@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83539ABDB64
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384F9ABDC7E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A3E0160265
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310A91BA7637
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFAF22DF87;
-	Tue, 20 May 2025 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CCF24728E;
+	Tue, 20 May 2025 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdtsRxH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGOO/50x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B58EEDE;
-	Tue, 20 May 2025 14:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7285C22D794;
+	Tue, 20 May 2025 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749857; cv=none; b=gCipcEa5gxBaPCqmRFUqvzjupwUxxieVFjRWKiA0i4mdl5nehKLHq3+5VWMC6xYLs97ri/ydZNEZPM8IYowK66D9RvH1J4qMC318xVsVYMIveL4IZgUkCTNaS9oKGVLBU1dwYe/stERjAp1CcdWaD44yYyU6bhsqqWpKXLM6D5U=
+	t=1747750705; cv=none; b=U7daskmexGFVUHs4qC7BZ/uwUf2TFnDDFCTU98KHHiGsrpflZyKt9R/E/Mgkc6Y+xNjG3f7n0dLWKbSvBJEJz46SYqlGHG9BU6NQBX0Sf+G7Djx5Ar0IQe5NbYb+MDxhgZ2hEpQy3N2OuGQ3TjMvv5MeJVY1nfAWtZmX9EW642I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749857; c=relaxed/simple;
-	bh=afLxmKZUVxp8AgOYJbyiEzA37pKbqS5HOio27kli+KI=;
+	s=arc-20240116; t=1747750705; c=relaxed/simple;
+	bh=urYACN+rCu6oi1U41MLFrc9A5LzDvTtSlppj04qtr2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnrFUbqO8Xt3zNvzHtgOFyjCSym71vLLZ6R8g1IF1iHYtUJqGjR17qMFEY6hAt63HCbwJ58QHrXcBZLDXLQJjeB8K/6xGYKyhIn1sHLZOSIbV2lY1bDcyrl8d7/9mNLfjv+zyBZldo13AmxyU3aGdVPGySwe2a7kz5zHYFJEdoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdtsRxH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431C9C4CEE9;
-	Tue, 20 May 2025 14:04:17 +0000 (UTC)
+	 MIME-Version; b=Mjk+nQNdo+8zQRUUAI/uhFKOeFmbsnQMIuPqxT3TgsCeqckrzdZobZvA7BJ5MzudAbGw4t0TZ4H7PTgFiatV3O7sOu607dkKtCG9b7HqKrYTu56X6SgtzHrruTZuets1W8M8yPHVRla6pWsapBMoz65YazDZqHqRkh5zMGs/reg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGOO/50x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0AEC4CEE9;
+	Tue, 20 May 2025 14:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749857;
-	bh=afLxmKZUVxp8AgOYJbyiEzA37pKbqS5HOio27kli+KI=;
+	s=korg; t=1747750705;
+	bh=urYACN+rCu6oi1U41MLFrc9A5LzDvTtSlppj04qtr2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdtsRxH2UE7+S3gwQthe98M3zii1wC46NrE8sxv8Boz+Th+vybkB6/qXU70iVuIIC
-	 bDOKp16xhtx7uiED2D5yuzEMJ7OIF/F1iNR3ho+8bOZDtat1pv7Mbb8X0WZavajR4Q
-	 OHUDXsmxJ0WoO+B4JFPuz1YdvM+5B6Ab5nkRO5v0=
+	b=kGOO/50xwjdDjOEYsWvy0m/QGF298yVR3C0vt2SrOttAlP+yEglJbmbo2EKBdjdTV
+	 GhM4/F2RCpNtAJcCvmCBfR2JkqUIB20b8t2QClIN7HS3mXfniHRaJu3GaWcyZzJVSw
+	 f0m/fYcjfN+Ogr248t7pDKT1mdpBAM7W8Elief6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	pengdonglin <dolinux.peng@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 081/117] ftrace: Fix preemption accounting for stacktrace filter command
-Date: Tue, 20 May 2025 15:50:46 +0200
-Message-ID: <20250520125807.210873396@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Kyoji Ogasawara <sawara04.o@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.14 077/145] btrfs: add back warning for mount option commit values exceeding 300
+Date: Tue, 20 May 2025 15:50:47 +0200
+Message-ID: <20250520125813.602163824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: pengdonglin <pengdonglin@xiaomi.com>
+From: Kyoji Ogasawara <sawara04.o@gmail.com>
 
-commit 11aff32439df6ca5b3b891b43032faf88f4a6a29 upstream.
+commit 4ce2affc6ef9f84b4aebbf18bd5c57397b6024eb upstream.
 
-The preemption count of the stacktrace filter command to trace ksys_read
-is consistently incorrect:
+The Btrfs documentation states that if the commit value is greater than
+300 a warning should be issued. The warning was accidentally lost in the
+new mount API update.
 
-$ echo ksys_read:stacktrace > set_ftrace_filter
-
-   <...>-453     [004] ...1.    38.308956: <stack trace>
-=> ksys_read
-=> do_syscall_64
-=> entry_SYSCALL_64_after_hwframe
-
-The root cause is that the trace framework disables preemption when
-invoking the filter command callback in function_trace_probe_call:
-
-   preempt_disable_notrace();
-   probe_ops->func(ip, parent_ip, probe_opsbe->tr, probe_ops, probe->data);
-   preempt_enable_notrace();
-
-Use tracing_gen_ctx_dec() to account for the preempt_disable_notrace(),
-which will output the correct preemption count:
-
-$ echo ksys_read:stacktrace > set_ftrace_filter
-
-   <...>-410     [006] .....    31.420396: <stack trace>
-=> ksys_read
-=> do_syscall_64
-=> entry_SYSCALL_64_after_hwframe
-
-Cc: stable@vger.kernel.org
-Fixes: 36590c50b2d07 ("tracing: Merge irqflags + preempt counter.")
-Link: https://lore.kernel.org/20250512094246.1167956-2-dolinux.peng@gmail.com
-Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 6941823cc878 ("btrfs: remove old mount API code")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_functions.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/btrfs/fs.h    |    1 +
+ fs/btrfs/super.c |    4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/kernel/trace/trace_functions.c
-+++ b/kernel/trace/trace_functions.c
-@@ -561,11 +561,7 @@ ftrace_traceoff(unsigned long ip, unsign
+--- a/fs/btrfs/fs.h
++++ b/fs/btrfs/fs.h
+@@ -285,6 +285,7 @@ enum {
+ #define BTRFS_FEATURE_INCOMPAT_SAFE_CLEAR		0ULL
  
- static __always_inline void trace_stack(struct trace_array *tr)
- {
--	unsigned int trace_ctx;
--
--	trace_ctx = tracing_gen_ctx();
--
--	__trace_stack(tr, trace_ctx, FTRACE_STACK_SKIP);
-+	__trace_stack(tr, tracing_gen_ctx_dec(), FTRACE_STACK_SKIP);
- }
+ #define BTRFS_DEFAULT_COMMIT_INTERVAL	(30)
++#define BTRFS_WARNING_COMMIT_INTERVAL	(300)
+ #define BTRFS_DEFAULT_MAX_INLINE	(2048)
  
- static void
+ struct btrfs_dev_replace {
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -569,6 +569,10 @@ static int btrfs_parse_param(struct fs_c
+ 		break;
+ 	case Opt_commit_interval:
+ 		ctx->commit_interval = result.uint_32;
++		if (ctx->commit_interval > BTRFS_WARNING_COMMIT_INTERVAL) {
++			btrfs_warn(NULL, "excessive commit interval %u, use with care",
++				   ctx->commit_interval);
++		}
+ 		if (ctx->commit_interval == 0)
+ 			ctx->commit_interval = BTRFS_DEFAULT_COMMIT_INTERVAL;
+ 		break;
 
 
 
