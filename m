@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-145570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A1FABDD5A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:39:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C04AABDBBE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3E74E5F1F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D06F18C7BB3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FE024FC09;
-	Tue, 20 May 2025 14:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6ED243367;
+	Tue, 20 May 2025 14:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGkPl9uv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBefDmTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE0F1A08DF;
-	Tue, 20 May 2025 14:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379E5242D7C;
+	Tue, 20 May 2025 14:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750559; cv=none; b=JTiGRoGWOum7TiuHQ74kOrlz/rwu7tZsFyg0smNeDCmsRuhCRCwKHDDqDhXzMcLVPHCliqPNeW6qR8wERIQQcAXS1Y0oHPKRMjH0cJuIXVbJEVmfxnG3SMrn/ITtymHwtwx5Mk1pKvEPnW+gOX25cKEdArKAdmDCCzggqaZIoZI=
+	t=1747750077; cv=none; b=QChC9IQMe0WEy3DWvkad5rlvhlI64Wl6n33Tas1iH/dwYe5OeHbkIawFNtW0L4UkpnnSadF400s/k4i213pbEVPg5meZPFnF26gZWXdwm6/XNiESAGJRN4PSzisECoKdQ6LaT8fGXp9ewtyWm4zTA6HErZ3zASqw0qMTFFLsTvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750559; c=relaxed/simple;
-	bh=xMLYj0o4f+dpedmnMi1rdm+0koh+BX1nabav4SSn0cs=;
+	s=arc-20240116; t=1747750077; c=relaxed/simple;
+	bh=UOMFGwO2uJ5emYfhRSXLS+BCfUQ5ykskanBe29U/ah4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUNCpZSOij4ZARLv6oACwmZ6MI9zj+NtyDpw2SmFF9epChIifDEWP2fw32sdYj3qXCmxgIQckCBET8tHhOM1FYVV6dupm++1epNDwPnsuXiKFnT0fSESvq10ojcua5Mw44RTfMrujAyNpWSQHCeAZFGAbvZmBYF3FIJKpeWKR9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGkPl9uv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F0FC4CEE9;
-	Tue, 20 May 2025 14:15:58 +0000 (UTC)
+	 MIME-Version; b=b+n9LOLZ3tjzOomlVmwZD1L1C8TGAfTSe6APdctytqlT6B74CRRGAqpRgoGtLCv03IK/TwvpeCBQtIZ8UulplBtBZOMebuy+v8u0EKhHoyGsKRoBi4fE9nykNdOug5H/5WFhhX93y7fyaG7uLhOpM++S3tJaZPtv0Ky2JeX61+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBefDmTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA69C4CEE9;
+	Tue, 20 May 2025 14:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750559;
-	bh=xMLYj0o4f+dpedmnMi1rdm+0koh+BX1nabav4SSn0cs=;
+	s=korg; t=1747750076;
+	bh=UOMFGwO2uJ5emYfhRSXLS+BCfUQ5ykskanBe29U/ah4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGkPl9uvCnITnQQoOwzTQWcG0ftHlOFdH+ZbYUr9xTE1FnUq3InPaKDuxIwKZkwlA
-	 74ugYyL7TnbkYXk1BS6ER9DpAPZyRy3D7PNxIJPplxseOTUdb5LdSs8CuTzdCWVq8j
-	 Df32PO/74vXKDCxWueJAbvbqBLhQoZ8xyz/dIa/c=
+	b=gBefDmTd8b+nsk/gmTEMXgdd59Kwci4OA1CN62Ul14TSSjA0XDb9RMdqmTVL+VyYk
+	 V4VwXxLlQegFqkF5+MSkzvcM3i7RpxNImpSvGCp8ZzE+ZcaKFjvPxRu6+/5nFdccj4
+	 FLCXv+skXBcTP5GsOWpjxbcyo1eSYrnjnY5VRhPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Stols <gstols@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 017/145] iio: adc: ad7606: move the software mode configuration
-Date: Tue, 20 May 2025 15:49:47 +0200
-Message-ID: <20250520125811.228953296@linuxfoundation.org>
+Subject: [PATCH 6.12 033/143] Bluetooth: MGMT: Fix MGMT_OP_ADD_DEVICE invalid device flags
+Date: Tue, 20 May 2025 15:49:48 +0200
+Message-ID: <20250520125811.350098738@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Stols <gstols@baylibre.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit f2a62931b39478c98f977caf299df5bc072f38e0 ]
+[ Upstream commit 1e2e3044c1bc64a64aa0eaf7c17f7832c26c9775 ]
 
-This is a preparation for the intoduction of the sofware functions in
-the iio backend version of the driver.
-The software mode configuration must be executed once the channels are
-configured, and the number of channels is known. This is not the case
-before iio-backend's configuration is called, and iio backend version of
-the driver does not have a timestamp channel.
-Also the sw_mode_config callback is configured during the iio-backend
-configuration.
-For clarity purpose, I moved the entire block instead of just the
-concerned function calls.
+Device flags could be updated in the meantime while MGMT_OP_ADD_DEVICE
+is pending on hci_update_passive_scan_sync so instead of setting the
+current_flags as cmd->user_data just do a lookup using
+hci_conn_params_lookup and use the latest stored flags.
 
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-Link: https://patch.msgid.link/20250210-wip-bl-ad7606_add_backend_sw_mode-v4-2-160df18b1da7@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 5257d80e22bf ("iio: adc: ad7606: check for NULL before calling sw_mode_config()")
+Fixes: a182d9c84f9c ("Bluetooth: MGMT: Fix Add Device to responding before completing")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ net/bluetooth/mgmt.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index d39354afd5394..376c808df11c7 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -1246,17 +1246,6 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 			return -ERESTARTSYS;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index c019f69c59395..d4700f940e8a1 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -7612,11 +7612,16 @@ static void add_device_complete(struct hci_dev *hdev, void *data, int err)
+ 	struct mgmt_cp_add_device *cp = cmd->param;
+ 
+ 	if (!err) {
++		struct hci_conn_params *params;
++
++		params = hci_conn_params_lookup(hdev, &cp->addr.bdaddr,
++						le_addr_type(cp->addr.type));
++
+ 		device_added(cmd->sk, hdev, &cp->addr.bdaddr, cp->addr.type,
+ 			     cp->action);
+ 		device_flags_changed(NULL, hdev, &cp->addr.bdaddr,
+ 				     cp->addr.type, hdev->conn_flags,
+-				     PTR_UINT(cmd->user_data));
++				     params ? params->flags : 0);
  	}
  
--	st->write_scale = ad7606_write_scale_hw;
--	st->write_os = ad7606_write_os_hw;
--
--	ret = ad7606_sw_mode_setup(indio_dev);
--	if (ret)
--		return ret;
--
--	ret = ad7606_chan_scales_setup(indio_dev);
--	if (ret)
--		return ret;
--
- 	/* If convst pin is not defined, setup PWM. */
- 	if (!st->gpio_convst) {
- 		st->cnvst_pwm = devm_pwm_get(dev, NULL);
-@@ -1334,6 +1323,17 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 			return ret;
+ 	mgmt_cmd_complete(cmd->sk, hdev->id, MGMT_OP_ADD_DEVICE,
+@@ -7719,8 +7724,6 @@ static int add_device(struct sock *sk, struct hci_dev *hdev,
+ 		goto unlock;
  	}
  
-+	st->write_scale = ad7606_write_scale_hw;
-+	st->write_os = ad7606_write_os_hw;
-+
-+	ret = ad7606_sw_mode_setup(indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad7606_chan_scales_setup(indio_dev);
-+	if (ret)
-+		return ret;
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
- EXPORT_SYMBOL_NS_GPL(ad7606_probe, "IIO_AD7606");
+-	cmd->user_data = UINT_PTR(current_flags);
+-
+ 	err = hci_cmd_sync_queue(hdev, add_device_sync, cmd,
+ 				 add_device_complete);
+ 	if (err < 0) {
 -- 
 2.39.5
 
