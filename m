@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E5DABDC38
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8EFABDCF3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B85203B1873
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775ED8A5EA1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66F224A06B;
-	Tue, 20 May 2025 14:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FE826A09A;
+	Tue, 20 May 2025 14:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2TakDMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SoY2e7XQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AE924A04F;
-	Tue, 20 May 2025 14:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5468266F15;
+	Tue, 20 May 2025 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750359; cv=none; b=eoLokODOwNjAviUnXQ6y5kV5KftYhFfTrt9N6mKdYGUa8Vxr0DuLlj6hm7tkzf0TTp3T0NvwdBIBAtrc1Nj0Sp2xt2ogw9x0ZUPgmZMxv/ZnuO16JhWYih7mFD3a0mYCh0aAe/CCNHT4IjTP+rNmiDI9GNzjv6NhESmNkDXHRxU=
+	t=1747750850; cv=none; b=otdyNkqW3h9He9RiznXEkh+cQBXqAcIjTBe+rk+ydqrmgAYka2FJ6CEodMgs6IuYqvdRpwIivNNpKBf6sdeDfjulRxj5xOgBy9Xy8AykTFic7MaDm3Kao1vdtvLb+sRen6cLjgtM7g3SSBHYNdm8ObGfHH2178q2MIQIQgiqY4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750359; c=relaxed/simple;
-	bh=d98JhYspnEoyzIcoFpP+1HCb9Rx/FM3TSe+oQAMGo7M=;
+	s=arc-20240116; t=1747750850; c=relaxed/simple;
+	bh=Vs9obrTYzGtWnK7pEXlINDi7h9exO5BkC9tYYprZkHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtJy2H/qwpvTjy4SJ8plHPH6+3+3oRuDEnlaESdWWAFs9lRJ6VsqXA9N2EFpAlC8oPY+5hVLV3vXmNaF4Ji319bi0drDqx5pIBrqGciExG865GDBBQZhrfk5wvbs7EER0iFAcPEebyA6C4VqZRZoOZnXHvuTOkyoXCT9Loc4Ch8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2TakDMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E594BC4CEE9;
-	Tue, 20 May 2025 14:12:38 +0000 (UTC)
+	 MIME-Version; b=R5c3aQxco5ZVUXiqBOr+yM4imhlT0qdIYh6+BATWOuDcTyAv3b0NDdlY/v1KszzyXlQaGSgPplVjADxZA+sWwqX5O7Yee2N7KRiWwHv3wSM3W5bUju8yKl9ofPXZhiSlzFfZNM1Re0H7p2EOq7Wr1LZtXDSZw9VIxM0AMFeUioY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoY2e7XQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E1FC4CEE9;
+	Tue, 20 May 2025 14:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750359;
-	bh=d98JhYspnEoyzIcoFpP+1HCb9Rx/FM3TSe+oQAMGo7M=;
+	s=korg; t=1747750850;
+	bh=Vs9obrTYzGtWnK7pEXlINDi7h9exO5BkC9tYYprZkHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2TakDMb0SjaeAlwnyUiiQAWFYF5UbzgRp6VoBMwU/Q6SqsYW+WR5MBrmJyb2t01h
-	 4qkhZq8ywEQtriGqM9vG7T4aw47FsIl4jmZUvOccYwxF/umXs/3VsVWpd/pc9ReJRh
-	 IUFn2yyEbKBGjFiKum5Ua8dygo5SvgvIKr1or6c8=
+	b=SoY2e7XQHAX5xHfr82CJF3pAXzHuJKzE8J0VGZnU3rHtZ5Nbw56Qh0DoeztZR36uV
+	 1KEJLdSONgv7hAEUHm75FkV53tkT9PY4QaKI6OmtsWwGpo6B5Wpg7NTxNgwIwSwnUR
+	 j6NDZpoUZd1+06m2jL65EIqklmx05pfZ3H8R1/gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fenghua Yu <fenghuay@nvidia.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 126/143] dmaengine: idxd: fix memory leak in error handling path of idxd_alloc
-Date: Tue, 20 May 2025 15:51:21 +0200
-Message-ID: <20250520125814.979896438@linuxfoundation.org>
+Subject: [PATCH 6.14 112/145] phy: renesas: rcar-gen3-usb2: Set timing registers only once
+Date: Tue, 20 May 2025 15:51:22 +0200
+Message-ID: <20250520125814.940437068@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 46a5cca76c76c86063000a12936f8e7875295838 upstream.
+commit 86e70849f4b2b4597ac9f7c7931f2a363774be25 upstream.
 
-Memory allocated for idxd is not freed if an error occurs during
-idxd_alloc(). To fix it, free the allocated memory in the reverse order
-of allocation before exiting the function in case of an error.
+phy-rcar-gen3-usb2 driver exports 4 PHYs. The timing registers are common
+to all PHYs. There is no need to set them every time a PHY is initialized.
+Set timing register only when the 1st PHY is initialized.
 
-Fixes: a8563a33a5e2 ("dmanegine: idxd: reformat opcap output to match bitmap_parse() input")
+Fixes: f3b5a8d9b50d ("phy: rcar-gen3-usb2: Add R-Car Gen3 USB2 PHY driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Link: https://lore.kernel.org/r/20250404120217.48772-7-xueshuai@linux.alibaba.com
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-6-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/init.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -602,28 +602,34 @@ static struct idxd_device *idxd_alloc(st
- 	idxd_dev_set_type(&idxd->idxd_dev, idxd->data->type);
- 	idxd->id = ida_alloc(&idxd_ida, GFP_KERNEL);
- 	if (idxd->id < 0)
--		return NULL;
-+		goto err_ida;
- 
- 	idxd->opcap_bmap = bitmap_zalloc_node(IDXD_MAX_OPCAP_BITS, GFP_KERNEL, dev_to_node(dev));
--	if (!idxd->opcap_bmap) {
--		ida_free(&idxd_ida, idxd->id);
--		return NULL;
--	}
-+	if (!idxd->opcap_bmap)
-+		goto err_opcap;
- 
- 	device_initialize(conf_dev);
- 	conf_dev->parent = dev;
- 	conf_dev->bus = &dsa_bus_type;
- 	conf_dev->type = idxd->data->dev_type;
- 	rc = dev_set_name(conf_dev, "%s%d", idxd->data->name_prefix, idxd->id);
--	if (rc < 0) {
--		put_device(conf_dev);
--		return NULL;
--	}
-+	if (rc < 0)
-+		goto err_name;
- 
- 	spin_lock_init(&idxd->dev_lock);
- 	spin_lock_init(&idxd->cmd_lock);
- 
- 	return idxd;
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -463,8 +463,11 @@ static int rcar_gen3_phy_usb2_init(struc
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+ 	val |= USB2_INT_ENABLE_UCOM_INTEN | rphy->int_enable_bits;
+ 	writel(val, usb2_base + USB2_INT_ENABLE);
+-	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
+-	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
 +
-+err_name:
-+	put_device(conf_dev);
-+	bitmap_free(idxd->opcap_bmap);
-+err_opcap:
-+	ida_free(&idxd_ida, idxd->id);
-+err_ida:
-+	kfree(idxd);
-+
-+	return NULL;
- }
++	if (!rcar_gen3_is_any_rphy_initialized(channel)) {
++		writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
++		writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
++	}
  
- static int idxd_enable_system_pasid(struct idxd_device *idxd)
+ 	/* Initialize otg part (only if we initialize a PHY with IRQs). */
+ 	if (rphy->int_enable_bits)
 
 
 
