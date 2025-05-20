@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-145175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7680ABDA74
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6965FABDAC3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F17A17B1473
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CDE81BA5A4E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207B2244686;
-	Tue, 20 May 2025 13:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F03242D98;
+	Tue, 20 May 2025 14:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOLlMWdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INqQhVx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9A2242D94;
-	Tue, 20 May 2025 13:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651221D8E07;
+	Tue, 20 May 2025 14:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749387; cv=none; b=SIfSgNAUiUag/DeoIBr/1u+Z/93Chcsq32LGk4u7P4v34swVTFBV+0H+bdI1AAttDRIGT6hU7F7r0efMwsSSy4ttCgCXTZ6Pn+OdGn7QcNgLpqanfubjFTHz2oWNYiFHWXM/QzpL7elei/MCJyDhhVlkPeETxvf45pbQTcHupoQ=
+	t=1747749659; cv=none; b=OXBydUKTIuG9Jv17IqS7kOHdctE7Q5mRrxohbSKlg3hlY6YYwklX/kSkudat7kWEliObKiNN2IneqajzrIZLmIeLyYZNvRmx/MVuqTKDGub/HPxp4m1bnxi8YKxiKKP1MYVT3hVMUKy5euFGpMcOVltVa3S+N1yvD1nHpBNQYS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749387; c=relaxed/simple;
-	bh=VAVfzM5U2xFZNQegw0+s4WxmxF3krHvS8keamVmb4Oc=;
+	s=arc-20240116; t=1747749659; c=relaxed/simple;
+	bh=KVz80NOgwKLkpK3YO/n3sXaqAdhImNhqzq/8J0fak70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIzoPuteNTxxZh8EaJopmPEIFRjPZls/xR2TOVV1jOjwXNtHZcxlFZnOUiSVdcS/jtfAVRjP5sWptWylZG6MY9rv3jn9pmcGCbbahx3kypa2uoEQFewhrxWZcrwkFAffvW62BXmiFxRqbHTp1a1Sa2l71ahMsBO44GIbxVFppRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOLlMWdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAA7C4CEEA;
-	Tue, 20 May 2025 13:56:27 +0000 (UTC)
+	 MIME-Version; b=Ctu6GKQfeOGWIOBDwZqurb2njPwlrxVMN3pxDJS4vLSrMgn3FpI83plcpdqXFmMOSFrFcKcFQoSzd9Q9m6kjAnlgFzRPPouzSLjfxKTNSYfTybHfuBY4Z0H5BgkcaidkCunsQtg+daLOlAo6m3MGHkUp3YgGJsZDkSwqHtANoyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INqQhVx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A27C4CEEB;
+	Tue, 20 May 2025 14:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749387;
-	bh=VAVfzM5U2xFZNQegw0+s4WxmxF3krHvS8keamVmb4Oc=;
+	s=korg; t=1747749659;
+	bh=KVz80NOgwKLkpK3YO/n3sXaqAdhImNhqzq/8J0fak70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOLlMWdRPrNEf2P1UijPNIifn8W5xMkjYgPIGQiQj82yCkcTPzh8CQVZoRAMa425H
-	 YiOTN9KAid5jGwIKWCDpxQ/Beya8UIVakOrVlmBiCxCcnt5PNqrKAkou3ziGCDHmoV
-	 vCaUzCXS5AqH48S/9Ylv7jfhl0FgVNcreRHYhias=
+	b=INqQhVx1djHqMz/KmPK1j30wJAZjPHrqhfx8u4HCA+s75Lckixd67KODeHUdLYSF0
+	 3x4vH9auqglpS08/y7eSUrxfVtHRxhUrlCg3wzTdL87Xh6rWcbJwkgvpN2KhmiiWmC
+	 /jm2ekJkSFRHIgVFu3830r9C+qgaq8P8fK0eqQyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	y0un9n132@gmail.com,
 	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 05/97] binfmt_elf: Leave a gap between .bss and brk
+Subject: [PATCH 6.6 005/117] binfmt_elf: Leave a gap between .bss and brk
 Date: Tue, 20 May 2025 15:49:30 +0200
-Message-ID: <20250520125800.875105306@linuxfoundation.org>
+Message-ID: <20250520125804.203965245@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 2672b9dca1af0..ff796910265da 100644
+index 02258b28e370e..700d93e73f6e0 100644
 --- a/fs/binfmt_elf.c
 +++ b/fs/binfmt_elf.c
-@@ -1294,6 +1294,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1293,6 +1293,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
  		if (IS_ENABLED(CONFIG_ARCH_HAS_ELF_RANDOMIZE) &&
  		    elf_ex->e_type == ET_DYN && !interpreter) {
  			mm->brk = mm->start_brk = ELF_ET_DYN_BASE;
