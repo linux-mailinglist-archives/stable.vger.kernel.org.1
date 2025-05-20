@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADA6ABDA8E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A40BABDA2B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B2131BA5324
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58CF07AA49A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9C622D7A8;
-	Tue, 20 May 2025 13:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EAE2459DA;
+	Tue, 20 May 2025 13:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCyGfK8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbo+JL4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D13AEC4;
-	Tue, 20 May 2025 13:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7095A2459D4;
+	Tue, 20 May 2025 13:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749503; cv=none; b=h/wxXnHmi4jt98fNYH2Nu9jBgvqwDX48CY2eYQXKbhM6hv0kcQ6JjNKL9usdn5AufwVjWbFz+dffCgv1DF+jbrNydgBJwZ8ezMI+X+GIO/fp84YKBbRTBAMSI3J/S0VgzBb3QfYy0mU/xNXjq8OjL17haCOv1XPzWXln48N7h8A=
+	t=1747749226; cv=none; b=kPCblpZMSLeMA/U+UR3HxyWUtbk4awYYs5sl/HkRpnwhBu0VHc6IUTzqp6Mb3X5C2OCyPXJNZTjb8uFJFcjcQkzZfw1iuCVUcDj8dQAnHT7oznLpFVstAYV2ttVIv11CpVNRCOhqFaRe/adjTixy8EbJbAK8X88e8N/NFnkzGPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749503; c=relaxed/simple;
-	bh=6EGn5U4JfgfczSaG02sjgyR2U7TefjPE7WtBEhqb06k=;
+	s=arc-20240116; t=1747749226; c=relaxed/simple;
+	bh=Gyb/4YBqtd8fCFV8CmjbJYwI+QPZgI16cuHJnOk0CP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4bGyLTX1zEV6Fuho/eVhgEObwfzWqny464Fi96q2KqezrKZw2R85WJfTFSSLoa0k6NhuU2ebWkgQHKlJpoQ5Ir+uD3h55AtGu+vmsxSPOHfO1l9HiifFLKGvaymNDhGeDIpHp9xxLXmM1Wi6J7lNhYiAF5n65DikTAWBXe5mYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCyGfK8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF625C4CEE9;
-	Tue, 20 May 2025 13:58:22 +0000 (UTC)
+	 MIME-Version; b=h5WyoKbvzS7FpU1lC70CpL2BXil/v+aSXcJblUNwA5MaXDesXknPehe1jeKb/3ZW1vqouVIZjztUKMA03RVMcInDatsBAa58X3baxtY7LDkGV0/84DsryyFoloQcrVXASJkHdWls/BTWC6boTOIZNSFqRm0jp6QB9tfO1OazIKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbo+JL4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D7CC4CEEA;
+	Tue, 20 May 2025 13:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749503;
-	bh=6EGn5U4JfgfczSaG02sjgyR2U7TefjPE7WtBEhqb06k=;
+	s=korg; t=1747749226;
+	bh=Gyb/4YBqtd8fCFV8CmjbJYwI+QPZgI16cuHJnOk0CP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCyGfK8CFjbcsn9HR36Pu/QvpKxT7hPYZf4ISFmOdVwj7qjbWufyjPr7F48S0EpSz
-	 GV/DFswG+WSIKNHFkykkOx9aK/5UwOQ6oRoiCe5gH9vP285lucvftPQjruc8zNpDsr
-	 U0nHhRzQAgsqIMb2d81rKa4kHU7Q1rwTrA4LSPec=
+	b=zbo+JL4NsNv/GdzA150r7b7FuiHGUoJBJORNl2mVWOwa52TiL6tZjeLbPrrpn1Zs2
+	 NEHFAasraSdHlSKhzCfU5+ZUWnHOpnIOonexA9j3mOTQqrfUs9n8E3PCHkgkUqx9pC
+	 AW5eb3Ec0GyRYk8HKNujECQzDbDdocUrgVV45cRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Mathieu Othacehe <othacehe@gnu.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/97] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
+Subject: [PATCH 5.15 09/59] net: cadence: macb: Fix a possible deadlock in macb_halt_tx.
 Date: Tue, 20 May 2025 15:50:00 +0200
-Message-ID: <20250520125802.035823781@linuxfoundation.org>
+Message-ID: <20250520125754.206899792@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Mathieu Othacehe <othacehe@gnu.org>
 
-[ Upstream commit 9d8a99c5a7c7f4f7eca2c168a4ec254409670035 ]
+[ Upstream commit c92d6089d8ad7d4d815ebcedee3f3907b539ff1f ]
 
-In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
-allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
-not freed. Fix that by jumping to the error path that frees them, by
-calling qlcnic_free_mbx_args(). This was found using static analysis.
+There is a situation where after THALT is set high, TGO stays high as
+well. Because jiffies are never updated, as we are in a context with
+interrupts disabled, we never exit that loop and have a deadlock.
 
-Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+That deadlock was noticed on a sama5d4 device that stayed locked for days.
+
+Use retries instead of jiffies so that the timeout really works and we do
+not have a deadlock anymore.
+
+Fixes: e86cd53afc590 ("net/macb: better manage tx errors")
+Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250512044829.36400-1-abdun.nihaal@gmail.com
+Link: https://patch.msgid.link/20250509121935.16282-1-othacehe@gnu.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-index 28d24d59efb84..d57b976b90409 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -1484,8 +1484,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
- 	}
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 275baaaea0e12..667af80a739b9 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -986,22 +986,15 @@ static void macb_update_stats(struct macb *bp)
  
- 	cmd_op = (cmd.rsp.arg[0] & 0xff);
--	if (cmd.rsp.arg[0] >> 25 == 2)
--		return 2;
-+	if (cmd.rsp.arg[0] >> 25 == 2) {
-+		ret = 2;
-+		goto out;
-+	}
-+
- 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
- 		set_bit(QLC_BC_VF_STATE, &vf->state);
- 	else
+ static int macb_halt_tx(struct macb *bp)
+ {
+-	unsigned long	halt_time, timeout;
+-	u32		status;
++	u32 status;
+ 
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(THALT));
+ 
+-	timeout = jiffies + usecs_to_jiffies(MACB_HALT_TIMEOUT);
+-	do {
+-		halt_time = jiffies;
+-		status = macb_readl(bp, TSR);
+-		if (!(status & MACB_BIT(TGO)))
+-			return 0;
+-
+-		udelay(250);
+-	} while (time_before(halt_time, timeout));
+-
+-	return -ETIMEDOUT;
++	/* Poll TSR until TGO is cleared or timeout. */
++	return read_poll_timeout_atomic(macb_readl, status,
++					!(status & MACB_BIT(TGO)),
++					250, MACB_HALT_TIMEOUT, false,
++					bp, TSR);
+ }
+ 
+ static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb)
 -- 
 2.39.5
 
