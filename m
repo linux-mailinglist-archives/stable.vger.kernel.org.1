@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6F3ABDA89
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20F0ABDB03
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:04:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0305E169130
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2022A188A06D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E9713635C;
-	Tue, 20 May 2025 13:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3F2246327;
+	Tue, 20 May 2025 14:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRueOz0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGTmgY93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD85DDA9;
-	Tue, 20 May 2025 13:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360E91D8E07;
+	Tue, 20 May 2025 14:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749484; cv=none; b=EbdwBLC/KZ7SLmYMSIGFtGMH795r0NfBVqKAnN/Y5VzzUTBJoE8fyemP24NpB4TGWXO92q1bpx+LrL91eeiBrR8esmeBqIwrJ5ZHzaa5sP2bEMVzjm6XGTIxON5mpmkOPO/ipB5tccdnRLrdhkfwnzllPSCHUqudkORo46RNqmg=
+	t=1747749783; cv=none; b=svhokAevuycNqursjLmV8lNr+KsXqb9VKh7gVLpiirC18I7TR4VX7YBaDzxpwKjcb14jR2BdBlNaom36rO1ttZ6U5csEmZUUOKSZoPaJMxdqgHw7p1Fa+QzLmIWBbHlfHLCc+q5wp9R7KKb4bNzPHAYAtYqE6LYUN4noPiEPhu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749484; c=relaxed/simple;
-	bh=GDeFuFcR/QRSKyeooZyP6jEGYpE+mmv5KD606OITWhM=;
+	s=arc-20240116; t=1747749783; c=relaxed/simple;
+	bh=IIuj0Q5XXif1945BnylO5ENZAP27z+uGzK1MjIlBxyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A50hFB4XNErErZvy6LdPmz1yP1wkk5tjiZgg1YS4JKYooZMy3lXuAsegHETonIEW2kSNj4ohwqaZxIxA8hAIXfc5vJ2QUHawI9R/AHWe+jPP7+yRbJANhAC4U2KKC14qHdNuk4H6gtUV/bQ0at9wTmAadr9OJ8GCwIQeHwprMv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRueOz0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6322AC4CEE9;
-	Tue, 20 May 2025 13:58:03 +0000 (UTC)
+	 MIME-Version; b=ZJXypf6PBSdel2E946hM+4+tddU/9sR6jIAufeIxYJtBOuUWHig67slJ1Jj8vLyixTw3IvZNCZFsJPvjsIjm/eWrrr7i9mp2X5cnyd9VrlNNxofxAvPakC0g+cEP0GSNK4nbm7upYaMxdZa2a1/vRRx16J5LX2a5/wZktAIX++U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGTmgY93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19C8C4CEE9;
+	Tue, 20 May 2025 14:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749484;
-	bh=GDeFuFcR/QRSKyeooZyP6jEGYpE+mmv5KD606OITWhM=;
+	s=korg; t=1747749783;
+	bh=IIuj0Q5XXif1945BnylO5ENZAP27z+uGzK1MjIlBxyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRueOz0n6y3woGYc00FZwcFNmtSm9rrFYyw3VcXtMheoLm62frsjnKGuFzgDe7dSv
-	 8fRzaGati2bQGe/fES+WSjN5dpHjtiHzvNG5RxQOt3GPhJ94se6Hy4iYfS0YYuC/dU
-	 6OrSgQQD0SkfvYgXm5J0NWKUictWv8jrc5RlHUv4=
+	b=bGTmgY93GJboWcTJVcVNjKQMBqnL6vcdSCP6STDZTzOHhefmbhDOjyWzEoY5UoJcQ
+	 hrPO1TrCkPJERLwB35hAUvbJlzdbxVl2w2xxprG6TZW3WUU3LXDC7UvV0C720EexWM
+	 z9VdpzYIxeZHrRjCy9VpYt39uLc4qzCqRz6SCDOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Thierry Reding <treding@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 58/97] phy: Fix error handling in tegra_xusb_port_init
-Date: Tue, 20 May 2025 15:50:23 +0200
-Message-ID: <20250520125802.929165661@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 059/117] tsnep: fix timestamping with a stacked DSA driver
+Date: Tue, 20 May 2025 15:50:24 +0200
+Message-ID: <20250520125806.325631814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
 
-commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
+[ Upstream commit b3ca9eef6646576ad506a96d941d87a69f66732a ]
 
-If device_add() fails, do not use device_unregister() for error
-handling. device_unregister() consists two functions: device_del() and
-put_device(). device_unregister() should only be called after
-device_add() succeeded because device_del() undoes what device_add()
-does if successful. Change device_unregister() to put_device() call
-before returning from the function.
+This driver is susceptible to a form of the bug explained in commit
+c26a2c2ddc01 ("gianfar: Fix TX timestamping with a stacked DSA driver")
+and in Documentation/networking/timestamping.rst section "Other caveats
+for MAC drivers", specifically it timestamps any skb which has
+SKBTX_HW_TSTAMP, and does not consider if timestamping has been enabled
+in adapter->hwtstamp_config.tx_type.
 
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+Evaluate the proper TX timestamping condition only once on the TX
+path (in tsnep_xmit_frame_ring()) and store the result in an additional
+TX entry flag. Evaluate the new TX entry flag in the TX confirmation path
+(in tsnep_tx_poll()).
 
-Found by code review.
+This way SKBTX_IN_PROGRESS is set by the driver as required, but never
+evaluated. SKBTX_IN_PROGRESS shall not be evaluated as it can be set
+by a stacked DSA driver and evaluating it would lead to unwanted
+timestamps.
 
-Cc: stable@vger.kernel.org
-Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 403f69bbdbad ("tsnep: Add TSN endpoint Ethernet MAC driver")
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250514195657.25874-1-gerhard@engleder-embedded.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/engleder/tsnep_main.c | 30 ++++++++++++++--------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -542,16 +542,16 @@ static int tegra_xusb_port_init(struct t
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index d8711e1511e47..215ae6745932a 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -67,6 +67,8 @@
+ #define TSNEP_TX_TYPE_XDP_NDO_MAP_PAGE	(TSNEP_TX_TYPE_XDP_NDO | TSNEP_TX_TYPE_MAP_PAGE)
+ #define TSNEP_TX_TYPE_XDP		(TSNEP_TX_TYPE_XDP_TX | TSNEP_TX_TYPE_XDP_NDO)
+ #define TSNEP_TX_TYPE_XSK		BIT(12)
++#define TSNEP_TX_TYPE_TSTAMP		BIT(13)
++#define TSNEP_TX_TYPE_SKB_TSTAMP	(TSNEP_TX_TYPE_SKB | TSNEP_TX_TYPE_TSTAMP)
  
- 	err = dev_set_name(&port->dev, "%s-%u", name, index);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
+ #define TSNEP_XDP_TX		BIT(0)
+ #define TSNEP_XDP_REDIRECT	BIT(1)
+@@ -385,8 +387,7 @@ static void tsnep_tx_activate(struct tsnep_tx *tx, int index, int length,
+ 	if (entry->skb) {
+ 		entry->properties = length & TSNEP_DESC_LENGTH_MASK;
+ 		entry->properties |= TSNEP_DESC_INTERRUPT_FLAG;
+-		if ((entry->type & TSNEP_TX_TYPE_SKB) &&
+-		    (skb_shinfo(entry->skb)->tx_flags & SKBTX_IN_PROGRESS))
++		if ((entry->type & TSNEP_TX_TYPE_SKB_TSTAMP) == TSNEP_TX_TYPE_SKB_TSTAMP)
+ 			entry->properties |= TSNEP_DESC_EXTENDED_WRITEBACK_FLAG;
  
- 	err = device_add(&port->dev);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
- 
- 	return 0;
- 
--unregister:
--	device_unregister(&port->dev);
-+put_device:
-+	put_device(&port->dev);
- 	return err;
+ 		/* toggle user flag to prevent false acknowledge
+@@ -478,7 +479,8 @@ static int tsnep_tx_map_frag(skb_frag_t *frag, struct tsnep_tx_entry *entry,
+ 	return mapped;
  }
  
+-static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count)
++static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count,
++			bool do_tstamp)
+ {
+ 	struct device *dmadev = tx->adapter->dmadev;
+ 	struct tsnep_tx_entry *entry;
+@@ -504,6 +506,9 @@ static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count)
+ 				entry->type = TSNEP_TX_TYPE_SKB_INLINE;
+ 				mapped = 0;
+ 			}
++
++			if (do_tstamp)
++				entry->type |= TSNEP_TX_TYPE_TSTAMP;
+ 		} else {
+ 			skb_frag_t *frag = &skb_shinfo(skb)->frags[i - 1];
+ 
+@@ -557,11 +562,12 @@ static int tsnep_tx_unmap(struct tsnep_tx *tx, int index, int count)
+ static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
+ 					 struct tsnep_tx *tx)
+ {
+-	int count = 1;
+ 	struct tsnep_tx_entry *entry;
++	bool do_tstamp = false;
++	int count = 1;
+ 	int length;
+-	int i;
+ 	int retval;
++	int i;
+ 
+ 	if (skb_shinfo(skb)->nr_frags > 0)
+ 		count += skb_shinfo(skb)->nr_frags;
+@@ -578,7 +584,13 @@ static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
+ 	entry = &tx->entry[tx->write];
+ 	entry->skb = skb;
+ 
+-	retval = tsnep_tx_map(skb, tx, count);
++	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
++	    tx->adapter->hwtstamp_config.tx_type == HWTSTAMP_TX_ON) {
++		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
++		do_tstamp = true;
++	}
++
++	retval = tsnep_tx_map(skb, tx, count, do_tstamp);
+ 	if (retval < 0) {
+ 		tsnep_tx_unmap(tx, tx->write, count);
+ 		dev_kfree_skb_any(entry->skb);
+@@ -590,9 +602,6 @@ static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
+ 	}
+ 	length = retval;
+ 
+-	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)
+-		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+-
+ 	for (i = 0; i < count; i++)
+ 		tsnep_tx_activate(tx, (tx->write + i) & TSNEP_RING_MASK, length,
+ 				  i == count - 1);
+@@ -843,8 +852,7 @@ static bool tsnep_tx_poll(struct tsnep_tx *tx, int napi_budget)
+ 
+ 		length = tsnep_tx_unmap(tx, tx->read, count);
+ 
+-		if ((entry->type & TSNEP_TX_TYPE_SKB) &&
+-		    (skb_shinfo(entry->skb)->tx_flags & SKBTX_IN_PROGRESS) &&
++		if (((entry->type & TSNEP_TX_TYPE_SKB_TSTAMP) == TSNEP_TX_TYPE_SKB_TSTAMP) &&
+ 		    (__le32_to_cpu(entry->desc_wb->properties) &
+ 		     TSNEP_DESC_EXTENDED_WRITEBACK_FLAG)) {
+ 			struct skb_shared_hwtstamps hwtstamps;
+-- 
+2.39.5
+
 
 
 
