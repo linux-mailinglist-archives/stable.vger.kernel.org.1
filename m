@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-145507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D714CABDCC1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:27:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E0ABDCFC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77564C6392
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:17:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60CE8C6399
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B91924BD0C;
-	Tue, 20 May 2025 14:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F26A242D98;
+	Tue, 20 May 2025 14:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTEkKeeu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVnHxwbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373BD24886F;
-	Tue, 20 May 2025 14:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1E91A3A80;
+	Tue, 20 May 2025 14:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750378; cv=none; b=iXIS1i3rvHvr8hG3xIBKFmd1zhJH8R/PAAqmOVetc2oneNPNganzABvA8xDKHt16D0RHF0q+S6jyvHC7WnOjOayBULpmAB4Kyo5Vq0mM7QeMhZsgocibGz4G/YcrOERF24us3H3Fkx9af8eKVzpOiFbKALn97bk2NH5tu3ambiQ=
+	t=1747750866; cv=none; b=NhsUjxz4xw4xQpgoII2hoNHviry4zNzaSIQneYdo/onMhXDiKdX8gr1ke1joXyBT5cz8HVEx5m/SC8pf0Eos/mm8Lf7t5qzVuxMRgoo/EqIpdJ/EnpL80YrSxhRewTH9UyyCjtybEkg9kQBGhT5aDsx7Dx9kcpUYKCsrdoi8Qb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750378; c=relaxed/simple;
-	bh=vIR1nKHv0vcV/V33dOUf5gidGuJgny/hgGCRD4LWPkM=;
+	s=arc-20240116; t=1747750866; c=relaxed/simple;
+	bh=k4ywCbHZYqfa/1XY+zWnfCR2Kn1NVInb22iLwd8JLZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqiJLi8tO6A4i3Rjicq1PnMES2IPSpJfwHk1ntnV5qHolkzUzfSDLjiqPoXPpTEPamnYuFLrAchuPkt7Oip1e6yVyhocO7f0Q+4h2JBxLUqnOO+d0x/OmHntVMrKh8Bx4BTcVNudUnkhZIqZ1RS97mD4dQkNnt6HtlqYu3Lxuco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTEkKeeu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55C8C4CEE9;
-	Tue, 20 May 2025 14:12:57 +0000 (UTC)
+	 MIME-Version; b=EXfN48mUaTV+l4abiJfyMdLnz1jOA3UL7y2s6zywFjnWikk7YhFc3fW2TGbTjMWU9gG9gONEDfKK43RMkMkYFpplHP3qhpB3PqvyaBgGa6TZaugrIRmVoJISbAMcHKo909qHNoMtVXPt+IU5cqfdTGyotugBr/sQwQrDg0Fo6nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVnHxwbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979CBC4CEE9;
+	Tue, 20 May 2025 14:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750378;
-	bh=vIR1nKHv0vcV/V33dOUf5gidGuJgny/hgGCRD4LWPkM=;
+	s=korg; t=1747750866;
+	bh=k4ywCbHZYqfa/1XY+zWnfCR2Kn1NVInb22iLwd8JLZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTEkKeeujtb0qFZwvHsbL3um1e4YKOoqggvo9h0fjn4L9f9dUfWCE49D/exhParhF
-	 Ia/qPP+cY6UW995/kTJKT3M+VS+zk1pVOR02rj5xHOaoh65Mtgy4c/IQSQhGDkq7Ao
-	 4a7w8ZKY6cJsyhXI61kOqmOvJ8LaFiPNr0AGkYwM=
+	b=wVnHxwbAuIVWgmj5L2pD5rGcezz03+pDK0/IKQa6YbECN2sTA2LrzevuR/6qbr9yS
+	 kLLtJStpunN2snEEwsBKKppVbhmfbICMR83icwiLh362YGLPR0JE/q74ZaGFzlQje7
+	 ja/ZyokgDAgFU7BbZhWrdZPRMkXM2CUIj9QyowW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.12 132/143] accel/ivpu: Rename ivpu_log_level to fw_log_level
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.14 117/145] wifi: mt76: disable napi on driver removal
 Date: Tue, 20 May 2025 15:51:27 +0200
-Message-ID: <20250520125815.208930067@linuxfoundation.org>
+Message-ID: <20250520125815.133532295@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 3a3fb8110c65d361cd9d750c9e16520f740c93f2 upstream.
+commit 78ab4be549533432d97ea8989d2f00b508fa68d8 upstream.
 
-Rename module param ivpu_log_level to fw_log_level, so it is clear
-what log level is actually changed.
+A warning on driver removal started occurring after commit 9dd05df8403b
+("net: warn if NAPI instance wasn't shut down"). Disable tx napi before
+deleting it in mt76_dma_cleanup().
 
-Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240930195322.461209-3-jacek.lawrynowicz@linux.intel.com
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+ WARNING: CPU: 4 PID: 18828 at net/core/dev.c:7288 __netif_napi_del_locked+0xf0/0x100
+ CPU: 4 UID: 0 PID: 18828 Comm: modprobe Not tainted 6.15.0-rc4 #4 PREEMPT(lazy)
+ Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
+ RIP: 0010:__netif_napi_del_locked+0xf0/0x100
+ Call Trace:
+ <TASK>
+ mt76_dma_cleanup+0x54/0x2f0 [mt76]
+ mt7921_pci_remove+0xd5/0x190 [mt7921e]
+ pci_device_remove+0x47/0xc0
+ device_release_driver_internal+0x19e/0x200
+ driver_detach+0x48/0x90
+ bus_remove_driver+0x6d/0xf0
+ pci_unregister_driver+0x2e/0xb0
+ __do_sys_delete_module.isra.0+0x197/0x2e0
+ do_syscall_64+0x7b/0x160
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Tested with mt7921e but the same pattern can be actually applied to other
+mt76 drivers calling mt76_dma_cleanup() during removal. Tx napi is enabled
+in their *_dma_init() functions and only toggled off and on again inside
+their suspend/resume/reset paths. So it should be okay to disable tx
+napi in such a generic way.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 2ac515a5d74f ("mt76: mt76x02: use napi polling for tx cleanup")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Tested-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250506115540.19045-1-pchelkin@ispras.ru
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_fw.c     |    4 ++--
- drivers/accel/ivpu/ivpu_fw_log.c |   12 ++++++------
- drivers/accel/ivpu/ivpu_fw_log.h |    6 +++---
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/wireless/mediatek/mt76/dma.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/accel/ivpu/ivpu_fw.c
-+++ b/drivers/accel/ivpu/ivpu_fw.c
-@@ -218,7 +218,7 @@ static int ivpu_fw_parse(struct ivpu_dev
- 	fw->cold_boot_entry_point = fw_hdr->entry_point;
- 	fw->entry_point = fw->cold_boot_entry_point;
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -1011,6 +1011,7 @@ void mt76_dma_cleanup(struct mt76_dev *d
+ 	int i;
  
--	fw->trace_level = min_t(u32, ivpu_log_level, IVPU_FW_LOG_FATAL);
-+	fw->trace_level = min_t(u32, ivpu_fw_log_level, IVPU_FW_LOG_FATAL);
- 	fw->trace_destination_mask = VPU_TRACE_DESTINATION_VERBOSE_TRACING;
- 	fw->trace_hw_component_mask = -1;
+ 	mt76_worker_disable(&dev->tx_worker);
++	napi_disable(&dev->tx_napi);
+ 	netif_napi_del(&dev->tx_napi);
  
-@@ -323,7 +323,7 @@ static int ivpu_fw_mem_init(struct ivpu_
- 		goto err_free_fw_mem;
- 	}
- 
--	if (ivpu_log_level <= IVPU_FW_LOG_INFO)
-+	if (ivpu_fw_log_level <= IVPU_FW_LOG_INFO)
- 		log_verb_size = IVPU_FW_VERBOSE_BUFFER_LARGE_SIZE;
- 	else
- 		log_verb_size = IVPU_FW_VERBOSE_BUFFER_SMALL_SIZE;
---- a/drivers/accel/ivpu/ivpu_fw_log.c
-+++ b/drivers/accel/ivpu/ivpu_fw_log.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (C) 2020-2023 Intel Corporation
-+ * Copyright (C) 2020-2024 Intel Corporation
-  */
- 
- #include <linux/ctype.h>
-@@ -15,12 +15,12 @@
- #include "ivpu_fw_log.h"
- #include "ivpu_gem.h"
- 
--#define IVPU_FW_LOG_LINE_LENGTH	  256
-+#define IVPU_FW_LOG_LINE_LENGTH	256
- 
--unsigned int ivpu_log_level = IVPU_FW_LOG_ERROR;
--module_param(ivpu_log_level, uint, 0444);
--MODULE_PARM_DESC(ivpu_log_level,
--		 "NPU firmware default trace level: debug=" __stringify(IVPU_FW_LOG_DEBUG)
-+unsigned int ivpu_fw_log_level = IVPU_FW_LOG_ERROR;
-+module_param_named(fw_log_level, ivpu_fw_log_level, uint, 0444);
-+MODULE_PARM_DESC(fw_log_level,
-+		 "NPU firmware default log level: debug=" __stringify(IVPU_FW_LOG_DEBUG)
- 		 " info=" __stringify(IVPU_FW_LOG_INFO)
- 		 " warn=" __stringify(IVPU_FW_LOG_WARN)
- 		 " error=" __stringify(IVPU_FW_LOG_ERROR)
---- a/drivers/accel/ivpu/ivpu_fw_log.h
-+++ b/drivers/accel/ivpu/ivpu_fw_log.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * Copyright (C) 2020-2023 Intel Corporation
-+ * Copyright (C) 2020-2024 Intel Corporation
-  */
- 
- #ifndef __IVPU_FW_LOG_H__
-@@ -17,12 +17,12 @@
- #define IVPU_FW_LOG_ERROR   4
- #define IVPU_FW_LOG_FATAL   5
- 
--extern unsigned int ivpu_log_level;
--
- #define IVPU_FW_VERBOSE_BUFFER_SMALL_SIZE	SZ_1M
- #define IVPU_FW_VERBOSE_BUFFER_LARGE_SIZE	SZ_8M
- #define IVPU_FW_CRITICAL_BUFFER_SIZE		SZ_512K
- 
-+extern unsigned int ivpu_fw_log_level;
-+
- void ivpu_fw_log_print(struct ivpu_device *vdev, bool only_new_msgs, struct drm_printer *p);
- void ivpu_fw_log_clear(struct ivpu_device *vdev);
- 
+ 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
 
 
 
