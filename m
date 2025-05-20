@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-145400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D7BABDB7F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FA7ABDB40
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 180B7189C7D2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:08:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EE9F8C2DA2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D82248878;
-	Tue, 20 May 2025 14:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B96EEDE;
+	Tue, 20 May 2025 14:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKuI/3C5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMLffeVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F202472AC;
-	Tue, 20 May 2025 14:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631BB243370;
+	Tue, 20 May 2025 14:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750068; cv=none; b=aO6/3MSKNTWqsD3FQPogl8Jgt/FhCZtBuNqQpkNPggWDW1ttqy1dLLr026chUR+d0A2eJMTT29wadCUik8mXLS+j0bMSzRoSosMwjiWgRXvbg6KmsTyOvzFPQL+GeCsd/P5Y6dnKugOKXk1J3Vz+MCr+gKbi2zHK9EM/GloYU3I=
+	t=1747749761; cv=none; b=WKdJc2tcmp+wr75z53+87x7iteG3h/qSZ+ZFLaTc1gtQ+MDYI5Z9wIwSB2hILBfQ2kpQiCkqvJfCB3Z0mDZ7i8P9UTiLGf0WH0Z9rMHqRa73kkBFj3c0zr2ARcIihpG/SxatWru/Ckj9AuDd7FCezlnviyid/L2ZE7eRBptHBQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750068; c=relaxed/simple;
-	bh=DmuoSYxrW93x338lxywQW2NjjqIGmPMLp2OybneRNE0=;
+	s=arc-20240116; t=1747749761; c=relaxed/simple;
+	bh=f+HI5qdaIbAkj/23doF5SajQBzNTjYeX+j5hMb5eRxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JmzLO+AHmYn8875wULUq0k/NRv9Olxvbpx7dvtkk1acCBFLN4Pa2MrTpJoIX9ftcFKszbFYFLge0Uq2J2Smxv2WlTxPwqXa+usyeS7Ab31ACc9ux0cUgpQoq6dCMw+27ZIVLrjqUt/O3wmzDIVtcs7YnRLrFAOOuXOH4Xpf4y+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKuI/3C5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C048C4CEEA;
-	Tue, 20 May 2025 14:07:47 +0000 (UTC)
+	 MIME-Version; b=VGQat+cHCSSxAA/nRrTDhcuyav/PC4he7YRY8RESERKm5r8HTCccMDvNbMUp6X9jNNm36KI7+LMVSQLkSKrf1GxJ6H0noUxTSoomGEOVMb/d3WfBJvHQiGieX7QdNnEoH6Da0sIIwUbOz5UZwhYvKrcOC8M155y6fkV2NvxjACY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMLffeVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8155C4CEEA;
+	Tue, 20 May 2025 14:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750068;
-	bh=DmuoSYxrW93x338lxywQW2NjjqIGmPMLp2OybneRNE0=;
+	s=korg; t=1747749761;
+	bh=f+HI5qdaIbAkj/23doF5SajQBzNTjYeX+j5hMb5eRxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKuI/3C5kjnxzu5xM7csHmkry52+JHGhtljtdnEVxHytxEuN/13GbBYxVFMD0z74N
-	 4xIRWujbzfaYOWwBloXKiV9PdstQbCxKY5K23jPHjqKWtfnFjmbeW1wzp4lr+I39Sr
-	 oHMzAmpQNVzkIXrjeyi6ehm24YmEv6C9MrLPUbEs=
+	b=GMLffeVJEYqfrM3jJ3JNXJMDfNiqgGSJB9MjENraaaB3pOhLHwwlgc2hsAMaoWh36
+	 K/abTiRnBlQ88OcdE/ZHHfxjhcnTw7hGaged/4+WI2zT19gtPbieXwNC5e81HY9Kw4
+	 03YiQPlbMKPD7l+ByTDC4X9bFMV/fA15W/nRsVe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Mikhail Lobanov <m.lobanov@rosa.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/143] spi: loopback-test: Do not split 1024-byte hexdumps
+Subject: [PATCH 6.6 021/117] KVM: SVM: Forcibly leave SMM mode on SHUTDOWN interception
 Date: Tue, 20 May 2025 15:49:46 +0200
-Message-ID: <20250520125811.271735855@linuxfoundation.org>
+Message-ID: <20250520125804.822676745@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
 
-[ Upstream commit a73fa3690a1f3014d6677e368dce4e70767a6ba2 ]
+[ Upstream commit a2620f8932fa9fdabc3d78ed6efb004ca409019f ]
 
-spi_test_print_hex_dump() prints buffers holding less than 1024 bytes in
-full.  Larger buffers are truncated: only the first 512 and the last 512
-bytes are printed, separated by a truncation message.  The latter is
-confusing in case the buffer holds exactly 1024 bytes, as all data is
-printed anyway.
+Previously, commit ed129ec9057f ("KVM: x86: forcibly leave nested mode
+on vCPU reset") addressed an issue where a triple fault occurring in
+nested mode could lead to use-after-free scenarios. However, the commit
+did not handle the analogous situation for System Management Mode (SMM).
 
-Fix this by printing buffers holding up to and including 1024 bytes in
-full.
+This omission results in triggering a WARN when KVM forces a vCPU INIT
+after SHUTDOWN interception while the vCPU is in SMM. This situation was
+reprodused using Syzkaller by:
 
-Fixes: 84e0c4e5e2c4ef42 ("spi: add loopback test driver to allow for spi_master regression tests")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/37ee1bc90c6554c9347040adabf04188c8f704aa.1746184171.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  1) Creating a KVM VM and vCPU
+  2) Sending a KVM_SMI ioctl to explicitly enter SMM
+  3) Executing invalid instructions causing consecutive exceptions and
+     eventually a triple fault
+
+The issue manifests as follows:
+
+  WARNING: CPU: 0 PID: 25506 at arch/x86/kvm/x86.c:12112
+  kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
+  Modules linked in:
+  CPU: 0 PID: 25506 Comm: syz-executor.0 Not tainted
+  6.1.130-syzkaller-00157-g164fe5dde9b6 #0
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+  BIOS 1.12.0-1 04/01/2014
+  RIP: 0010:kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
+  Call Trace:
+   <TASK>
+   shutdown_interception+0x66/0xb0 arch/x86/kvm/svm/svm.c:2136
+   svm_invoke_exit_handler+0x110/0x530 arch/x86/kvm/svm/svm.c:3395
+   svm_handle_exit+0x424/0x920 arch/x86/kvm/svm/svm.c:3457
+   vcpu_enter_guest arch/x86/kvm/x86.c:10959 [inline]
+   vcpu_run+0x2c43/0x5a90 arch/x86/kvm/x86.c:11062
+   kvm_arch_vcpu_ioctl_run+0x50f/0x1cf0 arch/x86/kvm/x86.c:11283
+   kvm_vcpu_ioctl+0x570/0xf00 arch/x86/kvm/../../../virt/kvm/kvm_main.c:4122
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:870 [inline]
+   __se_sys_ioctl fs/ioctl.c:856 [inline]
+   __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:856
+   do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+   do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Architecturally, INIT is blocked when the CPU is in SMM, hence KVM's WARN()
+in kvm_vcpu_reset() to guard against KVM bugs, e.g. to detect improper
+emulation of INIT.  SHUTDOWN on SVM is a weird edge case where KVM needs to
+do _something_ sane with the VMCB, since it's technically undefined, and
+INIT is the least awful choice given KVM's ABI.
+
+So, double down on stuffing INIT on SHUTDOWN, and force the vCPU out of
+SMM to avoid any weirdness (and the WARN).
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: ed129ec9057f ("KVM: x86: forcibly leave nested mode on vCPU reset")
+Cc: stable@vger.kernel.org
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Link: https://lore.kernel.org/r/20250414171207.155121-1-m.lobanov@rosa.ru
+[sean: massage changelog, make it clear this isn't architectural behavior]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/smm.c     | 1 +
+ arch/x86/kvm/svm/svm.c | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 31a878d9458d9..7740f94847a88 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -420,7 +420,7 @@ MODULE_LICENSE("GPL");
- static void spi_test_print_hex_dump(char *pre, const void *ptr, size_t len)
+diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
+index b42111a24cc28..8e38c51359d05 100644
+--- a/arch/x86/kvm/smm.c
++++ b/arch/x86/kvm/smm.c
+@@ -131,6 +131,7 @@ void kvm_smm_changed(struct kvm_vcpu *vcpu, bool entering_smm)
+ 
+ 	kvm_mmu_reset_context(vcpu);
+ }
++EXPORT_SYMBOL_GPL(kvm_smm_changed);
+ 
+ void process_smi(struct kvm_vcpu *vcpu)
  {
- 	/* limit the hex_dump */
--	if (len < 1024) {
-+	if (len <= 1024) {
- 		print_hex_dump(KERN_INFO, pre,
- 			       DUMP_PREFIX_OFFSET, 16, 1,
- 			       ptr, len, 0);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 0c01887124b6c..c84a1451f194c 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2225,6 +2225,10 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
+ 	 */
+ 	if (!sev_es_guest(vcpu->kvm)) {
+ 		clear_page(svm->vmcb);
++#ifdef CONFIG_KVM_SMM
++		if (is_smm(vcpu))
++			kvm_smm_changed(vcpu, false);
++#endif
+ 		kvm_vcpu_reset(vcpu, true);
+ 	}
+ 
 -- 
 2.39.5
 
