@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-145333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41229ABDB68
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B3EABDD1C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F43177B95
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8AB64E6A46
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5353022DF87;
-	Tue, 20 May 2025 14:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14221250C0F;
+	Tue, 20 May 2025 14:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PeNseFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6r/9GC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6B12F37;
-	Tue, 20 May 2025 14:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5823247290;
+	Tue, 20 May 2025 14:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749870; cv=none; b=Nk3JKWPZkg2EAH9MPY5mEpE/093su20a/7KoQIqtw7KdLvqjCQUJX+UjLWaue0awf395BIZNdpBITmeUjTtt+X/pNoTJOy9kElnniNOx4eZz7tEnJ6N2CcSNGTd1yc4gnHef0oYQGX5S6Nq3r4t8jo/5phYf4IZvbqSo2zQlxs8=
+	t=1747750661; cv=none; b=XkqB6ho3IzK0jg555gq16TonYsFnkg4WnjjfJ5OxCUpQ/g8hH6o6+Rov+1nVSq6dca9erswqNlaQhOqzqG7Z7p4F4igjA0vP13jvftqiZ76BsE2DMM+MxeJlcmODHTaL5IoI9XPuGVPgTQL5BdJlJ5yrpcmuKasgwBxuaLwT2tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749870; c=relaxed/simple;
-	bh=LV7k+mnu8GRa/QqKT8KVTU+tSHMry0B7Vc2HUO6KWzQ=;
+	s=arc-20240116; t=1747750661; c=relaxed/simple;
+	bh=GLav4X2DOJZfm1YCMP458BEm1jZQW794rdRKsHqQBEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Su+thAbfoQAYMTtPTcaojJ7HAj5ZVJViqvZmrgS71toaY8z/xXKDdm+tFQ7pAJKQPtWxMk5mEnUguQktQn433PmHmhOIVlIHRgtXejvZNyKKo9kchBhQJN38NKaqOk7wSdBN8z0A5LxonSE/cuojARCWI53JjbBdoKxVGQU2n8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PeNseFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D5DC4CEE9;
-	Tue, 20 May 2025 14:04:29 +0000 (UTC)
+	 MIME-Version; b=aPJeHtyHxgbBZ+FBbbDtg2OUM+FGa/sSKHCS8p9nWquYW3b1tD4eaWxwIpuFGm5Yg4yHYaGiBkloQRca+JHAQpyTUom5qCHeEP6yH1C8xBvgBBqCuHLAL7x8jVagMnoKCmhnYbEeQ6w5n23aswp44RP20AX7hR/bBFNB6k3uDdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6r/9GC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B032BC4CEEA;
+	Tue, 20 May 2025 14:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749869;
-	bh=LV7k+mnu8GRa/QqKT8KVTU+tSHMry0B7Vc2HUO6KWzQ=;
+	s=korg; t=1747750661;
+	bh=GLav4X2DOJZfm1YCMP458BEm1jZQW794rdRKsHqQBEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2PeNseFjjh7zGv7atAluHiONKRsfL+mzpAFUKlGsE8FIWCQShwlORxtPBRzPe8Igl
-	 xzX2cw3vfTrjToCEQT0tM4Nl41KoGkRUwVRQTbE7ZuyJrVFdZgyog0ZDbxXr9HWaLd
-	 GscoPZ0RKIx2V6v0C+Gz9knFkRiJUPn2kbUoVO0o=
+	b=U6r/9GC+BX8xnbvl8eXaJCy5KAKdYUJsMGWFogQxGD9rVoEsqeRBk81oZYOykXnUY
+	 9I8AOL0ijMfSROl1S2vX3/ztwjVumrVETy9+ae/ivPZwRK//P8HaWic612RLoOjlQU
+	 y1TCbFoYra0AXX8CqsZAceACURWPqT+q2FS6eQ1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4bcdddd48bb6f0be0da1@syzkaller.appspotmail.com,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/117] wifi: mac80211: Set n_channels after allocating struct cfg80211_scan_request
+Subject: [PATCH 6.14 050/145] netlink: specs: tc: fix a couple of attribute names
 Date: Tue, 20 May 2025 15:50:20 +0200
-Message-ID: <20250520125806.173100889@linuxfoundation.org>
+Message-ID: <20250520125812.536303485@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 82bbe02b2500ef0a62053fe2eb84773fe31c5a0a ]
+[ Upstream commit a9fb87b8b86918e34ef6bf3316311f41bc1a5b1f ]
 
-Make sure that n_channels is set after allocating the
-struct cfg80211_registered_device::int_scan_req member. Seen with
-syzkaller:
+Fix up spelling of two attribute names. These are clearly typoes
+and will prevent C codegen from working. Let's treat this as
+a fix to get the correction into users' hands ASAP, and prevent
+anyone depending on the wrong names.
 
-UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:1208:5
-index 0 is out of range for type 'struct ieee80211_channel *[] __counted_by(n_channels)' (aka 'struct ieee80211_channel *[]')
-
-This was missed in the initial conversions because I failed to locate
-the allocation likely due to the "sizeof(void *)" not matching the
-"channels" array type.
-
-Reported-by: syzbot+4bcdddd48bb6f0be0da1@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/680fd171.050a0220.2b69d1.045e.GAE@google.com/
-Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://patch.msgid.link/20250509184641.work.542-kees@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: a1bcfde83669 ("doc/netlink/specs: Add a spec for tc")
+Link: https://patch.msgid.link/20250513221316.841700-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ Documentation/netlink/specs/tc.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index d1046f495e63f..3a6fff98748b8 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1186,10 +1186,12 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 				return -EINVAL;
- 	}
- 
--	local->int_scan_req = kzalloc(sizeof(*local->int_scan_req) +
--				      sizeof(void *) * channels, GFP_KERNEL);
-+	local->int_scan_req = kzalloc(struct_size(local->int_scan_req,
-+						  channels, channels),
-+				      GFP_KERNEL);
- 	if (!local->int_scan_req)
- 		return -ENOMEM;
-+	local->int_scan_req->n_channels = channels;
- 
- 	eth_broadcast_addr(local->int_scan_req->bssid);
- 
+diff --git a/Documentation/netlink/specs/tc.yaml b/Documentation/netlink/specs/tc.yaml
+index aacccea5dfe42..5e1ff04f51f26 100644
+--- a/Documentation/netlink/specs/tc.yaml
++++ b/Documentation/netlink/specs/tc.yaml
+@@ -2745,7 +2745,7 @@ attribute-sets:
+         type: u16
+         byte-order: big-endian
+       -
+-        name: key-l2-tpv3-sid
++        name: key-l2tpv3-sid
+         type: u32
+         byte-order: big-endian
+       -
+@@ -3504,7 +3504,7 @@ attribute-sets:
+         name: rate64
+         type: u64
+       -
+-        name: prate4
++        name: prate64
+         type: u64
+       -
+         name: burst
 -- 
 2.39.5
 
