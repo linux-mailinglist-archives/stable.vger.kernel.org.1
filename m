@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-145130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD62ABDA2E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D114EABDB0C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D7A717EDA9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9FE31BA6D1E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51C424337B;
-	Tue, 20 May 2025 13:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4F92459FE;
+	Tue, 20 May 2025 14:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8KZ4LZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXC/zFO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B1E242D7D;
-	Tue, 20 May 2025 13:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF3024336D;
+	Tue, 20 May 2025 14:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749251; cv=none; b=bLmCINCeuCxlKEruhem/GTGJxbco+VS6ZJVsqpnU7iNeomGTliiqP++Bla/fRozu1ibaIDqoWzx2y3Tsw4S3YB+lCJCOMXh5rk7YqtKhvd9GAy4bX4VX2s4bxrNbp2WXSGHWnxJ8lsKn2UQDnF0PT5T62E80QcHmjia/bUEer4k=
+	t=1747749823; cv=none; b=eDtbPTu4OgoaUTZJIwCK5pAckSH5tUxAwmBfgMjIZcra9YNISvTcdDeWhlxEQ0F7i/81UbdLx45Qq7B34oEUunj3euzws4VAdHH9YDET20u9d4bNpgjKhXcJug5ksk/5CR4ldywqrr6Vi5FPS2b0ebAp+t81iTiVE6JnFe5K3Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749251; c=relaxed/simple;
-	bh=rWGUNIo0GOdNmg/dFrsLdpZbMTfqobSUVa97qA0wKyI=;
+	s=arc-20240116; t=1747749823; c=relaxed/simple;
+	bh=CFpDtyg8wuoAW3p3yLOtG74sgTdPAqVrhQO+fskP14Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gl8Kzv5xiQ6aOcWe8HeKRgCNGEgYsj+r4Hfx78cqbffm2E+wQZORHtgbFIODPTaRedb5uZehyU08wBXUGTuk+AV3/AbRzZf6+jB5cBN0G0bttg4yNu1i292yN9FlbHBTQi21uqqURfURvq+GWwFQ/kCbbitC+56UNcpQGmmAyLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8KZ4LZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA42C4CEE9;
-	Tue, 20 May 2025 13:54:10 +0000 (UTC)
+	 MIME-Version; b=aUoa1Yudn77URsIMjWw3mDHAW7fYcRboqeHIoTWlCjvoFCLsLaswqcZYgM2AYm2sG5IiOuQWxJQfvDI8UzXfVy88Wy3yrVax+QOooq7K4AAE2qUa5E+jKwrim1oLtezKXbth20CP+PJ6fqyIuyUcIZNELT/UNRRoxkElw33zfgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXC/zFO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9A7C4CEEB;
+	Tue, 20 May 2025 14:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749251;
-	bh=rWGUNIo0GOdNmg/dFrsLdpZbMTfqobSUVa97qA0wKyI=;
+	s=korg; t=1747749822;
+	bh=CFpDtyg8wuoAW3p3yLOtG74sgTdPAqVrhQO+fskP14Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8KZ4LZLobnrwWH77RL7goF3W6le7sLYrTZ0/6XyoM3ibNUnQn+y4+UD4owLSwRWv
-	 uLWUECR7ABeAdDsKJybUZh3A0V7LwTeJqTCp8O3j9pLlXHSX0S1yjFs4pWdR2VWu0h
-	 sYh6y617C02htH3ZhaYh4SrvY+Gtb4inh86S601o=
+	b=QXC/zFO+L1LNCQa4CWvi+VR4H93j9cp83JwSCg0/lD71h2+oPEUczXfRBVNEdkjMQ
+	 LMCkkBHAjjUIqbmA+e4f0xhYQcZf6uqN3GvTMhJmGxyicDqBwjdYy6SfGR7guO0RPy
+	 GqxaJQ/J4G1LQcUqguykdUMjg7ZMYbSYFlc8ykPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fenghua Yu <fenghuay@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 44/59] dmaengine: idxd: fix memory leak in error handling path of idxd_setup_engines
-Date: Tue, 20 May 2025 15:50:35 +0200
-Message-ID: <20250520125755.593144832@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 071/117] ALSA: es1968: Add error handling for snd_pcm_hw_constraint_pow2()
+Date: Tue, 20 May 2025 15:50:36 +0200
+Message-ID: <20250520125806.811307681@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 817bced19d1dbdd0b473580d026dc0983e30e17b upstream.
+commit 9e000f1b7f31684cc5927e034360b87ac7919593 upstream.
 
-Memory allocated for engines is not freed if an error occurs during
-idxd_setup_engines(). To fix it, free the allocated memory in the
-reverse order of allocation before exiting the function in case of an
-error.
+The function snd_es1968_capture_open() calls the function
+snd_pcm_hw_constraint_pow2(), but does not check its return
+value. A proper implementation can be found in snd_cx25821_pcm_open().
 
-Fixes: 75b911309060 ("dmaengine: idxd: fix engine conf_dev lifetime")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Link: https://lore.kernel.org/r/20250404120217.48772-3-xueshuai@linux.alibaba.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Add error handling for snd_pcm_hw_constraint_pow2() and propagate its
+error code.
+
+Fixes: b942cf815b57 ("[ALSA] es1968 - Fix stuttering capture")
+Cc: stable@vger.kernel.org # v2.6.22
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250514092444.331-1-vulab@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/init.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/es1968.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -289,6 +289,7 @@ static int idxd_setup_engines(struct idx
- 		rc = dev_set_name(conf_dev, "engine%d.%d", idxd->id, engine->id);
- 		if (rc < 0) {
- 			put_device(conf_dev);
-+			kfree(engine);
- 			goto err;
- 		}
+--- a/sound/pci/es1968.c
++++ b/sound/pci/es1968.c
+@@ -1569,7 +1569,7 @@ static int snd_es1968_capture_open(struc
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+ 	struct es1968 *chip = snd_pcm_substream_chip(substream);
+ 	struct esschan *es;
+-	int apu1, apu2;
++	int err, apu1, apu2;
  
-@@ -302,7 +303,10 @@ static int idxd_setup_engines(struct idx
- 		engine = idxd->engines[i];
- 		conf_dev = engine_confdev(engine);
- 		put_device(conf_dev);
-+		kfree(engine);
- 	}
-+	kfree(idxd->engines);
-+
- 	return rc;
- }
+ 	apu1 = snd_es1968_alloc_apu_pair(chip, ESM_APU_PCM_CAPTURE);
+ 	if (apu1 < 0)
+@@ -1613,7 +1613,9 @@ static int snd_es1968_capture_open(struc
+ 	runtime->hw = snd_es1968_capture;
+ 	runtime->hw.buffer_bytes_max = runtime->hw.period_bytes_max =
+ 		calc_available_memory_size(chip) - 1024; /* keep MIXBUF size */
+-	snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
++	err = snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
++	if (err < 0)
++		return err;
  
+ 	spin_lock_irq(&chip->substream_lock);
+ 	list_add(&es->list, &chip->substream_list);
 
 
 
