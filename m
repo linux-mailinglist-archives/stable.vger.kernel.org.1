@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34855ABDA3E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3FFABDAC8
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26D1F8A3B38
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 070F07B1F5D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3112459D4;
-	Tue, 20 May 2025 13:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFCAEEDE;
+	Tue, 20 May 2025 14:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ykb6xBXx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq4Ox56k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF23C2459CD;
-	Tue, 20 May 2025 13:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1132224502E;
+	Tue, 20 May 2025 14:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749306; cv=none; b=bTpq72EgaI77tojkKSCBhlIwrZfkTNLt+lV/g2cJaiqx3Fk17kMSUCUakTXRiBidc7kG76s2Q2u2u0nj6DxXS05EfCIcwjhXQootdJjNlfGsMoGg9Owzx/3+HVLYQS+u5k43aRsIqpnK9H81fvEM/RDrkA4Nh2fNWkY+VJJ/w7k=
+	t=1747749610; cv=none; b=DAsp9LTP5WLfKHiO2FlIwibOwqARMRLKUmPoljq0ZRJ85i/rv9oIs0zHtpma7NKIcXsTlOTPkAJwcfWqhEOAHDsRKB1quu2HW4/xH5m5O5r0aQDvxUST9MQVuhu8chFFFyFWjoY1c/wNDWruGslKmj5faaqp/xcE/EMm4NmqMsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749306; c=relaxed/simple;
-	bh=D3F5FFqKYWb/oSvlcNL8MM+PArU4uQcUBG47+B1r1dE=;
+	s=arc-20240116; t=1747749610; c=relaxed/simple;
+	bh=suJB6musRZnZcadjnUwqieBhctANUu1+JFVkOITLEwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYD4xkREnbDJvjKMoeNeV5e313gCg/Rx2XZV1iW+rC++IHhHjHz4abJumvTjI0qpUQqQJn+ODxwdiX8JTMUlRFit9MRJQjHzsb/8FCzp/lklz8NGNjtfG1q52V64x2VAvTZ2YXHzukpZED11WcYC0lrlt5AJq2KKHMiHVTXxCys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ykb6xBXx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50720C4CEE9;
-	Tue, 20 May 2025 13:55:06 +0000 (UTC)
+	 MIME-Version; b=cA+VPXXmdtWVUEu3HvB/MGAsO8dtqkxNYt9jzqwDZBsgOPojzBepkTp3s7ecFa6lT03IawNkoGqu4MEHD5RcQag7UPiNFUZitjeDQ1vMomYsA0Y42udrK0M3j04K9NkiUFgkSdvEUFukRS7IyCJElZrntnKdLLgIf8h4ByctCcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq4Ox56k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804D6C4CEE9;
+	Tue, 20 May 2025 14:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749306;
-	bh=D3F5FFqKYWb/oSvlcNL8MM+PArU4uQcUBG47+B1r1dE=;
+	s=korg; t=1747749609;
+	bh=suJB6musRZnZcadjnUwqieBhctANUu1+JFVkOITLEwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ykb6xBXx2s/z5DvqSvBMPc2DYllzhJox4lqwUL8JqFBtm6P14QZWuEOhuVPQ/mSaf
-	 dTp+RZ/VlAT93/23+5KNHWKYOBxQ1Wuauq0cG1isXsJ78t/+XeCWkHUqZGkBvxFGpt
-	 DB3LcnOE+tjMtLCCQKrMmwfTlhXSW6dkp19zzOcY=
+	b=rq4Ox56k57aoJM61dzFqqFSUzEBDFNK1fZ245A2jYSXPeO5p8jM2h1KIIqWP+7W/N
+	 90OLgJ10k2H0WuMZnDEbd/BEP7TG/XQ+PNoz/MA52MXWqDF/F4nJJWiQLbjj86zhkQ
+	 i+Q6HIofWz9h+EWKzf0HlEyq6pAH4Kr0MresyK4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 33/59] ALSA: es1968: Add error handling for snd_pcm_hw_constraint_pow2()
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 59/97] phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
 Date: Tue, 20 May 2025 15:50:24 +0200
-Message-ID: <20250520125755.174877450@linuxfoundation.org>
+Message-ID: <20250520125802.967560308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 9e000f1b7f31684cc5927e034360b87ac7919593 upstream.
+commit 54c4c58713aaff76c2422ff5750e557ab3b100d7 upstream.
 
-The function snd_es1968_capture_open() calls the function
-snd_pcm_hw_constraint_pow2(), but does not check its return
-value. A proper implementation can be found in snd_cx25821_pcm_open().
+It has been observed on the Renesas RZ/G3S SoC that unbinding and binding
+the PHY driver leads to role autodetection failures. This issue occurs when
+PHY 3 is the first initialized PHY. PHY 3 does not have an interrupt
+associated with the USB2_INT_ENABLE register (as
+rcar_gen3_int_enable[3] = 0). As a result, rcar_gen3_init_otg() is called
+to initialize OTG without enabling PHY interrupts.
 
-Add error handling for snd_pcm_hw_constraint_pow2() and propagate its
-error code.
+To resolve this, add rcar_gen3_is_any_otg_rphy_initialized() and call it in
+role_store(), role_show(), and rcar_gen3_init_otg(). At the same time,
+rcar_gen3_init_otg() is only called when initialization for a PHY with
+interrupt bits is in progress. As a result, the
+struct rcar_gen3_phy::otg_initialized is no longer needed.
 
-Fixes: b942cf815b57 ("[ALSA] es1968 - Fix stuttering capture")
-Cc: stable@vger.kernel.org # v2.6.22
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250514092444.331-1-vulab@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 549b6b55b005 ("phy: renesas: rcar-gen3-usb2: enable/disable independent irqs")
+Cc: stable@vger.kernel.org
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/es1968.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c |   33 +++++++++++++------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
---- a/sound/pci/es1968.c
-+++ b/sound/pci/es1968.c
-@@ -1569,7 +1569,7 @@ static int snd_es1968_capture_open(struc
- 	struct snd_pcm_runtime *runtime = substream->runtime;
- 	struct es1968 *chip = snd_pcm_substream_chip(substream);
- 	struct esschan *es;
--	int apu1, apu2;
-+	int err, apu1, apu2;
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -103,7 +103,6 @@ struct rcar_gen3_phy {
+ 	struct rcar_gen3_chan *ch;
+ 	u32 int_enable_bits;
+ 	bool initialized;
+-	bool otg_initialized;
+ 	bool powered;
+ };
  
- 	apu1 = snd_es1968_alloc_apu_pair(chip, ESM_APU_PCM_CAPTURE);
- 	if (apu1 < 0)
-@@ -1613,7 +1613,9 @@ static int snd_es1968_capture_open(struc
- 	runtime->hw = snd_es1968_capture;
- 	runtime->hw.buffer_bytes_max = runtime->hw.period_bytes_max =
- 		calc_available_memory_size(chip) - 1024; /* keep MIXBUF size */
--	snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
-+	err = snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
-+	if (err < 0)
-+		return err;
+@@ -311,16 +310,15 @@ static bool rcar_gen3_is_any_rphy_initia
+ 	return false;
+ }
  
- 	spin_lock_irq(&chip->substream_lock);
- 	list_add(&es->list, &chip->substream_list);
+-static bool rcar_gen3_needs_init_otg(struct rcar_gen3_chan *ch)
++static bool rcar_gen3_is_any_otg_rphy_initialized(struct rcar_gen3_chan *ch)
+ {
+-	int i;
+-
+-	for (i = 0; i < NUM_OF_PHYS; i++) {
+-		if (ch->rphys[i].otg_initialized)
+-			return false;
++	for (enum rcar_gen3_phy_index i = PHY_INDEX_BOTH_HC; i <= PHY_INDEX_EHCI;
++	     i++) {
++		if (ch->rphys[i].initialized)
++			return true;
+ 	}
+ 
+-	return true;
++	return false;
+ }
+ 
+ static bool rcar_gen3_are_all_rphys_power_off(struct rcar_gen3_chan *ch)
+@@ -342,7 +340,7 @@ static ssize_t role_store(struct device
+ 	bool is_b_device;
+ 	enum phy_mode cur_mode, new_mode;
+ 
+-	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
++	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ 		return -EIO;
+ 
+ 	if (sysfs_streq(buf, "host"))
+@@ -380,7 +378,7 @@ static ssize_t role_show(struct device *
+ {
+ 	struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
+ 
+-	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
++	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ 		return -EIO;
+ 
+ 	return sprintf(buf, "%s\n", rcar_gen3_is_host(ch) ? "host" :
+@@ -393,6 +391,9 @@ static void rcar_gen3_init_otg(struct rc
+ 	void __iomem *usb2_base = ch->base;
+ 	u32 val;
+ 
++	if (!ch->is_otg_channel || rcar_gen3_is_any_otg_rphy_initialized(ch))
++		return;
++
+ 	/* Should not use functions of read-modify-write a register */
+ 	val = readl(usb2_base + USB2_LINECTRL1);
+ 	val = (val & ~USB2_LINECTRL1_DP_RPD) | USB2_LINECTRL1_DPRPD_EN |
+@@ -456,12 +457,9 @@ static int rcar_gen3_phy_usb2_init(struc
+ 	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
+ 	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
+ 
+-	/* Initialize otg part */
+-	if (channel->is_otg_channel) {
+-		if (rcar_gen3_needs_init_otg(channel))
+-			rcar_gen3_init_otg(channel);
+-		rphy->otg_initialized = true;
+-	}
++	/* Initialize otg part (only if we initialize a PHY with IRQs). */
++	if (rphy->int_enable_bits)
++		rcar_gen3_init_otg(channel);
+ 
+ 	rphy->initialized = true;
+ 
+@@ -477,9 +475,6 @@ static int rcar_gen3_phy_usb2_exit(struc
+ 
+ 	rphy->initialized = false;
+ 
+-	if (channel->is_otg_channel)
+-		rphy->otg_initialized = false;
+-
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+ 	val &= ~rphy->int_enable_bits;
+ 	if (!rcar_gen3_is_any_rphy_initialized(channel))
 
 
 
