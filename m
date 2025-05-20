@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FFDABDC47
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B04ABDCD8
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27DFC8C202C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:17:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1B78A0C7C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436CB253326;
-	Tue, 20 May 2025 14:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5632517A4;
+	Tue, 20 May 2025 14:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3wgMO7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTVxr23i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F300C250C1C;
-	Tue, 20 May 2025 14:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AE724468C;
+	Tue, 20 May 2025 14:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750388; cv=none; b=sVk2VpVlCKGXrJaKZQY+tl2QU8fVDjiO8ja2+gsU2wtiZVa4myTtr4C/7JtZ3seMd+b5hUXn4G6hmSNHigtrfS0EpjHi7+xRwgYfgZIyz8R/blNB8Hdu0ihqQXtb5S2QZ/+M/fenkQv59yvBp558HjHdd5Txkqocf7l/YCsnzBE=
+	t=1747750783; cv=none; b=Vs87wgZa1PJhqYpqSLL9sAFrbZIU+YWEVN2QfE24LS9pCBnHvcZJ2fBONNGDh/HZIFk8RzEXz1z1Y1DmcfnfwVdSenk7/KuIgyW48zT8GvP2Z9OP1H1nzsSFwB30mPgvQ1mTjn/5dm/sQN1L+UipRi1gtWEPIwh9CSY3vzTmbFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750388; c=relaxed/simple;
-	bh=moT/lU+7E0eQI+kzg0kKJnf+9qioy8yGGbppPAZJTg8=;
+	s=arc-20240116; t=1747750783; c=relaxed/simple;
+	bh=k5GBe7YWOo9ZVMbg+VB61eN7en+hKkm3do64RCxZyD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paFgsurbqOhrYpwzfKkW70szrcuvpgxqoop4xai3gB+l+Oae2FrXvGHdm/5KdIjP1rmzc07dRP2PvJc5B7WGGpx+c41dVj4Hf+URUXHx2c8WFcxJW90VFlU2VO+KWtZM+CvQF0h51Sn1H9tuOUdiHgLlzYBHLnddZUlGG32Ut2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3wgMO7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3011C4CEEA;
-	Tue, 20 May 2025 14:13:06 +0000 (UTC)
+	 MIME-Version; b=K86ijGZohpsjAhn6Xgi/dcaaciWlLSynemEjB4W/t7Vtcv04chio8Hvh8ylaHd29lGFs3JlbojjMdpHZruQKDdBCHeMcxL0fv/5VkpDaj/MmnqqrPeti7sShMPKw29Wk4a79fz9nEwK+9qk+/703gbGWsE/VrlLLWEU/neSZ/2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTVxr23i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B508AC4CEF1;
+	Tue, 20 May 2025 14:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750387;
-	bh=moT/lU+7E0eQI+kzg0kKJnf+9qioy8yGGbppPAZJTg8=;
+	s=korg; t=1747750783;
+	bh=k5GBe7YWOo9ZVMbg+VB61eN7en+hKkm3do64RCxZyD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3wgMO7Vw9vXS31RuhuXvjl2H17FfLkrIIxiDWnp4/MQ4o/1UGLD01oCK9taIdOqQ
-	 LgUWn7t5Y1/6rRYGebpHV+eJTNFrc8u8Py9UxPjtxHfGwdv+GTcB6S6EFbcWDhu+ur
-	 KdXJEW9YDSgGSU4PB4lS8Y+K6lzdO/rAMz60fDFs=
+	b=GTVxr23i+h1/JpPeSvsXUebWnISgJj3McGmNYrpw9fRzsAyDYoSJvfXvW6X2DO27n
+	 hDkWsWZCOZ2cIuTLrxBVzuDvJN9viscsPt2mT8U+kz+s2UEu74CS29vZVd6n2Mm/o7
+	 qL63gOD3mP6qsKnd3xpXeZzYSNUHoLrMeudj9Vb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.12 134/143] accel/ivpu: Refactor functions in ivpu_fw_log.c
-Date: Tue, 20 May 2025 15:51:29 +0200
-Message-ID: <20250520125815.288876970@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 120/145] net: qede: Initialize qede_ll_ops with designated initializer
+Date: Tue, 20 May 2025 15:51:30 +0200
+Message-ID: <20250520125815.252646459@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,174 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 1fc1251149a76d3b75d7f4c94d9c4e081b7df6b4 upstream.
+commit 6b3ab7f2cbfaeb6580709cd8ef4d72cfd01bfde4 upstream.
 
-Make function names more consistent and (arguably) readable in
-fw log code. Add fw_log_print_all_in_bo() that remove duplicated code in
-ivpu_fw_log_print().
+After a recent change [1] in clang's randstruct implementation to
+randomize structures that only contain function pointers, there is an
+error because qede_ll_ops get randomized but does not use a designated
+initializer for the first member:
 
-Reviewed-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240930195322.461209-5-jacek.lawrynowicz@linux.intel.com
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
+    206 |         {
+        |         ^
+
+Explicitly initialize the common member using a designated initializer
+to fix the build.
+
+Cc: stable@vger.kernel.org
+Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
+Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20250507-qede-fix-clang-randstruct-v1-1-5ccc15626fba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_debugfs.c |    2 -
- drivers/accel/ivpu/ivpu_fw_log.c  |   62 ++++++++++++++++++++------------------
- drivers/accel/ivpu/ivpu_fw_log.h  |    2 -
- 3 files changed, 35 insertions(+), 31 deletions(-)
+ drivers/net/ethernet/qlogic/qede/qede_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/accel/ivpu/ivpu_debugfs.c
-+++ b/drivers/accel/ivpu/ivpu_debugfs.c
-@@ -201,7 +201,7 @@ fw_log_fops_write(struct file *file, con
- 	if (!size)
- 		return -EINVAL;
+--- a/drivers/net/ethernet/qlogic/qede/qede_main.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
+@@ -203,7 +203,7 @@ static struct pci_driver qede_pci_driver
+ };
  
--	ivpu_fw_log_clear(vdev);
-+	ivpu_fw_log_mark_read(vdev);
- 	return size;
- }
- 
---- a/drivers/accel/ivpu/ivpu_fw_log.c
-+++ b/drivers/accel/ivpu/ivpu_fw_log.c
-@@ -26,8 +26,8 @@ MODULE_PARM_DESC(fw_log_level,
- 		 " error=" __stringify(IVPU_FW_LOG_ERROR)
- 		 " fatal=" __stringify(IVPU_FW_LOG_FATAL));
- 
--static int fw_log_ptr(struct ivpu_device *vdev, struct ivpu_bo *bo, u32 *offset,
--		      struct vpu_tracing_buffer_header **log_header)
-+static int fw_log_from_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, u32 *offset,
-+			  struct vpu_tracing_buffer_header **out_log)
- {
- 	struct vpu_tracing_buffer_header *log;
- 
-@@ -48,7 +48,7 @@ static int fw_log_ptr(struct ivpu_device
- 		return -EINVAL;
- 	}
- 
--	*log_header = log;
-+	*out_log = log;
- 	*offset += log->size;
- 
- 	ivpu_dbg(vdev, FW_BOOT,
-@@ -59,7 +59,7 @@ static int fw_log_ptr(struct ivpu_device
- 	return 0;
- }
- 
--static void buffer_print(char *buffer, u32 size, struct drm_printer *p)
-+static void fw_log_print_lines(char *buffer, u32 size, struct drm_printer *p)
- {
- 	char line[IVPU_FW_LOG_LINE_LENGTH];
- 	u32 index = 0;
-@@ -90,11 +90,11 @@ static void buffer_print(char *buffer, u
- 		drm_printf(p, "%s\n", line);
- }
- 
--static void fw_log_print_buffer(struct ivpu_device *vdev, struct vpu_tracing_buffer_header *log,
--				const char *prefix, bool only_new_msgs, struct drm_printer *p)
-+static void fw_log_print_buffer(struct vpu_tracing_buffer_header *log, const char *prefix,
-+				bool only_new_msgs, struct drm_printer *p)
- {
--	char *log_buffer = (void *)log + log->header_size;
--	u32 log_size = log->size - log->header_size;
-+	char *log_data = (void *)log + log->header_size;
-+	u32 data_size = log->size - log->header_size;
- 	u32 log_start = log->read_index;
- 	u32 log_end = log->write_index;
- 
-@@ -106,51 +106,55 @@ static void fw_log_print_buffer(struct i
- 
- 	drm_printf(p, "==== %s \"%s\" log start ====\n", prefix, log->name);
- 	if (log->write_index > log->read_index) {
--		buffer_print(log_buffer + log_start, log_end - log_start, p);
-+		fw_log_print_lines(log_data + log_start, log_end - log_start, p);
- 	} else {
--		buffer_print(log_buffer + log_end, log_size - log_end, p);
--		buffer_print(log_buffer, log_end, p);
-+		fw_log_print_lines(log_data + log_end, data_size - log_end, p);
-+		fw_log_print_lines(log_data, log_end, p);
- 	}
- 	drm_printf(p, "\x1b[0m");
- 	drm_printf(p, "==== %s \"%s\" log end   ====\n", prefix, log->name);
- }
- 
--void ivpu_fw_log_print(struct ivpu_device *vdev, bool only_new_msgs, struct drm_printer *p)
-+static void
-+fw_log_print_all_in_bo(struct ivpu_device *vdev, const char *name,
-+		       struct ivpu_bo *bo, bool only_new_msgs, struct drm_printer *p)
- {
--	struct vpu_tracing_buffer_header *log_header;
-+	struct vpu_tracing_buffer_header *log;
- 	u32 next = 0;
- 
--	while (fw_log_ptr(vdev, vdev->fw->mem_log_crit, &next, &log_header) == 0)
--		fw_log_print_buffer(vdev, log_header, "NPU critical", only_new_msgs, p);
-+	while (fw_log_from_bo(vdev, bo, &next, &log) == 0)
-+		fw_log_print_buffer(log, name, only_new_msgs, p);
-+}
- 
--	next = 0;
--	while (fw_log_ptr(vdev, vdev->fw->mem_log_verb, &next, &log_header) == 0)
--		fw_log_print_buffer(vdev, log_header, "NPU verbose", only_new_msgs, p);
-+void ivpu_fw_log_print(struct ivpu_device *vdev, bool only_new_msgs, struct drm_printer *p)
-+{
-+	fw_log_print_all_in_bo(vdev, "NPU critical", vdev->fw->mem_log_crit, only_new_msgs, p);
-+	fw_log_print_all_in_bo(vdev, "NPU verbose", vdev->fw->mem_log_verb, only_new_msgs, p);
- }
- 
--void ivpu_fw_log_clear(struct ivpu_device *vdev)
-+void ivpu_fw_log_mark_read(struct ivpu_device *vdev)
- {
--	struct vpu_tracing_buffer_header *log_header;
-+	struct vpu_tracing_buffer_header *log;
- 	u32 next = 0;
- 
--	while (fw_log_ptr(vdev, vdev->fw->mem_log_crit, &next, &log_header) == 0)
--		log_header->read_index = log_header->write_index;
-+	while (fw_log_from_bo(vdev, vdev->fw->mem_log_crit, &next, &log) == 0)
-+		log->read_index = log->write_index;
- 
- 	next = 0;
--	while (fw_log_ptr(vdev, vdev->fw->mem_log_verb, &next, &log_header) == 0)
--		log_header->read_index = log_header->write_index;
-+	while (fw_log_from_bo(vdev, vdev->fw->mem_log_verb, &next, &log) == 0)
-+		log->read_index = log->write_index;
- }
- 
- void ivpu_fw_log_reset(struct ivpu_device *vdev)
- {
--	struct vpu_tracing_buffer_header *log_header;
-+	struct vpu_tracing_buffer_header *log;
- 	u32 next;
- 
- 	next = 0;
--	while (fw_log_ptr(vdev, vdev->fw->mem_log_crit, &next, &log_header) == 0)
--		log_header->read_index = 0;
-+	while (fw_log_from_bo(vdev, vdev->fw->mem_log_crit, &next, &log) == 0)
-+		log->read_index = 0;
- 
- 	next = 0;
--	while (fw_log_ptr(vdev, vdev->fw->mem_log_verb, &next, &log_header) == 0)
--		log_header->read_index = 0;
-+	while (fw_log_from_bo(vdev, vdev->fw->mem_log_verb, &next, &log) == 0)
-+		log->read_index = 0;
- }
---- a/drivers/accel/ivpu/ivpu_fw_log.h
-+++ b/drivers/accel/ivpu/ivpu_fw_log.h
-@@ -24,7 +24,7 @@
- extern unsigned int ivpu_fw_log_level;
- 
- void ivpu_fw_log_print(struct ivpu_device *vdev, bool only_new_msgs, struct drm_printer *p);
--void ivpu_fw_log_clear(struct ivpu_device *vdev);
-+void ivpu_fw_log_mark_read(struct ivpu_device *vdev);
- void ivpu_fw_log_reset(struct ivpu_device *vdev);
- 
- 
+ static struct qed_eth_cb_ops qede_ll_ops = {
+-	{
++	.common = {
+ #ifdef CONFIG_RFS_ACCEL
+ 		.arfs_filter_op = qede_arfs_filter_op,
+ #endif
 
 
 
