@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-145454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B932CABDBC4
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:15:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A94ABDCC0
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 484B4188BAB2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:13:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 404A88A672B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B802472A0;
-	Tue, 20 May 2025 14:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5696124A076;
+	Tue, 20 May 2025 14:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlrE/zBe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/DTLrqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7E624677D;
-	Tue, 20 May 2025 14:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136CD248879;
+	Tue, 20 May 2025 14:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750228; cv=none; b=Xo/zBpkpkVLrER4xqRocKJ4ykj4tLpP5uvbeNEV0+0IXihkhdysm0FEFQGy72Z/jxbZPJ5+4sgNWUCBLnCuUsroPIwHpjlz6JnvWfydhO/iawggPffKrIfdugTy6y33vVip4qcx8BJK2mhzYAsYXZsfvKah5upTY0GorqbodCQw=
+	t=1747750630; cv=none; b=sUBtsg1ea8orcKPAtFDFNRtkgQGaE7FAVvotiLDrgwOriF0qQwIA2muC5y4NoYXVJVRzG09N9HKbdKqv1qZAIEe9ZzlW3jL3h9/Tdvz2UToLjeGFot6cCBFx3MmmJr7s7wdIGXuA2VUiYHot3wQxzfT9roiLGG51VUXZ9ccBQrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750228; c=relaxed/simple;
-	bh=UorKLqo1eH4t95nJFwt7HULNY1b2DDMkMLCF11NRvfo=;
+	s=arc-20240116; t=1747750630; c=relaxed/simple;
+	bh=s+Oa4bBeYkNkKNlM6hMK8OZj+DNirhc2QGgLJxhMHTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMvrQxze7Puw9oUEvlsTP8E6bNzjN0H8is6CEFQgbG4AYzw9yu435JZo2TgVOEYmMZu2R1O33mUySAaqoJxprJVoSd1XJQTDD9m6vefJVbufFyhpjGRAhvfJGgeb1Syu4TECpEMLYSiU25/Dwz/IJTJh0MOiXV7aJ38Tfk1OeU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlrE/zBe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C5BC4CEE9;
-	Tue, 20 May 2025 14:10:27 +0000 (UTC)
+	 MIME-Version; b=PEucpLUV4xIieQxRIlmiRSTndXMcGx51Vf4Got61rpfaDpjbIa6wuxWPAghcoGshwPCxXrEqeV+/2fEEIDaJr/U1CFyciB9WZ5uWIr0z4ATf+BZXwhNqiQ3ergf+V3042X9d/BW4nl4Mh6G8jAn+zzCJvVHlagmlracAGORtZug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/DTLrqY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9D6C4CEE9;
+	Tue, 20 May 2025 14:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750227;
-	bh=UorKLqo1eH4t95nJFwt7HULNY1b2DDMkMLCF11NRvfo=;
+	s=korg; t=1747750629;
+	bh=s+Oa4bBeYkNkKNlM6hMK8OZj+DNirhc2QGgLJxhMHTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlrE/zBegIgPfxvqo2MgTsFubEdNHJtXY8ofril4fAgzox9QDcn9kCvmINUFWYkBh
-	 BYsTstNlKSDeYQfeIsNm4S8aswo0c4/InrLr5di8iMrVAkbe0lFgZ6KW/jkw3OatYP
-	 vRRKjvgqu87WtOEFFS8vZh+MuOIQWCjHuo0ltkDw=
+	b=w/DTLrqYRoUIgjU8Ka6xGZ8UFyBjRH0rBN+uowUF1nvme2dJbonPUYbvfbdsi8GAf
+	 itDJTS+8jBg7bqLOGMghuy/zGG42Ass+WssuweJDco2zu7acdr10xcP9JVmDCVtDc9
+	 vXtTTjaUzGvxU5tdJz/C3k7y0gu3yNaXuw+jK9zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <tim.huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>
-Subject: [PATCH 6.12 084/143] drm/amdgpu: fix incorrect MALL size for GFX1151
-Date: Tue, 20 May 2025 15:50:39 +0200
-Message-ID: <20250520125813.369823057@linuxfoundation.org>
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 070/145] LoongArch: Move __arch_cpu_idle() to .cpuidle.text section
+Date: Tue, 20 May 2025 15:50:40 +0200
+Message-ID: <20250520125813.322959736@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <tim.huang@amd.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 2d73b0845ab3963856e857b810600e5594bc29f4 upstream.
+commit 3e245b7b74c3a2ead5fa4bad27cc275284c75189 upstream.
 
-On GFX1151, the reported MALL cache size reflects only
-half of its actual size; this adjustment corrects the discrepancy.
+Now arch_cpu_idle() is annotated with __cpuidle which means it is in
+the .cpuidle.text section, but __arch_cpu_idle() isn't. Thus, fix the
+missing .cpuidle.text section assignment for __arch_cpu_idle() in order
+to correct backtracing with nmi_backtrace().
 
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0a5c060b593ad152318f89e5564bfdfcff8a6ac0)
+The principle is similar to the commit 97c8580e85cf81c ("MIPS: Annotate
+cpu_wait implementations with __cpuidle")
+
 Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/loongarch/kernel/genex.S |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-@@ -747,6 +747,18 @@ static int gmc_v11_0_sw_init(void *handl
- 	adev->gmc.vram_type = vram_type;
- 	adev->gmc.vram_vendor = vram_vendor;
+--- a/arch/loongarch/kernel/genex.S
++++ b/arch/loongarch/kernel/genex.S
+@@ -16,6 +16,7 @@
+ #include <asm/stackframe.h>
+ #include <asm/thread_info.h>
  
-+	/* The mall_size is already calculated as mall_size_per_umc * num_umc.
-+	 * However, for gfx1151, which features a 2-to-1 UMC mapping,
-+	 * the result must be multiplied by 2 to determine the actual mall size.
-+	 */
-+	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
-+	case IP_VERSION(11, 5, 1):
-+		adev->gmc.mall_size *= 2;
-+		break;
-+	default:
-+		break;
-+	}
-+
- 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
- 	case IP_VERSION(11, 0, 0):
- 	case IP_VERSION(11, 0, 1):
++	.section .cpuidle.text, "ax"
+ 	.align	5
+ SYM_FUNC_START(__arch_cpu_idle)
+ 	/* start of idle interrupt region */
+@@ -31,14 +32,16 @@ SYM_FUNC_START(__arch_cpu_idle)
+ 	 */
+ 	idle	0
+ 	/* end of idle interrupt region */
+-1:	jr	ra
++idle_exit:
++	jr	ra
+ SYM_FUNC_END(__arch_cpu_idle)
++	.previous
+ 
+ SYM_CODE_START(handle_vint)
+ 	UNWIND_HINT_UNDEFINED
+ 	BACKUP_T0T1
+ 	SAVE_ALL
+-	la_abs	t1, 1b
++	la_abs	t1, idle_exit
+ 	LONG_L	t0, sp, PT_ERA
+ 	/* 3 instructions idle interrupt region */
+ 	ori	t0, t0, 0b1100
 
 
 
