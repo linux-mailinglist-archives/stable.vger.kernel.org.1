@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DD9ABDBCD
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:16:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64B4ABDC18
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 414328C7D76
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:09:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0514F1883D0C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6D6247282;
-	Tue, 20 May 2025 14:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B1325C83D;
+	Tue, 20 May 2025 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8b8iODB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzKkWMeI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973161FBE9E;
-	Tue, 20 May 2025 14:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61C7253F3A;
+	Tue, 20 May 2025 14:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750110; cv=none; b=fV+zGMMANv8fRieAx884O7H1HqffIDeMewmnpvuyHvAtB0REilseaZpefeEj+LQITI+1GaJfSb5da/3Y4cuNuM8gqaE5rs4G/IGiibPbPWOXpaBwZc99pq+6D0Uck+zVNZqtdeCWUXqt5gQQbcwCyc/r1qKVnGqvvVSpvRVxml8=
+	t=1747750510; cv=none; b=IcB70npRLKVdlPCmGIWI1L7MNRaxepPyWbHHk46+XFu1BzI6ZgJ5+ThBfGctlc9FKVniFNoIfSVG3a3b80XUwOsu1Z1b1BZKT68oWOUHR43xmmAsTrRsPAw1/nETxjgNFx1dxb5UdDJ9qy1e6ha76RfyQCerC9ucFNj8XIcP4DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750110; c=relaxed/simple;
-	bh=KigC5bVxapeRUaaXvl/6FVw1lnmW+eieccB5utwAUDk=;
+	s=arc-20240116; t=1747750510; c=relaxed/simple;
+	bh=VEGaStB4Qc8jmzrLSKD8Njd1lysmikoLaljm3QF1diE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QngJMjR13YaItYuj4L3dbrzxeTbda11F9keRj0c79eNo/DOD7hBOher10Zcc3n+WvFsWl/SeWQfgA91Yp1rOkMSJ4p1yem7fOMyiEAP4VZyS/v6FlaG8/Fn4cQTigytsN1T1JXaRyLxEYUlaleA3/a+ltbzJWpOfzosMqpynRGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8b8iODB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28308C4CEE9;
-	Tue, 20 May 2025 14:08:29 +0000 (UTC)
+	 MIME-Version; b=TEhJaQTUULhVL3US4/sEvmWK/5JhsYtiJLbSNtUg8XSt6G7nJrGDJTN4CghaxQsiC0+nEUgh2anTsvRVNEsPJHwW/Nf3sqi3M1TTyrritELeubtfilY+rhyh/JwIf1pPxGthiY/FA3kxJc0QVrxhvQmKxolgeZH2YSf/M4hoCEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzKkWMeI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE5AC4CEE9;
+	Tue, 20 May 2025 14:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750110;
-	bh=KigC5bVxapeRUaaXvl/6FVw1lnmW+eieccB5utwAUDk=;
+	s=korg; t=1747750510;
+	bh=VEGaStB4Qc8jmzrLSKD8Njd1lysmikoLaljm3QF1diE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8b8iODBEyMYLObTW7dyWfFBv/SRCZVHmUdSQrkxzYc5gaTTMjrcmAWt4A9JBVX+U
-	 ByJu7Z7wjTQG8M8yCBHzMwGxSlYb9ZdTzhdkVAxb6XGzrZ/Gk3LnvJTl88P8ERk3CV
-	 wW1BrF2ggvMX8Vn3Cupa/RlF2GYK+6FsoHBBCnj0=
+	b=DzKkWMeI2eGAEl9quqjltDcQ+f6UX87NId/J6EBOWTLUWl0ByXzr0mjRoZibBGaDD
+	 Iuq7RCUmou2TpC0K0xXSw681bLSEqVlY4oxYj79kAUW0mhB7ZRXHiFTTTjyoKZrQIv
+	 PuJyAymPgbZrk0GuIWba024xzri4rv9EMvdXdp+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com,
+	syzbot+1065a199625a388fce60@syzkaller.appspotmail.com,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/143] ALSA: ump: Fix a typo of snd_ump_stream_msg_device_info
+Subject: [PATCH 6.14 031/145] net: mctp: Dont access ifa_index when missing
 Date: Tue, 20 May 2025 15:50:01 +0200
-Message-ID: <20250520125811.860040065@linuxfoundation.org>
+Message-ID: <20250520125811.786242241@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit dd33993a9721ab1dae38bd37c9f665987d554239 ]
+[ Upstream commit f11cf946c0a92c560a890d68e4775723353599e1 ]
 
-s/devince/device/
+In mctp_dump_addrinfo, ifa_index can be used to filter interfaces, but
+only when the struct ifaddrmsg is provided. Otherwise it will be
+comparing to uninitialised memory - reproducible in the syzkaller case from
+dhcpd, or busybox "ip addr show".
 
-It's used only internally, so no any behavior changes.
+The kernel MCTP implementation has always filtered by ifa_index, so
+existing userspace programs expecting to dump MCTP addresses must
+already be passing a valid ifa_index value (either 0 or a real index).
 
-Fixes: 37e0e14128e0 ("ALSA: ump: Support UMP Endpoint and Function Block parsing")
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20250511141147.10246-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+BUG: KMSAN: uninit-value in mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
+ mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
+ rtnl_dump_all+0x3ec/0x5b0 net/core/rtnetlink.c:4380
+ rtnl_dumpit+0xd5/0x2f0 net/core/rtnetlink.c:6824
+ netlink_dump+0x97b/0x1690 net/netlink/af_netlink.c:2309
+
+Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
+Reported-by: syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68135815.050a0220.3a872c.000e.GAE@google.com/
+Reported-by: syzbot+1065a199625a388fce60@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/681357d6.050a0220.14dd7d.000d.GAE@google.com/
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250508-mctp-addr-dump-v2-1-c8a53fd2dd66@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi2.c | 2 +-
- include/sound/ump_msg.h               | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/mctp/device.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_midi2.c b/drivers/usb/gadget/function/f_midi2.c
-index 8c9d0074db588..0c45936f51b3d 100644
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -475,7 +475,7 @@ static void reply_ump_stream_ep_info(struct f_midi2_ep *ep)
- /* reply a UMP EP device info */
- static void reply_ump_stream_ep_device(struct f_midi2_ep *ep)
- {
--	struct snd_ump_stream_msg_devince_info rep = {
-+	struct snd_ump_stream_msg_device_info rep = {
- 		.type = UMP_MSG_TYPE_STREAM,
- 		.status = UMP_STREAM_MSG_STATUS_DEVICE_INFO,
- 		.manufacture_id = ep->info.manufacturer,
-diff --git a/include/sound/ump_msg.h b/include/sound/ump_msg.h
-index 72f60ddfea753..9556b4755a1ed 100644
---- a/include/sound/ump_msg.h
-+++ b/include/sound/ump_msg.h
-@@ -604,7 +604,7 @@ struct snd_ump_stream_msg_ep_info {
- } __packed;
+diff --git a/net/mctp/device.c b/net/mctp/device.c
+index 8e0724c56723d..7c0dcf3df3196 100644
+--- a/net/mctp/device.c
++++ b/net/mctp/device.c
+@@ -117,11 +117,18 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
+ 	struct net_device *dev;
+ 	struct ifaddrmsg *hdr;
+ 	struct mctp_dev *mdev;
+-	int ifindex, rc;
+-
+-	hdr = nlmsg_data(cb->nlh);
+-	// filter by ifindex if requested
+-	ifindex = hdr->ifa_index;
++	int ifindex = 0, rc;
++
++	/* Filter by ifindex if a header is provided */
++	if (cb->nlh->nlmsg_len >= nlmsg_msg_size(sizeof(*hdr))) {
++		hdr = nlmsg_data(cb->nlh);
++		ifindex = hdr->ifa_index;
++	} else {
++		if (cb->strict_check) {
++			NL_SET_ERR_MSG(cb->extack, "mctp: Invalid header for addr dump request");
++			return -EINVAL;
++		}
++	}
  
- /* UMP Stream Message: Device Info Notification (128bit) */
--struct snd_ump_stream_msg_devince_info {
-+struct snd_ump_stream_msg_device_info {
- #ifdef __BIG_ENDIAN_BITFIELD
- 	/* 0 */
- 	u32 type:4;
-@@ -754,7 +754,7 @@ struct snd_ump_stream_msg_fb_name {
- union snd_ump_stream_msg {
- 	struct snd_ump_stream_msg_ep_discovery ep_discovery;
- 	struct snd_ump_stream_msg_ep_info ep_info;
--	struct snd_ump_stream_msg_devince_info device_info;
-+	struct snd_ump_stream_msg_device_info device_info;
- 	struct snd_ump_stream_msg_stream_cfg stream_cfg;
- 	struct snd_ump_stream_msg_fb_discovery fb_discovery;
- 	struct snd_ump_stream_msg_fb_info fb_info;
+ 	rcu_read_lock();
+ 	for_each_netdev_dump(net, dev, mcb->ifindex) {
 -- 
 2.39.5
 
