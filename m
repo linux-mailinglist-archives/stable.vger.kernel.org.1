@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8EFABDCF3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B68ABDC3B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775ED8A5EA1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 719A38A159D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FE826A09A;
-	Tue, 20 May 2025 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD21A24BBE4;
+	Tue, 20 May 2025 14:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SoY2e7XQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNIX/7j/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5468266F15;
-	Tue, 20 May 2025 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CC024A076;
+	Tue, 20 May 2025 14:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750850; cv=none; b=otdyNkqW3h9He9RiznXEkh+cQBXqAcIjTBe+rk+ydqrmgAYka2FJ6CEodMgs6IuYqvdRpwIivNNpKBf6sdeDfjulRxj5xOgBy9Xy8AykTFic7MaDm3Kao1vdtvLb+sRen6cLjgtM7g3SSBHYNdm8ObGfHH2178q2MIQIQgiqY4E=
+	t=1747750362; cv=none; b=hB0Ptz9IIBhhp9Og13i40aaVBb9Va4lrgTZi2o+1B4Np9vw7SczhB7Djp0RV3X7FkVUGHvEYsN/obt8oPPRRYyDCtv1rVIZKiTdUQB7N3ujITvEKiO8jTw/V+PqqYn64l4WH4m4hlUbIQzrlTMBZj9pJAT9Wt0IALvjL/l2DrQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750850; c=relaxed/simple;
-	bh=Vs9obrTYzGtWnK7pEXlINDi7h9exO5BkC9tYYprZkHo=;
+	s=arc-20240116; t=1747750362; c=relaxed/simple;
+	bh=h0L7a40NHbYiWWMnb/tPaDstvTeIx6uxDtz3O94GoXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5c3aQxco5ZVUXiqBOr+yM4imhlT0qdIYh6+BATWOuDcTyAv3b0NDdlY/v1KszzyXlQaGSgPplVjADxZA+sWwqX5O7Yee2N7KRiWwHv3wSM3W5bUju8yKl9ofPXZhiSlzFfZNM1Re0H7p2EOq7Wr1LZtXDSZw9VIxM0AMFeUioY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoY2e7XQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E1FC4CEE9;
-	Tue, 20 May 2025 14:20:50 +0000 (UTC)
+	 MIME-Version; b=O8U2n/nEqiqmT/fTzZhLZb0R1xNXTsy7qWiSiIcVmKeDoE95lVic33LwR7xIbhN5Sp3139u0WiUXRZEfhpTwuYlouBCHktpsQLDAb5Kz+ALmFrMv3o8j63xtKSiU8rB+L0YxCyGCHGIzcw8jWpacSQDndofObgvCZ4kCx1wCphk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNIX/7j/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11939C4CEE9;
+	Tue, 20 May 2025 14:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750850;
-	bh=Vs9obrTYzGtWnK7pEXlINDi7h9exO5BkC9tYYprZkHo=;
+	s=korg; t=1747750362;
+	bh=h0L7a40NHbYiWWMnb/tPaDstvTeIx6uxDtz3O94GoXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SoY2e7XQHAX5xHfr82CJF3pAXzHuJKzE8J0VGZnU3rHtZ5Nbw56Qh0DoeztZR36uV
-	 1KEJLdSONgv7hAEUHm75FkV53tkT9PY4QaKI6OmtsWwGpo6B5Wpg7NTxNgwIwSwnUR
-	 j6NDZpoUZd1+06m2jL65EIqklmx05pfZ3H8R1/gk=
+	b=RNIX/7j/cwtTrsuWDwLnaWdT766QwWzLlmrBiKlik7zhw5X43gtizxu9tJc0kc8H6
+	 NwNZBzz1f0lpLzcr7RBLKUYH2UHlTHtZINvr/1bQwQdBMKo2qCC8GXse3+Tiz3VoLo
+	 ji3Wp+eZLy/nwLGRDdQSFqrFj9tN/1ujHv4ccC9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.14 112/145] phy: renesas: rcar-gen3-usb2: Set timing registers only once
+Subject: [PATCH 6.12 127/143] dmaengine: idxd: fix memory leak in error handling path of idxd_pci_probe
 Date: Tue, 20 May 2025 15:51:22 +0200
-Message-ID: <20250520125814.940437068@linuxfoundation.org>
+Message-ID: <20250520125815.017500610@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 86e70849f4b2b4597ac9f7c7931f2a363774be25 upstream.
+commit 90022b3a6981ec234902be5dbf0f983a12c759fc upstream.
 
-phy-rcar-gen3-usb2 driver exports 4 PHYs. The timing registers are common
-to all PHYs. There is no need to set them every time a PHY is initialized.
-Set timing register only when the 1st PHY is initialized.
+Memory allocated for idxd is not freed if an error occurs during
+idxd_pci_probe(). To fix it, free the allocated memory in the reverse
+order of allocation before exiting the function in case of an error.
 
-Fixes: f3b5a8d9b50d ("phy: rcar-gen3-usb2: Add R-Car Gen3 USB2 PHY driver")
+Fixes: bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data accelerators")
 Cc: stable@vger.kernel.org
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250507125032.565017-6-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-8-xueshuai@linux.alibaba.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/dma/idxd/init.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -463,8 +463,11 @@ static int rcar_gen3_phy_usb2_init(struc
- 	val = readl(usb2_base + USB2_INT_ENABLE);
- 	val |= USB2_INT_ENABLE_UCOM_INTEN | rphy->int_enable_bits;
- 	writel(val, usb2_base + USB2_INT_ENABLE);
--	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
--	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
-+
-+	if (!rcar_gen3_is_any_rphy_initialized(channel)) {
-+		writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
-+		writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
-+	}
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -585,6 +585,17 @@ static void idxd_read_caps(struct idxd_d
+ 		idxd->hw.iaa_cap.bits = ioread64(idxd->reg_base + IDXD_IAACAP_OFFSET);
+ }
  
- 	/* Initialize otg part (only if we initialize a PHY with IRQs). */
- 	if (rphy->int_enable_bits)
++static void idxd_free(struct idxd_device *idxd)
++{
++	if (!idxd)
++		return;
++
++	put_device(idxd_confdev(idxd));
++	bitmap_free(idxd->opcap_bmap);
++	ida_free(&idxd_ida, idxd->id);
++	kfree(idxd);
++}
++
+ static struct idxd_device *idxd_alloc(struct pci_dev *pdev, struct idxd_driver_data *data)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -857,7 +868,7 @@ static int idxd_pci_probe(struct pci_dev
+  err:
+ 	pci_iounmap(pdev, idxd->reg_base);
+  err_iomap:
+-	put_device(idxd_confdev(idxd));
++	idxd_free(idxd);
+  err_idxd_alloc:
+ 	pci_disable_device(pdev);
+ 	return rc;
 
 
 
