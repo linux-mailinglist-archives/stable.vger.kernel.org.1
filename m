@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-145676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD03FABDD06
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:32:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD8AABDCFD
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 623F98A7393
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:26:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF418A6285
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1985C248864;
-	Tue, 20 May 2025 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C030246327;
+	Tue, 20 May 2025 14:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1AJpB0M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odk3/3gN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABB62907;
-	Tue, 20 May 2025 14:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD58C1A3A80;
+	Tue, 20 May 2025 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750887; cv=none; b=i1AGRzyyCE9kIzzvSPsLQAnBM2ZjUaVLghJXGhshbNbSL0Vq7E4ZHttNNOv5ha9fhpib+8s8leGZRh2IiJ2CwIUnAv0r54FEfxStMzZj9Hs+un/0UO5Pmdaj3gMbGDqJ2uZTAX+oYEDxTPTvkE2RhknQsk31vgxqu8w4rMS6UPA=
+	t=1747750871; cv=none; b=szH4DwghCfH9WHGel6qFix8cRtr3XEMky5yzx96i6vD00Cx85+zUawtLk7D+e37tIVXu6rY5l8ZndjcNvtOpDAvpKaXUqmbiS+gw5+xzOPRvQ3fjfqA5jBbOzZkwQZfqqz+2r1hRr7qw64w6YkrjTVj1IHeNCFQr5hfdJrHbx78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750887; c=relaxed/simple;
-	bh=k5SeS67/kJh2uTAA4yeEfL+u/Wl632EYNMtXXx3mbfQ=;
+	s=arc-20240116; t=1747750871; c=relaxed/simple;
+	bh=+43pptpJu+1dMVHPOtiP1EsP3t/7458m8/qYgvYShIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZE41wnxx/gqB9rfbEbFvpo3hiLWxNLNKzzVEWDyZfqSwJ+wqftPsTLH078qyjUWb4eH2Ia77deYGMMRpGVTOvhZzA31r/fQ9W2FbWBK/8Fdqcj25/wvSmzgdA5GcwNMnDYhYzavXIi7IzRLA79zXYAhEOQRcmFCo4mVGmibaB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1AJpB0M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F64C4CEE9;
-	Tue, 20 May 2025 14:21:27 +0000 (UTC)
+	 MIME-Version; b=kd+YnLDm07PAYsDQ2De9k6xIc7V+cWaD7SaThmjniTRzU3zefsRPIVL3b6CcHGFdn/Um8UEFqFj+EutvYo1wWEomlx/g/c136lyKmTo0BKHh/r4Q2dJVx08flzIa0yInKwWD44rsaVjAj/w0qF9LBp3Wthpe8B4SEOTEVpPq+fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odk3/3gN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577B8C4CEE9;
+	Tue, 20 May 2025 14:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750887;
-	bh=k5SeS67/kJh2uTAA4yeEfL+u/Wl632EYNMtXXx3mbfQ=;
+	s=korg; t=1747750871;
+	bh=+43pptpJu+1dMVHPOtiP1EsP3t/7458m8/qYgvYShIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1AJpB0MXyFeYzL3uheSnLrsPY/lbJv3n2/PyaDM6dgr+KGHHGd/gzGPril2yufb1
-	 r+zH6ag2DVKLHUivfH//vhkTp071i9I6XHIO1JML7dPrree5/RBAhwjd/eKxNAHnxf
-	 dhXmElg77BtgI2gYBwu6rzkMIpBSWkh94+YvO5Lk=
+	b=odk3/3gNkwv/CM+yuE4JS1LB0d0b0gAj4s/k5ZnMA/zGXu8boGX44zNoXTbNGzBI0
+	 pwvZeVLxYzbqahB9IjmGcKDHYgrVnfHGNZUTqE36dJclTXawWnhvuj5W/6YvDPZzln
+	 UqxePeDDE/uU+RowK6aN+Wu96oXpdIxGveo1sf6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Karol Wachowski <karol.wachowski@intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>
-Subject: [PATCH 6.14 140/145] accel/ivpu: Fix missing MMU events if file_priv is unbound
-Date: Tue, 20 May 2025 15:51:50 +0200
-Message-ID: <20250520125816.025712671@linuxfoundation.org>
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.14 141/145] accel/ivpu: Flush pending jobs of devices workqueues
+Date: Tue, 20 May 2025 15:51:51 +0200
+Message-ID: <20250520125816.065304088@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
 References: <20250520125810.535475500@linuxfoundation.org>
@@ -66,49 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@intel.com>
+From: Maciej Falkowski <maciej.falkowski@linux.intel.com>
 
-commit 2f5bbea1807a064a1e4c1b385c8cea4f37bb4b17 upstream.
+commit 683e9fa1c885a0cffbc10b459a7eee9df92af1c1 upstream.
 
-Move the ivpu_mmu_discard_events() function to the common portion of
-the abort work function. This ensures it is called only once, even if
-there are no faulty contexts in context_xa, to guarantee that MMU events
-are discarded and new events are not missed.
+Use flush_work() instead of cancel_work_sync() for driver IRQ
+workqueues to guarantee that remaining pending work
+will be handled.
 
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+This resolves two issues that were encountered where a driver was left
+in an incorrect state as the bottom-half was canceled:
+
+1. Cancelling context-abort of a job that is still executing and
+   is causing translation faults which is going to cause additional TDRs
+
+2. Cancelling bottom-half of a DCT (duty-cycle throttling) request
+   which will cause a device to not be adjusted to an external frequency
+   request.
+
+Fixes: bc3e5f48b7ee ("accel/ivpu: Use workqueue for IRQ handling")
+Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
 Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250129125636.1047413-4-jacek.lawrynowicz@linux.intel.com
+Link: https://lore.kernel.org/r/20250401155755.4049156-1-maciej.falkowski@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_job.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_drv.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_job.c
-+++ b/drivers/accel/ivpu/ivpu_job.c
-@@ -369,7 +369,6 @@ void ivpu_context_abort_locked(struct iv
- 		ivpu_jsm_context_release(vdev, file_priv->ctx.id);
- 
- 	ivpu_mmu_disable_ssid_events(vdev, file_priv->ctx.id);
--	ivpu_mmu_discard_events(vdev);
- 
- 	file_priv->aborted = true;
+--- a/drivers/accel/ivpu/ivpu_drv.c
++++ b/drivers/accel/ivpu/ivpu_drv.c
+@@ -420,9 +420,9 @@ void ivpu_prepare_for_reset(struct ivpu_
+ {
+ 	ivpu_hw_irq_disable(vdev);
+ 	disable_irq(vdev->irq);
+-	cancel_work_sync(&vdev->irq_ipc_work);
+-	cancel_work_sync(&vdev->irq_dct_work);
+-	cancel_work_sync(&vdev->context_abort_work);
++	flush_work(&vdev->irq_ipc_work);
++	flush_work(&vdev->irq_dct_work);
++	flush_work(&vdev->context_abort_work);
+ 	ivpu_ipc_disable(vdev);
+ 	ivpu_mmu_disable(vdev);
  }
-@@ -872,6 +871,13 @@ void ivpu_context_abort_work_fn(struct w
- 	}
- 	mutex_unlock(&vdev->context_list_lock);
- 
-+	/*
-+	 * We will not receive new MMU event interrupts until existing events are discarded
-+	 * however, we want to discard these events only after aborting the faulty context
-+	 * to avoid generating new faults from that context
-+	 */
-+	ivpu_mmu_discard_events(vdev);
-+
- 	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
- 		return;
- 
 
 
 
