@@ -1,89 +1,128 @@
-Return-Path: <stable+bounces-145535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4955ABDC0F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:19:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C0DABDCD2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF8D91884422
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:19:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3A964E5ABC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D1A24E008;
-	Tue, 20 May 2025 14:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5B42609E5;
+	Tue, 20 May 2025 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOGo8eDB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2gaaa6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9F52459F3;
-	Tue, 20 May 2025 14:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644A025DAF0;
+	Tue, 20 May 2025 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750457; cv=none; b=IeO67fmqu9vk+68LafkkfN2+gsn2M1Khf9LXXgkg9ECu9cWjU7GnK6shYf0KRjnJIFBRrvgXpbFCw9RyyySz8qjRaRjFtcOrG7kVCiHVcFPJLYjAjuuA+QaKrujIaQn8k4K+FGInrGIDrHb2yX6KSg/ZmGV1Yn+lNuINgSNB3po=
+	t=1747750511; cv=none; b=DdnQRvO9YWagy6Qgsx9YFGX+Jk677QB8R/icb0NLuBtZnA/MTjBT8BYeaC9MhbPK5b/B0WfrVVXEn1y3WWVCsno/bCu7gnG/XFW2Oxe5OAdIb5tthkpZesxjfchivOZR9LTKTcMuqldYrh6RvqaDazABrwXVQufqQgJQCfO4xqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750457; c=relaxed/simple;
-	bh=er5Z9v1gTHlblQ0IFiaXz43wpcJyMEwObalM+JrBQ+4=;
+	s=arc-20240116; t=1747750511; c=relaxed/simple;
+	bh=RjBf74JuRzmh1pvAQ/y+H/wsm5WmpnJ1p4e7jMoz8hY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=th/B9CSSBtmJ1Bvos6ZcsEBLygJu7SbRtcWA9diCQgo6jss/yILEbmziXVJKwXLqnjhiQ7BEtfocKBSIwzCWGJyb+nTNXSHMrLMGiRtkHiyQ22q8+XRTP72k97SDtY1tijzU9C7I1FGxhxzyo5Q3yMUEd0qdRvDe4dThbkgxJs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOGo8eDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1DDC4CEE9;
-	Tue, 20 May 2025 14:14:16 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=d80++cIc6JnskkEUedepFFgr4SThXsbcRLX7vZ/PhQUz5CPCAEm4f9MJ3TfWZE1VSkIViac/q3VxdvZ4nHu1y2a9P6M87gRFDFuOEsthFIjejZSS1dEsfhJyvPLJBf6mA9qLWSSVeatwIg2DSz59ApChilEVBAoMj63co9e89KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2gaaa6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DDAC4CEE9;
+	Tue, 20 May 2025 14:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747750457;
-	bh=er5Z9v1gTHlblQ0IFiaXz43wpcJyMEwObalM+JrBQ+4=;
+	s=k20201202; t=1747750511;
+	bh=RjBf74JuRzmh1pvAQ/y+H/wsm5WmpnJ1p4e7jMoz8hY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hOGo8eDBFYN3Jqyj3FUpoKhdtxaJ88v3hAYKddVq6a9xPj7N/EPLUwNimiW1bULhV
-	 zzS3bD0NvJRjmxd3bA4KkQLRbbG8XVQkcBxnNi/xINhap4m4X1kn80eiBHapK6w6T5
-	 DRBOnFHvZeRKYV9+WonGg/aJ9sJC/S0WSeEOcNdQ8pkxHXFIKsSVv77pMu2FwJFR6r
-	 pzHr9qRP7l47V/cJE9R0+gfV3do/1PAEedaCAPJ8besyxGRg8akGTwH4kFQoS/OUTG
-	 bZ6KUwtA4TP5QtjTpyCGBwINqRGG2PF25VBpFsYI76M8abO+KoJvIg6Ebb1LP8sxnt
-	 ENFgeVV1im3yw==
-Date: Tue, 20 May 2025 10:14:15 -0400
+	b=f2gaaa6Gmzie0JsgT11a1WE0a8YsnE2AYWnSL37T5yn/q+7P0u1Aq2yKhMA93IIMj
+	 4oumb+ltnKQU/EhaFAXMC5eFtpI+qZ3FUKK3wz3P48OQdeenpCx3DYyW7zn/2HJCnI
+	 MTA1jfrA3NHm/cC2H5Di5lBhKPlBARbGF7uT2l/8enq87LzltjZriOzYVmpSDAqGur
+	 CiB5jCUZZ6QirXUVvN+sTv0mAKnrsk6VQFgRiCSnR54fmST6qPjbe6c6WDI/7CFiQo
+	 ++/d0ziIpH6VTQJb2yfzt6swZLVugUehT9DjOhaaND6q2inCSN+KFY+UtHN26ffXyP
+	 dN0gnPVgbpjEA==
+Date: Tue, 20 May 2025 10:15:09 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Alex Deucher <alexdeucher@gmail.com>
+To: David Sterba <dsterba@suse.cz>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Alexandre Demers <alexandre.f.demers@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>, christian.koenig@amd.com,
-	airlied@gmail.com, simona@ffwll.ch, sunil.khatri@amd.com,
-	boyuan.zhang@amd.com, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH AUTOSEL 6.14 248/642] drm/amdgpu: add
- dce_v6_0_soft_reset() to DCE6
-Message-ID: <aCyONyjgTxvphCPN@lappy>
+	Qu Wenruo <wqu@suse.com>, Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>, clm@fb.com, josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.14 099/642] btrfs: prevent inline data extents
+ read from touching blocks beyond its range
+Message-ID: <aCyObd3OCtX9K-Jd@lappy>
 References: <20250505221419.2672473-1-sashal@kernel.org>
- <20250505221419.2672473-248-sashal@kernel.org>
- <CADnq5_MfAFmbLeg+PAtWaFvY1G29ApTmMKwFq7etT35NvQWXHw@mail.gmail.com>
+ <20250505221419.2672473-99-sashal@kernel.org>
+ <20250506131913.GD9140@twin.jikos.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADnq5_MfAFmbLeg+PAtWaFvY1G29ApTmMKwFq7etT35NvQWXHw@mail.gmail.com>
+In-Reply-To: <20250506131913.GD9140@twin.jikos.cz>
 
-On Tue, May 06, 2025 at 11:05:15AM -0400, Alex Deucher wrote:
->On Mon, May 5, 2025 at 6:24 PM Sasha Levin <sashal@kernel.org> wrote:
+On Tue, May 06, 2025 at 03:19:13PM +0200, David Sterba wrote:
+>On Mon, May 05, 2025 at 06:05:15PM -0400, Sasha Levin wrote:
+>> From: Qu Wenruo <wqu@suse.com>
 >>
->> From: Alexandre Demers <alexandre.f.demers@gmail.com>
+>> [ Upstream commit 1a5b5668d711d3d1ef447446beab920826decec3 ]
 >>
->> [ Upstream commit ab23db6d08efdda5d13d01a66c593d0e57f8917f ]
+>> Currently reading an inline data extent will zero out the remaining
+>> range in the page.
 >>
->> DCE6 was missing soft reset, but it was easily identifiable under radeon.
->> This should be it, pretty much as it is done under DCE8 and DCE10.
+>> This is not yet causing problems even for block size < page size
+>> (subpage) cases because:
 >>
->> Signed-off-by: Alexandre Demers <alexandre.f.demers@gmail.com>
->> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>> 1) An inline data extent always starts at file offset 0
+>>    Meaning at page read, we always read the inline extent first, before
+>>    any other blocks in the page. Then later blocks are properly read out
+>>    and re-fill the zeroed out ranges.
+>>
+>> 2) Currently btrfs will read out the whole page if a buffered write is
+>>    not page aligned
+>>    So a page is either fully uptodate at buffered write time (covers the
+>>    whole page), or we will read out the whole page first.
+>>    Meaning there is nothing to lose for such an inline extent read.
+>>
+>> But it's still not ideal:
+>>
+>> - We're zeroing out the page twice
+>>   Once done by read_inline_extent()/uncompress_inline(), once done by
+>>   btrfs_do_readpage() for ranges beyond i_size.
+>>
+>> - We're touching blocks that don't belong to the inline extent
+>>   In the incoming patches, we can have a partial uptodate folio, of
+>>   which some dirty blocks can exist while the page is not fully uptodate:
+>>
+>>   The page size is 16K and block size is 4K:
+>>
+>>   0         4K        8K        12K        16K
+>>   |         |         |/////////|          |
+>>
+>>   And range [8K, 12K) is dirtied by a buffered write, the remaining
+>>   blocks are not uptodate.
+>>
+>>   If range [0, 4K) contains an inline data extent, and we try to read
+>>   the whole page, the current behavior will overwrite range [8K, 12K)
+>>   with zero and cause data loss.
+>>
+>> So to make the behavior more consistent and in preparation for future
+>> changes, limit the inline data extents read to only zero out the range
+>> inside the first block, not the whole page.
+>>
+>> Reviewed-by: Filipe Manana <fdmanana@suse.com>
+>> Signed-off-by: Qu Wenruo <wqu@suse.com>
+>> Signed-off-by: David Sterba <dsterba@suse.com>
 >> Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
->This is not stable material.
+>This is not a stable dependency and the patch is not fixing anything
+>but a preparation so this does not make much sense for stable backports,
+>please drop it. Thanks.
 
-Dropped, thanks!
+Will do, thanks!
 
 -- 
 Thanks,
