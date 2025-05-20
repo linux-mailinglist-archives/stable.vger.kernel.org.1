@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1445DABD994
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:36:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10F8ABD99B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495A818805A1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 841C63A3B2B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256D522DA16;
-	Tue, 20 May 2025 13:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6222417F8;
+	Tue, 20 May 2025 13:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tu2sOCok"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQtxvlzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5821C4609
-	for <stable@vger.kernel.org>; Tue, 20 May 2025 13:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D018E2417E4
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 13:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747748200; cv=none; b=Y4mg2AZLG1gPdoW1JbXOz94YvPrjSwJUX57XyeV1TWmJpN52SO0KhhnM6GxvcGtjJL77xJy9rOSFFKh7RNcSsDnsyvdqnNqtCghMOxXIzJ6rh2k2A4yR14GRdd2IMtNfihHJAB0niDJBQcS47ztKl2d6BqUBE6mo1AuyVhPIO3w=
+	t=1747748203; cv=none; b=Bx9XmqhsPLhWVw9L/v7Y6w5UHdSco9CnsAgGB08MI8Q4aqyKe2p2xU7LbRQli/XVB2vEhGRF3YXF8vXGiFEAShhwdhw/0E67SJN6cFpLdIcAbrW7gvXWG0eIvBDJnskwyxWWR1jZXxJD1e1HU8UjmqGANKldSYsE/2caM738ejA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747748200; c=relaxed/simple;
-	bh=bvAxrAgXBSB1fXDQCiITStcoJmCe7OoVzw06nbytJtU=;
+	s=arc-20240116; t=1747748203; c=relaxed/simple;
+	bh=5ORxJxUsquv4n4IfZrMP/dOVnmOYOAvp8wnJjMYlpdg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jM+M53x9yCOWM7xJEXSYdd8R8jAF2q7NHoUg3/yrkU1Q5wIqb6KFdnqKIwiNn+VqK7O7yQwuyUBSIWBRoYQJ3DuFtfOPnOoHJwEGKbdWNRCGZokzLcy6CKVcZP8yp4TXGAyx6ZKDiny0PeeO+3+fGwRXYho1JnnC+ggaZfehf2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tu2sOCok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCD7C4CEE9;
-	Tue, 20 May 2025 13:36:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uI2qNBPO4+/rOnyUczNTl8xidfBlZKLvZk6Ewhv6qccF5FsMJxxtWwFioJsVBc70t/AwyF1gAjr6L6aYyzOHY639NQsZLgtEs18SSBXi4buP6ey8FMQsdLJ71cyyiYdnC+lxi1rs70yXjkmL35i0J/A63E4BXxHy1qI8RSMgwP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQtxvlzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA08EC4CEE9;
+	Tue, 20 May 2025 13:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747748200;
-	bh=bvAxrAgXBSB1fXDQCiITStcoJmCe7OoVzw06nbytJtU=;
+	s=k20201202; t=1747748202;
+	bh=5ORxJxUsquv4n4IfZrMP/dOVnmOYOAvp8wnJjMYlpdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tu2sOCokMWObqnE4OsXpelve6pjpuYdzM27EvDJz1dOLFrESXP0H1q2SajULI4Mhd
-	 m8i7RuaJSzfxERAmlPFkdoSjl7MDLl30akYF9oYgfhwlnsJTXhRFr/aGn4e+r5fBDk
-	 P+LjtEI3KNrjA/zICvHeH9Ix6CxZnHuWLwd91VrmhOZ3d89l9gutTO3ItQgy3cciWF
-	 V8ZMebsmYCtwPpx11qCAT1tU7PipjZMnzxUs7gj0tjLibR27iO66baODw+MuyluHTC
-	 0o/4LPsSDcq2p3wkGglZFhR/RjR9ZS9MkkL18ncfhp2yVrE4GvrMey8YTrZipy2bWa
-	 iZuw/2hIcUDcw==
+	b=hQtxvlzID6nw/dTb/RARVjyicSLycgsX+jZveq2NcVb1vg0wg+JIfvhA/1sZ/Op78
+	 5KZYD/JRbldtr08ueDo8/GxQrhLnvGLIG4VdmudKBBi+Lhtamfw6RyjUdfglhi90JY
+	 3EBEnZRL+xuY5RRJ2Ie4GGcFzlHqMKFyB7hIHyz8ezzfo/BD4gClf0W5fGyDT42CfZ
+	 ijqbGKXY+SGtOtbZQPDjGAVFzFNcjQ5KCHDi/Jn/xC0wakli/YQ0DJbU4wNV/3oPxE
+	 FIZYx07bWKWWmv8nPx0fShkiO0rR9km5v0VxeXkQnFdamE+KIfYwjlGGqYgUdKcqm3
+	 ITZuMvHCh+cnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] Bluetooth: btnxpuart: Fix kernel panic during FW release
-Date: Tue, 20 May 2025 09:36:38 -0400
-Message-Id: <20250520043140-eda1377e7249949c@stable.kernel.org>
+Subject: Re: [PATCH -stable,5.15 1/3] netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
+Date: Tue, 20 May 2025 09:36:40 -0400
+Message-Id: <20250520071006-2a8ceed8d6c511f0@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250520073106.2054836-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20250519233515.25539-2-pablo@netfilter.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,42 +67,87 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 1f77c05408c96bc0b58ae476a9cadc9e5b9cfd0f
+The upstream commit SHA1 provided is correct: 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: Neeraj Sanjay Kale<neeraj.sanjaykale@nxp.com>
+Backport author: Pablo Neira Ayuso<pablo@netfilter.org>
+Commit author: Florian Westphal<fw@strlen.de>
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 6749cf49eff7)
-6.12.y | Not found
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 825a80817cf1)
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  1f77c05408c96 ! 1:  f6951acf722c3 Bluetooth: btnxpuart: Fix kernel panic during FW release
+1:  8965d42bcf54d ! 1:  55bc2f4ca3c46 netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
     @@ Metadata
       ## Commit message ##
-         Bluetooth: btnxpuart: Fix kernel panic during FW release
+         netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
      
-    +    [ Upstream commit 1f77c05408c96bc0b58ae476a9cadc9e5b9cfd0f ]
+    +    commit 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd upstream.
     +
-         This fixes a kernel panic seen during release FW in a stress test
-         scenario where WLAN and BT FW download occurs simultaneously, and due to
-         a HW bug, chip sends out only 1 bootloader signatures.
-    @@ Commit message
-         Fixes: 689ca16e5232 ("Bluetooth: NXP: Add protocol support for NXP Bluetooth chipsets")
-         Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
-         Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         It would be better to not store nft_ctx inside nft_trans object,
+         the netlink ctx strucutre is huge and most of its information is
+         never needed in places that use trans->ctx.
+    @@ include/net/netfilter/nf_tables.h: static inline bool nft_chain_is_bound(struct
      
-      ## drivers/bluetooth/btnxpuart.c ##
-     @@ drivers/bluetooth/btnxpuart.c: static int nxp_download_firmware(struct hci_dev *hdev)
+      ## net/netfilter/nf_tables_api.c ##
+     @@ net/netfilter/nf_tables_api.c: static void nf_tables_chain_free_chain_rules(struct nft_chain *chain)
+    - 	kvfree(chain->blob_next);
+    + 	kvfree(chain->rules_next);
+      }
+      
+     -void nf_tables_chain_destroy(struct nft_ctx *ctx)
+    @@ net/netfilter/nf_tables_api.c: void nf_tables_chain_destroy(struct nft_ctx *ctx)
+      						 &basechain->hook_list, list) {
+      				list_del_rcu(&hook->list);
+     @@ net/netfilter/nf_tables_api.c: static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
+    - err_trans:
+    - 	nft_use_dec_restore(&table->use);
+    + err_use:
+    + 	nf_tables_unregister_hook(net, table, chain);
+      err_destroy_chain:
+     -	nf_tables_chain_destroy(ctx);
+     +	nf_tables_chain_destroy(chain);
+    @@ net/netfilter/nf_tables_api.c: static int nf_tables_addchain(struct nft_ctx *ctx
+      	return err;
+      }
+     @@ net/netfilter/nf_tables_api.c: static void nft_commit_release(struct nft_trans *trans)
+    - 		if (nft_trans_chain_update(trans))
+    - 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
+    - 		else
+    --			nf_tables_chain_destroy(&trans->ctx);
+    -+			nf_tables_chain_destroy(nft_trans_chain(trans));
+    + 		kfree(nft_trans_chain_name(trans));
+    + 		break;
+    + 	case NFT_MSG_DELCHAIN:
+    +-		nf_tables_chain_destroy(&trans->ctx);
+    ++		nf_tables_chain_destroy(nft_trans_chain(trans));
+      		break;
+      	case NFT_MSG_DELRULE:
+    - 	case NFT_MSG_DESTROYRULE:
+    + 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+     @@ net/netfilter/nf_tables_api.c: static void nf_tables_abort_release(struct nft_trans *trans)
+    - 		if (nft_trans_chain_update(trans))
+    - 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
+    - 		else
+    --			nf_tables_chain_destroy(&trans->ctx);
+    -+			nf_tables_chain_destroy(nft_trans_chain(trans));
+    + 		nf_tables_table_destroy(&trans->ctx);
+    + 		break;
+    + 	case NFT_MSG_NEWCHAIN:
+    +-		nf_tables_chain_destroy(&trans->ctx);
+    ++		nf_tables_chain_destroy(nft_trans_chain(trans));
+      		break;
+      	case NFT_MSG_NEWRULE:
+      		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
