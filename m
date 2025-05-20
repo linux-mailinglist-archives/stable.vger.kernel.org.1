@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86052ABDC7A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9502ABDB95
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D9683AAB45
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:19:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90E567B5846
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69FA24EAAA;
-	Tue, 20 May 2025 14:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3843724A051;
+	Tue, 20 May 2025 14:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0AH3Zz6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmjAaPKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922312459F7;
-	Tue, 20 May 2025 14:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DAF24A049;
+	Tue, 20 May 2025 14:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750494; cv=none; b=E6WXnkdT/m4u93/umHyJZS9DqzQJa7neBMjmThyfC1CVxo2ERguyF2CGuMQC2OgnvCFuoSf2hLsHvyVTLriUrX+kuP5z91dbcTpfSyQCAKMVTc9dzRoYXrhoHrVQI83Z3SFjK11Iqm2KkYwk5J7qxY9GZNc1h+VIysS25nq1A9s=
+	t=1747750197; cv=none; b=uqD/E4PhECR50gj/MwNi9u1DspxlblvCDq0D4MSmH0Lr9RC5h3CssoiT3EeEK1LJL2OpAx+oUl9sRZ8Kf1FsylRCuXjb8iucKutbKaYqRxu501cvqmHq+rq+Vyr0ZlccUFK2Xffghx2Bl13ge2UcmIGD3A4iC06QZQ4MEO3dj/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750494; c=relaxed/simple;
-	bh=BNJjc9hsQmXjR2Xc8cMIYKMAuh0OXMI0WxtSoMxAHgg=;
+	s=arc-20240116; t=1747750197; c=relaxed/simple;
+	bh=YTQnHi5IRbdCqD/6t0lYsAnd9Vjmc5lNT1NpFv0xEio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxjL3eIFp0l7TB7OxD4U5uNSOoxtlhrV8lt3AipBeMoeVnmxXdkQXEcyc/t3wghaKa1wQJ14V/XRfplTiIV4XFnJoZXG7e0Tz5fMU4xXu5tBFj/dWyXx15btqzTzKVpG/Yg1k45MeLgv+Uxn0Bxcr4fIrxzOgE8v1XL5QaqnuqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0AH3Zz6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D32EC4CEE9;
-	Tue, 20 May 2025 14:14:53 +0000 (UTC)
+	 MIME-Version; b=J/6n/X3LD3zZ0plJmCFY82DTtLrbutwAFM/c2djXh0rLO6DLrBFrAExu7hIJ25dnJGkTWJimTLVXXmOJ89+P/mzwm7COUzGa4PtTCMwxzkd2zXK/1uOwihtHKd7sg+eW4gCe8Wll09MP3zQGubvP0+DBiRRdLsJJswia767Q8zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmjAaPKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36371C4CEE9;
+	Tue, 20 May 2025 14:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750494;
-	bh=BNJjc9hsQmXjR2Xc8cMIYKMAuh0OXMI0WxtSoMxAHgg=;
+	s=korg; t=1747750196;
+	bh=YTQnHi5IRbdCqD/6t0lYsAnd9Vjmc5lNT1NpFv0xEio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N0AH3Zz68Qm8nxkNRcCfXqlpDUse62e7pMqVf1qpweRBqbs0RI/yh56VXd1y2YtTW
-	 R81KoFHFmb2tTQqQ4fUtLwn2DR/Crf/vVIPNFZHatTvLJTywldg2wewasxXwbGywJO
-	 sTXR6P2fdDhNbw4zpIk9INMtdILLVD70a4ItUzUE=
+	b=fmjAaPKvAnnEk2MFyr+wjw5dkJtRsPAO3ZeenWkYini9L5Mlp1rv7w9qF45MvCEm3
+	 MzbLdOG7xM7sZTPreyKw3vDLgR7nmDdK3T/rxtPQdmB7Dy+XK7W7ySnshuo/NUM+KN
+	 yx+Wpkjcma6fOLT95Uk+TZmqGWQ8Tz5ACA7ZPdaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 027/145] Bluetooth: MGMT: Fix MGMT_OP_ADD_DEVICE invalid device flags
+Subject: [PATCH 6.12 042/143] selftests: ncdevmem: Switch to AF_INET6
 Date: Tue, 20 May 2025 15:49:57 +0200
-Message-ID: <20250520125811.621766057@linuxfoundation.org>
+Message-ID: <20250520125811.705205517@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +64,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit 1e2e3044c1bc64a64aa0eaf7c17f7832c26c9775 ]
+[ Upstream commit 933056357a8cf0c9b3fb2ecc4d2d8d142614f0a3 ]
 
-Device flags could be updated in the meantime while MGMT_OP_ADD_DEVICE
-is pending on hci_update_passive_scan_sync so instead of setting the
-current_flags as cmd->user_data just do a lookup using
-hci_conn_params_lookup and use the latest stored flags.
+Use dualstack socket to support both v4 and v6. v4-mapped-v6 address
+can be used to do v4.
 
-Fixes: a182d9c84f9c ("Bluetooth: MGMT: Fix Add Device to responding before completing")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20241107181211.3934153-7-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 97c4e094a4b2 ("tests/ncdevmem: Fix double-free of queue array")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/ncdevmem.c | 97 ++++++++++++++++++--------
+ 1 file changed, 68 insertions(+), 29 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 621c555f639be..181b1e070b82e 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -7540,11 +7540,16 @@ static void add_device_complete(struct hci_dev *hdev, void *data, int err)
- 	struct mgmt_cp_add_device *cp = cmd->param;
+diff --git a/tools/testing/selftests/net/ncdevmem.c b/tools/testing/selftests/net/ncdevmem.c
+index faa9dce121c72..7c671b246d80f 100644
+--- a/tools/testing/selftests/net/ncdevmem.c
++++ b/tools/testing/selftests/net/ncdevmem.c
+@@ -234,13 +234,26 @@ static int configure_channels(unsigned int rx, unsigned int tx)
+ 	return run_command("sudo ethtool -L %s rx %u tx %u", ifname, rx, tx);
+ }
  
- 	if (!err) {
-+		struct hci_conn_params *params;
+-static int configure_flow_steering(void)
++static int configure_flow_steering(struct sockaddr_in6 *server_sin)
+ {
+-	return run_command("sudo ethtool -N %s flow-type tcp4 %s %s dst-ip %s %s %s dst-port %s queue %d >&2",
++	const char *type = "tcp6";
++	const char *server_addr;
++	char buf[40];
 +
-+		params = hci_conn_params_lookup(hdev, &cp->addr.bdaddr,
-+						le_addr_type(cp->addr.type));
++	inet_ntop(AF_INET6, &server_sin->sin6_addr, buf, sizeof(buf));
++	server_addr = buf;
 +
- 		device_added(cmd->sk, hdev, &cp->addr.bdaddr, cp->addr.type,
- 			     cp->action);
- 		device_flags_changed(NULL, hdev, &cp->addr.bdaddr,
- 				     cp->addr.type, hdev->conn_flags,
--				     PTR_UINT(cmd->user_data));
-+				     params ? params->flags : 0);
- 	}
++	if (IN6_IS_ADDR_V4MAPPED(&server_sin->sin6_addr)) {
++		type = "tcp4";
++		server_addr = strrchr(server_addr, ':') + 1;
++	}
++
++	return run_command("sudo ethtool -N %s flow-type %s %s %s dst-ip %s %s %s dst-port %s queue %d >&2",
+ 			   ifname,
++			   type,
+ 			   client_ip ? "src-ip" : "",
+ 			   client_ip ?: "",
+-			   server_ip,
++			   server_addr,
+ 			   client_ip ? "src-port" : "",
+ 			   client_ip ? port : "",
+ 			   port, start_queue);
+@@ -291,13 +304,51 @@ static int bind_rx_queue(unsigned int ifindex, unsigned int dmabuf_fd,
+ 	return -1;
+ }
  
- 	mgmt_cmd_complete(cmd->sk, hdev->id, MGMT_OP_ADD_DEVICE,
-@@ -7647,8 +7652,6 @@ static int add_device(struct sock *sk, struct hci_dev *hdev,
- 		goto unlock;
- 	}
++static void enable_reuseaddr(int fd)
++{
++	int opt = 1;
++	int ret;
++
++	ret = setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt));
++	if (ret)
++		error(1, errno, "%s: [FAIL, SO_REUSEPORT]\n", TEST_PREFIX);
++
++	ret = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
++	if (ret)
++		error(1, errno, "%s: [FAIL, SO_REUSEADDR]\n", TEST_PREFIX);
++}
++
++static int parse_address(const char *str, int port, struct sockaddr_in6 *sin6)
++{
++	int ret;
++
++	sin6->sin6_family = AF_INET6;
++	sin6->sin6_port = htons(port);
++
++	ret = inet_pton(sin6->sin6_family, str, &sin6->sin6_addr);
++	if (ret != 1) {
++		/* fallback to plain IPv4 */
++		ret = inet_pton(AF_INET, str, &sin6->sin6_addr.s6_addr32[3]);
++		if (ret != 1)
++			return -1;
++
++		/* add ::ffff prefix */
++		sin6->sin6_addr.s6_addr32[0] = 0;
++		sin6->sin6_addr.s6_addr32[1] = 0;
++		sin6->sin6_addr.s6_addr16[4] = 0;
++		sin6->sin6_addr.s6_addr16[5] = 0xffff;
++	}
++
++	return 0;
++}
++
+ int do_server(struct memory_buffer *mem)
+ {
+ 	char ctrl_data[sizeof(int) * 20000];
+ 	struct netdev_queue_id *queues;
+ 	size_t non_page_aligned_frags = 0;
+-	struct sockaddr_in client_addr;
+-	struct sockaddr_in server_sin;
++	struct sockaddr_in6 client_addr;
++	struct sockaddr_in6 server_sin;
+ 	size_t page_aligned_frags = 0;
+ 	size_t total_received = 0;
+ 	socklen_t client_addr_len;
+@@ -309,9 +360,12 @@ int do_server(struct memory_buffer *mem)
+ 	int socket_fd;
+ 	int client_fd;
+ 	size_t i = 0;
+-	int opt = 1;
+ 	int ret;
  
--	cmd->user_data = UINT_PTR(current_flags);
++	ret = parse_address(server_ip, atoi(port), &server_sin);
++	if (ret < 0)
++		error(1, 0, "parse server address");
++
+ 	if (reset_flow_steering())
+ 		error(1, 0, "Failed to reset flow steering\n");
+ 
+@@ -320,7 +374,7 @@ int do_server(struct memory_buffer *mem)
+ 		error(1, 0, "Failed to configure rss\n");
+ 
+ 	/* Flow steer our devmem flows to start_queue */
+-	if (configure_flow_steering())
++	if (configure_flow_steering(&server_sin))
+ 		error(1, 0, "Failed to configure flow steering\n");
+ 
+ 	sleep(1);
+@@ -341,29 +395,14 @@ int do_server(struct memory_buffer *mem)
+ 	if (!tmp_mem)
+ 		error(1, ENOMEM, "malloc failed");
+ 
+-	server_sin.sin_family = AF_INET;
+-	server_sin.sin_port = htons(atoi(port));
 -
- 	err = hci_cmd_sync_queue(hdev, add_device_sync, cmd,
- 				 add_device_complete);
- 	if (err < 0) {
+-	ret = inet_pton(server_sin.sin_family, server_ip, &server_sin.sin_addr);
+-	if (ret < 0)
+-		error(1, errno, "%s: [FAIL, create socket]\n", TEST_PREFIX);
+-
+-	socket_fd = socket(server_sin.sin_family, SOCK_STREAM, 0);
++	socket_fd = socket(AF_INET6, SOCK_STREAM, 0);
+ 	if (socket_fd < 0)
+ 		error(1, errno, "%s: [FAIL, create socket]\n", TEST_PREFIX);
+ 
+-	ret = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEPORT, &opt,
+-			 sizeof(opt));
+-	if (ret)
+-		error(1, errno, "%s: [FAIL, set sock opt]\n", TEST_PREFIX);
+-
+-	ret = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt,
+-			 sizeof(opt));
+-	if (ret)
+-		error(1, errno, "%s: [FAIL, set sock opt]\n", TEST_PREFIX);
++	enable_reuseaddr(socket_fd);
+ 
+ 	fprintf(stderr, "binding to address %s:%d\n", server_ip,
+-		ntohs(server_sin.sin_port));
++		ntohs(server_sin.sin6_port));
+ 
+ 	ret = bind(socket_fd, &server_sin, sizeof(server_sin));
+ 	if (ret)
+@@ -375,16 +414,16 @@ int do_server(struct memory_buffer *mem)
+ 
+ 	client_addr_len = sizeof(client_addr);
+ 
+-	inet_ntop(server_sin.sin_family, &server_sin.sin_addr, buffer,
++	inet_ntop(AF_INET6, &server_sin.sin6_addr, buffer,
+ 		  sizeof(buffer));
+ 	fprintf(stderr, "Waiting or connection on %s:%d\n", buffer,
+-		ntohs(server_sin.sin_port));
++		ntohs(server_sin.sin6_port));
+ 	client_fd = accept(socket_fd, &client_addr, &client_addr_len);
+ 
+-	inet_ntop(client_addr.sin_family, &client_addr.sin_addr, buffer,
++	inet_ntop(AF_INET6, &client_addr.sin6_addr, buffer,
+ 		  sizeof(buffer));
+ 	fprintf(stderr, "Got connection from %s:%d\n", buffer,
+-		ntohs(client_addr.sin_port));
++		ntohs(client_addr.sin6_port));
+ 
+ 	while (1) {
+ 		struct iovec iov = { .iov_base = iobuf,
 -- 
 2.39.5
 
