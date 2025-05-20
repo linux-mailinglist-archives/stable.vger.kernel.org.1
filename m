@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-145479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD05BABDBDB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC8AABDC3D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5EF2188645F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84EDC1897BF4
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842EB246767;
-	Tue, 20 May 2025 14:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D720F253F3A;
+	Tue, 20 May 2025 14:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vanFL54A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0yaLAg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4261C2522A8;
-	Tue, 20 May 2025 14:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9408E2528E5;
+	Tue, 20 May 2025 14:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750297; cv=none; b=YpbiTyTQQaER9gI7ncU5xw2bKAgbsmAW+82DbE+CIOS8Tt5w2LKs0Esrzw/BAewLEjdrFCre+uLs/XjXKPek4gpc215xv6UFYdTuKt7LMOv3xCwng8cti0PJmXlcW+abbez5/KjOStWKUUgY0UvBpjA7ci2a0b2C7uv9sDimYSY=
+	t=1747750597; cv=none; b=XolH9Jg7Rtjbo/ELqHEF1D/HObiH7RJRbpOeVDOV2RDDfB65LPEGIJXaa6cCxSlbYmvFwxSmEqd/KFZBq8d8TXEtkf05BnLqD7QyluqYW064NLUwKgDGwd16ACpnAWtyyXQ7LCtvAQ58H7UrLQZUeJEF9XRyR3MkAITSD1C07iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750297; c=relaxed/simple;
-	bh=yh/KUYDh3msUwcpD4zSzQahU4FCJtnWG8QYcg/Qfssw=;
+	s=arc-20240116; t=1747750597; c=relaxed/simple;
+	bh=Bt+1yRnOnOtgaIMjlh2p0mSp9cRbImM6MOnJZIC77lY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9YU2jms12pVa4MZnrsTgkBdShiP91CtBNV+r391BssZEKYcSoAy7mT8d34+DlFqXLfyZFDoBVWuaC2jTGwW8sKEq81NYedIiP7jMbNRQX4M3MxjjRSX51P1ZH40mZVEYK+pC3KosyLKe/LUpaUu2hU4gyQS5eBuBfVIKmktaiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vanFL54A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF746C4CEE9;
-	Tue, 20 May 2025 14:11:36 +0000 (UTC)
+	 MIME-Version; b=cI0L4aOOgOIi6gi0S8eTNCcq/0auXCQ1i3b7Fq2/Nydj6SUY7/DEDptNBWEqzJpqPizd3EB79UVHF5U2mf0Oa+J8pYydmc7MFf8LNWFMkQX/1Chaiv+lg1yCGmSroOr25qwSf0DaxQbj0RHPx75vShFx42k9tb0D8nPUPTpYcsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0yaLAg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB4EC4CEE9;
+	Tue, 20 May 2025 14:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750297;
-	bh=yh/KUYDh3msUwcpD4zSzQahU4FCJtnWG8QYcg/Qfssw=;
+	s=korg; t=1747750597;
+	bh=Bt+1yRnOnOtgaIMjlh2p0mSp9cRbImM6MOnJZIC77lY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vanFL54AsjgpagemeAFubmBBnghRxMd9WBLeRAM7cJj1C+PAHws3wm7c5BipUw3K0
-	 z/X2gto4eQ8hePZO6p1inGnzsQGKHCxbKS66AwOlgIPB4rTPtCTXk6+DBGGuT6O6XP
-	 984J9Z0LJ9wotEPlWERvmIWW7CbWIBN5W3EWvYbE=
+	b=q0yaLAg0+E0hr7aYjfvx4h3S2m7Wy4H0l0VKrnuZ5fawlL7A9nymUPI/pxHs8z83l
+	 lMlNllXkeuU8sYbRbiTmFcYBtZtdY5mIcqKW2aoS4AlX/nm11eKu8CWVIBlicdyAPu
+	 w9Ca5f9IDQizLzOmrlmF+tmgkNPCKhrIWbplqOpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 076/143] LoongArch: Fix MAX_REG_OFFSET calculation
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 061/145] NFSv4/pnfs: Reset the layout state after a layoutreturn
 Date: Tue, 20 May 2025 15:50:31 +0200
-Message-ID: <20250520125813.056337045@linuxfoundation.org>
+Message-ID: <20250520125812.971771613@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 90436d234230e9a950ccd87831108b688b27a234 upstream.
+[ Upstream commit 6d6d7f91cc8c111d40416ac9240a3bb9396c5235 ]
 
-Fix MAX_REG_OFFSET calculation, make it point to the last register
-in 'struct pt_regs' and not to the marker itself, which could allow
-regs_get_register() to return an invalid offset.
+If there are still layout segments in the layout plh_return_lsegs list
+after a layout return, we should be resetting the state to ensure they
+eventually get returned as well.
 
-Cc: stable@vger.kernel.org
-Fixes: 803b0fc5c3f2baa6e5 ("LoongArch: Add process management")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 68f744797edd ("pNFS: Do not free layout segments that are marked for return")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/ptrace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/pnfs.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/arch/loongarch/include/asm/ptrace.h
-+++ b/arch/loongarch/include/asm/ptrace.h
-@@ -55,7 +55,7 @@ static inline void instruction_pointer_s
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -745,6 +745,14 @@ pnfs_mark_matching_lsegs_invalid(struct
+ 	return remaining;
+ }
  
- /* Query offset/name of register from its name/offset */
- extern int regs_query_register_offset(const char *name);
--#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
-+#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last) - sizeof(unsigned long))
- 
- /**
-  * regs_get_register() - get register value from its offset
++static void pnfs_reset_return_info(struct pnfs_layout_hdr *lo)
++{
++	struct pnfs_layout_segment *lseg;
++
++	list_for_each_entry(lseg, &lo->plh_return_segs, pls_list)
++		pnfs_set_plh_return_info(lo, lseg->pls_range.iomode, 0);
++}
++
+ static void
+ pnfs_free_returned_lsegs(struct pnfs_layout_hdr *lo,
+ 		struct list_head *free_me,
+@@ -1292,6 +1300,7 @@ void pnfs_layoutreturn_free_lsegs(struct
+ 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
+ 		pnfs_free_returned_lsegs(lo, &freeme, range, seq);
+ 		pnfs_set_layout_stateid(lo, stateid, NULL, true);
++		pnfs_reset_return_info(lo);
+ 	} else
+ 		pnfs_mark_layout_stateid_invalid(lo, &freeme);
+ out_unlock:
 
 
 
