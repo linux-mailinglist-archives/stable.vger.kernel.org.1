@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC07BABDC1A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:20:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A50EABDCD1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1345D4C6B2B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:12:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75EEA4C4E22
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEB924A041;
-	Tue, 20 May 2025 14:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DFE24EF6B;
+	Tue, 20 May 2025 14:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgVy6s2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG86oIpn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58139248F71;
-	Tue, 20 May 2025 14:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0ACD24EA85;
+	Tue, 20 May 2025 14:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750190; cv=none; b=lZFa7CodxL2WP2rulsYgiTP1FcySanpfScL7nC2HoSGKvtB6Jv8ujdOzxp77NwQh9CUe0kBHx2wCEDBpmINdA2B5cAVt7n8KvRDIpggVh4G++pFjnFSXkBXRclOeFUhN/6vWLeTSIFfMo1Hv6z6R41VPZUFvIY72hF6uW/tluAw=
+	t=1747750488; cv=none; b=Ddu3qs8Vz2NF8raOIoPpVPomtrdRPWnvsZhuOMQPN5TG9pW/6As5D6LnuY91MzJ/lG7VaGJcQtNT3s+cZ177+2n/IMSh+9HvkO340lYRkaNlX0hp+w/nLNQUoV8ieVcK5dk8KdjEPtGISBg95Xu29NkhQar0LqK5ZGw2I4gKDI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750190; c=relaxed/simple;
-	bh=bnNtpdaYhSTu0AHgTNIQQgd5EocLQ1oPFbjp6LL9e8k=;
+	s=arc-20240116; t=1747750488; c=relaxed/simple;
+	bh=BHiVDD0gyfynS9n9dDwioMpLB9gphRjd4RpSEVQyfEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lo3KrFwVma5opAXR2GX6hkIz82cbtSBVrCxZa4ogmdynV+gkI1WLTkoViLnBYI4TCHbh1C7b4z5lSgCKMXsuSJLpGDnrOMmM2RvOZqBh7LwhXCPBMB+iqw5OeIjw+NXvE2l2YpZlnBG/RGzY4tYyzFbxFNIbfD0xReCBkomH5aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgVy6s2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC047C4CEE9;
-	Tue, 20 May 2025 14:09:49 +0000 (UTC)
+	 MIME-Version; b=QSCwqUpdOX0Xo4+sYtS9eyXrOLdxGVZQ4Hk6VH/IBWbCY0SFFZcOgbXkbgJj/ASVxJXl6Hl9l8y19H4AsZM2rGs3fv1J/BO4Rkhrw92SljCUZivJ/miS4HbjSuuRYSw8vAZj5DlpaJ/i6KLLkhZiwsgeaeOncrhrX//fd2vefhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rG86oIpn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F830C4CEE9;
+	Tue, 20 May 2025 14:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750190;
-	bh=bnNtpdaYhSTu0AHgTNIQQgd5EocLQ1oPFbjp6LL9e8k=;
+	s=korg; t=1747750488;
+	bh=BHiVDD0gyfynS9n9dDwioMpLB9gphRjd4RpSEVQyfEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgVy6s2KNhTo/QoBQ53Bawtgx84wi3vdt0RpTPe46vxheuCKdsLJuX3+LGbKH3Tk3
-	 9LHBkD9UARnQ9jIAe46SEsx921mLyoqM+OK7fFFuqE27VL4dU5Q92+EBwtmEXWpgPR
-	 8HwH1FHnDJN5eLVwUi3GvmTDOK8YZnITxQBgg+OQ=
+	b=rG86oIpnH96nZkaReh9CG3PycV2Y7kRQJCl3mvNkablaIndyy6Kvsm5ybnRL82lSX
+	 bdzaANQYxJKCcJKw/e6uobMIzDrC+Q2az2MAIHOz0H7Q8jIrvnf43yY81EUTHFLczp
+	 xDTE1/NXe0W9Shq2poe02Pj+1w/V5N+BaAUO9UdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mina Almasry <almasrymina@google.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/143] selftests: ncdevmem: Unify error handling
+Subject: [PATCH 6.14 025/145] spi: loopback-test: Do not split 1024-byte hexdumps
 Date: Tue, 20 May 2025 15:49:55 +0200
-Message-ID: <20250520125811.630278170@linuxfoundation.org>
+Message-ID: <20250520125811.542022432@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit bfccbaac1b45f9af7d76589d7e31ad921b50c0d7 ]
+[ Upstream commit a73fa3690a1f3014d6677e368dce4e70767a6ba2 ]
 
-There is a bunch of places where error() calls look out of place.
-Use the same error(1, errno, ...) pattern everywhere.
+spi_test_print_hex_dump() prints buffers holding less than 1024 bytes in
+full.  Larger buffers are truncated: only the first 512 and the last 512
+bytes are printed, separated by a truncation message.  The latter is
+confusing in case the buffer holds exactly 1024 bytes, as all data is
+printed anyway.
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20241107181211.3934153-4-sdf@fomichev.me
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 97c4e094a4b2 ("tests/ncdevmem: Fix double-free of queue array")
+Fix this by printing buffers holding up to and including 1024 bytes in
+full.
+
+Fixes: 84e0c4e5e2c4ef42 ("spi: add loopback test driver to allow for spi_master regression tests")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/37ee1bc90c6554c9347040adabf04188c8f704aa.1746184171.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/ncdevmem.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/spi/spi-loopback-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/ncdevmem.c b/tools/testing/selftests/net/ncdevmem.c
-index 3e7ef2eedd60b..4733d1a0aab5d 100644
---- a/tools/testing/selftests/net/ncdevmem.c
-+++ b/tools/testing/selftests/net/ncdevmem.c
-@@ -339,33 +339,33 @@ int do_server(struct memory_buffer *mem)
- 	server_sin.sin_port = htons(atoi(port));
- 
- 	ret = inet_pton(server_sin.sin_family, server_ip, &server_sin.sin_addr);
--	if (socket < 0)
--		error(79, 0, "%s: [FAIL, create socket]\n", TEST_PREFIX);
-+	if (ret < 0)
-+		error(1, errno, "%s: [FAIL, create socket]\n", TEST_PREFIX);
- 
- 	socket_fd = socket(server_sin.sin_family, SOCK_STREAM, 0);
--	if (socket < 0)
--		error(errno, errno, "%s: [FAIL, create socket]\n", TEST_PREFIX);
-+	if (socket_fd < 0)
-+		error(1, errno, "%s: [FAIL, create socket]\n", TEST_PREFIX);
- 
- 	ret = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEPORT, &opt,
- 			 sizeof(opt));
- 	if (ret)
--		error(errno, errno, "%s: [FAIL, set sock opt]\n", TEST_PREFIX);
-+		error(1, errno, "%s: [FAIL, set sock opt]\n", TEST_PREFIX);
- 
- 	ret = setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &opt,
- 			 sizeof(opt));
- 	if (ret)
--		error(errno, errno, "%s: [FAIL, set sock opt]\n", TEST_PREFIX);
-+		error(1, errno, "%s: [FAIL, set sock opt]\n", TEST_PREFIX);
- 
- 	fprintf(stderr, "binding to address %s:%d\n", server_ip,
- 		ntohs(server_sin.sin_port));
- 
- 	ret = bind(socket_fd, &server_sin, sizeof(server_sin));
- 	if (ret)
--		error(errno, errno, "%s: [FAIL, bind]\n", TEST_PREFIX);
-+		error(1, errno, "%s: [FAIL, bind]\n", TEST_PREFIX);
- 
- 	ret = listen(socket_fd, 1);
- 	if (ret)
--		error(errno, errno, "%s: [FAIL, listen]\n", TEST_PREFIX);
-+		error(1, errno, "%s: [FAIL, listen]\n", TEST_PREFIX);
- 
- 	client_addr_len = sizeof(client_addr);
- 
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 31a878d9458d9..7740f94847a88 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -420,7 +420,7 @@ MODULE_LICENSE("GPL");
+ static void spi_test_print_hex_dump(char *pre, const void *ptr, size_t len)
+ {
+ 	/* limit the hex_dump */
+-	if (len < 1024) {
++	if (len <= 1024) {
+ 		print_hex_dump(KERN_INFO, pre,
+ 			       DUMP_PREFIX_OFFSET, 16, 1,
+ 			       ptr, len, 0);
 -- 
 2.39.5
 
