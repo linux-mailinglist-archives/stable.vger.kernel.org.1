@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A187BABDA95
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC88EABDA05
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09DF87B3634
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:56:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6853417BF90
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5A12459F7;
-	Tue, 20 May 2025 13:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87858242922;
+	Tue, 20 May 2025 13:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoOSDPL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4T6ceal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDD422DF87;
-	Tue, 20 May 2025 13:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4353D241103;
+	Tue, 20 May 2025 13:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749437; cv=none; b=OVwm9pwmPSV5t4XadORhNhY/2dkGCuTuwBEXPimsfYZIfDrJJmbi5p7SN2tDZsyv7lXUHr0D6LNv/oGfPdhtQJatxL7s/BkwZoNUlAjZSaWHBUulOEKTOJ6ZV+PtNf/gXUM/BdeVE2sfc2+YF2zWBh7fe/P9j8r8cpor/maW2II=
+	t=1747749179; cv=none; b=R+u9HywJAN/N/L+aJZNJIiLu/OQhH4AFDSK8DU/t1qljmfYb1MhIJ2RF/5a6uHWMeR3P5HeXCEIObmZqKABSyKq7YwW2P8Gg4Z42VrYLzWKbACqBc6lwZpFacS+0ueIY6hNEL2ixftt+CVdUxxqdCZXPgfFdScvkdo8kH0MtSJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749437; c=relaxed/simple;
-	bh=WyLB7zqwmjaaab7tcPHNA+GkdnL/nWoPpzNGr8d0jYA=;
+	s=arc-20240116; t=1747749179; c=relaxed/simple;
+	bh=GmvM+vCcUvNugU6WLQ3spusaXjBy8c+v9TsYT8EtICc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5jPhNQOF5JxsoVCBDZZfqzjk+X1jloCJfTG/BvQ9bkGtCGlR5W7BIm6Fz/UEoto3fjt3yQE3NjdC62gYNPEz4TCGuP7XoBGSVauLo1BaqdLaeJl22WeX0iswAfAtDKNsHSF/zuzlkrB8IpSG7HtOQhaDu2AGKiMXqmuegwHO+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoOSDPL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEC6C4CEE9;
-	Tue, 20 May 2025 13:57:16 +0000 (UTC)
+	 MIME-Version; b=MRw8iej0kAHiw/eOLyKAGqvlNuoepK1rA1DbXvwLO1h/LcpNVVMDzvgSmqMUiYTiJPBIkrlheOf0Uu1HlhcCakZD/mSkP13qCuT1A3oYGTftGDOnPO5iAnxY/aNUD/2X/oATnqqtr2TXEflGihiX4Dvndx8kJdbRpujz1b04ekM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4T6ceal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DBAC4CEE9;
+	Tue, 20 May 2025 13:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749437;
-	bh=WyLB7zqwmjaaab7tcPHNA+GkdnL/nWoPpzNGr8d0jYA=;
+	s=korg; t=1747749179;
+	bh=GmvM+vCcUvNugU6WLQ3spusaXjBy8c+v9TsYT8EtICc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aoOSDPL1W72/F4/tbgJwx3NIX+ulaq63B/y1DJ+hHsbQARvwE6eC3wJNFb3tSrfdb
-	 CLLGgSts9a5G3f8NbuD9UezYkUhLHVlpxjDs6wycHro6EUTzrbo7GfgRSIlwjvuqXY
-	 9yZHVpxuZmFVZBqsRAYJboxUUbyRj2Z7VnZjsy9I=
+	b=H4T6cealKURs+qlB0EO5QK/BZysB3LicF9PdC6C+PT/32o1Jz0YPwJsX7gcOdBfVX
+	 /Mn6lQmTb8K8MacKVwqHeGXJXqpT4679gPgGRHiZNzCoHm8r/Hg4/MZB1FyyfJvw2i
+	 O01rUbq3KvZnyBTBN9pCXMbAvghIvH5XHyVn5xMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 45/97] ACPI: PPTT: Fix processor subtable walk
-Date: Tue, 20 May 2025 15:50:10 +0200
-Message-ID: <20250520125802.423962072@linuxfoundation.org>
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 5.15 20/59] x86/its: Add support for ITS-safe indirect thunk
+Date: Tue, 20 May 2025 15:50:11 +0200
+Message-ID: <20250520125754.656343448@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,250 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Linton <jeremy.linton@arm.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit adfab6b39202481bb43286fff94def4953793fdb upstream.
+commit 8754e67ad4ac692c67ff1f99c0d07156f04ae40c upstream.
 
-The original PPTT code had a bug where the processor subtable length
-was not correctly validated when encountering a truncated
-acpi_pptt_processor node.
+Due to ITS, indirect branches in the lower half of a cacheline may be
+vulnerable to branch target injection attack.
 
-Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
-sizeof() calls") attempted to fix this by validating the size is as
-large as the acpi_pptt_processor node structure. This introduced a
-regression where the last processor node in the PPTT table is ignored
-if it doesn't contain any private resources. That results errors like:
+Introduce ITS-safe thunks to patch indirect branches in the lower half of
+cacheline with the thunk. Also thunk any eBPF generated indirect branches
+in emit_indirect_jump().
 
-  ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
-  ACPI: SPE must be homogeneous
+Below category of indirect branches are not mitigated:
 
-Furthermore, it fails in a common case where the node length isn't
-equal to the acpi_pptt_processor structure size, leaving the original
-bug in a modified form.
+- Indirect branches in the .init section are not mitigated because they are
+  discarded after boot.
+- Indirect branches that are explicitly marked retpoline-safe.
 
-Correct the regression by adjusting the loop termination conditions as
-suggested by the bug reporters. An additional check performed after
-the subtable node type is detected, validates the acpi_pptt_processor
-node is fully contained in the PPTT table. Repeating the check in
-acpi_pptt_leaf_node() is largely redundant as the node is already
-known to be fully contained in the table.
+Note that retpoline also mitigates the indirect branches against ITS. This
+is because the retpoline sequence fills an RSB entry before RET, and it
+does not suffer from RSB-underflow part of the ITS.
 
-The case where a final truncated node's parent property is accepted,
-but the node itself is rejected should not be considered a bug.
-
-Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls")
-Reported-by: Maximilian Heyne <mheyne@amazon.de>
-Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@mheyne-amazon/
-Reported-by: Yicong Yang <yangyicong@hisilicon.com>
-Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyicong@huawei.com/
-Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-Tested-by: Yicong Yang <yangyicong@hisilicon.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Maximilian Heyne <mheyne@amazon.de>
-Cc: All applicable <stable@vger.kernel.org> # 7ab4f0e37a0f4: ACPI PPTT: Fix coding mistakes ...
-Link: https://patch.msgid.link/20250508023025.1301030-1-jeremy.linton@arm.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/pptt.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/x86/Kconfig                     |   11 +++++
+ arch/x86/include/asm/cpufeatures.h   |    1 
+ arch/x86/include/asm/nospec-branch.h |    5 ++
+ arch/x86/kernel/alternative.c        |   77 +++++++++++++++++++++++++++++++++++
+ arch/x86/kernel/vmlinux.lds.S        |    6 ++
+ arch/x86/lib/retpoline.S             |   28 ++++++++++++
+ arch/x86/net/bpf_jit_comp.c          |    6 ++
+ 7 files changed, 133 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -219,16 +219,18 @@ static int acpi_pptt_leaf_node(struct ac
- 			     sizeof(struct acpi_table_pptt));
- 	proc_sz = sizeof(struct acpi_pptt_processor);
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2517,6 +2517,17 @@ config MITIGATION_SPECTRE_BHI
+ 	  indirect branches.
+ 	  See <file:Documentation/admin-guide/hw-vuln/spectre.rst>
  
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	/* ignore subtable types that are smaller than a processor node */
-+	while ((unsigned long)entry + proc_sz <= table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
++config MITIGATION_ITS
++	bool "Enable Indirect Target Selection mitigation"
++	depends on CPU_SUP_INTEL && X86_64
++	depends on RETPOLINE && RETHUNK
++	default y
++	help
++	  Enable Indirect Target Selection (ITS) mitigation. ITS is a bug in
++	  BPU on some Intel CPUs that may allow Spectre V2 style attacks. If
++	  disabled, mitigation cannot be enabled via cmdline.
++	  See <file:Documentation/admin-guide/hw-vuln/indirect-target-selection.rst>
 +
- 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
- 		    cpu_node->parent == node_entry)
- 			return 0;
- 		if (entry->length == 0)
- 			return 0;
+ endif
+ 
+ config ARCH_HAS_ADD_PAGES
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -433,6 +433,7 @@
+ #define X86_FEATURE_BHI_CTRL		(21*32+ 2) /* "" BHI_DIS_S HW control available */
+ #define X86_FEATURE_CLEAR_BHB_HW	(21*32+ 3) /* "" BHI_DIS_S HW control enabled */
+ #define X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT (21*32+ 4) /* "" Clear branch history at vmexit using SW loop */
++#define X86_FEATURE_INDIRECT_THUNK_ITS	(21*32 + 5) /* "" Use thunk for indirect branches in lower half of cacheline */
+ 
+ /*
+  * BUG word(s)
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -271,6 +271,11 @@ extern void (*x86_return_thunk)(void);
+ 
+ typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
+ 
++#define ITS_THUNK_SIZE	64
++typedef u8 its_thunk_t[ITS_THUNK_SIZE];
 +
- 		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
- 				     entry->length);
--
- 	}
- 	return 1;
++extern its_thunk_t	 __x86_indirect_its_thunk_array[];
++
+ #define GEN(reg) \
+ 	extern retpoline_thunk_t __x86_indirect_thunk_ ## reg;
+ #include <asm/GEN-for-each-reg.h>
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -395,6 +395,74 @@ static int emit_indirect(int op, int reg
+ 	return i;
  }
-@@ -261,15 +263,18 @@ static struct acpi_pptt_processor *acpi_
- 	proc_sz = sizeof(struct acpi_pptt_processor);
  
- 	/* find the processor structure associated with this cpuid */
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	while ((unsigned long)entry + proc_sz <= table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
++#ifdef CONFIG_MITIGATION_ITS
++
++static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
++			     void *call_dest, void *jmp_dest)
++{
++	u8 op = insn->opcode.bytes[0];
++	int i = 0;
++
++	/*
++	 * Clang does 'weird' Jcc __x86_indirect_thunk_r11 conditional
++	 * tail-calls. Deal with them.
++	 */
++	if (is_jcc32(insn)) {
++		bytes[i++] = op;
++		op = insn->opcode.bytes[1];
++		goto clang_jcc;
++	}
++
++	if (insn->length == 6)
++		bytes[i++] = 0x2e; /* CS-prefix */
++
++	switch (op) {
++	case CALL_INSN_OPCODE:
++		__text_gen_insn(bytes+i, op, addr+i,
++				call_dest,
++				CALL_INSN_SIZE);
++		i += CALL_INSN_SIZE;
++		break;
++
++	case JMP32_INSN_OPCODE:
++clang_jcc:
++		__text_gen_insn(bytes+i, op, addr+i,
++				jmp_dest,
++				JMP32_INSN_SIZE);
++		i += JMP32_INSN_SIZE;
++		break;
++
++	default:
++		WARN(1, "%pS %px %*ph\n", addr, addr, 6, addr);
++		return -1;
++	}
++
++	WARN_ON_ONCE(i != insn->length);
++
++	return i;
++}
++
++static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
++{
++	return __emit_trampoline(addr, insn, bytes,
++				 __x86_indirect_its_thunk_array[reg],
++				 __x86_indirect_its_thunk_array[reg]);
++}
++
++/* Check if an indirect branch is at ITS-unsafe address */
++static bool cpu_wants_indirect_its_thunk_at(unsigned long addr, int reg)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
++		return false;
++
++	/* Indirect branch opcode is 2 or 3 bytes depending on reg */
++	addr += 1 + reg / 8;
++
++	/* Lower-half of the cacheline? */
++	return !(addr & 0x20);
++}
++#endif
++
+ /*
+  * Rewrite the compiler generated retpoline thunk calls.
+  *
+@@ -466,6 +534,15 @@ static int patch_retpoline(void *addr, s
+ 		bytes[i++] = 0xe8; /* LFENCE */
+ 	}
  
- 		if (entry->length == 0) {
- 			pr_warn("Invalid zero length subtable\n");
- 			break;
- 		}
-+		/* entry->length may not equal proc_sz, revalidate the processor structure length */
- 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
- 		    acpi_cpu_id == cpu_node->acpi_processor_id &&
-+		    (unsigned long)entry + entry->length <= table_end &&
-+		    entry->length == proc_sz + cpu_node->number_of_priv_resources * sizeof(u32) &&
- 		     acpi_pptt_leaf_node(table_hdr, cpu_node)) {
- 			return (struct acpi_pptt_processor *)entry;
- 		}
++#ifdef CONFIG_MITIGATION_ITS
++	/*
++	 * Check if the address of last byte of emitted-indirect is in
++	 * lower-half of the cacheline. Such branches need ITS mitigation.
++	 */
++	if (cpu_wants_indirect_its_thunk_at((unsigned long)addr + i, reg))
++		return emit_its_trampoline(addr, insn, reg, bytes);
++#endif
++
+ 	ret = emit_indirect(op, reg, bytes + i);
+ 	if (ret < 0)
+ 		return ret;
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -532,6 +532,12 @@ INIT_PER_CPU(irq_stack_backing_store);
+ 		"SRSO function pair won't alias");
+ #endif
+ 
++#if defined(CONFIG_MITIGATION_ITS) && !defined(CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B)
++. = ASSERT(__x86_indirect_its_thunk_rax & 0x20, "__x86_indirect_thunk_rax not in second half of cacheline");
++. = ASSERT(((__x86_indirect_its_thunk_rcx - __x86_indirect_its_thunk_rax) % 64) == 0, "Indirect thunks are not cacheline apart");
++. = ASSERT(__x86_indirect_its_thunk_array == __x86_indirect_its_thunk_rax, "Gap in ITS thunk array");
++#endif
++
+ #endif /* CONFIG_X86_64 */
+ 
+ #ifdef CONFIG_KEXEC_CORE
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -254,6 +254,34 @@ SYM_FUNC_START(entry_untrain_ret)
+ SYM_FUNC_END(entry_untrain_ret)
+ __EXPORT_THUNK(entry_untrain_ret)
+ 
++#ifdef CONFIG_MITIGATION_ITS
++
++.macro ITS_THUNK reg
++
++SYM_INNER_LABEL(__x86_indirect_its_thunk_\reg, SYM_L_GLOBAL)
++	UNWIND_HINT_EMPTY
++	ANNOTATE_NOENDBR
++	ANNOTATE_RETPOLINE_SAFE
++	jmp *%\reg
++	int3
++	.align 32, 0xcc		/* fill to the end of the line */
++	.skip  32, 0xcc		/* skip to the next upper half */
++.endm
++
++/* ITS mitigation requires thunks be aligned to upper half of cacheline */
++.align 64, 0xcc
++.skip 32, 0xcc
++SYM_CODE_START(__x86_indirect_its_thunk_array)
++
++#define GEN(reg) ITS_THUNK reg
++#include <asm/GEN-for-each-reg.h>
++#undef GEN
++
++	.align 64, 0xcc
++SYM_CODE_END(__x86_indirect_its_thunk_array)
++
++#endif
++
+ SYM_CODE_START(__x86_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -446,7 +446,11 @@ static void emit_indirect_jump(u8 **ppro
+ 	u8 *prog = *pprog;
+ 
+ #ifdef CONFIG_RETPOLINE
+-	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
++	if (IS_ENABLED(CONFIG_MITIGATION_ITS) &&
++	    cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
++		OPTIMIZER_HIDE_VAR(reg);
++		emit_jump(&prog, &__x86_indirect_its_thunk_array[reg], ip);
++	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
+ 		EMIT_LFENCE();
+ 		EMIT2(0xFF, 0xE0 + reg);
+ 	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE)) {
 
 
 
