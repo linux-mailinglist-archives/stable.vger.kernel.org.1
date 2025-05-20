@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E115CABDC42
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B473FABDC87
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3224A7B7555
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6045189D101
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A672B248166;
-	Tue, 20 May 2025 14:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22ED22512FB;
+	Tue, 20 May 2025 14:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBkbxfsu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PMLQx23"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FD3247DEA;
-	Tue, 20 May 2025 14:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33F72512E9;
+	Tue, 20 May 2025 14:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750334; cv=none; b=GvsOdMNWk3p78qZYAu8seOWfbzlwvK7voOp7eI3ZCsTeKL+gzR4OxR6phDkE6+k4fKS24AWLm1ab13ge0kTIrVp8YLoPdzJAtzhiErr+XtHcZVmS6PK/Ta9gTimqlaRFyv8Z/qYd1uYDh8RfRMxzioYISP9KB2b7Ymm6Ug/QZ3w=
+	t=1747750742; cv=none; b=XXmvLk55erd1b92yn38AvXFfUWM/MMLcubU33HriY2c0sNoVdL2dzwBuK8NC6vOpsWOOFZVrugoQJgpfp9a76b8f8ltw2h2Yc0vO8FAyNxcm2yfFTjn4duN0xZLF0Zf/5kDMg5ho+vW5kEfVtxwPTdLyj5KRIXz3fArIMMch1Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750334; c=relaxed/simple;
-	bh=6bSU9jnxqymxDARd3YKkxW/nbVG745rM1UbefGPQwO8=;
+	s=arc-20240116; t=1747750742; c=relaxed/simple;
+	bh=8bdRJ4oLSxq76BQvy8tMflB/oevOc4yb3VOIlib820w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVn9n99Bqfe0HwZMdMACCdD3wOlPVCfTNFeDSaIf49rXwXOoAr+jGvHxp7v8RLPrg73bLeK5/Xk0Hk5R3SA8yDrF9cDSI++yMJ8rBlKE+54fj5OQjJEEOwbwy114wVetAJzvGqVDfxKFxyMtylAYar1USC12Ugyy2nAkqWmRfmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBkbxfsu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5E0C4CEE9;
-	Tue, 20 May 2025 14:12:13 +0000 (UTC)
+	 MIME-Version; b=qq3+N42FG61ZGyl2mG0+7eIHUxJwdyiLQeqLCKCfjiNtAHxNiKj5yboosY4kG0lfZXv6MI5Q1HhjA4M4wRW9hFoutnPLQGccozSddeo22t1JE3LeAuH8I2waFk/Cnxai4FU0SYGI0Ba4SvlQl1O4K9Skf7eNpZSx4v5OEJi+xwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PMLQx23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510B0C4CEEA;
+	Tue, 20 May 2025 14:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750334;
-	bh=6bSU9jnxqymxDARd3YKkxW/nbVG745rM1UbefGPQwO8=;
+	s=korg; t=1747750742;
+	bh=8bdRJ4oLSxq76BQvy8tMflB/oevOc4yb3VOIlib820w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBkbxfsum5MhrjOiY5boY8QobIwSg59bAl2JtgXn1K0X6TKFmD8KuFMYP10LjQqv/
-	 UnwkAFdEJK6sqQvZnMCAj2G5Ti1GfNK07bCWN27/8/Dx31MBJaJQ1SxUAYNIfyWHw2
-	 WowZ1ll55nzzC3DGKmtcqTke3TgRR6LCplpO0E2k=
+	b=1PMLQx23MEzyLXjS2j9C+uMwN6DK83ma3C3Oy3SI3I6XCrqjQ1EF/XW4/d0ITOhYD
+	 T97SsJv+tiqDnk9XYRn9Mpj2LfPlG8cC/m1jti3VkScapwc8XzHNDgoSqA1925IuuL
+	 EEybPifl3FPwUH5ma0R6PeMGsRTiWYsM/eg5PW2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vaishnav Achath <vaishnav.a@ti.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 119/143] dmaengine: ti: k3-udma: Use cap_mask directly from dma_device structure instead of a local copy
-Date: Tue, 20 May 2025 15:51:14 +0200
-Message-ID: <20250520125814.707396846@linuxfoundation.org>
+	Ashish Kalra <ashish.kalra@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Srikanth Aithal <sraithal@amd.com>
+Subject: [PATCH 6.14 105/145] x86/sev: Make sure pages are not skipped during kdump
+Date: Tue, 20 May 2025 15:51:15 +0200
+Message-ID: <20250520125814.673418179@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-commit 8ca9590c39b69b55a8de63d2b21b0d44f523b43a upstream.
+commit 82b7f88f2316c5442708daeb0b5ec5aa54c8ff7f upstream.
 
-Currently, a local dma_cap_mask_t variable is used to store device
-cap_mask within udma_of_xlate(). However, the DMA_PRIVATE flag in
-the device cap_mask can get cleared when the last channel is released.
-This can happen right after storing the cap_mask locally in
-udma_of_xlate(), and subsequent dma_request_channel() can fail due to
-mismatch in the cap_mask. Fix this by removing the local dma_cap_mask_t
-variable and directly using the one from the dma_device structure.
+When shared pages are being converted to private during kdump, additional
+checks are performed. They include handling the case of a GHCB page being
+contained within a huge page.
 
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Currently, this check incorrectly skips a page just below the GHCB page from
+being transitioned back to private during kdump preparation.
+
+This skipped page causes a 0x404 #VC exception when it is accessed later while
+dumping guest memory for vmcore generation.
+
+Correct the range to be checked for GHCB contained in a huge page.  Also,
+ensure that the skipped huge page containing the GHCB page is transitioned
+back to private by applying the correct address mask later when changing GHCBs
+to private at end of kdump preparation.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Tested-by: Srikanth Aithal <sraithal@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Link: https://lore.kernel.org/r/20250417075521.623651-1-y-abhilashchandra@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/20250506183529.289549-1-Ashish.Kalra@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/k3-udma.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/coco/sev/core.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -4253,7 +4253,6 @@ static struct dma_chan *udma_of_xlate(st
- 				      struct of_dma *ofdma)
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 41060ba41b5c..36beaac713c1 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1101,7 +1101,8 @@ static void unshare_all_memory(void)
+ 			data = per_cpu(runtime_data, cpu);
+ 			ghcb = (unsigned long)&data->ghcb_page;
+ 
+-			if (addr <= ghcb && ghcb <= addr + size) {
++			/* Handle the case of a huge page containing the GHCB page */
++			if (addr <= ghcb && ghcb < addr + size) {
+ 				skipped_addr = true;
+ 				break;
+ 			}
+@@ -1213,8 +1214,8 @@ static void shutdown_all_aps(void)
+ void snp_kexec_finish(void)
  {
- 	struct udma_dev *ud = ofdma->of_dma_data;
--	dma_cap_mask_t mask = ud->ddev.cap_mask;
- 	struct udma_filter_param filter_param;
- 	struct dma_chan *chan;
+ 	struct sev_es_runtime_data *data;
++	unsigned long size, addr;
+ 	unsigned int level, cpu;
+-	unsigned long size;
+ 	struct ghcb *ghcb;
+ 	pte_t *pte;
  
-@@ -4285,7 +4284,7 @@ static struct dma_chan *udma_of_xlate(st
- 		}
+@@ -1242,8 +1243,10 @@ void snp_kexec_finish(void)
+ 		ghcb = &data->ghcb_page;
+ 		pte = lookup_address((unsigned long)ghcb, &level);
+ 		size = page_level_size(level);
+-		set_pte_enc(pte, level, (void *)ghcb);
+-		snp_set_memory_private((unsigned long)ghcb, (size / PAGE_SIZE));
++		/* Handle the case of a huge page containing the GHCB page */
++		addr = (unsigned long)ghcb & page_level_mask(level);
++		set_pte_enc(pte, level, (void *)addr);
++		snp_set_memory_private(addr, (size / PAGE_SIZE));
  	}
+ }
  
--	chan = __dma_request_channel(&mask, udma_dma_filter_fn, &filter_param,
-+	chan = __dma_request_channel(&ud->ddev.cap_mask, udma_dma_filter_fn, &filter_param,
- 				     ofdma->of_node);
- 	if (!chan) {
- 		dev_err(ud->dev, "get channel fail in %s.\n", __func__);
+-- 
+2.49.0
+
 
 
 
