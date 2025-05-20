@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A57ABDBA1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:13:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504FAABDB6D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 792AE1BC07CB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6653217A302
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1262459F2;
-	Tue, 20 May 2025 14:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3764244663;
+	Tue, 20 May 2025 14:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+plly92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jraFe3dX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F9B1CCEE7;
-	Tue, 20 May 2025 14:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A10242D9A;
+	Tue, 20 May 2025 14:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750150; cv=none; b=ogA7fpft5XtOeYjb6BHEnUB4L74iTM4R0HBheN+ARX3Z3jnUWv9cq7r9+QsPbv3O1VOOVLqI/hxJkBFqIo4xvWsu1feaTrx9jScjBqY46m4Kr8KzR15PRNotmJ/CNV4iwattPxt7nNId9/rTqiUtQRLxLlPgVGsi+jKElF32fzs=
+	t=1747749879; cv=none; b=tJ3o5k9V2IwcCSnUUQP+HY3ZxjQduKdXH0bueWwJlc+QM2/eWl15B1DK2yPEqDgrGakI6hOHjwkTCG7kdwHSt91HARjjkL1xT5lZhT9uckXzoLnd21kb/E2O3LQRTSnQNbJRmi/H32dnFf21nbfD1t0K5HFyN2vjxhxlr0DzyH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750150; c=relaxed/simple;
-	bh=a0OQxEgWjBNnXK6WLQRm+oKF3E+VxdQc17fB33kUg0M=;
+	s=arc-20240116; t=1747749879; c=relaxed/simple;
+	bh=mXz4Fu/n/70eHt/MIRd1YOLU07Cr1T6HEKgcqkP4I5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkgF5fEoyKJcv9LHLA5gDfYKe7ULRWM9+omstMDWsbYQcmTMjQvm8pwzoq9LBQQFmGZT+9N3AbZMnfBxZV2JqB0/m8YRWx2rIqBREV2BA1r9vyzfrGBLkqMlCIUqlpMoOleEkF+ZOzNSBAx3GY31/6KwdQomv3mUvkIRFIxtWos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+plly92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3010C4CEE9;
-	Tue, 20 May 2025 14:09:09 +0000 (UTC)
+	 MIME-Version; b=ZwZocUd7sU3GZXxdHiQ/toyeyXZUG0Eru9gsr8Pp+NmIuRatMivH4dZ79PFVLJow6gg44fFCtfxgnX1RH3PUorUCfy+a8OWqEmhdFRBgN+yfjMrZ96QamCJMNiFC1hm83lj+OuI+gyt8hGBU59YPiysuv24lxSH7wxHeE7t6sxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jraFe3dX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BAFC4CEE9;
+	Tue, 20 May 2025 14:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750150;
-	bh=a0OQxEgWjBNnXK6WLQRm+oKF3E+VxdQc17fB33kUg0M=;
+	s=korg; t=1747749879;
+	bh=mXz4Fu/n/70eHt/MIRd1YOLU07Cr1T6HEKgcqkP4I5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+plly92lKNn4SYJljVlHPHk/wxzxaHZciPKIOZjZ/G3Zl4SByLQe6LIaEMLPwxII
-	 NrbR2dJV0Az135ukNd1dtopzVVkjGmkiDgxojuQG5kDW4IUliq+YKcW8U3NmJ1dNGK
-	 ph9ADzeFhlbHIJwmylVnfKg/RB5AYMrGNNZWU9T4=
+	b=jraFe3dXUPR5aanG1MOp0TRZZUjjlfFmsYyWsD4yE0i6Pc+2uZsKXmZslceiMMF11
+	 DQsedy7hW9uKJSI6pwimIgE6zDQyEIqBgXLBgE5YIApS4y1mJF+wDiIsfNEmwOW1ns
+	 jIOdWFF8XXTHQxwZh8fG45glRn4XwVAnVPo7o/SM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/143] netlink: specs: tc: fix a couple of attribute names
+Subject: [PATCH 6.6 048/117] ALSA: sh: SND_AICA should depend on SH_DMA_API
 Date: Tue, 20 May 2025 15:50:13 +0200
-Message-ID: <20250520125812.336273874@linuxfoundation.org>
+Message-ID: <20250520125805.898418970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit a9fb87b8b86918e34ef6bf3316311f41bc1a5b1f ]
+[ Upstream commit 66e48ef6ef506c89ec1b3851c6f9f5f80b5835ff ]
 
-Fix up spelling of two attribute names. These are clearly typoes
-and will prevent C codegen from working. Let's treat this as
-a fix to get the correction into users' hands ASAP, and prevent
-anyone depending on the wrong names.
+If CONFIG_SH_DMA_API=n:
 
-Fixes: a1bcfde83669 ("doc/netlink/specs: Add a spec for tc")
-Link: https://patch.msgid.link/20250513221316.841700-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    WARNING: unmet direct dependencies detected for G2_DMA
+      Depends on [n]: SH_DREAMCAST [=y] && SH_DMA_API [=n]
+      Selected by [y]:
+      - SND_AICA [=y] && SOUND [=y] && SND [=y] && SND_SUPERH [=y] && SH_DREAMCAST [=y]
+
+SND_AICA selects G2_DMA.  As the latter depends on SH_DMA_API, the
+former should depend on SH_DMA_API, too.
+
+Fixes: f477a538c14d07f8 ("sh: dma: fix kconfig dependency for G2_DMA")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505131320.PzgTtl9H-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/b90625f8a9078d0d304bafe862cbe3a3fab40082.1747121335.git.geert+renesas@glider.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/tc.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/sh/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/tc.yaml b/Documentation/netlink/specs/tc.yaml
-index b02d59a0349c4..a5bde25c89e52 100644
---- a/Documentation/netlink/specs/tc.yaml
-+++ b/Documentation/netlink/specs/tc.yaml
-@@ -2745,7 +2745,7 @@ attribute-sets:
-         type: u16
-         byte-order: big-endian
-       -
--        name: key-l2-tpv3-sid
-+        name: key-l2tpv3-sid
-         type: u32
-         byte-order: big-endian
-       -
-@@ -3504,7 +3504,7 @@ attribute-sets:
-         name: rate64
-         type: u64
-       -
--        name: prate4
-+        name: prate64
-         type: u64
-       -
-         name: burst
+diff --git a/sound/sh/Kconfig b/sound/sh/Kconfig
+index b75fbb3236a7b..f5fa09d740b4c 100644
+--- a/sound/sh/Kconfig
++++ b/sound/sh/Kconfig
+@@ -14,7 +14,7 @@ if SND_SUPERH
+ 
+ config SND_AICA
+ 	tristate "Dreamcast Yamaha AICA sound"
+-	depends on SH_DREAMCAST
++	depends on SH_DREAMCAST && SH_DMA_API
+ 	select SND_PCM
+ 	select G2_DMA
+ 	help
 -- 
 2.39.5
 
