@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C6CABDB7D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDF7ABDC2F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC4F3A43F5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:05:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4ABE3B9F0A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7712424503E;
-	Tue, 20 May 2025 14:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B122505BE;
+	Tue, 20 May 2025 14:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9ieEBfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhGLm+yI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338C62F37;
-	Tue, 20 May 2025 14:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C120247DE1;
+	Tue, 20 May 2025 14:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749921; cv=none; b=czeoA0KckJNkzlo4aPYIKEXBZHWaPzP/JDa5fYC8lLtYw6klWNAZwLDtgBOJOH7iX9OreNEQsO8845mOlxsQ0tcS9ZxqiTGhrYIY+DnUioEToaTQDPR3I0FDbqwxxS76R4fII9fCDhbo04VGW1UJhcay5ygqhTrNfHJiJ1CqATk=
+	t=1747750316; cv=none; b=REqwYq5WM3lqOeK0eGnjqyvafhj4G5U9kzpZrwxpscTGVT5T6lqfio4fFjlZJQlm3Kz3bAXGK0De9Akcr7/MCJ2Fo95svrCu6KVQZHX0WagQS8ygdzQKOYeE/YJBvqKllS40hrCXvuGzOAIEFF/koZkONS8elgHbWcNjntNKwPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749921; c=relaxed/simple;
-	bh=Om0qtSjCkeBcorcpSADp/93V3yAegtQLGu43jMdfEfs=;
+	s=arc-20240116; t=1747750316; c=relaxed/simple;
+	bh=S/aT9khgMToPTr7Q1TNFIbh0iOcMRcnqQhqs09Szrl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuShbaAk8+TEjDG8H6vFdcmClz00nDzlBbM1JO+swMKNNtdMngxXIsWa8MNlo2xpsySnCYtLoiZnaPXlmO/eLXzFbT/f/hl8jGVGiZ+do2s5cEX0b1KINLaMnbjN5xC6furT5+l1WIxHaLt1z6js3ffLtpPGlbQ0Gy6C/8r5dJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9ieEBfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B78C4CEEA;
-	Tue, 20 May 2025 14:05:20 +0000 (UTC)
+	 MIME-Version; b=JosdN0BuUokJ4PFjBf1HttjDPnK3LlBNG2pdk34aD1QhuOGoP5u31RyayI19UJj4/rHkYo8lCFwtehpEA860h8q0OiHDgagi0CKtDKxtko9hQNHQmq2D8PEoM/rsxQA1lPaapB9B5lrJC8HQGv+olGqheppoaH6gE4zCM/H5O6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhGLm+yI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66650C4CEE9;
+	Tue, 20 May 2025 14:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749921;
-	bh=Om0qtSjCkeBcorcpSADp/93V3yAegtQLGu43jMdfEfs=;
+	s=korg; t=1747750315;
+	bh=S/aT9khgMToPTr7Q1TNFIbh0iOcMRcnqQhqs09Szrl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9ieEBfDCLROTCrpjXP3QVF6L5mBELH2E73BzClg9aqnanPpkfiL7z1Pj5Od9Pku6
-	 uXT4ZDYLe1VKVjTd4hGmNzQbT8K4nLg6CZDqusfy7w3+7wuC78eSCkymZNsOmtrxCp
-	 JIUXKtTKnaNCTJ1CsuTUbQs1DKyqrBWUJ9iTsHZ8=
+	b=uhGLm+yI+SdBpnI6AnMFBskAEeXuaDBGREq00h8VyUcbjj6t5ESXDTQqfPP42tLST
+	 EtS1aBDDI1EyKIpxYHbpKKoaLcVl+9kbH9jbeoCBb9T+/xa5FrsD6KMTcNlATYSaBX
+	 Hj9w2Mpa9fKoqCqMbULYp0ElSIAdPi0TJcnn/V2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Fenghua Yu <fenghuay@nvidia.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 102/117] dmaengine: idxd: Refactor remove call with idxd_cleanup() helper
-Date: Tue, 20 May 2025 15:51:07 +0200
-Message-ID: <20250520125808.041497768@linuxfoundation.org>
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.12 113/143] tpm: Mask TPM RC in tpm2_start_auth_session()
+Date: Tue, 20 May 2025 15:51:08 +0200
+Message-ID: <20250520125814.480445922@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit a409e919ca321cc0e28f8abf96fde299f0072a81 upstream.
+commit 539fbab37881e32ba6a708a100de6db19e1e7e7d upstream.
 
-The idxd_cleanup() helper cleans up perfmon, interrupts, internals and
-so on. Refactor remove call with the idxd_cleanup() helper to avoid code
-duplication. Note, this also fixes the missing put_device() for idxd
-groups, enginces and wqs.
+tpm2_start_auth_session() does not mask TPM RC correctly from the callers:
 
-Fixes: bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data accelerators")
-Cc: stable@vger.kernel.org
-Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20250404120217.48772-10-xueshuai@linux.alibaba.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[   28.766528] tpm tpm0: A TPM error (2307) occurred start auth session
+
+Process TPM RCs inside tpm2_start_auth_session(), and map them to POSIX
+error codes.
+
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
+Reported-by: Herbert Xu <herbert@gondor.apana.org.au>
+Closes: https://lore.kernel.org/linux-integrity/Z_NgdRHuTKP6JK--@gondor.apana.org.au/
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/init.c |   14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/char/tpm/tpm2-sessions.c | 20 ++++++--------------
+ include/linux/tpm.h              | 19 +++++++++++++++++++
+ 2 files changed, 25 insertions(+), 14 deletions(-)
 
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -891,7 +891,6 @@ static void idxd_shutdown(struct pci_dev
- static void idxd_remove(struct pci_dev *pdev)
- {
- 	struct idxd_device *idxd = pci_get_drvdata(pdev);
--	struct idxd_irq_entry *irq_entry;
- 
- 	idxd_unregister_devices(idxd);
- 	/*
-@@ -904,21 +903,12 @@ static void idxd_remove(struct pci_dev *
- 	get_device(idxd_confdev(idxd));
- 	device_unregister(idxd_confdev(idxd));
- 	idxd_shutdown(pdev);
--	if (device_pasid_enabled(idxd))
--		idxd_disable_system_pasid(idxd);
- 	idxd_device_remove_debugfs(idxd);
--
--	irq_entry = idxd_get_ie(idxd, 0);
--	free_irq(irq_entry->vector, irq_entry);
--	pci_free_irq_vectors(pdev);
-+	idxd_cleanup(idxd);
- 	pci_iounmap(pdev, idxd->reg_base);
--	if (device_user_pasid_enabled(idxd))
--		idxd_disable_sva(pdev);
--	pci_disable_device(pdev);
--	destroy_workqueue(idxd->wq);
--	perfmon_pmu_remove(idxd);
- 	put_device(idxd_confdev(idxd));
- 	idxd_free(idxd);
-+	pci_disable_device(pdev);
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index 3f89635ba5e8..7b5049b3d476 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -40,11 +40,6 @@
+  *
+  * These are the usage functions:
+  *
+- * tpm2_start_auth_session() which allocates the opaque auth structure
+- *	and gets a session from the TPM.  This must be called before
+- *	any of the following functions.  The session is protected by a
+- *	session_key which is derived from a random salt value
+- *	encrypted to the NULL seed.
+  * tpm2_end_auth_session() kills the session and frees the resources.
+  *	Under normal operation this function is done by
+  *	tpm_buf_check_hmac_response(), so this is only to be used on
+@@ -963,16 +958,13 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
  }
  
- static struct pci_driver idxd_pci_driver = {
+ /**
+- * tpm2_start_auth_session() - create a HMAC authentication session with the TPM
+- * @chip: the TPM chip structure to create the session with
++ * tpm2_start_auth_session() - Create an a HMAC authentication session
++ * @chip:	A TPM chip
+  *
+- * This function loads the NULL seed from its saved context and starts
+- * an authentication session on the null seed, fills in the
+- * @chip->auth structure to contain all the session details necessary
+- * for performing the HMAC, encrypt and decrypt operations and
+- * returns.  The NULL seed is flushed before this function returns.
++ * Loads the ephemeral key (null seed), and starts an HMAC authenticated
++ * session. The null seed is flushed before the return.
+  *
+- * Return: zero on success or actual error encountered.
++ * Returns zero on success, or a POSIX error code.
+  */
+ int tpm2_start_auth_session(struct tpm_chip *chip)
+ {
+@@ -1024,7 +1016,7 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+ 	/* hash algorithm for session */
+ 	tpm_buf_append_u16(&buf, TPM_ALG_SHA256);
+ 
+-	rc = tpm_transmit_cmd(chip, &buf, 0, "start auth session");
++	rc = tpm_ret_to_err(tpm_transmit_cmd(chip, &buf, 0, "StartAuthSession"));
+ 	tpm2_flush_context(chip, null_key);
+ 
+ 	if (rc == TPM2_RC_SUCCESS)
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index 6c3125300c00..9ac9768cc8f7 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -257,6 +257,7 @@ enum tpm2_return_codes {
+ 	TPM2_RC_TESTING		= 0x090A, /* RC_WARN */
+ 	TPM2_RC_REFERENCE_H0	= 0x0910,
+ 	TPM2_RC_RETRY		= 0x0922,
++	TPM2_RC_SESSION_MEMORY	= 0x0903,
+ };
+ 
+ enum tpm2_command_codes {
+@@ -437,6 +438,24 @@ static inline u32 tpm2_rc_value(u32 rc)
+ 	return (rc & BIT(7)) ? rc & 0xbf : rc;
+ }
+ 
++/*
++ * Convert a return value from tpm_transmit_cmd() to POSIX error code.
++ */
++static inline ssize_t tpm_ret_to_err(ssize_t ret)
++{
++	if (ret < 0)
++		return ret;
++
++	switch (tpm2_rc_value(ret)) {
++	case TPM2_RC_SUCCESS:
++		return 0;
++	case TPM2_RC_SESSION_MEMORY:
++		return -ENOMEM;
++	default:
++		return -EFAULT;
++	}
++}
++
+ #if defined(CONFIG_TCG_TPM) || defined(CONFIG_TCG_TPM_MODULE)
+ 
+ extern int tpm_is_tpm2(struct tpm_chip *chip);
+-- 
+2.49.0
+
 
 
 
