@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D530ABDD4A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:37:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0377ABDBB8
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FD3F16F06F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E35F58C78B4
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873D624677C;
-	Tue, 20 May 2025 14:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD53D24887C;
+	Tue, 20 May 2025 14:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6EZZ9ig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Epr3s8jT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448812907;
-	Tue, 20 May 2025 14:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6C2248879;
+	Tue, 20 May 2025 14:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750536; cv=none; b=IS3zaLdb5V11QN4fUzd0DSjFun157uRfzMLizcmSX1jemiAarzSGaXOCM3v06vx4JPKYT2GyMT9l+kM0ad0nhZ3IJdZ2pyw7PzTqS86Jkl+1W/o+9J3Dip788kC2hhfZmtHB28GXsfsSMKa3blStOrgEM8UrviNk2EYmD5FfPxQ=
+	t=1747750055; cv=none; b=oB8t6fuRZ+64vHQs29InSv4PdruKsC8y4d9W3vAfeQYKHQs+X4JqOacbFanXHk+PwOk7fReC48RyxQqPJvBgNuQJJbV1OaXTyOxKBc1k+ODkk14L5h1SudczRCj2q2H8dfr7TKYv6TcE69WIN7PyBXNCHG08P54gCN3FTZsOPIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750536; c=relaxed/simple;
-	bh=bd5XWma4wdvAKosyW75jDKI4hSN6sWkLtqj8lO3sagI=;
+	s=arc-20240116; t=1747750055; c=relaxed/simple;
+	bh=p9QKE2YfrCSFv4+ktATHDTRztLTX7DsqJDqQhLRJFNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFU28RRJ7NiZCE6GrVM3HxfBFfu2DkwVp/dJSbn9zsaWnmZBFWBGOpYj+fqYEVllCdUvf+ourtAbEVTmWjz5iy0SyRkQhidDVpMuUkPvBglRq6o9aecS2+e7uBNT7BHP5n6S9cH7doFeBi5gHisL1zA1VKHHQ+3goclcLy5QydU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6EZZ9ig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1599C4CEE9;
-	Tue, 20 May 2025 14:15:34 +0000 (UTC)
+	 MIME-Version; b=ZOA2Bry3OSrHyUGZ4GuyHCKCNvSAF84uBlyK24UCaVhqSNSevTJv8glZhorttEV4AcO7c5xNhwr/l4GvxVMYuaGBUKtf68u59vjIFQ/FvIBxYb5u/oh3lH6yYBHvW8gt6iTnh8OuJ1uz7Lu+fA0cfFvaEDioDYCA10gaWBPFp7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Epr3s8jT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0338DC4CEE9;
+	Tue, 20 May 2025 14:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750535;
-	bh=bd5XWma4wdvAKosyW75jDKI4hSN6sWkLtqj8lO3sagI=;
+	s=korg; t=1747750055;
+	bh=p9QKE2YfrCSFv4+ktATHDTRztLTX7DsqJDqQhLRJFNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6EZZ9igWpwiB+dxYgCBYEJaRWNXlo01kKAoi8Ky7wDo3Epv8cBmRT3f8xUzyfLE4
-	 r2LHAC9ExOAK/XNu4CMPFD3sxVpZf9Cv5naoFQW8A8rjJvuZi24PqXZKVTNPl7MjgY
-	 lQ86O50PwnZXSRcLkcADY5me1SwHjbBkQebmHo+Y=
+	b=Epr3s8jTOD0H57u/Mk1uXkuECCkQFHE0g43bUVBdo4CqT1vrGliszkGpMC9DzDchO
+	 /Zjhi2CsMT6IRy1tsdiiMM1rvuPH3YXXZwkepAAJ+E/JaBOqdWxsMOLm328UBDLyw+
+	 vRjpEK9OIHkziNMGJNwWX6PwA9Tfow+k/91jTHTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>,
-	Tarang Raval <tarang.raval@siliconsignals.io>,
-	Shawn Guo <shawnguo@kernel.org>,
+	liuyi <liuy22@mails.tsinghua.edu.cn>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 012/145] arm64: dts: imx8mp-var-som: Fix LDO5 shutdown causing SD card timeout
+Subject: [PATCH 6.12 027/143] RDMA/rxe: Fix slab-use-after-free Read in rxe_queue_cleanup bug
 Date: Tue, 20 May 2025 15:49:42 +0200
-Message-ID: <20250520125811.027929853@linuxfoundation.org>
+Message-ID: <20250520125811.115680084@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit c6888983134e2ccc2db8ffd2720b0d4826d952e4 ]
+[ Upstream commit f81b33582f9339d2dc17c69b92040d3650bb4bae ]
 
-Fix SD card timeout issue caused by LDO5 regulator getting disabled
-after boot.
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x7d/0xa0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xcf/0x610 mm/kasan/report.c:489
+ kasan_report+0xb5/0xe0 mm/kasan/report.c:602
+ rxe_queue_cleanup+0xd0/0xe0 drivers/infiniband/sw/rxe/rxe_queue.c:195
+ rxe_cq_cleanup+0x3f/0x50 drivers/infiniband/sw/rxe/rxe_cq.c:132
+ __rxe_cleanup+0x168/0x300 drivers/infiniband/sw/rxe/rxe_pool.c:232
+ rxe_create_cq+0x22e/0x3a0 drivers/infiniband/sw/rxe/rxe_verbs.c:1109
+ create_cq+0x658/0xb90 drivers/infiniband/core/uverbs_cmd.c:1052
+ ib_uverbs_create_cq+0xc7/0x120 drivers/infiniband/core/uverbs_cmd.c:1095
+ ib_uverbs_write+0x969/0xc90 drivers/infiniband/core/uverbs_main.c:679
+ vfs_write fs/read_write.c:677 [inline]
+ vfs_write+0x26a/0xcc0 fs/read_write.c:659
+ ksys_write+0x1b8/0x200 fs/read_write.c:731
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xaa/0x1b0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-The kernel log shows LDO5 being disabled, which leads to a timeout
-on USDHC2:
-[   33.760561] LDO5: disabling
-[   81.119861] mmc1: Timeout waiting for hardware interrupt.
+In the function rxe_create_cq, when rxe_cq_from_init fails, the function
+rxe_cleanup will be called to handle the allocated resources. In fact,
+some memory resources have already been freed in the function
+rxe_cq_from_init. Thus, this problem will occur.
 
-To prevent this, set regulator-boot-on and regulator-always-on for
-LDO5. Also add the vqmmc regulator to properly support 1.8V/3.3V
-signaling for USDHC2 using a GPIO-controlled regulator.
+The solution is to let rxe_cleanup do all the work.
 
-Fixes: 6c2a1f4f71258 ("arm64: dts: imx8mp-var-som-symphony: Add Variscite Symphony board and VAR-SOM-MX8MP SoM")
-Signed-off-by: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
-Acked-by: Tarang Raval <tarang.raval@siliconsignals.io>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Link: https://paste.ubuntu.com/p/tJgC42wDf6/
+Tested-by: liuyi <liuy22@mails.tsinghua.edu.cn>
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://patch.msgid.link/20250412075714.3257358-1-yanjun.zhu@linux.dev
+Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_cq.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-index b2ac2583a5929..b59da91fdd041 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-@@ -35,7 +35,6 @@
- 		      <0x1 0x00000000 0 0xc0000000>;
- 	};
+diff --git a/drivers/infiniband/sw/rxe/rxe_cq.c b/drivers/infiniband/sw/rxe/rxe_cq.c
+index fec87c9030abd..fffd144d509eb 100644
+--- a/drivers/infiniband/sw/rxe/rxe_cq.c
++++ b/drivers/infiniband/sw/rxe/rxe_cq.c
+@@ -56,11 +56,8 @@ int rxe_cq_from_init(struct rxe_dev *rxe, struct rxe_cq *cq, int cqe,
  
--
- 	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
- 	        compatible = "regulator-fixed";
- 	        regulator-name = "VSD_3V3";
-@@ -46,6 +45,16 @@
- 	        startup-delay-us = <100>;
- 	        off-on-delay-us = <12000>;
- 	};
-+
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		regulator-name = "VSD_VSEL";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio2 12 GPIO_ACTIVE_HIGH>;
-+		states = <3300000 0x0 1800000 0x1>;
-+		vin-supply = <&ldo5>;
-+	};
- };
+ 	err = do_mmap_info(rxe, uresp ? &uresp->mi : NULL, udata,
+ 			   cq->queue->buf, cq->queue->buf_size, &cq->queue->ip);
+-	if (err) {
+-		vfree(cq->queue->buf);
+-		kfree(cq->queue);
++	if (err)
+ 		return err;
+-	}
  
- &A53_0 {
-@@ -205,6 +214,7 @@
-         pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-         cd-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
-         vmmc-supply = <&reg_usdhc2_vmmc>;
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
-         bus-width = <4>;
-         status = "okay";
- };
+ 	cq->is_user = uresp;
+ 
 -- 
 2.39.5
 
