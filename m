@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-145624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29ABBABDC81
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2851FABDCD3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A83B1BA2EE2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B514C7E96
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C8A24C66A;
-	Tue, 20 May 2025 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1737248865;
+	Tue, 20 May 2025 14:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zojR0Bmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I38XtTwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEE924C060;
-	Tue, 20 May 2025 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50619247DEA;
+	Tue, 20 May 2025 14:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750727; cv=none; b=B583DFT1JMQfGN5frFKotYvkZ3E47ZIQs44cUKRK5JF+qTT5DU8+yDRxsL5Uq8Be/dEGD2K+dbs62Ibi3MBDXwIwHcoblxvJG+FL5rT+W8Yw6QPXyGO+J5b1ALJadxLzqYMOKbd+YdYfjek4VaoNf07T5c812U5Orx9cFXTUyYQ=
+	t=1747750325; cv=none; b=GBFrbW3/N0iCTDwHZQFzdoS5WUOSICk74oAvuB8O1B/NE/QvKdyj4WvYrZ3PqTvQ47O9QhqRDp+Uv3XByP2cOF463Rqs2bQtlULJwqAbavgM6nPcmxOfidD2BNcgiPz8DzZqQjL4kE4stfDwiX3xZKEtMLPGlXoj3nf3Oq/xaVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750727; c=relaxed/simple;
-	bh=DXRMk0rz/J7mqFo2Zv12lDICmvQagg9GvnObFuZxnIw=;
+	s=arc-20240116; t=1747750325; c=relaxed/simple;
+	bh=zHObVoiILrErZdHErEQTsGoXh4dHvwksDHDgcZJ1wSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIF4vG21bSzCynz8ZO8TQPKtavsu6F+/yuqoB4Oqj8xDh6BiW9d7TmYNKzHlhWzV1QN88eoQWbsNgQVz1+WZdzb7VVp5tJ1ijaHtWkWs7ltAH6TQ5gRvU8k60zj9WZrJVY0buFtpyWfx2hRNnSlavfsRMg7HLglReCmRmtx6V00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zojR0Bmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2817C4CEE9;
-	Tue, 20 May 2025 14:18:46 +0000 (UTC)
+	 MIME-Version; b=N2nVLJBJffGZz51wPuCmvnFc95uVTCEFn7y/bJZ+AW6QflwaPfp066z03FieB06HEsva4J1vFEzxL7lOtWwcTAhn/at7mMNM2weyomlflug2h1bLc0ztLZZ2eYfHG6Bo/euW7EQu7PavDLsMGbyToPlEAiqyf4VijNIVyxEOcCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I38XtTwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9348C4CEE9;
+	Tue, 20 May 2025 14:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750727;
-	bh=DXRMk0rz/J7mqFo2Zv12lDICmvQagg9GvnObFuZxnIw=;
+	s=korg; t=1747750325;
+	bh=zHObVoiILrErZdHErEQTsGoXh4dHvwksDHDgcZJ1wSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zojR0BmrUuLBfRiXw8GJ8A8m5wZMNLdFOhjgG4BlvNF4ZCJfDREm5CavrmB8OQs7h
-	 SDWiYUHjCo1es3ngyWgNPm3Km+e/SP8nWkD8QoJbyPklDepVyi/zwzUrf3KXPMVgyM
-	 3xK2Q3fVCuV60fEeOZ5W4f8WgPvfX3A4wsJvAlFM=
+	b=I38XtTwlNK4yZcX6p+YUyJGpi5f0yVo23ggtJDAKCuVbowLgWllrpMvkgsErdiv9e
+	 8c4OuHqHAM1u9l+/3nSsZBS3+EbPkhRcCA52Qo8qbW7Qerm4lGQbZUznRmiFka3CJX
+	 XfXhE7fKFaAIz5tpir5tu5HowbBSUqe4Hi/Z3aKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.14 101/145] i2c: designware: Fix an error handling path in i2c_dw_pci_probe()
+	Nathan Chancellor <nathan@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 116/143] net: qede: Initialize qede_ll_ops with designated initializer
 Date: Tue, 20 May 2025 15:51:11 +0200
-Message-ID: <20250520125814.521793819@linuxfoundation.org>
+Message-ID: <20250520125814.594883617@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 1cfe51ef07ca3286581d612debfb0430eeccbb65 upstream.
+commit 6b3ab7f2cbfaeb6580709cd8ef4d72cfd01bfde4 upstream.
 
-If navi_amd_register_client() fails, the previous i2c_dw_probe() call
-should be undone by a corresponding i2c_del_adapter() call, as already done
-in the remove function.
+After a recent change [1] in clang's randstruct implementation to
+randomize structures that only contain function pointers, there is an
+error because qede_ll_ops get randomized but does not use a designated
+initializer for the first member:
 
-Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: <stable@vger.kernel.org> # v5.13+
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/fcd9651835a32979df8802b2db9504c523a8ebbb.1747158983.git.christophe.jaillet@wanadoo.fr
+  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
+    206 |         {
+        |         ^
+
+Explicitly initialize the common member using a designated initializer
+to fix the build.
+
+Cc: stable@vger.kernel.org
+Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
+Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20250507-qede-fix-clang-randstruct-v1-1-5ccc15626fba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-pcidrv.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/qlogic/qede/qede_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-designware-pcidrv.c
-+++ b/drivers/i2c/busses/i2c-designware-pcidrv.c
-@@ -278,9 +278,11 @@ static int i2c_dw_pci_probe(struct pci_d
+--- a/drivers/net/ethernet/qlogic/qede/qede_main.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
+@@ -203,7 +203,7 @@ static struct pci_driver qede_pci_driver
+ };
  
- 	if ((dev->flags & MODEL_MASK) == MODEL_AMD_NAVI_GPU) {
- 		dev->slave = i2c_new_ccgx_ucsi(&dev->adapter, dev->irq, &dgpu_node);
--		if (IS_ERR(dev->slave))
-+		if (IS_ERR(dev->slave)) {
-+			i2c_del_adapter(&dev->adapter);
- 			return dev_err_probe(device, PTR_ERR(dev->slave),
- 					     "register UCSI failed\n");
-+		}
- 	}
- 
- 	pm_runtime_set_autosuspend_delay(device, 1000);
+ static struct qed_eth_cb_ops qede_ll_ops = {
+-	{
++	.common = {
+ #ifdef CONFIG_RFS_ACCEL
+ 		.arfs_filter_op = qede_arfs_filter_op,
+ #endif
 
 
 
