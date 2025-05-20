@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-145125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3384BABDA21
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF339ABDADD
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF561BA4BC4
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB304A6336
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D349F246771;
-	Tue, 20 May 2025 13:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3F4244196;
+	Tue, 20 May 2025 13:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mx6zs+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zy5yAIR7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA2A24501D;
-	Tue, 20 May 2025 13:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D370422DF87;
+	Tue, 20 May 2025 13:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749235; cv=none; b=NMxPj4whyaxFirLWHUUAsw9w/bppPPbtUUSQJxv7tTkF4vP8/qehZw8Ghw2cBr6NJakEXU/K3j/qJZcfS540x4g/liTpFofN2JlHbWYPuK7gMEgVGG2q8v32l/VCyMC3ErA2k1mKkk4iQXwQCjPmdzBZrBd7i+cDlMLx0PDdltg=
+	t=1747749597; cv=none; b=DG36VzPgshP7p0P/bWglqxQkRr9rLF2EWixMP5pIn9XYyOY8xm/wmX3gNiQ/hhdtz0qf7QCxSFos0uuafR3Be0bW9VbnDKsoyy/TEeVMViUMfwPjRkzjlhoayE5TLnAylbmyPicAIBt+WBGwMMRwvoFtrtV85fP+FMNyHPq9KCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749235; c=relaxed/simple;
-	bh=fx7JcI1Bof8dBLqtRY2epE+KCQU3h1w9zW7hHbd8vV4=;
+	s=arc-20240116; t=1747749597; c=relaxed/simple;
+	bh=JbMVGMqvemKbJECI9vxZUDar+D71ghpKvuEUqaSnzuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ca8f0KroM3GtqBy5PHAcDWdKfZwTObsgOY2DMktpqhInpYfLpGIAyVQFbK4mP3vKBjfqj4EANc262O+5GPElvHmgDoeg10VcIwZroM+M514Q2ytHhYBNFkUQ75TrC1vmCrluW5zftnPnbL2VbvF0UB7ndvVjrzFe6UM6C74Zj+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mx6zs+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148BCC4CEE9;
-	Tue, 20 May 2025 13:53:54 +0000 (UTC)
+	 MIME-Version; b=IHm/kFLd1xZxOXr7q0J3rlWFmxNXLXhmCZVrm3jVu+/AFL360vUQhIEhX2O0gDamr+SFvyR2pB6QqcE9Wx0hDh0PTMrl6hwH/e4cIHkRVjRUuwvLCD/BUzF6r5ARNi4n7LLwUzrjQfZno0w4hLDMowUPcyhGwghqeP5Ze2JmPfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zy5yAIR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5421EC4CEE9;
+	Tue, 20 May 2025 13:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749235;
-	bh=fx7JcI1Bof8dBLqtRY2epE+KCQU3h1w9zW7hHbd8vV4=;
+	s=korg; t=1747749597;
+	bh=JbMVGMqvemKbJECI9vxZUDar+D71ghpKvuEUqaSnzuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1mx6zs+etNi1goFOko2uJgaBTeAy3DFJLYOS6vUCkKOQ+uXPHeTQ0uOX1V8aIha1+
-	 62rOHS7LLKHR3OlPo3ioInZkFPpOVVf00vxzd/UcCnem6gdO6+5azdr9P9jVw0GoNr
-	 NUyQyKfKUPXjeTkVF0bTLNc8p4VBG8xDja25ibgI=
+	b=Zy5yAIR7tVbNOLeIeMETikzagJ54ftrXErnRR4Mul/OjHKPhtAIwBiGM38dGyUPkg
+	 RfMUBRD6sF1BkJwprCd843dCoLbqT13G7Qq97cO7gGdLIvAklgnrZdCUhVxumDs83k
+	 uCxt5mLSySLPUrzbdN578Zq/r+79/Q/EZYU+wOCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Thierry Reding <treding@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 39/59] phy: Fix error handling in tegra_xusb_port_init
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	dmaengine@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@legrand.com>
+Subject: [PATCH 6.1 65/97] dmaengine: ti: k3-udma: Add missing locking
 Date: Tue, 20 May 2025 15:50:30 +0200
-Message-ID: <20250520125755.403941749@linuxfoundation.org>
+Message-ID: <20250520125803.197726240@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Ronald Wahl <ronald.wahl@legrand.com>
 
-commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
+commit fca280992af8c2fbd511bc43f65abb4a17363f2f upstream.
 
-If device_add() fails, do not use device_unregister() for error
-handling. device_unregister() consists two functions: device_del() and
-put_device(). device_unregister() should only be called after
-device_add() succeeded because device_del() undoes what device_add()
-does if successful. Change device_unregister() to put_device() call
-before returning from the function.
+Recent kernels complain about a missing lock in k3-udma.c when the lock
+validator is enabled:
 
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+[    4.128073] WARNING: CPU: 0 PID: 746 at drivers/dma/ti/../virt-dma.h:169 udma_start.isra.0+0x34/0x238
+[    4.137352] CPU: 0 UID: 0 PID: 746 Comm: kworker/0:3 Not tainted 6.12.9-arm64 #28
+[    4.144867] Hardware name: pp-v12 (DT)
+[    4.148648] Workqueue: events udma_check_tx_completion
+[    4.153841] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    4.160834] pc : udma_start.isra.0+0x34/0x238
+[    4.165227] lr : udma_start.isra.0+0x30/0x238
+[    4.169618] sp : ffffffc083cabcf0
+[    4.172963] x29: ffffffc083cabcf0 x28: 0000000000000000 x27: ffffff800001b005
+[    4.180167] x26: ffffffc0812f0000 x25: 0000000000000000 x24: 0000000000000000
+[    4.187370] x23: 0000000000000001 x22: 00000000e21eabe9 x21: ffffff8000fa0670
+[    4.194571] x20: ffffff8001b6bf00 x19: ffffff8000fa0430 x18: ffffffc083b95030
+[    4.201773] x17: 0000000000000000 x16: 00000000f0000000 x15: 0000000000000048
+[    4.208976] x14: 0000000000000048 x13: 0000000000000000 x12: 0000000000000001
+[    4.216179] x11: ffffffc08151a240 x10: 0000000000003ea1 x9 : ffffffc08046ab68
+[    4.223381] x8 : ffffffc083cabac0 x7 : ffffffc081df3718 x6 : 0000000000029fc8
+[    4.230583] x5 : ffffffc0817ee6d8 x4 : 0000000000000bc0 x3 : 0000000000000000
+[    4.237784] x2 : 0000000000000000 x1 : 00000000001fffff x0 : 0000000000000000
+[    4.244986] Call trace:
+[    4.247463]  udma_start.isra.0+0x34/0x238
+[    4.251509]  udma_check_tx_completion+0xd0/0xdc
+[    4.256076]  process_one_work+0x244/0x3fc
+[    4.260129]  process_scheduled_works+0x6c/0x74
+[    4.264610]  worker_thread+0x150/0x1dc
+[    4.268398]  kthread+0xd8/0xe8
+[    4.271492]  ret_from_fork+0x10/0x20
+[    4.275107] irq event stamp: 220
+[    4.278363] hardirqs last  enabled at (219): [<ffffffc080a27c7c>] _raw_spin_unlock_irq+0x38/0x50
+[    4.287183] hardirqs last disabled at (220): [<ffffffc080a1c154>] el1_dbg+0x24/0x50
+[    4.294879] softirqs last  enabled at (182): [<ffffffc080037e68>] handle_softirqs+0x1c0/0x3cc
+[    4.303437] softirqs last disabled at (177): [<ffffffc080010170>] __do_softirq+0x1c/0x28
+[    4.311559] ---[ end trace 0000000000000000 ]---
 
-Found by code review.
+This commit adds the missing locking.
 
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: dmaengine@vger.kernel.org
 Cc: stable@vger.kernel.org
-Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
+Signed-off-by: Ronald Wahl <ronald.wahl@legrand.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20250414173113.80677-1-rwahl@gmx.de
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/dma/ti/k3-udma.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -542,16 +542,16 @@ static int tegra_xusb_port_init(struct t
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -1088,8 +1088,11 @@ static void udma_check_tx_completion(str
+ 	u32 residue_diff;
+ 	ktime_t time_diff;
+ 	unsigned long delay;
++	unsigned long flags;
  
- 	err = dev_set_name(&port->dev, "%s-%u", name, index);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
+ 	while (1) {
++		spin_lock_irqsave(&uc->vc.lock, flags);
++
+ 		if (uc->desc) {
+ 			/* Get previous residue and time stamp */
+ 			residue_diff = uc->tx_drain.residue;
+@@ -1124,6 +1127,8 @@ static void udma_check_tx_completion(str
+ 				break;
+ 			}
  
- 	err = device_add(&port->dev);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
++			spin_unlock_irqrestore(&uc->vc.lock, flags);
++
+ 			usleep_range(ktime_to_us(delay),
+ 				     ktime_to_us(delay) + 10);
+ 			continue;
+@@ -1140,6 +1145,8 @@ static void udma_check_tx_completion(str
  
- 	return 0;
- 
--unregister:
--	device_unregister(&port->dev);
-+put_device:
-+	put_device(&port->dev);
- 	return err;
+ 		break;
+ 	}
++
++	spin_unlock_irqrestore(&uc->vc.lock, flags);
  }
  
+ static irqreturn_t udma_ring_irq_handler(int irq, void *data)
 
 
 
