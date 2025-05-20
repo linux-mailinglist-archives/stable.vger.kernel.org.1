@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-145289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643A9ABDB25
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C92ABDD19
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2332F4C5A36
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C30516F6DB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F82246327;
-	Tue, 20 May 2025 14:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE6225228A;
+	Tue, 20 May 2025 14:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKvVtxas"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0T4tcTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A3222DF87;
-	Tue, 20 May 2025 14:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9947D22D9E3;
+	Tue, 20 May 2025 14:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749733; cv=none; b=FsvpCA5WFuGCd5Kr3ZYSNTHeEx4724mETrSfksUPllf5fk7jG1oweZqH0IAmrP2R/2RQEueourB33R+k+qj4Jh9YLnj2fi8LP+K+UiBm2NIVgqODCMinmfIgHZ6jWQrT707uXWWpkoPE9numnpf3xDwhcl/53Zq+0hwE0z4dhQI=
+	t=1747750529; cv=none; b=N3SgHRTrfbx43gkNOtGozgFrpN7DL//9tUep2W9KgfkCjg6I2i14lan6EViRtp6OOHU8/oZWflYOfZfHDTNdj0/5bYprZC3oUjtAzLDDWoJ80QJhS0YB3JsCGXqNsYXxXsSOmzLFktwY4++O/ym/MZrHgoXaduvLewah+KG39UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749733; c=relaxed/simple;
-	bh=K9kFIOtiEXm/tlxZD6NjFpoblG+/4B4oQLTiGNwWInc=;
+	s=arc-20240116; t=1747750529; c=relaxed/simple;
+	bh=WM45u/qFmdNahT6hTXmxD+EGIPT9IYynhxiECgzwLDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INA5xdtcMXazq+uRD4JnSygUvZHysaD842e21RI+pXKGoPF9CwYUkHbQxu787GFYg8IkNTdN1zwAryUIDOMhnuIZirQqHPN6o00FmAPTNOdPEz0EzubN8Cm9k4K/4vJAFa+FpKKYdmIpAhp/7n70GhW7tmleH0t4rWYglLdabjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKvVtxas; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D259C4CEEB;
-	Tue, 20 May 2025 14:02:12 +0000 (UTC)
+	 MIME-Version; b=fwSzSNaqgoXg8IYgyyUrjUnqcApCZblFJWWkpFwgLmr4MckPM5os0hLJBIbrnuRonE38uqvqdmMsdjrOIJQfYUS93DdwcIeMqB1bHb8iTlahOpd8RbQYVo1SDg5HGcQzFIi7aCrN4XHjA3EJlNhN5bXV6l7oli+ebrjNL9X/Dl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0T4tcTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C5DC4CEE9;
+	Tue, 20 May 2025 14:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749733;
-	bh=K9kFIOtiEXm/tlxZD6NjFpoblG+/4B4oQLTiGNwWInc=;
+	s=korg; t=1747750529;
+	bh=WM45u/qFmdNahT6hTXmxD+EGIPT9IYynhxiECgzwLDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zKvVtxas1mkC8UkKr2mkrp8j1SY7UcDS2yaCaqmf1bCNbDo1t20PhSzI6ptoCIB3y
-	 wp3eA0M/ZLcZM2JnHRQYzKzbApA7PBvQbXZc/LXlT6dgXDchyL4VUnrmwqrhj+KIKL
-	 KIZ6V2My2IoRTUYZ3OleWBOcAattKm0CPb3q+H7k=
+	b=I0T4tcTwnfXpd6YnLmxpF9tl71kXt9rP09UhBObjW/Zhu3BVwFa/uixeiBuwMx9rj
+	 c/Q6vP9DUron2/I/EKa/rbEfGKLQi1evauPac1nmpajf0UOfwndVDtWiwl/5R1XnFp
+	 YT587KC4+bmQJl3jT+CQ62liBxdmUtwxnxoMsebo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/117] ALSA: seq: Fix delivery of UMP events to group ports
+Subject: [PATCH 6.14 037/145] net: dsa: sja1105: discard incoming frames in BR_STATE_LISTENING
 Date: Tue, 20 May 2025 15:50:07 +0200
-Message-ID: <20250520125805.658248834@linuxfoundation.org>
+Message-ID: <20250520125812.021164782@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,160 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit ff7b190aef6cccdb6f14d20c5753081fe6420e0b ]
+[ Upstream commit 498625a8ab2c8e1c9ab5105744310e8d6952cc01 ]
 
-When an event with UMP message is sent to a UMP client, the EP port
-receives always no matter where the event is sent to, as it's a
-catch-all port.  OTOH, if an event is sent to EP port, and if the
-event has a certain UMP Group, it should have been delivered to the
-associated UMP Group port, too, but this was ignored, so far.
+It has been reported that when under a bridge with stp_state=1, the logs
+get spammed with this message:
 
-This patch addresses the behavior.  Now a UMP event sent to the
-Endpoint port will be delivered to the subscribers of the UMP group
-port the event is associated with.
+[  251.734607] fsl_dpaa2_eth dpni.5 eth0: Couldn't decode source port
 
-The patch also does a bit of refactoring to simplify the code about
-__deliver_to_subscribers().
+Further debugging shows the following info associated with packets:
+source_port=-1, switch_id=-1, vid=-1, vbid=1
 
-Fixes: 177ccf811df4 ("ALSA: seq: Support MIDI 2.0 UMP Endpoint port")
-Link: https://patch.msgid.link/20250511134528.6314-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+In other words, they are data plane packets which are supposed to be
+decoded by dsa_tag_8021q_find_port_by_vbid(), but the latter (correctly)
+refuses to do so, because no switch port is currently in
+BR_STATE_LEARNING or BR_STATE_FORWARDING - so the packet is effectively
+unexpected.
+
+The error goes away after the port progresses to BR_STATE_LEARNING in 15
+seconds (the default forward_time of the bridge), because then,
+dsa_tag_8021q_find_port_by_vbid() can correctly associate the data plane
+packets with a plausible bridge port in a plausible STP state.
+
+Re-reading IEEE 802.1D-1990, I see the following:
+
+"4.4.2 Learning: (...) The Forwarding Process shall discard received
+frames."
+
+IEEE 802.1D-2004 further clarifies:
+
+"DISABLED, BLOCKING, LISTENING, and BROKEN all correspond to the
+DISCARDING port state. While those dot1dStpPortStates serve to
+distinguish reasons for discarding frames, the operation of the
+Forwarding and Learning processes is the same for all of them. (...)
+LISTENING represents a port that the spanning tree algorithm has
+selected to be part of the active topology (computing a Root Port or
+Designated Port role) but is temporarily discarding frames to guard
+against loops or incorrect learning."
+
+Well, this is not what the driver does - instead it sets
+mac[port].ingress = true.
+
+To get rid of the log spam, prevent unexpected data plane packets to
+be received by software by discarding them on ingress in the LISTENING
+state.
+
+In terms of blame attribution: the prints only date back to commit
+d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based
+on the VBID"). However, the settings would permit a LISTENING port to
+forward to a FORWARDING port, and the standard suggests that's not OK.
+
+Fixes: 640f763f98c2 ("net: dsa: sja1105: Add support for Spanning Tree Protocol")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250509113816.2221992-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_clientmgr.c   | 52 ++++++++++++++++++++------------
- sound/core/seq/seq_ump_convert.c | 18 +++++++++++
- sound/core/seq/seq_ump_convert.h |  1 +
- 3 files changed, 52 insertions(+), 19 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_main.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
-index 6195fe9dda179..49f6763c3250d 100644
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -736,15 +736,21 @@ static int snd_seq_deliver_single_event(struct snd_seq_client *client,
-  */
- static int __deliver_to_subscribers(struct snd_seq_client *client,
- 				    struct snd_seq_event *event,
--				    struct snd_seq_client_port *src_port,
--				    int atomic, int hop)
-+				    int port, int atomic, int hop)
- {
-+	struct snd_seq_client_port *src_port;
- 	struct snd_seq_subscribers *subs;
- 	int err, result = 0, num_ev = 0;
- 	union __snd_seq_event event_saved;
- 	size_t saved_size;
- 	struct snd_seq_port_subs_info *grp;
- 
-+	if (port < 0)
-+		return 0;
-+	src_port = snd_seq_port_use_ptr(client, port);
-+	if (!src_port)
-+		return 0;
-+
- 	/* save original event record */
- 	saved_size = snd_seq_event_packet_size(event);
- 	memcpy(&event_saved, event, saved_size);
-@@ -780,6 +786,7 @@ static int __deliver_to_subscribers(struct snd_seq_client *client,
- 		read_unlock(&grp->list_lock);
- 	else
- 		up_read(&grp->list_mutex);
-+	snd_seq_port_unlock(src_port);
- 	memcpy(event, &event_saved, saved_size);
- 	return (result < 0) ? result : num_ev;
- }
-@@ -788,25 +795,32 @@ static int deliver_to_subscribers(struct snd_seq_client *client,
- 				  struct snd_seq_event *event,
- 				  int atomic, int hop)
- {
--	struct snd_seq_client_port *src_port;
--	int ret = 0, ret2;
--
--	src_port = snd_seq_port_use_ptr(client, event->source.port);
--	if (src_port) {
--		ret = __deliver_to_subscribers(client, event, src_port, atomic, hop);
--		snd_seq_port_unlock(src_port);
--	}
--
--	if (client->ump_endpoint_port < 0 ||
--	    event->source.port == client->ump_endpoint_port)
--		return ret;
-+	int ret;
-+#if IS_ENABLED(CONFIG_SND_SEQ_UMP)
-+	int ret2;
-+#endif
- 
--	src_port = snd_seq_port_use_ptr(client, client->ump_endpoint_port);
--	if (!src_port)
-+	ret = __deliver_to_subscribers(client, event,
-+				       event->source.port, atomic, hop);
-+#if IS_ENABLED(CONFIG_SND_SEQ_UMP)
-+	if (!snd_seq_client_is_ump(client) || client->ump_endpoint_port < 0)
- 		return ret;
--	ret2 = __deliver_to_subscribers(client, event, src_port, atomic, hop);
--	snd_seq_port_unlock(src_port);
--	return ret2 < 0 ? ret2 : ret;
-+	/* If it's an event from EP port (and with a UMP group),
-+	 * deliver to subscribers of the corresponding UMP group port, too.
-+	 * Or, if it's from non-EP port, deliver to subscribers of EP port, too.
-+	 */
-+	if (event->source.port == client->ump_endpoint_port)
-+		ret2 = __deliver_to_subscribers(client, event,
-+						snd_seq_ump_group_port(event),
-+						atomic, hop);
-+	else
-+		ret2 = __deliver_to_subscribers(client, event,
-+						client->ump_endpoint_port,
-+						atomic, hop);
-+	if (ret2 < 0)
-+		return ret2;
-+#endif
-+	return ret;
- }
- 
- /* deliver an event to the destination port(s).
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index 4dd540cbb1cbb..83a27362b7a06 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -1284,3 +1284,21 @@ int snd_seq_deliver_to_ump(struct snd_seq_client *source,
- 	else
- 		return cvt_to_ump_midi1(dest, dest_port, event, atomic, hop);
- }
-+
-+/* return the UMP group-port number of the event;
-+ * return -1 if groupless or non-UMP event
-+ */
-+int snd_seq_ump_group_port(const struct snd_seq_event *event)
-+{
-+	const struct snd_seq_ump_event *ump_ev =
-+		(const struct snd_seq_ump_event *)event;
-+	unsigned char type;
-+
-+	if (!snd_seq_ev_is_ump(event))
-+		return -1;
-+	type = ump_message_type(ump_ev->ump[0]);
-+	if (ump_is_groupless_msg(type))
-+		return -1;
-+	/* group-port number starts from 1 */
-+	return ump_message_group(ump_ev->ump[0]) + 1;
-+}
-diff --git a/sound/core/seq/seq_ump_convert.h b/sound/core/seq/seq_ump_convert.h
-index 6c146d8032804..4abf0a7637d70 100644
---- a/sound/core/seq/seq_ump_convert.h
-+++ b/sound/core/seq/seq_ump_convert.h
-@@ -18,5 +18,6 @@ int snd_seq_deliver_to_ump(struct snd_seq_client *source,
- 			   struct snd_seq_client_port *dest_port,
- 			   struct snd_seq_event *event,
- 			   int atomic, int hop);
-+int snd_seq_ump_group_port(const struct snd_seq_event *event);
- 
- #endif /* __SEQ_UMP_CONVERT_H */
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index f8454f3b6f9c5..f674c400f05b2 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2081,6 +2081,7 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
+ 	switch (state) {
+ 	case BR_STATE_DISABLED:
+ 	case BR_STATE_BLOCKING:
++	case BR_STATE_LISTENING:
+ 		/* From UM10944 description of DRPDTAG (why put this there?):
+ 		 * "Management traffic flows to the port regardless of the state
+ 		 * of the INGRESS flag". So BPDUs are still be allowed to pass.
+@@ -2090,11 +2091,6 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
+ 		mac[port].egress    = false;
+ 		mac[port].dyn_learn = false;
+ 		break;
+-	case BR_STATE_LISTENING:
+-		mac[port].ingress   = true;
+-		mac[port].egress    = false;
+-		mac[port].dyn_learn = false;
+-		break;
+ 	case BR_STATE_LEARNING:
+ 		mac[port].ingress   = true;
+ 		mac[port].egress    = false;
 -- 
 2.39.5
 
