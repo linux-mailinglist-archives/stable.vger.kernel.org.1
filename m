@@ -1,113 +1,106 @@
-Return-Path: <stable+bounces-145002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD632ABCE58
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 06:58:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24525ABCEC2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 07:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F614A15A5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 04:58:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9FCF4A391D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 05:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF67F258CE5;
-	Tue, 20 May 2025 04:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isuUUkja"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99EC1E9B0D;
+	Tue, 20 May 2025 05:50:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9155D21D3C6;
-	Tue, 20 May 2025 04:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E297FA94F;
+	Tue, 20 May 2025 05:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.236.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747717097; cv=none; b=mAcXdlKFobKYrqvR1jcWH8H5Lglc3ylA/xy9pMNjZNCRyj0QS6TpWYkf5aursfV5dulNWRXJ5FywivlwWWJOAMFihKAJ2XIY/VKUl9x1mZkmdNn145BPtbVJl8VjYtO0GR5CnjdpM9Z/svLOAB/CQvWg11FwWLbBghqoTuACb9M=
+	t=1747720235; cv=none; b=aHFhjeqFFexi84TPuFkJcAezcaqN/I1X6h8tiUl3bZm9EEGPRwHgdGI4/JhBHgMuh2ykUeDjuuqeMdzoysGWKFdGmuCWCGV6L8Uy4CGXkJZtsJNXirJuw0nuq4fKgJW9V4xTExcxMY/iFr/y6U15enIEDAlktbSjgJI8L22FMQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747717097; c=relaxed/simple;
-	bh=MBlWbA4wMpuoxg+pVoz6sHSDbF2DGVKREhsYA3mbNcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SMY00AEFidlPbH906v0IQQjUarx3tEh7o9QfTGbFop3jp4fA891NXeEPROxBWZzCQ48Vqus4IGj/FxuDswOxHaPaNl8Hg8L3FiMR98PUS3Hr2czepjIDpWiEOvV+Rv6otE1tBLa4sXtm/088zAklS0vJq2kIJ45PrCDljBAyE7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isuUUkja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7877EC4CEE9;
-	Tue, 20 May 2025 04:58:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747717097;
-	bh=MBlWbA4wMpuoxg+pVoz6sHSDbF2DGVKREhsYA3mbNcI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=isuUUkjaaAfuWY8irVYPxqm7HEK05v+6Jrq1LuQDz9DjOm3BrzCyTIVXH0tg+DYdr
-	 VMe4gv00vUgQNl+dz1U96ATyYwHn/BI//mtf3uql8iWhYTwsSVWSpA4ymWvtiwokwm
-	 vFNDcarg78fLjImFKljmPk0Y1YtXvpHxxJJ7uc14=
-Date: Tue, 20 May 2025 06:56:27 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Justin Forbes <jmforbes@linuxtx.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	syzbot+6af973a3b8dfd2faefdc@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>, Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14 162/197] loop: Add sanity check for read/write_iter
-Message-ID: <2025052059-unsteady-octagon-9321@gregkh>
-References: <20250512172044.326436266@linuxfoundation.org>
- <20250512172050.980575013@linuxfoundation.org>
- <CAFxkdAq+5ur__TPi6ZW9uoOBv037hgn1d_9906cBeXWE=X3Sgw@mail.gmail.com>
+	s=arc-20240116; t=1747720235; c=relaxed/simple;
+	bh=HpJnIaQxNCrVPEddwkzry03hhfHcD09CbAvopBDF+rw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D1YMEGzmH+TLjsTAH9zeOu7hwuy+SgqpDiMZmQnN346PYJyICeFgKW5H8ctZjjA9wFXWWcwkgpksJQPW+yy4DwNlBRLH5+Ukl+mpt5os0+nCRLmWqCbOvsiRkWNQy0+Xix9itjJaDG0+EfnJ4S9WJsG3QP9OHR9kRT1dgL3dJNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.236.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4b1jVC1shBz9sWb;
+	Tue, 20 May 2025 07:17:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id DBxSY6Tt1GUC; Tue, 20 May 2025 07:17:23 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4b1jVC0pHqz9sVS;
+	Tue, 20 May 2025 07:17:23 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0A9598B765;
+	Tue, 20 May 2025 07:17:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 6gA5yYbrJAGp; Tue, 20 May 2025 07:17:22 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 71E518B763;
+	Tue, 20 May 2025 07:17:22 +0200 (CEST)
+Message-ID: <633eb665-d1d4-4433-b81f-8ff831cf795c@csgroup.eu>
+Date: Tue, 20 May 2025 07:17:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] crypto: powerpc/poly1305 - add depends on BROKEN for now
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, naveen@kernel.org, dtsen@linux.ibm.com,
+ segher@kernel.crashing.org, stable@vger.kernel.org
+References: <20250514051847.193996-1-ebiggers@kernel.org>
+ <aCRlU0J7QoSJs5sy@gondor.apana.org.au> <20250514162933.GB1236@sol>
+ <aCVNG2lm9x9dzu6x@gondor.apana.org.au>
+ <02c22854-eebf-4ad1-b89e-8c2b65ab8236@csgroup.eu>
+ <aCvp1rzh2vV9L4g_@gondor.apana.org.au>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <aCvp1rzh2vV9L4g_@gondor.apana.org.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFxkdAq+5ur__TPi6ZW9uoOBv037hgn1d_9906cBeXWE=X3Sgw@mail.gmail.com>
 
-On Mon, May 19, 2025 at 06:19:26PM -0600, Justin Forbes wrote:
-> On Mon, May 12, 2025 at 11:51 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > 6.14-stable review patch.  If anyone has any objections, please let me know.
-> >
-> > ------------------
-> >
-> > From: Lizhi Xu <lizhi.xu@windriver.com>
-> >
-> > [ Upstream commit f5c84eff634ba003326aa034c414e2a9dcb7c6a7 ]
-> >
-> > Some file systems do not support read_iter/write_iter, such as selinuxfs
-> > in this issue.
-> > So before calling them, first confirm that the interface is supported and
-> > then call it.
-> >
-> > It is releavant in that vfs_iter_read/write have the check, and removal
-> > of their used caused szybot to be able to hit this issue.
-> >
-> > Fixes: f2fed441c69b ("loop: stop using vfs_iter__{read,write} for buffered I/O")
-> > Reported-by: syzbot+6af973a3b8dfd2faefdc@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=6af973a3b8dfd2faefdc
-> > Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-> > Reviewed-by: Christoph Hellwig <hch@lst.de>
-> > Link: https://lore.kernel.org/r/20250428143626.3318717-1-lizhi.xu@windriver.com
-> > Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  drivers/block/loop.c | 23 +++++++++++++++++++++++
-> >  1 file changed, 23 insertions(+)
+
+
+Le 20/05/2025 à 04:32, Herbert Xu a écrit :
+> On Mon, May 19, 2025 at 03:55:16PM +0200, Christophe Leroy wrote:
+>>
+>> As far as I can see related patches found in linux-next tree were not sent
+>> to linuxppc-dev@lists.ozlabs.org.
 > 
-> We have had an issue failing to set up loop devices with CI and Linus'
-> tree since rc6, and once this patch hit stable it proved to be the
-> culprit.  If I revert this patch, things work as they should. The
-> problem we are seeing is "
+> I just checked and it was definitely sent to linuxppc-dev:
+
+Oops sorry, my mistake.
+
+I see them in patchwork, they still have status 'New'.
+
 > 
-> More information can be found in:
-> https://github.com/coreos/fedora-coreos-tracker/issues/1948
-> and
-> https://openqa.fedoraproject.org/tests/3438220#step/_boot_to_anaconda/5
+> Cc: oe-kbuild-all@lists.linux.dev, Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Stephen Rothwell <sfr@canb.auug.org.au>, Danny Tsen <dtsen@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+> 
+>> Could you resend them, and split out the introduction of
+>> CONFIG_ARCH_SUPPORTS_INT128 from other parts of patch "crypto:
+>> powerpc/poly1305 - Add SIMD fallback" and add the lib/tishift.S in the patch
+>> which adds CONFIG_ARCH_SUPPORTS_INT128 ?
+> 
+> I'll just revert them and mark powerpc/poly1305 as broken.  You
+> guys can sort it out later.
 
-Sorry to hear that, please work with the developers to get this resolved
-in Linus's tree and then we will be glad to apply the needed fix from
-there.
+Fine, lets do that and make sure all necessary bits are there when 
+enabling CONFIG_ARCH_SUPPORTS_INT128
 
-thanks,
-
-greg k-h
+Thanks
+Christophe
 
