@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DB8ABDC31
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B745ABDB75
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A19C7B8C6C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6419E17F2C1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A0424C07A;
-	Tue, 20 May 2025 14:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D948A245038;
+	Tue, 20 May 2025 14:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAMSCOmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f175cPes"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4154224887D;
-	Tue, 20 May 2025 14:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EE122DF87;
+	Tue, 20 May 2025 14:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750409; cv=none; b=NQW5rCQN53wmrrjW7/4ySGi54M9XJ82+TNgRhVdcDAx/VwEP1Y5lm8cfaQfyU6iOrYhxOcqj8Sfkv9IxtupIrtkBgARct5dzW3qXa+L8+Ih95YG9Syw+JGX+62uB9CEvzZb5X34qFamn11pIDcfg27kPEQ9ARVhOY9mrhID+6ns=
+	t=1747749889; cv=none; b=pqsAz/w+AI1fHSJrjiZLBjM8BhOpBxv7GevY7Zs7fOVsqh01HD1kVrOp6nW12Wbv3Bx7fHqbxd31DooKzKec0KL+8KlOkgrhnRJY8LUZZneUYQsrQkyU9ug91DM4gQaJd5HWFxuxH3Y8YKnGWuROcjqhyIjSeaFbx02v+c/7LRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750409; c=relaxed/simple;
-	bh=tN3hhz6s9nFMFUbEf44hSMe28osXB0lHkbdd8MEj4p8=;
+	s=arc-20240116; t=1747749889; c=relaxed/simple;
+	bh=simiqPMec3l/Lk2DWn8JJ+mU384xyIcGPzVQ6gr6lNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRti2xgdppTO84QzsHfzfM628sJRfH5xWcAsivfGvr8Z8unB6OrsfoPpT/WKJh0aDDNk78PiXdchnW+aLqL2hRK0pZxDt31kz9vC62Ip0LjdVWXlHUyZthXy7vygQ0VNaimWWUxATu+3VnyzqPlpG2aRDkW8bVoO7/RMFhU7w/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAMSCOmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC6CC4CEE9;
-	Tue, 20 May 2025 14:13:28 +0000 (UTC)
+	 MIME-Version; b=Z8Z/Io4ZzDizPTtM92L5+OZDEpJxra/h3KdQKLMRSynwusfJehjtdF8lDbzPkJ0YegySSislgC8dyqUaLFENDAtUi/K+Z4xIKBAYWzdBNp6+HGWDvsQPC10sKFXMPSwqdR0pAImd4E5agdPdny48dw7NqjYSwvfT7kni9V2t8iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f175cPes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA5FC4CEE9;
+	Tue, 20 May 2025 14:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750409;
-	bh=tN3hhz6s9nFMFUbEf44hSMe28osXB0lHkbdd8MEj4p8=;
+	s=korg; t=1747749889;
+	bh=simiqPMec3l/Lk2DWn8JJ+mU384xyIcGPzVQ6gr6lNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAMSCOmuyQDFlJT9j7QL7N1pUz+r+udx341Bb2R+8LVwaqVCGFnh6YTDf51MttBy/
-	 4Xf1bdmtAxjBX9PLoJsHfy12aXfKSEcOy25dvHP0435A9MiJF++dPFhjoSzzeG31sf
-	 d3XwYJXEZholzPR65YGlkZtp16ayXF7ocYs0yhBc=
+	b=f175cPesIZ+O9+U0dfAGe+brIx+JEMdc5RfvHOfyu+j8hEWIb3NSBA13XTjsmEgwW
+	 D/k5ODzvUf6D6USOd7f/XtLwrPx7CFtjg4JNidy2OzEmqIApRqqn6aigw0ofZeMJbp
+	 dPhJTNtU35R29mdFTCo8ZUOHUPrkJS0tj3sZk4HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	pengdonglin <dolinux.peng@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 103/143] ftrace: Fix preemption accounting for stacktrace trigger command
+	Vaishnav Achath <vaishnav.a@ti.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 093/117] dmaengine: ti: k3-udma: Use cap_mask directly from dma_device structure instead of a local copy
 Date: Tue, 20 May 2025 15:50:58 +0200
-Message-ID: <20250520125814.096950681@linuxfoundation.org>
+Message-ID: <20250520125807.678525142@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: pengdonglin <pengdonglin@xiaomi.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-commit e333332657f615ac2b55aa35565c4a882018bbe9 upstream.
+commit 8ca9590c39b69b55a8de63d2b21b0d44f523b43a upstream.
 
-When using the stacktrace trigger command to trace syscalls, the
-preemption count was consistently reported as 1 when the system call
-event itself had 0 (".").
+Currently, a local dma_cap_mask_t variable is used to store device
+cap_mask within udma_of_xlate(). However, the DMA_PRIVATE flag in
+the device cap_mask can get cleared when the last channel is released.
+This can happen right after storing the cap_mask locally in
+udma_of_xlate(), and subsequent dma_request_channel() can fail due to
+mismatch in the cap_mask. Fix this by removing the local dma_cap_mask_t
+variable and directly using the one from the dma_device structure.
 
-For example:
-
-root@ubuntu22-vm:/sys/kernel/tracing/events/syscalls/sys_enter_read
-$ echo stacktrace > trigger
-$ echo 1 > enable
-
-    sshd-416     [002] .....   232.864910: sys_read(fd: a, buf: 556b1f3221d0, count: 8000)
-    sshd-416     [002] ...1.   232.864913: <stack trace>
- => ftrace_syscall_enter
- => syscall_trace_enter
- => do_syscall_64
- => entry_SYSCALL_64_after_hwframe
-
-The root cause is that the trace framework disables preemption in __DO_TRACE before
-invoking the trigger callback.
-
-Use the tracing_gen_ctx_dec() that will accommodate for the increase of
-the preemption count in __DO_TRACE when calling the callback. The result
-is the accurate reporting of:
-
-    sshd-410     [004] .....   210.117660: sys_read(fd: 4, buf: 559b725ba130, count: 40000)
-    sshd-410     [004] .....   210.117662: <stack trace>
- => ftrace_syscall_enter
- => syscall_trace_enter
- => do_syscall_64
- => entry_SYSCALL_64_after_hwframe
-
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
 Cc: stable@vger.kernel.org
-Fixes: ce33c845b030c ("tracing: Dump stacktrace trigger to the corresponding instance")
-Link: https://lore.kernel.org/20250512094246.1167956-1-dolinux.peng@gmail.com
-Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Link: https://lore.kernel.org/r/20250417075521.623651-1-y-abhilashchandra@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/ti/k3-udma.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/kernel/trace/trace_events_trigger.c
-+++ b/kernel/trace/trace_events_trigger.c
-@@ -1581,7 +1581,7 @@ stacktrace_trigger(struct event_trigger_
- 	struct trace_event_file *file = data->private_data;
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -4221,7 +4221,6 @@ static struct dma_chan *udma_of_xlate(st
+ 				      struct of_dma *ofdma)
+ {
+ 	struct udma_dev *ud = ofdma->of_dma_data;
+-	dma_cap_mask_t mask = ud->ddev.cap_mask;
+ 	struct udma_filter_param filter_param;
+ 	struct dma_chan *chan;
  
- 	if (file)
--		__trace_stack(file->tr, tracing_gen_ctx(), STACK_SKIP);
-+		__trace_stack(file->tr, tracing_gen_ctx_dec(), STACK_SKIP);
- 	else
- 		trace_dump_stack(STACK_SKIP);
- }
+@@ -4253,7 +4252,7 @@ static struct dma_chan *udma_of_xlate(st
+ 		}
+ 	}
+ 
+-	chan = __dma_request_channel(&mask, udma_dma_filter_fn, &filter_param,
++	chan = __dma_request_channel(&ud->ddev.cap_mask, udma_dma_filter_fn, &filter_param,
+ 				     ofdma->of_node);
+ 	if (!chan) {
+ 		dev_err(ud->dev, "get channel fail in %s.\n", __func__);
 
 
 
