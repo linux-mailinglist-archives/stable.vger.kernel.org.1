@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-145575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1261EABDC2B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469A9ABDC00
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 508EA18848FE
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7C0E3A3176
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B44248872;
-	Tue, 20 May 2025 14:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B45C248F7B;
+	Tue, 20 May 2025 14:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNYoB+kN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fk46oB4h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EA21CAA85;
-	Tue, 20 May 2025 14:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A4E24886F;
+	Tue, 20 May 2025 14:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750574; cv=none; b=QsPs5E1CwQzxJ6Xnv7JDSoJOX/G159QPdnzkb2ztjMaqExq8HmLie1jIjYj6j6VxEVVOEfhBtu5tlmyEcCu1tpeIFwzUAW32823esvfhdjJ37nRLWwp5oEaLfkFc8zS0Z+15DYEYAwXqYuKvwWIE7XUOI+9L92Dje3l1b4J8r/4=
+	t=1747750187; cv=none; b=c/xUPYlZtaS79UKu0B0Oulc29J1uJB6iJYGk0MYpYwyVSkl5q07VCHxo5sTSp4Mwi3prqW7JRS3arwhwFz4V+Rzi95GWuiyjYuLCNFCiNzHbj8p/KCMU7jdlRTBqlDfFFga7H8llOvZD1BP74f5u4kdphNWkgi5L8bWsXUFTkMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750574; c=relaxed/simple;
-	bh=/GW9pbRnBvGAM1yEM0Gh7SW9S5adUT3NlqfXapyUSWM=;
+	s=arc-20240116; t=1747750187; c=relaxed/simple;
+	bh=dldcpI9yjuu+6ETfjCA3wSJIsqXwVG9xfF1mFznKXJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+PT9+FucsujNkVWQQHjvq3tGSQOrdmrnoqPMZ+mZYY/i5uQebs92Y621KtbMTxnJlnmsc2EalsWehysnKfYVWOT0jwzGoCyRwLQU5u76K++4TpxPZO68r+U1oytuPuEcZQP0TxPRNXjjvWCsC06rskZdY7mRGP0V9lFS3jmkPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNYoB+kN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7714C4CEE9;
-	Tue, 20 May 2025 14:16:13 +0000 (UTC)
+	 MIME-Version; b=RvCdyEHOu5EBKFKuqO/3v/QA5t8LVyOvDEXIjRiiq8/d28oeUOBmNy/19I1AUayvBNYag8bNABDCAdgYQwuM9nPrPGhsnTQVypSjJnwEPNCy8vrPR8jq4H96w90f6BUnXDmuWG8+IuguowFBCNRRWOLIDs0y4II7r7NloxXBX2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fk46oB4h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C86C4CEE9;
+	Tue, 20 May 2025 14:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750574;
-	bh=/GW9pbRnBvGAM1yEM0Gh7SW9S5adUT3NlqfXapyUSWM=;
+	s=korg; t=1747750187;
+	bh=dldcpI9yjuu+6ETfjCA3wSJIsqXwVG9xfF1mFznKXJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNYoB+kNC2Wfmcbag6HkQ6jalmd4kakx2paQkFUbxZoKIo5rqunKGfkGLC3Ph03Oj
-	 3e+nmuY1J+fvK6Yvauc96e+d9qZwEhlrg3vpblGYycacBMNe5OZ+SJnOvF3EBtpLxE
-	 ZroD+hXqS2VW1YKVKNSXNraP2r4KqzxJYM7QwYpo=
+	b=Fk46oB4hYxe+oPLqpgrClwjf3GjXHUX9su3dH73QeCYBbXUH1g9YWLW+T44gDDh/a
+	 w4SqiqPbua0ogA/XB2LVzeemWot1DCZe96QLMTszMwWm0lw0VkOpZwxvsX+AmPft3s
+	 QlbatQUMFCiGUsRASwQwZd6MmKPUIpV3tc/+ldFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 053/145] net: ethernet: mtk_eth_soc: fix typo for declaration MT7988 ESW capability
-Date: Tue, 20 May 2025 15:50:23 +0200
-Message-ID: <20250520125812.659014616@linuxfoundation.org>
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 069/143] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
+Date: Tue, 20 May 2025 15:50:24 +0200
+Message-ID: <20250520125812.782502430@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+From: Nathan Lynch <nathan.lynch@amd.com>
 
-[ Upstream commit 1bdea6fad6fb985ff13828373c48e337c4e939f9 ]
+commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
 
-Since MTK_ESW_BIT is a bit number rather than a bitmap, it causes
-MTK_HAS_CAPS to produce incorrect results. This leads to the ETH
-driver not declaring MAC capabilities correctly for the MT7988 ESW.
+Several issues with this change:
 
-Fixes: 445eb6448ed3 ("net: ethernet: mtk_eth_soc: add basic support for MT7988 SoC")
-Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/b8b37f409d1280fad9c4d32521e6207f63cd3213.1747110258.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* The analysis is flawed and it's unclear what problem is being
+  fixed. There is no difference between wait_event_freezable_timeout()
+  and wait_event_timeout() with respect to device interrupts. And of
+  course "the interrupt notifying the finish of an operation happens
+  during wait_event_freezable_timeout()" -- that's how it's supposed
+  to work.
+
+* The link at the "Closes:" tag appears to be an unrelated
+  use-after-free in idxd.
+
+* It introduces a regression: dmatest threads are meant to be
+  freezable and this change breaks that.
+
+See discussion here:
+https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
+
+Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
+Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
+Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/dmatest.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 341def2bf1d35..22a8b909dd80b 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -4683,7 +4683,7 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 	}
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -841,9 +841,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
  
- 	if (mtk_is_netsys_v3_or_greater(mac->hw) &&
--	    MTK_HAS_CAPS(mac->hw->soc->caps, MTK_ESW_BIT) &&
-+	    MTK_HAS_CAPS(mac->hw->soc->caps, MTK_ESW) &&
- 	    id == MTK_GMAC1_ID) {
- 		mac->phylink_config.mac_capabilities = MAC_ASYM_PAUSE |
- 						       MAC_SYM_PAUSE |
--- 
-2.39.5
-
+-			wait_event_timeout(thread->done_wait,
+-					   done->done,
+-					   msecs_to_jiffies(params->timeout));
++			wait_event_freezable_timeout(thread->done_wait,
++					done->done,
++					msecs_to_jiffies(params->timeout));
+ 
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
 
 
 
