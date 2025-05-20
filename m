@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-145036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0319ABD22E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 10:42:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 177F2ABD24C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 10:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B14C97AE7A8
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 08:40:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBB51162168
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 08:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C308264604;
-	Tue, 20 May 2025 08:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5402E25DB0C;
+	Tue, 20 May 2025 08:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaeZohTx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fv6v/mTN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C5F1C84C0;
-	Tue, 20 May 2025 08:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08B825D91D
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 08:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747730518; cv=none; b=J2zpYjnbZ3A+caT5nFx3mCVYZ2g6pv9qA+GOmip7VeREFeMjILxepSllXwxiOkAZtTgV5TgvofOXVbOfhJWbsuQCOSxTGlOSHXNWQkVvbxic2BlIKxfD8zSXBscRtX8uN5f3PS9jV5bJhhWGWycTIL4KLleVR6pivSqmlzD+VWU=
+	t=1747730924; cv=none; b=i2+ftpVBPa8rFyAxTIZDQcKEnurZu8zed4qP+9U4/Ij4CWWmMkq6FV7X8f7hx81N+WeTyLYWKhFoBNMLSVGGNZ+GjtXWP74s2qtayJ5sfwAEnwABSxAuV2aPVu+Krej3L/kUp8CQGJdROXbkDRl9/g2HItfdgWmyEekhhpdIT1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747730518; c=relaxed/simple;
-	bh=VxyCiOVm9biPxOYF20FCa5ct5Es6wThbt6p5CNJbtC4=;
+	s=arc-20240116; t=1747730924; c=relaxed/simple;
+	bh=3+QrHJBHF8R+YSGX23QGZF6yQMjgjcscgRaZepOutdM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MnqFBZoeGeCnB+Tj3Z0M5bONWlDeN9TolK8hUpdLXc/WvJ3TO6eFnuyB/ncYi02nE/MJBjIQ137Z6IIuFE24lhYBhFXk5s/S+UhtiXE1y44ZcWj6dyG7capfR0cEpKwfUXX9rr/hHWJMUqisLGjHdldpA+DuSdeysFRT98GhbQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaeZohTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D002EC4CEE9;
-	Tue, 20 May 2025 08:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747730517;
-	bh=VxyCiOVm9biPxOYF20FCa5ct5Es6wThbt6p5CNJbtC4=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=EDt2YvUX64EzSpdkl8ZWGcM8m5TPaV/j2Xfag5sIz2l7vjnlmVPoRsMvuTrzeDEW6UUknWNzkjf9hNPVC2KUlR3Wf8TOl63K/RC7c/t2r1hozyzvvUurnT871TYiNC934HXVh8msrfMLI8JJ7PH7yg3/RYkSaxRelXhhpRDPlkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fv6v/mTN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC46C4CEE9;
+	Tue, 20 May 2025 08:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747730923;
+	bh=3+QrHJBHF8R+YSGX23QGZF6yQMjgjcscgRaZepOutdM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iaeZohTx+rOrydLwwi7k16JkKO7H5bIuzg2srJ33Vmf18jDeCIo28PUZXS6u7T6r/
-	 dATdCDe7DyFEKKcd++rT1h/wJPihwyKRHcVSgiL+ESzjiaecXJUNeoF6BcRC+AlWr/
-	 k2UP/UWugn+raOX8vxYoGKlu0EWjEoG3y2ABoNaBuqPqQ3ffImQ4Sl27PvVikdAO1d
-	 cd7P2zGFSU8qYJ5qfxBLQazi6YAhEvbfxmeUgVTrpddfrtIMD3B7MwruC9L6baOmWg
-	 NLhJ2sdCKkTv0KTtL61b3B/LknHH3uCZC+kKNGk0ggF9ydFmhjrPvJ0sBMErUEhgSW
-	 D6Qot7jHwbICw==
-Date: Tue, 20 May 2025 10:41:52 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: qup: Add error handling in qup_i2c_xfer_v2()
-Message-ID: <kmcsuqlmawjqvixoevqa2waf2smznvbtbgw7drlbwgegfojz5x@vziujze5nzsb>
-References: <20250519141918.2522-1-vulab@iscas.ac.cn>
+	b=Fv6v/mTNfbG9t25yhv2vGtJxHtb82+Ea3GRtkgSBv6jdFObcuGdFsWkV/+1uQy9+X
+	 NFQszH69KM8s0fJlC6Ml6sCGam7kC21Kkisda+cf+6v4hB0YssnbzQ05E6ipeaTDB+
+	 5aQIDevYr/ObwAnIyRdg/BtuT6dIUJ11BsfwZxLg=
+Date: Tue, 20 May 2025 10:48:40 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: stable@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+	Natanael Copa <ncopa@alpinelinux.org>
+Subject: Re: [PATCH 6.6] x86/its: Fix build error for its_static_thunk()
+Message-ID: <2025052057-prognosis-hush-bf23@gregkh>
+References: <20250519195021.mgldcftlu5k4u5sw@desk>
+ <20250519-its-build-fix-6-6-v1-1-225ac41eb447@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,83 +55,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250519141918.2522-1-vulab@iscas.ac.cn>
+In-Reply-To: <20250519-its-build-fix-6-6-v1-1-225ac41eb447@linux.intel.com>
 
-Hi Wentao,
-
-On Mon, May 19, 2025 at 10:19:18PM +0800, Wentao Liang wrote:
-> The qup_i2c_xfer_v2() calls the qup_i2c_change_state() but does
-> not check its return value. A proper implementation can be
-> found in qup_i2c_xfer().
+On Mon, May 19, 2025 at 01:43:42PM -0700, Pawan Gupta wrote:
+> Due to a likely merge resolution error of backport commit 772934d9062a
+> ("x86/its: FineIBT-paranoid vs ITS"), the function its_static_thunk() was
+> placed in the wrong ifdef block, causing a build error when
+> CONFIG_MITIGATION_ITS and CONFIG_FINEIBT are both disabled:
 > 
-> Add error handling for qup_i2c_change_state(). If the function
-> fails, return the error code.
+>   /linux-6.6/arch/x86/kernel/alternative.c:1452:5: error: redefinition of 'its_static_thunk'
+>    1452 | u8 *its_static_thunk(int reg)
+>         |     ^~~~~~~~~~~~~~~~
 > 
-> Fixes: 7545c7dba169 ("i2c: qup: reorganization of driver code to remove polling for qup v2")
-> Cc: stable@vger.kernel.org # v4.17
-
-no need to Cc stable here, it's not such a big issue.
-
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> Fix it by moving its_static_thunk() under CONFIG_MITIGATION_ITS.
+> 
+> Reported-by: Natanael Copa <ncopa@alpinelinux.org>
+> Link: https://lore.kernel.org/all/20250519164717.18738b4e@ncopa-desktop/
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 > ---
->  drivers/i2c/busses/i2c-qup.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> commit ("x86/its: FineIBT-paranoid vs ITS") was resolved correctly in
+> v6.12:
 > 
-> diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
-> index da20b4487c9a..2477f570fe86 100644
-> --- a/drivers/i2c/busses/i2c-qup.c
-> +++ b/drivers/i2c/busses/i2c-qup.c
-> @@ -1538,7 +1538,7 @@ static int qup_i2c_xfer_v2(struct i2c_adapter *adap,
->  			   int num)
->  {
->  	struct qup_i2c_dev *qup = i2c_get_adapdata(adap);
-> -	int ret, idx = 0;
-> +	int ret, err, idx = 0;
->  
->  	qup->bus_err = 0;
->  	qup->qup_err = 0;
-> @@ -1588,7 +1588,9 @@ static int qup_i2c_xfer_v2(struct i2c_adapter *adap,
->  		ret = qup_i2c_bus_active(qup, ONE_BYTE);
->  
->  	if (!ret)
-> -		qup_i2c_change_state(qup, QUP_RESET_STATE);
-> +		err = qup_i2c_change_state(qup, QUP_RESET_STATE);
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.12.29&id=7e78061be78b8593df9b0cd0f21b1fee425035de
+> 
+> Fix is required in v6.6 and v6.1
 
-This check was removed on purpose, not by accident in the commit
-you pointed out in the Fixes tag. On the other hand I agree that
-this needs to be checked, perhaps restoring the original code:
+Thanks for this, now queued up for 6.6.y, but I think 6.1.y is ok, as
+this didn't apply there, nor did I get any build reports of problems for
+it yet.  So I'll leave that be for now.
 
-	if (!ret)
-		ret = qup_i2c_change_state(qup, QUP_RESET_STATE);
-
-	if (ret == 0)
-		ret = num;
-
-What is exactly that you are trying to fix here? What is the
-error you have faced?
-
-Thanks,
-Andi
-
-> +	if (err)
-> +		return err;
->  
->  	if (ret == 0)
->  		ret = num;
-
-PS: your code can be refactored in a way that we don't need this
-extra variable. E.g., something like this:
-
-	if (!ret)
-		ret = qup_i2c_bus_active(qup, ONE_BYTE);
-
-	if (!ret) {
-		ret = qup_i2c_change_state(qup, QUP_RESET_STATE);
-		if (ret)
-			return ret;
-		ret = num;
-	}
-
-Looks the same, no? But I think the original version should work
-better.
+greg k-h
 
