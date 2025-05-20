@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7E3ABDC7F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD92ABDB7B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFE767B70B9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11DB8C551B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552A52512CF;
-	Tue, 20 May 2025 14:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72753222570;
+	Tue, 20 May 2025 14:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFM36FCg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpgvcdP3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129DD24C06A;
-	Tue, 20 May 2025 14:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206A6EEDE;
+	Tue, 20 May 2025 14:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750400; cv=none; b=gzOwWVXiS86YJ6fJUp0FCwpfqt64TmrQLGhzExjs7o43NtoGwgPn2B790OtSeQ5oxbR8NoHmcsnRl7YOSmDOd2Qz5/xrH9Cc3CPEDdwdb4qWz/MScWpHKl84Z9DE0V8q9vgMu3ZWgXeesu96ZUCw9tAT3a5zvuD7KzsEOO+XXoE=
+	t=1747749912; cv=none; b=jV0rQekMlRXn6vDwKPH1oon70vv4VlMlwQFLAisKAdBITTMWemGIrBcMIAib3Z+mcR6bsiZ9cxyO7R8Lyeu4tETLExZJI+3VdqwogJm+bUmEuIzS16eYitIkJ39T6RhcMpeYzZpUjl97OgHCgLvFRHVHqKfJ6LOQsVOSQFIfQBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750400; c=relaxed/simple;
-	bh=RUgaxgGdGnCe2f1bV2kTSVN3cJvuj5urce0NVDmd5zk=;
+	s=arc-20240116; t=1747749912; c=relaxed/simple;
+	bh=7RqziyKarBVpegosDXMYMRkKnRwKWDXlNi5dzgWpeMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4SBZlv7xTiA9jdpfRDL7f2B7KdR0IkhDnVzgni769hsG/DJ3oly9kAeBysnCgbhUxqlHftX1rP1kF91XWR+0/XKvBnqMMfjrZ1XWxQOo2E3gD7ZXkUD+AkT0LkQ2JsZpQQK7rvdRfoJ9WBzzKygQRel2ipuMQeHLPtuuxBoBfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFM36FCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7805EC4CEEB;
-	Tue, 20 May 2025 14:13:19 +0000 (UTC)
+	 MIME-Version; b=Rj8eL8IutUzaSKWcqLs9UkZ3c1jyCRdCnxcXC0LGqDebQVdGOS5m/R9aTGCc+w03k6I3jbu7i0dJLx8iiCes+yNr4IZF251IyPFmH1hP2JNoDgtHWyOfGyJSrE+TNTigF8SJKjYAgDicsnG62mpuJBrVHKviwshIrc9y3/ZD8tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpgvcdP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF0FC4CEE9;
+	Tue, 20 May 2025 14:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750400;
-	bh=RUgaxgGdGnCe2f1bV2kTSVN3cJvuj5urce0NVDmd5zk=;
+	s=korg; t=1747749911;
+	bh=7RqziyKarBVpegosDXMYMRkKnRwKWDXlNi5dzgWpeMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nFM36FCgENXbxv+HclusKF2R+jIcT3sDdmske9YgKQhpPXFDyT3coWR5VwAt2iqU7
-	 7yuzrSKgxkKWOM6vZPrRYpKhg8e8jUZxIP4RpgxMduZU72M9jJz2ZY49rYpN7lwvce
-	 LcvJ3sBqd9YHaCa382TazbP5I5wX08b5y9ZSaKGk=
+	b=wpgvcdP3rKp5/04DLHdvIPNeYAzeRsVcNRHwKfAAMjYG+zGJ5aM4Hc/XQrqMjOcn0
+	 hm7xRiogVpdf7Gm68ylRJsCFr2ykv9tzbn0wIqjugzrmx4SvETjZYv0g9CA0gdhXQl
+	 ihnuDyzC/IcplWhBP0HDRe15klES8odou0FwluR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Siwinski <ssiwinski@atto.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 110/143] scsi: sd_zbc: block: Respect bio vector limits for REPORT ZONES buffer
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 100/117] dmaengine: idxd: fix memory leak in error handling path of idxd_alloc
 Date: Tue, 20 May 2025 15:51:05 +0200
-Message-ID: <20250520125814.364511577@linuxfoundation.org>
+Message-ID: <20250520125807.955234617@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Siwinski <ssiwinski@atto.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit e8007fad5457ea547ca63bb011fdb03213571c7e upstream.
+commit 46a5cca76c76c86063000a12936f8e7875295838 upstream.
 
-The REPORT ZONES buffer size is currently limited by the HBA's maximum
-segment count to ensure the buffer can be mapped. However, the block
-layer further limits the number of iovec entries to 1024 when allocating
-a bio.
+Memory allocated for idxd is not freed if an error occurs during
+idxd_alloc(). To fix it, free the allocated memory in the reverse order
+of allocation before exiting the function in case of an error.
 
-To avoid allocation of buffers too large to be mapped, further restrict
-the maximum buffer size to BIO_MAX_INLINE_VECS.
-
-Replace the UIO_MAXIOV symbolic name with the more contextually
-appropriate BIO_MAX_INLINE_VECS.
-
-Fixes: b091ac616846 ("sd_zbc: Fix report zones buffer allocation")
+Fixes: a8563a33a5e2 ("dmanegine: idxd: reformat opcap output to match bitmap_parse() input")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve Siwinski <ssiwinski@atto.com>
-Link: https://lore.kernel.org/r/20250508200122.243129-1-ssiwinski@atto.com
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-7-xueshuai@linux.alibaba.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bio.c           |    2 +-
- drivers/scsi/sd_zbc.c |    6 +++++-
- include/linux/bio.h   |    1 +
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/dma/idxd/init.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -611,7 +611,7 @@ struct bio *bio_kmalloc(unsigned short n
- {
- 	struct bio *bio;
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -594,28 +594,34 @@ static struct idxd_device *idxd_alloc(st
+ 	idxd_dev_set_type(&idxd->idxd_dev, idxd->data->type);
+ 	idxd->id = ida_alloc(&idxd_ida, GFP_KERNEL);
+ 	if (idxd->id < 0)
+-		return NULL;
++		goto err_ida;
  
--	if (nr_vecs > UIO_MAXIOV)
-+	if (nr_vecs > BIO_MAX_INLINE_VECS)
- 		return NULL;
- 	return kmalloc(struct_size(bio, bi_inline_vecs, nr_vecs), gfp_mask);
+ 	idxd->opcap_bmap = bitmap_zalloc_node(IDXD_MAX_OPCAP_BITS, GFP_KERNEL, dev_to_node(dev));
+-	if (!idxd->opcap_bmap) {
+-		ida_free(&idxd_ida, idxd->id);
+-		return NULL;
+-	}
++	if (!idxd->opcap_bmap)
++		goto err_opcap;
+ 
+ 	device_initialize(conf_dev);
+ 	conf_dev->parent = dev;
+ 	conf_dev->bus = &dsa_bus_type;
+ 	conf_dev->type = idxd->data->dev_type;
+ 	rc = dev_set_name(conf_dev, "%s%d", idxd->data->name_prefix, idxd->id);
+-	if (rc < 0) {
+-		put_device(conf_dev);
+-		return NULL;
+-	}
++	if (rc < 0)
++		goto err_name;
+ 
+ 	spin_lock_init(&idxd->dev_lock);
+ 	spin_lock_init(&idxd->cmd_lock);
+ 
+ 	return idxd;
++
++err_name:
++	put_device(conf_dev);
++	bitmap_free(idxd->opcap_bmap);
++err_opcap:
++	ida_free(&idxd_ida, idxd->id);
++err_ida:
++	kfree(idxd);
++
++	return NULL;
  }
---- a/drivers/scsi/sd_zbc.c
-+++ b/drivers/scsi/sd_zbc.c
-@@ -169,6 +169,7 @@ static void *sd_zbc_alloc_report_buffer(
- 					unsigned int nr_zones, size_t *buflen)
- {
- 	struct request_queue *q = sdkp->disk->queue;
-+	unsigned int max_segments;
- 	size_t bufsize;
- 	void *buf;
  
-@@ -180,12 +181,15 @@ static void *sd_zbc_alloc_report_buffer(
- 	 * Furthermore, since the report zone command cannot be split, make
- 	 * sure that the allocated buffer can always be mapped by limiting the
- 	 * number of pages allocated to the HBA max segments limit.
-+	 * Since max segments can be larger than the max inline bio vectors,
-+	 * further limit the allocated buffer to BIO_MAX_INLINE_VECS.
- 	 */
- 	nr_zones = min(nr_zones, sdkp->zone_info.nr_zones);
- 	bufsize = roundup((nr_zones + 1) * 64, SECTOR_SIZE);
- 	bufsize = min_t(size_t, bufsize,
- 			queue_max_hw_sectors(q) << SECTOR_SHIFT);
--	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
-+	max_segments = min(BIO_MAX_INLINE_VECS, queue_max_segments(q));
-+	bufsize = min_t(size_t, bufsize, max_segments << PAGE_SHIFT);
- 
- 	while (bufsize >= SECTOR_SIZE) {
- 		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -11,6 +11,7 @@
- #include <linux/uio.h>
- 
- #define BIO_MAX_VECS		256U
-+#define BIO_MAX_INLINE_VECS	UIO_MAXIOV
- 
- struct queue_limits;
- 
+ static int idxd_enable_system_pasid(struct idxd_device *idxd)
 
 
 
