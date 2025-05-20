@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9E9ABDB80
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6592DABDC63
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70D0B7AD644
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:10:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7CFD1BA2D32
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B88246798;
-	Tue, 20 May 2025 14:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A533C24BD00;
+	Tue, 20 May 2025 14:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6H0Nu+V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dj+VIwKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546A6246789;
-	Tue, 20 May 2025 14:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6217A21D5BE;
+	Tue, 20 May 2025 14:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750159; cv=none; b=KzD9rXjrrItQ7kLnMvoNSi2nyfrUIzuATxU2t2VP5ZVLypFkdZnZOat30vhX0yAIqHwhBcILrM0fYmTGexmKUlEBlwn2ZeH4Rpk3o9JZXSAB3Pan+07LbKqqvvRmCnaPJNmuOKaO14OAA3/esIMSU0NiO7TozhnBq8kZijm18uI=
+	t=1747750652; cv=none; b=tYFpe7JK7cPVhbtuPWT1oB/Y4TEty5TItWF+ACuHUm3SXqipXDeUnqBOAOUYq9e1QfNcXPmw59s1ajdqYd6cPVHnD8kW7AuFmNQadzr5UMXWbcVjQlsxtRK4g9fqEcjvaNlW+xVpV79Rg76T0KrDoLT2LCdWlIHqhAb3fs5OHGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750159; c=relaxed/simple;
-	bh=nLG30NNEFXz/TxZbSI8+wLjXcthcJcosBPx6NuYaYvU=;
+	s=arc-20240116; t=1747750652; c=relaxed/simple;
+	bh=LG/aG8Kadoew9UK1qlybc04nTR5W1e5aoL+7jba/eXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amzarNrkI1BEOX5pzZg7qScr+aqQhsBsiu8sM/7r3c+vFp3IwcodAT+jdOAFhfOQf1kmSderm3Ayguhu7y3kI0WUbdb3Rl0Odpz7RLR++6g2W1gGD8g+O+f4AyHpGeqoukQujTlZVSQbZWilUXTkQW0NeGN00AT66p29l4ByooI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6H0Nu+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F13C4CEE9;
-	Tue, 20 May 2025 14:09:18 +0000 (UTC)
+	 MIME-Version; b=NonyUq9R7TTEw8t4QCMUjriprQ7BmI2yyRxIVFmxNxu7aYlpMlacq5fcWvZXBuvgY+5mS6TUrbCxKrcZ8P5Q0nsTBgVdlClykLVwf9uRJeO8mek+L+0tnLmRsLQUASYu4jH87rT9lPOrqDqoXqbBXWh1vImY+aPHHPpTOKkEp4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dj+VIwKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A17FC4CEE9;
+	Tue, 20 May 2025 14:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750159;
-	bh=nLG30NNEFXz/TxZbSI8+wLjXcthcJcosBPx6NuYaYvU=;
+	s=korg; t=1747750651;
+	bh=LG/aG8Kadoew9UK1qlybc04nTR5W1e5aoL+7jba/eXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6H0Nu+VwYh5hblYHHLif22xh7BSGdQPWJcNh7A7iwc6JW03l2m2B9qFvhdCbQNhw
-	 s52suqH2kPtux6GK5JpMLTaNZFFVHxTeEO7YUTjhagn7Zqo6Jmm4cHkwyLpccecg1/
-	 YwCF9yT8LhJypgcPlgPvv6q2RmEr5+MSuTa54WUY=
+	b=Dj+VIwKrKCQnsdXrp8YBF+XvcmnPcDk5P+55o3hVVpy+kKOTPgd2Hd3KSwsXy17+Q
+	 hvBFHwmtUTaRsUOgloVa2JHWRDLnlUh0X4c03U+hkw2+ITZoajBEFJyKNrKfgSluNc
+	 lFtmeizSpTUZfp8POec/R3dpOIyl6ldfhd0BAZjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/143] net: ethernet: mtk_eth_soc: fix typo for declaration MT7988 ESW capability
-Date: Tue, 20 May 2025 15:50:16 +0200
-Message-ID: <20250520125812.454050107@linuxfoundation.org>
+Subject: [PATCH 6.14 047/145] octeontx2-pf: Fix ethtool support for SDP representors
+Date: Tue, 20 May 2025 15:50:17 +0200
+Message-ID: <20250520125812.418646841@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 1bdea6fad6fb985ff13828373c48e337c4e939f9 ]
+[ Upstream commit 314007549d89adebdd1e214a743d7e26edbd075e ]
 
-Since MTK_ESW_BIT is a bit number rather than a bitmap, it causes
-MTK_HAS_CAPS to produce incorrect results. This leads to the ETH
-driver not declaring MAC capabilities correctly for the MT7988 ESW.
+The hardware supports multiple MAC types, including RPM, SDP, and LBK.
+However, features such as link settings and pause frames are only available
+on RPM MAC, and not supported on SDP or LBK.
 
-Fixes: 445eb6448ed3 ("net: ethernet: mtk_eth_soc: add basic support for MT7988 SoC")
-Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/b8b37f409d1280fad9c4d32521e6207f63cd3213.1747110258.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch updates the ethtool operations logic accordingly to reflect
+this behavior.
+
+Fixes: 2f7f33a09516 ("octeontx2-pf: Add representors for sdp MAC")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 0a13f7c4684e0..272f178906d61 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -4685,7 +4685,7 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 	}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 2d53dc77ef1ef..b3f616a7f2e96 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -315,7 +315,7 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 	struct otx2_nic *pfvf = netdev_priv(netdev);
+ 	struct cgx_pause_frm_cfg *req, *rsp;
  
- 	if (mtk_is_netsys_v3_or_greater(mac->hw) &&
--	    MTK_HAS_CAPS(mac->hw->soc->caps, MTK_ESW_BIT) &&
-+	    MTK_HAS_CAPS(mac->hw->soc->caps, MTK_ESW) &&
- 	    id == MTK_GMAC1_ID) {
- 		mac->phylink_config.mac_capabilities = MAC_ASYM_PAUSE |
- 						       MAC_SYM_PAUSE |
+-	if (is_otx2_lbkvf(pfvf->pdev))
++	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
+ 		return;
+ 
+ 	mutex_lock(&pfvf->mbox.lock);
+@@ -347,7 +347,7 @@ static int otx2_set_pauseparam(struct net_device *netdev,
+ 	if (pause->autoneg)
+ 		return -EOPNOTSUPP;
+ 
+-	if (is_otx2_lbkvf(pfvf->pdev))
++	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
+ 		return -EOPNOTSUPP;
+ 
+ 	if (pause->rx_pause)
+@@ -937,8 +937,8 @@ static u32 otx2_get_link(struct net_device *netdev)
+ {
+ 	struct otx2_nic *pfvf = netdev_priv(netdev);
+ 
+-	/* LBK link is internal and always UP */
+-	if (is_otx2_lbkvf(pfvf->pdev))
++	/* LBK and SDP links are internal and always UP */
++	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
+ 		return 1;
+ 	return pfvf->linfo.link_up;
+ }
+@@ -1409,7 +1409,7 @@ static int otx2vf_get_link_ksettings(struct net_device *netdev,
+ {
+ 	struct otx2_nic *pfvf = netdev_priv(netdev);
+ 
+-	if (is_otx2_lbkvf(pfvf->pdev)) {
++	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev)) {
+ 		cmd->base.duplex = DUPLEX_FULL;
+ 		cmd->base.speed = SPEED_100000;
+ 	} else {
 -- 
 2.39.5
 
