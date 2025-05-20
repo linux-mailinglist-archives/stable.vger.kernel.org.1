@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA549ABDAEF
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 693E1ABD9FB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405391BA0FE3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08499189A3EB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43DF198845;
-	Tue, 20 May 2025 14:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637EC2459ED;
+	Tue, 20 May 2025 13:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaJLKCD6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIgjscvn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947B0247289;
-	Tue, 20 May 2025 14:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1609F242D7D;
+	Tue, 20 May 2025 13:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749720; cv=none; b=MyKrF7KScbc4PZp+2UQyq2A5+SKNSBWHP5GAK44eCzHA5GEWP/A5BQThSJgx72UIX66XybGVcZYyM9ldqVjcjZaCL1Bfdmw3BivVKCfIce5hy7tbAii5yR3v0Jie9GnG7D8gN/EK4EsW/cKU+7Y3srWppMTnO2KNcR98uxXV80w=
+	t=1747749147; cv=none; b=MneNXqr3DaCLNw56cr30XMgphmC5RniPJGZqAiFFOzjpYCFs4yMLOuUhE9Y2QVwyleXkYIuBPxLrLfOG8Yl6hgVAuYvT4wWGlZZVhDbd6OwVN41f1iI52VHCx27g56VsmJfvlul7ZRdUpZED4vjsZfDg4wjFXA67hQBm33EwJAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749720; c=relaxed/simple;
-	bh=Ed4FtVhTZ1yWuQn1nS37wJWt6NcFbIWF/KSHJGP7srI=;
+	s=arc-20240116; t=1747749147; c=relaxed/simple;
+	bh=F/2onW47zNjmBkuJUNXtdK5O3r6yKcu7bog2ObPgK9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jtbudu7nfgCstSOEfVG/blIX90Qz2Ud0ic9i/sp5z5HcKr7mbw8a/H8AQ+Sgyj/3D2qvuSWyx6Yqy1Uk0hO7mqEmBwI95qOHkdEU3sQI+uvuavFSbOtVoC5NEoH7fDznlio8vFiCCJ7zSacVKEQu/D4f4U0IfPhqB+S/tcNTAds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaJLKCD6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA18C4CEEB;
-	Tue, 20 May 2025 14:01:59 +0000 (UTC)
+	 MIME-Version; b=dS40M+lu0Od1gyQ+x1dTF78FOO31krsWy9lYPldJkMQLmq8bfj/RD803qaivGvtX3JX070EHgbzjLV6jtjJ2xu/V45N8T6ANF2t2S84ovUuNi3NMwk72cpmg/adHts78lYd6w4OIR1TkQH1PUL7GD60Xk6IDgavsNQVuKgDAcz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIgjscvn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18211C4CEE9;
+	Tue, 20 May 2025 13:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749720;
-	bh=Ed4FtVhTZ1yWuQn1nS37wJWt6NcFbIWF/KSHJGP7srI=;
+	s=korg; t=1747749146;
+	bh=F/2onW47zNjmBkuJUNXtdK5O3r6yKcu7bog2ObPgK9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xaJLKCD6qSrevjpuCgmE3SE8ntcnLm7271PT7CgsYzECoDlVD0o9gGKa1wfUTywgu
-	 XeT3iJaO+LGx2oQoa9g2MCoEmRtoNcH+FiiT0sZsZgWo1ho1In35XZAvFEqwX8YTJb
-	 h8l8t/bvRrH25F8D669COKmtSi5qygcbi8ADrM+4=
+	b=tIgjscvnwzs/nfeO2OEiuxu1XXS0lc118ygZ2QGuYkwRltpvR5gIihMjTJnxAsmKq
+	 ls+5DcUz092MRYeP6iRaCuMkoyiYMbVXZHrktJ+ZWBIRh4KswNJLlKmKPfFINOPHRY
+	 h691Pr8zjc92mB31Lcu/FHf+BwD1542AUJrcETTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/117] tools/net/ynl: ethtool: fix crash when Hardware Clock info is missing
+Subject: [PATCH 5.15 12/59] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
 Date: Tue, 20 May 2025 15:50:03 +0200
-Message-ID: <20250520125805.502145014@linuxfoundation.org>
+Message-ID: <20250520125754.319639728@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit 45375814eb3f4245956c0c85092a4eee4441d167 ]
+[ Upstream commit 9d8a99c5a7c7f4f7eca2c168a4ec254409670035 ]
 
-Fix a crash in the ethtool YNL implementation when Hardware Clock information
-is not present in the response. This ensures graceful handling of devices or
-drivers that do not provide this optional field. e.g.
+In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
+allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
+not freed. Fix that by jumping to the error path that frees them, by
+calling qlcnic_free_mbx_args(). This was found using static analysis.
 
-  Traceback (most recent call last):
-    File "/net/tools/net/ynl/pyynl/./ethtool.py", line 438, in <module>
-      main()
-      ~~~~^^
-    File "/net/tools/net/ynl/pyynl/./ethtool.py", line 341, in main
-      print(f'PTP Hardware Clock: {tsinfo["phc-index"]}')
-                                   ~~~~~~^^^^^^^^^^^^^
-  KeyError: 'phc-index'
-
-Fixes: f3d07b02b2b8 ("tools: ynl: ethtool testing tool")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250508035414.82974-1-liuhangbin@gmail.com
+Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250512044829.36400-1-abdun.nihaal@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/ethtool.py | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/net/ynl/ethtool.py b/tools/net/ynl/ethtool.py
-index 47264ae20036b..ffd8eb6d19048 100755
---- a/tools/net/ynl/ethtool.py
-+++ b/tools/net/ynl/ethtool.py
-@@ -333,16 +333,24 @@ def main():
-         print('Capabilities:')
-         [print(f'\t{v}') for v in bits_to_dict(tsinfo['timestamping'])]
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+index d7c93c409a776..3bc2f83176d03 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -1485,8 +1485,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
+ 	}
  
--        print(f'PTP Hardware Clock: {tsinfo["phc-index"]}')
-+        print(f'PTP Hardware Clock: {tsinfo.get("phc-index", "none")}')
- 
--        print('Hardware Transmit Timestamp Modes:')
--        [print(f'\t{v}') for v in bits_to_dict(tsinfo['tx-types'])]
-+        if 'tx-types' in tsinfo:
-+            print('Hardware Transmit Timestamp Modes:')
-+            [print(f'\t{v}') for v in bits_to_dict(tsinfo['tx-types'])]
-+        else:
-+            print('Hardware Transmit Timestamp Modes: none')
+ 	cmd_op = (cmd.rsp.arg[0] & 0xff);
+-	if (cmd.rsp.arg[0] >> 25 == 2)
+-		return 2;
++	if (cmd.rsp.arg[0] >> 25 == 2) {
++		ret = 2;
++		goto out;
++	}
 +
-+        if 'rx-filters' in tsinfo:
-+            print('Hardware Receive Filter Modes:')
-+            [print(f'\t{v}') for v in bits_to_dict(tsinfo['rx-filters'])]
-+        else:
-+            print('Hardware Receive Filter Modes: none')
- 
--        print('Hardware Receive Filter Modes:')
--        [print(f'\t{v}') for v in bits_to_dict(tsinfo['rx-filters'])]
-+        if 'stats' in tsinfo and tsinfo['stats']:
-+            print('Statistics:')
-+            [print(f'\t{k}: {v}') for k, v in tsinfo['stats'].items()]
- 
--        print('Statistics:')
--        [print(f'\t{k}: {v}') for k, v in tsinfo['stats'].items()]
-         return
- 
-     print(f'Settings for {args.device}:')
+ 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
+ 		set_bit(QLC_BC_VF_STATE, &vf->state);
+ 	else
 -- 
 2.39.5
 
