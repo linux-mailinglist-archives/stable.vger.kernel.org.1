@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-145150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84306ABDA5D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:56:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB86ABDB04
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 369DF7B1754
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88D3188E115
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D302459EC;
-	Tue, 20 May 2025 13:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE77F21E0BB;
+	Tue, 20 May 2025 14:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoOZ31Ge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyPvtIlr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76AA242D94;
-	Tue, 20 May 2025 13:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B69BEEDE;
+	Tue, 20 May 2025 14:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749313; cv=none; b=qo5b/ha7Fk5Q3/w5Xv+t6XIPMv5JHpQTtESJUYyBeQnFKs2QYKiHCIlvm0m2DSBu/Is/DQJNrIDLhf5lhsbWIrUK0Yv04r9OknhAjF2WPYjljpacTZhIMK4XZ2C8DfKFcg+ONuEh+MkVfLhr4DN5peSBxLXjNoNFZrY01w82TYo=
+	t=1747749792; cv=none; b=E2GJKog+yzuXWL6P1wuz05rt9MeY0nq7WOEUGJ3NYA5JH9WDCfWOjf4W0uMtk8R3flJjj9ejQTizfb/V2xAECqc7lDxIckqiXjqKiDBc62udWb6n7jKGLsbo0g2i85QNXQbQGTiinJaxCxxfnVPYalvCbrTNNCf5HNuQK02m1PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749313; c=relaxed/simple;
-	bh=7KW5pNqdOmMWxQOl802TPoh6O6lbIbPN39oHYS7CR9w=;
+	s=arc-20240116; t=1747749792; c=relaxed/simple;
+	bh=enUK7xH7+T5ze+1pJE9l/SDwP+ciaNx+rur4Vg+vPtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zk9SJ6Ovs0p95tQkAiIEXHkN/CZTzZXP91FV/8wDcTPGpa0kvbGNMMaDLgGzPwkuI53SRAFSriokiAl6ynvAw2bUSvvgwN5NdX8xvWWj1gDC5D4EfBdVCVI3/3ha3geW8Rjo0xE0oLY3xeIRVGI8TcKHCPVPjwn4JXGy3HVsE9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uoOZ31Ge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60755C4CEE9;
-	Tue, 20 May 2025 13:55:12 +0000 (UTC)
+	 MIME-Version; b=oijGzAJYrvrPjgHUwdbCEtiTTW0GiMq8iPtColXbEvw5eP7UQnQWxPF+PJVNi2CV3qcLpuMgGwNaYNvJmUdMPNUbVxovqzk4bF+t5TOlY0CvVCW/QTPxIyiNbDCkkXW+xI5WjNmogREZnMnrLnJgj/yrDha9NugKFtMSuly3+7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyPvtIlr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B30AC4CEE9;
+	Tue, 20 May 2025 14:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749312;
-	bh=7KW5pNqdOmMWxQOl802TPoh6O6lbIbPN39oHYS7CR9w=;
+	s=korg; t=1747749792;
+	bh=enUK7xH7+T5ze+1pJE9l/SDwP+ciaNx+rur4Vg+vPtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uoOZ31GeGHERFPej1gYvsaEPtlb861M87DDsryRCt9G5gJ2XwQVVjbaml0EQvFFog
-	 zgpjG/jf54OGlx0Wn5aNV5mB71/LgXMKY26l1eCvN1djze8s70OuEscJ/6JYlQ3l2f
-	 VVYvQQhYzfghhkB0Fb+kXBRovA4g5raxomgSOeZQ=
+	b=KyPvtIlrdwOLMSpnshKKqCaj0HE8HbODPhy1j+9skGtFbkVSS4oc5HADxSDXCk5Sh
+	 eu+XsVP5dsCcrJtwdx92RyTIOVxIhpO+PWQSX+7GCy7WxHzpT5cZed7xqt6U01JrlY
+	 2k4P6PGn8Km9pUdyjAfIZ+83A7syU60c+eyTZn+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Chauvet <kwizart@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 35/59] ALSA: usb-audio: Add sample rate quirk for Microdia JP001 USB Camera
-Date: Tue, 20 May 2025 15:50:26 +0200
-Message-ID: <20250520125755.250969008@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.6 062/117] udf: Make sure i_lenExtents is uptodate on inode eviction
+Date: Tue, 20 May 2025 15:50:27 +0200
+Message-ID: <20250520125806.448097315@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Chauvet <kwizart@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 7b9938a14460e8ec7649ca2e80ac0aae9815bf02 upstream.
+commit 55dd5b4db3bf04cf077a8d1712f6295d4517c337 upstream.
 
-Microdia JP001 does not support reading the sample rate which leads to
-many lines of "cannot get freq at ep 0x84".
-This patch adds the USB ID to quirks.c and avoids those error messages.
+UDF maintains total length of all extents in i_lenExtents. Generally we
+keep extent lengths (and thus i_lenExtents) block aligned because it
+makes the file appending logic simpler. However the standard mandates
+that the inode size must match the length of all extents and thus we
+trim the last extent when closing the file. To catch possible bugs we
+also verify that i_lenExtents matches i_size when evicting inode from
+memory. Commit b405c1e58b73 ("udf: refactor udf_next_aext() to handle
+error") however broke the code updating i_lenExtents and thus
+udf_evict_inode() ended up spewing lots of errors about incorrectly
+sized extents although the extents were actually sized properly. Fix the
+updating of i_lenExtents to silence the errors.
 
-usb 7-4: New USB device found, idVendor=0c45, idProduct=636b, bcdDevice= 1.00
-usb 7-4: New USB device strings: Mfr=2, Product=1, SerialNumber=3
-usb 7-4: Product: JP001
-usb 7-4: Manufacturer: JP001
-usb 7-4: SerialNumber: JP001
-usb 7-4: 3:1: cannot get freq at ep 0x84
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nicolas Chauvet <kwizart@gmail.com>
-Link: https://patch.msgid.link/20250515102132.73062-1-kwizart@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/udf/truncate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1837,6 +1837,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x0c45, 0x6340, /* Sonix HD USB Camera */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x0c45, 0x636b, /* Microdia JP001 USB Camera */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x0d8c, 0x0014, /* USB Audio Device */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x0ecb, 0x205c, /* JBL Quantum610 Wireless */
+--- a/fs/udf/truncate.c
++++ b/fs/udf/truncate.c
+@@ -115,7 +115,7 @@ void udf_truncate_tail_extent(struct ino
+ 	}
+ 	/* This inode entry is in-memory only and thus we don't have to mark
+ 	 * the inode dirty */
+-	if (ret == 0)
++	if (ret >= 0)
+ 		iinfo->i_lenExtents = inode->i_size;
+ 	brelse(epos.bh);
+ }
 
 
 
