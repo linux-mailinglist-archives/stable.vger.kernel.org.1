@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-145241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A47EABDADE
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C48ABDAE6
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7490A8C32FC
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:59:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310D6163A65
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B077713635C;
-	Tue, 20 May 2025 13:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41B7246769;
+	Tue, 20 May 2025 14:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5ATylkn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTR9UIMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7EA2441B4;
-	Tue, 20 May 2025 13:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907D72459F7;
+	Tue, 20 May 2025 14:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749588; cv=none; b=Ww9dD9pPms8SZUC/bhoZj7FPtjEBNtf3NLv2OtksROaATmzkq0XF7glWF3ztSa+Jv9wYgojNH7ntuizsLGpBWsbP+WfsB98IzU9G0dOnZhEGGyRqLCToT80fHyIK/cUB1fkVtAJqq32ziTHZ0ySnwbqaHLTmJOBFsb1mJ+cICYE=
+	t=1747749628; cv=none; b=ngdIVBPxD7taTkONk3OhZn0f13CsZY+B4Udq+wkMmJFhvQz7bdnQegeSUtVfYIIwSadJc1X6cNqWbS2ciWUr8dripo0XvHQwEc5vxX70+kwSOwHaC1kMQGOIepPLvb5KCC/1TLb6AnwZnMUtr8/ct4IPHfViMtp4keWL7x4z2og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749588; c=relaxed/simple;
-	bh=plMkdfk/juW0iDxRF0R6w+EjwUkdNZtmwGAUAtcwb1k=;
+	s=arc-20240116; t=1747749628; c=relaxed/simple;
+	bh=hMpgHqRvpbyQikFcBwjjxd591oS8jSRpa6tb9OWl2Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sshTfglxyIeUNPA9TxMUMTl9mAJMXPnudqSS35ULZhEXxCQgGZQz80eJIrVnZWIvdB7AO+dzvZnSQEsvuwANGxqU7RdsEmQF9tVIGGgmhg48+2Ck+TmfPMuysL8YbRF/y+VPvCJYqeTfqXwM3lM/CE286PWqM386O8V/f5UE4sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5ATylkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D191DC4CEE9;
-	Tue, 20 May 2025 13:59:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n9LkI/leOSiRKgQbMhgBUQka8tC60PVdAov/SMpP7r+xZnjtn0O2TGXyw/OvHDRetpP0MvgR+e9yk7cC+W3TUPE/iQxcdhgP1ZguSxf6Qo/6mLj6oJgjQPu3xaE7btVYPaAOoz/cXy42H+MPmMK36SNyv66UC4RVf3XemZqbX64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTR9UIMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19592C4CEEF;
+	Tue, 20 May 2025 14:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749588;
-	bh=plMkdfk/juW0iDxRF0R6w+EjwUkdNZtmwGAUAtcwb1k=;
+	s=korg; t=1747749628;
+	bh=hMpgHqRvpbyQikFcBwjjxd591oS8jSRpa6tb9OWl2Dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5ATylknuIwnMFopwt/nysKQyOCTXMURfNbhWXGp3aXl7MEw0nvhYOPwb86sfZoH0
-	 CCJOhAfRpV9GyiKhoBlBAnHiqOb2t+IRwzFq9bcRid7wLVkEfMFuIn6LALAkgiUwrc
-	 y6D65UFxuxEIWiZ/mUu3ZP8gZ9a8CSBK2Q0GcMtE=
+	b=OTR9UIMtuUEXJGRPLRm7zfjkN0o3i2po0wOvAiVi+ES+h9Tb8KL+v/WF8lRwXHMTA
+	 cQa3cnihH0HTvpofQZk3gWTPrUe+jS08CYABgiXcJTD8WwSazvR+mYnFnBIYiIW+nx
+	 EFKXZwfGXly3wmMBdSLvTp6lxeJu9GFtXfDs/O10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Zhaoyang Li <lizy04@hust.edu.cn>
-Subject: [PATCH 6.1 91/97] arm64/sme: Always exit sme_alloc() early with existing storage
-Date: Tue, 20 May 2025 15:50:56 +0200
-Message-ID: <20250520125804.229184689@linuxfoundation.org>
+Subject: [PATCH 6.1 92/97] platform/x86/amd/pmc: Only disable IRQ1 wakeup where i8042 actually enabled it
+Date: Tue, 20 May 2025 15:50:57 +0200
+Message-ID: <20250520125804.265727497@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
 References: <20250520125800.653047540@linuxfoundation.org>
@@ -60,49 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 
-commit dc7eb8755797ed41a0d1b5c0c39df3c8f401b3d9 upstream.
+commit dd410d784402c5775f66faf8b624e85e41c38aaf upstream.
 
-When sme_alloc() is called with existing storage and we are not flushing we
-will always allocate new storage, both leaking the existing storage and
-corrupting the state. Fix this by separating the checks for flushing and
-for existing storage as we do for SVE.
+Wakeup for IRQ1 should be disabled only in cases where i8042 had
+actually enabled it, otherwise "wake_depth" for this IRQ will try to
+drop below zero and there will be an unpleasant WARN() logged:
 
-Callers that reallocate (eg, due to changing the vector length) should
-call sme_free() themselves.
+kernel: atkbd serio0: Disabling IRQ1 wakeup source to avoid platform firmware bug
+kernel: ------------[ cut here ]------------
+kernel: Unbalanced IRQ 1 wake disable
+kernel: WARNING: CPU: 10 PID: 6431 at kernel/irq/manage.c:920 irq_set_irq_wake+0x147/0x1a0
 
-Fixes: 5d0a8d2fba50 ("arm64/ptrace: Ensure that SME is set up for target when writing SSVE state")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240115-arm64-sme-flush-v1-1-7472bd3459b7@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+The PMC driver uses DEFINE_SIMPLE_DEV_PM_OPS() to define its dev_pm_ops
+which sets amd_pmc_suspend_handler() to the .suspend, .freeze, and
+.poweroff handlers. i8042_pm_suspend(), however, is only set as
+the .suspend handler.
+
+Fix the issue by call PMC suspend handler only from the same set of
+dev_pm_ops handlers as i8042_pm_suspend(), which currently means just
+the .suspend handler.
+
+To reproduce this issue try hibernating (S4) the machine after a fresh boot
+without putting it into s2idle first.
+
+Fixes: 8e60615e8932 ("platform/x86/amd: pmc: Disable IRQ1 wakeup for RN/CZN")
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Link: https://lore.kernel.org/r/c8f28c002ca3c66fbeeb850904a1f43118e17200.1736184606.git.mail@maciej.szmigiero.name
+[ij: edited the commit message.]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/platform/x86/amd/pmc.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1259,8 +1259,10 @@ void fpsimd_release_task(struct task_str
-  */
- void sme_alloc(struct task_struct *task, bool flush)
+--- a/drivers/platform/x86/amd/pmc.c
++++ b/drivers/platform/x86/amd/pmc.c
+@@ -834,6 +834,10 @@ static int __maybe_unused amd_pmc_suspen
  {
--	if (task->thread.za_state && flush) {
--		memset(task->thread.za_state, 0, za_state_size(task));
-+	if (task->thread.za_state) {
-+		if (flush)
-+			memset(task->thread.za_state, 0,
-+			       za_state_size(task));
- 		return;
- 	}
+ 	struct amd_pmc_dev *pdev = dev_get_drvdata(dev);
+ 
++	/*
++	* Must be called only from the same set of dev_pm_ops handlers
++	* as i8042_pm_suspend() is called: currently just from .suspend.
++	*/
+ 	if (pdev->cpu_id == AMD_CPU_ID_CZN) {
+ 		int rc = amd_pmc_czn_wa_irq1(pdev);
+ 
+@@ -846,7 +850,9 @@ static int __maybe_unused amd_pmc_suspen
+ 	return 0;
+ }
+ 
+-static SIMPLE_DEV_PM_OPS(amd_pmc_pm, amd_pmc_suspend_handler, NULL);
++static const struct dev_pm_ops amd_pmc_pm = {
++	.suspend = amd_pmc_suspend_handler,
++};
+ 
+ #endif
  
 
 
