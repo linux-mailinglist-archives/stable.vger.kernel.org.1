@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-145633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CE8ABDC8D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40AB8ABDC19
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2E241BC00B1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4FD58A3D53
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC84251781;
-	Tue, 20 May 2025 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A4424E4A1;
+	Tue, 20 May 2025 14:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKoiFUvH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUt08ZXb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D7F24DFE4;
-	Tue, 20 May 2025 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F10E246788;
+	Tue, 20 May 2025 14:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750755; cv=none; b=FcPNqk9TJjpbeOuIQjSEb0FGt6aY4VO9cYBjCMEiPefM245Q72vhY0yDdbqG1jVwnKz75si/XJ/fHG9S7Pz/SwDP1ZwdUHcDgESofZ4jAo6mP+zc/b+T/Moa0W6zna+fvKSQKdNNy7VsRam60gcR+6eGKb4aU0vZ5gIGwVzvDUU=
+	t=1747750264; cv=none; b=CJ2k5OK1xYswx4RRo1CUvfddemzLNUsj1NPimVl4exd3yG+s0F/+Rl4Bjed6BodkmR7FVVVz+ikyinzmi0HCj/OdzycgE1MibFHoDU8ijRG7WRoJKePoekJ+P6wutBTizM94jgObwLXszy0PP3zsogjDmhnSlfJEbtGAjDClJhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750755; c=relaxed/simple;
-	bh=J8GbOJ2WiWC2NuValYvTAp1eMAwYNPcpUGhXzjngXkk=;
+	s=arc-20240116; t=1747750264; c=relaxed/simple;
+	bh=H201zlHrJFjYrB0kwG57trFwfptJO9LLaSY2gqsZVgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F1xAnU/Vu7WCSBl0g0R2ZYCfpAcQfWIyYTPFq/aw38rWmO2h51/M63peiTEN3/yMtDdKSlqvRd4fbXSLyMh/ZDELTzzo+t7ywmjTH3yhaQcnNAVDwrFpkWS5PRFNrhqbNs/MvAnY+xOVlFn80a4234X2JxQjeE456JntKkMcqv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKoiFUvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BB0C4CEE9;
-	Tue, 20 May 2025 14:19:14 +0000 (UTC)
+	 MIME-Version; b=QIuBqoYlXg4YKz1wG6ZsFysqTy/e6FBXATyONNgI7bTJvb84XkVz/2zsTrk48AwqpvJnrkpQkBcEtJUg7BA97HnHHtAWc2bg2ywKcrDjITV1Np20pJRagvcpxDtD2q3N26Lt1zboB5drdaXAaoIQ4+kxS9F4znL3FJsK5XjJgDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUt08ZXb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6EAC4CEE9;
+	Tue, 20 May 2025 14:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750755;
-	bh=J8GbOJ2WiWC2NuValYvTAp1eMAwYNPcpUGhXzjngXkk=;
+	s=korg; t=1747750264;
+	bh=H201zlHrJFjYrB0kwG57trFwfptJO9LLaSY2gqsZVgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKoiFUvH/I0SAE8tLd9+oppahSkDtz0t3s09reclcvmn6unCwco8OfDpdzVmNJula
-	 pOeyopt22Ppnn8zIW5Oc3oqjc2cn1JcxBgahNL7wZrH+dscL6Gs7fHsbYIKH9D4sVE
-	 3dw6rwv1geX+q13350n5QqQQiJIyrPYohREIWXHM=
+	b=VUt08ZXbRTq0RDOtQAOPHHMgNVXStv49nCAeC5ByA0VFrQ7Hvhfuj4nklo0gs6DeW
+	 lNUESIRQ2+fs5mgzrjk7LKP+TE1apERDFOxPo8NiITHmB0VpTgSxj6qUNR93UJ18OR
+	 dzfBTVIXxy5YtyyXsgQW3SmwEMZ9yjfUcf9XcuUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>
-Subject: [PATCH 6.14 080/145] drm/amdgpu: read back register after written for VCN v4.0.5
+	Michael Kelley <mhklinux@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 095/143] hv_netvsc: Use vmbus_sendpacket_mpb_desc() to send VMBus messages
 Date: Tue, 20 May 2025 15:50:50 +0200
-Message-ID: <20250520125813.714702573@linuxfoundation.org>
+Message-ID: <20250520125813.788483246@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David (Ming Qiang) Wu <David.Wu3@amd.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit ee7360fc27d6045510f8fe459b5649b2af27811a upstream.
+commit 4f98616b855cb0e3b5917918bb07b44728eb96ea upstream.
 
-On VCN v4.0.5 there is a race condition where the WPTR is not
-updated after starting from idle when doorbell is used. Adding
-register read-back after written at function end is to ensure
-all register writes are done before they can be used.
+netvsc currently uses vmbus_sendpacket_pagebuffer() to send VMBus
+messages. This function creates a series of GPA ranges, each of which
+contains a single PFN. However, if the rndis header in the VMBus
+message crosses a page boundary, the netvsc protocol with the host
+requires that both PFNs for the rndis header must be in a single "GPA
+range" data structure, which isn't possible with
+vmbus_sendpacket_pagebuffer(). As the first step in fixing this, add a
+new function netvsc_build_mpb_array() to build a VMBus message with
+multiple GPA ranges, each of which may contain multiple PFNs. Use
+vmbus_sendpacket_mpb_desc() to send this VMBus message to the host.
 
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528
-Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 07c9db090b86e5211188e1b351303fbc673378cf)
-Cc: stable@vger.kernel.org
+There's no functional change since higher levels of netvsc don't
+maintain or propagate knowledge of contiguous PFNs. Based on its
+input, netvsc_build_mpb_array() still produces a separate GPA range
+for each PFN and the behavior is the same as with
+vmbus_sendpacket_pagebuffer(). But the groundwork is laid for a
+subsequent patch to provide the necessary grouping.
+
+Cc: <stable@vger.kernel.org> # 6.1.x
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/20250513000604.1396-3-mhklinux@outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/hyperv/netvsc.c |   50 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-@@ -983,6 +983,10 @@ static int vcn_v4_0_5_start_dpg_mode(str
- 			ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__SHIFT |
- 			VCN_RB1_DB_CTRL__EN_MASK);
- 
-+	/* Keeping one read-back to ensure all register writes are done, otherwise
-+	 * it may introduce race conditions */
-+	RREG32_SOC15(VCN, inst_idx, regVCN_RB1_DB_CTRL);
-+
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -1049,6 +1049,42 @@ static int netvsc_dma_map(struct hv_devi
  	return 0;
  }
  
-@@ -1169,6 +1173,10 @@ static int vcn_v4_0_5_start(struct amdgp
- 		fw_shared->sq.queue_mode &= ~(FW_QUEUE_RING_RESET | FW_QUEUE_DPG_HOLD_OFF);
- 	}
- 
-+	/* Keeping one read-back to ensure all register writes are done, otherwise
-+	 * it may introduce race conditions */
-+	RREG32_SOC15(VCN, i, regVCN_RB_ENABLE);
++/* Build an "array" of mpb entries describing the data to be transferred
++ * over VMBus. After the desc header fields, each "array" entry is variable
++ * size, and each entry starts after the end of the previous entry. The
++ * "offset" and "len" fields for each entry imply the size of the entry.
++ *
++ * The pfns are in HV_HYP_PAGE_SIZE, because all communication with Hyper-V
++ * uses that granularity, even if the system page size of the guest is larger.
++ * Each entry in the input "pb" array must describe a contiguous range of
++ * guest physical memory so that the pfns are sequential if the range crosses
++ * a page boundary. The offset field must be < HV_HYP_PAGE_SIZE.
++ */
++static inline void netvsc_build_mpb_array(struct hv_page_buffer *pb,
++				u32 page_buffer_count,
++				struct vmbus_packet_mpb_array *desc,
++				u32 *desc_size)
++{
++	struct hv_mpb_array *mpb_entry = &desc->range;
++	int i, j;
 +
- 	return 0;
- }
++	for (i = 0; i < page_buffer_count; i++) {
++		u32 offset = pb[i].offset;
++		u32 len = pb[i].len;
++
++		mpb_entry->offset = offset;
++		mpb_entry->len = len;
++
++		for (j = 0; j < HVPFN_UP(offset + len); j++)
++			mpb_entry->pfn_array[j] = pb[i].pfn + j;
++
++		mpb_entry = (struct hv_mpb_array *)&mpb_entry->pfn_array[j];
++	}
++
++	desc->rangecount = page_buffer_count;
++	*desc_size = (char *)mpb_entry - (char *)desc;
++}
++
+ static inline int netvsc_send_pkt(
+ 	struct hv_device *device,
+ 	struct hv_netvsc_packet *packet,
+@@ -1091,6 +1127,9 @@ static inline int netvsc_send_pkt(
  
+ 	packet->dma_range = NULL;
+ 	if (packet->page_buf_cnt) {
++		struct vmbus_channel_packet_page_buffer desc;
++		u32 desc_size;
++
+ 		if (packet->cp_partial)
+ 			pb += packet->rmsg_pgcnt;
+ 
+@@ -1100,11 +1139,12 @@ static inline int netvsc_send_pkt(
+ 			goto exit;
+ 		}
+ 
+-		ret = vmbus_sendpacket_pagebuffer(out_channel,
+-						  pb, packet->page_buf_cnt,
+-						  &nvmsg, sizeof(nvmsg),
+-						  req_id);
+-
++		netvsc_build_mpb_array(pb, packet->page_buf_cnt,
++				(struct vmbus_packet_mpb_array *)&desc,
++				 &desc_size);
++		ret = vmbus_sendpacket_mpb_desc(out_channel,
++				(struct vmbus_packet_mpb_array *)&desc,
++				desc_size, &nvmsg, sizeof(nvmsg), req_id);
+ 		if (ret)
+ 			netvsc_dma_unmap(ndev_ctx->device_ctx, packet);
+ 	} else {
 
 
 
