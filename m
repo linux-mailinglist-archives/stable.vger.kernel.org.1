@@ -1,226 +1,124 @@
-Return-Path: <stable+bounces-145012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67367ABD027
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:17:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D70ABD021
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA0CF4A3435
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 07:17:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE4271B6583B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 07:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BAA25D207;
-	Tue, 20 May 2025 07:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDA325CC63;
+	Tue, 20 May 2025 07:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jRpCNbQs";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/DK7HFP3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="C2b2MQ/I";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xH+q0fbC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gvTl/w2w"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47B4155335
-	for <stable@vger.kernel.org>; Tue, 20 May 2025 07:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22A515E8B;
+	Tue, 20 May 2025 07:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747725437; cv=none; b=UEgJFS2Y3dtEZt9YvTrMqQ3jPpxM7D4oK37YLVWjYoNLIH3ffgS1ITybZKeWg5pWKAmcrgPV7UDU5p7TBSFZDx5VdjkN+jL8/nhQKruU+UhDG6eCaTu92wWqnZzCoeJgOj7jepayUoQCFePA/c3xIlsxW2YJffXTP6/bCxCMREs=
+	t=1747725371; cv=none; b=oml/f93yc8rkjKVieE7yL4stEoDgwIgnPTJgqrFjPFJtVLBCiarkGOd62d1lORf1P8WofJfyrRhaBMWfpSh9Zewn9kZyMVHBwuK6G8W8qDU2EcZ5YlaccsA2XCDgZEbUJuZXZV8SVqncIesO/N6+nd/JliKoKgh+OYcUXbS9/xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747725437; c=relaxed/simple;
-	bh=lRagZQmgUvdghHg7ZtAe29OmSbKWbRuyjyXrV4X+phg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V1P5LCdKS9IhwGPPpi0+JDF/Lz+HYrO+o9yWDBAKXxgeHpcrpHihn5JLLrvnlTAkwPxjN/9N5up26N6llaKDYrGHNVwjQBTUbUpYph2tXsO7Xr3jMaKAgWuuDBSVRqxUIPoA4M1Z74z8q8NE+EasMYULxe/NzZvRJXlxuIcuIaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jRpCNbQs; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/DK7HFP3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=C2b2MQ/I; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xH+q0fbC; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DC0EC2228E;
-	Tue, 20 May 2025 07:17:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1747725434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=/X6S6/bCWZmUJrcNoSW9IqCVsbt0BrJkVECymPGZju8=;
-	b=jRpCNbQsrwGdsG50l8Udeh2QvYb4xWBl/o/SJCo3WynhJnJ4Rs1e3NT/ygTf1iA9LcnO+r
-	VzZjIfG58YENBkCxJ3+3Rid2IhfmBnBow+P6GMPGfKd2yuyJ+K/oRu1atREvteO67TB5pf
-	AFAy9/AL8PJZ1AoDRct1axLO2gt+J9U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1747725434;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=/X6S6/bCWZmUJrcNoSW9IqCVsbt0BrJkVECymPGZju8=;
-	b=/DK7HFP3+0AHHaPZi5YBYCDDbOvM0xqNv4CLPFhkw59jsEQiYFCrSqZHSlCTNJfPRB46Xs
-	5Cdfj0I0M5bqG9Cg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="C2b2MQ/I";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xH+q0fbC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1747725433; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=/X6S6/bCWZmUJrcNoSW9IqCVsbt0BrJkVECymPGZju8=;
-	b=C2b2MQ/In3XsmTEFFJ7lntxxxda6LA6WpjzPTk3xx60Y4uwwUaxp2GTpc/Yd9tNTobBLaw
-	+cDS3epecrrAfN/TNy30JWnOH2Vrjn7GTaFwlLEk3QPDQEPyIhIWZboWgg4Pwi/8VbNXmM
-	+MmEW2U7MM+elUgVMMjZeE+NP17k6a0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1747725433;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=/X6S6/bCWZmUJrcNoSW9IqCVsbt0BrJkVECymPGZju8=;
-	b=xH+q0fbCEaEG5O6J80vd6HE4OPU4VHMUGfmrL+vjdUamWBeyYFlrz0n5daKzmQuoMHLRDx
-	LczI73giHgTuQeAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8358913A3E;
-	Tue, 20 May 2025 07:17:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gSpMHnksLGiZNgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 20 May 2025 07:17:13 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: gregkh@linuxfoundation.org,
-	hdegoede@redhat.com,
-	arvidjaar@gmail.com,
-	tiwai@suse.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] dummycon: Trigger redraw when switching consoles with deferred takeover
-Date: Tue, 20 May 2025 09:14:00 +0200
-Message-ID: <20250520071418.8462-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1747725371; c=relaxed/simple;
+	bh=64nSeznQ/80kI+TqqvrHQheS4AVHuJSHiUdaas+H0vQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I96OM57U7npA2eqOFahsRaILiSCSHfnAQm5yFhqmGolauqSTN5jr7DCoCLb9Vv4IFagNXO9d3Ja0IYS9CST/nwzJiaLsTYsptu+5AyHlJBoQfRuoKyPYRPH3rXVNvmJgyoCWP/HGN1eQWUj8FJQbzrU2pCcj3a079weyZ1x8xmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gvTl/w2w; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-acbb85ce788so1073315566b.3;
+        Tue, 20 May 2025 00:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747725368; x=1748330168; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dDIRhWdKVMpUu59ujm96cXSr76HpSQ4ZrAeN1Auu11g=;
+        b=gvTl/w2wdlDybYmfvU13lSRNZPeyAb4DEtZLlfvC5/TX6IH33Z8lwpVEE1XqmLV+wC
+         6aRxgYl9/YRbGCBnrmnG7MOCYORpNO38iPlYQkmwaWIGqEyMKYSw5Fef+0A6/ZE309SD
+         iC1K3s5IA7T1+k58nulHjJJ1QYhKwIknEFwQTMMY6mDELYrgicR0P9RxnlJ0ncsEqt2V
+         VPwvK7Kzcq1QBYN3OWngaYD/XE1WMjHvJ9TYw03WIaIfSCAXZl3Xlr8zdGri/Kg+tAId
+         XcFiWj6tRALV6sBMbKAue3hF2DkbMRXKDXi2jf9zrGVDtKMgiti3QQHz2sknCS5o8iy5
+         /wVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747725368; x=1748330168;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dDIRhWdKVMpUu59ujm96cXSr76HpSQ4ZrAeN1Auu11g=;
+        b=XtFA/wau7J8IpmeVBpi6LwZGLbAN1FKFGJrKihQFpAKuKXCajzZa19cG0nmQy2dRdO
+         AbhohQX1uHlCQfTgiumhXyONfYz9uBDmvoe4d7maUnAnVfRfXzF3/Sw4QUTK79+JWOdU
+         /Mzlj3qKPh4aZ/uEihPc0qU9eLGgfxquaZi6EjP+9U/wacHImZrDsVd2DnOUxfp34i5x
+         b94g61k4v0YQqny8WCVuKFVMG52xxBlcKTTkOFaup/zJ+G6b39FqY6AkA0D3rMc5Omyf
+         auiULMDU2PFuFBXIuoFa7bGIP89LH8XIFnAdNgzQhaV4FS8aAWTE45ClolCJwT1BxVc6
+         xtRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxYdfQX937rzd2MSiNrNia8Nk56CHdxjJo78KanXcNXIW+py7HB0dk8/OJ8DZvrOPk/8SoCCtdTtoZldYo@vger.kernel.org, AJvYcCWyuKUzHeHlbWp+sx4cmy6k1l7vpzOjbohx0HkcFFlwmWXXApm58aZ5KDrMW26wqP1w8SUoTCGfLyiMmg==@vger.kernel.org, AJvYcCXosmAn/VMG4GtjiUmBH759mdzNiLO7HelDcGkZu3k2x1Zk4+udCPIX/owyZ+zIaODLr11xVicW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxats+M+64qKMfS/IqrE9JjdPITo/ZkwmzKJezQ2OE0p8Pm+7y3
+	JuiBME/MyDeMqTvR0SwbPgbfOYS3e++vw5P8YRvYk+Hsq0CsqWXBV+YfjPGspA/x
+X-Gm-Gg: ASbGncsPCC6lvjpB8YyR6TYSHr6Q6O0+tviSVdKIb6dl7s6/1b7Ad5N/yEq3JkXvYEP
+	e1BkZPvFlF2FW49rTEMBz/1bxVSJ3MP+a+WoH5cDUdhttO/wsOO0mRsueRPhiTHAzkSwqfy635c
+	+NvqphNrG0Pheyp5o/zaAW5eMn6HRSNyYDIitXS3sa6izso/YRVzXYIdzZBeQDxQJeN7V/eFzcP
+	O1zbTCfvtdRsD9CaBVqjzlKRXMj5KTpXXQwJQWTL5hoaIXspcQD8WIo87qe092JxEPJfGvBxC7X
+	R1SZu3wKigNM7KURnYAw/qeYTSvLEOLHo2/jCM0R8GkJJoiErwUv6wmZ6X7a7fxh3qdLHDv69FD
+	wLKE2vNHk
+X-Google-Smtp-Source: AGHT+IHVOlAW6lgxwfSXJ2mOzRf4cxrSKL/D38SFAUPj/n/z1oZNclDU9+lGnv4dlctwse3NYQjUmA==
+X-Received: by 2002:a17:907:1b0f:b0:ad5:5293:f236 with SMTP id a640c23a62f3a-ad55293f282mr1046955066b.3.1747725368115;
+        Tue, 20 May 2025 00:16:08 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d4c9e62sm685303466b.155.2025.05.20.00.16.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 May 2025 00:16:06 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 7942BBE2DE0; Tue, 20 May 2025 09:16:05 +0200 (CEST)
+Date: Tue, 20 May 2025 09:16:05 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Christian Hesse <list@eworm.de>
+Cc: Roland Clobus <rclobus@rclobus.nl>, Lizhi Xu <lizhi.xu@windriver.com>,
+	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+	1106070@bugs.debian.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: Re: [6.12.y regression] loosetup: failed to set up loop device:
+ Invalid argument after 184b147b9f7f ("loop: Add sanity check for
+ read/write_iter")
+Message-ID: <aCwsNSEoxfs4DOvi@eldamar.lan>
+References: <3a333f27-6810-4313-8910-485df652e897@rclobus.nl>
+ <aCwZy6leWNvr7EMd@eldamar.lan>
+ <20250520083438.295e415a@leda.eworm.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Bar: /
-X-Spam-Flag: NO
-X-Spam-Score: -0.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: DC0EC2228E
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-0.01 / 50.00];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	URIBL_BLOCKED(0.00)[suse.com:url,suse.de:email,suse.de:mid,suse.de:dkim,lists.freedesktop.org:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,redhat.com,gmail.com,suse.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,lists.freedesktop.org:email,suse.de:email,suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250520083438.295e415a@leda.eworm.net>
 
-Signal vt subsystem to redraw console when switching to dummycon
-with deferred takeover enabled. Makes the console switch to fbcon
-and displays the available output.
+H Christian,
 
-With deferred takeover enabled, dummycon acts as the placeholder
-until the first output to the console happens. At that point, fbcon
-takes over. If the output happens while dummycon is not active, it
-cannot inform fbcon. This is the case if the vt subsystem runs in
-graphics mode.
+On Tue, May 20, 2025 at 08:34:38AM +0200, Christian Hesse wrote:
+> Salvatore Bonaccorso <carnil@debian.org> on Tue, 2025/05/20 07:57:
+> > In Debian Roland Clobus reported a regression with setting up loop
+> > devices from a backing squashfs file lying on read-only mounted target
+> > directory from a iso.
+> > 
+> > The original report is at:
+> > https://bugs.debian.org/1106070
+> 
+> We are suffering the same for Arch Linux. Already reported here:
+> 
+> https://lore.kernel.org/all/20250519175640.2fcac001@leda.eworm.net/
 
-A typical graphical boot starts plymouth, a display manager and a
-compositor; all while leaving out dummycon. Switching to a text-mode
-console leaves the console with dummycon even if a getty terminal
-has been started.
+Sorry missed that one! Ack, so let's continue in that thread (worth
+looping in the regressions list though?)
 
-Returning true from dummycon's con_switch helper signals the vt
-subsystem to redraw the screen. If there's output available dummycon's
-con_putc{s} helpers trigger deferred takeover of fbcon, which sets a
-display mode and displays the output. If no output is available,
-dummycon remains active.
-
-v2:
-- make the comment slightly more verbose (Javier)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1242191
-Tested-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Fixes: 83d83bebf401 ("console/fbcon: Add support for deferred console takeover")
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.19+
----
- drivers/video/console/dummycon.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
-index 139049368fdc..7d02470f19b9 100644
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -85,6 +85,15 @@ static bool dummycon_blank(struct vc_data *vc, enum vesa_blank_mode blank,
- 	/* Redraw, so that we get putc(s) for output done while blanked */
- 	return true;
- }
-+
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	/*
-+	 * Redraw, so that we get putc(s) for output done while switched
-+	 * away. Informs deferred consoles to take over the display.
-+	 */
-+	return true;
-+}
- #else
- static void dummycon_putc(struct vc_data *vc, u16 c, unsigned int y,
- 			  unsigned int x) { }
-@@ -95,6 +104,10 @@ static bool dummycon_blank(struct vc_data *vc, enum vesa_blank_mode blank,
- {
- 	return false;
- }
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	return false;
-+}
- #endif
- 
- static const char *dummycon_startup(void)
-@@ -124,11 +137,6 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
- 	return false;
- }
- 
--static bool dummycon_switch(struct vc_data *vc)
--{
--	return false;
--}
--
- /*
-  *  The console `switch' structure for the dummy console
-  *
--- 
-2.49.0
-
+Regards,
+Salvatore
 
