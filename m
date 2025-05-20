@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B92ABDA84
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4FBABDA16
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DACD5189335A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 039AC189F3AD
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1750E24418E;
-	Tue, 20 May 2025 13:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9B7242D89;
+	Tue, 20 May 2025 13:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryDFQVVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joZPO+Lj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D2724337B;
-	Tue, 20 May 2025 13:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9861522D7A8;
+	Tue, 20 May 2025 13:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749473; cv=none; b=StXITLMExockAx/yjA0OriFjaZvGrp/v+H9IPl9REPoh5527hDbxPjj9uc7SEKq6yJaCy2n5WOU/VaFBl91Tnb1EzlRupVQjonUzLCccNDnEbBA/2uGKtB7XS9o0PT296S41R+P/qmPtdMRevDUjrggVazSiK5WFzMXhOxjBhok=
+	t=1747749212; cv=none; b=dpir87EUexvgY11uyJ8MJPy1SEzeKe+AFII6lWj87gwL7M8B5ttD3UCHz3u8lIpbYJKjNbpIJ1lDR2CFdb1RQOE4j4PSUkrqDYbjmbJtOxKnh2HINf1uIAoHepUU72ir/EYywJmwwb3iMgbvTrZ1Aze9nqv9P3b8h9Ue5zbh2fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749473; c=relaxed/simple;
-	bh=ZMxceUHv7SnoB4j/kisHr4LFfXZeDiuwBBfbV9owozM=;
+	s=arc-20240116; t=1747749212; c=relaxed/simple;
+	bh=Kkjb+Dhtn7Xdw3WVmUwTGjrzxM9VSOOa3Vj6a1XzN7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iksZxF4BhqboG3FAS0anR9l+S1p92N0oMnjfhVzb36iOazdAgjtjUXL4RrXaXLx8TUbJjJS/Cu18bHGwCNeajOD0lCqLf+FPYL1+atjVTBLIij0p6hgvoP331sHHXLQbeYg9gyRDDZzKEhiwlBDdTJkXIH3Xo34UYuVJPCDU798=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryDFQVVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E01C4CEE9;
-	Tue, 20 May 2025 13:57:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O4PtTzBG6tDKCPzDN1usYgJEnLJgZEqFLa8xfE707ciixyqf2Q4CKes9o1RZr9zfHaHD7px3+x1talPdQOT9PXQPF7LAXNUiA/RpXUhffETtxe5arV/zNOl4g0itBch2yktscpAxaoUql/2mh5kRKr3QQOGwX9LNXWRNSll8NSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joZPO+Lj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2A0C4CEE9;
+	Tue, 20 May 2025 13:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749473;
-	bh=ZMxceUHv7SnoB4j/kisHr4LFfXZeDiuwBBfbV9owozM=;
+	s=korg; t=1747749211;
+	bh=Kkjb+Dhtn7Xdw3WVmUwTGjrzxM9VSOOa3Vj6a1XzN7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryDFQVVXbJvhjkeQ8x6p0n9l0XPffb363XILB8z3iGEArcFv7ETdplNBsfgqi959C
-	 b9Hy9UABZEGlKgv1FmRaqE3MbgSAItYYxyNCzvAZi2O1EMIJt7s9qUIvgNLsGDTMzB
-	 gYOz4733WxX0/GSP21oipcQUBlPndln0XEDjkUUU=
+	b=joZPO+LjjP0lR7ZI7rBf3Zeidi/RiYvuvao9USXSlaq0FcHqLLPfcu+E7tVHdM6Tt
+	 Lb49KH6XloLdhA77SqR+KvT3/v/h6G3iuh1i66DecZ1rFoPc4ZuBztknQ3jxgyTfjh
+	 AohvrEV8tD5ed+AOPqyDDjotuDEGyDADJxc8s150=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Othacehe <othacehe@gnu.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/97] net: cadence: macb: Fix a possible deadlock in macb_halt_tx.
-Date: Tue, 20 May 2025 15:49:54 +0200
-Message-ID: <20250520125801.802466350@linuxfoundation.org>
+Subject: [PATCH 5.15 04/59] iio: chemical: sps30: use aligned_s64 for timestamp
+Date: Tue, 20 May 2025 15:49:55 +0200
+Message-ID: <20250520125754.013566906@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Othacehe <othacehe@gnu.org>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit c92d6089d8ad7d4d815ebcedee3f3907b539ff1f ]
+[ Upstream commit bb49d940344bcb8e2b19e69d7ac86f567887ea9a ]
 
-There is a situation where after THALT is set high, TGO stays high as
-well. Because jiffies are never updated, as we are in a context with
-interrupts disabled, we never exit that loop and have a deadlock.
+Follow the pattern of other drivers and use aligned_s64 for the
+timestamp. This will ensure that the timestamp is correctly aligned on
+all architectures.
 
-That deadlock was noticed on a sama5d4 device that stayed locked for days.
-
-Use retries instead of jiffies so that the timeout really works and we do
-not have a deadlock anymore.
-
-Fixes: e86cd53afc590 ("net/macb: better manage tx errors")
-Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250509121935.16282-1-othacehe@gnu.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a5bf6fdd19c3 ("iio:chemical:sps30: Fix timestamp alignment")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-5-eafac1e22318@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ drivers/iio/chemical/sps30.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index fc3342944dbcc..d2f4709dee0de 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -962,22 +962,15 @@ static void macb_update_stats(struct macb *bp)
+diff --git a/drivers/iio/chemical/sps30.c b/drivers/iio/chemical/sps30.c
+index d51314505115e..43991fe2e35bf 100644
+--- a/drivers/iio/chemical/sps30.c
++++ b/drivers/iio/chemical/sps30.c
+@@ -108,7 +108,7 @@ static irqreturn_t sps30_trigger_handler(int irq, void *p)
+ 	int ret;
+ 	struct {
+ 		s32 data[4]; /* PM1, PM2P5, PM4, PM10 */
+-		s64 ts;
++		aligned_s64 ts;
+ 	} scan;
  
- static int macb_halt_tx(struct macb *bp)
- {
--	unsigned long	halt_time, timeout;
--	u32		status;
-+	u32 status;
- 
- 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(THALT));
- 
--	timeout = jiffies + usecs_to_jiffies(MACB_HALT_TIMEOUT);
--	do {
--		halt_time = jiffies;
--		status = macb_readl(bp, TSR);
--		if (!(status & MACB_BIT(TGO)))
--			return 0;
--
--		udelay(250);
--	} while (time_before(halt_time, timeout));
--
--	return -ETIMEDOUT;
-+	/* Poll TSR until TGO is cleared or timeout. */
-+	return read_poll_timeout_atomic(macb_readl, status,
-+					!(status & MACB_BIT(TGO)),
-+					250, MACB_HALT_TIMEOUT, false,
-+					bp, TSR);
- }
- 
- static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
+ 	mutex_lock(&state->lock);
 -- 
 2.39.5
 
