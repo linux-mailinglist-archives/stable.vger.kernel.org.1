@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B04ABDCD8
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9730ABDC67
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1B78A0C7C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88C028A4B9C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5632517A4;
-	Tue, 20 May 2025 14:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C46251781;
+	Tue, 20 May 2025 14:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTVxr23i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFJsbY15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AE724468C;
-	Tue, 20 May 2025 14:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0102472AE;
+	Tue, 20 May 2025 14:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750783; cv=none; b=Vs87wgZa1PJhqYpqSLL9sAFrbZIU+YWEVN2QfE24LS9pCBnHvcZJ2fBONNGDh/HZIFk8RzEXz1z1Y1DmcfnfwVdSenk7/KuIgyW48zT8GvP2Z9OP1H1nzsSFwB30mPgvQ1mTjn/5dm/sQN1L+UipRi1gtWEPIwh9CSY3vzTmbFU=
+	t=1747750436; cv=none; b=K2tCRnduOxIcTgqhrZ9pRjls3lot7P5lBSaQYeQJ6IOx3GTyAvq2cug5qAlN122Tkv+9Pd3nHVhCyRRllXwauJ5jjDb2P5dkzMll1/OPUAT3owvT1XrlIgiwXUsPKhhELOIRg41eTqFucM86aexCo69FH5wEsn4kruRV5UsA2zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750783; c=relaxed/simple;
-	bh=k5GBe7YWOo9ZVMbg+VB61eN7en+hKkm3do64RCxZyD0=;
+	s=arc-20240116; t=1747750436; c=relaxed/simple;
+	bh=2ysceANjiXDDwni/D09KKLSKmgJITSyynl2eWalLQ88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K86ijGZohpsjAhn6Xgi/dcaaciWlLSynemEjB4W/t7Vtcv04chio8Hvh8ylaHd29lGFs3JlbojjMdpHZruQKDdBCHeMcxL0fv/5VkpDaj/MmnqqrPeti7sShMPKw29Wk4a79fz9nEwK+9qk+/703gbGWsE/VrlLLWEU/neSZ/2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTVxr23i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B508AC4CEF1;
-	Tue, 20 May 2025 14:19:42 +0000 (UTC)
+	 MIME-Version; b=EjgxSyMEQS9WJSH9CPQ45B6vWan5gGeH5KH7R9cvS0zFckoAdlHnLno1ufQltAZTHaBfT2OJlvf+37L+48fm+rxZqPNn4sZVSr6sRANZ8G8cn2xJIA5FtTGN2OnZIbf3vjbvgOIqQZMNDkKSXrnbwuNEKo8v6ieUllRECNtVX7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFJsbY15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD354C4CEEA;
+	Tue, 20 May 2025 14:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750783;
-	bh=k5GBe7YWOo9ZVMbg+VB61eN7en+hKkm3do64RCxZyD0=;
+	s=korg; t=1747750436;
+	bh=2ysceANjiXDDwni/D09KKLSKmgJITSyynl2eWalLQ88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTVxr23i+h1/JpPeSvsXUebWnISgJj3McGmNYrpw9fRzsAyDYoSJvfXvW6X2DO27n
-	 hDkWsWZCOZ2cIuTLrxBVzuDvJN9viscsPt2mT8U+kz+s2UEu74CS29vZVd6n2Mm/o7
-	 qL63gOD3mP6qsKnd3xpXeZzYSNUHoLrMeudj9Vb0=
+	b=pFJsbY152Do4wHfR4oHiCLd6kGJV8y1WvK7d8l4Q35+cpXX0ZHxQw2THNnCfs83I9
+	 Mnb7vloBpQRZdX6HwyZESAN/WQgg7BEv1K9CitCf0RvpU/hGdVwYtPodY6HoUjHRhd
+	 Z9BQbVAo/j1bikLjYtjneh+tBpfo22gH5qYrpvOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 120/145] net: qede: Initialize qede_ll_ops with designated initializer
+	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.12 135/143] accel/ivpu: Fix fw log printing
 Date: Tue, 20 May 2025 15:51:30 +0200
-Message-ID: <20250520125815.252646459@linuxfoundation.org>
+Message-ID: <20250520125815.326961719@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-commit 6b3ab7f2cbfaeb6580709cd8ef4d72cfd01bfde4 upstream.
+commit 4bc988b47019536b3b1f7d9c5b83893c712d94d6 upstream.
 
-After a recent change [1] in clang's randstruct implementation to
-randomize structures that only contain function pointers, there is an
-error because qede_ll_ops get randomized but does not use a designated
-initializer for the first member:
+  - Fix empty log detection that couldn't work without read_wrap_count
+  - Start printing wrapped log from correct position (log_start)
+  - Properly handle logs that are wrapped multiple times in reference
+    to reader position
+  - Don't add a newline when log buffer is wrapped
+  - Always add a newline after printing a log buffer in case log does
+    not end with one
 
-  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
-    206 |         {
-        |         ^
-
-Explicitly initialize the common member using a designated initializer
-to fix the build.
-
-Cc: stable@vger.kernel.org
-Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
-Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20250507-qede-fix-clang-randstruct-v1-1-5ccc15626fba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240930195322.461209-6-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_fw_log.c |   49 +++++++++++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
---- a/drivers/net/ethernet/qlogic/qede/qede_main.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
-@@ -203,7 +203,7 @@ static struct pci_driver qede_pci_driver
- };
+--- a/drivers/accel/ivpu/ivpu_fw_log.c
++++ b/drivers/accel/ivpu/ivpu_fw_log.c
+@@ -87,7 +87,7 @@ static void fw_log_print_lines(char *buf
+ 	}
+ 	line[index] = 0;
+ 	if (index != 0)
+-		drm_printf(p, "%s\n", line);
++		drm_printf(p, "%s", line);
+ }
  
- static struct qed_eth_cb_ops qede_ll_ops = {
--	{
-+	.common = {
- #ifdef CONFIG_RFS_ACCEL
- 		.arfs_filter_op = qede_arfs_filter_op,
- #endif
+ static void fw_log_print_buffer(struct vpu_tracing_buffer_header *log, const char *prefix,
+@@ -95,23 +95,29 @@ static void fw_log_print_buffer(struct v
+ {
+ 	char *log_data = (void *)log + log->header_size;
+ 	u32 data_size = log->size - log->header_size;
+-	u32 log_start = log->read_index;
+-	u32 log_end = log->write_index;
++	u32 log_start = only_new_msgs ? READ_ONCE(log->read_index) : 0;
++	u32 log_end = READ_ONCE(log->write_index);
+ 
+-	if (!(log->write_index || log->wrap_count) ||
+-	    (log->write_index == log->read_index && only_new_msgs)) {
+-		drm_printf(p, "==== %s \"%s\" log empty ====\n", prefix, log->name);
+-		return;
++	if (log->wrap_count == log->read_wrap_count) {
++		if (log_end <= log_start) {
++			drm_printf(p, "==== %s \"%s\" log empty ====\n", prefix, log->name);
++			return;
++		}
++	} else if (log->wrap_count == log->read_wrap_count + 1) {
++		if (log_end > log_start)
++			log_start = log_end;
++	} else {
++		log_start = log_end;
+ 	}
+ 
+ 	drm_printf(p, "==== %s \"%s\" log start ====\n", prefix, log->name);
+-	if (log->write_index > log->read_index) {
++	if (log_end > log_start) {
+ 		fw_log_print_lines(log_data + log_start, log_end - log_start, p);
+ 	} else {
+-		fw_log_print_lines(log_data + log_end, data_size - log_end, p);
++		fw_log_print_lines(log_data + log_start, data_size - log_start, p);
+ 		fw_log_print_lines(log_data, log_end, p);
+ 	}
+-	drm_printf(p, "\x1b[0m");
++	drm_printf(p, "\n\x1b[0m"); /* add new line and clear formatting */
+ 	drm_printf(p, "==== %s \"%s\" log end   ====\n", prefix, log->name);
+ }
+ 
+@@ -135,14 +141,19 @@ void ivpu_fw_log_print(struct ivpu_devic
+ void ivpu_fw_log_mark_read(struct ivpu_device *vdev)
+ {
+ 	struct vpu_tracing_buffer_header *log;
+-	u32 next = 0;
++	u32 next;
+ 
+-	while (fw_log_from_bo(vdev, vdev->fw->mem_log_crit, &next, &log) == 0)
+-		log->read_index = log->write_index;
++	next = 0;
++	while (fw_log_from_bo(vdev, vdev->fw->mem_log_crit, &next, &log) == 0) {
++		log->read_index = READ_ONCE(log->write_index);
++		log->read_wrap_count = READ_ONCE(log->wrap_count);
++	}
+ 
+ 	next = 0;
+-	while (fw_log_from_bo(vdev, vdev->fw->mem_log_verb, &next, &log) == 0)
+-		log->read_index = log->write_index;
++	while (fw_log_from_bo(vdev, vdev->fw->mem_log_verb, &next, &log) == 0) {
++		log->read_index = READ_ONCE(log->write_index);
++		log->read_wrap_count = READ_ONCE(log->wrap_count);
++	}
+ }
+ 
+ void ivpu_fw_log_reset(struct ivpu_device *vdev)
+@@ -151,10 +162,14 @@ void ivpu_fw_log_reset(struct ivpu_devic
+ 	u32 next;
+ 
+ 	next = 0;
+-	while (fw_log_from_bo(vdev, vdev->fw->mem_log_crit, &next, &log) == 0)
++	while (fw_log_from_bo(vdev, vdev->fw->mem_log_crit, &next, &log) == 0) {
+ 		log->read_index = 0;
++		log->read_wrap_count = 0;
++	}
+ 
+ 	next = 0;
+-	while (fw_log_from_bo(vdev, vdev->fw->mem_log_verb, &next, &log) == 0)
++	while (fw_log_from_bo(vdev, vdev->fw->mem_log_verb, &next, &log) == 0) {
+ 		log->read_index = 0;
++		log->read_wrap_count = 0;
++	}
+ }
 
 
 
