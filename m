@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-145286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF10BABDB21
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:06:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC761ABDC64
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04A9A4C57F5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 133987B3DC0
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA47C242907;
-	Tue, 20 May 2025 14:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B29E1CCEE7;
+	Tue, 20 May 2025 14:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTNpoUlQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/Z4AiOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974A62459ED;
-	Tue, 20 May 2025 14:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC452907;
+	Tue, 20 May 2025 14:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749723; cv=none; b=dnCpeJQqizLxn8YjBPvljb/S4NQiKpTE7RY+dpz2xH3tnlg0EhWCTIyV0/G7DdEbElXXyMQJHBNJhQ1YvsNVhr2YPkc+I9Cli7B8OqC9P1OBrDi2cf8o6bTLR5BiqliUEtNHlBR4SHU8McWgzSw1Avf9K+rhw9kaVpOHX+yf1kg=
+	t=1747750523; cv=none; b=TPnfAY8YZxHFFILliAPE0I3uThttyLunSN3/wmwXODo3tpwY4RYaJPUiq8tESD/Pd0v5sIyA9LkQsSosKXJsa/rjc6Tkk2XsU8bV4aV3wxRkphBTZhQ/iL4p78ixotQnu7BYvoCvWvamp4l+N+Sc77yCjb5hbMARWYMoRGJMGpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749723; c=relaxed/simple;
-	bh=W6IUm+FRbrQYOImJ1m1bJihZb/0kOkgVznkiy97f0B4=;
+	s=arc-20240116; t=1747750523; c=relaxed/simple;
+	bh=6j0atwQe9iEsuK5zD6rLHbg3D21si/+cHV/4lYKe2Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lCLTqOZqwgtPusn9dBC+xzryRy7tQjo1FY7eHH18FoGBStAKiwcUiK6TexPcyuMkj+7hxBzW0eOWfso2uFz1vT/3WINLMDrovgCBnI3csgTKmEHsCu4u8BBYJB1cL12CkXYdNQrFeUb1y4i1v6Si9SaalqqKbcOQY0SZSzb4NKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTNpoUlQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F894C4CEEF;
-	Tue, 20 May 2025 14:02:02 +0000 (UTC)
+	 MIME-Version; b=JDNg+tqlQ9Lpoorqin69D6nz/V+deYsTCjoPrHHqd+emCyZOPDgZY6n2SfqG6wlUGrnsXUh/mmXzKhY+r4n7L1qSDlaneMUzbJwEbKZNmuJ1d9Gkr4IvuwWnLzmSmwP8BXeq9+DsjJa4qzCaDzfZgG538kgzk/pUSuZIv3PDXc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/Z4AiOl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0766C4CEE9;
+	Tue, 20 May 2025 14:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749723;
-	bh=W6IUm+FRbrQYOImJ1m1bJihZb/0kOkgVznkiy97f0B4=;
+	s=korg; t=1747750523;
+	bh=6j0atwQe9iEsuK5zD6rLHbg3D21si/+cHV/4lYKe2Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTNpoUlQ6b2oSlV3Z5vHaBP+4HereoSVfH8nZjViUrUxiu15ZTokuYwb+AL4qVjRZ
-	 Xuz5jepiTJcFQeYqRN/rRcWP56qoIsONHMzNa1TQ5dZMAunbvqdXvzQzr9s0LKh+kY
-	 04b0Z5Nla4wSklaQg+k4tRkkwIsAVsLHpHbVPoLs=
+	b=D/Z4AiOldkx2v/58Yd5uly7nBXyqXTfmkMq0aI04Z8hOMD9wMyXvefTxQbZyjXIBZ
+	 4jyWmON7kyh+ItrFr68ROJdbuK3L5XYM0pXI9l4KTvOtT9679qB3U7UfQtKuZbzjId
+	 HTweh5JUriFHu9aGxraEMak/WunV3sOPNBS64V4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/117] mctp: no longer rely on net->dev_index_head[]
-Date: Tue, 20 May 2025 15:50:04 +0200
-Message-ID: <20250520125805.540508961@linuxfoundation.org>
+Subject: [PATCH 6.14 035/145] ALSA: ump: Fix a typo of snd_ump_stream_msg_device_info
+Date: Tue, 20 May 2025 15:50:05 +0200
+Message-ID: <20250520125811.939096913@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,122 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 2d20773aec14996b6cc4db92d885028319be683d ]
+[ Upstream commit dd33993a9721ab1dae38bd37c9f665987d554239 ]
 
-mctp_dump_addrinfo() is one of the last users of
-net->dev_index_head[] in the control path.
+s/devince/device/
 
-Switch to for_each_netdev_dump() for better scalability.
+It's used only internally, so no any behavior changes.
 
-Use C99 for mctp_device_rtnl_msg_handlers[] to prepare
-future RTNL removal from mctp_dump_addrinfo()
-
-(mdev->addrs is not yet RCU protected)
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Matt Johnston <matt@codeconstruct.com.au>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20241206223811.1343076-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: f11cf946c0a9 ("net: mctp: Don't access ifa_index when missing")
+Fixes: 37e0e14128e0 ("ALSA: ump: Support UMP Endpoint and Function Block parsing")
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250511141147.10246-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/device.c | 50 ++++++++++++++++++-----------------------------
- 1 file changed, 19 insertions(+), 31 deletions(-)
+ drivers/usb/gadget/function/f_midi2.c | 2 +-
+ include/sound/ump_msg.h               | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index 85cc5f31f1e7c..cdb18da96c4bc 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -20,8 +20,7 @@
- #include <net/sock.h>
- 
- struct mctp_dump_cb {
--	int h;
--	int idx;
-+	unsigned long ifindex;
- 	size_t a_idx;
- };
- 
-@@ -115,43 +114,29 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
+diff --git a/drivers/usb/gadget/function/f_midi2.c b/drivers/usb/gadget/function/f_midi2.c
+index 12e866fb311d6..0a800ba53816a 100644
+--- a/drivers/usb/gadget/function/f_midi2.c
++++ b/drivers/usb/gadget/function/f_midi2.c
+@@ -475,7 +475,7 @@ static void reply_ump_stream_ep_info(struct f_midi2_ep *ep)
+ /* reply a UMP EP device info */
+ static void reply_ump_stream_ep_device(struct f_midi2_ep *ep)
  {
- 	struct mctp_dump_cb *mcb = (void *)cb->ctx;
- 	struct net *net = sock_net(skb->sk);
--	struct hlist_head *head;
- 	struct net_device *dev;
- 	struct ifaddrmsg *hdr;
- 	struct mctp_dev *mdev;
--	int ifindex;
--	int idx = 0, rc;
-+	int ifindex, rc;
+-	struct snd_ump_stream_msg_devince_info rep = {
++	struct snd_ump_stream_msg_device_info rep = {
+ 		.type = UMP_MSG_TYPE_STREAM,
+ 		.status = UMP_STREAM_MSG_STATUS_DEVICE_INFO,
+ 		.manufacture_id = ep->info.manufacturer,
+diff --git a/include/sound/ump_msg.h b/include/sound/ump_msg.h
+index 72f60ddfea753..9556b4755a1ed 100644
+--- a/include/sound/ump_msg.h
++++ b/include/sound/ump_msg.h
+@@ -604,7 +604,7 @@ struct snd_ump_stream_msg_ep_info {
+ } __packed;
  
- 	hdr = nlmsg_data(cb->nlh);
- 	// filter by ifindex if requested
- 	ifindex = hdr->ifa_index;
- 
- 	rcu_read_lock();
--	for (; mcb->h < NETDEV_HASHENTRIES; mcb->h++, mcb->idx = 0) {
--		idx = 0;
--		head = &net->dev_index_head[mcb->h];
--		hlist_for_each_entry_rcu(dev, head, index_hlist) {
--			if (idx >= mcb->idx &&
--			    (ifindex == 0 || ifindex == dev->ifindex)) {
--				mdev = __mctp_dev_get(dev);
--				if (mdev) {
--					rc = mctp_dump_dev_addrinfo(mdev,
--								    skb, cb);
--					mctp_dev_put(mdev);
--					// Error indicates full buffer, this
--					// callback will get retried.
--					if (rc < 0)
--						goto out;
--				}
--			}
--			idx++;
--			// reset for next iteration
--			mcb->a_idx = 0;
--		}
-+	for_each_netdev_dump(net, dev, mcb->ifindex) {
-+		if (ifindex && ifindex != dev->ifindex)
-+			continue;
-+		mdev = __mctp_dev_get(dev);
-+		if (!mdev)
-+			continue;
-+		rc = mctp_dump_dev_addrinfo(mdev, skb, cb);
-+		mctp_dev_put(mdev);
-+		if (rc < 0)
-+			break;
-+		mcb->a_idx = 0;
- 	}
--out:
- 	rcu_read_unlock();
--	mcb->idx = idx;
- 
- 	return skb->len;
- }
-@@ -525,9 +510,12 @@ static struct notifier_block mctp_dev_nb = {
- };
- 
- static const struct rtnl_msg_handler mctp_device_rtnl_msg_handlers[] = {
--	{THIS_MODULE, PF_MCTP, RTM_NEWADDR, mctp_rtm_newaddr, NULL, 0},
--	{THIS_MODULE, PF_MCTP, RTM_DELADDR, mctp_rtm_deladdr, NULL, 0},
--	{THIS_MODULE, PF_MCTP, RTM_GETADDR, NULL, mctp_dump_addrinfo, 0},
-+	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_NEWADDR,
-+	 .doit = mctp_rtm_newaddr},
-+	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_DELADDR,
-+	 .doit = mctp_rtm_deladdr},
-+	{.owner = THIS_MODULE, .protocol = PF_MCTP, .msgtype = RTM_GETADDR,
-+	 .dumpit = mctp_dump_addrinfo},
- };
- 
- int __init mctp_device_init(void)
+ /* UMP Stream Message: Device Info Notification (128bit) */
+-struct snd_ump_stream_msg_devince_info {
++struct snd_ump_stream_msg_device_info {
+ #ifdef __BIG_ENDIAN_BITFIELD
+ 	/* 0 */
+ 	u32 type:4;
+@@ -754,7 +754,7 @@ struct snd_ump_stream_msg_fb_name {
+ union snd_ump_stream_msg {
+ 	struct snd_ump_stream_msg_ep_discovery ep_discovery;
+ 	struct snd_ump_stream_msg_ep_info ep_info;
+-	struct snd_ump_stream_msg_devince_info device_info;
++	struct snd_ump_stream_msg_device_info device_info;
+ 	struct snd_ump_stream_msg_stream_cfg stream_cfg;
+ 	struct snd_ump_stream_msg_fb_discovery fb_discovery;
+ 	struct snd_ump_stream_msg_fb_info fb_info;
 -- 
 2.39.5
 
