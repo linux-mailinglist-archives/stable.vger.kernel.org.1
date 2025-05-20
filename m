@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D016CABDAE7
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2309AABD9F9
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:52:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EF0918925C7
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B60B11B6486F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BE424676B;
-	Tue, 20 May 2025 14:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0776324501D;
+	Tue, 20 May 2025 13:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6V5iHU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcZ6A7+/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED06246789;
-	Tue, 20 May 2025 14:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48F9244196;
+	Tue, 20 May 2025 13:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749717; cv=none; b=oJCjlQigbjpiO1BWj+PVjWoWWLJumVDTCkPUtUDFDcCCalJPE+xqb/H6pZCqoEVlqjxXNkzcOV9hK/tt/hYAZvc6iuqI5HI+ikreWgPulHnFHMrufOMOH4NQilT3Y39AJnNN/eQVmgOUv6mKspBnSGtdpdbP2g12ypVF97m2N9o=
+	t=1747749142; cv=none; b=L6kPOug7aYgl+sD0zhKx4NV5O5L8Th/fAo9xTm0g3x8rdm3PeAiBUc1M+j9KKt01oBPH0nTnGK8anzUVvxNDrqRSyM72b5a7EE58U9/b/gUqqXuqqDRT23nF8UuV6shpJGaNW5INy6cItE9PZhw+uiYUz11rxNebiKnru46X11c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749717; c=relaxed/simple;
-	bh=aiMgM5s51YhmY2jkfTbJ58piF2q1Bfqx/XTb7L2Aji0=;
+	s=arc-20240116; t=1747749142; c=relaxed/simple;
+	bh=/NbC48qfcBX2MoebWKzDncK+byxSSWjOD55MGLxZWXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5E9ORGkpmam2R1S4ZmCO1+EjWC5/LivAjF/Pa3et6S3j4gqZaSXTavnKbo/gXTHNkADv87/VK45LiQaOdYxXZbdTib4M0z6e15enA73m7MlUb+qLqAO6m1HfJPmFpaE3xr9u7rQ15pR1DdyuaItRxDAiWBo8Z48KJeJaLj9wHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6V5iHU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158A9C4CEEB;
-	Tue, 20 May 2025 14:01:56 +0000 (UTC)
+	 MIME-Version; b=TS0grWVVbgl6KluxxB1jsFhdnbUgn2UquHf26+d+/EWjLG8SAYNhpR7B8o0YeLIBEN0dKBqM1ygwzsEq/VUw60p4pwLZ3/YYWl6bM3ZvH5Ie6m+1vFpyz8s131fLvt1TO4b/5Hm0sefU5sF+yzStRlL3Eifb9HZclBr9/43t9UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcZ6A7+/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84348C4CEE9;
+	Tue, 20 May 2025 13:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749717;
-	bh=aiMgM5s51YhmY2jkfTbJ58piF2q1Bfqx/XTb7L2Aji0=;
+	s=korg; t=1747749142;
+	bh=/NbC48qfcBX2MoebWKzDncK+byxSSWjOD55MGLxZWXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6V5iHU0Yg8mUCHObqfxvIMfujXgSTcAFMlDyAVRililSmFaCNy/9+vtlKyW11h8O
-	 K5+eEDiBHyaoNqrcusB2Oxg7D2ND8SI+EX+2sKzLcM+3XIFz4G2hmHWTUlMYuqxV6i
-	 LWNOHkAh/Js+vuaZ0Dk+oMDQaJ0RMGYL+PStLLnE=
+	b=XcZ6A7+/Dqs1h5kymV/PiyPjk/QpCiD2RnsAJ9v7xeOWGla+XkJRc0CQk1KF3UqyG
+	 avm7wVOkn4SqYXiAkA4YkW89z+PXtPj6utNWbHzGYWhPAi1JNnz4ZMeFgyl5GM3gku
+	 uTAdgL/o8tB2DxYx0PfdGkGxrEjj7NBzqLGJbWMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/117] tools: ynl: ethtool.py: Output timestamping statistics from tsinfo-get operation
+Subject: [PATCH 5.15 11/59] ALSA: sh: SND_AICA should depend on SH_DMA_API
 Date: Tue, 20 May 2025 15:50:02 +0200
-Message-ID: <20250520125805.465113308@linuxfoundation.org>
+Message-ID: <20250520125754.281104692@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 2e0e148c727061009d3db5f436f51890bbb49a80 ]
+[ Upstream commit 66e48ef6ef506c89ec1b3851c6f9f5f80b5835ff ]
 
-Print the nested stats attribute containing timestamping statistics when
-the --show-time-stamping flag is used.
+If CONFIG_SH_DMA_API=n:
 
-  [root@binary-eater-vm-01 linux-ethtool-ts]# ./tools/net/ynl/ethtool.py --show-time-stamping mlx5_1
-  Time stamping parameters for mlx5_1:
-  Capabilities:
-    hardware-transmit
-    hardware-receive
-    hardware-raw-clock
-  PTP Hardware Clock: 0
-  Hardware Transmit Timestamp Modes:
-    off
-    on
-  Hardware Receive Filter Modes:
-    none
-    all
-  Statistics:
-    tx-pkts: 8
-    tx-lost: 0
-    tx-err: 0
+    WARNING: unmet direct dependencies detected for G2_DMA
+      Depends on [n]: SH_DREAMCAST [=y] && SH_DMA_API [=n]
+      Selected by [y]:
+      - SND_AICA [=y] && SOUND [=y] && SND [=y] && SND_SUPERH [=y] && SH_DREAMCAST [=y]
 
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Link: https://lore.kernel.org/r/20240403212931.128541-8-rrameshbabu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 45375814eb3f ("tools/net/ynl: ethtool: fix crash when Hardware Clock info is missing")
+SND_AICA selects G2_DMA.  As the latter depends on SH_DMA_API, the
+former should depend on SH_DMA_API, too.
+
+Fixes: f477a538c14d07f8 ("sh: dma: fix kconfig dependency for G2_DMA")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505131320.PzgTtl9H-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/b90625f8a9078d0d304bafe862cbe3a3fab40082.1747121335.git.geert+renesas@glider.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/ethtool.py | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ sound/sh/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/net/ynl/ethtool.py b/tools/net/ynl/ethtool.py
-index 6c9f7e31250cd..47264ae20036b 100755
---- a/tools/net/ynl/ethtool.py
-+++ b/tools/net/ynl/ethtool.py
-@@ -320,7 +320,13 @@ def main():
-         return
+diff --git a/sound/sh/Kconfig b/sound/sh/Kconfig
+index b75fbb3236a7b..f5fa09d740b4c 100644
+--- a/sound/sh/Kconfig
++++ b/sound/sh/Kconfig
+@@ -14,7 +14,7 @@ if SND_SUPERH
  
-     if args.show_time_stamping:
--        tsinfo = dumpit(ynl, args, 'tsinfo-get')
-+        req = {
-+          'header': {
-+            'flags': 'stats',
-+          },
-+        }
-+
-+        tsinfo = dumpit(ynl, args, 'tsinfo-get', req)
- 
-         print(f'Time stamping parameters for {args.device}:')
- 
-@@ -334,6 +340,9 @@ def main():
- 
-         print('Hardware Receive Filter Modes:')
-         [print(f'\t{v}') for v in bits_to_dict(tsinfo['rx-filters'])]
-+
-+        print('Statistics:')
-+        [print(f'\t{k}: {v}') for k, v in tsinfo['stats'].items()]
-         return
- 
-     print(f'Settings for {args.device}:')
+ config SND_AICA
+ 	tristate "Dreamcast Yamaha AICA sound"
+-	depends on SH_DREAMCAST
++	depends on SH_DREAMCAST && SH_DMA_API
+ 	select SND_PCM
+ 	select G2_DMA
+ 	help
 -- 
 2.39.5
 
