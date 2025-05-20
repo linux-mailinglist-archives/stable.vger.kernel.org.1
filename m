@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB59ABDA25
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22BBABDAAC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84E618A2FCB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2425F7A83D5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1AF242922;
-	Tue, 20 May 2025 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A329243378;
+	Tue, 20 May 2025 13:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vOP5kqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YESess0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597DB242D93;
-	Tue, 20 May 2025 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45320DDA9;
+	Tue, 20 May 2025 13:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749260; cv=none; b=o8x9u2ayAkPdw+6yTq6Wtf3diT/N6+/5vdbzQRI3HHa16EtEmnIGvznFmy957EMKzfZdzyE7lTx4GoWfG+iDLIfiYD4hVJxi88FcZR78IMRcRxhuyktSwK13nEWgmTq8K7YOA6fJvsxrZwfyasr1stBWZp5WZQdvobk5lXnccIQ=
+	t=1747749528; cv=none; b=L899z0Pr1pH5Ac2iuZSdVtrflZ2rWn83Ns+BuZhkvrnyknp+es55vG6xP3ayDjISSKS74XF+Q2Y+BfEqykEQfm1jrimXrorTVWHgy9HpYKue1sD66Nxfz9tengJOTWk1qnhfzV/IVAa4lW95HXoMI8aojTYFKNcg6FhZgxUgRPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749260; c=relaxed/simple;
-	bh=O6hE7KXVfsbBo2yIecqXjeaK7JdXxPI8z1BujHOkIl0=;
+	s=arc-20240116; t=1747749528; c=relaxed/simple;
+	bh=48FRoC84zPDywtZEMRhiLI+EDwj/8AdYJTeAknoeaiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrnqxuT1ADgfabMXqyPdYyN4oRL6cwFX5+0frmH8AUVaqYrHc4Np/K3O5Fzeheffh8shtXy8PiArmdkfc5ott385rYo78fknqggoUEZ3/6uZdz7HoneTiNEF4s8JUUb14TRvdMb5sQHJeovEzdjHSm2TvsaMBPJndz1cwTsdkcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vOP5kqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF95CC4CEE9;
-	Tue, 20 May 2025 13:54:19 +0000 (UTC)
+	 MIME-Version; b=aU39NnVOfiniU4NKEbSAqyEDQesyQ40509J91unOahkqolz2WbZeP44cM43FQy/5fOivsHyMnPKIwEHs2JgIWjNeKv2Y93Sqmz0Cq17kzrfsDl0+C2g+d4QLUtx3nwDVaMd5hWwk7PZAKpHhdGklAjptHzCkLZqNE/NV0mazkos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YESess0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E028C4CEE9;
+	Tue, 20 May 2025 13:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749260;
-	bh=O6hE7KXVfsbBo2yIecqXjeaK7JdXxPI8z1BujHOkIl0=;
+	s=korg; t=1747749528;
+	bh=48FRoC84zPDywtZEMRhiLI+EDwj/8AdYJTeAknoeaiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2vOP5kqtpkZEhNzpwfDDA4CohegWtaLQRDzR/V2qwb8RzTF+GJl3sXmH/+00VKJck
-	 c5GnnpQEs48fIdzwbpFX8Mh9c4QJv2yeeODg8wwEBrAhLUk7jciNTlvk72t8bga6bp
-	 KHdAzvsg3wEWR7fmGw7b8257mrYsK3eBvT3palmI=
+	b=YESess0GGQGpA6qnsZNpnwnY6mLd7sSJ6UkstTgJ3dd4YECoossbARattQ5JzwXFh
+	 cCR1a5LrLXXV5IhKGjoko6S3ykZZlQW0Ffwv+eChZVwbqjz3VhOdm13s21xXmk2+Xr
+	 WATM5D970fIYmfoFXRpdjk9z62zTDNpLs0uysUFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.15 47/59] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
-Date: Tue, 20 May 2025 15:50:38 +0200
-Message-ID: <20250520125755.712144707@linuxfoundation.org>
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 74/97] dmaengine: idxd: fix memory leak in error handling path of idxd_pci_probe
+Date: Tue, 20 May 2025 15:50:39 +0200
+Message-ID: <20250520125803.548533227@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 94cff94634e506a4a44684bee1875d2dbf782722 upstream.
+commit 90022b3a6981ec234902be5dbf0f983a12c759fc upstream.
 
-On x86 during boot, clockevent_i8253_disable() can be invoked via
-x86_late_time_init -> hpet_time_init() -> pit_timer_init() which happens
-with enabled interrupts.
+Memory allocated for idxd is not freed if an error occurs during
+idxd_pci_probe(). To fix it, free the allocated memory in the reverse
+order of allocation before exiting the function in case of an error.
 
-If some of the old i8253 hardware is actually used then lockdep will notice
-that i8253_lock is used in hard interrupt context. This causes lockdep to
-complain because it observed the lock being acquired with interrupts
-enabled and in hard interrupt context.
-
-Make clockevent_i8253_disable() acquire the lock with
-raw_spinlock_irqsave() to cure this.
-
-[ tglx: Massage change log and use guard() ]
-
-Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data accelerators")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-8-xueshuai@linux.alibaba.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/i8253.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/dma/idxd/init.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/clocksource/i8253.c
-+++ b/drivers/clocksource/i8253.c
-@@ -103,7 +103,9 @@ int __init clocksource_i8253_init(void)
- #ifdef CONFIG_CLKEVT_I8253
- void clockevent_i8253_disable(void)
- {
--	raw_spin_lock(&i8253_lock);
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&i8253_lock, flags);
- 
- 	/*
- 	 * Writing the MODE register should stop the counter, according to
-@@ -133,7 +135,7 @@ void clockevent_i8253_disable(void)
- 
- 	outb_p(0x30, PIT_MODE);
- 
--	raw_spin_unlock(&i8253_lock);
-+	raw_spin_unlock_irqrestore(&i8253_lock, flags);
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -520,6 +520,17 @@ static void idxd_read_caps(struct idxd_d
+ 	multi_u64_to_bmap(idxd->opcap_bmap, &idxd->hw.opcap.bits[0], 4);
  }
  
- static int pit_shutdown(struct clock_event_device *evt)
++static void idxd_free(struct idxd_device *idxd)
++{
++	if (!idxd)
++		return;
++
++	put_device(idxd_confdev(idxd));
++	bitmap_free(idxd->opcap_bmap);
++	ida_free(&idxd_ida, idxd->id);
++	kfree(idxd);
++}
++
+ static struct idxd_device *idxd_alloc(struct pci_dev *pdev, struct idxd_driver_data *data)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -739,7 +750,7 @@ static int idxd_pci_probe(struct pci_dev
+  err:
+ 	pci_iounmap(pdev, idxd->reg_base);
+  err_iomap:
+-	put_device(idxd_confdev(idxd));
++	idxd_free(idxd);
+  err_idxd_alloc:
+ 	pci_disable_device(pdev);
+ 	return rc;
 
 
 
