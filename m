@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAD5ABDA63
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE66ABDAF0
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F285C7AFDF5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FDF38C1FF5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CCA24418E;
-	Tue, 20 May 2025 13:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB93C242D79;
+	Tue, 20 May 2025 14:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkA0BI2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xF8mKksK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3592D1922ED;
-	Tue, 20 May 2025 13:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CC8157487;
+	Tue, 20 May 2025 14:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749340; cv=none; b=oXcqvHGxaN4XKO0/8qkARKJ9QHHRh0dDY+McXwDx4Kc4DNbPLJsmrIHAa/8EqISWCvUs/6QKT6Q11Iu4nj4k0S5shzN+HPKJ2y5e2kf5gd9LbgFHtsPywVVL+X29IQzHVisD4yzok5DqDSw8PCST4EBjm53Tm/KbjSKi1RsbkFs=
+	t=1747749648; cv=none; b=L4LzSsDDblOtNdb6CHkiP+hh1WtFgfucRaXEwNcyauAcYJjn+rjF+GAOWepcEtMs7UYc96bswMcZ4zHGOA7ohE0K2CRq4UZCrUCeMkm9uy7bsft2u3cMZ3sU9DlDoBKRrLvgfj4ViOyd1t7CrNwenQ4s6PG7cfLpw4/pgRt1W4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749340; c=relaxed/simple;
-	bh=A1ejblnv8Enq0/Qu+JM7yFZo6odELEdC9sxa6Dc1tjU=;
+	s=arc-20240116; t=1747749648; c=relaxed/simple;
+	bh=GoMo8gKPe2oKNB/3+FDXvGExehYT8y/zSx5te5lkdpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A8LmlRcqoEl4XMmDBMBhbsQjJdYcHEC5FYbsAfw+4YNREAuZSXjRqMx2me7+uKmMo9wXDl7QhrHBxffWuaUGM7S/6OXF35OLeNZFoTuw4BsDOaBdbvfzRAdHC71WP3aJfkrj504L801SMHNobZ4cH/czF1Z2/DXFjBpp3PNBgSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkA0BI2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1275C4CEE9;
-	Tue, 20 May 2025 13:55:39 +0000 (UTC)
+	 MIME-Version; b=OZuLkycjHO8Uvk7m9LcZMlpUSyiJ3NLptwkzuNmPtrmI/ulO/rnGsqoq5a7f9qectMDo3kX353p2eJYGLu+gevpt3YiNjC+Qt8QcNI2Y0vT2R6TfhxfTPmg54d/MDiBffk+ny2uvDKKaE4tmHlpWHtkHdFLOA5UhgON8pnxs0eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xF8mKksK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB9BC4CEE9;
+	Tue, 20 May 2025 14:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749340;
-	bh=A1ejblnv8Enq0/Qu+JM7yFZo6odELEdC9sxa6Dc1tjU=;
+	s=korg; t=1747749647;
+	bh=GoMo8gKPe2oKNB/3+FDXvGExehYT8y/zSx5te5lkdpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkA0BI2ugrRog5DDXrjCLijkWHlzq8Tx5ML7QEb4Zt2EJivQ3CTak2TfBxEP4g2vo
-	 9EQocR7we3xdhWZ8PPgLMDZI4fH+P67huQlgjE1uyQYj8cuAZXQqNVyvwAVLzh9zFK
-	 wl6ZJ/m5qPt83a72uoUyMxGNcPufBADBgV8oETGw=
+	b=xF8mKksKXa0LZ9aH22VOtMditmBleLMLTMAMimmWljsQtegVktp96Vg+d1JoW0C8c
+	 xwDx1YGEDOtfb0Fq2tVXfuesRsEGNAWXjpkk2U1VXU49uiYrTgt7dfrqLK9pjw6phn
+	 JeOtM3l3l5n5luE6+BKSJB/22Am9K51w0w5zTwTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Michal Suchanek <msuchanek@suse.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 13/97] iio: adc: ad7266: Fix potential timestamp alignment issue.
-Date: Tue, 20 May 2025 15:49:38 +0200
-Message-ID: <20250520125801.186112064@linuxfoundation.org>
+Subject: [PATCH 6.6 014/117] tpm: tis: Double the timeout B to 4s
+Date: Tue, 20 May 2025 15:49:39 +0200
+Message-ID: <20250520125804.549697055@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Michal Suchanek <msuchanek@suse.de>
 
-[ Upstream commit 52d349884738c346961e153f195f4c7fe186fcf4 ]
+[ Upstream commit 2f661f71fda1fc0c42b7746ca5b7da529eb6b5be ]
 
-On architectures where an s64 is only 32-bit aligned insufficient padding
-would be left between the earlier elements and the timestamp. Use
-aligned_s64 to enforce the correct placement and ensure the storage is
-large enough.
+With some Infineon chips the timeouts in tpm_tis_send_data (both B and
+C) can reach up to about 2250 ms.
 
-Fixes: 54e018da3141 ("iio:ad7266: Mark transfer buffer as __be16") # aligned_s64 is much newer.
-Reported-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-2-jic23@kernel.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Timeout C is retried since
+commit de9e33df7762 ("tpm, tpm_tis: Workaround failed command reception on Infineon devices")
+
+Timeout B still needs to be extended.
+
+The problem is most commonly encountered with context related operation
+such as load context/save context. These are issued directly by the
+kernel, and there is no retry logic for them.
+
+When a filesystem is set up to use the TPM for unlocking the boot fails,
+and restarting the userspace service is ineffective. This is likely
+because ignoring a load context/save context result puts the real TPM
+state and the TPM state expected by the kernel out of sync.
+
+Chips known to be affected:
+tpm_tis IFX1522:00: 2.0 TPM (device-id 0x1D, rev-id 54)
+Description: SLB9672
+Firmware Revision: 15.22
+
+tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1B, rev-id 22)
+Firmware Revision: 7.83
+
+tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1A, rev-id 16)
+Firmware Revision: 5.63
+
+Link: https://lore.kernel.org/linux-integrity/Z5pI07m0Muapyu9w@kitsune.suse.cz/
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7266.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/tpm/tpm_tis_core.h | 2 +-
+ include/linux/tpm.h             | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-index 98648c679a55c..2ace3aafe4978 100644
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -44,7 +44,7 @@ struct ad7266_state {
- 	 */
- 	struct {
- 		__be16 sample[2];
--		s64 timestamp;
-+		aligned_s64 timestamp;
- 	} data __aligned(IIO_DMA_MINALIGN);
+diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
+index 369496a6aebf1..27e61ddfb6229 100644
+--- a/drivers/char/tpm/tpm_tis_core.h
++++ b/drivers/char/tpm/tpm_tis_core.h
+@@ -54,7 +54,7 @@ enum tis_int_flags {
+ enum tis_defaults {
+ 	TIS_MEM_LEN = 0x5000,
+ 	TIS_SHORT_TIMEOUT = 750,	/* ms */
+-	TIS_LONG_TIMEOUT = 2000,	/* 2 sec */
++	TIS_LONG_TIMEOUT = 4000,	/* 4 secs */
+ 	TIS_TIMEOUT_MIN_ATML = 14700,	/* usecs */
+ 	TIS_TIMEOUT_MAX_ATML = 15000,	/* usecs */
  };
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index 5f4998626a988..bf8a4ec8a01c1 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -181,7 +181,7 @@ enum tpm2_const {
  
+ enum tpm2_timeouts {
+ 	TPM2_TIMEOUT_A          =    750,
+-	TPM2_TIMEOUT_B          =   2000,
++	TPM2_TIMEOUT_B          =   4000,
+ 	TPM2_TIMEOUT_C          =    200,
+ 	TPM2_TIMEOUT_D          =     30,
+ 	TPM2_DURATION_SHORT     =     20,
 -- 
 2.39.5
 
