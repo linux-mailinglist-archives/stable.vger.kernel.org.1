@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B141ABDA42
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9361ABDABC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF1CA1BA4FD6
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D8651BA54C9
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF71B22D78C;
-	Tue, 20 May 2025 13:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8071D8E07;
+	Tue, 20 May 2025 14:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gxkw8zcp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpWGT6vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1D3242D9A;
-	Tue, 20 May 2025 13:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05189157487;
+	Tue, 20 May 2025 14:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749330; cv=none; b=Er6+XNyWAvKcXeFMchvkD7KeeKLSpgPeSb1Rv0YpRmaPO/pmBBI3umxBfJEi64eXSmnhfWoSjYAyhBEHzXwv+KkeZ4YLPmXJvNNhtiu7pAg8powi3RrfwEOBBToTi83tlXv8bA5EOhjRG5ekEJMuHzplsiTWPkxMTZWqYTHare4=
+	t=1747749633; cv=none; b=UAtalHDoNE0i7sFdhVn3KhHtFUGs0Hjxm4o9og/UIfuesqk98kVRWqR0qWDGqKYKzPCIPCP/zjvl8L/MIR6kDmX2lPldsFRO94qDjZfXi3U8zoG1aJhQssa7VXUCJMofx1HPGOcX7Tk+uperu6aDoyfuZ1cc5j/mhEIuvP6gKHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749330; c=relaxed/simple;
-	bh=708s2A/GAiTFxCJ5ww+8glg7QM9WzXzBaNesx7c/BLY=;
+	s=arc-20240116; t=1747749633; c=relaxed/simple;
+	bh=UnZmwwgRGOBL3q+75MbMFN6heZEA0G4q3Fow62ptEqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7P+WKy8iMJyzGjFCSAAUNvDdh+0E9aOOh4cHlrCdQ6Ej+cly7hAgPRFe3UjzT1wVDSyRvm4IlVfphcxgxtRW7Dgu3V/a48xtIi0lHGLCGuQY5fkNZ5JxrWOqgNYnqLNvbmWFJswZ9P4q4p2tnFs/CE/F22HR7ej5TkiiG9ElxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gxkw8zcp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED53DC4CEE9;
-	Tue, 20 May 2025 13:55:27 +0000 (UTC)
+	 MIME-Version; b=uMuObEvrWTPkFXX5BA4EI7D1w9f5QmTXw8qaCYfNbdxXU2/1aPMXfd7gyxvxeIJRLe8UFQh6CM+soJdwXVLfsuBT83WdSR84H9vevCv607ksj5NIAa3D0W1R0s0uvNNKgSTSa/AvLrMr8do2yyPIoTbqCWMa4fGsaQJAqQTRwmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpWGT6vF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB4FC4CEE9;
+	Tue, 20 May 2025 14:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749328;
-	bh=708s2A/GAiTFxCJ5ww+8glg7QM9WzXzBaNesx7c/BLY=;
+	s=korg; t=1747749631;
+	bh=UnZmwwgRGOBL3q+75MbMFN6heZEA0G4q3Fow62ptEqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gxkw8zcpTAJcAwEUl31acxSbHZBsnCKxwaCXL043+XRxuaPy2eWsgsvui+A8LhwVe
-	 r5qpchfHodgyxspiecGDnQcygoB117sz2MUwQqp1pZ4NUXf/E283vPQ1yVgToUED4x
-	 oR8Hwv3SBxm0Th0rpVlMZ0lntaft5/GlMBF8ySW4=
+	b=BpWGT6vFLRU48hwpXBwF/jI2aqTHf1vn/zROLs3IGaDV59s24Csi0BYiDVhWiTBoK
+	 kmp/81nxhTxz5MEI5uQ6Vbnedy94JGCo9QEg+DSq7rgGZE3ZCmL4u/oqgqlS1LQ+tM
+	 hIcdJo/wrWaQ8yMzpIAoX6q3mM6XA2H0LCWo1BQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>,
-	"Christian Brauner (Microsoft)" <brauner@kernel.org>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 01/97] binfmt: Fix whitespace issues
+Subject: [PATCH 6.6 001/117] fs/xattr.c: fix simple_xattr_list to always include security.* xattrs
 Date: Tue, 20 May 2025 15:49:26 +0200
-Message-ID: <20250520125800.721573657@linuxfoundation.org>
+Message-ID: <20250520125804.045794657@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-[ Upstream commit 8f6e3f9e5a0f58e458a348b7e36af11d0e9702af ]
+[ Upstream commit 8b0ba61df5a1c44e2b3cf683831a4fc5e24ea99d ]
 
-Fix the annoying whitespace issues that have been following these files
-around for years.
+The vfs has long had a fallback to obtain the security.* xattrs from the
+LSM when the filesystem does not implement its own listxattr, but
+shmem/tmpfs and kernfs later gained their own xattr handlers to support
+other xattrs. Unfortunately, as a side effect, tmpfs and kernfs-based
+filesystems like sysfs no longer return the synthetic security.* xattr
+names via listxattr unless they are explicitly set by userspace or
+initially set upon inode creation after policy load. coreutils has
+recently switched from unconditionally invoking getxattr for security.*
+for ls -Z via libselinux to only doing so if listxattr returns the xattr
+name, breaking ls -Z of such inodes.
 
-Cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Acked-by: Christian Brauner (Microsoft) <brauner@kernel.org>
-Link: https://lore.kernel.org/r/20221018071350.never.230-kees@kernel.org
-Stable-dep-of: 11854fe263eb ("binfmt_elf: Move brk for static PIE even if ASLR disabled")
+Before:
+$ getfattr -m.* /run/initramfs
+<no output>
+$ getfattr -m.* /sys/kernel/fscaps
+<no output>
+$ setfattr -n user.foo /run/initramfs
+$ getfattr -m.* /run/initramfs
+user.foo
+
+After:
+$ getfattr -m.* /run/initramfs
+security.selinux
+$ getfattr -m.* /sys/kernel/fscaps
+security.selinux
+$ setfattr -n user.foo /run/initramfs
+$ getfattr -m.* /run/initramfs
+security.selinux
+user.foo
+
+Link: https://lore.kernel.org/selinux/CAFqZXNtF8wDyQajPCdGn=iOawX4y77ph0EcfcqcUUj+T87FKyA@mail.gmail.com/
+Link: https://lore.kernel.org/selinux/20250423175728.3185-2-stephen.smalley.work@gmail.com/
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Link: https://lore.kernel.org/20250424152822.2719-1-stephen.smalley.work@gmail.com
+Fixes: b09e0fa4b4ea66266058ee ("tmpfs: implement generic xattr support")
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf.c          | 14 +++++++-------
- fs/binfmt_elf_fdpic.c    |  2 +-
- fs/exec.c                |  2 +-
- include/uapi/linux/elf.h |  2 +-
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ fs/xattr.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 89e7e4826efce..d1cf3d25da4b6 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -248,7 +248,7 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
- 	} while (0)
- 
- #ifdef ARCH_DLINFO
--	/* 
-+	/*
- 	 * ARCH_DLINFO must come first so PPC can do its special alignment of
- 	 * AUXV.
- 	 * update AT_VECTOR_SIZE_ARCH if the number of NEW_AUX_ENT() in
-@@ -1021,7 +1021,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 				 executable_stack);
- 	if (retval < 0)
- 		goto out_free_dentry;
--	
-+
- 	elf_bss = 0;
- 	elf_brk = 0;
- 
-@@ -1044,7 +1044,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 
- 		if (unlikely (elf_brk > elf_bss)) {
- 			unsigned long nbyte;
--	            
-+
- 			/* There was a PT_LOAD segment with p_memsz > p_filesz
- 			   before this one. Map anonymous pages, if needed,
- 			   and clear the area.  */
-@@ -1522,7 +1522,7 @@ static void fill_elf_note_phdr(struct elf_phdr *phdr, int sz, loff_t offset)
- 	phdr->p_align = 0;
+diff --git a/fs/xattr.c b/fs/xattr.c
+index c20046548f218..5fed22c22a2be 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -1291,6 +1291,15 @@ static bool xattr_is_trusted(const char *name)
+ 	return !strncmp(name, XATTR_TRUSTED_PREFIX, XATTR_TRUSTED_PREFIX_LEN);
  }
  
--static void fill_note(struct memelfnote *note, const char *name, int type, 
-+static void fill_note(struct memelfnote *note, const char *name, int type,
- 		unsigned int sz, void *data)
- {
- 	note->name = name;
-@@ -2005,8 +2005,8 @@ static int elf_dump_thread_status(long signr, struct elf_thread_status *t)
- 	t->num_notes = 0;
- 
- 	fill_prstatus(&t->prstatus.common, p, signr);
--	elf_core_copy_task_regs(p, &t->prstatus.pr_reg);	
--	
-+	elf_core_copy_task_regs(p, &t->prstatus.pr_reg);
++static bool xattr_is_maclabel(const char *name)
++{
++	const char *suffix = name + XATTR_SECURITY_PREFIX_LEN;
 +
- 	fill_note(&t->notes[0], "CORE", NT_PRSTATUS, sizeof(t->prstatus),
- 		  &(t->prstatus));
- 	t->num_notes++;
-@@ -2296,7 +2296,7 @@ static int elf_core_dump(struct coredump_params *cprm)
- 	if (!elf_core_write_extra_phdrs(cprm, offset))
- 		goto end_coredump;
++	return !strncmp(name, XATTR_SECURITY_PREFIX,
++			XATTR_SECURITY_PREFIX_LEN) &&
++		security_ismaclabel(suffix);
++}
++
+ /**
+  * simple_xattr_list - list all xattr objects
+  * @inode: inode from which to get the xattrs
+@@ -1323,6 +1332,17 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
+ 	if (err)
+ 		return err;
  
-- 	/* write out the notes section */
-+	/* write out the notes section */
- 	if (!write_note_info(&info, cprm))
- 		goto end_coredump;
++	err = security_inode_listsecurity(inode, buffer, remaining_size);
++	if (err < 0)
++		return err;
++
++	if (buffer) {
++		if (remaining_size < err)
++			return -ERANGE;
++		buffer += err;
++	}
++	remaining_size -= err;
++
+ 	read_lock(&xattrs->lock);
+ 	for (rbp = rb_first(&xattrs->rb_root); rbp; rbp = rb_next(rbp)) {
+ 		xattr = rb_entry(rbp, struct simple_xattr, rb_node);
+@@ -1331,6 +1351,10 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
+ 		if (!trusted && xattr_is_trusted(xattr->name))
+ 			continue;
  
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index c71a409273150..b2d3b6e43bb56 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -1603,7 +1603,7 @@ static int elf_fdpic_core_dump(struct coredump_params *cprm)
- 	if (!elf_core_write_extra_phdrs(cprm, offset))
- 		goto end_coredump;
- 
-- 	/* write out the notes section */
-+	/* write out the notes section */
- 	if (!writenote(thread_list->notes, cprm))
- 		goto end_coredump;
- 	if (!writenote(&psinfo_note, cprm))
-diff --git a/fs/exec.c b/fs/exec.c
-index 2039414cc6621..b65af8f9a4f9b 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -169,7 +169,7 @@ SYSCALL_DEFINE1(uselib, const char __user *, library)
- exit:
- 	fput(file);
- out:
--  	return error;
-+	return error;
- }
- #endif /* #ifdef CONFIG_USELIB */
- 
-diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-index c7b056af9ef0a..3e5f07be26fc8 100644
---- a/include/uapi/linux/elf.h
-+++ b/include/uapi/linux/elf.h
-@@ -91,7 +91,7 @@ typedef __s64	Elf64_Sxword;
- #define DT_INIT		12
- #define DT_FINI		13
- #define DT_SONAME	14
--#define DT_RPATH 	15
-+#define DT_RPATH	15
- #define DT_SYMBOLIC	16
- #define DT_REL	        17
- #define DT_RELSZ	18
++		/* skip MAC labels; these are provided by LSM above */
++		if (xattr_is_maclabel(xattr->name))
++			continue;
++
+ 		err = xattr_list_one(&buffer, &remaining_size, xattr->name);
+ 		if (err)
+ 			break;
 -- 
 2.39.5
 
