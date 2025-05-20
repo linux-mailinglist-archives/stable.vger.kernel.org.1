@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16337ABDAE4
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB61DABD9F7
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 716111888908
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 563EA7AC435
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95B324503B;
-	Tue, 20 May 2025 14:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749B92459C9;
+	Tue, 20 May 2025 13:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfSbewni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axgrXHyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D7C242D79;
-	Tue, 20 May 2025 14:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28039242D89;
+	Tue, 20 May 2025 13:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749714; cv=none; b=a+DphHEYhNbllE5MeDJpmrXDzzvuAVBzcQ3nIrlbzOmsL86oe5RYrFAjCrVJ/j8jtdtymqjN+rUYCdUdhMCGQ1cTxFUAG7qbt+bH3x6CHtdTVYqtkYqTkSFeDi164jvTSqr06rPeLe5QgLCCbcoJP1lSf3KzS8T8iL9uFkWC7gU=
+	t=1747749139; cv=none; b=Lwm2HbQFMYfQFxfIk7sRxupCRbY9TDmezn3zNoYphPsJDBuENeR9VYXHxDl3UdbbVK+ppCiUmVPlXySSpaoaFtCwsKsFRijiJbPX5py1lSI2kSWIPY60QtfLFdsxltT3uZPnVLO1kTsxYgqte0CR88ULoDsW+CgyGGR7niZ8TMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749714; c=relaxed/simple;
-	bh=e+sK+wRGAemWV5Mlb6+QXbF137Ih5XUej35L62862Zw=;
+	s=arc-20240116; t=1747749139; c=relaxed/simple;
+	bh=Yge/m4wQaVb57P1AVgdR5pPcS03bqChYaBEAObyw7iA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVhpJcUZMM9yX1NF2YRrOVNzQhUNI7z8uwywpklY1esRwxPKS1f558R7KAJuEDMSUJC5hdbNzyJWIVp+zdO1UAr1Gi0kzGyAXEdVx0pBH+aoxQW08gaeZUO3Zc4ATZEizv49+RAGh5xSsDSysYW7dpIphbsWHgB0qGCqG3LP8Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfSbewni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C93C4CEE9;
-	Tue, 20 May 2025 14:01:53 +0000 (UTC)
+	 MIME-Version; b=cNbgrKfhE+4oL7MDAJc8/q8DCf9RBStiOGhD3HX1lAcZq2FoxJUOE+4ZDNKFJ2KiQnUPRA1c4obC//hq4uKmeuqzdhUJvj+ipLHtJWHDIc0S8yRED8cH6T9seMR4Wv61M5ywJx7I/exaDZ1/+1oQAv/ar4ORnmrZLV/962SLM9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axgrXHyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5C6C4CEEA;
+	Tue, 20 May 2025 13:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749714;
-	bh=e+sK+wRGAemWV5Mlb6+QXbF137Ih5XUej35L62862Zw=;
+	s=korg; t=1747749138;
+	bh=Yge/m4wQaVb57P1AVgdR5pPcS03bqChYaBEAObyw7iA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfSbewni5qRfIMysStgAfbW/wlSOeI4+8HhtsmVRTGt1Br8UlPP1wIsMrXICwkJHL
-	 NP9/bhLq5j+G9Zm3i+xC8wDzKwsgWUoI19guNK/JEJYyO5HFN5IZIC09OjPw0Qsjzt
-	 J6Rjh29iBX3jkM0PCLJTRAMr8b1/UIgnSmwXufQM=
+	b=axgrXHytleziEPkIlMrTsyzblrfpuSIRMAQcLrVlxn0TmQYhtfEb+pXAnZrbVRG0T
+	 +MysLPUZhhMCLZMXIhl989oFMakMV6zDw+MMbUWwV8yp7KmOZqi68+6pACnc89Df+g
+	 iUfvFLtYYiCHdnLsOG9vrWaOaaiUtnDmMle5wRmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will <willsroot@protonmail.com>,
-	Savy <savy@syst3mfailure.io>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/117] net_sched: Flush gso_skb list too during ->change()
+Subject: [PATCH 5.15 10/59] net: dsa: sja1105: discard incoming frames in BR_STATE_LISTENING
 Date: Tue, 20 May 2025 15:50:01 +0200
-Message-ID: <20250520125805.426455223@linuxfoundation.org>
+Message-ID: <20250520125754.244287175@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,149 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 2d3cbfd6d54a2c39ce3244f33f85c595844bd7b8 ]
+[ Upstream commit 498625a8ab2c8e1c9ab5105744310e8d6952cc01 ]
 
-Previously, when reducing a qdisc's limit via the ->change() operation, only
-the main skb queue was trimmed, potentially leaving packets in the gso_skb
-list. This could result in NULL pointer dereference when we only check
-sch->limit against sch->q.qlen.
+It has been reported that when under a bridge with stp_state=1, the logs
+get spammed with this message:
 
-This patch introduces a new helper, qdisc_dequeue_internal(), which ensures
-both the gso_skb list and the main queue are properly flushed when trimming
-excess packets. All relevant qdiscs (codel, fq, fq_codel, fq_pie, hhf, pie)
-are updated to use this helper in their ->change() routines.
+[  251.734607] fsl_dpaa2_eth dpni.5 eth0: Couldn't decode source port
 
-Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
-Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
-Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc")
-Fixes: d4b36210c2e6 ("net: pkt_sched: PIE AQM scheme")
-Reported-by: Will <willsroot@protonmail.com>
-Reported-by: Savy <savy@syst3mfailure.io>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Further debugging shows the following info associated with packets:
+source_port=-1, switch_id=-1, vid=-1, vbid=1
+
+In other words, they are data plane packets which are supposed to be
+decoded by dsa_tag_8021q_find_port_by_vbid(), but the latter (correctly)
+refuses to do so, because no switch port is currently in
+BR_STATE_LEARNING or BR_STATE_FORWARDING - so the packet is effectively
+unexpected.
+
+The error goes away after the port progresses to BR_STATE_LEARNING in 15
+seconds (the default forward_time of the bridge), because then,
+dsa_tag_8021q_find_port_by_vbid() can correctly associate the data plane
+packets with a plausible bridge port in a plausible STP state.
+
+Re-reading IEEE 802.1D-1990, I see the following:
+
+"4.4.2 Learning: (...) The Forwarding Process shall discard received
+frames."
+
+IEEE 802.1D-2004 further clarifies:
+
+"DISABLED, BLOCKING, LISTENING, and BROKEN all correspond to the
+DISCARDING port state. While those dot1dStpPortStates serve to
+distinguish reasons for discarding frames, the operation of the
+Forwarding and Learning processes is the same for all of them. (...)
+LISTENING represents a port that the spanning tree algorithm has
+selected to be part of the active topology (computing a Root Port or
+Designated Port role) but is temporarily discarding frames to guard
+against loops or incorrect learning."
+
+Well, this is not what the driver does - instead it sets
+mac[port].ingress = true.
+
+To get rid of the log spam, prevent unexpected data plane packets to
+be received by software by discarding them on ingress in the LISTENING
+state.
+
+In terms of blame attribution: the prints only date back to commit
+d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based
+on the VBID"). However, the settings would permit a LISTENING port to
+forward to a FORWARDING port, and the standard suggests that's not OK.
+
+Fixes: 640f763f98c2 ("net: dsa: sja1105: Add support for Spanning Tree Protocol")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250509113816.2221992-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h | 15 +++++++++++++++
- net/sched/sch_codel.c     |  2 +-
- net/sched/sch_fq.c        |  2 +-
- net/sched/sch_fq_codel.c  |  2 +-
- net/sched/sch_fq_pie.c    |  2 +-
- net/sched/sch_hhf.c       |  2 +-
- net/sched/sch_pie.c       |  2 +-
- 7 files changed, 21 insertions(+), 6 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_main.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 4ec2a948ae3db..3287988a6a987 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1029,6 +1029,21 @@ static inline struct sk_buff *__qdisc_dequeue_head(struct qdisc_skb_head *qh)
- 	return skb;
- }
- 
-+static inline struct sk_buff *qdisc_dequeue_internal(struct Qdisc *sch, bool direct)
-+{
-+	struct sk_buff *skb;
-+
-+	skb = __skb_dequeue(&sch->gso_skb);
-+	if (skb) {
-+		sch->q.qlen--;
-+		return skb;
-+	}
-+	if (direct)
-+		return __qdisc_dequeue_head(&sch->q);
-+	else
-+		return sch->dequeue(sch);
-+}
-+
- static inline struct sk_buff *qdisc_dequeue_head(struct Qdisc *sch)
- {
- 	struct sk_buff *skb = __qdisc_dequeue_head(&sch->q);
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-index 5f2e068157456..63c02040b426a 100644
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -168,7 +168,7 @@ static int codel_change(struct Qdisc *sch, struct nlattr *opt,
- 
- 	qlen = sch->q.qlen;
- 	while (sch->q.qlen > sch->limit) {
--		struct sk_buff *skb = __qdisc_dequeue_head(&sch->q);
-+		struct sk_buff *skb = qdisc_dequeue_internal(sch, true);
- 
- 		dropped += qdisc_pkt_len(skb);
- 		qdisc_qstats_backlog_dec(sch, skb);
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index f59a2cb2c803d..91f5ef6be0f23 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -901,7 +901,7 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
- 		sch_tree_lock(sch);
- 	}
- 	while (sch->q.qlen > sch->limit) {
--		struct sk_buff *skb = fq_dequeue(sch);
-+		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
- 
- 		if (!skb)
- 			break;
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index 9330923a624c0..47b5a056165cb 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -431,7 +431,7 @@ static int fq_codel_change(struct Qdisc *sch, struct nlattr *opt,
- 
- 	while (sch->q.qlen > sch->limit ||
- 	       q->memory_usage > q->memory_limit) {
--		struct sk_buff *skb = fq_codel_dequeue(sch);
-+		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
- 
- 		q->cstats.drop_len += qdisc_pkt_len(skb);
- 		rtnl_kfree_skbs(skb, skb);
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 68e6acd0f130d..607c580d75e4b 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -357,7 +357,7 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
- 
- 	/* Drop excess packets if new limit is lower */
- 	while (sch->q.qlen > sch->limit) {
--		struct sk_buff *skb = fq_pie_qdisc_dequeue(sch);
-+		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
- 
- 		len_dropped += qdisc_pkt_len(skb);
- 		num_dropped += 1;
-diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
-index d26cd436cbe31..83fc44f20e31c 100644
---- a/net/sched/sch_hhf.c
-+++ b/net/sched/sch_hhf.c
-@@ -560,7 +560,7 @@ static int hhf_change(struct Qdisc *sch, struct nlattr *opt,
- 	qlen = sch->q.qlen;
- 	prev_backlog = sch->qstats.backlog;
- 	while (sch->q.qlen > sch->limit) {
--		struct sk_buff *skb = hhf_dequeue(sch);
-+		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
- 
- 		rtnl_kfree_skbs(skb, skb);
- 	}
-diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
-index 2da6250ec3463..48c5ab8ec143c 100644
---- a/net/sched/sch_pie.c
-+++ b/net/sched/sch_pie.c
-@@ -190,7 +190,7 @@ static int pie_change(struct Qdisc *sch, struct nlattr *opt,
- 	/* Drop excess packets if new limit is lower */
- 	qlen = sch->q.qlen;
- 	while (sch->q.qlen > sch->limit) {
--		struct sk_buff *skb = __qdisc_dequeue_head(&sch->q);
-+		struct sk_buff *skb = qdisc_dequeue_internal(sch, true);
- 
- 		dropped += qdisc_pkt_len(skb);
- 		qdisc_qstats_backlog_dec(sch, skb);
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index 888f10d93b9ab..ec1c0ad591184 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -1969,6 +1969,7 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
+ 	switch (state) {
+ 	case BR_STATE_DISABLED:
+ 	case BR_STATE_BLOCKING:
++	case BR_STATE_LISTENING:
+ 		/* From UM10944 description of DRPDTAG (why put this there?):
+ 		 * "Management traffic flows to the port regardless of the state
+ 		 * of the INGRESS flag". So BPDUs are still be allowed to pass.
+@@ -1978,11 +1979,6 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
+ 		mac[port].egress    = false;
+ 		mac[port].dyn_learn = false;
+ 		break;
+-	case BR_STATE_LISTENING:
+-		mac[port].ingress   = true;
+-		mac[port].egress    = false;
+-		mac[port].dyn_learn = false;
+-		break;
+ 	case BR_STATE_LEARNING:
+ 		mac[port].ingress   = true;
+ 		mac[port].egress    = false;
 -- 
 2.39.5
 
