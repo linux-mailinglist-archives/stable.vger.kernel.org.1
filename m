@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D39CABDD34
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:35:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3F3ABDC2A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2C64E1DE9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:22:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 530143BDC9D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2765250C0E;
-	Tue, 20 May 2025 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA762522A8;
+	Tue, 20 May 2025 14:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0O74TXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iV2I5mAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E27524A04A;
-	Tue, 20 May 2025 14:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D092248F50;
+	Tue, 20 May 2025 14:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750604; cv=none; b=fMZp/9cwWbJRIEDIa6hOh98zgj/2t0vjhGMCnF+KV4MIxZxddtpGVUOmysFzPFbrqvGIc3yvhdkvD2EeXaRZTFFrAyxuXemLBDKeq333agffd9eGJo/ZxJzuoxN2KQRd1D8btrXMY3vzWlx4IZyP+rAd1cn/+JQbvlVHhX+a8pQ=
+	t=1747750303; cv=none; b=r/fVR/VxW83iAP3x+WRE7AGoCgRN3A5gboR/5m6zpa3GNFrR86nO/XBvmApJxdB26PQWeHSZYOQDjRmPDG6YXo56PGK1+w7M+X42ijrq2gvtxEAwjYNbmMbCvlx+7lKwGSNu5cZnOViFGTruPJBcHU10Wh7OZpzPH3tVhgHno8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750604; c=relaxed/simple;
-	bh=Iy5WWRAQOR2z3dZP97USklvob/VyAmWMZ13Mgoljs2Y=;
+	s=arc-20240116; t=1747750303; c=relaxed/simple;
+	bh=hTGYU0BezZpSEG4Ut0muPhLtue5SD8VdXoGW1LiAe6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVajRFYYjUezMaD1BMmex0xZfSEdr/CMbx/i3l+ft7vfXA5+ScR42H4b1TAicrRvoR+RyQt6Kdm/f2+i+4H1S9U19eRHjoV5qRxSnq138WCPnsNvp/Ru1NaxqdyFWNPB/nTN+6ynI224bp3I5e9R3am2xr+ZKFnPcmoGRV8mW74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0O74TXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF760C4CEE9;
-	Tue, 20 May 2025 14:16:42 +0000 (UTC)
+	 MIME-Version; b=eiwHhDLDJMDUmvjoY9HID+2mvck3KFHJU25c3A0YoDabtu9msUNFuc5nqlnw/45IC4BVsDf6SvVA25tVfixawfm7Z0yPIkXHw0bFuLXcg1VCafjo3doeNEl+kOuG6UIxQGFUgCa7kuusIZVjPkRzSqezMUuahrN8S0Bc4XBTeMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iV2I5mAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90E5C4CEFC;
+	Tue, 20 May 2025 14:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750603;
-	bh=Iy5WWRAQOR2z3dZP97USklvob/VyAmWMZ13Mgoljs2Y=;
+	s=korg; t=1747750303;
+	bh=hTGYU0BezZpSEG4Ut0muPhLtue5SD8VdXoGW1LiAe6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0O74TXK6Jcb/swyn2v/KV/DJt1dJ97ON8dlwLRrsRPiZlK+L1Tj8gQiJQpLP8GL+
-	 i+0dIzuAu7uCsUau1dFZzBW95HpBntRnUCT+FW+gXrVk5WnZC2OC3EXOt4Hii4QYsS
-	 ExD0/rQfycOyHvvJ2eaXVz54to3Oq1gMHiaMWwFE=
+	b=iV2I5mADR6APeMF1nY8NXx8rZvl05fpfBoTRlSqR1KEeCbcqpsYzqO2A1tx/X4qCG
+	 rPtYEWSskmPtpXu/PFrFFZwLCG7BC6xxRG05pZEcaW+0RXNU+cTD8a+OWjmqa0JOp4
+	 gKx5ZdDPGYrml4xAFemBM79dRflSrHqq8CGrgF3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.14 062/145] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
-Date: Tue, 20 May 2025 15:50:32 +0200
-Message-ID: <20250520125813.011066813@linuxfoundation.org>
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 078/143] LoongArch: uprobes: Remove redundant code about resume_era
+Date: Tue, 20 May 2025 15:50:33 +0200
+Message-ID: <20250520125813.134195852@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathan.lynch@amd.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
+commit 12614f794274f63fbdfe76771b2b332077d63848 upstream.
 
-Several issues with this change:
+arch_uprobe_skip_sstep() returns true if instruction was emulated, that
+is to say, there is no need to single step for the emulated instructions.
+regs->csr_era will point to the destination address directly after the
+exception, so the resume_era related code is redundant, just remove them.
 
-* The analysis is flawed and it's unclear what problem is being
-  fixed. There is no difference between wait_event_freezable_timeout()
-  and wait_event_timeout() with respect to device interrupts. And of
-  course "the interrupt notifying the finish of an operation happens
-  during wait_event_freezable_timeout()" -- that's how it's supposed
-  to work.
-
-* The link at the "Closes:" tag appears to be an unrelated
-  use-after-free in idxd.
-
-* It introduces a regression: dmatest threads are meant to be
-  freezable and this change breaks that.
-
-See discussion here:
-https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
-
-Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
-Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
-Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 19bc6cb64092 ("LoongArch: Add uprobes support")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dmatest.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/loongarch/include/asm/uprobes.h |    1 -
+ arch/loongarch/kernel/uprobes.c      |    7 +------
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -841,9 +841,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
+--- a/arch/loongarch/include/asm/uprobes.h
++++ b/arch/loongarch/include/asm/uprobes.h
+@@ -15,7 +15,6 @@ typedef u32 uprobe_opcode_t;
+ #define UPROBE_XOLBP_INSN	__emit_break(BRK_UPROBE_XOLBP)
  
--			wait_event_timeout(thread->done_wait,
--					   done->done,
--					   msecs_to_jiffies(params->timeout));
-+			wait_event_freezable_timeout(thread->done_wait,
-+					done->done,
-+					msecs_to_jiffies(params->timeout));
+ struct arch_uprobe {
+-	unsigned long	resume_era;
+ 	u32	insn[2];
+ 	u32	ixol[2];
+ 	bool	simulate;
+--- a/arch/loongarch/kernel/uprobes.c
++++ b/arch/loongarch/kernel/uprobes.c
+@@ -52,11 +52,7 @@ int arch_uprobe_post_xol(struct arch_upr
  
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
+ 	WARN_ON_ONCE(current->thread.trap_nr != UPROBE_TRAP_NR);
+ 	current->thread.trap_nr = utask->autask.saved_trap_nr;
+-
+-	if (auprobe->simulate)
+-		instruction_pointer_set(regs, auprobe->resume_era);
+-	else
+-		instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
++	instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
+ 
+ 	return 0;
+ }
+@@ -86,7 +82,6 @@ bool arch_uprobe_skip_sstep(struct arch_
+ 
+ 	insn.word = auprobe->insn[0];
+ 	arch_simulate_insn(insn, regs);
+-	auprobe->resume_era = regs->csr_era;
+ 
+ 	return true;
+ }
 
 
 
