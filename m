@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7E0ABDB7C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED0AABDD4B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:37:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CFC9189B0DE
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:08:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80D5A4E3529
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF49248879;
-	Tue, 20 May 2025 14:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6D2248F4E;
+	Tue, 20 May 2025 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfQpct84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHNj5EkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AE924728A;
-	Tue, 20 May 2025 14:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972F3243371;
+	Tue, 20 May 2025 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750058; cv=none; b=XO68ZWigDT7dw/25t6lnKJ5p98WtvuiWT5YSpaE2idf2o1eqp2OFe1axiUi/0fZDrDDQN6JHN47Yv7xA8/SbXV2PTIlN+dJKUdaykPlKAiEjNeRQQnmbMpLhBdM8XJ47evcQRzwaCuHjthzZQ0jzexKUaYutvAgZr7W4/MM834k=
+	t=1747750546; cv=none; b=VgEZXLcaH0UYIlGsf3SRm+7ZKuUWWMtUguE9dPy1ANDzL6UBa3aeuAyi1HXKR8il6Xco6RBMVMVM85ERaSf9BCj4mvhoLaBCyOJm9d+Yw/54FnqW1g8RpRvPJVRQhTX1wu30B6mjwWAy2atQJxO6VrGVhL9Jep1eg9o9sWmO8P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750058; c=relaxed/simple;
-	bh=7RKjtybvrWh5mCrmO8fmPKwJ5TkkZEU1Kcn4F4Nm/dM=;
+	s=arc-20240116; t=1747750546; c=relaxed/simple;
+	bh=jw+jNYNDcgDYJ/YAU43vzR8HDJ0xfkViZ1VEMmusJKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlKSBdpDtlGKeQ7NrXH+XDCVPgXj0UdZT4q5Z+yg1Bpu0wIbNq02zFZAyWZIP0+CevipIvrvDQ0tyYDoqAVTkB8YVpOsXGoQlBWIi8ScF26GQV5AeZfdI65Ks4Vs8T2/11wTHpc1Di09XLjhR2ShictUDTHvloEc18wOQbrXCW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfQpct84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC07C4CEE9;
-	Tue, 20 May 2025 14:07:37 +0000 (UTC)
+	 MIME-Version; b=D64kAM6CnkgEHZqDNt+us4tJhAUvmlkjzKbww0/u/0NBCRtYlOBO9xxld6fRhmHHeEWrFf0tZcVPCQuU3sy75hrSB9K4Nqm4w+y+H027KBoCGFNFZboNDF7TM4UKRVWP3Bj+ZtgWp/TpHTubiatoVv55iVJzzR/sJmy6ag+iy34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHNj5EkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F25CC4CEE9;
+	Tue, 20 May 2025 14:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750058;
-	bh=7RKjtybvrWh5mCrmO8fmPKwJ5TkkZEU1Kcn4F4Nm/dM=;
+	s=korg; t=1747750546;
+	bh=jw+jNYNDcgDYJ/YAU43vzR8HDJ0xfkViZ1VEMmusJKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zfQpct84NHF/tSIFOHH0UFzZHnr0VsGMqVd3U+rZJxOc/paPDcvDDN+wHgTyoD/ar
-	 XTmVcLWJ8C0hN1T27QLP6vEthfMR0eaYcpO+MR/WQ0mpf7ceA4KZSobfCU4IqWkt1K
-	 J1UGcOzx0iHhGnktqD1BGLdeV7OC0y48Ql0lxXAk=
+	b=nHNj5EkVNj4PXa64XhRjmebXOVszBd7ITpsgtrX5pB3xj41DQdw1dZU1hOC/kw6h/
+	 cXHcFKSRa+0rPdXOT06aeyjt2JAvOe6X5+Nh8XhW17Eub2KwrOWt6TpbB0Okw2x/KS
+	 ao0M4S5Ty9M+35C1fCssaSx5XPGRIWevYL5Re0/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Waiman Long <longman@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/143] HID: thrustmaster: fix memory leak in thrustmaster_interrupts()
+Subject: [PATCH 6.14 013/145] cgroup/cpuset: Extend kthread_is_per_cpu() check to all PF_NO_SETAFFINITY tasks
 Date: Tue, 20 May 2025 15:49:43 +0200
-Message-ID: <20250520125811.152604630@linuxfoundation.org>
+Message-ID: <20250520125811.068409445@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 09d546303b370113323bfff456c4e8cff8756005 ]
+[ Upstream commit 39b5ef791d109dd54c7c2e6e87933edfcc0ad1ac ]
 
-In thrustmaster_interrupts(), the allocated send_buf is not
-freed if the usb_check_int_endpoints() check fails, leading
-to a memory leak.
+Commit ec5fbdfb99d1 ("cgroup/cpuset: Enable update_tasks_cpumask()
+on top_cpuset") enabled us to pull CPUs dedicated to child partitions
+from tasks in top_cpuset by ignoring per cpu kthreads. However, there
+can be other kthreads that are not per cpu but have PF_NO_SETAFFINITY
+flag set to indicate that we shouldn't mess with their CPU affinity.
+For other kthreads, their affinity will be changed to skip CPUs dedicated
+to child partitions whether it is an isolating or a scheduling one.
 
-Fix this by ensuring send_buf is freed before returning in
-the error path.
+As all the per cpu kthreads have PF_NO_SETAFFINITY set, the
+PF_NO_SETAFFINITY tasks are essentially a superset of per cpu kthreads.
+Fix this issue by dropping the kthread_is_per_cpu() check and checking
+the PF_NO_SETAFFINITY flag instead.
 
-Fixes: 50420d7c79c3 ("HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check")
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: ec5fbdfb99d1 ("cgroup/cpuset: Enable update_tasks_cpumask() on top_cpuset")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-thrustmaster.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/cgroup/cpuset.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
-index 3b81468a1df29..0bf70664c35ee 100644
---- a/drivers/hid/hid-thrustmaster.c
-+++ b/drivers/hid/hid-thrustmaster.c
-@@ -174,6 +174,7 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
- 	u8 ep_addr[2] = {b_ep, 0};
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 1287274ae1ce9..6fbffdca0c741 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1116,9 +1116,11 @@ void cpuset_update_tasks_cpumask(struct cpuset *cs, struct cpumask *new_cpus)
  
- 	if (!usb_check_int_endpoints(usbif, ep_addr)) {
-+		kfree(send_buf);
- 		hid_err(hdev, "Unexpected non-int endpoint\n");
- 		return;
- 	}
+ 		if (top_cs) {
+ 			/*
+-			 * Percpu kthreads in top_cpuset are ignored
++			 * PF_NO_SETAFFINITY tasks are ignored.
++			 * All per cpu kthreads should have PF_NO_SETAFFINITY
++			 * flag set, see kthread_set_per_cpu().
+ 			 */
+-			if (kthread_is_per_cpu(task))
++			if (task->flags & PF_NO_SETAFFINITY)
+ 				continue;
+ 			cpumask_andnot(new_cpus, possible_mask, subpartitions_cpus);
+ 		} else {
 -- 
 2.39.5
 
