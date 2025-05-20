@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-145308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB86ABDB04
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:05:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9015ABDAD1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88D3188E115
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 398054A3400
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE77F21E0BB;
-	Tue, 20 May 2025 14:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E06A242D93;
+	Tue, 20 May 2025 13:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyPvtIlr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtEh7qg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B69BEEDE;
-	Tue, 20 May 2025 14:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4A322D7A8;
+	Tue, 20 May 2025 13:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749792; cv=none; b=E2GJKog+yzuXWL6P1wuz05rt9MeY0nq7WOEUGJ3NYA5JH9WDCfWOjf4W0uMtk8R3flJjj9ejQTizfb/V2xAECqc7lDxIckqiXjqKiDBc62udWb6n7jKGLsbo0g2i85QNXQbQGTiinJaxCxxfnVPYalvCbrTNNCf5HNuQK02m1PI=
+	t=1747749579; cv=none; b=G5joCuXWnLiBqrm9GBzFKnV//ZqmfQxv7SLEQgM513xJ/NzCDhuBlYHGdW9yDs8Pc/Pk+jvi9slea+HOgT2afl2YqF3OFHTdd/yW8gYSTKaGcmFeEYnBIcoJiZ/5kWVflbJiHwAddBZwvym0JCJzh47FPoE/WxbDYePI8EsooTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749792; c=relaxed/simple;
-	bh=enUK7xH7+T5ze+1pJE9l/SDwP+ciaNx+rur4Vg+vPtE=;
+	s=arc-20240116; t=1747749579; c=relaxed/simple;
+	bh=8o2J1Goq8S4gvSWgRvrcqa6/9m4+tDJ8Rco03obWhxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oijGzAJYrvrPjgHUwdbCEtiTTW0GiMq8iPtColXbEvw5eP7UQnQWxPF+PJVNi2CV3qcLpuMgGwNaYNvJmUdMPNUbVxovqzk4bF+t5TOlY0CvVCW/QTPxIyiNbDCkkXW+xI5WjNmogREZnMnrLnJgj/yrDha9NugKFtMSuly3+7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyPvtIlr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B30AC4CEE9;
-	Tue, 20 May 2025 14:03:11 +0000 (UTC)
+	 MIME-Version; b=CJnGuaWyGmOm97VvEozbNKZXfWitfl59WOISp+KtnZqQN1ZE6neE3/lMiVU4L/VObmIao6mVGRHpQ7JdfJUEPYyjmx8KhcMsXHPtY4PX5BHL9D2aFj15x/tKbhAZey3GIigiItToqL7winGO9p586Jd7O58CGewDfjUck+9BCr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtEh7qg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A396CC4CEE9;
+	Tue, 20 May 2025 13:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749792;
-	bh=enUK7xH7+T5ze+1pJE9l/SDwP+ciaNx+rur4Vg+vPtE=;
+	s=korg; t=1747749579;
+	bh=8o2J1Goq8S4gvSWgRvrcqa6/9m4+tDJ8Rco03obWhxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyPvtIlrdwOLMSpnshKKqCaj0HE8HbODPhy1j+9skGtFbkVSS4oc5HADxSDXCk5Sh
-	 eu+XsVP5dsCcrJtwdx92RyTIOVxIhpO+PWQSX+7GCy7WxHzpT5cZed7xqt6U01JrlY
-	 2k4P6PGn8Km9pUdyjAfIZ+83A7syU60c+eyTZn+Y=
+	b=FtEh7qg1H6hGikHVSYTM6j20O4ffmJeLF7UyqcDNYOQJRuKtekb0D/Ep+GLIUNtO4
+	 NPjsC0smsqx9gISLuM2DWntIXiKpWlXi7idLxCgbGL2No5Go2B9aSYVDNNbJ8FxpUg
+	 2AXTaYWKiQf5MYgjfoNVntBozTCCQpPyzmH6otVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.6 062/117] udf: Make sure i_lenExtents is uptodate on inode eviction
+	Jethro Donaldson <devel@jro.nz>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 62/97] smb: client: fix memory leak during error handling for POSIX mkdir
 Date: Tue, 20 May 2025 15:50:27 +0200
-Message-ID: <20250520125806.448097315@linuxfoundation.org>
+Message-ID: <20250520125803.082298042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Jethro Donaldson <devel@jro.nz>
 
-commit 55dd5b4db3bf04cf077a8d1712f6295d4517c337 upstream.
+commit 1fe4a44b7fa3955bcb7b4067c07b778fe90d8ee7 upstream.
 
-UDF maintains total length of all extents in i_lenExtents. Generally we
-keep extent lengths (and thus i_lenExtents) block aligned because it
-makes the file appending logic simpler. However the standard mandates
-that the inode size must match the length of all extents and thus we
-trim the last extent when closing the file. To catch possible bugs we
-also verify that i_lenExtents matches i_size when evicting inode from
-memory. Commit b405c1e58b73 ("udf: refactor udf_next_aext() to handle
-error") however broke the code updating i_lenExtents and thus
-udf_evict_inode() ended up spewing lots of errors about incorrectly
-sized extents although the extents were actually sized properly. Fix the
-updating of i_lenExtents to silence the errors.
+The response buffer for the CREATE request handled by smb311_posix_mkdir()
+is leaked on the error path (goto err_free_rsp_buf) because the structure
+pointer *rsp passed to free_rsp_buf() is not assigned until *after* the
+error condition is checked.
 
-Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
+As *rsp is initialised to NULL, free_rsp_buf() becomes a no-op and the leak
+is instead reported by __kmem_cache_shutdown() upon subsequent rmmod of
+cifs.ko if (and only if) the error path has been hit.
+
+Pass rsp_iov.iov_base to free_rsp_buf() instead, similar to the code in
+other functions in smb2pdu.c for which *rsp is assigned late.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jethro Donaldson <devel@jro.nz>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/truncate.c |    2 +-
+ fs/smb/client/smb2pdu.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/udf/truncate.c
-+++ b/fs/udf/truncate.c
-@@ -115,7 +115,7 @@ void udf_truncate_tail_extent(struct ino
- 	}
- 	/* This inode entry is in-memory only and thus we don't have to mark
- 	 * the inode dirty */
--	if (ret == 0)
-+	if (ret >= 0)
- 		iinfo->i_lenExtents = inode->i_size;
- 	brelse(epos.bh);
- }
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -2826,7 +2826,7 @@ int smb311_posix_mkdir(const unsigned in
+ 	/* Eventually save off posix specific response info and timestaps */
+ 
+ err_free_rsp_buf:
+-	free_rsp_buf(resp_buftype, rsp);
++	free_rsp_buf(resp_buftype, rsp_iov.iov_base);
+ 	kfree(pc_buf);
+ err_free_req:
+ 	cifs_small_buf_release(req);
 
 
 
