@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-145302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39B5ABDB36
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D56ABDD05
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0678916449D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A2C4E29FC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E8A2459F3;
-	Tue, 20 May 2025 14:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E0A253F0E;
+	Tue, 20 May 2025 14:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImjlEqae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiebiHMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE72459E5;
-	Tue, 20 May 2025 14:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1317E24E4D2;
+	Tue, 20 May 2025 14:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749773; cv=none; b=V/0uyrQ17jpl6MGTaXRfU6PQmBgKwrXq8TtaoPPZovxKrElDbW9wnTYhKxy2L2DiK+NBP0UfiG05eAB1A2iPzmWyJIqYVPJmwadOCmXZCikfTlDJ5aH+aXd//rY38a6CrjmvCM1tbWl/n0vMKSdayAkXzHL3KWQeRDzo4VGQlCE=
+	t=1747750467; cv=none; b=aLnBxY18fS4i1L0vTdQgxDRAMwgaD20KnLCjGdsLYR+5HX0kqLOfEunK7kPJKzxCKT+UgpoaOTgiXjJIfwCdmVnti7NUoog6yNGRuj6OLuEKNKudIp5d1S9LUH/Lg6ivBb45ZyjALUIYgFgxgEetOWZkQWEqgaW92M7m67416SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749773; c=relaxed/simple;
-	bh=gAtjiDEf3DVfev6ldemrV9uV/jyiVPErqpl+u8cwO9s=;
+	s=arc-20240116; t=1747750467; c=relaxed/simple;
+	bh=h0TPl0pgEVJNQMBbS+b2WL68bS+NIFa8b/MDPwSe1U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mj8lB64DyPge6gtBn6JoBGLa82AZxqrx0Sq7lIsqVrRcrwDG/DJ1Xuipanh/CEz8kU4xqaKgY/8hkfBd1fEFTsZzxLFMd6OuzZdoEp5LwHvlhp3hTLgb601V6TBa0CpzqX9Nd5b3W3/sMbGsNgqWvpZXXqlSK2Mmqw+ydR/0fvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImjlEqae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424BAC4CEEF;
-	Tue, 20 May 2025 14:02:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AMEAtu2rBEn+UiWfD7TFDUn1vHOfUe/XSNfGe9FKRn0y24vqrkpUZb6l/bJNdLqD9067f46V8wxMewwydDX8pszungm75wKCghymAZZ2/L4E/XmfNpqtcrL9MWhVCh3/cmwYCaDtZauPHg7qMgZ4YZ2OjVjtu94PxkhCEl5NHvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiebiHMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B63C4CEE9;
+	Tue, 20 May 2025 14:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749773;
-	bh=gAtjiDEf3DVfev6ldemrV9uV/jyiVPErqpl+u8cwO9s=;
+	s=korg; t=1747750466;
+	bh=h0TPl0pgEVJNQMBbS+b2WL68bS+NIFa8b/MDPwSe1U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImjlEqaeyo3WZm3PEBvjj2s6h72VKV8OptBMvhkslCIh2Xgifv+BfxXUK6OtrPFrt
-	 UaIUml4hM9h3liIVwyq3JPkYs0ioNY/HtQqcmebUcjHfUYz7Z8Q+eGi7XRWS21wFwn
-	 6HnkXQs3Mcf+kPl+VNXJ4dHawyoHbOUMeOyKrI0M=
+	b=KiebiHMvx9ZN1RacErS33O7XR57oe92d7J+rR/8XYhaV3SJnqwYDHmB7OWV9+RUoX
+	 /7uSitRYf4+hs3mQshm28/APtqioIMbupdZjl5gkHAqa3kWa+2HXkRZoXOLij3+Bqv
+	 Ao3CjdCZTZLeRgDqypU5sHJTA9wL5cGfHjAP0WF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Xinhui Yang <cyan@cyano.uk>,
+	Rong Zhang <i@rong.moe>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Yemu Lu <prcups@krgm.moe>,
+	Runhua He <hua@aosc.io>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/117] firmware: arm_scmi: Add helper to trace bad messages
+Subject: [PATCH 6.14 010/145] platform/x86/amd/pmc: Declare quirk_spurious_8042 for MECHREVO Wujie 14XA (GX4HRXL)
 Date: Tue, 20 May 2025 15:49:40 +0200
-Message-ID: <20250520125804.588539159@linuxfoundation.org>
+Message-ID: <20250520125810.950492313@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +65,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Runhua He <hua@aosc.io>
 
-[ Upstream commit 5dc0e0b1f0ea2b55031f84a365962b9b45869b98 ]
+[ Upstream commit 0887817e4953885fbd6a5c1bec2fdd339261eb19 ]
 
-Upon reception of malformed and unexpected timed-out SCMI messages, it is
-not possible to trace those bad messages in their entirety, because usually
-we cannot even retrieve the payload, or it is just not reliable.
+MECHREVO Wujie 14XA (GX4HRXL) wakes up immediately after s2idle entry.
+This happens regardless of whether the laptop is plugged into AC power,
+or whether any peripheral is plugged into the laptop.
 
-Add a helper to trace at least the content of the header of the received
-message while associating a meaningful tag and error code.
+Similar to commit a55bdad5dfd1 ("platform/x86/amd/pmc: Disable keyboard
+wakeup on AMD Framework 13"), the MECHREVO Wujie 14XA wakes up almost
+instantly after s2idle suspend entry (IRQ1 is the keyboard):
 
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20240325204620.1437237-3-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Stable-dep-of: c23c03bf1faa ("firmware: arm_scmi: Fix timeout checks on polling path")
+2025-04-18 17:23:57,588 DEBUG:  PM: Triggering wakeup from IRQ 9
+2025-04-18 17:23:57,588 DEBUG:  PM: Triggering wakeup from IRQ 1
+
+Add this model to the spurious_8042 quirk to workaround this.
+
+This patch does not affect the wake-up function of the built-in keyboard.
+Because the firmware of this machine adds an insurance for keyboard
+wake-up events, as it always triggers an additional IRQ 9 to wake up the
+system.
+
+Suggested-by: Mingcong Bai <jeffbai@aosc.io>
+Suggested-by: Xinhui Yang <cyan@cyano.uk>
+Suggested-by: Rong Zhang <i@rong.moe>
+Fixes: a55bdad5dfd1 ("platform/x86/amd/pmc: Disable keyboard wakeup on AMD Framework 13")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4166
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://zhuanldan.zhihu.com/p/730538041
+Tested-by: Yemu Lu <prcups@krgm.moe>
+Signed-off-by: Runhua He <hua@aosc.io>
+Link: https://lore.kernel.org/r/20250507100103.995395-1-hua@aosc.io
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/common.h | 11 +++++++++
- drivers/firmware/arm_scmi/driver.c | 39 ++++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
-index 039f686f4580d..e26a2856a0e3d 100644
---- a/drivers/firmware/arm_scmi/common.h
-+++ b/drivers/firmware/arm_scmi/common.h
-@@ -303,6 +303,17 @@ extern const struct scmi_desc scmi_optee_desc;
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index b4f49720c87f6..2e3f6fc67c568 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -217,6 +217,13 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "03.05"),
+ 		}
+ 	},
++	{
++		.ident = "MECHREVO Wujie 14X (GX4HRXL)",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "WUJIE14-GX4HRXL"),
++		}
++	},
+ 	{}
+ };
  
- void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr, void *priv);
- 
-+enum scmi_bad_msg {
-+	MSG_UNEXPECTED = -1,
-+	MSG_INVALID = -2,
-+	MSG_UNKNOWN = -3,
-+	MSG_NOMEM = -4,
-+	MSG_MBOX_SPURIOUS = -5,
-+};
-+
-+void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
-+			    enum scmi_bad_msg err);
-+
- /* shmem related declarations */
- struct scmi_shared_mem;
- 
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index efa9698c876a0..b3c2a199b2afb 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -687,6 +687,45 @@ scmi_xfer_lookup_unlocked(struct scmi_xfers_info *minfo, u16 xfer_id)
- 	return xfer ?: ERR_PTR(-EINVAL);
- }
- 
-+/**
-+ * scmi_bad_message_trace  - A helper to trace weird messages
-+ *
-+ * @cinfo: A reference to the channel descriptor on which the message was
-+ *	   received
-+ * @msg_hdr: Message header to track
-+ * @err: A specific error code used as a status value in traces.
-+ *
-+ * This helper can be used to trace any kind of weird, incomplete, unexpected,
-+ * timed-out message that arrives and as such, can be traced only referring to
-+ * the header content, since the payload is missing/unreliable.
-+ */
-+void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
-+			    enum scmi_bad_msg err)
-+{
-+	char *tag;
-+	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
-+
-+	switch (MSG_XTRACT_TYPE(msg_hdr)) {
-+	case MSG_TYPE_COMMAND:
-+		tag = "!RESP";
-+		break;
-+	case MSG_TYPE_DELAYED_RESP:
-+		tag = "!DLYD";
-+		break;
-+	case MSG_TYPE_NOTIFICATION:
-+		tag = "!NOTI";
-+		break;
-+	default:
-+		tag = "!UNKN";
-+		break;
-+	}
-+
-+	trace_scmi_msg_dump(info->id, cinfo->id,
-+			    MSG_XTRACT_PROT_ID(msg_hdr),
-+			    MSG_XTRACT_ID(msg_hdr), tag,
-+			    MSG_XTRACT_TOKEN(msg_hdr), err, NULL, 0);
-+}
-+
- /**
-  * scmi_msg_response_validate  - Validate message type against state of related
-  * xfer
 -- 
 2.39.5
 
