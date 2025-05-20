@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642F5ABDC70
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3903EABDC84
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BBF17B9DD6
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BBED4E3246
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD2924EA85;
-	Tue, 20 May 2025 14:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2384F24A044;
+	Tue, 20 May 2025 14:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmwIGSl9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpV1wNao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A66242D73;
-	Tue, 20 May 2025 14:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32D9248879;
+	Tue, 20 May 2025 14:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750491; cv=none; b=mu84p1jKCO16b5bsUPoEW/NatwmojVVlCi4ef0ClNo50pWBs4sdUvwAxwaaO4FjQVBETjUGpxbhpvfieKkPzIWHOE0Ueuzve3mru1fjeKRAB/7FThbQSuaiwssFY2CUacwWhqiqpyz3QrWXHmAe4/oBVESx43yM+zsqqkNZsWfk=
+	t=1747750193; cv=none; b=CnxGN/XxLgFlDJR2kcpBitOxIys4meozbsMrvWTuwLA1aN8hp35kONo31s+YBVwTOsB63q7KLf9fGL6tmfzuEene0CTblkWxnqxSmwmtaBbqvzUglvCs++vYY4Kb51qDMoorAfRlu6dvtbhWcJZ11/BugzrqIHRxsnHW4wQMQOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750491; c=relaxed/simple;
-	bh=QwLFgfIHAj0n9RQwMnygxsMpKc4yYv8dGu7FpEtyWHo=;
+	s=arc-20240116; t=1747750193; c=relaxed/simple;
+	bh=RDcYXyEPGUP4SLKOB1mt4ItBqC/nM70mum8VAoAidyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0+aMeXut906+S8ghU0XQ0eUaCl24c+tXq3QoRJcZaU/IxwM1vAnasOIfamow4L6CwAgNZIzRL2RuHYTE123WHRsLidJpNCW32XJc+z0c+pjhwHSXyRMLeWZi7c/LnEEHLhWqGrlMBHZvrlLBreuZaGpK560L2gP6+vOoYON/h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmwIGSl9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F03C4CEE9;
-	Tue, 20 May 2025 14:14:50 +0000 (UTC)
+	 MIME-Version; b=TfxR2OdWec0bMUif+o5o56efg52ufU0yId+mDaGpziN/DQJ+wl8LemlegWJY7oNul3lj50t1r32ZpYBBdvfED3lCkWf0jKpzBvFzG4JdlyCLXiZj5quAe1347KqjADWOLyYd5ZBb/JtnL7LdKrN9ZeBoya6ZvqYo311Tn3e8zrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpV1wNao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E152EC4CEE9;
+	Tue, 20 May 2025 14:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750491;
-	bh=QwLFgfIHAj0n9RQwMnygxsMpKc4yYv8dGu7FpEtyWHo=;
+	s=korg; t=1747750193;
+	bh=RDcYXyEPGUP4SLKOB1mt4ItBqC/nM70mum8VAoAidyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmwIGSl9xSWz6VJ3SWjswarqZAE4x2b06JjISqlpxYpt0i0rgGnpnO9WdyF18QQ8a
-	 29YQvp/IzwBuES+HiAiuJ8wc0mgYzTVPkqc36WMJ5dBTPnKI0Vql3hpE9sk7owELtg
-	 1CaL9Xe3kB+fzNKgrivff9AKa2i74pgrnfeUxN74=
+	b=cpV1wNaoCDaV7y/DFUeMyfJAgffGC8iGGil9qyzFzfWnss/SOLh0v6pjWC5JMvWC+
+	 piE/7ddlwMOdTeacGVegnVR5DnOnEIA2ZBt9P8uLT7sOmPlpVD1f2/yfBHx8opbkfR
+	 QvYxzcDCWdQrT/pL8PwP68UotdMf7WcUp5fYSU4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 026/145] RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem
+Subject: [PATCH 6.12 041/143] selftests: ncdevmem: Make client_ip optional
 Date: Tue, 20 May 2025 15:49:56 +0200
-Message-ID: <20250520125811.582646954@linuxfoundation.org>
+Message-ID: <20250520125811.667116307@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit d0706bfd3ee40923c001c6827b786a309e2a8713 ]
+[ Upstream commit 0ebd75f5f2392c2ada04c6e11447415911fe1506 ]
 
-Call Trace:
+Support 3-tuple filtering by making client_ip optional. When -c is
+not passed, don't specify src-ip/src-port in the filter.
 
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- strlen+0x93/0xa0 lib/string.c:420
- __fortify_strlen include/linux/fortify-string.h:268 [inline]
- get_kobj_path_length lib/kobject.c:118 [inline]
- kobject_get_path+0x3f/0x2a0 lib/kobject.c:158
- kobject_uevent_env+0x289/0x1870 lib/kobject_uevent.c:545
- ib_register_device drivers/infiniband/core/device.c:1472 [inline]
- ib_register_device+0x8cf/0xe00 drivers/infiniband/core/device.c:1393
- rxe_register_device+0x275/0x320 drivers/infiniband/sw/rxe/rxe_verbs.c:1552
- rxe_net_add+0x8e/0xe0 drivers/infiniband/sw/rxe/rxe_net.c:550
- rxe_newlink+0x70/0x190 drivers/infiniband/sw/rxe/rxe.c:225
- nldev_newlink+0x3a3/0x680 drivers/infiniband/core/nldev.c:1796
- rdma_nl_rcv_msg+0x387/0x6e0 drivers/infiniband/core/netlink.c:195
- rdma_nl_rcv_skb.constprop.0.isra.0+0x2e5/0x450
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmsg+0x16d/0x220 net/socket.c:2652
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-This problem is similar to the problem that the
-commit 1d6a9e7449e2 ("RDMA/core: Fix use-after-free when rename device name")
-fixes.
-
-The root cause is: the function ib_device_rename() renames the name with
-lock. But in the function kobject_uevent(), this name is accessed without
-lock protection at the same time.
-
-The solution is to add the lock protection when this name is accessed in
-the function kobject_uevent().
-
-Fixes: 779e0bf47632 ("RDMA/core: Do not indicate device ready when device enablement fails")
-Link: https://patch.msgid.link/r/20250506151008.75701-1-yanjun.zhu@linux.dev
-Reported-by: syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e2ce9e275ecc70a30b72
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20241107181211.3934153-5-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 97c4e094a4b2 ("tests/ncdevmem: Fix double-free of queue array")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/device.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/ncdevmem.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index ee75b99f84bcc..baf12e3e2a7ea 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -1352,6 +1352,9 @@ static void ib_device_notify_register(struct ib_device *device)
+diff --git a/tools/testing/selftests/net/ncdevmem.c b/tools/testing/selftests/net/ncdevmem.c
+index 4733d1a0aab5d..faa9dce121c72 100644
+--- a/tools/testing/selftests/net/ncdevmem.c
++++ b/tools/testing/selftests/net/ncdevmem.c
+@@ -62,7 +62,7 @@
+  */
  
- 	down_read(&devices_rwsem);
+ static char *server_ip = "192.168.1.4";
+-static char *client_ip = "192.168.1.2";
++static char *client_ip;
+ static char *port = "5201";
+ static size_t do_validation;
+ static int start_queue = 8;
+@@ -236,8 +236,14 @@ static int configure_channels(unsigned int rx, unsigned int tx)
  
-+	/* Mark for userspace that device is ready */
-+	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
-+
- 	ret = rdma_nl_notify_event(device, 0, RDMA_REGISTER_EVENT);
- 	if (ret)
- 		goto out;
-@@ -1468,10 +1471,9 @@ int ib_register_device(struct ib_device *device, const char *name,
- 		return ret;
- 	}
- 	dev_set_uevent_suppress(&device->dev, false);
--	/* Mark for userspace that device is ready */
--	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
+ static int configure_flow_steering(void)
+ {
+-	return run_command("sudo ethtool -N %s flow-type tcp4 src-ip %s dst-ip %s src-port %s dst-port %s queue %d >&2",
+-			   ifname, client_ip, server_ip, port, port, start_queue);
++	return run_command("sudo ethtool -N %s flow-type tcp4 %s %s dst-ip %s %s %s dst-port %s queue %d >&2",
++			   ifname,
++			   client_ip ? "src-ip" : "",
++			   client_ip ?: "",
++			   server_ip,
++			   client_ip ? "src-port" : "",
++			   client_ip ? port : "",
++			   port, start_queue);
+ }
  
- 	ib_device_notify_register(device);
-+
- 	ib_device_put(device);
- 
- 	return 0;
+ static int bind_rx_queue(unsigned int ifindex, unsigned int dmabuf_fd,
 -- 
 2.39.5
 
