@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33B9ABDCE3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:30:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00A7ABDBEE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E68858A5F59
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EA11882F17
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6152459F7;
-	Tue, 20 May 2025 14:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A209124A067;
+	Tue, 20 May 2025 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xX8aSNjz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwnNHK5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2638DEC4;
-	Tue, 20 May 2025 14:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF6724A066;
+	Tue, 20 May 2025 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750808; cv=none; b=s4VzyqcOn+VA5BR8VM3yB8t/3tudINnEVT1+mw2dHzWKkY7oo1+XCqn9DwYbG1pue5D7zgqWESPOJBzw+LFHyiGembCSlaaE0GyydT5gUIaWVcNagAjj/CPfYnwCT3jdgoGMYc1CIzP1zvkrpboA0ORNqR3SchSkTlop7xQHTJE=
+	t=1747750356; cv=none; b=nZ12RRCMxWsXbc5edq1rsxnVTdqz5iOUweIvBVQicFirQWMxxJqjMHFrUmMOcLCc4NPjlV5aW7vBboErMfkro4emGx3vy8zecfthhLgXZ6m3zAk8aAMKs9yZbkLADj9ilJud61qA/c14TxkZNrwaK/di6eqGTc7uyMI30/hx/eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750808; c=relaxed/simple;
-	bh=CgxGZI47a7l58BRia5Dc22KPfmoUUpJ36nUvffMxLwA=;
+	s=arc-20240116; t=1747750356; c=relaxed/simple;
+	bh=dIQx1m+0ThsdkSAbYctbT8jJeUH/4AVuNYE04oL8qTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSFD/ivsjwZ6C9HoQCqQ2Nx54kHO/tk+VP1/nwMGeWcz9YZsf3XFJ0dfnepuEcv+QX5gGVHbsUf+jC+GBcbHFGzPghg6cA20YFhfyAI3iYCVnubqQSSSpjZ7zD9dNG0oqu9poNuXt8Pfyk3ivlxLriRdhGC+9eks5+AY9UeHwOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xX8aSNjz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A0AC4CEE9;
-	Tue, 20 May 2025 14:20:07 +0000 (UTC)
+	 MIME-Version; b=fvSLyPeowiD0cRWfkFvNyLC8FptkSRzu88FJ4GU1ObKpPha58qDxrj5Kj8Lrl932l5E5WANJx0CnaRzHA49WcwXqzUdn465FajYLQ+ssbe7Nlnqhf6pke6vLbfjK7qmeY7xbIfsgh8VxzKWYPB2LWT+IX9tH9RoZ0SstjuO4WhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwnNHK5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABAAC4CEE9;
+	Tue, 20 May 2025 14:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750808;
-	bh=CgxGZI47a7l58BRia5Dc22KPfmoUUpJ36nUvffMxLwA=;
+	s=korg; t=1747750356;
+	bh=dIQx1m+0ThsdkSAbYctbT8jJeUH/4AVuNYE04oL8qTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xX8aSNjz0DLEZbwPb/k+gIlB+iH2AOqjS5kzSnh1cgErS1YML5r/D7+FOdx75jRgN
-	 LbfMKp0lbQd5jYGI8GCdCAO7zrrCf7EjFQATyPxNabGEZc+BapFWRj6pHz6uBuMLc4
-	 +RPy0CKwkJGdjRvputBBr9J+LEjNUiZVVAylEwlI=
+	b=GwnNHK5VQvnwhVPnyvpD9p+fWZIFYPrFdMy38UVH5cOsF7FBZewTkyoaulqKt+P9u
+	 QCd+/mvMnQ4EnPknnO8Z61oWflXNQlKMsi2uF3EoBNcfp9Fo4Oh/eWG0xCsy4emyWd
+	 oWsaeKJANWaHruG1ZzdIfT8/SfUdMKxs4sMz9cYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.14 110/145] net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 125/143] dmaengine: idxd: Add missing idxd cleanup to fix memory leak in remove call
 Date: Tue, 20 May 2025 15:51:20 +0200
-Message-ID: <20250520125814.862880650@linuxfoundation.org>
+Message-ID: <20250520125814.943437168@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 8c619eb21b8e87ae95877e9cca9fcb0e3115776e upstream.
+commit d5449ff1b04dfe9ed8e455769aa01e4c2ccf6805 upstream.
 
-The KSZ9477 PHY driver contained workarounds for broken EEE capability
-advertisements by manually masking supported EEE modes and forcibly
-disabling EEE if MICREL_NO_EEE was set.
+The remove call stack is missing idxd cleanup to free bitmap, ida and
+the idxd_device. Call idxd_free() helper routines to make sure we exit
+gracefully.
 
-With proper MAC-side EEE handling implemented via phylink, these quirks
-are no longer necessary. Remove MICREL_NO_EEE handling and the use of
-ksz9477_get_features().
-
-This simplifies the PHY driver and avoids duplicated EEE management logic.
-
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: stable@vger.kernel.org # v6.14+
-Link: https://patch.msgid.link/20250504081434.424489-3-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data accelerators")
+Cc: stable@vger.kernel.org
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-9-xueshuai@linux.alibaba.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c   |    7 -------
- include/linux/micrel_phy.h |    1 -
- 2 files changed, 8 deletions(-)
+ drivers/dma/idxd/init.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -2002,12 +2002,6 @@ static int ksz9477_config_init(struct ph
- 			return err;
- 	}
- 
--	/* According to KSZ9477 Errata DS80000754C (Module 4) all EEE modes
--	 * in this switch shall be regarded as broken.
--	 */
--	if (phydev->dev_flags & MICREL_NO_EEE)
--		phy_disable_eee(phydev);
--
- 	return kszphy_config_init(phydev);
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -915,6 +915,7 @@ static void idxd_remove(struct pci_dev *
+ 	destroy_workqueue(idxd->wq);
+ 	perfmon_pmu_remove(idxd);
+ 	put_device(idxd_confdev(idxd));
++	idxd_free(idxd);
  }
  
-@@ -5680,7 +5674,6 @@ static struct phy_driver ksphy_driver[]
- 	.handle_interrupt = kszphy_handle_interrupt,
- 	.suspend	= genphy_suspend,
- 	.resume		= ksz9477_resume,
--	.get_features	= ksz9477_get_features,
- } };
- 
- module_phy_driver(ksphy_driver);
---- a/include/linux/micrel_phy.h
-+++ b/include/linux/micrel_phy.h
-@@ -44,7 +44,6 @@
- #define MICREL_PHY_50MHZ_CLK	BIT(0)
- #define MICREL_PHY_FXEN		BIT(1)
- #define MICREL_KSZ8_P1_ERRATA	BIT(2)
--#define MICREL_NO_EEE		BIT(3)
- 
- #define MICREL_KSZ9021_EXTREG_CTRL	0xB
- #define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
+ static struct pci_driver idxd_pci_driver = {
 
 
 
