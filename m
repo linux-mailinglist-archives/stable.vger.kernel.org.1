@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F25ABDC4C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21ECABDB28
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 078BD7B8BEC
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2BC1BA6BCE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EAA2472AD;
-	Tue, 20 May 2025 14:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAF6244663;
+	Tue, 20 May 2025 14:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQl5Qvsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpsUjER5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F5524729E;
-	Tue, 20 May 2025 14:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F8F2F37;
+	Tue, 20 May 2025 14:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750403; cv=none; b=Mml/fLh5ElXCvUSfIJnInK6m8rqTLUAaDwIrYnTc77ztj+zFWkO+bH4x5ZmtVSfbefTNJYzymZCmbYGLfAaKbyyoH8XVK6CaO/Eik0HKswx8ARKFbGsAuFrtgIu31KK2NKbclv4asPIlfOfeGJvyhwu2LpbrczpNXZscOxNsZLo=
+	t=1747749915; cv=none; b=uEjaidYFLEHT/ZXubHtU0a1aZNkwQit9yBuS7nDusAfDkJeLfXmG38K1Yvv0EL3N6Ni1Ima5nbocw+/ZaLdYnprV9sJybXj+ZCh7V4WpfGXbJNOuh3fms4QRGVKoAq7igL2lm+Faicl6eHWhb0bzRo6cXvmqkWCvzPTWXS1/T6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750403; c=relaxed/simple;
-	bh=kS38ErVfUuU1X6WfxhEG34KsDu8IJ46AArxm1LWvSfA=;
+	s=arc-20240116; t=1747749915; c=relaxed/simple;
+	bh=4HMnH92tgsO+USQdwrLb6KX1a3wbBTcHetlt+6TgSJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzdCSeJBaLypfFbs+OlKTBPX9FhyqD7uqC3rODGrRuA7xtqlBRG3Lte6RSR0Ujtu/NC7EZkzxiLFskiZifMTJhv0o3MpJW46frFKyYKhaWjQfMqGxM1AdBbWn4sQ90BI5AlQ4EjGavympz2WZN/9Xiuaab3p8UsyCHg6SgYApX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQl5Qvsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2783C4CEE9;
-	Tue, 20 May 2025 14:13:22 +0000 (UTC)
+	 MIME-Version; b=Qh1R76cbxMF0ySJggeWT451JJDSdaXUlKeVXx7AB6tydjr0kejQtGeYi08X/Sv7i6tUzvOtHXxnrufTrkGxJktbwu+GG8i+3/gMa35GIqotUFMXF58KtkhRwkNdDotUddbI1IhyxNUeAT3t1k7F0peIi+R9z0XDacAOoIwviAIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpsUjER5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD22C4CEE9;
+	Tue, 20 May 2025 14:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750403;
-	bh=kS38ErVfUuU1X6WfxhEG34KsDu8IJ46AArxm1LWvSfA=;
+	s=korg; t=1747749914;
+	bh=4HMnH92tgsO+USQdwrLb6KX1a3wbBTcHetlt+6TgSJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQl5QvsiXGmytn7FJPPnhwFN7fueSWIbLTzSbo/ZSPlSHl9TEUzqw5tF3ZLyTNCSr
-	 m8WA66xwOX0+z6MkcfhMjRRxVDsCgkcfDj/XELBPkuSXSBKCc77WsLRuIp2Cl47l4x
-	 XMd7FYA/szx64g4yDhUa+byjJ8yFCQoz/cY6eik8=
+	b=ZpsUjER5CaH/wnEjuDqSypCsjxGsyZGP0xM9IJOEGMrOMFhaYWjt5yva3EZAGQ+L3
+	 ZdafoncCtihdOCKAaGRooP8zknG5EnH6UQXN7ADVo9O0CfbqxWDqbyU3AirGTdS2qO
+	 Ve94u4NRGsfqEv3FUyIgBzyJEfnCcrXrJFRDqRPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Donaldson <devel@jro.nz>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 111/143] smb: client: fix memory leak during error handling for POSIX mkdir
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 101/117] dmaengine: idxd: fix memory leak in error handling path of idxd_pci_probe
 Date: Tue, 20 May 2025 15:51:06 +0200
-Message-ID: <20250520125814.405102389@linuxfoundation.org>
+Message-ID: <20250520125807.995067824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jethro Donaldson <devel@jro.nz>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 1fe4a44b7fa3955bcb7b4067c07b778fe90d8ee7 upstream.
+commit 90022b3a6981ec234902be5dbf0f983a12c759fc upstream.
 
-The response buffer for the CREATE request handled by smb311_posix_mkdir()
-is leaked on the error path (goto err_free_rsp_buf) because the structure
-pointer *rsp passed to free_rsp_buf() is not assigned until *after* the
-error condition is checked.
+Memory allocated for idxd is not freed if an error occurs during
+idxd_pci_probe(). To fix it, free the allocated memory in the reverse
+order of allocation before exiting the function in case of an error.
 
-As *rsp is initialised to NULL, free_rsp_buf() becomes a no-op and the leak
-is instead reported by __kmem_cache_shutdown() upon subsequent rmmod of
-cifs.ko if (and only if) the error path has been hit.
-
-Pass rsp_iov.iov_base to free_rsp_buf() instead, similar to the code in
-other functions in smb2pdu.c for which *rsp is assigned late.
-
+Fixes: bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data accelerators")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jethro Donaldson <devel@jro.nz>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-8-xueshuai@linux.alibaba.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/idxd/init.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2985,7 +2985,7 @@ replay_again:
- 	/* Eventually save off posix specific response info and timestamps */
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -577,6 +577,17 @@ static void idxd_read_caps(struct idxd_d
+ 		idxd->hw.iaa_cap.bits = ioread64(idxd->reg_base + IDXD_IAACAP_OFFSET);
+ }
  
- err_free_rsp_buf:
--	free_rsp_buf(resp_buftype, rsp);
-+	free_rsp_buf(resp_buftype, rsp_iov.iov_base);
- 	kfree(pc_buf);
- err_free_req:
- 	cifs_small_buf_release(req);
++static void idxd_free(struct idxd_device *idxd)
++{
++	if (!idxd)
++		return;
++
++	put_device(idxd_confdev(idxd));
++	bitmap_free(idxd->opcap_bmap);
++	ida_free(&idxd_ida, idxd->id);
++	kfree(idxd);
++}
++
+ static struct idxd_device *idxd_alloc(struct pci_dev *pdev, struct idxd_driver_data *data)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -843,7 +854,7 @@ static int idxd_pci_probe(struct pci_dev
+  err:
+ 	pci_iounmap(pdev, idxd->reg_base);
+  err_iomap:
+-	put_device(idxd_confdev(idxd));
++	idxd_free(idxd);
+  err_idxd_alloc:
+ 	pci_disable_device(pdev);
+ 	return rc;
 
 
 
