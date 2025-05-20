@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-145596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F2CABDC5F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFD4ABDC36
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9F5A1BA28F2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E00C54C7096
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D02224BBFA;
-	Tue, 20 May 2025 14:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2F4248878;
+	Tue, 20 May 2025 14:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbrPypJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ka1GE/QO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA19247290;
-	Tue, 20 May 2025 14:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D88019ABB6;
+	Tue, 20 May 2025 14:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750639; cv=none; b=h7CTfd26m0hnP4vxfRkA3aZha5NbPSrtA6TaCFsBhKxDyyQQonRTweQfIszF2B22KL8SzZSW7LtZDvDkWf5WIu4W6Jt91XT8WO82pfuf2BtHsPt1/wWyGO8ovzKnJtRtPEKDMxXvXrDua1nPUxZ4yDDc4bINYHKm/5chcMXjchA=
+	t=1747750237; cv=none; b=mulKSwpLgkGMcu+A+J4SYeK4DWaKheET3nADaDoIxgEDYIQIiaTa0X9U4be8pXSN7bo2N5C2cC6pz2CQ2YkaMIb5ru47gmUQzx5GFYOjG3pZvdXXXIw5lXTzrP6AX6VJ7YJLyLnp0vh9IKUKHNnfw5w6QrOBLfsmg8biuaHK8DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750639; c=relaxed/simple;
-	bh=+w8ykACRlPJyWeRAFKjXS/y0snKiCdEN7yL1gFd8rRM=;
+	s=arc-20240116; t=1747750237; c=relaxed/simple;
+	bh=cExWMK8nPMoA3Tpe0Ib3jcl/ArLqNl3WlSoaax1pOgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/olwRbkpCT067nQGeDLZtf3Eq9NF+UqZqnik53b7IPeUWBJab0z2irQyYGgE6nzIL2DbiLiEsIXygj4u4eNSAo2tKzxNtHXBs2YF7EeLKnw976ItXPR2yNXCHZ1KqjwCoUz51lLsi/q6G2Kmog/h2vFF/n5a+YM/IF2WOEfCTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbrPypJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9B3C4CEE9;
-	Tue, 20 May 2025 14:17:18 +0000 (UTC)
+	 MIME-Version; b=urHOEOB0PnBFgzxRQF7wAUA3i11TCHlizhUB5ImKxFftyjz0z2+d5fB+VcobmdgZOnG7tDKLZ5V6ME1wLsv7bqUnY3aw8b7+N2BjhIK/GrGJVFPYa5lJIov+HPFmaLmBYLRBirfp7YzPfRLTS8c81p+KcJ2UAd5AjGbaU4ubgqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ka1GE/QO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB6FC4CEE9;
+	Tue, 20 May 2025 14:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750639;
-	bh=+w8ykACRlPJyWeRAFKjXS/y0snKiCdEN7yL1gFd8rRM=;
+	s=korg; t=1747750237;
+	bh=cExWMK8nPMoA3Tpe0Ib3jcl/ArLqNl3WlSoaax1pOgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbrPypJORfVgQBnStx+zG5WTJhXFw+2hPiRzEVLOlS9vOgK48531Ve9WX+BYjhFot
-	 a1rlZ4Pas3bpEOX29q+Nx/yq1ZVeWxdAqe0iSnOzLXtOW1NcwadpcSb8E5tq9WWE1F
-	 C1oOMeqsUlRI8UWfeU7AvqaGFoHeMbNTCFBxVTQM=
+	b=ka1GE/QOHDA5UcOpRAUx/Z99G4tPKM2J+iFUIjdT7k6H1xfNqNnRWYO3h5Nzzh/41
+	 atBHJtIsrsGLGAkvi/ee5Uf/ZM96ttziMGv70L2cki/2WhuXnM5q0iWkHqNluTfP2W
+	 GqJt+s6HESVopu0ZBtAMoPxUQxSDbsJDvSlXE6z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.14 072/145] LoongArch: Fix MAX_REG_OFFSET calculation
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.12 087/143] drm/amd/display: Avoid flooding unnecessary info messages
 Date: Tue, 20 May 2025 15:50:42 +0200
-Message-ID: <20250520125813.406988942@linuxfoundation.org>
+Message-ID: <20250520125813.481920728@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 90436d234230e9a950ccd87831108b688b27a234 upstream.
+commit d33724ffb743d3d2698bd969e29253ae0cff9739 upstream.
 
-Fix MAX_REG_OFFSET calculation, make it point to the last register
-in 'struct pt_regs' and not to the marker itself, which could allow
-regs_get_register() to return an invalid offset.
+It's expected that we'll encounter temporary exceptions
+during aux transactions. Adjust logging from drm_info to
+drm_dbg_dp to prevent flooding with unnecessary log messages.
 
+Fixes: 3637e457eb00 ("drm/amd/display: Fix wrong handling for AUX_DEFER case")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250513032026.838036-1-Wayne.Lin@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9a9c3e1fe5256da14a0a307dff0478f90c55fc8c)
 Cc: stable@vger.kernel.org
-Fixes: 803b0fc5c3f2baa6e5 ("LoongArch: Add process management")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/ptrace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/include/asm/ptrace.h
-+++ b/arch/loongarch/include/asm/ptrace.h
-@@ -55,7 +55,7 @@ static inline void instruction_pointer_s
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -107,7 +107,7 @@ static ssize_t dm_dp_aux_transfer(struct
+ 	if (payload.write && result >= 0) {
+ 		if (result) {
+ 			/*one byte indicating partially written bytes*/
+-			drm_info(adev_to_drm(adev), "amdgpu: AUX partially written\n");
++			drm_dbg_dp(adev_to_drm(adev), "amdgpu: AUX partially written\n");
+ 			result = payload.data[0];
+ 		} else if (!payload.reply[0])
+ 			/*I2C_ACK|AUX_ACK*/
+@@ -133,11 +133,11 @@ static ssize_t dm_dp_aux_transfer(struct
+ 			break;
+ 		}
  
- /* Query offset/name of register from its name/offset */
- extern int regs_query_register_offset(const char *name);
--#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
-+#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last) - sizeof(unsigned long))
+-		drm_info(adev_to_drm(adev), "amdgpu: DP AUX transfer fail:%d\n", operation_result);
++		drm_dbg_dp(adev_to_drm(adev), "amdgpu: DP AUX transfer fail:%d\n", operation_result);
+ 	}
  
- /**
-  * regs_get_register() - get register value from its offset
+ 	if (payload.reply[0])
+-		drm_info(adev_to_drm(adev), "amdgpu: AUX reply command not ACK: 0x%02x.",
++		drm_dbg_dp(adev_to_drm(adev), "amdgpu: AUX reply command not ACK: 0x%02x.",
+ 			payload.reply[0]);
+ 
+ 	return result;
 
 
 
