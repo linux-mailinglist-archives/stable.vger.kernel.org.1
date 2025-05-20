@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-145246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6F4ABDAC6
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:01:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AD5ABDAEA
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 946547B1ABB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72E507A4AC8
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FE724633C;
-	Tue, 20 May 2025 14:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7643C24336D;
+	Tue, 20 May 2025 14:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icTGICKs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gl5HsXHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13572459D4;
-	Tue, 20 May 2025 14:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330A71D8E07;
+	Tue, 20 May 2025 14:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749604; cv=none; b=IjyUdM2fxe67GWnbT2Wmr9kF9LVXxhny3AEg9hPlFeWTDK4dU7VmrC/jP7q7kSSeGyyeuezWgfTF5/uLtRt+VOdPTVViqELNHbWNCydWmP7k85qgjZEQCiR/thgLcBKDJjyw4w84Cg5SkrmqMqL6LN2bMrdAdAer2SP6TygnwZE=
+	t=1747749808; cv=none; b=ULvkZmaEGXMuLmVM13zI9muZ9Qac5kfPJfUr646BwRMzWQNjZgfnLm9G3LJdob3/iLpvU1VLARgJ26wcgGCpBPnSPe87phKI/PU2uarytKeayJZwaUlQLi6OEVOHKH3L3IkZJph3/KBvZ1OER6z2Z/Drh58w2FdTnVx7MJhS++A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749604; c=relaxed/simple;
-	bh=rivoi/t1PjZbBSN7qpIrYy7zTJbdxTvZkn/8p7r2qIs=;
+	s=arc-20240116; t=1747749808; c=relaxed/simple;
+	bh=W81/0/9W1q5vm6073iwDaj9kMlzfwTTT3c6fU9O1E4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0oCuNrFK9jYTmzPZv2qqfgA/GyFupD5GZ91Ak/oV6zJRGRsRSneGr/VXR9Ze2lMIWzjpDVGpjSa6436g2vKNlLSEpB5sTLUBLDJ5Jcc/sjjsUxt1xw1MCD0NfWui4mErDPtSSAsALP6dZftsXoeELzi9i5eFBsNxrWm1FJ/4d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icTGICKs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD44C4CEE9;
-	Tue, 20 May 2025 14:00:03 +0000 (UTC)
+	 MIME-Version; b=X3D/Ydwoyc3kOjOZjJeah6saa5XnpKM0lvhXBlAaLVulLxJyV4olt+/Rme35tQpwgBEx/zN6VCnzO/AsKNGJuUL+9SJF27ppgafcnWb2VGcLzjonQbzN6PNmgQYQslRpu1K18mMeeBj0NKyVnv2ll0hSZFQe84h0YKYSNtApLVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gl5HsXHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95137C4CEEA;
+	Tue, 20 May 2025 14:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749603;
-	bh=rivoi/t1PjZbBSN7qpIrYy7zTJbdxTvZkn/8p7r2qIs=;
+	s=korg; t=1747749808;
+	bh=W81/0/9W1q5vm6073iwDaj9kMlzfwTTT3c6fU9O1E4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icTGICKswLOnRF2xiJPNVMnkelkgMBPddVh7Q6OLKZ8u5zk28LPcmDcBFM2BliuGW
-	 wO+/rhRqL5jQ1nJI/+6s2REcp5t1FROOLv9JIqZJ8EG391Mgh2II0yGWiR5WMEn3WN
-	 c1LROlp/B2yqcAP8RnexIQ6Hv+gK+9PSVaGR7CZY=
+	b=gl5HsXHFX+HFc5P6UFObcjq0jkBwxBeDgQgig5foRvCPf7jIwP1znqjLCDDV/rAvM
+	 7WwBIWmzRFB9s5WkUus4WKc7kIuhOpbzEaVpzrn8e7HpC+9JBSRwVPnuVh6regwtd1
+	 wF8i+/QhyFbuSJRiCFTCpNDUGaAVG60gpUdMHFcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fenghua Yu <fenghuay@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 67/97] dmaengine: idxd: fix memory leak in error handling path of idxd_setup_wqs
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 067/117] LoongArch: uprobes: Remove redundant code about resume_era
 Date: Tue, 20 May 2025 15:50:32 +0200
-Message-ID: <20250520125803.277219276@linuxfoundation.org>
+Message-ID: <20250520125806.652028981@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 3fd2f4bc010cdfbc07dd21018dc65bd9370eb7a4 upstream.
+commit 12614f794274f63fbdfe76771b2b332077d63848 upstream.
 
-Memory allocated for wqs is not freed if an error occurs during
-idxd_setup_wqs(). To fix it, free the allocated memory in the reverse
-order of allocation before exiting the function in case of an error.
+arch_uprobe_skip_sstep() returns true if instruction was emulated, that
+is to say, there is no need to single step for the emulated instructions.
+regs->csr_era will point to the destination address directly after the
+exception, so the resume_era related code is redundant, just remove them.
 
-Fixes: 7c5dd23e57c1 ("dmaengine: idxd: fix wq conf_dev 'struct device' lifetime")
-Fixes: 700af3a0a26c ("dmaengine: idxd: add 'struct idxd_dev' as wrapper for conf_dev")
-Fixes: de5819b99489 ("dmaengine: idxd: track enabled workqueues in bitmap")
-Fixes: b0325aefd398 ("dmaengine: idxd: add WQ operation cap restriction support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Link: https://lore.kernel.org/r/20250404120217.48772-2-xueshuai@linux.alibaba.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 19bc6cb64092 ("LoongArch: Add uprobes support")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/init.c |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ arch/loongarch/include/asm/uprobes.h |    1 -
+ arch/loongarch/kernel/uprobes.c      |    7 +------
+ 2 files changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -155,8 +155,8 @@ static int idxd_setup_wqs(struct idxd_de
+--- a/arch/loongarch/include/asm/uprobes.h
++++ b/arch/loongarch/include/asm/uprobes.h
+@@ -15,7 +15,6 @@ typedef u32 uprobe_opcode_t;
+ #define UPROBE_XOLBP_INSN	larch_insn_gen_break(BRK_UPROBE_XOLBP)
  
- 	idxd->wq_enable_map = bitmap_zalloc_node(idxd->max_wqs, GFP_KERNEL, dev_to_node(dev));
- 	if (!idxd->wq_enable_map) {
--		kfree(idxd->wqs);
--		return -ENOMEM;
-+		rc = -ENOMEM;
-+		goto err_bitmap;
- 	}
+ struct arch_uprobe {
+-	unsigned long	resume_era;
+ 	u32	insn[2];
+ 	u32	ixol[2];
+ 	bool	simulate;
+--- a/arch/loongarch/kernel/uprobes.c
++++ b/arch/loongarch/kernel/uprobes.c
+@@ -52,11 +52,7 @@ int arch_uprobe_post_xol(struct arch_upr
  
- 	for (i = 0; i < idxd->max_wqs; i++) {
-@@ -175,10 +175,8 @@ static int idxd_setup_wqs(struct idxd_de
- 		conf_dev->bus = &dsa_bus_type;
- 		conf_dev->type = &idxd_wq_device_type;
- 		rc = dev_set_name(conf_dev, "wq%d.%d", idxd->id, wq->id);
--		if (rc < 0) {
--			put_device(conf_dev);
-+		if (rc < 0)
- 			goto err;
--		}
- 
- 		mutex_init(&wq->wq_lock);
- 		init_waitqueue_head(&wq->err_queue);
-@@ -189,7 +187,6 @@ static int idxd_setup_wqs(struct idxd_de
- 		wq->enqcmds_retries = IDXD_ENQCMDS_RETRIES;
- 		wq->wqcfg = kzalloc_node(idxd->wqcfg_size, GFP_KERNEL, dev_to_node(dev));
- 		if (!wq->wqcfg) {
--			put_device(conf_dev);
- 			rc = -ENOMEM;
- 			goto err;
- 		}
-@@ -197,9 +194,8 @@ static int idxd_setup_wqs(struct idxd_de
- 		if (idxd->hw.wq_cap.op_config) {
- 			wq->opcap_bmap = bitmap_zalloc(IDXD_MAX_OPCAP_BITS, GFP_KERNEL);
- 			if (!wq->opcap_bmap) {
--				put_device(conf_dev);
- 				rc = -ENOMEM;
--				goto err;
-+				goto err_opcap_bmap;
- 			}
- 			bitmap_copy(wq->opcap_bmap, idxd->opcap_bmap, IDXD_MAX_OPCAP_BITS);
- 		}
-@@ -208,12 +204,28 @@ static int idxd_setup_wqs(struct idxd_de
+ 	WARN_ON_ONCE(current->thread.trap_nr != UPROBE_TRAP_NR);
+ 	current->thread.trap_nr = utask->autask.saved_trap_nr;
+-
+-	if (auprobe->simulate)
+-		instruction_pointer_set(regs, auprobe->resume_era);
+-	else
+-		instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
++	instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
  
  	return 0;
- 
-- err:
-+err_opcap_bmap:
-+	kfree(wq->wqcfg);
-+
-+err:
-+	put_device(conf_dev);
-+	kfree(wq);
-+
- 	while (--i >= 0) {
- 		wq = idxd->wqs[i];
-+		if (idxd->hw.wq_cap.op_config)
-+			bitmap_free(wq->opcap_bmap);
-+		kfree(wq->wqcfg);
- 		conf_dev = wq_confdev(wq);
- 		put_device(conf_dev);
-+		kfree(wq);
-+
- 	}
-+	bitmap_free(idxd->wq_enable_map);
-+
-+err_bitmap:
-+	kfree(idxd->wqs);
-+
- 	return rc;
  }
+@@ -86,7 +82,6 @@ bool arch_uprobe_skip_sstep(struct arch_
  
+ 	insn.word = auprobe->insn[0];
+ 	arch_simulate_insn(insn, regs);
+-	auprobe->resume_era = regs->csr_era;
+ 
+ 	return true;
+ }
 
 
 
