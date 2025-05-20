@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-145325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FE8ABDB5A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:09:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9E9ABDB80
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DF268C2346
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70D0B7AD644
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0335243370;
-	Tue, 20 May 2025 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B88246798;
+	Tue, 20 May 2025 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cFU88nY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6H0Nu+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C19A1B0F17;
-	Tue, 20 May 2025 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546A6246789;
+	Tue, 20 May 2025 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749845; cv=none; b=pkTFFdE+q+OC25+ij0N+hTiMueM25Mo/6F6toig/EfsTMparatGEM5GyeNXfYL9xZCC2oZ6tqDiC7fK0LugJLxcOqCZkszklHvvHdjsxCTVeba9w+i0D2tHjrnI97Rf2LJfILJrSjZxtlJsGvJIycdUuB51ybVLAcOt1AZssczY=
+	t=1747750159; cv=none; b=KzD9rXjrrItQ7kLnMvoNSi2nyfrUIzuATxU2t2VP5ZVLypFkdZnZOat30vhX0yAIqHwhBcILrM0fYmTGexmKUlEBlwn2ZeH4Rpk3o9JZXSAB3Pan+07LbKqqvvRmCnaPJNmuOKaO14OAA3/esIMSU0NiO7TozhnBq8kZijm18uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749845; c=relaxed/simple;
-	bh=8iqytRMN+xB3c9uZojlfA579HXov28Z3e4kykckPSGk=;
+	s=arc-20240116; t=1747750159; c=relaxed/simple;
+	bh=nLG30NNEFXz/TxZbSI8+wLjXcthcJcosBPx6NuYaYvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eRyciI5jIFAgLHoiNcIrIP31UANWRyqwzjvH/kG85RtUo53g4w0QkbyW3pFWVRbIBcYRc4FjGp9NYK+gEypvqapz3+si/qZD4MZZHE60pMxYSWymPf5oSE3IJ4g0QuRfuDFOZTImeB9d3QZRJPncQXUF1DHMd7axBzGPmvGJJII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cFU88nY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F947C4CEE9;
-	Tue, 20 May 2025 14:04:04 +0000 (UTC)
+	 MIME-Version; b=amzarNrkI1BEOX5pzZg7qScr+aqQhsBsiu8sM/7r3c+vFp3IwcodAT+jdOAFhfOQf1kmSderm3Ayguhu7y3kI0WUbdb3Rl0Odpz7RLR++6g2W1gGD8g+O+f4AyHpGeqoukQujTlZVSQbZWilUXTkQW0NeGN00AT66p29l4ByooI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6H0Nu+V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F13C4CEE9;
+	Tue, 20 May 2025 14:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749845;
-	bh=8iqytRMN+xB3c9uZojlfA579HXov28Z3e4kykckPSGk=;
+	s=korg; t=1747750159;
+	bh=nLG30NNEFXz/TxZbSI8+wLjXcthcJcosBPx6NuYaYvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cFU88nY1QPMdBhJQmVjLlLo6UmQ6p9FhNzTMIkX+QzFwBkGlRIUcNrZ4bSGxTLL4
-	 6dScJVKqXU4VqvvtOtxSp7MLmcQFuFMw2aEJqYN4TXuFNBL5lZTd2XZXUghhxIq+66
-	 cqNupm+0eQCE7N8niNSFQ2XSMyrksPU0KRHKEbsI=
+	b=m6H0Nu+VwYh5hblYHHLif22xh7BSGdQPWJcNh7A7iwc6JW03l2m2B9qFvhdCbQNhw
+	 s52suqH2kPtux6GK5JpMLTaNZFFVHxTeEO7YUTjhagn7Zqo6Jmm4cHkwyLpccecg1/
+	 YwCF9yT8LhJypgcPlgPvv6q2RmEr5+MSuTa54WUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/117] regulator: max20086: fix invalid memory access
+Subject: [PATCH 6.12 061/143] net: ethernet: mtk_eth_soc: fix typo for declaration MT7988 ESW capability
 Date: Tue, 20 May 2025 15:50:16 +0200
-Message-ID: <20250520125806.020145708@linuxfoundation.org>
+Message-ID: <20250520125812.454050107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
-[ Upstream commit 6b0cd72757c69bc2d45da42b41023e288d02e772 ]
+[ Upstream commit 1bdea6fad6fb985ff13828373c48e337c4e939f9 ]
 
-max20086_parse_regulators_dt() calls of_regulator_match() using an
-array of struct of_regulator_match allocated on the stack for the
-matches argument.
+Since MTK_ESW_BIT is a bit number rather than a bitmap, it causes
+MTK_HAS_CAPS to produce incorrect results. This leads to the ETH
+driver not declaring MAC capabilities correctly for the MT7988 ESW.
 
-of_regulator_match() calls devm_of_regulator_put_matches(), which calls
-devres_alloc() to allocate a struct devm_of_regulator_matches which will
-be de-allocated using devm_of_regulator_put_matches().
-
-struct devm_of_regulator_matches is populated with the stack allocated
-matches array.
-
-If the device fails to probe, devm_of_regulator_put_matches() will be
-called and will try to call of_node_put() on that stack pointer,
-generating the following dmesg entries:
-
-max20086 6-0028: Failed to read DEVICE_ID reg: -121
-kobject: '\xc0$\xa5\x03' (000000002cebcb7a): is not initialized, yet
-kobject_put() is being called.
-
-Followed by a stack trace matching the call flow described above.
-
-Switch to allocating the matches array using devm_kcalloc() to
-avoid accessing the stack pointer long after it's out of scope.
-
-This also has the advantage of allowing multiple max20086 to probe
-without overriding the data stored inside the global of_regulator_match.
-
-Fixes: bfff546aae50 ("regulator: Add MAX20086-MAX20089 driver")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Link: https://patch.msgid.link/20250508064947.2567255-1-demonsingur@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 445eb6448ed3 ("net: ethernet: mtk_eth_soc: add basic support for MT7988 SoC")
+Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/b8b37f409d1280fad9c4d32521e6207f63cd3213.1747110258.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/max20086-regulator.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
-index 32f47b896fd1e..ebfbcadbca529 100644
---- a/drivers/regulator/max20086-regulator.c
-+++ b/drivers/regulator/max20086-regulator.c
-@@ -132,7 +132,7 @@ static int max20086_regulators_register(struct max20086 *chip)
- 
- static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
- {
--	struct of_regulator_match matches[MAX20086_MAX_REGULATORS] = { };
-+	struct of_regulator_match *matches;
- 	struct device_node *node;
- 	unsigned int i;
- 	int ret;
-@@ -143,6 +143,11 @@ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
- 		return -ENODEV;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 0a13f7c4684e0..272f178906d61 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -4685,7 +4685,7 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
  	}
  
-+	matches = devm_kcalloc(chip->dev, chip->info->num_outputs,
-+			       sizeof(*matches), GFP_KERNEL);
-+	if (!matches)
-+		return -ENOMEM;
-+
- 	for (i = 0; i < chip->info->num_outputs; ++i)
- 		matches[i].name = max20086_output_names[i];
- 
+ 	if (mtk_is_netsys_v3_or_greater(mac->hw) &&
+-	    MTK_HAS_CAPS(mac->hw->soc->caps, MTK_ESW_BIT) &&
++	    MTK_HAS_CAPS(mac->hw->soc->caps, MTK_ESW) &&
+ 	    id == MTK_GMAC1_ID) {
+ 		mac->phylink_config.mac_capabilities = MAC_ASYM_PAUSE |
+ 						       MAC_SYM_PAUSE |
 -- 
 2.39.5
 
