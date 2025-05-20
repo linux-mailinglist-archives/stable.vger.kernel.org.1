@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824EFABDBA6
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:14:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DA3ABDC55
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 395118C765B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:07:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C697F7B9767
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CDB2472B0;
-	Tue, 20 May 2025 14:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041A224DFE4;
+	Tue, 20 May 2025 14:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbNFT26N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odBAS5Xx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0AC288D6;
-	Tue, 20 May 2025 14:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37D024888A;
+	Tue, 20 May 2025 14:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750018; cv=none; b=DJFwQDf649aUVWKLRRRVOiYRZiQ1Pb23EvRCpyrTaQ8rKHrewLB0cAOfdseqkfxr14yaKg63Y+HTLN1qmAQOq9wvLIRBkvPJdO+NHj9vzQ7esqS/+qq92IHHreNr3Dx3uktV5SZpomZwni10TKKAIOu9nBJ8oCOofbqW9g1s80Q=
+	t=1747750439; cv=none; b=pq+tSD07Ch9wZVDo2iCsIHtBtpbkWd6ukD0XszkGbQ4/+TO94PUD8rcB6XMdyqGXoB2qT0nwqo68SbNjBgW+3DknSPmyIX6N8Ez4yVb+lXBk54rULi9LCS5VceO/O0B3QiGuqKUN9jPO7j75uEnyZZlgvAuVNmksxluTPb71nrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750018; c=relaxed/simple;
-	bh=LRZ2PAzQ6Sa+6gOyVUAC+1tTbGB9IdjXDG8gNwC4kNE=;
+	s=arc-20240116; t=1747750439; c=relaxed/simple;
+	bh=xEzw+xGbp6EQ9N21IhdS7V2AKlGUl6KvyYIqyw41gVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oj32RdKqrNzTbFdapTWhZ89kc+Lk33RB9YfgC8/KyBRuLXVLqx4cVQuE2M8j5URIC6HcZ6RERVzJlLjkqZLa6oZnsHcE9dpNDZw6hf6hQ0vCnE+xwan6TAt+2A6AObRPJKrZ3RghXHvtIeVTr2LfRVNDEx0RWiiwfu1Z8H0mFsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbNFT26N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EB7C4CEE9;
-	Tue, 20 May 2025 14:06:57 +0000 (UTC)
+	 MIME-Version; b=QZp+au+SIRE27SQjL+3zLPqjmZw/PpoPafKZbI/nPbHSQh9OwLnW4Z1D79Dd3VOoIbIIcmvTwaVOWGwysJsdsomwYl1BPju8XO/CfFGzaHVwVT47rG5ZFS3WQvup2z9R9iBoFrqFBzEHu0SWVyWtq089ngu/DMiDKXRuUxmq8lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odBAS5Xx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF95FC4CEE9;
+	Tue, 20 May 2025 14:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750018;
-	bh=LRZ2PAzQ6Sa+6gOyVUAC+1tTbGB9IdjXDG8gNwC4kNE=;
+	s=korg; t=1747750439;
+	bh=xEzw+xGbp6EQ9N21IhdS7V2AKlGUl6KvyYIqyw41gVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbNFT26NKolWu3GQuNi0zCHv21gvVPRN2hsB0B5DbDz+zW8X9h9JEYAWrq2nZyiiN
-	 2cEJGyoXEGnx+eQRrwPa9G664lRAZOJnH+QqeCetZyG54XlDwVpd066ObY79DS0Bv2
-	 QYFGmnNGCCW7sLpPrauYsovGDqcJK1yt5YikQT0M=
+	b=odBAS5XxYs8Pe5E3dX8HiB1dhwPbxqW3sDWfzC9irF8lcmWU+WlF1YmqBF9OWzHg+
+	 CRlW8IkoHTiahQgQNXbpm3WJA5d4snDKRaZOSZ8h/vHeRWn9MtTPr4ShWcGcfbG2cm
+	 fzKpQTu5ZxrPFWKx3uBrkR1BW/C2muwK49W+juP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Tom Vincent <linux@tlvince.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/143] iio: adc: ad7266: Fix potential timestamp alignment issue.
+Subject: [PATCH 6.14 001/145] arm64: dts: rockchip: Assign RT5616 MCLK rate on rk3588-friendlyelec-cm3588
 Date: Tue, 20 May 2025 15:49:31 +0200
-Message-ID: <20250520125810.698675484@linuxfoundation.org>
+Message-ID: <20250520125810.598200447@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Tom Vincent <linux@tlvince.com>
 
-[ Upstream commit 52d349884738c346961e153f195f4c7fe186fcf4 ]
+[ Upstream commit 5e6a4ee9799b202fefa8c6264647971f892f0264 ]
 
-On architectures where an s64 is only 32-bit aligned insufficient padding
-would be left between the earlier elements and the timestamp. Use
-aligned_s64 to enforce the correct placement and ensure the storage is
-large enough.
+The Realtek RT5616 audio codec on the FriendlyElec CM3588 module fails
+to probe correctly due to the missing clock properties. This results
+in distorted analogue audio output.
 
-Fixes: 54e018da3141 ("iio:ad7266: Mark transfer buffer as __be16") # aligned_s64 is much newer.
-Reported-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-2-jic23@kernel.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Assign MCLK to 12.288 MHz, which allows the codec to advertise most of
+the standard sample rates per other RK3588 devices.
+
+Fixes: e23819cf273c ("arm64: dts: rockchip: Add FriendlyElec CM3588 NAS board")
+Signed-off-by: Tom Vincent <linux@tlvince.com>
+Link: https://lore.kernel.org/r/20250417081753.644950-1-linux@tlvince.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7266.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588-friendlyelec-cm3588.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-index 7949b076fb87e..d4c9b85135f58 100644
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -45,7 +45,7 @@ struct ad7266_state {
- 	 */
- 	struct {
- 		__be16 sample[2];
--		s64 timestamp;
-+		aligned_s64 timestamp;
- 	} data __aligned(IIO_DMA_MINALIGN);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-friendlyelec-cm3588.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-friendlyelec-cm3588.dtsi
+index e3a9598b99fca..cacffc851584f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-friendlyelec-cm3588.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-friendlyelec-cm3588.dtsi
+@@ -222,6 +222,10 @@
+ 		compatible = "realtek,rt5616";
+ 		reg = <0x1b>;
+ 		#sound-dai-cells = <0>;
++		assigned-clocks = <&cru I2S0_8CH_MCLKOUT>;
++		assigned-clock-rates = <12288000>;
++		clocks = <&cru I2S0_8CH_MCLKOUT>;
++		clock-names = "mclk";
+ 	};
  };
  
 -- 
