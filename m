@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753D6ABDB58
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4890CABDD83
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74C2A16A6F1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 828C11796BD
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22BB246327;
-	Tue, 20 May 2025 14:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEA424BBF0;
+	Tue, 20 May 2025 14:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAasDafi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9/2or0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE25246769;
-	Tue, 20 May 2025 14:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FF724BBFB;
+	Tue, 20 May 2025 14:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749835; cv=none; b=A9weQ300YBbhK2N/eL2iLy44UrBOEhiOpeLXoabR9GsrFfm6de+dVDRLNKYXpetA446w9XDEfSpErh53cFwYurG1aXWFEPP6GHI4GZlD51CU66D4NghR3UWVfxCTzHs5uEXIRWEnvNlZc6WlJ+hp90T/E70F+E+oFtnVdmliYHw=
+	t=1747750633; cv=none; b=eboMnVPdr+4dZuMeb29bwkvXgWsUEnmo0H5gM7Z3cHi1mrnDCOkWTG+gmQE6MifEoEJxLlpizb62316/DUM6WcVSidiDFmLK40YmONxWGLz7ndUm0J78JE5jyUNXFUHQi4Is3nhXdah+MmJqGC43BpDOm2JrzeYC6M8Ppn4X6Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749835; c=relaxed/simple;
-	bh=MLNrMmd3GB53xMuKyzuqNIKYQZPG6mQWaUi0zX7T7sg=;
+	s=arc-20240116; t=1747750633; c=relaxed/simple;
+	bh=lOPGASBPMePfakbbnYhiCIy3/lp4R+oi2nAuG4E2JmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nrjWQIul+jzKWP3xELMolsryGgq5jNeycABl+2P/7uhJsCdKFwz3SYY2LENoNxlzlODVwVBG1iUQvoqtxlhmvS3dUqxxzrgI7ntXvG7gsp+PEqJZV2gYeTH9/7IjglNWTo2MrM4c1bM59owv1ftPKgVDMfw4o6vHf77+GwO/oU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAasDafi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B50EC4CEE9;
-	Tue, 20 May 2025 14:03:54 +0000 (UTC)
+	 MIME-Version; b=TaI2o15ikGYspokk9Iwp8XR20c3RPGW8fzCcHT09rgm4vljqAPIxSAsNncPXSioquurLBVVnO+IwVpqyRUb7QjvmKuYHGUVK7rD7ORSAlxfHtkmIUGteM7OQvUFdclrcFYfhkgy6pu3XSb7TBpcRA+bZwsUxbhsgfqc6p7CEy9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9/2or0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA10DC4CEE9;
+	Tue, 20 May 2025 14:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749834;
-	bh=MLNrMmd3GB53xMuKyzuqNIKYQZPG6mQWaUi0zX7T7sg=;
+	s=korg; t=1747750633;
+	bh=lOPGASBPMePfakbbnYhiCIy3/lp4R+oi2nAuG4E2JmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAasDafirmvmMm5J80t2xXkatrvVla6v90wmKhVIYTgIC3yn/v+7pfmJlVVO6OqMl
-	 5Yq2k+i6kqxQn68FOpA7aWrJth9CQO3E/Hx0XyGPxwsWMTVPX742H4bcG4E4SDw+WS
-	 RyAoPJG+rG8lsQ4dQtjgoqhNse4w1Oli2NyPbMLA=
+	b=t9/2or0Ynj2a/QGxYph5QMvJL8bCduzOnVJH2HV3Vj+diaCe6ocbct3jacH8M+W3A
+	 2T9cUsCTCJ6GTN2RQcr4Ng6FQB8oOSVl7LsE0FnlTSpUI5p5BmIlNtycqDAWbKZacE
+	 urB3l7+sDwXrHO45jhMWYa/i/1B7Be+etYkRx/Q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 075/117] hv_netvsc: Use vmbus_sendpacket_mpb_desc() to send VMBus messages
-Date: Tue, 20 May 2025 15:50:40 +0200
-Message-ID: <20250520125806.965492413@linuxfoundation.org>
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 071/145] LoongArch: Save and restore CSR.CNTC for hibernation
+Date: Tue, 20 May 2025 15:50:41 +0200
+Message-ID: <20250520125813.369647118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 4f98616b855cb0e3b5917918bb07b44728eb96ea upstream.
+commit ceb9155d058a11242aa0572875c44e9713b1a2be upstream.
 
-netvsc currently uses vmbus_sendpacket_pagebuffer() to send VMBus
-messages. This function creates a series of GPA ranges, each of which
-contains a single PFN. However, if the rndis header in the VMBus
-message crosses a page boundary, the netvsc protocol with the host
-requires that both PFNs for the rndis header must be in a single "GPA
-range" data structure, which isn't possible with
-vmbus_sendpacket_pagebuffer(). As the first step in fixing this, add a
-new function netvsc_build_mpb_array() to build a VMBus message with
-multiple GPA ranges, each of which may contain multiple PFNs. Use
-vmbus_sendpacket_mpb_desc() to send this VMBus message to the host.
+Save and restore CSR.CNTC for hibernation which is similar to suspend.
 
-There's no functional change since higher levels of netvsc don't
-maintain or propagate knowledge of contiguous PFNs. Based on its
-input, netvsc_build_mpb_array() still produces a separate GPA range
-for each PFN and the behavior is the same as with
-vmbus_sendpacket_pagebuffer(). But the groundwork is laid for a
-subsequent patch to provide the necessary grouping.
+For host this is unnecessary because sched clock is ensured continuous,
+but for kvm guest sched clock isn't enough because rdtime.d should also
+be continuous.
 
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20250513000604.1396-3-mhklinux@outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Host::rdtime.d = Host::CSR.CNTC + counter
+Guest::rdtime.d = Host::CSR.CNTC + Host::CSR.GCNTC + Guest::CSR.CNTC + counter
+
+so,
+
+Guest::rdtime.d = Host::rdtime.d + Host::CSR.GCNTC + Guest::CSR.CNTC
+
+To ensure Guest::rdtime.d continuous, Host::rdtime.d should be at first
+continuous, while Host::CSR.GCNTC / Guest::CSR.CNTC is maintained by KVM.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc.c |   50 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 45 insertions(+), 5 deletions(-)
+ arch/loongarch/kernel/time.c     |    2 +-
+ arch/loongarch/power/hibernate.c |    3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -1047,6 +1047,42 @@ static int netvsc_dma_map(struct hv_devi
- 	return 0;
+--- a/arch/loongarch/kernel/time.c
++++ b/arch/loongarch/kernel/time.c
+@@ -111,7 +111,7 @@ static unsigned long __init get_loops_pe
+ 	return lpj;
  }
  
-+/* Build an "array" of mpb entries describing the data to be transferred
-+ * over VMBus. After the desc header fields, each "array" entry is variable
-+ * size, and each entry starts after the end of the previous entry. The
-+ * "offset" and "len" fields for each entry imply the size of the entry.
-+ *
-+ * The pfns are in HV_HYP_PAGE_SIZE, because all communication with Hyper-V
-+ * uses that granularity, even if the system page size of the guest is larger.
-+ * Each entry in the input "pb" array must describe a contiguous range of
-+ * guest physical memory so that the pfns are sequential if the range crosses
-+ * a page boundary. The offset field must be < HV_HYP_PAGE_SIZE.
-+ */
-+static inline void netvsc_build_mpb_array(struct hv_page_buffer *pb,
-+				u32 page_buffer_count,
-+				struct vmbus_packet_mpb_array *desc,
-+				u32 *desc_size)
-+{
-+	struct hv_mpb_array *mpb_entry = &desc->range;
-+	int i, j;
-+
-+	for (i = 0; i < page_buffer_count; i++) {
-+		u32 offset = pb[i].offset;
-+		u32 len = pb[i].len;
-+
-+		mpb_entry->offset = offset;
-+		mpb_entry->len = len;
-+
-+		for (j = 0; j < HVPFN_UP(offset + len); j++)
-+			mpb_entry->pfn_array[j] = pb[i].pfn + j;
-+
-+		mpb_entry = (struct hv_mpb_array *)&mpb_entry->pfn_array[j];
-+	}
-+
-+	desc->rangecount = page_buffer_count;
-+	*desc_size = (char *)mpb_entry - (char *)desc;
-+}
-+
- static inline int netvsc_send_pkt(
- 	struct hv_device *device,
- 	struct hv_netvsc_packet *packet,
-@@ -1089,6 +1125,9 @@ static inline int netvsc_send_pkt(
+-static long init_offset __nosavedata;
++static long init_offset;
  
- 	packet->dma_range = NULL;
- 	if (packet->page_buf_cnt) {
-+		struct vmbus_channel_packet_page_buffer desc;
-+		u32 desc_size;
-+
- 		if (packet->cp_partial)
- 			pb += packet->rmsg_pgcnt;
+ void save_counter(void)
+ {
+--- a/arch/loongarch/power/hibernate.c
++++ b/arch/loongarch/power/hibernate.c
+@@ -2,6 +2,7 @@
+ #include <asm/fpu.h>
+ #include <asm/loongson.h>
+ #include <asm/sections.h>
++#include <asm/time.h>
+ #include <asm/tlbflush.h>
+ #include <linux/suspend.h>
  
-@@ -1098,11 +1137,12 @@ static inline int netvsc_send_pkt(
- 			goto exit;
- 		}
+@@ -14,6 +15,7 @@ struct pt_regs saved_regs;
  
--		ret = vmbus_sendpacket_pagebuffer(out_channel,
--						  pb, packet->page_buf_cnt,
--						  &nvmsg, sizeof(nvmsg),
--						  req_id);
--
-+		netvsc_build_mpb_array(pb, packet->page_buf_cnt,
-+				(struct vmbus_packet_mpb_array *)&desc,
-+				 &desc_size);
-+		ret = vmbus_sendpacket_mpb_desc(out_channel,
-+				(struct vmbus_packet_mpb_array *)&desc,
-+				desc_size, &nvmsg, sizeof(nvmsg), req_id);
- 		if (ret)
- 			netvsc_dma_unmap(ndev_ctx->device_ctx, packet);
- 	} else {
+ void save_processor_state(void)
+ {
++	save_counter();
+ 	saved_crmd = csr_read32(LOONGARCH_CSR_CRMD);
+ 	saved_prmd = csr_read32(LOONGARCH_CSR_PRMD);
+ 	saved_euen = csr_read32(LOONGARCH_CSR_EUEN);
+@@ -26,6 +28,7 @@ void save_processor_state(void)
+ 
+ void restore_processor_state(void)
+ {
++	sync_counter();
+ 	csr_write32(saved_crmd, LOONGARCH_CSR_CRMD);
+ 	csr_write32(saved_prmd, LOONGARCH_CSR_PRMD);
+ 	csr_write32(saved_euen, LOONGARCH_CSR_EUEN);
 
 
 
