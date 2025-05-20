@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65939ABDC90
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8959BABDC80
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7436E4C5D6A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2B3C1BA3215
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3AB24BD03;
-	Tue, 20 May 2025 14:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7092924C07E;
+	Tue, 20 May 2025 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSuKWru9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0eyssHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A86D247DE1;
-	Tue, 20 May 2025 14:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD152472B1;
+	Tue, 20 May 2025 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750319; cv=none; b=UxJjQAqZhqFTRbc8E01MEu4/UiUGHccOoJt3rxYVf2JSz0/lEdUtwtcErevH3ForL1LHQUzFdOYhlYD8xcs80j2sA6Pkhn2mvPPRuGHajiYbLSuVQxNPoEsmmGHUj96ichI/RWeX5QOXAyGpKaLVMuDXgZ5FA70yC/2EcSr2qRU=
+	t=1747750724; cv=none; b=t0Od/21QuNnG67JIXk+WPxFPAaTezzfKkmrpef+K1mCjtlfXnx7YAEnnv2eNsFlPsHjAfNedM9QhKHgY0ucPsYG1uDxMkPqKXmNX/mooXyQwA8yXhV8VI+FioXfDY2F5pNPKfXhBAksTP+GUoN/PJWveMK3+nduRD2YH7GlAQfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750319; c=relaxed/simple;
-	bh=Gi+mVUIoE+MMDxyM+xPeYrmr2XQUBCZnRVEF7takZzQ=;
+	s=arc-20240116; t=1747750724; c=relaxed/simple;
+	bh=RzPfbm9vjCfwVRFGm9o70LsN6frkicCLHO2JZy/2ry4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ds2bXkFc86dufcfMNrCfTiBdQFA+KLsAy7UCOwACae1OSUvLL8XR8/At8rYjWN16wXXL4DWIQJ8rb57tCwRqRvyEIFOvgVc2+zaAo0lOr1CUaHVrJbZNlEmFfwhbV2RyaXEe4VG9kGZjU10ngbKz6jx3ZnkOJYsz8IafiW/yxdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSuKWru9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9033AC4CEEB;
-	Tue, 20 May 2025 14:11:58 +0000 (UTC)
+	 MIME-Version; b=oPwaT4tZXRYxNvv7BGU6862lmXUH+3VVa7eqlx/A+lXTGf5g28emEEhNAvfS1C5JOfi2b1dNGyRFILjqdXCMZ7baQag2RJGjf/oiBAIgtTZGpgekineVwC+ovDMs7l77P0kJfsG0WWfcZPqHtVgsSSxTuD9vpfF1ZQXn3KTdiIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0eyssHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4651C4CEE9;
+	Tue, 20 May 2025 14:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750319;
-	bh=Gi+mVUIoE+MMDxyM+xPeYrmr2XQUBCZnRVEF7takZzQ=;
+	s=korg; t=1747750724;
+	bh=RzPfbm9vjCfwVRFGm9o70LsN6frkicCLHO2JZy/2ry4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xSuKWru958Pd2oGOFok+NA92vgvfJ+XEEJ4o482xW26eEGTLyC5S4Tkj0J/3E2LwT
-	 DJ8AC6KVgaVeyCqyJvnyRk6ZG+Rbdj1/79kqmg4i2xJg651OkajNxktXFpgW8UdBXO
-	 ZHr3X8yLhJIzlBqAu+K/qTAwVbhKosXt6b1X9PRs=
+	b=g0eyssHWqw7X9j2fEV/lcFblwn+++mB10mdSMe7dbIsXCVODcmMsyKPPuScuUak6E
+	 LFGja7ZFQOaFOOyVxkqOAlz2qVtpf+n62DZWz8RpRYd3s89znYDo9vVHy44szYAT0u
+	 7sIqDM3ZMIquCb6v4FqF4edHl/mn4mNWji6GyTKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.12 114/143] wifi: mt76: disable napi on driver removal
-Date: Tue, 20 May 2025 15:51:09 +0200
-Message-ID: <20250520125814.520747146@linuxfoundation.org>
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Marcus Seyfarth <m.seyfarth@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.14 100/145] kbuild: Disable -Wdefault-const-init-unsafe
+Date: Tue, 20 May 2025 15:51:10 +0200
+Message-ID: <20250520125814.483555611@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 78ab4be549533432d97ea8989d2f00b508fa68d8 upstream.
+commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
 
-A warning on driver removal started occurring after commit 9dd05df8403b
-("net: warn if NAPI instance wasn't shut down"). Disable tx napi before
-deleting it in mt76_dma_cleanup().
+A new on by default warning in clang [1] aims to flags instances where
+const variables without static or thread local storage or const members
+in aggregate types are not initialized because it can lead to an
+indeterminate value. This is quite noisy for the kernel due to
+instances originating from header files such as:
 
- WARNING: CPU: 4 PID: 18828 at net/core/dev.c:7288 __netif_napi_del_locked+0xf0/0x100
- CPU: 4 UID: 0 PID: 18828 Comm: modprobe Not tainted 6.15.0-rc4 #4 PREEMPT(lazy)
- Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
- RIP: 0010:__netif_napi_del_locked+0xf0/0x100
- Call Trace:
- <TASK>
- mt76_dma_cleanup+0x54/0x2f0 [mt76]
- mt7921_pci_remove+0xd5/0x190 [mt7921e]
- pci_device_remove+0x47/0xc0
- device_release_driver_internal+0x19e/0x200
- driver_detach+0x48/0x90
- bus_remove_driver+0x6d/0xf0
- pci_unregister_driver+0x2e/0xb0
- __do_sys_delete_module.isra.0+0x197/0x2e0
- do_syscall_64+0x7b/0x160
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+     62 |         typecheck(typeof(ring->size), next);
+        |         ^
+  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
+     10 | ({      type __dummy; \
+        |              ^
 
-Tested with mt7921e but the same pattern can be actually applied to other
-mt76 drivers calling mt76_dma_cleanup() during removal. Tx napi is enabled
-in their *_dma_init() functions and only toggled off and on again inside
-their suspend/resume/reset paths. So it should be okay to disable tx
-napi in such a generic way.
+  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+        |                            ^
+  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
+    138 | #define time_before(a,b)        time_after(b,a)
+        |                                 ^
+  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
+    128 |         (typecheck(unsigned long, a) && \
+        |          ^
+  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+     11 |         typeof(x) __dummy2; \
+        |                   ^
 
-Found by Linux Verification Center (linuxtesting.org).
+  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
+    409 |         struct list_head *next = smp_load_acquire(&head->next);
+        |                                  ^
+  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
+    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
+        |                             ^
+  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
+    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
+        |                                                                  ^
+  include/linux/list.h:409:27: note: member '__val' declared 'const' here
 
-Fixes: 2ac515a5d74f ("mt76: mt76x02: use napi polling for tx cleanup")
+  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+     66 |         struct scatter_walk walk;
+        |                             ^
+  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
+    112 |                 void *const addr;
+        |                             ^
+
+  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+    733 |         struct vm_area_struct pseudo_vma;
+        |                               ^
+  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
+    803 |                 const vm_flags_t vm_flags;
+        |                                  ^
+
+Silencing the instances from typecheck.h is difficult because '= {}' is
+not available in older but supported compilers and '= {0}' would cause
+warnings about a literal 0 being treated as NULL. While it might be
+possible to come up with a local hack to silence the warning for
+clang-21+, it may not be worth it since -Wuninitialized will still
+trigger if an uninitialized const variable is actually used.
+
+In all audited cases of the "field" variant of the warning, the members
+are either not used in the particular call path, modified through other
+means such as memset() / memcpy() because the containing object is not
+const, or are within a union with other non-const members.
+
+Since this warning does not appear to have a high signal to noise ratio,
+just disable it.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Tested-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250506115540.19045-1-pchelkin@ispras.ru
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/Makefile.extrawarn |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -999,6 +999,7 @@ void mt76_dma_cleanup(struct mt76_dev *d
- 	int i;
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -36,6 +36,18 @@ KBUILD_CFLAGS += -Wno-gnu
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111219
+ KBUILD_CFLAGS += $(call cc-disable-warning, format-overflow-non-kprintf)
+ KBUILD_CFLAGS += $(call cc-disable-warning, format-truncation-non-kprintf)
++
++# Clang may emit a warning when a const variable, such as the dummy variables
++# in typecheck(), or const member of an aggregate type are not initialized,
++# which can result in unexpected behavior. However, in many audited cases of
++# the "field" variant of the warning, this is intentional because the field is
++# never used within a particular call path, the field is within a union with
++# other non-const members, or the containing object is not const so the field
++# can be modified via memcpy() / memset(). While the variable warning also gets
++# disabled with this same switch, there should not be too much coverage lost
++# because -Wuninitialized will still flag when an uninitialized const variable
++# is used.
++KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
+ else
  
- 	mt76_worker_disable(&dev->tx_worker);
-+	napi_disable(&dev->tx_napi);
- 	netif_napi_del(&dev->tx_napi);
- 
- 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
+ # gcc inanely warns about local variables called 'main'
 
 
 
