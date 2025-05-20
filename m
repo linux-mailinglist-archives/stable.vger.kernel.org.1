@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-145225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422C6ABDAAE
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:00:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8EFABDA33
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F3B77A8985
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6503C8A387A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4E0DDA9;
-	Tue, 20 May 2025 13:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02C3EC4;
+	Tue, 20 May 2025 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7EKMhjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylJbNde/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAC21922ED;
-	Tue, 20 May 2025 13:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC3B245012;
+	Tue, 20 May 2025 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749537; cv=none; b=YEOcVcMdx9Mslg1wnCPydSbCD8P0xBM+oM8DbInJ06mEWa9PX29iMmjU7B0UPA5NtfncMcLX67V52GkmnYrjM6TdOJVGwhChTURba+huDVj3RWdfP1LCrM9uEyN8r1hWU9dxx1j/sNdGvgECuZ4uB1KzvRqlCrc9b4L5LQ1u+Zg=
+	t=1747749279; cv=none; b=OFH6nkCcJ6p3KtaNL9dxEl+pIN1gwfdl95M+qBu/vDBBtiGv/spodzll75BT7nTNQ/wJM/sTUwXnfO9fw3QiJXZRY/DlJxC/lGdVNtcAe9KmbLO99xqVy9/9rLXlxhLRe8V9bbZbTB1ylLIqu5fX8BnoQ/j2vErOxBB5Vm1Mkgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749537; c=relaxed/simple;
-	bh=hc1KPoNR3Bm/clZQmt7JkjJvl2OUvoza2/nHFKk6gF4=;
+	s=arc-20240116; t=1747749279; c=relaxed/simple;
+	bh=NBfHMqe1Euq/EeoxYqM7ENLlynANNTmeSvEKIJ2+iBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pq5UC9/8N5LTtsSGf5SSjjAYwUGhmw3hcew1vZoyKZEq6iI6pTkgk2m87QFZL7K5d79uhQIwl82qg/5uU7WYK6TlSkD6rJX142aSrcYctRUglvYMuzxgoa+/x/cM5X5+O1N3ma+c2ibTUoQ5IZnvfFF1ptuTeFXP/jP6YL6W/Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7EKMhjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42083C4CEE9;
-	Tue, 20 May 2025 13:58:57 +0000 (UTC)
+	 MIME-Version; b=iMaRwz46hZK+vF36b8Y1GFltZGyZrSSov3xnBaRq9v/DnBuX3LVMCeBoJNTVGfCtfDligwLbrOk/Fr7qpSqqxY9z0vV57KjdpElN6OXL0RzTtQqk7V2GkZf4SPDETQIOcN8GsKTr/K0ik6p4mVHkzj8l/CjdQvU/4qq18xrlDZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylJbNde/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C631CC4CEE9;
+	Tue, 20 May 2025 13:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749537;
-	bh=hc1KPoNR3Bm/clZQmt7JkjJvl2OUvoza2/nHFKk6gF4=;
+	s=korg; t=1747749279;
+	bh=NBfHMqe1Euq/EeoxYqM7ENLlynANNTmeSvEKIJ2+iBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7EKMhjqPa58BCEjjIDCBH7pUGaWFKVYj1pUVhF1rmaAUMupyW8CDPlI45+nZTLa1
-	 +DRKY8GQ6ZE6BvSHGQ6uhY8btIl0PbeunSTEWbX8v8xAfuNQBQcW3bVDxIgQHhCmAy
-	 ZTdJBJtwzvNMLnW+YqL0oKrCbMn4r5J6kpsRE6nE=
+	b=ylJbNde/dd6sn4q79hWQ9/D5NJTGpbW/eWNbwDY9s5z45Gmhlstt2vlIHBy4sxehj
+	 UfkLF258rkC9tnX62oCGdS0xnTi1eVvBA+cPJJa30O2EHgXcC7PQeTWfqifc5rv+rL
+	 e1n4epD9/Xyuehsl4u2/4UXJvYZYRAFolXaLxUY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 77/97] usb: typec: fix potential array underflow in ucsi_ccg_sync_control()
-Date: Tue, 20 May 2025 15:50:42 +0200
-Message-ID: <20250520125803.662801373@linuxfoundation.org>
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baolin Wang <baolin.wang@inux.alibaba.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sri Jayaramappa <sjayaram@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 52/59] selftests/mm: compaction_test: support platform with huge mount of memory
+Date: Tue, 20 May 2025 15:50:43 +0200
+Message-ID: <20250520125755.913075093@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Feng Tang <feng.tang@linux.alibaba.com>
 
-commit e56aac6e5a25630645607b6856d4b2a17b2311a5 upstream.
+commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
 
-The "command" variable can be controlled by the user via debugfs.  The
-worry is that if con_index is zero then "&uc->ucsi->connector[con_index
-- 1]" would be an array underflow.
+When running mm selftest to verify mm patches, 'compaction_test' case
+failed on an x86 server with 1TB memory.  And the root cause is that it
+has too much free memory than what the test supports.
 
-Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/c69ef0b3-61b0-4dde-98dd-97b97f81d912@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ The function ucsi_ccg_sync_write() is renamed to ucsi_ccg_sync_control()
-  in commit 13f2ec3115c8 ("usb: typec: ucsi:simplify command sending API").
-  Apply this patch to ucsi_ccg_sync_write() in 6.1.y accordingly. ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+The test case tries to allocate 100000 huge pages, which is about 200 GB
+for that x86 server, and when it succeeds, it expects it's large than 1/3
+of 80% of the free memory in system.  This logic only works for platform
+with 750 GB ( 200 / (1/3) / 80% ) or less free memory, and may raise false
+alarm for others.
+
+Fix it by changing the fixed page number to self-adjustable number
+according to the real number of free memory.
+
+Link: https://lkml.kernel.org/r/20250423103645.2758-1-feng.tang@linux.alibaba.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@inux.alibaba.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi_ccg.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/vm/compaction_test.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_ccg.c
-+++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
-@@ -585,6 +585,10 @@ static int ucsi_ccg_sync_write(struct uc
- 		    uc->has_multiple_dp) {
- 			con_index = (uc->last_cmd_sent >> 16) &
- 				    UCSI_CMD_CONNECTOR_MASK;
-+			if (con_index == 0) {
-+				ret = -EINVAL;
-+				goto unlock;
-+			}
- 			con = &uc->ucsi->connector[con_index - 1];
- 			ucsi_ccg_update_set_new_cam_cmd(uc, con, (u64 *)val);
- 		}
-@@ -600,6 +604,7 @@ static int ucsi_ccg_sync_write(struct uc
- err_clear_bit:
- 	clear_bit(DEV_CMD_PENDING, &uc->flags);
- 	pm_runtime_put_sync(uc->dev);
-+unlock:
- 	mutex_unlock(&uc->lock);
+--- a/tools/testing/selftests/vm/compaction_test.c
++++ b/tools/testing/selftests/vm/compaction_test.c
+@@ -89,6 +89,8 @@ int check_compaction(unsigned long mem_f
+ 	int compaction_index = 0;
+ 	char initial_nr_hugepages[20] = {0};
+ 	char nr_hugepages[20] = {0};
++	char target_nr_hugepages[24] = {0};
++	int slen;
  
- 	return ret;
+ 	/* We want to test with 80% of available memory. Else, OOM killer comes
+ 	   in to play */
+@@ -118,11 +120,18 @@ int check_compaction(unsigned long mem_f
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+-	/* Request a large number of huge pages. The Kernel will allocate
+-	   as much as it can */
+-	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+-		ksft_test_result_fail("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
+-				      strerror(errno));
++	/*
++	 * Request huge pages for about half of the free memory. The Kernel
++	 * will allocate as much as it can, and we expect it will get at least 1/3
++	 */
++	nr_hugepages_ul = mem_free / hugepage_size / 2;
++	snprintf(target_nr_hugepages, sizeof(target_nr_hugepages),
++		 "%lu", nr_hugepages_ul);
++
++	slen = strlen(target_nr_hugepages);
++	if (write(fd, target_nr_hugepages, slen) != slen) {
++		ksft_test_result_fail("Failed to write %lu to /proc/sys/vm/nr_hugepages: %s\n",
++			       nr_hugepages_ul, strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
 
 
 
