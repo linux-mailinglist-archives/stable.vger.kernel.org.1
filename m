@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9B0ABDCED
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D10ABDC0A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492494E1FC5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECAF716D90B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61E624679A;
-	Tue, 20 May 2025 14:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1858B248176;
+	Tue, 20 May 2025 14:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G16AieC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahf8pX+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BB02907;
-	Tue, 20 May 2025 14:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7454245032;
+	Tue, 20 May 2025 14:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750518; cv=none; b=frbhBczwVbUuQvlLZxR90tS1YNdv4K3syatrW0NTey7g3k6k/bZpuGjLUNAGAZSgu5e/7SmTPqrmWpemCnqGO4BLui0aHq4Z56DZtxD/DXCu2U8COK3/3BGX0c3hwdPXbe+iK5GpMvN7CEjVC5bZjjL2ltW1IQknYxgBi1ofUPQ=
+	t=1747750119; cv=none; b=Q3n7c33XosjUlItd1MrIcKJ1cxbQ8BMGzfzksAhW9TSx0VUDMei18y/lplFaR5bl3RcqZGP1GO8qSNGgfz4qHgxwCG1SQCyzkH/PZCpGJ0oKePHq/b/PZbKoccjGNfn6O+FjMWE4X9lZpVJ+u47qrQutLYkEDd54cun4y0oICV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750518; c=relaxed/simple;
-	bh=RVLfctzsQ918M+Z04XjdGWw+N4baU1YJZScy213UdeQ=;
+	s=arc-20240116; t=1747750119; c=relaxed/simple;
+	bh=e9iM2e2N7cqOgrE/uuKOZun7yq6lypnScYM7vFVP6SI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDjSO3aA4WheBdaO2Jq8m52rAZv4bw3ngNCXyCknivXtlm6mrr6pacJl1eSfXGuDB6pKclMc84NQ32prBKBdHu0dHFAPrzdV7G81teVOVgyz/46ghNxuB22JAYTuGihzXXRo9PMnMW+zdCnohY1vNEiOcgoqkZx6gr9ZQty65Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G16AieC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B33BC4CEE9;
-	Tue, 20 May 2025 14:15:16 +0000 (UTC)
+	 MIME-Version; b=r8I7g95WViXA4vIGCIJvfAoMBJwGvAktYzgj8q+0070xcMEGt90nAS2PBSGcmZZsObW6D0U/Oy/qcdqvCPZYQc1KWuEDyUtbBxiZdMav5/cRsUu5tkEX+uYGpFcVtBbglaHv3UKYyYK/gDYDLofPZ/+HQNJbSmhVOE8y74/wR3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahf8pX+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7E4C4CEE9;
+	Tue, 20 May 2025 14:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750517;
-	bh=RVLfctzsQ918M+Z04XjdGWw+N4baU1YJZScy213UdeQ=;
+	s=korg; t=1747750119;
+	bh=e9iM2e2N7cqOgrE/uuKOZun7yq6lypnScYM7vFVP6SI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G16AieC5TZPFU+1f7xBsbznjijphe16IUdvUpQ78h3SnYYWrFTmTHE0HRhh/I80bJ
-	 ZEd+STZhp4rjyAy5qT7u4pShomWKH3LOt7uuPNSilwm3+znsetxPIDLqr+b8Q3kqOX
-	 xjm2Cp3gzrZPRQUt5e6rYE8T6Q359M7kMVMRwLpE=
+	b=ahf8pX+YeyvZ19dFrymAMLXBgt6P1oeGOFkdzP9Zweft7lUQmZwpXuA6koDeqE0Av
+	 2lXMRhB8DYzR/SjSa+7gGaGCuy6f2lI0R+RKqqPJ17WjSdEAQtHOpQ4KJQt8W0bv8K
+	 clrOJTX0j01+9Rd8ossPFlTCQpp9hQ6Y/bCs6C8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 033/145] net: mctp: Ensure keys maintain only one ref to corresponding dev
-Date: Tue, 20 May 2025 15:50:03 +0200
-Message-ID: <20250520125811.861570454@linuxfoundation.org>
+Subject: [PATCH 6.12 049/143] nvme-pci: make nvme_pci_npages_prp() __always_inline
+Date: Tue, 20 May 2025 15:50:04 +0200
+Message-ID: <20250520125811.972395793@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit e4f349bd6e58051df698b82f94721f18a02a293d ]
+[ Upstream commit 40696426b8c8c4f13cf6ac52f0470eed144be4b2 ]
 
-mctp_flow_prepare_output() is called in mctp_route_output(), which
-places outbound packets onto a given interface. The packet may represent
-a message fragment, in which case we provoke an unbalanced reference
-count to the underlying device. This causes trouble if we ever attempt
-to remove the interface:
+The only reason nvme_pci_npages_prp() could be used as a compile-time
+known result in BUILD_BUG_ON() is because the compiler was always choosing
+to inline the function. Under special circumstances (sanitizer coverage
+functions disabled for __init functions on ARCH=um), the compiler decided
+to stop inlining it:
 
-    [   48.702195] usb 1-1: USB disconnect, device number 2
-    [   58.883056] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
-    [   69.022548] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
-    [   79.172568] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
-    ...
+   drivers/nvme/host/pci.c: In function 'nvme_init':
+   include/linux/compiler_types.h:557:45: error: call to '__compiletime_assert_678' declared with attribute error: BUILD_BUG_ON failed: nvme_pci_npages_prp() > NVME_MAX_NR_ALLOCATIONS
+     557 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:538:25: note: in definition of macro '__compiletime_assert'
+     538 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:557:9: note: in expansion of macro '_compiletime_assert'
+     557 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+         |         ^~~~~~~~~~~~~~~~
+   drivers/nvme/host/pci.c:3804:9: note: in expansion of macro 'BUILD_BUG_ON'
+    3804 |         BUILD_BUG_ON(nvme_pci_npages_prp() > NVME_MAX_NR_ALLOCATIONS);
+         |         ^~~~~~~~~~~~
 
-Predicate the invocation of mctp_dev_set_key() in
-mctp_flow_prepare_output() on not already having associated the device
-with the key. It's not yet realistic to uphold the property that the key
-maintains only one device reference earlier in the transmission sequence
-as the route (and therefore the device) may not be known at the time the
-key is associated with the socket.
+Force it to be __always_inline to make sure it is always available for
+use with BUILD_BUG_ON().
 
-Fixes: 67737c457281 ("mctp: Pass flow data & flow release events to drivers")
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250508-mctp-dev-refcount-v1-1-d4f965c67bb5@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505061846.12FMyRjj-lkp@intel.com/
+Fixes: c372cdd1efdf ("nvme-pci: iod npages fits in s8")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/route.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 4c460160914f0..d9c8e5a5f9ce9 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -313,8 +313,10 @@ static void mctp_flow_prepare_output(struct sk_buff *skb, struct mctp_dev *dev)
- 
- 	key = flow->key;
- 
--	if (WARN_ON(key->dev && key->dev != dev))
-+	if (key->dev) {
-+		WARN_ON(key->dev != dev);
- 		return;
-+	}
- 
- 	mctp_dev_set_key(dev, key);
- }
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 83ee433b69415..504dc05380350 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -390,7 +390,7 @@ static bool nvme_dbbuf_update_and_check_event(u16 value, __le32 *dbbuf_db,
+  * as it only leads to a small amount of wasted memory for the lifetime of
+  * the I/O.
+  */
+-static int nvme_pci_npages_prp(void)
++static __always_inline int nvme_pci_npages_prp(void)
+ {
+ 	unsigned max_bytes = (NVME_MAX_KB_SZ * 1024) + NVME_CTRL_PAGE_SIZE;
+ 	unsigned nprps = DIV_ROUND_UP(max_bytes, NVME_CTRL_PAGE_SIZE);
 -- 
 2.39.5
 
