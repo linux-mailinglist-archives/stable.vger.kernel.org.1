@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6A6ABDCA5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:26:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33202ABDD28
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D8224C7997
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95E334C5E92
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7442459F2;
-	Tue, 20 May 2025 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4836250C13;
+	Tue, 20 May 2025 14:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUerOW5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yA8tc/IH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE330246764;
-	Tue, 20 May 2025 14:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD962505C7;
+	Tue, 20 May 2025 14:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750286; cv=none; b=kFA0yp+N52LsNeIX23jI3RsQTegeulur1tcoOQ6eXkTpxbGVzGvgoT0RM6B7+s4Mt++GsRhKJ9iVu8Dk3MiKKDmrzWH0hmj72s9hSYaX+JIog7bpMDYhrIOW8Pb9ejblzXJvx5GPY09hix206VSjcPSzaoDRtgN62yxBoSJO0RU=
+	t=1747750677; cv=none; b=kcJvVLfSi4OJvfHz5HORDroITm27poChEmm4We136YDc4KA5BLwbm3X6St3lM0ghBOx7157jJHj0wFe7Mv2yUJdBHAF5Wq12FDm2rerxaBkL+0JlqsFW/C1xuHn5qM+kLkJ/Lo1WUu+994OWJ2rfQg81s5MawQwrPycP8/TXxaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750286; c=relaxed/simple;
-	bh=6wj8utrLPHz+ddB58wupfJyaSl3AJ7VqJhi1sooJ9hQ=;
+	s=arc-20240116; t=1747750677; c=relaxed/simple;
+	bh=j7XUk58StIpFkbSUmzNoitBdNHATsNMeZKwZjYfSKvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kx3ceiArbSN0cZp5BsHmFboUZLxxmwGbg/h5icqupUVHtQqCod1YTrPefdh6shSrF4YnVP7RnInqkwpEO6lUjvpMn8OhDuVl/3Kt8KNuucqStMTp4ne2joGPca9YJxmVIKhO21oqpmjpU5BW1UZL4NUsREI9YpFSr7sQsRM+HEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUerOW5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658DDC4CEE9;
-	Tue, 20 May 2025 14:11:25 +0000 (UTC)
+	 MIME-Version; b=dB5XeRHRjXIpd3ItMws+BqIhvaRF8NLP0KVkdLN2jPLPsoXGyAJnQg5EVJfbTsjzBASL0zErEzQwVZRYW3t8GkNkoKZ38fD/xNb1Enlxok2IDq/VagniP8UF+88oouj5ZOOSD3LKrWxCIv7tEUa+P6m1a/6so3j3XxAx3d4Oar0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yA8tc/IH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187F2C4CEE9;
+	Tue, 20 May 2025 14:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750285;
-	bh=6wj8utrLPHz+ddB58wupfJyaSl3AJ7VqJhi1sooJ9hQ=;
+	s=korg; t=1747750677;
+	bh=j7XUk58StIpFkbSUmzNoitBdNHATsNMeZKwZjYfSKvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUerOW5AW7D2uJ0QWc+ZIOQJ3PhTC7r6lZvyuOL0UC94GnfYDdLGvwBL0kpV56V2S
-	 7k4mr8PXzSz3kcPS6jjJXg/cKcGxU4PJxoIfUQUpbaTaPjEyO46Ju4IAf88Y5c/Hnc
-	 nVaBu3XwU/ZE6glHxQfwZPhz4J2XD0Zfb+pLO4R0=
+	b=yA8tc/IHVHLWK9Gvqi70C74uHGQ0/xlcgJD+3NpZw9+udB9LSOwA/E3ZmrzofX9nl
+	 SB84V6ScJzRNVMP+Zlz177r/m8GbbqpIIyngB5f7ALKdgRUMIpevE8gNU2oDNScbGh
+	 21OyBKkpbfI973Xwar6shixCNS0lzsp5r4JYDyN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 101/143] Drivers: hv: vmbus: Remove vmbus_sendpacket_pagebuffer()
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.14 086/145] gpio: pca953x: fix IRQ storm on system wake up
 Date: Tue, 20 May 2025 15:50:56 +0200
-Message-ID: <20250520125814.020111988@linuxfoundation.org>
+Message-ID: <20250520125813.943800291@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-commit 45a442fe369e6c4e0b4aa9f63b31c3f2f9e2090e upstream.
+commit 3e38f946062b4845961ab86b726651b4457b2af8 upstream.
 
-With the netvsc driver changed to use vmbus_sendpacket_mpb_desc()
-instead of vmbus_sendpacket_pagebuffer(), the latter has no remaining
-callers. Remove it.
+If an input changes state during wake-up and is used as an interrupt
+source, the IRQ handler reads the volatile input register to clear the
+interrupt mask and deassert the IRQ line. However, the IRQ handler is
+triggered before access to the register is granted, causing the read
+operation to fail.
 
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20250513000604.1396-6-mhklinux@outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As a result, the IRQ handler enters a loop, repeatedly printing the
+"failed reading register" message, until `pca953x_resume()` is eventually
+called, which restores the driver context and enables access to
+registers.
+
+Fix by disabling the IRQ line before entering suspend mode, and
+re-enabling it after the driver context is restored in `pca953x_resume()`.
+
+An IRQ can be disabled with disable_irq() and still wake the system as
+long as the IRQ has wake enabled, so the wake-up functionality is
+preserved.
+
+Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250512095441.31645-1-francesco@dolcini.it
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/channel.c   |   59 -------------------------------------------------
- include/linux/hyperv.h |    7 -----
- 2 files changed, 66 deletions(-)
+ drivers/gpio/gpio-pca953x.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/hv/channel.c
-+++ b/drivers/hv/channel.c
-@@ -1077,65 +1077,6 @@ int vmbus_sendpacket(struct vmbus_channe
- EXPORT_SYMBOL(vmbus_sendpacket);
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -1203,6 +1203,8 @@ static int pca953x_restore_context(struc
  
- /*
-- * vmbus_sendpacket_pagebuffer - Send a range of single-page buffer
-- * packets using a GPADL Direct packet type. This interface allows you
-- * to control notifying the host. This will be useful for sending
-- * batched data. Also the sender can control the send flags
-- * explicitly.
-- */
--int vmbus_sendpacket_pagebuffer(struct vmbus_channel *channel,
--				struct hv_page_buffer pagebuffers[],
--				u32 pagecount, void *buffer, u32 bufferlen,
--				u64 requestid)
--{
--	int i;
--	struct vmbus_channel_packet_page_buffer desc;
--	u32 descsize;
--	u32 packetlen;
--	u32 packetlen_aligned;
--	struct kvec bufferlist[3];
--	u64 aligned_data = 0;
--
--	if (pagecount > MAX_PAGE_BUFFER_COUNT)
--		return -EINVAL;
--
--	/*
--	 * Adjust the size down since vmbus_channel_packet_page_buffer is the
--	 * largest size we support
--	 */
--	descsize = sizeof(struct vmbus_channel_packet_page_buffer) -
--			  ((MAX_PAGE_BUFFER_COUNT - pagecount) *
--			  sizeof(struct hv_page_buffer));
--	packetlen = descsize + bufferlen;
--	packetlen_aligned = ALIGN(packetlen, sizeof(u64));
--
--	/* Setup the descriptor */
--	desc.type = VM_PKT_DATA_USING_GPA_DIRECT;
--	desc.flags = VMBUS_DATA_PACKET_FLAG_COMPLETION_REQUESTED;
--	desc.dataoffset8 = descsize >> 3; /* in 8-bytes granularity */
--	desc.length8 = (u16)(packetlen_aligned >> 3);
--	desc.transactionid = VMBUS_RQST_ERROR; /* will be updated in hv_ringbuffer_write() */
--	desc.reserved = 0;
--	desc.rangecount = pagecount;
--
--	for (i = 0; i < pagecount; i++) {
--		desc.range[i].len = pagebuffers[i].len;
--		desc.range[i].offset = pagebuffers[i].offset;
--		desc.range[i].pfn	 = pagebuffers[i].pfn;
--	}
--
--	bufferlist[0].iov_base = &desc;
--	bufferlist[0].iov_len = descsize;
--	bufferlist[1].iov_base = buffer;
--	bufferlist[1].iov_len = bufferlen;
--	bufferlist[2].iov_base = &aligned_data;
--	bufferlist[2].iov_len = (packetlen_aligned - packetlen);
--
--	return hv_ringbuffer_write(channel, bufferlist, 3, requestid, NULL);
--}
--EXPORT_SYMBOL_GPL(vmbus_sendpacket_pagebuffer);
--
--/*
-  * vmbus_sendpacket_mpb_desc - Send one or more multi-page buffer packets
-  * using a GPADL Direct packet type.
-  * The desc argument must include space for the VMBus descriptor. The
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -1232,13 +1232,6 @@ extern int vmbus_sendpacket(struct vmbus
- 				  enum vmbus_packet_type type,
- 				  u32 flags);
+ 	guard(mutex)(&chip->i2c_lock);
  
--extern int vmbus_sendpacket_pagebuffer(struct vmbus_channel *channel,
--					    struct hv_page_buffer pagebuffers[],
--					    u32 pagecount,
--					    void *buffer,
--					    u32 bufferlen,
--					    u64 requestid);
--
- extern int vmbus_sendpacket_mpb_desc(struct vmbus_channel *channel,
- 				     struct vmbus_packet_mpb_array *mpb,
- 				     u32 desc_size,
++	if (chip->client->irq > 0)
++		enable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, false);
+ 	regcache_mark_dirty(chip->regmap);
+ 	ret = pca953x_regcache_sync(chip);
+@@ -1215,6 +1217,10 @@ static int pca953x_restore_context(struc
+ static void pca953x_save_context(struct pca953x_chip *chip)
+ {
+ 	guard(mutex)(&chip->i2c_lock);
++
++	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
++	if (chip->client->irq > 0)
++		disable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, true);
+ }
+ 
 
 
 
