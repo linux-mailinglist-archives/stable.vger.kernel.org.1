@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-145632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A50FABDD53
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:38:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 922E1ABDB29
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8D46161B85
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FEB61BA0AAD
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620C024888A;
-	Tue, 20 May 2025 14:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6CB24501D;
+	Tue, 20 May 2025 14:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUtWeGXf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tmvhxlp3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201DE24DFE4;
-	Tue, 20 May 2025 14:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B81D2F37;
+	Tue, 20 May 2025 14:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750752; cv=none; b=oOjh5Zc6YOuMQc4EBNx9D8RYpOwEMofkfmoMk8a3886lKVudGZ+e+x7fVPGzWAaRl2jPNv8+vtfEiHgafP4OltDwJqoqK7CTp9LcAlmVUSVMIqHEX+GZsMlRZO2XneM+ZtzE7jZ1kGHypU3yzy8fs9eFHUqT6PZnxXTifXL7jTc=
+	t=1747749918; cv=none; b=KT0M6II3vBClX3R+NM1voTqzVk7YwiaVP72f/Ivwd4uIJAnxctJlUH1+YJzomkBEBJcrjkiFYsGcGILwDcCmAPfPE98TOik0p00gtsy3OOtIze2iGa7+9P08Hl3PY4zgLE5+nOq+x/yQsemVBNRU87vwpYhrf9vzpgKgfjzJvTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750752; c=relaxed/simple;
-	bh=K5gES8cJIxBs1pVo9NAnFW7Fms/6D79E6HqRvBkFfNk=;
+	s=arc-20240116; t=1747749918; c=relaxed/simple;
+	bh=KfLDOKBVKzJpLR5Kv/Ie9qSjsQxQCGnmiNpPw4HEMJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdRCpJTr3cG4vMe83nrX+VC5weoQksln1+8Tb9p1eLHFU+hBIB310qA1wsXTNqogMeddExSdHtP5QLJYJrfcr7+ChvAgZmASApNw6K1DxJHT8GQT4i61TSPhvqW9+RiewEh7doVFoMhjYIVhb6esXcUkByBhgz4znCehniYLwbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUtWeGXf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861ACC4CEEA;
-	Tue, 20 May 2025 14:19:11 +0000 (UTC)
+	 MIME-Version; b=f17P0xTxfO/QkAWWsKUWu3MQg0EX5m/V/hn1nhiWJ6V3wLJnm/elFYvGs61wDkZK8Vj9hQzPI+v6Ss45hbUhBXkh5Yp4P7U8j9naC1JeRVOVcGMfvG2T3DlFQUviyZudlxo8sHYD1frhzqtGhjR3n1Y0TP/8MWWsAob3QiR+n1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tmvhxlp3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBFEC4CEE9;
+	Tue, 20 May 2025 14:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750752;
-	bh=K5gES8cJIxBs1pVo9NAnFW7Fms/6D79E6HqRvBkFfNk=;
+	s=korg; t=1747749918;
+	bh=KfLDOKBVKzJpLR5Kv/Ie9qSjsQxQCGnmiNpPw4HEMJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUtWeGXfeH6WoM1aU5Wv86/JEjz5ZIDaHlpSZu58OL0qZjazNtbv4l8BVNd0RFpYh
-	 K/WY86v8AYsYk4tbZxGXXSLV/eo0gG0F7Ui1lVZXjF2eB4DE5o+ou4wMceP1XR5jKW
-	 vduf0823NAxjYWbsq+Q4ygDjA6YinqhLmSz2co8s=
+	b=Tmvhxlp3A51UivuzRxBnApRWHN2rnaiYPbYwcwqGSHkqD+2McBvXNgqPM30XDGzvB
+	 cXTTRdpXKClP4NEETiOb3qiXSducOx5NIk4W/MelzN8r5yS/wi2lpoy2ajuoN3S38N
+	 Ac7dapq04s8bbBlalkeFhYdE0A4FO8b55wA/xaUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.14 079/145] drm/tiny: panel-mipi-dbi: Use drm_client_setup_with_fourcc()
+	Ma Ke <make24@iscas.ac.cn>,
+	Thierry Reding <treding@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 084/117] phy: Fix error handling in tegra_xusb_port_init
 Date: Tue, 20 May 2025 15:50:49 +0200
-Message-ID: <20250520125813.676615714@linuxfoundation.org>
+Message-ID: <20250520125807.328232642@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 9c1798259b9420f38f1fa1b83e3d864c3eb1a83e upstream.
+commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
 
-Since commit 559358282e5b ("drm/fb-helper: Don't use the preferred depth
-for the BPP default"), RGB565 displays such as the CFAF240320X no longer
-render correctly: colors are distorted and the content is shown twice
-horizontally.
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-This regression is due to the fbdev emulation layer defaulting to 32 bits
-per pixel, whereas the display expects 16 bpp (RGB565). As a result, the
-framebuffer data is incorrectly interpreted by the panel.
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-Fix the issue by calling drm_client_setup_with_fourcc() with a format
-explicitly selected based on the display's bits-per-pixel value. For 16
-bpp, use DRM_FORMAT_RGB565; for other values, fall back to the previous
-behavior. This ensures that the allocated framebuffer format matches the
-hardware expectations, avoiding color and layout corruption.
-
-Tested on a CFAF240320X display with an RGB565 configuration, confirming
-correct colors and layout after applying this patch.
+Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 559358282e5b ("drm/fb-helper: Don't use the preferred depth for the BPP default")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250417103458.2496790-1-festevam@gmail.com
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/panel-mipi-dbi.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/phy/tegra/xusb.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-+++ b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-@@ -390,7 +390,10 @@ static int panel_mipi_dbi_spi_probe(stru
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -548,16 +548,16 @@ static int tegra_xusb_port_init(struct t
  
- 	spi_set_drvdata(spi, drm);
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
  
--	drm_client_setup(drm, NULL);
-+	if (bpp == 16)
-+		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB565);
-+	else
-+		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB888);
+ 	err = device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
  
  	return 0;
+ 
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
  }
+ 
 
 
 
