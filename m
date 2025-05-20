@@ -1,233 +1,109 @@
-Return-Path: <stable+bounces-144992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898D4ABCBFB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 02:23:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93467ABCC03
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 02:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C27C17C4E5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 00:23:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAF5017F13B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 00:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F77C254877;
-	Tue, 20 May 2025 00:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FCD253F2B;
+	Tue, 20 May 2025 00:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="cG344SDC";
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="NarhBe0J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h9iWDfN4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA18321E0A2;
-	Tue, 20 May 2025 00:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7402EFC08;
+	Tue, 20 May 2025 00:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747700568; cv=none; b=aCl2F2NXySd0uAVQucp/3/UW1DS1guni7EA9LlGIyUp9hFDXPFBJruhldPzNdqPIkhBKQVlBWLs2anbWm/N/xCG4JQK0nN94FHfecWBlk8Y8+p8s40Ujh7escPEU5+EJPnbK/Poc6xNmvvUCA5mpmRw/D1J5TFbNPgdfVOeOXWI=
+	t=1747701098; cv=none; b=gmwGVNAtE3403obXuzpWnXpL224t6uMr4OYG/TFO01YtSodV655ZOMdqWcGvrtMNgEzNCA7J2XoUZyFBZFfrEfP9gA5PJy/nn2Bezubf6UcvrOsbFt1+0ErxHuCIyM17sXjCUi36ejd7SjMX87O7J4XNxOIiaspRlqdczX9FT8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747700568; c=relaxed/simple;
-	bh=2sCflagYN1p0EebWs7zkkYMbJ9WhV8z0MOEquY11XpE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fJtK834sMizXTolcIdv8Qcm41c7HzGteaZU8QRhrCn0cX860UoyKienks820jb5bL89tuxvCpF+XsgrDLbJ5vJQWccDA/8roL8+WjTdotu5zyFVY5uqIJ5F5XmJBK53j6oYpH6/Pmug+1ewr7ZFp3wyEga9yh10s6jBA2wVcIUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=cG344SDC; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=NarhBe0J; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Received: by mail.netfilter.org (Postfix, from userid 109)
-	id 7886160264; Tue, 20 May 2025 02:22:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1747700565;
-	bh=oGvscRL3p69LkmN1hCOi58RKacP8aVkx5RQ5/VPTiGk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cG344SDCqxU/oNSxDYUZ8ddVUX17PG+wklz1bIiengmvNBFsBB1TGdOLn+qWmZ3ff
-	 63Z0yC2l/Iym1baRPnBrhUJw+qSc921UIWURsuFsp4G5PU0MHRTsp7JtuyBVKGUdhN
-	 ou+IkPpSKSgyWItWFv8avfV4D5WO79RRvoUPvBkkgRB1lMmtSwQGaZACTsGN39N7KU
-	 clmsIaiDVrDak7voQpxiFEZur+DiYOsY9Saig42LYmWMVDRC872Hpr6e4U9HURDhlE
-	 q4HSUot3C0jufZJoeHoPg9o/lIxHy6duc0d8UfD2tkLcMe9U0w2Sa1WVKvcG3gFVto
-	 bKOQTRXlbNJ0A==
-X-Spam-Level: 
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id A05A360272;
-	Tue, 20 May 2025 02:22:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1747700563;
-	bh=oGvscRL3p69LkmN1hCOi58RKacP8aVkx5RQ5/VPTiGk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NarhBe0J+iFvpN6uy4ASs1nek0f2yR1qbRxU1yZBhmorgQInEvdFHPqzpKx8TBbeD
-	 viOS6MS1l/9V1356M8bb7Af2DzTbAY23nqCdlBrZcHZOLsl/g9djEjttAUjNyJtGjV
-	 3YGTxgAZtJchozVPI4m0wI8NKcGw5yKSG4e0WavcOp+trvxluhHacL0n6vhOvkS1RN
-	 i4LwRYp2MV6+rFDpefV2ePTVV0p6FX63DcMaeBQNqN9hJQ4EQogO3azWrtmSHRwcXG
-	 vuweaN5F5hblo13ngtlkYkV3KKTR7zxdnW0Ib+h6SZiwMMKlAQXjo6MdpI0emLAoBs
-	 Q0/tqwAuPqziQ==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH -stable,5.10 3/3] netfilter: nf_tables: do not defer rule destruction via call_rcu
-Date: Tue, 20 May 2025 02:22:36 +0200
-Message-Id: <20250520002236.185365-4-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20250520002236.185365-1-pablo@netfilter.org>
-References: <20250520002236.185365-1-pablo@netfilter.org>
+	s=arc-20240116; t=1747701098; c=relaxed/simple;
+	bh=ns9XDYIXLCeBYLBqsS+BgnN5u6+CGHLNqq0gVv2wN+A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bxfBMm0qLbtR5P+xoPbhioeOJnvKsXEiVTe2TRYz9vSG72D5r9Q02eCipKQS9Fxc0rcDtlDcqVAUbbzaCPuylmpZ0F86xLunLtvhjrzYWOEuqs/KiOlNj3piruTz19nxjNBlgl+ji97/HHIr51qi9p79apQVUcxaSAsjyDvKG2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h9iWDfN4; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54d6f933152so7610270e87.1;
+        Mon, 19 May 2025 17:31:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747701094; x=1748305894; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ns9XDYIXLCeBYLBqsS+BgnN5u6+CGHLNqq0gVv2wN+A=;
+        b=h9iWDfN4A8T3LUvGjmjtxKbtYskwcBMGzJss7eVMaamTYpVRa/ncu+Qi1A3oMiw4zX
+         PCn6My2yCgknq7Bdob6rEp4CSj9sje6NFhCPGMRyXgCwrFaWkTzFxN/BH/jcxPD4NRNQ
+         NbCYWHsRQc79Gxz3I+QDWy8XCpzz94QrFkRjIYTBPbfJpnYdeY+/Sd0U78FFWXZGF/p3
+         gVEDwUrwmi1YCa18OBwW5exD/ejPO75MsWOJjPcPBQdIu/uMdyoew5M06nQ1bALNLHtu
+         ndQ08h19FZn8PGPjnwQVqRaucm9T2gshUo4WV8vXIKuquUvZDmLG5pgl4wgerZHLFnem
+         LMSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747701094; x=1748305894;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ns9XDYIXLCeBYLBqsS+BgnN5u6+CGHLNqq0gVv2wN+A=;
+        b=SkW9BaPfEjMfryg9WAxOl0Bp4KBPr3GQMqOUmjuhniOtMpylpKApBdnk3rvsyp4mLE
+         q2QsUPM8AP0teepZnIeRUmY/5rmGbM7EncB49LtjhUz+jM9MOXao572+WTTlVbapG642
+         OYy4IzjOi73Lxxt/ldOEMcl9EEuAI4I0wwy5IOlxVpZ7eSXrR0K9IhB2F7S2KqQ0vyh4
+         to/1OxKYw72AAmXU5gS46DwBmfEyA/fU3Ymmn5+oirxuVqKR5nNQaA9/sl6tHU/1/G2K
+         FoyDxHuNGIVTufdzmCu/QFd2B4KcfQYjT+lp0Pva/MbrWNRpghpT+U0AswPFMTIOek5X
+         VFaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWgKshcP/GyyZub6HXRCq6MP0yugiZTjtTnN85v87/WLqLIqx43qwS6rZiOAfMfUEXzHafz0a28Cs=@vger.kernel.org, AJvYcCX+DCillYWL5P6owmUcYv0tGe2DDw7ezw7QwnY0TpTB2QzBGfe5BGyuZ1e55pqIGTvOH0jvytRs@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqFh2yQbDTTZ7J9SfFMkFM4QfRe/88pHftv+fop9wUYy1Xn6ho
+	fD7IyRYT9KH3qnZBFA3FeE8MWC/grn0hTshj11vqTQkeU7vq5PhSCsAWyUhxqNtxCitiufDhtKV
+	jOKzrwzFPTpzv7kPEW2DZj0sP95bRClg=
+X-Gm-Gg: ASbGncspPLPp+trNjEQy3nKP08X4uPe2rjhGwMw2JeorWMzKsStbNDRybJcpsm0ykUi
+	Y8YCNdQMv6Edpskj1zXCKTDyF40c/2CXguWGPEPORcyOlmzaoY3h6IjJOwL7evBrdNxN7A9/s6A
+	V3EzGHYE4f9sRKr9gXQWvIWcT0H6cNBw3yCf27kEwfBshbP/JgjggdS5XO7q2nZtV2
+X-Google-Smtp-Source: AGHT+IHc3qnC8mMmIb4o3P/26DdOOQXX3nerx+sg0ERdVNJOtlNY+uefNM75tmbBlQiRwdBJb++4jdz/dw+kltKT9Sw=
+X-Received: by 2002:a05:6512:6288:b0:54f:c5cd:ce4f with SMTP id
+ 2adb3069b0e04-550e971b4f6mr3860617e87.6.1747701094191; Mon, 19 May 2025
+ 17:31:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250516173900.677821-1-festevam@gmail.com> <a41491e0-595a-4614-a03e-34848446a815@gmail.com>
+In-Reply-To: <a41491e0-595a-4614-a03e-34848446a815@gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 19 May 2025 21:31:22 -0300
+X-Gm-Features: AX0GCFuAOw3iH2QReFfX-AnOKr69vd_4uUAPLtQWzlUBbgyAvbsAPmzDVMS1jzU
+Message-ID: <CAOMZO5CtcmpH6sMpHboEyP50iPG3qGAyzg+TEoR7w2-ykU44_g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: adc: max1363: Fix MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: jic23@kernel.org, linux-iio@vger.kernel.org, 
+	Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Florian Westphal <fw@strlen.de>
+Hi Matti,
 
-commit b04df3da1b5c6f6dc7cdccc37941740c078c4043 upstream.
+On Mon, May 19, 2025 at 2:01=E2=80=AFAM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
 
-nf_tables_chain_destroy can sleep, it can't be used from call_rcu
-callbacks.
+> I could argue the problem which is fixed is not related to the
+> 2718f15403fb. I'd say the problem has been the commit which introduced
+> the 'offending' masks instead. The 2718f15403fb is not fixed by this
+> change. It could help identifying the faulty releases if correct commit
+> was pointed here.
 
-Moreover, nf_tables_rule_release() is only safe for error unwinding,
-while transaction mutex is held and the to-be-desroyed rule was not
-exposed to either dataplane or dumps, as it deactives+frees without
-the required synchronize_rcu() in-between.
+Fair enough, thanks.
 
-nft_rule_expr_deactivate() callbacks will change ->use counters
-of other chains/sets, see e.g. nft_lookup .deactivate callback, these
-must be serialized via transaction mutex.
+I am going through this driver's history, and it looks like the masks
+have been always wrong, since the beginning.
 
-Also add a few lockdep asserts to make this more explicit.
+I was not able to point to an exact commit, though.
 
-Calling synchronize_rcu() isn't ideal, but fixing this without is hard
-and way more intrusive.  As-is, we can get:
-
-WARNING: .. net/netfilter/nf_tables_api.c:5515 nft_set_destroy+0x..
-Workqueue: events nf_tables_trans_destroy_work
-RIP: 0010:nft_set_destroy+0x3fe/0x5c0
-Call Trace:
- <TASK>
- nf_tables_trans_destroy_work+0x6b7/0xad0
- process_one_work+0x64a/0xce0
- worker_thread+0x613/0x10d0
-
-In case the synchronize_rcu becomes an issue, we can explore alternatives.
-
-One way would be to allocate nft_trans_rule objects + one nft_trans_chain
-object, deactivate the rules + the chain and then defer the freeing to the
-nft destroy workqueue.  We'd still need to keep the synchronize_rcu path as
-a fallback to handle -ENOMEM corner cases though.
-
-Reported-by: syzbot+b26935466701e56cfdc2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67478d92.050a0220.253251.0062.GAE@google.com/T/
-Fixes: c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- include/net/netfilter/nf_tables.h |  3 ---
- net/netfilter/nf_tables_api.c     | 32 +++++++++++++++----------------
- 2 files changed, 15 insertions(+), 20 deletions(-)
-
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index c055847066c9..25dd157728a3 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -962,7 +962,6 @@ struct nft_chain {
- 	char				*name;
- 	u16				udlen;
- 	u8				*udata;
--	struct rcu_head			rcu_head;
- 
- 	/* Only used during control plane commit phase: */
- 	struct nft_rule			**rules_next;
-@@ -1101,7 +1100,6 @@ static inline void nft_use_inc_restore(u32 *use)
-  *	@sets: sets in the table
-  *	@objects: stateful objects in the table
-  *	@flowtables: flow tables in the table
-- *	@net: netnamespace this table belongs to
-  *	@hgenerator: handle generator state
-  *	@handle: table handle
-  *	@use: number of chain references to this table
-@@ -1117,7 +1115,6 @@ struct nft_table {
- 	struct list_head		sets;
- 	struct list_head		objects;
- 	struct list_head		flowtables;
--	possible_net_t			net;
- 	u64				hgenerator;
- 	u64				handle;
- 	u32				use;
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f3d20023b353..ff419ecb268a 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1299,7 +1299,6 @@ static int nf_tables_newtable(struct net *net, struct sock *nlsk,
- 	INIT_LIST_HEAD(&table->sets);
- 	INIT_LIST_HEAD(&table->objects);
- 	INIT_LIST_HEAD(&table->flowtables);
--	write_pnet(&table->net, net);
- 	table->family = family;
- 	table->flags = flags;
- 	table->handle = ++table_handle;
-@@ -3345,8 +3344,11 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
- 	kfree(rule);
- }
- 
-+/* can only be used if rule is no longer visible to dumps */
- static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
- {
-+	lockdep_commit_lock_is_held(ctx->net);
-+
- 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
- 	nf_tables_rule_destroy(ctx, rule);
- }
-@@ -4858,6 +4860,8 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase)
- {
-+	lockdep_commit_lock_is_held(ctx->net);
-+
- 	switch (phase) {
- 	case NFT_TRANS_PREPARE_ERROR:
- 		nft_set_trans_unbind(ctx, set);
-@@ -9571,19 +9575,6 @@ static void __nft_release_basechain_now(struct nft_ctx *ctx)
- 	nf_tables_chain_destroy(ctx->chain);
- }
- 
--static void nft_release_basechain_rcu(struct rcu_head *head)
--{
--	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
--	struct nft_ctx ctx = {
--		.family	= chain->table->family,
--		.chain	= chain,
--		.net	= read_pnet(&chain->table->net),
--	};
--
--	__nft_release_basechain_now(&ctx);
--	put_net(ctx.net);
--}
--
- int __nft_release_basechain(struct nft_ctx *ctx)
- {
- 	struct nft_rule *rule;
-@@ -9598,11 +9589,18 @@ int __nft_release_basechain(struct nft_ctx *ctx)
- 	nft_chain_del(ctx->chain);
- 	nft_use_dec(&ctx->table->use);
- 
--	if (maybe_get_net(ctx->net))
--		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
--	else
-+	if (!maybe_get_net(ctx->net)) {
- 		__nft_release_basechain_now(ctx);
-+		return 0;
-+	}
-+
-+	/* wait for ruleset dumps to complete.  Owning chain is no longer in
-+	 * lists, so new dumps can't find any of these rules anymore.
-+	 */
-+	synchronize_rcu();
- 
-+	__nft_release_basechain_now(ctx);
-+	put_net(ctx->net);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(__nft_release_basechain);
--- 
-2.30.2
-
+Maybe I can remove the Fixes line. Jonathan?
 
