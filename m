@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F4EABDB4C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F26ABDBEF
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 063A28C2870
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AE9C7B6E50
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC9024336D;
-	Tue, 20 May 2025 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FB4242913;
+	Tue, 20 May 2025 14:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XL6u25SI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhX5nEK4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A417EEDE;
-	Tue, 20 May 2025 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDFF246327;
+	Tue, 20 May 2025 14:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749805; cv=none; b=pRxCxy0oqiuCOzAyID7w1R6kCnqj4M6fk2NsdskRQPqJ2CN55dcIhojNQvQSNxOvVjJtM6H+ti8dBC/iEiFTWvfpPTY1gIlLo4cJS79HOo9bCPn/hupXpY3u1TwPJotDURzs0hVLoqST8sWFJW2I1FmFMZ7tBiiBqLN7eJQnTDw=
+	t=1747750300; cv=none; b=sXoDay/AKesh7vOIk43z00Wp26OyHR/3sC3VOo/ivb/RsalJhYZbjdYGyA8MyrlLQ4QTlC6sBBeXnw7JURwggdVt97015WpLeovuLnlVEIB7fdFgdeiVSufoRYZc4lqKDxxgGrmI+bDK3UP+G4lx7jdoINTSUvg1G10W8yiSjw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749805; c=relaxed/simple;
-	bh=7LxPmxdNyLFMWai6jP2FvvEYoFJkY/Wh+QuaJ1910Co=;
+	s=arc-20240116; t=1747750300; c=relaxed/simple;
+	bh=A3py9v57tVl3h34swCfUX6zXvkmgqn7ugeIz2hiIqjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZkoz5npMjQq7xLwZFtDI6AEPUZWddu9wrn5tLo4b/TUMQbLGcBrUWBtNa5ADOOWnQpHFrFcygk0hIOnzhivzQcA7sXbNKzm8E+Quox/QBsq4tylc3jJzaP1ViSkAggw93VPkVJ+uG144onB22Fcv7VgPNEoxEuOAu582Sj6yjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XL6u25SI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837A8C4CEE9;
-	Tue, 20 May 2025 14:03:24 +0000 (UTC)
+	 MIME-Version; b=ZF+gG4Dx3FEcrjPgyteoNakkoPZ8Rq8uzSSLwtTG7lGP8h74f+899vQAKU1xrfapw7TizkZ83McRbMszqYjAgaQNJy0jPLbEAdpz9U5UKLPqwq51KI0yWdKhvkYsYWPTF01n5D+RuXFmUXRrlztkXN031soAzaaqvGMnvLcPFJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhX5nEK4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E838C4CEE9;
+	Tue, 20 May 2025 14:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749805;
-	bh=7LxPmxdNyLFMWai6jP2FvvEYoFJkY/Wh+QuaJ1910Co=;
+	s=korg; t=1747750300;
+	bh=A3py9v57tVl3h34swCfUX6zXvkmgqn7ugeIz2hiIqjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XL6u25SIEV/UED2XOIPwb4He1G4XFYUi6Dn5z0TXkvjfM98ewAUWpOzmUqKTAGboC
-	 JQnmlKFYYcTYvKSGCG8dLLBTFrwZSIEYhy3oYHpkAwaDGIqF0yQuA1dDhWaSjb8ovl
-	 Bbs5C5nXhvlP9w8OOPIOw+j6iTb2Kh/rr8fIPoHE=
+	b=vhX5nEK4huaposwNYcAgkSa21Vc/qEWvtMstdCdfHuXb6avYxfYtTehEvSUFVZ2BD
+	 Klo+8+B6ItQ9zUZmLd7dr3JJIF9pZkQ09W7uXVSPX4T0JlyAUnkZ3jZuUCQtPMqdEU
+	 ncZ1fxlbGBzHIG0SCOArnlSOFbxsRab1KIbSRC2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 066/117] LoongArch: uprobes: Remove user_{en,dis}able_single_step()
-Date: Tue, 20 May 2025 15:50:31 +0200
-Message-ID: <20250520125806.611562268@linuxfoundation.org>
+Subject: [PATCH 6.12 077/143] LoongArch: uprobes: Remove user_{en,dis}able_single_step()
+Date: Tue, 20 May 2025 15:50:32 +0200
+Message-ID: <20250520125813.094935820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
