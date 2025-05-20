@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-145303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC22DABDB48
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 376C3ABDC3F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CE98C2F85
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC1E71B62963
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFDF2459F2;
-	Tue, 20 May 2025 14:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037E3248F71;
+	Tue, 20 May 2025 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIPP5jS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtgSmROX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D4F22D9E3;
-	Tue, 20 May 2025 14:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B60250C0E;
+	Tue, 20 May 2025 14:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749777; cv=none; b=c9kYrH3jG0OKf3uHMJcEqS6akmEjEBx1uo1/HXmPRhKyg24hxIGb0pLEnsfdo2zbi3H6ynTRSH7/Z+NUbcQfcarwes0Wjyy7G0gmA+dlq6djV99E85D/BDT524gNb4n7Wpajew2MFPlktWbrr2RVGEP0+mmJCAlJP6sv02sU8oA=
+	t=1747750600; cv=none; b=P2xUL3i1p6+E457qWVtJhBHgO3JU7hk927f6hnWDsS6WrqxAEQyGjw5Sc7ZOM8jU6aU4PhX5t0hJw2ZSJVz0Y+RxhfxpVHWHayRANo7nrLEANy4nqDgh/E00ax8H+H6wPaXVot7lP0jSfii2MwXi7jM77vVoms7w8ZVYReLNkU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749777; c=relaxed/simple;
-	bh=rkHo5qPTSb4lz1STJKJ9BpMVEmo1XyY2EF7zgqf93ng=;
+	s=arc-20240116; t=1747750600; c=relaxed/simple;
+	bh=QgKoEmz4IX3GoVN0G2cz5bl+hlqc51SlVFVaIA/gkAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uyd/ltM9arF6hytseujitYTDj8ajKFfaOE3BuCfRf8kD5oCDjDF65ATwJccsgy5sMvN6JMMadziaroDYjQSnHsiuaWHdeOQP/xTDWWz+7HwxP+fCAOp8Q68dc4o549ACMmFHmtQPg08pBt+/ulFStyw4MV0jQ1vPI1KmxVzuLR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIPP5jS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCB1C4CEEA;
-	Tue, 20 May 2025 14:02:56 +0000 (UTC)
+	 MIME-Version; b=Y3ZXUydpRDYWR5MmcWdPoLOZaoCrQ1ypKsX6CCY08CCYNcw33/abQuOHjmD+nItyxHi7hzvtlhh5ASM4S1MJ7RuL0THsQJcPyPxaCjCZf3GqUbVyBqtkrYpVn/V2IFnHEtGNoCvk7DNkJFVs9ju3jGOm9RxrqScQJkM4DvvCK0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtgSmROX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC38AC4CEE9;
+	Tue, 20 May 2025 14:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749776;
-	bh=rkHo5qPTSb4lz1STJKJ9BpMVEmo1XyY2EF7zgqf93ng=;
+	s=korg; t=1747750600;
+	bh=QgKoEmz4IX3GoVN0G2cz5bl+hlqc51SlVFVaIA/gkAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIPP5jS94Ts/Yue6ypt2ezjUNfUeJiBR6+i0CcUqPKNSLtfPM1EVC6vD2CaNCxFcB
-	 kaegc5aRh8fNy1F/Ok/iinBnurnEZ2ClaJd8fYrC9xXbPXtgh0YwqxMrJYzdy1Oam1
-	 ol72CLsm12jOXVwHTuRUzqXz9VuwF0lwZnfJRrWM=
+	b=qtgSmROXEbgHY7pJj1Crw2g8TneQ2Saxf9CPQUpKkc3R9LH39Pah8tmbXFTgTzu29
+	 oyiCgyApAdjNrmWFA6ZBAApAT06wjuV18nEX951X1clxtG/ccp2bigQD/8nXIAFF+L
+	 LPQ1WRCJmetF4DhePIZ/oFg7muaRla3Bifq1yBFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/117] net/mlx5e: Disable MACsec offload for uplink representor profile
+Subject: [PATCH 6.14 044/145] net/mlx5e: Disable MACsec offload for uplink representor profile
 Date: Tue, 20 May 2025 15:50:14 +0200
-Message-ID: <20250520125805.938216448@linuxfoundation.org>
+Message-ID: <20250520125812.301573673@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -204,10 +204,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 8a892614015cd..d9dc7280302eb 100644
+index 8fcaee381b0e0..01f6a60308cb7 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -4136,6 +4136,10 @@ static netdev_features_t mlx5e_fix_uplink_rep_features(struct net_device *netdev
+@@ -4373,6 +4373,10 @@ static netdev_features_t mlx5e_fix_uplink_rep_features(struct net_device *netdev
  	if (netdev->features & NETIF_F_HW_VLAN_CTAG_FILTER)
  		netdev_warn(netdev, "Disabling HW_VLAN CTAG FILTERING, not supported in switchdev mode\n");
  
