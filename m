@@ -1,84 +1,108 @@
-Return-Path: <stable+bounces-145055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8330BABD675
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:14:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C77ABD68E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:17:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3D74C0448
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 11:12:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 025997B2EF7
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 11:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2292927FD44;
-	Tue, 20 May 2025 11:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E4027FB15;
+	Tue, 20 May 2025 11:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiAr+J3+"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="wxlGzFdy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF21727A128;
-	Tue, 20 May 2025 11:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160FD27586D;
+	Tue, 20 May 2025 11:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747739344; cv=none; b=DTDCf/WOOtSOvcS+0tcQvfmfgzFxdlvFRnBkEpmRRn5mp6d7OEkbaic5ZC1X0HRemWTRcSJTJGS71VsnBNKFN5TFNFbB9zRviEwyKV+lD9fXZDCY3WnqgeZ97gGmfUE7w9qNuKhHlxjQDbKgnLYNaLkRIxzJo9sxS5z27Uhrn38=
+	t=1747739651; cv=none; b=F/rLze225Dl0Nz2VGt+Q4Q0hS8WklmF+NI8fjSrUoN/Hcrx9Mo/07m993quhM5jSqoKo0fRqNB9H7b2XrLCxhsbqH70IceEoi4W//2ih4oET4Z4hPIxpClDPDBtnMBC+zMH/sQvg/fG1w2Uc5PqjGYiYDw1H75n+A+3IwPhWwfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747739344; c=relaxed/simple;
-	bh=wUBAPcM3h4h9sfAm09rqg5/mI3M5u/QWh9zdXEUH5So=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B3WFuuACWgS1jDJ7l2t2ZLKm8VSg7jVa3LQvITEbJb2Aia++5ppnNkCec3gr4HJKfbtZclRuEZRkKuNVF68wZpz16f6JsfWwuVJ+LnvjzB4wVCoE9UZuLeLqqK5LpDvd0+nmUqHil2p/geFws4fFaiM00GAfsgEnZLXYcCUagsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiAr+J3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973CEC4CEE9;
-	Tue, 20 May 2025 11:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747739344;
-	bh=wUBAPcM3h4h9sfAm09rqg5/mI3M5u/QWh9zdXEUH5So=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EiAr+J3+btA797hPhIByNLI2XSDgV8RczHGGS+rcgiDElj5vTmSX99zi/+q1D5t0q
-	 ABl5TUxW3uqj7IqnyXfWWZgbF/mYYVxJRt2ZR7C6mSh8MrO4FCjY3RUpcQvLp1rRNQ
-	 QxYYiOTvOJO0YqyUJ/CLuuIkX/d5V0DMkM4bFToE=
-Date: Tue, 20 May 2025 13:09:01 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, sashal@kernel.org,
+	s=arc-20240116; t=1747739651; c=relaxed/simple;
+	bh=H2zYyCKEFC1gdpuxbPqLXotR11sCRrie5bfyYZlCQ2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CcGWPmHlM1is3enidTP/g7abcC91P3VSZh2PpdcM5h8/uwQTRT3iFSYLTSbV9OWSKwEsQxVIAGqKy+qrPWe+sFnrk7X6tc3dnNl3N8rCtK02pyKXnyWOM0jMmHLoYmokrUWZbJFJSDQoq4aT2lL+L0DNvWlvoPqwfHiavA9J/uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=wxlGzFdy; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1747739645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EUwblmsHazoEp78aho7gvryVjUx9gR5cv4lS4+eKc64=;
+	b=wxlGzFdyRmi2c0GmSPeJc34AxBGAICGIxqJQrw2EILpSGxzEi5ijTG/4tMxCKsbokPxTjI
+	i7UE+pBVpLBMucFVq88mpxsmJzzNg7it5p8YkRQ5jaERCtACq3DRvTAx1HqpqW7akwqeL1
+	2VsTwd8EMG5Yh3gxFf0rcaP6XJtDopY=
+To: Michael Hennerich <michael.hennerich@analog.com>
+Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH -stable,6.1 0/3] Netfilter fixes for -stable
-Message-ID: <2025052052-wistful-cork-c09f@gregkh>
-References: <20250519233438.22640-1-pablo@netfilter.org>
+Subject: [PATCH v2 1/2] Input: adp5588-keys - Add check on return code
+Date: Tue, 20 May 2025 14:13:57 +0300
+Message-ID: <20250520111404.1346071-2-arefev@swemel.ru>
+In-Reply-To: <20250520111404.1346071-1-arefev@swemel.ru>
+References: <20250520111404.1346071-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519233438.22640-1-pablo@netfilter.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 20, 2025 at 01:34:35AM +0200, Pablo Neira Ayuso wrote:
-> Hi Greg, Sasha,
-> 
-> This batch contains backported fixes for 6.1 -stable.
-> 
-> The following list shows the backported patches, I am using original commit
-> IDs for reference:
-> 
-> 1) 8965d42bcf54 ("netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx")
-> 
->    This is a stable dependency for the next patch.
-> 
-> 2) c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
-> 
-> 3) b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
-> 
->    This is a fix-for-fix for patch 2.
-> 
-> These three patches are required to fix the netdevice release path for
-> netdev family basechains.
-> 
+Function 'adp5588_read()' can return a negative value, which after
+calculations will be used as an index to access the array
+'kpad->keycode'.
 
-All now queued up, thanks!
+Add a check for the return value.
 
-greg k-h
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 69a4af606ed4 ("Input: adp5588-keys - support GPI events for ADP5588 devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+V1 -> V2:
+Added  tag Fixes
+	
+ drivers/input/keyboard/adp5588-keys.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/input/keyboard/adp5588-keys.c b/drivers/input/keyboard/adp5588-keys.c
+index dc734974ce06..13136f863270 100644
+--- a/drivers/input/keyboard/adp5588-keys.c
++++ b/drivers/input/keyboard/adp5588-keys.c
+@@ -519,9 +519,14 @@ static void adp5588_report_events(struct adp5588_kpad *kpad, int ev_cnt)
+ 	int i;
+ 
+ 	for (i = 0; i < ev_cnt; i++) {
+-		int key = adp5588_read(kpad->client, KEY_EVENTA + i);
+-		int key_val = key & KEY_EV_MASK;
+-		int key_press = key & KEY_EV_PRESSED;
++		int key, key_val, key_press;
++
++		key = adp5588_read(kpad->client, KEY_EVENTA + i);
++		if (key < 0)
++			continue;
++
++		key_val = key & KEY_EV_MASK;
++		key_press = key & KEY_EV_PRESSED;
+ 
+ 		if (key_val >= GPI_PIN_BASE && key_val <= GPI_PIN_END) {
+ 			/* gpio line used as IRQ source */
+-- 
+2.43.0
+
 
