@@ -1,123 +1,105 @@
-Return-Path: <stable+bounces-145693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5534EABE255
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 20:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF6FABE258
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 20:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92B481708CA
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 18:09:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 853C317E627
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 18:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA8A276041;
-	Tue, 20 May 2025 18:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C56B26FDB9;
+	Tue, 20 May 2025 18:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="hDT6pRch"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jc43qRPW"
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3866722DA16;
-	Tue, 20 May 2025 18:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6E71BD9F0
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 18:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747764567; cv=none; b=AISVpTOtp1SWerzhZ28stlYE2EKRjmUrNei+5yG3q2coRDKycEOCBV8toClyOXhylJrBufv4QJBzwBhAX+Ff8LFguvqASAoSFilLNw2xn8i9J9WdOcOD5F1lk0tEb9V9Xj7a+/TmegTn62o4BzycFxpTu8OwAASGaJwPPUdxOOg=
+	t=1747764639; cv=none; b=T6NDUfiRSPHA73XcjRl/ESeiQDY/5hnBF4nXHcnHIdSyEY1vW3SfaoX9/SaS4Mldf/ugoWeCfdJdaIiqF/D1l3FzlxEcu+RI/b2KeNA/S6t5lwvwpdLVbf1tD8n2mp4ZOgEKHvMJRKXAe1L0MWP3RQBxe123ossIT8F64hC6yl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747764567; c=relaxed/simple;
-	bh=XPzARLkBvcJFmLTFMZW4+wt5UBWrFQ9ZwCb7j8lQ/30=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GxKGc+i206pSsRyV4NCsege7t5x6x6IuBcjd+FR5f/L50kCHq5aVfLSRtBHcIeqts6k1NpZXqnDJ1t2yWSEVNFiNFqHCcZzgchbadlX1AfMYSH3xe27d1KpAH8Cvp6TnfdZkbVyg6+p/mqQhBLudom7fhWBHLJYl3gOJEnbrjfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=hDT6pRch; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4b22cz6JJ6zlgqyG;
-	Tue, 20 May 2025 18:09:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1747764562; x=1750356563; bh=Byijd5r5XP31BtZ8ZR7CrdnO
-	sTA+YR7G3UabzhUTU0Q=; b=hDT6pRchf/JB1iMQV3oh4oUr4Fh4OVA/5Ne37f42
-	gIJugzX0BAvBxdgYASCE/tdWwhKp6f9BGXDtP6yQdFdMS47qfhxv0DCwG1ldV/Ne
-	Xe/fdDXJUEXaOtt2rY+MBdnNFckxqx20NpzTVGdZ2PbeyMO59+nDa4AtzZpvxyqF
-	XD7oIF1xUg+9jxVdOiSRI+in1Aso0iMjn5SX/UCb9IHvsfYi4BgLrJV56D9mbESb
-	rtDlR1ejP3CsjIWGc7fsZTfrtPSwlJDnza9RjL0tEXJHE4t6KrnUiLxgE7o/BjKQ
-	uLehHQU4YO7weIBhNTvSzv6Tktxjww2VQVEll2/BxC979g==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id EK_TemovTSWB; Tue, 20 May 2025 18:09:22 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4b22cs5v81zltKl7;
-	Tue, 20 May 2025 18:09:16 +0000 (UTC)
-Message-ID: <d28b6138-7618-4092-8e05-66be2625ecd9@acm.org>
-Date: Tue, 20 May 2025 11:09:15 -0700
+	s=arc-20240116; t=1747764639; c=relaxed/simple;
+	bh=aKDn3vLoSnjVSVa1sA31kz+IllVs/d1XPuCkY1Baebk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QCezFnTH3a/fA0QDD3Z2wchhtPadYLwKGSgRhnqyFwloj6bsglaKr6JyYkQJ/mF+yJxRhnzS6c07n1rhxypJb8NCLOQ/lBwQ1yFH3qsPBeKYEpDA405g4NVILXgnPKEyxw0L8STb2MTpRGn47V06F6pPVU27JKaznzQC2qRh5OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jc43qRPW; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747764638; x=1779300638;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=aKDn3vLoSnjVSVa1sA31kz+IllVs/d1XPuCkY1Baebk=;
+  b=jc43qRPWxRRFKs0/pufT8cuFd7qqefoysxtmF+Q5iEK6Iw99J72Iac91
+   VSEDqqwLXXuG9XaPUayX6m1ha0N5wthMSNxm5WyBAJNbVNbRPwUVo5024
+   g9/4pU0cn+f5ICe+wW7rsMgI1QqjpOmDX7Gj4Pu+J88xv/2e0Nd9epnH5
+   yzEWGE8RJg2C54dYLEUngoQ9nwbkWJO++5jarE2yDX+ACTatZaeWXgMES
+   dVJZwXjmHYZnwaUQJRF1p9HSRbW6j0/ZGI0yQgk1OxBwqjUiDsTi/icHk
+   vnZ0rrozp9q6NFDh56CQ4nUP9b1k+6TjGJWyXmpQwl+0SsMFaWT189Rj0
+   Q==;
+X-CSE-ConnectionGUID: fvZzwgcuTlCF1TKQ+U4R+Q==
+X-CSE-MsgGUID: 0hi6iBqETimyOhlx6ckn4g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="52341212"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="52341212"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 11:10:37 -0700
+X-CSE-ConnectionGUID: DyzUohwXT561HAIJmKG+8A==
+X-CSE-MsgGUID: yQrgOVUQRg2VXUKHDdSn2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="139648761"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.168])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 11:10:34 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org
+Cc: Haoxiang Li <haoxiang_li2024@163.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/7] drm/i915/display: Add check for
+ alloc_ordered_workqueue() and alloc_workqueue()
+In-Reply-To: <8c1002cd-e5bf-4d1b-880c-5e7ac7d08f70@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1747397638.git.jani.nikula@intel.com>
+ <20d3d096c6a4907636f8a1389b3b4dd753ca356e.1747397638.git.jani.nikula@intel.com>
+ <8c1002cd-e5bf-4d1b-880c-5e7ac7d08f70@intel.com>
+Date: Tue, 20 May 2025 21:10:32 +0300
+Message-ID: <87ecwjtap3.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] block: Make __submit_bio_noacct() preserve the bio
- submission order
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- Damien Le Moal <dlemoal@kernel.org>, Yu Kuai <yukuai1@huaweicloud.com>,
- Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org
-References: <20250514202937.2058598-1-bvanassche@acm.org>
- <20250514202937.2058598-2-bvanassche@acm.org> <20250516044754.GA12964@lst.de>
- <47b24ea0-ef8f-441f-b405-a062b986ce93@acm.org> <20250520135624.GA8472@lst.de>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250520135624.GA8472@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 5/20/25 6:56 AM, Christoph Hellwig wrote:
-> On Mon, May 19, 2025 at 03:12:11PM -0700, Bart Van Assche wrote:
->> This new patch should address the concerns brought up in your latest
->> email:
-> 
-> No, we should never need to do a sort, as mentioned we need to fix
-> how stackable drivers split the I/O.  Or maybe even get them out of
-> all the splits that aren't required.
+On Fri, 16 May 2025, Matthew Auld <matthew.auld@intel.com> wrote:
+> On 16/05/2025 13:16, Jani Nikula wrote:
+>> From: Haoxiang Li <haoxiang_li2024@163.com>
+>> 
+>> Add check for the return value of alloc_ordered_workqueue()
+>> and alloc_workqueue(). Furthermore, if some allocations fail,
+>> cleanup works are added to avoid potential memory leak problem.
+>> 
+>> Fixes: 40053823baad ("drm/i915/display: move modeset probe/remove functions to intel_display_driver.c")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-If the sequential write bios are split by the device mapper, sorting
-bios in the block layer is not necessary. Christoph and Damien, do you
-agree to replace the bio sorting code in my previous email with the
-patch below?
+Thanks for the review, pushed the lot to drm-intel-next.
 
-Thanks,
+BR,
+Jani.
 
-Bart.
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 3d419fd2be57..c41ab294987e 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -1792,9 +1792,12 @@ static inline bool dm_zone_bio_needs_split(struct 
-mapped_device *md,
-  {
-  	/*
-  	 * For mapped device that need zone append emulation, we must
--	 * split any large BIO that straddles zone boundaries.
-+	 * split any large BIO that straddles zone boundaries. Additionally,
-+	 * split sequential writes to prevent that splitting lower in the stack
-+	 * causes reordering.
-  	 */
--	return dm_emulate_zone_append(md) && bio_straddles_zones(bio) &&
-+	return ((dm_emulate_zone_append(md) && bio_straddles_zones(bio)) ||
-+		bio_op(bio) == REQ_OP_WRITE) &&
-  		!bio_flagged(bio, BIO_ZONE_WRITE_PLUGGING);
-  }
-  static inline bool dm_zone_plug_bio(struct mapped_device *md, struct 
-bio *bio)
-
+-- 
+Jani Nikula, Intel
 
