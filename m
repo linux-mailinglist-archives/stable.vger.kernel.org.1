@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A40BABDA2B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91F8ABDA7C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58CF07AA49A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:52:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53FEE8A4AB8
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EAE2459DA;
-	Tue, 20 May 2025 13:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46AA246769;
+	Tue, 20 May 2025 13:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbo+JL4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUZqeFhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7095A2459D4;
-	Tue, 20 May 2025 13:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7133A2459E3;
+	Tue, 20 May 2025 13:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749226; cv=none; b=kPCblpZMSLeMA/U+UR3HxyWUtbk4awYYs5sl/HkRpnwhBu0VHc6IUTzqp6Mb3X5C2OCyPXJNZTjb8uFJFcjcQkzZfw1iuCVUcDj8dQAnHT7oznLpFVstAYV2ttVIv11CpVNRCOhqFaRe/adjTixy8EbJbAK8X88e8N/NFnkzGPA=
+	t=1747749409; cv=none; b=rsoVedpwFZJHrWY3X9vpturjy2lwTVn50synyE8eaf6yQrhmo897a3Pux4gukMIwfAeEaXqVWC0y3Ef0HISEqU3Ow1T3Oy1elKCppHRP3B7HM96TBlGZDOYcdUujSMRlHuG8Gk/3PYCZ9eeDYQS43+aDmMyGSxO1myUuRRIlgSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749226; c=relaxed/simple;
-	bh=Gyb/4YBqtd8fCFV8CmjbJYwI+QPZgI16cuHJnOk0CP4=;
+	s=arc-20240116; t=1747749409; c=relaxed/simple;
+	bh=hKMYmezyoDTlUYKLEyhJLh2HP26Jsu8DM2VYouvWtpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5WyoKbvzS7FpU1lC70CpL2BXil/v+aSXcJblUNwA5MaXDesXknPehe1jeKb/3ZW1vqouVIZjztUKMA03RVMcInDatsBAa58X3baxtY7LDkGV0/84DsryyFoloQcrVXASJkHdWls/BTWC6boTOIZNSFqRm0jp6QB9tfO1OazIKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbo+JL4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D7CC4CEEA;
-	Tue, 20 May 2025 13:53:45 +0000 (UTC)
+	 MIME-Version; b=CfkziAeTNArbai6y1FNP9jFnAYyr62nhLniMhzAXpD2IyQtUFOGkMzFYd1Vl4meO/5kvl+EEdUJSak/j/B0crxyJ5CXkDy6dO/2GJ4Mt9YNPsZ7hjjA9eVuD89CRXO1QbVbYGACKeIhjKvuMuyQD/bAIk5x2YwEhu6v/qrYYbD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUZqeFhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23EFC4CEF3;
+	Tue, 20 May 2025 13:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749226;
-	bh=Gyb/4YBqtd8fCFV8CmjbJYwI+QPZgI16cuHJnOk0CP4=;
+	s=korg; t=1747749409;
+	bh=hKMYmezyoDTlUYKLEyhJLh2HP26Jsu8DM2VYouvWtpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zbo+JL4NsNv/GdzA150r7b7FuiHGUoJBJORNl2mVWOwa52TiL6tZjeLbPrrpn1Zs2
-	 NEHFAasraSdHlSKhzCfU5+ZUWnHOpnIOonexA9j3mOTQqrfUs9n8E3PCHkgkUqx9pC
-	 AW5eb3Ec0GyRYk8HKNujECQzDbDdocUrgVV45cRM=
+	b=AUZqeFhe7Q3ylQIZWuAh+cDeB/g4MfMQbaEO7lBu1PRVUwtOJnsLxfDPv3Ur+PSi1
+	 v+jCytT1t/Oc9XqX3YAnDLOpzTIOam8OvCuwasWS34ZqfFdOu3piZShHkv5JymFCdx
+	 4VkFBod5hNE+DsDon8Q+BtuUSR8CXZ4+2wL5d9Dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Othacehe <othacehe@gnu.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/59] net: cadence: macb: Fix a possible deadlock in macb_halt_tx.
-Date: Tue, 20 May 2025 15:50:00 +0200
-Message-ID: <20250520125754.206899792@linuxfoundation.org>
+Subject: [PATCH 6.1 36/97] regulator: max20086: fix invalid memory access
+Date: Tue, 20 May 2025 15:50:01 +0200
+Message-ID: <20250520125802.073253785@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Othacehe <othacehe@gnu.org>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-[ Upstream commit c92d6089d8ad7d4d815ebcedee3f3907b539ff1f ]
+[ Upstream commit 6b0cd72757c69bc2d45da42b41023e288d02e772 ]
 
-There is a situation where after THALT is set high, TGO stays high as
-well. Because jiffies are never updated, as we are in a context with
-interrupts disabled, we never exit that loop and have a deadlock.
+max20086_parse_regulators_dt() calls of_regulator_match() using an
+array of struct of_regulator_match allocated on the stack for the
+matches argument.
 
-That deadlock was noticed on a sama5d4 device that stayed locked for days.
+of_regulator_match() calls devm_of_regulator_put_matches(), which calls
+devres_alloc() to allocate a struct devm_of_regulator_matches which will
+be de-allocated using devm_of_regulator_put_matches().
 
-Use retries instead of jiffies so that the timeout really works and we do
-not have a deadlock anymore.
+struct devm_of_regulator_matches is populated with the stack allocated
+matches array.
 
-Fixes: e86cd53afc590 ("net/macb: better manage tx errors")
-Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250509121935.16282-1-othacehe@gnu.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If the device fails to probe, devm_of_regulator_put_matches() will be
+called and will try to call of_node_put() on that stack pointer,
+generating the following dmesg entries:
+
+max20086 6-0028: Failed to read DEVICE_ID reg: -121
+kobject: '\xc0$\xa5\x03' (000000002cebcb7a): is not initialized, yet
+kobject_put() is being called.
+
+Followed by a stack trace matching the call flow described above.
+
+Switch to allocating the matches array using devm_kcalloc() to
+avoid accessing the stack pointer long after it's out of scope.
+
+This also has the advantage of allowing multiple max20086 to probe
+without overriding the data stored inside the global of_regulator_match.
+
+Fixes: bfff546aae50 ("regulator: Add MAX20086-MAX20089 driver")
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Link: https://patch.msgid.link/20250508064947.2567255-1-demonsingur@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ drivers/regulator/max20086-regulator.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 275baaaea0e12..667af80a739b9 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -986,22 +986,15 @@ static void macb_update_stats(struct macb *bp)
+diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
+index b8bf76c170fea..332fb58f90952 100644
+--- a/drivers/regulator/max20086-regulator.c
++++ b/drivers/regulator/max20086-regulator.c
+@@ -133,7 +133,7 @@ static int max20086_regulators_register(struct max20086 *chip)
  
- static int macb_halt_tx(struct macb *bp)
+ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
  {
--	unsigned long	halt_time, timeout;
--	u32		status;
-+	u32 status;
+-	struct of_regulator_match matches[MAX20086_MAX_REGULATORS] = { };
++	struct of_regulator_match *matches;
+ 	struct device_node *node;
+ 	unsigned int i;
+ 	int ret;
+@@ -144,6 +144,11 @@ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
+ 		return -ENODEV;
+ 	}
  
- 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(THALT));
++	matches = devm_kcalloc(chip->dev, chip->info->num_outputs,
++			       sizeof(*matches), GFP_KERNEL);
++	if (!matches)
++		return -ENOMEM;
++
+ 	for (i = 0; i < chip->info->num_outputs; ++i)
+ 		matches[i].name = max20086_output_names[i];
  
--	timeout = jiffies + usecs_to_jiffies(MACB_HALT_TIMEOUT);
--	do {
--		halt_time = jiffies;
--		status = macb_readl(bp, TSR);
--		if (!(status & MACB_BIT(TGO)))
--			return 0;
--
--		udelay(250);
--	} while (time_before(halt_time, timeout));
--
--	return -ETIMEDOUT;
-+	/* Poll TSR until TGO is cleared or timeout. */
-+	return read_poll_timeout_atomic(macb_readl, status,
-+					!(status & MACB_BIT(TGO)),
-+					250, MACB_HALT_TIMEOUT, false,
-+					bp, TSR);
- }
- 
- static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb)
 -- 
 2.39.5
 
