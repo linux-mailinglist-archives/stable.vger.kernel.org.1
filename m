@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2309AABD9F9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:52:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E61ABDA78
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B60B11B6486F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:52:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 200684A00C1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0776324501D;
-	Tue, 20 May 2025 13:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3685A2459D6;
+	Tue, 20 May 2025 13:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcZ6A7+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbnlVZhi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48F9244196;
-	Tue, 20 May 2025 13:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83132459CF;
+	Tue, 20 May 2025 13:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749142; cv=none; b=L6kPOug7aYgl+sD0zhKx4NV5O5L8Th/fAo9xTm0g3x8rdm3PeAiBUc1M+j9KKt01oBPH0nTnGK8anzUVvxNDrqRSyM72b5a7EE58U9/b/gUqqXuqqDRT23nF8UuV6shpJGaNW5INy6cItE9PZhw+uiYUz11rxNebiKnru46X11c=
+	t=1747749416; cv=none; b=pqCsVwx4K9/pmYoSSpJADPiCIALRVGm8Q+fsGmyG/a/BlBiVOw7Fc9UxGDBjVY3ieC1vcP5xr9UqENrJbfUUZDlQ4bSYvhCzSYIebNFgWGix5JMVgb9Y2MmdB0W8tMFj7eOSJ3LdI5HgYOzPV+jZhsn0SC7h2bi4gnO5sH+jebM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749142; c=relaxed/simple;
-	bh=/NbC48qfcBX2MoebWKzDncK+byxSSWjOD55MGLxZWXY=;
+	s=arc-20240116; t=1747749416; c=relaxed/simple;
+	bh=FAI+kCtSbAEIobj7BSZn6HS2ruQNkJ2/ewzauVXfMyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TS0grWVVbgl6KluxxB1jsFhdnbUgn2UquHf26+d+/EWjLG8SAYNhpR7B8o0YeLIBEN0dKBqM1ygwzsEq/VUw60p4pwLZ3/YYWl6bM3ZvH5Ie6m+1vFpyz8s131fLvt1TO4b/5Hm0sefU5sF+yzStRlL3Eifb9HZclBr9/43t9UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcZ6A7+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84348C4CEE9;
-	Tue, 20 May 2025 13:52:21 +0000 (UTC)
+	 MIME-Version; b=Xrh5e86W3aJZK5f6t1OkqdehFqgwaWyfbGGsbkmMSZeVY3e0PXEtq4X8qOhMIV3QLYuJZrlqC/hqdOdXV26hogFWrRRzex8UR4g2AADRBek7W99SqPbZwolGti5ii2JraanHgHW46fLmxghXn9k3QroXbpEoclUhoKTqAdRSF9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbnlVZhi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA6DC4CEE9;
+	Tue, 20 May 2025 13:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749142;
-	bh=/NbC48qfcBX2MoebWKzDncK+byxSSWjOD55MGLxZWXY=;
+	s=korg; t=1747749415;
+	bh=FAI+kCtSbAEIobj7BSZn6HS2ruQNkJ2/ewzauVXfMyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcZ6A7+/Dqs1h5kymV/PiyPjk/QpCiD2RnsAJ9v7xeOWGla+XkJRc0CQk1KF3UqyG
-	 avm7wVOkn4SqYXiAkA4YkW89z+PXtPj6utNWbHzGYWhPAi1JNnz4ZMeFgyl5GM3gku
-	 uTAdgL/o8tB2DxYx0PfdGkGxrEjj7NBzqLGJbWMs=
+	b=gbnlVZhiMSFy4Ktp7I/CiRfbBpgikd4qcQLuY8zB1zSTgtKwZ76A+lCv9rDhLtNaf
+	 zQMjBjId0rBdlZ8qYIXREF6I8tpzJlk7Jg7SN1Z+GqH7w8Exe/JpUbyEGK6kF8CuWN
+	 A1Qm42DjZn7FksXvGWWN4W8OOpFv0jmCOZNSi/aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Takashi Iwai <tiwai@suse.de>,
+	Pengtao He <hept.hept.hept@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 11/59] ALSA: sh: SND_AICA should depend on SH_DMA_API
-Date: Tue, 20 May 2025 15:50:02 +0200
-Message-ID: <20250520125754.281104692@linuxfoundation.org>
+Subject: [PATCH 6.1 38/97] net/tls: fix kernel panic when alloc_page failed
+Date: Tue, 20 May 2025 15:50:03 +0200
+Message-ID: <20250520125802.153094609@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Pengtao He <hept.hept.hept@gmail.com>
 
-[ Upstream commit 66e48ef6ef506c89ec1b3851c6f9f5f80b5835ff ]
+[ Upstream commit 491deb9b8c4ad12fe51d554a69b8165b9ef9429f ]
 
-If CONFIG_SH_DMA_API=n:
+We cannot set frag_list to NULL pointer when alloc_page failed.
+It will be used in tls_strp_check_queue_ok when the next time
+tls_strp_read_sock is called.
 
-    WARNING: unmet direct dependencies detected for G2_DMA
-      Depends on [n]: SH_DREAMCAST [=y] && SH_DMA_API [=n]
-      Selected by [y]:
-      - SND_AICA [=y] && SOUND [=y] && SND [=y] && SND_SUPERH [=y] && SH_DREAMCAST [=y]
+This is because we don't reset full_len in tls_strp_flush_anchor_copy()
+so the recv path will try to continue handling the partial record
+on the next call but we dettached the rcvq from the frag list.
+Alternative fix would be to reset full_len.
 
-SND_AICA selects G2_DMA.  As the latter depends on SH_DMA_API, the
-former should depend on SH_DMA_API, too.
+Unable to handle kernel NULL pointer dereference
+at virtual address 0000000000000028
+ Call trace:
+ tls_strp_check_rcv+0x128/0x27c
+ tls_strp_data_ready+0x34/0x44
+ tls_data_ready+0x3c/0x1f0
+ tcp_data_ready+0x9c/0xe4
+ tcp_data_queue+0xf6c/0x12d0
+ tcp_rcv_established+0x52c/0x798
 
-Fixes: f477a538c14d07f8 ("sh: dma: fix kconfig dependency for G2_DMA")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505131320.PzgTtl9H-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/b90625f8a9078d0d304bafe862cbe3a3fab40082.1747121335.git.geert+renesas@glider.be
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Signed-off-by: Pengtao He <hept.hept.hept@gmail.com>
+Link: https://patch.msgid.link/20250514132013.17274-1-hept.hept.hept@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/sh/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_strp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/sh/Kconfig b/sound/sh/Kconfig
-index b75fbb3236a7b..f5fa09d740b4c 100644
---- a/sound/sh/Kconfig
-+++ b/sound/sh/Kconfig
-@@ -14,7 +14,7 @@ if SND_SUPERH
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index f37f4a0fcd3c2..44d7f1aef9f12 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -396,7 +396,6 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
+ 		return 0;
  
- config SND_AICA
- 	tristate "Dreamcast Yamaha AICA sound"
--	depends on SH_DREAMCAST
-+	depends on SH_DREAMCAST && SH_DMA_API
- 	select SND_PCM
- 	select G2_DMA
- 	help
+ 	shinfo = skb_shinfo(strp->anchor);
+-	shinfo->frag_list = NULL;
+ 
+ 	/* If we don't know the length go max plus page for cipher overhead */
+ 	need_spc = strp->stm.full_len ?: TLS_MAX_PAYLOAD_SIZE + PAGE_SIZE;
+@@ -412,6 +411,8 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
+ 				   page, 0, 0);
+ 	}
+ 
++	shinfo->frag_list = NULL;
++
+ 	strp->copy_mode = 1;
+ 	strp->stm.offset = 0;
+ 
 -- 
 2.39.5
 
