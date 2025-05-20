@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C082ABDA65
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C149CABDAD7
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1424A185D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:56:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90D297AFD29
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DC7246770;
-	Tue, 20 May 2025 13:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A485242D92;
+	Tue, 20 May 2025 14:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ3SBBDP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeKaVKiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAA22459FE;
-	Tue, 20 May 2025 13:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACC81D8E07;
+	Tue, 20 May 2025 14:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749391; cv=none; b=VEak57YLihJm+apieNG1TUdeys7h8uJw5FsrMwljbHNJZzwM1GgjiQwMX7uOuvyyD0Ea+Qs79ssbLt/4kfIOrJdsUg3qYs3AMS0/ZMslXLVfUiFvmJ2NVwZIrui8Xxpaps4MJ2MF5xWBX4gYJkf4jUdBwGQv44fVz3dcmWabG2g=
+	t=1747749662; cv=none; b=bicClVe+ps1Cb3RIIuLfLNIbUQqIKiG45U1ON3T7xDGTgoaz+GtsyUfvj2N3WzhsqphhjlbwGJgIRMNr46Ws0yp7+oU2LPwFEh+ANKS0O0BRoHn5ku8xTfd9ruHFic/52g4HLMZCMh39maHIwDC19M0dKCYJlnFKbBg2PrEvrzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749391; c=relaxed/simple;
-	bh=cltzuY1C74a2llN2oNVTC04YRmHVetVTeZCww2cYhjs=;
+	s=arc-20240116; t=1747749662; c=relaxed/simple;
+	bh=lqUweTT80N3Q8inDtGFVg1SetboAdk/BX9LyHS9ZCO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iX/I72KkSu0AkU3OC/X/58XGCZaWb2w53wnu4UR2DAN8htT5UN5nUFir8LwESXYpdM2zHf1naN1WD07b2tcDvzrmm6S58+0PshrKkhDUW7BPQslwRWNRe0zFEbSehLSuibvVgGCQ7LATo6G3AxC487Q7PnB8DNUNIru9RUNHaXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ3SBBDP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817E4C4CEEF;
-	Tue, 20 May 2025 13:56:30 +0000 (UTC)
+	 MIME-Version; b=uHlii30RN9x1BJXB4oCrysdiqzqLzz8mbYFeg3j72vZmJooyvnP0HYAobro4KwMcmQ3qbihulAc2/3r2HnNjy6jBc0fySgyS8WURj/i36Xz9unEOxk+dmMyrPj5d5aZ91vYolVSw8IcJacLNQGhnzAz0Qb5J/wkDhHVrRmjRzzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeKaVKiT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E34C4CEE9;
+	Tue, 20 May 2025 14:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749391;
-	bh=cltzuY1C74a2llN2oNVTC04YRmHVetVTeZCww2cYhjs=;
+	s=korg; t=1747749662;
+	bh=lqUweTT80N3Q8inDtGFVg1SetboAdk/BX9LyHS9ZCO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZ3SBBDPaJGLCq6d6buADDHG6hlhdjGYbqVGa7awHOEfIt26e7TRXOC5ZU5CYe1u4
-	 jUzs7vnG4xSXHUh4lm+Toe2dcBtq6obPzsMJiqNa/4M75RQb2W1MRj8PaVTbImwuz2
-	 F6rVICcG140pgUnsMSD5O85EGc0syYG7N7Ku6r8Q=
+	b=TeKaVKiT57fsd3Qa/kjdnkT/Q9iegP+HUsbHMSUXyGLzeVQeKx36qYB9DruBan/6v
+	 vnhbI68qn3Te3GHM1qyt//XLVRDIkt0WmTfaPY72iabsOhbeurZPUvaUWCxwDPPwrg
+	 2FfHDj1BWPjFdlg2wbkQvdjW55TdKChLgKuF7tyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/97] selftests/exec: Build both static and non-static load_address tests
+Subject: [PATCH 6.6 006/117] selftests/exec: Build both static and non-static load_address tests
 Date: Tue, 20 May 2025 15:49:31 +0200
-Message-ID: <20250520125800.914764503@linuxfoundation.org>
+Message-ID: <20250520125804.241750865@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
