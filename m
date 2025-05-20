@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2541DABDB6B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2519ABDC95
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA9E16F1DA
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7F98A0317
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47628242913;
-	Tue, 20 May 2025 14:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98010248166;
+	Tue, 20 May 2025 14:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMTqRKPz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVKLThea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0558E2F37;
-	Tue, 20 May 2025 14:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F301A08DF;
+	Tue, 20 May 2025 14:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749877; cv=none; b=rE+ICG/KpDDdS84L56VGgEs+DDnj5oadSmbKmSFb9LhI+fxwQQEWBGDTZa0AQ4QWvaPgs6H+btANACf4orVXj2KZJxwzhQLQh+tjCPsjOGGoBf9sRx7PJp1/jLAoKpc7xzUzg3S5ELeJwm/TR5kkZ9Hn5pddOoBZjA2o7g6fTig=
+	t=1747750571; cv=none; b=ZtRhkIXqq4OcqPxbcQLJBrGqm/ym7FwoeGZYxi5TUeilJJR2JkDFTeNds1Ak9nFADDR9PhhGIKEOGmkmJg1JqgU0frcLFOFt8WxHVNUzeTWnGwNHWbW+C0qStUcOH6c7ajWCYNMgPn3JgYdd12TNw9OCDV1VqOgM2iyP8Z9XK18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749877; c=relaxed/simple;
-	bh=1uvANhScLtHxOKoMhScjC/c3XbdM65lvSGkBmvJlPeY=;
+	s=arc-20240116; t=1747750571; c=relaxed/simple;
+	bh=lIOqelYtfamP2KWVRpYUewZuwnWMZBACWF+KTgbdvYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCXe0KZDulP7ulZDh9XZ5REWFJtSngTzmMWK/neL/URo6giDc7VULuumNMIYGORx572p/4LC0wzo9/8jDn7vBkiwSSCCuDTkBWkuotYjjxnq3a3Cqb56ZNIh9iHDAmgF0UQm48ei0gAVjilUlCjEJg/zmHKsKXVCwVKD4lMCTV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMTqRKPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE530C4CEE9;
-	Tue, 20 May 2025 14:04:35 +0000 (UTC)
+	 MIME-Version; b=WipO3WI9nmwY+YNlKu77/zQhTV/Q0dup5CUL+psSJL6AiC7ozIKHsFQoLPFZD8WGxPMhSYzIoAyNMbZ9sOCS7LEfOfC6IrYqQAE27NtLUXCTug0dR9ttu5b4iy+l3ESlObkij2JYgoEDxvhwAUfUnUCqzp7SVe0I6eJlaXuD15c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVKLThea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC701C4CEE9;
+	Tue, 20 May 2025 14:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749876;
-	bh=1uvANhScLtHxOKoMhScjC/c3XbdM65lvSGkBmvJlPeY=;
+	s=korg; t=1747750571;
+	bh=lIOqelYtfamP2KWVRpYUewZuwnWMZBACWF+KTgbdvYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YMTqRKPzkGyxWTS+fiGjpGV01isqG+h4UKkmcJvSDW78uotrEbHeqCArycsYOVB2t
-	 NbiZ6EiEwaRF2krXG2w8Tfz7sLOUU2+bwZP9dfFhcZmsHTQKgbWDDNjV8pvJwAn2sz
-	 Kf66jceRoR8OjHC+i4nLI6efL9BDqqwCsVmXwPSY=
+	b=IVKLThea50ROAGl1VaRI4WNNb/LV/g07LXU/JBrSFHIimqv3E9DbXtSNyXQz0KRZB
+	 rfDfnhemb5pKbYptefQbOvB6zxfSf//Vn5JPaV85q25jlRW2TrbNlBOZ2PdlEVylx2
+	 o6Oxvc7Le/5z9u9s2Rz+bO0WOw0an8BQNSiH5gig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengtao He <hept.hept.hept@gmail.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/117] net/tls: fix kernel panic when alloc_page failed
+Subject: [PATCH 6.14 052/145] octeontx2-pf: macsec: Fix incorrect max transmit size in TX secy
 Date: Tue, 20 May 2025 15:50:22 +0200
-Message-ID: <20250520125806.248549731@linuxfoundation.org>
+Message-ID: <20250520125812.611812027@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengtao He <hept.hept.hept@gmail.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 491deb9b8c4ad12fe51d554a69b8165b9ef9429f ]
+[ Upstream commit 865ab2461375e3a5a2526f91f9a9f17b8931bc9e ]
 
-We cannot set frag_list to NULL pointer when alloc_page failed.
-It will be used in tls_strp_check_queue_ok when the next time
-tls_strp_read_sock is called.
+MASCEC hardware block has a field called maximum transmit size for
+TX secy. Max packet size going out of MCS block has be programmed
+taking into account full packet size which has L2 header,SecTag
+and ICV. MACSEC offload driver is configuring max transmit size as
+macsec interface MTU which is incorrect. Say with 1500 MTU of real
+device, macsec interface created on top of real device will have MTU of
+1468(1500 - (SecTag + ICV)). This is causing packets from macsec
+interface of size greater than or equal to 1468 are not getting
+transmitted out because driver programmed max transmit size as 1468
+instead of 1514(1500 + ETH_HDR_LEN).
 
-This is because we don't reset full_len in tls_strp_flush_anchor_copy()
-so the recv path will try to continue handling the partial record
-on the next call but we dettached the rcvq from the frag list.
-Alternative fix would be to reset full_len.
-
-Unable to handle kernel NULL pointer dereference
-at virtual address 0000000000000028
- Call trace:
- tls_strp_check_rcv+0x128/0x27c
- tls_strp_data_ready+0x34/0x44
- tls_data_ready+0x3c/0x1f0
- tcp_data_ready+0x9c/0xe4
- tcp_data_queue+0xf6c/0x12d0
- tcp_rcv_established+0x52c/0x798
-
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Signed-off-by: Pengtao He <hept.hept.hept@gmail.com>
-Link: https://patch.msgid.link/20250514132013.17274-1-hept.hept.hept@gmail.com
+Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1747053756-4529-1-git-send-email-sbhatta@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_strp.c | 3 ++-
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 5df08d848b5c9..1852fac3e72b7 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -395,7 +395,6 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 		return 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index f3b9daffaec3c..4c7e0f345cb5b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -531,7 +531,8 @@ static int cn10k_mcs_write_tx_secy(struct otx2_nic *pfvf,
+ 	if (sw_tx_sc->encrypt)
+ 		sectag_tci |= (MCS_TCI_E | MCS_TCI_C);
  
- 	shinfo = skb_shinfo(strp->anchor);
--	shinfo->frag_list = NULL;
- 
- 	/* If we don't know the length go max plus page for cipher overhead */
- 	need_spc = strp->stm.full_len ?: TLS_MAX_PAYLOAD_SIZE + PAGE_SIZE;
-@@ -411,6 +410,8 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 				   page, 0, 0);
- 	}
- 
-+	shinfo->frag_list = NULL;
-+
- 	strp->copy_mode = 1;
- 	strp->stm.offset = 0;
- 
+-	policy = FIELD_PREP(MCS_TX_SECY_PLCY_MTU, secy->netdev->mtu);
++	policy = FIELD_PREP(MCS_TX_SECY_PLCY_MTU,
++			    pfvf->netdev->mtu + OTX2_ETH_HLEN);
+ 	/* Write SecTag excluding AN bits(1..0) */
+ 	policy |= FIELD_PREP(MCS_TX_SECY_PLCY_ST_TCI, sectag_tci >> 2);
+ 	policy |= FIELD_PREP(MCS_TX_SECY_PLCY_ST_OFFSET, tag_offset);
 -- 
 2.39.5
 
