@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF489ABDC61
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F228ABDB5D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4700E1887139
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 276338C2B99
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADABF24BC14;
-	Tue, 20 May 2025 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C383243367;
+	Tue, 20 May 2025 14:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G24lAxtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhCkJf0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EB221D5BE;
-	Tue, 20 May 2025 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B5EEEDE;
+	Tue, 20 May 2025 14:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750645; cv=none; b=P87NWRVLqywBi9YPDmdDUlMABT9V9+4ahfVuDsbezUA+3c6rulj/p96+S/xBgpKLgYVZBHMYVT7K+RBSziYPtf1YWkfW/KviardV6cU4UvIvba9WXAKplNl3mAPapD8c000RVFRfidwe4OAWTNaWGAwoNQOGJBfK2cqoc4n/oMo=
+	t=1747749855; cv=none; b=TJpDUNhSZsAiLyFz/IhTQ2KUzM/CifDvvAqZu2v5CerQuGz4laZBF5/23uT5L+nfVudWOKZa/JlH7S0g9Z3YZ/J1XOVC9oY+xiHT8nnQbbbjQKC3K8EvYWTHtM+ipXSYF1qVtEkQBIu30FDpRXoJ+AOyfxy03hIrQczd5iaoh0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750645; c=relaxed/simple;
-	bh=/+KwpTaFKcfNuNOYkUUDyw/aee0cmVaaG1McJ7Aa4YY=;
+	s=arc-20240116; t=1747749855; c=relaxed/simple;
+	bh=oNHdK/wazY9RTtrwG3HqNjKf3AA58dbqGk6Ee6em+pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClcyrESggAMNubtWq8QmcjlVt+/0Na+leyyhdktbg7M6e2nih2a+DTh2ePVsa0KrRB8/ilv2ohsrXCB7T6kiWfrkXBZMtNOpNLtZOkdVWyse28QdagUqn7jTh3r66fcPeWaH2Qt7IbIiILYUFqJqQW5Y229ygGdzhJX+fjWPYFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G24lAxtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB70C4CEE9;
-	Tue, 20 May 2025 14:17:24 +0000 (UTC)
+	 MIME-Version; b=t4hECklMxmF62RT8qxWL+fbq+gUcyU4ZXtgzB2cekjXE7vHQr+ExhJj472gVJsSULoyItrYla+J+N6Qz0riJNnlQr+UfufCbUepPMQeuolnRWfgfKtnk8e4+l7HCtQc/GGZ15pBhyeghNlKh13C5ZQJ/rXrmCba2RR2lsJQkpj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhCkJf0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CD7C4CEE9;
+	Tue, 20 May 2025 14:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750645;
-	bh=/+KwpTaFKcfNuNOYkUUDyw/aee0cmVaaG1McJ7Aa4YY=;
+	s=korg; t=1747749854;
+	bh=oNHdK/wazY9RTtrwG3HqNjKf3AA58dbqGk6Ee6em+pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G24lAxtV5sMLGg+kmB2tei3wIRgNr91FI9SvJnC+DTJwHHs81OZMGvXzIdWBuB27q
-	 ho4MSYtgSAx9G+UR0x++5zn8Kej4QAc0r6ytCTyFjJW36q0PIbvNjlyoG8vSKSmuXh
-	 ea3yVBTR8YnWmN8pcQO5KWv/g3kkTPj9I8an2Ry0=
+	b=YhCkJf0G8bJuJyx/X2YGEHTVZA6ocqmOzQrZbGNzHq4sqIE4fBWZg8y4L5pxrE5Dr
+	 4OZGMCcn0LGPHq8qXMq1f1YyrD2smWeI4fvgely6wLDDAOnTMURIdRJpv5pC3X2eNH
+	 2teKJGZY+dqGEyuZZyIGu26qkv1L3Pt8IZFpvFnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.14 074/145] LoongArch: uprobes: Remove redundant code about resume_era
-Date: Tue, 20 May 2025 15:50:44 +0200
-Message-ID: <20250520125813.483781795@linuxfoundation.org>
+	pengdonglin <dolinux.peng@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 080/117] ftrace: Fix preemption accounting for stacktrace trigger command
+Date: Tue, 20 May 2025 15:50:45 +0200
+Message-ID: <20250520125807.173332733@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: pengdonglin <pengdonglin@xiaomi.com>
 
-commit 12614f794274f63fbdfe76771b2b332077d63848 upstream.
+commit e333332657f615ac2b55aa35565c4a882018bbe9 upstream.
 
-arch_uprobe_skip_sstep() returns true if instruction was emulated, that
-is to say, there is no need to single step for the emulated instructions.
-regs->csr_era will point to the destination address directly after the
-exception, so the resume_era related code is redundant, just remove them.
+When using the stacktrace trigger command to trace syscalls, the
+preemption count was consistently reported as 1 when the system call
+event itself had 0 (".").
+
+For example:
+
+root@ubuntu22-vm:/sys/kernel/tracing/events/syscalls/sys_enter_read
+$ echo stacktrace > trigger
+$ echo 1 > enable
+
+    sshd-416     [002] .....   232.864910: sys_read(fd: a, buf: 556b1f3221d0, count: 8000)
+    sshd-416     [002] ...1.   232.864913: <stack trace>
+ => ftrace_syscall_enter
+ => syscall_trace_enter
+ => do_syscall_64
+ => entry_SYSCALL_64_after_hwframe
+
+The root cause is that the trace framework disables preemption in __DO_TRACE before
+invoking the trigger callback.
+
+Use the tracing_gen_ctx_dec() that will accommodate for the increase of
+the preemption count in __DO_TRACE when calling the callback. The result
+is the accurate reporting of:
+
+    sshd-410     [004] .....   210.117660: sys_read(fd: 4, buf: 559b725ba130, count: 40000)
+    sshd-410     [004] .....   210.117662: <stack trace>
+ => ftrace_syscall_enter
+ => syscall_trace_enter
+ => do_syscall_64
+ => entry_SYSCALL_64_after_hwframe
 
 Cc: stable@vger.kernel.org
-Fixes: 19bc6cb64092 ("LoongArch: Add uprobes support")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: ce33c845b030c ("tracing: Dump stacktrace trigger to the corresponding instance")
+Link: https://lore.kernel.org/20250512094246.1167956-1-dolinux.peng@gmail.com
+Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/uprobes.h |    1 -
- arch/loongarch/kernel/uprobes.c      |    7 +------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ kernel/trace/trace_events_trigger.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/include/asm/uprobes.h
-+++ b/arch/loongarch/include/asm/uprobes.h
-@@ -15,7 +15,6 @@ typedef u32 uprobe_opcode_t;
- #define UPROBE_XOLBP_INSN	__emit_break(BRK_UPROBE_XOLBP)
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -1554,7 +1554,7 @@ stacktrace_trigger(struct event_trigger_
+ 	struct trace_event_file *file = data->private_data;
  
- struct arch_uprobe {
--	unsigned long	resume_era;
- 	u32	insn[2];
- 	u32	ixol[2];
- 	bool	simulate;
---- a/arch/loongarch/kernel/uprobes.c
-+++ b/arch/loongarch/kernel/uprobes.c
-@@ -52,11 +52,7 @@ int arch_uprobe_post_xol(struct arch_upr
- 
- 	WARN_ON_ONCE(current->thread.trap_nr != UPROBE_TRAP_NR);
- 	current->thread.trap_nr = utask->autask.saved_trap_nr;
--
--	if (auprobe->simulate)
--		instruction_pointer_set(regs, auprobe->resume_era);
--	else
--		instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
-+	instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
- 
- 	return 0;
- }
-@@ -86,7 +82,6 @@ bool arch_uprobe_skip_sstep(struct arch_
- 
- 	insn.word = auprobe->insn[0];
- 	arch_simulate_insn(insn, regs);
--	auprobe->resume_era = regs->csr_era;
- 
- 	return true;
+ 	if (file)
+-		__trace_stack(file->tr, tracing_gen_ctx(), STACK_SKIP);
++		__trace_stack(file->tr, tracing_gen_ctx_dec(), STACK_SKIP);
+ 	else
+ 		trace_dump_stack(STACK_SKIP);
  }
 
 
