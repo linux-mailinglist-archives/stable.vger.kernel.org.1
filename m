@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E61ABDA78
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA549ABDAEF
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 200684A00C1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405391BA0FE3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3685A2459D6;
-	Tue, 20 May 2025 13:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43DF198845;
+	Tue, 20 May 2025 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbnlVZhi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaJLKCD6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83132459CF;
-	Tue, 20 May 2025 13:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947B0247289;
+	Tue, 20 May 2025 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749416; cv=none; b=pqCsVwx4K9/pmYoSSpJADPiCIALRVGm8Q+fsGmyG/a/BlBiVOw7Fc9UxGDBjVY3ieC1vcP5xr9UqENrJbfUUZDlQ4bSYvhCzSYIebNFgWGix5JMVgb9Y2MmdB0W8tMFj7eOSJ3LdI5HgYOzPV+jZhsn0SC7h2bi4gnO5sH+jebM=
+	t=1747749720; cv=none; b=MyKrF7KScbc4PZp+2UQyq2A5+SKNSBWHP5GAK44eCzHA5GEWP/A5BQThSJgx72UIX66XybGVcZYyM9ldqVjcjZaCL1Bfdmw3BivVKCfIce5hy7tbAii5yR3v0Jie9GnG7D8gN/EK4EsW/cKU+7Y3srWppMTnO2KNcR98uxXV80w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749416; c=relaxed/simple;
-	bh=FAI+kCtSbAEIobj7BSZn6HS2ruQNkJ2/ewzauVXfMyo=;
+	s=arc-20240116; t=1747749720; c=relaxed/simple;
+	bh=Ed4FtVhTZ1yWuQn1nS37wJWt6NcFbIWF/KSHJGP7srI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xrh5e86W3aJZK5f6t1OkqdehFqgwaWyfbGGsbkmMSZeVY3e0PXEtq4X8qOhMIV3QLYuJZrlqC/hqdOdXV26hogFWrRRzex8UR4g2AADRBek7W99SqPbZwolGti5ii2JraanHgHW46fLmxghXn9k3QroXbpEoclUhoKTqAdRSF9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbnlVZhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA6DC4CEE9;
-	Tue, 20 May 2025 13:56:55 +0000 (UTC)
+	 MIME-Version; b=Jtbudu7nfgCstSOEfVG/blIX90Qz2Ud0ic9i/sp5z5HcKr7mbw8a/H8AQ+Sgyj/3D2qvuSWyx6Yqy1Uk0hO7mqEmBwI95qOHkdEU3sQI+uvuavFSbOtVoC5NEoH7fDznlio8vFiCCJ7zSacVKEQu/D4f4U0IfPhqB+S/tcNTAds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaJLKCD6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA18C4CEEB;
+	Tue, 20 May 2025 14:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749415;
-	bh=FAI+kCtSbAEIobj7BSZn6HS2ruQNkJ2/ewzauVXfMyo=;
+	s=korg; t=1747749720;
+	bh=Ed4FtVhTZ1yWuQn1nS37wJWt6NcFbIWF/KSHJGP7srI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbnlVZhiMSFy4Ktp7I/CiRfbBpgikd4qcQLuY8zB1zSTgtKwZ76A+lCv9rDhLtNaf
-	 zQMjBjId0rBdlZ8qYIXREF6I8tpzJlk7Jg7SN1Z+GqH7w8Exe/JpUbyEGK6kF8CuWN
-	 A1Qm42DjZn7FksXvGWWN4W8OOpFv0jmCOZNSi/aM=
+	b=xaJLKCD6qSrevjpuCgmE3SE8ntcnLm7271PT7CgsYzECoDlVD0o9gGKa1wfUTywgu
+	 XeT3iJaO+LGx2oQoa9g2MCoEmRtoNcH+FiiT0sZsZgWo1ho1In35XZAvFEqwX8YTJb
+	 h8l8t/bvRrH25F8D669COKmtSi5qygcbi8ADrM+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengtao He <hept.hept.hept@gmail.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 38/97] net/tls: fix kernel panic when alloc_page failed
+Subject: [PATCH 6.6 038/117] tools/net/ynl: ethtool: fix crash when Hardware Clock info is missing
 Date: Tue, 20 May 2025 15:50:03 +0200
-Message-ID: <20250520125802.153094609@linuxfoundation.org>
+Message-ID: <20250520125805.502145014@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengtao He <hept.hept.hept@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 491deb9b8c4ad12fe51d554a69b8165b9ef9429f ]
+[ Upstream commit 45375814eb3f4245956c0c85092a4eee4441d167 ]
 
-We cannot set frag_list to NULL pointer when alloc_page failed.
-It will be used in tls_strp_check_queue_ok when the next time
-tls_strp_read_sock is called.
+Fix a crash in the ethtool YNL implementation when Hardware Clock information
+is not present in the response. This ensures graceful handling of devices or
+drivers that do not provide this optional field. e.g.
 
-This is because we don't reset full_len in tls_strp_flush_anchor_copy()
-so the recv path will try to continue handling the partial record
-on the next call but we dettached the rcvq from the frag list.
-Alternative fix would be to reset full_len.
+  Traceback (most recent call last):
+    File "/net/tools/net/ynl/pyynl/./ethtool.py", line 438, in <module>
+      main()
+      ~~~~^^
+    File "/net/tools/net/ynl/pyynl/./ethtool.py", line 341, in main
+      print(f'PTP Hardware Clock: {tsinfo["phc-index"]}')
+                                   ~~~~~~^^^^^^^^^^^^^
+  KeyError: 'phc-index'
 
-Unable to handle kernel NULL pointer dereference
-at virtual address 0000000000000028
- Call trace:
- tls_strp_check_rcv+0x128/0x27c
- tls_strp_data_ready+0x34/0x44
- tls_data_ready+0x3c/0x1f0
- tcp_data_ready+0x9c/0xe4
- tcp_data_queue+0xf6c/0x12d0
- tcp_rcv_established+0x52c/0x798
-
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Signed-off-by: Pengtao He <hept.hept.hept@gmail.com>
-Link: https://patch.msgid.link/20250514132013.17274-1-hept.hept.hept@gmail.com
+Fixes: f3d07b02b2b8 ("tools: ynl: ethtool testing tool")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250508035414.82974-1-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_strp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/ethtool.py | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index f37f4a0fcd3c2..44d7f1aef9f12 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -396,7 +396,6 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 		return 0;
+diff --git a/tools/net/ynl/ethtool.py b/tools/net/ynl/ethtool.py
+index 47264ae20036b..ffd8eb6d19048 100755
+--- a/tools/net/ynl/ethtool.py
++++ b/tools/net/ynl/ethtool.py
+@@ -333,16 +333,24 @@ def main():
+         print('Capabilities:')
+         [print(f'\t{v}') for v in bits_to_dict(tsinfo['timestamping'])]
  
- 	shinfo = skb_shinfo(strp->anchor);
--	shinfo->frag_list = NULL;
+-        print(f'PTP Hardware Clock: {tsinfo["phc-index"]}')
++        print(f'PTP Hardware Clock: {tsinfo.get("phc-index", "none")}')
  
- 	/* If we don't know the length go max plus page for cipher overhead */
- 	need_spc = strp->stm.full_len ?: TLS_MAX_PAYLOAD_SIZE + PAGE_SIZE;
-@@ -412,6 +411,8 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 				   page, 0, 0);
- 	}
- 
-+	shinfo->frag_list = NULL;
+-        print('Hardware Transmit Timestamp Modes:')
+-        [print(f'\t{v}') for v in bits_to_dict(tsinfo['tx-types'])]
++        if 'tx-types' in tsinfo:
++            print('Hardware Transmit Timestamp Modes:')
++            [print(f'\t{v}') for v in bits_to_dict(tsinfo['tx-types'])]
++        else:
++            print('Hardware Transmit Timestamp Modes: none')
 +
- 	strp->copy_mode = 1;
- 	strp->stm.offset = 0;
++        if 'rx-filters' in tsinfo:
++            print('Hardware Receive Filter Modes:')
++            [print(f'\t{v}') for v in bits_to_dict(tsinfo['rx-filters'])]
++        else:
++            print('Hardware Receive Filter Modes: none')
  
+-        print('Hardware Receive Filter Modes:')
+-        [print(f'\t{v}') for v in bits_to_dict(tsinfo['rx-filters'])]
++        if 'stats' in tsinfo and tsinfo['stats']:
++            print('Statistics:')
++            [print(f'\t{k}: {v}') for k, v in tsinfo['stats'].items()]
+ 
+-        print('Statistics:')
+-        [print(f'\t{k}: {v}') for k, v in tsinfo['stats'].items()]
+         return
+ 
+     print(f'Settings for {args.device}:')
 -- 
 2.39.5
 
