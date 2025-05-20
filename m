@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EAAABDA9F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:59:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC30BABDA45
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C0E8C250A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 281C38A365E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB20CDDA9;
-	Tue, 20 May 2025 13:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7137244686;
+	Tue, 20 May 2025 13:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpQeF8c8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5wMEwIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B3D13635C;
-	Tue, 20 May 2025 13:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB8C22C325;
+	Tue, 20 May 2025 13:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749470; cv=none; b=m3wb5QgahCAoOF7ZtNiJKXRR2Ih64Gnr5xiWFHNCEWUixiaFRCCYgSDfNLTVRPm6e9ZmFffO2rf8FbT4Jvj6lqqwcfbBse+B28r5y5b6MK2RrMsgvwrtkcyUQGv0sCA00Mn3zV8jWVKrLfpIeOBslzoUWFGwgsK/6e28ZxQ7N5o=
+	t=1747749325; cv=none; b=lBRnKjFmEVF2cjITcrtWPcf40zv6Ia7a0CqJDtm+H5pGqW6aK0Mw8e1zliz72wLu51cvonPjLDbhwrvA1R6idL+Lt9uG91b+dBJaq3uXqZqwTTs/bdNHl7AGEcVyC+wZ3hzwOEq3mnQZcse8ifQ7G0e30DmMimRV6DYIDriYpaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749470; c=relaxed/simple;
-	bh=VWO44E/VUx01JAK+5EnBoP6U473XsgTa8ObdYZ4kiaU=;
+	s=arc-20240116; t=1747749325; c=relaxed/simple;
+	bh=x291YV/c/VQHEBW3zFJGi123AyRu+tvs0thH6n4gXqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6SAwe8bSmK2geK7L/wuxqxspJxKP8K928f83ehDGHlvf7wno1USHYoeBBupIxkyZBk/XlESbtGUtLlwdhQeeRa5nM4c11nqb6jFF65t8IuKpwMNiEkOCgm8syJZl9Czl/Iz4d+DCiO62tHrX7+3LrjtjFsffP85mbCIbxRZhXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpQeF8c8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3357C4CEE9;
-	Tue, 20 May 2025 13:57:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZgQ10KehpjWwyQJI2W7nDski+/lkrdjDLN15IxBdMgEKHMd1AGTyXPvciyXca+7yF4bxZQQ3FDR9DVBbT9b5UuUNk2idVK8ol3LGvDXkExubcoY1B/k2QARsbJ8H57u5Ot2QJe7XDD2hdoU2A2MjLlOqKPfniK8J4MVvjSlO7n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5wMEwIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A49C4CEE9;
+	Tue, 20 May 2025 13:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749470;
-	bh=VWO44E/VUx01JAK+5EnBoP6U473XsgTa8ObdYZ4kiaU=;
+	s=korg; t=1747749325;
+	bh=x291YV/c/VQHEBW3zFJGi123AyRu+tvs0thH6n4gXqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NpQeF8c8j6D/57jVhfQeJw1ltjHXDP3kZ7UmgRVMAXrp7DIyZHlWHyHIO6/tNCk8U
-	 Vy2b+fm8tARpniR4xFS5YPf1yZ8zexlh4aKGeWIiMPtRVsbwfIwgGa3VpnYhvWpOwi
-	 19/q+8EphPWlKe/sicswzYL/NAe0UAr4fq10ZUpw=
+	b=c5wMEwICrKpPK+9QyMYNbm3BSuJ09KuPAyNqWhmPW/wBdghbdCbkexQyWgZqecY/f
+	 QLfkMcEEhjofvE+gk70HIJAxGkbXujrEd/Q3PvTqm4pPOVNY4GKqcA5wXSW+es0BOD
+	 PGcokwO68BSyNOzk4/z4h1u8u59UEZq5tfeb8qOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	pengdonglin <dolinux.peng@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 55/97] ftrace: Fix preemption accounting for stacktrace trigger command
+	Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Subject: [PATCH 5.15 29/59] x86/its: FineIBT-paranoid vs ITS
 Date: Tue, 20 May 2025 15:50:20 +0200
-Message-ID: <20250520125802.814361817@linuxfoundation.org>
+Message-ID: <20250520125755.018498241@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +62,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: pengdonglin <pengdonglin@xiaomi.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit e333332657f615ac2b55aa35565c4a882018bbe9 upstream.
+commit e52c1dc7455d32c8a55f9949d300e5e87d011fa6 upstream.
 
-When using the stacktrace trigger command to trace syscalls, the
-preemption count was consistently reported as 1 when the system call
-event itself had 0 (".").
+FineIBT-paranoid was using the retpoline bytes for the paranoid check,
+disabling retpolines, because all parts that have IBT also have eIBRS
+and thus don't need no stinking retpolines.
 
-For example:
+Except... ITS needs the retpolines for indirect calls must not be in
+the first half of a cacheline :-/
 
-root@ubuntu22-vm:/sys/kernel/tracing/events/syscalls/sys_enter_read
-$ echo stacktrace > trigger
-$ echo 1 > enable
+So what was the paranoid call sequence:
 
-    sshd-416     [002] .....   232.864910: sys_read(fd: a, buf: 556b1f3221d0, count: 8000)
-    sshd-416     [002] ...1.   232.864913: <stack trace>
- => ftrace_syscall_enter
- => syscall_trace_enter
- => do_syscall_64
- => entry_SYSCALL_64_after_hwframe
+  <fineibt_paranoid_start>:
+   0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
+   6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
+   a:   4d 8d 5b <f0>           lea    -0x10(%r11), %r11
+   e:   75 fd                   jne    d <fineibt_paranoid_start+0xd>
+  10:   41 ff d3                call   *%r11
+  13:   90                      nop
 
-The root cause is that the trace framework disables preemption in __DO_TRACE before
-invoking the trigger callback.
+Now becomes:
 
-Use the tracing_gen_ctx_dec() that will accommodate for the increase of
-the preemption count in __DO_TRACE when calling the callback. The result
-is the accurate reporting of:
+  <fineibt_paranoid_start>:
+   0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
+   6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
+   a:   4d 8d 5b f0             lea    -0x10(%r11), %r11
+   e:   2e e8 XX XX XX XX	cs call __x86_indirect_paranoid_thunk_r11
 
-    sshd-410     [004] .....   210.117660: sys_read(fd: 4, buf: 559b725ba130, count: 40000)
-    sshd-410     [004] .....   210.117662: <stack trace>
- => ftrace_syscall_enter
- => syscall_trace_enter
- => do_syscall_64
- => entry_SYSCALL_64_after_hwframe
+  Where the paranoid_thunk looks like:
 
-Cc: stable@vger.kernel.org
-Fixes: ce33c845b030c ("tracing: Dump stacktrace trigger to the corresponding instance")
-Link: https://lore.kernel.org/20250512094246.1167956-1-dolinux.peng@gmail.com
-Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+   1d:  <ea>                    (bad)
+   __x86_indirect_paranoid_thunk_r11:
+   1e:  75 fd                   jne 1d
+   __x86_indirect_its_thunk_r11:
+   20:  41 ff eb                jmp *%r11
+   23:  cc                      int3
+
+[ dhansen: remove initialization to false ]
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+[ Just a portion of the original commit, in order to fix a build issue
+  in stable kernels due to backports ]
+Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+Link: https://lore.kernel.org/r/20250514113952.GB16434@noisy.programming.kicks-ass.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_trigger.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/alternative.h |    8 ++++++++
+ arch/x86/kernel/alternative.c      |    8 ++++++++
+ arch/x86/net/bpf_jit_comp.c        |    2 +-
+ 3 files changed, 17 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events_trigger.c
-+++ b/kernel/trace/trace_events_trigger.c
-@@ -1539,7 +1539,7 @@ stacktrace_trigger(struct event_trigger_
- 	struct trace_event_file *file = data->private_data;
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -5,6 +5,7 @@
+ #include <linux/types.h>
+ #include <linux/stringify.h>
+ #include <asm/asm.h>
++#include <asm/bug.h>
  
- 	if (file)
--		__trace_stack(file->tr, tracing_gen_ctx(), STACK_SKIP);
-+		__trace_stack(file->tr, tracing_gen_ctx_dec(), STACK_SKIP);
- 	else
- 		trace_dump_stack(STACK_SKIP);
+ #define ALTINSTR_FLAG_INV	(1 << 15)
+ #define ALT_NOT(feat)		((feat) | ALTINSTR_FLAG_INV)
+@@ -84,10 +85,17 @@ struct module;
+ extern void its_init_mod(struct module *mod);
+ extern void its_fini_mod(struct module *mod);
+ extern void its_free_mod(struct module *mod);
++extern u8 *its_static_thunk(int reg);
+ #else /* CONFIG_MITIGATION_ITS */
+ static inline void its_init_mod(struct module *mod) { }
+ static inline void its_fini_mod(struct module *mod) { }
+ static inline void its_free_mod(struct module *mod) { }
++static inline u8 *its_static_thunk(int reg)
++{
++	WARN_ONCE(1, "ITS not compiled in");
++
++	return NULL;
++}
+ #endif
+ 
+ #ifdef CONFIG_RETHUNK
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -597,6 +597,14 @@ static bool cpu_wants_indirect_its_thunk
+ 	/* Lower-half of the cacheline? */
+ 	return !(addr & 0x20);
  }
++
++u8 *its_static_thunk(int reg)
++{
++	u8 *thunk = __x86_indirect_its_thunk_array[reg];
++
++	return thunk;
++}
++
+ #endif
+ 
+ /*
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -449,7 +449,7 @@ static void emit_indirect_jump(u8 **ppro
+ 	if (IS_ENABLED(CONFIG_MITIGATION_ITS) &&
+ 	    cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
+ 		OPTIMIZER_HIDE_VAR(reg);
+-		emit_jump(&prog, &__x86_indirect_its_thunk_array[reg], ip);
++		emit_jump(&prog, its_static_thunk(reg), ip);
+ 	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
+ 		EMIT_LFENCE();
+ 		EMIT2(0xFF, 0xE0 + reg);
 
 
 
