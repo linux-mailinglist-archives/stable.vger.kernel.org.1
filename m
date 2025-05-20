@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-145581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E87ABDD5E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:39:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E00D6ABDBEA
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 547BF4E61D9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A7237B6816
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A401252289;
-	Tue, 20 May 2025 14:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165FD246792;
+	Tue, 20 May 2025 14:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc4mr3yK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in74PdUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264902505D7;
-	Tue, 20 May 2025 14:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB68246775;
+	Tue, 20 May 2025 14:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750593; cv=none; b=dIS/+Zq9UXTc9TFZ/ezDXGq6U0DW976ZbBZLnLLuK+9hUbwZw52gYdW/n8GI8Gtlue6ZCfuJk+cnt0e+0E72CElc7zPiBgcL77JRqd/8bZ71RPdRT7eXKH3Vrm7fb1V2pAoW+9Dv9CZJJiEj7GAA94aNwQG8zb+by5i6VAp8Isw=
+	t=1747750291; cv=none; b=gltCsDwP/vM4Pw+mqLC4M3BkVH/IbIxszL5NIA6mn93m/GXVz/ZPS7oFdVJpaq0zVaHpwAFbewSZzFu0398/VXEqHpgyCR6kGn2mXUbKqA8kC5I/9d4BnT3NCXWID1sN89LisReIP7HIR4rO8rkGPkzYyZRljItFnxSRUffxwFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750593; c=relaxed/simple;
-	bh=TMCoR6QumvztVFvFZpfDEDqY8I2JX2hBrQn6mcN4QAE=;
+	s=arc-20240116; t=1747750291; c=relaxed/simple;
+	bh=xPFyoB7DaY4uy8rIWf51WgjZMZC8ZsFIb1LyNzaVv0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXFXRjLr/scDsjKntCdcMzTnMnJHZg7jExPMuoDm6nP8HKaAd3c9lKAfgRPCV5IKeN77FnCXVmVEuOGG4zHUlybVpxM4aHuA6KVNzLZt8uUDczhRFAbig62suAcdFssMc0yfgacXENWuFK89MyidGZvFRr+HdtqTUAHFuUGuSMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc4mr3yK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B05C4CEE9;
-	Tue, 20 May 2025 14:16:31 +0000 (UTC)
+	 MIME-Version; b=oRanLlySw0CuRC1Kt9m2o+n+rDdPYOhjTFKWmUApVDVF5XAgN0yGDFn39jrd9UEWJ/7pH9O2uNYenfzbNAop8wQB2Cgx6588CDku5crB7zduoumM+KCbyDr7ZladfJyUpmDYqfq61HllXy5QmgI3Lw/WyQtsGlyiu+WWFs0yBBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in74PdUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE2EC4CEE9;
+	Tue, 20 May 2025 14:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750591;
-	bh=TMCoR6QumvztVFvFZpfDEDqY8I2JX2hBrQn6mcN4QAE=;
+	s=korg; t=1747750291;
+	bh=xPFyoB7DaY4uy8rIWf51WgjZMZC8ZsFIb1LyNzaVv0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mc4mr3yKMs7IQCPVLF8i8/c0NytVzm1+X1fal+KKKNO9qIXg8ADv5wHdJZABP2lKN
-	 Twjp9nKsr90EooNEBlwAMasqCssNc2bChiiXy22ZXRUGxMsRQOHwweGDPAoCtiRCOM
-	 UyD7fg/H2QfwE19NT05s11QnU//ML1co87R2pcyY=
+	b=in74PdUMxJEkVoWbNY7WtYbgCT8JrbF+iwrgfAeD6VAaZH0uEDsBEp42j7KQT/DhG
+	 DTRBUPRtaEymJfccUwOxkHBr7jDwXT5bgnGH0SCLpULhQ2gvfiya/V0/qECydpT9rB
+	 4aMfbX3BABslvO1YY5b7EW0pr/44yAkGEbx9qT8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 059/145] tsnep: fix timestamping with a stacked DSA driver
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 074/143] LoongArch: Move __arch_cpu_idle() to .cpuidle.text section
 Date: Tue, 20 May 2025 15:50:29 +0200
-Message-ID: <20250520125812.891179454@linuxfoundation.org>
+Message-ID: <20250520125812.979641581@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit b3ca9eef6646576ad506a96d941d87a69f66732a ]
+commit 3e245b7b74c3a2ead5fa4bad27cc275284c75189 upstream.
 
-This driver is susceptible to a form of the bug explained in commit
-c26a2c2ddc01 ("gianfar: Fix TX timestamping with a stacked DSA driver")
-and in Documentation/networking/timestamping.rst section "Other caveats
-for MAC drivers", specifically it timestamps any skb which has
-SKBTX_HW_TSTAMP, and does not consider if timestamping has been enabled
-in adapter->hwtstamp_config.tx_type.
+Now arch_cpu_idle() is annotated with __cpuidle which means it is in
+the .cpuidle.text section, but __arch_cpu_idle() isn't. Thus, fix the
+missing .cpuidle.text section assignment for __arch_cpu_idle() in order
+to correct backtracing with nmi_backtrace().
 
-Evaluate the proper TX timestamping condition only once on the TX
-path (in tsnep_xmit_frame_ring()) and store the result in an additional
-TX entry flag. Evaluate the new TX entry flag in the TX confirmation path
-(in tsnep_tx_poll()).
+The principle is similar to the commit 97c8580e85cf81c ("MIPS: Annotate
+cpu_wait implementations with __cpuidle")
 
-This way SKBTX_IN_PROGRESS is set by the driver as required, but never
-evaluated. SKBTX_IN_PROGRESS shall not be evaluated as it can be set
-by a stacked DSA driver and evaluating it would lead to unwanted
-timestamps.
-
-Fixes: 403f69bbdbad ("tsnep: Add TSN endpoint Ethernet MAC driver")
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250514195657.25874-1-gerhard@engleder-embedded.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/engleder/tsnep_main.c | 30 ++++++++++++++--------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ arch/loongarch/kernel/genex.S |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-index 0d030cb0b21c7..63aeb400051c4 100644
---- a/drivers/net/ethernet/engleder/tsnep_main.c
-+++ b/drivers/net/ethernet/engleder/tsnep_main.c
-@@ -67,6 +67,8 @@
- #define TSNEP_TX_TYPE_XDP_NDO_MAP_PAGE	(TSNEP_TX_TYPE_XDP_NDO | TSNEP_TX_TYPE_MAP_PAGE)
- #define TSNEP_TX_TYPE_XDP		(TSNEP_TX_TYPE_XDP_TX | TSNEP_TX_TYPE_XDP_NDO)
- #define TSNEP_TX_TYPE_XSK		BIT(12)
-+#define TSNEP_TX_TYPE_TSTAMP		BIT(13)
-+#define TSNEP_TX_TYPE_SKB_TSTAMP	(TSNEP_TX_TYPE_SKB | TSNEP_TX_TYPE_TSTAMP)
+--- a/arch/loongarch/kernel/genex.S
++++ b/arch/loongarch/kernel/genex.S
+@@ -16,6 +16,7 @@
+ #include <asm/stackframe.h>
+ #include <asm/thread_info.h>
  
- #define TSNEP_XDP_TX		BIT(0)
- #define TSNEP_XDP_REDIRECT	BIT(1)
-@@ -387,8 +389,7 @@ static void tsnep_tx_activate(struct tsnep_tx *tx, int index, int length,
- 	if (entry->skb) {
- 		entry->properties = length & TSNEP_DESC_LENGTH_MASK;
- 		entry->properties |= TSNEP_DESC_INTERRUPT_FLAG;
--		if ((entry->type & TSNEP_TX_TYPE_SKB) &&
--		    (skb_shinfo(entry->skb)->tx_flags & SKBTX_IN_PROGRESS))
-+		if ((entry->type & TSNEP_TX_TYPE_SKB_TSTAMP) == TSNEP_TX_TYPE_SKB_TSTAMP)
- 			entry->properties |= TSNEP_DESC_EXTENDED_WRITEBACK_FLAG;
++	.section .cpuidle.text, "ax"
+ 	.align	5
+ SYM_FUNC_START(__arch_cpu_idle)
+ 	/* start of idle interrupt region */
+@@ -31,14 +32,16 @@ SYM_FUNC_START(__arch_cpu_idle)
+ 	 */
+ 	idle	0
+ 	/* end of idle interrupt region */
+-1:	jr	ra
++idle_exit:
++	jr	ra
+ SYM_FUNC_END(__arch_cpu_idle)
++	.previous
  
- 		/* toggle user flag to prevent false acknowledge
-@@ -480,7 +481,8 @@ static int tsnep_tx_map_frag(skb_frag_t *frag, struct tsnep_tx_entry *entry,
- 	return mapped;
- }
- 
--static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count)
-+static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count,
-+			bool do_tstamp)
- {
- 	struct device *dmadev = tx->adapter->dmadev;
- 	struct tsnep_tx_entry *entry;
-@@ -506,6 +508,9 @@ static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count)
- 				entry->type = TSNEP_TX_TYPE_SKB_INLINE;
- 				mapped = 0;
- 			}
-+
-+			if (do_tstamp)
-+				entry->type |= TSNEP_TX_TYPE_TSTAMP;
- 		} else {
- 			skb_frag_t *frag = &skb_shinfo(skb)->frags[i - 1];
- 
-@@ -559,11 +564,12 @@ static int tsnep_tx_unmap(struct tsnep_tx *tx, int index, int count)
- static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
- 					 struct tsnep_tx *tx)
- {
--	int count = 1;
- 	struct tsnep_tx_entry *entry;
-+	bool do_tstamp = false;
-+	int count = 1;
- 	int length;
--	int i;
- 	int retval;
-+	int i;
- 
- 	if (skb_shinfo(skb)->nr_frags > 0)
- 		count += skb_shinfo(skb)->nr_frags;
-@@ -580,7 +586,13 @@ static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
- 	entry = &tx->entry[tx->write];
- 	entry->skb = skb;
- 
--	retval = tsnep_tx_map(skb, tx, count);
-+	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
-+	    tx->adapter->hwtstamp_config.tx_type == HWTSTAMP_TX_ON) {
-+		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
-+		do_tstamp = true;
-+	}
-+
-+	retval = tsnep_tx_map(skb, tx, count, do_tstamp);
- 	if (retval < 0) {
- 		tsnep_tx_unmap(tx, tx->write, count);
- 		dev_kfree_skb_any(entry->skb);
-@@ -592,9 +604,6 @@ static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
- 	}
- 	length = retval;
- 
--	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)
--		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
--
- 	for (i = 0; i < count; i++)
- 		tsnep_tx_activate(tx, (tx->write + i) & TSNEP_RING_MASK, length,
- 				  i == count - 1);
-@@ -845,8 +854,7 @@ static bool tsnep_tx_poll(struct tsnep_tx *tx, int napi_budget)
- 
- 		length = tsnep_tx_unmap(tx, tx->read, count);
- 
--		if ((entry->type & TSNEP_TX_TYPE_SKB) &&
--		    (skb_shinfo(entry->skb)->tx_flags & SKBTX_IN_PROGRESS) &&
-+		if (((entry->type & TSNEP_TX_TYPE_SKB_TSTAMP) == TSNEP_TX_TYPE_SKB_TSTAMP) &&
- 		    (__le32_to_cpu(entry->desc_wb->properties) &
- 		     TSNEP_DESC_EXTENDED_WRITEBACK_FLAG)) {
- 			struct skb_shared_hwtstamps hwtstamps;
--- 
-2.39.5
-
+ SYM_CODE_START(handle_vint)
+ 	UNWIND_HINT_UNDEFINED
+ 	BACKUP_T0T1
+ 	SAVE_ALL
+-	la_abs	t1, 1b
++	la_abs	t1, idle_exit
+ 	LONG_L	t0, sp, PT_ERA
+ 	/* 3 instructions idle interrupt region */
+ 	ori	t0, t0, 0b1100
 
 
 
