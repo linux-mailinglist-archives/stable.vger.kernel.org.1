@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DFEABDAF5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F8AABDA6E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 016998C2AEB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE78A3BEFB8
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DC7243370;
-	Tue, 20 May 2025 14:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41943243378;
+	Tue, 20 May 2025 13:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw20hpj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yahy6ri3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5512BEEDE;
-	Tue, 20 May 2025 14:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A5C1922ED;
+	Tue, 20 May 2025 13:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749665; cv=none; b=X0O6dJb8V9lylDG1SdvGYFjxVqZWRu/iNbwtZOl4RMDY6ZlP9aF4huOAM8PHLa2EsSQXkSTzuBsAJ0ly/7yCIoRDZjPVo+X8rEC8IdZS7ft5l3ARi7HVIUYmJql4mKlUslq3rwn4wdSDsi8vSiZtOe9xw/+zx/V0GPXIp+YTYYU=
+	t=1747749394; cv=none; b=uk/ZgEnf36A0+BIHzhjTb0ibh4g40nEc3zfAAVyZo/qgiPIErm+yGfF1xlV1sD21Z+5WnZSZ/LUGabWx44+LxJh497/k7/B/303WxAmgwfuvsHiOuD9A69uMRdiEcm02Y0v+26Vt6slMdWhS7xs+chHM8pf+gQ32dNz6lbLbGOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749665; c=relaxed/simple;
-	bh=YfUieMhGPQLT1eFeU2oDcujaubrlKn1Uq5n8P54pjsE=;
+	s=arc-20240116; t=1747749394; c=relaxed/simple;
+	bh=Fc6FGj33fUFcnPudlmIqi/E9D6ChwHwq2004Sm7k3wE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1Q8DL3RYxM1cBbn0f9kADzFUGA7/tB3bbFS4Q29R/84Rw8pjwlJN0FR6DaYcoZuOyJuJTbt1xzew61EBlp6qpQhCGFPee11mgcD1iIXSQrOb5D+/I4DHl2XLWkal3XRJQBVVcDImZ17O+0YXf9RcTKrgp8UP4v+8i3TFHupgb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw20hpj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EA5C4CEE9;
-	Tue, 20 May 2025 14:01:04 +0000 (UTC)
+	 MIME-Version; b=J3OYti6BSCF4bUujvXMDI/j7/MCZHmAijJVp2j+yA/5bDEyuFuxJCqx2xrgsxc6gMaFHRZHFqPcLKIAm+05RV3HmySuWFW7odwYkrq3GDCQ/zu+jkpjk3t5j3qS4DdsrOxh/BRDK/Tto1hlv9vdZLjpnYG3jFnlT/93ejn+Lrc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yahy6ri3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649A2C4CEE9;
+	Tue, 20 May 2025 13:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749665;
-	bh=YfUieMhGPQLT1eFeU2oDcujaubrlKn1Uq5n8P54pjsE=;
+	s=korg; t=1747749393;
+	bh=Fc6FGj33fUFcnPudlmIqi/E9D6ChwHwq2004Sm7k3wE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mw20hpj4eARrlUpW5EhK2im2m2alcFQEWmynbfQXkOAWYIfNohh5iIVlQ02vGMINp
-	 sPWBc7AIXsxf1ufWaz+e/YWLfZscmb0RmqsJw4cOShexYMEnVREfc5n7u7dL9D9+6h
-	 a0joWij+YwYmy0omhBuJZSToPVYxd09bde6PkcMc=
+	b=yahy6ri3hthOvG4CgZc4cH0RumfrbQ52A1DdIiklnKn/KQ7xL6V+ijhVKZa2dYSjY
+	 E7tjMrTFXt77FMg5cPGBFSsm5Nrzp9aDOjDBDF3juvRwH/F3sDrv8yZrLtZp3EjUgh
+	 GCvu8H6rYhf7B9I16K5plqnTd1zWOPLkGsXMK+DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/117] binfmt_elf: Calculate total_size earlier
+Subject: [PATCH 6.1 07/97] binfmt_elf: Calculate total_size earlier
 Date: Tue, 20 May 2025 15:49:32 +0200
-Message-ID: <20250520125804.280519130@linuxfoundation.org>
+Message-ID: <20250520125800.954046765@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -84,10 +84,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 27 insertions(+), 25 deletions(-)
 
 diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 700d93e73f6e0..58c43a572df8b 100644
+index ff796910265da..26abe256e91fb 100644
 --- a/fs/binfmt_elf.c
 +++ b/fs/binfmt_elf.c
-@@ -1092,7 +1092,34 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1093,7 +1093,34 @@ static int load_elf_binary(struct linux_binprm *bprm)
  			 * Header for ET_DYN binaries to calculate the
  			 * randomization (load_bias) for all the LOAD
  			 * Program Headers.
@@ -122,7 +122,7 @@ index 700d93e73f6e0..58c43a572df8b 100644
  			 * There are effectively two types of ET_DYN
  			 * binaries: programs (i.e. PIE: ET_DYN with INTERP)
  			 * and loaders (ET_DYN without INTERP, since they
-@@ -1133,31 +1160,6 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1134,31 +1161,6 @@ static int load_elf_binary(struct linux_binprm *bprm)
  			 * is then page aligned.
  			 */
  			load_bias = ELF_PAGESTART(load_bias - vaddr);
