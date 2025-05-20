@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-145366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BCC6ABDB93
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:12:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D500ABDC56
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2DC23B097B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:06:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C4E04C7694
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57DC2459F3;
-	Tue, 20 May 2025 14:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C1024E4D2;
+	Tue, 20 May 2025 14:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APebAvyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EL8fNMDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C9024418D;
-	Tue, 20 May 2025 14:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEFF248F4B;
+	Tue, 20 May 2025 14:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749967; cv=none; b=GT3QwdLsLK4Xu2SlyaSp5dx7/poiDqt4EDQmqH7kPemSpJiFfR9HrgkFSZNE8XT5XSMAQfbZ9T7C4SQOVSuSQV2xOS59JLxfVSV33aZ33M9E2xB9OJbyuRRZweP+jcm88n/uj83jTdOMNNWvWMKTatwh/Y3X9C4QXvl2dPQjsi8=
+	t=1747750270; cv=none; b=rUHZhVaatIarnZCeoCca6XPmXr34fxE3P/ZPOCY2MA3qC/oDLbjBlMvC4cJGd+F//nMRDXa2kUc6eVt9Z93d5fqTLhY4RgJpJB/ET1A3k6nzeV1a9vC/NIsTuwE7gpzeY8oVxrFSvMJTcwum/TaT0d3g9Lvdc1+d8b210FJPHoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749967; c=relaxed/simple;
-	bh=euQfORQ6Kdka4Oa97T0/xM939YwNpbuVXXfhQMdam9g=;
+	s=arc-20240116; t=1747750270; c=relaxed/simple;
+	bh=k4ceO3LcFKFNGEQX7OzRTvn+aBVd2sJPvbBRpDjMFso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dN/3l92ar4NyUConWe1Ts0Nd7nK3F5qysbQYc74Lxk0dgjVWzZoMNUNuSWp1P5KVVV7ZlO16gBURuMvYxijgrhP0snRzFKg19mD2Q8yEGNd+1o7KxEwjSiFUZ3EXSL2PNjnWsFregQF9+79lesOZAVgJf8RCKcSTl6ok679DYoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APebAvyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15119C4CEF2;
-	Tue, 20 May 2025 14:06:06 +0000 (UTC)
+	 MIME-Version; b=DRlUiN32OYF+6gZ5zEP4StD7CcvN+ICFpes9l0ntmzncSM31FL9cPkJPHk1kIMqbxYyqfchx5dHR+8+CuZ60hGK78591HkZUPjwIC5HsYlfz+2xA41zEUyBB+nNzfGU5M0nkyQPvRXQFizx47xt29DsXPCdU/evNkUlEiWblNKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EL8fNMDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27469C4CEE9;
+	Tue, 20 May 2025 14:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749967;
-	bh=euQfORQ6Kdka4Oa97T0/xM939YwNpbuVXXfhQMdam9g=;
+	s=korg; t=1747750270;
+	bh=k4ceO3LcFKFNGEQX7OzRTvn+aBVd2sJPvbBRpDjMFso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APebAvybXzUp4Cjh3zcIEw42V8MYhq02AvyOJQbaKXv5mfFfnjXWx6Q1RW0ciUAiK
-	 Z42FDrN7x2DTBiMw66QZ/8XrVrVNZfZ4hQqy1m44v4zcQ4i8YLiTnhl9zVAvjG+AwY
-	 mVfUETD/H+iumc9spiZ2UIMURpOuD1U9c1lK7QJc=
+	b=EL8fNMDFTshEfwQCeUK+3Dmtn1kP0H2k+ytnONof94sb60o/OPd2hnxLBEgd6PacB
+	 WLiJju5Ug7TN6uOu/1dWxhgvX9MNcOKdK2BZMzp/QUEhINEtWqlh5Fe4KvxTbl4vgo
+	 hm2ZHc4+Y/Oi1T4RkTbuB04TTiHU0M7eMhGdXdt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Siwinski <ssiwinski@atto.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 087/117] scsi: sd_zbc: block: Respect bio vector limits for REPORT ZONES buffer
+	Michael Kelley <mhklinux@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 097/143] hv_netvsc: Remove rmsg_pgcnt
 Date: Tue, 20 May 2025 15:50:52 +0200
-Message-ID: <20250520125807.450283677@linuxfoundation.org>
+Message-ID: <20250520125813.867485485@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Siwinski <ssiwinski@atto.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit e8007fad5457ea547ca63bb011fdb03213571c7e upstream.
+commit 5bbc644bbf4e97a05bc0cb052189004588ff8a09 upstream.
 
-The REPORT ZONES buffer size is currently limited by the HBA's maximum
-segment count to ensure the buffer can be mapped. However, the block
-layer further limits the number of iovec entries to 1024 when allocating
-a bio.
+init_page_array() now always creates a single page buffer array entry
+for the rndis message, even if the rndis message crosses a page
+boundary. As such, the number of page buffer array entries used for
+the rndis message must no longer be tracked -- it is always just 1.
+Remove the rmsg_pgcnt field and use "1" where the value is needed.
 
-To avoid allocation of buffers too large to be mapped, further restrict
-the maximum buffer size to BIO_MAX_INLINE_VECS.
-
-Replace the UIO_MAXIOV symbolic name with the more contextually
-appropriate BIO_MAX_INLINE_VECS.
-
-Fixes: b091ac616846 ("sd_zbc: Fix report zones buffer allocation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve Siwinski <ssiwinski@atto.com>
-Link: https://lore.kernel.org/r/20250508200122.243129-1-ssiwinski@atto.com
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: <stable@vger.kernel.org> # 6.1.x
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/20250513000604.1396-5-mhklinux@outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bio.c           |    2 +-
- drivers/scsi/sd_zbc.c |    6 +++++-
- include/linux/bio.h   |    1 +
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/hyperv/hyperv_net.h |    1 -
+ drivers/net/hyperv/netvsc.c     |    7 +++----
+ drivers/net/hyperv/netvsc_drv.c |    1 -
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -600,7 +600,7 @@ struct bio *bio_kmalloc(unsigned short n
- {
- 	struct bio *bio;
+--- a/drivers/net/hyperv/hyperv_net.h
++++ b/drivers/net/hyperv/hyperv_net.h
+@@ -158,7 +158,6 @@ struct hv_netvsc_packet {
+ 	u8 cp_partial; /* partial copy into send buffer */
  
--	if (nr_vecs > UIO_MAXIOV)
-+	if (nr_vecs > BIO_MAX_INLINE_VECS)
- 		return NULL;
- 	return kmalloc(struct_size(bio, bi_inline_vecs, nr_vecs), gfp_mask);
- }
---- a/drivers/scsi/sd_zbc.c
-+++ b/drivers/scsi/sd_zbc.c
-@@ -202,6 +202,7 @@ static void *sd_zbc_alloc_report_buffer(
- 					unsigned int nr_zones, size_t *buflen)
- {
- 	struct request_queue *q = sdkp->disk->queue;
-+	unsigned int max_segments;
- 	size_t bufsize;
- 	void *buf;
+ 	u8 rmsg_size; /* RNDIS header and PPI size */
+-	u8 rmsg_pgcnt; /* page count of RNDIS header and PPI */
+ 	u8 page_buf_cnt;
  
-@@ -213,12 +214,15 @@ static void *sd_zbc_alloc_report_buffer(
- 	 * Furthermore, since the report zone command cannot be split, make
- 	 * sure that the allocated buffer can always be mapped by limiting the
- 	 * number of pages allocated to the HBA max segments limit.
-+	 * Since max segments can be larger than the max inline bio vectors,
-+	 * further limit the allocated buffer to BIO_MAX_INLINE_VECS.
- 	 */
- 	nr_zones = min(nr_zones, sdkp->zone_info.nr_zones);
- 	bufsize = roundup((nr_zones + 1) * 64, SECTOR_SIZE);
- 	bufsize = min_t(size_t, bufsize,
- 			queue_max_hw_sectors(q) << SECTOR_SHIFT);
--	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
-+	max_segments = min(BIO_MAX_INLINE_VECS, queue_max_segments(q));
-+	bufsize = min_t(size_t, bufsize, max_segments << PAGE_SHIFT);
+ 	u16 q_idx;
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -947,8 +947,7 @@ static void netvsc_copy_to_send_buf(stru
+ 		     + pend_size;
+ 	int i;
+ 	u32 padding = 0;
+-	u32 page_count = packet->cp_partial ? packet->rmsg_pgcnt :
+-		packet->page_buf_cnt;
++	u32 page_count = packet->cp_partial ? 1 : packet->page_buf_cnt;
+ 	u32 remain;
  
- 	while (bufsize >= SECTOR_SIZE) {
- 		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -11,6 +11,7 @@
- #include <linux/uio.h>
+ 	/* Add padding */
+@@ -1131,7 +1130,7 @@ static inline int netvsc_send_pkt(
+ 		u32 desc_size;
  
- #define BIO_MAX_VECS		256U
-+#define BIO_MAX_INLINE_VECS	UIO_MAXIOV
+ 		if (packet->cp_partial)
+-			pb += packet->rmsg_pgcnt;
++			pb++;
  
- struct queue_limits;
+ 		ret = netvsc_dma_map(ndev_ctx->device_ctx, packet, pb);
+ 		if (ret) {
+@@ -1293,7 +1292,7 @@ int netvsc_send(struct net_device *ndev,
+ 		packet->send_buf_index = section_index;
  
+ 		if (packet->cp_partial) {
+-			packet->page_buf_cnt -= packet->rmsg_pgcnt;
++			packet->page_buf_cnt--;
+ 			packet->total_data_buflen = msd_len + packet->rmsg_size;
+ 		} else {
+ 			packet->page_buf_cnt = 0;
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -342,7 +342,6 @@ static u32 init_page_array(void *hdr, u3
+ 	pb[0].len = len;
+ 	pb[0].pfn = virt_to_hvpfn(hdr);
+ 	packet->rmsg_size = len;
+-	packet->rmsg_pgcnt = 1;
+ 
+ 	pb[1].offset = offset_in_hvpage(skb->data);
+ 	pb[1].len = skb_headlen(skb);
 
 
 
