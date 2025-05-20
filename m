@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B58ABDB2F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAB0ABDC27
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC708A6099
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0166F1884C92
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF74246771;
-	Tue, 20 May 2025 14:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477AB2522A1;
+	Tue, 20 May 2025 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5JqLe1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvrK3NFq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C1522C325;
-	Tue, 20 May 2025 14:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0621D242D79;
+	Tue, 20 May 2025 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749739; cv=none; b=minZxOapXpyNVPp3Lwgjyg4MoQ+aNkBNidbsGfq2YfPdlbuiwZiW/D0UNIMQSVBP4jsOlQdOiMHrLTYvbua1/oyFCc3pKWeXLhslncYzzl8cPunitWbUMC4LbBkxpMWH+A4PWh0JcbU9Sn4m+sBYBrxQ8vO0U69QEYufapl+rbw=
+	t=1747750538; cv=none; b=b9dNA4SjuCzrHlreqnRgng6MPhBaCcSgtUo3lQBqSQd9bqKVXuSPobIKdjZ8dHN09AJIbgaAwEVngGNPYE/0jBYmwruTujNwAulZu6Cho3sFICNna7hv8qMjShYnzeRezVGw15Qt9ECKHCDIDTcSAaD1syWRU0cuqwwCbAoEm+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749739; c=relaxed/simple;
-	bh=MA6Du0K6xcvZTgJloq9uI2AbAdwjqNL2qFXLgME0m5E=;
+	s=arc-20240116; t=1747750538; c=relaxed/simple;
+	bh=6WOQfei03eqs6iVpkDMt+a86L4ahhc3ZlPTI3jUMsfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4ILv6HV2/dZkz6dy3Tl/MoWvPkWgqYro/Pa/Yf7W7VvZ5ccDr53lRosGUG2bektkT4Pcv1Ow2BbmAtmHp+GQjBtv3R9JwNCf0jfJi0sXAZgZO30WMi9YitdekBzZlyCGfzp3t4dnZ3Paj34avgRIicHpb85e8IniRJucRM1L20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5JqLe1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADF6C4CEE9;
-	Tue, 20 May 2025 14:02:18 +0000 (UTC)
+	 MIME-Version; b=o72JG6aomGiJEHX49Ts/PUWiDpns1eEAWvcoSg/eOt21Vp217RYe+9PibWaQmmfcqnqaswW2+u4D3DX96uc2H6kphApvQ/2/AfGp+0F0p4PeXZsK324oKrZe5JDHbCS+yS57TQHN1vaoaoh+7j2ZD+jprudY3EFKEuRipzxahYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvrK3NFq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDFDC4CEE9;
+	Tue, 20 May 2025 14:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749739;
-	bh=MA6Du0K6xcvZTgJloq9uI2AbAdwjqNL2qFXLgME0m5E=;
+	s=korg; t=1747750537;
+	bh=6WOQfei03eqs6iVpkDMt+a86L4ahhc3ZlPTI3jUMsfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5JqLe1H+0vNKxeKzdeXWCCSVnhOD0EUsV3KssvbpBuizMR0dv/DmnQsGhhNFw9Wc
-	 nwzGoN/J9j0lO7wBTvT352FXg+4Olli58EPLEyLIQXAvsemlxaI5/Kz7qIO+a/wSGN
-	 m7L1h5KgEwxIx+/hel8DMHLQUtIcy8vt6Y/7vn0M=
+	b=ZvrK3NFqJ8hV8y+UbE9BxS9AygbFAYbz0uiYlDSsZm5GXg9e1W0fHhOGS51zTsN/g
+	 Zkx6DAJd6fjhTc+m6D4u610BBYji6boVvagwXeF7zEBqbexHZCwGflt/XUfdnWffjD
+	 SD0iwVcEv3nxlRXkKGH8c+GC09Bcznzdi/AacL/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Othacehe <othacehe@gnu.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hannes Reinecke <hare@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Daniel Wagner <wagi@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/117] net: cadence: macb: Fix a possible deadlock in macb_halt_tx.
+Subject: [PATCH 6.14 039/145] nvme-pci: acquire cq_poll_lock in nvme_poll_irqdisable
 Date: Tue, 20 May 2025 15:50:09 +0200
-Message-ID: <20250520125805.737598361@linuxfoundation.org>
+Message-ID: <20250520125812.096530765@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Othacehe <othacehe@gnu.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit c92d6089d8ad7d4d815ebcedee3f3907b539ff1f ]
+[ Upstream commit 3d8932133dcecbd9bef1559533c1089601006f45 ]
 
-There is a situation where after THALT is set high, TGO stays high as
-well. Because jiffies are never updated, as we are in a context with
-interrupts disabled, we never exit that loop and have a deadlock.
+We need to lock this queue for that condition because the timeout work
+executes per-namespace and can poll the poll CQ.
 
-That deadlock was noticed on a sama5d4 device that stayed locked for days.
-
-Use retries instead of jiffies so that the timeout really works and we do
-not have a deadlock anymore.
-
-Fixes: e86cd53afc590 ("net/macb: better manage tx errors")
-Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250509121935.16282-1-othacehe@gnu.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Hannes Reinecke <hare@kernel.org>
+Closes: https://lore.kernel.org/all/20240902130728.1999-1-hare@kernel.org/
+Fixes: a0fa9647a54e ("NVMe: add blk polling support")
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ drivers/nvme/host/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 4325d0ace1f26..6f45f4d9fba71 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1016,22 +1016,15 @@ static void macb_update_stats(struct macb *bp)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 7fdf7f24d46e6..00bd21b5c641e 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1205,7 +1205,9 @@ static void nvme_poll_irqdisable(struct nvme_queue *nvmeq)
+ 	WARN_ON_ONCE(test_bit(NVMEQ_POLLED, &nvmeq->flags));
  
- static int macb_halt_tx(struct macb *bp)
- {
--	unsigned long	halt_time, timeout;
--	u32		status;
-+	u32 status;
- 
- 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(THALT));
- 
--	timeout = jiffies + usecs_to_jiffies(MACB_HALT_TIMEOUT);
--	do {
--		halt_time = jiffies;
--		status = macb_readl(bp, TSR);
--		if (!(status & MACB_BIT(TGO)))
--			return 0;
--
--		udelay(250);
--	} while (time_before(halt_time, timeout));
--
--	return -ETIMEDOUT;
-+	/* Poll TSR until TGO is cleared or timeout. */
-+	return read_poll_timeout_atomic(macb_readl, status,
-+					!(status & MACB_BIT(TGO)),
-+					250, MACB_HALT_TIMEOUT, false,
-+					bp, TSR);
+ 	disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
++	spin_lock(&nvmeq->cq_poll_lock);
+ 	nvme_poll_cq(nvmeq, NULL);
++	spin_unlock(&nvmeq->cq_poll_lock);
+ 	enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
  }
  
- static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
 -- 
 2.39.5
 
