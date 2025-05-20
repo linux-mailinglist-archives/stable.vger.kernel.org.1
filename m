@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8959BABDC80
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBD8ABDCD5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:28:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2B3C1BA3215
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B0F74C5C82
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7092924C07E;
-	Tue, 20 May 2025 14:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC0A248869;
+	Tue, 20 May 2025 14:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0eyssHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjNgT6QP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD152472B1;
-	Tue, 20 May 2025 14:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC312500DF;
+	Tue, 20 May 2025 14:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750724; cv=none; b=t0Od/21QuNnG67JIXk+WPxFPAaTezzfKkmrpef+K1mCjtlfXnx7YAEnnv2eNsFlPsHjAfNedM9QhKHgY0ucPsYG1uDxMkPqKXmNX/mooXyQwA8yXhV8VI+FioXfDY2F5pNPKfXhBAksTP+GUoN/PJWveMK3+nduRD2YH7GlAQfQ=
+	t=1747750322; cv=none; b=EOCSSVQtXVMwBsmCvJr/5jnPjnOkRC9mDv29sVQAsuocxF08Ns0gvZaz0B0nDEKIYqIcQl0R+b8G080UKe65YcUIH33cYBKg/xuu2+82pV3hwduq89VBWWhzrLZpkcVvr3pQ65441UA1k9NZcaCopL0U1ZxYXi7otOFazzb19Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750724; c=relaxed/simple;
-	bh=RzPfbm9vjCfwVRFGm9o70LsN6frkicCLHO2JZy/2ry4=;
+	s=arc-20240116; t=1747750322; c=relaxed/simple;
+	bh=Dsz78Ddd3rkCRnek972+rfmCEeOTw0txZMDFt7F7tGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPwaT4tZXRYxNvv7BGU6862lmXUH+3VVa7eqlx/A+lXTGf5g28emEEhNAvfS1C5JOfi2b1dNGyRFILjqdXCMZ7baQag2RJGjf/oiBAIgtTZGpgekineVwC+ovDMs7l77P0kJfsG0WWfcZPqHtVgsSSxTuD9vpfF1ZQXn3KTdiIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0eyssHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4651C4CEE9;
-	Tue, 20 May 2025 14:18:43 +0000 (UTC)
+	 MIME-Version; b=fs7qTEz7KHyRALBfKJr0FhmGynFfUAt6p28c4YIekJuK4iHQvqKQHp70rmWnftCm2sm1iu4eW2KYv+1NYIU23N8QV/TNZNrlT6TtsrZ/mMIIeO+93M9cV43VUW0UWOuHCKRYiYgrxBD6jA8Z2ayBbrXW8G7xzpTOS50WoFoy39U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjNgT6QP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DB9C4CEE9;
+	Tue, 20 May 2025 14:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750724;
-	bh=RzPfbm9vjCfwVRFGm9o70LsN6frkicCLHO2JZy/2ry4=;
+	s=korg; t=1747750322;
+	bh=Dsz78Ddd3rkCRnek972+rfmCEeOTw0txZMDFt7F7tGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0eyssHWqw7X9j2fEV/lcFblwn+++mB10mdSMe7dbIsXCVODcmMsyKPPuScuUak6E
-	 LFGja7ZFQOaFOOyVxkqOAlz2qVtpf+n62DZWz8RpRYd3s89znYDo9vVHy44szYAT0u
-	 7sIqDM3ZMIquCb6v4FqF4edHl/mn4mNWji6GyTKM=
+	b=SjNgT6QPsmh4xhILl2z1kgF3HG7E2ssi+4fNfBKP5kzyUzqGwno9Huh9qb+Jxu5oI
+	 fU09RjHSf+3rsN+iky6T5bQTOzjQ8/Bb79qhoPhrRj0KT6Tg8UUsYVQgP0/Vjp/mnI
+	 YoVM7x17R8bKck8xkvrSiVbf815i+Ir9sByPKXbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Marcus Seyfarth <m.seyfarth@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.14 100/145] kbuild: Disable -Wdefault-const-init-unsafe
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tasos Sahanidis <tasos@tasossah.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 115/143] ring-buffer: Fix persistent buffer when commit page is the reader page
 Date: Tue, 20 May 2025 15:51:10 +0200
-Message-ID: <20250520125814.483555611@linuxfoundation.org>
+Message-ID: <20250520125814.557231606@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
+commit 1d6c39c89f617c9fec6bbae166e25b16a014f7c8 upstream.
 
-A new on by default warning in clang [1] aims to flags instances where
-const variables without static or thread local storage or const members
-in aggregate types are not initialized because it can lead to an
-indeterminate value. This is quite noisy for the kernel due to
-instances originating from header files such as:
+The ring buffer is made up of sub buffers (sometimes called pages as they
+are by default PAGE_SIZE). It has the following "pages":
 
-  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
-     62 |         typecheck(typeof(ring->size), next);
-        |         ^
-  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
-     10 | ({      type __dummy; \
-        |              ^
+  "tail page" - this is the page that the next write will write to
+  "head page" - this is the page that the reader will swap the reader page with.
+  "reader page" - This belongs to the reader, where it will swap the head
+                  page from the ring buffer so that the reader does not
+                  race with the writer.
 
-  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
-    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
-        |                            ^
-  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
-    138 | #define time_before(a,b)        time_after(b,a)
-        |                                 ^
-  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
-    128 |         (typecheck(unsigned long, a) && \
-        |          ^
-  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
-     11 |         typeof(x) __dummy2; \
-        |                   ^
+The writer may end up on the "reader page" if the ring buffer hasn't
+written more than one page, where the "tail page" and the "head page" are
+the same.
 
-  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
-    409 |         struct list_head *next = smp_load_acquire(&head->next);
-        |                                  ^
-  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
-    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
-        |                             ^
-  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
-    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
-        |                                                                  ^
-  include/linux/list.h:409:27: note: member '__val' declared 'const' here
+The persistent ring buffer has meta data that points to where these pages
+exist so on reboot it can re-create the pointers to the cpu_buffer
+descriptor. But when the commit page is on the reader page, the logic is
+incorrect.
 
-  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
-     66 |         struct scatter_walk walk;
-        |                             ^
-  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
-    112 |                 void *const addr;
-        |                             ^
+The check to see if the commit page is on the reader page checked if the
+head page was the reader page, which would never happen, as the head page
+is always in the ring buffer. The correct check would be to test if the
+commit page is on the reader page. If that's the case, then it can exit
+out early as the commit page is only on the reader page when there's only
+one page of data in the buffer. There's no reason to iterate the ring
+buffer pages to find the "commit page" as it is already found.
 
-  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
-    733 |         struct vm_area_struct pseudo_vma;
-        |                               ^
-  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
-    803 |                 const vm_flags_t vm_flags;
-        |                                  ^
+To trigger this bug:
 
-Silencing the instances from typecheck.h is difficult because '= {}' is
-not available in older but supported compilers and '= {0}' would cause
-warnings about a literal 0 being treated as NULL. While it might be
-possible to come up with a local hack to silence the warning for
-clang-21+, it may not be worth it since -Wuninitialized will still
-trigger if an uninitialized const variable is actually used.
+  # echo 1 > /sys/kernel/tracing/instances/boot_mapped/events/syscalls/sys_enter_fchownat/enable
+  # touch /tmp/x
+  # chown sshd /tmp/x
+  # reboot
 
-In all audited cases of the "field" variant of the warning, the members
-are either not used in the particular call path, modified through other
-means such as memset() / memcpy() because the containing object is not
-const, or are within a union with other non-const members.
+On boot up, the dmesg will have:
+ Ring buffer meta [0] is from previous boot!
+ Ring buffer meta [1] is from previous boot!
+ Ring buffer meta [2] is from previous boot!
+ Ring buffer meta [3] is from previous boot!
+ Ring buffer meta [4] commit page not found
+ Ring buffer meta [5] is from previous boot!
+ Ring buffer meta [6] is from previous boot!
+ Ring buffer meta [7] is from previous boot!
 
-Since this warning does not appear to have a high signal to noise ratio,
-just disable it.
+Where the buffer on CPU 4 had a "commit page not found" error and that
+buffer is cleared and reset causing the output to be empty and the data lost.
+
+When it works correctly, it has:
+
+  # cat /sys/kernel/tracing/instances/boot_mapped/trace_pipe
+        <...>-1137    [004] .....   998.205323: sys_enter_fchownat: __syscall_nr=0x104 (260) dfd=0xffffff9c (4294967196) filename=(0xffffc90000a0002c) user=0x3e8 (1000) group=0xffffffff (4294967295) flag=0x0 (0
 
 Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
-Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250513115032.3e0b97f7@gandalf.local.home
+Fixes: 5f3b6e839f3ce ("ring-buffer: Validate boot range memory events")
+Reported-by: Tasos Sahanidis <tasos@tasossah.com>
+Tested-by: Tasos Sahanidis <tasos@tasossah.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.extrawarn |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/trace/ring_buffer.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -36,6 +36,18 @@ KBUILD_CFLAGS += -Wno-gnu
- # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111219
- KBUILD_CFLAGS += $(call cc-disable-warning, format-overflow-non-kprintf)
- KBUILD_CFLAGS += $(call cc-disable-warning, format-truncation-non-kprintf)
-+
-+# Clang may emit a warning when a const variable, such as the dummy variables
-+# in typecheck(), or const member of an aggregate type are not initialized,
-+# which can result in unexpected behavior. However, in many audited cases of
-+# the "field" variant of the warning, this is intentional because the field is
-+# never used within a particular call path, the field is within a union with
-+# other non-const members, or the containing object is not const so the field
-+# can be modified via memcpy() / memset(). While the variable warning also gets
-+# disabled with this same switch, there should not be too much coverage lost
-+# because -Wuninitialized will still flag when an uninitialized const variable
-+# is used.
-+KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
- else
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1832,10 +1832,12 @@ static void rb_meta_validate_events(stru
  
- # gcc inanely warns about local variables called 'main'
+ 	head_page = cpu_buffer->head_page;
+ 
+-	/* If both the head and commit are on the reader_page then we are done. */
+-	if (head_page == cpu_buffer->reader_page &&
+-	    head_page == cpu_buffer->commit_page)
++	/* If the commit_buffer is the reader page, update the commit page */
++	if (meta->commit_buffer == (unsigned long)cpu_buffer->reader_page->page) {
++		cpu_buffer->commit_page = cpu_buffer->reader_page;
++		/* Nothing more to do, the only page is the reader page */
+ 		goto done;
++	}
+ 
+ 	/* Iterate until finding the commit page */
+ 	for (i = 0; i < meta->nr_subbufs + 1; i++, rb_inc_page(&head_page)) {
 
 
 
