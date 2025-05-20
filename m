@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAE3ABDCC3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:27:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D2CABDBD5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:16:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9BD67B9698
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:19:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDD3F4E026C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACCA248F50;
-	Tue, 20 May 2025 14:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10CA2472A5;
+	Tue, 20 May 2025 14:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWYA1gWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjATIgC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67D5243371;
-	Tue, 20 May 2025 14:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6F2242907;
+	Tue, 20 May 2025 14:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750550; cv=none; b=PI2O3iWudNfV0NUap/QB2wVDuC04ozoDpKPZ1KR+xUimC9RMxHj2Q+J31odCWbH+A8uTVRVpFr0TJWIODTzGLabmP2ycW4aCMIOA1OLD1aMaBVclJZdiWXpJfxQkKaWg0G23S2CJ0H937zIJdqPGc+UrWKnHgNmvtOeB42Zr/Hk=
+	t=1747750061; cv=none; b=UFL0ysSYVo4g65TyK0G5JS7/+9rZd8/f01+YzXDqasFk0wQyj+V1gYylaXYeyTO16rF3EYqWFoew7ZFKne/BBZjGuj8exMDD5aTijMm9/NuuCqTZCF4rY4m1T7Vinh4yB1Xr2Y1XMmgFFwi2Lx9JqRQo37jrIkLWiqR0QIwJFAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750550; c=relaxed/simple;
-	bh=AfRBPd2ekAxAZUGRr8fA8dxZSvEjmV48i4jIFNzAuIY=;
+	s=arc-20240116; t=1747750061; c=relaxed/simple;
+	bh=ZGmDlnskt9+4St0FAr8s1zj1jfM2kZBqlN+1my0jJpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sshJe/MG4/djszYPAJnU87ufXRMMLkcPfuWh1bv84RXDeoNUi4Wp1kvc8GEBIM2zA2d4x6CiLhcoE5L+rSUo0tWZ2sCN0WhRFVSl1I5ahe05tqadn7QzdAU+84/hDClLnC+PibTvbafgMhaw9tdDqG48WJNXN2DpvBW/K5lBCVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWYA1gWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA6AC4CEE9;
-	Tue, 20 May 2025 14:15:50 +0000 (UTC)
+	 MIME-Version; b=PzszlJYwieY2Z4tiASLaHdYim9VMC+OxEcvBfI8PkkQSDO+rD8whPZxUr2xbnGKfcack4Hg6hUHz77smkoDjWA3gOYqSvxeXjMmZdgLhsaVFzcEveLmeO1+2cqcb1Dl1SZpAiFf7S+ALOTCqJUkWXsXZmJJ/UPK8OhiDx44O7HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjATIgC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C36C4CEE9;
+	Tue, 20 May 2025 14:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750550;
-	bh=AfRBPd2ekAxAZUGRr8fA8dxZSvEjmV48i4jIFNzAuIY=;
+	s=korg; t=1747750061;
+	bh=ZGmDlnskt9+4St0FAr8s1zj1jfM2kZBqlN+1my0jJpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWYA1gWcG/kiOlV7sltRP6MX+MctLBrSU7iv02AIY7qwUAkyiDNkzBsD4l964N6zw
-	 97VFEoi6IGAttAeTz4NkCVb3661bBmk7aGsLdoGGOWCYJ00mY0wICyrvgjWxZDDZif
-	 IPFVtv5KDP4ONixo1Tf40M1eJ/Hz4jdQGlg7oFHk=
+	b=FjATIgC/kfbcCvYBhRwgECYvNw4KIx23owLqY1Ib2JA5hf4B3RHhqNvf/XvvSr7Ew
+	 Ao1P1L79iOav5CiUFgHbkhhggv8Hl+i1yNgoa017QRc+8w6hau9P9ePabG2k2ByxFx
+	 w1g6nuSjFkVCwf3mCV3M2t3VScTLoT9mnMN2FUks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 014/145] tracing: fprobe: Fix RCU warning message in list traversal
+Subject: [PATCH 6.12 029/143] HID: uclogic: Add NULL check in uclogic_input_configured()
 Date: Tue, 20 May 2025 15:49:44 +0200
-Message-ID: <20250520125811.109464485@linuxfoundation.org>
+Message-ID: <20250520125811.194924582@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 9dda18a32b4a6693fccd3f7c0738af646147b1cf ]
+[ Upstream commit bd07f751208ba190f9b0db5e5b7f35d5bb4a8a1e ]
 
-When CONFIG_PROVE_RCU_LIST is enabled, fprobe triggers the following
-warning:
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+uclogic_input_configured() does not check for this case, which results
+in a NULL pointer dereference.
 
-    WARNING: suspicious RCU usage
-    kernel/trace/fprobe.c:457 RCU-list traversed in non-reader section!!
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-    other info that might help us debug this:
-	#1: ffffffff863c4e08 (fprobe_mutex){+.+.}-{4:4}, at: fprobe_module_callback+0x7b/0x8c0
-
-    Call Trace:
-	fprobe_module_callback
-	notifier_call_chain
-	blocking_notifier_call_chain
-
-This warning occurs because fprobe_remove_node_in_module() traverses an
-RCU list using RCU primitives without holding an RCU read lock. However,
-the function is only called from fprobe_module_callback(), which holds
-the fprobe_mutex lock that provides sufficient protection for safely
-traversing the list.
-
-Fix the warning by specifying the locking design to the
-CONFIG_PROVE_RCU_LIST mechanism. Add the lockdep_is_held() argument to
-hlist_for_each_entry_rcu() to inform the RCU checker that fprobe_mutex
-provides the required protection.
-
-Link: https://lore.kernel.org/all/20250410-fprobe-v1-1-068ef5f41436@debian.org/
-
-Fixes: a3dc2983ca7b90 ("tracing: fprobe: Cleanup fprobe hash when module unloading")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Tested-by: Antonio Quartulli <antonio@mandelbit.com>
-Tested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: dd613a4e45f8 ("HID: uclogic: Correct devm device reference for hidinput input_dev name")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/fprobe.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-uclogic-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index 95c6e3473a76b..ba7ff14f5339b 100644
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -454,7 +454,8 @@ static void fprobe_remove_node_in_module(struct module *mod, struct hlist_head *
- 	struct fprobe_hlist_node *node;
- 	int ret = 0;
+diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
+index d8008933c052f..321c43fb06ae0 100644
+--- a/drivers/hid/hid-uclogic-core.c
++++ b/drivers/hid/hid-uclogic-core.c
+@@ -142,11 +142,12 @@ static int uclogic_input_configured(struct hid_device *hdev,
+ 			suffix = "System Control";
+ 			break;
+ 		}
+-	}
+-
+-	if (suffix)
++	} else {
+ 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
+ 						 "%s %s", hdev->name, suffix);
++		if (!hi->input->name)
++			return -ENOMEM;
++	}
  
--	hlist_for_each_entry_rcu(node, head, hlist) {
-+	hlist_for_each_entry_rcu(node, head, hlist,
-+				 lockdep_is_held(&fprobe_mutex)) {
- 		if (!within_module(node->addr, mod))
- 			continue;
- 		if (delete_fprobe_node(node))
+ 	return 0;
+ }
 -- 
 2.39.5
 
