@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB50EABDC50
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C01ABDB39
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8D64C5F56
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68BF24C61BF
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FF524FC09;
-	Tue, 20 May 2025 14:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE954242913;
+	Tue, 20 May 2025 14:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ax9dIF31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFEWEJvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8E82505A9;
-	Tue, 20 May 2025 14:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B23419F137;
+	Tue, 20 May 2025 14:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750309; cv=none; b=tgOWTjuyy1jNZsNzE9xSvBywBlxXMWxWJDDg2K3lGki2VB0mpY4U4BQOpDDU31AIMkMPlOJDT7k2Z4LQRCrumZjcSwflGjORipmge9KchdzBgzxJfbs9uziHpa65HrInxOAUHi9xnP/ipiaEwFXksSL4QgHuNVBqUpEdX0nyGD0=
+	t=1747749786; cv=none; b=Axln3aEPVonaI6zlicV527QuT721eO4xtJxOIdPL85rpEDhs95NqwuRfbRcY/V53/RokACO8jFhj2LkS0+4/4MPhAlXVSdodwue4X4NH7grqLbXjLfqSu5ynJDA1ME3wv1Lgj0ueJVnkoUktHwC1S9LVQmN0wrWxI6EHb/cNE1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750309; c=relaxed/simple;
-	bh=yRssfUquttrLNr9CSC/t1q9st3M3aLhuDPcVvHnaKHk=;
+	s=arc-20240116; t=1747749786; c=relaxed/simple;
+	bh=7RbzkqKlwK315JGDFJIXCsfZkRG+Ta3LblttXNJVEJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWopGfLbzYKwxlQQogr3Bjg4S6WN9nLVnkQgV7DBVjZguzNEPThstvsCBuE3d7CRhJQtokqNKxrOgJy9psdmJi7JweFqRp2XST9cwpwRnRY4YurWajvfZ80vEjYPHJNafV1oBg3Uxmq5iFdw0mL0plKgPjeV7OtA7MnnchDyrr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ax9dIF31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B91C4CEEA;
-	Tue, 20 May 2025 14:11:48 +0000 (UTC)
+	 MIME-Version; b=vEa4LHdF0dmc84rt+aTAhsH5c/uwHzEBBzL29c/xkMQCaJPIznLhrS9MBwo1mYOcMl6iVbWY61nqb3hnC5WcO9Xm8uL/JsuU1Z/nE+WRQgTJE/ORhXU/CSQQ2c1oQwq//JYd9jZwdjQnlpVaKvP0B0op8J4YUzVO/7FIbwBC4kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFEWEJvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2AAC4CEE9;
+	Tue, 20 May 2025 14:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750309;
-	bh=yRssfUquttrLNr9CSC/t1q9st3M3aLhuDPcVvHnaKHk=;
+	s=korg; t=1747749786;
+	bh=7RbzkqKlwK315JGDFJIXCsfZkRG+Ta3LblttXNJVEJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ax9dIF31HneZSNsn4icBCugq/vG2nCQU3rOnKvh5rL4ETYGPsxUrFuvm4dgd0gvUi
-	 VNgMRFZo893YftN5jiduj4AnQjzBDuLNtNjETv1CcluKR8OfwsIMcOze78Kl0/nmEx
-	 mrumloMckRLfYb0vikM6IIml5WtbtQmgOs9Dy+60=
+	b=fFEWEJvYNxXvPDcjdeK3sW5Xsq7LVjRKQVAd/Op4HSvtACZz3qMFiP7xdPZUXID7f
+	 9Ha5COu2bBRHOnyztN2N22rkWB6L4TdtY8x7MK3oNxtl8kKvmueJ4/eKHb2bXi6kG2
+	 S+yra+tRlI1Xz5JYOOYv07W2/7kiIigmo9q/GIRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>
-Subject: [PATCH 6.12 070/143] sched_ext: bpf_iter_scx_dsq_new() should always initialize iterator
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 060/117] NFSv4/pnfs: Reset the layout state after a layoutreturn
 Date: Tue, 20 May 2025 15:50:25 +0200
-Message-ID: <20250520125812.819841965@linuxfoundation.org>
+Message-ID: <20250520125806.365889708@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 428dc9fc0873989d73918d4a9cc22745b7bbc799 upstream.
+[ Upstream commit 6d6d7f91cc8c111d40416ac9240a3bb9396c5235 ]
 
-BPF programs may call next() and destroy() on BPF iterators even after new()
-returns an error value (e.g. bpf_for_each() macro ignores error returns from
-new()). bpf_iter_scx_dsq_new() could leave the iterator in an uninitialized
-state after an error return causing bpf_iter_scx_dsq_next() to dereference
-garbage data. Make bpf_iter_scx_dsq_new() always clear $kit->dsq so that
-next() and destroy() become noops.
+If there are still layout segments in the layout plh_return_lsegs list
+after a layout return, we should be resetting the state to ensure they
+eventually get returned as well.
 
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Fixes: 650ba21b131e ("sched_ext: Implement DSQ iterator")
-Cc: stable@vger.kernel.org # v6.12+
-Acked-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 68f744797edd ("pNFS: Do not free layout segments that are marked for return")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfs/pnfs.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6731,6 +6731,12 @@ __bpf_kfunc int bpf_iter_scx_dsq_new(str
- 	BUILD_BUG_ON(__alignof__(struct bpf_iter_scx_dsq_kern) !=
- 		     __alignof__(struct bpf_iter_scx_dsq));
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -732,6 +732,14 @@ pnfs_mark_matching_lsegs_invalid(struct
+ 	return remaining;
+ }
  
-+	/*
-+	 * next() and destroy() will be called regardless of the return value.
-+	 * Always clear $kit->dsq.
-+	 */
-+	kit->dsq = NULL;
++static void pnfs_reset_return_info(struct pnfs_layout_hdr *lo)
++{
++	struct pnfs_layout_segment *lseg;
 +
- 	if (flags & ~__SCX_DSQ_ITER_USER_FLAGS)
- 		return -EINVAL;
- 
++	list_for_each_entry(lseg, &lo->plh_return_segs, pls_list)
++		pnfs_set_plh_return_info(lo, lseg->pls_range.iomode, 0);
++}
++
+ static void
+ pnfs_free_returned_lsegs(struct pnfs_layout_hdr *lo,
+ 		struct list_head *free_me,
+@@ -1180,6 +1188,7 @@ void pnfs_layoutreturn_free_lsegs(struct
+ 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
+ 		pnfs_free_returned_lsegs(lo, &freeme, range, seq);
+ 		pnfs_set_layout_stateid(lo, stateid, NULL, true);
++		pnfs_reset_return_info(lo);
+ 	} else
+ 		pnfs_mark_layout_stateid_invalid(lo, &freeme);
+ out_unlock:
 
 
 
