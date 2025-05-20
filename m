@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-145254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C48ABDAE6
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B0AABDAC9
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:01:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310D6163A65
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60CC57B3E01
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41B7246769;
-	Tue, 20 May 2025 14:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E772459ED;
+	Tue, 20 May 2025 14:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTR9UIMt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns9eTqBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907D72459F7;
-	Tue, 20 May 2025 14:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0676D24503B;
+	Tue, 20 May 2025 14:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749628; cv=none; b=ngdIVBPxD7taTkONk3OhZn0f13CsZY+B4Udq+wkMmJFhvQz7bdnQegeSUtVfYIIwSadJc1X6cNqWbS2ciWUr8dripo0XvHQwEc5vxX70+kwSOwHaC1kMQGOIepPLvb5KCC/1TLb6AnwZnMUtr8/ct4IPHfViMtp4keWL7x4z2og=
+	t=1747749613; cv=none; b=Cp3FQnLTUTFa/yz60DIeCpaqqxvvfZBDBc+0UwAZbmSN66fopBEcpRudVCODjhJ6xObxSlhSpc02PbEk6TOHgupjyud8cUF4tamIKB4vbGIKPq8nRuNGMNWiaP0hgCgDCkQeltEizbPyf6edOIaX2EwNpRyknUQUN8ULtup0g9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749628; c=relaxed/simple;
-	bh=hMpgHqRvpbyQikFcBwjjxd591oS8jSRpa6tb9OWl2Dg=;
+	s=arc-20240116; t=1747749613; c=relaxed/simple;
+	bh=PIHUbFXzqhMfBU5vD5N1HxNWu5FN8cPqUnrD8dSfUpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n9LkI/leOSiRKgQbMhgBUQka8tC60PVdAov/SMpP7r+xZnjtn0O2TGXyw/OvHDRetpP0MvgR+e9yk7cC+W3TUPE/iQxcdhgP1ZguSxf6Qo/6mLj6oJgjQPu3xaE7btVYPaAOoz/cXy42H+MPmMK36SNyv66UC4RVf3XemZqbX64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTR9UIMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19592C4CEEF;
-	Tue, 20 May 2025 14:00:27 +0000 (UTC)
+	 MIME-Version; b=Kz20YZ3p0hH5oYCnh4LF1JtyqTK0pdZrpc2hkyXs/v84FL+CSJw0kagJROLdavJVicG/dufv/ZnSeiRLLU9hAVEUjhHcOEsoEIJUmg2F/LGTFxDgQr03+ljWkCdnqowiJ+71ZsjKvihmMwEF3dixgL0ARwrfge5kTi+9lY23u0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns9eTqBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E55C4CEE9;
+	Tue, 20 May 2025 14:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749628;
-	bh=hMpgHqRvpbyQikFcBwjjxd591oS8jSRpa6tb9OWl2Dg=;
+	s=korg; t=1747749612;
+	bh=PIHUbFXzqhMfBU5vD5N1HxNWu5FN8cPqUnrD8dSfUpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OTR9UIMtuUEXJGRPLRm7zfjkN0o3i2po0wOvAiVi+ES+h9Tb8KL+v/WF8lRwXHMTA
-	 cQa3cnihH0HTvpofQZk3gWTPrUe+jS08CYABgiXcJTD8WwSazvR+mYnFnBIYiIW+nx
-	 EFKXZwfGXly3wmMBdSLvTp6lxeJu9GFtXfDs/O10=
+	b=ns9eTqBObW/82htjfpDZXDlODEewhoTpsIlqkJf4KEx+uonp2M1/e5NsbdtcoMzAG
+	 mbZlsRdy+kbDfTWX6r9E9/xuirUdDpF6CiKwrmEplElO6CLU/RA8RbEp6Pyb2A6fxH
+	 lV6pv4hmWEPBMrfw9v2DU2bHaZbYGMoYOoOILP1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Zhaoyang Li <lizy04@hust.edu.cn>
-Subject: [PATCH 6.1 92/97] platform/x86/amd/pmc: Only disable IRQ1 wakeup where i8042 actually enabled it
-Date: Tue, 20 May 2025 15:50:57 +0200
-Message-ID: <20250520125804.265727497@linuxfoundation.org>
+Subject: [PATCH 6.1 93/97] bnxt_en: Fix receive ring space parameters when XDP is active
+Date: Tue, 20 May 2025 15:50:58 +0200
+Message-ID: <20250520125804.304298473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
 References: <20250520125800.653047540@linuxfoundation.org>
@@ -61,75 +62,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-commit dd410d784402c5775f66faf8b624e85e41c38aaf upstream.
+commit 3051a77a09dfe3022aa012071346937fdf059033 upstream.
 
-Wakeup for IRQ1 should be disabled only in cases where i8042 had
-actually enabled it, otherwise "wake_depth" for this IRQ will try to
-drop below zero and there will be an unpleasant WARN() logged:
+The MTU setting at the time an XDP multi-buffer is attached
+determines whether the aggregation ring will be used and the
+rx_skb_func handler.  This is done in bnxt_set_rx_skb_mode().
 
-kernel: atkbd serio0: Disabling IRQ1 wakeup source to avoid platform firmware bug
-kernel: ------------[ cut here ]------------
-kernel: Unbalanced IRQ 1 wake disable
-kernel: WARNING: CPU: 10 PID: 6431 at kernel/irq/manage.c:920 irq_set_irq_wake+0x147/0x1a0
+If the MTU is later changed, the aggregation ring setting may need
+to be changed and it may become out-of-sync with the settings
+initially done in bnxt_set_rx_skb_mode().  This may result in
+random memory corruption and crashes as the HW may DMA data larger
+than the allocated buffer size, such as:
 
-The PMC driver uses DEFINE_SIMPLE_DEV_PM_OPS() to define its dev_pm_ops
-which sets amd_pmc_suspend_handler() to the .suspend, .freeze, and
-.poweroff handlers. i8042_pm_suspend(), however, is only set as
-the .suspend handler.
+BUG: kernel NULL pointer dereference, address: 00000000000003c0
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 17 PID: 0 Comm: swapper/17 Kdump: loaded Tainted: G S         OE      6.1.0-226bf9805506 #1
+Hardware name: Wiwynn Delta Lake PVT BZA.02601.0150/Delta Lake-Class1, BIOS F0E_3A12 08/26/2021
+RIP: 0010:bnxt_rx_pkt+0xe97/0x1ae0 [bnxt_en]
+Code: 8b 95 70 ff ff ff 4c 8b 9d 48 ff ff ff 66 41 89 87 b4 00 00 00 e9 0b f7 ff ff 0f b7 43 0a 49 8b 95 a8 04 00 00 25 ff 0f 00 00 <0f> b7 14 42 48 c1 e2 06 49 03 95 a0 04 00 00 0f b6 42 33f
+RSP: 0018:ffffa19f40cc0d18 EFLAGS: 00010202
+RAX: 00000000000001e0 RBX: ffff8e2c805c6100 RCX: 00000000000007ff
+RDX: 0000000000000000 RSI: ffff8e2c271ab990 RDI: ffff8e2c84f12380
+RBP: ffffa19f40cc0e48 R08: 000000000001000d R09: 974ea2fcddfa4cbf
+R10: 0000000000000000 R11: ffffa19f40cc0ff8 R12: ffff8e2c94b58980
+R13: ffff8e2c952d6600 R14: 0000000000000016 R15: ffff8e2c271ab990
+FS:  0000000000000000(0000) GS:ffff8e3b3f840000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000003c0 CR3: 0000000e8580a004 CR4: 00000000007706e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ __bnxt_poll_work+0x1c2/0x3e0 [bnxt_en]
 
-Fix the issue by call PMC suspend handler only from the same set of
-dev_pm_ops handlers as i8042_pm_suspend(), which currently means just
-the .suspend handler.
+To address the issue, we now call bnxt_set_rx_skb_mode() within
+bnxt_change_mtu() to properly set the AGG rings configuration and
+update rx_skb_func based on the new MTU value.
+Additionally, BNXT_FLAG_NO_AGG_RINGS is cleared at the beginning of
+bnxt_set_rx_skb_mode() to make sure it gets set or cleared based on
+the current MTU.
 
-To reproduce this issue try hibernating (S4) the machine after a fresh boot
-without putting it into s2idle first.
-
-Fixes: 8e60615e8932 ("platform/x86/amd: pmc: Disable IRQ1 wakeup for RN/CZN")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Link: https://lore.kernel.org/r/c8f28c002ca3c66fbeeb850904a1f43118e17200.1736184606.git.mail@maciej.szmigiero.name
-[ij: edited the commit message.]
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 08450ea98ae9 ("bnxt_en: Fix max_mtu setting for multi-buf XDP")
+Co-developed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/amd/pmc.c
-+++ b/drivers/platform/x86/amd/pmc.c
-@@ -834,6 +834,10 @@ static int __maybe_unused amd_pmc_suspen
- {
- 	struct amd_pmc_dev *pdev = dev_get_drvdata(dev);
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -4041,7 +4041,7 @@ int bnxt_set_rx_skb_mode(struct bnxt *bp
+ 	struct net_device *dev = bp->dev;
  
-+	/*
-+	* Must be called only from the same set of dev_pm_ops handlers
-+	* as i8042_pm_suspend() is called: currently just from .suspend.
-+	*/
- 	if (pdev->cpu_id == AMD_CPU_ID_CZN) {
- 		int rc = amd_pmc_czn_wa_irq1(pdev);
+ 	if (page_mode) {
+-		bp->flags &= ~BNXT_FLAG_AGG_RINGS;
++		bp->flags &= ~(BNXT_FLAG_AGG_RINGS | BNXT_FLAG_NO_AGG_RINGS);
+ 		bp->flags |= BNXT_FLAG_RX_PAGE_MODE;
  
-@@ -846,7 +850,9 @@ static int __maybe_unused amd_pmc_suspen
- 	return 0;
- }
+ 		if (bp->xdp_prog->aux->xdp_has_frags)
+@@ -12799,6 +12799,14 @@ static int bnxt_change_mtu(struct net_de
+ 		bnxt_close_nic(bp, true, false);
  
--static SIMPLE_DEV_PM_OPS(amd_pmc_pm, amd_pmc_suspend_handler, NULL);
-+static const struct dev_pm_ops amd_pmc_pm = {
-+	.suspend = amd_pmc_suspend_handler,
-+};
+ 	dev->mtu = new_mtu;
++
++	/* MTU change may change the AGG ring settings if an XDP multi-buffer
++	 * program is attached.  We need to set the AGG rings settings and
++	 * rx_skb_func accordingly.
++	 */
++	if (READ_ONCE(bp->xdp_prog))
++		bnxt_set_rx_skb_mode(bp, true);
++
+ 	bnxt_set_ring_params(bp);
  
- #endif
- 
+ 	if (netif_running(dev))
 
 
 
