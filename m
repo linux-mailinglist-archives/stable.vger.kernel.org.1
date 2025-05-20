@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC46AABD9B7
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:40:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DC1ABD9B6
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD9857A5E0C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:39:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03D5C1BA4A89
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9B522D4E7;
-	Tue, 20 May 2025 13:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672271B6CE3;
+	Tue, 20 May 2025 13:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9w14eTN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Syx1aYHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416051B0416
-	for <stable@vger.kernel.org>; Tue, 20 May 2025 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B079242D63
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 13:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747748427; cv=none; b=f21wqEhMz37BAIB2DGFWiMyNpm38A7J5LmtsV86nLoi38XT7LLJrsUm6T0Z87umbZvQ4yBMhBKl8aKcLMprQ9T/CvngDUjIR7N8M6Giab8bbnZIhdzt6cMJnO9hqlsLAMFO7dMTWNXPVQPlBI01KdZ5EWLx5pAGKcCXIcOYehBA=
+	t=1747748429; cv=none; b=JVeLptHM0T+nRlhlMUASBqsr0cPwXYfIADZHxR+Udag1P9FNqoX4PDR4KOBLvq20TmPc08sUUo5xERVZd+WOZXmEBriIRkB3if+45taGAHCgRyzZvQulvu0bLq/BPBaVYdFEAVQM7pZoAErWWsqOdSSpzSwx4aXqDuVNuInEQ5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747748427; c=relaxed/simple;
-	bh=qn1DEtLJ4LRR9nBQDS1VyK62Wr7jF3fXo4T8OVLytkE=;
+	s=arc-20240116; t=1747748429; c=relaxed/simple;
+	bh=Z9yFPCEwMxMz1X9tdwC08HYza7WWFqfutvd2vrR8W14=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JfEREvdOu+WjrWUY8En56Idty61/aXNSRPn/vpBb2YFhV+BfRY59AsCUvt2B4fqPVEqQVMGym67Sc+ttKwRwt6yf32p/n916HZ1uCP7LrGPVyhVBeSVxOVf1oMwzRfr+aeTzSgdoMEOuPotOLiHAj56TRs9lj2X4dw45am6Dcfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9w14eTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4002EC4CEE9;
-	Tue, 20 May 2025 13:40:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nh1MOVqnu+IOBAQVUJAdx+D3uoNcjg0y8pfhKggnRHfvwIT5S7FMWA/gzDMZHJ9UFT0gL/aXVO+MpBB003zZyil++PwecSm5d9q11hVhnpQ0SzXVaqWi09xGdztcfZd229Qx6K/hrUtLKJqyFkFV/hiI27570Mo5eXhD1t61bJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Syx1aYHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2212DC4CEE9;
+	Tue, 20 May 2025 13:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747748426;
-	bh=qn1DEtLJ4LRR9nBQDS1VyK62Wr7jF3fXo4T8OVLytkE=;
+	s=k20201202; t=1747748428;
+	bh=Z9yFPCEwMxMz1X9tdwC08HYza7WWFqfutvd2vrR8W14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U9w14eTNK/QszGXxvRHbWvQpb1EaB+BQXEjjk0Y/bk9s82VcHPRrRqzpaEiWEVwZs
-	 Vj6CJeprm/4E2Mk5v2Uwg2DOnlqTHC4/lYWZV1+CvHx24L7qNkCBMpAmcxn57Gt4mE
-	 PpJ1N77oWxs1aEg5FBCcsELAwZptOdsU15WxtaoC571cl7jcf2HXmfh5pyGWHmMXsy
-	 hMLBfdY+VIW7dWFe3zHkzom611inOfMgzhyM66goET4XotOe5AdZ+iBazVbnOHoVFq
-	 ONHCk4px9YzEx1VYmk/zYok37+HqXGwKYCOhqppbKOf8CrVitThXocyDIBISk6lJmp
-	 oLE58AFqElezQ==
+	b=Syx1aYHOIgFO+kIKHxRUJiSdp9bz+IYUiySPAynHyHEIDf//7Kq09FNtdLAy7Jrnv
+	 wB3a43NnH6+m+Ik2YMnTPfK1q5/IU1d3yTIyuaB717s+U0sdxaTPEXVbwKy3ZcZky8
+	 q/beHBykFnzRGqfhseGmsPVaFI4LgzwJBA+/BpaoLP8HSdiKSG7Y73ZpaR9eDfposB
+	 FZrYwjGbABVRVJBxIucvYYkiblUEM6hbc0f505+t2qVIRKXY/WJYOQA3wYiRN29yFc
+	 vcb5yV6XRUASg4alM41isOM4r+k6JC/42BHhQqCHJXPPJCaf7DpHE05ETqSnDf/Se6
+	 6AYYqiHFu9ScA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: jianqi.ren.cn@windriver.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] sctp: add mutual exclusion in proc_sctp_do_udp_port()
-Date: Tue, 20 May 2025 09:40:25 -0400
-Message-Id: <20250520055608-cf835548563e53ce@stable.kernel.org>
+To: stable@vger.kernel.org,
+	kirill.shutemov@linux.intel.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12.y] mm/page_alloc: fix race condition in unaccepted memory handling
+Date: Tue, 20 May 2025 09:40:27 -0400
+Message-Id: <20250520062522-88efd3e89d1ab487@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250520081507.1955494-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <20250520072848.639525-1-kirill.shutemov@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,70 +64,106 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 10206302af856791fbcc27a33ed3c3eb09b2793d
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: <jianqi.ren.cn@windriver.com>
-Commit author: Eric Dumazet<edumazet@google.com>
+Found matching upstream commit: fefc075182275057ce607effaa3daa9e6e3bdc73
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: d3d7675d7762)
-6.12.y | Present (different SHA1: e5178bfc55b3)
+6.14.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  10206302af856 ! 1:  413154924c580 sctp: add mutual exclusion in proc_sctp_do_udp_port()
-    @@ Metadata
-      ## Commit message ##
-         sctp: add mutual exclusion in proc_sctp_do_udp_port()
-     
-    +    [ Upstream commit 10206302af856791fbcc27a33ed3c3eb09b2793d ]
-    +
-         We must serialize calls to sctp_udp_sock_stop() and sctp_udp_sock_start()
-         or risk a crash as syzbot reported:
-     
+1:  fefc075182275 ! 1:  e5e24c3c382e8 mm/page_alloc: fix race condition in unaccepted memory handling
     @@ Commit message
-         Acked-by: Xin Long <lucien.xin@gmail.com>
-         Link: https://patch.msgid.link/20250331091532.224982-1-edumazet@google.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    [Minor conflict resolved due to code context change.]
-    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         Cc: Johannes Weiner <hannes@cmpxchg.org>
+         Cc: <stable@vger.kernel.org>    [6.5+]
+         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    -
+    - ## mm/internal.h ##
+    -@@ mm/internal.h: unsigned long move_page_tables(struct pagetable_move_control *pmc);
+    - 
+    - #ifdef CONFIG_UNACCEPTED_MEMORY
+    - void accept_page(struct page *page);
+    --void unaccepted_cleanup_work(struct work_struct *work);
+    - #else /* CONFIG_UNACCEPTED_MEMORY */
+    - static inline void accept_page(struct page *page)
+    - {
+    -
+    - ## mm/mm_init.c ##
+    -@@ mm/mm_init.c: static void __meminit zone_init_free_lists(struct zone *zone)
+    - 
+    - #ifdef CONFIG_UNACCEPTED_MEMORY
+    - 	INIT_LIST_HEAD(&zone->unaccepted_pages);
+    --	INIT_WORK(&zone->unaccepted_cleanup, unaccepted_cleanup_work);
+    - #endif
+    - }
+    - 
+    +    (cherry picked from commit fefc075182275057ce607effaa3daa9e6e3bdc73)
+    +    Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
      
-      ## net/sctp/sysctl.c ##
-    -@@ net/sctp/sysctl.c: static int proc_sctp_do_auth(const struct ctl_table *ctl, int write,
-    +@@ net/sctp/sysctl.c: static int proc_sctp_do_auth(struct ctl_table *ctl, int write,
-      	return ret;
+      ## mm/page_alloc.c ##
+     @@ mm/page_alloc.c: bool has_managed_dma(void)
+    @@ mm/page_alloc.c: bool has_managed_dma(void)
+     -
+      static bool lazy_accept = true;
+      
+    --void unaccepted_cleanup_work(struct work_struct *work)
+    --{
+    --	static_branch_dec(&zones_with_unaccepted_pages);
+    --}
+    --
+      static int __init accept_memory_parse(char *p)
+    - {
+    - 	if (!strcmp(p, "lazy")) {
+     @@ mm/page_alloc.c: static bool page_contains_unaccepted(struct page *page, unsigned int order)
+      static void __accept_page(struct zone *zone, unsigned long *flags,
+      			  struct page *page)
+    @@ mm/page_alloc.c: static void __accept_page(struct zone *zone, unsigned long *fla
+      
+      	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
+     -
+    --	if (last) {
+    --		/*
+    --		 * There are two corner cases:
+    --		 *
+    --		 * - If allocation occurs during the CPU bring up,
+    --		 *   static_branch_dec() cannot be used directly as
+    --		 *   it causes a deadlock on cpu_hotplug_lock.
+    --		 *
+    --		 *   Instead, use schedule_work() to prevent deadlock.
+    --		 *
+    --		 * - If allocation occurs before workqueues are initialized,
+    --		 *   static_branch_dec() should be called directly.
+    --		 *
+    --		 *   Workqueues are initialized before CPU bring up, so this
+    --		 *   will not conflict with the first scenario.
+    --		 */
+    --		if (system_wq)
+    --			schedule_work(&zone->unaccepted_cleanup);
+    --		else
+    --			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
+    --	}
+    +-	if (last)
+    +-		static_branch_dec(&zones_with_unaccepted_pages);
       }
       
-     +static DEFINE_MUTEX(sctp_sysctl_mutex);
-     +
-    - static int proc_sctp_do_udp_port(const struct ctl_table *ctl, int write,
-    + static int proc_sctp_do_udp_port(struct ctl_table *ctl, int write,
-      				 void *buffer, size_t *lenp, loff_t *ppos)
+      void accept_page(struct page *page)
+    @@ mm/page_alloc.c: static bool try_to_accept_memory_one(struct zone *zone)
+     -	return static_branch_unlikely(&zones_with_unaccepted_pages);
+     -}
+     -
+    - static bool cond_accept_memory(struct zone *zone, unsigned int order,
+    - 			       int alloc_flags)
+    + static bool cond_accept_memory(struct zone *zone, unsigned int order)
       {
-    -@@ net/sctp/sysctl.c: static int proc_sctp_do_udp_port(const struct ctl_table *ctl, int write,
-    +@@ net/sctp/sysctl.c: static int proc_sctp_do_udp_port(struct ctl_table *ctl, int write,
-      		if (new_value > max || new_value < min)
-      			return -EINVAL;
-      
-    @@ net/sctp/sysctl.c: static int proc_sctp_do_udp_port(const struct ctl_table *ctl,
-      		net->sctp.udp_port = new_value;
-      		sctp_udp_sock_stop(net);
-      		if (new_value) {
-    -@@ net/sctp/sysctl.c: static int proc_sctp_do_udp_port(const struct ctl_table *ctl, int write,
-    +@@ net/sctp/sysctl.c: static int proc_sctp_do_udp_port(struct ctl_table *ctl, int write,
-      		lock_sock(sk);
-      		sctp_sk(sk)->udp_port = htons(net->sctp.udp_port);
-      		release_sock(sk);
+      	long to_accept, wmark;
+      	bool ret = false;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
