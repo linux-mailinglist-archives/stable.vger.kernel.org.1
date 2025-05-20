@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-145377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD44ABDBA2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:13:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A43ABDBDD
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFEED8A3A23
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:07:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACF474C678E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFF12459CF;
-	Tue, 20 May 2025 14:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37082472AB;
+	Tue, 20 May 2025 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYotuNcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndaCBr75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABD122D7A8;
-	Tue, 20 May 2025 14:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A000F1FBE9E;
+	Tue, 20 May 2025 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749999; cv=none; b=nVpdK/HDUiNOZeVdag3KtwLKL1GJ2shRlllGfHacHC1risqRZWYMX3tjBDtPG6XJmhlw3DgItWZPgI1Zl8+P7wd9/rvC+c3Q1abztMXlOu3M/fDmhzJ7m2EguHXGvRNlTzxcxAAimVYo+FZOTGHtltyORMQtlU0MokkAEXixx94=
+	t=1747750104; cv=none; b=RsEM1FRsTZ8dHlDrZmS0CUarkgamV9+6hlh7OV2X7S1SGq88W9xXDklUA+mpEeGHwMo4cJssRrX4y/K0yoFdoyFkQ1w8Z3czD3tu/NEPf4rJNqx0INA3fXZUV/0ymRmHdXxfEL6ueEv2nrgYnIYg8RMv08sjmW62GYLJsyWT1Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749999; c=relaxed/simple;
-	bh=AqtFIkkbFyuaOWldyU6QmLc2M1VLKb+k+5A8Yf5ZxqM=;
+	s=arc-20240116; t=1747750104; c=relaxed/simple;
+	bh=0Xi6kJ7rfBNkr1+qT56mBZHQ+xXhfWGOU0+FRmZFSEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2rKIM28iUYrH30/62NPEPb3eequ+o89z/QukAScVAHeSistW/twtMU5FYoiwpQnU+NhO7sUP8AxEygJRX8DbA9F41t344ZQNqFMDCeW+5zf/DKx0Ft9r9QCAi+pagCxpX3lNsmUQSg9XUs4igonTtjgKx0+NHpT13NFpYSQUhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYotuNcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76312C4CEE9;
-	Tue, 20 May 2025 14:06:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tcOsBulVUqdcegRd+i6mAlsmk8p1XYFmq4K4GwUeUwu5ylZ9MigiH32aQ11m80axrQ0kJhgCu9bsrMOScyuneF08KboxZsAmr5rAUiFjofsWlKz8BtR5mFnI5NS2Vz2iA3ksK73aaZ1IIq/GNdz60IZeCNkqwGGur+mRcU8xzAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndaCBr75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EBDC4CEE9;
+	Tue, 20 May 2025 14:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749998;
-	bh=AqtFIkkbFyuaOWldyU6QmLc2M1VLKb+k+5A8Yf5ZxqM=;
+	s=korg; t=1747750104;
+	bh=0Xi6kJ7rfBNkr1+qT56mBZHQ+xXhfWGOU0+FRmZFSEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYotuNcbH+2zdcxNFHbbjgPBf8Hblsrj4RuwO/AYu7u1c8bEMLrw2fXeITc61num7
-	 T+PYO1zOQKf9AysIiDlSgc58wajHFyWzvEeZBSSabLcswgIQlEBO18UErq/6UbuCT7
-	 gmRDA5E4iDRdtyC5C1x3nKR9JRbwxoXueIfw/laA=
+	b=ndaCBr75VqaEa9PzIJ0SamnUXQVyR/tuIQkU8U+s7kJTllpQBL6RlyaaQkfKXF9qR
+	 9lJDzRl98tonTHDcEv3e/+NoYaswmVbtoWInuujLAkZrjaTSZI1JkRHgUQyRHlCKRs
+	 l9NblmPLN8Z4e2iQA8P9dUKW1JXFn2J+1fyY1LYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/143] fs/xattr.c: fix simple_xattr_list to always include security.* xattrs
-Date: Tue, 20 May 2025 15:49:17 +0200
-Message-ID: <20250520125810.133745600@linuxfoundation.org>
+Subject: [PATCH 6.12 003/143] drivers/platform/x86/amd: pmf: Check for invalid sideloaded Smart PC Policies
+Date: Tue, 20 May 2025 15:49:18 +0200
+Message-ID: <20250520125810.179550368@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
 References: <20250520125810.036375422@linuxfoundation.org>
@@ -60,106 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 8b0ba61df5a1c44e2b3cf683831a4fc5e24ea99d ]
+[ Upstream commit 690d722e02819ef978f90cd7553973eba1007e6c ]
 
-The vfs has long had a fallback to obtain the security.* xattrs from the
-LSM when the filesystem does not implement its own listxattr, but
-shmem/tmpfs and kernfs later gained their own xattr handlers to support
-other xattrs. Unfortunately, as a side effect, tmpfs and kernfs-based
-filesystems like sysfs no longer return the synthetic security.* xattr
-names via listxattr unless they are explicitly set by userspace or
-initially set upon inode creation after policy load. coreutils has
-recently switched from unconditionally invoking getxattr for security.*
-for ls -Z via libselinux to only doing so if listxattr returns the xattr
-name, breaking ls -Z of such inodes.
+If a policy is passed into amd_pmf_get_pb_data() that causes the engine
+to fail to start there is a memory leak. Free the memory in this failure
+path.
 
-Before:
-$ getfattr -m.* /run/initramfs
-<no output>
-$ getfattr -m.* /sys/kernel/fscaps
-<no output>
-$ setfattr -n user.foo /run/initramfs
-$ getfattr -m.* /run/initramfs
-user.foo
-
-After:
-$ getfattr -m.* /run/initramfs
-security.selinux
-$ getfattr -m.* /sys/kernel/fscaps
-security.selinux
-$ setfattr -n user.foo /run/initramfs
-$ getfattr -m.* /run/initramfs
-security.selinux
-user.foo
-
-Link: https://lore.kernel.org/selinux/CAFqZXNtF8wDyQajPCdGn=iOawX4y77ph0EcfcqcUUj+T87FKyA@mail.gmail.com/
-Link: https://lore.kernel.org/selinux/20250423175728.3185-2-stephen.smalley.work@gmail.com/
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Link: https://lore.kernel.org/20250424152822.2719-1-stephen.smalley.work@gmail.com
-Fixes: b09e0fa4b4ea66266058ee ("tmpfs: implement generic xattr support")
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 10817f28e5337 ("platform/x86/amd/pmf: Add capability to sideload of policy binary")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250423132002.3984997-2-superm1@kernel.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xattr.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/platform/x86/amd/pmf/tee-if.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xattr.c b/fs/xattr.c
-index 05ec7e7d9e87e..4f5a45338a83a 100644
---- a/fs/xattr.c
-+++ b/fs/xattr.c
-@@ -1290,6 +1290,15 @@ static bool xattr_is_trusted(const char *name)
- 	return !strncmp(name, XATTR_TRUSTED_PREFIX, XATTR_TRUSTED_PREFIX_LEN);
+diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
+index cb5abab2210a7..804c4085b82fb 100644
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -364,9 +364,14 @@ static ssize_t amd_pmf_get_pb_data(struct file *filp, const char __user *buf,
+ 	amd_pmf_hex_dump_pb(dev);
+ 	ret = amd_pmf_start_policy_engine(dev);
+ 	if (ret < 0)
+-		return ret;
++		goto cleanup;
+ 
+ 	return length;
++
++cleanup:
++	kfree(dev->policy_buf);
++	dev->policy_buf = NULL;
++	return ret;
  }
  
-+static bool xattr_is_maclabel(const char *name)
-+{
-+	const char *suffix = name + XATTR_SECURITY_PREFIX_LEN;
-+
-+	return !strncmp(name, XATTR_SECURITY_PREFIX,
-+			XATTR_SECURITY_PREFIX_LEN) &&
-+		security_ismaclabel(suffix);
-+}
-+
- /**
-  * simple_xattr_list - list all xattr objects
-  * @inode: inode from which to get the xattrs
-@@ -1322,6 +1331,17 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
- 	if (err)
- 		return err;
- 
-+	err = security_inode_listsecurity(inode, buffer, remaining_size);
-+	if (err < 0)
-+		return err;
-+
-+	if (buffer) {
-+		if (remaining_size < err)
-+			return -ERANGE;
-+		buffer += err;
-+	}
-+	remaining_size -= err;
-+
- 	read_lock(&xattrs->lock);
- 	for (rbp = rb_first(&xattrs->rb_root); rbp; rbp = rb_next(rbp)) {
- 		xattr = rb_entry(rbp, struct simple_xattr, rb_node);
-@@ -1330,6 +1350,10 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
- 		if (!trusted && xattr_is_trusted(xattr->name))
- 			continue;
- 
-+		/* skip MAC labels; these are provided by LSM above */
-+		if (xattr_is_maclabel(xattr->name))
-+			continue;
-+
- 		err = xattr_list_one(&buffer, &remaining_size, xattr->name);
- 		if (err)
- 			break;
+ static const struct file_operations pb_fops = {
 -- 
 2.39.5
 
