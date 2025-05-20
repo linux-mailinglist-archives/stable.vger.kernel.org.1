@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-145580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6FDABDCDD
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:29:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C49CABDBE3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33E847B811E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB38C7B6125
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634FC248F7D;
-	Tue, 20 May 2025 14:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B132500D0;
+	Tue, 20 May 2025 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPaE6v2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNwV4p5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C4248F7F;
-	Tue, 20 May 2025 14:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E0C24EF83;
+	Tue, 20 May 2025 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750589; cv=none; b=tSm6Zuyphqg9h/2B0jwOlddOJnXeykA68JLfrzHF0Eh6mOpE0SjZWpxFdnmKeBCfpHCLXTlobqsHGFSsSZAiPYIkJMNhTYWayB9bPEfhMT40XZzG+IF0T4hYZGAti6INp0vC+Za37pFjgLD/l2R3Xw91ux2DhlWKu9vzTvnk9hw=
+	t=1747750280; cv=none; b=GWBN+uV/LSMDjxO+VkBUh0IEt8c+dI3XRhYcprkXfkHf8/BHYRcKOAAwsZbhUzO99JQl25k9w5ToRPwgppFhvQAO803Tv/lxV2wcOqdA0hYROi+1SG4XD1e1QSdEjTL0994Vk5lhbWhxeR9VO9YxoiuZHeVAvXJy3KXPwqXXtDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750589; c=relaxed/simple;
-	bh=WevZLmX+AeJZ/MaDfJX7Y6Mk2qaezdOgt2ZPBGvdQsQ=;
+	s=arc-20240116; t=1747750280; c=relaxed/simple;
+	bh=Oph6A+SSwSOEI1y/9MEw8CE+D3zB7tRdPRlPJTZyJCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJwNcC/UcBsYz83mFNkbzdlSNNznFjIo0qe/ZZ3xqJ3kkdHMcCMIrG2mR/SpJ1tVyMO30Yt88a9S5XAi8wgbQOKHgPlLdnUxwnWaHDtpqlO+9Vkkzaq4iKadU9d80JxGQRK4J+xuox3TVtd/ZbkUTXFMrjCsW8N/EwWrz6Jh9XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPaE6v2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34571C4CEEB;
-	Tue, 20 May 2025 14:16:27 +0000 (UTC)
+	 MIME-Version; b=kbXzK6l8lPvbISa8KLkjY5wUehfNJtM3V2DPR9msSkJLClZHL1fpGwb3AUwNKIb4yQHcTcMzt+MB3FSJu+Ad/RifmMrzsavUTqgdWDTJE876PaoLfR0kLZN3mrfbInV0aRi3TaThsnONKlcA2nf6ttYkJGRTjBYlC2fLXbyBVug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNwV4p5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D551C4CEE9;
+	Tue, 20 May 2025 14:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750588;
-	bh=WevZLmX+AeJZ/MaDfJX7Y6Mk2qaezdOgt2ZPBGvdQsQ=;
+	s=korg; t=1747750279;
+	bh=Oph6A+SSwSOEI1y/9MEw8CE+D3zB7tRdPRlPJTZyJCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPaE6v2s8u3QbpCeU8mnttyFRrF6TqKS85M9FJQQvTCOTb4tMowFZ1k6+314LZ050
-	 lhMqUmfzU9Cfia/naf2/wx7UmC2be1F5TYhjx93tIyVohrFjerE4133meqaO4g9pYF
-	 xDLr6IqOskTXO+TuGvroXZdZEIY8oFtnFeM2DfX8=
+	b=NNwV4p5QBCftJHGtjp/U7tn5/HYKI/4ybnCN9fD6qKAKN54MYBJdtuflC9GHrnv61
+	 IYxdAkfkYWiFPCNhglvYCEx7osQlNQlnXxR4klUKbuUlcfGaYQeqA6ZekNb26suqUN
+	 cf4S7ZQp3Hky8VnkHt98/BozEivnnU2UOQTGnK5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengtao He <hept.hept.hept@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 058/145] net/tls: fix kernel panic when alloc_page failed
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 073/143] LoongArch: Prevent cond_resched() occurring within kernel-fpu
 Date: Tue, 20 May 2025 15:50:28 +0200
-Message-ID: <20250520125812.852192502@linuxfoundation.org>
+Message-ID: <20250520125812.937057872@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengtao He <hept.hept.hept@gmail.com>
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
 
-[ Upstream commit 491deb9b8c4ad12fe51d554a69b8165b9ef9429f ]
+commit 2468b0e3d5659dfde77f081f266e1111a981efb8 upstream.
 
-We cannot set frag_list to NULL pointer when alloc_page failed.
-It will be used in tls_strp_check_queue_ok when the next time
-tls_strp_read_sock is called.
+When CONFIG_PREEMPT_COUNT is not configured (i.e. CONFIG_PREEMPT_NONE/
+CONFIG_PREEMPT_VOLUNTARY), preempt_disable() / preempt_enable() merely
+acts as a barrier(). However, in these cases cond_resched() can still
+trigger a context switch and modify the CSR.EUEN, resulting in do_fpu()
+exception being activated within the kernel-fpu critical sections, as
+demonstrated in the following path:
 
-This is because we don't reset full_len in tls_strp_flush_anchor_copy()
-so the recv path will try to continue handling the partial record
-on the next call but we dettached the rcvq from the frag list.
-Alternative fix would be to reset full_len.
+dcn32_calculate_wm_and_dlg()
+    DC_FP_START()
+	dcn32_calculate_wm_and_dlg_fpu()
+	    dcn32_find_dummy_latency_index_for_fw_based_mclk_switch()
+		dcn32_internal_validate_bw()
+		    dcn32_enable_phantom_stream()
+			dc_create_stream_for_sink()
+			   kzalloc(GFP_KERNEL)
+				__kmem_cache_alloc_node()
+				    __cond_resched()
+    DC_FP_END()
 
-Unable to handle kernel NULL pointer dereference
-at virtual address 0000000000000028
- Call trace:
- tls_strp_check_rcv+0x128/0x27c
- tls_strp_data_ready+0x34/0x44
- tls_data_ready+0x3c/0x1f0
- tcp_data_ready+0x9c/0xe4
- tcp_data_queue+0xf6c/0x12d0
- tcp_rcv_established+0x52c/0x798
+This patch is similar to commit d02198550423a0b (x86/fpu: Improve crypto
+performance by making kernel-mode FPU reliably usable in softirqs).  It
+uses local_bh_disable() instead of preempt_disable() for non-RT kernels
+so it can avoid the cond_resched() issue, and also extend the kernel-fpu
+application scenarios to the softirq context.
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Signed-off-by: Pengtao He <hept.hept.hept@gmail.com>
-Link: https://patch.msgid.link/20250514132013.17274-1-hept.hept.hept@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_strp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/kfpu.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 77e33e1e340e3..65b0da6fdf6a7 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -396,7 +396,6 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 		return 0;
+--- a/arch/loongarch/kernel/kfpu.c
++++ b/arch/loongarch/kernel/kfpu.c
+@@ -18,11 +18,28 @@ static unsigned int euen_mask = CSR_EUEN
+ static DEFINE_PER_CPU(bool, in_kernel_fpu);
+ static DEFINE_PER_CPU(unsigned int, euen_current);
  
- 	shinfo = skb_shinfo(strp->anchor);
--	shinfo->frag_list = NULL;
- 
- 	/* If we don't know the length go max plus page for cipher overhead */
- 	need_spc = strp->stm.full_len ?: TLS_MAX_PAYLOAD_SIZE + PAGE_SIZE;
-@@ -412,6 +411,8 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 				   page, 0, 0);
- 	}
- 
-+	shinfo->frag_list = NULL;
++static inline void fpregs_lock(void)
++{
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_disable();
++	else
++		local_bh_disable();
++}
 +
- 	strp->copy_mode = 1;
- 	strp->stm.offset = 0;
++static inline void fpregs_unlock(void)
++{
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_enable();
++	else
++		local_bh_enable();
++}
++
+ void kernel_fpu_begin(void)
+ {
+ 	unsigned int *euen_curr;
  
--- 
-2.39.5
-
+-	preempt_disable();
++	if (!irqs_disabled())
++		fpregs_lock();
+ 
+ 	WARN_ON(this_cpu_read(in_kernel_fpu));
+ 
+@@ -73,7 +90,8 @@ void kernel_fpu_end(void)
+ 
+ 	this_cpu_write(in_kernel_fpu, false);
+ 
+-	preempt_enable();
++	if (!irqs_disabled())
++		fpregs_unlock();
+ }
+ EXPORT_SYMBOL_GPL(kernel_fpu_end);
+ 
 
 
 
