@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA192ABDB4E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50398ABDC23
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 753778C28CB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653D817C8DB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E82424337C;
-	Tue, 20 May 2025 14:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86326246791;
+	Tue, 20 May 2025 14:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AF7g6lv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOnZa4BZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B21621E0BB;
-	Tue, 20 May 2025 14:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D35243371;
+	Tue, 20 May 2025 14:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749811; cv=none; b=W2G7Raj3HWPTpOpgG8SqCvAVOwO7u+RzBOXiqDzHTfyQHdSUQ2rdQUn1oD6GU7P6KXYotxrnseQAuQ9CK3E8rbrb3XnvoSIb7B4htWbjHRkukBFYLuyZTnJb3kAl23P6eCNLCMYKmLTDieG82dREH54/ogfBtrg8G9Ps1OFenhk=
+	t=1747750156; cv=none; b=s7VAYxu/FiB7KO2Z107W7Zc1dUlC9lcCSXJ+QT6X+4vijTKt5crFyw1QE8UfzJ/aho6mdwbZEhjSwnSvZlrc//6pIfSa3dnJfqPLiBHB1DtGmR9nVHxJO0VBO1pQSSaXsBazdkVXCwgIkkGE+1vDyHh1Lr48/y/FNGjqUw01I28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749811; c=relaxed/simple;
-	bh=axR3kXiBTpYxTfuT9Wcm6wIi/6aERCuXTsYEHjnIbiE=;
+	s=arc-20240116; t=1747750156; c=relaxed/simple;
+	bh=JMPBP1B5GG7tt09kuQTYLUGkJ2zrMjTFV/OOoIQ28xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDOzs76ukll/Z+uuyz9kwZLG3RT43ndRs/2Z+VrsArxot5pAw8ihrNw7ettmaiK9Ql3JNGe3CEkTcYV+k2K1izmJoCJG7PCaQLcXXHCto3OHmXBeL4MX5tjNJnzjeKRIyWhbk9cQd+yav7o3iVW2u5rl0K9J7cVSJb/a65J4FtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AF7g6lv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9618DC4CEE9;
-	Tue, 20 May 2025 14:03:30 +0000 (UTC)
+	 MIME-Version; b=iHfoayiIPQ7v4XlQQ06WDdqWF+mwIxsD6lHPnUG9tQ8imTC5Pk2N2ThJFN59eSpCxFDSbN9AqjbECAcVcUCPvlj371ESTz4UK65ucL80oAu8RTmAaCScfJF7z0ymzljwIPfoXcLXM/tPGz/21uXKIZ1zU2e2cRNSjZK0neFiedc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOnZa4BZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B408DC4CEEA;
+	Tue, 20 May 2025 14:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749810;
-	bh=axR3kXiBTpYxTfuT9Wcm6wIi/6aERCuXTsYEHjnIbiE=;
+	s=korg; t=1747750156;
+	bh=JMPBP1B5GG7tt09kuQTYLUGkJ2zrMjTFV/OOoIQ28xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2AF7g6lvbwqcfuMh/poVOiCB8gvMzvYrB7gBIDQItvYfL2R1HNYJBlT4MOiC342eR
-	 T+bqX5oxbMB5d52BKTIXCmdo7mVcrodeKdi9Ys1S6crMqx6vDoOH/lvzsPu9xzCd0S
-	 iWx6+Q8Niqd0zjXpqII+OIb/JEXmn6DGpglYGNhU=
+	b=NOnZa4BZ6WWvElAakK47seQk7N9GrmbapIUzwjdyvGO/Ad/tzUwrhlfkCyDaXk7Dv
+	 CuSF3OTPqoY+pptClfQJ3r33T2rYkMzDFOmfn98oEtNBk1Rnn8A4h2ObP6H+KVH+lg
+	 R1Kbr2CnSE0u2tWcQpgmkyvmQzngfvxntRJSrC3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/117] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
+Subject: [PATCH 6.12 060/143] octeontx2-pf: macsec: Fix incorrect max transmit size in TX secy
 Date: Tue, 20 May 2025 15:50:15 +0200
-Message-ID: <20250520125805.976812224@linuxfoundation.org>
+Message-ID: <20250520125812.414426538@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 9d8a99c5a7c7f4f7eca2c168a4ec254409670035 ]
+[ Upstream commit 865ab2461375e3a5a2526f91f9a9f17b8931bc9e ]
 
-In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
-allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
-not freed. Fix that by jumping to the error path that frees them, by
-calling qlcnic_free_mbx_args(). This was found using static analysis.
+MASCEC hardware block has a field called maximum transmit size for
+TX secy. Max packet size going out of MCS block has be programmed
+taking into account full packet size which has L2 header,SecTag
+and ICV. MACSEC offload driver is configuring max transmit size as
+macsec interface MTU which is incorrect. Say with 1500 MTU of real
+device, macsec interface created on top of real device will have MTU of
+1468(1500 - (SecTag + ICV)). This is causing packets from macsec
+interface of size greater than or equal to 1468 are not getting
+transmitted out because driver programmed max transmit size as 1468
+instead of 1514(1500 + ETH_HDR_LEN).
 
-Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250512044829.36400-1-abdun.nihaal@gmail.com
+Link: https://patch.msgid.link/1747053756-4529-1-git-send-email-sbhatta@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-index 28d24d59efb84..d57b976b90409 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -1484,8 +1484,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
- 	}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index 6cc7a78968fc1..74953f67a2bf9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -533,7 +533,8 @@ static int cn10k_mcs_write_tx_secy(struct otx2_nic *pfvf,
+ 	if (sw_tx_sc->encrypt)
+ 		sectag_tci |= (MCS_TCI_E | MCS_TCI_C);
  
- 	cmd_op = (cmd.rsp.arg[0] & 0xff);
--	if (cmd.rsp.arg[0] >> 25 == 2)
--		return 2;
-+	if (cmd.rsp.arg[0] >> 25 == 2) {
-+		ret = 2;
-+		goto out;
-+	}
-+
- 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
- 		set_bit(QLC_BC_VF_STATE, &vf->state);
- 	else
+-	policy = FIELD_PREP(MCS_TX_SECY_PLCY_MTU, secy->netdev->mtu);
++	policy = FIELD_PREP(MCS_TX_SECY_PLCY_MTU,
++			    pfvf->netdev->mtu + OTX2_ETH_HLEN);
+ 	/* Write SecTag excluding AN bits(1..0) */
+ 	policy |= FIELD_PREP(MCS_TX_SECY_PLCY_ST_TCI, sectag_tci >> 2);
+ 	policy |= FIELD_PREP(MCS_TX_SECY_PLCY_ST_OFFSET, tag_offset);
 -- 
 2.39.5
 
