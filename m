@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75FD9ABDA50
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:56:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57FEABDB02
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5A991BA4E2B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:56:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFD9C188717A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDDB242D9A;
-	Tue, 20 May 2025 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63F5242913;
+	Tue, 20 May 2025 14:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ga7ZVIgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6I/Hd2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9051922ED;
-	Tue, 20 May 2025 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03B71D8E07;
+	Tue, 20 May 2025 14:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749369; cv=none; b=snL4FG1PwKa9kXn5ZRAizSqWN75vkjX42KaiJMuL/hXuVqRrFmoO4fJBi/MI4uOZ3HVmsk0IoRmzMGanXGkHxr+wVAZItT5mcA27oyGa6BQVRxHVhxuYg5Iyf+BytxyeVbtdDZkG3eRhc1s2yZraleSPhnXz5L72i8HeElbFnoY=
+	t=1747749767; cv=none; b=rYUV1ZsBs/Bodi1/XoW4o5nBW389ui1EIJiP3UcisozD9+s1qacqhz4oQOjX2/hZHMPAVqmcgkOCG9xIuv4GNAu9xUgmUr85uePVvnx9Y+2ZBvBr+igpit4dKX9okpgmeAuxJCkEzfXJgLDxCCJg+2I3up1+A09zd6uvKPPfE3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749369; c=relaxed/simple;
-	bh=IZ/qREx0ta4DuZnx8RRrzoNNNXkeZuZ0EoAya0mAWRE=;
+	s=arc-20240116; t=1747749767; c=relaxed/simple;
+	bh=pLueAJD4lwAElQ2tJ5kzXQWE7Al6HUFu9TsplQmlEKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sr8e1Z7F1WlKeBjbdsLpfXoxC8GGOAFXpXxTa15wOXb9gSprUojQlcy58fIIkMlIImqUK2743PDVZI5lbmroCZba5ubZU4lX1OximLftc760kpWkd6MidPp7tlsjY8g7FPkHJ0zrsGQzqT42hDTKSMJBec7o6gBd10gB4VELC88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ga7ZVIgz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66AAC4CEE9;
-	Tue, 20 May 2025 13:56:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Gsg9EvHEz6bhfZ3LSJ6OvZnA9u7MaAbmikiRpR+cZOsVYhRc/o8jOlOWDs2R20gNqCURJKy7Z5enz4Mk7GOafJyw60ibrJLR3nkli2uT+C8q/R/deDs3LduyLNpZMYqm0YnxfmUCvFqKVUeFfEFtBH2IWUMps0N9C0EpxSdT0mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6I/Hd2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F55C4CEE9;
+	Tue, 20 May 2025 14:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749369;
-	bh=IZ/qREx0ta4DuZnx8RRrzoNNNXkeZuZ0EoAya0mAWRE=;
+	s=korg; t=1747749767;
+	bh=pLueAJD4lwAElQ2tJ5kzXQWE7Al6HUFu9TsplQmlEKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ga7ZVIgzi5rtoxpDgSO1hQWDhoI8EEaC0919jqZS/yxeUYgSl+uRpWUq/BCvBjwdb
-	 oPR/kDsK7AMgVIAVah+TlLFhH8q1mWvXgfOC4ltRdXPo4/3YouPTXaoLTexWGyvzXx
-	 yx8BnS9J5stXZhFSzLmypH9HHxLvNqG7kf7ELVCs=
+	b=q6I/Hd2Kse4JBcJDSz/Wwey8KPp08W/cveI3F95LL2eptqoIiLkgY73gXww35tjMs
+	 6h7vHUStwANBp3p5OLhuHW+C8AJTaE9FLQhA0kj/4K+7uNt4zNoCVQePmRfT5xSGzH
+	 5fjG2bOatAnG57QYuIe182UEyw8jkUi/fmCer1mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	liuyi <liuy22@mails.tsinghua.edu.cn>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	=?UTF-8?q?J=C3=BCrg=20Billeter?= <j@bitron.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/97] RDMA/rxe: Fix slab-use-after-free Read in rxe_queue_cleanup bug
-Date: Tue, 20 May 2025 15:49:47 +0200
-Message-ID: <20250520125801.536128406@linuxfoundation.org>
+Subject: [PATCH 6.6 023/117] drm/amd: Stop evicting resources on APUs in suspend
+Date: Tue, 20 May 2025 15:49:48 +0200
+Message-ID: <20250520125804.901974781@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit f81b33582f9339d2dc17c69b92040d3650bb4bae ]
+[ Upstream commit 226db36032c61d8717dfdd052adac351b22d3e83 ]
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x7d/0xa0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xcf/0x610 mm/kasan/report.c:489
- kasan_report+0xb5/0xe0 mm/kasan/report.c:602
- rxe_queue_cleanup+0xd0/0xe0 drivers/infiniband/sw/rxe/rxe_queue.c:195
- rxe_cq_cleanup+0x3f/0x50 drivers/infiniband/sw/rxe/rxe_cq.c:132
- __rxe_cleanup+0x168/0x300 drivers/infiniband/sw/rxe/rxe_pool.c:232
- rxe_create_cq+0x22e/0x3a0 drivers/infiniband/sw/rxe/rxe_verbs.c:1109
- create_cq+0x658/0xb90 drivers/infiniband/core/uverbs_cmd.c:1052
- ib_uverbs_create_cq+0xc7/0x120 drivers/infiniband/core/uverbs_cmd.c:1095
- ib_uverbs_write+0x969/0xc90 drivers/infiniband/core/uverbs_main.c:679
- vfs_write fs/read_write.c:677 [inline]
- vfs_write+0x26a/0xcc0 fs/read_write.c:659
- ksys_write+0x1b8/0x200 fs/read_write.c:731
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xaa/0x1b0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+commit 5095d5418193 ("drm/amd: Evict resources during PM ops prepare()
+callback") intentionally moved the eviction of resources to earlier in
+the suspend process, but this introduced a subtle change that it occurs
+before adev->in_s0ix or adev->in_s3 are set. This meant that APUs
+actually started to evict resources at suspend time as well.
 
-In the function rxe_create_cq, when rxe_cq_from_init fails, the function
-rxe_cleanup will be called to handle the allocated resources. In fact,
-some memory resources have already been freed in the function
-rxe_cq_from_init. Thus, this problem will occur.
+Explicitly set s0ix or s3 in the prepare() stage, and unset them if the
+prepare() stage failed.
 
-The solution is to let rxe_cleanup do all the work.
+v2: squash in warning fix from Stephen Rothwell
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://paste.ubuntu.com/p/tJgC42wDf6/
-Tested-by: liuyi <liuy22@mails.tsinghua.edu.cn>
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20250412075714.3257358-1-yanjun.zhu@linux.dev
-Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: Jürg Billeter <j@bitron.ch>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3132#note_2271038
+Fixes: 5095d5418193 ("drm/amd: Evict resources during PM ops prepare() callback")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: d0ce1aaa8531 ("Revert "drm/amd: Stop evicting resources on APUs in suspend"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_cq.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h        |  2 ++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c   | 15 +++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 11 +++++++++--
+ 3 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_cq.c b/drivers/infiniband/sw/rxe/rxe_cq.c
-index b1a0ab3cd4bd1..43dfc6fd8a3ed 100644
---- a/drivers/infiniband/sw/rxe/rxe_cq.c
-+++ b/drivers/infiniband/sw/rxe/rxe_cq.c
-@@ -71,11 +71,8 @@ int rxe_cq_from_init(struct rxe_dev *rxe, struct rxe_cq *cq, int cqe,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index d59e8536192ca..ed4ebc6d32695 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -1458,9 +1458,11 @@ static inline int amdgpu_acpi_smart_shift_update(struct drm_device *dev,
+ #if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
+ bool amdgpu_acpi_is_s3_active(struct amdgpu_device *adev);
+ bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev);
++void amdgpu_choose_low_power_state(struct amdgpu_device *adev);
+ #else
+ static inline bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev) { return false; }
+ static inline bool amdgpu_acpi_is_s3_active(struct amdgpu_device *adev) { return false; }
++static inline void amdgpu_choose_low_power_state(struct amdgpu_device *adev) { }
+ #endif
  
- 	err = do_mmap_info(rxe, uresp ? &uresp->mi : NULL, udata,
- 			   cq->queue->buf, cq->queue->buf_size, &cq->queue->ip);
--	if (err) {
--		vfree(cq->queue->buf);
--		kfree(cq->queue);
-+	if (err)
- 		return err;
--	}
+ #if defined(CONFIG_DRM_AMD_DC)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+index 8b2f2b921d9de..8b8e273662b39 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -1525,4 +1525,19 @@ bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev)
+ #endif /* CONFIG_AMD_PMC */
+ }
  
- 	cq->is_user = uresp;
++/**
++ * amdgpu_choose_low_power_state
++ *
++ * @adev: amdgpu_device_pointer
++ *
++ * Choose the target low power state for the GPU
++ */
++void amdgpu_choose_low_power_state(struct amdgpu_device *adev)
++{
++	if (amdgpu_acpi_is_s0ix_active(adev))
++		adev->in_s0ix = true;
++	else if (amdgpu_acpi_is_s3_active(adev))
++		adev->in_s3 = true;
++}
++
+ #endif /* CONFIG_SUSPEND */
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 10f5a3d0f5916..b2056228e8699 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4121,13 +4121,15 @@ int amdgpu_device_prepare(struct drm_device *dev)
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	int i, r;
  
++	amdgpu_choose_low_power_state(adev);
++
+ 	if (dev->switch_power_state == DRM_SWITCH_POWER_OFF)
+ 		return 0;
+ 
+ 	/* Evict the majority of BOs before starting suspend sequence */
+ 	r = amdgpu_device_evict_resources(adev);
+ 	if (r)
+-		return r;
++		goto unprepare;
+ 
+ 	flush_delayed_work(&adev->gfx.gfx_off_delay_work);
+ 
+@@ -4138,10 +4140,15 @@ int amdgpu_device_prepare(struct drm_device *dev)
+ 			continue;
+ 		r = adev->ip_blocks[i].version->funcs->prepare_suspend((void *)adev);
+ 		if (r)
+-			return r;
++			goto unprepare;
+ 	}
+ 
+ 	return 0;
++
++unprepare:
++	adev->in_s0ix = adev->in_s3 = false;
++
++	return r;
+ }
+ 
+ /**
 -- 
 2.39.5
 
