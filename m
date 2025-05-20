@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB64ABDB41
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A1FABDD5A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C242A8C2E0F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3E74E5F1F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D296A2451C8;
-	Tue, 20 May 2025 14:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FE024FC09;
+	Tue, 20 May 2025 14:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CseVsbes"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGkPl9uv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC7D242907;
-	Tue, 20 May 2025 14:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE0F1A08DF;
+	Tue, 20 May 2025 14:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749764; cv=none; b=diOoR54SUOtdxWhdXNiPi8L3pPi0Xvk6VhIFkkKd9kkKxqF1c/j4ZdOVZXcQ1AXXPK1jOjzvsQLFUBdtihRV5h8MHP9E9xRrTSK250OrU31BuIiRLz1pX5YHC+flJ/OGGJX8dSthmVJT2KSwRBWYwOfPm5ZqiOVXzjT1c+3na0g=
+	t=1747750559; cv=none; b=JTiGRoGWOum7TiuHQ74kOrlz/rwu7tZsFyg0smNeDCmsRuhCRCwKHDDqDhXzMcLVPHCliqPNeW6qR8wERIQQcAXS1Y0oHPKRMjH0cJuIXVbJEVmfxnG3SMrn/ITtymHwtwx5Mk1pKvEPnW+gOX25cKEdArKAdmDCCzggqaZIoZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749764; c=relaxed/simple;
-	bh=qAxhrlehMoBkHmTyzm7RhHncUMelum2T2M1X9NFD6yc=;
+	s=arc-20240116; t=1747750559; c=relaxed/simple;
+	bh=xMLYj0o4f+dpedmnMi1rdm+0koh+BX1nabav4SSn0cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IZnrmFU5xG9bY24o9eqI+U2570N4EY5eiyBFLGf0OvqWkJDsgdmDkom8XoKyL7t8w+/ld4jXTW8FFvhoMESxHmE7lFyhbaI1LwQ/WkMi57JVUnXIR3PPGbqc/IZOfFAEUMWXF65QWCqE13g7wAlarAsN9G7T+YpOFNOaTcRPaQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CseVsbes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0999C4CEEA;
-	Tue, 20 May 2025 14:02:43 +0000 (UTC)
+	 MIME-Version; b=WUNCpZSOij4ZARLv6oACwmZ6MI9zj+NtyDpw2SmFF9epChIifDEWP2fw32sdYj3qXCmxgIQckCBET8tHhOM1FYVV6dupm++1epNDwPnsuXiKFnT0fSESvq10ojcua5Mw44RTfMrujAyNpWSQHCeAZFGAbvZmBYF3FIJKpeWKR9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGkPl9uv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F0FC4CEE9;
+	Tue, 20 May 2025 14:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749764;
-	bh=qAxhrlehMoBkHmTyzm7RhHncUMelum2T2M1X9NFD6yc=;
+	s=korg; t=1747750559;
+	bh=xMLYj0o4f+dpedmnMi1rdm+0koh+BX1nabav4SSn0cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CseVsbesTX+iGjz4pi9VhftgfmwTt0WIEJglZFfmTyWoREs8LIS9zWYT+cMwi65aJ
-	 /h5M7MrFsUxrRaJ9pk0NPRu/s+2/1cdENH1/KdIQv/FIT3E6CE+FneJT4ZgcMzJChq
-	 e8A6rDrm7RxlWgWtl3dfczgCjzkCJGGl3LawJAUM=
+	b=zGkPl9uvCnITnQQoOwzTQWcG0ftHlOFdH+ZbYUr9xTE1FnUq3InPaKDuxIwKZkwlA
+	 74ugYyL7TnbkYXk1BS6ER9DpAPZyRy3D7PNxIJPplxseOTUdb5LdSs8CuTzdCWVq8j
+	 Df32PO/74vXKDCxWueJAbvbqBLhQoZ8xyz/dIa/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
+	Guillaume Stols <gstols@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/117] iio: adc: ad7266: Fix potential timestamp alignment issue.
+Subject: [PATCH 6.14 017/145] iio: adc: ad7606: move the software mode configuration
 Date: Tue, 20 May 2025 15:49:47 +0200
-Message-ID: <20250520125804.861504669@linuxfoundation.org>
+Message-ID: <20250520125811.228953296@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Guillaume Stols <gstols@baylibre.com>
 
-[ Upstream commit 52d349884738c346961e153f195f4c7fe186fcf4 ]
+[ Upstream commit f2a62931b39478c98f977caf299df5bc072f38e0 ]
 
-On architectures where an s64 is only 32-bit aligned insufficient padding
-would be left between the earlier elements and the timestamp. Use
-aligned_s64 to enforce the correct placement and ensure the storage is
-large enough.
+This is a preparation for the intoduction of the sofware functions in
+the iio backend version of the driver.
+The software mode configuration must be executed once the channels are
+configured, and the number of channels is known. This is not the case
+before iio-backend's configuration is called, and iio backend version of
+the driver does not have a timestamp channel.
+Also the sw_mode_config callback is configured during the iio-backend
+configuration.
+For clarity purpose, I moved the entire block instead of just the
+concerned function calls.
 
-Fixes: 54e018da3141 ("iio:ad7266: Mark transfer buffer as __be16") # aligned_s64 is much newer.
-Reported-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-2-jic23@kernel.org
-Cc: <Stable@vger.kernel.org>
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+Link: https://patch.msgid.link/20250210-wip-bl-ad7606_add_backend_sw_mode-v4-2-160df18b1da7@baylibre.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 5257d80e22bf ("iio: adc: ad7606: check for NULL before calling sw_mode_config()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7266.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7606.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-index 98648c679a55c..2ace3aafe4978 100644
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -44,7 +44,7 @@ struct ad7266_state {
- 	 */
- 	struct {
- 		__be16 sample[2];
--		s64 timestamp;
-+		aligned_s64 timestamp;
- 	} data __aligned(IIO_DMA_MINALIGN);
- };
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index d39354afd5394..376c808df11c7 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -1246,17 +1246,6 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 			return -ERESTARTSYS;
+ 	}
  
+-	st->write_scale = ad7606_write_scale_hw;
+-	st->write_os = ad7606_write_os_hw;
+-
+-	ret = ad7606_sw_mode_setup(indio_dev);
+-	if (ret)
+-		return ret;
+-
+-	ret = ad7606_chan_scales_setup(indio_dev);
+-	if (ret)
+-		return ret;
+-
+ 	/* If convst pin is not defined, setup PWM. */
+ 	if (!st->gpio_convst) {
+ 		st->cnvst_pwm = devm_pwm_get(dev, NULL);
+@@ -1334,6 +1323,17 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 			return ret;
+ 	}
+ 
++	st->write_scale = ad7606_write_scale_hw;
++	st->write_os = ad7606_write_os_hw;
++
++	ret = ad7606_sw_mode_setup(indio_dev);
++	if (ret)
++		return ret;
++
++	ret = ad7606_chan_scales_setup(indio_dev);
++	if (ret)
++		return ret;
++
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+ EXPORT_SYMBOL_NS_GPL(ad7606_probe, "IIO_AD7606");
 -- 
 2.39.5
 
