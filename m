@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9015ABDAD1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EDDABDA4D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 398054A3400
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:59:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA3F4A1C0B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E06A242D93;
-	Tue, 20 May 2025 13:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E1F24337B;
+	Tue, 20 May 2025 13:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtEh7qg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pjz0vALA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4A322D7A8;
-	Tue, 20 May 2025 13:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E870C242D9A;
+	Tue, 20 May 2025 13:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749579; cv=none; b=G5joCuXWnLiBqrm9GBzFKnV//ZqmfQxv7SLEQgM513xJ/NzCDhuBlYHGdW9yDs8Pc/Pk+jvi9slea+HOgT2afl2YqF3OFHTdd/yW8gYSTKaGcmFeEYnBIcoJiZ/5kWVflbJiHwAddBZwvym0JCJzh47FPoE/WxbDYePI8EsooTY=
+	t=1747749316; cv=none; b=ina8tvI8XxUdTbvLJpneAlFE/w7e9TY9VwCxCz0c1W3HokkXAOa8T1vxzKJ55C7PDYId0JRmvtmmPe3UZJTgw6/6RQ942V+lTPs0P/XJ4Nl+VOXV5f/iJP9BX1yjxGCwqRgkMKGZDZ1Q3ORHbRm9WsKjFKtv7cZRMSitP7u3Ghw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749579; c=relaxed/simple;
-	bh=8o2J1Goq8S4gvSWgRvrcqa6/9m4+tDJ8Rco03obWhxM=;
+	s=arc-20240116; t=1747749316; c=relaxed/simple;
+	bh=TfNhB8PQ6nvRllrZ4skaT98hoIinNlKHvZkyB4Q7l1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJnGuaWyGmOm97VvEozbNKZXfWitfl59WOISp+KtnZqQN1ZE6neE3/lMiVU4L/VObmIao6mVGRHpQ7JdfJUEPYyjmx8KhcMsXHPtY4PX5BHL9D2aFj15x/tKbhAZey3GIigiItToqL7winGO9p586Jd7O58CGewDfjUck+9BCr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtEh7qg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A396CC4CEE9;
-	Tue, 20 May 2025 13:59:38 +0000 (UTC)
+	 MIME-Version; b=YAxM5sAIWfjEwznYQ0pvp9P/kUKvpS9is3QMMtXBVcBeQFGsJddoCJNhTLtM+HazNqd6WPVNJGbn0xi2jY0py+i5eDXBJcmmNgeZzQO1qMFF1+5QsWEy+gcSChT+QzK58Knlm5kmXQDV/kVOLT+OJoeeearGiZx08vktlcSLiP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pjz0vALA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B20C4CEE9;
+	Tue, 20 May 2025 13:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749579;
-	bh=8o2J1Goq8S4gvSWgRvrcqa6/9m4+tDJ8Rco03obWhxM=;
+	s=korg; t=1747749315;
+	bh=TfNhB8PQ6nvRllrZ4skaT98hoIinNlKHvZkyB4Q7l1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtEh7qg1H6hGikHVSYTM6j20O4ffmJeLF7UyqcDNYOQJRuKtekb0D/Ep+GLIUNtO4
-	 NPjsC0smsqx9gISLuM2DWntIXiKpWlXi7idLxCgbGL2No5Go2B9aSYVDNNbJ8FxpUg
-	 2AXTaYWKiQf5MYgjfoNVntBozTCCQpPyzmH6otVU=
+	b=Pjz0vALAVZytYwRo2eLMdQ1s8qM1WHrKbWX1bv1mTV+9zobCiQf3bMITV85g7hx4y
+	 gXuOk+g5xZ0xfS5QP7CnEi/xydXno4FABWjki4k1a5NjYS1X3WMiQVdQ+VMr340vCE
+	 fU649nLwd5lMG5TBSJVuhes3bEntHHrPO4+C5feM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Donaldson <devel@jro.nz>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 62/97] smb: client: fix memory leak during error handling for POSIX mkdir
+	pengdonglin <dolinux.peng@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 36/59] ftrace: Fix preemption accounting for stacktrace trigger command
 Date: Tue, 20 May 2025 15:50:27 +0200
-Message-ID: <20250520125803.082298042@linuxfoundation.org>
+Message-ID: <20250520125755.289732793@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jethro Donaldson <devel@jro.nz>
+From: pengdonglin <pengdonglin@xiaomi.com>
 
-commit 1fe4a44b7fa3955bcb7b4067c07b778fe90d8ee7 upstream.
+commit e333332657f615ac2b55aa35565c4a882018bbe9 upstream.
 
-The response buffer for the CREATE request handled by smb311_posix_mkdir()
-is leaked on the error path (goto err_free_rsp_buf) because the structure
-pointer *rsp passed to free_rsp_buf() is not assigned until *after* the
-error condition is checked.
+When using the stacktrace trigger command to trace syscalls, the
+preemption count was consistently reported as 1 when the system call
+event itself had 0 (".").
 
-As *rsp is initialised to NULL, free_rsp_buf() becomes a no-op and the leak
-is instead reported by __kmem_cache_shutdown() upon subsequent rmmod of
-cifs.ko if (and only if) the error path has been hit.
+For example:
 
-Pass rsp_iov.iov_base to free_rsp_buf() instead, similar to the code in
-other functions in smb2pdu.c for which *rsp is assigned late.
+root@ubuntu22-vm:/sys/kernel/tracing/events/syscalls/sys_enter_read
+$ echo stacktrace > trigger
+$ echo 1 > enable
+
+    sshd-416     [002] .....   232.864910: sys_read(fd: a, buf: 556b1f3221d0, count: 8000)
+    sshd-416     [002] ...1.   232.864913: <stack trace>
+ => ftrace_syscall_enter
+ => syscall_trace_enter
+ => do_syscall_64
+ => entry_SYSCALL_64_after_hwframe
+
+The root cause is that the trace framework disables preemption in __DO_TRACE before
+invoking the trigger callback.
+
+Use the tracing_gen_ctx_dec() that will accommodate for the increase of
+the preemption count in __DO_TRACE when calling the callback. The result
+is the accurate reporting of:
+
+    sshd-410     [004] .....   210.117660: sys_read(fd: 4, buf: 559b725ba130, count: 40000)
+    sshd-410     [004] .....   210.117662: <stack trace>
+ => ftrace_syscall_enter
+ => syscall_trace_enter
+ => do_syscall_64
+ => entry_SYSCALL_64_after_hwframe
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Jethro Donaldson <devel@jro.nz>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: ce33c845b030c ("tracing: Dump stacktrace trigger to the corresponding instance")
+Link: https://lore.kernel.org/20250512094246.1167956-1-dolinux.peng@gmail.com
+Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c |    2 +-
+ kernel/trace/trace_events_trigger.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2826,7 +2826,7 @@ int smb311_posix_mkdir(const unsigned in
- 	/* Eventually save off posix specific response info and timestaps */
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -1244,7 +1244,7 @@ stacktrace_trigger(struct event_trigger_
+ 	struct trace_event_file *file = data->private_data;
  
- err_free_rsp_buf:
--	free_rsp_buf(resp_buftype, rsp);
-+	free_rsp_buf(resp_buftype, rsp_iov.iov_base);
- 	kfree(pc_buf);
- err_free_req:
- 	cifs_small_buf_release(req);
+ 	if (file)
+-		__trace_stack(file->tr, tracing_gen_ctx(), STACK_SKIP);
++		__trace_stack(file->tr, tracing_gen_ctx_dec(), STACK_SKIP);
+ 	else
+ 		trace_dump_stack(STACK_SKIP);
+ }
 
 
 
