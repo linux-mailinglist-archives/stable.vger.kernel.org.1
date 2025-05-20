@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-145577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3164CABDC2E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB50EABDC50
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FE011885B2D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8D64C5F56
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8E1248881;
-	Tue, 20 May 2025 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FF524FC09;
+	Tue, 20 May 2025 14:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMNGX7GQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ax9dIF31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE37D1CAA85;
-	Tue, 20 May 2025 14:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8E82505A9;
+	Tue, 20 May 2025 14:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750579; cv=none; b=JydnTyN6JwkOgOEifhDWJkMY1OiCPMGUxu4VjKTscymdWoz9KfdxQSq9Hrqq0VroogKyzw6AvZPpN2PHQIY2CDekGswfJz26PQdT5ql0Iy32GYaDUAHWArjJVQTgjJ4LIwl0/kdJVWXxRboD7gXwrIf3b2ZU0NTlfUsBO/4yb7g=
+	t=1747750309; cv=none; b=tgOWTjuyy1jNZsNzE9xSvBywBlxXMWxWJDDg2K3lGki2VB0mpY4U4BQOpDDU31AIMkMPlOJDT7k2Z4LQRCrumZjcSwflGjORipmge9KchdzBgzxJfbs9uziHpa65HrInxOAUHi9xnP/ipiaEwFXksSL4QgHuNVBqUpEdX0nyGD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750579; c=relaxed/simple;
-	bh=wjW7hxsmroRVFb3uPw+uIw2AfQ9NGEA6iw+qXFwk8dI=;
+	s=arc-20240116; t=1747750309; c=relaxed/simple;
+	bh=yRssfUquttrLNr9CSC/t1q9st3M3aLhuDPcVvHnaKHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICBtMXhI4FUjLXMNwFvEtZNQpthrU0KNnXpq0ktOBufKEWpSqPWsmOCOSjuic9T3b5ytlID2PQAH9rGYa52LElEUhox113xYETW9ev927SdrwCq21kOaB0MOuzmDSNaJPp4r285bTGTT71XD3p+yoqarVvpnCxHENMqsAhXOoN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMNGX7GQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E03C4CEE9;
-	Tue, 20 May 2025 14:16:19 +0000 (UTC)
+	 MIME-Version; b=dWopGfLbzYKwxlQQogr3Bjg4S6WN9nLVnkQgV7DBVjZguzNEPThstvsCBuE3d7CRhJQtokqNKxrOgJy9psdmJi7JweFqRp2XST9cwpwRnRY4YurWajvfZ80vEjYPHJNafV1oBg3Uxmq5iFdw0mL0plKgPjeV7OtA7MnnchDyrr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ax9dIF31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B91C4CEEA;
+	Tue, 20 May 2025 14:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750579;
-	bh=wjW7hxsmroRVFb3uPw+uIw2AfQ9NGEA6iw+qXFwk8dI=;
+	s=korg; t=1747750309;
+	bh=yRssfUquttrLNr9CSC/t1q9st3M3aLhuDPcVvHnaKHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMNGX7GQ43BnGGMs0RfqkhHqij0UOrgGAUUzScYi4gKQM7LJtiAk+hwmJSYz9GKez
-	 dPdPN+m4G4++Z1HUtutIexENv5h9eXCr6t1AFTq/qspWknsA1DUu5nSminx5J61lDQ
-	 h3UulNJih6hiSF0w5GNZuLoC1qVT/OXiRjxhnENg=
+	b=ax9dIF31HneZSNsn4icBCugq/vG2nCQU3rOnKvh5rL4ETYGPsxUrFuvm4dgd0gvUi
+	 VNgMRFZo893YftN5jiduj4AnQjzBDuLNtNjETv1CcluKR8OfwsIMcOze78Kl0/nmEx
+	 mrumloMckRLfYb0vikM6IIml5WtbtQmgOs9Dy+60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 055/145] octeontx2-pf: Do not reallocate all ntuple filters
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>
+Subject: [PATCH 6.12 070/143] sched_ext: bpf_iter_scx_dsq_new() should always initialize iterator
 Date: Tue, 20 May 2025 15:50:25 +0200
-Message-ID: <20250520125812.735987118@linuxfoundation.org>
+Message-ID: <20250520125812.819841965@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit dcb479fde00be9a151c047d0a7c0626b64eb0019 ]
+commit 428dc9fc0873989d73918d4a9cc22745b7bbc799 upstream.
 
-If ntuple filters count is modified followed by
-unicast filters count using devlink then the ntuple count
-set by user is ignored and all the ntuple filters are
-being reallocated. Fix this by storing the ntuple count
-set by user. Without this patch, say if user tries
-to modify ntuple count as 8 followed by ucast filter count as 4
-using devlink commands then ntuple count is being reverted to
-default value 16 i.e, not retaining user set value 8.
+BPF programs may call next() and destroy() on BPF iterators even after new()
+returns an error value (e.g. bpf_for_each() macro ignores error returns from
+new()). bpf_iter_scx_dsq_new() could leave the iterator in an uninitialized
+state after an error return causing bpf_iter_scx_dsq_next() to dereference
+garbage data. Make bpf_iter_scx_dsq_new() always clear $kit->dsq so that
+next() and destroy() become noops.
 
-Fixes: 39c469188b6d ("octeontx2-pf: Add ucast filter count configurability via devlink.")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1747054357-5850-1-git-send-email-sbhatta@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 650ba21b131e ("sched_ext: Implement DSQ iterator")
+Cc: stable@vger.kernel.org # v6.12+
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h  | 1 +
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c | 1 +
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c   | 3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ kernel/sched/ext.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index 65814e3dc93f5..7cc12f10e8a15 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -349,6 +349,7 @@ struct otx2_flow_config {
- 	struct list_head	flow_list_tc;
- 	u8			ucast_flt_cnt;
- 	bool			ntuple;
-+	u16			ntuple_cnt;
- };
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -6731,6 +6731,12 @@ __bpf_kfunc int bpf_iter_scx_dsq_new(str
+ 	BUILD_BUG_ON(__alignof__(struct bpf_iter_scx_dsq_kern) !=
+ 		     __alignof__(struct bpf_iter_scx_dsq));
  
- struct dev_hw_ops {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
-index 33ec9a7f7c033..e13ae5484c19c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
-@@ -41,6 +41,7 @@ static int otx2_dl_mcam_count_set(struct devlink *devlink, u32 id,
- 	if (!pfvf->flow_cfg)
- 		return 0;
++	/*
++	 * next() and destroy() will be called regardless of the return value.
++	 * Always clear $kit->dsq.
++	 */
++	kit->dsq = NULL;
++
+ 	if (flags & ~__SCX_DSQ_ITER_USER_FLAGS)
+ 		return -EINVAL;
  
-+	pfvf->flow_cfg->ntuple_cnt = ctx->val.vu16;
- 	otx2_alloc_mcam_entries(pfvf, ctx->val.vu16);
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-index 47bfd1fb37d4b..64c6d9162ef64 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-@@ -247,7 +247,7 @@ int otx2_mcam_entry_init(struct otx2_nic *pfvf)
- 	mutex_unlock(&pfvf->mbox.lock);
- 
- 	/* Allocate entries for Ntuple filters */
--	count = otx2_alloc_mcam_entries(pfvf, OTX2_DEFAULT_FLOWCOUNT);
-+	count = otx2_alloc_mcam_entries(pfvf, flow_cfg->ntuple_cnt);
- 	if (count <= 0) {
- 		otx2_clear_ntuple_flow_info(pfvf, flow_cfg);
- 		return 0;
-@@ -307,6 +307,7 @@ int otx2_mcam_flow_init(struct otx2_nic *pf)
- 	INIT_LIST_HEAD(&pf->flow_cfg->flow_list_tc);
- 
- 	pf->flow_cfg->ucast_flt_cnt = OTX2_DEFAULT_UNICAST_FLOWS;
-+	pf->flow_cfg->ntuple_cnt = OTX2_DEFAULT_FLOWCOUNT;
- 
- 	/* Allocate bare minimum number of MCAM entries needed for
- 	 * unicast and ntuple filters.
--- 
-2.39.5
-
 
 
 
