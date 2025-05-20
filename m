@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28CA4ABDBFB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE4FABDB61
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BD628C60EB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 876808C2CAF
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9674248866;
-	Tue, 20 May 2025 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8AC242D92;
+	Tue, 20 May 2025 14:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpWh8y7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRqq+vSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65157246773;
-	Tue, 20 May 2025 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381BA222570;
+	Tue, 20 May 2025 14:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750177; cv=none; b=LNE6/95d3sE+aLPheCbDbMsZH0pd2lT5YRNjjBnjOMIC8Nn5Yacj+IMhySG/Z7cSPbDRW+t4/uA/KIFP0NZn5TKguDyCi6Zoso5jdD2Acr8dwA/x+bC6dn89lVpteFQjdXMKKTX+UQTvJ+AW0Sx7chNiTp8sJsUvxd/7yec4J+A=
+	t=1747749873; cv=none; b=sbTYH7TAeFbBA8Y1a/jOd8PaZI2H11jLvXSQaGpQEiaSrEz2ig9spr0c3glhw3ktw2fwneUy5O9Bt9pkLGURflJYi7HmDCrlC2DNOY7tv2lEPLWNevQOVayveU3gHI9pNJtyWbmeDTGcvKs82xCaCJL0ILl5VgoYkHZ36NXgxKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750177; c=relaxed/simple;
-	bh=GipE5Mf6+kt/+s5duhETLQcSc/VHpm7fd3N80Ugv6qY=;
+	s=arc-20240116; t=1747749873; c=relaxed/simple;
+	bh=8jJaIJ19iEq2zoTvAHN0j6OZgcdzlDcf6I2XEr9VE3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6ssNG9kN/skfLVD6YiVRKCbn4L5KLOkU2KFk7w9HkaOPf4sw1bgfLkigtM1qtoUzylQOraDS07/lL7Dx48pD+6Ejq71ypCl3SdpizHex0cVNG/P89XSNG0dHkzF3aCbLFs7djgU10OL3ogZqFyHJ3/aCWwr1b0D5VJYVIimuXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpWh8y7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F0FC4CEEA;
-	Tue, 20 May 2025 14:09:36 +0000 (UTC)
+	 MIME-Version; b=flB33VMQd1hrnM1Qq1yVPJfZIK6B/6OAPxngqJw2TpBlDcjC9yZ+otUnX0niJ0XurbGsOKhrttshoBa6BrpXkuZuBpNYROT21xzhEgwgSnMH765/jLj+GqSPWKMzY44GVYgnZg2SZs5amS+bivIGp0LUoxKf+pC3gRrUdX4eEj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRqq+vSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DB9C4CEE9;
+	Tue, 20 May 2025 14:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750177;
-	bh=GipE5Mf6+kt/+s5duhETLQcSc/VHpm7fd3N80Ugv6qY=;
+	s=korg; t=1747749873;
+	bh=8jJaIJ19iEq2zoTvAHN0j6OZgcdzlDcf6I2XEr9VE3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpWh8y7a3MO0lpRXheXDc8URo+JwK/chY1UzflnRNlvFkpkJky/P9FWVoBq5eQ76K
-	 TqmUw+aZmTdt+RkF106oZZbofpb38oxuTWSV3iKGBHnRzQQJca9PLA3EjrYzravdqj
-	 TmF5a6yWrpG0z/sIFz1q11oWVS5ZYVmPSNwqmAfM=
+	b=VRqq+vSzfNrd3UH5OlxLwaTs8C7rhwck6FD/PAUTutkUDt58ghq4P9ZeYIFzwZSVJ
+	 wbwoK9ctiSvBWeG+Fa0XHBDu9OsOaGaUgELo4pG/u3HhyUpmvV1PidnshSC6kFVMHl
+	 JosLiQVxUow38dGpn8tEGYNgz2KdEXH+yVZgFOnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengtao He <hept.hept.hept@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/143] net/tls: fix kernel panic when alloc_page failed
+Subject: [PATCH 6.6 056/117] mlxsw: spectrum_router: Fix use-after-free when deleting GRE net devices
 Date: Tue, 20 May 2025 15:50:21 +0200
-Message-ID: <20250520125812.657324687@linuxfoundation.org>
+Message-ID: <20250520125806.211219678@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengtao He <hept.hept.hept@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 491deb9b8c4ad12fe51d554a69b8165b9ef9429f ]
+[ Upstream commit 92ec4855034b2c4d13f117558dc73d20581fa9ff ]
 
-We cannot set frag_list to NULL pointer when alloc_page failed.
-It will be used in tls_strp_check_queue_ok when the next time
-tls_strp_read_sock is called.
+The driver only offloads neighbors that are constructed on top of net
+devices registered by it or their uppers (which are all Ethernet). The
+device supports GRE encapsulation and decapsulation of forwarded
+traffic, but the driver will not offload dummy neighbors constructed on
+top of GRE net devices as they are not uppers of its net devices:
 
-This is because we don't reset full_len in tls_strp_flush_anchor_copy()
-so the recv path will try to continue handling the partial record
-on the next call but we dettached the rcvq from the frag list.
-Alternative fix would be to reset full_len.
+ # ip link add name gre1 up type gre tos inherit local 192.0.2.1 remote 198.51.100.1
+ # ip neigh add 0.0.0.0 lladdr 0.0.0.0 nud noarp dev gre1
+ $ ip neigh show dev gre1 nud noarp
+ 0.0.0.0 lladdr 0.0.0.0 NOARP
 
-Unable to handle kernel NULL pointer dereference
-at virtual address 0000000000000028
- Call trace:
- tls_strp_check_rcv+0x128/0x27c
- tls_strp_data_ready+0x34/0x44
- tls_data_ready+0x3c/0x1f0
- tcp_data_ready+0x9c/0xe4
- tcp_data_queue+0xf6c/0x12d0
- tcp_rcv_established+0x52c/0x798
+(Note that the neighbor is not marked with 'offload')
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Signed-off-by: Pengtao He <hept.hept.hept@gmail.com>
-Link: https://patch.msgid.link/20250514132013.17274-1-hept.hept.hept@gmail.com
+When the driver is reloaded and the existing configuration is replayed,
+the driver does not perform the same check regarding existing neighbors
+and offloads the previously added one:
+
+ # devlink dev reload pci/0000:01:00.0
+ $ ip neigh show dev gre1 nud noarp
+ 0.0.0.0 lladdr 0.0.0.0 offload NOARP
+
+If the neighbor is later deleted, the driver will ignore the
+notification (given the GRE net device is not its upper) and will
+therefore keep referencing freed memory, resulting in a use-after-free
+[1] when the net device is deleted:
+
+ # ip neigh del 0.0.0.0 lladdr 0.0.0.0 dev gre1
+ # ip link del dev gre1
+
+Fix by skipping neighbor replay if the net device for which the replay
+is performed is not our upper.
+
+[1]
+BUG: KASAN: slab-use-after-free in mlxsw_sp_neigh_entry_update+0x1ea/0x200
+Read of size 8 at addr ffff888155b0e420 by task ip/2282
+[...]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6f/0xa0
+ print_address_description.constprop.0+0x6f/0x350
+ print_report+0x108/0x205
+ kasan_report+0xdf/0x110
+ mlxsw_sp_neigh_entry_update+0x1ea/0x200
+ mlxsw_sp_router_rif_gone_sync+0x2a8/0x440
+ mlxsw_sp_rif_destroy+0x1e9/0x750
+ mlxsw_sp_netdevice_ipip_ol_event+0x3c9/0xdc0
+ mlxsw_sp_router_netdevice_event+0x3ac/0x15e0
+ notifier_call_chain+0xca/0x150
+ call_netdevice_notifiers_info+0x7f/0x100
+ unregister_netdevice_many_notify+0xc8c/0x1d90
+ rtnl_dellink+0x34e/0xa50
+ rtnetlink_rcv_msg+0x6fb/0xb70
+ netlink_rcv_skb+0x131/0x360
+ netlink_unicast+0x426/0x710
+ netlink_sendmsg+0x75a/0xc20
+ __sock_sendmsg+0xc1/0x150
+ ____sys_sendmsg+0x5aa/0x7b0
+ ___sys_sendmsg+0xfc/0x180
+ __sys_sendmsg+0x121/0x1b0
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: 8fdb09a7674c ("mlxsw: spectrum_router: Replay neighbours when RIF is made")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/c53c02c904fde32dad484657be3b1477884e9ad6.1747225701.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_strp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 77e33e1e340e3..65b0da6fdf6a7 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -396,7 +396,6 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 		return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+index d15aa6b25a888..0534b10e29c5c 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+@@ -3013,6 +3013,9 @@ static int mlxsw_sp_neigh_rif_made_sync(struct mlxsw_sp *mlxsw_sp,
+ 		.rif = rif,
+ 	};
  
- 	shinfo = skb_shinfo(strp->anchor);
--	shinfo->frag_list = NULL;
- 
- 	/* If we don't know the length go max plus page for cipher overhead */
- 	need_spc = strp->stm.full_len ?: TLS_MAX_PAYLOAD_SIZE + PAGE_SIZE;
-@@ -412,6 +411,8 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 				   page, 0, 0);
- 	}
- 
-+	shinfo->frag_list = NULL;
++	if (!mlxsw_sp_dev_lower_is_port(mlxsw_sp_rif_dev(rif)))
++		return 0;
 +
- 	strp->copy_mode = 1;
- 	strp->stm.offset = 0;
- 
+ 	neigh_for_each(&arp_tbl, mlxsw_sp_neigh_rif_made_sync_each, &rms);
+ 	if (rms.err)
+ 		goto err_arp;
 -- 
 2.39.5
 
