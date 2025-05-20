@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-145523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA3BABDC06
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:19:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BD2ABDCE2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3967B1884C69
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D2608C44CE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D668824C09C;
-	Tue, 20 May 2025 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F56025394C;
+	Tue, 20 May 2025 14:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPE6NI7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCT9zb9z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932C5248F41;
-	Tue, 20 May 2025 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2602517B3;
+	Tue, 20 May 2025 14:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750424; cv=none; b=JvTK09fYUz1WdKphwSRtD6hC/N+p6jLjGu/6zeXQrq69bDNyt4T68O6SV40iOoT+f+5GMoL6fVeR6m+LJgcyfIEd/KbmdEm2HX0K/ODLPzrA/PQFHw2gCAouiV5dTdlzg9n3jDm2uzp2Csbpt2mL2U+yXDxl2Zsqa0hwbbyo9Lc=
+	t=1747750802; cv=none; b=BtckNDNq1rUZxZi18+MY28S2uwMtSey9rpek1Gu1XDeA1fY+6mfOUWv3R9E0dRR74cE9Hnp6LgFPbOpphoYjkWfguP9qrnwCmKs4/CGHuvkkKFsLRKpuAMo7+r2fIasJObjdmwRJJQuYulhY5kaloceqfmLrnynvlntaJMtQPWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750424; c=relaxed/simple;
-	bh=9FZED7vHY7AXHiu6JZK5sOXIgcaUI/4xZgHV/K60xmk=;
+	s=arc-20240116; t=1747750802; c=relaxed/simple;
+	bh=JyreFUL1VL4yKE47wIVHN6HNWdiUeTjVFh5YyFxtegI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcWbhAxUwm0WeLhThYC7cdZL7Vrr549H5Gy0BQ+jSpkOdE1dqf//EkeQ9+643Znnw/4cfq0JK9A/773eD1WNcxTXmCcXHwkWh+mm3/CEEv2hZ6wDdEd/XLBrwRiPZSaRvLR+VnJ2v98IMAz/yrSIIOGUqh0osaCtlhWDdFZGiRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPE6NI7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0189C4CEE9;
-	Tue, 20 May 2025 14:13:43 +0000 (UTC)
+	 MIME-Version; b=XJ1glTMl3UQZ2Q8uTs2/f94V8eobfjAYRWMfu8RpaQCFFnbZucJtKAny147bzXSbM6F/F99LDJNPfV63mTBvnoi5+DY+gfgS/WQ4yfUwB9u11USi5uOKl+gb8pvkBefPfngpRILgsPLDXO5BD8Gf4VdcCa+prYn1kHTcnIFYC38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCT9zb9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC65C4CEE9;
+	Tue, 20 May 2025 14:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750424;
-	bh=9FZED7vHY7AXHiu6JZK5sOXIgcaUI/4xZgHV/K60xmk=;
+	s=korg; t=1747750801;
+	bh=JyreFUL1VL4yKE47wIVHN6HNWdiUeTjVFh5YyFxtegI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QPE6NI7v/Z5oCNcGDQVK++7z9A5tkfhY1l6IbM0e9TGWJB/iDRdnSaSSTNw1E/B1m
-	 T6tl95y8Yi9qOGqWo3rAZgNV69KIcskfvfP30M5n3pTJh5pbffIsFJwc2J1XHyc2T/
-	 Qa/V8Vrq+f9bvDgIKsR6FnZcIoxytblbsquoc9zc=
+	b=uCT9zb9z4Z6IemcyHcEXCC27k7kTj04nfve+qXEt6GFsTe8dP74EqE50x21NMTkvm
+	 9GoMJC1Jyf5/govdCHflw65LVWRrHwn1EO7pfKWWQsXk26RXwed179cL3eS7vIau34
+	 qKB9B324gyH9KPFXYywpPkwOd8hRSxEHnQuClVq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.12 140/143] drm/tiny: panel-mipi-dbi: Use drm_client_setup_with_fourcc()
-Date: Tue, 20 May 2025 15:51:35 +0200
-Message-ID: <20250520125815.520289974@linuxfoundation.org>
+	Vaishnav Achath <vaishnav.a@ti.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.14 126/145] dmaengine: ti: k3-udma: Use cap_mask directly from dma_device structure instead of a local copy
+Date: Tue, 20 May 2025 15:51:36 +0200
+Message-ID: <20250520125815.482754841@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-commit 9c1798259b9420f38f1fa1b83e3d864c3eb1a83e upstream.
+commit 8ca9590c39b69b55a8de63d2b21b0d44f523b43a upstream.
 
-Since commit 559358282e5b ("drm/fb-helper: Don't use the preferred depth
-for the BPP default"), RGB565 displays such as the CFAF240320X no longer
-render correctly: colors are distorted and the content is shown twice
-horizontally.
+Currently, a local dma_cap_mask_t variable is used to store device
+cap_mask within udma_of_xlate(). However, the DMA_PRIVATE flag in
+the device cap_mask can get cleared when the last channel is released.
+This can happen right after storing the cap_mask locally in
+udma_of_xlate(), and subsequent dma_request_channel() can fail due to
+mismatch in the cap_mask. Fix this by removing the local dma_cap_mask_t
+variable and directly using the one from the dma_device structure.
 
-This regression is due to the fbdev emulation layer defaulting to 32 bits
-per pixel, whereas the display expects 16 bpp (RGB565). As a result, the
-framebuffer data is incorrectly interpreted by the panel.
-
-Fix the issue by calling drm_client_setup_with_fourcc() with a format
-explicitly selected based on the display's bits-per-pixel value. For 16
-bpp, use DRM_FORMAT_RGB565; for other values, fall back to the previous
-behavior. This ensures that the allocated framebuffer format matches the
-hardware expectations, avoiding color and layout corruption.
-
-Tested on a CFAF240320X display with an RGB565 configuration, confirming
-correct colors and layout after applying this patch.
-
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
 Cc: stable@vger.kernel.org
-Fixes: 559358282e5b ("drm/fb-helper: Don't use the preferred depth for the BPP default")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250417103458.2496790-1-festevam@gmail.com
+Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Link: https://lore.kernel.org/r/20250417075521.623651-1-y-abhilashchandra@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/panel-mipi-dbi.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma/ti/k3-udma.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-+++ b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-@@ -390,7 +390,10 @@ static int panel_mipi_dbi_spi_probe(stru
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -4253,7 +4253,6 @@ static struct dma_chan *udma_of_xlate(st
+ 				      struct of_dma *ofdma)
+ {
+ 	struct udma_dev *ud = ofdma->of_dma_data;
+-	dma_cap_mask_t mask = ud->ddev.cap_mask;
+ 	struct udma_filter_param filter_param;
+ 	struct dma_chan *chan;
  
- 	spi_set_drvdata(spi, drm);
+@@ -4285,7 +4284,7 @@ static struct dma_chan *udma_of_xlate(st
+ 		}
+ 	}
  
--	drm_client_setup(drm, NULL);
-+	if (bpp == 16)
-+		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB565);
-+	else
-+		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB888);
- 
- 	return 0;
- }
+-	chan = __dma_request_channel(&mask, udma_dma_filter_fn, &filter_param,
++	chan = __dma_request_channel(&ud->ddev.cap_mask, udma_dma_filter_fn, &filter_param,
+ 				     ofdma->of_node);
+ 	if (!chan) {
+ 		dev_err(ud->dev, "get channel fail in %s.\n", __func__);
 
 
 
