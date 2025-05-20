@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-145268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB9DABDADA
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5785DABDA73
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3873F7B38E8
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:59:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4337C8A2963
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A77322DF87;
-	Tue, 20 May 2025 14:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285BB24394B;
+	Tue, 20 May 2025 13:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T7JspTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3oflxap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170A5198845;
-	Tue, 20 May 2025 14:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B6D243370;
+	Tue, 20 May 2025 13:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749671; cv=none; b=GWWS1QnOglI8Pw2086EZ558jBb+hO7v3yh0UfvwJqPbkKrXMYxp2msqZsi2lXpIz6kBr7FWH4X2GpyONTVyyrPysfN5RDOLm4o4oekbGblLD5Q1jisSyJSgWdZs8xzisPObdvoTzJOXmUmQoD3crdgGQo+qnb85x0PgpKtCN6xQ=
+	t=1747749399; cv=none; b=G3ttoaBcH1Q88w7BmAy4clk9ZTlb/6WTrOuR7LOFTGKP2GD7ya1aRDwmPaSb0amf6eocqKimH1ElmMOYT8DgQtpHKgLQZM/a2US/oTlpCXgl14zGSMtgk/8V/Q7sP0+O0dgapH70Bj65IbXbaUCYcMltUtXYmyAWvpjXTSleH2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749671; c=relaxed/simple;
-	bh=hThdXEmdJoLLgl2o8O02l73pVuI2BSa0m1AWtufA+zA=;
+	s=arc-20240116; t=1747749399; c=relaxed/simple;
+	bh=2bx5K0wRoVV+EOWwhhCCHglZzHbnQbpBWouLiG72ISc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZnQKGEN0hQtB4Iqa35MWs+saiEfqplCYSsDixhrYhfHX/UcZdkfQcHJ19l3N/Nrc3CQpKWuiKDzeFIfIQ4TuXw3EtbVoRSXi7y3iAzQBuRtt9OMZ0YD9qgPrRPDODzomKVbdsf1f2ERB2hGGlbVjTXlHNV6h9QrGwy5JPYP0ej0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T7JspTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBF8C4CEE9;
-	Tue, 20 May 2025 14:01:10 +0000 (UTC)
+	 MIME-Version; b=XolBS4Ol9MMV6vd5PcEJbzWnTE/RO0wWCs37vNzbDfiZchqVQ3K+qD2Qct9jrZ2Gxtn3sYpzp+W7fY/XHbv0ZedCmGPFY8kuvyxmWV88NjYsFkKsr4mHbztdrxZ/DRxPa9z4PAcZ6U3Z1Z0WKdIZ+qc9s5/h/YC9jqjRqzvqS7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3oflxap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC02C4CEE9;
+	Tue, 20 May 2025 13:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749671;
-	bh=hThdXEmdJoLLgl2o8O02l73pVuI2BSa0m1AWtufA+zA=;
+	s=korg; t=1747749399;
+	bh=2bx5K0wRoVV+EOWwhhCCHglZzHbnQbpBWouLiG72ISc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1T7JspTEm+h5FWlitYbr/AsxgwcotYKtYYHLovNmF8IEbzqjHezPGFBme7wGZUe/K
-	 9KChRkpE7r1EHYMu5U9H2Pbry5kaayY24csEuqRTj8TFTunDNszP4fPceHY9EpfLMW
-	 4JhLqLmLuyi+uV2ZEnp8IY16WTtgf9TBIjx8K3C0=
+	b=o3oflxap90rJ227xCz1GJ7o+pu+KgmILopUnLnJiMcS8psu0WiEEri/6GNbIo4S9e
+	 irGNyxz/NXzULNSWycp/A/PLZ4sBHr06CaCTGHXZj6Y/oYABrZ+jO+g/0EWcrT8lNz
+	 bqCUSw/3rsglWPOzUQMUUCmVas/2jPRhzG0r/aTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ryan Roberts <ryan.roberts@arm.com>,
 	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/117] binfmt_elf: Move brk for static PIE even if ASLR disabled
+Subject: [PATCH 6.1 09/97] binfmt_elf: Move brk for static PIE even if ASLR disabled
 Date: Tue, 20 May 2025 15:49:34 +0200
-Message-ID: <20250520125804.356068452@linuxfoundation.org>
+Message-ID: <20250520125801.034815102@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -139,10 +139,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 47 insertions(+), 24 deletions(-)
 
 diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 2fa276e7da1b1..3ff7d2e47c7e9 100644
+index fd3d800f69c1c..762704eed9ce9 100644
 --- a/fs/binfmt_elf.c
 +++ b/fs/binfmt_elf.c
-@@ -855,6 +855,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -856,6 +856,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
  	struct elf_phdr *elf_ppnt, *elf_phdata, *interp_elf_phdata = NULL;
  	struct elf_phdr *elf_property_phdata = NULL;
  	unsigned long elf_brk;
@@ -150,7 +150,7 @@ index 2fa276e7da1b1..3ff7d2e47c7e9 100644
  	int retval, i;
  	unsigned long elf_entry;
  	unsigned long e_entry;
-@@ -1122,15 +1123,19 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1123,15 +1124,19 @@ static int load_elf_binary(struct linux_binprm *bprm)
  			/* Calculate any requested alignment. */
  			alignment = maximum_alignment(elf_phdata, elf_ex->e_phnum);
  
@@ -179,7 +179,7 @@ index 2fa276e7da1b1..3ff7d2e47c7e9 100644
  			 * "./ld.so someprog" to test out a new version of
  			 * the loader, the subsequent program that the
  			 * loader loads must avoid the loader itself, so
-@@ -1143,6 +1148,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1144,6 +1149,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
  			 * ELF_ET_DYN_BASE and loaders are loaded into the
  			 * independently randomized mmap region (0 load_bias
  			 * without MAP_FIXED nor MAP_FIXED_NOREPLACE).
@@ -189,7 +189,7 @@ index 2fa276e7da1b1..3ff7d2e47c7e9 100644
  			 */
  			if (interpreter) {
  				/* On ET_DYN with PT_INTERP, we do the ASLR. */
-@@ -1259,8 +1267,6 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1260,8 +1268,6 @@ static int load_elf_binary(struct linux_binprm *bprm)
  	start_data += load_bias;
  	end_data += load_bias;
  
@@ -198,7 +198,7 @@ index 2fa276e7da1b1..3ff7d2e47c7e9 100644
  	if (interpreter) {
  		elf_entry = load_elf_interp(interp_elf_ex,
  					    interpreter,
-@@ -1316,27 +1322,44 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1317,27 +1323,44 @@ static int load_elf_binary(struct linux_binprm *bprm)
  	mm->end_data = end_data;
  	mm->start_stack = bprm->p;
  
