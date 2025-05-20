@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2257ABDBA0
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:13:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E7D5ABDB31
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E314189B22B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C5EC8A628F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F94E246769;
-	Tue, 20 May 2025 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A305F242913;
+	Tue, 20 May 2025 14:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnu8PXxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrPTDZRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4691CCEE7;
-	Tue, 20 May 2025 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605A7EEDE;
+	Tue, 20 May 2025 14:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750147; cv=none; b=dm0bD06iFWFRzcTaf9fNoMdt1uh4/Jto0celYZeV3WlELH6Z+743VaDYY/qkUQOKWYVvjc13Zb6PfERckAYkkxiDl2AxlIrFpMphLQ0eQStF6/Aqxn1I02x6bpsRLBRc9357Nmzj15ximhMRULRbyu/aUzMClpr/MDBdXH/Ntzc=
+	t=1747749752; cv=none; b=kPRPMWyU4TBuL8ygaGWUanDU2JJn2RIG7EIkt8M6nNsioXKNM4moCc9WlYbh+mV/7ABMhYNk1DBN/896tdsCIh+hPlCHdRR+k9zulYXku6Jg6SFQikzXmHLrFj05p1bSs7kQq2bRigS/7EHC1naQsqtSgsMMRCnuByc+XnmhFNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750147; c=relaxed/simple;
-	bh=kOFZRY7FLQmF/hknFne3tU3aZyfJN5TvINqlb29VEgg=;
+	s=arc-20240116; t=1747749752; c=relaxed/simple;
+	bh=dNHw/LRCQEVZRR7XDYi5S+kl4CHfBJoPsxEXnlKRUmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNRN2uK2Zn1r2Ze2YcokJlujV65P6VknKPtPkQ70f21J+cyoywiQe4q81eqo1ShZMy+cFE0H/KsZmL/34S8gyu+26lElnjU/KcfHZ4VcEaz4FVaPAR6BNBZ+mfRNl/181vk1pLcKgHrNCYzJEM1TaA7pzGTAXZdQQ7c0Qe6+Fyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnu8PXxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31F8C4CEE9;
-	Tue, 20 May 2025 14:09:06 +0000 (UTC)
+	 MIME-Version; b=RxaiRVgKolW4hSBcxb+piJJPXqNBYTqy/ZFSWbPF1IhfE/9yEOFUw/88PGKWcauHQx5IEzjQcrPgPQvRZqpcbUVQ2dO56dfZK4zz80QDavG52uXQFEjPqxGeFvYx83Cu5oCrbe4K6ottspn5KUQnGUbFtlWpygUKmFh6O8k33mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrPTDZRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D375CC4CEE9;
+	Tue, 20 May 2025 14:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750147;
-	bh=kOFZRY7FLQmF/hknFne3tU3aZyfJN5TvINqlb29VEgg=;
+	s=korg; t=1747749752;
+	bh=dNHw/LRCQEVZRR7XDYi5S+kl4CHfBJoPsxEXnlKRUmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cnu8PXxwkJ8rZezYKlt/7b+ABWIWj4IjWeFVXt7gjgstHJH6bbi9k9oPdIzt3aTDp
-	 3JGVO5IVWF6VLpkB1m/PBemlmpCTC7qKcMTNrIL09+Dias+DFy6PDmqyrZ4xeXCyWJ
-	 YXwHTQ84BVkEw2xu/29X+EROalT0vORBgRisWPAk=
+	b=RrPTDZRWG74lSHg7bD6dwjPJJU0OGEH6Ra26gDiiUO2gOcCdoPFBWEZrONjMgnm5c
+	 saBt3tamoHRFRpyMKB4J8Vla9FO/Pc5SSqT3LgZSKuYSh16lEjgBdTUWf9uxnlun8t
+	 YVbcmfdQj8W/qvFGUNFT+PLgpudIYhGjymxjBH94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Daniel Wagner <wagi@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/143] drm/xe: Save CTX_TIMESTAMP mmio value instead of LRC value
+Subject: [PATCH 6.6 047/117] nvme-pci: acquire cq_poll_lock in nvme_poll_irqdisable
 Date: Tue, 20 May 2025 15:50:12 +0200
-Message-ID: <20250520125812.299217889@linuxfoundation.org>
+Message-ID: <20250520125805.858361024@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 66c8f7b435bddb7d8577ac8a57e175a6cb147227 ]
+[ Upstream commit 3d8932133dcecbd9bef1559533c1089601006f45 ]
 
-For determining actual job execution time, save the current value of the
-CTX_TIMESTAMP register rather than the value saved in LRC since the
-current register value is the closest to the start time of the job.
+We need to lock this queue for that condition because the timeout work
+executes per-namespace and can poll the poll CQ.
 
-v2: Define MI_STORE_REGISTER_MEM to fix compile error
-v3: Place MI_STORE_REGISTER_MEM sorted by MI_INSTR (Lucas)
-
-Fixes: 65921374c48f ("drm/xe: Emit ctx timestamp copy in ring ops")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://lore.kernel.org/r/20250509161159.2173069-6-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 38b14233e5deff51db8faec287b4acd227152246)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reported-by: Hannes Reinecke <hare@kernel.org>
+Closes: https://lore.kernel.org/all/20240902130728.1999-1-hare@kernel.org/
+Fixes: a0fa9647a54e ("NVMe: add blk polling support")
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/instructions/xe_mi_commands.h | 4 ++++
- drivers/gpu/drm/xe/xe_lrc.c                      | 2 +-
- drivers/gpu/drm/xe/xe_ring_ops.c                 | 7 ++-----
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/nvme/host/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/instructions/xe_mi_commands.h b/drivers/gpu/drm/xe/instructions/xe_mi_commands.h
-index 10ec2920d31b3..d4033278be9fc 100644
---- a/drivers/gpu/drm/xe/instructions/xe_mi_commands.h
-+++ b/drivers/gpu/drm/xe/instructions/xe_mi_commands.h
-@@ -47,6 +47,10 @@
- #define   MI_LRI_FORCE_POSTED		REG_BIT(12)
- #define   MI_LRI_LEN(x)			(((x) & 0xff) + 1)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 08280bd65d03d..1e5c8220e365c 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1107,7 +1107,9 @@ static void nvme_poll_irqdisable(struct nvme_queue *nvmeq)
+ 	WARN_ON_ONCE(test_bit(NVMEQ_POLLED, &nvmeq->flags));
  
-+#define MI_STORE_REGISTER_MEM		(__MI_INSTR(0x24) | XE_INSTR_NUM_DW(4))
-+#define   MI_SRM_USE_GGTT		REG_BIT(22)
-+#define   MI_SRM_ADD_CS_OFFSET		REG_BIT(19)
-+
- #define MI_FLUSH_DW			__MI_INSTR(0x26)
- #define   MI_FLUSH_DW_STORE_INDEX	REG_BIT(21)
- #define   MI_INVALIDATE_TLB		REG_BIT(18)
-diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
-index aec7db39c061e..2d4e38b3bab19 100644
---- a/drivers/gpu/drm/xe/xe_lrc.c
-+++ b/drivers/gpu/drm/xe/xe_lrc.c
-@@ -694,7 +694,7 @@ static inline u32 __xe_lrc_start_seqno_offset(struct xe_lrc *lrc)
- 
- static u32 __xe_lrc_ctx_job_timestamp_offset(struct xe_lrc *lrc)
- {
--	/* The start seqno is stored in the driver-defined portion of PPHWSP */
-+	/* This is stored in the driver-defined portion of PPHWSP */
- 	return xe_lrc_pphwsp_offset(lrc) + LRC_CTX_JOB_TIMESTAMP_OFFSET;
+ 	disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
++	spin_lock(&nvmeq->cq_poll_lock);
+ 	nvme_poll_cq(nvmeq, NULL);
++	spin_unlock(&nvmeq->cq_poll_lock);
+ 	enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
  }
  
-diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
-index 9f327f27c0726..fb31e09acb519 100644
---- a/drivers/gpu/drm/xe/xe_ring_ops.c
-+++ b/drivers/gpu/drm/xe/xe_ring_ops.c
-@@ -229,13 +229,10 @@ static u32 get_ppgtt_flag(struct xe_sched_job *job)
- 
- static int emit_copy_timestamp(struct xe_lrc *lrc, u32 *dw, int i)
- {
--	dw[i++] = MI_COPY_MEM_MEM | MI_COPY_MEM_MEM_SRC_GGTT |
--		MI_COPY_MEM_MEM_DST_GGTT;
-+	dw[i++] = MI_STORE_REGISTER_MEM | MI_SRM_USE_GGTT | MI_SRM_ADD_CS_OFFSET;
-+	dw[i++] = RING_CTX_TIMESTAMP(0).addr;
- 	dw[i++] = xe_lrc_ctx_job_timestamp_ggtt_addr(lrc);
- 	dw[i++] = 0;
--	dw[i++] = xe_lrc_ctx_timestamp_ggtt_addr(lrc);
--	dw[i++] = 0;
--	dw[i++] = MI_NOOP;
- 
- 	return i;
- }
 -- 
 2.39.5
 
