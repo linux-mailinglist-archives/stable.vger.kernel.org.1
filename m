@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF785ABDA27
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A69ABDA9B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:59:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC9BC1BA1F08
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 931184A2843
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5362B24679C;
-	Tue, 20 May 2025 13:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1919C2459D6;
+	Tue, 20 May 2025 13:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6kfEUVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5BmfWlp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5732451C8;
-	Tue, 20 May 2025 13:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2D82451C8;
+	Tue, 20 May 2025 13:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749248; cv=none; b=ZROz9iXsK+gs+borLngFFz9Dc9CDEBj1H3/DPpqO7P5vH9JIB7vE4Dnh7UsqWPPC1zj3xfmUxhSi3AUstKw31KMDY2ux48TtcteHn9NhTKRZkUWIsr0jo1Mxt/aPFdT/g4ElX8kzybK+EOcs529DVoOaYvMsRZypgnzNTFHZjqA=
+	t=1747749512; cv=none; b=taUjGtIJAXu8j3c+nCXY4hQUvSuhUzY72U4N1R1H8vJM3SUNDC6xQKmqXwJwgOUOJfTRWGvwzKPt7KcZwyaTQxE/SJY7rzuG3Cs3sOyX6KeyYLEWXxTlCn0/5MB3h//PquwNFRswKD0VDwFlE1Ym6eY3mQBZ0fv+4mHTyvh4f5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749248; c=relaxed/simple;
-	bh=Iide5p1oDHgAugmedqz0aW5pzxD/pTjuW6/1quf3Gpk=;
+	s=arc-20240116; t=1747749512; c=relaxed/simple;
+	bh=LO9ZJJ+j1NPsKRh8CxnT0t7BFdl56UiSkKozkY1yCbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUCYZ/YxVuDrdDKQiZoI6Tx3bzdmmu19UHZ2LPfd8SKs43Dw2MI+MX4QoTq2GoLmDCG1ly04KtnHfnCdj17puFiBsa5K7RyyUidLaQZqa7VLr3xI4k0LkumqMfk8vlrcZ0z1jd7zcDLA5gjvH5lFIY2JNJEmOKq5AKPkAg8EtK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6kfEUVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74842C4CEE9;
-	Tue, 20 May 2025 13:54:07 +0000 (UTC)
+	 MIME-Version; b=USlJkrnBVfCR13Gd8PAT9sxVuG9Ad1SfMZi/dFPNmlTIyq7mUnbF3dMbmDrSq1Vl7lm330J1AUAPqW6Oqm+FCnFHzJIqTosASAGG1VEGfxN7RBIyLuUMULs0mNp84y6z8t+cyWmMMWGfYAIF+NuwsaDBDa43+LFD331jsjv5MMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5BmfWlp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C67C4CEEB;
+	Tue, 20 May 2025 13:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749247;
-	bh=Iide5p1oDHgAugmedqz0aW5pzxD/pTjuW6/1quf3Gpk=;
+	s=korg; t=1747749512;
+	bh=LO9ZJJ+j1NPsKRh8CxnT0t7BFdl56UiSkKozkY1yCbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6kfEUVVqWz9aowbCqhAF0dWgY5eWwB+o17/8bX8PWGBATw8gN6DkmmH1uPutLLo0
-	 Ix/RCk64FxoDBpSPqwTNHiHKw288xTCIPkSOm6RGpVvxXuHKR6ddksGJ+Z0WpU9DPS
-	 AA0A/SC/ysF1FI6Ew+Eyx9UjRt421VRrcmiWHNLk=
+	b=G5BmfWlpAs6hBgG3yqdCA6A8qkZNHSALPjePqMQilSj8cAOUgHDr7SQ79xmVSZol9
+	 dw4cMgIE+S9w0J0NiIcQKG7Yi5SvmYj83zF4IejefXr9c6eHOZIgoT45m41wjzqTQT
+	 +SFQdB0b5rUXkC3VPdk9yyqJXIhHIw9U7aZKDykc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vaishnav Achath <vaishnav.a@ti.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 43/59] dmaengine: ti: k3-udma: Use cap_mask directly from dma_device structure instead of a local copy
+Subject: [PATCH 6.1 69/97] dmaengine: idxd: fix memory leak in error handling path of idxd_setup_groups
 Date: Tue, 20 May 2025 15:50:34 +0200
-Message-ID: <20250520125755.556460244@linuxfoundation.org>
+Message-ID: <20250520125803.356330544@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 8ca9590c39b69b55a8de63d2b21b0d44f523b43a upstream.
+commit aa6f4f945b10eac57aed46154ae7d6fada7fccc7 upstream.
 
-Currently, a local dma_cap_mask_t variable is used to store device
-cap_mask within udma_of_xlate(). However, the DMA_PRIVATE flag in
-the device cap_mask can get cleared when the last channel is released.
-This can happen right after storing the cap_mask locally in
-udma_of_xlate(), and subsequent dma_request_channel() can fail due to
-mismatch in the cap_mask. Fix this by removing the local dma_cap_mask_t
-variable and directly using the one from the dma_device structure.
+Memory allocated for groups is not freed if an error occurs during
+idxd_setup_groups(). To fix it, free the allocated memory in the reverse
+order of allocation before exiting the function in case of an error.
 
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Fixes: defe49f96012 ("dmaengine: idxd: fix group conf_dev lifetime")
 Cc: stable@vger.kernel.org
-Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Link: https://lore.kernel.org/r/20250417075521.623651-1-y-abhilashchandra@ti.com
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-4-xueshuai@linux.alibaba.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/k3-udma.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dma/idxd/init.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -4210,7 +4210,6 @@ static struct dma_chan *udma_of_xlate(st
- 				      struct of_dma *ofdma)
- {
- 	struct udma_dev *ud = ofdma->of_dma_data;
--	dma_cap_mask_t mask = ud->ddev.cap_mask;
- 	struct udma_filter_param filter_param;
- 	struct dma_chan *chan;
- 
-@@ -4242,7 +4241,7 @@ static struct dma_chan *udma_of_xlate(st
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -310,6 +310,7 @@ static int idxd_setup_groups(struct idxd
+ 		rc = dev_set_name(conf_dev, "group%d.%d", idxd->id, group->id);
+ 		if (rc < 0) {
+ 			put_device(conf_dev);
++			kfree(group);
+ 			goto err;
  		}
- 	}
  
--	chan = __dma_request_channel(&mask, udma_dma_filter_fn, &filter_param,
-+	chan = __dma_request_channel(&ud->ddev.cap_mask, udma_dma_filter_fn, &filter_param,
- 				     ofdma->of_node);
- 	if (!chan) {
- 		dev_err(ud->dev, "get channel fail in %s.\n", __func__);
+@@ -329,7 +330,10 @@ static int idxd_setup_groups(struct idxd
+ 	while (--i >= 0) {
+ 		group = idxd->groups[i];
+ 		put_device(group_confdev(group));
++		kfree(group);
+ 	}
++	kfree(idxd->groups);
++
+ 	return rc;
+ }
+ 
 
 
 
