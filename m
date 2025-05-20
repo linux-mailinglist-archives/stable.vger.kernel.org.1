@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-145243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1F2ABDAD8
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3384BABDA21
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D87334A6016
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF561BA4BC4
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DB1245033;
-	Tue, 20 May 2025 13:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D349F246771;
+	Tue, 20 May 2025 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/6/H6R6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mx6zs+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27C724337C;
-	Tue, 20 May 2025 13:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA2A24501D;
+	Tue, 20 May 2025 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749594; cv=none; b=ehuudt5YQBQr6J+5SvDC+DlKoSimld/dr5ug0SUBHofekNtD0grKoIF2X+gCJtuSYcQ8vmXUT9HZMFjMRWn1D7A/FfS8MqfB1GUy8aPAnzhLhiF698+TmtntwLb2x2seth3xh+iyqghUeq7fEOOxhpT5lVUH9IJ9h9CNdiwA4lg=
+	t=1747749235; cv=none; b=NMxPj4whyaxFirLWHUUAsw9w/bppPPbtUUSQJxv7tTkF4vP8/qehZw8Ghw2cBr6NJakEXU/K3j/qJZcfS540x4g/liTpFofN2JlHbWYPuK7gMEgVGG2q8v32l/VCyMC3ErA2k1mKkk4iQXwQCjPmdzBZrBd7i+cDlMLx0PDdltg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749594; c=relaxed/simple;
-	bh=1XWSK+aVLEua948AZpPZwEnMYTMsn2Vi+gGKo74UYGI=;
+	s=arc-20240116; t=1747749235; c=relaxed/simple;
+	bh=fx7JcI1Bof8dBLqtRY2epE+KCQU3h1w9zW7hHbd8vV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhUHK/5bjEd2lgBC3COzB4HiI44Q/70XwOUsq0eXLaHHcaV9CQr1HUvFzTfpolyhGgej6eJTI2KHlK9ThUMx/cKp9TFJk45ZqiarqGuXxBIm0K9af/G7ph+gw9/NKNyqD+tH8L5zcJNFmfQ19kyw3cNvfi2oIxk1kT/GsTGUzoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/6/H6R6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4246CC4CEEA;
-	Tue, 20 May 2025 13:59:54 +0000 (UTC)
+	 MIME-Version; b=Ca8f0KroM3GtqBy5PHAcDWdKfZwTObsgOY2DMktpqhInpYfLpGIAyVQFbK4mP3vKBjfqj4EANc262O+5GPElvHmgDoeg10VcIwZroM+M514Q2ytHhYBNFkUQ75TrC1vmCrluW5zftnPnbL2VbvF0UB7ndvVjrzFe6UM6C74Zj+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mx6zs+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148BCC4CEE9;
+	Tue, 20 May 2025 13:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749594;
-	bh=1XWSK+aVLEua948AZpPZwEnMYTMsn2Vi+gGKo74UYGI=;
+	s=korg; t=1747749235;
+	bh=fx7JcI1Bof8dBLqtRY2epE+KCQU3h1w9zW7hHbd8vV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/6/H6R6AS8I86Ytdyd0sVI87S4yI5+LJelR0CPxgawSHKA3g2WQIjKmzso+8FTos
-	 9WCWNwXN2LDZWdJs3TvNC7vxg9POJkt0MOMdQcX2DzO3ISK477mMhQUIy6yiSrmqa1
-	 YWjVr5CcDx5ZU6cU2U3r8cpRlpepi2CHYe21c9+4=
+	b=1mx6zs+etNi1goFOko2uJgaBTeAy3DFJLYOS6vUCkKOQ+uXPHeTQ0uOX1V8aIha1+
+	 62rOHS7LLKHR3OlPo3ioInZkFPpOVVf00vxzd/UcCnem6gdO6+5azdr9P9jVw0GoNr
+	 NUyQyKfKUPXjeTkVF0bTLNc8p4VBG8xDja25ibgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 64/97] net: qede: Initialize qede_ll_ops with designated initializer
-Date: Tue, 20 May 2025 15:50:29 +0200
-Message-ID: <20250520125803.158548759@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Thierry Reding <treding@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 39/59] phy: Fix error handling in tegra_xusb_port_init
+Date: Tue, 20 May 2025 15:50:30 +0200
+Message-ID: <20250520125755.403941749@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 6b3ab7f2cbfaeb6580709cd8ef4d72cfd01bfde4 upstream.
+commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
 
-After a recent change [1] in clang's randstruct implementation to
-randomize structures that only contain function pointers, there is an
-error because qede_ll_ops get randomized but does not use a designated
-initializer for the first member:
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
-    206 |         {
-        |         ^
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-Explicitly initialize the common member using a designated initializer
-to fix the build.
+Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
-Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20250507-qede-fix-clang-randstruct-v1-1-5ccc15626fba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/tegra/xusb.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/qlogic/qede/qede_main.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
-@@ -204,7 +204,7 @@ static struct pci_driver qede_pci_driver
- };
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -542,16 +542,16 @@ static int tegra_xusb_port_init(struct t
  
- static struct qed_eth_cb_ops qede_ll_ops = {
--	{
-+	.common = {
- #ifdef CONFIG_RFS_ACCEL
- 		.arfs_filter_op = qede_arfs_filter_op,
- #endif
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	err = device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	return 0;
+ 
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
+ }
+ 
 
 
 
