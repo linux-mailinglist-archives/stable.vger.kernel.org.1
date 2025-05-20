@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-145604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEBDABDD1F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:33:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28CA4ABDBFB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:18:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 540224E444C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BD628C60EB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79F5250C14;
-	Tue, 20 May 2025 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9674248866;
+	Tue, 20 May 2025 14:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rY2p7umL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpWh8y7a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9B421D5BE;
-	Tue, 20 May 2025 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65157246773;
+	Tue, 20 May 2025 14:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750664; cv=none; b=P5gS8lCS0JW7QjUu8kADLsghmRq/w1e/X5EmKAX8guhmLUEeO1Ese4rmiytAgPElyRyP7877QBHJLjfF3mbt/EjOB31qJQZIREiJ5auLoz4ARc59Oeq8beOPesOCNlkn55pW9DKs6vBjJrCXY3Eh5fMVC+2TfpzVjqlszvG4HBc=
+	t=1747750177; cv=none; b=LNE6/95d3sE+aLPheCbDbMsZH0pd2lT5YRNjjBnjOMIC8Nn5Yacj+IMhySG/Z7cSPbDRW+t4/uA/KIFP0NZn5TKguDyCi6Zoso5jdD2Acr8dwA/x+bC6dn89lVpteFQjdXMKKTX+UQTvJ+AW0Sx7chNiTp8sJsUvxd/7yec4J+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750664; c=relaxed/simple;
-	bh=fBr0+58u34wd/z6VFkohke1w99Z7sMdTTuXC2icZGQ0=;
+	s=arc-20240116; t=1747750177; c=relaxed/simple;
+	bh=GipE5Mf6+kt/+s5duhETLQcSc/VHpm7fd3N80Ugv6qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trSEDD0dH2q8eYSGM5Zjr58ijcNGaq0y5UKGvsT2ZpnrffFBACEQv8GUS1L3lazSc9UQFd5q91z2rkjlCheWmqRjKH78djy9h4F/rQOH/hN5VI3mwbn9+6KYC5XaK37cT6sSlkSA+JnTQi5ahJA1nLsUKXonY3uE+fBbfF9vCag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rY2p7umL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9218C4CEEB;
-	Tue, 20 May 2025 14:17:43 +0000 (UTC)
+	 MIME-Version; b=V6ssNG9kN/skfLVD6YiVRKCbn4L5KLOkU2KFk7w9HkaOPf4sw1bgfLkigtM1qtoUzylQOraDS07/lL7Dx48pD+6Ejq71ypCl3SdpizHex0cVNG/P89XSNG0dHkzF3aCbLFs7djgU10OL3ogZqFyHJ3/aCWwr1b0D5VJYVIimuXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpWh8y7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F0FC4CEEA;
+	Tue, 20 May 2025 14:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750664;
-	bh=fBr0+58u34wd/z6VFkohke1w99Z7sMdTTuXC2icZGQ0=;
+	s=korg; t=1747750177;
+	bh=GipE5Mf6+kt/+s5duhETLQcSc/VHpm7fd3N80Ugv6qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rY2p7umLtDB19cMnm2ZOXcTe7wg4/tke4pkuADdbK/IMZ+CdjyY+uFEVGLKseE+JI
-	 +MDDN0RVekRPL9cI9TERnjwU+fUIE7Udk8kNKiktfZqBX6Q7ppwdpBCQdeiRWUkiBN
-	 U6oFNahsbxrvU1GD8i4rCtMTvbXrDPvIlWsLGp+8=
+	b=SpWh8y7a3MO0lpRXheXDc8URo+JwK/chY1UzflnRNlvFkpkJky/P9FWVoBq5eQ76K
+	 TqmUw+aZmTdt+RkF106oZZbofpb38oxuTWSV3iKGBHnRzQQJca9PLA3EjrYzravdqj
+	 TmF5a6yWrpG0z/sIFz1q11oWVS5ZYVmPSNwqmAfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Pengtao He <hept.hept.hept@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 051/145] netlink: specs: tc: all actions are indexed arrays
+Subject: [PATCH 6.12 066/143] net/tls: fix kernel panic when alloc_page failed
 Date: Tue, 20 May 2025 15:50:21 +0200
-Message-ID: <20250520125812.573930367@linuxfoundation.org>
+Message-ID: <20250520125812.657324687@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Pengtao He <hept.hept.hept@gmail.com>
 
-[ Upstream commit f3dd5fb2fa494dcbdb10f8d27f2deac8ef61a2fc ]
+[ Upstream commit 491deb9b8c4ad12fe51d554a69b8165b9ef9429f ]
 
-Some TC filters have actions listed as indexed arrays of nests
-and some as just nests. They are all indexed arrays, the handling
-is common across filters.
+We cannot set frag_list to NULL pointer when alloc_page failed.
+It will be used in tls_strp_check_queue_ok when the next time
+tls_strp_read_sock is called.
 
-Fixes: 2267672a6190 ("doc/netlink/specs: Update the tc spec")
-Link: https://patch.msgid.link/20250513221638.842532-1-kuba@kernel.org
+This is because we don't reset full_len in tls_strp_flush_anchor_copy()
+so the recv path will try to continue handling the partial record
+on the next call but we dettached the rcvq from the frag list.
+Alternative fix would be to reset full_len.
+
+Unable to handle kernel NULL pointer dereference
+at virtual address 0000000000000028
+ Call trace:
+ tls_strp_check_rcv+0x128/0x27c
+ tls_strp_data_ready+0x34/0x44
+ tls_data_ready+0x3c/0x1f0
+ tcp_data_ready+0x9c/0xe4
+ tcp_data_queue+0xf6c/0x12d0
+ tcp_rcv_established+0x52c/0x798
+
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Signed-off-by: Pengtao He <hept.hept.hept@gmail.com>
+Link: https://patch.msgid.link/20250514132013.17274-1-hept.hept.hept@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/tc.yaml | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/tls/tls_strp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/tc.yaml b/Documentation/netlink/specs/tc.yaml
-index 5e1ff04f51f26..953aa837958b3 100644
---- a/Documentation/netlink/specs/tc.yaml
-+++ b/Documentation/netlink/specs/tc.yaml
-@@ -2017,7 +2017,8 @@ attribute-sets:
-     attributes:
-       -
-         name: act
--        type: nest
-+        type: indexed-array
-+        sub-type: nest
-         nested-attributes: tc-act-attrs
-       -
-         name: police
-@@ -2250,7 +2251,8 @@ attribute-sets:
-     attributes:
-       -
-         name: act
--        type: nest
-+        type: indexed-array
-+        sub-type: nest
-         nested-attributes: tc-act-attrs
-       -
-         name: police
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 77e33e1e340e3..65b0da6fdf6a7 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -396,7 +396,6 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
+ 		return 0;
+ 
+ 	shinfo = skb_shinfo(strp->anchor);
+-	shinfo->frag_list = NULL;
+ 
+ 	/* If we don't know the length go max plus page for cipher overhead */
+ 	need_spc = strp->stm.full_len ?: TLS_MAX_PAYLOAD_SIZE + PAGE_SIZE;
+@@ -412,6 +411,8 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
+ 				   page, 0, 0);
+ 	}
+ 
++	shinfo->frag_list = NULL;
++
+ 	strp->copy_mode = 1;
+ 	strp->stm.offset = 0;
+ 
 -- 
 2.39.5
 
