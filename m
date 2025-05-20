@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-145270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A28ABDAC7
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:01:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF54FABDAE1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE1AC1BA5AF9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1F611885959
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180FE246327;
-	Tue, 20 May 2025 14:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD312246773;
+	Tue, 20 May 2025 14:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AI4TIksy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFnJbKki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD412459F3;
-	Tue, 20 May 2025 14:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F8924633C;
+	Tue, 20 May 2025 14:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749676; cv=none; b=ZXUEVzfGf7JI0FDgfgeJGYUJRrEnUiW/IyqaFsStCceTitdD4a5M1wBmGtGf+aumAVxGhbQ9pp+1iz6Y5a3jUI/BvdmzfkTqwKbXEmfbkWBq5LfyemTvccH5V/ivjWCGMX4AFgfbENeMksfIWUF/ACs24yTeSkP9E5miyGCu5Yc=
+	t=1747749708; cv=none; b=cQn8n6SsLsVkRVXWhDQripMF5BdeCYQRAXkPXSu6h26qQoymgitbwXTrBnApwhYxq8P9U91kwKCuqfwMIhnL63wdr28GToQzBYC+ECGOPxYYo0PYAO14z1YpwZIJejT10Pn6Lk00vWgs3HpDEOQWxr8g9wXbJoMfvoBSKnnxUIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749676; c=relaxed/simple;
-	bh=1jYue2ejbg8X2S7zWR3YvKOhQisXRUWuOOh3zW4H0Q4=;
+	s=arc-20240116; t=1747749708; c=relaxed/simple;
+	bh=6WZRxVvOFbgG7JkF5DeKRd2vrTVT4T+QwW2t2dVeTVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQQ/ecwQqTWRfLKqAW5d6VeHePoK+Y3JsBsqkfGF+2qqHH43ozdVASR5AvfhEnWDCS8HGYO9BFc8+NtNLzcEKO7RMJALDBoNHUlC+t4dn8YntUlomaALjLWYAlizhDU6OVzA40r1C2YhYzBlS6DMnnvZPeGonN4D3mFZq9R8sSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AI4TIksy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC2FC4CEE9;
-	Tue, 20 May 2025 14:01:16 +0000 (UTC)
+	 MIME-Version; b=pdt1Vu2djU6zfJJRkmWT3p+b6kBFRxB6JU2vIWxebNG7Sqi/CjCvaatrl0psFviVEdmiJzwUbzr18cRiKgzZFo92QCpjL2mA8xH6x3GYl7UuCH88lKzsDQe4fTZQf+rKzOffFcUOsSzAzHZVaB5GDeHfwOvZXwJiLlt0DYkw1zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFnJbKki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020E9C4CEEA;
+	Tue, 20 May 2025 14:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749676;
-	bh=1jYue2ejbg8X2S7zWR3YvKOhQisXRUWuOOh3zW4H0Q4=;
+	s=korg; t=1747749708;
+	bh=6WZRxVvOFbgG7JkF5DeKRd2vrTVT4T+QwW2t2dVeTVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AI4TIksyPKH9dipwzumA4d8Q6/N+PbKTLGlncynlYQ9zYOrdlGPcnTEXQJ+faMGHp
-	 xC5oJxBVvMDuLMM4GTkKE95WX0GPi/iiqj+Zq4aNkNfDz34bXZUlQkx7ZQGTffcIMn
-	 2riCNpS2nYnTjaHvKTRCnLb0M+Y8zesnTKqd/nsc=
+	b=VFnJbKkiTtkEV84PpsEeEIy57S27VItHnXOv9A5O1aXfUw5WgXaEp5UnYlNeoBK1b
+	 JKWGERtoaF5DVzx3q6TkM1ljCh7n0ZJHtmVPbJP9y+9gDvgAabQc7rYdRosHuN36XF
+	 zl3niHeSapeFrzTm3HalEmfKIIBVQJXIoUlzGi90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Luke Parkin <luke.parkin@arm.com>,
 	Cristian Marussi <cristian.marussi@arm.com>,
 	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/117] firmware: arm_scmi: Add message dump traces for bad and unexpected replies
-Date: Tue, 20 May 2025 15:49:41 +0200
-Message-ID: <20250520125804.627745420@linuxfoundation.org>
+Subject: [PATCH 6.6 017/117] firmware: arm_scmi: Add support for debug metrics at the interface
+Date: Tue, 20 May 2025 15:49:42 +0200
+Message-ID: <20250520125804.666709413@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
 References: <20250520125803.981048184@linuxfoundation.org>
@@ -66,80 +67,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Luke Parkin <luke.parkin@arm.com>
 
-[ Upstream commit 5076ab66db1671a5cd9ecfb857d1949e36a33142 ]
+[ Upstream commit 1b18d4295f9d1125bc7a799fc12924cd45fc04b1 ]
 
-It is useful to have message dump traces for any invalid/bad/unexpected
-replies. Let us add traces for the same as well as late-timed-out,
-out-of-order and unexpected/spurious messages.
+Since SCMI involves interaction with the entity(software, firmware and/or
+hardware) providing services or features, it is quite useful to track
+certain metrics(for pure debugging purposes) like how many messages were
+sent or received, were there any failures, what kind of failures, ..etc.
 
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20240325204620.1437237-4-cristian.marussi@arm.com
+Add a new optional config option for the above purpose and the initial
+support for counting such key debug metrics.
+
+Signed-off-by: Luke Parkin <luke.parkin@arm.com>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Cristian Marussi <cristian.marussi@arm.com>
+Message-Id: <20240805131013.587016-3-sudeep.holla@arm.com>
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Stable-dep-of: c23c03bf1faa ("firmware: arm_scmi: Fix timeout checks on polling path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/driver.c  | 10 ++++++++++
- drivers/firmware/arm_scmi/mailbox.c |  3 +++
- 2 files changed, 13 insertions(+)
+ drivers/firmware/arm_scmi/Kconfig  | 14 ++++++++++++++
+ drivers/firmware/arm_scmi/common.h | 10 ++++++++++
+ drivers/firmware/arm_scmi/driver.c |  2 ++
+ 3 files changed, 26 insertions(+)
 
+diff --git a/drivers/firmware/arm_scmi/Kconfig b/drivers/firmware/arm_scmi/Kconfig
+index ea0f5083ac47f..9a41c1c91f71a 100644
+--- a/drivers/firmware/arm_scmi/Kconfig
++++ b/drivers/firmware/arm_scmi/Kconfig
+@@ -55,6 +55,20 @@ config ARM_SCMI_RAW_MODE_SUPPORT_COEX
+ 	  operate normally, thing which could make an SCMI test suite using the
+ 	  SCMI Raw mode support unreliable. If unsure, say N.
+ 
++config ARM_SCMI_DEBUG_COUNTERS
++	bool "Enable SCMI communication debug metrics tracking"
++	select ARM_SCMI_NEED_DEBUGFS
++	depends on DEBUG_FS
++	default n
++	help
++	  Enables tracking of some key communication metrics for debug
++	  purposes. It may track metrics like how many messages were sent
++	  or received, were there any failures, what kind of failures, ..etc.
++
++	  Enable this option to create a new debugfs directory which contains
++	  such useful debug counters. This can be helpful for debugging and
++	  SCMI monitoring.
++
+ config ARM_SCMI_HAVE_TRANSPORT
+ 	bool
+ 	help
+diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
+index e26a2856a0e3d..e3a9217f29d39 100644
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -303,6 +303,16 @@ extern const struct scmi_desc scmi_optee_desc;
+ 
+ void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr, void *priv);
+ 
++enum debug_counters {
++	SCMI_DEBUG_COUNTERS_LAST
++};
++
++static inline void scmi_inc_count(atomic_t *arr, int stat)
++{
++	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS))
++		atomic_inc(&arr[stat]);
++}
++
+ enum scmi_bad_msg {
+ 	MSG_UNEXPECTED = -1,
+ 	MSG_INVALID = -2,
 diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index b3c2a199b2afb..f66a16d3671f1 100644
+index f66a16d3671f1..3bc41a9920294 100644
 --- a/drivers/firmware/arm_scmi/driver.c
 +++ b/drivers/firmware/arm_scmi/driver.c
-@@ -852,6 +852,9 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
- 			"Message for %d type %d is not expected!\n",
- 			xfer_id, msg_type);
- 		spin_unlock_irqrestore(&minfo->xfer_lock, flags);
-+
-+		scmi_bad_message_trace(cinfo, msg_hdr, MSG_UNEXPECTED);
-+
- 		return xfer;
- 	}
- 	refcount_inc(&xfer->users);
-@@ -876,6 +879,9 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
- 		dev_err(cinfo->dev,
- 			"Invalid message type:%d for %d - HDR:0x%X  state:%d\n",
- 			msg_type, xfer_id, msg_hdr, xfer->state);
-+
-+		scmi_bad_message_trace(cinfo, msg_hdr, MSG_INVALID);
-+
- 		/* On error the refcount incremented above has to be dropped */
- 		__scmi_xfer_put(minfo, xfer);
- 		xfer = ERR_PTR(-EINVAL);
-@@ -917,6 +923,9 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
- 	if (IS_ERR(xfer)) {
- 		dev_err(dev, "failed to get free message slot (%ld)\n",
- 			PTR_ERR(xfer));
-+
-+		scmi_bad_message_trace(cinfo, msg_hdr, MSG_NOMEM);
-+
- 		scmi_clear_channel(info, cinfo);
- 		return;
- 	}
-@@ -1036,6 +1045,7 @@ void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr, void *priv)
- 		break;
- 	default:
- 		WARN_ONCE(1, "received unknown msg_type:%d\n", msg_type);
-+		scmi_bad_message_trace(cinfo, msg_hdr, MSG_UNKNOWN);
- 		break;
- 	}
- }
-diff --git a/drivers/firmware/arm_scmi/mailbox.c b/drivers/firmware/arm_scmi/mailbox.c
-index 8e513f70b75d4..f1d5e3fba35e0 100644
---- a/drivers/firmware/arm_scmi/mailbox.c
-+++ b/drivers/firmware/arm_scmi/mailbox.c
-@@ -58,6 +58,9 @@ static void rx_callback(struct mbox_client *cl, void *m)
- 	 */
- 	if (cl->knows_txdone && !shmem_channel_free(smbox->shmem)) {
- 		dev_warn(smbox->cinfo->dev, "Ignoring spurious A2P IRQ !\n");
-+		scmi_bad_message_trace(smbox->cinfo,
-+				       shmem_read_header(smbox->shmem),
-+				       MSG_MBOX_SPURIOUS);
- 		return;
- 	}
+@@ -108,12 +108,14 @@ struct scmi_protocol_instance {
+  * @name: Name of this SCMI instance
+  * @type: Type of this SCMI instance
+  * @is_atomic: Flag to state if the transport of this instance is atomic
++ * @counters: An array of atomic_c's used for tracking statistics (if enabled)
+  */
+ struct scmi_debug_info {
+ 	struct dentry *top_dentry;
+ 	const char *name;
+ 	const char *type;
+ 	bool is_atomic;
++	atomic_t counters[SCMI_DEBUG_COUNTERS_LAST];
+ };
  
+ /**
 -- 
 2.39.5
 
