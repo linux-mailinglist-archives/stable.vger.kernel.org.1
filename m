@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 520EBABDCCF
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F990ABDD8F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0482F4C56C3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 872354E737E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E332517A4;
-	Tue, 20 May 2025 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC6A2512EC;
+	Tue, 20 May 2025 14:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1WB8v02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et90fBTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139AF24E01B;
-	Tue, 20 May 2025 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A132512E5;
+	Tue, 20 May 2025 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750256; cv=none; b=DEr/aeXmBuHfKrPE1MTGWH3YTg9plbxFAX57xgAJm/TrwoM89v0nSOUHPimqcVTwtHdzcZ26md1Y/59r5hN0rYlA9bV0EpeF5iLOJq64HjJEGX3cgkEPi/sgZlPxxYODm3Waf8UMXgBy5/XnhmKLqX7GdOiQd7xk1h01cLnjXUo=
+	t=1747750739; cv=none; b=pyrwqsb1gyFBS/z1o6Zkk8fIPqnFQsM2zmAD6Mts4tbNdipK7cNl/fhDEzgZ7CZe6iKaTvEpYgLt5jhoeytKtGxiKh9DoFGUnwqy7OEbNcfG9xpr5ZsPyvGuYAmP5BQCAhESP9uZsox8B4rWftxnkTKOjep80l53aPq/V/YLUSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750256; c=relaxed/simple;
-	bh=5gtDe0UAINPI4V+g84dwscQdgUWtnhsPUG4V7Piq3iI=;
+	s=arc-20240116; t=1747750739; c=relaxed/simple;
+	bh=kEtp4KiAVcH85sfCaTtSl/ZS4fhQCkjcKW4qKyrcQ18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rti7muHbnTMEf6o//t1I9VuTRv1NFnnhwlETq7QHoMHD6ZTcscwAXA7aJj0/QUcw+XyQxF0zEFZJZVG59iZuJ7ew9O0FhfaxVJDKzCVji3SfzlhPjeFNkfTw3r89bOmP+iiijn8CLyoie+dDXo/MRJOJzqKRqHeYgPKnn6NDNUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1WB8v02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9906AC4CEEA;
-	Tue, 20 May 2025 14:10:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cnzliu7dCEvN56DaoeB9EkG4d6AccHvGKfDdveDlDmCYLO0qR0sJW7hOh13IIk/lixY120e1i8RBo2PWSijZXyJej+L6CzpxptNWwU69r3zuA70Vzo4BWtvL0PEW3mvsimaa2T5VNMW8bPyMbP7IsHR37kI4XFvhcnPUyjuQpWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et90fBTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3504AC4CEE9;
+	Tue, 20 May 2025 14:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750255;
-	bh=5gtDe0UAINPI4V+g84dwscQdgUWtnhsPUG4V7Piq3iI=;
+	s=korg; t=1747750739;
+	bh=kEtp4KiAVcH85sfCaTtSl/ZS4fhQCkjcKW4qKyrcQ18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1WB8v02ZE9fDWrPTJ0vR/RQjQ9kNVST9/foMo0bwcKy1PVQUZla2A3k3XlsOtSmr
-	 Y5jP5EDYRTTxDKcUk283fVHUVR9jsTXiH5n0aNiap6jDXf1qAZdtN/tHV+1rW2j04V
-	 yHugJn1lp9Z2/6DCiH3vxv4OFtaX2PaGATlw4f2M=
+	b=Et90fBTMqFTHcF6DqeygNuNhMyqDy9dI19aGHAt3NIX4dskUV8tq3NDWKpgBJ/Oh/
+	 7htI6DWkubguUZzkB3U7dOrZ52790D1eyzGvM3d6R8qtivf68l0aD/bcpchKAgQlaJ
+	 Ed9IhV2EqCN5J/mr/qJh+h+KD2j6jXGMzszmMh1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Heusel <christian@heusel.eu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 092/143] ALSA: usb-audio: Add sample rate quirk for Audioengine D1
-Date: Tue, 20 May 2025 15:50:47 +0200
-Message-ID: <20250520125813.674783096@linuxfoundation.org>
+	=?UTF-8?q?Michel=20D=C3=A4nzer?= <michel.daenzer@mailbox.org>,
+	Melissa Wen <mwen@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 078/145] Revert "drm/amd/display: Hardware cursor changes color when switched to software cursor"
+Date: Tue, 20 May 2025 15:50:48 +0200
+Message-ID: <20250520125813.640658311@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Heusel <christian@heusel.eu>
+From: Melissa Wen <mwen@igalia.com>
 
-commit 2b24eb060c2bb9ef79e1d3bcf633ba1bc95215d6 upstream.
+commit fe14c0f096f58d2569e587e9f4b05d772272bbb4 upstream.
 
-A user reported on the Arch Linux Forums that their device is emitting
-the following message in the kernel journal, which is fixed by adding
-the quirk as submitted in this patch:
+This reverts commit 272e6aab14bbf98d7a06b2b1cd6308a02d4a10a1.
 
-    > kernel: usb 1-2: current rate 8436480 is different from the runtime rate 48000
+Applying degamma curve to the cursor by default breaks Linux userspace
+expectation.
 
-There also is an entry for this product line added long time ago.
-Their specific device has the following ID:
+On Linux, AMD display manager enables cursor degamma ROM just for
+implict sRGB on HW versions where degamma is split into two blocks:
+degamma ROM for pre-defined TFs and `gamma correction` for user/custom
+curves, and degamma ROM settings doesn't apply to cursor plane.
 
-    $ lsusb | grep Audio
-    Bus 001 Device 002: ID 1101:0003 EasyPass Industrial Co., Ltd Audioengine D1
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=305494
-Fixes: 93f9d1a4ac593 ("ALSA: usb-audio: Apply sample rate quirk for Audioengine D1")
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1513
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2803
+Reported-by: Michel Dänzer <michel.daenzer@mailbox.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4144
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f6a305d4748801a6c799ae9375b2ecff3aed094b)
 Cc: stable@vger.kernel.org
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-Link: https://patch.msgid.link/20250512-audioengine-quirk-addition-v1-1-4c370af6eff7@heusel.eu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2248,6 +2248,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_FIXED_RATE),
- 	DEVICE_FLG(0x0fd9, 0x0008, /* Hauppauge HVR-950Q */
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
-+	DEVICE_FLG(0x1101, 0x0003, /* Audioengine D1 */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x1224, 0x2a25, /* Jieli Technology USB PHY 2.0 */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
- 	DEVICE_FLG(0x1395, 0x740a, /* Sennheiser DECT */
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn401/dcn401_dpp_cm.c
+@@ -120,10 +120,11 @@ void dpp401_set_cursor_attributes(
+ 	enum dc_cursor_color_format color_format = cursor_attributes->color_format;
+ 	int cur_rom_en = 0;
+ 
+-	// DCN4 should always do Cursor degamma for Cursor Color modes
+ 	if (color_format == CURSOR_MODE_COLOR_PRE_MULTIPLIED_ALPHA ||
+ 		color_format == CURSOR_MODE_COLOR_UN_PRE_MULTIPLIED_ALPHA) {
+-		cur_rom_en = 1;
++		if (cursor_attributes->attribute_flags.bits.ENABLE_CURSOR_DEGAMMA) {
++			cur_rom_en = 1;
++		}
+ 	}
+ 
+ 	REG_UPDATE_3(CURSOR0_CONTROL,
 
 
 
