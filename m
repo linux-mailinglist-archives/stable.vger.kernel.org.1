@@ -1,202 +1,157 @@
-Return-Path: <stable+bounces-145715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A80ABE4C2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 22:32:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237CDABE4EA
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 22:39:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9553ADAE0
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 20:31:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F8AF4C4A31
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 20:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D10528C85D;
-	Tue, 20 May 2025 20:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C077D25B695;
+	Tue, 20 May 2025 20:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MwFkArGp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M2m+Bxd5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF0428C2CF;
-	Tue, 20 May 2025 20:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49F828C853
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 20:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747773095; cv=none; b=se7gdbgiiLtATVW56cK1X5kVJ++vjSZTCMeYKVkvpfoJJJLu5A/3ADG/d/WztA3YPnqBxVzhm49c4iy7ZPr7o6iMR0xYn+W4Kr8MkKwvnbxDE8Ok5NdI2bvVgRu0pomhi6pihDBeb8YyBIcTfM8nGFgEkPiiAzNyRxqxQjLSugE=
+	t=1747773419; cv=none; b=ZnRGE7ghCApVL9TufQxSvZyOS/Aymmhpl2KufIeJ7jkY34gL3RcfhsDFbUe529Q7A4pB9BsHEE1IwmbeO+vigNiTiKJX98UPTY8+HtJyk//3Q1ftil8FlPLsVQmd8ZIu+ms1K6/HPUiLzFlCRJlz4qJc5q4IpnGUYY22KypS7d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747773095; c=relaxed/simple;
-	bh=3GWxq42/tgSqBxgPB7yrDRaLb7a882QSAs5qQK5Arp4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YxSDwfZbZt0O9gNOJxCGqt3xr22Ua8ZBRVXPIXHgdWnNfzD/dlCcQ+cyiq39AIcCVIdN2UzvbGNdewZrAN0HjEakoJAvrYWZUtlWlrunzBmLhgoKuJe2toNU+s7xiFtT/HNznNSkvKQvZN1Hh2uKFiL0YW4GpikiC4b6vMhyLYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MwFkArGp; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747773093; x=1779309093;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3GWxq42/tgSqBxgPB7yrDRaLb7a882QSAs5qQK5Arp4=;
-  b=MwFkArGpeogcwVgPjgL2rJMTtRAcbp9562nAO5+Ho28kuMYAZgAPA45R
-   YucRJdLLEipn66ji1PB36597lvHwlgT6I0mpng0ReYBqGVtRx+281SUfg
-   2CKNbgmiiskW+rDoF7hSY782cSM8MST3TckWrwYVVVsNfc657cl7cI1H4
-   XBzGphp60vK8nA9qGxFaRdqUU2OklW+eF4H0XyosxWMbcyFUlFlfnxIG2
-   hjHbCredLgRrG1IBkzu/qlYfp5AiHhWZCR0YwI8Kw1oHh8tZ3VqV6H0jg
-   /Rh1yTKt2H46rY/GJbY2wzAH81dPsJjRj9VG8j1ozzLiGj5Rwa85vdMSL
-   A==;
-X-CSE-ConnectionGUID: zq8BqAp1QEGwr3K86DZSxg==
-X-CSE-MsgGUID: pKLRBb06Sc2bf3jBiEhCLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49861355"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="49861355"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 13:31:32 -0700
-X-CSE-ConnectionGUID: q0AcIwtGTrC78y+QjzCHfg==
-X-CSE-MsgGUID: JQOZXCiKQOu/6s3LgSjiSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="176941458"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 20 May 2025 13:31:30 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uHTcW-000NXg-0K;
-	Tue, 20 May 2025 20:31:28 +0000
-Date: Wed, 21 May 2025 04:30:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>, andi.shyti@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: qup: Add error handling in qup_i2c_xfer_v2()
-Message-ID: <202505210438.G4nfkpQ2-lkp@intel.com>
-References: <20250519141918.2522-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1747773419; c=relaxed/simple;
+	bh=RIcfmaKTtd4VIDlEArAOVwY3U/TuBBuX+W0FYjOr1ug=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SrRNBX7V3rewi7hgn8B1Xqze2I+H+LgPtgy+lYHoxqecn+1ErBFKXbzw+x0er0eYR0OJJWCEXVoN+c8WWZW1kwGBjDkAB6z/z9sv11z23jZ39DMCuQOHhVWVFnKsXAsGsODAmGxnkrjpeZyMtDsGX6wRrB+Mu8gA80v3r3sXEAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M2m+Bxd5; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6019b564d0bso7253056a12.2
+        for <stable@vger.kernel.org>; Tue, 20 May 2025 13:36:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747773415; x=1748378215; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e/XCxJQ0tjfNX3NNg49vnesXQqH+m1Ea2MKf5/DqpwA=;
+        b=M2m+Bxd5S4+lqnbePBkr+0cwZpiLn9dPrw4e9RtOrPrDSKHoKbrzp4CN9cHPz+Y9H2
+         /jNcvC8zGmpfShXHyD+x0IVmJAtTDRii26XkIcSFtWF1T+pohtpbmZCsI5aZb/IvljjB
+         rwZk19p5iJNBovF2eVi4bkuMzPXgeUrnV82r49jMXiemCXJkqzxqO7V0FaJKlR43wFGB
+         8DSPO74pDleDWCRSBK7JsmQwcwh+CwijuV9y8SOy5EQ0m0a5scW7X9UHJUbZptC/WR3k
+         J72v4LmpJLl9ExyojmeEK6vrz97m6raJiRctvf+2Z1nAYxU+WSkaC0f/up863/oITfKA
+         feLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747773415; x=1748378215;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e/XCxJQ0tjfNX3NNg49vnesXQqH+m1Ea2MKf5/DqpwA=;
+        b=VZai2YpZYyrnvo2W11aJ8c+fIWi2eptP8H6AWrVc1tcOw+jMNk0zaun4PGcMSaxjII
+         BijomKiFeiavxKXhQWM8b8WO7pMjsy3K8GnIWJjTpK9PY+6C6u7WtS0Ttq16QThQa8jM
+         4TV5xFZcjlC741563r7uJeKis5+e2OKzJ+xZgxi1O+C9XlZMzCEjWLKliMdKRO7Qp5IN
+         9g0m4qs1NGHE9Z2Y62e9NcPM0U5g7y9QyHpWbj54Fx9jD/NVWY6a8j9Yin0CqBHYQFnw
+         PRtX+xdY8RGzlVSZtvgSusg4g6soE7nXh6AqcCwtTfbTy7hVH6aPMhvGDqAZ+gqRdyF5
+         DNbQ==
+X-Gm-Message-State: AOJu0Yz8weNtH6JbmQ0cLKZz1GV4+5IAFOmub7dfR/vKdWjQYbbu1LUk
+	O/ew8lb7jU8cn75zv3o7z+XZR8xRid3S2bnmHAQjDr2AJwI+nC4Xj9ZFTKxgFK4kTG2Rng==
+X-Gm-Gg: ASbGncvPDCihjGILQeDtxbQD9pA51mjsIJa1w807IOHoebrF/uDUYPdlVnM5fJBKTnZ
+	ceVkojS/H6VfpmSLst4iFH+oiQg/mM4+I6kb8HNXTE8bz73HIyoGkiPB+2x+X4uIyPcziVL60dk
+	KDfxV9xYCzDcl296n58prL5c4MB8uY4h5DVqvdwLuwVbIGso2ZMl4N9hU4M+QkFFjMOFFVTZlIy
+	TY6rw0GtLKSlw8Jji+JSCWiLSLdWzCgyNCweK7zYo+EVzoMTcFFtd/1z+8PvFxZSNyKLT1y7mRg
+	RPyDPzhqEBZnN6vq34Y2DCcnAWpo1O/Nz/PWuDsEQRHxFoS8rVA01j7jVqdVuwfsCoorXQZhalc
+	1HQtHGJUAw1SnXr2daBwpSmJ5k68OLJ1vDZP9+dpZlGfAYsNlVG9LUcfB6gd/lDX7tiM=
+X-Google-Smtp-Source: AGHT+IFXg9MUj2quvHRUvCl23nWx2N8xvJ0dJBKnOia793Tf7P3ycLLMCoqBs2F6LwM6njcBsCCj+g==
+X-Received: by 2002:a05:6402:13d1:b0:601:9853:5471 with SMTP id 4fb4d7f45d1cf-6019862aabemr13213217a12.31.1747773415368;
+        Tue, 20 May 2025 13:36:55 -0700 (PDT)
+Received: from emanuele-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6004d4f5fe5sm7686527a12.7.2025.05.20.13.36.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 May 2025 13:36:55 -0700 (PDT)
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+To: stable@vger.kernel.org
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6.y] gpio: pca953x: fix IRQ storm on system wake up
+Date: Tue, 20 May 2025 22:36:37 +0200
+Message-ID: <20250520203637.3133360-1-ghidoliemanuele@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2025051941-gloomily-occupy-87f2@gregkh>
+References: <2025051941-gloomily-occupy-87f2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519141918.2522-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-Hi Wentao,
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-kernel test robot noticed the following build warnings:
+If an input changes state during wake-up and is used as an interrupt
+source, the IRQ handler reads the volatile input register to clear the
+interrupt mask and deassert the IRQ line. However, the IRQ handler is
+triggered before access to the register is granted, causing the read
+operation to fail.
 
-[auto build test WARNING on andi-shyti/i2c/i2c-host]
-[also build test WARNING on linus/master v6.15-rc7 next-20250516]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+As a result, the IRQ handler enters a loop, repeatedly printing the
+"failed reading register" message, until `pca953x_resume()` is eventually
+called, which restores the driver context and enables access to
+registers.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/i2c-qup-Add-error-handling-in-qup_i2c_xfer_v2/20250519-222137
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git i2c/i2c-host
-patch link:    https://lore.kernel.org/r/20250519141918.2522-1-vulab%40iscas.ac.cn
-patch subject: [PATCH] i2c: qup: Add error handling in qup_i2c_xfer_v2()
-config: hexagon-randconfig-001-20250521 (https://download.01.org/0day-ci/archive/20250521/202505210438.G4nfkpQ2-lkp@intel.com/config)
-compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250521/202505210438.G4nfkpQ2-lkp@intel.com/reproduce)
+Fix by disabling the IRQ line before entering suspend mode, and
+re-enabling it after the driver context is restored in `pca953x_resume()`.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505210438.G4nfkpQ2-lkp@intel.com/
+An IRQ can be disabled with disable_irq() and still wake the system as
+long as the IRQ has wake enabled, so the wake-up functionality is
+preserved.
 
-All warnings (new ones prefixed by >>):
+Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250512095441.31645-1-francesco@dolcini.it
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+(cherry picked from commit 3e38f946062b4845961ab86b726651b4457b2af8)
+---
+ drivers/gpio/gpio-pca953x.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
->> drivers/i2c/busses/i2c-qup.c:1619:6: warning: variable 'err' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-    1619 |         if (!ret)
-         |             ^~~~
-   drivers/i2c/busses/i2c-qup.c:1621:6: note: uninitialized use occurs here
-    1621 |         if (err)
-         |             ^~~
-   drivers/i2c/busses/i2c-qup.c:1619:2: note: remove the 'if' if its condition is always true
-    1619 |         if (!ret)
-         |         ^~~~~~~~~
-    1620 |                 err = qup_i2c_change_state(qup, QUP_RESET_STATE);
-   drivers/i2c/busses/i2c-qup.c:1570:14: note: initialize the variable 'err' to silence this warning
-    1570 |         int ret, err, idx = 0;
-         |                     ^
-         |                      = 0
-   1 warning generated.
-
-
-vim +1619 drivers/i2c/busses/i2c-qup.c
-
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1564  
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1565  static int qup_i2c_xfer_v2(struct i2c_adapter *adap,
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1566  			   struct i2c_msg msgs[],
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1567  			   int num)
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1568  {
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1569  	struct qup_i2c_dev *qup = i2c_get_adapdata(adap);
-61f647e9d36d67 Wentao Liang          2025-05-19  1570  	int ret, err, idx = 0;
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1571  
-fbf9921f8b35d9 Sricharan Ramabadhran 2016-06-10  1572  	qup->bus_err = 0;
-fbf9921f8b35d9 Sricharan Ramabadhran 2016-06-10  1573  	qup->qup_err = 0;
-fbf9921f8b35d9 Sricharan Ramabadhran 2016-06-10  1574  
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1575  	ret = pm_runtime_get_sync(qup->dev);
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1576  	if (ret < 0)
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1577  		goto out;
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1578  
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1579  	ret = qup_i2c_determine_mode_v2(qup, msgs, num);
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1580  	if (ret)
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1581  		goto out;
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1582  
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1583  	writel(1, qup->base + QUP_SW_RESET);
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1584  	ret = qup_i2c_poll_state(qup, QUP_RESET_STATE);
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1585  	if (ret)
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1586  		goto out;
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1587  
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1588  	/* Configure QUP as I2C mini core */
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1589  	writel(I2C_MINI_CORE | I2C_N_VAL_V2, qup->base + QUP_CONFIG);
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1590  	writel(QUP_V2_TAGS_EN, qup->base + QUP_I2C_MASTER_GEN);
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1591  
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1592  	if (qup_i2c_poll_state_i2c_master(qup)) {
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1593  		ret = -EIO;
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1594  		goto out;
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1595  	}
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1596  
-eb422b539c1f39 Abhishek Sahu         2018-03-12  1597  	if (qup->use_dma) {
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1598  		reinit_completion(&qup->xfer);
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1599  		ret = qup_i2c_bam_xfer(adap, &msgs[0], num);
-eb422b539c1f39 Abhishek Sahu         2018-03-12  1600  		qup->use_dma = false;
-9cedf3b2f09946 Sricharan Ramabadhran 2016-02-22  1601  	} else {
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1602  		qup_i2c_conf_mode_v2(qup);
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1603  
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1604  		for (idx = 0; idx < num; idx++) {
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1605  			qup->msg = &msgs[idx];
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1606  			qup->is_last = idx == (num - 1);
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1607  
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1608  			ret = qup_i2c_xfer_v2_msg(qup, idx,
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1609  					!!(msgs[idx].flags & I2C_M_RD));
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1610  			if (ret)
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1611  				break;
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1612  		}
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1613  		qup->msg = NULL;
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1614  	}
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1615  
-f74187932d30e4 Sricharan Ramabadhran 2016-01-19  1616  	if (!ret)
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1617  		ret = qup_i2c_bus_active(qup, ONE_BYTE);
-7545c7dba169c4 Abhishek Sahu         2018-03-12  1618  
-7545c7dba169c4 Abhishek Sahu         2018-03-12 @1619  	if (!ret)
-61f647e9d36d67 Wentao Liang          2025-05-19  1620  		err = qup_i2c_change_state(qup, QUP_RESET_STATE);
-61f647e9d36d67 Wentao Liang          2025-05-19  1621  	if (err)
-61f647e9d36d67 Wentao Liang          2025-05-19  1622  		return err;
-f74187932d30e4 Sricharan Ramabadhran 2016-01-19  1623  
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1624  	if (ret == 0)
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1625  		ret = num;
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1626  out:
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1627  	pm_runtime_mark_last_busy(qup->dev);
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1628  	pm_runtime_put_autosuspend(qup->dev);
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1629  
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1630  	return ret;
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1631  }
-191424bb6166f6 Sricharan Ramabadhran 2016-01-19  1632  
-
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index b882b26ab500..7dc0ff89a7cf 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -1222,6 +1222,10 @@ static int pca953x_suspend(struct device *dev)
+ 	struct pca953x_chip *chip = dev_get_drvdata(dev);
+ 
+ 	mutex_lock(&chip->i2c_lock);
++
++	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
++	if (chip->client->irq > 0)
++		disable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, true);
+ 	mutex_unlock(&chip->i2c_lock);
+ 
+@@ -1247,6 +1251,9 @@ static int pca953x_resume(struct device *dev)
+ 	}
+ 
+ 	mutex_lock(&chip->i2c_lock);
++
++	if (chip->client->irq > 0)
++		enable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, false);
+ 	regcache_mark_dirty(chip->regmap);
+ 	ret = pca953x_regcache_sync(dev);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
