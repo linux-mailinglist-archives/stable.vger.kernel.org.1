@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984AEABDA8B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB4BABD9FC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 454088C031A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 480867AD9CA
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C28B2459E5;
-	Tue, 20 May 2025 13:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7DD245027;
+	Tue, 20 May 2025 13:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxo/PWjN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyUWLWhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ADF2459C0;
-	Tue, 20 May 2025 13:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851C7242D93;
+	Tue, 20 May 2025 13:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749419; cv=none; b=fy6gZt4seZ8E69fXCVf9H2Y8Rcac6K1Q2jEz/BwO5rcMmzI4gzbSSuLzoZLyOpoblPgKvM+4/u3RadlLJtVbKSuBGmBXm0gHk98StAOt7zLo/aYx3caKEF3bgJtsURTKVwUpNu5snTWosb5rkkd582lXPKPG5QCOHy8Hxt3J3I0=
+	t=1747749150; cv=none; b=Lf70eBFXMuntsQvJn0rK6iUaBW/5vQ2V8LEcE0S9OAgXgBQaGniY142ZjTcI11MCx6KPTWvBq/miFckg467iGy4OLzw4x1G1dxNIDCH+JU+jRXIURpz+x8Fio/NnjhJUJ6uMb+muNwAFhdNGHFMOxWXY+3GwNvWSRDdE7Rh7buE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749419; c=relaxed/simple;
-	bh=FEppOwl902pnfpgAP3/ZiyN7D9EShuIZlyaz2uA2LKg=;
+	s=arc-20240116; t=1747749150; c=relaxed/simple;
+	bh=OvanAK6dQS3Y5OTM9QBRTPllcQrUYSma0jpgmLimEPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKba8fZQ3n+3GuUedhgjcOAv7H3zqDv3dR8773IHPxTSyk8nTI8TivffS8FMBdEx9mMVkHm0T6JUpMtmUsZB8TtJNaHLFzwwOzpDAPCKCHrjlm2W2qyZLEdAWKnAo2EE5r11SmowMdsKvjt31RidnfzLvABP+HmVX3zscDVuSdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxo/PWjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76781C4CEE9;
-	Tue, 20 May 2025 13:56:58 +0000 (UTC)
+	 MIME-Version; b=LNdINOy896whcce+SFjTc0YxuDPx1UNUO6iQlKG14fELBQbI31JXwBJpECcbcFpHvwTK2Apn6PVLmfFLrH5OVDNOXUxc04HeHROo4HYJamaNzijmRK7ZcEG/Ik04Vr1XDSSQIXjXDX0Q5GPzl8H/r5cmUQui6207K6m0tZPwnYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyUWLWhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F907C4CEE9;
+	Tue, 20 May 2025 13:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749418;
-	bh=FEppOwl902pnfpgAP3/ZiyN7D9EShuIZlyaz2uA2LKg=;
+	s=korg; t=1747749149;
+	bh=OvanAK6dQS3Y5OTM9QBRTPllcQrUYSma0jpgmLimEPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxo/PWjNzqyl2jU+b8hCYKcAZTwGy3Bs1oArEgXS8jOeHLzb2RvJ3GdWnl6JyMq/O
-	 QyPZwaZ7RglgwNeOMd1TjwF/KDUDVFYBkoWcsfNIWaNj+piKFbEQzb7DjMHo0efzbd
-	 /JqpoGqA6p9+KsiXEcLu9WRpTC4PxUfrnxbSD3kU=
+	b=AyUWLWhXjDoHicQsxJDLWqSBer+4oR7ZqC391xAt8jIxBSIBtudIJdvQ8IUR3tvrJ
+	 zhP/NG6ZR7VJnrhNjkALAXzDwjxf7+x9BJsdKcZCLkWvhd9g9kCMfZxEu/7b9Jr5ap
+	 EfTzFNvIboGPPSU8EiP974E3Wl25Z2a5GvqOm+6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/97] NFSv4/pnfs: Reset the layout state after a layoutreturn
+Subject: [PATCH 5.15 13/59] NFSv4/pnfs: Reset the layout state after a layoutreturn
 Date: Tue, 20 May 2025 15:50:04 +0200
-Message-ID: <20250520125802.191250336@linuxfoundation.org>
+Message-ID: <20250520125754.360088841@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -77,12 +77,14 @@ Fixes: 68f744797edd ("pNFS: Do not free layout segments that are marked for retu
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c |    9 +++++++++
+ fs/nfs/pnfs.c | 9 +++++++++
  1 file changed, 9 insertions(+)
 
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index 4016cc5316230..83935bb1719ad 100644
 --- a/fs/nfs/pnfs.c
 +++ b/fs/nfs/pnfs.c
-@@ -732,6 +732,14 @@ pnfs_mark_matching_lsegs_invalid(struct
+@@ -729,6 +729,14 @@ pnfs_mark_matching_lsegs_invalid(struct pnfs_layout_hdr *lo,
  	return remaining;
  }
  
@@ -97,7 +99,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  static void
  pnfs_free_returned_lsegs(struct pnfs_layout_hdr *lo,
  		struct list_head *free_me,
-@@ -1180,6 +1188,7 @@ void pnfs_layoutreturn_free_lsegs(struct
+@@ -1177,6 +1185,7 @@ void pnfs_layoutreturn_free_lsegs(struct pnfs_layout_hdr *lo,
  		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
  		pnfs_free_returned_lsegs(lo, &freeme, range, seq);
  		pnfs_set_layout_stateid(lo, stateid, NULL, true);
@@ -105,6 +107,9 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  	} else
  		pnfs_mark_layout_stateid_invalid(lo, &freeme);
  out_unlock:
+-- 
+2.39.5
+
 
 
 
