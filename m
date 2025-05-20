@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AD5ABDAEA
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FC8ABDA24
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72E507A4AC8
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB0621BA4A96
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7643C24336D;
-	Tue, 20 May 2025 14:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1649C24677B;
+	Tue, 20 May 2025 13:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gl5HsXHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmhtu7hS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330A71D8E07;
-	Tue, 20 May 2025 14:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CF424677A;
+	Tue, 20 May 2025 13:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749808; cv=none; b=ULvkZmaEGXMuLmVM13zI9muZ9Qac5kfPJfUr646BwRMzWQNjZgfnLm9G3LJdob3/iLpvU1VLARgJ26wcgGCpBPnSPe87phKI/PU2uarytKeayJZwaUlQLi6OEVOHKH3L3IkZJph3/KBvZ1OER6z2Z/Drh58w2FdTnVx7MJhS++A=
+	t=1747749244; cv=none; b=jGEheEBgaTDk8FSexg1voqV8IXXgAYg9kqHRqPOn3Lv80cPUrV5kFyTRM8MBKRo2cKDV1GEAdI9TLSCyw0lFZ54ZIfg3z6MYkIfDXmqZ2uc3jQdfQCAEJAMsbuZTTph8pWk+01jvSeczFAsgoopLlAmdzT0KqWZRWnheNPYc1R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749808; c=relaxed/simple;
-	bh=W81/0/9W1q5vm6073iwDaj9kMlzfwTTT3c6fU9O1E4I=;
+	s=arc-20240116; t=1747749244; c=relaxed/simple;
+	bh=GkpE6fcC7kOlcQACMcKhUiAtH5GSLmJSGDPUjtyBdl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3D/Ydwoyc3kOjOZjJeah6saa5XnpKM0lvhXBlAaLVulLxJyV4olt+/Rme35tQpwgBEx/zN6VCnzO/AsKNGJuUL+9SJF27ppgafcnWb2VGcLzjonQbzN6PNmgQYQslRpu1K18mMeeBj0NKyVnv2ll0hSZFQe84h0YKYSNtApLVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gl5HsXHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95137C4CEEA;
-	Tue, 20 May 2025 14:03:27 +0000 (UTC)
+	 MIME-Version; b=ULt93t7mZ40yOgHZGYXAFkOK8wLAmXd2es+RVtnQLqDbZsTtsx3lWpREQAGrLS1WlEWENwMl2h+gTUu7KUUcEnrHrQ8KP9CAMyHOaR/k1ZavmlhszHezJTb9/M7zATb5GP6XvMK0sGW6j4rm0aaCOWKlDfMRe391eJzXryMZbvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmhtu7hS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30967C4CEEB;
+	Tue, 20 May 2025 13:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749808;
-	bh=W81/0/9W1q5vm6073iwDaj9kMlzfwTTT3c6fU9O1E4I=;
+	s=korg; t=1747749244;
+	bh=GkpE6fcC7kOlcQACMcKhUiAtH5GSLmJSGDPUjtyBdl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gl5HsXHFX+HFc5P6UFObcjq0jkBwxBeDgQgig5foRvCPf7jIwP1znqjLCDDV/rAvM
-	 7WwBIWmzRFB9s5WkUus4WKc7kIuhOpbzEaVpzrn8e7HpC+9JBSRwVPnuVh6regwtd1
-	 wF8i+/QhyFbuSJRiCFTCpNDUGaAVG60gpUdMHFcg=
+	b=hmhtu7hSmx4vRDlm9nH+PYAh1QLLL2WmP43otE4QhD4n7O0HZ0ArHX66hL//WqrDQ
+	 GPB0MR2y5sIXMNVbCMawbEpK59mhYLXSjgmJJHvvmM8TZ+Pd37quDVKDGy9y32d5Ie
+	 /tVFZnVztUReaTtzDfQObTTCXa1AinXqudYuDx8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 067/117] LoongArch: uprobes: Remove redundant code about resume_era
-Date: Tue, 20 May 2025 15:50:32 +0200
-Message-ID: <20250520125806.652028981@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	dmaengine@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@legrand.com>
+Subject: [PATCH 5.15 42/59] dmaengine: ti: k3-udma: Add missing locking
+Date: Tue, 20 May 2025 15:50:33 +0200
+Message-ID: <20250520125755.519864236@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Ronald Wahl <ronald.wahl@legrand.com>
 
-commit 12614f794274f63fbdfe76771b2b332077d63848 upstream.
+commit fca280992af8c2fbd511bc43f65abb4a17363f2f upstream.
 
-arch_uprobe_skip_sstep() returns true if instruction was emulated, that
-is to say, there is no need to single step for the emulated instructions.
-regs->csr_era will point to the destination address directly after the
-exception, so the resume_era related code is redundant, just remove them.
+Recent kernels complain about a missing lock in k3-udma.c when the lock
+validator is enabled:
 
+[    4.128073] WARNING: CPU: 0 PID: 746 at drivers/dma/ti/../virt-dma.h:169 udma_start.isra.0+0x34/0x238
+[    4.137352] CPU: 0 UID: 0 PID: 746 Comm: kworker/0:3 Not tainted 6.12.9-arm64 #28
+[    4.144867] Hardware name: pp-v12 (DT)
+[    4.148648] Workqueue: events udma_check_tx_completion
+[    4.153841] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    4.160834] pc : udma_start.isra.0+0x34/0x238
+[    4.165227] lr : udma_start.isra.0+0x30/0x238
+[    4.169618] sp : ffffffc083cabcf0
+[    4.172963] x29: ffffffc083cabcf0 x28: 0000000000000000 x27: ffffff800001b005
+[    4.180167] x26: ffffffc0812f0000 x25: 0000000000000000 x24: 0000000000000000
+[    4.187370] x23: 0000000000000001 x22: 00000000e21eabe9 x21: ffffff8000fa0670
+[    4.194571] x20: ffffff8001b6bf00 x19: ffffff8000fa0430 x18: ffffffc083b95030
+[    4.201773] x17: 0000000000000000 x16: 00000000f0000000 x15: 0000000000000048
+[    4.208976] x14: 0000000000000048 x13: 0000000000000000 x12: 0000000000000001
+[    4.216179] x11: ffffffc08151a240 x10: 0000000000003ea1 x9 : ffffffc08046ab68
+[    4.223381] x8 : ffffffc083cabac0 x7 : ffffffc081df3718 x6 : 0000000000029fc8
+[    4.230583] x5 : ffffffc0817ee6d8 x4 : 0000000000000bc0 x3 : 0000000000000000
+[    4.237784] x2 : 0000000000000000 x1 : 00000000001fffff x0 : 0000000000000000
+[    4.244986] Call trace:
+[    4.247463]  udma_start.isra.0+0x34/0x238
+[    4.251509]  udma_check_tx_completion+0xd0/0xdc
+[    4.256076]  process_one_work+0x244/0x3fc
+[    4.260129]  process_scheduled_works+0x6c/0x74
+[    4.264610]  worker_thread+0x150/0x1dc
+[    4.268398]  kthread+0xd8/0xe8
+[    4.271492]  ret_from_fork+0x10/0x20
+[    4.275107] irq event stamp: 220
+[    4.278363] hardirqs last  enabled at (219): [<ffffffc080a27c7c>] _raw_spin_unlock_irq+0x38/0x50
+[    4.287183] hardirqs last disabled at (220): [<ffffffc080a1c154>] el1_dbg+0x24/0x50
+[    4.294879] softirqs last  enabled at (182): [<ffffffc080037e68>] handle_softirqs+0x1c0/0x3cc
+[    4.303437] softirqs last disabled at (177): [<ffffffc080010170>] __do_softirq+0x1c/0x28
+[    4.311559] ---[ end trace 0000000000000000 ]---
+
+This commit adds the missing locking.
+
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: dmaengine@vger.kernel.org
 Cc: stable@vger.kernel.org
-Fixes: 19bc6cb64092 ("LoongArch: Add uprobes support")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Ronald Wahl <ronald.wahl@legrand.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20250414173113.80677-1-rwahl@gmx.de
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/uprobes.h |    1 -
- arch/loongarch/kernel/uprobes.c      |    7 +------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ drivers/dma/ti/k3-udma.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/loongarch/include/asm/uprobes.h
-+++ b/arch/loongarch/include/asm/uprobes.h
-@@ -15,7 +15,6 @@ typedef u32 uprobe_opcode_t;
- #define UPROBE_XOLBP_INSN	larch_insn_gen_break(BRK_UPROBE_XOLBP)
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -1082,8 +1082,11 @@ static void udma_check_tx_completion(str
+ 	u32 residue_diff;
+ 	ktime_t time_diff;
+ 	unsigned long delay;
++	unsigned long flags;
  
- struct arch_uprobe {
--	unsigned long	resume_era;
- 	u32	insn[2];
- 	u32	ixol[2];
- 	bool	simulate;
---- a/arch/loongarch/kernel/uprobes.c
-+++ b/arch/loongarch/kernel/uprobes.c
-@@ -52,11 +52,7 @@ int arch_uprobe_post_xol(struct arch_upr
+ 	while (1) {
++		spin_lock_irqsave(&uc->vc.lock, flags);
++
+ 		if (uc->desc) {
+ 			/* Get previous residue and time stamp */
+ 			residue_diff = uc->tx_drain.residue;
+@@ -1118,6 +1121,8 @@ static void udma_check_tx_completion(str
+ 				break;
+ 			}
  
- 	WARN_ON_ONCE(current->thread.trap_nr != UPROBE_TRAP_NR);
- 	current->thread.trap_nr = utask->autask.saved_trap_nr;
--
--	if (auprobe->simulate)
--		instruction_pointer_set(regs, auprobe->resume_era);
--	else
--		instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
-+	instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
++			spin_unlock_irqrestore(&uc->vc.lock, flags);
++
+ 			usleep_range(ktime_to_us(delay),
+ 				     ktime_to_us(delay) + 10);
+ 			continue;
+@@ -1134,6 +1139,8 @@ static void udma_check_tx_completion(str
  
- 	return 0;
+ 		break;
+ 	}
++
++	spin_unlock_irqrestore(&uc->vc.lock, flags);
  }
-@@ -86,7 +82,6 @@ bool arch_uprobe_skip_sstep(struct arch_
  
- 	insn.word = auprobe->insn[0];
- 	arch_simulate_insn(insn, regs);
--	auprobe->resume_era = regs->csr_era;
- 
- 	return true;
- }
+ static irqreturn_t udma_ring_irq_handler(int irq, void *data)
 
 
 
