@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95595ABDBAE
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:14:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39B5ABDB36
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 823F08A6162
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:07:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0678916449D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E282F2459FE;
-	Tue, 20 May 2025 14:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E8A2459F3;
+	Tue, 20 May 2025 14:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cy5kvJWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImjlEqae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF19244196;
-	Tue, 20 May 2025 14:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE72459E5;
+	Tue, 20 May 2025 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750049; cv=none; b=PERCqTC4EMysIPTHQOWaGvWoy9RXWvGUco8qhm3XhCehQErydX5znROSH36ayusWdluFIrDa2+eQ617+aBSM864hsFJmD80r12wJAkU7kJto+eOuIthZcMienwZa3cM0w3mAPdiJN8vUND87icY6DLPzo3fSBXdTFYhhlj5wfmE=
+	t=1747749773; cv=none; b=V/0uyrQ17jpl6MGTaXRfU6PQmBgKwrXq8TtaoPPZovxKrElDbW9wnTYhKxy2L2DiK+NBP0UfiG05eAB1A2iPzmWyJIqYVPJmwadOCmXZCikfTlDJ5aH+aXd//rY38a6CrjmvCM1tbWl/n0vMKSdayAkXzHL3KWQeRDzo4VGQlCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750049; c=relaxed/simple;
-	bh=ubwxANYQqsUk23w9kZWfqeMeRDu2V16TIrPN3974rFk=;
+	s=arc-20240116; t=1747749773; c=relaxed/simple;
+	bh=gAtjiDEf3DVfev6ldemrV9uV/jyiVPErqpl+u8cwO9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHSK4xKKez50cuerPYwM8vNuYU5z3ijxehL/zpOHSffC5FJIbEs7FwjCMQ6fi3vA/tzKaOC56VVefyW1Eiq+Wfx69SULxyv67slspAsdCrH89ZiyooURitlDzCQ5akROZXEQSdw9pH8tBNb3XX9RwXYB+rgZ5UjMafdEDT9PEI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cy5kvJWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1167DC4CEE9;
-	Tue, 20 May 2025 14:07:28 +0000 (UTC)
+	 MIME-Version; b=Mj8lB64DyPge6gtBn6JoBGLa82AZxqrx0Sq7lIsqVrRcrwDG/DJ1Xuipanh/CEz8kU4xqaKgY/8hkfBd1fEFTsZzxLFMd6OuzZdoEp5LwHvlhp3hTLgb601V6TBa0CpzqX9Nd5b3W3/sMbGsNgqWvpZXXqlSK2Mmqw+ydR/0fvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImjlEqae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424BAC4CEEF;
+	Tue, 20 May 2025 14:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750049;
-	bh=ubwxANYQqsUk23w9kZWfqeMeRDu2V16TIrPN3974rFk=;
+	s=korg; t=1747749773;
+	bh=gAtjiDEf3DVfev6ldemrV9uV/jyiVPErqpl+u8cwO9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cy5kvJWOuO1jvWviHSXX841cv0fY24UeV7P/jB0FoGtX+skcguwpF/9F2XGl8XDU5
-	 8dJOfqbKIul5yyaT2BnclpLMbCMo21x1cya+UqSYGIj+jhNuyscJqVCExwB4c0tZWn
-	 URsiO5C4kVR/8UxRgTpKfTZkaYssPcYLxTsAaN3I=
+	b=ImjlEqaeyo3WZm3PEBvjj2s6h72VKV8OptBMvhkslCIh2Xgifv+BfxXUK6OtrPFrt
+	 UaIUml4hM9h3liIVwyq3JPkYs0ioNY/HtQqcmebUcjHfUYz7Z8Q+eGi7XRWS21wFwn
+	 6HnkXQs3Mcf+kPl+VNXJ4dHawyoHbOUMeOyKrI0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/143] virtio_ring: add a func argument recycle_done to virtqueue_reset()
+Subject: [PATCH 6.6 015/117] firmware: arm_scmi: Add helper to trace bad messages
 Date: Tue, 20 May 2025 15:49:40 +0200
-Message-ID: <20250520125811.041703552@linuxfoundation.org>
+Message-ID: <20250520125804.588539159@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 8d2da07c813ad333c20eb803e15f8c4541f25350 ]
+[ Upstream commit 5dc0e0b1f0ea2b55031f84a365962b9b45869b98 ]
 
-When virtqueue_reset() has actually recycled all unused buffers,
-additional work may be required in some cases. Relying solely on its
-return status is fragile, so introduce a new function argument
-'recycle_done', which is invoked when it really occurs.
+Upon reception of malformed and unexpected timed-out SCMI messages, it is
+not possible to trace those bad messages in their entirety, because usually
+we cannot even retrieve the payload, or it is just not reliable.
 
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 76a771ec4c9a ("virtio_net: ensure netdev_tx_reset_queue is called on bind xsk for tx")
+Add a helper to trace at least the content of the header of the received
+message while associating a meaningful tag and error code.
+
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20240325204620.1437237-3-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Stable-dep-of: c23c03bf1faa ("firmware: arm_scmi: Fix timeout checks on polling path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c     | 4 ++--
- drivers/virtio/virtio_ring.c | 6 +++++-
- include/linux/virtio.h       | 3 ++-
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/firmware/arm_scmi/common.h | 11 +++++++++
+ drivers/firmware/arm_scmi/driver.c | 39 ++++++++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index fbd1150c33cce..bb444972693a0 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -5547,7 +5547,7 @@ static int virtnet_rq_bind_xsk_pool(struct virtnet_info *vi, struct receive_queu
+diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
+index 039f686f4580d..e26a2856a0e3d 100644
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -303,6 +303,17 @@ extern const struct scmi_desc scmi_optee_desc;
  
- 	virtnet_rx_pause(vi, rq);
+ void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr, void *priv);
  
--	err = virtqueue_reset(rq->vq, virtnet_rq_unmap_free_buf);
-+	err = virtqueue_reset(rq->vq, virtnet_rq_unmap_free_buf, NULL);
- 	if (err) {
- 		netdev_err(vi->dev, "reset rx fail: rx queue index: %d err: %d\n", qindex, err);
++enum scmi_bad_msg {
++	MSG_UNEXPECTED = -1,
++	MSG_INVALID = -2,
++	MSG_UNKNOWN = -3,
++	MSG_NOMEM = -4,
++	MSG_MBOX_SPURIOUS = -5,
++};
++
++void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
++			    enum scmi_bad_msg err);
++
+ /* shmem related declarations */
+ struct scmi_shared_mem;
  
-@@ -5576,7 +5576,7 @@ static int virtnet_sq_bind_xsk_pool(struct virtnet_info *vi,
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index efa9698c876a0..b3c2a199b2afb 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -687,6 +687,45 @@ scmi_xfer_lookup_unlocked(struct scmi_xfers_info *minfo, u16 xfer_id)
+ 	return xfer ?: ERR_PTR(-EINVAL);
+ }
  
- 	virtnet_tx_pause(vi, sq);
- 
--	err = virtqueue_reset(sq->vq, virtnet_sq_free_unused_buf);
-+	err = virtqueue_reset(sq->vq, virtnet_sq_free_unused_buf, NULL);
- 	if (err) {
- 		netdev_err(vi->dev, "reset tx fail: tx queue index: %d err: %d\n", qindex, err);
- 		pool = NULL;
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index 0112742e4504b..1f8a322eb00be 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -2815,6 +2815,7 @@ EXPORT_SYMBOL_GPL(virtqueue_set_dma_premapped);
-  * virtqueue_reset - detach and recycle all unused buffers
-  * @_vq: the struct virtqueue we're talking about.
-  * @recycle: callback to recycle unused buffers
-+ * @recycle_done: callback to be invoked when recycle for all unused buffers done
-  *
-  * Caller must ensure we don't call this with other virtqueue operations
-  * at the same time (except where noted).
-@@ -2826,7 +2827,8 @@ EXPORT_SYMBOL_GPL(virtqueue_set_dma_premapped);
-  * -EPERM: Operation not permitted
-  */
- int virtqueue_reset(struct virtqueue *_vq,
--		    void (*recycle)(struct virtqueue *vq, void *buf))
-+		    void (*recycle)(struct virtqueue *vq, void *buf),
-+		    void (*recycle_done)(struct virtqueue *vq))
- {
- 	struct vring_virtqueue *vq = to_vvq(_vq);
- 	int err;
-@@ -2834,6 +2836,8 @@ int virtqueue_reset(struct virtqueue *_vq,
- 	err = virtqueue_disable_and_recycle(_vq, recycle);
- 	if (err)
- 		return err;
-+	if (recycle_done)
-+		recycle_done(_vq);
- 
- 	if (vq->packed_ring)
- 		virtqueue_reinit_packed(vq);
-diff --git a/include/linux/virtio.h b/include/linux/virtio.h
-index 73c8922e69e09..d791d47eb00ed 100644
---- a/include/linux/virtio.h
-+++ b/include/linux/virtio.h
-@@ -103,7 +103,8 @@ int virtqueue_resize(struct virtqueue *vq, u32 num,
- 		     void (*recycle)(struct virtqueue *vq, void *buf),
- 		     void (*recycle_done)(struct virtqueue *vq));
- int virtqueue_reset(struct virtqueue *vq,
--		    void (*recycle)(struct virtqueue *vq, void *buf));
-+		    void (*recycle)(struct virtqueue *vq, void *buf),
-+		    void (*recycle_done)(struct virtqueue *vq));
- 
- struct virtio_admin_cmd {
- 	__le16 opcode;
++/**
++ * scmi_bad_message_trace  - A helper to trace weird messages
++ *
++ * @cinfo: A reference to the channel descriptor on which the message was
++ *	   received
++ * @msg_hdr: Message header to track
++ * @err: A specific error code used as a status value in traces.
++ *
++ * This helper can be used to trace any kind of weird, incomplete, unexpected,
++ * timed-out message that arrives and as such, can be traced only referring to
++ * the header content, since the payload is missing/unreliable.
++ */
++void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
++			    enum scmi_bad_msg err)
++{
++	char *tag;
++	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
++
++	switch (MSG_XTRACT_TYPE(msg_hdr)) {
++	case MSG_TYPE_COMMAND:
++		tag = "!RESP";
++		break;
++	case MSG_TYPE_DELAYED_RESP:
++		tag = "!DLYD";
++		break;
++	case MSG_TYPE_NOTIFICATION:
++		tag = "!NOTI";
++		break;
++	default:
++		tag = "!UNKN";
++		break;
++	}
++
++	trace_scmi_msg_dump(info->id, cinfo->id,
++			    MSG_XTRACT_PROT_ID(msg_hdr),
++			    MSG_XTRACT_ID(msg_hdr), tag,
++			    MSG_XTRACT_TOKEN(msg_hdr), err, NULL, 0);
++}
++
+ /**
+  * scmi_msg_response_validate  - Validate message type against state of related
+  * xfer
 -- 
 2.39.5
 
