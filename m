@@ -1,157 +1,123 @@
-Return-Path: <stable+bounces-145716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237CDABE4EA
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 22:39:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605D5ABE5D2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 23:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F8AF4C4A31
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 20:38:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99B6C1891641
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 21:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C077D25B695;
-	Tue, 20 May 2025 20:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FD4253B40;
+	Tue, 20 May 2025 21:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M2m+Bxd5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9A58QQJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49F828C853
-	for <stable@vger.kernel.org>; Tue, 20 May 2025 20:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0733171D2
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 21:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747773419; cv=none; b=ZnRGE7ghCApVL9TufQxSvZyOS/Aymmhpl2KufIeJ7jkY34gL3RcfhsDFbUe529Q7A4pB9BsHEE1IwmbeO+vigNiTiKJX98UPTY8+HtJyk//3Q1ftil8FlPLsVQmd8ZIu+ms1K6/HPUiLzFlCRJlz4qJc5q4IpnGUYY22KypS7d8=
+	t=1747775552; cv=none; b=NmeueDseazKhI0wm+OD78zDuxHZzg2BY4NAdQ/1QlE4SMmiynj2oEhEo4TjqhEsyFvldTCXXuwG8X9PBx7rOJjYQOOsKF1ndk8U0l+HRuIeRcXIc9DxImPWmb9d4xKF/5Fz5AQVTsv7lBjbovk0VgYJXtgkMwRiNNM9DEyz/3xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747773419; c=relaxed/simple;
-	bh=RIcfmaKTtd4VIDlEArAOVwY3U/TuBBuX+W0FYjOr1ug=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrRNBX7V3rewi7hgn8B1Xqze2I+H+LgPtgy+lYHoxqecn+1ErBFKXbzw+x0er0eYR0OJJWCEXVoN+c8WWZW1kwGBjDkAB6z/z9sv11z23jZ39DMCuQOHhVWVFnKsXAsGsODAmGxnkrjpeZyMtDsGX6wRrB+Mu8gA80v3r3sXEAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M2m+Bxd5; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6019b564d0bso7253056a12.2
-        for <stable@vger.kernel.org>; Tue, 20 May 2025 13:36:57 -0700 (PDT)
+	s=arc-20240116; t=1747775552; c=relaxed/simple;
+	bh=JxHtbcJN/O4Vpsg3y6yxolxHrOTOCH+dF8W4h1Bq0C0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P982chwFY0b2KI3jhDSb8unB3QL36MHUkkEjw3jWwIFAFu/vo6C4JGk2/LDZFEWkv9HXm8JzIUVsu8kx5OOAWFhEH1jR2PbmIYFpZnr81dMCOPYfzZI+xLHms0av+kCIS0Oe9UdqzWePYzXZsY+9c3nLBfyyNEtkVGHj1Px54tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9A58QQJ; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-861b1f04b99so189741439f.0
+        for <stable@vger.kernel.org>; Tue, 20 May 2025 14:12:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747773415; x=1748378215; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e/XCxJQ0tjfNX3NNg49vnesXQqH+m1Ea2MKf5/DqpwA=;
-        b=M2m+Bxd5S4+lqnbePBkr+0cwZpiLn9dPrw4e9RtOrPrDSKHoKbrzp4CN9cHPz+Y9H2
-         /jNcvC8zGmpfShXHyD+x0IVmJAtTDRii26XkIcSFtWF1T+pohtpbmZCsI5aZb/IvljjB
-         rwZk19p5iJNBovF2eVi4bkuMzPXgeUrnV82r49jMXiemCXJkqzxqO7V0FaJKlR43wFGB
-         8DSPO74pDleDWCRSBK7JsmQwcwh+CwijuV9y8SOy5EQ0m0a5scW7X9UHJUbZptC/WR3k
-         J72v4LmpJLl9ExyojmeEK6vrz97m6raJiRctvf+2Z1nAYxU+WSkaC0f/up863/oITfKA
-         feLw==
+        d=linuxfoundation.org; s=google; t=1747775550; x=1748380350; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KMrFfTENF4F3SCjFNJP/23CVdgvfjcCcQGdu8rVvJBA=;
+        b=R9A58QQJgGJUeQMKdzodAysPhRA7TVHXYfJjdaOSbZn5nqOY9kxD+tItCCBQr1SeAi
+         sF4b2NMS1dXYzunHn6zA0YlpU5otKL5wjMBS44CCzKOseyKp4SwfhX4Tq7LCMTahsN7g
+         UvEU5f9HmSV4ULTeSQCPXJngfwYw6CiY3Dp9E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747773415; x=1748378215;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e/XCxJQ0tjfNX3NNg49vnesXQqH+m1Ea2MKf5/DqpwA=;
-        b=VZai2YpZYyrnvo2W11aJ8c+fIWi2eptP8H6AWrVc1tcOw+jMNk0zaun4PGcMSaxjII
-         BijomKiFeiavxKXhQWM8b8WO7pMjsy3K8GnIWJjTpK9PY+6C6u7WtS0Ttq16QThQa8jM
-         4TV5xFZcjlC741563r7uJeKis5+e2OKzJ+xZgxi1O+C9XlZMzCEjWLKliMdKRO7Qp5IN
-         9g0m4qs1NGHE9Z2Y62e9NcPM0U5g7y9QyHpWbj54Fx9jD/NVWY6a8j9Yin0CqBHYQFnw
-         PRtX+xdY8RGzlVSZtvgSusg4g6soE7nXh6AqcCwtTfbTy7hVH6aPMhvGDqAZ+gqRdyF5
-         DNbQ==
-X-Gm-Message-State: AOJu0Yz8weNtH6JbmQ0cLKZz1GV4+5IAFOmub7dfR/vKdWjQYbbu1LUk
-	O/ew8lb7jU8cn75zv3o7z+XZR8xRid3S2bnmHAQjDr2AJwI+nC4Xj9ZFTKxgFK4kTG2Rng==
-X-Gm-Gg: ASbGncvPDCihjGILQeDtxbQD9pA51mjsIJa1w807IOHoebrF/uDUYPdlVnM5fJBKTnZ
-	ceVkojS/H6VfpmSLst4iFH+oiQg/mM4+I6kb8HNXTE8bz73HIyoGkiPB+2x+X4uIyPcziVL60dk
-	KDfxV9xYCzDcl296n58prL5c4MB8uY4h5DVqvdwLuwVbIGso2ZMl4N9hU4M+QkFFjMOFFVTZlIy
-	TY6rw0GtLKSlw8Jji+JSCWiLSLdWzCgyNCweK7zYo+EVzoMTcFFtd/1z+8PvFxZSNyKLT1y7mRg
-	RPyDPzhqEBZnN6vq34Y2DCcnAWpo1O/Nz/PWuDsEQRHxFoS8rVA01j7jVqdVuwfsCoorXQZhalc
-	1HQtHGJUAw1SnXr2daBwpSmJ5k68OLJ1vDZP9+dpZlGfAYsNlVG9LUcfB6gd/lDX7tiM=
-X-Google-Smtp-Source: AGHT+IFXg9MUj2quvHRUvCl23nWx2N8xvJ0dJBKnOia793Tf7P3ycLLMCoqBs2F6LwM6njcBsCCj+g==
-X-Received: by 2002:a05:6402:13d1:b0:601:9853:5471 with SMTP id 4fb4d7f45d1cf-6019862aabemr13213217a12.31.1747773415368;
-        Tue, 20 May 2025 13:36:55 -0700 (PDT)
-Received: from emanuele-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6004d4f5fe5sm7686527a12.7.2025.05.20.13.36.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 May 2025 13:36:55 -0700 (PDT)
-From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-To: stable@vger.kernel.org
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6.y] gpio: pca953x: fix IRQ storm on system wake up
-Date: Tue, 20 May 2025 22:36:37 +0200
-Message-ID: <20250520203637.3133360-1-ghidoliemanuele@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2025051941-gloomily-occupy-87f2@gregkh>
-References: <2025051941-gloomily-occupy-87f2@gregkh>
+        d=1e100.net; s=20230601; t=1747775550; x=1748380350;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KMrFfTENF4F3SCjFNJP/23CVdgvfjcCcQGdu8rVvJBA=;
+        b=MimF2iIZFdBZ8asvm05yDgDFaw+SQONE1E7P3SO0ix4cai32dW1oMmBT7ryprNXOvD
+         7XLgzrn2xIIDTdACVXSHfw78Ce1XuS86fmvhDGQBx5IS8xfQNkuTLVwexdLD1Y4Cu6f6
+         kHxYsN8Oo6i+FIz1nDuH5Ap4rfdzRATkoo/nUr/EdpwhduPGzSA0xUAOWkB02i53Lr9D
+         K7RwZJ38u6QFj3LXFGVQQxwLBwF1RVUiK4M1VI6VR9xgffqHvfXElCbtl3mVNWd9FGCI
+         3LZTqiRTFuQqhm+dSs4aPT2l/FAf8DB9j4o0vlzMI1F2TbcQn8us62apLBsjyC/p5/ro
+         pZBw==
+X-Forwarded-Encrypted: i=1; AJvYcCXAT6fCynxnc0MbpxvKNk2NUlUKoQyafuQxXiyB0gCINKjbACfN6kxwqpirXM3jj2ftSywS0TU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMlMuTbMCpgXFOq1VXtR4bbaOtFnhfFZRcxYHuAD8iRmsXML9x
+	dPcKptojVKf4/687XV5ky3QSFJais0+2S9zflt1XpDqDpI1T+kYLi1XpWufnDKF+hP4=
+X-Gm-Gg: ASbGncsA4eu2S+6np8ImPGx34246DbV4NnUSO1lz5Xns9SOvsB3ZdNs10MBTG6z+QgR
+	BmECBzagVWLbiOIWqZyNw71MMdArXZc2D+BIhqN8txVCeB/d3pzzpeMlmk9O1DU0jYAzilOZiBr
+	TOcr2GJ3/J/tCd6D9v2BIgTGuyLj+jnE2w+OEfd1IG8+LjtY85Vvq45yk5PS2Ti4hMoCy40QXxj
+	uNnZsTVytGtBF8bKlUVJr7vwX3Rf9lz+5im8mUIgH8d8/5fHt1Gvf0wUyc6FlnLRPWd4SgIK/gz
+	iZuYT4eNH+4ql3ahtQ9fjjEB8N/z/LbaWR/Y/qsen0rheYu7oVQjvIvGzqiF8g==
+X-Google-Smtp-Source: AGHT+IH1LDM15vwRPpbt5rCMjiAO4KoSLMc0NMXg9FmElbvwrQgJ4BrS4fhsC8wXOY8J96B+wGJ9fA==
+X-Received: by 2002:a05:6602:3791:b0:861:d71f:33e3 with SMTP id ca18e2360f4ac-86a23199f69mr2609760039f.5.1747775549724;
+        Tue, 20 May 2025 14:12:29 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4fbcc38a46dsm2397257173.16.2025.05.20.14.12.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 May 2025 14:12:29 -0700 (PDT)
+Message-ID: <b316a79c-1146-4bb7-baf2-6f0727f87a0d@linuxfoundation.org>
+Date: Tue, 20 May 2025 15:12:28 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 000/145] 6.14.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+On 5/20/25 07:49, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.8 release.
+> There are 145 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-If an input changes state during wake-up and is used as an interrupt
-source, the IRQ handler reads the volatile input register to clear the
-interrupt mask and deassert the IRQ line. However, the IRQ handler is
-triggered before access to the register is granted, causing the read
-operation to fail.
+Compiled and booted on my test system. No dmesg regressions.
 
-As a result, the IRQ handler enters a loop, repeatedly printing the
-"failed reading register" message, until `pca953x_resume()` is eventually
-called, which restores the driver context and enables access to
-registers.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Fix by disabling the IRQ line before entering suspend mode, and
-re-enabling it after the driver context is restored in `pca953x_resume()`.
-
-An IRQ can be disabled with disable_irq() and still wake the system as
-long as the IRQ has wake enabled, so the wake-up functionality is
-preserved.
-
-Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20250512095441.31645-1-francesco@dolcini.it
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-(cherry picked from commit 3e38f946062b4845961ab86b726651b4457b2af8)
----
- drivers/gpio/gpio-pca953x.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index b882b26ab500..7dc0ff89a7cf 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -1222,6 +1222,10 @@ static int pca953x_suspend(struct device *dev)
- 	struct pca953x_chip *chip = dev_get_drvdata(dev);
- 
- 	mutex_lock(&chip->i2c_lock);
-+
-+	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
-+	if (chip->client->irq > 0)
-+		disable_irq(chip->client->irq);
- 	regcache_cache_only(chip->regmap, true);
- 	mutex_unlock(&chip->i2c_lock);
- 
-@@ -1247,6 +1251,9 @@ static int pca953x_resume(struct device *dev)
- 	}
- 
- 	mutex_lock(&chip->i2c_lock);
-+
-+	if (chip->client->irq > 0)
-+		enable_irq(chip->client->irq);
- 	regcache_cache_only(chip->regmap, false);
- 	regcache_mark_dirty(chip->regmap);
- 	ret = pca953x_regcache_sync(dev);
--- 
-2.43.0
-
+thanks,
+-- Shuah
 
