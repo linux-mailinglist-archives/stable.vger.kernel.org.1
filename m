@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-145013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40384ABD05C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:23:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BA3ABD06D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B56763B09C2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 07:23:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76DB51B654A8
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 07:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7690925D207;
-	Tue, 20 May 2025 07:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DCF25D52A;
+	Tue, 20 May 2025 07:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gUYcgP0I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bdFcNmf0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBC325C711
-	for <stable@vger.kernel.org>; Tue, 20 May 2025 07:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A275C1C7005
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 07:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747725810; cv=none; b=amBVBshE0SsM0fE1kskpWJ+gFKtGt5ijtDOF+AnhRa7iFWoWTjYYZwbZ0Tu9bmRu2lk376KWDLAElXMj+EC69waE3+/U72W8kmx7R2xdUBU0eqGKlziyzVMaBAYwOqth1WgfQg+03c0T1MxPxQsSR7wlhEtI/PBIXGawm3uq/5M=
+	t=1747726136; cv=none; b=SVUIIxa6eYQ86JU2UV7tATiOOLxUHqNya/tB1p3Z9HabVkkVE2pGkoqkdJ4EccsVSwNpMB01YZShuUuo624QpFKa9SAZV/Au3xe8ULYBmLU+oFh0o+OMzNhBUBuB0nQVOpktB0YXoz7iwHY/oNU+WuGWTAOs4l8nzbw5bC6j/ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747725810; c=relaxed/simple;
-	bh=MS1qEWwSc+cPpRwfnoFMRCjUsypxvDK/6MU7VIuNZbQ=;
+	s=arc-20240116; t=1747726136; c=relaxed/simple;
+	bh=dZU0bY90E96vUR/qPPa5BEs1ypRngIk5t70ayMFf7eE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dd9IDnwDXWouWVAUa63eOg0EjSzEXMARoyW5byV4FloTBYRMpjmIiigFSeO0oZN2LGIqkwZkPmfBaB8yZGafSDzjoZ5Yq1EEd8DIGqjPBGf/P/nzZiDiIstcqFoFVdpaIQrrzaergyCplN0pdP8XdUlbXqwo6vI5YJqubN/V8hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gUYcgP0I; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=fNrIiw5/ghZ/+5ZR+cjM+AOv3ZPsqEZSqaBFWSpvaAS20dODU5O14KjpH4wxwFqi1SVaHOxNVSAJDGWHh4IZdR/4VPQXl9J/iOOcWK4cMfG+Cr9x5FrGk2hGnek887zxjFOeyWjX19c5QL/kuLtDIN1NWLRbfqu4FjEecsV85C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bdFcNmf0; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747725808; x=1779261808;
+  t=1747726135; x=1779262135;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MS1qEWwSc+cPpRwfnoFMRCjUsypxvDK/6MU7VIuNZbQ=;
-  b=gUYcgP0ImLivejhj9tgLoLWPScM8bqDgZARRMsBHUXt4Tz39O1CNWvTp
-   rmJWhGq4RDUohAxgWpxdjXB9S7ZX4V4S4IXaiZRd65ojsX6x89usdjPHM
-   RZG9Zqo0FxskaN5KOBID7NKGIiD0PSQnK+l3VDmsjR3hz2WLowMAKJ1bK
-   j3Nlo+3QKOJiGobqUhTNyppXxv/ZhgYT8VeMa15IX7IVOrOrblEEB40Km
-   tzJeK3Ci3vtDswFKfwTyGMo2SrzXa404JE+vzWEtgP0nzxAZTuVFqHEb+
-   FvKg6duw4MLWYwKvvHLwDYmD6m4zHjgMzKi9mH/NxeC2na4w3ltYzyFKC
-   w==;
-X-CSE-ConnectionGUID: POAf4anZRp6feL6bnQJEOg==
-X-CSE-MsgGUID: 2Wn9CJ70S66NZ4868AjIUg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49746766"
+  bh=dZU0bY90E96vUR/qPPa5BEs1ypRngIk5t70ayMFf7eE=;
+  b=bdFcNmf0J/mxrw0ubz1XUr2BedgAOkg4Z02MRpuszeTrA0E1/mV1AbAx
+   DSJv/4UBLDor8L9PKiFcDggnDsJX0e38MHqcPcJJ6eiAFmKBeseP0nnDp
+   mlhs1PxCThDh9ZlvziQOc3/ogzfgNTUMRSlA8b9y8dSHHvNlUYcUVOBtp
+   0zdBkuVn1GnNRI7/ilXmADrhWMESGmk2DWN4n90/L64q46b2EDu6opGIK
+   4PXFI28ECXPaJ2YTA8qet4xl9N9tZP4L6iFJG2wJg5zASArTsbJbu2YIz
+   KjISKVThfeyXu+/iwDgpr9i5vv7mw8psPmIgP9JGXIwJxN5oo2IVWALVx
+   A==;
+X-CSE-ConnectionGUID: 7oZkE7WmSGCSCLznB0Jctw==
+X-CSE-MsgGUID: GrrELUmwRzaO81pD4nr8kw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="61038274"
 X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="49746766"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 00:23:27 -0700
-X-CSE-ConnectionGUID: LEIX0AA8T1GIKxZ3HkqMHA==
-X-CSE-MsgGUID: yvjS7gC7Q2WubxgeH8/oYg==
+   d="scan'208";a="61038274"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 00:28:54 -0700
+X-CSE-ConnectionGUID: 2Ybv16qNSa+1UwQbpzL6xQ==
+X-CSE-MsgGUID: 9QQQjVUUQCq1X+hMWmUYEg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="140617559"
+   d="scan'208";a="144593249"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 20 May 2025 00:23:25 -0700
+  by orviesa004.jf.intel.com with ESMTP; 20 May 2025 00:28:52 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E08B9209; Tue, 20 May 2025 10:23:23 +0300 (EEST)
+	id 47C7E209; Tue, 20 May 2025 10:28:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -71,12 +71,12 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Brendan Jackman <jackmanb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14.y] mm/page_alloc: fix race condition in unaccepted memory handling
-Date: Tue, 20 May 2025 10:23:20 +0300
-Message-ID: <20250520072320.605775-1-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 6.12.y] mm/page_alloc: fix race condition in unaccepted memory handling
+Date: Tue, 20 May 2025 10:28:48 +0300
+Message-ID: <20250520072848.639525-1-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <2025051944-undone-repayment-6c7e@gregkh>
-References: <2025051944-undone-repayment-6c7e@gregkh>
+In-Reply-To: <2025051945-yiddish-xerox-03f5@gregkh>
+References: <2025051945-yiddish-xerox-03f5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -132,10 +132,10 @@ Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
  1 file changed, 23 deletions(-)
 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 74a996a3508e..2cc8b3e36dc9 100644
+index d29da0c6a7f2..ebe1ec661492 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -6951,9 +6951,6 @@ bool has_managed_dma(void)
+@@ -7041,9 +7041,6 @@ bool has_managed_dma(void)
  
  #ifdef CONFIG_UNACCEPTED_MEMORY
  
@@ -145,7 +145,7 @@ index 74a996a3508e..2cc8b3e36dc9 100644
  static bool lazy_accept = true;
  
  static int __init accept_memory_parse(char *p)
-@@ -6980,11 +6977,7 @@ static bool page_contains_unaccepted(struct page *page, unsigned int order)
+@@ -7070,11 +7067,7 @@ static bool page_contains_unaccepted(struct page *page, unsigned int order)
  static void __accept_page(struct zone *zone, unsigned long *flags,
  			  struct page *page)
  {
@@ -157,7 +157,7 @@ index 74a996a3508e..2cc8b3e36dc9 100644
  	account_freepages(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
  	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
  	__ClearPageUnaccepted(page);
-@@ -6993,9 +6986,6 @@ static void __accept_page(struct zone *zone, unsigned long *flags,
+@@ -7083,9 +7076,6 @@ static void __accept_page(struct zone *zone, unsigned long *flags,
  	accept_memory(page_to_phys(page), PAGE_SIZE << MAX_PAGE_ORDER);
  
  	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
@@ -167,7 +167,7 @@ index 74a996a3508e..2cc8b3e36dc9 100644
  }
  
  void accept_page(struct page *page)
-@@ -7032,19 +7022,11 @@ static bool try_to_accept_memory_one(struct zone *zone)
+@@ -7122,19 +7112,11 @@ static bool try_to_accept_memory_one(struct zone *zone)
  	return true;
  }
  
@@ -187,7 +187,7 @@ index 74a996a3508e..2cc8b3e36dc9 100644
  	if (list_empty(&zone->unaccepted_pages))
  		return false;
  
-@@ -7078,22 +7060,17 @@ static bool __free_unaccepted(struct page *page)
+@@ -7168,22 +7150,17 @@ static bool __free_unaccepted(struct page *page)
  {
  	struct zone *zone = page_zone(page);
  	unsigned long flags;
