@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF339ABDADD
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC8CABDA23
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB304A6336
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07BA11765D3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3F4244196;
-	Tue, 20 May 2025 13:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B309A245019;
+	Tue, 20 May 2025 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zy5yAIR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1ToOxNk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D370422DF87;
-	Tue, 20 May 2025 13:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9B3245007;
+	Tue, 20 May 2025 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749597; cv=none; b=DG36VzPgshP7p0P/bWglqxQkRr9rLF2EWixMP5pIn9XYyOY8xm/wmX3gNiQ/hhdtz0qf7QCxSFos0uuafR3Be0bW9VbnDKsoyy/TEeVMViUMfwPjRkzjlhoayE5TLnAylbmyPicAIBt+WBGwMMRwvoFtrtV85fP+FMNyHPq9KCk=
+	t=1747749238; cv=none; b=GDHE1EaD1rrRDfuFg7E33A676jxRP7p50FgJNe5XCrEY9oNBLDaFGrV8H2yzKdoP5SLCP/c94vL2d3gJGko8oneKOzlo0D8YtkhaLLRo/zttWLaiyPxMtwL+M2xLY2dlP5uzd3hPpAH3Ab566pfmiavRduttqJn517o1zzB7+Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749597; c=relaxed/simple;
-	bh=JbMVGMqvemKbJECI9vxZUDar+D71ghpKvuEUqaSnzuI=;
+	s=arc-20240116; t=1747749238; c=relaxed/simple;
+	bh=AWzLEwor9bhVdzlXCSYTY4qeyBvnsg97jPm73duf5Qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHm/kFLd1xZxOXr7q0J3rlWFmxNXLXhmCZVrm3jVu+/AFL360vUQhIEhX2O0gDamr+SFvyR2pB6QqcE9Wx0hDh0PTMrl6hwH/e4cIHkRVjRUuwvLCD/BUzF6r5ARNi4n7LLwUzrjQfZno0w4hLDMowUPcyhGwghqeP5Ze2JmPfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zy5yAIR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5421EC4CEE9;
-	Tue, 20 May 2025 13:59:57 +0000 (UTC)
+	 MIME-Version; b=NtK7iIhnjwWBuMPGaW/ImKaxA4AkJ5K8fO/z43YhpWI4sDwsKHSr7YRh/yimcrIUtO+xGcVV1IOHY+c21EgBga71HJag9tXGwCO839rgchYP6SBD4NirhIGTEXPgWXfUcU+OAJLaeGJ4JvYlTERxed/IRgIL4S90/78BWpSA3tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1ToOxNk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9290C4CEE9;
+	Tue, 20 May 2025 13:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749597;
-	bh=JbMVGMqvemKbJECI9vxZUDar+D71ghpKvuEUqaSnzuI=;
+	s=korg; t=1747749238;
+	bh=AWzLEwor9bhVdzlXCSYTY4qeyBvnsg97jPm73duf5Qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zy5yAIR7tVbNOLeIeMETikzagJ54ftrXErnRR4Mul/OjHKPhtAIwBiGM38dGyUPkg
-	 RfMUBRD6sF1BkJwprCd843dCoLbqT13G7Qq97cO7gGdLIvAklgnrZdCUhVxumDs83k
-	 uCxt5mLSySLPUrzbdN578Zq/r+79/Q/EZYU+wOCc=
+	b=p1ToOxNkNYfCLrjMKodS1+yppzgzFc7qZ5KJUZg2v4p3giP/Qt8g+oEjLx9s7HwFP
+	 lKFhWjt9uec4DzBQ74NRAb9wm1bIhUS5ou9/7gi0o13HyuYPl7Bw51ifcA9S0mbUqb
+	 XZmhgdv4F+wyQCd6NRhkx71au92xs7DQiJsW9h+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	dmaengine@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@legrand.com>
-Subject: [PATCH 6.1 65/97] dmaengine: ti: k3-udma: Add missing locking
-Date: Tue, 20 May 2025 15:50:30 +0200
-Message-ID: <20250520125803.197726240@linuxfoundation.org>
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 40/59] phy: renesas: rcar-gen3-usb2: Set timing registers only once
+Date: Tue, 20 May 2025 15:50:31 +0200
+Message-ID: <20250520125755.442800703@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@legrand.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit fca280992af8c2fbd511bc43f65abb4a17363f2f upstream.
+commit 86e70849f4b2b4597ac9f7c7931f2a363774be25 upstream.
 
-Recent kernels complain about a missing lock in k3-udma.c when the lock
-validator is enabled:
+phy-rcar-gen3-usb2 driver exports 4 PHYs. The timing registers are common
+to all PHYs. There is no need to set them every time a PHY is initialized.
+Set timing register only when the 1st PHY is initialized.
 
-[    4.128073] WARNING: CPU: 0 PID: 746 at drivers/dma/ti/../virt-dma.h:169 udma_start.isra.0+0x34/0x238
-[    4.137352] CPU: 0 UID: 0 PID: 746 Comm: kworker/0:3 Not tainted 6.12.9-arm64 #28
-[    4.144867] Hardware name: pp-v12 (DT)
-[    4.148648] Workqueue: events udma_check_tx_completion
-[    4.153841] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.160834] pc : udma_start.isra.0+0x34/0x238
-[    4.165227] lr : udma_start.isra.0+0x30/0x238
-[    4.169618] sp : ffffffc083cabcf0
-[    4.172963] x29: ffffffc083cabcf0 x28: 0000000000000000 x27: ffffff800001b005
-[    4.180167] x26: ffffffc0812f0000 x25: 0000000000000000 x24: 0000000000000000
-[    4.187370] x23: 0000000000000001 x22: 00000000e21eabe9 x21: ffffff8000fa0670
-[    4.194571] x20: ffffff8001b6bf00 x19: ffffff8000fa0430 x18: ffffffc083b95030
-[    4.201773] x17: 0000000000000000 x16: 00000000f0000000 x15: 0000000000000048
-[    4.208976] x14: 0000000000000048 x13: 0000000000000000 x12: 0000000000000001
-[    4.216179] x11: ffffffc08151a240 x10: 0000000000003ea1 x9 : ffffffc08046ab68
-[    4.223381] x8 : ffffffc083cabac0 x7 : ffffffc081df3718 x6 : 0000000000029fc8
-[    4.230583] x5 : ffffffc0817ee6d8 x4 : 0000000000000bc0 x3 : 0000000000000000
-[    4.237784] x2 : 0000000000000000 x1 : 00000000001fffff x0 : 0000000000000000
-[    4.244986] Call trace:
-[    4.247463]  udma_start.isra.0+0x34/0x238
-[    4.251509]  udma_check_tx_completion+0xd0/0xdc
-[    4.256076]  process_one_work+0x244/0x3fc
-[    4.260129]  process_scheduled_works+0x6c/0x74
-[    4.264610]  worker_thread+0x150/0x1dc
-[    4.268398]  kthread+0xd8/0xe8
-[    4.271492]  ret_from_fork+0x10/0x20
-[    4.275107] irq event stamp: 220
-[    4.278363] hardirqs last  enabled at (219): [<ffffffc080a27c7c>] _raw_spin_unlock_irq+0x38/0x50
-[    4.287183] hardirqs last disabled at (220): [<ffffffc080a1c154>] el1_dbg+0x24/0x50
-[    4.294879] softirqs last  enabled at (182): [<ffffffc080037e68>] handle_softirqs+0x1c0/0x3cc
-[    4.303437] softirqs last disabled at (177): [<ffffffc080010170>] __do_softirq+0x1c/0x28
-[    4.311559] ---[ end trace 0000000000000000 ]---
-
-This commit adds the missing locking.
-
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: dmaengine@vger.kernel.org
+Fixes: f3b5a8d9b50d ("phy: rcar-gen3-usb2: Add R-Car Gen3 USB2 PHY driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ronald Wahl <ronald.wahl@legrand.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20250414173113.80677-1-rwahl@gmx.de
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-6-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/k3-udma.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -1088,8 +1088,11 @@ static void udma_check_tx_completion(str
- 	u32 residue_diff;
- 	ktime_t time_diff;
- 	unsigned long delay;
-+	unsigned long flags;
- 
- 	while (1) {
-+		spin_lock_irqsave(&uc->vc.lock, flags);
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -453,8 +453,11 @@ static int rcar_gen3_phy_usb2_init(struc
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+ 	val |= USB2_INT_ENABLE_UCOM_INTEN | rphy->int_enable_bits;
+ 	writel(val, usb2_base + USB2_INT_ENABLE);
+-	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
+-	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
 +
- 		if (uc->desc) {
- 			/* Get previous residue and time stamp */
- 			residue_diff = uc->tx_drain.residue;
-@@ -1124,6 +1127,8 @@ static void udma_check_tx_completion(str
- 				break;
- 			}
++	if (!rcar_gen3_is_any_rphy_initialized(channel)) {
++		writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
++		writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
++	}
  
-+			spin_unlock_irqrestore(&uc->vc.lock, flags);
-+
- 			usleep_range(ktime_to_us(delay),
- 				     ktime_to_us(delay) + 10);
- 			continue;
-@@ -1140,6 +1145,8 @@ static void udma_check_tx_completion(str
- 
- 		break;
- 	}
-+
-+	spin_unlock_irqrestore(&uc->vc.lock, flags);
- }
- 
- static irqreturn_t udma_ring_irq_handler(int irq, void *data)
+ 	/* Initialize otg part */
+ 	if (channel->is_otg_channel) {
 
 
 
