@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC88EABDA05
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701CFABDAFA
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6853417BF90
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 876841BA6432
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87858242922;
-	Tue, 20 May 2025 13:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1930246773;
+	Tue, 20 May 2025 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4T6ceal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeUuO+n5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4353D241103;
-	Tue, 20 May 2025 13:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E75C2459FE;
+	Tue, 20 May 2025 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749179; cv=none; b=R+u9HywJAN/N/L+aJZNJIiLu/OQhH4AFDSK8DU/t1qljmfYb1MhIJ2RF/5a6uHWMeR3P5HeXCEIObmZqKABSyKq7YwW2P8Gg4Z42VrYLzWKbACqBc6lwZpFacS+0ueIY6hNEL2ixftt+CVdUxxqdCZXPgfFdScvkdo8kH0MtSJ8=
+	t=1747749749; cv=none; b=aCLE97yOL764GR81kYTmQTCUEY0/j5SJ+eEKd3HmW7ngagX6I01Ih1JO7pE3sJiFbxlmtPLJhFMwrPVzopkmN4+N+CVGFaAlV2Qn9OEllKGxRJtWHLHozdoCr1PSOLhvJaRf6CxWX03UfrjtCz1ugMniHm4rXJvA74sYhAuNUGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749179; c=relaxed/simple;
-	bh=GmvM+vCcUvNugU6WLQ3spusaXjBy8c+v9TsYT8EtICc=;
+	s=arc-20240116; t=1747749749; c=relaxed/simple;
+	bh=k41ZPdspR/lgCLxQjIhMjkFLmoogAVOiTWuIm5oc9mI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRw8iej0kAHiw/eOLyKAGqvlNuoepK1rA1DbXvwLO1h/LcpNVVMDzvgSmqMUiYTiJPBIkrlheOf0Uu1HlhcCakZD/mSkP13qCuT1A3oYGTftGDOnPO5iAnxY/aNUD/2X/oATnqqtr2TXEflGihiX4Dvndx8kJdbRpujz1b04ekM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4T6ceal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DBAC4CEE9;
-	Tue, 20 May 2025 13:52:58 +0000 (UTC)
+	 MIME-Version; b=lTlRskdnhrLxIkpBPeuM4V8J8N1TpLx55goZQp7xyL+/FHtdzDvMlewYo+MZLRgdxDeVD6txCW2knKu2drLbxbGfD5Y/4IesrF57kNlTKVozrdg0z9TuyIqJ4BxRUCmdpGR4JEQOTWmZWMbd9UOFaSwMFKjCd6RXfaNoqhgWcTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeUuO+n5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22DAC4CEE9;
+	Tue, 20 May 2025 14:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749179;
-	bh=GmvM+vCcUvNugU6WLQ3spusaXjBy8c+v9TsYT8EtICc=;
+	s=korg; t=1747749749;
+	bh=k41ZPdspR/lgCLxQjIhMjkFLmoogAVOiTWuIm5oc9mI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4T6cealKURs+qlB0EO5QK/BZysB3LicF9PdC6C+PT/32o1Jz0YPwJsX7gcOdBfVX
-	 /Mn6lQmTb8K8MacKVwqHeGXJXqpT4679gPgGRHiZNzCoHm8r/Hg4/MZB1FyyfJvw2i
-	 O01rUbq3KvZnyBTBN9pCXMbAvghIvH5XHyVn5xMM=
+	b=YeUuO+n5mg7KFyp4JVKisI/WsTP2qW30uu+u7VC5MBMyyPfiPZkW8Vp6GsE2cv9mL
+	 aLigiJiaK+YwsuyJwYxrsQ825v7rPR5U18r5lkZIZzVxnd5ji/iaW2grgp8akr0Y6t
+	 jtb3e1PWvm0A110qjP/gR6HeraPfxpS7cAt59Vm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 5.15 20/59] x86/its: Add support for ITS-safe indirect thunk
+	kernel test robot <lkp@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 046/117] nvme-pci: make nvme_pci_npages_prp() __always_inline
 Date: Tue, 20 May 2025 15:50:11 +0200
-Message-ID: <20250520125754.656343448@linuxfoundation.org>
+Message-ID: <20250520125805.819326663@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,250 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Kees Cook <kees@kernel.org>
 
-commit 8754e67ad4ac692c67ff1f99c0d07156f04ae40c upstream.
+[ Upstream commit 40696426b8c8c4f13cf6ac52f0470eed144be4b2 ]
 
-Due to ITS, indirect branches in the lower half of a cacheline may be
-vulnerable to branch target injection attack.
+The only reason nvme_pci_npages_prp() could be used as a compile-time
+known result in BUILD_BUG_ON() is because the compiler was always choosing
+to inline the function. Under special circumstances (sanitizer coverage
+functions disabled for __init functions on ARCH=um), the compiler decided
+to stop inlining it:
 
-Introduce ITS-safe thunks to patch indirect branches in the lower half of
-cacheline with the thunk. Also thunk any eBPF generated indirect branches
-in emit_indirect_jump().
+   drivers/nvme/host/pci.c: In function 'nvme_init':
+   include/linux/compiler_types.h:557:45: error: call to '__compiletime_assert_678' declared with attribute error: BUILD_BUG_ON failed: nvme_pci_npages_prp() > NVME_MAX_NR_ALLOCATIONS
+     557 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:538:25: note: in definition of macro '__compiletime_assert'
+     538 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:557:9: note: in expansion of macro '_compiletime_assert'
+     557 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+         |         ^~~~~~~~~~~~~~~~
+   drivers/nvme/host/pci.c:3804:9: note: in expansion of macro 'BUILD_BUG_ON'
+    3804 |         BUILD_BUG_ON(nvme_pci_npages_prp() > NVME_MAX_NR_ALLOCATIONS);
+         |         ^~~~~~~~~~~~
 
-Below category of indirect branches are not mitigated:
+Force it to be __always_inline to make sure it is always available for
+use with BUILD_BUG_ON().
 
-- Indirect branches in the .init section are not mitigated because they are
-  discarded after boot.
-- Indirect branches that are explicitly marked retpoline-safe.
-
-Note that retpoline also mitigates the indirect branches against ITS. This
-is because the retpoline sequence fills an RSB entry before RET, and it
-does not suffer from RSB-underflow part of the ITS.
-
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505061846.12FMyRjj-lkp@intel.com/
+Fixes: c372cdd1efdf ("nvme-pci: iod npages fits in s8")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig                     |   11 +++++
- arch/x86/include/asm/cpufeatures.h   |    1 
- arch/x86/include/asm/nospec-branch.h |    5 ++
- arch/x86/kernel/alternative.c        |   77 +++++++++++++++++++++++++++++++++++
- arch/x86/kernel/vmlinux.lds.S        |    6 ++
- arch/x86/lib/retpoline.S             |   28 ++++++++++++
- arch/x86/net/bpf_jit_comp.c          |    6 ++
- 7 files changed, 133 insertions(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2517,6 +2517,17 @@ config MITIGATION_SPECTRE_BHI
- 	  indirect branches.
- 	  See <file:Documentation/admin-guide/hw-vuln/spectre.rst>
- 
-+config MITIGATION_ITS
-+	bool "Enable Indirect Target Selection mitigation"
-+	depends on CPU_SUP_INTEL && X86_64
-+	depends on RETPOLINE && RETHUNK
-+	default y
-+	help
-+	  Enable Indirect Target Selection (ITS) mitigation. ITS is a bug in
-+	  BPU on some Intel CPUs that may allow Spectre V2 style attacks. If
-+	  disabled, mitigation cannot be enabled via cmdline.
-+	  See <file:Documentation/admin-guide/hw-vuln/indirect-target-selection.rst>
-+
- endif
- 
- config ARCH_HAS_ADD_PAGES
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -433,6 +433,7 @@
- #define X86_FEATURE_BHI_CTRL		(21*32+ 2) /* "" BHI_DIS_S HW control available */
- #define X86_FEATURE_CLEAR_BHB_HW	(21*32+ 3) /* "" BHI_DIS_S HW control enabled */
- #define X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT (21*32+ 4) /* "" Clear branch history at vmexit using SW loop */
-+#define X86_FEATURE_INDIRECT_THUNK_ITS	(21*32 + 5) /* "" Use thunk for indirect branches in lower half of cacheline */
- 
- /*
-  * BUG word(s)
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -271,6 +271,11 @@ extern void (*x86_return_thunk)(void);
- 
- typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
- 
-+#define ITS_THUNK_SIZE	64
-+typedef u8 its_thunk_t[ITS_THUNK_SIZE];
-+
-+extern its_thunk_t	 __x86_indirect_its_thunk_array[];
-+
- #define GEN(reg) \
- 	extern retpoline_thunk_t __x86_indirect_thunk_ ## reg;
- #include <asm/GEN-for-each-reg.h>
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -395,6 +395,74 @@ static int emit_indirect(int op, int reg
- 	return i;
- }
- 
-+#ifdef CONFIG_MITIGATION_ITS
-+
-+static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
-+			     void *call_dest, void *jmp_dest)
-+{
-+	u8 op = insn->opcode.bytes[0];
-+	int i = 0;
-+
-+	/*
-+	 * Clang does 'weird' Jcc __x86_indirect_thunk_r11 conditional
-+	 * tail-calls. Deal with them.
-+	 */
-+	if (is_jcc32(insn)) {
-+		bytes[i++] = op;
-+		op = insn->opcode.bytes[1];
-+		goto clang_jcc;
-+	}
-+
-+	if (insn->length == 6)
-+		bytes[i++] = 0x2e; /* CS-prefix */
-+
-+	switch (op) {
-+	case CALL_INSN_OPCODE:
-+		__text_gen_insn(bytes+i, op, addr+i,
-+				call_dest,
-+				CALL_INSN_SIZE);
-+		i += CALL_INSN_SIZE;
-+		break;
-+
-+	case JMP32_INSN_OPCODE:
-+clang_jcc:
-+		__text_gen_insn(bytes+i, op, addr+i,
-+				jmp_dest,
-+				JMP32_INSN_SIZE);
-+		i += JMP32_INSN_SIZE;
-+		break;
-+
-+	default:
-+		WARN(1, "%pS %px %*ph\n", addr, addr, 6, addr);
-+		return -1;
-+	}
-+
-+	WARN_ON_ONCE(i != insn->length);
-+
-+	return i;
-+}
-+
-+static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
-+{
-+	return __emit_trampoline(addr, insn, bytes,
-+				 __x86_indirect_its_thunk_array[reg],
-+				 __x86_indirect_its_thunk_array[reg]);
-+}
-+
-+/* Check if an indirect branch is at ITS-unsafe address */
-+static bool cpu_wants_indirect_its_thunk_at(unsigned long addr, int reg)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-+		return false;
-+
-+	/* Indirect branch opcode is 2 or 3 bytes depending on reg */
-+	addr += 1 + reg / 8;
-+
-+	/* Lower-half of the cacheline? */
-+	return !(addr & 0x20);
-+}
-+#endif
-+
- /*
-  * Rewrite the compiler generated retpoline thunk calls.
-  *
-@@ -466,6 +534,15 @@ static int patch_retpoline(void *addr, s
- 		bytes[i++] = 0xe8; /* LFENCE */
- 	}
- 
-+#ifdef CONFIG_MITIGATION_ITS
-+	/*
-+	 * Check if the address of last byte of emitted-indirect is in
-+	 * lower-half of the cacheline. Such branches need ITS mitigation.
-+	 */
-+	if (cpu_wants_indirect_its_thunk_at((unsigned long)addr + i, reg))
-+		return emit_its_trampoline(addr, insn, reg, bytes);
-+#endif
-+
- 	ret = emit_indirect(op, reg, bytes + i);
- 	if (ret < 0)
- 		return ret;
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -532,6 +532,12 @@ INIT_PER_CPU(irq_stack_backing_store);
- 		"SRSO function pair won't alias");
- #endif
- 
-+#if defined(CONFIG_MITIGATION_ITS) && !defined(CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B)
-+. = ASSERT(__x86_indirect_its_thunk_rax & 0x20, "__x86_indirect_thunk_rax not in second half of cacheline");
-+. = ASSERT(((__x86_indirect_its_thunk_rcx - __x86_indirect_its_thunk_rax) % 64) == 0, "Indirect thunks are not cacheline apart");
-+. = ASSERT(__x86_indirect_its_thunk_array == __x86_indirect_its_thunk_rax, "Gap in ITS thunk array");
-+#endif
-+
- #endif /* CONFIG_X86_64 */
- 
- #ifdef CONFIG_KEXEC_CORE
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -254,6 +254,34 @@ SYM_FUNC_START(entry_untrain_ret)
- SYM_FUNC_END(entry_untrain_ret)
- __EXPORT_THUNK(entry_untrain_ret)
- 
-+#ifdef CONFIG_MITIGATION_ITS
-+
-+.macro ITS_THUNK reg
-+
-+SYM_INNER_LABEL(__x86_indirect_its_thunk_\reg, SYM_L_GLOBAL)
-+	UNWIND_HINT_EMPTY
-+	ANNOTATE_NOENDBR
-+	ANNOTATE_RETPOLINE_SAFE
-+	jmp *%\reg
-+	int3
-+	.align 32, 0xcc		/* fill to the end of the line */
-+	.skip  32, 0xcc		/* skip to the next upper half */
-+.endm
-+
-+/* ITS mitigation requires thunks be aligned to upper half of cacheline */
-+.align 64, 0xcc
-+.skip 32, 0xcc
-+SYM_CODE_START(__x86_indirect_its_thunk_array)
-+
-+#define GEN(reg) ITS_THUNK reg
-+#include <asm/GEN-for-each-reg.h>
-+#undef GEN
-+
-+	.align 64, 0xcc
-+SYM_CODE_END(__x86_indirect_its_thunk_array)
-+
-+#endif
-+
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -446,7 +446,11 @@ static void emit_indirect_jump(u8 **ppro
- 	u8 *prog = *pprog;
- 
- #ifdef CONFIG_RETPOLINE
--	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
-+	if (IS_ENABLED(CONFIG_MITIGATION_ITS) &&
-+	    cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
-+		OPTIMIZER_HIDE_VAR(reg);
-+		emit_jump(&prog, &__x86_indirect_its_thunk_array[reg], ip);
-+	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
- 		EMIT_LFENCE();
- 		EMIT2(0xFF, 0xE0 + reg);
- 	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE)) {
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index fdde38903ebcd..08280bd65d03d 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -386,7 +386,7 @@ static bool nvme_dbbuf_update_and_check_event(u16 value, __le32 *dbbuf_db,
+  * as it only leads to a small amount of wasted memory for the lifetime of
+  * the I/O.
+  */
+-static int nvme_pci_npages_prp(void)
++static __always_inline int nvme_pci_npages_prp(void)
+ {
+ 	unsigned max_bytes = (NVME_MAX_KB_SZ * 1024) + NVME_CTRL_PAGE_SIZE;
+ 	unsigned nprps = DIV_ROUND_UP(max_bytes, NVME_CTRL_PAGE_SIZE);
+-- 
+2.39.5
+
 
 
 
