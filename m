@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-145230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36722ABDAC4
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:01:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740D7ABDA37
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDD0216E3FC
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:59:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13CC1BA4EB2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9829E246771;
-	Tue, 20 May 2025 13:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7ABF24337B;
+	Tue, 20 May 2025 13:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxH3ul5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzVTIBbF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5470624169B;
-	Tue, 20 May 2025 13:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0F19F137;
+	Tue, 20 May 2025 13:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749554; cv=none; b=i1+aPwmGmec2kabVfXrPDsQvlcu63TJ0Q3+RtDHqGylyve5T/MItp1+xpRTH1ioim4AfODKX+WHwmwrIJKYDgb6shWQ8pMrgshTgVZtp7VFpBHbQ/vP3zVH/vfA9C5df+nRxncKmsUS+2pvayhcLTI7qylGcERjlc6iSmIBwnys=
+	t=1747749288; cv=none; b=cJ2/WWzNVsH0yiJztkCsj9C55HtdpVy6HBPKFy3GaTKtbYCWIm517g/BZwjilW2hxYnwqdgJIcv4Cuk9oAXK/IR25uCOntI2mgm6c/9Ie57zrI3YwDYxYS8GtiImGpkkq9BnxIsrKrTIAXZwhHor0qyX3O5Ko42R9phNGq5liK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749554; c=relaxed/simple;
-	bh=vjEbisoty+OYEpZ4lZrGGxud/t9N5b2XklgqRvRzQlE=;
+	s=arc-20240116; t=1747749288; c=relaxed/simple;
+	bh=JYVXJBlHLAmsmONZxjqIp9oCWWVU++IJ7ikq2/o//PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XvyLRp2PSUnThcivaEd2RJiui83M5LRDaZfiU4pg2FWe9PTZLHx8OeX7Vl+85Iq2eqLodqLKBErWsLYV8nSImjHyalzKZUvkebjer+84EFN+XlMczOwl6jSLjtAEJZpxz9xPU+ZNn09ZugRTSdUhGYVf7bh7sYzEV8Wx1z4W/fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxH3ul5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7778C4CEE9;
-	Tue, 20 May 2025 13:59:13 +0000 (UTC)
+	 MIME-Version; b=UQO1vC8bYk2tjmzwLfql2YyOm4W/Mf6Zi09qYxKX7hykgAlem1Bt3jid0qfX3qxS0h6c1XF3R/QmZx4xDejyr4rHmzHgvZMzfOY78mbgOX0Qhg0HbaOoMATeNggmhqueyZ96Jibykvn7eXCovsLSJDcbvcRZFXr6hN8yb58trPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzVTIBbF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06372C4CEE9;
+	Tue, 20 May 2025 13:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749554;
-	bh=vjEbisoty+OYEpZ4lZrGGxud/t9N5b2XklgqRvRzQlE=;
+	s=korg; t=1747749288;
+	bh=JYVXJBlHLAmsmONZxjqIp9oCWWVU++IJ7ikq2/o//PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxH3ul5Us94eSajDxiBjFW6TtLdghNVP0K7KQkUO+7UDXQCn1bZppwiTbrMs3q1HG
-	 Q0ygNIa2UrmWwhGreFOCm20zvIYPQ46XftRvLmq044hZvCtQY1+wmhEvoBOj7g3npI
-	 /Hoi2MFRhsps1mN1qtCH/3SOOw2YzIToALTWLaWo=
+	b=vzVTIBbFSguP5bfF1ZZRemPOtwR8VfLtZqDKsMJB4Lpd2pWA38dwkhjw4YuDZ9dzY
+	 4knEyTFm35V7ZvLO73Wuv4/27y9+d4dRnmq45kzIg0LXeCc4ByqU/lHEjXRA7NaVpn
+	 wYBDYnkGfXmZIcrxGp6crdnzmgo65gqgXnRL8eZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Lu <luxu.kernel@bytedance.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Zhaoyang Li <lizy04@hust.edu.cn>
-Subject: [PATCH 6.1 81/97] riscv: mm: Fix the out of bound issue of vmemmap address
+	Boris Burkov <boris@bur.io>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 55/59] btrfs: do not clean up repair bio if submit fails
 Date: Tue, 20 May 2025 15:50:46 +0200
-Message-ID: <20250520125803.813630568@linuxfoundation.org>
+Message-ID: <20250520125756.030382239@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Lu <luxu.kernel@bytedance.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit f754f27e98f88428aaf6be6e00f5cbce97f62d4b upstream.
+commit 8cbc3001a3264d998d6b6db3e23f935c158abd4d upstream.
 
-In sparse vmemmap model, the virtual address of vmemmap is calculated as:
-((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT)).
-And the struct page's va can be calculated with an offset:
-(vmemmap + (pfn)).
+The submit helper will always run bio_endio() on the bio if it fails to
+submit, so cleaning up the bio just leads to a variety of use-after-free
+and NULL pointer dereference bugs because we race with the endio
+function that is cleaning up the bio.  Instead just return BLK_STS_OK as
+the repair function has to continue to process the rest of the pages,
+and the endio for the repair bio will do the appropriate cleanup for the
+page that it was given.
 
-However, when initializing struct pages, kernel actually starts from the
-first page from the same section that phys_ram_base belongs to. If the
-first page's physical address is not (phys_ram_base >> PAGE_SHIFT), then
-we get an va below VMEMMAP_START when calculating va for it's struct page.
-
-For example, if phys_ram_base starts from 0x82000000 with pfn 0x82000, the
-first page in the same section is actually pfn 0x80000. During
-init_unavailable_range(), we will initialize struct page for pfn 0x80000
-with virtual address ((struct page *)VMEMMAP_START - 0x2000), which is
-below VMEMMAP_START as well as PCI_IO_END.
-
-This commit fixes this bug by introducing a new variable
-'vmemmap_start_pfn' which is aligned with memory section size and using
-it to calculate vmemmap address instead of phys_ram_base.
-
-Fixes: a11dd49dcb93 ("riscv: Sparse-Memory/vmemmap out-of-bounds fix")
-Signed-off-by: Xu Lu <luxu.kernel@bytedance.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20241209122617.53341-1-luxu.kernel@bytedance.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[Minor context change fixed.]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/page.h    |    1 +
- arch/riscv/include/asm/pgtable.h |    2 +-
- arch/riscv/mm/init.c             |   17 ++++++++++++++++-
- 3 files changed, 18 insertions(+), 2 deletions(-)
+ fs/btrfs/extent_io.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/arch/riscv/include/asm/page.h
-+++ b/arch/riscv/include/asm/page.h
-@@ -115,6 +115,7 @@ struct kernel_mapping {
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2624,7 +2624,6 @@ int btrfs_repair_one_sector(struct inode
+ 	const int icsum = bio_offset >> fs_info->sectorsize_bits;
+ 	struct bio *repair_bio;
+ 	struct btrfs_io_bio *repair_io_bio;
+-	blk_status_t status;
  
- extern struct kernel_mapping kernel_map;
- extern phys_addr_t phys_ram_base;
-+extern unsigned long vmemmap_start_pfn;
+ 	btrfs_debug(fs_info,
+ 		   "repair read error: read error at %llu", start);
+@@ -2664,13 +2663,13 @@ int btrfs_repair_one_sector(struct inode
+ 		    "repair read error: submitting new read to mirror %d",
+ 		    failrec->this_mirror);
  
- #define is_kernel_mapping(x)	\
- 	((x) >= kernel_map.virt_addr && (x) < (kernel_map.virt_addr + kernel_map.size))
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -79,7 +79,7 @@
-  * Define vmemmap for pfn_to_page & page_to_pfn calls. Needed if kernel
-  * is configured with CONFIG_SPARSEMEM_VMEMMAP enabled.
-  */
--#define vmemmap		((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT))
-+#define vmemmap		((struct page *)VMEMMAP_START - vmemmap_start_pfn)
+-	status = submit_bio_hook(inode, repair_bio, failrec->this_mirror,
+-				 failrec->bio_flags);
+-	if (status) {
+-		free_io_failure(failure_tree, tree, failrec);
+-		bio_put(repair_bio);
+-	}
+-	return blk_status_to_errno(status);
++	/*
++	 * At this point we have a bio, so any errors from submit_bio_hook()
++	 * will be handled by the endio on the repair_bio, so we can't return an
++	 * error here.
++	 */
++	submit_bio_hook(inode, repair_bio, failrec->this_mirror, failrec->bio_flags);
++	return BLK_STS_OK;
+ }
  
- #define PCI_IO_SIZE      SZ_16M
- #define PCI_IO_END       VMEMMAP_START
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -22,6 +22,7 @@
- #include <linux/hugetlb.h>
- 
- #include <asm/fixmap.h>
-+#include <asm/sparsemem.h>
- #include <asm/tlbflush.h>
- #include <asm/sections.h>
- #include <asm/soc.h>
-@@ -52,6 +53,13 @@ EXPORT_SYMBOL(pgtable_l5_enabled);
- phys_addr_t phys_ram_base __ro_after_init;
- EXPORT_SYMBOL(phys_ram_base);
- 
-+#ifdef CONFIG_SPARSEMEM_VMEMMAP
-+#define VMEMMAP_ADDR_ALIGN	(1ULL << SECTION_SIZE_BITS)
-+
-+unsigned long vmemmap_start_pfn __ro_after_init;
-+EXPORT_SYMBOL(vmemmap_start_pfn);
-+#endif
-+
- unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)]
- 							__page_aligned_bss;
- EXPORT_SYMBOL(empty_zero_page);
-@@ -210,8 +218,12 @@ static void __init setup_bootmem(void)
- 	memblock_reserve(vmlinux_start, vmlinux_end - vmlinux_start);
- 
- 	phys_ram_end = memblock_end_of_DRAM();
--	if (!IS_ENABLED(CONFIG_XIP_KERNEL))
-+	if (!IS_ENABLED(CONFIG_XIP_KERNEL)) {
- 		phys_ram_base = memblock_start_of_DRAM();
-+#ifdef CONFIG_SPARSEMEM_VMEMMAP
-+		vmemmap_start_pfn = round_down(phys_ram_base, VMEMMAP_ADDR_ALIGN) >> PAGE_SHIFT;
-+#endif
-+}
- 	/*
- 	 * Reserve physical address space that would be mapped to virtual
- 	 * addresses greater than (void *)(-PAGE_SIZE) because:
-@@ -946,6 +958,9 @@ asmlinkage void __init setup_vm(uintptr_
- 	kernel_map.xiprom_sz = (uintptr_t)(&_exiprom) - (uintptr_t)(&_xiprom);
- 
- 	phys_ram_base = CONFIG_PHYS_RAM_BASE;
-+#ifdef CONFIG_SPARSEMEM_VMEMMAP
-+	vmemmap_start_pfn = round_down(phys_ram_base, VMEMMAP_ADDR_ALIGN) >> PAGE_SHIFT;
-+#endif
- 	kernel_map.phys_addr = (uintptr_t)CONFIG_PHYS_RAM_BASE;
- 	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
- 
+ static void end_page_read(struct page *page, bool uptodate, u64 start, u32 len)
 
 
 
