@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6066DABDA1A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90267ABDA85
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDB293BF57F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8E271892E83
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A3F246767;
-	Tue, 20 May 2025 13:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C487B24337B;
+	Tue, 20 May 2025 13:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc/t0diT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOsVwXG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126CE246335;
-	Tue, 20 May 2025 13:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78887242D7D;
+	Tue, 20 May 2025 13:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749233; cv=none; b=evEJwwluXT6YMAvvmuUKAZ1pi7FNwPc90EDXfYWYzHVXXhHni1zvbaT/rgVI1g28TV74/q2XgYlL+x9gIwkEDmcmmWestr4hww8MHxcSBp7e+tQT3OPOIzqCql8pHHfs+RGHhPYY8DzMgpqZo2+bl0OcopaEoGZO2wODfc40D2I=
+	t=1747749476; cv=none; b=cdS928lpTS1Qti/K9d/wb14sKpZIgc+x5b+jaTqeBTGxhDBqHvMpmmHWeLYh7XjZgpC67XE/ChXUm7yA0c5TFH8FOwbiJE7s0Q/8Oy1Dwa025fJSO8/E9/JBj7GWmJsPch0iafWZHGrrOJASdvMNQArBLcMv3uihHvR0KRtXMqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749233; c=relaxed/simple;
-	bh=9vxIbJsW3JoD5mox7TBu8b4V68sPF8uLkIwY1QeGkY0=;
+	s=arc-20240116; t=1747749476; c=relaxed/simple;
+	bh=YaX/z0HixTmk3VchSbi9c7VfuvwnUl9XwV6LDwHJF9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOAPf/+RyEMRLYdeOwbB+CV7aE0QatoDoxjzFByJdMAI/k3jAwZIFMrVLe2i7Z8eEHTpgG+XXmcmNx0aMu7ZVfVkNJjjePsGvXS+xFeE0cDqmbbzsOfiCyFNenkJPtFYZARb8vaGTufeuSL+D49oDHO5Ua3eZSwGY5+1k9U477E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc/t0diT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06230C4CEE9;
-	Tue, 20 May 2025 13:53:51 +0000 (UTC)
+	 MIME-Version; b=Yw4RdSxE2kVEsOFIe/gOuZkwkzhrc1s5jxqwEkuDfw7NmJD6Hjy1Vc+dhMUdh1ogwrfgK5UFGFVQVa33yjqhW4y9LxdTNrmZDg0yxIFb/Q13Rd6pzhLZA1MVqRXooj4ThlMuSlCYoyi58nNXk4GrhNKTANUUpa0Kp/eDRqLodu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOsVwXG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37D4C4CEE9;
+	Tue, 20 May 2025 13:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749232;
-	bh=9vxIbJsW3JoD5mox7TBu8b4V68sPF8uLkIwY1QeGkY0=;
+	s=korg; t=1747749476;
+	bh=YaX/z0HixTmk3VchSbi9c7VfuvwnUl9XwV6LDwHJF9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mc/t0diTsUCL1RmV5muhtgPsKuyzdFovMe7mlmVayH33CoeplDuZFJst9JK5XMB3p
-	 UNazeVM9oWy0gdxPB6CWRn2hRU009hTIDvuMSUmrWtlAws+IwQ4BXN0NOBQmsazR8v
-	 Fms7W7RTYlySCVIcAtKz7Dbv+xPEHD2jH7pi+9j4=
+	b=DOsVwXG3LW+O0mA7s1TmNapqY3WwhAxvaP1ZuQ9C3bNFcf2+feCNlZFzhdIKma46J
+	 3InaW0eVk/SkQSR1jvz6aUq81r7JLmK2Gi0+b4ddE242sF32+FsPsYvp4XMd1jCmLK
+	 7B/03OtUkzkEP5nBPk289KbpSTZwXvtkrnTe++v4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 30/59] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
+	pengdonglin <dolinux.peng@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 56/97] ftrace: Fix preemption accounting for stacktrace filter command
 Date: Tue, 20 May 2025 15:50:21 +0200
-Message-ID: <20250520125755.055077179@linuxfoundation.org>
+Message-ID: <20250520125802.851841291@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathan.lynch@amd.com>
+From: pengdonglin <pengdonglin@xiaomi.com>
 
-commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
+commit 11aff32439df6ca5b3b891b43032faf88f4a6a29 upstream.
 
-Several issues with this change:
+The preemption count of the stacktrace filter command to trace ksys_read
+is consistently incorrect:
 
-* The analysis is flawed and it's unclear what problem is being
-  fixed. There is no difference between wait_event_freezable_timeout()
-  and wait_event_timeout() with respect to device interrupts. And of
-  course "the interrupt notifying the finish of an operation happens
-  during wait_event_freezable_timeout()" -- that's how it's supposed
-  to work.
+$ echo ksys_read:stacktrace > set_ftrace_filter
 
-* The link at the "Closes:" tag appears to be an unrelated
-  use-after-free in idxd.
+   <...>-453     [004] ...1.    38.308956: <stack trace>
+=> ksys_read
+=> do_syscall_64
+=> entry_SYSCALL_64_after_hwframe
 
-* It introduces a regression: dmatest threads are meant to be
-  freezable and this change breaks that.
+The root cause is that the trace framework disables preemption when
+invoking the filter command callback in function_trace_probe_call:
 
-See discussion here:
-https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
+   preempt_disable_notrace();
+   probe_ops->func(ip, parent_ip, probe_opsbe->tr, probe_ops, probe->data);
+   preempt_enable_notrace();
 
-Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
-Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
-Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Use tracing_gen_ctx_dec() to account for the preempt_disable_notrace(),
+which will output the correct preemption count:
+
+$ echo ksys_read:stacktrace > set_ftrace_filter
+
+   <...>-410     [006] .....    31.420396: <stack trace>
+=> ksys_read
+=> do_syscall_64
+=> entry_SYSCALL_64_after_hwframe
+
+Cc: stable@vger.kernel.org
+Fixes: 36590c50b2d07 ("tracing: Merge irqflags + preempt counter.")
+Link: https://lore.kernel.org/20250512094246.1167956-2-dolinux.peng@gmail.com
+Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dmatest.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/trace/trace_functions.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -828,9 +828,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
+--- a/kernel/trace/trace_functions.c
++++ b/kernel/trace/trace_functions.c
+@@ -561,11 +561,7 @@ ftrace_traceoff(unsigned long ip, unsign
  
--			wait_event_timeout(thread->done_wait,
--					   done->done,
--					   msecs_to_jiffies(params->timeout));
-+			wait_event_freezable_timeout(thread->done_wait,
-+					done->done,
-+					msecs_to_jiffies(params->timeout));
+ static __always_inline void trace_stack(struct trace_array *tr)
+ {
+-	unsigned int trace_ctx;
+-
+-	trace_ctx = tracing_gen_ctx();
+-
+-	__trace_stack(tr, trace_ctx, FTRACE_STACK_SKIP);
++	__trace_stack(tr, tracing_gen_ctx_dec(), FTRACE_STACK_SKIP);
+ }
  
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
+ static void
 
 
 
