@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3612AABDA8D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E305ABDB10
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:05:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20124A28A4
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81A1D3A5D55
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97171244196;
-	Tue, 20 May 2025 13:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74089242D79;
+	Tue, 20 May 2025 14:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ji19dwcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4hAbAqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A66DDA9;
-	Tue, 20 May 2025 13:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30226EEDE;
+	Tue, 20 May 2025 14:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749494; cv=none; b=A9cUbTm2vMHPf+ApkVAlM1zEwj1JCJDuNgOG8+QqYUW7Ko6BX4YlafII/6y4nYeisTEhxVaF9o4JsUVJhaVjsdqap+iFWPltDEzJaSX0B2tgPwZAot9jOs3pclxToADeFyM2aN9YQp736aJ3bMyYYJIHNJOvaQPWkspX7T84rpQ=
+	t=1747749700; cv=none; b=akymUq5729jHcx033suCssyj/e7lK1yJH0biIITUFjnnxaZ+QOYtJTdK434ZgUDrsNEmgCCP98G7msQtxmJVCHxUoQezYQ7vfRDiEevGsfWgVR+BBakDoJHDXlNWFAg9+9jKHogrNmTalndX/P/HKbU+scyj5lS09SZ85J3lRTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749494; c=relaxed/simple;
-	bh=Uyjsjr2zu2LrV9Fl1eOR/Sux/ESPFCYfexwEd61eafk=;
+	s=arc-20240116; t=1747749700; c=relaxed/simple;
+	bh=SW1SidAaStpsAWn4FK0WKBwjr8qgsNJh1rm9Gjp7KPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWar9NP5rNG/xzIWRAVkqTR+1szGAsKTMpDCVpx52Fe5W301qB98QF0lSSij9wg8vDIf6boz6zhww4ZQ154aDlmq7AzV6wTilNpulTvcV3JdA+IfF45j9YEsU1OLJ2FvjWpMVcWVHvzacu4QVieePbad0470+DHA2+139HCfDV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ji19dwcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DE0C4CEE9;
-	Tue, 20 May 2025 13:58:13 +0000 (UTC)
+	 MIME-Version; b=ernHg9aNHuvZSjI0wZxJAa0Kj5hq0FjEYHrqJM/a5iD/A1b7iAhBmvdz2GoK9afpdp/NtRIwrjZJtQc42xULT62ImG3CFaYptkM5zG/TT/ZlTvYBa4M5feEYF4gHTj+PXmzpmrsQwUbGRTO3JG952S+op9g8TmkPupU7F73tPL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4hAbAqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA66C4CEE9;
+	Tue, 20 May 2025 14:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749494;
-	bh=Uyjsjr2zu2LrV9Fl1eOR/Sux/ESPFCYfexwEd61eafk=;
+	s=korg; t=1747749699;
+	bh=SW1SidAaStpsAWn4FK0WKBwjr8qgsNJh1rm9Gjp7KPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ji19dwcv99Fya/PZ62+GP2WQLlWOzPhjTNX9TS5tj3t1PIWcIp9uZYGPVFKrVurxj
-	 jKnZ8jsoinGUa//ekQk/LIXrlL6HmNnYAVz+TW4QIS0rTr8yPPbKAHmg1AMEYWpjR/
-	 qXIEXUR/60byLVIQQ8G0Zr4ljEw0Jfpkr+ShAMg8=
+	b=g4hAbAqJ6bnFot1JBslNPcvbb0EeYh55Sy76Wp/lZOUhZQ+mGrqzdzREMP66KXOWB
+	 H4rSId/IYaeNQCUJSRUZbQVATI7G2y34ccWOqH4aGJF4wmGGyfUqQrLrkI0LH78PX7
+	 OM4vLgUP8SUsQ/oEw7k0hcMO9hvXXUdhrglFigNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Daniel Wagner <wagi@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 32/97] nvme-pci: acquire cq_poll_lock in nvme_poll_irqdisable
+Subject: [PATCH 6.6 032/117] HID: uclogic: Add NULL check in uclogic_input_configured()
 Date: Tue, 20 May 2025 15:49:57 +0200
-Message-ID: <20250520125801.916683627@linuxfoundation.org>
+Message-ID: <20250520125805.258465020@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 3d8932133dcecbd9bef1559533c1089601006f45 ]
+[ Upstream commit bd07f751208ba190f9b0db5e5b7f35d5bb4a8a1e ]
 
-We need to lock this queue for that condition because the timeout work
-executes per-namespace and can poll the poll CQ.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+uclogic_input_configured() does not check for this case, which results
+in a NULL pointer dereference.
 
-Reported-by: Hannes Reinecke <hare@kernel.org>
-Closes: https://lore.kernel.org/all/20240902130728.1999-1-hare@kernel.org/
-Fixes: a0fa9647a54e ("NVMe: add blk polling support")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Add NULL check after devm_kasprintf() to prevent this issue.
+
+Fixes: dd613a4e45f8 ("HID: uclogic: Correct devm device reference for hidinput input_dev name")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-uclogic-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 553e6bb461b39..49a3cb8f1f105 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1154,7 +1154,9 @@ static void nvme_poll_irqdisable(struct nvme_queue *nvmeq)
- 	WARN_ON_ONCE(test_bit(NVMEQ_POLLED, &nvmeq->flags));
+diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
+index ad74cbc9a0aa5..45de01dea4b1c 100644
+--- a/drivers/hid/hid-uclogic-core.c
++++ b/drivers/hid/hid-uclogic-core.c
+@@ -142,11 +142,12 @@ static int uclogic_input_configured(struct hid_device *hdev,
+ 			suffix = "System Control";
+ 			break;
+ 		}
+-	}
+-
+-	if (suffix)
++	} else {
+ 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
+ 						 "%s %s", hdev->name, suffix);
++		if (!hi->input->name)
++			return -ENOMEM;
++	}
  
- 	disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
-+	spin_lock(&nvmeq->cq_poll_lock);
- 	nvme_poll_cq(nvmeq, NULL);
-+	spin_unlock(&nvmeq->cq_poll_lock);
- 	enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
+ 	return 0;
  }
- 
 -- 
 2.39.5
 
