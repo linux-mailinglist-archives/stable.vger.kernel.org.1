@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-145362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC7CABDB42
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A06DABDDB3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33C151BA77B6
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:06:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59F9B4E7402
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA2224677A;
-	Tue, 20 May 2025 14:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A83A2512E5;
+	Tue, 20 May 2025 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xjtk6RZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6WlYYHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB66F242907;
-	Tue, 20 May 2025 14:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADEF251785;
+	Tue, 20 May 2025 14:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749955; cv=none; b=a0B6nwRZtaRPis9veVZ8KJUJpA+neVe9Fm3yZeanBYDYdMxYe9ei+9SflZjf07ItDWq/+/qJ3YYTCqtz2xat9gMPBjzI5DrmoMxCM+GPT62OHpqeQBq+MXF/wFvka650iW0zudldrCsQAHVTnGCJRv3XGjkTpvtT8Z5cCw7FsuU=
+	t=1747750748; cv=none; b=dk2vaKEk3RGGcFR4rf+bOlLaXJbPiJfoSPZm/BytP2g6wmKk4Qu3TxHHLNpnsCrEnkF5lTUSpu1F7AStPjGyHF6PmpNAJgp8jGIKiyrXoH2sxO7kW3x6yYGclRkI4nKEqDtvmR+RlaMi1K37W+ra5dvztnavEV7PNs1HHg4ZqNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749955; c=relaxed/simple;
-	bh=bgQ0W7L9igsBdnBQXOr40EiX4HMfDhjJN2NK1SypqtA=;
+	s=arc-20240116; t=1747750748; c=relaxed/simple;
+	bh=5wvTn+AnzkhD+Tn/YJi0LQlMWK3OaXRQzWL2ZzPi1iI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IgWW0KaPokGGnd3kqSf2SHm9HI5DBOIxSVq2QOAub2NB0OgAe8OV1bH6qbZ8rtcauUwVL5tIHWXI9+9bdHbfecnpsS5ZVCqJQh0ndNRE5u9L3QiiYkEYmwUbJcYWgpgWxvIsnSrbR3PNP7ehR0nrB6NlCR5mwOFaz4Hzdei81fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xjtk6RZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A34C4CEE9;
-	Tue, 20 May 2025 14:05:55 +0000 (UTC)
+	 MIME-Version; b=B6qWQZenQ0uON99+fYGrjK5V91wrL9Uu1ywLsfSgDjwt02FQomQJcKqhTmq5U/uofP/AYtiCUjq/gLMlqxNziZhd7w/3Xbh/nklWfzFdn+mA4AqrFg/P9EU+NNEuluodvkOOQ/h1bsOldBzebMuR4ZaOdqrJGKEm+776ERObVNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6WlYYHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AD8C4CEEA;
+	Tue, 20 May 2025 14:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749955;
-	bh=bgQ0W7L9igsBdnBQXOr40EiX4HMfDhjJN2NK1SypqtA=;
+	s=korg; t=1747750748;
+	bh=5wvTn+AnzkhD+Tn/YJi0LQlMWK3OaXRQzWL2ZzPi1iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xjtk6RZZJxrOiPzw0zHChFuWMjMYrGG3wm0kjNKlQLeRj8vagF8zt/2f2AxPOKFy
-	 j3br7ros2bYO2/iIbAmt5tFB12XmtEmNq/vwaVJR7gzbBqvImxBuToj68PCbNPg3as
-	 clyeh+O0YUHQr+zAyW5/VCLs6saCZr77XhDZbS/o=
+	b=U6WlYYHkE4KaTZHaEs0VpkJQhAtw1Bw9qv7y1PtwkV7vpdlBCzHtgpuIa/R5jFqIr
+	 PFn1Oo45ywgPI7W4Xj/YpAetYVabMbeOeiI9KPZznVzBeIoHceS/ElLZ5txJyV0FVo
+	 Dh32bqxpofWfCVHrur7lRjvk+t5ngkCcRGKSfsSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH 6.6 112/117] memblock: Accept allocated memory before use in memblock_double_array()
+	Wayne Chang <waynec@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.14 107/145] phy: tegra: xusb: Use a bitmask for UTMI pad power state tracking
 Date: Tue, 20 May 2025 15:51:17 +0200
-Message-ID: <20250520125808.444075823@linuxfoundation.org>
+Message-ID: <20250520125814.747437391@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-commit da8bf5daa5e55a6af2b285ecda460d6454712ff4 upstream.
+commit b47158fb42959c417ff2662075c0d46fb783d5d1 upstream.
 
-When increasing the array size in memblock_double_array() and the slab
-is not yet available, a call to memblock_find_in_range() is used to
-reserve/allocate memory. However, the range returned may not have been
-accepted, which can result in a crash when booting an SNP guest:
+The current implementation uses bias_pad_enable as a reference count to
+manage the shared bias pad for all UTMI PHYs. However, during system
+suspension with connected USB devices, multiple power-down requests for
+the UTMI pad result in a mismatch in the reference count, which in turn
+produces warnings such as:
 
-  RIP: 0010:memcpy_orig+0x68/0x130
-  Code: ...
-  RSP: 0000:ffffffff9cc03ce8 EFLAGS: 00010006
-  RAX: ff11001ff83e5000 RBX: 0000000000000000 RCX: fffffffffffff000
-  RDX: 0000000000000bc0 RSI: ffffffff9dba8860 RDI: ff11001ff83e5c00
-  RBP: 0000000000002000 R08: 0000000000000000 R09: 0000000000002000
-  R10: 000000207fffe000 R11: 0000040000000000 R12: ffffffff9d06ef78
-  R13: ff11001ff83e5000 R14: ffffffff9dba7c60 R15: 0000000000000c00
-  memblock_double_array+0xff/0x310
-  memblock_add_range+0x1fb/0x2f0
-  memblock_reserve+0x4f/0xa0
-  memblock_alloc_range_nid+0xac/0x130
-  memblock_alloc_internal+0x53/0xc0
-  memblock_alloc_try_nid+0x3d/0xa0
-  swiotlb_init_remap+0x149/0x2f0
-  mem_init+0xb/0xb0
-  mm_core_init+0x8f/0x350
-  start_kernel+0x17e/0x5d0
-  x86_64_start_reservations+0x14/0x30
-  x86_64_start_kernel+0x92/0xa0
-  secondary_startup_64_no_verify+0x194/0x19b
+[  237.762967] WARNING: CPU: 10 PID: 1618 at tegra186_utmi_pad_power_down+0x160/0x170
+[  237.763103] Call trace:
+[  237.763104]  tegra186_utmi_pad_power_down+0x160/0x170
+[  237.763107]  tegra186_utmi_phy_power_off+0x10/0x30
+[  237.763110]  phy_power_off+0x48/0x100
+[  237.763113]  tegra_xusb_enter_elpg+0x204/0x500
+[  237.763119]  tegra_xusb_suspend+0x48/0x140
+[  237.763122]  platform_pm_suspend+0x2c/0xb0
+[  237.763125]  dpm_run_callback.isra.0+0x20/0xa0
+[  237.763127]  __device_suspend+0x118/0x330
+[  237.763129]  dpm_suspend+0x10c/0x1f0
+[  237.763130]  dpm_suspend_start+0x88/0xb0
+[  237.763132]  suspend_devices_and_enter+0x120/0x500
+[  237.763135]  pm_suspend+0x1ec/0x270
 
-Mitigate this by calling accept_memory() on the memory range returned
-before the slab is available.
+The root cause was traced back to the dynamic power-down changes
+introduced in commit a30951d31b25 ("xhci: tegra: USB2 pad power controls"),
+where the UTMI pad was being powered down without verifying its current
+state. This unbalanced behavior led to discrepancies in the reference
+count.
 
-Prior to v6.12, the accept_memory() interface used a 'start' and 'end'
-parameter instead of 'start' and 'size', therefore the accept_memory()
-call must be adjusted to specify 'start + size' for 'end' when applying
-to kernels prior to v6.12.
+To rectify this issue, this patch replaces the single reference counter
+with a bitmask, renamed to utmi_pad_enabled. Each bit in the mask
+corresponds to one of the four USB2 PHYs, allowing us to track each pad's
+enablement status individually.
 
-Cc: stable@vger.kernel.org # see patch description, needs adjustments for <= 6.11
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/da1ac73bf4ded761e21b4e4bb5178382a580cd73.1746725050.git.thomas.lendacky@amd.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+With this change:
+  - The bias pad is powered on only when the mask is clear.
+  - Each UTMI pad is powered on or down based on its corresponding bit
+    in the mask, preventing redundant operations.
+  - The overall power state of the shared bias pad is maintained
+    correctly during suspend/resume cycles.
+
+The mutex used to prevent race conditions during UTMI pad enable/disable
+operations has been moved from the tegra186_utmi_bias_pad_power_on/off
+functions to the parent functions tegra186_utmi_pad_power_on/down. This
+change ensures that there are no race conditions when updating the bitmask.
+
+Cc: stable@vger.kernel.org
+Fixes: a30951d31b25 ("xhci: tegra: USB2 pad power controls")
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20250408030905.990474-1-waynec@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memblock.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/phy/tegra/xusb-tegra186.c |   44 +++++++++++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
 
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -460,7 +460,14 @@ static int __init_memblock memblock_doub
- 				min(new_area_start, memblock.current_limit),
- 				new_alloc_size, PAGE_SIZE);
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -237,6 +237,8 @@
+ #define   DATA0_VAL_PD				BIT(1)
+ #define   USE_XUSB_AO				BIT(4)
  
--		new_array = addr ? __va(addr) : NULL;
-+		if (addr) {
-+			/* The memory may not have been accepted, yet. */
-+			accept_memory(addr, addr + new_alloc_size);
++#define TEGRA_UTMI_PAD_MAX 4
 +
-+			new_array = __va(addr);
-+		} else {
-+			new_array = NULL;
-+		}
+ #define TEGRA186_LANE(_name, _offset, _shift, _mask, _type)		\
+ 	{								\
+ 		.name = _name,						\
+@@ -269,7 +271,7 @@ struct tegra186_xusb_padctl {
+ 
+ 	/* UTMI bias and tracking */
+ 	struct clk *usb2_trk_clk;
+-	unsigned int bias_pad_enable;
++	DECLARE_BITMAP(utmi_pad_enabled, TEGRA_UTMI_PAD_MAX);
+ 
+ 	/* padctl context */
+ 	struct tegra186_xusb_padctl_context context;
+@@ -603,12 +605,8 @@ static void tegra186_utmi_bias_pad_power
+ 	u32 value;
+ 	int err;
+ 
+-	mutex_lock(&padctl->lock);
+-
+-	if (priv->bias_pad_enable++ > 0) {
+-		mutex_unlock(&padctl->lock);
++	if (!bitmap_empty(priv->utmi_pad_enabled, TEGRA_UTMI_PAD_MAX))
+ 		return;
+-	}
+ 
+ 	err = clk_prepare_enable(priv->usb2_trk_clk);
+ 	if (err < 0)
+@@ -667,17 +665,8 @@ static void tegra186_utmi_bias_pad_power
+ 	struct tegra186_xusb_padctl *priv = to_tegra186_xusb_padctl(padctl);
+ 	u32 value;
+ 
+-	mutex_lock(&padctl->lock);
+-
+-	if (WARN_ON(priv->bias_pad_enable == 0)) {
+-		mutex_unlock(&padctl->lock);
+-		return;
+-	}
+-
+-	if (--priv->bias_pad_enable > 0) {
+-		mutex_unlock(&padctl->lock);
++	if (!bitmap_empty(priv->utmi_pad_enabled, TEGRA_UTMI_PAD_MAX))
+ 		return;
+-	}
+ 
+ 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_BIAS_PAD_CTL1);
+ 	value |= USB2_PD_TRK;
+@@ -690,13 +679,13 @@ static void tegra186_utmi_bias_pad_power
+ 		clk_disable_unprepare(priv->usb2_trk_clk);
  	}
- 	if (!addr) {
- 		pr_err("memblock: Failed to double %s array from %ld to %ld entries !\n",
+ 
+-	mutex_unlock(&padctl->lock);
+ }
+ 
+ static void tegra186_utmi_pad_power_on(struct phy *phy)
+ {
+ 	struct tegra_xusb_lane *lane = phy_get_drvdata(phy);
+ 	struct tegra_xusb_padctl *padctl = lane->pad->padctl;
++	struct tegra186_xusb_padctl *priv = to_tegra186_xusb_padctl(padctl);
+ 	struct tegra_xusb_usb2_port *port;
+ 	struct device *dev = padctl->dev;
+ 	unsigned int index = lane->index;
+@@ -705,9 +694,16 @@ static void tegra186_utmi_pad_power_on(s
+ 	if (!phy)
+ 		return;
+ 
++	mutex_lock(&padctl->lock);
++	if (test_bit(index, priv->utmi_pad_enabled)) {
++		mutex_unlock(&padctl->lock);
++		return;
++	}
++
+ 	port = tegra_xusb_find_usb2_port(padctl, index);
+ 	if (!port) {
+ 		dev_err(dev, "no port found for USB2 lane %u\n", index);
++		mutex_unlock(&padctl->lock);
+ 		return;
+ 	}
+ 
+@@ -724,18 +720,28 @@ static void tegra186_utmi_pad_power_on(s
+ 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
+ 	value &= ~USB2_OTG_PD_DR;
+ 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
++
++	set_bit(index, priv->utmi_pad_enabled);
++	mutex_unlock(&padctl->lock);
+ }
+ 
+ static void tegra186_utmi_pad_power_down(struct phy *phy)
+ {
+ 	struct tegra_xusb_lane *lane = phy_get_drvdata(phy);
+ 	struct tegra_xusb_padctl *padctl = lane->pad->padctl;
++	struct tegra186_xusb_padctl *priv = to_tegra186_xusb_padctl(padctl);
+ 	unsigned int index = lane->index;
+ 	u32 value;
+ 
+ 	if (!phy)
+ 		return;
+ 
++	mutex_lock(&padctl->lock);
++	if (!test_bit(index, priv->utmi_pad_enabled)) {
++		mutex_unlock(&padctl->lock);
++		return;
++	}
++
+ 	dev_dbg(padctl->dev, "power down UTMI pad %u\n", index);
+ 
+ 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_OTG_PADX_CTL0(index));
+@@ -748,7 +754,11 @@ static void tegra186_utmi_pad_power_down
+ 
+ 	udelay(2);
+ 
++	clear_bit(index, priv->utmi_pad_enabled);
++
+ 	tegra186_utmi_bias_pad_power_off(padctl);
++
++	mutex_unlock(&padctl->lock);
+ }
+ 
+ static int tegra186_xusb_padctl_vbus_override(struct tegra_xusb_padctl *padctl,
 
 
 
