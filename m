@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-145425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D319ABDB78
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F62ABDB9F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 864917AB9E9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:09:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCA081BC0787
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3560224EABF;
-	Tue, 20 May 2025 14:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB8F2459FE;
+	Tue, 20 May 2025 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLms76k7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOabGrFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42E324EAA3;
-	Tue, 20 May 2025 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9F5242D7C;
+	Tue, 20 May 2025 14:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750138; cv=none; b=uqdQjHanQPHImk8P2iOaI5ez+lWEar9G3I5YJL9YRM/u/W0ont4tfL20EbXTiW9afZq2kUwjL8OupjDDMcC+kb3g2AKo+pwv+WO+lPNxid3EADNgCXfi8iLG/Y0lx3KnkdlVSXaSs+MIxQQNlAQI0XYf4hay3W05aHTJtTvpL94=
+	t=1747750144; cv=none; b=vBMuzS193NXnKvg6pJ2GjjoWYoAH/CO+xbFv7gBRIPotPyFSepRRyIzEHaHPgtKJWycqU66YeWy02ydZaZVRN6nmSEgQIdXM4Z1crDq30FBSlT8lSSWxo4J+MUi4rGmCCVAbj2333YZDV0fYcqj8luj6MsrM11alRg6s4OOsT44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750138; c=relaxed/simple;
-	bh=03KcDSG0uCNuqAQPwuV830xyyHTA+CESuKdO17ECIsI=;
+	s=arc-20240116; t=1747750144; c=relaxed/simple;
+	bh=EFTkiE/sn8hvqFqKuf32t1sHkPSmgr2MkHpg2zn+Gi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFJJONEJvPIlKrEQ2YxGeqGANnkUwK9Oi+iv+TllamGCvn4zFIOn/peVoiXOTS1Cq+H+6RT9GOmMncfI92w+H43TJRsgBkwmSvgmUY9wLNjxcHM7TyJIDkGgmMOGnQLQZwGymzZdKxY+t8O+Ife8AP0fFnUDPTHDJvzRCx7kpRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLms76k7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6234AC4CEE9;
-	Tue, 20 May 2025 14:08:57 +0000 (UTC)
+	 MIME-Version; b=cQb2W1KOtaRZi81VHY+QNs1d1Lqf3xDs369RCVep3WXegmcvnmDZ+hhTlfvM5+HCk3r+HihZK6x/rjMpUXDXy9bgswOmRCP9xRYAlZS8yQ2ZMvSQOfjfY2o8LIhlppex1S3XlO5l3v6YMu6eJyTFsIkTHkjl1aAhMtw8TlCQ/xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOabGrFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765A6C4CEE9;
+	Tue, 20 May 2025 14:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750137;
-	bh=03KcDSG0uCNuqAQPwuV830xyyHTA+CESuKdO17ECIsI=;
+	s=korg; t=1747750143;
+	bh=EFTkiE/sn8hvqFqKuf32t1sHkPSmgr2MkHpg2zn+Gi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLms76k75cPyLXSNQ5hKnUPAHSoAeWinkflApnca+ezYHX3SuDZcCD+NVuXXNxamr
-	 T8Z/EO8Yct49MTsP8mqKd24jQ1sV/2az/mNezDTih8QoSSAa/KgB/YV7Wvys2pPlaH
-	 THrfhx6Ic0Ye+CKYgFRyWIOKfOZ6flY7mJ4bc4OY=
+	b=kOabGrFVQ/skOYldGupbwftpITJB3gPWfsmlXisiwqLvmJ98oO6zJf8t/cMU8ER8F
+	 tw5HvMgKR9UlSjZgQ+CCYk0ZZOJmWY+j6lUkeIpihBxeQPuRTWK7no7Qza1wvseu48
+	 aFULOBiswe1kSXXMjh34Sd5yGxC2b8yaUuEDsqWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/143] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
-Date: Tue, 20 May 2025 15:50:10 +0200
-Message-ID: <20250520125812.210464234@linuxfoundation.org>
+Subject: [PATCH 6.12 056/143] regulator: max20086: fix invalid memory access
+Date: Tue, 20 May 2025 15:50:11 +0200
+Message-ID: <20250520125812.258921224@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
 References: <20250520125810.036375422@linuxfoundation.org>
@@ -67,43 +66,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-[ Upstream commit 9d8a99c5a7c7f4f7eca2c168a4ec254409670035 ]
+[ Upstream commit 6b0cd72757c69bc2d45da42b41023e288d02e772 ]
 
-In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
-allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
-not freed. Fix that by jumping to the error path that frees them, by
-calling qlcnic_free_mbx_args(). This was found using static analysis.
+max20086_parse_regulators_dt() calls of_regulator_match() using an
+array of struct of_regulator_match allocated on the stack for the
+matches argument.
 
-Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250512044829.36400-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+of_regulator_match() calls devm_of_regulator_put_matches(), which calls
+devres_alloc() to allocate a struct devm_of_regulator_matches which will
+be de-allocated using devm_of_regulator_put_matches().
+
+struct devm_of_regulator_matches is populated with the stack allocated
+matches array.
+
+If the device fails to probe, devm_of_regulator_put_matches() will be
+called and will try to call of_node_put() on that stack pointer,
+generating the following dmesg entries:
+
+max20086 6-0028: Failed to read DEVICE_ID reg: -121
+kobject: '\xc0$\xa5\x03' (000000002cebcb7a): is not initialized, yet
+kobject_put() is being called.
+
+Followed by a stack trace matching the call flow described above.
+
+Switch to allocating the matches array using devm_kcalloc() to
+avoid accessing the stack pointer long after it's out of scope.
+
+This also has the advantage of allowing multiple max20086 to probe
+without overriding the data stored inside the global of_regulator_match.
+
+Fixes: bfff546aae50 ("regulator: Add MAX20086-MAX20089 driver")
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Link: https://patch.msgid.link/20250508064947.2567255-1-demonsingur@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/regulator/max20086-regulator.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-index 28d24d59efb84..d57b976b90409 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -1484,8 +1484,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
+diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
+index 59eb23d467ec0..198d45f8e8849 100644
+--- a/drivers/regulator/max20086-regulator.c
++++ b/drivers/regulator/max20086-regulator.c
+@@ -132,7 +132,7 @@ static int max20086_regulators_register(struct max20086 *chip)
+ 
+ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
+ {
+-	struct of_regulator_match matches[MAX20086_MAX_REGULATORS] = { };
++	struct of_regulator_match *matches;
+ 	struct device_node *node;
+ 	unsigned int i;
+ 	int ret;
+@@ -143,6 +143,11 @@ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
+ 		return -ENODEV;
  	}
  
- 	cmd_op = (cmd.rsp.arg[0] & 0xff);
--	if (cmd.rsp.arg[0] >> 25 == 2)
--		return 2;
-+	if (cmd.rsp.arg[0] >> 25 == 2) {
-+		ret = 2;
-+		goto out;
-+	}
++	matches = devm_kcalloc(chip->dev, chip->info->num_outputs,
++			       sizeof(*matches), GFP_KERNEL);
++	if (!matches)
++		return -ENOMEM;
 +
- 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
- 		set_bit(QLC_BC_VF_STATE, &vf->state);
- 	else
+ 	for (i = 0; i < chip->info->num_outputs; ++i)
+ 		matches[i].name = max20086_output_names[i];
+ 
 -- 
 2.39.5
 
