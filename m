@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E8EABDC7D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D10ABDC92
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F5C1BA2F15
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A571E4E5120
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B973924887D;
-	Tue, 20 May 2025 14:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9368E24C06A;
+	Tue, 20 May 2025 14:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0l3MLi+5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebO6q5OO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CFA244663;
-	Tue, 20 May 2025 14:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BF32512CD;
+	Tue, 20 May 2025 14:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750699; cv=none; b=oOt6Ksykwo4pt1mIMJC5pD8Tw/K49MoKZ7qflj01Bf+t3njvSsc15axqw44aZGzHD/2r+EysoHhNAppIIMCugB1iYMZrj+24z2GX6pL51sRDgrR8+8zyCEid6E+bQlOKWkvaMtnYT97oT0BZeFr55EWvObiG324jNJCz1+J6VOU=
+	t=1747750400; cv=none; b=EHuuCjy1Sl64fQxJ8ReIollFqICy2K4DQQA78SWnHxdMPDPdTb8ZjH6E4ZSM03YDZdXFoNlG4IsI/RRWQKetmLKADjjOZ04EuD/KLtjRcjfx7uYgrIH5fw7RV/Uiigs6xA7ev8PsRYMcaiL2hF7KjgNyS0zLPuWL8pd3NPAY/4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750699; c=relaxed/simple;
-	bh=UWfpgd4nF9XM0/9OP7A3eCngxlNvI87n0MxjFwN24vc=;
+	s=arc-20240116; t=1747750400; c=relaxed/simple;
+	bh=DAXPy2cnaxCbxc9gvE9gRmJRtQ5V2UaMkYgFlBarfRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsE0lMbpHOF6OD+POC49SCdtyssZnuRjHU3hDXtG1XM1C3rDCyG9TRlycGcIU7XdzDXc8oVzC1ViZJ6t1wQ7vV4XVoXLhLb16l/hsMWot7QPn1AQUb50zp5kJEwwX2iX0KrdJ9UaYTr1ucUtKKvmEKSbo15ZD6nPmn3MXlxDD9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0l3MLi+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF20BC4CEE9;
-	Tue, 20 May 2025 14:18:18 +0000 (UTC)
+	 MIME-Version; b=tAgH81TGi5jVnSwq6GtO3afikEqhF8uSHPW1Q9YZi+d736m8RAySKTlRO6koONUyo/jWYZTfRuZs68aSs/oN1wXw1D09YqgUnnTRrd0rlZom7Ug9nm5mL8crW1GDWINlc7kPGMtXV697f6e9dU3AYLZ8ePcUcDbpCVTNTyeEUTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebO6q5OO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6675AC4CEE9;
+	Tue, 20 May 2025 14:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750699;
-	bh=UWfpgd4nF9XM0/9OP7A3eCngxlNvI87n0MxjFwN24vc=;
+	s=korg; t=1747750396;
+	bh=DAXPy2cnaxCbxc9gvE9gRmJRtQ5V2UaMkYgFlBarfRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0l3MLi+5x+BjpmlW+5ojJXXXP4afc7K2ufkTlJ/ZfjC93PcWpq3pFyKupiBHmD2VU
-	 zG7Cre3ABSBWl58q+rIZ8eX2nJKiu+Z7OW7oXUeJMhZqRInp44U0nP6M9btxanYf28
-	 6KF/EdBO4cY8/QMq5sd+88IFIEnwSCBKEETdtUgk=
+	b=ebO6q5OOzV0LpwMdxM/NicoNbKaOzLoV7jS7iWi7x6TxTHanZUFBoCBvWvtWr0gx8
+	 X4EQOW9Wo/qDZvhzBOkTT77e3PjB0x9/qHd1+P7Nxuq5pOeBjLgklc8todiP0WFPhP
+	 FTKHKTsBlu8m5CrgAdJN7muRP5CjXUk6P3Yb/Qqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Edwards <CFSworks@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	stable@kernel.org
-Subject: [PATCH 6.14 093/145] arm64: dts: rockchip: Allow Turing RK1 cooling fan to spin down
-Date: Tue, 20 May 2025 15:51:03 +0200
-Message-ID: <20250520125814.207216404@linuxfoundation.org>
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 109/143] phy: renesas: rcar-gen3-usb2: Set timing registers only once
+Date: Tue, 20 May 2025 15:51:04 +0200
+Message-ID: <20250520125814.325642613@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Edwards <cfsworks@gmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit fdc7bd909a5f38793468e9cf9b6a9063d96c6234 upstream.
+commit 86e70849f4b2b4597ac9f7c7931f2a363774be25 upstream.
 
-The RK3588 thermal sensor driver only receives interrupts when a
-higher-temperature threshold is crossed; it cannot notify when the
-sensor cools back off. As a result, the driver must poll for temperature
-changes to detect when the conditions for a thermal trip are no longer
-met. However, it only does so if the DT enables polling.
+phy-rcar-gen3-usb2 driver exports 4 PHYs. The timing registers are common
+to all PHYs. There is no need to set them every time a PHY is initialized.
+Set timing register only when the 1st PHY is initialized.
 
-Before this patch, the RK1 DT did not enable polling, causing the fan to
-continue running at the speed corresponding to the highest temperature
-reached.
-
-Follow suit with similar RK3588 boards by setting a polling-delay of
-1000ms, enabling the driver to detect when the sensor cools back off,
-allowing the fan speed to decrease as appropriate.
-
-Fixes: 7c8ec5e6b9d6 ("arm64: dts: rockchip: Enable automatic fan control on Turing RK1")
-Cc: stable@kernel.org # v6.13+
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250329165017.3885-1-CFSworks@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: f3b5a8d9b50d ("phy: rcar-gen3-usb2: Add R-Car Gen3 USB2 PHY driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-6-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi
-index 711ac4f2c7cb..60ad272982ad 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi
-@@ -214,6 +214,8 @@ rgmii_phy: ethernet-phy@1 {
- };
- 
- &package_thermal {
-+	polling-delay = <1000>;
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -463,8 +463,11 @@ static int rcar_gen3_phy_usb2_init(struc
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+ 	val |= USB2_INT_ENABLE_UCOM_INTEN | rphy->int_enable_bits;
+ 	writel(val, usb2_base + USB2_INT_ENABLE);
+-	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
+-	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
 +
- 	trips {
- 		package_active1: trip-active1 {
- 			temperature = <45000>;
--- 
-2.49.0
-
++	if (!rcar_gen3_is_any_rphy_initialized(channel)) {
++		writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
++		writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
++	}
+ 
+ 	/* Initialize otg part (only if we initialize a PHY with IRQs). */
+ 	if (rphy->int_enable_bits)
 
 
 
