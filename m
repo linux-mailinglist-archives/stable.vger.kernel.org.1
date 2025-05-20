@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57FEABDB02
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:04:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40C5ABDA69
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFD9C188717A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81DBA7B225B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63F5242913;
-	Tue, 20 May 2025 14:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B908C243378;
+	Tue, 20 May 2025 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6I/Hd2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+03HomY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03B71D8E07;
-	Tue, 20 May 2025 14:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EFE241103;
+	Tue, 20 May 2025 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749767; cv=none; b=rYUV1ZsBs/Bodi1/XoW4o5nBW389ui1EIJiP3UcisozD9+s1qacqhz4oQOjX2/hZHMPAVqmcgkOCG9xIuv4GNAu9xUgmUr85uePVvnx9Y+2ZBvBr+igpit4dKX9okpgmeAuxJCkEzfXJgLDxCCJg+2I3up1+A09zd6uvKPPfE3s=
+	t=1747749372; cv=none; b=cZuY7CL0qnHR+mfGChK4ytEIq7f8vtIs56zneEGffLouose1Ri9NJStxoC09H0IsnEuwOUzTlSyRQNSdmZcMezasKMNrzTAmmT0snSB7luB4qLO1Ow7qjFXnjKJbOXIocVF8Ld4BzA4kmUAdQK7isiBdhXIMPj4cGh4geceK1NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749767; c=relaxed/simple;
-	bh=pLueAJD4lwAElQ2tJ5kzXQWE7Al6HUFu9TsplQmlEKQ=;
+	s=arc-20240116; t=1747749372; c=relaxed/simple;
+	bh=rpLYCW5Q7iKPEa/d9kkuIDbCyEz5Eznv0E/XFCkdVPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gsg9EvHEz6bhfZ3LSJ6OvZnA9u7MaAbmikiRpR+cZOsVYhRc/o8jOlOWDs2R20gNqCURJKy7Z5enz4Mk7GOafJyw60ibrJLR3nkli2uT+C8q/R/deDs3LduyLNpZMYqm0YnxfmUCvFqKVUeFfEFtBH2IWUMps0N9C0EpxSdT0mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6I/Hd2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F55C4CEE9;
-	Tue, 20 May 2025 14:02:46 +0000 (UTC)
+	 MIME-Version; b=NLjswP9SCEYcJjELVE5yr2TDqP4tJU6m5/6oumYkT1xhYGl7JB2gNLaGIj+MhH4B8i/6kbBQeu56K3uiXzyuKfSBhuiR8zl2IReRDSg2d4zLBA40c0Mmf8JBj3XPwsVrmsrWbD+wMBefnitnoioVFNhNtyP4P0Ss+LETR8bqzV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+03HomY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA92DC4CEE9;
+	Tue, 20 May 2025 13:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749767;
-	bh=pLueAJD4lwAElQ2tJ5kzXQWE7Al6HUFu9TsplQmlEKQ=;
+	s=korg; t=1747749372;
+	bh=rpLYCW5Q7iKPEa/d9kkuIDbCyEz5Eznv0E/XFCkdVPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6I/Hd2Kse4JBcJDSz/Wwey8KPp08W/cveI3F95LL2eptqoIiLkgY73gXww35tjMs
-	 6h7vHUStwANBp3p5OLhuHW+C8AJTaE9FLQhA0kj/4K+7uNt4zNoCVQePmRfT5xSGzH
-	 5fjG2bOatAnG57QYuIe182UEyw8jkUi/fmCer1mM=
+	b=R+03HomYhChfBoTkNfXcD2ehchRWkDOkrZnYMQPnMMMkeaQYU53TJws0qaW/YhyYH
+	 alTum9qY8/aUMaHW/FLy2tPTcWrndAtlxmqplOYjdCKnaLdHi5wiM4myun49xQnBp8
+	 fSRs0+57HnxhUl/e2D5Ewy5Nrb9B27vPdawj0q9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?J=C3=BCrg=20Billeter?= <j@bitron.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/117] drm/amd: Stop evicting resources on APUs in suspend
+Subject: [PATCH 6.1 23/97] HID: thrustmaster: fix memory leak in thrustmaster_interrupts()
 Date: Tue, 20 May 2025 15:49:48 +0200
-Message-ID: <20250520125804.901974781@linuxfoundation.org>
+Message-ID: <20250520125801.573867258@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,120 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit 226db36032c61d8717dfdd052adac351b22d3e83 ]
+[ Upstream commit 09d546303b370113323bfff456c4e8cff8756005 ]
 
-commit 5095d5418193 ("drm/amd: Evict resources during PM ops prepare()
-callback") intentionally moved the eviction of resources to earlier in
-the suspend process, but this introduced a subtle change that it occurs
-before adev->in_s0ix or adev->in_s3 are set. This meant that APUs
-actually started to evict resources at suspend time as well.
+In thrustmaster_interrupts(), the allocated send_buf is not
+freed if the usb_check_int_endpoints() check fails, leading
+to a memory leak.
 
-Explicitly set s0ix or s3 in the prepare() stage, and unset them if the
-prepare() stage failed.
+Fix this by ensuring send_buf is freed before returning in
+the error path.
 
-v2: squash in warning fix from Stephen Rothwell
-
-Reported-by: Jürg Billeter <j@bitron.ch>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3132#note_2271038
-Fixes: 5095d5418193 ("drm/amd: Evict resources during PM ops prepare() callback")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: d0ce1aaa8531 ("Revert "drm/amd: Stop evicting resources on APUs in suspend"")
+Fixes: 50420d7c79c3 ("HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check")
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h        |  2 ++
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c   | 15 +++++++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 11 +++++++++--
- 3 files changed, 26 insertions(+), 2 deletions(-)
+ drivers/hid/hid-thrustmaster.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-index d59e8536192ca..ed4ebc6d32695 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -1458,9 +1458,11 @@ static inline int amdgpu_acpi_smart_shift_update(struct drm_device *dev,
- #if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
- bool amdgpu_acpi_is_s3_active(struct amdgpu_device *adev);
- bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev);
-+void amdgpu_choose_low_power_state(struct amdgpu_device *adev);
- #else
- static inline bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev) { return false; }
- static inline bool amdgpu_acpi_is_s3_active(struct amdgpu_device *adev) { return false; }
-+static inline void amdgpu_choose_low_power_state(struct amdgpu_device *adev) { }
- #endif
+diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
+index 3b81468a1df29..0bf70664c35ee 100644
+--- a/drivers/hid/hid-thrustmaster.c
++++ b/drivers/hid/hid-thrustmaster.c
+@@ -174,6 +174,7 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
+ 	u8 ep_addr[2] = {b_ep, 0};
  
- #if defined(CONFIG_DRM_AMD_DC)
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-index 8b2f2b921d9de..8b8e273662b39 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -1525,4 +1525,19 @@ bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev)
- #endif /* CONFIG_AMD_PMC */
- }
- 
-+/**
-+ * amdgpu_choose_low_power_state
-+ *
-+ * @adev: amdgpu_device_pointer
-+ *
-+ * Choose the target low power state for the GPU
-+ */
-+void amdgpu_choose_low_power_state(struct amdgpu_device *adev)
-+{
-+	if (amdgpu_acpi_is_s0ix_active(adev))
-+		adev->in_s0ix = true;
-+	else if (amdgpu_acpi_is_s3_active(adev))
-+		adev->in_s3 = true;
-+}
-+
- #endif /* CONFIG_SUSPEND */
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 10f5a3d0f5916..b2056228e8699 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4121,13 +4121,15 @@ int amdgpu_device_prepare(struct drm_device *dev)
- 	struct amdgpu_device *adev = drm_to_adev(dev);
- 	int i, r;
- 
-+	amdgpu_choose_low_power_state(adev);
-+
- 	if (dev->switch_power_state == DRM_SWITCH_POWER_OFF)
- 		return 0;
- 
- 	/* Evict the majority of BOs before starting suspend sequence */
- 	r = amdgpu_device_evict_resources(adev);
- 	if (r)
--		return r;
-+		goto unprepare;
- 
- 	flush_delayed_work(&adev->gfx.gfx_off_delay_work);
- 
-@@ -4138,10 +4140,15 @@ int amdgpu_device_prepare(struct drm_device *dev)
- 			continue;
- 		r = adev->ip_blocks[i].version->funcs->prepare_suspend((void *)adev);
- 		if (r)
--			return r;
-+			goto unprepare;
+ 	if (!usb_check_int_endpoints(usbif, ep_addr)) {
++		kfree(send_buf);
+ 		hid_err(hdev, "Unexpected non-int endpoint\n");
+ 		return;
  	}
- 
- 	return 0;
-+
-+unprepare:
-+	adev->in_s0ix = adev->in_s3 = false;
-+
-+	return r;
- }
- 
- /**
 -- 
 2.39.5
 
