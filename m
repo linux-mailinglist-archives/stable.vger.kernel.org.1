@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-145601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE8DABDC66
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DB7ABDB66
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7171BA2B01
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F5EE16DC41
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A32824C061;
-	Tue, 20 May 2025 14:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A926243367;
+	Tue, 20 May 2025 14:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPtmH5tx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKnnkunm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172492475E3;
-	Tue, 20 May 2025 14:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A76222570;
+	Tue, 20 May 2025 14:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750655; cv=none; b=Gf5a3f9eSIcfVXKq4ufeOTV5nWjI3n4MEv9jeKy17UQaQwRpvr0FiEsabUAEzR/wCF33ueCeJ/nuuHKLk4ZgDkRPD/TkoZjP/KZXs5VzfYFr/i8avwztnv/ghZEZLBat61ZSPI891LuI5KKFlf2JZ/gQwviZSc0L/iqbyRQnYBU=
+	t=1747749867; cv=none; b=twJegSwtsbLVf9Pk7yJg9dIC7KUYx5kQTx1oEY3pvXILKAjMCw7GqunF6q9egGBn8DpJJUMGVNakp9kwEYs1mRV2R+sFMuZaJiAYZNuXzrFQ7biblhfhJCFv74teH2pziuRwh7bZ/hnj8eE82RJMsqrfP5YQsN2jWiTjP7Vg/5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750655; c=relaxed/simple;
-	bh=6Ni4qYguYLEi6BmvmX3X07eD3nQTqNptwfNMVxLFbtk=;
+	s=arc-20240116; t=1747749867; c=relaxed/simple;
+	bh=80u4pUaKRopfhW3HDmvpuKjQaCs2OI/fqcWQV3tvN84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJnnAIkf3YqVFZuFv0p0I8QjdeZsxnyHs9hAgIu23+m/ZXEKtD4RyFGfCGN1GolvZ9qw2K1DAcMz7axXjwgK+1H9IRa8u6BHW67ll7aEJxmrInbm1B+25coZywhn0IvSeagc8O5J62RGh4H5p38AmpzRkm2N6MP8z72g57KwgQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPtmH5tx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72904C4CEE9;
-	Tue, 20 May 2025 14:17:34 +0000 (UTC)
+	 MIME-Version; b=NnXrb4dE4xQch2H9aHGmNuzLX8fG871DW2uTd5to3Hrh3tAr9R2wHRX8K7misTzGELybI1P4T0SllPS8fnZr8UcEah0KMpWHzMTZBfSdA8S4pp3Vl+RLQBr7vvV6VGYVq3y7zsPsdcp8DrRqOZdpZaVa5lsBw9z0Mi+t2YByDHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKnnkunm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E7CC4CEE9;
+	Tue, 20 May 2025 14:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750654;
-	bh=6Ni4qYguYLEi6BmvmX3X07eD3nQTqNptwfNMVxLFbtk=;
+	s=korg; t=1747749866;
+	bh=80u4pUaKRopfhW3HDmvpuKjQaCs2OI/fqcWQV3tvN84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPtmH5txKzrpo/je6/61c/NtJ38dDY0pb22gcqS9u2MQnnqYNmvtzcA4xXVJPrZlJ
-	 HAVTAOOi0zzsnZEsqJ0ZiVbe2w/+XAuIs5RS4IL9ips+0ySSh2WBIWJRGc5l8A6LKR
-	 LmGNgT/2mq+ThMLPKhYd09f6XjaIsCf7K206WKjY=
+	b=OKnnkunm0bxLrpjVA1hwi6WFGpvbXdRklOo2+aCv+CWA+A3hExJ+Y8WyNxROyGUYq
+	 VDLcl/WS329Q/igbBMhcdJ3vgMsxjZxTAdBIOFentGAnl+A6XPqpiAg0G5xIophPvV
+	 ojuIui/LR0AXdRttajrSPyLrwUfi4AzegRrmmY7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 048/145] io_uring/fdinfo: grab ctx->uring_lock around io_uring_show_fdinfo()
-Date: Tue, 20 May 2025 15:50:18 +0200
-Message-ID: <20250520125812.460995541@linuxfoundation.org>
+Subject: [PATCH 6.6 054/117] octeontx2-af: Fix CGX Receive counters
+Date: Tue, 20 May 2025 15:50:19 +0200
+Message-ID: <20250520125806.134901652@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit d871198ee431d90f5308d53998c1ba1d5db5619a ]
+[ Upstream commit bf449f35e77fd44017abf991fac1f9ab7705bbe0 ]
 
-Not everything requires locking in there, which is why the 'has_lock'
-variable exists. But enough does that it's a bit unwieldy to manage.
-Wrap the whole thing in a ->uring_lock trylock, and just return
-with no output if we fail to grab it. The existing trylock() will
-already have greatly diminished utility/output for the failure case.
+Each CGX block supports 4 logical MACs (LMACS). Receive
+counters CGX_CMR_RX_STAT0-8 are per LMAC and CGX_CMR_RX_STAT9-12
+are per CGX.
 
-This fixes an issue with reading the SQE fields, if the ring is being
-actively resized at the same time.
+Due a bug in previous patch, stale Per CGX counters values observed.
 
-Reported-by: Jann Horn <jannh@google.com>
-Fixes: 79cfe9e59c2a ("io_uring/register: add IORING_REGISTER_RESIZE_RINGS")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 66208910e57a ("octeontx2-af: Support to retrieve CGX LMAC stats")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://patch.msgid.link/20250513071554.728922-1-hkelam@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/fdinfo.c | 48 ++++++++++++++++++++++++-----------------------
- 1 file changed, 25 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/io_uring/fdinfo.c b/io_uring/fdinfo.c
-index f60d0a9d505e2..336aec7ea8c29 100644
---- a/io_uring/fdinfo.c
-+++ b/io_uring/fdinfo.c
-@@ -86,13 +86,8 @@ static inline void napi_show_fdinfo(struct io_ring_ctx *ctx,
- }
- #endif
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 52792546fe00d..339be6950c039 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -707,6 +707,11 @@ int cgx_get_rx_stats(void *cgxd, int lmac_id, int idx, u64 *rx_stat)
  
--/*
-- * Caller holds a reference to the file already, we don't need to do
-- * anything else to get an extra reference.
-- */
--__cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
-+static void __io_uring_show_fdinfo(struct io_ring_ctx *ctx, struct seq_file *m)
- {
--	struct io_ring_ctx *ctx = file->private_data;
- 	struct io_overflow_cqe *ocqe;
- 	struct io_rings *r = ctx->rings;
- 	struct rusage sq_usage;
-@@ -106,7 +101,6 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 	unsigned int sq_entries, cq_entries;
- 	int sq_pid = -1, sq_cpu = -1;
- 	u64 sq_total_time = 0, sq_work_time = 0;
--	bool has_lock;
- 	unsigned int i;
- 
- 	if (ctx->flags & IORING_SETUP_CQE32)
-@@ -176,15 +170,7 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 		seq_printf(m, "\n");
- 	}
- 
--	/*
--	 * Avoid ABBA deadlock between the seq lock and the io_uring mutex,
--	 * since fdinfo case grabs it in the opposite direction of normal use
--	 * cases. If we fail to get the lock, we just don't iterate any
--	 * structures that could be going away outside the io_uring mutex.
--	 */
--	has_lock = mutex_trylock(&ctx->uring_lock);
--
--	if (has_lock && (ctx->flags & IORING_SETUP_SQPOLL)) {
-+	if (ctx->flags & IORING_SETUP_SQPOLL) {
- 		struct io_sq_data *sq = ctx->sq_data;
- 
- 		/*
-@@ -206,7 +192,7 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 	seq_printf(m, "SqTotalTime:\t%llu\n", sq_total_time);
- 	seq_printf(m, "SqWorkTime:\t%llu\n", sq_work_time);
- 	seq_printf(m, "UserFiles:\t%u\n", ctx->file_table.data.nr);
--	for (i = 0; has_lock && i < ctx->file_table.data.nr; i++) {
-+	for (i = 0; i < ctx->file_table.data.nr; i++) {
- 		struct file *f = NULL;
- 
- 		if (ctx->file_table.data.nodes[i])
-@@ -218,7 +204,7 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 		}
- 	}
- 	seq_printf(m, "UserBufs:\t%u\n", ctx->buf_table.nr);
--	for (i = 0; has_lock && i < ctx->buf_table.nr; i++) {
-+	for (i = 0; i < ctx->buf_table.nr; i++) {
- 		struct io_mapped_ubuf *buf = NULL;
- 
- 		if (ctx->buf_table.nodes[i])
-@@ -228,7 +214,7 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 		else
- 			seq_printf(m, "%5u: <none>\n", i);
- 	}
--	if (has_lock && !xa_empty(&ctx->personalities)) {
-+	if (!xa_empty(&ctx->personalities)) {
- 		unsigned long index;
- 		const struct cred *cred;
- 
-@@ -238,7 +224,7 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 	}
- 
- 	seq_puts(m, "PollList:\n");
--	for (i = 0; has_lock && i < (1U << ctx->cancel_table.hash_bits); i++) {
-+	for (i = 0; i < (1U << ctx->cancel_table.hash_bits); i++) {
- 		struct io_hash_bucket *hb = &ctx->cancel_table.hbs[i];
- 		struct io_kiocb *req;
- 
-@@ -247,9 +233,6 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 					task_work_pending(req->tctx->task));
- 	}
- 
--	if (has_lock)
--		mutex_unlock(&ctx->uring_lock);
--
- 	seq_puts(m, "CqOverflowList:\n");
- 	spin_lock(&ctx->completion_lock);
- 	list_for_each_entry(ocqe, &ctx->cq_overflow_list, list) {
-@@ -262,4 +245,23 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 	spin_unlock(&ctx->completion_lock);
- 	napi_show_fdinfo(ctx, m);
- }
+ 	if (!is_lmac_valid(cgx, lmac_id))
+ 		return -ENODEV;
 +
-+/*
-+ * Caller holds a reference to the file already, we don't need to do
-+ * anything else to get an extra reference.
-+ */
-+__cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
-+{
-+	struct io_ring_ctx *ctx = file->private_data;
++	/* pass lmac as 0 for CGX_CMR_RX_STAT9-12 */
++	if (idx >= CGX_RX_STAT_GLOBAL_INDEX)
++		lmac_id = 0;
 +
-+	/*
-+	 * Avoid ABBA deadlock between the seq lock and the io_uring mutex,
-+	 * since fdinfo case grabs it in the opposite direction of normal use
-+	 * cases.
-+	 */
-+	if (mutex_trylock(&ctx->uring_lock)) {
-+		__io_uring_show_fdinfo(ctx, m);
-+		mutex_unlock(&ctx->uring_lock);
-+	}
-+}
- #endif
+ 	*rx_stat =  cgx_read(cgx, lmac_id, CGXX_CMRX_RX_STAT0 + (idx * 8));
+ 	return 0;
+ }
 -- 
 2.39.5
 
