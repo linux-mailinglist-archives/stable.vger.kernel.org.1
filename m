@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-145188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEEEABDA8F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56BD2ABDA08
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A83898C0F51
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4B51B67B89
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0622024466C;
-	Tue, 20 May 2025 13:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC34242D8B;
+	Tue, 20 May 2025 13:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jnskb7kl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UA9z5NNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53DE244196;
-	Tue, 20 May 2025 13:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D682459C9;
+	Tue, 20 May 2025 13:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749425; cv=none; b=DUTeJjnYNq6vvuhPhOCmc9yXdD/4d5Tg71K9lYMEZuxoNThf0DBUeB3nV1D9RzxRByD2AXjOczVKUk08NAtG5Avsz9yb6FrT2h18VyXaJTMvfa0xUXvbDjBzNLfNQVE2crSjjZax0HP11fPlj+1rjZA6lOvzWLF8hCHNW9N0dB4=
+	t=1747749160; cv=none; b=YwzMRqA7C10f0eXvZlSRNK97YFvKepkyremuES8nI3Bikrr+WRUggUhWNBSf7ftBfnZP0z43szrwT4Eirg1zJSPZBEo+ezayyw5OygOBEYecA0wDQVQ0z1BZep8XEwyqIEWf4SNVAtLusCavn5bp7uhfZNl7/R/6YWNMAh0Bqao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749425; c=relaxed/simple;
-	bh=/XxP9NvPsXi3TyG3PZPVHdSGhf/2cY2bKB/6xgN54ww=;
+	s=arc-20240116; t=1747749160; c=relaxed/simple;
+	bh=+kujDUrDI0UQGawFYxm0yWwvcwHtRdkSOuf3ApHBpZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCp5eQCZjoiK182cbV2zli/2v/B40fOCopcgze+VWCy/v7KC+QTgr4k8ebHSwhxj0YLajormVkdRxZwVQq5mwzDHGdF/4QUxFAmbtiCtMdCmxbfst8gsnNyefWr8AVpyMKNHyzb3ID6hfUZ8/ckw5ZPpLWJwpIJ+CzrJlvTzchA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jnskb7kl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17F5C4CEE9;
-	Tue, 20 May 2025 13:57:04 +0000 (UTC)
+	 MIME-Version; b=HHVPdvNQr6/GOlAbOwZF0NSUbt5AicDnL9zaF+697/cY0z5GuQ5xDyFbJP4irpOtraDGec9QqK711Rrg5s3Qj5w4RvAZacxrdTC6NO4pqHLeQ6HCFaeKSbOBYyghmCwDQMc9/9Gl/Ga/8QreDwlRQgeYv9bLXiBb/7LfuBWWyS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UA9z5NNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83432C4CEE9;
+	Tue, 20 May 2025 13:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749425;
-	bh=/XxP9NvPsXi3TyG3PZPVHdSGhf/2cY2bKB/6xgN54ww=;
+	s=korg; t=1747749159;
+	bh=+kujDUrDI0UQGawFYxm0yWwvcwHtRdkSOuf3ApHBpZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jnskb7klH0Xt1NyU4SwVFFNYk9bkcNLaCeIat5z8INYEsf9ha+K1PjMOnmjE7kUoE
-	 Toys0+GJCpTzzvx6oJXfz2pMWcNNvdAsSoYnsi/fAAAj69chUdptMjiSUQQSiusYCH
-	 qn6iVFE3SdHWLblK7XzpAAFtYtwvyGpZTq53MANk=
+	b=UA9z5NNpqdag9WSRGdeXwv3GOirwaSY/OFLB/gFyOpBOPJWwNJv8C+aNpQJjdTxML
+	 c3Oc4MY3O3VngvVLqGIoELgY9T1bLLg1bCTO3AsNbMZw89tFw9CgSkgnaSBvJzfbNi
+	 52uSSgIV52TA+XkPixG6ZOLOehvi1S5bLtjq4Y5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 41/97] LoongArch: Fix MAX_REG_OFFSET calculation
-Date: Tue, 20 May 2025 15:50:06 +0200
-Message-ID: <20250520125802.269276363@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 5.15 16/59] x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
+Date: Tue, 20 May 2025 15:50:07 +0200
+Message-ID: <20250520125754.479883612@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 90436d234230e9a950ccd87831108b688b27a234 upstream.
+commit 052040e34c08428a5a388b85787e8531970c0c67 upstream.
 
-Fix MAX_REG_OFFSET calculation, make it point to the last register
-in 'struct pt_regs' and not to the marker itself, which could allow
-regs_get_register() to return an invalid offset.
+Retpoline mitigation for spectre-v2 uses thunks for indirect branches. To
+support this mitigation compilers add a CS prefix with
+-mindirect-branch-cs-prefix. For an indirect branch in asm, this needs to
+be added manually.
 
-Cc: stable@vger.kernel.org
-Fixes: 803b0fc5c3f2baa6e5 ("LoongArch: Add process management")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+CS prefix is already being added to indirect branches in asm files, but not
+in inline asm. Add CS prefix to CALL_NOSPEC for inline asm as well. There
+is no JMP_NOSPEC for inline asm.
+
+Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250228-call-nospec-v3-2-96599fed0f33@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/ptrace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/include/asm/ptrace.h
-+++ b/arch/loongarch/include/asm/ptrace.h
-@@ -54,7 +54,7 @@ static inline void instruction_pointer_s
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -119,9 +119,8 @@
+ .endm
  
- /* Query offset/name of register from its name/offset */
- extern int regs_query_register_offset(const char *name);
--#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
-+#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last) - sizeof(unsigned long))
+ /*
+- * Equivalent to -mindirect-branch-cs-prefix; emit the 5 byte jmp/call
+- * to the retpoline thunk with a CS prefix when the register requires
+- * a RAX prefix byte to encode. Also see apply_retpolines().
++ * Emits a conditional CS prefix that is compatible with
++ * -mindirect-branch-cs-prefix.
+  */
+ .macro __CS_PREFIX reg:req
+ 	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
+@@ -282,11 +281,23 @@ extern retpoline_thunk_t __x86_indirect_
+ #ifdef CONFIG_X86_64
  
- /**
-  * regs_get_register() - get register value from its offset
+ /*
++ * Emits a conditional CS prefix that is compatible with
++ * -mindirect-branch-cs-prefix.
++ */
++#define __CS_PREFIX(reg)				\
++	".irp rs,r8,r9,r10,r11,r12,r13,r14,r15\n"	\
++	".ifc \\rs," reg "\n"				\
++	".byte 0x2e\n"					\
++	".endif\n"					\
++	".endr\n"
++
++/*
+  * Inline asm uses the %V modifier which is only in newer GCC
+  * which is ensured when CONFIG_RETPOLINE is defined.
+  */
+ #ifdef CONFIG_RETPOLINE
+-#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
++#define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
++			"call __x86_indirect_thunk_%V[thunk_target]\n"
+ #else
+ #define CALL_NOSPEC	"call *%[thunk_target]\n"
+ #endif
 
 
 
