@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-145154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC30BABDA45
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6066DABDA1A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 281C38A365E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDB293BF57F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7137244686;
-	Tue, 20 May 2025 13:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A3F246767;
+	Tue, 20 May 2025 13:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5wMEwIC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc/t0diT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB8C22C325;
-	Tue, 20 May 2025 13:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126CE246335;
+	Tue, 20 May 2025 13:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749325; cv=none; b=lBRnKjFmEVF2cjITcrtWPcf40zv6Ia7a0CqJDtm+H5pGqW6aK0Mw8e1zliz72wLu51cvonPjLDbhwrvA1R6idL+Lt9uG91b+dBJaq3uXqZqwTTs/bdNHl7AGEcVyC+wZ3hzwOEq3mnQZcse8ifQ7G0e30DmMimRV6DYIDriYpaQ=
+	t=1747749233; cv=none; b=evEJwwluXT6YMAvvmuUKAZ1pi7FNwPc90EDXfYWYzHVXXhHni1zvbaT/rgVI1g28TV74/q2XgYlL+x9gIwkEDmcmmWestr4hww8MHxcSBp7e+tQT3OPOIzqCql8pHHfs+RGHhPYY8DzMgpqZo2+bl0OcopaEoGZO2wODfc40D2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749325; c=relaxed/simple;
-	bh=x291YV/c/VQHEBW3zFJGi123AyRu+tvs0thH6n4gXqw=;
+	s=arc-20240116; t=1747749233; c=relaxed/simple;
+	bh=9vxIbJsW3JoD5mox7TBu8b4V68sPF8uLkIwY1QeGkY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZgQ10KehpjWwyQJI2W7nDski+/lkrdjDLN15IxBdMgEKHMd1AGTyXPvciyXca+7yF4bxZQQ3FDR9DVBbT9b5UuUNk2idVK8ol3LGvDXkExubcoY1B/k2QARsbJ8H57u5Ot2QJe7XDD2hdoU2A2MjLlOqKPfniK8J4MVvjSlO7n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5wMEwIC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A49C4CEE9;
-	Tue, 20 May 2025 13:55:24 +0000 (UTC)
+	 MIME-Version; b=EOAPf/+RyEMRLYdeOwbB+CV7aE0QatoDoxjzFByJdMAI/k3jAwZIFMrVLe2i7Z8eEHTpgG+XXmcmNx0aMu7ZVfVkNJjjePsGvXS+xFeE0cDqmbbzsOfiCyFNenkJPtFYZARb8vaGTufeuSL+D49oDHO5Ua3eZSwGY5+1k9U477E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc/t0diT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06230C4CEE9;
+	Tue, 20 May 2025 13:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749325;
-	bh=x291YV/c/VQHEBW3zFJGi123AyRu+tvs0thH6n4gXqw=;
+	s=korg; t=1747749232;
+	bh=9vxIbJsW3JoD5mox7TBu8b4V68sPF8uLkIwY1QeGkY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5wMEwICrKpPK+9QyMYNbm3BSuJ09KuPAyNqWhmPW/wBdghbdCbkexQyWgZqecY/f
-	 QLfkMcEEhjofvE+gk70HIJAxGkbXujrEd/Q3PvTqm4pPOVNY4GKqcA5wXSW+es0BOD
-	 PGcokwO68BSyNOzk4/z4h1u8u59UEZq5tfeb8qOE=
+	b=mc/t0diTsUCL1RmV5muhtgPsKuyzdFovMe7mlmVayH33CoeplDuZFJst9JK5XMB3p
+	 UNazeVM9oWy0gdxPB6CWRn2hRU009hTIDvuMSUmrWtlAws+IwQ4BXN0NOBQmsazR8v
+	 Fms7W7RTYlySCVIcAtKz7Dbv+xPEHD2jH7pi+9j4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
-Subject: [PATCH 5.15 29/59] x86/its: FineIBT-paranoid vs ITS
-Date: Tue, 20 May 2025 15:50:20 +0200
-Message-ID: <20250520125755.018498241@linuxfoundation.org>
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 30/59] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
+Date: Tue, 20 May 2025 15:50:21 +0200
+Message-ID: <20250520125755.055077179@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
 References: <20250520125753.836407405@linuxfoundation.org>
@@ -62,125 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Nathan Lynch <nathan.lynch@amd.com>
 
-commit e52c1dc7455d32c8a55f9949d300e5e87d011fa6 upstream.
+commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
 
-FineIBT-paranoid was using the retpoline bytes for the paranoid check,
-disabling retpolines, because all parts that have IBT also have eIBRS
-and thus don't need no stinking retpolines.
+Several issues with this change:
 
-Except... ITS needs the retpolines for indirect calls must not be in
-the first half of a cacheline :-/
+* The analysis is flawed and it's unclear what problem is being
+  fixed. There is no difference between wait_event_freezable_timeout()
+  and wait_event_timeout() with respect to device interrupts. And of
+  course "the interrupt notifying the finish of an operation happens
+  during wait_event_freezable_timeout()" -- that's how it's supposed
+  to work.
 
-So what was the paranoid call sequence:
+* The link at the "Closes:" tag appears to be an unrelated
+  use-after-free in idxd.
 
-  <fineibt_paranoid_start>:
-   0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
-   6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
-   a:   4d 8d 5b <f0>           lea    -0x10(%r11), %r11
-   e:   75 fd                   jne    d <fineibt_paranoid_start+0xd>
-  10:   41 ff d3                call   *%r11
-  13:   90                      nop
+* It introduces a regression: dmatest threads are meant to be
+  freezable and this change breaks that.
 
-Now becomes:
+See discussion here:
+https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
 
-  <fineibt_paranoid_start>:
-   0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
-   6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
-   a:   4d 8d 5b f0             lea    -0x10(%r11), %r11
-   e:   2e e8 XX XX XX XX	cs call __x86_indirect_paranoid_thunk_r11
-
-  Where the paranoid_thunk looks like:
-
-   1d:  <ea>                    (bad)
-   __x86_indirect_paranoid_thunk_r11:
-   1e:  75 fd                   jne 1d
-   __x86_indirect_its_thunk_r11:
-   20:  41 ff eb                jmp *%r11
-   23:  cc                      int3
-
-[ dhansen: remove initialization to false ]
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-[ Just a portion of the original commit, in order to fix a build issue
-  in stable kernels due to backports ]
-Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Link: https://lore.kernel.org/r/20250514113952.GB16434@noisy.programming.kicks-ass.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
+Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
+Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/alternative.h |    8 ++++++++
- arch/x86/kernel/alternative.c      |    8 ++++++++
- arch/x86/net/bpf_jit_comp.c        |    2 +-
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/dma/dmatest.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -5,6 +5,7 @@
- #include <linux/types.h>
- #include <linux/stringify.h>
- #include <asm/asm.h>
-+#include <asm/bug.h>
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -828,9 +828,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
  
- #define ALTINSTR_FLAG_INV	(1 << 15)
- #define ALT_NOT(feat)		((feat) | ALTINSTR_FLAG_INV)
-@@ -84,10 +85,17 @@ struct module;
- extern void its_init_mod(struct module *mod);
- extern void its_fini_mod(struct module *mod);
- extern void its_free_mod(struct module *mod);
-+extern u8 *its_static_thunk(int reg);
- #else /* CONFIG_MITIGATION_ITS */
- static inline void its_init_mod(struct module *mod) { }
- static inline void its_fini_mod(struct module *mod) { }
- static inline void its_free_mod(struct module *mod) { }
-+static inline u8 *its_static_thunk(int reg)
-+{
-+	WARN_ONCE(1, "ITS not compiled in");
-+
-+	return NULL;
-+}
- #endif
+-			wait_event_timeout(thread->done_wait,
+-					   done->done,
+-					   msecs_to_jiffies(params->timeout));
++			wait_event_freezable_timeout(thread->done_wait,
++					done->done,
++					msecs_to_jiffies(params->timeout));
  
- #ifdef CONFIG_RETHUNK
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -597,6 +597,14 @@ static bool cpu_wants_indirect_its_thunk
- 	/* Lower-half of the cacheline? */
- 	return !(addr & 0x20);
- }
-+
-+u8 *its_static_thunk(int reg)
-+{
-+	u8 *thunk = __x86_indirect_its_thunk_array[reg];
-+
-+	return thunk;
-+}
-+
- #endif
- 
- /*
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -449,7 +449,7 @@ static void emit_indirect_jump(u8 **ppro
- 	if (IS_ENABLED(CONFIG_MITIGATION_ITS) &&
- 	    cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
- 		OPTIMIZER_HIDE_VAR(reg);
--		emit_jump(&prog, &__x86_indirect_its_thunk_array[reg], ip);
-+		emit_jump(&prog, its_static_thunk(reg), ip);
- 	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
- 		EMIT_LFENCE();
- 		EMIT2(0xFF, 0xE0 + reg);
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
 
 
 
