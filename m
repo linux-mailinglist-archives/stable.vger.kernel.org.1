@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-145486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDF7ABDC2F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEDDABDD32
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4ABE3B9F0A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EC9A4C7026
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B122505BE;
-	Tue, 20 May 2025 14:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BFC24C07A;
+	Tue, 20 May 2025 14:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhGLm+yI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxtRX9xp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C120247DE1;
-	Tue, 20 May 2025 14:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057E224C060;
+	Tue, 20 May 2025 14:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750316; cv=none; b=REqwYq5WM3lqOeK0eGnjqyvafhj4G5U9kzpZrwxpscTGVT5T6lqfio4fFjlZJQlm3Kz3bAXGK0De9Akcr7/MCJ2Fo95svrCu6KVQZHX0WagQS8ygdzQKOYeE/YJBvqKllS40hrCXvuGzOAIEFF/koZkONS8elgHbWcNjntNKwPI=
+	t=1747750718; cv=none; b=KGCn+KKDnu5xZW0QZ1Q2Gd6O2JhFUlO6xjWHgFqNWFfT3USu/BzoDH554fSSfatXyLJyjqYESxLgy/Kg2VPY/etea8NUPj83qHMQszr10nH34JfpTjyV/MWyhpsS66PSuavy1tBW3SF3JXqn/JPOtPR49V+EX1T0PhwgbpsDT+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750316; c=relaxed/simple;
-	bh=S/aT9khgMToPTr7Q1TNFIbh0iOcMRcnqQhqs09Szrl4=;
+	s=arc-20240116; t=1747750718; c=relaxed/simple;
+	bh=7Dfo/hCbmc14sL1pwyFKzRff5KE9xQ6Q7pKvGNKlyMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JosdN0BuUokJ4PFjBf1HttjDPnK3LlBNG2pdk34aD1QhuOGoP5u31RyayI19UJj4/rHkYo8lCFwtehpEA860h8q0OiHDgagi0CKtDKxtko9hQNHQmq2D8PEoM/rsxQA1lPaapB9B5lrJC8HQGv+olGqheppoaH6gE4zCM/H5O6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhGLm+yI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66650C4CEE9;
-	Tue, 20 May 2025 14:11:55 +0000 (UTC)
+	 MIME-Version; b=nC7WNV7co+eLweieDlRsyU+EMPRsGwxnQldI/jqiUWdQ4opmVG09OdtuTkO2fXvcPr4Rkr/201f3iG35AXy20BWg0K6ISibiW1mQVh8+06ZVMNuJHTw43ByKaMEUQa6gSh7vKPCku+pPE8IWKo1SaVmo/xcSUZhf3KtQxGU/U+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxtRX9xp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863F7C4CEE9;
+	Tue, 20 May 2025 14:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750315;
-	bh=S/aT9khgMToPTr7Q1TNFIbh0iOcMRcnqQhqs09Szrl4=;
+	s=korg; t=1747750717;
+	bh=7Dfo/hCbmc14sL1pwyFKzRff5KE9xQ6Q7pKvGNKlyMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhGLm+yI+SdBpnI6AnMFBskAEeXuaDBGREq00h8VyUcbjj6t5ESXDTQqfPP42tLST
-	 EtS1aBDDI1EyKIpxYHbpKKoaLcVl+9kbH9jbeoCBb9T+/xa5FrsD6KMTcNlATYSaBX
-	 Hj9w2Mpa9fKoqCqMbULYp0ElSIAdPi0TJcnn/V2c=
+	b=SxtRX9xpT+AqsLdjtH8qZ4CiKvC+BqLpsolA0PFQE/8ueHpWVSqWZJ9cmR67/xIE6
+	 keRStb2KycPRHNLaDZuEk7yaj4X3wntCgXd/PeKQxPsPe18vIC+0f77OusSxEsJ5OY
+	 54nRJs42qXGMoWIkaEhrqVt7UMqrMURC8YZPwDFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.12 113/143] tpm: Mask TPM RC in tpm2_start_auth_session()
+	Michael Kelley <mhklinux@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 098/145] Drivers: hv: Allow vmbus_sendpacket_mpb_desc() to create multiple ranges
 Date: Tue, 20 May 2025 15:51:08 +0200
-Message-ID: <20250520125814.480445922@linuxfoundation.org>
+Message-ID: <20250520125814.405832054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit 539fbab37881e32ba6a708a100de6db19e1e7e7d upstream.
+commit 380b75d3078626aadd0817de61f3143f5db6e393 upstream.
 
-tpm2_start_auth_session() does not mask TPM RC correctly from the callers:
+vmbus_sendpacket_mpb_desc() is currently used only by the storvsc driver
+and is hardcoded to create a single GPA range. To allow it to also be
+used by the netvsc driver to create multiple GPA ranges, no longer
+hardcode as having a single GPA range. Allow the calling driver to
+specify the rangecount in the supplied descriptor.
 
-[   28.766528] tpm tpm0: A TPM error (2307) occurred start auth session
+Update the storvsc driver to reflect this new approach.
 
-Process TPM RCs inside tpm2_start_auth_session(), and map them to POSIX
-error codes.
-
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-Reported-by: Herbert Xu <herbert@gondor.apana.org.au>
-Closes: https://lore.kernel.org/linux-integrity/Z_NgdRHuTKP6JK--@gondor.apana.org.au/
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.1.x
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/20250513000604.1396-2-mhklinux@outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm2-sessions.c | 20 ++++++--------------
- include/linux/tpm.h              | 19 +++++++++++++++++++
- 2 files changed, 25 insertions(+), 14 deletions(-)
+ drivers/hv/channel.c       |    6 +++---
+ drivers/scsi/storvsc_drv.c |    1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 3f89635ba5e8..7b5049b3d476 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -40,11 +40,6 @@
-  *
-  * These are the usage functions:
-  *
-- * tpm2_start_auth_session() which allocates the opaque auth structure
-- *	and gets a session from the TPM.  This must be called before
-- *	any of the following functions.  The session is protected by a
-- *	session_key which is derived from a random salt value
-- *	encrypted to the NULL seed.
-  * tpm2_end_auth_session() kills the session and frees the resources.
-  *	Under normal operation this function is done by
-  *	tpm_buf_check_hmac_response(), so this is only to be used on
-@@ -963,16 +958,13 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
- }
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -1136,9 +1136,10 @@ int vmbus_sendpacket_pagebuffer(struct v
+ EXPORT_SYMBOL_GPL(vmbus_sendpacket_pagebuffer);
  
- /**
-- * tpm2_start_auth_session() - create a HMAC authentication session with the TPM
-- * @chip: the TPM chip structure to create the session with
-+ * tpm2_start_auth_session() - Create an a HMAC authentication session
-+ * @chip:	A TPM chip
-  *
-- * This function loads the NULL seed from its saved context and starts
-- * an authentication session on the null seed, fills in the
-- * @chip->auth structure to contain all the session details necessary
-- * for performing the HMAC, encrypt and decrypt operations and
-- * returns.  The NULL seed is flushed before this function returns.
-+ * Loads the ephemeral key (null seed), and starts an HMAC authenticated
-+ * session. The null seed is flushed before the return.
-  *
-- * Return: zero on success or actual error encountered.
-+ * Returns zero on success, or a POSIX error code.
+ /*
+- * vmbus_sendpacket_multipagebuffer - Send a multi-page buffer packet
++ * vmbus_sendpacket_mpb_desc - Send one or more multi-page buffer packets
+  * using a GPADL Direct packet type.
+- * The buffer includes the vmbus descriptor.
++ * The desc argument must include space for the VMBus descriptor. The
++ * rangecount field must already be set.
   */
- int tpm2_start_auth_session(struct tpm_chip *chip)
- {
-@@ -1024,7 +1016,7 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
- 	/* hash algorithm for session */
- 	tpm_buf_append_u16(&buf, TPM_ALG_SHA256);
+ int vmbus_sendpacket_mpb_desc(struct vmbus_channel *channel,
+ 			      struct vmbus_packet_mpb_array *desc,
+@@ -1160,7 +1161,6 @@ int vmbus_sendpacket_mpb_desc(struct vmb
+ 	desc->length8 = (u16)(packetlen_aligned >> 3);
+ 	desc->transactionid = VMBUS_RQST_ERROR; /* will be updated in hv_ringbuffer_write() */
+ 	desc->reserved = 0;
+-	desc->rangecount = 1;
  
--	rc = tpm_transmit_cmd(chip, &buf, 0, "start auth session");
-+	rc = tpm_ret_to_err(tpm_transmit_cmd(chip, &buf, 0, "StartAuthSession"));
- 	tpm2_flush_context(chip, null_key);
+ 	bufferlist[0].iov_base = desc;
+ 	bufferlist[0].iov_len = desc_size;
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1819,6 +1819,7 @@ static int storvsc_queuecommand(struct S
+ 				return SCSI_MLQUEUE_DEVICE_BUSY;
+ 		}
  
- 	if (rc == TPM2_RC_SUCCESS)
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 6c3125300c00..9ac9768cc8f7 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -257,6 +257,7 @@ enum tpm2_return_codes {
- 	TPM2_RC_TESTING		= 0x090A, /* RC_WARN */
- 	TPM2_RC_REFERENCE_H0	= 0x0910,
- 	TPM2_RC_RETRY		= 0x0922,
-+	TPM2_RC_SESSION_MEMORY	= 0x0903,
- };
++		payload->rangecount = 1;
+ 		payload->range.len = length;
+ 		payload->range.offset = offset_in_hvpg;
  
- enum tpm2_command_codes {
-@@ -437,6 +438,24 @@ static inline u32 tpm2_rc_value(u32 rc)
- 	return (rc & BIT(7)) ? rc & 0xbf : rc;
- }
- 
-+/*
-+ * Convert a return value from tpm_transmit_cmd() to POSIX error code.
-+ */
-+static inline ssize_t tpm_ret_to_err(ssize_t ret)
-+{
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (tpm2_rc_value(ret)) {
-+	case TPM2_RC_SUCCESS:
-+		return 0;
-+	case TPM2_RC_SESSION_MEMORY:
-+		return -ENOMEM;
-+	default:
-+		return -EFAULT;
-+	}
-+}
-+
- #if defined(CONFIG_TCG_TPM) || defined(CONFIG_TCG_TPM_MODULE)
- 
- extern int tpm_is_tpm2(struct tpm_chip *chip);
--- 
-2.49.0
-
 
 
 
