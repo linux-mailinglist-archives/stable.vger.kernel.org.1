@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-145421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A43EABDB71
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643A9ABDB25
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21087A9338
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:09:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2332F4C5A36
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A68248884;
-	Tue, 20 May 2025 14:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F82246327;
+	Tue, 20 May 2025 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZmdoyRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKvVtxas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E557524888A;
-	Tue, 20 May 2025 14:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A3222DF87;
+	Tue, 20 May 2025 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750129; cv=none; b=gQQwJTkOjMdV6g+IWgFK+8AO/sqjm8YXCzR3WFAkICzXWARoURD2diTE0YDfzPYtCo6thBDQQiTEtaXsQ0l8s5IEAgSTuIycQcVLtetpBf/uXhGI+qbcWwQEAEEtdk/snCAhe2XXGOSHo6uxFxVdOILsUQKdhQSRIVejozOldXs=
+	t=1747749733; cv=none; b=FsvpCA5WFuGCd5Kr3ZYSNTHeEx4724mETrSfksUPllf5fk7jG1oweZqH0IAmrP2R/2RQEueourB33R+k+qj4Jh9YLnj2fi8LP+K+UiBm2NIVgqODCMinmfIgHZ6jWQrT707uXWWpkoPE9numnpf3xDwhcl/53Zq+0hwE0z4dhQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750129; c=relaxed/simple;
-	bh=ZLztwofXTJ3GY9QWoVa7XPOFRfhYG4VIZ8K5ZVJdSDI=;
+	s=arc-20240116; t=1747749733; c=relaxed/simple;
+	bh=K9kFIOtiEXm/tlxZD6NjFpoblG+/4B4oQLTiGNwWInc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FTBStIpjdTex1HuFydvEP6R7FgXY4Q8KAFpigmgposp/X4T8BJGKOyAP1Y/FC27FJP2dvWWhs1IOqMByDqRJ/kjTc6FWhQh2rNqaalqCTxFdgj6Uxse9Oe7OVImKBvkRDAVd+UuHrwuWUDnIUd5NN3xZhegEepfCXkr+W/g8l6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZmdoyRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61931C4CEE9;
-	Tue, 20 May 2025 14:08:48 +0000 (UTC)
+	 MIME-Version; b=INA5xdtcMXazq+uRD4JnSygUvZHysaD842e21RI+pXKGoPF9CwYUkHbQxu787GFYg8IkNTdN1zwAryUIDOMhnuIZirQqHPN6o00FmAPTNOdPEz0EzubN8Cm9k4K/4vJAFa+FpKKYdmIpAhp/7n70GhW7tmleH0t4rWYglLdabjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKvVtxas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D259C4CEEB;
+	Tue, 20 May 2025 14:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750128;
-	bh=ZLztwofXTJ3GY9QWoVa7XPOFRfhYG4VIZ8K5ZVJdSDI=;
+	s=korg; t=1747749733;
+	bh=K9kFIOtiEXm/tlxZD6NjFpoblG+/4B4oQLTiGNwWInc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZmdoyRj7AnCVNHun69LeSepzPlRVkZ7KHbEjs8ENy9Qonm7c0GQXVact+tRL6PhG
-	 FWuNdJ5Upk6t+y9iCYv1m0mPe6TcnP0GvLG5VIkzYXC40/US2qEAsjTXvBCBB/sV3S
-	 CvC7Vq/mEqLA/bRlpnpJ61I140dP9xI4c3tHA6vM=
+	b=zKvVtxas1mkC8UkKr2mkrp8j1SY7UcDS2yaCaqmf1bCNbDo1t20PhSzI6ptoCIB3y
+	 wp3eA0M/ZLcZM2JnHRQYzKzbApA7PBvQbXZc/LXlT6dgXDchyL4VUnrmwqrhj+KIKL
+	 KIZ6V2My2IoRTUYZ3OleWBOcAattKm0CPb3q+H7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/143] net: dsa: b53: prevent standalone from trying to forward to other ports
+Subject: [PATCH 6.6 042/117] ALSA: seq: Fix delivery of UMP events to group ports
 Date: Tue, 20 May 2025 15:50:07 +0200
-Message-ID: <20250520125812.094209600@linuxfoundation.org>
+Message-ID: <20250520125805.658248834@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +61,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4227ea91e2657f7965e34313448e9d0a2b67712e ]
+[ Upstream commit ff7b190aef6cccdb6f14d20c5753081fe6420e0b ]
 
-When bridged ports and standalone ports share a VLAN, e.g. via VLAN
-uppers, or untagged traffic with a vlan unaware bridge, the ASIC will
-still try to forward traffic to known FDB entries on standalone ports.
-But since the port VLAN masks prevent forwarding to bridged ports, this
-traffic will be dropped.
+When an event with UMP message is sent to a UMP client, the EP port
+receives always no matter where the event is sent to, as it's a
+catch-all port.  OTOH, if an event is sent to EP port, and if the
+event has a certain UMP Group, it should have been delivered to the
+associated UMP Group port, too, but this was ignored, so far.
 
-This e.g. can be observed in the bridge_vlan_unaware ping tests, where
-this breaks pinging with learning on.
+This patch addresses the behavior.  Now a UMP event sent to the
+Endpoint port will be delivered to the subscribers of the UMP group
+port the event is associated with.
 
-Work around this by enabling the simplified EAP mode on switches
-supporting it for standalone ports, which causes the ASIC to redirect
-traffic of unknown source MAC addresses to the CPU port.
+The patch also does a bit of refactoring to simplify the code about
+__deliver_to_subscribers().
 
-Since standalone ports do not learn, there are no known source MAC
-addresses, so effectively this redirects all incoming traffic to the CPU
-port.
-
-Fixes: ff39c2d68679 ("net: dsa: b53: Add bridge support")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250508091424.26870-1-jonas.gorski@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 177ccf811df4 ("ALSA: seq: Support MIDI 2.0 UMP Endpoint port")
+Link: https://patch.msgid.link/20250511134528.6314-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 33 ++++++++++++++++++++++++++++++++
- drivers/net/dsa/b53/b53_regs.h   | 14 ++++++++++++++
- 2 files changed, 47 insertions(+)
+ sound/core/seq/seq_clientmgr.c   | 52 ++++++++++++++++++++------------
+ sound/core/seq/seq_ump_convert.c | 18 +++++++++++
+ sound/core/seq/seq_ump_convert.h |  1 +
+ 3 files changed, 52 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index e072d2b50c987..0168ad495e6c9 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -326,6 +326,26 @@ static void b53_get_vlan_entry(struct b53_device *dev, u16 vid,
- 	}
- }
- 
-+static void b53_set_eap_mode(struct b53_device *dev, int port, int mode)
-+{
-+	u64 eap_conf;
-+
-+	if (is5325(dev) || is5365(dev) || dev->chip_id == BCM5389_DEVICE_ID)
-+		return;
-+
-+	b53_read64(dev, B53_EAP_PAGE, B53_PORT_EAP_CONF(port), &eap_conf);
-+
-+	if (is63xx(dev)) {
-+		eap_conf &= ~EAP_MODE_MASK_63XX;
-+		eap_conf |= (u64)mode << EAP_MODE_SHIFT_63XX;
-+	} else {
-+		eap_conf &= ~EAP_MODE_MASK;
-+		eap_conf |= (u64)mode << EAP_MODE_SHIFT;
-+	}
-+
-+	b53_write64(dev, B53_EAP_PAGE, B53_PORT_EAP_CONF(port), eap_conf);
-+}
-+
- static void b53_set_forwarding(struct b53_device *dev, int enable)
+diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
+index 6195fe9dda179..49f6763c3250d 100644
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -736,15 +736,21 @@ static int snd_seq_deliver_single_event(struct snd_seq_client *client,
+  */
+ static int __deliver_to_subscribers(struct snd_seq_client *client,
+ 				    struct snd_seq_event *event,
+-				    struct snd_seq_client_port *src_port,
+-				    int atomic, int hop)
++				    int port, int atomic, int hop)
  {
- 	u8 mgmt;
-@@ -586,6 +606,13 @@ int b53_setup_port(struct dsa_switch *ds, int port)
- 	b53_port_set_mcast_flood(dev, port, true);
- 	b53_port_set_learning(dev, port, false);
++	struct snd_seq_client_port *src_port;
+ 	struct snd_seq_subscribers *subs;
+ 	int err, result = 0, num_ev = 0;
+ 	union __snd_seq_event event_saved;
+ 	size_t saved_size;
+ 	struct snd_seq_port_subs_info *grp;
  
-+	/* Force all traffic to go to the CPU port to prevent the ASIC from
-+	 * trying to forward to bridged ports on matching FDB entries, then
-+	 * dropping frames because it isn't allowed to forward there.
-+	 */
-+	if (dsa_is_user_port(ds, port))
-+		b53_set_eap_mode(dev, port, EAP_MODE_SIMPLIFIED);
++	if (port < 0)
++		return 0;
++	src_port = snd_seq_port_use_ptr(client, port);
++	if (!src_port)
++		return 0;
 +
- 	return 0;
+ 	/* save original event record */
+ 	saved_size = snd_seq_event_packet_size(event);
+ 	memcpy(&event_saved, event, saved_size);
+@@ -780,6 +786,7 @@ static int __deliver_to_subscribers(struct snd_seq_client *client,
+ 		read_unlock(&grp->list_lock);
+ 	else
+ 		up_read(&grp->list_mutex);
++	snd_seq_port_unlock(src_port);
+ 	memcpy(event, &event_saved, saved_size);
+ 	return (result < 0) ? result : num_ev;
  }
- EXPORT_SYMBOL(b53_setup_port);
-@@ -2043,6 +2070,9 @@ int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
- 		pvlan |= BIT(i);
- 	}
+@@ -788,25 +795,32 @@ static int deliver_to_subscribers(struct snd_seq_client *client,
+ 				  struct snd_seq_event *event,
+ 				  int atomic, int hop)
+ {
+-	struct snd_seq_client_port *src_port;
+-	int ret = 0, ret2;
+-
+-	src_port = snd_seq_port_use_ptr(client, event->source.port);
+-	if (src_port) {
+-		ret = __deliver_to_subscribers(client, event, src_port, atomic, hop);
+-		snd_seq_port_unlock(src_port);
+-	}
+-
+-	if (client->ump_endpoint_port < 0 ||
+-	    event->source.port == client->ump_endpoint_port)
+-		return ret;
++	int ret;
++#if IS_ENABLED(CONFIG_SND_SEQ_UMP)
++	int ret2;
++#endif
  
-+	/* Disable redirection of unknown SA to the CPU port */
-+	b53_set_eap_mode(dev, port, EAP_MODE_BASIC);
+-	src_port = snd_seq_port_use_ptr(client, client->ump_endpoint_port);
+-	if (!src_port)
++	ret = __deliver_to_subscribers(client, event,
++				       event->source.port, atomic, hop);
++#if IS_ENABLED(CONFIG_SND_SEQ_UMP)
++	if (!snd_seq_client_is_ump(client) || client->ump_endpoint_port < 0)
+ 		return ret;
+-	ret2 = __deliver_to_subscribers(client, event, src_port, atomic, hop);
+-	snd_seq_port_unlock(src_port);
+-	return ret2 < 0 ? ret2 : ret;
++	/* If it's an event from EP port (and with a UMP group),
++	 * deliver to subscribers of the corresponding UMP group port, too.
++	 * Or, if it's from non-EP port, deliver to subscribers of EP port, too.
++	 */
++	if (event->source.port == client->ump_endpoint_port)
++		ret2 = __deliver_to_subscribers(client, event,
++						snd_seq_ump_group_port(event),
++						atomic, hop);
++	else
++		ret2 = __deliver_to_subscribers(client, event,
++						client->ump_endpoint_port,
++						atomic, hop);
++	if (ret2 < 0)
++		return ret2;
++#endif
++	return ret;
+ }
+ 
+ /* deliver an event to the destination port(s).
+diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
+index 4dd540cbb1cbb..83a27362b7a06 100644
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -1284,3 +1284,21 @@ int snd_seq_deliver_to_ump(struct snd_seq_client *source,
+ 	else
+ 		return cvt_to_ump_midi1(dest, dest_port, event, atomic, hop);
+ }
 +
- 	/* Configure the local port VLAN control membership to include
- 	 * remote ports and update the local port bitmask
- 	 */
-@@ -2078,6 +2108,9 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct dsa_bridge bridge)
- 			pvlan &= ~BIT(i);
- 	}
- 
-+	/* Enable redirection of unknown SA to the CPU port */
-+	b53_set_eap_mode(dev, port, EAP_MODE_SIMPLIFIED);
++/* return the UMP group-port number of the event;
++ * return -1 if groupless or non-UMP event
++ */
++int snd_seq_ump_group_port(const struct snd_seq_event *event)
++{
++	const struct snd_seq_ump_event *ump_ev =
++		(const struct snd_seq_ump_event *)event;
++	unsigned char type;
 +
- 	b53_write16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), pvlan);
- 	dev->ports[port].vlan_ctl_mask = pvlan;
++	if (!snd_seq_ev_is_ump(event))
++		return -1;
++	type = ump_message_type(ump_ev->ump[0]);
++	if (ump_is_groupless_msg(type))
++		return -1;
++	/* group-port number starts from 1 */
++	return ump_message_group(ump_ev->ump[0]) + 1;
++}
+diff --git a/sound/core/seq/seq_ump_convert.h b/sound/core/seq/seq_ump_convert.h
+index 6c146d8032804..4abf0a7637d70 100644
+--- a/sound/core/seq/seq_ump_convert.h
++++ b/sound/core/seq/seq_ump_convert.h
+@@ -18,5 +18,6 @@ int snd_seq_deliver_to_ump(struct snd_seq_client *source,
+ 			   struct snd_seq_client_port *dest_port,
+ 			   struct snd_seq_event *event,
+ 			   int atomic, int hop);
++int snd_seq_ump_group_port(const struct snd_seq_event *event);
  
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index bfbcb66bef662..5f7a0e5c5709d 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -50,6 +50,9 @@
- /* Jumbo Frame Registers */
- #define B53_JUMBO_PAGE			0x40
- 
-+/* EAP Registers */
-+#define B53_EAP_PAGE			0x42
-+
- /* EEE Control Registers Page */
- #define B53_EEE_PAGE			0x92
- 
-@@ -480,6 +483,17 @@
- #define   JMS_MIN_SIZE			1518
- #define   JMS_MAX_SIZE			9724
- 
-+/*************************************************************************
-+ * EAP Page Registers
-+ *************************************************************************/
-+#define B53_PORT_EAP_CONF(i)		(0x20 + 8 * (i))
-+#define  EAP_MODE_SHIFT			51
-+#define  EAP_MODE_SHIFT_63XX		50
-+#define  EAP_MODE_MASK			(0x3ull << EAP_MODE_SHIFT)
-+#define  EAP_MODE_MASK_63XX		(0x3ull << EAP_MODE_SHIFT_63XX)
-+#define  EAP_MODE_BASIC			0
-+#define  EAP_MODE_SIMPLIFIED		3
-+
- /*************************************************************************
-  * EEE Configuration Page Registers
-  *************************************************************************/
+ #endif /* __SEQ_UMP_CONVERT_H */
 -- 
 2.39.5
 
