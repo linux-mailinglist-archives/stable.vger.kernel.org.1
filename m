@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-145522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FADABDD31
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:35:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D043AABDCE1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80274E1398
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCA4B8C42D0
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58487248F40;
-	Tue, 20 May 2025 14:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FFA2517B8;
+	Tue, 20 May 2025 14:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvHEuVT3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhqLAISW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14701288D6;
-	Tue, 20 May 2025 14:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E9D2517AC;
+	Tue, 20 May 2025 14:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750421; cv=none; b=gOa7mpuZzT6YfgELiP3s6M2D2Euxps8L6E8FTFAQZMMK8iYsZEMrJhNuLSEk+jtiM0FpcTNpSBEiAIFI3RS9ivDhhY9PN+mjovoOMrainKrqAcahrPKcZRuI+4DG8ZYhBvI9HmmOgACTKutoE0+nkLPfgYdf3WXgyYAY6bTpCOc=
+	t=1747750799; cv=none; b=QPC9sOpsIhoAw0lJxzpw0zhLi2+EIKPsIeGPzkegMmk+iFyk1FYglBwK+HQKhH99XbIxQbYZnBCviMvtSvjjJ1qTvyagnChOqdkjw197X5psE1GCXt4kpK1/d+qvPs4Tc6s9WcdOATTXq/F55hQNUKA0w6Gwp3uHJkc7mYDZFeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750421; c=relaxed/simple;
-	bh=CvO5JhzQBv71vGHVEP6HkG7EPRAdMeAMh+Qg1o/axrw=;
+	s=arc-20240116; t=1747750799; c=relaxed/simple;
+	bh=VbzGW9/v/gEC11cqHCF2STw270qXZuaO6zKwvfin6II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qlDj2O8bZqZCPv9TbEek5ujJHSssGEXeSy3dbeHEzdnCrNqvl82OPvZFcqU8OUdr06Jv9AMjThy7HPn5gX8iFU+PxZERePdwEQmzBYdET9gzFz1mMrfzhG+rLule8VNSW+6rb/Q67w7qIyYQIa2RFoYTytIJ9JNTHwKJGpeFZRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvHEuVT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AE5C4CEEA;
-	Tue, 20 May 2025 14:13:40 +0000 (UTC)
+	 MIME-Version; b=CHD+wXPirzU6lSJJExbMb7P3xByegA4/NAVr5N5BNuCqMx3DN9JR9XFNFzSWJpmpGR4VVgq6AOloHFXS7/8wZmipjKI5jqMZ4UnDooIe3Ul8xZXLMJomt4Eleqm+EU/NoqWUx0JzRY/lPDFHO64vfRYJb1xVxJFjP43gslQm+lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhqLAISW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D8C4CEE9;
+	Tue, 20 May 2025 14:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750420;
-	bh=CvO5JhzQBv71vGHVEP6HkG7EPRAdMeAMh+Qg1o/axrw=;
+	s=korg; t=1747750799;
+	bh=VbzGW9/v/gEC11cqHCF2STw270qXZuaO6zKwvfin6II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvHEuVT30mKCijlhjbk5NNQJYQIAejhrQOIK9N/dlUkVUB6+RROs/xexuZMBQKEs8
-	 exIHE3HHnTh21gYTsQ0+YzrFlzFlo9kSW9xc27TCFEp3uCjbXr2L+9mZmncI9DYr40
-	 gsJeeiR/wvWXYiy9p0Khj2YjL5KqYpElXfDMrTq4=
+	b=dhqLAISWg38lRud9mQPSETo0dWmKwxFbVh8Qjccezjii8ewp816IsKmxz3rPd8K/O
+	 Wzy2pwLSQCRWFrKt9Hp+Qd8NUgO2lP6KP8I0s9oLrDUcgszS7yFscNSpDOHzFiMJLZ
+	 nY5pbIddVb/SeAMXrJsplo1vIaoD0g9ToVVigxBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH 6.12 139/143] drm/panel-mipi-dbi: Run DRM default client setup
-Date: Tue, 20 May 2025 15:51:34 +0200
-Message-ID: <20250520125815.482251665@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	dmaengine@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@legrand.com>
+Subject: [PATCH 6.14 125/145] dmaengine: ti: k3-udma: Add missing locking
+Date: Tue, 20 May 2025 15:51:35 +0200
+Message-ID: <20250520125815.443772349@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +62,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Ronald Wahl <ronald.wahl@legrand.com>
 
-commit 1b0caa5f5ac20bcaf82fc89a5c849b21ce3bfdf6 upstream.
+commit fca280992af8c2fbd511bc43f65abb4a17363f2f upstream.
 
-Call drm_client_setup() to run the kernel's default client setup
-for DRM. Set fbdev_probe in struct drm_driver, so that the client
-setup can start the common fbdev client.
+Recent kernels complain about a missing lock in k3-udma.c when the lock
+validator is enabled:
 
-v5:
-- select DRM_CLIENT_SELECTION
+[    4.128073] WARNING: CPU: 0 PID: 746 at drivers/dma/ti/../virt-dma.h:169 udma_start.isra.0+0x34/0x238
+[    4.137352] CPU: 0 UID: 0 PID: 746 Comm: kworker/0:3 Not tainted 6.12.9-arm64 #28
+[    4.144867] Hardware name: pp-v12 (DT)
+[    4.148648] Workqueue: events udma_check_tx_completion
+[    4.153841] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    4.160834] pc : udma_start.isra.0+0x34/0x238
+[    4.165227] lr : udma_start.isra.0+0x30/0x238
+[    4.169618] sp : ffffffc083cabcf0
+[    4.172963] x29: ffffffc083cabcf0 x28: 0000000000000000 x27: ffffff800001b005
+[    4.180167] x26: ffffffc0812f0000 x25: 0000000000000000 x24: 0000000000000000
+[    4.187370] x23: 0000000000000001 x22: 00000000e21eabe9 x21: ffffff8000fa0670
+[    4.194571] x20: ffffff8001b6bf00 x19: ffffff8000fa0430 x18: ffffffc083b95030
+[    4.201773] x17: 0000000000000000 x16: 00000000f0000000 x15: 0000000000000048
+[    4.208976] x14: 0000000000000048 x13: 0000000000000000 x12: 0000000000000001
+[    4.216179] x11: ffffffc08151a240 x10: 0000000000003ea1 x9 : ffffffc08046ab68
+[    4.223381] x8 : ffffffc083cabac0 x7 : ffffffc081df3718 x6 : 0000000000029fc8
+[    4.230583] x5 : ffffffc0817ee6d8 x4 : 0000000000000bc0 x3 : 0000000000000000
+[    4.237784] x2 : 0000000000000000 x1 : 00000000001fffff x0 : 0000000000000000
+[    4.244986] Call trace:
+[    4.247463]  udma_start.isra.0+0x34/0x238
+[    4.251509]  udma_check_tx_completion+0xd0/0xdc
+[    4.256076]  process_one_work+0x244/0x3fc
+[    4.260129]  process_scheduled_works+0x6c/0x74
+[    4.264610]  worker_thread+0x150/0x1dc
+[    4.268398]  kthread+0xd8/0xe8
+[    4.271492]  ret_from_fork+0x10/0x20
+[    4.275107] irq event stamp: 220
+[    4.278363] hardirqs last  enabled at (219): [<ffffffc080a27c7c>] _raw_spin_unlock_irq+0x38/0x50
+[    4.287183] hardirqs last disabled at (220): [<ffffffc080a1c154>] el1_dbg+0x24/0x50
+[    4.294879] softirqs last  enabled at (182): [<ffffffc080037e68>] handle_softirqs+0x1c0/0x3cc
+[    4.303437] softirqs last disabled at (177): [<ffffffc080010170>] __do_softirq+0x1c/0x28
+[    4.311559] ---[ end trace 0000000000000000 ]---
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: "Noralf Trønnes" <noralf@tronnes.org>
-Acked-by: Noralf Trønnes <noralf@tronnes.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240924071734.98201-32-tzimmermann@suse.de
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+This commit adds the missing locking.
+
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: dmaengine@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Ronald Wahl <ronald.wahl@legrand.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20250414173113.80677-1-rwahl@gmx.de
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/Kconfig          |    1 +
- drivers/gpu/drm/tiny/panel-mipi-dbi.c |    4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma/ti/k3-udma.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/tiny/Kconfig
-+++ b/drivers/gpu/drm/tiny/Kconfig
-@@ -67,6 +67,7 @@ config DRM_OFDRM
- config DRM_PANEL_MIPI_DBI
- 	tristate "DRM support for MIPI DBI compatible panels"
- 	depends on DRM && SPI
-+	select DRM_CLIENT_SELECTION
- 	select DRM_KMS_HELPER
- 	select DRM_GEM_DMA_HELPER
- 	select DRM_MIPI_DBI
---- a/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-+++ b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
-@@ -15,6 +15,7 @@
- #include <linux/spi/spi.h>
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -1091,8 +1091,11 @@ static void udma_check_tx_completion(str
+ 	u32 residue_diff;
+ 	ktime_t time_diff;
+ 	unsigned long delay;
++	unsigned long flags;
  
- #include <drm/drm_atomic_helper.h>
-+#include <drm/drm_client_setup.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_fbdev_dma.h>
- #include <drm/drm_gem_atomic_helper.h>
-@@ -264,6 +265,7 @@ static const struct drm_driver panel_mip
- 	.driver_features	= DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
- 	.fops			= &panel_mipi_dbi_fops,
- 	DRM_GEM_DMA_DRIVER_OPS_VMAP,
-+	DRM_FBDEV_DMA_DRIVER_OPS,
- 	.debugfs_init		= mipi_dbi_debugfs_init,
- 	.name			= "panel-mipi-dbi",
- 	.desc			= "MIPI DBI compatible display panel",
-@@ -388,7 +390,7 @@ static int panel_mipi_dbi_spi_probe(stru
+ 	while (1) {
++		spin_lock_irqsave(&uc->vc.lock, flags);
++
+ 		if (uc->desc) {
+ 			/* Get previous residue and time stamp */
+ 			residue_diff = uc->tx_drain.residue;
+@@ -1127,6 +1130,8 @@ static void udma_check_tx_completion(str
+ 				break;
+ 			}
  
- 	spi_set_drvdata(spi, drm);
++			spin_unlock_irqrestore(&uc->vc.lock, flags);
++
+ 			usleep_range(ktime_to_us(delay),
+ 				     ktime_to_us(delay) + 10);
+ 			continue;
+@@ -1143,6 +1148,8 @@ static void udma_check_tx_completion(str
  
--	drm_fbdev_dma_setup(drm, 0);
-+	drm_client_setup(drm, NULL);
- 
- 	return 0;
+ 		break;
+ 	}
++
++	spin_unlock_irqrestore(&uc->vc.lock, flags);
  }
+ 
+ static irqreturn_t udma_ring_irq_handler(int irq, void *data)
 
 
 
