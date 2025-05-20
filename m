@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A96DABDCF2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B844ABDD2C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF2924E0601
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B666D4E793E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10265248F41;
-	Tue, 20 May 2025 14:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3638824E4AA;
+	Tue, 20 May 2025 14:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7u6PGQJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWDnnl3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C010B2512DE;
-	Tue, 20 May 2025 14:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B9924EA85;
+	Tue, 20 May 2025 14:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750427; cv=none; b=SkBLCwTgnYqc5212kraxoNWtKMfgseGtdqfVs3dGsdKBIa4nZPD6UmHLn3MWQifRgsMWXSPv4FuI4HOJXK0LcIz4IHIGFFasAQj/+rCaaepAV4gT6u3cagnBbPbHinMauvXFwURjK09Y2gIRjGZGWwRogzWW4ngjiRhrzEoweuI=
+	t=1747750805; cv=none; b=eIHSYt/H1oha/Jl/5c160wLVR4JyZVYZe/I2Z5ZtXflBELsfj2plNCFJPMQfPj6luBuf3UHdSh8+oF+jDWDc7/saaOwswLM4B1tTdlDyI5QZCUlwVWd4o5mWNii+5DCHizhstloKsLs3zLuYTw+Q5hyRrBmCrfsV+EWO0sU6BVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750427; c=relaxed/simple;
-	bh=ztOSff1Or/4NVXvuikm36NkizQWPh5H86+om5yHJwwI=;
+	s=arc-20240116; t=1747750805; c=relaxed/simple;
+	bh=NxhqC0acUNIdErV2nW1DmV9nrjOeDBafOq/7uQSUYAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sH7H7FmI//8jStzXNfDSUUY5UEdXd5/GN8LoNQbbRPMha+YveZ+n351bBAd5wPNNmxtPJdh2LbNHggTNp5A06Rk7/CEzAsLPY/kkLls/XNTzYyze1VAPSAlEnrFQ7wqkoakyGHVSEMuLnCJafHbXBAHpEB7zDu+Tg9Q3ibm8oW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7u6PGQJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1984C4CEE9;
-	Tue, 20 May 2025 14:13:46 +0000 (UTC)
+	 MIME-Version; b=qBahNCFI0PIbrfI71SAfJjk2h7jwMFl5VEWGrbCXveBYG7nTXDSTV4ItAb4weH2qKmskA2zakApEJebvjix2L1VEE7huPu0LOb77Xu4T59u5OagMbBQofPtdKnQkcgeD+qq/UKtAMP2SVMkM0O1IPOfx2c2NJWI3i5s5An9Ztes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWDnnl3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77155C4CEE9;
+	Tue, 20 May 2025 14:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750427;
-	bh=ztOSff1Or/4NVXvuikm36NkizQWPh5H86+om5yHJwwI=;
+	s=korg; t=1747750804;
+	bh=NxhqC0acUNIdErV2nW1DmV9nrjOeDBafOq/7uQSUYAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G7u6PGQJtZgyadY2ZM6S/3C6nI8AkPmup1ROwDR2AEb6PrrHc+g8ONnUwG9e9qHCh
-	 lexP48Esxx0NFl4drxfkni4VtQcZz9JKCUsodGoUXbje0CEEOXjwH9etaEyFmnYFO+
-	 EeZXLCZ7ahZQcj5wGW5BLyPaQgV8Qd7MB4xP9DLk=
+	b=MWDnnl3D35d9iqgVIv+axuVKA9XHTRwj+XB2oZ+Havcq71dnUmsOn3sVCpiGCcX63
+	 tQFMyhzpRcBv8Igas7O6TeZk6CZJa1mdgsMPmTgbNIOxbkz4djoa1LZd+Ad3uasrHV
+	 6f0P3gBGToAcy4MFpIQ54ed9KvvVEiitJ4wjxnJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 141/143] usb: typec: ucsi: displayport: Fix deadlock
-Date: Tue, 20 May 2025 15:51:36 +0200
-Message-ID: <20250520125815.557845626@linuxfoundation.org>
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.14 127/145] dmaengine: idxd: fix memory leak in error handling path of idxd_setup_wqs
+Date: Tue, 20 May 2025 15:51:37 +0200
+Message-ID: <20250520125815.521565076@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,160 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 364618c89d4c57c85e5fc51a2446cd939bf57802 upstream.
+commit 3fd2f4bc010cdfbc07dd21018dc65bd9370eb7a4 upstream.
 
-This patch introduces the ucsi_con_mutex_lock / ucsi_con_mutex_unlock
-functions to the UCSI driver. ucsi_con_mutex_lock ensures the connector
-mutex is only locked if a connection is established and the partner pointer
-is valid. This resolves a deadlock scenario where
-ucsi_displayport_remove_partner holds con->mutex waiting for
-dp_altmode_work to complete while dp_altmode_work attempts to acquire it.
+Memory allocated for wqs is not freed if an error occurs during
+idxd_setup_wqs(). To fix it, free the allocated memory in the reverse
+order of allocation before exiting the function in case of an error.
 
-Cc: stable <stable@kernel.org>
-Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250424084429.3220757-2-akuchynski@chromium.org
+Fixes: 7c5dd23e57c1 ("dmaengine: idxd: fix wq conf_dev 'struct device' lifetime")
+Fixes: 700af3a0a26c ("dmaengine: idxd: add 'struct idxd_dev' as wrapper for conf_dev")
+Fixes: de5819b99489 ("dmaengine: idxd: track enabled workqueues in bitmap")
+Fixes: b0325aefd398 ("dmaengine: idxd: add WQ operation cap restriction support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-2-xueshuai@linux.alibaba.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/displayport.c |   19 +++++++++++--------
- drivers/usb/typec/ucsi/ucsi.c        |   34 ++++++++++++++++++++++++++++++++++
- drivers/usb/typec/ucsi/ucsi.h        |    2 ++
- 3 files changed, 47 insertions(+), 8 deletions(-)
+ drivers/dma/idxd/init.c |   30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -54,7 +54,8 @@ static int ucsi_displayport_enter(struct
- 	u8 cur = 0;
- 	int ret;
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -169,8 +169,8 @@ static int idxd_setup_wqs(struct idxd_de
  
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
- 
- 	if (!dp->override && dp->initialized) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
-@@ -100,7 +101,7 @@ static int ucsi_displayport_enter(struct
- 	schedule_work(&dp->work);
- 	ret = 0;
- err_unlock:
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
- 
- 	return ret;
- }
-@@ -112,7 +113,8 @@ static int ucsi_displayport_exit(struct
- 	u64 command;
- 	int ret = 0;
- 
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
- 
- 	if (!dp->override) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
-@@ -144,7 +146,7 @@ static int ucsi_displayport_exit(struct
- 	schedule_work(&dp->work);
- 
- out_unlock:
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
- 
- 	return ret;
- }
-@@ -202,20 +204,21 @@ static int ucsi_displayport_vdm(struct t
- 	int cmd = PD_VDO_CMD(header);
- 	int svdm_version;
- 
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
- 
- 	if (!dp->override && dp->initialized) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
- 
- 		dev_warn(&p->dev,
- 			 "firmware doesn't support alternate mode overriding\n");
--		mutex_unlock(&dp->con->lock);
-+		ucsi_con_mutex_unlock(dp->con);
- 		return -EOPNOTSUPP;
+ 	idxd->wq_enable_map = bitmap_zalloc_node(idxd->max_wqs, GFP_KERNEL, dev_to_node(dev));
+ 	if (!idxd->wq_enable_map) {
+-		kfree(idxd->wqs);
+-		return -ENOMEM;
++		rc = -ENOMEM;
++		goto err_bitmap;
  	}
  
- 	svdm_version = typec_altmode_get_svdm_version(alt);
- 	if (svdm_version < 0) {
--		mutex_unlock(&dp->con->lock);
-+		ucsi_con_mutex_unlock(dp->con);
- 		return svdm_version;
- 	}
+ 	for (i = 0; i < idxd->max_wqs; i++) {
+@@ -189,10 +189,8 @@ static int idxd_setup_wqs(struct idxd_de
+ 		conf_dev->bus = &dsa_bus_type;
+ 		conf_dev->type = &idxd_wq_device_type;
+ 		rc = dev_set_name(conf_dev, "wq%d.%d", idxd->id, wq->id);
+-		if (rc < 0) {
+-			put_device(conf_dev);
++		if (rc < 0)
+ 			goto err;
+-		}
  
-@@ -259,7 +262,7 @@ static int ucsi_displayport_vdm(struct t
- 		break;
- 	}
- 
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
+ 		mutex_init(&wq->wq_lock);
+ 		init_waitqueue_head(&wq->err_queue);
+@@ -203,7 +201,6 @@ static int idxd_setup_wqs(struct idxd_de
+ 		wq->enqcmds_retries = IDXD_ENQCMDS_RETRIES;
+ 		wq->wqcfg = kzalloc_node(idxd->wqcfg_size, GFP_KERNEL, dev_to_node(dev));
+ 		if (!wq->wqcfg) {
+-			put_device(conf_dev);
+ 			rc = -ENOMEM;
+ 			goto err;
+ 		}
+@@ -211,9 +208,8 @@ static int idxd_setup_wqs(struct idxd_de
+ 		if (idxd->hw.wq_cap.op_config) {
+ 			wq->opcap_bmap = bitmap_zalloc(IDXD_MAX_OPCAP_BITS, GFP_KERNEL);
+ 			if (!wq->opcap_bmap) {
+-				put_device(conf_dev);
+ 				rc = -ENOMEM;
+-				goto err;
++				goto err_opcap_bmap;
+ 			}
+ 			bitmap_copy(wq->opcap_bmap, idxd->opcap_bmap, IDXD_MAX_OPCAP_BITS);
+ 		}
+@@ -224,12 +220,28 @@ static int idxd_setup_wqs(struct idxd_de
  
  	return 0;
+ 
+- err:
++err_opcap_bmap:
++	kfree(wq->wqcfg);
++
++err:
++	put_device(conf_dev);
++	kfree(wq);
++
+ 	while (--i >= 0) {
+ 		wq = idxd->wqs[i];
++		if (idxd->hw.wq_cap.op_config)
++			bitmap_free(wq->opcap_bmap);
++		kfree(wq->wqcfg);
+ 		conf_dev = wq_confdev(wq);
+ 		put_device(conf_dev);
++		kfree(wq);
++
+ 	}
++	bitmap_free(idxd->wq_enable_map);
++
++err_bitmap:
++	kfree(idxd->wqs);
++
+ 	return rc;
  }
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1904,6 +1904,40 @@ void ucsi_set_drvdata(struct ucsi *ucsi,
- EXPORT_SYMBOL_GPL(ucsi_set_drvdata);
- 
- /**
-+ * ucsi_con_mutex_lock - Acquire the connector mutex
-+ * @con: The connector interface to lock
-+ *
-+ * Returns true on success, false if the connector is disconnected
-+ */
-+bool ucsi_con_mutex_lock(struct ucsi_connector *con)
-+{
-+	bool mutex_locked = false;
-+	bool connected = true;
-+
-+	while (connected && !mutex_locked) {
-+		mutex_locked = mutex_trylock(&con->lock) != 0;
-+		connected = con->status.flags & UCSI_CONSTAT_CONNECTED;
-+		if (connected && !mutex_locked)
-+			msleep(20);
-+	}
-+
-+	connected = connected && con->partner;
-+	if (!connected && mutex_locked)
-+		mutex_unlock(&con->lock);
-+
-+	return connected;
-+}
-+
-+/**
-+ * ucsi_con_mutex_unlock - Release the connector mutex
-+ * @con: The connector interface to unlock
-+ */
-+void ucsi_con_mutex_unlock(struct ucsi_connector *con)
-+{
-+	mutex_unlock(&con->lock);
-+}
-+
-+/**
-  * ucsi_create - Allocate UCSI instance
-  * @dev: Device interface to the PPM (Platform Policy Manager)
-  * @ops: I/O routines
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -91,6 +91,8 @@ int ucsi_register(struct ucsi *ucsi);
- void ucsi_unregister(struct ucsi *ucsi);
- void *ucsi_get_drvdata(struct ucsi *ucsi);
- void ucsi_set_drvdata(struct ucsi *ucsi, void *data);
-+bool ucsi_con_mutex_lock(struct ucsi_connector *con);
-+void ucsi_con_mutex_unlock(struct ucsi_connector *con);
- 
- void ucsi_connector_change(struct ucsi *ucsi, u8 num);
  
 
 
