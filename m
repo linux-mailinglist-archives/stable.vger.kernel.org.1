@@ -1,271 +1,341 @@
-Return-Path: <stable+bounces-144994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746C5ABCC29
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 03:19:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 230A0ABCCDB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 04:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 667F97AB11E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 01:18:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AE31886F85
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 02:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD19E253F31;
-	Tue, 20 May 2025 01:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925152561B3;
+	Tue, 20 May 2025 02:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qwZcIU8L"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="h0ccmubo"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2082.outbound.protection.outlook.com [40.107.237.82])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazolkn19012056.outbound.protection.outlook.com [52.103.2.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B641925AB;
-	Tue, 20 May 2025 01:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5745222068B;
+	Tue, 20 May 2025 02:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.2.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747703989; cv=fail; b=mOKVvler+tX5TNgi19KLsW4fZs0THVJLltMtUCQ18vLkd68KwRbCNKewht0KPYpTA7rV8hmDd4peXhUjAo9F+MP5jZqXyb7iy+kVK0HgMxLuBSawoy3/GXLZd3ILvbjdDa3hnbVFj3ZY4Q0gcarYbBZyfz7yQjDJIQL5Zx+ScqE=
+	t=1747706873; cv=fail; b=UIY9+h3i/dA3OUdBjuXZy0h2EEdD0gdosWxeRrFgLbjn5j4CW4l4i0tOA9f04WVK5jRiy53igQ1ikbUF9XIKb+9W5WJnuB2lE4Q49bk+YLCkM1DuQQNnCl98okpbzZkljs/U680VKP59Q2oAn+wJuzU8wYDk5H1DlkQEiY6tmeA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747703989; c=relaxed/simple;
-	bh=fdkWfo59WaNAr1GMvV2UPaZ9oJGlpc5tiU/LNamaVqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=QF1+sfehedzKj0YcBjsS2yCxje+voXVMMj2CbnqY+//dlpZe5gs08bkCt3t0CJBsrdWloMf1MMYyvsi7b3WYMLdf5e5+KxcoIsQhkd7eOY40Ol72qam/CNq7FFggrl9fZHcDr2ml3v1NzBLn95Gp8YvVCiYi8Zc5VS/YzKpFo7Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qwZcIU8L; arc=fail smtp.client-ip=40.107.237.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1747706873; c=relaxed/simple;
+	bh=9FAcd9wuxmJgfR5XZQFs9dQ/SANyw22bRcM+GZLVHG4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rEn990M1+RyU95kznANW/f7MU9elzlsL+oiv12NLNOcq9hHOeMufbcalC93WBRNLvk0IHWnSWw9s2QDfZ23j7H0nMPiQ2OFkELN5WgXP4uLx2pI9X1ToarDZn0n2v6TBy3NhXwsKopygp2RLQXzlnixGiOSekk5LoxrwEEj1QgY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=h0ccmubo; arc=fail smtp.client-ip=52.103.2.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tLfM0vQhbaxFYBs2N705sh2aeUF0tZ/cyP1OY/SQdX5et6E+WZ3mF08nlac4JY1q7kuYyP8BvwxRq/rZOG9khYIfEg7kf3AiHyoyBeX3KK5ij25q5hj7+PDRVpnOGOY/4bCzm5dBetB2yJjX7lTVxuHFVTTK1Mbc48hIr5SSv2d6DTKrI2FnFwTlfoXoKkVjKHjGurn0LcnlhvHjZ/nGEm+tb3uxML0hACAXuIU/PB6bMOrXIkle0MGFv7QIhvSWZ/w23km1vBQ9gsVsdQkL362LjD/1Lo9DHY4hxUhdSJ6nw/4oHdG7I4hGO6OCoosRXGZXdIEs5X9ATyzm5S/8lA==
+ b=mJKbPG/AEPW+JaIkhLQPrfm+8e+hUo/PYDqGtWDCIj789zxx7P8qKRtOZHHOlAVHf7JEshXlA+J/3p9JagJq7pPh+9/7C+h5in5JL1qcJHI8fjkO0KfaTMvmZD7IsdhWygDkXYfOv2CYQadhGt73/4Gyh0A20GJ7BofdyWgliETMtIN+5aGGlEQHMmemxJ5tHdfFPDFgMJy+0axXh1hfvjAvIajNJsJfkeP3zeEz0v7dL1QWelDzqdeK+sgSXPcF/pzltRtCoVtfqdGQeaHOXrdhI1yi+dmI/gJDfjHxyoMVDGSvhLAXkQ84vps6Olbvm2qBFmzkIx2P5Q7dvqk4FQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O211HpBIUG+JouU52oJ91P2YHpVbPjvYBuwpwHzyQ3Y=;
- b=ksuZE6Zdnj+dkECyIvjuWgsbVsFVdXCNFlJYA9ecn8pl11GfcPo2GoiOTGPWW29YmYn6e5sRK5LzBZG1QBxn7czT9I7wnW2FxrK+A0AggZiv2/ILVYklQbiOBzPq+8a/zIiD2on3R7iEyURws2ze8lEaO3DKpltrmWplDley/+TGgPjGVLcdomSjD3hWsP60DqEi0tyG+930sy33jxlFkDDDvpsW+uoQhsDK9/sId5/ySWo7lR5Uo3nZua6tkmHd5tEvxu2frG55CM54z9xPnPhRrVavRavkaOeG8lASsFWGGByR65Bo7VxTEut8NmgAie+OYZtW+/kgAFGI9kIYsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=PqSMrRQTONs75Obmb8JJkTRHESiDIi6In7LCNp3+tk0=;
+ b=u6iMoBpiRHX5jkISeVtgJaUVGaRtB19ltMatZetQ3jYfi3pgR5AXW3KRGhzVbCe88lk18s7gm32ci9kroTAMBrVFD+/uGobgtqOkJPNRgP2fOCfdY00NSbFwHhnaK4hZBYywI3sYBuviYjPpdjwe2c+ONfliQ7tFRJt8vXkGOQ0WtXB6/5AtCZnMMhoehhbXcirrNX84U0TNL5QHseyXKsVf9MgCbuDhr1OtLIY65IPAsPA1S2/j5fvSYdUU9YZRRkGSwAvmWeS5BjTjSkiwf8TAEjaFOTL+XIyXT/JtyrqRdQabWL1vLHF/Sx5T+sD78mMIFarFgP/jaUV2LzOwDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O211HpBIUG+JouU52oJ91P2YHpVbPjvYBuwpwHzyQ3Y=;
- b=qwZcIU8L3V63a90c1lPXsr9pQhw5ylt+Lvt/KM8shDGuaQ11oo2XCvRHkRkWOGdz9lkrQfgeFjT6Uxn/HXrpD2JaqyYySMqHEKhouHIkGfxJ63nOr7lX7kNtqWx9hb2YNs02+9tgV8LLECpSVN/zWyxu1MUhCCAB6MxYyLgpxcU+kXcykwZRiADAJTXmLJg1e5x1Y7VFJRlD3sF6G8/5rcz8lGAZw6jf/LhfD/aIiFQMGCNO96UyaTWpEMfav2SHsyc7ZU/GNinB6evdW0lMcnssDopI9r8d5xQX0dWasmHysglk3df3x7l8n3o4KLZe8WJifG1aH4ITdPLs5vgUXw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB4186.namprd12.prod.outlook.com (2603:10b6:5:21b::11)
- by SJ1PR12MB6028.namprd12.prod.outlook.com (2603:10b6:a03:489::8) with
+ bh=PqSMrRQTONs75Obmb8JJkTRHESiDIi6In7LCNp3+tk0=;
+ b=h0ccmubosUlGIIGRCTqPH1cRhln86K3+hv605csrYDDFJHwEObChRSgjSRPjyCKtzx6NryFw48b9RkeKJmMHNsxlLTLusS+hvuvmANX1skksWZhGVkYrLps1+aG+RbWWKhOI8FWZ4TJJNG1lzqloCDoqzblzr86JXTp0Nv4rkAbLfGm4H7hfagF1MJV/3YGMIRWRViQ4BkLcwQHByLpxsUsDmcELQc4DnW0sb+m/EDidCW5Xf1W0Q2ns/bqUiocZaSvCkZbUYi6m4XJx8+q3A+87JWsinG1yZC3Q6u7uXS6WqYRmkYV9ZoYK0T4nEgiqMXyejHFnJjQK21wyw1mF8g==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by CH2PR02MB6646.namprd02.prod.outlook.com (2603:10b6:610:a4::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Tue, 20 May
- 2025 01:19:44 +0000
-Received: from DM6PR12MB4186.namprd12.prod.outlook.com
- ([fe80::af59:1fd0:6ccf:2086]) by DM6PR12MB4186.namprd12.prod.outlook.com
- ([fe80::af59:1fd0:6ccf:2086%4]) with mapi id 15.20.8746.030; Tue, 20 May 2025
- 01:19:44 +0000
-From: Tushar Dave <tdave@nvidia.com>
-To: joro@8bytes.org,
-	will@kernel.org,
-	robin.murphy@arm.com,
-	kevin.tian@intel.com,
-	jgg@nvidia.com,
-	yi.l.liu@intel.com,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: linux-pci@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v4 rc] iommu: Skip PASID validation for devices without PASID capability
-Date: Mon, 19 May 2025 18:19:37 -0700
-Message-Id: <20250520011937.3230557-1-tdave@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0284.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::19) To DM6PR12MB4186.namprd12.prod.outlook.com
- (2603:10b6:5:21b::11)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.16; Tue, 20 May
+ 2025 02:07:48 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8722.027; Tue, 20 May 2025
+ 02:07:48 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+CC: Saurabh Singh Sengar <ssengar@microsoft.com>, KY Srinivasan
+	<kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	"deller@gmx.de" <deller@gmx.de>, "javierm@redhat.com" <javierm@redhat.com>,
+	"arnd@arndb.de" <arnd@arndb.de>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [EXTERNAL] [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB
+ for Hyper-V guests
+Thread-Topic: [EXTERNAL] [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB
+ for Hyper-V guests
+Thread-Index:
+ AQHbxr50JRYwwviVjkKTy5BtFNRPi7PWPWqAgACTq0CAAC7cgIAAKlIwgAMFvACAAJVKIA==
+Date: Tue, 20 May 2025 02:07:48 +0000
+Message-ID:
+ <SN6PR02MB4157FD9AB9114C8DD6FF4B82D49FA@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20250516235820.15356-1-mhklinux@outlook.com>
+ <KUZP153MB144472E667B0C1A421B49285BE92A@KUZP153MB1444.APCP153.PROD.OUTLOOK.COM>
+ <SN6PR02MB41575C18EA832E640484A02CD492A@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <20250517161407.GA30678@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <SN6PR02MB41574848C3351DD1673A2855D492A@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <20250519165454.GA11708@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To:
+ <20250519165454.GA11708@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|CH2PR02MB6646:EE_
+x-ms-office365-filtering-correlation-id: 8aa4a33d-df62-4901-c2e8-08dd97431e6e
+x-ms-exchange-slblob-mailprops:
+ qdrM8TqeFBu6m38okHpoNWln7NSyvc1VWe1hxfoIPGRtTkjcfRf1f6PjRxR3k6N5ZVQrqksfKaQtDjsZf+fKAg3gC7dzU8aS2a/l7aJduvqtPYuw7cX8Pcv0h682oO3FWpo+K2PITwogY1nIekWtpQo9grA5VU7JqTm6DG5rZgv/tJzgdL75a9PRrdQcG+DgtYXlyM+fFORPthLq0o0XwnaKEG+YX2HCzmK9KqLRYQW4qorzLqvPF/FRZo/tDGrICMo6IcjfWj/Ouu0pxaGCeA/iJTOFjp2p924i1BEB/otVasuoznv1EBSDLgk7/E+SwVbq2LP8F5edAXVLcFydIJ5ThD1t22ZTrrXn4RqbFNXlu2GpLOA6G9T+Xq9ilHFb7aDpEqt1VVwi/H+fJxHXL1AX+Zwh6FJKd+0RqgG56fD7om5Kv3ouoJzykkFd1STfIqlur60o+SiVUPRvCZ9dwseLWOJVOwhXD+V1IQXqfjcKASu+Ml4KHp5xcHq9P4yVbC1yTmTuBqocw3suqT3mM4IL5y3rBCzvHKq24acn4dE6jiO0awETD86PZU3i7Z5STAV1SNsFTVhGIWP1SXi+1n9pDBmRu9GbY9Y8r4PLyWOIRrZB2dsjDUtHF0PRyuIC7SvshoPuisiSsJgO3j2U1zXFDVDZUQFhfh6u48U7Xl41MVZMsAzik/e6iFCoEKjSOjTXLrVSVCE5xpfUljBBYjzlIMgSPSwIgJrrnMMD4xpXLwOaG0+avlaePlXLDoV4L2V7kdTPueOqG0BBiZpD82I1VOzihdT1
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|461199028|41001999006|15080799009|19110799006|8060799009|8062599006|4302099013|3412199025|440099028|102099032|10035399007|34005399003|56899033|1602099012;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?p8cjW23vSDrJs/vT1kwqgVwDKf1mToAFcjsqPLG2QREosKzX0VtFnZ883dR3?=
+ =?us-ascii?Q?zdb+uV0bLi0BHfd1Cpppz5mLY8UkWsjay/g2D3XttzQJ9cKo5dF7kSguR6UE?=
+ =?us-ascii?Q?2EB3ng7ZsspJMm94fRLcmykFmoeXc1LRqAWk8zXurpYapcTINbRw5dk8J7tJ?=
+ =?us-ascii?Q?6RwGIC97ffQussNjmpPFS0lzjXr8fH0Gb9WnklZxW8TUaVUNUqfYiQjvOREz?=
+ =?us-ascii?Q?mgBxSspWGHsBGPgRAW8hpzLZvwgYGUml+oVejTpFG8WEVCrW6yl+O/NoJ6vZ?=
+ =?us-ascii?Q?lGW7XGbjxh72KChM3mGbPiRbNZbYpz6rboj9FXGv5tmd+Q8+a5dOmgrFhe1h?=
+ =?us-ascii?Q?nPEJLBMasg715HkbHPKRhvcfSE9/BnqrKdVsa/HBmSWEVbJ71qTjDrQuvQfI?=
+ =?us-ascii?Q?MOeFbtV/4XgveDYFxr9XmJ3kNtu5LTMoe7wWV6HrFTRzSsfI/AetfTCPEdRS?=
+ =?us-ascii?Q?9O7SlkVwQImQhjmao7OVwiHDKCFSlx5fDzLk5LWszgaGuKMMLP2cSIy+QEDS?=
+ =?us-ascii?Q?fqV+lShLLLE49aeSWPF9pI12TUNAlSCub8EKS0s3P3JKHAOhZnR1ktCeBwsK?=
+ =?us-ascii?Q?aBjWorIh1sAzFWIWpfE5saCSj7HMgzK6AEhpCASkBDVDuwe+7ByHCs/klGAO?=
+ =?us-ascii?Q?GCSluh5Ayg0z0oY2uP7B6BsTJC/1ip1zSY1Pd/Gm8WHteQ6/2QgXCNUPkNtv?=
+ =?us-ascii?Q?VXhsw6R1D6d6G/VXBpM2USE3klwfNvWEmCvvRCWmg7fmPb8gq2NTdTpKkhEp?=
+ =?us-ascii?Q?19v0lr3Q11/4cI7bpsHinftwEvkzKzldjrCH7SYOnf7eqAUcQf/RsqquleCe?=
+ =?us-ascii?Q?RSvHrmKURt8LZjk8bm4pCvqyW+uQuc1sMLXLzCY6a6R5YZHr9Of5pTFHgG+v?=
+ =?us-ascii?Q?9YjCkRhdz9ZCsB+LhUVBj7wpW7UyT1dwvRqgCj5gtgowd8pmqKF+oyN6Hmzi?=
+ =?us-ascii?Q?/IZVh7MH001qcl/BHT+4aLKdtK5GLvM9DCss4sd1ighYQiIngqGisdl8H8Zb?=
+ =?us-ascii?Q?q0SUub6K9BFUFIKVAI18XU02xSKCu2bgG/qtqer5imcNFPbolzrXNiR9c2qi?=
+ =?us-ascii?Q?0mOHwsix6tHM+H2dtl2NinjsuuVSX+gzdkW4WfHwSuLKjhFWJ2A4Jp2BatTs?=
+ =?us-ascii?Q?d+TQxWVJlroBdyTMd7YsVwHx2LxAurPyPT8qyMved8l7JELSGrqhy0vSkz+X?=
+ =?us-ascii?Q?85j/v8MmZftdJlrUG+PwoOgvX+GhtcmRssCr9rG+SEvgQJA3f27Sretas+rw?=
+ =?us-ascii?Q?WkF1dHuLLaKSWBGDGrhD?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?h36d/GvOL2wmZxE93c/RaPdRY8/jeGsgGng68W5gk8P9Ol8eE7FmVIAFuubJ?=
+ =?us-ascii?Q?G6ERJ4K1AN5pJG8azFahWeNb9rxqJlCFL7/bZWT1Jow6YQ06exbKQPxoIPaa?=
+ =?us-ascii?Q?wfieQod4XI2HfgMprc72q29j6r4JWPJ84BvB4Yt02m9oVh0V3KaTssk5rM0M?=
+ =?us-ascii?Q?fZRGxt12/6ITioWU5cgs8u9MEQSsxZOZIFfwg615Z9RfknvxQWNXfj0Qe5y+?=
+ =?us-ascii?Q?14mhnCv1/T3Nvipm9eMMpGMcudawWvyIn45rpVDYv41JCujLIowMVU0HaJR2?=
+ =?us-ascii?Q?IlhsR64ln7br6QTLw2j2NGkbWUB8GQ6FbQ64YmaMTAq/LXFeBhu/neQt6xcc?=
+ =?us-ascii?Q?IRA+tQ5H0EZW7ilz4POd+nd/OgiBViyvhzCqtEMBWJgxyXnHN0SWoPB4L7Pc?=
+ =?us-ascii?Q?Jdj4f+719CE/I83YxiMGUkg34Yz8JvLANkDfGMxB9otQXNktZ+Zn13jb15bN?=
+ =?us-ascii?Q?2t+rDij2bmhZ1hcYpdIq9RXOB85baJ+epcwmhp957CPzbESDbloU2/Nzou8i?=
+ =?us-ascii?Q?ZiGqRKKDBjCPmYpecGuUlfTSPEkMNdPR2zWNwCa+pL7L8J13SAFAWnN3cNVW?=
+ =?us-ascii?Q?jPrFG74ExmeAzPd6EjimuB8peEG6g5pXZQ6vhMt3GR8vFEELjiODUgwl3Hwt?=
+ =?us-ascii?Q?FzcxA/bZf7AV0ylr8WRJ3oynh0YDQPZFdfu/X6YWr8nCpsOD6uWzfKvFowUI?=
+ =?us-ascii?Q?EYp2e2x2Pjb7IzRJJiMZKyHo3PyzPpAJctwy5MaQUFewQJlayQEG3NdmsWm9?=
+ =?us-ascii?Q?LbQ4QtNenP6HAYOKRiBfzZ1iFDmxdf4oontFk6yULRD8oh1axLpK5nTAAvsX?=
+ =?us-ascii?Q?lCNL84uFkqRAQ1QwMHHaklcHvck3zARtA5AQ/H/f3IgZLYdU/1dBacfP569y?=
+ =?us-ascii?Q?LPbzCOph/9gzBFvfOzgbNnBSQdvVihv+HbtVOodMOEKaAP9H72VZOwTlAGRd?=
+ =?us-ascii?Q?M8yd5s9ZuO1jBBtWmyyz/ixv+4f+b0nqiqyYDVc9zkO41yWUsxpswah7AKvI?=
+ =?us-ascii?Q?kNrNY0wdgr1HSAmqRGt21JFODVsR1z8T2vBIKtfcVUGqSN5gn5hiZ7aoaq9C?=
+ =?us-ascii?Q?vyIkn/NSchWJpCOeWLhPeXwIIZ6wfLKzgbrJDcuhX1i8e8LnrT9X/WidFV1r?=
+ =?us-ascii?Q?3zEsuxi8sF84aD3ra6ig5pIz2c9u9rNI60rUNQWh8eL8na/KU2HRcVBv7E/j?=
+ =?us-ascii?Q?/CUYJPMJ1zsAhGq6Oqz4qa8lp6D7o5Ba6x8Vw6k1jTLaJ6Qm3/M2SVs0X3U?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4186:EE_|SJ1PR12MB6028:EE_
-X-MS-Office365-Filtering-Correlation-Id: 545e8339-dad8-41d7-d0cc-08dd973c6740
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dSjru6yPVXMrY500kGo0IjiNamtdogFKkvkBWFkVjsMJlBq78v0C6a4ROP1Z?=
- =?us-ascii?Q?68LUc1bMlngi2M5pEJodVxOLjjKjUK3Xy2dyQaGPJCHMZ6Pn8jJ5WeUveHtx?=
- =?us-ascii?Q?AdAbvKkghDCawDUKhsYUqU+xpJCrIZ5cgQRUUNfoKc4Tnu+zfVtELHHtInYC?=
- =?us-ascii?Q?+1G3Ut/VvDEbGii30K9NbhI2OURL3NJSi17U5oTvtKW9KwWYLYOV771kT0Zp?=
- =?us-ascii?Q?lo9p7FXy3rurgytmMPXRS9OSX0n9QCidcT+U+8KTK8iEqbO4UvHp77afo9uj?=
- =?us-ascii?Q?EkOFY2ka63Rbx/gTV5vbMv+iuSXpln10KDr6SDdZyiouIX+Wg1sPnb4X+NIm?=
- =?us-ascii?Q?Mgrv6I+ksehgv9rYIshj+rlZ94pukcHb7GOuCZCsYtKxGb1ufZFHCqqDQA8S?=
- =?us-ascii?Q?0rw4+DubmWfXbYknDIzSjE3qEmeOYnrRDnOqwRBlUXcVwfQC1jlm2db8Zjlw?=
- =?us-ascii?Q?bjVZEQHGmwyE8zqUvhhSR0bO6NorHp3B9Gjai8ARBVqLgwaM4+uoJgd0IAID?=
- =?us-ascii?Q?+Qze7cE8fCLjyUHfgjzOcz4dSEwEcd4P3XIT4Ioq22++Gmrg+cGgkl7hdE54?=
- =?us-ascii?Q?f0aeY0igyTol7JP6JdgjPhHIkTwQ2Qi+1Nwg5E8gpLrYoYuGBq1u7ehrH34V?=
- =?us-ascii?Q?1kKyWQVA9LiJDVuI3pyxq7uwfoO+0J4lokFUeHucsWF79T9VFcyZptkbCoeS?=
- =?us-ascii?Q?pih1LcYTFwU+8I7AJKmGVA1h9aHwQ3vQgrc2EMI27YEeUXL/T3DIqTEAhItB?=
- =?us-ascii?Q?Mk2xdRtOcWKQJYFCbgzIOuq+m2Su2iFP5fppbEANrVx6wWOv6l75Q3c7uFDg?=
- =?us-ascii?Q?d7nx20BZW+5iA03CMmDIAOxhGwKU6sak2umHoMxUl5RnxYdRVvJ92FhkkPk5?=
- =?us-ascii?Q?ixcdk/MVEmIZBkC+KdseXjSCWVclVQtboP3vnrAmkUUKlFt4stpOrSA2qXaG?=
- =?us-ascii?Q?f0oI3zDw7Ff2cW6CQvvBwLcL5Jrn/S0Zfy/ly3vL6dHSBf6dLAFt3gNWyDBs?=
- =?us-ascii?Q?yG+5HSdRYD2AtxZaCTUon1kHgxUbGN0ZPjb7WYB+qhE1wz3Ll0VwcK51uA9w?=
- =?us-ascii?Q?1NzAdQyZtr5dRU7IQ7lFa8iHjsezYDF4+Ro4PAw40+LrKff3HfUQxucj8AJn?=
- =?us-ascii?Q?37Xw1262Q9g5OWFl178nXGycBGCBshQ78GAXXFlHy3DW2ADWVlqwMGH9GGbx?=
- =?us-ascii?Q?fgt3B+GaIhlU1KPZM1e9qcoaEU8XTKNkwQ4p/R88NpBoCGw6LzzPyGoNdv9v?=
- =?us-ascii?Q?murrWqUpXxS9Bp271MtHoUIzd9N8wbMBA0BX8ZWQp7lmd6axpg60EzPgxENm?=
- =?us-ascii?Q?4jkAXqh7Hf3fze2Eex5Svt3YSEElLY2Kd7EbG03iAVUDKbhF5586YuaHqzKz?=
- =?us-ascii?Q?jEgPskjQTSKZ0MljMO+0hXCvOWhh/CfGJwSYhm2l8cPYyR9NfgWI37EOZy+w?=
- =?us-ascii?Q?5sCQXGg9Qks=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4186.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nzxA8jRWaXt31IIyfPfbNpjG+7g3VWHTZ4q4zotdHUkmLwMnEf9xytLlWVuK?=
- =?us-ascii?Q?h+Yrv1BpggYXJ5GItyTBiufCJ7ffdwZtjyiYiU7/0P+6J7t0oykIbDcsJ93U?=
- =?us-ascii?Q?uB1p/WnpJVzw+lXfp0W4i6JQBOZIkFLvyrOowbkbUwQuv4dobL4PFMdQubdM?=
- =?us-ascii?Q?lMwtsed6R9gbCZVQd8BaXxZeeM+MEVvZ7e2ghPhr/PWtQ1rG/x7jKOwCdRiU?=
- =?us-ascii?Q?DMrz5e3fsZE0TqQRtpCJmN8vxAKU/C3GQIyrvLBG02ueoHAg0640gzAOVr2B?=
- =?us-ascii?Q?15vz8UY8mmVp0nOMN7maajWlyUc92b7bpTrw3j2Xw3OAQA5ofYF81IR5beDR?=
- =?us-ascii?Q?JSpi0Lw22nipHtveneJEwIQOrbEmfv6JT0YYxWXSsYO0bo1XafH+ag3xipMg?=
- =?us-ascii?Q?8SL6t5+s+mmvR8bdW8uxudaqAFnjG30OAR8OvftXTrc8JdAoO/trU5Em0vb0?=
- =?us-ascii?Q?CDkSXVJeTEFlYHYQlBZQFl8UHj9+3MpaDyxCw1Xccmmi7+0DZKo0Z9zaqmV6?=
- =?us-ascii?Q?QpO0UvauNLd47vHmIxuJqag9P7t0f58lXYXDUlqtr1+HDw/du64PsIWt7YqQ?=
- =?us-ascii?Q?n1QZDCr69qFD1dfmcmK7BRRI9gtJhq5Ez6HseMHbr6OfYFn85M7dn3YWTzLg?=
- =?us-ascii?Q?5H9dfU57u+m6VJw1CO5bE7JgozcwmWsZSuEM1/+H0v/AKEHTHTq0ZxQGSiwa?=
- =?us-ascii?Q?UfXcJLU+TOa8+HhTX1Nsro0A2ZpNWMJOJULbLNZ+2Bw+z6VuwIrkLLZLYox2?=
- =?us-ascii?Q?PkHccl61ptT6OyAOVnZUmCsupzyyrnuteQS0KeVxvlJh+R0+7Fm7UMsmAuOs?=
- =?us-ascii?Q?wiVDYwL2YqH68iPp56ugCAuVYChgDYn+a55+YRgDqY7y6Df0eBKWCuImv8Fp?=
- =?us-ascii?Q?ZinjoQ+fT6o6VzIhRhTr3hp04ERM+2NGAi2rMSpJok+qa00bOcu/Xxd6n/Ka?=
- =?us-ascii?Q?5pcGkAL6/WXe9y1BvoKtgEDFqxIRu2NjJumn73qJIpYraBQiskfvkxTzhJJk?=
- =?us-ascii?Q?k4C7RGoFAx0WDQ3/OZM7dwPj0mJuEcJzYTgJQrYDQ8jwlDvgLLmgnFyItOrQ?=
- =?us-ascii?Q?bu/mlcExW18HNPvM8nqS2npAviOzDieTuNC87duCT3VGmVGDWphBp+ZWqMTJ?=
- =?us-ascii?Q?awdjCThZTgIbRZcbe96iAtdZnTrBo+aOQJKvxik+DU+ws3mNh4DVUSlS6gYN?=
- =?us-ascii?Q?2sv7q77l1xY23nngD2Tx9lPA1GxZkxFPUJrjG3wBby7f7Kar7u+mxDcevi4c?=
- =?us-ascii?Q?4GIMSSPxIh16DK3vBx9Oxga35r4FvTeG4UfQc8WnLe4C3/GbqWpoh0o5Hy1t?=
- =?us-ascii?Q?YI1EdcwAjBJGsyH6F506ypg9XzSeB50GylupP0X22tcoCJSyNM7OpLXzGMeP?=
- =?us-ascii?Q?nsUpJQdqmxYUYUE7lynx1mReZfhvAOKV1qlXc4DbqwWTMb+WudqiW5LDGRNs?=
- =?us-ascii?Q?H8GAV0ToV4qYZIHakcPKlvDZbl/3Hsbsy9rNmC1mW5TvfiJwFfrDAaEh+Eqk?=
- =?us-ascii?Q?fSdpON3noD0XZhUlm+cmn9Ghq+VEdO1gmdAZ4GBdXMHoUVOpJt6P1TctVTKx?=
- =?us-ascii?Q?sjYyOW4YLOXtiDR+5PESSjTT6xOXhuhEqz2v1cO0?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 545e8339-dad8-41d7-d0cc-08dd973c6740
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4186.namprd12.prod.outlook.com
+X-OriginatorOrg: outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2025 01:19:44.4315
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8aa4a33d-df62-4901-c2e8-08dd97431e6e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 May 2025 02:07:48.5569
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N+UwhjL6DnJ+e44FniYjdWQbQw2vFJD2o4BxTnKnQ2HWUncEWnJNRvCeyRaUvng93TGy2KzhE2J2mTHw/f7QGA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6028
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6646
 
-Generally PASID support requires ACS settings that usually create
-single device groups, but there are some niche cases where we can get
-multi-device groups and still have working PASID support. The primary
-issue is that PCI switches are not required to treat PASID tagged TLPs
-specially so appropriate ACS settings are required to route all TLPs to
-the host bridge if PASID is going to work properly.
+From: Saurabh Singh Sengar <ssengar@linux.microsoft.com> Sent: Monday, May =
+19, 2025 9:55 AM
+>=20
+> On Sat, May 17, 2025 at 06:47:22PM +0000, Michael Kelley wrote:
+> > From: Saurabh Singh Sengar <ssengar@linux.microsoft.com> Sent: Saturday=
+, May 17, 2025 9:14 AM
+> > >
+> > > On Sat, May 17, 2025 at 01:34:20PM +0000, Michael Kelley wrote:
+> > > > From: Saurabh Singh Sengar <ssengar@microsoft.com> Sent: Friday, Ma=
+y 16, 2025 9:38 PM
+> > > > >
+> > > > > > From: Michael Kelley <mhklinux@outlook.com>
+> > > > > >
+> > > > > > The Hyper-V host provides guest VMs with a range of MMIO addres=
+ses that
+> > > > > > guest VMBus drivers can use. The VMBus driver in Linux manages =
+that MMIO
+> > > > > > space, and allocates portions to drivers upon request. As part =
+of managing
+> > > > > > that MMIO space in a Generation 2 VM, the VMBus driver must res=
+erve the
+> > > > > > portion of the MMIO space that Hyper-V has designated for the s=
+ynthetic
+> > > > > > frame buffer, and not allocate this space to VMBus drivers othe=
+r than graphics
+> > > > > > framebuffer drivers. The synthetic frame buffer MMIO area is de=
+scribed by
+> > > > > > the screen_info data structure that is passed to the Linux kern=
+el at boot time,
+> > > > > > so the VMBus driver must access screen_info for Generation 2 VM=
+s. (In
+> > > > > > Generation 1 VMs, the framebuffer MMIO space is communicated to=
+ the
+> > > > > > guest via a PCI pseudo-device, and access to screen_info is not=
+ needed.)
+> > > > > >
+> > > > > > In commit a07b50d80ab6 ("hyperv: avoid dependency on screen_inf=
+o") the
+> > > > > > VMBus driver's access to screen_info is restricted to when CONF=
+IG_SYSFB is
+> > > > > > enabled. CONFIG_SYSFB is typically enabled in kernels built for=
+ Hyper-V by
+> > > > > > virtue of having at least one of CONFIG_FB_EFI, CONFIG_FB_VESA,=
+ or
+> > > > > > CONFIG_SYSFB_SIMPLEFB enabled, so the restriction doesn't usual=
+ly affect
+> > > > > > anything. But it's valid to have none of these enabled, in whic=
+h case
+> > > > > > CONFIG_SYSFB is not enabled, and the VMBus driver is unable to =
+properly
+> > > > > > reserve the framebuffer MMIO space for graphics framebuffer dri=
+vers. The
+> > > > > > framebuffer MMIO space may be assigned to some other VMBus driv=
+er, with
+> > > > > > undefined results. As an example, if a VM is using a PCI pass-t=
+hru NVMe
+> > > > > > controller to host the OS disk, the PCI NVMe controller is prob=
+ed before any
+> > > > > > graphic devices, and the NVMe controller is assigned a portion =
+of the
+> > > > > > framebuffer MMIO space.
+> > > > > > Hyper-V reports an error to Linux during the probe, and the OS =
+disk fails to
+> > > > > > get setup. Then Linux fails to boot in the VM.
+> > > > > >
+> > > > > > Fix this by having CONFIG_HYPERV always select SYSFB. Then the =
+VMBus
+> > > > > > driver in a Gen 2 VM can always reserve the MMIO space for the =
+graphics
+> > > > > > framebuffer driver, and prevent the undefined behavior.
+> > > > >
+> > > > > One question: Shouldn't the SYSFB be selected by actual graphics =
+framebuffer driver
+> > > > > which is expected to use it. With this patch this option will be =
+enabled irrespective
+> > > > > if there is any user for it or not, wondering if we can better op=
+timize it for such systems.
+> > > > >
+> > > >
+> > > > That approach doesn't work. For a cloud-based server, it might make
+> > > > sense to build a kernel image without either of the Hyper-V graphic=
+s
+> > > > framebuffer drivers (DRM_HYPERV or HYPERV_FB) since in that case th=
+e
+> > > > Linux console is the serial console. But the problem could still oc=
+cur
+> > > > where a PCI pass-thru NVMe controller tries to use the MMIO space
+> > > > that Hyper-V intends for the framebuffer. That problem is directly =
+tied
+> > > > to CONFIG_SYSFB because it's the VMBus driver that must treat the
+> > > > framebuffer MMIO space as special. The absence or presence of a
+> > > > framebuffer driver isn't the key factor, though we've been (incorre=
+ctly)
+> > > > relying on the presence of a framebuffer driver to set CONFIG_SYSFB=
+.
+> > > >
+> > >
+> > > Thank you for the clarification. I was concerned because SYSFB is not=
+ currently
+> > > enabled in the OpenHCL kernel, and our goal is to keep the OpenHCL co=
+nfiguration
+> > > as minimal as possible. I haven't yet looked into the details to dete=
+rmine
+> > > whether this might have any impact on the kernel binary size or runti=
+me memory
+> > > usage. I trust this won't affect negatively.
+> > >
+> > > OpenHCL Config Ref:
+> > > https://github.com/microsoft/OHCL-Linux-Kernel/blob/product/hcl-main/=
+6.12/Microsoft/hcl-x64.config
+> > >
+> >
+> > Good point.
+> >
+> > The OpenHCL code tree has commit a07b50d80ab6 that restricts the
+> > screen_info to being available only when CONFIG_SYSFB is enabled.
+> > But since OpenHCL in VTL2 gets its firmware info via OF instead of ACPI=
+,
+> > I'm unsure what the Hyper-V host tells it about available MMIO space,
+> > and whether that space includes MMIO space for a framebuffer. If it
+> > doesn't, then OpenHCL won't have the problem I describe above, and
+> > it won't need CONFIG_SYSFB. This patch could be modified to do
+> >
+> > select SYSFB if !HYPERV_VTL_MODE
+>=20
+> I am worried that this is not very scalable, there could be more such
+> Hyper-V systems in future.
 
-pci_enable_pasid() does check that each device that will use PASID has
-the proper ACS settings to achieve this routing.
+I could see scalability being a problem if there were 20 more such
+Hyper-V systems in the future. But if there are just 2 or 3 more, that
+seems like it would be manageable.
 
-However, no-PASID devices can be combined with PASID capable devices
-within the same topology using non-uniform ACS settings. In this case
-the no-PASID devices may not have strict route to host ACS flags and
-end up being grouped with the PASID devices.
+Regardless, I'm OK with doing this with or without the
+"if !HYPERV_VTL_MODE". I don't think we should just drop this
+entirely. When playing around with various framebuffers drivers
+a few weeks back, I personally encountered the problem of having
+built a kernel that wouldn't boot in an Azure VM with an NVMe OS
+disk. I couldn't figure out why probing the NVMe controller failed.
+It took me an hour to sort out what was happening, and I was
+familiar with the Hyper-V PCI driver. I'd like to prevent such a
+problem from happening to someone else.
 
-This configuration fails to allow use of the PASID within the iommu
-core code which wrongly checks if the no-PASID device supports PASID.
+>=20
+> >
+> > Can you find out what MMIO space Hyper-V provides to VTL2 via OF?
+> > It would make sense if no framebuffer is provided. And maybe
+> > screen_info itself is not set up when VTL2 is loaded, which would
+> > also make adding CONFIG_SYSFB pointless for VTL2.
+>=20
+> I can only see below address range passed for MMIO to VMBus driver:
+> ranges =3D <0x0f 0xf0000000 0x0f 0xf0000000 0x10000000>;
 
-Fix this by ignoring no-PASID devices during the PASID validation. They
-will never issue a PASID TLP anyhow so they can be ignored.
+I'm guessing the above text is what shows up in DT?  I'm not sure
+how to interpret it. In normal guests, Hyper-V offers a "low MMIO"
+range that is below the 4 GiB line, and a "high MMIO" range that
+is just before the 64 GiB line. In a normal guest in Azure, I see the
+MLX driver using 0xfc0000000, which would be just below the 64 GiB
+line, and in the "high MMIO" range. The "0x0f 0xf0000000" in DT might
+be physical address 0xff0000000, which is consistent with the
+"high MMIO" range.  I'm not sure how to interpret the second
+occurrence of "0xf 0xf0000000".  I'm guessing the 0x10000000
+(256 Mib) is the length of the available range, which would also
+make sense.
 
-Fixes: c404f55c26fc ("iommu: Validate the PASID in iommu_attach_device_pasid()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tushar Dave <tdave@nvidia.com>
----
+The framebuffer address is always in the "low MMIO" range. So
+if my interpretation is anywhere close to correct, DT isn't
+specifying any MMIO space for a framebuffer, and there's
+no need for CONFIG_SYSFB in a kernel running in VTL2.
 
-changes in v4:
-- rebase to 6.15-rc7
+What's your preference for how to proceed? Adding CONFIG_SYSFB
+probably *will* increase the kernel code size, but I don't know
+by how much. I can do a measurement.
 
- drivers/iommu/iommu.c | 43 ++++++++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 15 deletions(-)
+Michael
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 4f91a740c15f..9d728800a862 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -3366,10 +3366,12 @@ static int __iommu_set_group_pasid(struct iommu_domain *domain,
- 	int ret;
- 
- 	for_each_group_device(group, device) {
--		ret = domain->ops->set_dev_pasid(domain, device->dev,
--						 pasid, old);
--		if (ret)
--			goto err_revert;
-+		if (device->dev->iommu->max_pasids > 0) {
-+			ret = domain->ops->set_dev_pasid(domain, device->dev,
-+							 pasid, old);
-+			if (ret)
-+				goto err_revert;
-+		}
- 	}
- 
- 	return 0;
-@@ -3379,15 +3381,18 @@ static int __iommu_set_group_pasid(struct iommu_domain *domain,
- 	for_each_group_device(group, device) {
- 		if (device == last_gdev)
- 			break;
--		/*
--		 * If no old domain, undo the succeeded devices/pasid.
--		 * Otherwise, rollback the succeeded devices/pasid to the old
--		 * domain. And it is a driver bug to fail attaching with a
--		 * previously good domain.
--		 */
--		if (!old || WARN_ON(old->ops->set_dev_pasid(old, device->dev,
-+		if (device->dev->iommu->max_pasids > 0) {
-+			/*
-+			 * If no old domain, undo the succeeded devices/pasid.
-+			 * Otherwise, rollback the succeeded devices/pasid to
-+			 * the old domain. And it is a driver bug to fail
-+			 * attaching with a previously good domain.
-+			 */
-+			if (!old ||
-+			    WARN_ON(old->ops->set_dev_pasid(old, device->dev,
- 							    pasid, domain)))
--			iommu_remove_dev_pasid(device->dev, pasid, domain);
-+				iommu_remove_dev_pasid(device->dev, pasid, domain);
-+		}
- 	}
- 	return ret;
- }
-@@ -3398,8 +3403,10 @@ static void __iommu_remove_group_pasid(struct iommu_group *group,
- {
- 	struct group_device *device;
- 
--	for_each_group_device(group, device)
--		iommu_remove_dev_pasid(device->dev, pasid, domain);
-+	for_each_group_device(group, device) {
-+		if (device->dev->iommu->max_pasids > 0)
-+			iommu_remove_dev_pasid(device->dev, pasid, domain);
-+	}
- }
- 
- /*
-@@ -3440,7 +3447,13 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
- 
- 	mutex_lock(&group->mutex);
- 	for_each_group_device(group, device) {
--		if (pasid >= device->dev->iommu->max_pasids) {
-+		/*
-+		 * Skip PASID validation for devices without PASID support
-+		 * (max_pasids = 0). These devices cannot issue transactions
-+		 * with PASID, so they don't affect group's PASID usage.
-+		 */
-+		if ((device->dev->iommu->max_pasids > 0) &&
-+		    (pasid >= device->dev->iommu->max_pasids)) {
- 			ret = -EINVAL;
- 			goto out_unlock;
- 		}
--- 
-2.34.1
-
+>=20
+> I don't think we have any use of scrren_info or framebuffer in OpenHCL.
+>=20
+> - Saurabh
 
