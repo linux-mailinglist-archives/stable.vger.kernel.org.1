@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEE6ABDC44
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2ECABDCEE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D1804E249D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:10:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D024F4E5D44
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158C42472AC;
-	Tue, 20 May 2025 14:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E912247282;
+	Tue, 20 May 2025 14:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb3e82Ci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xsTf4gBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C8B24E010;
-	Tue, 20 May 2025 14:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB6222D9E3;
+	Tue, 20 May 2025 14:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750125; cv=none; b=fhTgn/C2iFaxM89VHY0ZmFs+qE1sMk3hiwrG49dyb1cIf2oXlJwx+Gz0mmCyptte8GjzqEgU+iUUp/2sU+01nFjDjsbWy1ERVmR0MM6WBNumeWR2WWwICBs3ppLL1jAWnhJtI4SnC8pda1VzHXIQ2MTUkyvMW+7nLAcQ6drlt08=
+	t=1747750526; cv=none; b=ap0GKNDO8a7o7Gpmlm/t63noQ8kljcTa5On2cBdiFyo9bzUvVSKrfia88drlAVHcAgUAbfwE+hHpuJKMzFb9HmtGYZa7l0wO2AaZQxNdu4i5IDZpahGHWKjh7R8OdZd1xf0+CXlC1HJW0FB+uYgmZ+Grjbpk1muaSM50bev8qjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750125; c=relaxed/simple;
-	bh=PyOjcOgj2AH/qMy4q9Yj+Mfp961elB7RcF49wzfZOh0=;
+	s=arc-20240116; t=1747750526; c=relaxed/simple;
+	bh=BR5xnlrYXxM4CEPLS+aS9CxsTmvQShPAQdTSuXZO8x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FO+r9kAMVePZ50iBbyd/7BD7V3DgZts9Zm6MK3TUZSYI9o49JQhm4lo3tVLulMDaJlBMRhRnVod7e6ty4K9vB++CaiVXDz7Fj9TYtxUCBEb3+O1LwB4Ir8VOOQ4WrXLruhu8VPJMIMAGKO456vXzVyJEBV6XJPit+6x64yq39wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb3e82Ci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E8CC4CEE9;
-	Tue, 20 May 2025 14:08:45 +0000 (UTC)
+	 MIME-Version; b=JVJS8sHSMZkWttIryz8vTEvVWpmQEZA8n17hA+AMwjOKFK+iNTdP7XXROFZmWK4o/4QyDEtRR9M+az0QEfewsEuae8wd1dxB9W66vsyAA++9u9lJ5R1K+GWCDm7dp2IYHnW9O3lucUobrE+OfijJifY2duqDa3ttkYix15yhu1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xsTf4gBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AE1C4CEE9;
+	Tue, 20 May 2025 14:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750125;
-	bh=PyOjcOgj2AH/qMy4q9Yj+Mfp961elB7RcF49wzfZOh0=;
+	s=korg; t=1747750526;
+	bh=BR5xnlrYXxM4CEPLS+aS9CxsTmvQShPAQdTSuXZO8x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xb3e82CigUflXMlhI3by3xPJBGN00Y6VoFRib8VeBtWEIEBf0Z6muI8cuwLPQFDY5
-	 iqbi1Wog6H6ZG+ANvjWL3MW8B9NY74Emdb6EA3fGmtDRkP9F7Zn53QB7+m/qvqpM7A
-	 +tUjVrGzX+ydjwieHMqpPWm1VXjEQcls1jni+9wo=
+	b=xsTf4gBSqveansZQuC9CcW0TmnMKe25ZynI/H1n/E/hjCZ1OVH0cB4I5rrLGOU5BY
+	 kcaejqW+dUq8vegBdOeTxc0mt5rApYazz/x21yIdWL9x5odKnwu+uZZiSEGqXU3TGr
+	 MUE5Fm5/fEdXg3yp3+xJ6qP/mwr36LdTR1MhF4Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Takashi Iwai <tiwai@suse.de>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/143] ALSA: sh: SND_AICA should depend on SH_DMA_API
+Subject: [PATCH 6.14 036/145] net: cadence: macb: Fix a possible deadlock in macb_halt_tx.
 Date: Tue, 20 May 2025 15:50:06 +0200
-Message-ID: <20250520125812.054036995@linuxfoundation.org>
+Message-ID: <20250520125811.979536876@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Mathieu Othacehe <othacehe@gnu.org>
 
-[ Upstream commit 66e48ef6ef506c89ec1b3851c6f9f5f80b5835ff ]
+[ Upstream commit c92d6089d8ad7d4d815ebcedee3f3907b539ff1f ]
 
-If CONFIG_SH_DMA_API=n:
+There is a situation where after THALT is set high, TGO stays high as
+well. Because jiffies are never updated, as we are in a context with
+interrupts disabled, we never exit that loop and have a deadlock.
 
-    WARNING: unmet direct dependencies detected for G2_DMA
-      Depends on [n]: SH_DREAMCAST [=y] && SH_DMA_API [=n]
-      Selected by [y]:
-      - SND_AICA [=y] && SOUND [=y] && SND [=y] && SND_SUPERH [=y] && SH_DREAMCAST [=y]
+That deadlock was noticed on a sama5d4 device that stayed locked for days.
 
-SND_AICA selects G2_DMA.  As the latter depends on SH_DMA_API, the
-former should depend on SH_DMA_API, too.
+Use retries instead of jiffies so that the timeout really works and we do
+not have a deadlock anymore.
 
-Fixes: f477a538c14d07f8 ("sh: dma: fix kconfig dependency for G2_DMA")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505131320.PzgTtl9H-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/b90625f8a9078d0d304bafe862cbe3a3fab40082.1747121335.git.geert+renesas@glider.be
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: e86cd53afc590 ("net/macb: better manage tx errors")
+Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250509121935.16282-1-othacehe@gnu.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/sh/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_main.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/sound/sh/Kconfig b/sound/sh/Kconfig
-index b75fbb3236a7b..f5fa09d740b4c 100644
---- a/sound/sh/Kconfig
-+++ b/sound/sh/Kconfig
-@@ -14,7 +14,7 @@ if SND_SUPERH
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index c1f57d96e63fc..e3cc26472c2f1 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1002,22 +1002,15 @@ static void macb_update_stats(struct macb *bp)
  
- config SND_AICA
- 	tristate "Dreamcast Yamaha AICA sound"
--	depends on SH_DREAMCAST
-+	depends on SH_DREAMCAST && SH_DMA_API
- 	select SND_PCM
- 	select G2_DMA
- 	help
+ static int macb_halt_tx(struct macb *bp)
+ {
+-	unsigned long	halt_time, timeout;
+-	u32		status;
++	u32 status;
+ 
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(THALT));
+ 
+-	timeout = jiffies + usecs_to_jiffies(MACB_HALT_TIMEOUT);
+-	do {
+-		halt_time = jiffies;
+-		status = macb_readl(bp, TSR);
+-		if (!(status & MACB_BIT(TGO)))
+-			return 0;
+-
+-		udelay(250);
+-	} while (time_before(halt_time, timeout));
+-
+-	return -ETIMEDOUT;
++	/* Poll TSR until TGO is cleared or timeout. */
++	return read_poll_timeout_atomic(macb_readl, status,
++					!(status & MACB_BIT(TGO)),
++					250, MACB_HALT_TIMEOUT, false,
++					bp, TSR);
+ }
+ 
+ static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
 -- 
 2.39.5
 
