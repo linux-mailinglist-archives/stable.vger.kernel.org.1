@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B561ABDB46
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBC7ABDD16
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 731BF4C491E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDAFB4C550F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FA7242913;
-	Tue, 20 May 2025 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0BD24A05A;
+	Tue, 20 May 2025 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyqOs+Fz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVd+Ipc8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC54A1D8E07;
-	Tue, 20 May 2025 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8608A1D5CFE;
+	Tue, 20 May 2025 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749814; cv=none; b=QiYFaOAI2EDnGiNiHSKuJVQ1/gLL97eq8Opz8diXlq3QaSuikAC98MDFMKUQ6pJ5yN0SOU4MDl5zT/PkRsw5fo9pr1l13p536QXe5hEZ95WyCbChsHHj6yxpB7z02VRhev09nNlnAaY72DLQEr6OrowddCmcgG0nUlOymqEcGec=
+	t=1747750606; cv=none; b=MBX+zDvl5STHd1QYotz1VoZT25SAF9Sf8XiyIO7ekV1TcHMdE+58MHv20y+cnniLzeFrdz8weLXJFj6dN8ulh5AItfEGeATJBEKJt1yObIlGXqyY7w4p2h0Z+NdBzVuMl9wnw7L/9PAGyXwVcmzTxCPI7MDjFkivm7Zqhp3zjd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749814; c=relaxed/simple;
-	bh=VVptbzpPR80Xv+hjzF4jqEYToy0qJYt2QS7fjPsTt7o=;
+	s=arc-20240116; t=1747750606; c=relaxed/simple;
+	bh=lXboqQp2Oqwa547QqYYDzSc2Ci+trYWCAKrgw+QV3VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1pL9zmz3x9yfD4+M2Xnl2f8AYKRg9HaPTDwHLnrCa1Z8db74dlRZEwm0wbaLXS+NMRTpPGhfz3Ul9QAAyn9ZAro8iqEK6N3zNoGrTqyq9ukcRgEXVDpM4d1ViDfdPPuofx5IQ2PUUiVh7nvu9uxTAPOGh+va2dB1AZtcq89JBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyqOs+Fz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D72EC4CEE9;
-	Tue, 20 May 2025 14:03:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GfU7xvmfhkwLVKS2xkrOeIC/4rcBpdtDslDjx2ZBiVsgU7cat8BnrHZiduAYolts0gyrF2h7Me1IhMRSlNp2mNpatf/D5V458qJEU1fpR52ORitbbRv2EbhSuxXCq8hmE/Pjb7cwdWHaTBhCa2y4yZxRE1yyTIBqxF5wmZUowUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVd+Ipc8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1430C4CEE9;
+	Tue, 20 May 2025 14:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749813;
-	bh=VVptbzpPR80Xv+hjzF4jqEYToy0qJYt2QS7fjPsTt7o=;
+	s=korg; t=1747750606;
+	bh=lXboqQp2Oqwa547QqYYDzSc2Ci+trYWCAKrgw+QV3VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyqOs+FzHxLbXh9Lz42KYoU9KBB4QWP++QoiHm+HFtJvLOrXM+IdFdH6rtOXAVWkO
-	 gQ2ufv5wsdC92ah+3+qJ2ClWvDG+lTCwJXBsvWaIJjcFsK3jwPWQI4x/tshFEI/Jj0
-	 p2y/W6gPrUGWY+8YEqro6rqiLZvoaeMVtP9ejGdA=
+	b=rVd+Ipc8WGTt4bkf3FDh5QM+Fl+oZEDVJQ2jiIxTxXzWnuiu6M3ZQN3sY1xz4o4GE
+	 9o7qRlxT4n0SutmVQOdK7bz5Sq4mnr7oOJMRr1blX5/WX2Gch/EroQPqKx/Ii+KUkP
+	 /GP/dmaPCOgr5f0Wca6rhzrQ4bmZz5+otKKK8JvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 068/117] drm/amd/display: Correct the reply value when AUX write incomplete
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.14 063/145] Revert "kbuild, rust: use -fremap-path-prefix to make paths relative"
 Date: Tue, 20 May 2025 15:50:33 +0200
-Message-ID: <20250520125806.693154540@linuxfoundation.org>
+Message-ID: <20250520125813.048024209@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit d433981385c62c72080e26f1c00a961d18b233be upstream.
+commit 8cf5b3f836147d8d4e7c6eb4c01945b97dab8297 upstream.
 
-[Why]
-Now forcing aux->transfer to return 0 when incomplete AUX write is
-inappropriate. It should return bytes have been transferred.
+This reverts commit dbdffaf50ff9cee3259a7cef8a7bd9e0f0ba9f13.
 
-[How]
-aux->transfer is asked not to change original msg except reply field of
-drm_dp_aux_msg structure. Copy the msg->buffer when it's write request,
-and overwrite the first byte when sink reply 1 byte indicating partially
-written byte number. Then we can return the correct value without
-changing the original msg.
+--remap-path-prefix breaks the ability of debuggers to find the source
+file corresponding to object files. As there is no simple or uniform
+way to specify the source directory explicitly, this breaks developers
+workflows.
 
-Fixes: 3637e457eb00 ("drm/amd/display: Fix wrong handling for AUX_DEFER case")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ray Wu <ray.wu@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7ac37f0dcd2e0b729fa7b5513908dc8ab802b540)
-Cc: stable@vger.kernel.org
+Revert the unconditional usage of --remap-path-prefix, equivalent to the
+same change for -ffile-prefix-map in KBUILD_CPPFLAGS.
+
+Fixes: dbdffaf50ff9 ("kbuild, rust: use -fremap-path-prefix to make paths relative")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           |    3 ++-
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   10 ++++++++--
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ Makefile |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -11069,7 +11069,8 @@ int amdgpu_dm_process_dmub_aux_transfer_
- 		/* The reply is stored in the top nibble of the command. */
- 		payload->reply[0] = (adev->dm.dmub_notify->aux_reply.command >> 4) & 0xF;
+--- a/Makefile
++++ b/Makefile
+@@ -1070,7 +1070,6 @@ KBUILD_CFLAGS += -fno-builtin-wcslen
+ # change __FILE__ to the relative path to the source directory
+ ifdef building_out_of_srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srcroot)/=)
+-KBUILD_RUSTFLAGS += --remap-path-prefix=$(srcroot)/=
+ endif
  
--	if (!payload->write && p_notify->aux_reply.length)
-+	/*write req may receive a byte indicating partially written number as well*/
-+	if (p_notify->aux_reply.length)
- 		memcpy(payload->data, p_notify->aux_reply.data,
- 				p_notify->aux_reply.length);
- 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -59,6 +59,7 @@ static ssize_t dm_dp_aux_transfer(struct
- 	enum aux_return_code_type operation_result;
- 	struct amdgpu_device *adev;
- 	struct ddc_service *ddc;
-+	uint8_t copy[16];
- 
- 	if (WARN_ON(msg->size > 16))
- 		return -E2BIG;
-@@ -74,6 +75,11 @@ static ssize_t dm_dp_aux_transfer(struct
- 			(msg->request & DP_AUX_I2C_WRITE_STATUS_UPDATE) != 0;
- 	payload.defer_delay = 0;
- 
-+	if (payload.write) {
-+		memcpy(copy, msg->buffer, msg->size);
-+		payload.data = copy;
-+	}
-+
- 	result = dc_link_aux_transfer_raw(TO_DM_AUX(aux)->ddc_service, &payload,
- 				      &operation_result);
- 
-@@ -97,9 +103,9 @@ static ssize_t dm_dp_aux_transfer(struct
- 	 */
- 	if (payload.write && result >= 0) {
- 		if (result) {
--			/*one byte indicating partially written bytes. Force 0 to retry*/
-+			/*one byte indicating partially written bytes*/
- 			drm_info(adev_to_drm(adev), "amdgpu: AUX partially written\n");
--			result = 0;
-+			result = payload.data[0];
- 		} else if (!payload.reply[0])
- 			/*I2C_ACK|AUX_ACK*/
- 			result = msg->size;
+ # include additional Makefiles when needed
 
 
 
