@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-145592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF79ABDC8C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B932CABDBC4
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B00187B7E6A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 484B4188BAB2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD2524BBF3;
-	Tue, 20 May 2025 14:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B802472A0;
+	Tue, 20 May 2025 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb4ki4Dw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlrE/zBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F0624A076;
-	Tue, 20 May 2025 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7E624677D;
+	Tue, 20 May 2025 14:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750627; cv=none; b=hXQhn7FRwagpe4pVbApqYiKN57tuzKFBF7NeJ93cw9fkihYhASUnXdQlK6f2O8kk8z5U9KDjFlqAcKDjbJsqzrnPcSlEQ2p3xePJVuQ8N2ZiBsh1wSZwQ376MPg8rkMHglAWkFGzG4Pu9ZnsKv/zjn7chighr09ZLTWyWLfHVD0=
+	t=1747750228; cv=none; b=Xo/zBpkpkVLrER4xqRocKJ4ykj4tLpP5uvbeNEV0+0IXihkhdysm0FEFQGy72Z/jxbZPJ5+4sgNWUCBLnCuUsroPIwHpjlz6JnvWfydhO/iawggPffKrIfdugTy6y33vVip4qcx8BJK2mhzYAsYXZsfvKah5upTY0GorqbodCQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750627; c=relaxed/simple;
-	bh=OLD7ZOOI/ID77ewyY7tloYakpyUjzHyvxYrNW7oiZNk=;
+	s=arc-20240116; t=1747750228; c=relaxed/simple;
+	bh=UorKLqo1eH4t95nJFwt7HULNY1b2DDMkMLCF11NRvfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0F5UIxlRg3rEj1IbQks9PP1Q61x0PYSsyVXe35kTRR+i9Y8ym+vTG1M9Mu7ZT/ySckjOQmDVAjB4DJ4v0q5iazqCQWzkBlw0wEBgnfWtncZsRzJUr5N/UtaTqZOYgPkty/fj5AjysO/wwdAUgKshuNMoZH/twER9klNwWN6aeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bb4ki4Dw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC1DC4CEE9;
-	Tue, 20 May 2025 14:17:06 +0000 (UTC)
+	 MIME-Version; b=NMvrQxze7Puw9oUEvlsTP8E6bNzjN0H8is6CEFQgbG4AYzw9yu435JZo2TgVOEYmMZu2R1O33mUySAaqoJxprJVoSd1XJQTDD9m6vefJVbufFyhpjGRAhvfJGgeb1Syu4TECpEMLYSiU25/Dwz/IJTJh0MOiXV7aJ38Tfk1OeU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlrE/zBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C5BC4CEE9;
+	Tue, 20 May 2025 14:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750626;
-	bh=OLD7ZOOI/ID77ewyY7tloYakpyUjzHyvxYrNW7oiZNk=;
+	s=korg; t=1747750227;
+	bh=UorKLqo1eH4t95nJFwt7HULNY1b2DDMkMLCF11NRvfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bb4ki4DwEllRsMMtNwDh7SAINvPvhJosmwZ68/NHBjSD3nrC/5Pr6yz++CbG1DX2n
-	 ZSNzblSUtP8HIHO62GsrWk35XhAQBfodnYzuA81OHWSsc/R+wy7yJz5Gp6vASkAsE+
-	 W1tFMi1oI1EveWz5Fv2ZfydiL2q8Bqj2e5cq8Ao4=
+	b=XlrE/zBegIgPfxvqo2MgTsFubEdNHJtXY8ofril4fAgzox9QDcn9kCvmINUFWYkBh
+	 BYsTstNlKSDeYQfeIsNm4S8aswo0c4/InrLr5di8iMrVAkbe0lFgZ6KW/jkw3OatYP
+	 vRRKjvgqu87WtOEFFS8vZh+MuOIQWCjHuo0ltkDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.14 069/145] LoongArch: Prevent cond_resched() occurring within kernel-fpu
+	Tim Huang <tim.huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>
+Subject: [PATCH 6.12 084/143] drm/amdgpu: fix incorrect MALL size for GFX1151
 Date: Tue, 20 May 2025 15:50:39 +0200
-Message-ID: <20250520125813.282508073@linuxfoundation.org>
+Message-ID: <20250520125813.369823057@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
+From: Tim Huang <tim.huang@amd.com>
 
-commit 2468b0e3d5659dfde77f081f266e1111a981efb8 upstream.
+commit 2d73b0845ab3963856e857b810600e5594bc29f4 upstream.
 
-When CONFIG_PREEMPT_COUNT is not configured (i.e. CONFIG_PREEMPT_NONE/
-CONFIG_PREEMPT_VOLUNTARY), preempt_disable() / preempt_enable() merely
-acts as a barrier(). However, in these cases cond_resched() can still
-trigger a context switch and modify the CSR.EUEN, resulting in do_fpu()
-exception being activated within the kernel-fpu critical sections, as
-demonstrated in the following path:
+On GFX1151, the reported MALL cache size reflects only
+half of its actual size; this adjustment corrects the discrepancy.
 
-dcn32_calculate_wm_and_dlg()
-    DC_FP_START()
-	dcn32_calculate_wm_and_dlg_fpu()
-	    dcn32_find_dummy_latency_index_for_fw_based_mclk_switch()
-		dcn32_internal_validate_bw()
-		    dcn32_enable_phantom_stream()
-			dc_create_stream_for_sink()
-			   kzalloc(GFP_KERNEL)
-				__kmem_cache_alloc_node()
-				    __cond_resched()
-    DC_FP_END()
-
-This patch is similar to commit d02198550423a0b (x86/fpu: Improve crypto
-performance by making kernel-mode FPU reliably usable in softirqs).  It
-uses local_bh_disable() instead of preempt_disable() for non-RT kernels
-so it can avoid the cond_resched() issue, and also extend the kernel-fpu
-application scenarios to the softirq context.
-
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0a5c060b593ad152318f89e5564bfdfcff8a6ac0)
 Cc: stable@vger.kernel.org
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/kfpu.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/loongarch/kernel/kfpu.c
-+++ b/arch/loongarch/kernel/kfpu.c
-@@ -18,11 +18,28 @@ static unsigned int euen_mask = CSR_EUEN
- static DEFINE_PER_CPU(bool, in_kernel_fpu);
- static DEFINE_PER_CPU(unsigned int, euen_current);
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+@@ -747,6 +747,18 @@ static int gmc_v11_0_sw_init(void *handl
+ 	adev->gmc.vram_type = vram_type;
+ 	adev->gmc.vram_vendor = vram_vendor;
  
-+static inline void fpregs_lock(void)
-+{
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_disable();
-+	else
-+		local_bh_disable();
-+}
++	/* The mall_size is already calculated as mall_size_per_umc * num_umc.
++	 * However, for gfx1151, which features a 2-to-1 UMC mapping,
++	 * the result must be multiplied by 2 to determine the actual mall size.
++	 */
++	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
++	case IP_VERSION(11, 5, 1):
++		adev->gmc.mall_size *= 2;
++		break;
++	default:
++		break;
++	}
 +
-+static inline void fpregs_unlock(void)
-+{
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_enable();
-+	else
-+		local_bh_enable();
-+}
-+
- void kernel_fpu_begin(void)
- {
- 	unsigned int *euen_curr;
- 
--	preempt_disable();
-+	if (!irqs_disabled())
-+		fpregs_lock();
- 
- 	WARN_ON(this_cpu_read(in_kernel_fpu));
- 
-@@ -73,7 +90,8 @@ void kernel_fpu_end(void)
- 
- 	this_cpu_write(in_kernel_fpu, false);
- 
--	preempt_enable();
-+	if (!irqs_disabled())
-+		fpregs_unlock();
- }
- EXPORT_SYMBOL_GPL(kernel_fpu_end);
- 
+ 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
+ 	case IP_VERSION(11, 0, 0):
+ 	case IP_VERSION(11, 0, 1):
 
 
 
