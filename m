@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C85ABDCBD
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:27:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E8EABDC7D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858854E14C6
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F5C1BA2F15
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA1524C074;
-	Tue, 20 May 2025 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B973924887D;
+	Tue, 20 May 2025 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYxJryia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0l3MLi+5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEB024C06A;
-	Tue, 20 May 2025 14:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CFA244663;
+	Tue, 20 May 2025 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750394; cv=none; b=X+V1lLH3vY42v9cZexfH2WbQzYei8UK/fIXllieeo3TN7V8XcRkjdQN+WpK7qLA4/TX3qtWkAo2wiNs2dry/7D/gjUhkuV/Sksu3S8o0YziIy/ZQDSCeUdG84Fv6bjuV2oZu03jzvRH+AVtKAxt+agLF62pp8jY7ncyd6d8U88E=
+	t=1747750699; cv=none; b=oOt6Ksykwo4pt1mIMJC5pD8Tw/K49MoKZ7qflj01Bf+t3njvSsc15axqw44aZGzHD/2r+EysoHhNAppIIMCugB1iYMZrj+24z2GX6pL51sRDgrR8+8zyCEid6E+bQlOKWkvaMtnYT97oT0BZeFr55EWvObiG324jNJCz1+J6VOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750394; c=relaxed/simple;
-	bh=IzbdcJZNKpyZcrxQ+Si1UIis4SYzkF5MPu7iP6e6kmA=;
+	s=arc-20240116; t=1747750699; c=relaxed/simple;
+	bh=UWfpgd4nF9XM0/9OP7A3eCngxlNvI87n0MxjFwN24vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FN0bScc0hqSjnNbDEZpMNzOSxnWgiQxjtI8ZE+sib19VhP6LuUKoMFi8shPb1dVYeGcnvFFuKnTgKKOY2NUVi3/ozoqx7tqFtQhTZZNq3wdniU4pmCKE5aNJrf+KYa7KUInosGzlw3WKjmXzGPno2LBYteyu+QEOi6SMKd2MV2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYxJryia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFA6C4CEE9;
-	Tue, 20 May 2025 14:13:13 +0000 (UTC)
+	 MIME-Version; b=tsE0lMbpHOF6OD+POC49SCdtyssZnuRjHU3hDXtG1XM1C3rDCyG9TRlycGcIU7XdzDXc8oVzC1ViZJ6t1wQ7vV4XVoXLhLb16l/hsMWot7QPn1AQUb50zp5kJEwwX2iX0KrdJ9UaYTr1ucUtKKvmEKSbo15ZD6nPmn3MXlxDD9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0l3MLi+5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF20BC4CEE9;
+	Tue, 20 May 2025 14:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750393;
-	bh=IzbdcJZNKpyZcrxQ+Si1UIis4SYzkF5MPu7iP6e6kmA=;
+	s=korg; t=1747750699;
+	bh=UWfpgd4nF9XM0/9OP7A3eCngxlNvI87n0MxjFwN24vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kYxJryiaKbpPrU5WzeHJsH/eicJOhfD1vPRFl/yCzgD1Hr8FsFkdZtornW7saXQao
-	 bpX5wg/QfWqyLAVKkb3bREUP4zIbvgueKU/PG81H9FOoh1yH4kH/KNb1KhxaQ940K6
-	 pD3nYy9mS9+O+zfgIjszFZalY1ldO2GltyvgrKR0=
+	b=0l3MLi+5x+BjpmlW+5ojJXXXP4afc7K2ufkTlJ/ZfjC93PcWpq3pFyKupiBHmD2VU
+	 zG7Cre3ABSBWl58q+rIZ8eX2nJKiu+Z7OW7oXUeJMhZqRInp44U0nP6M9btxanYf28
+	 6KF/EdBO4cY8/QMq5sd+88IFIEnwSCBKEETdtUgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 108/143] phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
+	Sam Edwards <CFSworks@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	stable@kernel.org
+Subject: [PATCH 6.14 093/145] arm64: dts: rockchip: Allow Turing RK1 cooling fan to spin down
 Date: Tue, 20 May 2025 15:51:03 +0200
-Message-ID: <20250520125814.287162027@linuxfoundation.org>
+Message-ID: <20250520125814.207216404@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Sam Edwards <cfsworks@gmail.com>
 
-commit 54c4c58713aaff76c2422ff5750e557ab3b100d7 upstream.
+commit fdc7bd909a5f38793468e9cf9b6a9063d96c6234 upstream.
 
-It has been observed on the Renesas RZ/G3S SoC that unbinding and binding
-the PHY driver leads to role autodetection failures. This issue occurs when
-PHY 3 is the first initialized PHY. PHY 3 does not have an interrupt
-associated with the USB2_INT_ENABLE register (as
-rcar_gen3_int_enable[3] = 0). As a result, rcar_gen3_init_otg() is called
-to initialize OTG without enabling PHY interrupts.
+The RK3588 thermal sensor driver only receives interrupts when a
+higher-temperature threshold is crossed; it cannot notify when the
+sensor cools back off. As a result, the driver must poll for temperature
+changes to detect when the conditions for a thermal trip are no longer
+met. However, it only does so if the DT enables polling.
 
-To resolve this, add rcar_gen3_is_any_otg_rphy_initialized() and call it in
-role_store(), role_show(), and rcar_gen3_init_otg(). At the same time,
-rcar_gen3_init_otg() is only called when initialization for a PHY with
-interrupt bits is in progress. As a result, the
-struct rcar_gen3_phy::otg_initialized is no longer needed.
+Before this patch, the RK1 DT did not enable polling, causing the fan to
+continue running at the speed corresponding to the highest temperature
+reached.
 
-Fixes: 549b6b55b005 ("phy: renesas: rcar-gen3-usb2: enable/disable independent irqs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250507125032.565017-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Follow suit with similar RK3588 boards by setting a polling-delay of
+1000ms, enabling the driver to detect when the sensor cools back off,
+allowing the fan speed to decrease as appropriate.
+
+Fixes: 7c8ec5e6b9d6 ("arm64: dts: rockchip: Enable automatic fan control on Turing RK1")
+Cc: stable@kernel.org # v6.13+
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250329165017.3885-1-CFSworks@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c |   33 +++++++++++++------------------
- 1 file changed, 14 insertions(+), 19 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -107,7 +107,6 @@ struct rcar_gen3_phy {
- 	struct rcar_gen3_chan *ch;
- 	u32 int_enable_bits;
- 	bool initialized;
--	bool otg_initialized;
- 	bool powered;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi
+index 711ac4f2c7cb..60ad272982ad 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-turing-rk1.dtsi
+@@ -214,6 +214,8 @@ rgmii_phy: ethernet-phy@1 {
  };
  
-@@ -320,16 +319,15 @@ static bool rcar_gen3_is_any_rphy_initia
- 	return false;
- }
- 
--static bool rcar_gen3_needs_init_otg(struct rcar_gen3_chan *ch)
-+static bool rcar_gen3_is_any_otg_rphy_initialized(struct rcar_gen3_chan *ch)
- {
--	int i;
--
--	for (i = 0; i < NUM_OF_PHYS; i++) {
--		if (ch->rphys[i].otg_initialized)
--			return false;
-+	for (enum rcar_gen3_phy_index i = PHY_INDEX_BOTH_HC; i <= PHY_INDEX_EHCI;
-+	     i++) {
-+		if (ch->rphys[i].initialized)
-+			return true;
- 	}
- 
--	return true;
-+	return false;
- }
- 
- static bool rcar_gen3_are_all_rphys_power_off(struct rcar_gen3_chan *ch)
-@@ -351,7 +349,7 @@ static ssize_t role_store(struct device
- 	bool is_b_device;
- 	enum phy_mode cur_mode, new_mode;
- 
--	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
-+	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
- 		return -EIO;
- 
- 	if (sysfs_streq(buf, "host"))
-@@ -389,7 +387,7 @@ static ssize_t role_show(struct device *
- {
- 	struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
- 
--	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
-+	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
- 		return -EIO;
- 
- 	return sprintf(buf, "%s\n", rcar_gen3_is_host(ch) ? "host" :
-@@ -402,6 +400,9 @@ static void rcar_gen3_init_otg(struct rc
- 	void __iomem *usb2_base = ch->base;
- 	u32 val;
- 
-+	if (!ch->is_otg_channel || rcar_gen3_is_any_otg_rphy_initialized(ch))
-+		return;
+ &package_thermal {
++	polling-delay = <1000>;
 +
- 	/* Should not use functions of read-modify-write a register */
- 	val = readl(usb2_base + USB2_LINECTRL1);
- 	val = (val & ~USB2_LINECTRL1_DP_RPD) | USB2_LINECTRL1_DPRPD_EN |
-@@ -465,12 +466,9 @@ static int rcar_gen3_phy_usb2_init(struc
- 	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
- 	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
- 
--	/* Initialize otg part */
--	if (channel->is_otg_channel) {
--		if (rcar_gen3_needs_init_otg(channel))
--			rcar_gen3_init_otg(channel);
--		rphy->otg_initialized = true;
--	}
-+	/* Initialize otg part (only if we initialize a PHY with IRQs). */
-+	if (rphy->int_enable_bits)
-+		rcar_gen3_init_otg(channel);
- 
- 	rphy->initialized = true;
- 
-@@ -486,9 +484,6 @@ static int rcar_gen3_phy_usb2_exit(struc
- 
- 	rphy->initialized = false;
- 
--	if (channel->is_otg_channel)
--		rphy->otg_initialized = false;
--
- 	val = readl(usb2_base + USB2_INT_ENABLE);
- 	val &= ~rphy->int_enable_bits;
- 	if (!rcar_gen3_is_any_rphy_initialized(channel))
+ 	trips {
+ 		package_active1: trip-active1 {
+ 			temperature = <45000>;
+-- 
+2.49.0
+
 
 
 
