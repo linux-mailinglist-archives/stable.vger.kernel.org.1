@@ -1,809 +1,293 @@
-Return-Path: <stable+bounces-145005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F04ABCF0D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 08:15:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508F3ABCF57
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 08:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AD861B65FFB
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 06:15:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACD7A17199B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 06:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300F425C717;
-	Tue, 20 May 2025 06:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB4725CC42;
+	Tue, 20 May 2025 06:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kRNQ/fYc"
+	dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b="Oumlm7HB";
+	dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b="yc0SftEb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0014ca01.pphosted.com (mx0b-0014ca01.pphosted.com [208.86.201.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A941C6BE;
-	Tue, 20 May 2025 06:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747721700; cv=none; b=R9j7wfBV7xw1LaCq8SBPjBaqbD9TCNEvgVWTVyRwqbHJkoabToyRPO8wnCK7O7nSQ3ZBy4dvcGVyUpFVj2HGZc/HzuFP7BZala2WbPX1HaPpKG0wYidN4rL408O1pizTj/g0bKI01hgVhsTaCeGLetXmXT8R7XFOE6NIe4Nr+8s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747721700; c=relaxed/simple;
-	bh=aO5SXqTECBYALqAHY/HrzOgmXG6QtUf86s50KzNWxWw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:References:To:
-	 In-Reply-To:Content-Type; b=t5BkGQ9o3mRrsN1MRzm0HdHBknBdg+jJznNIDUeumt1y7kRoZPHJR3Q6IN84E7EluELC4w3zYmTR2pA03C6WrSazf8fVZ5cVH/0MNVl+5Ravxw1RHR4Ejs/xyFEF/XS3mTj9esbcbtwnTELrkDP786mpK0A1nFAevlU/zsR6txY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRNQ/fYc; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-441c0d8eb3bso5475235e9.1;
-        Mon, 19 May 2025 23:14:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747721694; x=1748326494; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:to:content-language
-         :references:subject:from:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Cd5NgWlfHqJO2r3AKeYK4TYQW3MvPSmsjCdlqh7PBNA=;
-        b=kRNQ/fYcPhWr12yQ4KBm8Gd4QKwj/VAd0AR8DgbesGgVtGaQDFqba+SOSfL757GtqB
-         OufET42lLTqBHDdIwjffANuIr31eh9n3ow10eJEsUVudOD6OPiV1HWwXcOBtTxXGAzpv
-         P1TBm5I+1fjSadgT+yhbaROur887p5pAYhVaCZrVdrYnV19xCQWd/HP8smJefuQ765kp
-         CtfNLej6SPn5iMr4l2+uJUV9ONt5jWj0vukbimLLiUFtb6VbDjngrZV875e6YjNQQwbj
-         Njq12IxpReIwE7rDDpOH27vwWjLaEYxZ66df4wV5y62yIYWT7s2Yyl58EuzlBBO/6CWO
-         NObw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747721694; x=1748326494;
-        h=content-transfer-encoding:in-reply-to:autocrypt:to:content-language
-         :references:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cd5NgWlfHqJO2r3AKeYK4TYQW3MvPSmsjCdlqh7PBNA=;
-        b=MY/xLTGpZY1TwYCRBeIPLJBAF8DjdZ87SksloqD8I8IS8XrB/F1UkwZOOBdpJ/VVw9
-         Tsfc6diAouDkECq6+r43SfUiYB2s3xjMR8am9VOh5I86BUeOObE7GU+ElQqKECvRad+m
-         AghtwFljIfNra4lsXIs97teQ/ZXjq+t0B5I6JYA6QjmSDxXoN8uQ7fr5fLAv/JKrOhm1
-         3GJVDxXaV0ZrLzsAP1evQVte38c+q6wi7w0639EAJ8S5bMafr00jVpYjAeofYda3vPL3
-         bQYdCav3UZazBs0O6WTvDD7WAedUhd68JGZ0ofr0I2E/quiRtlUOCVaP0/iKHQezJvit
-         z2yA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzCxljNq+7oOU4qyA/578vx4pKj95e3D3WA4fALV3dwvGOA8aP2G9FphIoUxpoHtRr9h0WMU5gv1tM8G0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlAaHvPxKrgwv3n/VTqZUHs5qbcm9jH8S09E5q/dc0oRLrIKJT
-	jjKKE1n8eFUfFUN9Sd0OX8rdSgUgIj3gxyRU5V/udc7BfX4JMQlx3cKGLg3xEq20JD4=
-X-Gm-Gg: ASbGncvcCuUj3ZvkZyV53VcbDhIvb1EvysMNGUqbgrBg4SCjXgtbYY0TxgHHMwf3lL1
-	OitPAhMeOauJBE80Uc/4PzgR+X4DL+8JcXuMvgZbgCPHDe3q03/GOmOpyO1kOg/8J9b0Cj7r1KH
-	XO03aWYm1MNM1anxHncren9xhKZFdO+PSdWWSL1C9HaoHzw4AgbNhqISENF9xSR6Qw5AeTo84kw
-	wbOb4LpMvZ2QkuEwuSPFJzVilty6NEbFTCXw069bSo1sxmLHww0sTrP8oUetwCadgg8MOe0c8XX
-	XkCidoj1ovYkVr13YC7TYqBKCPwl7L1kTUv2CgvE6DnzT67NPTxn26WxY0WJIg==
-X-Google-Smtp-Source: AGHT+IEjSDBz6V0DAyjloCesOarfAmUWDJSmuhcuI6gkkBuDWfBaNv07Oi8goEbc4ZTY2Oy5tQhwfw==
-X-Received: by 2002:a05:600c:3584:b0:439:90f5:3919 with SMTP id 5b1f17b1804b1-442feebf43fmr50989005e9.4.1747721693424;
-        Mon, 19 May 2025 23:14:53 -0700 (PDT)
-Received: from [192.168.1.2] ([91.86.120.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442ebdc362fsm180716595e9.1.2025.05.19.23.14.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 May 2025 23:14:52 -0700 (PDT)
-Message-ID: <1bac715e-8779-4120-ac94-066f2f80fe81@gmail.com>
-Date: Tue, 20 May 2025 08:14:52 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B682571A9;
+	Tue, 20 May 2025 06:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=208.86.201.193
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747722558; cv=fail; b=P8h4Mg+/CZl7ETcBQNjAyZEb+poPmy///p03hZi98GePClj2qZ1Byl/kFHLcckN4MmAtJ+AVS+EzGMeueGxCsLbu13/NidBaovIUL4GUNpIUpvyC0igJiqbEuQoNuGRlQmXbkns8ct8e0AXqq+ZWS+IbHwpWy4S2Fuqakz1jEjI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747722558; c=relaxed/simple;
+	bh=1TnNz20zNoY8oZLlCZYqVdkVn7NzITvmxSExC7EdDis=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NtUYH4L8f0LaPE6ULbRiT147wLkBmPxIDUFOBPdNwNpeLHG8NorLWKM3io+Bd2rlB2oXeqSimVjugUlH0t094CIXarHmUUBpZwRG0luNXW62Q8aE2yB5iFqUZS6EtTTvYuLajtnAkHygVdXzDoEAazgEoibNFbhYHO8laB1CD20=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cadence.com; spf=pass smtp.mailfrom=cadence.com; dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b=Oumlm7HB; dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b=yc0SftEb; arc=fail smtp.client-ip=208.86.201.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cadence.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cadence.com
+Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
+	by mx0b-0014ca01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54K1u1er027287;
+	Mon, 19 May 2025 23:28:58 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=proofpoint;
+	 bh=BfAUYp7p/2MehSApbfPP4e1h91FT40XVBD1aG34K71c=; b=Oumlm7HBBjfb
+	ytiQjJyHGKjPC5eZlLN9+auevqDeSxzccijyMy4O3aj6UIGSsa0AZhO54YtXRkXJ
+	stEcPKzHP5FGBrW+XIC9AGI5rTjk79sjX93aMjDXyOKdfaGTrQiy46kwSBRshqUC
+	S4/TIPOXqJ7fwRDk8OmZS6pmuqBURRIGSRRw5GT0/pnHLlmQWXvEmZHEvW8gCAne
+	f9YNLDduCymh/5iDqilfYLNvPpQ9S4velIaq0vosFR7D8v5jzgrkQEFe8KPBh+PD
+	Wr4f03bGmqPZdPel9Ol9QgJMIlFtcWpaQSwPQuulm6ybFOGOTxMO733+0VHIJwVU
+	gdrpmaJDZQ==
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2176.outbound.protection.outlook.com [104.47.59.176])
+	by mx0b-0014ca01.pphosted.com (PPS) with ESMTPS id 46pp1ystjm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 May 2025 23:28:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pcS6cgVIOh2vI7wTyBE1kVd0+H4A/mTUToeQ8wxycXJYcOeht8OczzsWTKimTn15Esf3PTYdjyin2HZqojTkOaojSFC2aE08+DAJqxS2QJOiXdBa5iQOtHIyJchcPgLRIEdEJasm+M4HYCOdwcsbGO+G6cPHQDvc2wY39JjgNx+VtvTwCB+revE7ThYvzZt9iRSQPuZpHaAPwyPHkKVnTou2m6+D2Bbh6fByduWTybMHaSqHlnuGZ3rcyeREuNXef67DqpYzlWVZ8MScQRqVoHjU88ILZUWOvqnRsAWKOHnj97dLhRQyhw1MCziUIh6ed1ubFwl+0C2xI4miFK7tJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BfAUYp7p/2MehSApbfPP4e1h91FT40XVBD1aG34K71c=;
+ b=GD8XUljQ/fTP0WUdZl6sTrOQOxkapT11KesXBH/ajDO1CbdNXgxoOrmqlMjK27wghb+vHiQa+svJOxyTILvPPaXFJbPVOsiSWmNPJnjIl5iBnLwiCecYSwHHBMdlwlsZ+WypclI06d8GEUoBzFMgcgX/zXjtDquTzvq1DQBjElWS7OIJWSwfS6y9/2PrmGQtlIOt+s+Cn9n8UOPHBo5vBJaY7LHPeMh0wA9VDy+8+oJJWuXxxvlJldyo35vGMiAYrmqkROWZ4e7B7UnXDGnspGmIctBbjluFPh15XRHKL8vc/nKXVQgECog4KFJNw3YhWTjwN6Yl4ZBBPFN4Wfgolw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
+ dkim=pass header.d=cadence.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BfAUYp7p/2MehSApbfPP4e1h91FT40XVBD1aG34K71c=;
+ b=yc0SftEbOG7uEKOv6eygqAkPlWQjOiNabWHrRJ2wP5D2igJ2EHU1+pGMa7Sy339Q2XCJDUnUQ4JQZRtkb0sOPulYv7DQNG0Z2Kj7n0/j70JocvX/cogbPmlPXcRv/e0RbDMg0a/NBc/HUphz+PyaowMGo54C4W+09Pj9TnVHBbg=
+Received: from PH7PR07MB9538.namprd07.prod.outlook.com (2603:10b6:510:203::19)
+ by DS7PR07MB7751.namprd07.prod.outlook.com (2603:10b6:5:2c0::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Tue, 20 May
+ 2025 06:28:55 +0000
+Received: from PH7PR07MB9538.namprd07.prod.outlook.com
+ ([fe80::5dbd:49e3:4dc:ccc7]) by PH7PR07MB9538.namprd07.prod.outlook.com
+ ([fe80::5dbd:49e3:4dc:ccc7%5]) with mapi id 15.20.8699.022; Tue, 20 May 2025
+ 06:28:55 +0000
+From: Pawel Laszczak <pawell@cadence.com>
+To: =?iso-8859-2?Q?Micha=B3_Pecio?= <michal.pecio@gmail.com>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
+        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "javier.carrasco@wolfvision.net" <javier.carrasco@wolfvision.net>,
+        "make_ruc2021@163.com" <make_ruc2021@163.com>,
+        "peter.chen@nxp.com"
+	<peter.chen@nxp.com>,
+        "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        Pawel Eichler <peichler@cadence.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v3] usb: hub: lack of clearing xHC resources
+Thread-Topic: [PATCH v3] usb: hub: lack of clearing xHC resources
+Thread-Index: AQHbibVtMdBQbgcSHUi7NaX2HmZ3QLPVfimAgAXvhVA=
+Date: Tue, 20 May 2025 06:28:54 +0000
+Message-ID:
+ <PH7PR07MB9538F4ED153A621B6BD26D5CDD9FA@PH7PR07MB9538.namprd07.prod.outlook.com>
+References: <20250228074307.728010-1-pawell@cadence.com>
+	<PH7PR07MB953841E38C088678ACDCF6EEDDCC2@PH7PR07MB9538.namprd07.prod.outlook.com>
+ <20250516115627.5e79831f@foxbook>
+In-Reply-To: <20250516115627.5e79831f@foxbook>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR07MB9538:EE_|DS7PR07MB7751:EE_
+x-ms-office365-filtering-correlation-id: ca63667e-37fb-4efd-fc21-08dd97679868
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-2?Q?5D0hFdoSb2NdjX9h/euuZCt5NYJ5A0My7X2pSg/hDu3RoX8IqtBumWhGSd?=
+ =?iso-8859-2?Q?RKtDxwgqKxF+P53sNumecDuEDFSJRSDdKCskc/VS+o7h8Amow62wBo1yLn?=
+ =?iso-8859-2?Q?csvxKAdA/r3SUavW35/nGyp67Fji8BirOAus/S6nP1ICVx1uHHdWX8hunm?=
+ =?iso-8859-2?Q?z6YTGRGaFgDOMWoiZ5IhmOjVCVT6E+gpUyIKJlO37N97ZebNNulq5WXjEX?=
+ =?iso-8859-2?Q?0oB95o4DzXhSf/y27cPqnh8pZMA8ljA0ZMxmJRoDI7akkywNkqIFTavgT4?=
+ =?iso-8859-2?Q?fgqiDVBDZiyMoLwnBUo49uTtQn1wWZb22WDwLY9QxecDUtVFPdZDywy/Rh?=
+ =?iso-8859-2?Q?xG7geMe1f0DFAxdGDPGt1bsPqEdpc5n2qubstTjpwi5IL1HWHkS9b+TlLb?=
+ =?iso-8859-2?Q?7tNu7mtpOUko1FgwbM34qVCBrrkhCRAxknmZLTXESpBlwZns+LCL5/hVBo?=
+ =?iso-8859-2?Q?C2JYDVjL/hkF/8xkIDIfh2AXAiPM2zBnFTF47SyPGjrsSyNBhGZicsZVTX?=
+ =?iso-8859-2?Q?byNYUAXkv84Jgud2TJarx3SwV6kAVyrLqioGQGi90QPPRNUSlfzYvY8uRy?=
+ =?iso-8859-2?Q?6hXRvtwZ3nsmvC+2+apidT7lufL9kuPnjrGCA7QOMXajImJhvb4YRLSba8?=
+ =?iso-8859-2?Q?O0Jp1sYJ8cEz+FEl8O04okcf9sdtI3/eAsgDdfcvQIyqaMmtQgVMA+wq6b?=
+ =?iso-8859-2?Q?muXkPR88fdI7XYccyFgnPBTRq0fvD8/G0oeyLPHXGYdjtF0Hgss86WniMt?=
+ =?iso-8859-2?Q?2Y2+TvK2MM1pORankkmnSzXQRNDSSkCAlFrWFtso9eTsNOrMOXRO952Su1?=
+ =?iso-8859-2?Q?+Hzoq4FygkCyT18KzTidIaxfTnZUjBxvKFLyK7rorK6uLpgchDs1/pLrv6?=
+ =?iso-8859-2?Q?1EORU1Fc+3R4vN5WLoOIXlKs4HyXGnkB5uZ0fd7nNyfEOggtaCSUE0lvGN?=
+ =?iso-8859-2?Q?nEx9sEfVcl340P1RuxLDLJ0NR4DbEExJ8AKS20XMDAlqpamwvQgPtIZoPU?=
+ =?iso-8859-2?Q?AN81J/SrMUBhQncu3POJiePoxXiB7+sLxStjyUkOPx/k3S6Sms2cpN/Taw?=
+ =?iso-8859-2?Q?lcbRgNRVryPaSaiBQmetZa+W/F2aUiialWPbMxDdgH1DdbP22cUoXUXsh1?=
+ =?iso-8859-2?Q?2anKI43ZnzZDA+Gwt5jqi2VqXRGvst9YUNoVu2Jl+JWhQGir1R+SGsnaCv?=
+ =?iso-8859-2?Q?sS2ymayhsrDZ8a9VM23W9E5zDLLfeZtRSat1wKIFNsmFX5FpNlDc4wJFH4?=
+ =?iso-8859-2?Q?PO4mCjL/wIK7a6YuNB2EecKCYNOC2NxyYc+/wgNwEOyTybaQi1bAvZc3iu?=
+ =?iso-8859-2?Q?Ktol4MoKlARqD+OJLpp25raV87YbZk00BUEJoXT/Z6gnE5ffRfA2kDNpWX?=
+ =?iso-8859-2?Q?Wd9xSD6pfWq9Xd9GX5Vav/18sEJ71kjCmmZLPaiNW6AUtkXLpScofWV54p?=
+ =?iso-8859-2?Q?86W6pkpyJzksCZZh5mfSYjjuu23Fttdn4k9a5PHxHscpyvwnFjhfooIyXk?=
+ =?iso-8859-2?Q?A=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR07MB9538.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-2?Q?hrPeUP4A8t59XPJUtHSQzmjEMiNBjhowQm+mO3bPwJab6/7X6RBCKjXBMD?=
+ =?iso-8859-2?Q?H6wtmzbrAo/GaFq/ht7o1f6JDzk83BTXBg6ykPzRRghv03H5nhh+Rueij6?=
+ =?iso-8859-2?Q?8sRZvV1hCvmcLPNW8tnA2VYSLO1p0XLw/1W9OYXsqhplACqKerOw2k2rst?=
+ =?iso-8859-2?Q?yR/FPqHZYyPXsiMIe84VS0bRq42Tg7HVwj1aEJkDt0WMIFA9KAT9moCzrZ?=
+ =?iso-8859-2?Q?y30LwkH7TMHoI5L5iJsJ2fpGEc6sIZ85yXRsTPO3wFWVsTjqHEnbszYp8o?=
+ =?iso-8859-2?Q?T/1SH7pRNY6Pmt3K/BPbJP7pIVZfwaTsrz5r4XIKj99syk0SQlCNKwH4i9?=
+ =?iso-8859-2?Q?jzPLG843ALKF/Bd7XzUvzwT2H2xxob5AOxfPKniDc0WNi3UlTr4dyeMEVF?=
+ =?iso-8859-2?Q?ZEge+mYD8y/xJpSj76V2I9pxFRjpQwK/jdvLyBwUoDc8G7ONebLO0HtYkl?=
+ =?iso-8859-2?Q?patXXzIC2OHWT0srJKniFLUiDgEmsqcFKb4G86XKfXvk/pRRH2HxlGRZ7f?=
+ =?iso-8859-2?Q?cYQ7oHnqFbif/KixbU2x/Oly7UmfoioyFpe3zC/tl/DqlXL+cfkgS6IrzE?=
+ =?iso-8859-2?Q?b1/QwU689rqOVTDqEqQYGfydN/3ANqpT1eKMzd1QksQd6gk7GXSUvHjp2V?=
+ =?iso-8859-2?Q?lLdOlz4SEJ6F8qcGx9LFOUg+i0aMo0qUtMumgMihTP+SPRk8fU/8EqM/Eo?=
+ =?iso-8859-2?Q?vFA0MWJZ/NVLpmGDeObgFWJ6GNA36bdCp4eXKXEASMwQBUUzhEYe3ATgUL?=
+ =?iso-8859-2?Q?bmbucNIhrxcRaUBNXY0Y8G25xiiSUd2zu9pkRa9bzmJnrdnlpd+LIHCOqi?=
+ =?iso-8859-2?Q?mKcJzy6Nk9l9uGNTH4cb5YdCdPsN8Wm/4nEZ0C9iJ4fRQV5UxxrzKLIvD0?=
+ =?iso-8859-2?Q?0O5YH0Z6E1/eGKcL0uCWVFI/VZJIKlPVFmg9kHOrxxwcO1tQwaLESEW9eI?=
+ =?iso-8859-2?Q?xpPfaywvphfTXFLVGyH/51MsmU6jJJAiGVFmab6vUHvZCT0vTlDhn+5/Yz?=
+ =?iso-8859-2?Q?HcYPLuli48ed766hNUFiqFiew3XgPQEkREqmg9M70FvVdf8f4HL0Y8Mubr?=
+ =?iso-8859-2?Q?8gBXSOgY97seGi6Y6MJZYd+Mb2fzheH6Te5+zMwHeweK8Deze3oLbaEcBi?=
+ =?iso-8859-2?Q?B3+LnbC29QdwYXE87kxIom6J+u1U7NT0PCjT/zZTu6ud+0FbxpC1YPABxt?=
+ =?iso-8859-2?Q?B5VsG6wrcvWoMIRwnZjr1UdYj6+WKmIU7SRfvc1+UAewfogNolhaHKsFD+?=
+ =?iso-8859-2?Q?12yRMm/46veZssiJGgb9cq+zVdeCDOOzvqY9wXX28IRe0l73nWPSgedGIA?=
+ =?iso-8859-2?Q?w3TcCpom7IqtSxIy67K2HiBGMNhybBBbzwUlSOh8Sj+H/Afr0RA5XGCZMu?=
+ =?iso-8859-2?Q?JhNo/8HgPuV48y/Y3NMbLMLgX2yZTCEBTl2yDHcMlNb/ADed5kGEVREG+e?=
+ =?iso-8859-2?Q?XOgkikzbHhmMyhWpXpi+kvp8ZSzog2kk5yossjYMsLXeG/oI+kHVnKWfdO?=
+ =?iso-8859-2?Q?GxWFHCqlXqFOfKzGsIJcklzPJ6flzgIx+pXUkEV/iRHvfz7nwUn3OCBv1q?=
+ =?iso-8859-2?Q?uj7BcCSV3OztOSwdI3ADLPME3Ya83RthstqOgSgVXyEMoz1O52Vz9vS+Zv?=
+ =?iso-8859-2?Q?dnuWJYwQtvkNzC/THTQSKmdelGI37Rwjrt?=
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: =?UTF-8?Q?Fran=C3=A7ois_Valenduc?= <francoisvalenduc@gmail.com>
-Subject: Re: Linux 6.14.7
-References: <2025051800-extended-bullfrog-ae21@gregkh>
-Content-Language: fr-FR
-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Autocrypt: addr=francoisvalenduc@gmail.com; keydata=
- xsBNBFmRfc4BCACWux+Xf5qYIpxqWPxBjg9NEVoGwp+CrOBfxS5S35pdwhLhtvbAjWrkDd7R
- UV6TEQh46FxTC7xv7I9Zgu3ST12ZiE4oKuXD7SaiiHdL0F2XfFeM/BXDtqSKJl3KbIB6CwKn
- yFrcEFnSl22dbt7e0LGilPBUc6vLFix/R2yTZen2hGdPrwTBSC4x78mKtxGbQIQWA0H0Gok6
- YvDYA0Vd6Lm7Gn0Y4CztLJoy58BaV2K4+eFYziB+JpH49CQPos9me4qyQXnYUMs8m481nOvU
- uN+boF+tE6R2UfTqy4/BppD1VTaL8opoltiPwllnvBHQkxUqCqPyx4wy4poyFnqqZiX1ABEB
- AAHNL0ZyYW7Dp29pcyBWYWxlbmR1YyA8ZnJhbmNvaXN2YWxlbmR1Y0BnbWFpbC5jb20+wsCO
- BBMBCAA4FiEE6f5kDnmodCNt9zOTYrYEnPv/3ocFAlmRfc4CGy8FCwkIBwIGFQgJCgsCBBYC
- AwECHgECF4AACgkQYrYEnPv/3ofKaAgAhhzNxGIoMIeENxVjJJJiGTBgreh8xIBSKfCY3uJQ
- tZ735QHIAxFUh23YG0nwSqTpDLwD9eYVufsLDxek1kIyfTDW7pogEFj+anyVAZbtGHt+upnx
- FFz8gXMg1P1qR5PK15iKQMWxadrUSJB4MVyGX1gAwPUYeIv1cB9HHcC6NiaSBKkjB49y6MfC
- jKgASMKvx5roNChytMUS79xLBvSScR6RxukuR0ZNlB1XBnnyK5jRkYOrCnvjUlFhJP4YJ8N/
- Q521BbypfCKvotXOiiHfUK4pDYjIwf6djNucg3ssDeVYypefIo7fT0pVxoE75029Sf7AL5yJ
- +LuNATPhW4lzXs7ATQRZkX3OAQgAqboEfr+k+xbshcTSZf12I/bfsCdI+GrDJMg8od6GR2NV
- yG9uD6OAe8EstGZjeIG0cMvTLRA97iiWz+xgzd5Db7RS4oxzxiZGHFQ1p+fDTgsdKiza08bL
- Kf+2ORl+7f15+D/P7duyh/51u0SFwu/2eoZI/zLXodYpjs7a3YguM2vHms2PcAheKHfH0j3F
- JtlvkempO87hguS9Hv7RyVYaBI68/c0myo6i9ylYMQqN2uo87Hc/hXSH/VGLqRGJmmviHPhl
- vAHwU2ajoAEjHiR22k+HtlYJRS2GUkXDsamOtibdkZraQPFlDAsGqLPDjXhxafIUhRADKElU
- x64m60OIwQARAQABwsGsBBgBCAAgFiEE6f5kDnmodCNt9zOTYrYEnPv/3ocFAlmRfc4CGy4B
- QAkQYrYEnPv/3ofAdCAEGQEIAB0WIQTSXq0Jm40UAAQ2YA1s6na6MHaNdgUCWZF9zgAKCRBs
- 6na6MHaNdgZ1B/486VdJ4/TO72QO6YzbdnrcWe/qWn4XZhE9D5xj73WIZU2uCdUlTAiaYxgw
- Dq2EL53mO5HsWf5llHcj0lweQCQIdjpKNpsIQc7setd+kV1NWHRQ4Hfi4f2KDXjDxuK6CiHx
- SVFprkOifmwIq3FLneKa0wfSbbpFllGf97TN+cH+b55HXUcm7We88RSsaZw4QMpzVf/lLkvr
- dNofHCBqU1HSTY6y4DGRKDUyY3Q2Q7yoTTKwtgt2h2NlRcjEK/vtIt21hrc88ZMM/SMvhaBJ
- hpbL9eGOCmrs0QImeDkk4Kq6McqLfOt0rNnVYFSYBJDgDHccMsDIJaB9PCvKr6gZ1rYQmAIH
- /3bgRZuGI/pGUPhj0YYBpb3vNfnIEQ1o7D59J9QxbXxJM7cww3NMonbXPu20le27wXsDe8um
- IcgOdgZQ/c7h6AuTnG7b4TDZeR6di9N1wuRkaTmDZMln0ob+aFwl8iRZjDBb99iyHydJhPOn
- HKbaQwvh0qG47O0FdzTsGtIfIaIq/dW27HUt2ogqIesTuhd/VIHJr8FcBm1C+PqSERICN73p
- XfmwqgbZCBKeGdt3t8qzOyS7QZFTc6uIQTcuu3/v8BGcIXFMTwNhW1AMN9YDhhd4rEf/rhaY
- YSvtJ8+QyAVfetyu7/hhEHxBR3nFas9Ds9GAHjKkNvY/ZhBahcARkUY=
-In-Reply-To: <2025051800-extended-bullfrog-ae21@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: cadence.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR07MB9538.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca63667e-37fb-4efd-fc21-08dd97679868
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 May 2025 06:28:55.0351
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Wz23OcjwkGo1GvHKZdJxBvL6EomoM341LQ5Fobdfjg71jXi3EtqchM2UFeMTHDjRap6o1nAoQWEyQpIXlL8FLSSiJZ01lDgN4tzLDFu5l4Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR07MB7751
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIwMDA1MSBTYWx0ZWRfX7nOfBC0WqbYt zDcEoOKJjELUj1NfV3lZlw/9M8oszUHvtBFMmRZyjmzdbjYvypXh8ltliZ8rxf8FWyJ37+xPTbG cUZb9qFGpRg5jLQqisY6kbfO5HVwO81wegu0DqRhdBEHQSkO+e2OEoF+E5V6zBZOuhqjxpc5G1K
+ 0v28eGzMgLxX8k9t1yMEC8qRxDP3oye00RmGjGaIsT4nRCSFMzNDzTiksW2thRJU1pk0Y4CFDwi dn9esRGzJQPOGg6jDxRb/4gV5fqMry+7PZ1JXblMvXwXdAmSxqi3VxJiYsZ59/QBKc/iwb/FD1s C7bw2LCtSJvWO9CXn+g7ecO94U1tfsyx3WcHkRX667o62JvOZf1I7OIYqLeElzLFzYtTMnDXjaA
+ xhIrdzTKpg5LWTWwqm3DdYpqTlh+0ihfZjDrxoQK9m1UbZ4zTViAan18G/6aegQ7uiqib3Z6
+X-Proofpoint-ORIG-GUID: xKqKcFu5SGWA3Zx83e_gq1rgFs9Ky6NZ
+X-Authority-Analysis: v=2.4 cv=OMcn3TaB c=1 sm=1 tr=0 ts=682c2129 cx=c_pps a=nskeBUqQUen4dZUz4TdP1w==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=-CRmgG0JhlAA:10
+ a=dt9VzEwgFbYA:10 a=Zpq2whiEiuAA:10 a=uherdBYGAAAA:8 a=VwQbUJbxAAAA:8 a=Br2UW1UjAAAA:8 a=vCSHyV674Z8sEcIe9OAA:9 a=jiObf9B0YAUA:10 a=WmXOPjafLNExVIMTj843:22
+X-Proofpoint-GUID: xKqKcFu5SGWA3Zx83e_gq1rgFs9Ky6NZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-20_03,2025-05-16_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 phishscore=0
+ impostorscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0
+ malwarescore=0 priorityscore=1501 clxscore=1011 adultscore=0 spamscore=0
+ mlxlogscore=794 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505200051
 
-Good morning,
+>
+>
+>On Fri, 28 Feb 2025 07:50:25 +0000, Pawel Laszczak wrote:
+>> The xHC resources allocated for USB devices are not released in
+>> correct order after resuming in case when while suspend device was
+>> reconnected.
+>>
+>> This issue has been detected during the fallowing scenario:
+>> - connect hub HS to root port
+>> - connect LS/FS device to hub port
+>> - wait for enumeration to finish
+>> - force host to suspend
+>> - reconnect hub attached to root port
+>> - wake host
+>>
+>> For this scenario during enumeration of USB LS/FS device the Cadence
+>> xHC reports completion error code for xHC commands because the xHC
+>> resources used for devices has not been properly released.
+>> XHCI specification doesn't mention that device can be reset in any
+>> order so, we should not treat this issue as Cadence xHC controller
+>> bug. Similar as during disconnecting in this case the device resources
+>> should be cleared starting form the last usb device in tree toward the
+>> root hub. To fix this issue usbcore driver should call
+>> hcd->driver->reset_device for all USB devices connected to hub which
+>> was reconnected while suspending.
+>>
+>> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence
+>> USBSSP DRD Driver")
+>> cc: <stable@vger.kernel.org>
+>> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+>
+>Taking discussion about this patch out of bugzilla
+>https://urldefense.com/v3/__https://bugzilla.kernel.org/show_bug.cgi?id=3D=
+220
+>069*c42__;Iw!!EHscmS1ygiU1lA!FD7UdYLwKPptb8LI646boayHRFMR7zLGkto3
+>rhb0whLx1-CVUGaYVVgrG5Y6EyLj-QcTuuUHSpaZcVPaTTRM$
+>
+>As Mathias pointed out, this whole idea is an explicit spec violation, bec=
+ause it
+>puts multiple Device Slots into the Default state.
+>
+>(Which has nothing to do with actually resetting the devices, by the way. =
+USB
+>core will still do it from the root towards the leaves. It only means the =
+xHC
+>believes that they are reset when they are not.)
+>
+>
+>A reset-resume of a whole tree looks like a tricky case, because on one ha=
+nd a
+>hub must resume (here: be reset) before its children in order to reset the=
+m,
+>but this apparently causes problems when some xHCs consider the hub "in
+>use" by the children (or its TT in use by their endpoints, I suspect that'=
+s the
+>case here and the reason why this patch helps).
+>
+>I have done some experimentation with reset-resuming from autosuspend,
+>either by causing Transaction Errors while resuming (full speed only) or
+>simulating usb_get_std_status() error in finish_port_resume().
+>
+>Either way, I noticed that the whole device tree ends up logically
+>disconnected and reconnected during reset-resume, so perhaps it would be
+>acceptable to disable all xHC Device Slots (leaf to root) before resetting
+>everything and re-enable Slots (root to leaf) one by one?
 
-I now get plenty of such errors when I want to install an rpm package 
-compiled with make binrpm-pkg under opensuse tumbleweed:
+Are you able recreate  this issue with different xHC controllers or only wi=
+th
+one specific xHCI?
+I try to recreate this issue but without result.=20
 
-ksym(6.14.7:shash_free_singlespawn_instance) = 97902343 est nécessaire 
-pour kernel-6.14.7-1.x86_64
-         ksym(6.14.7:shash_no_setkey) = 6392a6d9 est nécessaire pour 
-kernel-6.14.7-1.x86_64
-         ksym(6.14.7:shash_register_instance) = 5867280f est nécessaire 
-pour kernel-6.14.7-1.x86_64
+Regards,
+Pawel
 
-This also occurs with 6.12.29, but did not occur with 6.12.28. Of course 
-it work if I install with rpm -ivh --nodeps ...
-
-Best regards,
-
-François Valenduc
+>
+>
+>By the way, it's highly unclear if bug 220069 is caused by this spec viola=
+tion (I
+>think it's not), but this is still very sloppy code.
 
 
-Le 18/05/25 à 08:41, Greg Kroah-Hartman a écrit :
-> I'm announcing the release of the 6.14.7 kernel.
-> 
-> All users of the 6.14 kernel series must upgrade.
-> 
-> The updated 6.14.y git tree can be found at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.14.y
-> and can be browsed at the normal kernel.org git web browser:
-> 	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------
-> 
->   .clippy.toml                                                    |    2
->   Documentation/ABI/testing/sysfs-devices-system-cpu              |    1
->   Documentation/admin-guide/hw-vuln/index.rst                     |    1
->   Documentation/admin-guide/hw-vuln/indirect-target-selection.rst |  168 ++++++++
->   Documentation/admin-guide/kernel-parameters.txt                 |   18
->   Makefile                                                        |    2
->   arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi                |   25 -
->   arch/arm64/include/asm/cputype.h                                |    2
->   arch/arm64/include/asm/insn.h                                   |    1
->   arch/arm64/include/asm/spectre.h                                |    3
->   arch/arm64/kernel/cpufeature.c                                  |    9
->   arch/arm64/kernel/proton-pack.c                                 |   13
->   arch/arm64/kvm/mmu.c                                            |   13
->   arch/arm64/lib/insn.c                                           |   60 +-
->   arch/arm64/net/bpf_jit_comp.c                                   |   57 ++
->   arch/mips/include/asm/ptrace.h                                  |    3
->   arch/riscv/kernel/process.c                                     |    6
->   arch/riscv/kernel/traps.c                                       |   64 +--
->   arch/riscv/kernel/traps_misaligned.c                            |   17
->   arch/s390/kernel/entry.S                                        |    3
->   arch/s390/pci/pci_clp.c                                         |    2
->   arch/x86/Kconfig                                                |   12
->   arch/x86/entry/entry_64.S                                       |   20
->   arch/x86/include/asm/alternative.h                              |   32 +
->   arch/x86/include/asm/cpufeatures.h                              |    3
->   arch/x86/include/asm/microcode.h                                |    2
->   arch/x86/include/asm/msr-index.h                                |    8
->   arch/x86/include/asm/nospec-branch.h                            |   10
->   arch/x86/kernel/alternative.c                                   |  208 +++++++++-
->   arch/x86/kernel/cpu/bugs.c                                      |  176 ++++++++
->   arch/x86/kernel/cpu/common.c                                    |   72 ++-
->   arch/x86/kernel/cpu/microcode/amd.c                             |    6
->   arch/x86/kernel/cpu/microcode/core.c                            |   58 +-
->   arch/x86/kernel/cpu/microcode/intel.c                           |    2
->   arch/x86/kernel/cpu/microcode/internal.h                        |    1
->   arch/x86/kernel/ftrace.c                                        |    2
->   arch/x86/kernel/head32.c                                        |    4
->   arch/x86/kernel/module.c                                        |    6
->   arch/x86/kernel/static_call.c                                   |    4
->   arch/x86/kernel/vmlinux.lds.S                                   |   10
->   arch/x86/kvm/mmu/mmu.c                                          |   69 ++-
->   arch/x86/kvm/smm.c                                              |    1
->   arch/x86/kvm/svm/svm.c                                          |    4
->   arch/x86/kvm/x86.c                                              |    4
->   arch/x86/lib/retpoline.S                                        |   39 +
->   arch/x86/mm/tlb.c                                               |   23 +
->   arch/x86/net/bpf_jit_comp.c                                     |   58 ++
->   drivers/accel/ivpu/ivpu_hw.c                                    |    2
->   drivers/accel/ivpu/ivpu_job.c                                   |   90 +++-
->   drivers/base/cpu.c                                              |    3
->   drivers/block/loop.c                                            |   43 +-
->   drivers/bluetooth/btmtk.c                                       |   10
->   drivers/clocksource/i8253.c                                     |    4
->   drivers/firmware/arm_scmi/driver.c                              |   13
->   drivers/gpu/drm/amd/amdgpu/amdgpu.h                             |    2
->   drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c                        |   18
->   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c                      |   29 -
->   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c                         |   10
->   drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h                         |    1
->   drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c                           |    7
->   drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c                           |    7
->   drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c                           |   12
->   drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c                           |    7
->   drivers/gpu/drm/amd/amdgpu/hdp_v7_0.c                           |    7
->   drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c                           |    1
->   drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c                           |    1
->   drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c                           |    1
->   drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c                           |    4
->   drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c                         |    1
->   drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c                         |    1
->   drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c                         |    3
->   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c               |   36 -
->   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c     |   28 +
->   drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c   |   14
->   drivers/gpu/drm/panel/panel-simple.c                            |   25 -
->   drivers/gpu/drm/v3d/v3d_sched.c                                 |   28 +
->   drivers/gpu/drm/xe/tests/xe_mocs.c                              |    7
->   drivers/gpu/drm/xe/xe_gt_debugfs.c                              |    9
->   drivers/gpu/drm/xe/xe_gt_pagefault.c                            |   11
->   drivers/hv/hyperv_vmbus.h                                       |    6
->   drivers/hv/vmbus_drv.c                                          |  100 ++++
->   drivers/iio/accel/adis16201.c                                   |    4
->   drivers/iio/accel/adxl355_core.c                                |    2
->   drivers/iio/accel/adxl367.c                                     |   10
->   drivers/iio/adc/ad7266.c                                        |    2
->   drivers/iio/adc/ad7606_spi.c                                    |    2
->   drivers/iio/adc/ad7768-1.c                                      |    2
->   drivers/iio/adc/dln2-adc.c                                      |    2
->   drivers/iio/adc/rockchip_saradc.c                               |   17
->   drivers/iio/chemical/pms7003.c                                  |    5
->   drivers/iio/chemical/sps30.c                                    |    2
->   drivers/iio/common/hid-sensors/hid-sensor-attributes.c          |    4
->   drivers/iio/imu/bmi270/bmi270_core.c                            |    6
->   drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c                      |    2
->   drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c                  |    6
->   drivers/iio/light/hid-sensor-prox.c                             |   22 -
->   drivers/iio/light/opt3001.c                                     |    5
->   drivers/iio/pressure/mprls0025pa.h                              |   17
->   drivers/iio/temperature/maxim_thermocouple.c                    |    2
->   drivers/input/joystick/xpad.c                                   |   40 +
->   drivers/input/keyboard/mtk-pmic-keys.c                          |    4
->   drivers/input/mouse/synaptics.c                                 |    5
->   drivers/input/touchscreen/cyttsp5.c                             |    7
->   drivers/md/dm-table.c                                           |    3
->   drivers/net/can/m_can/m_can.c                                   |    3
->   drivers/net/can/rockchip/rockchip_canfd-core.c                  |    2
->   drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c                  |   42 +-
->   drivers/net/dsa/b53/b53_common.c                                |  207 +++++++--
->   drivers/net/dsa/b53/b53_priv.h                                  |    3
->   drivers/net/dsa/bcm_sf2.c                                       |    1
->   drivers/net/ethernet/intel/ice/ice_adapter.c                    |   47 --
->   drivers/net/ethernet/intel/ice/ice_adapter.h                    |    6
->   drivers/net/ethernet/mediatek/mtk_eth_soc.c                     |   19
->   drivers/net/ethernet/meta/fbnic/fbnic_csr.h                     |    2
->   drivers/net/ethernet/meta/fbnic/fbnic_fw.c                      |  197 +++++----
->   drivers/net/ethernet/meta/fbnic/fbnic_mac.c                     |    6
->   drivers/net/virtio_net.c                                        |   23 -
->   drivers/nvme/host/core.c                                        |    3
->   drivers/pci/hotplug/s390_pci_hpc.c                              |    1
->   drivers/staging/axis-fifo/axis-fifo.c                           |   14
->   drivers/staging/iio/adc/ad7816.c                                |    2
->   drivers/staging/vc04_services/bcm2835-camera/bcm2835-camera.c   |    1
->   drivers/uio/uio_hv_generic.c                                    |   39 -
->   drivers/usb/cdns3/cdnsp-gadget.c                                |   31 +
->   drivers/usb/cdns3/cdnsp-gadget.h                                |    6
->   drivers/usb/cdns3/cdnsp-pci.c                                   |   12
->   drivers/usb/cdns3/cdnsp-ring.c                                  |    3
->   drivers/usb/cdns3/core.h                                        |    3
->   drivers/usb/class/usbtmc.c                                      |   59 +-
->   drivers/usb/dwc3/core.h                                         |    4
->   drivers/usb/dwc3/gadget.c                                       |   60 +-
->   drivers/usb/gadget/composite.c                                  |   12
->   drivers/usb/gadget/function/f_ecm.c                             |    7
->   drivers/usb/gadget/udc/tegra-xudc.c                             |    4
->   drivers/usb/host/uhci-platform.c                                |    2
->   drivers/usb/host/xhci-dbgcap.c                                  |   19
->   drivers/usb/host/xhci-dbgcap.h                                  |    3
->   drivers/usb/host/xhci-tegra.c                                   |    3
->   drivers/usb/misc/onboard_usb_dev.c                              |   10
->   drivers/usb/typec/tcpm/tcpm.c                                   |    2
->   drivers/usb/typec/ucsi/displayport.c                            |   21 -
->   drivers/usb/typec/ucsi/ucsi.c                                   |   34 +
->   drivers/usb/typec/ucsi/ucsi.h                                   |    2
->   drivers/vfio/pci/vfio_pci_core.c                                |   12
->   drivers/xen/swiotlb-xen.c                                       |    1
->   drivers/xen/xenbus/xenbus.h                                     |    2
->   drivers/xen/xenbus/xenbus_comms.c                               |    9
->   drivers/xen/xenbus/xenbus_dev_frontend.c                        |    2
->   drivers/xen/xenbus/xenbus_xs.c                                  |   18
->   fs/btrfs/volumes.c                                              |   91 ----
->   fs/erofs/fileio.c                                               |    4
->   fs/erofs/zdata.c                                                |   31 -
->   fs/namespace.c                                                  |    3
->   fs/ocfs2/alloc.c                                                |    1
->   fs/ocfs2/journal.c                                              |   80 ++-
->   fs/ocfs2/journal.h                                              |    1
->   fs/ocfs2/ocfs2.h                                                |   17
->   fs/ocfs2/quota_local.c                                          |    9
->   fs/ocfs2/suballoc.c                                             |   38 +
->   fs/ocfs2/suballoc.h                                             |    1
->   fs/ocfs2/super.c                                                |    3
->   fs/smb/client/cached_dir.c                                      |   10
->   fs/smb/server/oplock.c                                          |    7
->   fs/smb/server/smb2pdu.c                                         |    5
->   fs/smb/server/vfs.c                                             |    7
->   fs/smb/server/vfs_cache.c                                       |   33 +
->   fs/userfaultfd.c                                                |   28 +
->   include/linux/cpu.h                                             |    2
->   include/linux/execmem.h                                         |    3
->   include/linux/hyperv.h                                          |    6
->   include/linux/ieee80211.h                                       |    2
->   include/linux/module.h                                          |    5
->   include/linux/timekeeper_internal.h                             |    8
->   include/linux/vmalloc.h                                         |    1
->   include/net/netdev_queues.h                                     |    6
->   init/Kconfig                                                    |    3
->   io_uring/io_uring.c                                             |   58 +-
->   io_uring/sqpoll.c                                               |    2
->   kernel/params.c                                                 |    4
->   kernel/time/timekeeping.c                                       |   50 ++
->   kernel/time/vsyscall.c                                          |    4
->   mm/huge_memory.c                                                |   11
->   mm/internal.h                                                   |   27 -
->   mm/memblock.c                                                   |    9
->   mm/page_alloc.c                                                 |  161 ++++---
->   mm/vmalloc.c                                                    |   31 +
->   net/can/gw.c                                                    |  149 ++++---
->   net/core/filter.c                                               |    1
->   net/core/netdev-genl.c                                          |   69 ++-
->   net/ipv6/addrconf.c                                             |   15
->   net/mac80211/mlme.c                                             |   12
->   net/netfilter/ipset/ip_set_hash_gen.h                           |    2
->   net/netfilter/ipvs/ip_vs_xmit.c                                 |   27 -
->   net/openvswitch/actions.c                                       |    3
->   net/sched/sch_htb.c                                             |   15
->   net/wireless/scan.c                                             |    2
->   rust/bindings/lib.rs                                            |    1
->   rust/kernel/alloc/kvec.rs                                       |    3
->   rust/kernel/list.rs                                             |    3
->   rust/kernel/str.rs                                              |   46 +-
->   rust/macros/module.rs                                           |   19
->   rust/macros/paste.rs                                            |    2
->   rust/macros/pinned_drop.rs                                      |    3
->   rust/uapi/lib.rs                                                |    1
->   tools/objtool/check.c                                           |    1
->   tools/testing/selftests/Makefile                                |    1
->   tools/testing/selftests/mm/compaction_test.c                    |   19
->   tools/testing/selftests/mm/pkey-powerpc.h                       |   14
->   tools/testing/selftests/mm/pkey_util.c                          |    1
->   tools/testing/selftests/x86/bugs/Makefile                       |    3
->   tools/testing/selftests/x86/bugs/common.py                      |  164 +++++++
->   tools/testing/selftests/x86/bugs/its_indirect_alignment.py      |  150 +++++++
->   tools/testing/selftests/x86/bugs/its_permutations.py            |  109 +++++
->   tools/testing/selftests/x86/bugs/its_ret_alignment.py           |  139 ++++++
->   tools/testing/selftests/x86/bugs/its_sysfs.py                   |   65 +++
->   215 files changed, 3564 insertions(+), 1212 deletions(-)
-> 
-> Aditya Garg (3):
->        Input: synaptics - enable InterTouch on Dynabook Portege X30L-G
->        Input: synaptics - enable InterTouch on Dell Precision M3800
->        Input: synaptics - enable InterTouch on TUXEDO InfinityBook Pro 14 v5
-> 
-> Al Viro (1):
->        do_umount(): add missing barrier before refcount checks in sync case
-> 
-> Alex Deucher (7):
->        Revert "drm/amd: Stop evicting resources on APUs in suspend"
->        drm/amdgpu: fix pm notifier handling
->        drm/amdgpu/hdp4: use memcfg register to post the write for HDP flush
->        drm/amdgpu/hdp5.2: use memcfg register to post the write for HDP flush
->        drm/amdgpu/hdp5: use memcfg register to post the write for HDP flush
->        drm/amdgpu/hdp6: use memcfg register to post the write for HDP flush
->        drm/amdgpu/hdp7: use memcfg register to post the write for HDP flush
-> 
-> Alex Williamson (1):
->        vfio/pci: Align huge faults to order
-> 
-> Alexander Duyck (7):
->        fbnic: Fix initialization of mailbox descriptor rings
->        fbnic: Gate AXI read/write enabling on FW mailbox
->        fbnic: Actually flush_tx instead of stalling out
->        fbnic: Cleanup handling of completions
->        fbnic: Improve responsiveness of fbnic_mbx_poll_tx_ready
->        fbnic: Pull fbnic_fw_xmit_cap_msg use out of interrupt context
->        fbnic: Do not allow mailbox to toggle to ready outside fbnic_mbx_poll_tx_ready
-> 
-> Alexey Charkov (1):
->        usb: uhci-platform: Make the clock really optional
-> 
-> Andrei Kuchynski (2):
->        usb: typec: ucsi: displayport: Fix deadlock
->        usb: typec: ucsi: displayport: Fix NULL pointer access
-> 
-> Angelo Dureghello (1):
->        iio: adc: ad7606: fix serial register access
-> 
-> Antonios Salios (1):
->        can: m_can: m_can_class_allocate_dev(): initialize spin lock on device probe
-> 
-> Aurabindo Pillai (1):
->        drm/amd/display: more liberal vmin/vmax update for freesync
-> 
-> Borislav Petkov (AMD) (1):
->        x86/microcode: Consolidate the loader enablement checking
-> 
-> Christoph Hellwig (1):
->        loop: factor out a loop_assign_backing_file helper
-> 
-> Clément Léger (2):
->        riscv: misaligned: factorize trap handling
->        riscv: misaligned: enable IRQs while handling misaligned accesses
-> 
-> Cong Wang (1):
->        sch_htb: make htb_deactivate() idempotent
-> 
-> Cristian Marussi (1):
->        firmware: arm_scmi: Fix timeout checks on polling path
-> 
-> Dan Carpenter (1):
->        dm: add missing unlock on in dm_keyslot_evict()
-> 
-> Daniel Golle (1):
->        net: ethernet: mtk_eth_soc: reset all TX queues on DMA free
-> 
-> Daniel Sneddon (2):
->        x86/bpf: Call branch history clearing sequence on exit
->        x86/bpf: Add IBHF call at end of classic BPF
-> 
-> Daniel Wagner (1):
->        nvme: unblock ctrl state transition for firmware update
-> 
-> Dave Hansen (1):
->        x86/mm: Eliminate window where TLB flushes may be inadvertently skipped
-> 
-> Dave Penkler (3):
->        usb: usbtmc: Fix erroneous get_stb ioctl error returns
->        usb: usbtmc: Fix erroneous wait_srq ioctl return
->        usb: usbtmc: Fix erroneous generic_read ioctl return
-> 
-> Dave Stevenson (1):
->        staging: bcm2835-camera: Initialise dev in v4l2_dev
-> 
-> David Lechner (4):
->        iio: chemical: sps30: use aligned_s64 for timestamp
->        iio: chemical: pms7003: use aligned_s64 for timestamp
->        iio: imu: inv_mpu6050: align buffer for timestamp
->        iio: pressure: mprls0025pa: use aligned_s64 for timestamp
-> 
-> Dmitry Antipov (1):
->        module: ensure that kobject_put() is safe for module type kobjects
-> 
-> Dmitry Torokhov (1):
->        Input: synaptics - enable SMBus for HP Elitebook 850 G1
-> 
-> Eelco Chaudron (1):
->        openvswitch: Fix unsafe attribute parsing in output_userspace()
-> 
-> Eric Biggers (1):
->        x86/its: Fix build errors when CONFIG_MODULES=n
-> 
-> Feng Tang (1):
->        selftests/mm: compaction_test: support platform with huge mount of memory
-> 
-> Frank Wunderlich (1):
->        net: ethernet: mtk_eth_soc: do not reset PSE when setting FE
-> 
-> Gabriel Krisman Bertazi (1):
->        io_uring/sqpoll: Increase task_work submission batch size
-> 
-> Gabriel Shahrouzi (4):
->        staging: iio: adc: ad7816: Correct conditional logic for store mode
->        staging: axis-fifo: Remove hardware resets for user errors
->        staging: axis-fifo: Correct handling of tx_fifo_depth for size validation
->        iio: adis16201: Correct inclinometer channel resolution
-> 
-> Gao Xiang (1):
->        erofs: ensure the extra temporary copy is valid for shortened bvecs
-> 
-> Gary Bisson (1):
->        Input: mtk-pmic-keys - fix possible null pointer dereference
-> 
-> Gavin Guo (1):
->        mm/huge_memory: fix dereferencing invalid pmd migration entry
-> 
-> Greg Kroah-Hartman (1):
->        Linux 6.14.7
-> 
-> Guillaume Nault (1):
->        gre: Fix again IPv6 link-local address generation.
-> 
-> Gustavo Silva (1):
->        iio: imu: bmi270: fix initial sampling frequency configuration
-> 
-> Hao Qin (1):
->        Bluetooth: btmtk: Remove the resetting step before downloading the fw
-> 
-> Heiko Carstens (1):
->        s390/entry: Fix last breaking event handling in case of stack corruption
-> 
-> Heming Zhao (1):
->        ocfs2: fix the issue with discontiguous allocation in the global_bitmap
-> 
-> Hugo Villeneuve (1):
->        Input: cyttsp5 - ensure minimum reset pulse width
-> 
-> Jacek Lawrynowicz (1):
->        accel/ivpu: Increase state dump msg timeout
-> 
-> Jakub Kicinski (4):
->        virtio-net: don't re-enable refill work too early when NAPI is disabled
->        virtio-net: free xsk_buffs on error in virtnet_xsk_pool_enable()
->        net: export a helper for adding up queue stats
->        virtio-net: fix total qstat values
-> 
-> James Morse (6):
->        arm64: insn: Add support for encoding DSB
->        arm64: proton-pack: Expose whether the platform is mitigated by firmware
->        arm64: proton-pack: Expose whether the branchy loop k value
->        arm64: bpf: Add BHB mitigation to the epilogue for cBPF programs
->        arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
->        arm64: proton-pack: Add new CPUs 'k' values for branch mitigation
-> 
-> Jan Kara (3):
->        ocfs2: switch osb->disable_recovery to enum
->        ocfs2: implement handshaking with ocfs2 recovery thread
->        ocfs2: stop quota recovery before disabling quotas
-> 
-> Jason Andryuk (1):
->        xenbus: Use kref to track req lifetime
-> 
-> Jens Axboe (2):
->        io_uring: ensure deferred completions are flushed for multishot
->        io_uring: always arm linked timeouts prior to issue
-> 
-> Jim Lin (1):
->        usb: host: tegra: Prevent host controller crash when OTG port is used
-> 
-> Johannes Weiner (2):
->        mm: page_alloc: don't steal single pages from biggest buddy
->        mm: page_alloc: speed up fallbacks in rmqueue_bulk()
-> 
-> John Ernberg (1):
->        xen: swiotlb: Use swiotlb bouncing if kmalloc allocation demands it
-> 
-> Jonas Gorski (11):
->        net: dsa: b53: allow leaky reserved multicast
->        net: dsa: b53: keep CPU port always tagged again
->        net: dsa: b53: fix clearing PVID of a port
->        net: dsa: b53: fix flushing old pvid VLAN on pvid change
->        net: dsa: b53: fix VLAN ID for untagged vlan on bridge leave
->        net: dsa: b53: always rejoin default untagged VLAN on bridge leave
->        net: dsa: b53: do not allow to configure VLAN 0
->        net: dsa: b53: do not program vlans when vlan filtering is off
->        net: dsa: b53: fix toggling vlan_filtering
->        net: dsa: b53: fix learning on VLAN unaware bridges
->        net: dsa: b53: do not set learning and unicast/multicast on up
-> 
-> Jonathan Cameron (5):
->        iio: adc: ad7768-1: Fix insufficient alignment of timestamp.
->        iio: adc: ad7266: Fix potential timestamp alignment issue.
->        iio: temp: maxim-thermocouple: Fix potential lack of DMA safe buffer.
->        iio: accel: adxl355: Make timestamp 64-bit aligned using aligned_s64
->        iio: adc: dln2: Use aligned_s64 for timestamp
-> 
-> Jozsef Kadlecsik (1):
->        netfilter: ipset: fix region locking in hash types
-> 
-> Julian Anastasov (1):
->        ipvs: fix uninit-value for saddr in do_output_route4
-> 
-> Karol Wachowski (2):
->        accel/ivpu: Separate DB ID and CMDQ ID allocations from CMDQ allocation
->        accel/ivpu: Correct mutex unlock order in job submission
-> 
-> Kees Cook (1):
->        mm: vmalloc: support more granular vrealloc() sizing
-> 
-> Kelsey Maes (1):
->        can: mcp251xfd: fix TDC setting for low data bit rates
-> 
-> Kevin Baker (1):
->        drm/panel: simple: Update timings for AUO G101EVN010
-> 
-> Lizhi Xu (1):
->        loop: Add sanity check for read/write_iter
-> 
-> Lode Willems (1):
->        Input: xpad - add support for 8BitDo Ultimate 2 Wireless Controller
-> 
-> Lothar Rubusch (1):
->        iio: accel: adxl367: fix setting odr for activity time update
-> 
-> Luca Ceresoli (1):
->        iio: light: opt3001: fix deadlock due to concurrent flag access
-> 
-> Lukasz Czechowski (1):
->        usb: misc: onboard_usb_dev: fix support for Cypress HX3 hubs
-> 
-> Madhavan Srinivasan (1):
->        selftests/mm: fix build break when compiling pkey_util.c
-> 
-> Manuel Fombuena (1):
->        Input: synaptics - enable InterTouch on Dynabook Portege X30-D
-> 
-> Marc Kleine-Budde (3):
->        can: mcan: m_can_class_unregister(): fix order of unregistration calls
->        can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
->        can: rockchip_canfd: rkcanfd_remove(): fix order of unregistration calls
-> 
-> Mark Tinguely (1):
->        ocfs2: fix panic in failed foilio allocation
-> 
-> Mathias Nyman (1):
->        xhci: dbc: Avoid event polling busyloop if pending rx transfers are inactive.
-> 
-> Matthew Brost (1):
->        drm/xe: Add page queue multiplier
-> 
-> Max Kellermann (1):
->        fs/erofs/fileio: call erofs_onlinefolio_split() after bio_add_folio()
-> 
-> Maíra Canal (1):
->        drm/v3d: Add job to pending list if the reset was skipped
-> 
-> Michael-CY Lee (1):
->        wifi: mac80211: fix the type of status_code for negotiated TID to Link Mapping
-> 
-> Miguel Ojeda (5):
->        rust: clean Rust 1.88.0's `unnecessary_transmutes` lint
->        objtool/rust: add one more `noreturn` Rust function for Rust 1.87.0
->        rust: clean Rust 1.88.0's warning about `clippy::disallowed_macros` configuration
->        rust: allow Rust 1.87.0's `clippy::ptr_eq` lint
->        rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
-> 
-> Mikael Gonella-Bolduc (1):
->        Input: cyttsp5 - fix power control issue on wakeup
-> 
-> Mikhail Lobanov (1):
->        KVM: SVM: Forcibly leave SMM mode on SHUTDOWN interception
-> 
-> Nam Cao (1):
->        riscv: Fix kernel crash due to PR_SET_TAGGED_ADDR_CTRL
-> 
-> Naman Jain (1):
->        uio_hv_generic: Fix sysfs creation path for ring buffer
-> 
-> Namjae Jeon (1):
->        ksmbd: prevent rename with empty string
-> 
-> Niklas Schnelle (2):
->        s390/pci: Fix missing check for zpci_create_device() error return
->        s390/pci: Fix duplicate pci_dev_put() in disable_slot() when PF has child VFs
-> 
-> Norbert Szetei (1):
->        ksmbd: prevent out-of-bounds stream writes by validating *pos
-> 
-> Nylon Chen (1):
->        riscv: misaligned: Add handling for ZCB instructions
-> 
-> Nysal Jan K.A. (1):
->        selftests/mm: fix a build failure on powerpc
-> 
-> Oliver Hartkopp (1):
->        can: gw: fix RCU/BH usage in cgw_create_job()
-> 
-> Oliver Neukum (1):
->        USB: usbtmc: use interruptible sleep in usbtmc_read
-> 
-> Paul Aurich (1):
->        smb: client: Avoid race in open_cached_dir with lease breaks
-> 
-> Paul Chaignon (1):
->        bpf: Scrub packet on bpf_redirect_peer
-> 
-> Pawan Gupta (11):
->        x86/bhi: Do not set BHI_DIS_S in 32-bit mode
->        Documentation: x86/bugs/its: Add ITS documentation
->        x86/its: Enumerate Indirect Target Selection (ITS) bug
->        x86/its: Add support for ITS-safe indirect thunk
->        x86/its: Add support for ITS-safe return thunk
->        x86/its: Enable Indirect Target Selection mitigation
->        x86/its: Add "vmexit" option to skip mitigation on some CPUs
->        x86/its: Add support for RSB stuffing mitigation
->        x86/its: Align RETs in BHB clear sequence to avoid thunking
->        x86/ibt: Keep IBT disabled during alternative patching
->        selftest/x86/bugs: Add selftests for ITS
-> 
-> Pawel Laszczak (2):
->        usb: cdnsp: Fix issue with resuming from L1
->        usb: cdnsp: fix L1 resume issue for RTL_REVISION_NEW_LPM version
-> 
-> Peter Xu (1):
->        mm/userfaultfd: fix uninitialized output field for -EAGAIN race
-> 
-> Peter Zijlstra (2):
->        x86/its: Use dynamic thunks for indirect branches
->        x86/its: FineIBT-paranoid vs ITS
-> 
-> Petr Vaněk (1):
->        mm: fix folio_pte_batch() on XEN PV
-> 
-> Prashanth K (3):
->        usb: dwc3: gadget: Make gadget_wakeup asynchronous
->        usb: gadget: f_ecm: Add get_status callback
->        usb: gadget: Use get_status callback to set remote wakeup capability
-> 
-> Przemek Kitszel (1):
->        ice: use DSN instead of PCI BDF for ice_adapter index
-> 
-> Qu Wenruo (1):
->        Revert "btrfs: canonicalize the device path before adding it"
-> 
-> RD Babiera (1):
->        usb: typec: tcpm: delay SNK_TRY_WAIT_DEBOUNCE to SRC_TRYWAIT transition
-> 
-> Roman Li (1):
->        drm/amd/display: Fix invalid context error in dml helper
-> 
-> Ruijing Dong (1):
->        drm/amdgpu/vcn: using separate VCN1_AON_SOC offset
-> 
-> Samuel Holland (1):
->        riscv: Disallow PR_GET_TAGGED_ADDR_CTRL without Supm
-> 
-> Sean Christopherson (1):
->        KVM: x86/mmu: Prevent installing hugepages when mem attributes are changing
-> 
-> Sean Heelan (1):
->        ksmbd: Fix UAF in __close_file_table_ids
-> 
-> Sebastian Andrzej Siewior (1):
->        clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
-> 
-> Sebastian Ott (1):
->        KVM: arm64: Fix uninitialized memcache pointer in user_mem_abort()
-> 
-> Shuicheng Lin (1):
->        drm/xe: Release force wake first then runtime power
-> 
-> Silvano Seva (2):
->        iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
->        iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_tagged_fifo
-> 
-> Simon Xue (1):
->        iio: adc: rockchip: Fix clock initialization sequence
-> 
-> Tejas Upadhyay (1):
->        drm/xe/tests/mocs: Hold XE_FORCEWAKE_ALL for LNCF regs
-> 
-> Thomas Gleixner (1):
->        timekeeping: Prevent coarse clocks going backwards
-> 
-> Thorsten Blum (1):
->        MIPS: Fix MAX_REG_OFFSET
-> 
-> Tom Lendacky (1):
->        memblock: Accept allocated memory before use in memblock_double_array()
-> 
-> Veerendranath Jakkam (1):
->        wifi: cfg80211: fix out-of-bounds access during multi-link element defragmentation
-> 
-> Vicki Pfau (2):
->        Input: xpad - fix Share button on Xbox One controllers
->        Input: xpad - fix two controller table values
-> 
-> Wang Zhaolong (1):
->        ksmbd: fix memory leak in parse_lease_state()
-> 
-> Wayne Chang (1):
->        usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
-> 
-> Wayne Lin (5):
->        drm/amd/display: Shift DMUB AUX reply command if necessary
->        drm/amd/display: Fix the checking condition in dmub aux handling
->        drm/amd/display: Remove incorrect checking in dmub aux handler
->        drm/amd/display: Fix wrong handling for AUX_DEFER case
->        drm/amd/display: Copy AUX read reply data whenever length > 0
-> 
-> Wojciech Dubowik (1):
->        arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to usdhc2
-> 
-> Yeoreum Yun (1):
->        arm64: cpufeature: Move arm64_use_ng_mappings to the .data section to prevent wrong idmap generation
-> 
-> Zhang Lixu (3):
->        iio: hid-sensor-prox: Restore lost scale assignments
->        iio: hid-sensor-prox: support multi-channel SCALE calculation
->        iio: hid-sensor-prox: Fix incorrect OFFSET calculation
-> 
-
+>
+>Regards,
+>Michal
 
