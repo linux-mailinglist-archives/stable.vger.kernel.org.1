@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2AEABDB0D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:05:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD028ABDAA0
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31C843A7D29
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:01:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B823A60DE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1E822C325;
-	Tue, 20 May 2025 14:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31A524337B;
+	Tue, 20 May 2025 13:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcuLz0ZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ui7CBw/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0346198845;
-	Tue, 20 May 2025 14:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A89D13635C;
+	Tue, 20 May 2025 13:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749696; cv=none; b=hNPszHdKzWo4D/jq2rtmqgiCjALwWMv/Uvr38riLtRB9C4SipaQaDjiXSl7n+mvvctS0QJHghmGS0YLbITkTjD2lxo0vo9RQxb6RJ/4YSdhncvZb7Bb2DnaC2oB5ufpQu2vaRm8+fb0rFzhD5doKl02yo03/K7dt3ocArZZPAOw=
+	t=1747749491; cv=none; b=sEJwVvijIDJ2Ugt0rs5AljkuPb1e+XARTdzE94fHkJ1RgDKyoaxjaMbuoM2GyORaXDQ80zyKTZ+uPdw8y+ISCugAdzjjLwTFVJ47ZaZv5Mv2IpEE+Ww2YCbGy1j04uU7OU1KgGBU1httgpGiCgw5amPANRDl89siMUHuP+OK9D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749696; c=relaxed/simple;
-	bh=Wda9TnTRhXyqgsx3vThtcOxCIGkrjtKbDKi6W7I2ACc=;
+	s=arc-20240116; t=1747749491; c=relaxed/simple;
+	bh=M//9Ofoe47Qfr+IrJHhweJWQ0wQYHAaJjARuhHjw1qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pm9sghPeMKrdI9VRsmN2FDAocA/9ityS3f1OFaHNxiq4yayO2lW7pB782aJFiFdhWlP/ZpK25qwMa/DbVcZn9xNqRuRqZQcntbstatpNbtv+/e4Y2Azn6YpJjDVDcEES2xXKJOIKlVm/7pmBYz713JKQ1qYoZ75uBGiEq1ed+Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcuLz0ZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656D8C4CEE9;
-	Tue, 20 May 2025 14:01:36 +0000 (UTC)
+	 MIME-Version; b=JbkEoMW7Q9MY0P20FSXQS7QiBJDlLfFZUQ0VFdZSB6V9eqk1CVq/RZ47Q+wWdMrgBdDydkqowRk4LflLn7KOuGCpjWi7EEIKVVplwF+FvUfFAYmlZ8axVr78iVrIdV3CED68ryey6/JpKqD4cdSBwyFOHToQGJ2Y4i3rB6MtjYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ui7CBw/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98153C4CEE9;
+	Tue, 20 May 2025 13:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749696;
-	bh=Wda9TnTRhXyqgsx3vThtcOxCIGkrjtKbDKi6W7I2ACc=;
+	s=korg; t=1747749491;
+	bh=M//9Ofoe47Qfr+IrJHhweJWQ0wQYHAaJjARuhHjw1qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RcuLz0ZWDzFlMJUKJw0wjPycLkNMOZ2hfyMpZ3u/XaOvspoRLQwep+pXRginJQ/sU
-	 Gwjv33YOJuvykIjebOk0vQmHMtiEyGZn3eM0JXwR1148uA/IYKtn+XNftBKmyvaH4Q
-	 t6ZNoo1M3iozBmjUmSHdYD9jCz0gOZof0XDKhG0o=
+	b=ui7CBw/0btll0xm/ls3ARyETsYy8dfbdOFmoLRYsNfVVebc0WLtgsoj82Ao1UP7T1
+	 p30VjCa5XbeKZ0mZ3kw7mxokNiLwykJLmxwquaApVTeHLrPyV4lOCuzZz0PJml+kYb
+	 7DN6IHSTtVa9WhzfZaBY4wbF+2EiGno+few0vmP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	kernel test robot <lkp@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/117] HID: thrustmaster: fix memory leak in thrustmaster_interrupts()
+Subject: [PATCH 6.1 31/97] nvme-pci: make nvme_pci_npages_prp() __always_inline
 Date: Tue, 20 May 2025 15:49:56 +0200
-Message-ID: <20250520125805.220934639@linuxfoundation.org>
+Message-ID: <20250520125801.879194925@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 09d546303b370113323bfff456c4e8cff8756005 ]
+[ Upstream commit 40696426b8c8c4f13cf6ac52f0470eed144be4b2 ]
 
-In thrustmaster_interrupts(), the allocated send_buf is not
-freed if the usb_check_int_endpoints() check fails, leading
-to a memory leak.
+The only reason nvme_pci_npages_prp() could be used as a compile-time
+known result in BUILD_BUG_ON() is because the compiler was always choosing
+to inline the function. Under special circumstances (sanitizer coverage
+functions disabled for __init functions on ARCH=um), the compiler decided
+to stop inlining it:
 
-Fix this by ensuring send_buf is freed before returning in
-the error path.
+   drivers/nvme/host/pci.c: In function 'nvme_init':
+   include/linux/compiler_types.h:557:45: error: call to '__compiletime_assert_678' declared with attribute error: BUILD_BUG_ON failed: nvme_pci_npages_prp() > NVME_MAX_NR_ALLOCATIONS
+     557 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:538:25: note: in definition of macro '__compiletime_assert'
+     538 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:557:9: note: in expansion of macro '_compiletime_assert'
+     557 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+         |         ^~~~~~~~~~~~~~~~
+   drivers/nvme/host/pci.c:3804:9: note: in expansion of macro 'BUILD_BUG_ON'
+    3804 |         BUILD_BUG_ON(nvme_pci_npages_prp() > NVME_MAX_NR_ALLOCATIONS);
+         |         ^~~~~~~~~~~~
 
-Fixes: 50420d7c79c3 ("HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check")
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Force it to be __always_inline to make sure it is always available for
+use with BUILD_BUG_ON().
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505061846.12FMyRjj-lkp@intel.com/
+Fixes: c372cdd1efdf ("nvme-pci: iod npages fits in s8")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-thrustmaster.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
-index 3b81468a1df29..0bf70664c35ee 100644
---- a/drivers/hid/hid-thrustmaster.c
-+++ b/drivers/hid/hid-thrustmaster.c
-@@ -174,6 +174,7 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
- 	u8 ep_addr[2] = {b_ep, 0};
- 
- 	if (!usb_check_int_endpoints(usbif, ep_addr)) {
-+		kfree(send_buf);
- 		hid_err(hdev, "Unexpected non-int endpoint\n");
- 		return;
- 	}
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index da858463b2557..553e6bb461b39 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -376,7 +376,7 @@ static bool nvme_dbbuf_update_and_check_event(u16 value, __le32 *dbbuf_db,
+  * as it only leads to a small amount of wasted memory for the lifetime of
+  * the I/O.
+  */
+-static int nvme_pci_npages_prp(void)
++static __always_inline int nvme_pci_npages_prp(void)
+ {
+ 	unsigned max_bytes = (NVME_MAX_KB_SZ * 1024) + NVME_CTRL_PAGE_SIZE;
+ 	unsigned nprps = DIV_ROUND_UP(max_bytes, NVME_CTRL_PAGE_SIZE);
 -- 
 2.39.5
 
