@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-145259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D43FABDAEE
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACAD5ABDA63
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDF3A8C1F7B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F285C7AFDF5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460CB22C325;
-	Tue, 20 May 2025 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CCA24418E;
+	Tue, 20 May 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA3BOsWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkA0BI2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AC5242D92;
-	Tue, 20 May 2025 14:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3592D1922ED;
+	Tue, 20 May 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749645; cv=none; b=jpXo2JDmEYIu7+li4ZabXWN9Uj4SYwI5PInanNwJgW+jlYxcorkQ/2DA39B27/DJH3VN69PFq13a8pYsOnbR2gfygFE+L45vIZolv0Por8B+jHdl9c86ffh+N+BI7FxMBDDj6pgE665PNAEao4vm5nD46MtDqWE1xyDvbYy45MU=
+	t=1747749340; cv=none; b=oXcqvHGxaN4XKO0/8qkARKJ9QHHRh0dDY+McXwDx4Kc4DNbPLJsmrIHAa/8EqISWCvUs/6QKT6Q11Iu4nj4k0S5shzN+HPKJ2y5e2kf5gd9LbgFHtsPywVVL+X29IQzHVisD4yzok5DqDSw8PCST4EBjm53Tm/KbjSKi1RsbkFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749645; c=relaxed/simple;
-	bh=Eu1VNuNPmaeb5hF/X1FS6KKoZCwkvO0s6qztp7OEQf0=;
+	s=arc-20240116; t=1747749340; c=relaxed/simple;
+	bh=A1ejblnv8Enq0/Qu+JM7yFZo6odELEdC9sxa6Dc1tjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lalye+cdiLl9GjSwNu5EJaETNmXPtUWDgvAMHqHs9HTNtF1rRR4AnQgmJG7foNTEd04NTaxkZhnsZL0GWh/0Y+PFiSpjIMBGRIWusyDfhC2WsiVIhQSKDtQBxvVzPN5JzAul5ikCoIbBuQld3w/p3ipmqWQGWiArKDdt/3PEIUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA3BOsWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EDDC4CEE9;
-	Tue, 20 May 2025 14:00:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A8LmlRcqoEl4XMmDBMBhbsQjJdYcHEC5FYbsAfw+4YNREAuZSXjRqMx2me7+uKmMo9wXDl7QhrHBxffWuaUGM7S/6OXF35OLeNZFoTuw4BsDOaBdbvfzRAdHC71WP3aJfkrj504L801SMHNobZ4cH/czF1Z2/DXFjBpp3PNBgSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkA0BI2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1275C4CEE9;
+	Tue, 20 May 2025 13:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749644;
-	bh=Eu1VNuNPmaeb5hF/X1FS6KKoZCwkvO0s6qztp7OEQf0=;
+	s=korg; t=1747749340;
+	bh=A1ejblnv8Enq0/Qu+JM7yFZo6odELEdC9sxa6Dc1tjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RA3BOsWz95rRYkuwH4Lo8lEA8wRB82y1QoaJlcADx6KhtmISeDmt+4fe6eVSoYl5z
-	 pJ5iWn0EjjhjfkQ5UfWDwnh4Kcjhhogb13cR+kGq9vWXSszy2Y8HrDXI8iXfGM90qV
-	 AZld+V/LgHlI0sTl9VQXm0/i4yNk33c/TTypBPpc=
+	b=OkA0BI2ugrRog5DDXrjCLijkWHlzq8Tx5ML7QEb4Zt2EJivQ3CTak2TfBxEP4g2vo
+	 9EQocR7we3xdhWZ8PPgLMDZI4fH+P67huQlgjE1uyQYj8cuAZXQqNVyvwAVLzh9zFK
+	 wl6ZJ/m5qPt83a72uoUyMxGNcPufBADBgV8oETGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Cacheux <paulcacheux@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/117] tracing: probes: Fix a possible race in trace_probe_log APIs
+Subject: [PATCH 6.1 13/97] iio: adc: ad7266: Fix potential timestamp alignment issue.
 Date: Tue, 20 May 2025 15:49:38 +0200
-Message-ID: <20250520125804.511353318@linuxfoundation.org>
+Message-ID: <20250520125801.186112064@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,156 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit fd837de3c9cb1a162c69bc1fb1f438467fe7f2f5 ]
+[ Upstream commit 52d349884738c346961e153f195f4c7fe186fcf4 ]
 
-Since the shared trace_probe_log variable can be accessed and
-modified via probe event create operation of kprobe_events,
-uprobe_events, and dynamic_events, it should be protected.
-In the dynamic_events, all operations are serialized by
-`dyn_event_ops_mutex`. But kprobe_events and uprobe_events
-interfaces are not serialized.
+On architectures where an s64 is only 32-bit aligned insufficient padding
+would be left between the earlier elements and the timestamp. Use
+aligned_s64 to enforce the correct placement and ensure the storage is
+large enough.
 
-To solve this issue, introduces dyn_event_create(), which runs
-create() operation under the mutex, for kprobe_events and
-uprobe_events. This also uses lockdep to check the mutex is
-held when using trace_probe_log* APIs.
-
-Link: https://lore.kernel.org/all/174684868120.551552.3068655787654268804.stgit@devnote2/
-
-Reported-by: Paul Cacheux <paulcacheux@gmail.com>
-Closes: https://lore.kernel.org/all/20250510074456.805a16872b591e2971a4d221@kernel.org/
-Fixes: ab105a4fb894 ("tracing: Use tracing error_log with probe events")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 54e018da3141 ("iio:ad7266: Mark transfer buffer as __be16") # aligned_s64 is much newer.
+Reported-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250413103443.2420727-2-jic23@kernel.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_dynevent.c | 16 +++++++++++++++-
- kernel/trace/trace_dynevent.h |  1 +
- kernel/trace/trace_kprobe.c   |  2 +-
- kernel/trace/trace_probe.c    |  9 +++++++++
- kernel/trace/trace_uprobe.c   |  2 +-
- 5 files changed, 27 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7266.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_dynevent.c b/kernel/trace/trace_dynevent.c
-index 4376887e0d8aa..c9b0533407ede 100644
---- a/kernel/trace/trace_dynevent.c
-+++ b/kernel/trace/trace_dynevent.c
-@@ -16,7 +16,7 @@
- #include "trace_output.h"	/* for trace_event_sem */
- #include "trace_dynevent.h"
- 
--static DEFINE_MUTEX(dyn_event_ops_mutex);
-+DEFINE_MUTEX(dyn_event_ops_mutex);
- static LIST_HEAD(dyn_event_ops_list);
- 
- bool trace_event_dyn_try_get_ref(struct trace_event_call *dyn_call)
-@@ -125,6 +125,20 @@ int dyn_event_release(const char *raw_command, struct dyn_event_operations *type
- 	return ret;
- }
- 
-+/*
-+ * Locked version of event creation. The event creation must be protected by
-+ * dyn_event_ops_mutex because of protecting trace_probe_log.
-+ */
-+int dyn_event_create(const char *raw_command, struct dyn_event_operations *type)
-+{
-+	int ret;
-+
-+	mutex_lock(&dyn_event_ops_mutex);
-+	ret = type->create(raw_command);
-+	mutex_unlock(&dyn_event_ops_mutex);
-+	return ret;
-+}
-+
- static int create_dyn_event(const char *raw_command)
- {
- 	struct dyn_event_operations *ops;
-diff --git a/kernel/trace/trace_dynevent.h b/kernel/trace/trace_dynevent.h
-index 936477a111d3e..beee3f8d75444 100644
---- a/kernel/trace/trace_dynevent.h
-+++ b/kernel/trace/trace_dynevent.h
-@@ -100,6 +100,7 @@ void *dyn_event_seq_next(struct seq_file *m, void *v, loff_t *pos);
- void dyn_event_seq_stop(struct seq_file *m, void *v);
- int dyn_events_release_all(struct dyn_event_operations *type);
- int dyn_event_release(const char *raw_command, struct dyn_event_operations *type);
-+int dyn_event_create(const char *raw_command, struct dyn_event_operations *type);
- 
- /*
-  * for_each_dyn_event	-	iterate over the dyn_event list
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 508c10414a934..46491f3c1569c 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1004,7 +1004,7 @@ static int create_or_delete_trace_kprobe(const char *raw_command)
- 	if (raw_command[0] == '-')
- 		return dyn_event_release(raw_command, &trace_kprobe_ops);
- 
--	ret = trace_kprobe_create(raw_command);
-+	ret = dyn_event_create(raw_command, &trace_kprobe_ops);
- 	return ret == -ECANCELED ? -EINVAL : ret;
- }
- 
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index 606190239c877..694f32d843d90 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -153,9 +153,12 @@ static const struct fetch_type *find_fetch_type(const char *type, unsigned long
- }
- 
- static struct trace_probe_log trace_probe_log;
-+extern struct mutex dyn_event_ops_mutex;
- 
- void trace_probe_log_init(const char *subsystem, int argc, const char **argv)
- {
-+	lockdep_assert_held(&dyn_event_ops_mutex);
-+
- 	trace_probe_log.subsystem = subsystem;
- 	trace_probe_log.argc = argc;
- 	trace_probe_log.argv = argv;
-@@ -164,11 +167,15 @@ void trace_probe_log_init(const char *subsystem, int argc, const char **argv)
- 
- void trace_probe_log_clear(void)
- {
-+	lockdep_assert_held(&dyn_event_ops_mutex);
-+
- 	memset(&trace_probe_log, 0, sizeof(trace_probe_log));
- }
- 
- void trace_probe_log_set_index(int index)
- {
-+	lockdep_assert_held(&dyn_event_ops_mutex);
-+
- 	trace_probe_log.index = index;
- }
- 
-@@ -177,6 +184,8 @@ void __trace_probe_log_err(int offset, int err_type)
- 	char *command, *p;
- 	int i, len = 0, pos = 0;
- 
-+	lockdep_assert_held(&dyn_event_ops_mutex);
-+
- 	if (!trace_probe_log.argv)
- 		return;
- 
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 79f8da7e3cd49..ecf04e81ddf70 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -730,7 +730,7 @@ static int create_or_delete_trace_uprobe(const char *raw_command)
- 	if (raw_command[0] == '-')
- 		return dyn_event_release(raw_command, &trace_uprobe_ops);
- 
--	ret = trace_uprobe_create(raw_command);
-+	ret = dyn_event_create(raw_command, &trace_uprobe_ops);
- 	return ret == -ECANCELED ? -EINVAL : ret;
- }
+diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
+index 98648c679a55c..2ace3aafe4978 100644
+--- a/drivers/iio/adc/ad7266.c
++++ b/drivers/iio/adc/ad7266.c
+@@ -44,7 +44,7 @@ struct ad7266_state {
+ 	 */
+ 	struct {
+ 		__be16 sample[2];
+-		s64 timestamp;
++		aligned_s64 timestamp;
+ 	} data __aligned(IIO_DMA_MINALIGN);
+ };
  
 -- 
 2.39.5
