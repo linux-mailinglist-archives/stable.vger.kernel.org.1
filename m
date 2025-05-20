@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-145352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B46ABDB84
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843ADABDD7F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F5188C5D2C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:05:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDA964C6ABC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A5B246335;
-	Tue, 20 May 2025 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6285124C092;
+	Tue, 20 May 2025 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPGURp50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIPr+uPM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A122F37;
-	Tue, 20 May 2025 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D60E24C060;
+	Tue, 20 May 2025 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749927; cv=none; b=oLOArQpMMiIL+uEl1uRPDamqgd3dukPgWZve2Py5KCTqrySRDedkIO5lFcEaKxUQuzXnCTjNB1oe4urtcu/JDAlYcl95RpAqqgZ0hjFSuRQwC5J6bYKBubw85X9g5Finfhh4jAx2ug1Q6wo1d+Bu+5Slu4O4nJTMPEF+eRrvfJw=
+	t=1747750721; cv=none; b=PlbMXQHkXRVMSW6AZiRHA7sIRb+5QGjSyauJgRhFb+fzQoyyaAJ3JHoqFK7fuNCl8yVv4sHsvFAC21rpsxUr4M5MTQ20ouSNqPaPWTTfeHY3Uz1NZVOGFpSjdtEyxIpj2iBbb6Jytz+zBXPmTN4xbH539VHEgfEt8GUsRgpWbZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749927; c=relaxed/simple;
-	bh=SqamiV8I18T8cjb8bb316UzMM86EJNNf6iJ1qEOYomM=;
+	s=arc-20240116; t=1747750721; c=relaxed/simple;
+	bh=G0IipBNEo09BUUQEPjGYDoG405eqSBHiZ8GyQuovh8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHuQvDjXje/rT9dJJVI7QxI9cnIezAWlW0VWNCsR3menTNFaZvKOYaZs/+r4V6fIUzSqTMTnXTwYpOzaGjt+bdRuKt0vglzMuUTZa24o3N57cZRQJuWnD+wckyniqlwnS4VNNaTzWjKyqAxomBlWMRCnz89zHEpJujbLnDY+KbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPGURp50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD266C4CEEA;
-	Tue, 20 May 2025 14:05:26 +0000 (UTC)
+	 MIME-Version; b=KWHPow4Nit/snW6jDzOJebTRx0RxaBCvVA3hVPxkbG8iJfAmfhb/AFk2SrXjTzD/AfUYMynTgw9G/75twfhnsQySIswvwUladCYFcYoqF/IFogsk/wtpL/VpyiyWZwqc6PwClCeq1CaOf1LipwBqTM1EMv+j1H2xqIuxUpk3X2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIPr+uPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92741C4CEE9;
+	Tue, 20 May 2025 14:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749927;
-	bh=SqamiV8I18T8cjb8bb316UzMM86EJNNf6iJ1qEOYomM=;
+	s=korg; t=1747750721;
+	bh=G0IipBNEo09BUUQEPjGYDoG405eqSBHiZ8GyQuovh8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPGURp50oWDprTUkuzAfV0lmNOUNzLa7HwlMieGT6nD412GFq2s1a6Glt2+GydmaA
-	 mTZJ6KVifAt5r6NYa4XzePwS5sKHUODrXNGHxu1U90agVxLq78TsoJPizjwDB++MHx
-	 i7gNaxbOxvXxLUEJSgUSAKWrRxEG4ExBCbF2m2z0=
+	b=vIPr+uPMtHx+mw1F1MAvLlVX7WfZ8tHxwmSN5NovuDcOuYeSBRNlSO7kzqPIJgHXO
+	 ixRdrkjfqUqSTT3VzKAcQPZbZQDn9VdZkrLdMfr0rC01s6AS/4cnGdlkXVApVSpHLb
+	 fuZgltKnFXfkB4VQYHew8o//0WZoUwwDjaVrla+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 104/117] mm/page_alloc: fix race condition in unaccepted memory handling
+	Michael Kelley <mhklinux@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 099/145] Drivers: hv: vmbus: Remove vmbus_sendpacket_pagebuffer()
 Date: Tue, 20 May 2025 15:51:09 +0200
-Message-ID: <20250520125808.124375642@linuxfoundation.org>
+Message-ID: <20250520125814.444477669@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,159 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit fefc075182275057ce607effaa3daa9e6e3bdc73 upstream.
+commit 45a442fe369e6c4e0b4aa9f63b31c3f2f9e2090e upstream.
 
-The page allocator tracks the number of zones that have unaccepted memory
-using static_branch_enc/dec() and uses that static branch in hot paths to
-determine if it needs to deal with unaccepted memory.
+With the netvsc driver changed to use vmbus_sendpacket_mpb_desc()
+instead of vmbus_sendpacket_pagebuffer(), the latter has no remaining
+callers. Remove it.
 
-Borislav and Thomas pointed out that the tracking is racy: operations on
-static_branch are not serialized against adding/removing unaccepted pages
-to/from the zone.
-
-Sanity checks inside static_branch machinery detects it:
-
-WARNING: CPU: 0 PID: 10 at kernel/jump_label.c:276 __static_key_slow_dec_cpuslocked+0x8e/0xa0
-
-The comment around the WARN() explains the problem:
-
-	/*
-	 * Warn about the '-1' case though; since that means a
-	 * decrement is concurrent with a first (0->1) increment. IOW
-	 * people are trying to disable something that wasn't yet fully
-	 * enabled. This suggests an ordering problem on the user side.
-	 */
-
-The effect of this static_branch optimization is only visible on
-microbenchmark.
-
-Instead of adding more complexity around it, remove it altogether.
-
-Link: https://lkml.kernel.org/r/20250506133207.1009676-1-kirill.shutemov@linux.intel.com
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Link: https://lore.kernel.org/all/20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local
-Reported-by: Borislav Petkov <bp@alien8.de>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: <stable@vger.kernel.org>	[6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: <stable@vger.kernel.org> # 6.1.x
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/20250513000604.1396-6-mhklinux@outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |   27 ---------------------------
- 1 file changed, 27 deletions(-)
+ drivers/hv/channel.c   |   59 -------------------------------------------------
+ include/linux/hyperv.h |    7 -----
+ 2 files changed, 66 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -303,7 +303,6 @@ EXPORT_SYMBOL(nr_online_nodes);
- static bool page_contains_unaccepted(struct page *page, unsigned int order);
- static void accept_page(struct page *page, unsigned int order);
- static bool cond_accept_memory(struct zone *zone, unsigned int order);
--static inline bool has_unaccepted_memory(void);
- static bool __free_unaccepted(struct page *page);
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -1077,65 +1077,6 @@ int vmbus_sendpacket(struct vmbus_channe
+ EXPORT_SYMBOL(vmbus_sendpacket);
  
- int page_group_by_mobility_disabled __read_mostly;
-@@ -6586,9 +6585,6 @@ bool has_managed_dma(void)
- 
- #ifdef CONFIG_UNACCEPTED_MEMORY
- 
--/* Counts number of zones with unaccepted pages. */
--static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
--
- static bool lazy_accept = true;
- 
- static int __init accept_memory_parse(char *p)
-@@ -6624,7 +6620,6 @@ static bool try_to_accept_memory_one(str
- {
- 	unsigned long flags;
- 	struct page *page;
--	bool last;
- 
- 	spin_lock_irqsave(&zone->lock, flags);
- 	page = list_first_entry_or_null(&zone->unaccepted_pages,
-@@ -6635,7 +6630,6 @@ static bool try_to_accept_memory_one(str
- 	}
- 
- 	list_del(&page->lru);
--	last = list_empty(&zone->unaccepted_pages);
- 
- 	__mod_zone_freepage_state(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
- 	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
-@@ -6645,9 +6639,6 @@ static bool try_to_accept_memory_one(str
- 
- 	__free_pages_ok(page, MAX_ORDER, FPI_TO_TAIL);
- 
--	if (last)
--		static_branch_dec(&zones_with_unaccepted_pages);
--
- 	return true;
- }
- 
-@@ -6656,9 +6647,6 @@ static bool cond_accept_memory(struct zo
- 	long to_accept, wmark;
- 	bool ret = false;
- 
--	if (!has_unaccepted_memory())
--		return false;
--
- 	if (list_empty(&zone->unaccepted_pages))
- 		return false;
- 
-@@ -6688,30 +6676,20 @@ static bool cond_accept_memory(struct zo
- 	return ret;
- }
- 
--static inline bool has_unaccepted_memory(void)
+ /*
+- * vmbus_sendpacket_pagebuffer - Send a range of single-page buffer
+- * packets using a GPADL Direct packet type. This interface allows you
+- * to control notifying the host. This will be useful for sending
+- * batched data. Also the sender can control the send flags
+- * explicitly.
+- */
+-int vmbus_sendpacket_pagebuffer(struct vmbus_channel *channel,
+-				struct hv_page_buffer pagebuffers[],
+-				u32 pagecount, void *buffer, u32 bufferlen,
+-				u64 requestid)
 -{
--	return static_branch_unlikely(&zones_with_unaccepted_pages);
+-	int i;
+-	struct vmbus_channel_packet_page_buffer desc;
+-	u32 descsize;
+-	u32 packetlen;
+-	u32 packetlen_aligned;
+-	struct kvec bufferlist[3];
+-	u64 aligned_data = 0;
+-
+-	if (pagecount > MAX_PAGE_BUFFER_COUNT)
+-		return -EINVAL;
+-
+-	/*
+-	 * Adjust the size down since vmbus_channel_packet_page_buffer is the
+-	 * largest size we support
+-	 */
+-	descsize = sizeof(struct vmbus_channel_packet_page_buffer) -
+-			  ((MAX_PAGE_BUFFER_COUNT - pagecount) *
+-			  sizeof(struct hv_page_buffer));
+-	packetlen = descsize + bufferlen;
+-	packetlen_aligned = ALIGN(packetlen, sizeof(u64));
+-
+-	/* Setup the descriptor */
+-	desc.type = VM_PKT_DATA_USING_GPA_DIRECT;
+-	desc.flags = VMBUS_DATA_PACKET_FLAG_COMPLETION_REQUESTED;
+-	desc.dataoffset8 = descsize >> 3; /* in 8-bytes granularity */
+-	desc.length8 = (u16)(packetlen_aligned >> 3);
+-	desc.transactionid = VMBUS_RQST_ERROR; /* will be updated in hv_ringbuffer_write() */
+-	desc.reserved = 0;
+-	desc.rangecount = pagecount;
+-
+-	for (i = 0; i < pagecount; i++) {
+-		desc.range[i].len = pagebuffers[i].len;
+-		desc.range[i].offset = pagebuffers[i].offset;
+-		desc.range[i].pfn	 = pagebuffers[i].pfn;
+-	}
+-
+-	bufferlist[0].iov_base = &desc;
+-	bufferlist[0].iov_len = descsize;
+-	bufferlist[1].iov_base = buffer;
+-	bufferlist[1].iov_len = bufferlen;
+-	bufferlist[2].iov_base = &aligned_data;
+-	bufferlist[2].iov_len = (packetlen_aligned - packetlen);
+-
+-	return hv_ringbuffer_write(channel, bufferlist, 3, requestid, NULL);
 -}
+-EXPORT_SYMBOL_GPL(vmbus_sendpacket_pagebuffer);
 -
- static bool __free_unaccepted(struct page *page)
- {
- 	struct zone *zone = page_zone(page);
- 	unsigned long flags;
--	bool first = false;
+-/*
+  * vmbus_sendpacket_mpb_desc - Send one or more multi-page buffer packets
+  * using a GPADL Direct packet type.
+  * The desc argument must include space for the VMBus descriptor. The
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1223,13 +1223,6 @@ extern int vmbus_sendpacket(struct vmbus
+ 				  enum vmbus_packet_type type,
+ 				  u32 flags);
  
- 	if (!lazy_accept)
- 		return false;
- 
- 	spin_lock_irqsave(&zone->lock, flags);
--	first = list_empty(&zone->unaccepted_pages);
- 	list_add_tail(&page->lru, &zone->unaccepted_pages);
- 	__mod_zone_freepage_state(zone, MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
- 	__mod_zone_page_state(zone, NR_UNACCEPTED, MAX_ORDER_NR_PAGES);
- 	spin_unlock_irqrestore(&zone->lock, flags);
- 
--	if (first)
--		static_branch_inc(&zones_with_unaccepted_pages);
+-extern int vmbus_sendpacket_pagebuffer(struct vmbus_channel *channel,
+-					    struct hv_page_buffer pagebuffers[],
+-					    u32 pagecount,
+-					    void *buffer,
+-					    u32 bufferlen,
+-					    u64 requestid);
 -
- 	return true;
- }
- 
-@@ -6730,11 +6708,6 @@ static bool cond_accept_memory(struct zo
- {
- 	return false;
- }
--
--static inline bool has_unaccepted_memory(void)
--{
--	return false;
--}
- 
- static bool __free_unaccepted(struct page *page)
- {
+ extern int vmbus_sendpacket_mpb_desc(struct vmbus_channel *channel,
+ 				     struct vmbus_packet_mpb_array *mpb,
+ 				     u32 desc_size,
 
 
 
