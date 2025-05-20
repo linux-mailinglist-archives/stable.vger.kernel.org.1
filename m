@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-145643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DF4ABDDB7
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D7FABDCDF
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DE284E309F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0A54E0E39
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9861624E4C7;
-	Tue, 20 May 2025 14:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCEA247289;
+	Tue, 20 May 2025 14:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18RhOrpK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWl5AG7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535BD24418D;
-	Tue, 20 May 2025 14:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BE419ABB6;
+	Tue, 20 May 2025 14:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750786; cv=none; b=cMr6raUT6jhP/q1uEu4ImRH8WmzY3VvsbHg42zwXEf+Q0Qii+mz2gpFP12VZpnVxgvzkFbGf+wyZOk9DfedGzU2lo1hJlnXqxLOjY3x99WkqDLlkX5JLMmHMTJdcNcd2FIMyL9olkY34R2+EfBubyRQMB3/jg5UAnB2I2M+Lnug=
+	t=1747750412; cv=none; b=NNTT8XHgdfcoQLGH6dIJs7rvuSUuBQterAYQw2MboqUizpMcQR813g1RKOs+IJ6jXsH4hK5CeQu7Dp22r9w6/3SHl1JokEZAgrK5UVEAImEAAfhAV+9tNh22n9LBzzulvZTl+y2Rx1vgfg2Udi7HMVsncM/iRVyoqwXYiFmUGCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750786; c=relaxed/simple;
-	bh=j5nWYrck52xAsuc8r7hxTLRyroppZT5kv4OfK6Wc/n8=;
+	s=arc-20240116; t=1747750412; c=relaxed/simple;
+	bh=9CglWsqmuiU4HB4xrO1cTgbWWX277Fk1Jopi0h0lAlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDY9Ic1Iv8UM6mH2ykP2t7/laQ81gPeR9BnbecSXbe/p78E8OUmzuonMXKO74oGtohPV95CZtSfSVIYmSZfnbKKIIBwoOvS8S0Y6AFxvlf5x4J4bKvyvKpWFIcn6I5fhI2rp2zbJpFx9enm/PfEJzay3Iyg57yXjnQ7VLiiHcTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18RhOrpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DBAC4CEE9;
-	Tue, 20 May 2025 14:19:45 +0000 (UTC)
+	 MIME-Version; b=NcNlmiMdIEh/Nx8wQvW8SrZi23+z5Q6v/UCR4ahLNE4nH+DDSR6Kr064bReIZeXNx7U6mVaDBRf0FJ5fYC7cCZRJko+C6dLrK2rbBqyDJE4p4bpTdrlcceCrkTqE94s6JXh1MczsueoYmjG4C0OwRw9du0reDziAhm2tvUnbuXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWl5AG7Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932B8C4CEE9;
+	Tue, 20 May 2025 14:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750786;
-	bh=j5nWYrck52xAsuc8r7hxTLRyroppZT5kv4OfK6Wc/n8=;
+	s=korg; t=1747750411;
+	bh=9CglWsqmuiU4HB4xrO1cTgbWWX277Fk1Jopi0h0lAlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18RhOrpK9ns8dbS5p1PQ+C4utVLfK2ryM8jR6Xozq4Vd00nrD1hvrrz6MlU9P24ng
-	 DOhxRXyvEX8Wdgb5f851BPO89YtGELUIKbhcPNGuycl/Tosdy0WjAOUUPpgpuX8KVb
-	 4QtrJdv/zguPVRzlStFDKiOrHlplvKKzTU1orMUU=
+	b=yWl5AG7QZSKjpPMGk9ry2aAEZlDsIueTBnQwIX3v73kMz+v9hK5j+yxRSG/7s8E5R
+	 iPTwTiAtRcNdeIrqd8SioJ7J8UBmWZIHq431adB+nFKu54g3Wp5sB2f5BEL2FLj+CY
+	 4/38Ajzo5au5xM+Jo2cvPA1P4gjPGGOzNa52uOMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5b8c4abafcb1d791ccfc@syzkaller.appspotmail.com,
-	syzbot+6456a99dfdc2e78c4feb@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.14 121/145] io_uring/memmap: dont use page_address() on a highmem page
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 136/143] iio: light: opt3001: fix deadlock due to concurrent flag access
 Date: Tue, 20 May 2025 15:51:31 +0200
-Message-ID: <20250520125815.291795901@linuxfoundation.org>
+Message-ID: <20250520125815.365307546@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit f446c6311e86618a1f81eb576b56a6266307238f upstream.
+commit f063a28002e3350088b4577c5640882bf4ea17ea upstream.
 
-For older/32-bit systems with highmem, don't assume that the pages in
-a mapped region are always going to be mapped. If io_region_init_ptr()
-finds that the pages are coalescable, also check if the first page is
-a HighMem page or not. If it is, fall through to the usual vmap()
-mapping rather than attempt to get the unmapped page address.
+The threaded IRQ function in this driver is reading the flag twice: once to
+lock a mutex and once to unlock it. Even though the code setting the flag
+is designed to prevent it, there are subtle cases where the flag could be
+true at the mutex_lock stage and false at the mutex_unlock stage. This
+results in the mutex not being unlocked, resulting in a deadlock.
 
+Fix it by making the opt3001_irq() code generally more robust, reading the
+flag into a variable and using the variable value at both stages.
+
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
 Cc: stable@vger.kernel.org
-Fixes: c4d0ac1c1567 ("io_uring/memmap: optimise single folio regions")
-Link: https://lore.kernel.org/all/681fe2fb.050a0220.f2294.001a.GAE@google.com/
-Reported-by: syzbot+5b8c4abafcb1d791ccfc@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/681fed0a.050a0220.f2294.001c.GAE@google.com/
-Reported-by: syzbot+6456a99dfdc2e78c4feb@syzkaller.appspotmail.com
-Tested-by: syzbot+6456a99dfdc2e78c4feb@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[Fixed conflict while applying on 6.12]
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/memmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/light/opt3001.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/memmap.c b/io_uring/memmap.c
-index 76fcc79656b0..07f8a5cbd37e 100644
---- a/io_uring/memmap.c
-+++ b/io_uring/memmap.c
-@@ -116,7 +116,7 @@ static int io_region_init_ptr(struct io_mapped_region *mr)
- 	void *ptr;
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -692,8 +692,9 @@ static irqreturn_t opt3001_irq(int irq,
+ 	struct opt3001 *opt = iio_priv(iio);
+ 	int ret;
+ 	bool wake_result_ready_queue = false;
++	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
  
- 	if (io_check_coalesce_buffer(mr->pages, mr->nr_pages, &ifd)) {
--		if (ifd.nr_folios == 1) {
-+		if (ifd.nr_folios == 1 && !PageHighMem(mr->pages[0])) {
- 			mr->ptr = page_address(mr->pages[0]);
- 			return 0;
- 		}
--- 
-2.49.0
-
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_lock(&opt->lock);
+ 
+ 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
+@@ -730,7 +731,7 @@ static irqreturn_t opt3001_irq(int irq,
+ 	}
+ 
+ out:
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_unlock(&opt->lock);
+ 
+ 	if (wake_result_ready_queue)
 
 
 
