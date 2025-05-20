@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE159ABDA03
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A187BABDA95
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6739917BFFE
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09DF87B3634
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FF72441B4;
-	Tue, 20 May 2025 13:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5A12459F7;
+	Tue, 20 May 2025 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VShyuWIh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoOSDPL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29DF22D78C;
-	Tue, 20 May 2025 13:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDD422DF87;
+	Tue, 20 May 2025 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749171; cv=none; b=A1TgyKHsgDNcLxbjjYCW7q9TnB4Ij1J4om4qZtY1NGlDd0kXGUzYI8bGpv2WiIJN2890ArV0jGrpFD9KbA6cH3X/Zq5dkjhqPv6KAElp01rbtWA0E+xrLkzuBIUmmffUhry0i44I6CFhtaGSgZCS8QP9Hh9WOlPdkJGB7QYsYUA=
+	t=1747749437; cv=none; b=OVwm9pwmPSV5t4XadORhNhY/2dkGCuTuwBEXPimsfYZIfDrJJmbi5p7SN2tDZsyv7lXUHr0D6LNv/oGfPdhtQJatxL7s/BkwZoNUlAjZSaWHBUulOEKTOJ6ZV+PtNf/gXUM/BdeVE2sfc2+YF2zWBh7fe/P9j8r8cpor/maW2II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749171; c=relaxed/simple;
-	bh=9qFE7NNfcgNcv3vPRc+I5oVF6z0Q+IO95aolzmijCbA=;
+	s=arc-20240116; t=1747749437; c=relaxed/simple;
+	bh=WyLB7zqwmjaaab7tcPHNA+GkdnL/nWoPpzNGr8d0jYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHtn8Jf/9iWnfqXvP0tTrqcHofEwvwyqL6HwTtEwXYcDcTAw+yzHQ1wlxD8wQeEUUzAoYNPnrS5HaLcIhRrzNQbWSu70KzmH8a7vavgAtDqXZIS46F+DmZeXDqlV7RBAL6qPCfU6XuEAo3aS3quSo7v2T9DsFC206ZaN2vetdPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VShyuWIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63A0C4CEE9;
-	Tue, 20 May 2025 13:52:50 +0000 (UTC)
+	 MIME-Version; b=X5jPhNQOF5JxsoVCBDZZfqzjk+X1jloCJfTG/BvQ9bkGtCGlR5W7BIm6Fz/UEoto3fjt3yQE3NjdC62gYNPEz4TCGuP7XoBGSVauLo1BaqdLaeJl22WeX0iswAfAtDKNsHSF/zuzlkrB8IpSG7HtOQhaDu2AGKiMXqmuegwHO+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoOSDPL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEC6C4CEE9;
+	Tue, 20 May 2025 13:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749171;
-	bh=9qFE7NNfcgNcv3vPRc+I5oVF6z0Q+IO95aolzmijCbA=;
+	s=korg; t=1747749437;
+	bh=WyLB7zqwmjaaab7tcPHNA+GkdnL/nWoPpzNGr8d0jYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VShyuWIhyZ8DvC6/0T2Xp18EInnZ8cjNtIyTlPTcppGfDro+rcWy23Ywq2Tyik+0Q
-	 U8LBD2dsaQ94PMXyDoJoLJfiVP6/3Mt9B4GTbStiFbqpI8YoZyVhCxJR3j2xFz+tgS
-	 G48omPfdjgPuLWdgfSXAoy+jNbuGeKS3PUlTB6II=
+	b=aoOSDPL1W72/F4/tbgJwx3NIX+ulaq63B/y1DJ+hHsbQARvwE6eC3wJNFb3tSrfdb
+	 CLLGgSts9a5G3f8NbuD9UezYkUhLHVlpxjDs6wycHro6EUTzrbo7GfgRSIlwjvuqXY
+	 9yZHVpxuZmFVZBqsRAYJboxUUbyRj2Z7VnZjsy9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 5.15 19/59] x86/its: Enumerate Indirect Target Selection (ITS) bug
+	Maximilian Heyne <mheyne@amazon.de>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 45/97] ACPI: PPTT: Fix processor subtable walk
 Date: Tue, 20 May 2025 15:50:10 +0200
-Message-ID: <20250520125754.614191646@linuxfoundation.org>
+Message-ID: <20250520125802.423962072@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Jeremy Linton <jeremy.linton@arm.com>
 
-commit 159013a7ca18c271ff64192deb62a689b622d860 upstream.
+commit adfab6b39202481bb43286fff94def4953793fdb upstream.
 
-ITS bug in some pre-Alderlake Intel CPUs may allow indirect branches in the
-first half of a cache line get predicted to a target of a branch located in
-the second half of the cache line.
+The original PPTT code had a bug where the processor subtable length
+was not correctly validated when encountering a truncated
+acpi_pptt_processor node.
 
-Set X86_BUG_ITS on affected CPUs. Mitigation to follow in later commits.
+Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
+sizeof() calls") attempted to fix this by validating the size is as
+large as the acpi_pptt_processor node structure. This introduced a
+regression where the last processor node in the PPTT table is ignored
+if it doesn't contain any private resources. That results errors like:
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+  ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
+  ACPI: SPE must be homogeneous
+
+Furthermore, it fails in a common case where the node length isn't
+equal to the acpi_pptt_processor structure size, leaving the original
+bug in a modified form.
+
+Correct the regression by adjusting the loop termination conditions as
+suggested by the bug reporters. An additional check performed after
+the subtable node type is detected, validates the acpi_pptt_processor
+node is fully contained in the PPTT table. Repeating the check in
+acpi_pptt_leaf_node() is largely redundant as the node is already
+known to be fully contained in the table.
+
+The case where a final truncated node's parent property is accepted,
+but the node itself is rejected should not be considered a bug.
+
+Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls")
+Reported-by: Maximilian Heyne <mheyne@amazon.de>
+Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@mheyne-amazon/
+Reported-by: Yicong Yang <yangyicong@hisilicon.com>
+Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyicong@huawei.com/
+Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+Tested-by: Yicong Yang <yangyicong@hisilicon.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Tested-by: Maximilian Heyne <mheyne@amazon.de>
+Cc: All applicable <stable@vger.kernel.org> # 7ab4f0e37a0f4: ACPI PPTT: Fix coding mistakes ...
+Link: https://patch.msgid.link/20250508023025.1301030-1-jeremy.linton@arm.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h |    1 
- arch/x86/include/asm/msr-index.h   |    8 +++++
- arch/x86/kernel/cpu/common.c       |   58 +++++++++++++++++++++++++++++--------
- arch/x86/kvm/x86.c                 |    4 +-
- 4 files changed, 58 insertions(+), 13 deletions(-)
+ drivers/acpi/pptt.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -483,4 +483,5 @@
- #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* CPU is vulnerable to Register File Data Sampling */
- #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
- #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
-+#define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
- #endif /* _ASM_X86_CPUFEATURES_H */
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -183,6 +183,14 @@
- 						 * VERW clears CPU Register
- 						 * File.
- 						 */
-+#define ARCH_CAP_ITS_NO			BIT_ULL(62) /*
-+						     * Not susceptible to
-+						     * Indirect Target Selection.
-+						     * This bit is not set by
-+						     * HW, but is synthesized by
-+						     * VMMs for guests to know
-+						     * their affected status.
-+						     */
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -219,16 +219,18 @@ static int acpi_pptt_leaf_node(struct ac
+ 			     sizeof(struct acpi_table_pptt));
+ 	proc_sz = sizeof(struct acpi_pptt_processor);
  
- #define MSR_IA32_FLUSH_CMD		0x0000010b
- #define L1D_FLUSH			BIT(0)	/*
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1141,6 +1141,8 @@ static const __initconst struct x86_cpu_
- #define GDS		BIT(6)
- /* CPU is affected by Register File Data Sampling */
- #define RFDS		BIT(7)
-+/* CPU is affected by Indirect Target Selection */
-+#define ITS		BIT(8)
- 
- static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
-@@ -1152,22 +1154,25 @@ static const struct x86_cpu_id cpu_vuln_
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPINGS(0x0, 0x5),	MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
- 	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPINGS(0x0, 0xb),	MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
-@@ -1231,6 +1236,32 @@ static bool __init vulnerable_to_rfds(u6
- 	return cpu_matches(cpu_vuln_blacklist, RFDS);
+-	while ((unsigned long)entry + proc_sz < table_end) {
++	/* ignore subtable types that are smaller than a processor node */
++	while ((unsigned long)entry + proc_sz <= table_end) {
+ 		cpu_node = (struct acpi_pptt_processor *)entry;
++
+ 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+ 		    cpu_node->parent == node_entry)
+ 			return 0;
+ 		if (entry->length == 0)
+ 			return 0;
++
+ 		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
+ 				     entry->length);
+-
+ 	}
+ 	return 1;
  }
+@@ -261,15 +263,18 @@ static struct acpi_pptt_processor *acpi_
+ 	proc_sz = sizeof(struct acpi_pptt_processor);
  
-+static bool __init vulnerable_to_its(u64 x86_arch_cap_msr)
-+{
-+	/* The "immunity" bit trumps everything else: */
-+	if (x86_arch_cap_msr & ARCH_CAP_ITS_NO)
-+		return false;
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
-+		return false;
-+
-+	/* None of the affected CPUs have BHI_CTRL */
-+	if (boot_cpu_has(X86_FEATURE_BHI_CTRL))
-+		return false;
-+
-+	/*
-+	 * If a VMM did not expose ITS_NO, assume that a guest could
-+	 * be running on a vulnerable hardware or may migrate to such
-+	 * hardware.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
-+		return true;
-+
-+	if (cpu_matches(cpu_vuln_blacklist, ITS))
-+		return true;
-+
-+	return false;
-+}
-+
- static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
- {
- 	u64 x86_arch_cap_msr = x86_read_arch_cap_msr();
-@@ -1358,6 +1389,9 @@ static void __init cpu_set_bug_bits(stru
- 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
- 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
+ 	/* find the processor structure associated with this cpuid */
+-	while ((unsigned long)entry + proc_sz < table_end) {
++	while ((unsigned long)entry + proc_sz <= table_end) {
+ 		cpu_node = (struct acpi_pptt_processor *)entry;
  
-+	if (vulnerable_to_its(x86_arch_cap_msr))
-+		setup_force_cpu_bug(X86_BUG_ITS);
-+
- 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
- 		return;
- 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1499,7 +1499,7 @@ static unsigned int num_msr_based_featur
- 	 ARCH_CAP_PSCHANGE_MC_NO | ARCH_CAP_TSX_CTRL_MSR | ARCH_CAP_TAA_NO | \
- 	 ARCH_CAP_SBDR_SSDP_NO | ARCH_CAP_FBSDP_NO | ARCH_CAP_PSDP_NO | \
- 	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO | \
--	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_BHI_NO)
-+	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_BHI_NO | ARCH_CAP_ITS_NO)
- 
- static u64 kvm_get_arch_capabilities(void)
- {
-@@ -1538,6 +1538,8 @@ static u64 kvm_get_arch_capabilities(voi
- 		data |= ARCH_CAP_MDS_NO;
- 	if (!boot_cpu_has_bug(X86_BUG_RFDS))
- 		data |= ARCH_CAP_RFDS_NO;
-+	if (!boot_cpu_has_bug(X86_BUG_ITS))
-+		data |= ARCH_CAP_ITS_NO;
- 
- 	if (!boot_cpu_has(X86_FEATURE_RTM)) {
- 		/*
+ 		if (entry->length == 0) {
+ 			pr_warn("Invalid zero length subtable\n");
+ 			break;
+ 		}
++		/* entry->length may not equal proc_sz, revalidate the processor structure length */
+ 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+ 		    acpi_cpu_id == cpu_node->acpi_processor_id &&
++		    (unsigned long)entry + entry->length <= table_end &&
++		    entry->length == proc_sz + cpu_node->number_of_priv_resources * sizeof(u32) &&
+ 		     acpi_pptt_leaf_node(table_hdr, cpu_node)) {
+ 			return (struct acpi_pptt_processor *)entry;
+ 		}
 
 
 
