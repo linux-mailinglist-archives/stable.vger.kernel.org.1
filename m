@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-145669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E0ABDCFC
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD86ABDBFC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:18:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60CE8C6399
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1921885FD7
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F26A242D98;
-	Tue, 20 May 2025 14:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C0824C069;
+	Tue, 20 May 2025 14:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVnHxwbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhY/rDSR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1E91A3A80;
-	Tue, 20 May 2025 14:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E42F24A07C;
+	Tue, 20 May 2025 14:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750866; cv=none; b=NhsUjxz4xw4xQpgoII2hoNHviry4zNzaSIQneYdo/onMhXDiKdX8gr1ke1joXyBT5cz8HVEx5m/SC8pf0Eos/mm8Lf7t5qzVuxMRgoo/EqIpdJ/EnpL80YrSxhRewTH9UyyCjtybEkg9kQBGhT5aDsx7Dx9kcpUYKCsrdoi8Qb8=
+	t=1747750384; cv=none; b=scTCW0DVTVrSdqD7PN+gwTmLRXxdYdfm1VRXxFgqaNMtlsS5jew3EJbqzHUzfWan2vkfu+9udqlqLvSO4pAYZXLz6pG8F3zm3REmRnOxS69QMMfVGrZVodfD2bcQo73j8ppBxdyMHfYTHWRL7JLXuE/K2Pn13NIKNU3zXmGsCWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750866; c=relaxed/simple;
-	bh=k4ywCbHZYqfa/1XY+zWnfCR2Kn1NVInb22iLwd8JLZA=;
+	s=arc-20240116; t=1747750384; c=relaxed/simple;
+	bh=ApnTjO8cPHxcKB6RNqY4QmX4GuTsxs34KzvK6JIsWeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXfN48mUaTV+l4abiJfyMdLnz1jOA3UL7y2s6zywFjnWikk7YhFc3fW2TGbTjMWU9gG9gONEDfKK43RMkMkYFpplHP3qhpB3PqvyaBgGa6TZaugrIRmVoJISbAMcHKo909qHNoMtVXPt+IU5cqfdTGyotugBr/sQwQrDg0Fo6nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVnHxwbA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979CBC4CEE9;
-	Tue, 20 May 2025 14:21:05 +0000 (UTC)
+	 MIME-Version; b=HyHJzUlyD2EDAL7RT8S2DHTz03gGuvbZ4n3FLIQkR6nGnbRxDwvzwrDTIo+c+fzdaz8quuKexQ56gfGe61eb4v2fPEq8HTQZCeTQVZnag2MsOXbZxUBvyk94cr8Oj1vCVbp2NeUHabwQO9TpVjXSd9/08/B7h4ODz8HAxmlycDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhY/rDSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F020AC4CEE9;
+	Tue, 20 May 2025 14:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750866;
-	bh=k4ywCbHZYqfa/1XY+zWnfCR2Kn1NVInb22iLwd8JLZA=;
+	s=korg; t=1747750384;
+	bh=ApnTjO8cPHxcKB6RNqY4QmX4GuTsxs34KzvK6JIsWeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVnHxwbAuIVWgmj5L2pD5rGcezz03+pDK0/IKQa6YbECN2sTA2LrzevuR/6qbr9yS
-	 kLLtJStpunN2snEEwsBKKppVbhmfbICMR83icwiLh362YGLPR0JE/q74ZaGFzlQje7
-	 ja/ZyokgDAgFU7BbZhWrdZPRMkXM2CUIj9QyowW4=
+	b=rhY/rDSRtIdosuWTWUaB9BlOzT72hRgbsCJvKRKP54jL1w4Uvt55QeHcrZC38AzfD
+	 Px/0CIb0y19aWaRVbClf0G3ahU8YDT0YvbdUXOiJDXu4Im4aKqr6YMXHEyiv3vA3eP
+	 DHsR4Dr6fd9zSmuXTU9wOVwxbdxTsVIGOe9vcCJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.14 117/145] wifi: mt76: disable napi on driver removal
-Date: Tue, 20 May 2025 15:51:27 +0200
-Message-ID: <20250520125815.133532295@linuxfoundation.org>
+	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>
+Subject: [PATCH 6.12 133/143] accel/ivpu: Reset fw log on cold boot
+Date: Tue, 20 May 2025 15:51:28 +0200
+Message-ID: <20250520125815.246202052@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
 
-commit 78ab4be549533432d97ea8989d2f00b508fa68d8 upstream.
+commit 4b4d9e394b6f45ac26ac6144b31604c76b7e3705 upstream.
 
-A warning on driver removal started occurring after commit 9dd05df8403b
-("net: warn if NAPI instance wasn't shut down"). Disable tx napi before
-deleting it in mt76_dma_cleanup().
+Add ivpu_fw_log_reset() that resets the read_index of all FW logs
+on cold boot so logs are properly read.
 
- WARNING: CPU: 4 PID: 18828 at net/core/dev.c:7288 __netif_napi_del_locked+0xf0/0x100
- CPU: 4 UID: 0 PID: 18828 Comm: modprobe Not tainted 6.15.0-rc4 #4 PREEMPT(lazy)
- Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
- RIP: 0010:__netif_napi_del_locked+0xf0/0x100
- Call Trace:
- <TASK>
- mt76_dma_cleanup+0x54/0x2f0 [mt76]
- mt7921_pci_remove+0xd5/0x190 [mt7921e]
- pci_device_remove+0x47/0xc0
- device_release_driver_internal+0x19e/0x200
- driver_detach+0x48/0x90
- bus_remove_driver+0x6d/0xf0
- pci_unregister_driver+0x2e/0xb0
- __do_sys_delete_module.isra.0+0x197/0x2e0
- do_syscall_64+0x7b/0x160
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Tested with mt7921e but the same pattern can be actually applied to other
-mt76 drivers calling mt76_dma_cleanup() during removal. Tx napi is enabled
-in their *_dma_init() functions and only toggled off and on again inside
-their suspend/resume/reset paths. So it should be okay to disable tx
-napi in such a generic way.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 2ac515a5d74f ("mt76: mt76x02: use napi polling for tx cleanup")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Tested-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250506115540.19045-1-pchelkin@ispras.ru
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240930195322.461209-4-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/accel/ivpu/ivpu_fw_log.c |   14 ++++++++++++++
+ drivers/accel/ivpu/ivpu_fw_log.h |    1 +
+ drivers/accel/ivpu/ivpu_pm.c     |    1 +
+ 3 files changed, 16 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -1011,6 +1011,7 @@ void mt76_dma_cleanup(struct mt76_dev *d
- 	int i;
+--- a/drivers/accel/ivpu/ivpu_fw_log.c
++++ b/drivers/accel/ivpu/ivpu_fw_log.c
+@@ -140,3 +140,17 @@ void ivpu_fw_log_clear(struct ivpu_devic
+ 	while (fw_log_ptr(vdev, vdev->fw->mem_log_verb, &next, &log_header) == 0)
+ 		log_header->read_index = log_header->write_index;
+ }
++
++void ivpu_fw_log_reset(struct ivpu_device *vdev)
++{
++	struct vpu_tracing_buffer_header *log_header;
++	u32 next;
++
++	next = 0;
++	while (fw_log_ptr(vdev, vdev->fw->mem_log_crit, &next, &log_header) == 0)
++		log_header->read_index = 0;
++
++	next = 0;
++	while (fw_log_ptr(vdev, vdev->fw->mem_log_verb, &next, &log_header) == 0)
++		log_header->read_index = 0;
++}
+--- a/drivers/accel/ivpu/ivpu_fw_log.h
++++ b/drivers/accel/ivpu/ivpu_fw_log.h
+@@ -25,6 +25,7 @@ extern unsigned int ivpu_fw_log_level;
  
- 	mt76_worker_disable(&dev->tx_worker);
-+	napi_disable(&dev->tx_napi);
- 	netif_napi_del(&dev->tx_napi);
+ void ivpu_fw_log_print(struct ivpu_device *vdev, bool only_new_msgs, struct drm_printer *p);
+ void ivpu_fw_log_clear(struct ivpu_device *vdev);
++void ivpu_fw_log_reset(struct ivpu_device *vdev);
  
- 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
+ 
+ #endif /* __IVPU_FW_LOG_H__ */
+--- a/drivers/accel/ivpu/ivpu_pm.c
++++ b/drivers/accel/ivpu/ivpu_pm.c
+@@ -38,6 +38,7 @@ static void ivpu_pm_prepare_cold_boot(st
+ 
+ 	ivpu_cmdq_reset_all_contexts(vdev);
+ 	ivpu_ipc_reset(vdev);
++	ivpu_fw_log_reset(vdev);
+ 	ivpu_fw_load(vdev);
+ 	fw->entry_point = fw->cold_boot_entry_point;
+ }
 
 
 
