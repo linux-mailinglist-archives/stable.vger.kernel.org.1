@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47688ABDB51
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:09:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF79ABDC8C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B2B78C3846
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B00187B7E6A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCAE242913;
-	Tue, 20 May 2025 14:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD2524BBF3;
+	Tue, 20 May 2025 14:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhcddBdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb4ki4Dw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD491D8E07;
-	Tue, 20 May 2025 14:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F0624A076;
+	Tue, 20 May 2025 14:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749832; cv=none; b=F0WrJbeX/roPlGd/QMkaIZ1I4J2UFxFDq6jPk0Fse0ruZ2uwkMu6b5PYKh3RAAi1wngwITeqyKeKmDdK0HAFt84YiqyHwRUFDidOXXkr+zid83C4SX/B230gmpiNcevotLd5Fk/8lWUvFCbYnbxlTaOSxkHAwNyovn81JGnoUCo=
+	t=1747750627; cv=none; b=hXQhn7FRwagpe4pVbApqYiKN57tuzKFBF7NeJ93cw9fkihYhASUnXdQlK6f2O8kk8z5U9KDjFlqAcKDjbJsqzrnPcSlEQ2p3xePJVuQ8N2ZiBsh1wSZwQ376MPg8rkMHglAWkFGzG4Pu9ZnsKv/zjn7chighr09ZLTWyWLfHVD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749832; c=relaxed/simple;
-	bh=mKYuxtI3yza1gb+bhJofO9R9s0ttFa5Dkf2BV2kBBLE=;
+	s=arc-20240116; t=1747750627; c=relaxed/simple;
+	bh=OLD7ZOOI/ID77ewyY7tloYakpyUjzHyvxYrNW7oiZNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gmNsp2lKMi0+nPA6wPJd0MZEWgsNQ38zCID/M32qmVTyv6Yu5fetenbrH/gBY6aCnbbvCmnMbvms+mjou1F16WD/sVShxEZD41q7CR1+HmjGfB5diSVzvEgAdkOzCBET081lF5k+Ya8VCr1FCNb06dGZs2tNovSDYpCjwOh/TxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhcddBdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706E1C4CEE9;
-	Tue, 20 May 2025 14:03:51 +0000 (UTC)
+	 MIME-Version; b=R0F5UIxlRg3rEj1IbQks9PP1Q61x0PYSsyVXe35kTRR+i9Y8ym+vTG1M9Mu7ZT/ySckjOQmDVAjB4DJ4v0q5iazqCQWzkBlw0wEBgnfWtncZsRzJUr5N/UtaTqZOYgPkty/fj5AjysO/wwdAUgKshuNMoZH/twER9klNwWN6aeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bb4ki4Dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC1DC4CEE9;
+	Tue, 20 May 2025 14:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749831;
-	bh=mKYuxtI3yza1gb+bhJofO9R9s0ttFa5Dkf2BV2kBBLE=;
+	s=korg; t=1747750626;
+	bh=OLD7ZOOI/ID77ewyY7tloYakpyUjzHyvxYrNW7oiZNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QhcddBdhViXJPpB9/BYIfEXr7TknrUu15C/TbKCVBoKNZxLdVjgA2R4PiBo7U494S
-	 1nEfiX0noMFSmmkXY16VEOg3oTo+Pq6PWXUU+vdRl0rityU/RxmcdOx/ZXvZCxcazy
-	 mCAX+E6iMiQQE4PATz5JlM8j7I2xz9f1liqvv5Ak=
+	b=bb4ki4DwEllRsMMtNwDh7SAINvPvhJosmwZ68/NHBjSD3nrC/5Pr6yz++CbG1DX2n
+	 ZSNzblSUtP8HIHO62GsrWk35XhAQBfodnYzuA81OHWSsc/R+wy7yJz5Gp6vASkAsE+
+	 W1tFMi1oI1EveWz5Fv2ZfydiL2q8Bqj2e5cq8Ao4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyejeong Choi <hjeong.choi@samsung.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.6 074/117] dma-buf: insert memory barrier before updating num_fences
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 069/145] LoongArch: Prevent cond_resched() occurring within kernel-fpu
 Date: Tue, 20 May 2025 15:50:39 +0200
-Message-ID: <20250520125806.927237146@linuxfoundation.org>
+Message-ID: <20250520125813.282508073@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +59,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyejeong Choi <hjeong.choi@samsung.com>
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
 
-commit 72c7d62583ebce7baeb61acce6057c361f73be4a upstream.
+commit 2468b0e3d5659dfde77f081f266e1111a981efb8 upstream.
 
-smp_store_mb() inserts memory barrier after storing operation.
-It is different with what the comment is originally aiming so Null
-pointer dereference can be happened if memory update is reordered.
+When CONFIG_PREEMPT_COUNT is not configured (i.e. CONFIG_PREEMPT_NONE/
+CONFIG_PREEMPT_VOLUNTARY), preempt_disable() / preempt_enable() merely
+acts as a barrier(). However, in these cases cond_resched() can still
+trigger a context switch and modify the CSR.EUEN, resulting in do_fpu()
+exception being activated within the kernel-fpu critical sections, as
+demonstrated in the following path:
 
-Signed-off-by: Hyejeong Choi <hjeong.choi@samsung.com>
-Fixes: a590d0fdbaa5 ("dma-buf: Update reservation shared_count after adding the new fence")
-CC: stable@vger.kernel.org
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250513020638.GA2329653@au1-maretx-p37.eng.sarc.samsung.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+dcn32_calculate_wm_and_dlg()
+    DC_FP_START()
+	dcn32_calculate_wm_and_dlg_fpu()
+	    dcn32_find_dummy_latency_index_for_fw_based_mclk_switch()
+		dcn32_internal_validate_bw()
+		    dcn32_enable_phantom_stream()
+			dc_create_stream_for_sink()
+			   kzalloc(GFP_KERNEL)
+				__kmem_cache_alloc_node()
+				    __cond_resched()
+    DC_FP_END()
+
+This patch is similar to commit d02198550423a0b (x86/fpu: Improve crypto
+performance by making kernel-mode FPU reliably usable in softirqs).  It
+uses local_bh_disable() instead of preempt_disable() for non-RT kernels
+so it can avoid the cond_resched() issue, and also extend the kernel-fpu
+application scenarios to the softirq context.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/dma-resv.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/kfpu.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/drivers/dma-buf/dma-resv.c
-+++ b/drivers/dma-buf/dma-resv.c
-@@ -313,8 +313,9 @@ void dma_resv_add_fence(struct dma_resv
- 	count++;
+--- a/arch/loongarch/kernel/kfpu.c
++++ b/arch/loongarch/kernel/kfpu.c
+@@ -18,11 +18,28 @@ static unsigned int euen_mask = CSR_EUEN
+ static DEFINE_PER_CPU(bool, in_kernel_fpu);
+ static DEFINE_PER_CPU(unsigned int, euen_current);
  
- 	dma_resv_list_set(fobj, i, fence, usage);
--	/* pointer update must be visible before we extend the num_fences */
--	smp_store_mb(fobj->num_fences, count);
-+	/* fence update must be visible before we extend the num_fences */
-+	smp_wmb();
-+	fobj->num_fences = count;
++static inline void fpregs_lock(void)
++{
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_disable();
++	else
++		local_bh_disable();
++}
++
++static inline void fpregs_unlock(void)
++{
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		preempt_enable();
++	else
++		local_bh_enable();
++}
++
+ void kernel_fpu_begin(void)
+ {
+ 	unsigned int *euen_curr;
+ 
+-	preempt_disable();
++	if (!irqs_disabled())
++		fpregs_lock();
+ 
+ 	WARN_ON(this_cpu_read(in_kernel_fpu));
+ 
+@@ -73,7 +90,8 @@ void kernel_fpu_end(void)
+ 
+ 	this_cpu_write(in_kernel_fpu, false);
+ 
+-	preempt_enable();
++	if (!irqs_disabled())
++		fpregs_unlock();
  }
- EXPORT_SYMBOL(dma_resv_add_fence);
+ EXPORT_SYMBOL_GPL(kernel_fpu_end);
  
 
 
