@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-145297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14601ABDAFC
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:04:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39821ABDA51
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC8BD1884A10
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12FF68A3AB7
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B412459F7;
-	Tue, 20 May 2025 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2F5243370;
+	Tue, 20 May 2025 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3DwZm0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOUI+Gk/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592F6EEDE;
-	Tue, 20 May 2025 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD581922ED;
+	Tue, 20 May 2025 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749758; cv=none; b=cEe/4eAPCa5HwAd2SbSAwu+c7QLTpp8e3t38KD0a46C22RdNd77x9Zd3blJEohcJcxine6f/Nmd9pwxod/uB/WyfJnKlp9yu2JLTBAWGzL47roa/p6zmfXPBKYTmvzwjKC8KR2nxGGA/L5BM+ovjguzy4vta9c/8nexiGIFB5Ng=
+	t=1747749363; cv=none; b=bUA1LAoWcc5ouI79akI8YvQQEE1/ksswSvOIQXB9a/aNZSQAR9TDVC3Pug44j0gvYwn4AQ4L+2ClqL4/rff7ROFOobKXZPnVGhSmZLq+ysWfKzWB1mMr40d4hSbrrXE3pF0Spid9uyC77nBxTo5hggRmQsOuIF2xabtbhb0ICgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749758; c=relaxed/simple;
-	bh=+XVHl7O7cwcc4RjEIonMkVtZ3q3THUWZ1aEJqOwFFIw=;
+	s=arc-20240116; t=1747749363; c=relaxed/simple;
+	bh=IL8G3VQYO7XP0cKFU4qhb+69+/tc0b1rBm2XtgSAwSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJwnhXUlJq3ANqjkg5SxzAGV9ls7p0gsOzHBTih1j5ItxBDZA/2dtWglQhTtpvJ4HNMxLSi8/9InbcYa03RamdcU3JzzhobMKkxKA1JNYFdmQ1MawwBkpCAxnJpRRfjX5riILhH2RLySVYCQChVFfYHRC0LkxxHhSSyqMjtsIT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3DwZm0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E28C4CEE9;
-	Tue, 20 May 2025 14:02:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kTpiJiazzVB1BlcuReKVXYhEVhfIcoJsFUcM5IS+lFTRlLrM2lze3tkTflJBgOoOZPAPVwxYLbdhhlkouFbj411f3mWrvcH6vWbZU74CtFx0Hw89ttuyU4khPs/YPcjFntMRM+E0zpzeCi/1IGZtoI1LatJX0qZ97oLQCuCer8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOUI+Gk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33193C4CEE9;
+	Tue, 20 May 2025 13:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749758;
-	bh=+XVHl7O7cwcc4RjEIonMkVtZ3q3THUWZ1aEJqOwFFIw=;
+	s=korg; t=1747749363;
+	bh=IL8G3VQYO7XP0cKFU4qhb+69+/tc0b1rBm2XtgSAwSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n3DwZm0wL4IzJ5OqyF++mfUQGftLsWp2+IonrwhtxjrVhisp6TPLH9xIPFBlHNxOZ
-	 T02HrCPkJAZ75Tx9eYp262iPxPW0np5SGQR4i5e6l4ej78RwSBSXj63F4gytvJnTU5
-	 GYzwDTZl80kFGlg3dDtZN0OZCNZZMJwHUuHWf+JY=
+	b=rOUI+Gk/kYqo1+Vx5sRdZ4sG1PqiRrION8212vib9gT/M7Kfindcljw1VTJm7gZuM
+	 IjA0kSeQYiC4Pj2JXaaa3UXiChYdxnF5JlMOd2ZnPWFoE9g/rOVc/jFV2dAkN25MGj
+	 BOr8P8mlde6+rdxL6TE561M54FTFCpPwsEWohbqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Gonda <pgonda@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/117] KVM: SVM: Update SEV-ES shutdown intercepts with more metadata
+Subject: [PATCH 6.1 20/97] iio: chemical: sps30: use aligned_s64 for timestamp
 Date: Tue, 20 May 2025 15:49:45 +0200
-Message-ID: <20250520125804.782364770@linuxfoundation.org>
+Message-ID: <20250520125801.460805883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Gonda <pgonda@google.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit bc3d7c5570a03ab45bde4bae83697c80900fb714 ]
+[ Upstream commit bb49d940344bcb8e2b19e69d7ac86f567887ea9a ]
 
-Currently if an SEV-ES VM shuts down userspace sees KVM_RUN struct with
-only errno=EINVAL. This is a very limited amount of information to debug
-the situation. Instead return KVM_EXIT_SHUTDOWN to alert userspace the VM
-is shutting down and is not usable any further.
+Follow the pattern of other drivers and use aligned_s64 for the
+timestamp. This will ensure that the timestamp is correctly aligned on
+all architectures.
 
-Signed-off-by: Peter Gonda <pgonda@google.com>
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org
-Cc: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20230907162449.1739785-1-pgonda@google.com
-[sean: tweak changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: a2620f8932fa ("KVM: SVM: Forcibly leave SMM mode on SHUTDOWN interception")
+Fixes: a5bf6fdd19c3 ("iio:chemical:sps30: Fix timestamp alignment")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-5-eafac1e22318@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/iio/chemical/sps30.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 29c1be65cb71a..0c01887124b6c 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2211,12 +2211,6 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
- 	struct kvm_run *kvm_run = vcpu->run;
- 	struct vcpu_svm *svm = to_svm(vcpu);
+diff --git a/drivers/iio/chemical/sps30.c b/drivers/iio/chemical/sps30.c
+index 814ce0aad1ccc..4085a36cd1db7 100644
+--- a/drivers/iio/chemical/sps30.c
++++ b/drivers/iio/chemical/sps30.c
+@@ -108,7 +108,7 @@ static irqreturn_t sps30_trigger_handler(int irq, void *p)
+ 	int ret;
+ 	struct {
+ 		s32 data[4]; /* PM1, PM2P5, PM4, PM10 */
+-		s64 ts;
++		aligned_s64 ts;
+ 	} scan;
  
--	/*
--	 * The VM save area has already been encrypted so it
--	 * cannot be reinitialized - just terminate.
--	 */
--	if (sev_es_guest(vcpu->kvm))
--		return -EINVAL;
- 
- 	/*
- 	 * VMCB is undefined after a SHUTDOWN intercept.  INIT the vCPU to put
-@@ -2225,9 +2219,14 @@ static int shutdown_interception(struct kvm_vcpu *vcpu)
- 	 * userspace.  At a platform view, INIT is acceptable behavior as
- 	 * there exist bare metal platforms that automatically INIT the CPU
- 	 * in response to shutdown.
-+	 *
-+	 * The VM save area for SEV-ES guests has already been encrypted so it
-+	 * cannot be reinitialized, i.e. synthesizing INIT is futile.
- 	 */
--	clear_page(svm->vmcb);
--	kvm_vcpu_reset(vcpu, true);
-+	if (!sev_es_guest(vcpu->kvm)) {
-+		clear_page(svm->vmcb);
-+		kvm_vcpu_reset(vcpu, true);
-+	}
- 
- 	kvm_run->exit_reason = KVM_EXIT_SHUTDOWN;
- 	return 0;
+ 	mutex_lock(&state->lock);
 -- 
 2.39.5
 
