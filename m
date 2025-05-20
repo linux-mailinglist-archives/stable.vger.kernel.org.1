@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC8AABDC3D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F4EABDB4C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84EDC1897BF4
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:22:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 063A28C2870
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D720F253F3A;
-	Tue, 20 May 2025 14:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC9024336D;
+	Tue, 20 May 2025 14:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0yaLAg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XL6u25SI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9408E2528E5;
-	Tue, 20 May 2025 14:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A417EEDE;
+	Tue, 20 May 2025 14:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750597; cv=none; b=XolH9Jg7Rtjbo/ELqHEF1D/HObiH7RJRbpOeVDOV2RDDfB65LPEGIJXaa6cCxSlbYmvFwxSmEqd/KFZBq8d8TXEtkf05BnLqD7QyluqYW064NLUwKgDGwd16ACpnAWtyyXQ7LCtvAQ58H7UrLQZUeJEF9XRyR3MkAITSD1C07iI=
+	t=1747749805; cv=none; b=pRxCxy0oqiuCOzAyID7w1R6kCnqj4M6fk2NsdskRQPqJ2CN55dcIhojNQvQSNxOvVjJtM6H+ti8dBC/iEiFTWvfpPTY1gIlLo4cJS79HOo9bCPn/hupXpY3u1TwPJotDURzs0hVLoqST8sWFJW2I1FmFMZ7tBiiBqLN7eJQnTDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750597; c=relaxed/simple;
-	bh=Bt+1yRnOnOtgaIMjlh2p0mSp9cRbImM6MOnJZIC77lY=;
+	s=arc-20240116; t=1747749805; c=relaxed/simple;
+	bh=7LxPmxdNyLFMWai6jP2FvvEYoFJkY/Wh+QuaJ1910Co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cI0L4aOOgOIi6gi0S8eTNCcq/0auXCQ1i3b7Fq2/Nydj6SUY7/DEDptNBWEqzJpqPizd3EB79UVHF5U2mf0Oa+J8pYydmc7MFf8LNWFMkQX/1Chaiv+lg1yCGmSroOr25qwSf0DaxQbj0RHPx75vShFx42k9tb0D8nPUPTpYcsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0yaLAg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB4EC4CEE9;
-	Tue, 20 May 2025 14:16:36 +0000 (UTC)
+	 MIME-Version; b=LZkoz5npMjQq7xLwZFtDI6AEPUZWddu9wrn5tLo4b/TUMQbLGcBrUWBtNa5ADOOWnQpHFrFcygk0hIOnzhivzQcA7sXbNKzm8E+Quox/QBsq4tylc3jJzaP1ViSkAggw93VPkVJ+uG144onB22Fcv7VgPNEoxEuOAu582Sj6yjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XL6u25SI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837A8C4CEE9;
+	Tue, 20 May 2025 14:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750597;
-	bh=Bt+1yRnOnOtgaIMjlh2p0mSp9cRbImM6MOnJZIC77lY=;
+	s=korg; t=1747749805;
+	bh=7LxPmxdNyLFMWai6jP2FvvEYoFJkY/Wh+QuaJ1910Co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0yaLAg0+E0hr7aYjfvx4h3S2m7Wy4H0l0VKrnuZ5fawlL7A9nymUPI/pxHs8z83l
-	 lMlNllXkeuU8sYbRbiTmFcYBtZtdY5mIcqKW2aoS4AlX/nm11eKu8CWVIBlicdyAPu
-	 w9Ca5f9IDQizLzOmrlmF+tmgkNPCKhrIWbplqOpA=
+	b=XL6u25SIEV/UED2XOIPwb4He1G4XFYUi6Dn5z0TXkvjfM98ewAUWpOzmUqKTAGboC
+	 JQnmlKFYYcTYvKSGCG8dLLBTFrwZSIEYhy3oYHpkAwaDGIqF0yQuA1dDhWaSjb8ovl
+	 Bbs5C5nXhvlP9w8OOPIOw+j6iTb2Kh/rr8fIPoHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 061/145] NFSv4/pnfs: Reset the layout state after a layoutreturn
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 066/117] LoongArch: uprobes: Remove user_{en,dis}able_single_step()
 Date: Tue, 20 May 2025 15:50:31 +0200
-Message-ID: <20250520125812.971771613@linuxfoundation.org>
+Message-ID: <20250520125806.611562268@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 6d6d7f91cc8c111d40416ac9240a3bb9396c5235 ]
+commit 0b326b2371f94e798137cc1a3c5c2eef2bc69061 upstream.
 
-If there are still layout segments in the layout plh_return_lsegs list
-after a layout return, we should be resetting the state to ensure they
-eventually get returned as well.
+When executing the "perf probe" and "perf stat" test cases about some
+cryptographic algorithm, the output shows that "Trace/breakpoint trap".
+This is because it uses the software singlestep breakpoint for uprobes
+on LoongArch, and no need to use the hardware singlestep. So just remove
+the related function call to user_{en,dis}able_single_step() for uprobes
+on LoongArch.
 
-Fixes: 68f744797edd ("pNFS: Do not free layout segments that are marked for return")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+How to reproduce:
+
+Please make sure CONFIG_UPROBE_EVENTS is set and openssl supports sm2
+algorithm, then execute the following command.
+
+cd tools/perf && make
+./perf probe -x /usr/lib64/libcrypto.so BN_mod_mul_montgomery
+./perf stat -e probe_libcrypto:BN_mod_mul_montgomery openssl speed sm2
+
+Cc: stable@vger.kernel.org
+Fixes: 19bc6cb64092 ("LoongArch: Add uprobes support")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pnfs.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/loongarch/kernel/uprobes.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -745,6 +745,14 @@ pnfs_mark_matching_lsegs_invalid(struct
- 	return remaining;
+--- a/arch/loongarch/kernel/uprobes.c
++++ b/arch/loongarch/kernel/uprobes.c
+@@ -42,7 +42,6 @@ int arch_uprobe_pre_xol(struct arch_upro
+ 	utask->autask.saved_trap_nr = current->thread.trap_nr;
+ 	current->thread.trap_nr = UPROBE_TRAP_NR;
+ 	instruction_pointer_set(regs, utask->xol_vaddr);
+-	user_enable_single_step(current);
+ 
+ 	return 0;
+ }
+@@ -59,8 +58,6 @@ int arch_uprobe_post_xol(struct arch_upr
+ 	else
+ 		instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
+ 
+-	user_disable_single_step(current);
+-
+ 	return 0;
  }
  
-+static void pnfs_reset_return_info(struct pnfs_layout_hdr *lo)
-+{
-+	struct pnfs_layout_segment *lseg;
-+
-+	list_for_each_entry(lseg, &lo->plh_return_segs, pls_list)
-+		pnfs_set_plh_return_info(lo, lseg->pls_range.iomode, 0);
-+}
-+
- static void
- pnfs_free_returned_lsegs(struct pnfs_layout_hdr *lo,
- 		struct list_head *free_me,
-@@ -1292,6 +1300,7 @@ void pnfs_layoutreturn_free_lsegs(struct
- 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
- 		pnfs_free_returned_lsegs(lo, &freeme, range, seq);
- 		pnfs_set_layout_stateid(lo, stateid, NULL, true);
-+		pnfs_reset_return_info(lo);
- 	} else
- 		pnfs_mark_layout_stateid_invalid(lo, &freeme);
- out_unlock:
+@@ -70,7 +67,6 @@ void arch_uprobe_abort_xol(struct arch_u
+ 
+ 	current->thread.trap_nr = utask->autask.saved_trap_nr;
+ 	instruction_pointer_set(regs, utask->vaddr);
+-	user_disable_single_step(current);
+ }
+ 
+ bool arch_uprobe_xol_was_trapped(struct task_struct *t)
 
 
 
