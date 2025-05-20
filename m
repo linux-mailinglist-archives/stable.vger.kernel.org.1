@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED0AABDD4B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:37:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0032DABDB26
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80D5A4E3529
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72B524C5B09
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6D2248F4E;
-	Tue, 20 May 2025 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086BD243370;
+	Tue, 20 May 2025 14:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHNj5EkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFAYSsIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972F3243371;
-	Tue, 20 May 2025 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97FAEEDE;
+	Tue, 20 May 2025 14:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750546; cv=none; b=VgEZXLcaH0UYIlGsf3SRm+7ZKuUWWMtUguE9dPy1ANDzL6UBa3aeuAyi1HXKR8il6Xco6RBMVMVM85ERaSf9BCj4mvhoLaBCyOJm9d+Yw/54FnqW1g8RpRvPJVRQhTX1wu30B6mjwWAy2atQJxO6VrGVhL9Jep1eg9o9sWmO8P8=
+	t=1747749742; cv=none; b=ohE/avFH+KUB3cEEw533Hkxdy1dWMl4uLgEh/XhKGLlNCqLSboNepSQqgJTiYj7o3qNz5mMzYyaia6Dtxgp4kbMbvKBcMZOPf/+OkqHEJ+xJcZdoD20IawuR/vjmz++vk25N1CXbAom8T6C2eRTYp1mjVG7o8Fs6Yn3N2x21BI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750546; c=relaxed/simple;
-	bh=jw+jNYNDcgDYJ/YAU43vzR8HDJ0xfkViZ1VEMmusJKk=;
+	s=arc-20240116; t=1747749742; c=relaxed/simple;
+	bh=w5SDU04gWgxqivugwUu2KpCu5vXf4njL3ACIOPpspQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D64kAM6CnkgEHZqDNt+us4tJhAUvmlkjzKbww0/u/0NBCRtYlOBO9xxld6fRhmHHeEWrFf0tZcVPCQuU3sy75hrSB9K4Nqm4w+y+H027KBoCGFNFZboNDF7TM4UKRVWP3Bj+ZtgWp/TpHTubiatoVv55iVJzzR/sJmy6ag+iy34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHNj5EkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F25CC4CEE9;
-	Tue, 20 May 2025 14:15:45 +0000 (UTC)
+	 MIME-Version; b=V2o9SjQiI7m4F6646RTqsaBMFpGfgOWxDTYvV24vSqh9VQWKI7tl6QQJnX9Fl5My1Nq+oKXBs+xJ/cPAlCKfPcVophOeXk0D1R3AcfbsoKVuBILFE7AnhpWxEoC0c6uM7IXAsigcgmUNfBIVFKsY8PCdVdiW7mIVfm6doopeLO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFAYSsIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF2EC4CEE9;
+	Tue, 20 May 2025 14:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750546;
-	bh=jw+jNYNDcgDYJ/YAU43vzR8HDJ0xfkViZ1VEMmusJKk=;
+	s=korg; t=1747749742;
+	bh=w5SDU04gWgxqivugwUu2KpCu5vXf4njL3ACIOPpspQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHNj5EkVNj4PXa64XhRjmebXOVszBd7ITpsgtrX5pB3xj41DQdw1dZU1hOC/kw6h/
-	 cXHcFKSRa+0rPdXOT06aeyjt2JAvOe6X5+Nh8XhW17Eub2KwrOWt6TpbB0Okw2x/KS
-	 ao0M4S5Ty9M+35C1fCssaSx5XPGRIWevYL5Re0/Y=
+	b=aFAYSsIkmrAeYUk1kGvibpyocH6mGhZurL79hRItgN5nsawcI3Wsx6sODEjoxlFuP
+	 ZbBLnxH7belJn9qaXXOLWfsG6W45v76X7fRYPLP2olPUtbPT4Mu10RxXx+9z8M6YAk
+	 n9plnsW7yhhzzAut13wvHGbdx/wuoMLlPWA/Q4uE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
+	Luke Parkin <luke.parkin@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 013/145] cgroup/cpuset: Extend kthread_is_per_cpu() check to all PF_NO_SETAFFINITY tasks
+Subject: [PATCH 6.6 018/117] firmware: arm_scmi: Track basic SCMI communication debug metrics
 Date: Tue, 20 May 2025 15:49:43 +0200
-Message-ID: <20250520125811.068409445@linuxfoundation.org>
+Message-ID: <20250520125804.705376048@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Luke Parkin <luke.parkin@arm.com>
 
-[ Upstream commit 39b5ef791d109dd54c7c2e6e87933edfcc0ad1ac ]
+[ Upstream commit 0b3d48c4726e1b20dffd2ff81a9d94d5d930220b ]
 
-Commit ec5fbdfb99d1 ("cgroup/cpuset: Enable update_tasks_cpumask()
-on top_cpuset") enabled us to pull CPUs dedicated to child partitions
-from tasks in top_cpuset by ignoring per cpu kthreads. However, there
-can be other kthreads that are not per cpu but have PF_NO_SETAFFINITY
-flag set to indicate that we shouldn't mess with their CPU affinity.
-For other kthreads, their affinity will be changed to skip CPUs dedicated
-to child partitions whether it is an isolating or a scheduling one.
+Add the support for counting some of the SCMI communication debug metrics
+like how many were sent successfully or with some errors, responses
+received, notifications and delayed responses, transfer timeouts and
+errors from the firmware/platform.
 
-As all the per cpu kthreads have PF_NO_SETAFFINITY set, the
-PF_NO_SETAFFINITY tasks are essentially a superset of per cpu kthreads.
-Fix this issue by dropping the kthread_is_per_cpu() check and checking
-the PF_NO_SETAFFINITY flag instead.
+In many cases, the traces exists. But the traces are not always necessarily
+enabled and getting such cumulative SCMI communication debug metrics helps
+in understanding if there are any possible improvements that can be made
+on either side of SCMI communication.
 
-Fixes: ec5fbdfb99d1 ("cgroup/cpuset: Enable update_tasks_cpumask() on top_cpuset")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Luke Parkin <luke.parkin@arm.com>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Cristian Marussi <cristian.marussi@arm.com>
+Message-Id: <20240805131013.587016-4-sudeep.holla@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Stable-dep-of: c23c03bf1faa ("firmware: arm_scmi: Fix timeout checks on polling path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/firmware/arm_scmi/common.h | 14 ++++++++++++++
+ drivers/firmware/arm_scmi/driver.c | 25 ++++++++++++++++++++-----
+ 2 files changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 1287274ae1ce9..6fbffdca0c741 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1116,9 +1116,11 @@ void cpuset_update_tasks_cpumask(struct cpuset *cs, struct cpumask *new_cpus)
+diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
+index e3a9217f29d39..6c22348712154 100644
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -304,6 +304,20 @@ extern const struct scmi_desc scmi_optee_desc;
+ void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr, void *priv);
  
- 		if (top_cs) {
+ enum debug_counters {
++	SENT_OK,
++	SENT_FAIL,
++	SENT_FAIL_POLLING_UNSUPPORTED,
++	SENT_FAIL_CHANNEL_NOT_FOUND,
++	RESPONSE_OK,
++	NOTIFICATION_OK,
++	DELAYED_RESPONSE_OK,
++	XFERS_RESPONSE_TIMEOUT,
++	XFERS_RESPONSE_POLLED_TIMEOUT,
++	RESPONSE_POLLED_OK,
++	ERR_MSG_UNEXPECTED,
++	ERR_MSG_INVALID,
++	ERR_MSG_NOMEM,
++	ERR_PROTOCOL,
+ 	SCMI_DEBUG_COUNTERS_LAST
+ };
+ 
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 3bc41a9920294..09aaad6dce043 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -856,6 +856,7 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
+ 		spin_unlock_irqrestore(&minfo->xfer_lock, flags);
+ 
+ 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_UNEXPECTED);
++		scmi_inc_count(info->dbg->counters, ERR_MSG_UNEXPECTED);
+ 
+ 		return xfer;
+ 	}
+@@ -883,6 +884,8 @@ scmi_xfer_command_acquire(struct scmi_chan_info *cinfo, u32 msg_hdr)
+ 			msg_type, xfer_id, msg_hdr, xfer->state);
+ 
+ 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_INVALID);
++		scmi_inc_count(info->dbg->counters, ERR_MSG_INVALID);
++
+ 
+ 		/* On error the refcount incremented above has to be dropped */
+ 		__scmi_xfer_put(minfo, xfer);
+@@ -927,6 +930,7 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
+ 			PTR_ERR(xfer));
+ 
+ 		scmi_bad_message_trace(cinfo, msg_hdr, MSG_NOMEM);
++		scmi_inc_count(info->dbg->counters, ERR_MSG_NOMEM);
+ 
+ 		scmi_clear_channel(info, cinfo);
+ 		return;
+@@ -942,6 +946,7 @@ static void scmi_handle_notification(struct scmi_chan_info *cinfo,
+ 	trace_scmi_msg_dump(info->id, cinfo->id, xfer->hdr.protocol_id,
+ 			    xfer->hdr.id, "NOTI", xfer->hdr.seq,
+ 			    xfer->hdr.status, xfer->rx.buf, xfer->rx.len);
++	scmi_inc_count(info->dbg->counters, NOTIFICATION_OK);
+ 
+ 	scmi_notify(cinfo->handle, xfer->hdr.protocol_id,
+ 		    xfer->hdr.id, xfer->rx.buf, xfer->rx.len, ts);
+@@ -1001,8 +1006,10 @@ static void scmi_handle_response(struct scmi_chan_info *cinfo,
+ 	if (xfer->hdr.type == MSG_TYPE_DELAYED_RESP) {
+ 		scmi_clear_channel(info, cinfo);
+ 		complete(xfer->async_done);
++		scmi_inc_count(info->dbg->counters, DELAYED_RESPONSE_OK);
+ 	} else {
+ 		complete(&xfer->done);
++		scmi_inc_count(info->dbg->counters, RESPONSE_OK);
+ 	}
+ 
+ 	if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
+@@ -1086,6 +1093,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 			       struct scmi_xfer *xfer, unsigned int timeout_ms)
+ {
+ 	int ret = 0;
++	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
+ 
+ 	if (xfer->hdr.poll_completion) {
+ 		/*
+@@ -1106,13 +1114,12 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 					"timed out in resp(caller: %pS) - polling\n",
+ 					(void *)_RET_IP_);
+ 				ret = -ETIMEDOUT;
++				scmi_inc_count(info->dbg->counters, XFERS_RESPONSE_POLLED_TIMEOUT);
+ 			}
+ 		}
+ 
+ 		if (!ret) {
+ 			unsigned long flags;
+-			struct scmi_info *info =
+-				handle_to_scmi_info(cinfo->handle);
+ 
  			/*
--			 * Percpu kthreads in top_cpuset are ignored
-+			 * PF_NO_SETAFFINITY tasks are ignored.
-+			 * All per cpu kthreads should have PF_NO_SETAFFINITY
-+			 * flag set, see kthread_set_per_cpu().
- 			 */
--			if (kthread_is_per_cpu(task))
-+			if (task->flags & PF_NO_SETAFFINITY)
- 				continue;
- 			cpumask_andnot(new_cpus, possible_mask, subpartitions_cpus);
- 		} else {
+ 			 * Do not fetch_response if an out-of-order delayed
+@@ -1132,6 +1139,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 					    "RESP" : "resp",
+ 					    xfer->hdr.seq, xfer->hdr.status,
+ 					    xfer->rx.buf, xfer->rx.len);
++			scmi_inc_count(info->dbg->counters, RESPONSE_POLLED_OK);
+ 
+ 			if (IS_ENABLED(CONFIG_ARM_SCMI_RAW_MODE_SUPPORT)) {
+ 				struct scmi_info *info =
+@@ -1149,6 +1157,7 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 			dev_err(dev, "timed out in resp(caller: %pS)\n",
+ 				(void *)_RET_IP_);
+ 			ret = -ETIMEDOUT;
++			scmi_inc_count(info->dbg->counters, XFERS_RESPONSE_TIMEOUT);
+ 		}
+ 	}
+ 
+@@ -1232,13 +1241,15 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
+ 	    !is_transport_polling_capable(info->desc)) {
+ 		dev_warn_once(dev,
+ 			      "Polling mode is not supported by transport.\n");
++		scmi_inc_count(info->dbg->counters, SENT_FAIL_POLLING_UNSUPPORTED);
+ 		return -EINVAL;
+ 	}
+ 
+ 	cinfo = idr_find(&info->tx_idr, pi->proto->id);
+-	if (unlikely(!cinfo))
++	if (unlikely(!cinfo)) {
++		scmi_inc_count(info->dbg->counters, SENT_FAIL_CHANNEL_NOT_FOUND);
+ 		return -EINVAL;
+-
++	}
+ 	/* True ONLY if also supported by transport. */
+ 	if (is_polling_enabled(cinfo, info->desc))
+ 		xfer->hdr.poll_completion = true;
+@@ -1270,16 +1281,20 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
+ 	ret = info->desc->ops->send_message(cinfo, xfer);
+ 	if (ret < 0) {
+ 		dev_dbg(dev, "Failed to send message %d\n", ret);
++		scmi_inc_count(info->dbg->counters, SENT_FAIL);
+ 		return ret;
+ 	}
+ 
+ 	trace_scmi_msg_dump(info->id, cinfo->id, xfer->hdr.protocol_id,
+ 			    xfer->hdr.id, "CMND", xfer->hdr.seq,
+ 			    xfer->hdr.status, xfer->tx.buf, xfer->tx.len);
++	scmi_inc_count(info->dbg->counters, SENT_OK);
+ 
+ 	ret = scmi_wait_for_message_response(cinfo, xfer);
+-	if (!ret && xfer->hdr.status)
++	if (!ret && xfer->hdr.status) {
+ 		ret = scmi_to_linux_errno(xfer->hdr.status);
++		scmi_inc_count(info->dbg->counters, ERR_PROTOCOL);
++	}
+ 
+ 	if (info->desc->ops->mark_txdone)
+ 		info->desc->ops->mark_txdone(cinfo, ret, xfer);
 -- 
 2.39.5
 
