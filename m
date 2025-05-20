@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CDCABDC3A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0641ABDC49
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EFBE7B9D62
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 798984E2A53
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF1824EAB1;
-	Tue, 20 May 2025 14:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4631B24FBFF;
+	Tue, 20 May 2025 14:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7Aq434K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuriOXQh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE72824E4C6;
-	Tue, 20 May 2025 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019002459DA;
+	Tue, 20 May 2025 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750483; cv=none; b=uOfsq8fAKO5kGu5H4TN0gGwcOJi4OponvmJPEvj2BFRtrcFJ5mwY+0L782ZOMxXih/PGFyCzYnfK/dKmADCris5Xwfy3hF7QJw6VBtM6CcsUyB3yo+5x50D/9aWghsotRVgE9jjvh7WDQLtMtqXbM+lvJmGTKGP4/xcf/61AULU=
+	t=1747750141; cv=none; b=dlCFYY/q/lqtQYEpprppWtdzsheXCBTjbgeT35Zk0qPJiREu6tA4wCoJnNeH6mPK+sjygHHKR7SQRLEBlPuZFa8CtLxD1Yo79+EsC19Qm5pcXq4vAKngootH44/4jCUw/NkKa4vo9jLFRXzvryYEwepuRHDfoDsQ9bnrpEW6gxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750483; c=relaxed/simple;
-	bh=bVNXBy6rdfwr5iPdaSi9XomDnvJu7AUqRFNWu+R2xBg=;
+	s=arc-20240116; t=1747750141; c=relaxed/simple;
+	bh=2CIrRS4sbjou7qHhe6ubT3dka9OL0rrejPNNCMRE4zM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJZCoNyW3ovDastnD2C50WPftj7yL+lndtshXwUYI6xUCQCahXht38mQiF46lF1myQYp+YL6+h3lOOCbbPa6lgrr5lm3MnMu7jQmvM8ae96ZAn9taDBPBzOGXI3OEzTxdHFHA/0zO6OB4fXjg4rXBuGYp9AJ8YzA+Rs8sUiM8eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7Aq434K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE3BC4CEE9;
-	Tue, 20 May 2025 14:14:41 +0000 (UTC)
+	 MIME-Version; b=qJyFe3lgtWjhK8Ls/8ySKcqHQxqid2aLPbOCFiTNR/KjqFsypCLq7X6fkyKF4h5k7QWjjnP8PbYOyoOIhzEfrAprA4VlHJ6HA8LT//0plqCE+q3R9ijSeSCzkIdW2W2bpO//1lifGiGS0oMOBcInsLcZxQiSn6tbcWK8y4+5f2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuriOXQh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E99EC4CEEB;
+	Tue, 20 May 2025 14:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750482;
-	bh=bVNXBy6rdfwr5iPdaSi9XomDnvJu7AUqRFNWu+R2xBg=;
+	s=korg; t=1747750140;
+	bh=2CIrRS4sbjou7qHhe6ubT3dka9OL0rrejPNNCMRE4zM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7Aq434KF4XlD8Y/G/bWpUfUO0fDnINr6KUmVg6WFrBoVy1BZ0albDbdKm/qC4zcL
-	 8KIo4AEOIIIebih28/1eeh2GbG3fIVp983IUuWfmfr06SAGRUX8f92YQg3P1gM3BDI
-	 N6YX2J1LbD0grzWrWImvbG8+IHR+YXSf65bEFCOo=
+	b=IuriOXQhMJK/gJyLWr57UHXBz084Gf43HTKtZFCVwSuzVEKdU+vI7F72Q+qGbx0PZ
+	 jA5qBk2T1/vez+GDiNP7eMy+UFRC43BRTBnG17EcOcTZkMCPUiadJCz4pmtKawcFx8
+	 09JM8XvkQ/i1++SQkF9/49L/KoksysWQJ/6SsTqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 023/145] nfs: handle failure of nfs_get_lock_context in unlock path
+Subject: [PATCH 6.12 038/143] selftests: ncdevmem: Redirect all non-payload output to stderr
 Date: Tue, 20 May 2025 15:49:53 +0200
-Message-ID: <20250520125811.465517347@linuxfoundation.org>
+Message-ID: <20250520125811.555587063@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit c457dc1ec770a22636b473ce5d35614adfe97636 ]
+[ Upstream commit 6891f0b523e1ef452523ba43d67ca2a654760e78 ]
 
-When memory is insufficient, the allocation of nfs_lock_context in
-nfs_get_lock_context() fails and returns -ENOMEM. If we mistakenly treat
-an nfs4_unlockdata structure (whose l_ctx member has been set to -ENOMEM)
-as valid and proceed to execute rpc_run_task(), this will trigger a NULL
-pointer dereference in nfs4_locku_prepare. For example:
+That should make it possible to do expected payload validation on
+the caller side.
 
-BUG: kernel NULL pointer dereference, address: 000000000000000c
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP PTI
-CPU: 15 UID: 0 PID: 12 Comm: kworker/u64:0 Not tainted 6.15.0-rc2-dirty #60
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40
-Workqueue: rpciod rpc_async_schedule
-RIP: 0010:nfs4_locku_prepare+0x35/0xc2
-Code: 89 f2 48 89 fd 48 c7 c7 68 69 ef b5 53 48 8b 8e 90 00 00 00 48 89 f3
-RSP: 0018:ffffbbafc006bdb8 EFLAGS: 00010246
-RAX: 000000000000004b RBX: ffff9b964fc1fa00 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: fffffffffffffff4 RDI: ffff9ba53fddbf40
-RBP: ffff9ba539934000 R08: 0000000000000000 R09: ffffbbafc006bc38
-R10: ffffffffb6b689c8 R11: 0000000000000003 R12: ffff9ba539934030
-R13: 0000000000000001 R14: 0000000004248060 R15: ffffffffb56d1c30
-FS: 0000000000000000(0000) GS:ffff9ba5881f0000(0000) knlGS:00000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000000000000c CR3: 000000093f244000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- __rpc_execute+0xbc/0x480
- rpc_async_schedule+0x2f/0x40
- process_one_work+0x232/0x5d0
- worker_thread+0x1da/0x3d0
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x10d/0x240
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x34/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-Modules linked in:
-CR2: 000000000000000c
----[ end trace 0000000000000000 ]---
-
-Free the allocated nfs4_unlockdata when nfs_get_lock_context() fails and
-return NULL to terminate subsequent rpc_run_task, preventing NULL pointer
-dereference.
-
-Fixes: f30cb757f680 ("NFS: Always wait for I/O completion before unlock")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/20250417072508.3850532-1-lilingfeng3@huawei.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20241107181211.3934153-2-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 97c4e094a4b2 ("tests/ncdevmem: Fix double-free of queue array")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/ncdevmem.c | 61 +++++++++++++-------------
+ 1 file changed, 30 insertions(+), 31 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 6e95db6c17e92..810cfd9b7e533 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -7049,10 +7049,18 @@ static struct nfs4_unlockdata *nfs4_alloc_unlockdata(struct file_lock *fl,
- 	struct nfs4_unlockdata *p;
- 	struct nfs4_state *state = lsp->ls_state;
- 	struct inode *inode = state->inode;
-+	struct nfs_lock_context *l_ctx;
+diff --git a/tools/testing/selftests/net/ncdevmem.c b/tools/testing/selftests/net/ncdevmem.c
+index 64d6805381c50..9245d3f158dd3 100644
+--- a/tools/testing/selftests/net/ncdevmem.c
++++ b/tools/testing/selftests/net/ncdevmem.c
+@@ -88,7 +88,6 @@ void print_nonzero_bytes(void *ptr, size_t size)
  
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
- 	if (p == NULL)
- 		return NULL;
-+	l_ctx = nfs_get_lock_context(ctx);
-+	if (!IS_ERR(l_ctx)) {
-+		p->l_ctx = l_ctx;
-+	} else {
-+		kfree(p);
-+		return NULL;
-+	}
- 	p->arg.fh = NFS_FH(inode);
- 	p->arg.fl = &p->fl;
- 	p->arg.seqid = seqid;
-@@ -7060,7 +7068,6 @@ static struct nfs4_unlockdata *nfs4_alloc_unlockdata(struct file_lock *fl,
- 	p->lsp = lsp;
- 	/* Ensure we don't close file until we're done freeing locks! */
- 	p->ctx = get_nfs_open_context(ctx);
--	p->l_ctx = nfs_get_lock_context(ctx);
- 	locks_init_lock(&p->fl);
- 	locks_copy_lock(&p->fl, fl);
- 	p->server = NFS_SERVER(inode);
+ 	for (i = 0; i < size; i++)
+ 		putchar(p[i]);
+-	printf("\n");
+ }
+ 
+ void validate_buffer(void *line, size_t size)
+@@ -120,7 +119,7 @@ void validate_buffer(void *line, size_t size)
+ 		char command[256];                                      \
+ 		memset(command, 0, sizeof(command));                    \
+ 		snprintf(command, sizeof(command), cmd, ##__VA_ARGS__); \
+-		printf("Running: %s\n", command);                       \
++		fprintf(stderr, "Running: %s\n", command);                       \
+ 		system(command);                                        \
+ 	})
+ 
+@@ -128,22 +127,22 @@ static int reset_flow_steering(void)
+ {
+ 	int ret = 0;
+ 
+-	ret = run_command("sudo ethtool -K %s ntuple off", ifname);
++	ret = run_command("sudo ethtool -K %s ntuple off >&2", ifname);
+ 	if (ret)
+ 		return ret;
+ 
+-	return run_command("sudo ethtool -K %s ntuple on", ifname);
++	return run_command("sudo ethtool -K %s ntuple on >&2", ifname);
+ }
+ 
+ static int configure_headersplit(bool on)
+ {
+-	return run_command("sudo ethtool -G %s tcp-data-split %s", ifname,
++	return run_command("sudo ethtool -G %s tcp-data-split %s >&2", ifname,
+ 			   on ? "on" : "off");
+ }
+ 
+ static int configure_rss(void)
+ {
+-	return run_command("sudo ethtool -X %s equal %d", ifname, start_queue);
++	return run_command("sudo ethtool -X %s equal %d >&2", ifname, start_queue);
+ }
+ 
+ static int configure_channels(unsigned int rx, unsigned int tx)
+@@ -153,7 +152,7 @@ static int configure_channels(unsigned int rx, unsigned int tx)
+ 
+ static int configure_flow_steering(void)
+ {
+-	return run_command("sudo ethtool -N %s flow-type tcp4 src-ip %s dst-ip %s src-port %s dst-port %s queue %d",
++	return run_command("sudo ethtool -N %s flow-type tcp4 src-ip %s dst-ip %s src-port %s dst-port %s queue %d >&2",
+ 			   ifname, client_ip, server_ip, port, port, start_queue);
+ }
+ 
+@@ -187,7 +186,7 @@ static int bind_rx_queue(unsigned int ifindex, unsigned int dmabuf_fd,
+ 		goto err_close;
+ 	}
+ 
+-	printf("got dmabuf id=%d\n", rsp->id);
++	fprintf(stderr, "got dmabuf id=%d\n", rsp->id);
+ 	dmabuf_id = rsp->id;
+ 
+ 	netdev_bind_rx_req_free(req);
+@@ -314,8 +313,8 @@ int do_server(void)
+ 	if (ret)
+ 		error(errno, errno, "%s: [FAIL, set sock opt]\n", TEST_PREFIX);
+ 
+-	printf("binding to address %s:%d\n", server_ip,
+-	       ntohs(server_sin.sin_port));
++	fprintf(stderr, "binding to address %s:%d\n", server_ip,
++		ntohs(server_sin.sin_port));
+ 
+ 	ret = bind(socket_fd, &server_sin, sizeof(server_sin));
+ 	if (ret)
+@@ -329,14 +328,14 @@ int do_server(void)
+ 
+ 	inet_ntop(server_sin.sin_family, &server_sin.sin_addr, buffer,
+ 		  sizeof(buffer));
+-	printf("Waiting or connection on %s:%d\n", buffer,
+-	       ntohs(server_sin.sin_port));
++	fprintf(stderr, "Waiting or connection on %s:%d\n", buffer,
++		ntohs(server_sin.sin_port));
+ 	client_fd = accept(socket_fd, &client_addr, &client_addr_len);
+ 
+ 	inet_ntop(client_addr.sin_family, &client_addr.sin_addr, buffer,
+ 		  sizeof(buffer));
+-	printf("Got connection from %s:%d\n", buffer,
+-	       ntohs(client_addr.sin_port));
++	fprintf(stderr, "Got connection from %s:%d\n", buffer,
++		ntohs(client_addr.sin_port));
+ 
+ 	while (1) {
+ 		struct iovec iov = { .iov_base = iobuf,
+@@ -349,14 +348,13 @@ int do_server(void)
+ 		ssize_t ret;
+ 
+ 		is_devmem = false;
+-		printf("\n\n");
+ 
+ 		msg.msg_iov = &iov;
+ 		msg.msg_iovlen = 1;
+ 		msg.msg_control = ctrl_data;
+ 		msg.msg_controllen = sizeof(ctrl_data);
+ 		ret = recvmsg(client_fd, &msg, MSG_SOCK_DEVMEM);
+-		printf("recvmsg ret=%ld\n", ret);
++		fprintf(stderr, "recvmsg ret=%ld\n", ret);
+ 		if (ret < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
+ 			continue;
+ 		if (ret < 0) {
+@@ -364,7 +362,7 @@ int do_server(void)
+ 			continue;
+ 		}
+ 		if (ret == 0) {
+-			printf("client exited\n");
++			fprintf(stderr, "client exited\n");
+ 			goto cleanup;
+ 		}
+ 
+@@ -373,7 +371,7 @@ int do_server(void)
+ 			if (cm->cmsg_level != SOL_SOCKET ||
+ 			    (cm->cmsg_type != SCM_DEVMEM_DMABUF &&
+ 			     cm->cmsg_type != SCM_DEVMEM_LINEAR)) {
+-				fprintf(stdout, "skipping non-devmem cmsg\n");
++				fprintf(stderr, "skipping non-devmem cmsg\n");
+ 				continue;
+ 			}
+ 
+@@ -384,7 +382,7 @@ int do_server(void)
+ 				/* TODO: process data copied from skb's linear
+ 				 * buffer.
+ 				 */
+-				fprintf(stdout,
++				fprintf(stderr,
+ 					"SCM_DEVMEM_LINEAR. dmabuf_cmsg->frag_size=%u\n",
+ 					dmabuf_cmsg->frag_size);
+ 
+@@ -395,12 +393,13 @@ int do_server(void)
+ 			token.token_count = 1;
+ 
+ 			total_received += dmabuf_cmsg->frag_size;
+-			printf("received frag_page=%llu, in_page_offset=%llu, frag_offset=%llu, frag_size=%u, token=%u, total_received=%lu, dmabuf_id=%u\n",
+-			       dmabuf_cmsg->frag_offset >> PAGE_SHIFT,
+-			       dmabuf_cmsg->frag_offset % getpagesize(),
+-			       dmabuf_cmsg->frag_offset, dmabuf_cmsg->frag_size,
+-			       dmabuf_cmsg->frag_token, total_received,
+-			       dmabuf_cmsg->dmabuf_id);
++			fprintf(stderr,
++				"received frag_page=%llu, in_page_offset=%llu, frag_offset=%llu, frag_size=%u, token=%u, total_received=%lu, dmabuf_id=%u\n",
++				dmabuf_cmsg->frag_offset >> PAGE_SHIFT,
++				dmabuf_cmsg->frag_offset % getpagesize(),
++				dmabuf_cmsg->frag_offset,
++				dmabuf_cmsg->frag_size, dmabuf_cmsg->frag_token,
++				total_received, dmabuf_cmsg->dmabuf_id);
+ 
+ 			if (dmabuf_cmsg->dmabuf_id != dmabuf_id)
+ 				error(1, 0,
+@@ -438,15 +437,15 @@ int do_server(void)
+ 		if (!is_devmem)
+ 			error(1, 0, "flow steering error\n");
+ 
+-		printf("total_received=%lu\n", total_received);
++		fprintf(stderr, "total_received=%lu\n", total_received);
+ 	}
+ 
+-	fprintf(stdout, "%s: ok\n", TEST_PREFIX);
++	fprintf(stderr, "%s: ok\n", TEST_PREFIX);
+ 
+-	fprintf(stdout, "page_aligned_frags=%lu, non_page_aligned_frags=%lu\n",
++	fprintf(stderr, "page_aligned_frags=%lu, non_page_aligned_frags=%lu\n",
+ 		page_aligned_frags, non_page_aligned_frags);
+ 
+-	fprintf(stdout, "page_aligned_frags=%lu, non_page_aligned_frags=%lu\n",
++	fprintf(stderr, "page_aligned_frags=%lu, non_page_aligned_frags=%lu\n",
+ 		page_aligned_frags, non_page_aligned_frags);
+ 
+ cleanup:
+@@ -551,7 +550,7 @@ int main(int argc, char *argv[])
+ 			ifname = optarg;
+ 			break;
+ 		case '?':
+-			printf("unknown option: %c\n", optopt);
++			fprintf(stderr, "unknown option: %c\n", optopt);
+ 			break;
+ 		}
+ 	}
+@@ -559,7 +558,7 @@ int main(int argc, char *argv[])
+ 	ifindex = if_nametoindex(ifname);
+ 
+ 	for (; optind < argc; optind++)
+-		printf("extra arguments: %s\n", argv[optind]);
++		fprintf(stderr, "extra arguments: %s\n", argv[optind]);
+ 
+ 	run_devmem_tests();
+ 
 -- 
 2.39.5
 
