@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-145441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469A9ABDC00
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:18:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C379CABDD6A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7C0E3A3176
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:12:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 125384E3265
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B45C248F7B;
-	Tue, 20 May 2025 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A4A24887A;
+	Tue, 20 May 2025 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fk46oB4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF7c5EQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A4E24886F;
-	Tue, 20 May 2025 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B641CAA85;
+	Tue, 20 May 2025 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750187; cv=none; b=c/xUPYlZtaS79UKu0B0Oulc29J1uJB6iJYGk0MYpYwyVSkl5q07VCHxo5sTSp4Mwi3prqW7JRS3arwhwFz4V+Rzi95GWuiyjYuLCNFCiNzHbj8p/KCMU7jdlRTBqlDfFFga7H8llOvZD1BP74f5u4kdphNWkgi5L8bWsXUFTkMg=
+	t=1747750577; cv=none; b=FsrMJvp15IYTxf1CIlok4bud71miKtPH+qOGi/0f+QY3JFHwl1fHfXPhcTaGLyIYf5kE+qPas3bi1M/f+680i2uc9LNDwbFG5ZQEQpIG1aSUOIjesvbtGkdavpVsF2nU5w2O2SntMPb8Frbm2wZXvebWNaRfJx7AeUC5CgaikIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750187; c=relaxed/simple;
-	bh=dldcpI9yjuu+6ETfjCA3wSJIsqXwVG9xfF1mFznKXJg=;
+	s=arc-20240116; t=1747750577; c=relaxed/simple;
+	bh=wgeqe8oZgSAvombEColRHgIqEjJt7NkIZuAZ98XY0GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvCdyEHOu5EBKFKuqO/3v/QA5t8LVyOvDEXIjRiiq8/d28oeUOBmNy/19I1AUayvBNYag8bNABDCAdgYQwuM9nPrPGhsnTQVypSjJnwEPNCy8vrPR8jq4H96w90f6BUnXDmuWG8+IuguowFBCNRRWOLIDs0y4II7r7NloxXBX2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fk46oB4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C86C4CEE9;
-	Tue, 20 May 2025 14:09:46 +0000 (UTC)
+	 MIME-Version; b=c2uSld5PAQhVhAuEirH8zFHqmLVUHOEcMVq6LbvoFlpTsbyI+b850t1/i9+J/wiLrMed3PODK6ZMewZxuPa64PJUUKg+X+wyN9N23265Q/LE4mLpnpDfL88X5dseb01G1kTfCeeQZOzW7z+3spXXEAAFwYfBcwfYZyA/kiTZHOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF7c5EQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84963C4CEE9;
+	Tue, 20 May 2025 14:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750187;
-	bh=dldcpI9yjuu+6ETfjCA3wSJIsqXwVG9xfF1mFznKXJg=;
+	s=korg; t=1747750576;
+	bh=wgeqe8oZgSAvombEColRHgIqEjJt7NkIZuAZ98XY0GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fk46oB4hYxe+oPLqpgrClwjf3GjXHUX9su3dH73QeCYBbXUH1g9YWLW+T44gDDh/a
-	 w4SqiqPbua0ogA/XB2LVzeemWot1DCZe96QLMTszMwWm0lw0VkOpZwxvsX+AmPft3s
-	 QlbatQUMFCiGUsRASwQwZd6MmKPUIpV3tc/+ldFU=
+	b=TF7c5EQzKpthCoWQdwL4CNmP6PtwLf/Dm5r2WKcZ97/tzuXhZysxCxjUg6snIBQFe
+	 GqtqqTg8Y5cwFM7uj39bR0RSU71cQGXSuBPMCOk7xdYc/zpbWKh3rsgnyh4pEAWwfV
+	 Sq8i5ophbF8wjdyqJugnYXslLkcfIiEEOrwuorjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 069/143] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 054/145] octeontx2-af: Fix CGX Receive counters
 Date: Tue, 20 May 2025 15:50:24 +0200
-Message-ID: <20250520125812.782502430@linuxfoundation.org>
+Message-ID: <20250520125812.696972405@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathan.lynch@amd.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
+[ Upstream commit bf449f35e77fd44017abf991fac1f9ab7705bbe0 ]
 
-Several issues with this change:
+Each CGX block supports 4 logical MACs (LMACS). Receive
+counters CGX_CMR_RX_STAT0-8 are per LMAC and CGX_CMR_RX_STAT9-12
+are per CGX.
 
-* The analysis is flawed and it's unclear what problem is being
-  fixed. There is no difference between wait_event_freezable_timeout()
-  and wait_event_timeout() with respect to device interrupts. And of
-  course "the interrupt notifying the finish of an operation happens
-  during wait_event_freezable_timeout()" -- that's how it's supposed
-  to work.
+Due a bug in previous patch, stale Per CGX counters values observed.
 
-* The link at the "Closes:" tag appears to be an unrelated
-  use-after-free in idxd.
-
-* It introduces a regression: dmatest threads are meant to be
-  freezable and this change breaks that.
-
-See discussion here:
-https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
-
-Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
-Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
-Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 66208910e57a ("octeontx2-af: Support to retrieve CGX LMAC stats")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://patch.msgid.link/20250513071554.728922-1-hkelam@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmatest.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -841,9 +841,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 8216f843a7cd5..e43c4608d3ba3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -707,6 +707,11 @@ int cgx_get_rx_stats(void *cgxd, int lmac_id, int idx, u64 *rx_stat)
  
--			wait_event_timeout(thread->done_wait,
--					   done->done,
--					   msecs_to_jiffies(params->timeout));
-+			wait_event_freezable_timeout(thread->done_wait,
-+					done->done,
-+					msecs_to_jiffies(params->timeout));
- 
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
+ 	if (!is_lmac_valid(cgx, lmac_id))
+ 		return -ENODEV;
++
++	/* pass lmac as 0 for CGX_CMR_RX_STAT9-12 */
++	if (idx >= CGX_RX_STAT_GLOBAL_INDEX)
++		lmac_id = 0;
++
+ 	*rx_stat =  cgx_read(cgx, lmac_id, CGXX_CMRX_RX_STAT0 + (idx * 8));
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
