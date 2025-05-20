@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27A4ABDC02
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:19:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9B0ABDCED
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4137A172973
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:10:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492494E1FC5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F414D24C068;
-	Tue, 20 May 2025 14:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61E624679A;
+	Tue, 20 May 2025 14:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEbkvtOY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G16AieC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCB324BCF5;
-	Tue, 20 May 2025 14:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BB02907;
+	Tue, 20 May 2025 14:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750116; cv=none; b=HNxKWb+6P4IlLSSI2TVV7NwI4oVzekpBSud0MPaHGZk6eZfbxP3yKcRwd9eE3cd7M7Cd5AGEJmf4NutcTsw55lWzWUZ5b40rugsrgWJOO8kgpfU3mA2d7esBOnuGontWsFUP+TU1VithTsvJR12HsRwrHHVjTYNxWrq9GHER8w4=
+	t=1747750518; cv=none; b=frbhBczwVbUuQvlLZxR90tS1YNdv4K3syatrW0NTey7g3k6k/bZpuGjLUNAGAZSgu5e/7SmTPqrmWpemCnqGO4BLui0aHq4Z56DZtxD/DXCu2U8COK3/3BGX0c3hwdPXbe+iK5GpMvN7CEjVC5bZjjL2ltW1IQknYxgBi1ofUPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750116; c=relaxed/simple;
-	bh=RR3zlEcDIEqa2Np7QuMVNPTAOlVlJsDRjIjOLsskLKQ=;
+	s=arc-20240116; t=1747750518; c=relaxed/simple;
+	bh=RVLfctzsQ918M+Z04XjdGWw+N4baU1YJZScy213UdeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnAdpjHO0dCch5lOK9GSga5PjozpwJyfCJGk+aBqEgztvPPPiztD6k27k6/ArzlhURnM3nEDYYcRnlIRZIY/xMVqs7MgBHCK2Sp8aijk1GsT77Ilsw4hr02gJEzpG1+xSs05gmeyy6DqfPesAZCiXVL9qa1o2OJExDm79Lf/+h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEbkvtOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23160C4CEF1;
-	Tue, 20 May 2025 14:08:35 +0000 (UTC)
+	 MIME-Version; b=qDjSO3aA4WheBdaO2Jq8m52rAZv4bw3ngNCXyCknivXtlm6mrr6pacJl1eSfXGuDB6pKclMc84NQ32prBKBdHu0dHFAPrzdV7G81teVOVgyz/46ghNxuB22JAYTuGihzXXRo9PMnMW+zdCnohY1vNEiOcgoqkZx6gr9ZQty65Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G16AieC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B33BC4CEE9;
+	Tue, 20 May 2025 14:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750116;
-	bh=RR3zlEcDIEqa2Np7QuMVNPTAOlVlJsDRjIjOLsskLKQ=;
+	s=korg; t=1747750517;
+	bh=RVLfctzsQ918M+Z04XjdGWw+N4baU1YJZScy213UdeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEbkvtOY2cfpi7S/7RoaDKEphvpw431cx+dTAUgUlmxQaUzySgoQdWvnj6SW+hzGB
-	 boA/Ys6pPqLhyT97QJSWCtFZHVfEEpYC1h1cyad393bFepTpsl0AlzEvk3WGTEMBr1
-	 JN4MTtl/FdboTG7iybUjZq3jTPTUYVpfYk2O6m8A=
+	b=G16AieC5TZPFU+1f7xBsbznjijphe16IUdvUpQ78h3SnYYWrFTmTHE0HRhh/I80bJ
+	 ZEd+STZhp4rjyAy5qT7u4pShomWKH3LOt7uuPNSilwm3+znsetxPIDLqr+b8Q3kqOX
+	 xjm2Cp3gzrZPRQUt5e6rYE8T6Q359M7kMVMRwLpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/143] net: dsa: sja1105: discard incoming frames in BR_STATE_LISTENING
+Subject: [PATCH 6.14 033/145] net: mctp: Ensure keys maintain only one ref to corresponding dev
 Date: Tue, 20 May 2025 15:50:03 +0200
-Message-ID: <20250520125811.934296665@linuxfoundation.org>
+Message-ID: <20250520125811.861570454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-[ Upstream commit 498625a8ab2c8e1c9ab5105744310e8d6952cc01 ]
+[ Upstream commit e4f349bd6e58051df698b82f94721f18a02a293d ]
 
-It has been reported that when under a bridge with stp_state=1, the logs
-get spammed with this message:
+mctp_flow_prepare_output() is called in mctp_route_output(), which
+places outbound packets onto a given interface. The packet may represent
+a message fragment, in which case we provoke an unbalanced reference
+count to the underlying device. This causes trouble if we ever attempt
+to remove the interface:
 
-[  251.734607] fsl_dpaa2_eth dpni.5 eth0: Couldn't decode source port
+    [   48.702195] usb 1-1: USB disconnect, device number 2
+    [   58.883056] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
+    [   69.022548] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
+    [   79.172568] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
+    ...
 
-Further debugging shows the following info associated with packets:
-source_port=-1, switch_id=-1, vid=-1, vbid=1
+Predicate the invocation of mctp_dev_set_key() in
+mctp_flow_prepare_output() on not already having associated the device
+with the key. It's not yet realistic to uphold the property that the key
+maintains only one device reference earlier in the transmission sequence
+as the route (and therefore the device) may not be known at the time the
+key is associated with the socket.
 
-In other words, they are data plane packets which are supposed to be
-decoded by dsa_tag_8021q_find_port_by_vbid(), but the latter (correctly)
-refuses to do so, because no switch port is currently in
-BR_STATE_LEARNING or BR_STATE_FORWARDING - so the packet is effectively
-unexpected.
-
-The error goes away after the port progresses to BR_STATE_LEARNING in 15
-seconds (the default forward_time of the bridge), because then,
-dsa_tag_8021q_find_port_by_vbid() can correctly associate the data plane
-packets with a plausible bridge port in a plausible STP state.
-
-Re-reading IEEE 802.1D-1990, I see the following:
-
-"4.4.2 Learning: (...) The Forwarding Process shall discard received
-frames."
-
-IEEE 802.1D-2004 further clarifies:
-
-"DISABLED, BLOCKING, LISTENING, and BROKEN all correspond to the
-DISCARDING port state. While those dot1dStpPortStates serve to
-distinguish reasons for discarding frames, the operation of the
-Forwarding and Learning processes is the same for all of them. (...)
-LISTENING represents a port that the spanning tree algorithm has
-selected to be part of the active topology (computing a Root Port or
-Designated Port role) but is temporarily discarding frames to guard
-against loops or incorrect learning."
-
-Well, this is not what the driver does - instead it sets
-mac[port].ingress = true.
-
-To get rid of the log spam, prevent unexpected data plane packets to
-be received by software by discarding them on ingress in the LISTENING
-state.
-
-In terms of blame attribution: the prints only date back to commit
-d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based
-on the VBID"). However, the settings would permit a LISTENING port to
-forward to a FORWARDING port, and the standard suggests that's not OK.
-
-Fixes: 640f763f98c2 ("net: dsa: sja1105: Add support for Spanning Tree Protocol")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250509113816.2221992-1-vladimir.oltean@nxp.com
+Fixes: 67737c457281 ("mctp: Pass flow data & flow release events to drivers")
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250508-mctp-dev-refcount-v1-1-d4f965c67bb5@codeconstruct.com.au
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/mctp/route.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index d0563ef59acf6..fbac2a647b20b 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2083,6 +2083,7 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
- 	switch (state) {
- 	case BR_STATE_DISABLED:
- 	case BR_STATE_BLOCKING:
-+	case BR_STATE_LISTENING:
- 		/* From UM10944 description of DRPDTAG (why put this there?):
- 		 * "Management traffic flows to the port regardless of the state
- 		 * of the INGRESS flag". So BPDUs are still be allowed to pass.
-@@ -2092,11 +2093,6 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
- 		mac[port].egress    = false;
- 		mac[port].dyn_learn = false;
- 		break;
--	case BR_STATE_LISTENING:
--		mac[port].ingress   = true;
--		mac[port].egress    = false;
--		mac[port].dyn_learn = false;
--		break;
- 	case BR_STATE_LEARNING:
- 		mac[port].ingress   = true;
- 		mac[port].egress    = false;
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 4c460160914f0..d9c8e5a5f9ce9 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -313,8 +313,10 @@ static void mctp_flow_prepare_output(struct sk_buff *skb, struct mctp_dev *dev)
+ 
+ 	key = flow->key;
+ 
+-	if (WARN_ON(key->dev && key->dev != dev))
++	if (key->dev) {
++		WARN_ON(key->dev != dev);
+ 		return;
++	}
+ 
+ 	mctp_dev_set_key(dev, key);
+ }
 -- 
 2.39.5
 
