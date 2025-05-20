@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA57FABDC6B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C22ABDBD3
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:16:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CAF63B1549
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925A54C7FB0
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6335248F46;
-	Tue, 20 May 2025 14:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6A824337C;
+	Tue, 20 May 2025 14:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7NmD7EH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l20DtrS5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812E624337C;
-	Tue, 20 May 2025 14:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775B824290D;
+	Tue, 20 May 2025 14:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750448; cv=none; b=b0gXeeUeJU8u1tf39hVd2O0N+mE/+W8npPu1PDoAtmNmRhymc0qIFvVk9G0tPVZNKrGDvYhy3R08mMfMzQbUWRUm9DxEtMZ7HPvfQPwex6VHzjXGIiFhrFvWNHh8I3FE60IzEx+UPvvghBGypYEf0xdCLneKLuZhrGhCdVsNkpA=
+	t=1747750031; cv=none; b=E0gDt0wu6UJ4a6dZqIgEUbeUoHCS/IJH/nXgcTHJ9NCq29FMZqfTFb9+ahBLsIQ4lBk4USXoH4SiS+j+DILf+yCzE80RrjsNJh2SPtKw5llvyCGvpeMsxUpeijdRVEErcjytek3fHMq/rrOnGhyaHM2KgxPTtiTMzsWR4p8l3GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750448; c=relaxed/simple;
-	bh=q09StbpRNK8iifx1Lbf5RIAKF2SglG0xBt5ZB7GdZeI=;
+	s=arc-20240116; t=1747750031; c=relaxed/simple;
+	bh=mE6G6Zg6QrHyfFTEXqMKv1zA4tUXm7Tnh4tCIiu4nL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R2ndtFRxNT1zz2ywGqE/y2QtUUYy7tPPqb8/e8uoQCyETY75F7vNRy3JNbTEcLrOXpNFZlf6Pt9UXHP6TTpIB7TEaoHoChXZCiscGDtgFgyFIUnUNCDt8fAPLwYoeWmKBp+ZCKlr+pOHgbYJV40CmJObNjxqiRpTH4aGk/AyEGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7NmD7EH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B54C4CEE9;
-	Tue, 20 May 2025 14:14:07 +0000 (UTC)
+	 MIME-Version; b=ZdUA+rTciVS3hKDH6fz4KaW0UWgm5Wvv45Jty7ELByY0HeOAebfDYiRRbPfO1FOLkAgPil0JYp1tGeBFbTySiVux8SSCyyKehNNCFeORv8WCKWI8YQsA4dXZxJIVuchqLnR55GvDPg/uBRYuwOtMDqfHuUMY63NyvnIRZ7Wommo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l20DtrS5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F51C4CEE9;
+	Tue, 20 May 2025 14:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750448;
-	bh=q09StbpRNK8iifx1Lbf5RIAKF2SglG0xBt5ZB7GdZeI=;
+	s=korg; t=1747750030;
+	bh=mE6G6Zg6QrHyfFTEXqMKv1zA4tUXm7Tnh4tCIiu4nL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7NmD7EH2nuxnDr+mHJ6iDrcvR0Ti5u6BhvLKwx0y5D+7H5B58NtSAKfiBgQoT59W
-	 HHCTxiSA136OtODP67NqmxfmSj2sdFwzDGVTREU14c43H0Unf4e4+LQeT4iO89rW/7
-	 8zcG+7eCm9ECXcuuFtvLk+usjbzmQEMlyt5OvaeA=
+	b=l20DtrS5cotbl2apUpbx+qx3Wr13N22k14nNwy2rqBb/6i0JkYJKn5PPrrBTTy2zY
+	 LMLnH1J9pvFUwYpclUUFJr+DFGHGGG9S/td6sWawQJNomrzPKYP0ANDf8Xl9H19aKQ
+	 W6OejTW8xefhqg2ogw7cyVEve2xkYpq4/pNLPj5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Heusel <christian@heusel.eu>,
 	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 004/145] drivers/platform/x86/amd: pmf: Check for invalid Smart PC Policies
-Date: Tue, 20 May 2025 15:49:34 +0200
-Message-ID: <20250520125810.718597952@linuxfoundation.org>
+Subject: [PATCH 6.12 020/143] Revert "drm/amd: Stop evicting resources on APUs in suspend"
+Date: Tue, 20 May 2025 15:49:35 +0200
+Message-ID: <20250520125810.851728274@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +60,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 8e81b9cd6e95188d12c9cc25d40b61dd5ea05ace ]
+[ Upstream commit d0ce1aaa8531a4a4707711cab5721374751c51b0 ]
 
-commit 376a8c2a14439 ("platform/x86/amd/pmf: Update PMF Driver for
-Compatibility with new PMF-TA") added support for platforms that support
-an updated TA, however it also exposed a number of platforms that although
-they have support for the updated TA don't actually populate a policy
-binary.
+This reverts commit 3a9626c816db901def438dc2513622e281186d39.
 
-Add an explicit check that the policy binary isn't empty before
-initializing the TA.
+This breaks S4 because we end up setting the s3/s0ix flags
+even when we are entering s4 since prepare is used by both
+flows.  The causes both the S3/s0ix and s4 flags to be set
+which breaks several checks in the driver which assume they
+are mutually exclusive.
 
-Reported-by: Christian Heusel <christian@heusel.eu>
-Closes: https://lore.kernel.org/platform-driver-x86/ae644428-5bf2-4b30-81ba-0b259ed3449b@heusel.eu/
-Fixes: 376a8c2a14439 ("platform/x86/amd/pmf: Update PMF Driver for Compatibility with new PMF-TA")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Christian Heusel <christian@heusel.eu>
-Link: https://lore.kernel.org/r/20250423132002.3984997-3-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3634
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ce8f7d95899c2869b47ea6ce0b3e5bf304b2fff4)
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/tee-if.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h        |  2 --
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c   | 18 ------------------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 11 ++---------
+ 3 files changed, 2 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
-index e008ac079fade..d3bd12ad036ae 100644
---- a/drivers/platform/x86/amd/pmf/tee-if.c
-+++ b/drivers/platform/x86/amd/pmf/tee-if.c
-@@ -334,6 +334,11 @@ static int amd_pmf_start_policy_engine(struct amd_pmf_dev *dev)
- 	return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 8050e0960f5e2..7edf8d67a0fa5 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -1571,11 +1571,9 @@ static inline void amdgpu_acpi_get_backlight_caps(struct amdgpu_dm_backlight_cap
+ #if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
+ bool amdgpu_acpi_is_s3_active(struct amdgpu_device *adev);
+ bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev);
+-void amdgpu_choose_low_power_state(struct amdgpu_device *adev);
+ #else
+ static inline bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev) { return false; }
+ static inline bool amdgpu_acpi_is_s3_active(struct amdgpu_device *adev) { return false; }
+-static inline void amdgpu_choose_low_power_state(struct amdgpu_device *adev) { }
+ #endif
+ 
+ void amdgpu_register_gpu_instance(struct amdgpu_device *adev);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+index b8d4e07d2043e..bebfbc1497d8e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -1533,22 +1533,4 @@ bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev)
+ #endif /* CONFIG_AMD_PMC */
  }
  
-+static inline bool amd_pmf_pb_valid(struct amd_pmf_dev *dev)
-+{
-+	return memchr_inv(dev->policy_buf, 0xff, dev->policy_sz);
-+}
-+
- #ifdef CONFIG_AMD_PMF_DEBUG
- static void amd_pmf_hex_dump_pb(struct amd_pmf_dev *dev)
- {
-@@ -361,6 +366,11 @@ static ssize_t amd_pmf_get_pb_data(struct file *filp, const char __user *buf,
- 	dev->policy_buf = new_policy_buf;
- 	dev->policy_sz = length;
+-/**
+- * amdgpu_choose_low_power_state
+- *
+- * @adev: amdgpu_device_pointer
+- *
+- * Choose the target low power state for the GPU
+- */
+-void amdgpu_choose_low_power_state(struct amdgpu_device *adev)
+-{
+-	if (adev->in_runpm)
+-		return;
+-
+-	if (amdgpu_acpi_is_s0ix_active(adev))
+-		adev->in_s0ix = true;
+-	else if (amdgpu_acpi_is_s3_active(adev))
+-		adev->in_s3 = true;
+-}
+-
+ #endif /* CONFIG_SUSPEND */
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index e6c8426fa06ec..1ed84648733ee 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4770,15 +4770,13 @@ int amdgpu_device_prepare(struct drm_device *dev)
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	int i, r;
  
-+	if (!amd_pmf_pb_valid(dev)) {
-+		ret = -EINVAL;
-+		goto cleanup;
-+	}
-+
- 	amd_pmf_hex_dump_pb(dev);
- 	ret = amd_pmf_start_policy_engine(dev);
- 	if (ret < 0)
-@@ -533,6 +543,12 @@ int amd_pmf_init_smart_pc(struct amd_pmf_dev *dev)
+-	amdgpu_choose_low_power_state(adev);
+-
+ 	if (dev->switch_power_state == DRM_SWITCH_POWER_OFF)
+ 		return 0;
  
- 	memcpy_fromio(dev->policy_buf, dev->policy_base, dev->policy_sz);
+ 	/* Evict the majority of BOs before starting suspend sequence */
+ 	r = amdgpu_device_evict_resources(adev);
+ 	if (r)
+-		goto unprepare;
++		return r;
  
-+	if (!amd_pmf_pb_valid(dev)) {
-+		dev_info(dev->dev, "No Smart PC policy present\n");
-+		ret = -EINVAL;
-+		goto err_free_policy;
-+	}
-+
- 	amd_pmf_hex_dump_pb(dev);
+ 	flush_delayed_work(&adev->gfx.gfx_off_delay_work);
  
- 	dev->prev_data = kzalloc(sizeof(*dev->prev_data), GFP_KERNEL);
+@@ -4789,15 +4787,10 @@ int amdgpu_device_prepare(struct drm_device *dev)
+ 			continue;
+ 		r = adev->ip_blocks[i].version->funcs->prepare_suspend((void *)adev);
+ 		if (r)
+-			goto unprepare;
++			return r;
+ 	}
+ 
+ 	return 0;
+-
+-unprepare:
+-	adev->in_s0ix = adev->in_s3 = adev->in_s4 = false;
+-
+-	return r;
+ }
+ 
+ /**
 -- 
 2.39.5
 
