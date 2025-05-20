@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C49CABDBE3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:17:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0490ABDB3F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB38C7B6125
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:13:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFC341654DA
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B132500D0;
-	Tue, 20 May 2025 14:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F18242907;
+	Tue, 20 May 2025 14:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNwV4p5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOhGvbsO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E0C24EF83;
-	Tue, 20 May 2025 14:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FD2242913;
+	Tue, 20 May 2025 14:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750280; cv=none; b=GWBN+uV/LSMDjxO+VkBUh0IEt8c+dI3XRhYcprkXfkHf8/BHYRcKOAAwsZbhUzO99JQl25k9w5ToRPwgppFhvQAO803Tv/lxV2wcOqdA0hYROi+1SG4XD1e1QSdEjTL0994Vk5lhbWhxeR9VO9YxoiuZHeVAvXJy3KXPwqXXtDs=
+	t=1747749798; cv=none; b=GJE55G+u7/hTTitsHac8hlN1HJgKcrKyXw/LpCJJFWrkwd63rtRbwo4z+oMzmwZlyzeuC7XmuXYsmsZoe2oJJKoHKCdiqiXVPzipK0KgKIOra/jLzoYCu5+J6OXtEzOAv+ATAjEIOxjkc9AgzoR+puqApl/PiLMBmOm06AtA2FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750280; c=relaxed/simple;
-	bh=Oph6A+SSwSOEI1y/9MEw8CE+D3zB7tRdPRlPJTZyJCg=;
+	s=arc-20240116; t=1747749798; c=relaxed/simple;
+	bh=UyqHl3/6vfYJ1QdAMMWpOpGMdqWNIGu4usyqYXwPq4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbXzK6l8lPvbISa8KLkjY5wUehfNJtM3V2DPR9msSkJLClZHL1fpGwb3AUwNKIb4yQHcTcMzt+MB3FSJu+Ad/RifmMrzsavUTqgdWDTJE876PaoLfR0kLZN3mrfbInV0aRi3TaThsnONKlcA2nf6ttYkJGRTjBYlC2fLXbyBVug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNwV4p5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D551C4CEE9;
-	Tue, 20 May 2025 14:11:19 +0000 (UTC)
+	 MIME-Version; b=ZG68cunXNaFx21KE+sM/j2tY8i0mj5NHSH+P1K1tNUvcXEg7pDi03t0pCS0dYpvon4DPPyXQhiJ0nkwcyQ18YdC/1J5FcEDehnrVfR/03vKAWvW5MZoMWdf0hpg476cPYc+vUThfHY5yWVIaOTZ82XXkzWSFfHSxnBSFwAwyWZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOhGvbsO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BF8C4CEE9;
+	Tue, 20 May 2025 14:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750279;
-	bh=Oph6A+SSwSOEI1y/9MEw8CE+D3zB7tRdPRlPJTZyJCg=;
+	s=korg; t=1747749798;
+	bh=UyqHl3/6vfYJ1QdAMMWpOpGMdqWNIGu4usyqYXwPq4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNwV4p5QBCftJHGtjp/U7tn5/HYKI/4ybnCN9fD6qKAKN54MYBJdtuflC9GHrnv61
-	 IYxdAkfkYWiFPCNhglvYCEx7osQlNQlnXxR4klUKbuUlcfGaYQeqA6ZekNb26suqUN
-	 cf4S7ZQp3Hky8VnkHt98/BozEivnnU2UOQTGnK5M=
+	b=yOhGvbsOwnbgueaC5tTbPCb59kK0G/dyFAgpgOqhNdkMRixQflNUUAdZsROX8ABo7
+	 M4xfmBcnju/0RM6BHEd0KKSbV2bi85h0ZcK5XpdsCdQXsWmbLyVSNHj3N32j0bXv2d
+	 KzsBtfeVd7/gRJUxAIk7QuQ/389GSzBgxA7mJrk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Xianglai Li <lixianglai@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 073/143] LoongArch: Prevent cond_resched() occurring within kernel-fpu
-Date: Tue, 20 May 2025 15:50:28 +0200
-Message-ID: <20250520125812.937057872@linuxfoundation.org>
+Subject: [PATCH 6.6 064/117] LoongArch: Save and restore CSR.CNTC for hibernation
+Date: Tue, 20 May 2025 15:50:29 +0200
+Message-ID: <20250520125806.533413283@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 2468b0e3d5659dfde77f081f266e1111a981efb8 upstream.
+commit ceb9155d058a11242aa0572875c44e9713b1a2be upstream.
 
-When CONFIG_PREEMPT_COUNT is not configured (i.e. CONFIG_PREEMPT_NONE/
-CONFIG_PREEMPT_VOLUNTARY), preempt_disable() / preempt_enable() merely
-acts as a barrier(). However, in these cases cond_resched() can still
-trigger a context switch and modify the CSR.EUEN, resulting in do_fpu()
-exception being activated within the kernel-fpu critical sections, as
-demonstrated in the following path:
+Save and restore CSR.CNTC for hibernation which is similar to suspend.
 
-dcn32_calculate_wm_and_dlg()
-    DC_FP_START()
-	dcn32_calculate_wm_and_dlg_fpu()
-	    dcn32_find_dummy_latency_index_for_fw_based_mclk_switch()
-		dcn32_internal_validate_bw()
-		    dcn32_enable_phantom_stream()
-			dc_create_stream_for_sink()
-			   kzalloc(GFP_KERNEL)
-				__kmem_cache_alloc_node()
-				    __cond_resched()
-    DC_FP_END()
+For host this is unnecessary because sched clock is ensured continuous,
+but for kvm guest sched clock isn't enough because rdtime.d should also
+be continuous.
 
-This patch is similar to commit d02198550423a0b (x86/fpu: Improve crypto
-performance by making kernel-mode FPU reliably usable in softirqs).  It
-uses local_bh_disable() instead of preempt_disable() for non-RT kernels
-so it can avoid the cond_resched() issue, and also extend the kernel-fpu
-application scenarios to the softirq context.
+Host::rdtime.d = Host::CSR.CNTC + counter
+Guest::rdtime.d = Host::CSR.CNTC + Host::CSR.GCNTC + Guest::CSR.CNTC + counter
+
+so,
+
+Guest::rdtime.d = Host::rdtime.d + Host::CSR.GCNTC + Guest::CSR.CNTC
+
+To ensure Guest::rdtime.d continuous, Host::rdtime.d should be at first
+continuous, while Host::CSR.GCNTC / Guest::CSR.CNTC is maintained by KVM.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/kfpu.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/time.c     |    2 +-
+ arch/loongarch/power/hibernate.c |    3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/kfpu.c
-+++ b/arch/loongarch/kernel/kfpu.c
-@@ -18,11 +18,28 @@ static unsigned int euen_mask = CSR_EUEN
- static DEFINE_PER_CPU(bool, in_kernel_fpu);
- static DEFINE_PER_CPU(unsigned int, euen_current);
- 
-+static inline void fpregs_lock(void)
-+{
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_disable();
-+	else
-+		local_bh_disable();
-+}
-+
-+static inline void fpregs_unlock(void)
-+{
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		preempt_enable();
-+	else
-+		local_bh_enable();
-+}
-+
- void kernel_fpu_begin(void)
- {
- 	unsigned int *euen_curr;
- 
--	preempt_disable();
-+	if (!irqs_disabled())
-+		fpregs_lock();
- 
- 	WARN_ON(this_cpu_read(in_kernel_fpu));
- 
-@@ -73,7 +90,8 @@ void kernel_fpu_end(void)
- 
- 	this_cpu_write(in_kernel_fpu, false);
- 
--	preempt_enable();
-+	if (!irqs_disabled())
-+		fpregs_unlock();
+--- a/arch/loongarch/kernel/time.c
++++ b/arch/loongarch/kernel/time.c
+@@ -110,7 +110,7 @@ static unsigned long __init get_loops_pe
+ 	return lpj;
  }
- EXPORT_SYMBOL_GPL(kernel_fpu_end);
  
+-static long init_offset __nosavedata;
++static long init_offset;
+ 
+ void save_counter(void)
+ {
+--- a/arch/loongarch/power/hibernate.c
++++ b/arch/loongarch/power/hibernate.c
+@@ -2,6 +2,7 @@
+ #include <asm/fpu.h>
+ #include <asm/loongson.h>
+ #include <asm/sections.h>
++#include <asm/time.h>
+ #include <asm/tlbflush.h>
+ #include <linux/suspend.h>
+ 
+@@ -14,6 +15,7 @@ struct pt_regs saved_regs;
+ 
+ void save_processor_state(void)
+ {
++	save_counter();
+ 	saved_crmd = csr_read32(LOONGARCH_CSR_CRMD);
+ 	saved_prmd = csr_read32(LOONGARCH_CSR_PRMD);
+ 	saved_euen = csr_read32(LOONGARCH_CSR_EUEN);
+@@ -26,6 +28,7 @@ void save_processor_state(void)
+ 
+ void restore_processor_state(void)
+ {
++	sync_counter();
+ 	csr_write32(saved_crmd, LOONGARCH_CSR_CRMD);
+ 	csr_write32(saved_prmd, LOONGARCH_CSR_PRMD);
+ 	csr_write32(saved_euen, LOONGARCH_CSR_EUEN);
 
 
 
