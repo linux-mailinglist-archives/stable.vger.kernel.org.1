@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA1AABDB74
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D530ABDD4A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F19571897DB4
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:08:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FD3F16F06F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCFE246773;
-	Tue, 20 May 2025 14:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873D624677C;
+	Tue, 20 May 2025 14:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtWglO7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6EZZ9ig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A66C2475CD;
-	Tue, 20 May 2025 14:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448812907;
+	Tue, 20 May 2025 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750052; cv=none; b=UtrUm/I9bnZ+XkFaCN1U4V0Wums5o6xC0kZhiF9wUKbWhhGxyLWBFZNOwQ7LVNA9jOHf/dMTqK2pIt9LBzdb1V4AzrfgTo2MrNyPBRfH4l5LNLTLt9eXw0fLfEmDsoHDPuUj870x8mYzkdBkDsbheGARAe95cQNqZgZxzq3HkgI=
+	t=1747750536; cv=none; b=IS3zaLdb5V11QN4fUzd0DSjFun157uRfzMLizcmSX1jemiAarzSGaXOCM3v06vx4JPKYT2GyMT9l+kM0ad0nhZ3IJdZ2pyw7PzTqS86Jkl+1W/o+9J3Dip788kC2hhfZmtHB28GXsfsSMKa3blStOrgEM8UrviNk2EYmD5FfPxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750052; c=relaxed/simple;
-	bh=eA8Tb4YeldoQTdVlcEFs7OavpbK8RZHj63BV0IYkAKE=;
+	s=arc-20240116; t=1747750536; c=relaxed/simple;
+	bh=bd5XWma4wdvAKosyW75jDKI4hSN6sWkLtqj8lO3sagI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoDV4xZ1DZn414afAcOjh33TTX+UVC8fq5XObHBsOoVQEvltdSjsNX5QLsd+H5FTJuNa+U2IYZiigue33oyj+TMuR0tOCZTtHFlfGy8gthK1kfBjYaoAHbRODQLxHCGUDtCaraL4af22hSmRKEA3KtN3NPygpWdYZZxEiwr+H40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtWglO7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E977DC4CEEB;
-	Tue, 20 May 2025 14:07:31 +0000 (UTC)
+	 MIME-Version; b=nFU28RRJ7NiZCE6GrVM3HxfBFfu2DkwVp/dJSbn9zsaWnmZBFWBGOpYj+fqYEVllCdUvf+ourtAbEVTmWjz5iy0SyRkQhidDVpMuUkPvBglRq6o9aecS2+e7uBNT7BHP5n6S9cH7doFeBi5gHisL1zA1VKHHQ+3goclcLy5QydU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6EZZ9ig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1599C4CEE9;
+	Tue, 20 May 2025 14:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750052;
-	bh=eA8Tb4YeldoQTdVlcEFs7OavpbK8RZHj63BV0IYkAKE=;
+	s=korg; t=1747750535;
+	bh=bd5XWma4wdvAKosyW75jDKI4hSN6sWkLtqj8lO3sagI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KtWglO7VFXf0ipsqQHYXefKopokmLMolbFqfxPJeiN7YxNTA6+fwrGKTfpiOPOaIa
-	 8hpBdI8cedrFpG8d+TktQ3tzC3IYrALLwEjDOrcHjH8vGKhPh/VTETeoUM3uNeIt5+
-	 X1DgH3u2ypd5PTD6xpSigO+WKmxJYYE87qw7yi6k=
+	b=E6EZZ9igWpwiB+dxYgCBYEJaRWNXlo01kKAoi8Ky7wDo3Epv8cBmRT3f8xUzyfLE4
+	 r2LHAC9ExOAK/XNu4CMPFD3sxVpZf9Cv5naoFQW8A8rjJvuZi24PqXZKVTNPl7MjgY
+	 lQ86O50PwnZXSRcLkcADY5me1SwHjbBkQebmHo+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>,
+	Tarang Raval <tarang.raval@siliconsignals.io>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/143] virtio_net: ensure netdev_tx_reset_queue is called on bind xsk for tx
-Date: Tue, 20 May 2025 15:49:41 +0200
-Message-ID: <20250520125811.078323051@linuxfoundation.org>
+Subject: [PATCH 6.14 012/145] arm64: dts: imx8mp-var-som: Fix LDO5 shutdown causing SD card timeout
+Date: Tue, 20 May 2025 15:49:42 +0200
+Message-ID: <20250520125811.027929853@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <koichiro.den@canonical.com>
+From: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
 
-[ Upstream commit 76a771ec4c9adfd75fe53c8505cf656a075d7101 ]
+[ Upstream commit c6888983134e2ccc2db8ffd2720b0d4826d952e4 ]
 
-virtnet_sq_bind_xsk_pool() flushes tx skbs and then resets tx queue, so
-DQL counters need to be reset when flushing has actually occurred, Add
-virtnet_sq_free_unused_buf_done() as a callback for virtqueue_resize()
-to handle this.
+Fix SD card timeout issue caused by LDO5 regulator getting disabled
+after boot.
 
-Fixes: 21a4e3ce6dc7 ("virtio_net: xsk: bind/unbind xsk for tx")
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The kernel log shows LDO5 being disabled, which leads to a timeout
+on USDHC2:
+[   33.760561] LDO5: disabling
+[   81.119861] mmc1: Timeout waiting for hardware interrupt.
+
+To prevent this, set regulator-boot-on and regulator-always-on for
+LDO5. Also add the vqmmc regulator to properly support 1.8V/3.3V
+signaling for USDHC2 using a GPIO-controlled regulator.
+
+Fixes: 6c2a1f4f71258 ("arm64: dts: imx8mp-var-som-symphony: Add Variscite Symphony board and VAR-SOM-MX8MP SoM")
+Signed-off-by: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
+Acked-by: Tarang Raval <tarang.raval@siliconsignals.io>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index bb444972693a0..6d36cb204f9bc 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -5576,7 +5576,8 @@ static int virtnet_sq_bind_xsk_pool(struct virtnet_info *vi,
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
+index b2ac2583a5929..b59da91fdd041 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
+@@ -35,7 +35,6 @@
+ 		      <0x1 0x00000000 0 0xc0000000>;
+ 	};
  
- 	virtnet_tx_pause(vi, sq);
+-
+ 	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
+ 	        compatible = "regulator-fixed";
+ 	        regulator-name = "VSD_3V3";
+@@ -46,6 +45,16 @@
+ 	        startup-delay-us = <100>;
+ 	        off-on-delay-us = <12000>;
+ 	};
++
++	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
++		compatible = "regulator-gpio";
++		regulator-name = "VSD_VSEL";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++		gpios = <&gpio2 12 GPIO_ACTIVE_HIGH>;
++		states = <3300000 0x0 1800000 0x1>;
++		vin-supply = <&ldo5>;
++	};
+ };
  
--	err = virtqueue_reset(sq->vq, virtnet_sq_free_unused_buf, NULL);
-+	err = virtqueue_reset(sq->vq, virtnet_sq_free_unused_buf,
-+			      virtnet_sq_free_unused_buf_done);
- 	if (err) {
- 		netdev_err(vi->dev, "reset tx fail: tx queue index: %d err: %d\n", qindex, err);
- 		pool = NULL;
+ &A53_0 {
+@@ -205,6 +214,7 @@
+         pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+         cd-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
+         vmmc-supply = <&reg_usdhc2_vmmc>;
++	vqmmc-supply = <&reg_usdhc2_vqmmc>;
+         bus-width = <4>;
+         status = "okay";
+ };
 -- 
 2.39.5
 
