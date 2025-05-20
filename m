@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-145374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D1AABDB9D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:13:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13601ABDB7E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE77A8A0B25
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:06:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAC4C189BF33
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1AD2459FE;
-	Tue, 20 May 2025 14:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E4824728B;
+	Tue, 20 May 2025 14:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMTmz4l1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhPfhdPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5875E2F37;
-	Tue, 20 May 2025 14:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4B8242907;
+	Tue, 20 May 2025 14:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749991; cv=none; b=KVQf3Nq8mm12PDbdZJyMnbe0XETfDEawmh4pMzEUaL5nduTaTI0lWPEJr80+UlSvMVOVI4AhQfz0Mc2WtrXByhRwn28h5ONUYl2a+u+D1AY7NFJTNGF6XKvChbemvxvlWIj/BOC4fPiEeMUd5OhLUq7Y3EPHAns35lyLToTYBSQ=
+	t=1747750067; cv=none; b=W8OySsTHkB+vreWixAHZkko0ZhqHAby1CdLs63hrSW+CyaftliwmUNhI1qAwovAPTSfsh3M98TWDaThHKX4A8brVeyMNKzzCj1QAI9S6DOci3YZOUbXW5Dqovb8MU8P8AYQ2kVKMdpxGDlRb7+nAoyRtIjums2L4ay/y9CmzvPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749991; c=relaxed/simple;
-	bh=J8Nnu0+0C7RcYK7SzGdMl+rht0/3u+/XlcGoxeUaRXA=;
+	s=arc-20240116; t=1747750067; c=relaxed/simple;
+	bh=LSCg1WtZiijRBQPQNeV6HQ3meIGHPHi5xW3N/tJxwKY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PptKIwiqllMaqT9ZNy66xXPOtfoGCe4CbPsrGFM/Hzz+Tz0F6332nY0qfEXrZGYB0vVNay9O8EAom+ODdtNMzq6TdFwd1ypveg4uPNjiWXFlQXqB91ZAuYFY6QYzXoH3WEVbuKtw5nlslhiyDNkS/RX0MZt1n7YO/LNGMU7jdVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMTmz4l1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFFCC4CEEA;
-	Tue, 20 May 2025 14:06:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jfrv2iau0lDUu8vtxJQszOR++05fnvPjC9KqzLAnP56xvp2C+geJQ02BEVYW3OyJrZFyZVeT12vHnQyXxsXGcivLDUhKDV2XQoOLfBVDHr0+Ay34SnTgIloykLtA3QUzO5LANyN5JQ0dZQf+QhGU0oOFH27islrWaJkObQ2YYdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhPfhdPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B65C4CEE9;
+	Tue, 20 May 2025 14:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747749991;
-	bh=J8Nnu0+0C7RcYK7SzGdMl+rht0/3u+/XlcGoxeUaRXA=;
+	s=k20201202; t=1747750067;
+	bh=LSCg1WtZiijRBQPQNeV6HQ3meIGHPHi5xW3N/tJxwKY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jMTmz4l1D5ourzsVmUpjAL9mBLX2qNMGwWlXkv7Za0mYaSTDodm7NSfQ1M3Q68F8P
-	 VcQ+NuToW6mDyjatw1upBI1aMjVUQE3lAUtT0NtG1pc4aRhlfb9HjwTqve54eN/av2
-	 ZTMS2lSrkmxC6mt9owaDSssl1K35qedBUTuHx7/1KWTkMpCkbGBetb71zgku7/ZvTA
-	 GUVgfv2nDOGZ+Sk5kc7Sjogt8fz5AHu26QCPKtNf5QtObiM0Csv46Z3f+aC5OKrS83
-	 yNfiJZ+NSRPzty2pEuzqnnQObixwv7GTl0U4qNIOHkIBC8GNxoTxU9TrukFLIwj2Ci
-	 yzZSesdrYunTw==
-Date: Tue, 20 May 2025 10:06:29 -0400
+	b=FhPfhdPmp2r2S7/maxTkCUhqOKs6wqRP2tJXDr41s4uQ30rwwCfFCHh14mB777rua
+	 6me++dEJQX7EPUHHuF0JwWs2C0SF9MEMKaK2D4rM9MvCJozy4od20TpghXrlhnjS81
+	 e+SJJ4myQfzFDM6VdI67ETDzz5f5+UeEGqOYtx3cSR/ypMwwQHpGxT5ns1OVHx6Gze
+	 TBNdCtksbBTjCKuPlS8n8viFJJNT0JpcG00EV4IcwvUSZvT2K559/FFZc9tJrAgkeD
+	 Fxkx1gV9RNVMnuiK0hxR4ifjyKCyFp3YQPirQ1RNPjrC4IQNymJSdp5j0AcAiKC4da
+	 PhDwwv6/Ads/g==
+Date: Tue, 20 May 2025 10:07:45 -0400
 From: Sasha Levin <sashal@kernel.org>
 To: Alex Deucher <alexdeucher@gmail.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Charlene Liu <Charlene.Liu@amd.com>, Alvin Lee <alvin.lee2@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>, harry.wentland@amd.com,
-	sunpeng.li@amd.com, christian.koenig@amd.com, airlied@gmail.com,
-	simona@ffwll.ch, hamzamahfooz@linux.microsoft.com,
-	Daniel.Sa@amd.com, alex.hung@amd.com, rostrows@amd.com,
-	Wayne.Lin@amd.com, Syed.Hassan@amd.com,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>, sunpeng.li@amd.com,
+	christian.koenig@amd.com, airlied@gmail.com, simona@ffwll.ch,
 	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH AUTOSEL 5.15 090/153] drm/amd/display: fix dcn4x init
- failed
-Message-ID: <aCyMZQyha8ftILL2@lappy>
-References: <20250505231320.2695319-1-sashal@kernel.org>
- <20250505231320.2695319-90-sashal@kernel.org>
- <CADnq5_NhYbp2SMivbG2pvB8oZNie5LBxS_ME5nMofX-2syQHrw@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.6 229/294] drm/amd/display/dc: enable oem i2c
+ support for DCE 12.x
+Message-ID: <aCyMsX3_LQXsUuE4@lappy>
+References: <20250505225634.2688578-1-sashal@kernel.org>
+ <20250505225634.2688578-229-sashal@kernel.org>
+ <CADnq5_OGPGwbKfFSP6BpNAhtOXnZ+L3Vmga9TxLDAAub=bu9JA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,30 +64,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADnq5_NhYbp2SMivbG2pvB8oZNie5LBxS_ME5nMofX-2syQHrw@mail.gmail.com>
+In-Reply-To: <CADnq5_OGPGwbKfFSP6BpNAhtOXnZ+L3Vmga9TxLDAAub=bu9JA@mail.gmail.com>
 
-On Tue, May 06, 2025 at 11:00:58AM -0400, Alex Deucher wrote:
->On Mon, May 5, 2025 at 7:16 PM Sasha Levin <sashal@kernel.org> wrote:
+On Tue, May 06, 2025 at 11:02:34AM -0400, Alex Deucher wrote:
+>On Mon, May 5, 2025 at 7:04 PM Sasha Levin <sashal@kernel.org> wrote:
 >>
->> From: Charlene Liu <Charlene.Liu@amd.com>
+>> From: Alex Deucher <alexander.deucher@amd.com>
 >>
->> [ Upstream commit 23ef388a84c72b0614a6c10f866ffeac7e807719 ]
+>> [ Upstream commit 2ed83f2cc41e8f7ced1c0610ec2b0821c5522ed5 ]
 >>
->> [why]
->> failed due to cmdtable not created.
->> switch atombios cmdtable as default.
+>> Use the value pulled from the vbios just like newer chips.
 >>
->> Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
->> Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
->> Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
->> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+>> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 >> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 >> Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
->Support for DCN 4 was added in 6.11 I think so there is no need to
->backport DCN 4.x fixes to kernels older than 6.11.
+>This is a new feature not a bug fix and this change only makes sense
+>with the other changes in kernel 6.15.
 
-I'll drop it from older trees, thanks!
+I'll drop it, thanks!
 
 -- 
 Thanks,
