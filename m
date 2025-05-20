@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-145521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF44ABDC54
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02AFABDC9B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D4EC8C24CF
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:17:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79C891BC018F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5557E24677A;
-	Tue, 20 May 2025 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76D82517A6;
+	Tue, 20 May 2025 14:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlTONdHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+W7NPkY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10854288D6;
-	Tue, 20 May 2025 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8654324503E;
+	Tue, 20 May 2025 14:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750418; cv=none; b=FfT6PvO5L1fPei45ePrbIx++Bzx1ticl/D+ak0LOdTp+57l1xwuRoTmeaesGZEz79BXC0tp+DNvo7fvWGJtcfHTRpLilmteLITDT4tBs5qXkZecp5CulW9FnrVPjb3lrYd23HxTlMRpdeP0KQ1m+4G9iXre5e+0dQFn9Uf1QZuU=
+	t=1747750792; cv=none; b=KOiMAuYcZoZYgb2wvDLJhQATndK8q4cwuKaSqDxvoVUX8IrDDYVK8grRkCHMz1jKQVGy5mEyApp5G/7Akj3/ldj5f/JWlTOZaKcQ3QGVPepXHerHQRfuWx5+/x9fwH/R90DUWSZS8a3a1QUn5HcfTRpF19EcSff8e0R169smKLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750418; c=relaxed/simple;
-	bh=J6x5ViGPIDWlBxGpXpO3PpEVtZNOFUgJjq0ZpoRHoXY=;
+	s=arc-20240116; t=1747750792; c=relaxed/simple;
+	bh=hlkfmYdrxQGUd3wkaCTHo8t+dX8SDnGle89seSvbddU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgJ5CsMqD4QFW9DdiB8NuUImBsJrhDpJlUZwMNhWGjNGa4vuI+e5s98BiHgdo8YvKOnz9kwCDkyFTbJPDBaJro3k6mpF+HjP+xbX4zPW/2GCLAUtbMrrFtcpzTcykDJse9eCehw0AY3HziMB6gLbp/CAla4wWmLB25y2WzzuLWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlTONdHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9697CC4CEE9;
-	Tue, 20 May 2025 14:13:37 +0000 (UTC)
+	 MIME-Version; b=kfu9u8F7GrujRvS9W8OJ05tqRI1qyzMGP9Oco4AG+jLbtbUydhH66T7CwrT79tbg7i9GVJwlDq04SX13V+SL/PtAeOYeu3Wd8wD78W4fgzifw9ftPOHIS7dOaWLTK8tg/5BiOhR6oM8Ge9D9DkJElkp4sYp1CPQ/JQ9AoTVvyVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+W7NPkY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAC9C4CEE9;
+	Tue, 20 May 2025 14:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750417;
-	bh=J6x5ViGPIDWlBxGpXpO3PpEVtZNOFUgJjq0ZpoRHoXY=;
+	s=korg; t=1747750792;
+	bh=hlkfmYdrxQGUd3wkaCTHo8t+dX8SDnGle89seSvbddU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LlTONdHvYZFsEK4h1WR7PppjNMlEcsaOlsfewaE2f5l+AE1452MJ3zt3E2ngrfHug
-	 TD6BFIMidjDkSyqn8M6JVUoANfm1q3qXtRrPIHaXKrrgE+dXz++UWulXQ+cQ1An1IV
-	 QJhyKu9E1wfklJWcBYOafzV9knQpC6MFjSOGzHdA=
+	b=H+W7NPkYxv0wYQnPJtVAZgvNFLJb++zDHNOJg7PgYaH+esZMjvgAron6PXZ9T3l3w
+	 fv0NbZylTuZxuPM41eBucgN4Msn3sZMi5Gh7W1keG/RjOyRuWyBpIWVfMn82coBC5G
+	 8UURKFsyGymMLTiG/t0bfQZSrKQWa7+6w/mjeI7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH 6.12 138/143] drm/fbdev-dma: Support struct drm_driver.fbdev_probe
+	Wupeng Ma <mawupeng1@huawei.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.14 123/145] mm: hugetlb: fix incorrect fallback for subpool
 Date: Tue, 20 May 2025 15:51:33 +0200
-Message-ID: <20250520125815.441736462@linuxfoundation.org>
+Message-ID: <20250520125815.366321869@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Wupeng Ma <mawupeng1@huawei.com>
 
-commit 8998eedda2539d2528cfebdc7c17eed0ad35b714 upstream.
+commit a833a693a490ecff8ba377654c6d4d333718b6b1 upstream.
 
-Rework fbdev probing to support fbdev_probe in struct drm_driver
-and reimplement the old fb_probe callback on top of it. Provide an
-initializer macro for struct drm_driver that sets the callback
-according to the kernel configuration.
+During our testing with hugetlb subpool enabled, we observe that
+hstate->resv_huge_pages may underflow into negative values.  Root cause
+analysis reveals a race condition in subpool reservation fallback handling
+as follow:
 
-This change allows the common fbdev client to run on top of DMA-
-based DRM drivers.
+hugetlb_reserve_pages()
+    /* Attempt subpool reservation */
+    gbl_reserve = hugepage_subpool_get_pages(spool, chg);
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240924071734.98201-6-tzimmermann@suse.de
-Signed-off-by: Fabio Estevam <festevam@denx.de>
+    /* Global reservation may fail after subpool allocation */
+    if (hugetlb_acct_memory(h, gbl_reserve) < 0)
+        goto out_put_pages;
+
+out_put_pages:
+    /* This incorrectly restores reservation to subpool */
+    hugepage_subpool_put_pages(spool, chg);
+
+When hugetlb_acct_memory() fails after subpool allocation, the current
+implementation over-commits subpool reservations by returning the full
+'chg' value instead of the actual allocated 'gbl_reserve' amount.  This
+discrepancy propagates to global reservations during subsequent releases,
+eventually causing resv_huge_pages underflow.
+
+This problem can be trigger easily with the following steps:
+1. reverse hugepage for hugeltb allocation
+2. mount hugetlbfs with min_size to enable hugetlb subpool
+3. alloc hugepages with two task(make sure the second will fail due to
+   insufficient amount of hugepages)
+4. with for a few seconds and repeat step 3 which will make
+   hstate->resv_huge_pages to go below zero.
+
+To fix this problem, return corrent amount of pages to subpool during the
+fallback after hugepage_subpool_get_pages is called.
+
+Link: https://lkml.kernel.org/r/20250410062633.3102457-1-mawupeng1@huawei.com
+Fixes: 1c5ecae3a93f ("hugetlbfs: add minimum size accounting to subpools")
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Ma Wupeng <mawupeng1@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_fbdev_dma.c |   60 ++++++++++++++++++++++++----------------
- include/drm/drm_fbdev_dma.h     |   12 ++++++++
- 2 files changed, 48 insertions(+), 24 deletions(-)
+ mm/hugetlb.c |   28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/drm_fbdev_dma.c
-+++ b/drivers/gpu/drm/drm_fbdev_dma.c
-@@ -106,6 +106,40 @@ static const struct fb_ops drm_fbdev_dma
- static int drm_fbdev_dma_helper_fb_probe(struct drm_fb_helper *fb_helper,
- 					 struct drm_fb_helper_surface_size *sizes)
- {
-+	return drm_fbdev_dma_driver_fbdev_probe(fb_helper, sizes);
-+}
-+
-+static int drm_fbdev_dma_helper_fb_dirty(struct drm_fb_helper *helper,
-+					 struct drm_clip_rect *clip)
-+{
-+	struct drm_device *dev = helper->dev;
-+	int ret;
-+
-+	/* Call damage handlers only if necessary */
-+	if (!(clip->x1 < clip->x2 && clip->y1 < clip->y2))
-+		return 0;
-+
-+	if (helper->fb->funcs->dirty) {
-+		ret = helper->fb->funcs->dirty(helper->fb, NULL, 0, 0, clip, 1);
-+		if (drm_WARN_ONCE(dev, ret, "Dirty helper failed: ret=%d\n", ret))
-+			return ret;
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2987,7 +2987,7 @@ struct folio *alloc_hugetlb_folio(struct
+ 	struct hugepage_subpool *spool = subpool_vma(vma);
+ 	struct hstate *h = hstate_vma(vma);
+ 	struct folio *folio;
+-	long retval, gbl_chg;
++	long retval, gbl_chg, gbl_reserve;
+ 	map_chg_state map_chg;
+ 	int ret, idx;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+@@ -3140,8 +3140,16 @@ out_uncharge_cgroup_reservation:
+ 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
+ 						    h_cg);
+ out_subpool_put:
+-	if (map_chg)
+-		hugepage_subpool_put_pages(spool, 1);
++	/*
++	 * put page to subpool iff the quota of subpool's rsv_hpages is used
++	 * during hugepage_subpool_get_pages.
++	 */
++	if (map_chg && !gbl_chg) {
++		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
++		hugetlb_acct_memory(h, -gbl_reserve);
 +	}
 +
-+	return 0;
-+}
 +
-+static const struct drm_fb_helper_funcs drm_fbdev_dma_helper_funcs = {
-+	.fb_probe = drm_fbdev_dma_helper_fb_probe,
-+	.fb_dirty = drm_fbdev_dma_helper_fb_dirty,
-+};
-+
-+/*
-+ * struct drm_fb_helper
-+ */
-+
-+int drm_fbdev_dma_driver_fbdev_probe(struct drm_fb_helper *fb_helper,
-+				     struct drm_fb_helper_surface_size *sizes)
-+{
- 	struct drm_client_dev *client = &fb_helper->client;
- 	struct drm_device *dev = fb_helper->dev;
- 	bool use_deferred_io = false;
-@@ -148,6 +182,7 @@ static int drm_fbdev_dma_helper_fb_probe
- 		goto err_drm_client_buffer_delete;
- 	}
+ out_end_reservation:
+ 	if (map_chg != MAP_CHG_ENFORCED)
+ 		vma_end_reservation(h, vma, addr);
+@@ -6949,7 +6957,7 @@ bool hugetlb_reserve_pages(struct inode
+ 					struct vm_area_struct *vma,
+ 					vm_flags_t vm_flags)
+ {
+-	long chg = -1, add = -1;
++	long chg = -1, add = -1, spool_resv, gbl_resv;
+ 	struct hstate *h = hstate_inode(inode);
+ 	struct hugepage_subpool *spool = subpool_inode(inode);
+ 	struct resv_map *resv_map;
+@@ -7084,8 +7092,16 @@ bool hugetlb_reserve_pages(struct inode
+ 	return true;
  
-+	fb_helper->funcs = &drm_fbdev_dma_helper_funcs;
- 	fb_helper->buffer = buffer;
- 	fb_helper->fb = fb;
- 
-@@ -211,30 +246,7 @@ err_drm_client_buffer_delete:
- 	drm_client_framebuffer_delete(buffer);
- 	return ret;
- }
--
--static int drm_fbdev_dma_helper_fb_dirty(struct drm_fb_helper *helper,
--					 struct drm_clip_rect *clip)
--{
--	struct drm_device *dev = helper->dev;
--	int ret;
--
--	/* Call damage handlers only if necessary */
--	if (!(clip->x1 < clip->x2 && clip->y1 < clip->y2))
--		return 0;
--
--	if (helper->fb->funcs->dirty) {
--		ret = helper->fb->funcs->dirty(helper->fb, NULL, 0, 0, clip, 1);
--		if (drm_WARN_ONCE(dev, ret, "Dirty helper failed: ret=%d\n", ret))
--			return ret;
--	}
--
--	return 0;
--}
--
--static const struct drm_fb_helper_funcs drm_fbdev_dma_helper_funcs = {
--	.fb_probe = drm_fbdev_dma_helper_fb_probe,
--	.fb_dirty = drm_fbdev_dma_helper_fb_dirty,
--};
-+EXPORT_SYMBOL(drm_fbdev_dma_driver_fbdev_probe);
- 
- /*
-  * struct drm_client_funcs
---- a/include/drm/drm_fbdev_dma.h
-+++ b/include/drm/drm_fbdev_dma.h
-@@ -4,12 +4,24 @@
- #define DRM_FBDEV_DMA_H
- 
- struct drm_device;
-+struct drm_fb_helper;
-+struct drm_fb_helper_surface_size;
- 
- #ifdef CONFIG_DRM_FBDEV_EMULATION
-+int drm_fbdev_dma_driver_fbdev_probe(struct drm_fb_helper *fb_helper,
-+				     struct drm_fb_helper_surface_size *sizes);
-+
-+#define DRM_FBDEV_DMA_DRIVER_OPS \
-+	.fbdev_probe = drm_fbdev_dma_driver_fbdev_probe
-+
- void drm_fbdev_dma_setup(struct drm_device *dev, unsigned int preferred_bpp);
- #else
- static inline void drm_fbdev_dma_setup(struct drm_device *dev, unsigned int preferred_bpp)
- { }
-+
-+#define DRM_FBDEV_DMA_DRIVER_OPS \
-+	.fbdev_probe = NULL
-+
- #endif
- 
- #endif
+ out_put_pages:
+-	/* put back original number of pages, chg */
+-	(void)hugepage_subpool_put_pages(spool, chg);
++	spool_resv = chg - gbl_reserve;
++	if (spool_resv) {
++		/* put sub pool's reservation back, chg - gbl_reserve */
++		gbl_resv = hugepage_subpool_put_pages(spool, spool_resv);
++		/*
++		 * subpool's reserved pages can not be put back due to race,
++		 * return to hstate.
++		 */
++		hugetlb_acct_memory(h, -gbl_resv);
++	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
 
 
 
