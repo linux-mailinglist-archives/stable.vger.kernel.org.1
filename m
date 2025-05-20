@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472CCABD9C8
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:42:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CF8ABD9C9
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78D05188A295
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:43:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6BE6188C6CE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E01242D76;
-	Tue, 20 May 2025 13:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F82242D7F;
+	Tue, 20 May 2025 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uy3EQG9H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axPx0/GX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1062F37
-	for <stable@vger.kernel.org>; Tue, 20 May 2025 13:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056E81ACECE
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 13:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747748574; cv=none; b=cEM1H/wplpUyoL85ICgWrdVTPPkLaeO9Pqt+oSlXhz6dTQ2FufzBNtBQQuDiVSALzx8geKkJqZ5ogimigMKhaa6yh2i+pVWkRBWmQJXaK5pE1kcGJTLmThK6erGdCbJqGSNyxuHlBLQT/Vv9aFMdwsF77wW67JQQ587fiwiLydw=
+	t=1747748576; cv=none; b=cttx/Ozbl6dtUE8K1jEV07cedWkh0xR1MkLEFlT5St7GHYLIdi7xzKBHHrjKim1NH7uoDr59IMxZ1eqY4YETF+87WfKOQVqeLVIyAjv+J1od7jZ2meR10FmWv1yxSxlpQOAMJOA6LsF33ACI9gbHzVDnMyQ2kzBL/AwxR1GzATs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747748574; c=relaxed/simple;
-	bh=h8jXzIWJiawuxMJKhKBnO01ZxxuccT76hd6oU6TD2xE=;
+	s=arc-20240116; t=1747748576; c=relaxed/simple;
+	bh=ccQw1ypctHamaUnTzujs+eh5roAr5Jl+wnIYF0/bJAs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WlIS0Rn2Jy1F22KQVjY3u5uUa8jpyFILVnm2oqJ0tDEGNuKualWntGFcJ//gFrrUSCoZd1LSGSbjOZFA4SaJsoq7wIlSf3kBhaAy5rdbfTKnL4C+uW82hmqNfCDioxo34WFNrJEDdtBoitJvp+b0kZH3JlDHAxoXmD7UoGQ2Q/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uy3EQG9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A791C4CEE9;
-	Tue, 20 May 2025 13:42:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MIr02q+o+Iee7206O2Qi6qY6leFftxihFb0JUn5Ch5eIFu9C4qNagogII4eDhJ/leGF5pqQTcKGcQ82QHeimIJxC3387yVq/+37w5DTuIC/uDTBEffsVzA722XZyMBpn2eY36UJdkYqgPtnrhI8lnISMyjsQyTB6Il+NeBV8PJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axPx0/GX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDAFC4CEEA;
+	Tue, 20 May 2025 13:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747748573;
-	bh=h8jXzIWJiawuxMJKhKBnO01ZxxuccT76hd6oU6TD2xE=;
+	s=k20201202; t=1747748575;
+	bh=ccQw1ypctHamaUnTzujs+eh5roAr5Jl+wnIYF0/bJAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uy3EQG9HFSnEYcvSjk9a37R+4ML0gsENQ3G8T2+o15yeHcJlPv/V3W3ED7e79LnG8
-	 Kob8uNqDMVHUpCFW4FrkH7Sdr9ZGZwlJSoecRxH6SAsJh7QQv5c6Agwq6tolrgtLSJ
-	 quTmXXd+1KpUDtORiIsnLRiiAM5wZZmItGBz9t7hTIJCKA9RbykrmcJVrrrJ8bNVDA
-	 FlTWNs5wkuvEFEtCi/+T56fFVz31ANYMs9x0j4B0keExguASOSilCzmOsUeiMP14R3
-	 PiaL8gQQgN3yOIWDKt/F+bIkkD7C4cUTnsv25Bc8F5FyV3bqOl5wtvvhFC+eSmEerd
-	 ssb5EsTH2HX0g==
+	b=axPx0/GXEZvFTHgeBk4pPCfhpyzRq3FVjYRumXLVadK9vKaPlC8kAgdDE6p7VY/GW
+	 Ql3L5z0nnKeO/1m+GZXlIGHT4RLxuuoY4Jhv0HHxcrqHbw2+x/l4GdDqDNZ76CuKoI
+	 lNIjBDGTxc0Zh036+P7QshjjtUt2W7gKdf0MU2nnDtgHaNxxIRt+BHhi5O6li8Z+e9
+	 PLXxB6s+JzJ4hkha473sWFQETQqRmRok7hWl9uskZDxIm6XNfp+AcXoeYXaZjTCnhp
+	 05lR+CcKMWkK78kSP02+mVSfMgf0EdbNhzpP7BTQtmWegSQqzOAnYzuRYFB5Rn7Dxc
+	 FF5aCocS91jag==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	pablo@netfilter.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH -stable,5.10 2/3] netfilter: nf_tables: wait for rcu grace period on net_device removal
-Date: Tue, 20 May 2025 09:42:52 -0400
-Message-Id: <20250520050514-7a16f4c9834fb4a7@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH -stable,5.10 1/3] netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
+Date: Tue, 20 May 2025 09:42:53 -0400
+Message-Id: <20250520045436-a59c2fa3c85f0dd8@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250520002236.185365-3-pablo@netfilter.org>
+In-Reply-To:  <20250520002236.185365-2-pablo@netfilter.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,83 +64,101 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 2/3 of a series
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: c03d278fdf35e73dd0ec543b9b556876b9d9a8dc
+The upstream commit SHA1 provided is correct: 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Pablo Neira Ayuso<pablo@netfilter.org>
+Commit author: Florian Westphal<fw@strlen.de>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: bfd05c68e4c6)
+6.6.y | Present (different SHA1: 825a80817cf1)
 6.1.y | Not found
 5.15.y | Not found
 
-Found fixes commits:
-b04df3da1b5c netfilter: nf_tables: do not defer rule destruction via call_rcu
-
 Note: The patch differs from the upstream commit:
 ---
-1:  c03d278fdf35e ! 1:  69ad0f74eb737 netfilter: nf_tables: wait for rcu grace period on net_device removal
+1:  8965d42bcf54d ! 1:  b89d3ef279494 netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
     @@ Metadata
       ## Commit message ##
-         netfilter: nf_tables: wait for rcu grace period on net_device removal
+         netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
      
-    +    commit c03d278fdf35e73dd0ec543b9b556876b9d9a8dc upstream.
+    +    commit 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd upstream.
     +
-         8c873e219970 ("netfilter: core: free hooks with call_rcu") removed
-         synchronize_net() call when unregistering basechain hook, however,
-         net_device removal event handler for the NFPROTO_NETDEV was not updated
-    @@ Commit message
-         Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-     
-      ## include/net/netfilter/nf_tables.h ##
-    -@@ include/net/netfilter/nf_tables.h: struct nft_rule_blob {
-    -  *	@name: name of the chain
-    -  *	@udlen: user data length
-    -  *	@udata: user data in the chain
-    -+ *	@rcu_head: rcu head for deferred release
-    -  *	@blob_next: rule blob pointer to the next in the chain
-    -  */
-    - struct nft_chain {
-     @@ include/net/netfilter/nf_tables.h: struct nft_chain {
-      	char				*name;
-      	u16				udlen;
-    @@ include/net/netfilter/nf_tables.h: struct nft_chain {
-     +	struct rcu_head			rcu_head;
-      
-      	/* Only used during control plane commit phase: */
-    - 	struct nft_rule_blob		*blob_next;
-    + 	struct nft_rule			**rules_next;
-     @@ include/net/netfilter/nf_tables.h: static inline void nft_use_inc_restore(u32 *use)
-       *	@sets: sets in the table
-       *	@objects: stateful objects in the table
-    @@ include/net/netfilter/nf_tables.h: struct nft_table {
-      	u32				use;
+         It would be better to not store nft_ctx inside nft_trans object,
+         the netlink ctx strucutre is huge and most of its information is
+         never needed in places that use trans->ctx.
+    @@ include/net/netfilter/nf_tables.h: static inline bool nft_chain_is_bound(struct
      
       ## net/netfilter/nf_tables_api.c ##
-    -@@ net/netfilter/nf_tables_api.c: static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
-    +@@ net/netfilter/nf_tables_api.c: static int nf_tables_newtable(struct net *net, struct sock *nlsk,
-      	INIT_LIST_HEAD(&table->sets);
-      	INIT_LIST_HEAD(&table->objects);
-      	INIT_LIST_HEAD(&table->flowtables);
-     +	write_pnet(&table->net, net);
-      	table->family = family;
-      	table->flags = flags;
-    - 	table->handle = ++nft_net->table_handle;
-    + 	table->handle = ++table_handle;
-     @@ net/netfilter/nf_tables_api.c: int nft_data_dump(struct sk_buff *skb, int attr, const struct nft_data *data,
+     @@ net/netfilter/nf_tables_api.c: static void nf_tables_chain_free_chain_rules(struct nft_chain *chain)
+    - 	kvfree(chain->blob_next);
+    + 	kvfree(chain->rules_next);
       }
-      EXPORT_SYMBOL_GPL(nft_data_dump);
+      
+     -void nf_tables_chain_destroy(struct nft_ctx *ctx)
+    @@ net/netfilter/nf_tables_api.c: void nf_tables_chain_destroy(struct nft_ctx *ctx)
+      						 &basechain->hook_list, list) {
+      				list_del_rcu(&hook->list);
+     @@ net/netfilter/nf_tables_api.c: static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
+    - err_trans:
+    - 	nft_use_dec_restore(&table->use);
+    + err_use:
+    + 	nf_tables_unregister_hook(net, table, chain);
+      err_destroy_chain:
+     -	nf_tables_chain_destroy(ctx);
+     +	nf_tables_chain_destroy(chain);
+    @@ net/netfilter/nf_tables_api.c: static int nf_tables_addchain(struct nft_ctx *ctx
+      	return err;
+      }
+     @@ net/netfilter/nf_tables_api.c: static void nft_commit_release(struct nft_trans *trans)
+    - 		if (nft_trans_chain_update(trans))
+    - 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
+    - 		else
+    --			nf_tables_chain_destroy(&trans->ctx);
+    -+			nf_tables_chain_destroy(nft_trans_chain(trans));
+    + 		kfree(nft_trans_chain_name(trans));
+    + 		break;
+    + 	case NFT_MSG_DELCHAIN:
+    +-		nf_tables_chain_destroy(&trans->ctx);
+    ++		nf_tables_chain_destroy(nft_trans_chain(trans));
+      		break;
+      	case NFT_MSG_DELRULE:
+    - 	case NFT_MSG_DESTROYRULE:
+    + 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+     @@ net/netfilter/nf_tables_api.c: static void nf_tables_abort_release(struct nft_trans *trans)
+    - 		if (nft_trans_chain_update(trans))
+    - 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
+    - 		else
+    --			nf_tables_chain_destroy(&trans->ctx);
+    -+			nf_tables_chain_destroy(nft_trans_chain(trans));
+    + 		nf_tables_table_destroy(&trans->ctx);
+    + 		break;
+    + 	case NFT_MSG_NEWCHAIN:
+    +-		nf_tables_chain_destroy(&trans->ctx);
+    ++		nf_tables_chain_destroy(nft_trans_chain(trans));
+      		break;
+      	case NFT_MSG_NEWRULE:
+      		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+    @@ net/netfilter/nf_tables_api.c: static void __nft_release_table(struct net *net,
+     -		nf_tables_chain_destroy(&ctx);
+     +		nf_tables_chain_destroy(chain);
+      	}
+    + 	list_del(&table->list);
+      	nf_tables_table_destroy(&ctx);
+    - }
+     
+      ## net/netfilter/nft_immediate.c ##
+     @@ net/netfilter/nft_immediate.c: static void nft_immediate_destroy(const struct nft_ctx *ctx,
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
