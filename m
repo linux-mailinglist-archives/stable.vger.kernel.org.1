@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-145355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0B5ABDB85
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20ACFABDC1D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E5D73B38A7
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:05:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B02F7B7466
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB4C2459FA;
-	Tue, 20 May 2025 14:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E83F248872;
+	Tue, 20 May 2025 14:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0jL4+/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glC45yFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095EB222570;
-	Tue, 20 May 2025 14:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DAA247DEA;
+	Tue, 20 May 2025 14:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749937; cv=none; b=oJDqKTp9RpiruK26tOZNvmt1QQWrrx1fs/J+JkA3ZD/vAA+IjOKUHfz1Ihwy/VHNsFA2qbXPQ1Xuk0jyHMAfew4FiaC69d9nEUCZu8glWLNwgMhtXlYaDzi3pvQMuJFpcFcKlc2nRtiXQZsuXsxZVMSqDgEMP0tsveE4YvYR04c=
+	t=1747750328; cv=none; b=SH/7lj9n7AhPEx633yMqckztQDLOKATUOS9Bqw74uYE3i7ThCVtG+7p7HBNTs23qxjJz9i/z7yP2mTQyp/tcT4shYGW3082Y7FEprXxncQVdM75g/q9OGSBpaar7/ahBVY39XSr+1VUmgBwB+J71y/tpoj+wHPRAtrze7fDomHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749937; c=relaxed/simple;
-	bh=pT4FUr+qeqVtE8+b3+xdg1zbrXVFI7Q+uUA47fUllLU=;
+	s=arc-20240116; t=1747750328; c=relaxed/simple;
+	bh=+MHXeWTCx/qxnBchXhrngBCwMnj/AV3Jd9wI3/0Bqcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAyrMjZO8iKn/6M7QEceKjRXnV0HFpx3YhBi1WSl7KqdReuxGSDoljLjLCgVIejMm5wxkmFzPU6RfWfePVWy3BZr01VARck9UR5KGb7VciVOzP4uxdv+3nmk1jwIs5hlwaFlkqtgDATut9TDb6uHLDvlLGHwLne3RSMMGa29Stc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0jL4+/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE6BC4CEE9;
-	Tue, 20 May 2025 14:05:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qftIAnTxjSM9QRe+6lcr/WNk8a7D/lGphmv123JjwYg0Y7ADOB0oL3DKVnB/bBP9pNZ3M4O8k+kSctakZ3mNBB68kzpXLU+cYTGlcoZb9ALek+aOUGkaJyAKdeWN0406ZRLsYdcdEs2GmTGSKp/MG2ATPWT83j27Po5N2j7Yz10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glC45yFl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51C1C4CEE9;
+	Tue, 20 May 2025 14:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749936;
-	bh=pT4FUr+qeqVtE8+b3+xdg1zbrXVFI7Q+uUA47fUllLU=;
+	s=korg; t=1747750328;
+	bh=+MHXeWTCx/qxnBchXhrngBCwMnj/AV3Jd9wI3/0Bqcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0jL4+/Rtc0A4bbNEw8X08l7W/Fxv6Z2/+WBX90EDtPQJhbRRMZKdgOb+13yZ6ZMs
-	 4ctBcDWlaybnF+OGJoKPsJSGiOmDpg0eFCQ0/U2ElFF2A9iUvxn+T5f+pe8w7EjbOn
-	 WjVjllIZ14O3KcyxPyY8Mch1w/MrsvsIWENiIqAg=
+	b=glC45yFl8ubHo/6eEUwr1Z64sxnZPnkOIRAKxaBLnc2rPOYX9xRg37iwyEiQxWZDP
+	 4jBDx0pBp4ND+t0qV4rE/KtwK2AdpMBL+RKXJRa8RN0gjhlRQDKSszQXfeFpzNd6Je
+	 XmZ9jk9Nww8PZzcYcCJOsfyPY1UqhdnAqQVh/+3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Baolin Wang <baolin.wang@inux.alibaba.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
+	Barry Song <v-songbaohua@oppo.com>,
+	David Hildenbrand <david@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 107/117] selftests/mm: compaction_test: support platform with huge mount of memory
+Subject: [PATCH 6.12 117/143] mm: userfaultfd: correct dirty flags set for both present and swap pte
 Date: Tue, 20 May 2025 15:51:12 +0200
-Message-ID: <20250520125808.251608482@linuxfoundation.org>
+Message-ID: <20250520125814.631002399@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +64,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Tang <feng.tang@linux.alibaba.com>
+From: Barry Song <v-songbaohua@oppo.com>
 
-commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
+commit 75cb1cca2c880179a11c7dd9380b6f14e41a06a4 upstream.
 
-When running mm selftest to verify mm patches, 'compaction_test' case
-failed on an x86 server with 1TB memory.  And the root cause is that it
-has too much free memory than what the test supports.
+As David pointed out, what truly matters for mremap and userfaultfd move
+operations is the soft dirty bit.  The current comment and
+implementation—which always sets the dirty bit for present PTEs and
+fails to set the soft dirty bit for swap PTEs—are incorrect.  This could
+break features like Checkpoint-Restore in Userspace (CRIU).
 
-The test case tries to allocate 100000 huge pages, which is about 200 GB
-for that x86 server, and when it succeeds, it expects it's large than 1/3
-of 80% of the free memory in system.  This logic only works for platform
-with 750 GB ( 200 / (1/3) / 80% ) or less free memory, and may raise false
-alarm for others.
+This patch updates the behavior to correctly set the soft dirty bit for
+both present and swap PTEs in accordance with mremap.
 
-Fix it by changing the fixed page number to self-adjustable number
-according to the real number of free memory.
-
-Link: https://lkml.kernel.org/r/20250423103645.2758-1-feng.tang@linux.alibaba.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-Acked-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@inux.alibaba.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Link: https://lkml.kernel.org/r/20250508220912.7275-1-21cnbao@gmail.com
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Reported-by: David Hildenbrand <david@redhat.com>
+Closes: https://lore.kernel.org/linux-mm/02f14ee1-923f-47e3-a994-4950afb9afcc@redhat.com/
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/compaction_test.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ mm/userfaultfd.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/mm/compaction_test.c
-+++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -89,6 +89,8 @@ int check_compaction(unsigned long mem_f
- 	int compaction_index = 0;
- 	char initial_nr_hugepages[20] = {0};
- 	char nr_hugepages[20] = {0};
-+	char target_nr_hugepages[24] = {0};
-+	int slen;
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1059,8 +1059,13 @@ static int move_present_pte(struct mm_st
+ 	src_folio->index = linear_page_index(dst_vma, dst_addr);
  
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -119,11 +121,18 @@ int check_compaction(unsigned long mem_f
+ 	orig_dst_pte = mk_pte(&src_folio->page, dst_vma->vm_page_prot);
+-	/* Follow mremap() behavior and treat the entry dirty after the move */
+-	orig_dst_pte = pte_mkwrite(pte_mkdirty(orig_dst_pte), dst_vma);
++	/* Set soft dirty bit so userspace can notice the pte was moved */
++#ifdef CONFIG_MEM_SOFT_DIRTY
++	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
++#endif
++	if (pte_dirty(orig_src_pte))
++		orig_dst_pte = pte_mkdirty(orig_dst_pte);
++	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
  
- 	lseek(fd, 0, SEEK_SET);
- 
--	/* Request a large number of huge pages. The Kernel will allocate
--	   as much as it can */
--	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
--		ksft_print_msg("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
--			       strerror(errno));
-+	/*
-+	 * Request huge pages for about half of the free memory. The Kernel
-+	 * will allocate as much as it can, and we expect it will get at least 1/3
-+	 */
-+	nr_hugepages_ul = mem_free / hugepage_size / 2;
-+	snprintf(target_nr_hugepages, sizeof(target_nr_hugepages),
-+		 "%lu", nr_hugepages_ul);
-+
-+	slen = strlen(target_nr_hugepages);
-+	if (write(fd, target_nr_hugepages, slen) != slen) {
-+		ksft_print_msg("Failed to write %lu to /proc/sys/vm/nr_hugepages: %s\n",
-+			       nr_hugepages_ul, strerror(errno));
- 		goto close_fd;
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+ out:
+@@ -1094,6 +1099,9 @@ static int move_swap_pte(struct mm_struc
  	}
+ 
+ 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
++#ifdef CONFIG_MEM_SOFT_DIRTY
++	orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
++#endif
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
  
 
 
