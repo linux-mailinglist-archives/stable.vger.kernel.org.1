@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10F8ABD99B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:37:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D05ABD9AB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 841C63A3B2B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:36:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6E2E167088
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6222417F8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB21424293C;
 	Tue, 20 May 2025 13:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQtxvlzI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uEkzPMJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D018E2417E4
-	for <stable@vger.kernel.org>; Tue, 20 May 2025 13:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2DB2417E4
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 13:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747748203; cv=none; b=Bx9XmqhsPLhWVw9L/v7Y6w5UHdSco9CnsAgGB08MI8Q4aqyKe2p2xU7LbRQli/XVB2vEhGRF3YXF8vXGiFEAShhwdhw/0E67SJN6cFpLdIcAbrW7gvXWG0eIvBDJnskwyxWWR1jZXxJD1e1HU8UjmqGANKldSYsE/2caM738ejA=
+	t=1747748204; cv=none; b=UaNxRoSiW4L81uQUFqKQ/CylVNqXp1s+qTqG+EO9MioGt9R10Kyiq1FCCRr0TMfSvcEe2yFro0AZVVhCcqeBMFawg7bFFrvPvE03BBFUdnP+xGW05j34iz6lBxAOnq0loXROkISyR1N/2CFpA0kmcuWNf058XO0AE5y0yIv/+Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747748203; c=relaxed/simple;
-	bh=5ORxJxUsquv4n4IfZrMP/dOVnmOYOAvp8wnJjMYlpdg=;
+	s=arc-20240116; t=1747748204; c=relaxed/simple;
+	bh=fLq7uIZ4qIqx2Roro5y+RqCeGXlPBv/FhLdBZCqTaxs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uI2qNBPO4+/rOnyUczNTl8xidfBlZKLvZk6Ewhv6qccF5FsMJxxtWwFioJsVBc70t/AwyF1gAjr6L6aYyzOHY639NQsZLgtEs18SSBXi4buP6ey8FMQsdLJ71cyyiYdnC+lxi1rs70yXjkmL35i0J/A63E4BXxHy1qI8RSMgwP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQtxvlzI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA08EC4CEE9;
-	Tue, 20 May 2025 13:36:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PSu+ZIuFzjKuwowZuAy1lsS+0638nYJKVtBBMd7qa2Ecw7j9biq00mjbwniSXY741ygE5PTVMqsIoSNnKbOn/iWE4eMBlRIq1N3d67nitbnh/LGHbJGFjkKSdJuPekbqDRnGC7FjrKTMIZ3j+YdJehFSZ0qQjSdwjAZEhNDQUBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uEkzPMJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6321C4CEEA;
+	Tue, 20 May 2025 13:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747748202;
-	bh=5ORxJxUsquv4n4IfZrMP/dOVnmOYOAvp8wnJjMYlpdg=;
+	s=k20201202; t=1747748204;
+	bh=fLq7uIZ4qIqx2Roro5y+RqCeGXlPBv/FhLdBZCqTaxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQtxvlzID6nw/dTb/RARVjyicSLycgsX+jZveq2NcVb1vg0wg+JIfvhA/1sZ/Op78
-	 5KZYD/JRbldtr08ueDo8/GxQrhLnvGLIG4VdmudKBBi+Lhtamfw6RyjUdfglhi90JY
-	 3EBEnZRL+xuY5RRJ2Ie4GGcFzlHqMKFyB7hIHyz8ezzfo/BD4gClf0W5fGyDT42CfZ
-	 ijqbGKXY+SGtOtbZQPDjGAVFzFNcjQ5KCHDi/Jn/xC0wakli/YQ0DJbU4wNV/3oPxE
-	 FIZYx07bWKWWmv8nPx0fShkiO0rR9km5v0VxeXkQnFdamE+KIfYwjlGGqYgUdKcqm3
-	 ITZuMvHCh+cnQ==
+	b=uEkzPMJ7X2A7kZzJbbtcwx35wHWgYxC6kd4JfobhxhgasvSJL7lD8ewfDVNQLuP4Q
+	 DKQkqBA1MWaWWKim9kx76zc5PJ/JKYRhRRkBpKxe9d0nZjtpqKBs4zIYBudO8Et10t
+	 cu6UOl5PseO9qKk4E6it5hERnz9UbGjaRHIXES5Rtm1mwjDnN1V64ODJKsVOKRvelb
+	 +I0VtV7M97qQnsuByCxnEXk+XEzQdPdTDWaN07FwC7Pt25J54864gHkd3xlX2ZgyBG
+	 HjDqkViUCW/04ou9brtEnpBBszasAX9pr8fm19qcmahNV3SRQKofHCBiewix3YMNzd
+	 DKCrGoNJZVyKA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH -stable,5.15 1/3] netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
-Date: Tue, 20 May 2025 09:36:40 -0400
-Message-Id: <20250520071006-2a8ceed8d6c511f0@stable.kernel.org>
+To: stable@vger.kernel.org,
+	kirill.shutemov@linux.intel.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14.y] mm/page_alloc: fix race condition in unaccepted memory handling
+Date: Tue, 20 May 2025 09:36:42 -0400
+Message-Id: <20250520060539-94d821f2bc069044@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250519233515.25539-2-pablo@netfilter.org>
+In-Reply-To:  <20250520072320.605775-1-kirill.shutemov@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,90 +64,103 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Pablo Neira Ayuso<pablo@netfilter.org>
-Commit author: Florian Westphal<fw@strlen.de>
-
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 825a80817cf1)
-6.1.y | Not found
+Found matching upstream commit: fefc075182275057ce607effaa3daa9e6e3bdc73
 
 Note: The patch differs from the upstream commit:
 ---
-1:  8965d42bcf54d ! 1:  55bc2f4ca3c46 netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
-    @@ Metadata
-      ## Commit message ##
-         netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
+1:  fefc075182275 ! 1:  66476a80746d9 mm/page_alloc: fix race condition in unaccepted memory handling
+    @@ Commit message
+         Cc: Johannes Weiner <hannes@cmpxchg.org>
+         Cc: <stable@vger.kernel.org>    [6.5+]
+         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    -
+    - ## mm/internal.h ##
+    -@@ mm/internal.h: unsigned long move_page_tables(struct pagetable_move_control *pmc);
+    - 
+    - #ifdef CONFIG_UNACCEPTED_MEMORY
+    - void accept_page(struct page *page);
+    --void unaccepted_cleanup_work(struct work_struct *work);
+    - #else /* CONFIG_UNACCEPTED_MEMORY */
+    - static inline void accept_page(struct page *page)
+    - {
+    -
+    - ## mm/mm_init.c ##
+    -@@ mm/mm_init.c: static void __meminit zone_init_free_lists(struct zone *zone)
+    - 
+    - #ifdef CONFIG_UNACCEPTED_MEMORY
+    - 	INIT_LIST_HEAD(&zone->unaccepted_pages);
+    --	INIT_WORK(&zone->unaccepted_cleanup, unaccepted_cleanup_work);
+    - #endif
+    - }
+    - 
+    +    (cherry picked from commit fefc075182275057ce607effaa3daa9e6e3bdc73)
+    +    Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
      
-    +    commit 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd upstream.
-    +
-         It would be better to not store nft_ctx inside nft_trans object,
-         the netlink ctx strucutre is huge and most of its information is
-         never needed in places that use trans->ctx.
-    @@ include/net/netfilter/nf_tables.h: static inline bool nft_chain_is_bound(struct
-     
-      ## net/netfilter/nf_tables_api.c ##
-     @@ net/netfilter/nf_tables_api.c: static void nf_tables_chain_free_chain_rules(struct nft_chain *chain)
-    - 	kvfree(chain->blob_next);
-    + 	kvfree(chain->rules_next);
+      ## mm/page_alloc.c ##
+     @@ mm/page_alloc.c: bool has_managed_dma(void)
+    @@ mm/page_alloc.c: bool has_managed_dma(void)
+     -
+      static bool lazy_accept = true;
+      
+    --void unaccepted_cleanup_work(struct work_struct *work)
+    --{
+    --	static_branch_dec(&zones_with_unaccepted_pages);
+    --}
+    --
+      static int __init accept_memory_parse(char *p)
+    - {
+    - 	if (!strcmp(p, "lazy")) {
+     @@ mm/page_alloc.c: static bool page_contains_unaccepted(struct page *page, unsigned int order)
+      static void __accept_page(struct zone *zone, unsigned long *flags,
+      			  struct page *page)
+    @@ mm/page_alloc.c: static void __accept_page(struct zone *zone, unsigned long *fla
+      
+      	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
+     -
+    --	if (last) {
+    --		/*
+    --		 * There are two corner cases:
+    --		 *
+    --		 * - If allocation occurs during the CPU bring up,
+    --		 *   static_branch_dec() cannot be used directly as
+    --		 *   it causes a deadlock on cpu_hotplug_lock.
+    --		 *
+    --		 *   Instead, use schedule_work() to prevent deadlock.
+    --		 *
+    --		 * - If allocation occurs before workqueues are initialized,
+    --		 *   static_branch_dec() should be called directly.
+    --		 *
+    --		 *   Workqueues are initialized before CPU bring up, so this
+    --		 *   will not conflict with the first scenario.
+    --		 */
+    --		if (system_wq)
+    --			schedule_work(&zone->unaccepted_cleanup);
+    --		else
+    --			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
+    --	}
+    +-	if (last)
+    +-		static_branch_dec(&zones_with_unaccepted_pages);
       }
       
-     -void nf_tables_chain_destroy(struct nft_ctx *ctx)
-    @@ net/netfilter/nf_tables_api.c: void nf_tables_chain_destroy(struct nft_ctx *ctx)
-      						 &basechain->hook_list, list) {
-      				list_del_rcu(&hook->list);
-     @@ net/netfilter/nf_tables_api.c: static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
-    - err_trans:
-    - 	nft_use_dec_restore(&table->use);
-    + err_use:
-    + 	nf_tables_unregister_hook(net, table, chain);
-      err_destroy_chain:
-     -	nf_tables_chain_destroy(ctx);
-     +	nf_tables_chain_destroy(chain);
-    @@ net/netfilter/nf_tables_api.c: static int nf_tables_addchain(struct nft_ctx *ctx
-      	return err;
-      }
-     @@ net/netfilter/nf_tables_api.c: static void nft_commit_release(struct nft_trans *trans)
-    - 		if (nft_trans_chain_update(trans))
-    - 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
-    - 		else
-    --			nf_tables_chain_destroy(&trans->ctx);
-    -+			nf_tables_chain_destroy(nft_trans_chain(trans));
-    + 		kfree(nft_trans_chain_name(trans));
-    + 		break;
-    + 	case NFT_MSG_DELCHAIN:
-    +-		nf_tables_chain_destroy(&trans->ctx);
-    ++		nf_tables_chain_destroy(nft_trans_chain(trans));
-      		break;
-      	case NFT_MSG_DELRULE:
-    - 	case NFT_MSG_DESTROYRULE:
-    + 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
-     @@ net/netfilter/nf_tables_api.c: static void nf_tables_abort_release(struct nft_trans *trans)
-    - 		if (nft_trans_chain_update(trans))
-    - 			nft_hooks_destroy(&nft_trans_chain_hooks(trans));
-    - 		else
-    --			nf_tables_chain_destroy(&trans->ctx);
-    -+			nf_tables_chain_destroy(nft_trans_chain(trans));
-    + 		nf_tables_table_destroy(&trans->ctx);
-    + 		break;
-    + 	case NFT_MSG_NEWCHAIN:
-    +-		nf_tables_chain_destroy(&trans->ctx);
-    ++		nf_tables_chain_destroy(nft_trans_chain(trans));
-      		break;
-      	case NFT_MSG_NEWRULE:
-      		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+      void accept_page(struct page *page)
+    @@ mm/page_alloc.c: static bool try_to_accept_memory_one(struct zone *zone)
+     -	return static_branch_unlikely(&zones_with_unaccepted_pages);
+     -}
+     -
+    - static bool cond_accept_memory(struct zone *zone, unsigned int order,
+    - 			       int alloc_flags)
+    + static bool cond_accept_memory(struct zone *zone, unsigned int order)
+      {
+      	long to_accept, wmark;
+      	bool ret = false;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.14.y       |  Success    |  Success   |
 
