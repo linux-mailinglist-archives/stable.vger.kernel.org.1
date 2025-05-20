@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF0EABDB24
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A43EABDB71
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 257374C59D7
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21087A9338
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701CA246768;
-	Tue, 20 May 2025 14:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A68248884;
+	Tue, 20 May 2025 14:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZHq1Q39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZmdoyRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DACF1F4622;
-	Tue, 20 May 2025 14:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E557524888A;
+	Tue, 20 May 2025 14:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749730; cv=none; b=qZIsL0VWzJgSJ6RopnQKYg5yMJ2g+vKt12jIpunPCS3JKpPStwQCAQAvcATVjr21dlXRKTVlYZfkY4wcciKch/+Ih9cPxeTk9k5pa4UgbL5YgkBJpXIXzfOcbuDM1ljt9V+utH3KmgD5YYWFBFdM1JwWmpV7SFD4wJ0wg4TsQM0=
+	t=1747750129; cv=none; b=gQQwJTkOjMdV6g+IWgFK+8AO/sqjm8YXCzR3WFAkICzXWARoURD2diTE0YDfzPYtCo6thBDQQiTEtaXsQ0l8s5IEAgSTuIycQcVLtetpBf/uXhGI+qbcWwQEAEEtdk/snCAhe2XXGOSHo6uxFxVdOILsUQKdhQSRIVejozOldXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749730; c=relaxed/simple;
-	bh=/ErcEAep7eeZBWlJ+uQUQc3Wxk9ZsXLE9I5b9rV6xIM=;
+	s=arc-20240116; t=1747750129; c=relaxed/simple;
+	bh=ZLztwofXTJ3GY9QWoVa7XPOFRfhYG4VIZ8K5ZVJdSDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnJlyRjce5BG5RgeR4k5eOWybvPDYi4NK1xTpjxCirWraVOz/NtxK9EDM1QR8q/pTO9iyUS3n1kKWF8Qtk2IIP4/q8psAro3g1RG22EoUV6s2EO6ffZftc2X022v7/mp2L5BhDaSrJm6AUro8U1L9+wtPjC0jmr/BMhvL2dEw9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZHq1Q39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770D7C4CEE9;
-	Tue, 20 May 2025 14:02:09 +0000 (UTC)
+	 MIME-Version; b=FTBStIpjdTex1HuFydvEP6R7FgXY4Q8KAFpigmgposp/X4T8BJGKOyAP1Y/FC27FJP2dvWWhs1IOqMByDqRJ/kjTc6FWhQh2rNqaalqCTxFdgj6Uxse9Oe7OVImKBvkRDAVd+UuHrwuWUDnIUd5NN3xZhegEepfCXkr+W/g8l6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZmdoyRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61931C4CEE9;
+	Tue, 20 May 2025 14:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749730;
-	bh=/ErcEAep7eeZBWlJ+uQUQc3Wxk9ZsXLE9I5b9rV6xIM=;
+	s=korg; t=1747750128;
+	bh=ZLztwofXTJ3GY9QWoVa7XPOFRfhYG4VIZ8K5ZVJdSDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZHq1Q39nOeFhEF8R1hEh0IeFVcYmJC7ZQGA08Nck8/gajnnOI5y+y+8Tg21oLtnR
-	 epWoojmnC25JmvT444H9JxZla1WPvGFDnn2jOKF8btzRDAIAkCIZQtwFr2ZETf/61C
-	 EJaP7/R0nQjqShnLk+mgexmRhGQDY/q+PH0t3VY4=
+	b=OZmdoyRj7AnCVNHun69LeSepzPlRVkZ7KHbEjs8ENy9Qonm7c0GQXVact+tRL6PhG
+	 FWuNdJ5Upk6t+y9iCYv1m0mPe6TcnP0GvLG5VIkzYXC40/US2qEAsjTXvBCBB/sV3S
+	 CvC7Vq/mEqLA/bRlpnpJ61I140dP9xI4c3tHA6vM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/117] net: mctp: Ensure keys maintain only one ref to corresponding dev
-Date: Tue, 20 May 2025 15:50:06 +0200
-Message-ID: <20250520125805.620247185@linuxfoundation.org>
+Subject: [PATCH 6.12 052/143] net: dsa: b53: prevent standalone from trying to forward to other ports
+Date: Tue, 20 May 2025 15:50:07 +0200
+Message-ID: <20250520125812.094209600@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit e4f349bd6e58051df698b82f94721f18a02a293d ]
+[ Upstream commit 4227ea91e2657f7965e34313448e9d0a2b67712e ]
 
-mctp_flow_prepare_output() is called in mctp_route_output(), which
-places outbound packets onto a given interface. The packet may represent
-a message fragment, in which case we provoke an unbalanced reference
-count to the underlying device. This causes trouble if we ever attempt
-to remove the interface:
+When bridged ports and standalone ports share a VLAN, e.g. via VLAN
+uppers, or untagged traffic with a vlan unaware bridge, the ASIC will
+still try to forward traffic to known FDB entries on standalone ports.
+But since the port VLAN masks prevent forwarding to bridged ports, this
+traffic will be dropped.
 
-    [   48.702195] usb 1-1: USB disconnect, device number 2
-    [   58.883056] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
-    [   69.022548] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
-    [   79.172568] unregister_netdevice: waiting for mctpusb0 to become free. Usage count = 2
-    ...
+This e.g. can be observed in the bridge_vlan_unaware ping tests, where
+this breaks pinging with learning on.
 
-Predicate the invocation of mctp_dev_set_key() in
-mctp_flow_prepare_output() on not already having associated the device
-with the key. It's not yet realistic to uphold the property that the key
-maintains only one device reference earlier in the transmission sequence
-as the route (and therefore the device) may not be known at the time the
-key is associated with the socket.
+Work around this by enabling the simplified EAP mode on switches
+supporting it for standalone ports, which causes the ASIC to redirect
+traffic of unknown source MAC addresses to the CPU port.
 
-Fixes: 67737c457281 ("mctp: Pass flow data & flow release events to drivers")
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250508-mctp-dev-refcount-v1-1-d4f965c67bb5@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Since standalone ports do not learn, there are no known source MAC
+addresses, so effectively this redirects all incoming traffic to the CPU
+port.
+
+Fixes: ff39c2d68679 ("net: dsa: b53: Add bridge support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250508091424.26870-1-jonas.gorski@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/route.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 33 ++++++++++++++++++++++++++++++++
+ drivers/net/dsa/b53/b53_regs.h   | 14 ++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index d3c1f54386efc..009ba5edbd525 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -274,8 +274,10 @@ static void mctp_flow_prepare_output(struct sk_buff *skb, struct mctp_dev *dev)
- 
- 	key = flow->key;
- 
--	if (WARN_ON(key->dev && key->dev != dev))
-+	if (key->dev) {
-+		WARN_ON(key->dev != dev);
- 		return;
-+	}
- 
- 	mctp_dev_set_key(dev, key);
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index e072d2b50c987..0168ad495e6c9 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -326,6 +326,26 @@ static void b53_get_vlan_entry(struct b53_device *dev, u16 vid,
+ 	}
  }
+ 
++static void b53_set_eap_mode(struct b53_device *dev, int port, int mode)
++{
++	u64 eap_conf;
++
++	if (is5325(dev) || is5365(dev) || dev->chip_id == BCM5389_DEVICE_ID)
++		return;
++
++	b53_read64(dev, B53_EAP_PAGE, B53_PORT_EAP_CONF(port), &eap_conf);
++
++	if (is63xx(dev)) {
++		eap_conf &= ~EAP_MODE_MASK_63XX;
++		eap_conf |= (u64)mode << EAP_MODE_SHIFT_63XX;
++	} else {
++		eap_conf &= ~EAP_MODE_MASK;
++		eap_conf |= (u64)mode << EAP_MODE_SHIFT;
++	}
++
++	b53_write64(dev, B53_EAP_PAGE, B53_PORT_EAP_CONF(port), eap_conf);
++}
++
+ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ {
+ 	u8 mgmt;
+@@ -586,6 +606,13 @@ int b53_setup_port(struct dsa_switch *ds, int port)
+ 	b53_port_set_mcast_flood(dev, port, true);
+ 	b53_port_set_learning(dev, port, false);
+ 
++	/* Force all traffic to go to the CPU port to prevent the ASIC from
++	 * trying to forward to bridged ports on matching FDB entries, then
++	 * dropping frames because it isn't allowed to forward there.
++	 */
++	if (dsa_is_user_port(ds, port))
++		b53_set_eap_mode(dev, port, EAP_MODE_SIMPLIFIED);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(b53_setup_port);
+@@ -2043,6 +2070,9 @@ int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
+ 		pvlan |= BIT(i);
+ 	}
+ 
++	/* Disable redirection of unknown SA to the CPU port */
++	b53_set_eap_mode(dev, port, EAP_MODE_BASIC);
++
+ 	/* Configure the local port VLAN control membership to include
+ 	 * remote ports and update the local port bitmask
+ 	 */
+@@ -2078,6 +2108,9 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct dsa_bridge bridge)
+ 			pvlan &= ~BIT(i);
+ 	}
+ 
++	/* Enable redirection of unknown SA to the CPU port */
++	b53_set_eap_mode(dev, port, EAP_MODE_SIMPLIFIED);
++
+ 	b53_write16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), pvlan);
+ 	dev->ports[port].vlan_ctl_mask = pvlan;
+ 
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index bfbcb66bef662..5f7a0e5c5709d 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -50,6 +50,9 @@
+ /* Jumbo Frame Registers */
+ #define B53_JUMBO_PAGE			0x40
+ 
++/* EAP Registers */
++#define B53_EAP_PAGE			0x42
++
+ /* EEE Control Registers Page */
+ #define B53_EEE_PAGE			0x92
+ 
+@@ -480,6 +483,17 @@
+ #define   JMS_MIN_SIZE			1518
+ #define   JMS_MAX_SIZE			9724
+ 
++/*************************************************************************
++ * EAP Page Registers
++ *************************************************************************/
++#define B53_PORT_EAP_CONF(i)		(0x20 + 8 * (i))
++#define  EAP_MODE_SHIFT			51
++#define  EAP_MODE_SHIFT_63XX		50
++#define  EAP_MODE_MASK			(0x3ull << EAP_MODE_SHIFT)
++#define  EAP_MODE_MASK_63XX		(0x3ull << EAP_MODE_SHIFT_63XX)
++#define  EAP_MODE_BASIC			0
++#define  EAP_MODE_SIMPLIFIED		3
++
+ /*************************************************************************
+  * EEE Configuration Page Registers
+  *************************************************************************/
 -- 
 2.39.5
 
