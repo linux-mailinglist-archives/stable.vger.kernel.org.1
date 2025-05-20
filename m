@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-145591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5DFABDC5A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47688ABDB51
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936561BA376A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B2B78C3846
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B187E27B4F2;
-	Tue, 20 May 2025 14:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCAE242913;
+	Tue, 20 May 2025 14:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/Rcv3D4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhcddBdh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9E92522BD;
-	Tue, 20 May 2025 14:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD491D8E07;
+	Tue, 20 May 2025 14:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750622; cv=none; b=qKlOURFfU1vkIa4OVSzcBYPqMlspZcwvGafyvBMn1kdJT7SI8xDZzNefnpa3fr0jjsBGir8CWHzE052af6lcWzJnT1cAnkZohFRUW9uB9Iy9qjkWOPYMKUFvVYTHEHCK0JNcI4bNeo5szORbM3utphn9bAwoVf/SFqtt2GY4Y7I=
+	t=1747749832; cv=none; b=F0WrJbeX/roPlGd/QMkaIZ1I4J2UFxFDq6jPk0Fse0ruZ2uwkMu6b5PYKh3RAAi1wngwITeqyKeKmDdK0HAFt84YiqyHwRUFDidOXXkr+zid83C4SX/B230gmpiNcevotLd5Fk/8lWUvFCbYnbxlTaOSxkHAwNyovn81JGnoUCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750622; c=relaxed/simple;
-	bh=naq4yp2DIlAvBSD73+JCm+TQS/npBrWO27I4qmN8CNA=;
+	s=arc-20240116; t=1747749832; c=relaxed/simple;
+	bh=mKYuxtI3yza1gb+bhJofO9R9s0ttFa5Dkf2BV2kBBLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V21rTnCY6QiFViSRgPoq2LOSOpmf7RWn9RYUr3a2AYMYvwVounjOlbwzBSXbuOu7aRB3KH2muVO8ydu1N6GPL3dGfW3DYl9G0WsFHWnqgnZpCA0LbT/RX70aXcG51FLEgLTQQFVUpo0Ki+hJa4cb3QOnchmJRvraiY9rPA6jmho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/Rcv3D4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE02C4CEE9;
-	Tue, 20 May 2025 14:17:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gmNsp2lKMi0+nPA6wPJd0MZEWgsNQ38zCID/M32qmVTyv6Yu5fetenbrH/gBY6aCnbbvCmnMbvms+mjou1F16WD/sVShxEZD41q7CR1+HmjGfB5diSVzvEgAdkOzCBET081lF5k+Ya8VCr1FCNb06dGZs2tNovSDYpCjwOh/TxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhcddBdh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706E1C4CEE9;
+	Tue, 20 May 2025 14:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750622;
-	bh=naq4yp2DIlAvBSD73+JCm+TQS/npBrWO27I4qmN8CNA=;
+	s=korg; t=1747749831;
+	bh=mKYuxtI3yza1gb+bhJofO9R9s0ttFa5Dkf2BV2kBBLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/Rcv3D466+7iHaiA12bTKz/uXltzuvttvrjx62Gu566viZ4Wdq+XvDdGizqzQmQS
-	 3IxI6ZigQy7T7HD3IwtQ0/x5p4Syg7aS2ev04hKoQIC6ta3IMTEzyUezJJA98TmLTr
-	 3Lhl72xJEt6LoKZ9/ynpozdxqBOm2H2ZjuL6jsqk=
+	b=QhcddBdhViXJPpB9/BYIfEXr7TknrUu15C/TbKCVBoKNZxLdVjgA2R4PiBo7U494S
+	 1nEfiX0noMFSmmkXY16VEOg3oTo+Pq6PWXUU+vdRl0rityU/RxmcdOx/ZXvZCxcazy
+	 mCAX+E6iMiQQE4PATz5JlM8j7I2xz9f1liqvv5Ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yijun Shen <Yijun.Shen@dell.com>,
-	Yijun Shen <Yijun_Shen@Dell.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.14 068/145] HID: amd_sfh: Fix SRA sensor when its the only sensor
-Date: Tue, 20 May 2025 15:50:38 +0200
-Message-ID: <20250520125813.244232396@linuxfoundation.org>
+	Hyejeong Choi <hjeong.choi@samsung.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.6 074/117] dma-buf: insert memory barrier before updating num_fences
+Date: Tue, 20 May 2025 15:50:39 +0200
+Message-ID: <20250520125806.927237146@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Hyejeong Choi <hjeong.choi@samsung.com>
 
-commit 0cc2effbc8f522af6b9d871cd27678e6aed9d56c upstream.
+commit 72c7d62583ebce7baeb61acce6057c361f73be4a upstream.
 
-On systems that only have an SRA sensor connected to SFH the sensor
-doesn't get enabled due to a bad optimization condition of breaking
-the sensor walk loop.
+smp_store_mb() inserts memory barrier after storing operation.
+It is different with what the comment is originally aiming so Null
+pointer dereference can be happened if memory update is reordered.
 
-This optimization is unnecessary in the first place because if there
-is only one device then the loop only runs once. Drop the condition
-and explicitly mark sensor as enabled.
-
-Reported-by: Yijun Shen <Yijun.Shen@dell.com>
-Tested-By: Yijun Shen <Yijun_Shen@Dell.com>
-Fixes: d1c444b47100d ("HID: amd_sfh: Add support to export device operating states")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Hyejeong Choi <hjeong.choi@samsung.com>
+Fixes: a590d0fdbaa5 ("dma-buf: Update reservation shared_count after adding the new fence")
+CC: stable@vger.kernel.org
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250513020638.GA2329653@au1-maretx-p37.eng.sarc.samsung.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/dma-buf/dma-resv.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
-+++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
-@@ -134,9 +134,6 @@ static int amd_sfh1_1_hid_client_init(st
- 	for (i = 0; i < cl_data->num_hid_devices; i++) {
- 		cl_data->sensor_sts[i] = SENSOR_DISABLED;
+--- a/drivers/dma-buf/dma-resv.c
++++ b/drivers/dma-buf/dma-resv.c
+@@ -313,8 +313,9 @@ void dma_resv_add_fence(struct dma_resv
+ 	count++;
  
--		if (cl_data->num_hid_devices == 1 && cl_data->sensor_idx[0] == SRA_IDX)
--			break;
--
- 		if (cl_data->sensor_idx[i] == SRA_IDX) {
- 			info.sensor_idx = cl_data->sensor_idx[i];
- 			writel(0, privdata->mmio + amd_get_p2c_val(privdata, 0));
-@@ -145,8 +142,10 @@ static int amd_sfh1_1_hid_client_init(st
- 				(privdata, cl_data->sensor_idx[i], ENABLE_SENSOR);
- 
- 			cl_data->sensor_sts[i] = (status == 0) ? SENSOR_ENABLED : SENSOR_DISABLED;
--			if (cl_data->sensor_sts[i] == SENSOR_ENABLED)
-+			if (cl_data->sensor_sts[i] == SENSOR_ENABLED) {
-+				cl_data->is_any_sensor_enabled = true;
- 				privdata->dev_en.is_sra_present = true;
-+			}
- 			continue;
- 		}
+ 	dma_resv_list_set(fobj, i, fence, usage);
+-	/* pointer update must be visible before we extend the num_fences */
+-	smp_store_mb(fobj->num_fences, count);
++	/* fence update must be visible before we extend the num_fences */
++	smp_wmb();
++	fobj->num_fences = count;
+ }
+ EXPORT_SYMBOL(dma_resv_add_fence);
  
 
 
