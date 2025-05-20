@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE4FABDB61
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF69ABDC26
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 876808C2CAF
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C63354E2FE0
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8AC242D92;
-	Tue, 20 May 2025 14:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7713224887A;
+	Tue, 20 May 2025 14:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRqq+vSz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKNjMKiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381BA222570;
-	Tue, 20 May 2025 14:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E3E246773;
+	Tue, 20 May 2025 14:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749873; cv=none; b=sbTYH7TAeFbBA8Y1a/jOd8PaZI2H11jLvXSQaGpQEiaSrEz2ig9spr0c3glhw3ktw2fwneUy5O9Bt9pkLGURflJYi7HmDCrlC2DNOY7tv2lEPLWNevQOVayveU3gHI9pNJtyWbmeDTGcvKs82xCaCJL0ILl5VgoYkHZ36NXgxKI=
+	t=1747750182; cv=none; b=O6BlYOktw1eHmcjzYTcQ13J4/2Bq1eE0j22x+mrwPRI8lyW+Gu79EshGZP5S8K+JWh0YTdiwA4r434Bf3LM1N9jNs/B+nExMYJbGSbGrTRyndc7+1amlwvUx9tTyYYlzmNhb4fmGz4EDlWaNdRkvfYLffd3d+FWUSZ3uKKEYNnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749873; c=relaxed/simple;
-	bh=8jJaIJ19iEq2zoTvAHN0j6OZgcdzlDcf6I2XEr9VE3A=;
+	s=arc-20240116; t=1747750182; c=relaxed/simple;
+	bh=DCGMaGKDc9+gU9DmS7a69EdSpxlLDB5fAUy1Te83x8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flB33VMQd1hrnM1Qq1yVPJfZIK6B/6OAPxngqJw2TpBlDcjC9yZ+otUnX0niJ0XurbGsOKhrttshoBa6BrpXkuZuBpNYROT21xzhEgwgSnMH765/jLj+GqSPWKMzY44GVYgnZg2SZs5amS+bivIGp0LUoxKf+pC3gRrUdX4eEj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRqq+vSz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DB9C4CEE9;
-	Tue, 20 May 2025 14:04:32 +0000 (UTC)
+	 MIME-Version; b=ey6hZc163ICleP3TvSpMC7zEUOzBzcKQYUp/XTOfh3aj1fSYqKjlmoZTaKPXVd19OYn7nXqyRE4hybF8AHcCq00U1l+4jMI2AfH/u4QCR7G7MmgbZr/1oLuCTkRS+akaWHNR5aVtQTbuyHPcpAfCgWFKaQ0/AiDDJZso91OwAXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKNjMKiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3C3C4CEE9;
+	Tue, 20 May 2025 14:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749873;
-	bh=8jJaIJ19iEq2zoTvAHN0j6OZgcdzlDcf6I2XEr9VE3A=;
+	s=korg; t=1747750180;
+	bh=DCGMaGKDc9+gU9DmS7a69EdSpxlLDB5fAUy1Te83x8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRqq+vSzfNrd3UH5OlxLwaTs8C7rhwck6FD/PAUTutkUDt58ghq4P9ZeYIFzwZSVJ
-	 wbwoK9ctiSvBWeG+Fa0XHBDu9OsOaGaUgELo4pG/u3HhyUpmvV1PidnshSC6kFVMHl
-	 JosLiQVxUow38dGpn8tEGYNgz2KdEXH+yVZgFOnc=
+	b=vKNjMKiK2dh5Xv9w7HY5fRoh3bEGprKxBlhbj7Ipotp+fOY0qVykF/V7J0Tj8ciHq
+	 8HWHfHDNYxggvvee7GA44HgX8d7+wbUZhegBITzOh7JCqAXbXSkVjmNbd9JEPqcEnF
+	 EwRJl84mr2nF34t6vTZxC/etH7SBlOxmzzJZoDVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/117] mlxsw: spectrum_router: Fix use-after-free when deleting GRE net devices
-Date: Tue, 20 May 2025 15:50:21 +0200
-Message-ID: <20250520125806.211219678@linuxfoundation.org>
+Subject: [PATCH 6.12 067/143] tsnep: fix timestamping with a stacked DSA driver
+Date: Tue, 20 May 2025 15:50:22 +0200
+Message-ID: <20250520125812.695245116@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
 
-[ Upstream commit 92ec4855034b2c4d13f117558dc73d20581fa9ff ]
+[ Upstream commit b3ca9eef6646576ad506a96d941d87a69f66732a ]
 
-The driver only offloads neighbors that are constructed on top of net
-devices registered by it or their uppers (which are all Ethernet). The
-device supports GRE encapsulation and decapsulation of forwarded
-traffic, but the driver will not offload dummy neighbors constructed on
-top of GRE net devices as they are not uppers of its net devices:
+This driver is susceptible to a form of the bug explained in commit
+c26a2c2ddc01 ("gianfar: Fix TX timestamping with a stacked DSA driver")
+and in Documentation/networking/timestamping.rst section "Other caveats
+for MAC drivers", specifically it timestamps any skb which has
+SKBTX_HW_TSTAMP, and does not consider if timestamping has been enabled
+in adapter->hwtstamp_config.tx_type.
 
- # ip link add name gre1 up type gre tos inherit local 192.0.2.1 remote 198.51.100.1
- # ip neigh add 0.0.0.0 lladdr 0.0.0.0 nud noarp dev gre1
- $ ip neigh show dev gre1 nud noarp
- 0.0.0.0 lladdr 0.0.0.0 NOARP
+Evaluate the proper TX timestamping condition only once on the TX
+path (in tsnep_xmit_frame_ring()) and store the result in an additional
+TX entry flag. Evaluate the new TX entry flag in the TX confirmation path
+(in tsnep_tx_poll()).
 
-(Note that the neighbor is not marked with 'offload')
+This way SKBTX_IN_PROGRESS is set by the driver as required, but never
+evaluated. SKBTX_IN_PROGRESS shall not be evaluated as it can be set
+by a stacked DSA driver and evaluating it would lead to unwanted
+timestamps.
 
-When the driver is reloaded and the existing configuration is replayed,
-the driver does not perform the same check regarding existing neighbors
-and offloads the previously added one:
-
- # devlink dev reload pci/0000:01:00.0
- $ ip neigh show dev gre1 nud noarp
- 0.0.0.0 lladdr 0.0.0.0 offload NOARP
-
-If the neighbor is later deleted, the driver will ignore the
-notification (given the GRE net device is not its upper) and will
-therefore keep referencing freed memory, resulting in a use-after-free
-[1] when the net device is deleted:
-
- # ip neigh del 0.0.0.0 lladdr 0.0.0.0 dev gre1
- # ip link del dev gre1
-
-Fix by skipping neighbor replay if the net device for which the replay
-is performed is not our upper.
-
-[1]
-BUG: KASAN: slab-use-after-free in mlxsw_sp_neigh_entry_update+0x1ea/0x200
-Read of size 8 at addr ffff888155b0e420 by task ip/2282
-[...]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x6f/0xa0
- print_address_description.constprop.0+0x6f/0x350
- print_report+0x108/0x205
- kasan_report+0xdf/0x110
- mlxsw_sp_neigh_entry_update+0x1ea/0x200
- mlxsw_sp_router_rif_gone_sync+0x2a8/0x440
- mlxsw_sp_rif_destroy+0x1e9/0x750
- mlxsw_sp_netdevice_ipip_ol_event+0x3c9/0xdc0
- mlxsw_sp_router_netdevice_event+0x3ac/0x15e0
- notifier_call_chain+0xca/0x150
- call_netdevice_notifiers_info+0x7f/0x100
- unregister_netdevice_many_notify+0xc8c/0x1d90
- rtnl_dellink+0x34e/0xa50
- rtnetlink_rcv_msg+0x6fb/0xb70
- netlink_rcv_skb+0x131/0x360
- netlink_unicast+0x426/0x710
- netlink_sendmsg+0x75a/0xc20
- __sock_sendmsg+0xc1/0x150
- ____sys_sendmsg+0x5aa/0x7b0
- ___sys_sendmsg+0xfc/0x180
- __sys_sendmsg+0x121/0x1b0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: 8fdb09a7674c ("mlxsw: spectrum_router: Replay neighbours when RIF is made")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/c53c02c904fde32dad484657be3b1477884e9ad6.1747225701.git.petrm@nvidia.com
+Fixes: 403f69bbdbad ("tsnep: Add TSN endpoint Ethernet MAC driver")
+Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250514195657.25874-1-gerhard@engleder-embedded.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/engleder/tsnep_main.c | 30 ++++++++++++++--------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index d15aa6b25a888..0534b10e29c5c 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -3013,6 +3013,9 @@ static int mlxsw_sp_neigh_rif_made_sync(struct mlxsw_sp *mlxsw_sp,
- 		.rif = rif,
- 	};
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index 44da335d66bda..6a6efe2b2bc51 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -67,6 +67,8 @@
+ #define TSNEP_TX_TYPE_XDP_NDO_MAP_PAGE	(TSNEP_TX_TYPE_XDP_NDO | TSNEP_TX_TYPE_MAP_PAGE)
+ #define TSNEP_TX_TYPE_XDP		(TSNEP_TX_TYPE_XDP_TX | TSNEP_TX_TYPE_XDP_NDO)
+ #define TSNEP_TX_TYPE_XSK		BIT(12)
++#define TSNEP_TX_TYPE_TSTAMP		BIT(13)
++#define TSNEP_TX_TYPE_SKB_TSTAMP	(TSNEP_TX_TYPE_SKB | TSNEP_TX_TYPE_TSTAMP)
  
-+	if (!mlxsw_sp_dev_lower_is_port(mlxsw_sp_rif_dev(rif)))
-+		return 0;
+ #define TSNEP_XDP_TX		BIT(0)
+ #define TSNEP_XDP_REDIRECT	BIT(1)
+@@ -387,8 +389,7 @@ static void tsnep_tx_activate(struct tsnep_tx *tx, int index, int length,
+ 	if (entry->skb) {
+ 		entry->properties = length & TSNEP_DESC_LENGTH_MASK;
+ 		entry->properties |= TSNEP_DESC_INTERRUPT_FLAG;
+-		if ((entry->type & TSNEP_TX_TYPE_SKB) &&
+-		    (skb_shinfo(entry->skb)->tx_flags & SKBTX_IN_PROGRESS))
++		if ((entry->type & TSNEP_TX_TYPE_SKB_TSTAMP) == TSNEP_TX_TYPE_SKB_TSTAMP)
+ 			entry->properties |= TSNEP_DESC_EXTENDED_WRITEBACK_FLAG;
+ 
+ 		/* toggle user flag to prevent false acknowledge
+@@ -480,7 +481,8 @@ static int tsnep_tx_map_frag(skb_frag_t *frag, struct tsnep_tx_entry *entry,
+ 	return mapped;
+ }
+ 
+-static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count)
++static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count,
++			bool do_tstamp)
+ {
+ 	struct device *dmadev = tx->adapter->dmadev;
+ 	struct tsnep_tx_entry *entry;
+@@ -506,6 +508,9 @@ static int tsnep_tx_map(struct sk_buff *skb, struct tsnep_tx *tx, int count)
+ 				entry->type = TSNEP_TX_TYPE_SKB_INLINE;
+ 				mapped = 0;
+ 			}
 +
- 	neigh_for_each(&arp_tbl, mlxsw_sp_neigh_rif_made_sync_each, &rms);
- 	if (rms.err)
- 		goto err_arp;
++			if (do_tstamp)
++				entry->type |= TSNEP_TX_TYPE_TSTAMP;
+ 		} else {
+ 			skb_frag_t *frag = &skb_shinfo(skb)->frags[i - 1];
+ 
+@@ -559,11 +564,12 @@ static int tsnep_tx_unmap(struct tsnep_tx *tx, int index, int count)
+ static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
+ 					 struct tsnep_tx *tx)
+ {
+-	int count = 1;
+ 	struct tsnep_tx_entry *entry;
++	bool do_tstamp = false;
++	int count = 1;
+ 	int length;
+-	int i;
+ 	int retval;
++	int i;
+ 
+ 	if (skb_shinfo(skb)->nr_frags > 0)
+ 		count += skb_shinfo(skb)->nr_frags;
+@@ -580,7 +586,13 @@ static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
+ 	entry = &tx->entry[tx->write];
+ 	entry->skb = skb;
+ 
+-	retval = tsnep_tx_map(skb, tx, count);
++	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
++	    tx->adapter->hwtstamp_config.tx_type == HWTSTAMP_TX_ON) {
++		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
++		do_tstamp = true;
++	}
++
++	retval = tsnep_tx_map(skb, tx, count, do_tstamp);
+ 	if (retval < 0) {
+ 		tsnep_tx_unmap(tx, tx->write, count);
+ 		dev_kfree_skb_any(entry->skb);
+@@ -592,9 +604,6 @@ static netdev_tx_t tsnep_xmit_frame_ring(struct sk_buff *skb,
+ 	}
+ 	length = retval;
+ 
+-	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)
+-		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+-
+ 	for (i = 0; i < count; i++)
+ 		tsnep_tx_activate(tx, (tx->write + i) & TSNEP_RING_MASK, length,
+ 				  i == count - 1);
+@@ -845,8 +854,7 @@ static bool tsnep_tx_poll(struct tsnep_tx *tx, int napi_budget)
+ 
+ 		length = tsnep_tx_unmap(tx, tx->read, count);
+ 
+-		if ((entry->type & TSNEP_TX_TYPE_SKB) &&
+-		    (skb_shinfo(entry->skb)->tx_flags & SKBTX_IN_PROGRESS) &&
++		if (((entry->type & TSNEP_TX_TYPE_SKB_TSTAMP) == TSNEP_TX_TYPE_SKB_TSTAMP) &&
+ 		    (__le32_to_cpu(entry->desc_wb->properties) &
+ 		     TSNEP_DESC_EXTENDED_WRITEBACK_FLAG)) {
+ 			struct skb_shared_hwtstamps hwtstamps;
 -- 
 2.39.5
 
