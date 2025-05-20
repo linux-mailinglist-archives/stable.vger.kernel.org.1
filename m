@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EE1ABDAF9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:04:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE159ABDA03
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 767A81BA63FA
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6739917BFFE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB6C24503B;
-	Tue, 20 May 2025 14:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FF72441B4;
+	Tue, 20 May 2025 13:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIfaAwBv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VShyuWIh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C43CEEDE;
-	Tue, 20 May 2025 14:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29DF22D78C;
+	Tue, 20 May 2025 13:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749746; cv=none; b=EAlN4Kzsnw87ntBp89tgRLJo1I03Q8+546ZbnI044u1i3x2u+/FmtErAKWPoYGrkpX9hRdAFkTkAa8EDJoFp/5PVuFI5kYJgrQ1+rEPH24fygPgUBUfnmTHNf4NM5OXEZ0xGyNYqFabYVy1YXNPAMI/bo9U/J6VIGeb63Jj5BQI=
+	t=1747749171; cv=none; b=A1TgyKHsgDNcLxbjjYCW7q9TnB4Ij1J4om4qZtY1NGlDd0kXGUzYI8bGpv2WiIJN2890ArV0jGrpFD9KbA6cH3X/Zq5dkjhqPv6KAElp01rbtWA0E+xrLkzuBIUmmffUhry0i44I6CFhtaGSgZCS8QP9Hh9WOlPdkJGB7QYsYUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749746; c=relaxed/simple;
-	bh=9SPc8xcWZbQy9LIgHBUPvCCK42hgFJoNZM0uAJOecbQ=;
+	s=arc-20240116; t=1747749171; c=relaxed/simple;
+	bh=9qFE7NNfcgNcv3vPRc+I5oVF6z0Q+IO95aolzmijCbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mm8IH72L71pbwrH93h9MTgvBH9dthm4X4m2Vym0vfWovT9P6v0m81BPZ8ABiDuF5LglGzBLd8hyeMjwTXSQ5yfWiebED0hl4Dr8GPCEqy08wbHiG+JEd+8SBq2GsGJJ9hq6aLX9V+jfPqu71doDYFnH8pXXQmgXunqwZOovoNhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIfaAwBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877EBC4CEE9;
-	Tue, 20 May 2025 14:02:25 +0000 (UTC)
+	 MIME-Version; b=XHtn8Jf/9iWnfqXvP0tTrqcHofEwvwyqL6HwTtEwXYcDcTAw+yzHQ1wlxD8wQeEUUzAoYNPnrS5HaLcIhRrzNQbWSu70KzmH8a7vavgAtDqXZIS46F+DmZeXDqlV7RBAL6qPCfU6XuEAo3aS3quSo7v2T9DsFC206ZaN2vetdPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VShyuWIh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63A0C4CEE9;
+	Tue, 20 May 2025 13:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749745;
-	bh=9SPc8xcWZbQy9LIgHBUPvCCK42hgFJoNZM0uAJOecbQ=;
+	s=korg; t=1747749171;
+	bh=9qFE7NNfcgNcv3vPRc+I5oVF6z0Q+IO95aolzmijCbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIfaAwBvC7ABme4P+F+vXSUSGIUxc7jkvYODIMciHZT6T5fmFsgeShGPjz2NfOe2M
-	 syW+6PeDXBldJddIuzEc/CUGLziiXXpmyGft7S8REavcrlaev8VtYLbO7fOAQDCdrq
-	 DBBrZmG0YHTR8nMr4AsjIv/hQ2Lz/NTZPbf2TR5s=
+	b=VShyuWIhyZ8DvC6/0T2Xp18EInnZ8cjNtIyTlPTcppGfDro+rcWy23Ywq2Tyik+0Q
+	 U8LBD2dsaQ94PMXyDoJoLJfiVP6/3Mt9B4GTbStiFbqpI8YoZyVhCxJR3j2xFz+tgS
+	 G48omPfdjgPuLWdgfSXAoy+jNbuGeKS3PUlTB6II=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/117] net: dsa: sja1105: discard incoming frames in BR_STATE_LISTENING
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 5.15 19/59] x86/its: Enumerate Indirect Target Selection (ITS) bug
 Date: Tue, 20 May 2025 15:50:10 +0200
-Message-ID: <20250520125805.780214610@linuxfoundation.org>
+Message-ID: <20250520125754.614191646@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 498625a8ab2c8e1c9ab5105744310e8d6952cc01 ]
+commit 159013a7ca18c271ff64192deb62a689b622d860 upstream.
 
-It has been reported that when under a bridge with stp_state=1, the logs
-get spammed with this message:
+ITS bug in some pre-Alderlake Intel CPUs may allow indirect branches in the
+first half of a cache line get predicted to a target of a branch located in
+the second half of the cache line.
 
-[  251.734607] fsl_dpaa2_eth dpni.5 eth0: Couldn't decode source port
+Set X86_BUG_ITS on affected CPUs. Mitigation to follow in later commits.
 
-Further debugging shows the following info associated with packets:
-source_port=-1, switch_id=-1, vid=-1, vbid=1
-
-In other words, they are data plane packets which are supposed to be
-decoded by dsa_tag_8021q_find_port_by_vbid(), but the latter (correctly)
-refuses to do so, because no switch port is currently in
-BR_STATE_LEARNING or BR_STATE_FORWARDING - so the packet is effectively
-unexpected.
-
-The error goes away after the port progresses to BR_STATE_LEARNING in 15
-seconds (the default forward_time of the bridge), because then,
-dsa_tag_8021q_find_port_by_vbid() can correctly associate the data plane
-packets with a plausible bridge port in a plausible STP state.
-
-Re-reading IEEE 802.1D-1990, I see the following:
-
-"4.4.2 Learning: (...) The Forwarding Process shall discard received
-frames."
-
-IEEE 802.1D-2004 further clarifies:
-
-"DISABLED, BLOCKING, LISTENING, and BROKEN all correspond to the
-DISCARDING port state. While those dot1dStpPortStates serve to
-distinguish reasons for discarding frames, the operation of the
-Forwarding and Learning processes is the same for all of them. (...)
-LISTENING represents a port that the spanning tree algorithm has
-selected to be part of the active topology (computing a Root Port or
-Designated Port role) but is temporarily discarding frames to guard
-against loops or incorrect learning."
-
-Well, this is not what the driver does - instead it sets
-mac[port].ingress = true.
-
-To get rid of the log spam, prevent unexpected data plane packets to
-be received by software by discarding them on ingress in the LISTENING
-state.
-
-In terms of blame attribution: the prints only date back to commit
-d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based
-on the VBID"). However, the settings would permit a LISTENING port to
-forward to a FORWARDING port, and the standard suggests that's not OK.
-
-Fixes: 640f763f98c2 ("net: dsa: sja1105: Add support for Spanning Tree Protocol")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250509113816.2221992-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ arch/x86/include/asm/cpufeatures.h |    1 
+ arch/x86/include/asm/msr-index.h   |    8 +++++
+ arch/x86/kernel/cpu/common.c       |   58 +++++++++++++++++++++++++++++--------
+ arch/x86/kvm/x86.c                 |    4 +-
+ 4 files changed, 58 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 1a367e64bc3b1..843e50b5a0ec5 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -2076,6 +2076,7 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
- 	switch (state) {
- 	case BR_STATE_DISABLED:
- 	case BR_STATE_BLOCKING:
-+	case BR_STATE_LISTENING:
- 		/* From UM10944 description of DRPDTAG (why put this there?):
- 		 * "Management traffic flows to the port regardless of the state
- 		 * of the INGRESS flag". So BPDUs are still be allowed to pass.
-@@ -2085,11 +2086,6 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
- 		mac[port].egress    = false;
- 		mac[port].dyn_learn = false;
- 		break;
--	case BR_STATE_LISTENING:
--		mac[port].ingress   = true;
--		mac[port].egress    = false;
--		mac[port].dyn_learn = false;
--		break;
- 	case BR_STATE_LEARNING:
- 		mac[port].ingress   = true;
- 		mac[port].egress    = false;
--- 
-2.39.5
-
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -483,4 +483,5 @@
+ #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* CPU is vulnerable to Register File Data Sampling */
+ #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
+ #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
++#define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
+ #endif /* _ASM_X86_CPUFEATURES_H */
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -183,6 +183,14 @@
+ 						 * VERW clears CPU Register
+ 						 * File.
+ 						 */
++#define ARCH_CAP_ITS_NO			BIT_ULL(62) /*
++						     * Not susceptible to
++						     * Indirect Target Selection.
++						     * This bit is not set by
++						     * HW, but is synthesized by
++						     * VMMs for guests to know
++						     * their affected status.
++						     */
+ 
+ #define MSR_IA32_FLUSH_CMD		0x0000010b
+ #define L1D_FLUSH			BIT(0)	/*
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1141,6 +1141,8 @@ static const __initconst struct x86_cpu_
+ #define GDS		BIT(6)
+ /* CPU is affected by Register File Data Sampling */
+ #define RFDS		BIT(7)
++/* CPU is affected by Indirect Target Selection */
++#define ITS		BIT(8)
+ 
+ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+ 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
+@@ -1152,22 +1154,25 @@ static const struct x86_cpu_id cpu_vuln_
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPINGS(0x0, 0x5),	MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPINGS(0x0, 0xb),	MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
+ 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
+ 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
+@@ -1231,6 +1236,32 @@ static bool __init vulnerable_to_rfds(u6
+ 	return cpu_matches(cpu_vuln_blacklist, RFDS);
+ }
+ 
++static bool __init vulnerable_to_its(u64 x86_arch_cap_msr)
++{
++	/* The "immunity" bit trumps everything else: */
++	if (x86_arch_cap_msr & ARCH_CAP_ITS_NO)
++		return false;
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
++		return false;
++
++	/* None of the affected CPUs have BHI_CTRL */
++	if (boot_cpu_has(X86_FEATURE_BHI_CTRL))
++		return false;
++
++	/*
++	 * If a VMM did not expose ITS_NO, assume that a guest could
++	 * be running on a vulnerable hardware or may migrate to such
++	 * hardware.
++	 */
++	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
++		return true;
++
++	if (cpu_matches(cpu_vuln_blacklist, ITS))
++		return true;
++
++	return false;
++}
++
+ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
+ {
+ 	u64 x86_arch_cap_msr = x86_read_arch_cap_msr();
+@@ -1358,6 +1389,9 @@ static void __init cpu_set_bug_bits(stru
+ 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
+ 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
+ 
++	if (vulnerable_to_its(x86_arch_cap_msr))
++		setup_force_cpu_bug(X86_BUG_ITS);
++
+ 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
+ 		return;
+ 
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1499,7 +1499,7 @@ static unsigned int num_msr_based_featur
+ 	 ARCH_CAP_PSCHANGE_MC_NO | ARCH_CAP_TSX_CTRL_MSR | ARCH_CAP_TAA_NO | \
+ 	 ARCH_CAP_SBDR_SSDP_NO | ARCH_CAP_FBSDP_NO | ARCH_CAP_PSDP_NO | \
+ 	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO | \
+-	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_BHI_NO)
++	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_BHI_NO | ARCH_CAP_ITS_NO)
+ 
+ static u64 kvm_get_arch_capabilities(void)
+ {
+@@ -1538,6 +1538,8 @@ static u64 kvm_get_arch_capabilities(voi
+ 		data |= ARCH_CAP_MDS_NO;
+ 	if (!boot_cpu_has_bug(X86_BUG_RFDS))
+ 		data |= ARCH_CAP_RFDS_NO;
++	if (!boot_cpu_has_bug(X86_BUG_ITS))
++		data |= ARCH_CAP_ITS_NO;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_RTM)) {
+ 		/*
 
 
 
