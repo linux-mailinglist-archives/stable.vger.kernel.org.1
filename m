@@ -1,124 +1,216 @@
-Return-Path: <stable+bounces-145011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D70ABD021
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:16:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40384ABD05C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE4271B6583B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 07:16:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B56763B09C2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 07:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDA325CC63;
-	Tue, 20 May 2025 07:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7690925D207;
+	Tue, 20 May 2025 07:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gvTl/w2w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gUYcgP0I"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22A515E8B;
-	Tue, 20 May 2025 07:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBC325C711
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 07:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747725371; cv=none; b=oml/f93yc8rkjKVieE7yL4stEoDgwIgnPTJgqrFjPFJtVLBCiarkGOd62d1lORf1P8WofJfyrRhaBMWfpSh9Zewn9kZyMVHBwuK6G8W8qDU2EcZ5YlaccsA2XCDgZEbUJuZXZV8SVqncIesO/N6+nd/JliKoKgh+OYcUXbS9/xk=
+	t=1747725810; cv=none; b=amBVBshE0SsM0fE1kskpWJ+gFKtGt5ijtDOF+AnhRa7iFWoWTjYYZwbZ0Tu9bmRu2lk376KWDLAElXMj+EC69waE3+/U72W8kmx7R2xdUBU0eqGKlziyzVMaBAYwOqth1WgfQg+03c0T1MxPxQsSR7wlhEtI/PBIXGawm3uq/5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747725371; c=relaxed/simple;
-	bh=64nSeznQ/80kI+TqqvrHQheS4AVHuJSHiUdaas+H0vQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I96OM57U7npA2eqOFahsRaILiSCSHfnAQm5yFhqmGolauqSTN5jr7DCoCLb9Vv4IFagNXO9d3Ja0IYS9CST/nwzJiaLsTYsptu+5AyHlJBoQfRuoKyPYRPH3rXVNvmJgyoCWP/HGN1eQWUj8FJQbzrU2pCcj3a079weyZ1x8xmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gvTl/w2w; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-acbb85ce788so1073315566b.3;
-        Tue, 20 May 2025 00:16:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747725368; x=1748330168; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dDIRhWdKVMpUu59ujm96cXSr76HpSQ4ZrAeN1Auu11g=;
-        b=gvTl/w2wdlDybYmfvU13lSRNZPeyAb4DEtZLlfvC5/TX6IH33Z8lwpVEE1XqmLV+wC
-         6aRxgYl9/YRbGCBnrmnG7MOCYORpNO38iPlYQkmwaWIGqEyMKYSw5Fef+0A6/ZE309SD
-         iC1K3s5IA7T1+k58nulHjJJ1QYhKwIknEFwQTMMY6mDELYrgicR0P9RxnlJ0ncsEqt2V
-         VPwvK7Kzcq1QBYN3OWngaYD/XE1WMjHvJ9TYw03WIaIfSCAXZl3Xlr8zdGri/Kg+tAId
-         XcFiWj6tRALV6sBMbKAue3hF2DkbMRXKDXi2jf9zrGVDtKMgiti3QQHz2sknCS5o8iy5
-         /wVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747725368; x=1748330168;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dDIRhWdKVMpUu59ujm96cXSr76HpSQ4ZrAeN1Auu11g=;
-        b=XtFA/wau7J8IpmeVBpi6LwZGLbAN1FKFGJrKihQFpAKuKXCajzZa19cG0nmQy2dRdO
-         AbhohQX1uHlCQfTgiumhXyONfYz9uBDmvoe4d7maUnAnVfRfXzF3/Sw4QUTK79+JWOdU
-         /Mzlj3qKPh4aZ/uEihPc0qU9eLGgfxquaZi6EjP+9U/wacHImZrDsVd2DnOUxfp34i5x
-         b94g61k4v0YQqny8WCVuKFVMG52xxBlcKTTkOFaup/zJ+G6b39FqY6AkA0D3rMc5Omyf
-         auiULMDU2PFuFBXIuoFa7bGIP89LH8XIFnAdNgzQhaV4FS8aAWTE45ClolCJwT1BxVc6
-         xtRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUxYdfQX937rzd2MSiNrNia8Nk56CHdxjJo78KanXcNXIW+py7HB0dk8/OJ8DZvrOPk/8SoCCtdTtoZldYo@vger.kernel.org, AJvYcCWyuKUzHeHlbWp+sx4cmy6k1l7vpzOjbohx0HkcFFlwmWXXApm58aZ5KDrMW26wqP1w8SUoTCGfLyiMmg==@vger.kernel.org, AJvYcCXosmAn/VMG4GtjiUmBH759mdzNiLO7HelDcGkZu3k2x1Zk4+udCPIX/owyZ+zIaODLr11xVicW@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxats+M+64qKMfS/IqrE9JjdPITo/ZkwmzKJezQ2OE0p8Pm+7y3
-	JuiBME/MyDeMqTvR0SwbPgbfOYS3e++vw5P8YRvYk+Hsq0CsqWXBV+YfjPGspA/x
-X-Gm-Gg: ASbGncsPCC6lvjpB8YyR6TYSHr6Q6O0+tviSVdKIb6dl7s6/1b7Ad5N/yEq3JkXvYEP
-	e1BkZPvFlF2FW49rTEMBz/1bxVSJ3MP+a+WoH5cDUdhttO/wsOO0mRsueRPhiTHAzkSwqfy635c
-	+NvqphNrG0Pheyp5o/zaAW5eMn6HRSNyYDIitXS3sa6izso/YRVzXYIdzZBeQDxQJeN7V/eFzcP
-	O1zbTCfvtdRsD9CaBVqjzlKRXMj5KTpXXQwJQWTL5hoaIXspcQD8WIo87qe092JxEPJfGvBxC7X
-	R1SZu3wKigNM7KURnYAw/qeYTSvLEOLHo2/jCM0R8GkJJoiErwUv6wmZ6X7a7fxh3qdLHDv69FD
-	wLKE2vNHk
-X-Google-Smtp-Source: AGHT+IHVOlAW6lgxwfSXJ2mOzRf4cxrSKL/D38SFAUPj/n/z1oZNclDU9+lGnv4dlctwse3NYQjUmA==
-X-Received: by 2002:a17:907:1b0f:b0:ad5:5293:f236 with SMTP id a640c23a62f3a-ad55293f282mr1046955066b.3.1747725368115;
-        Tue, 20 May 2025 00:16:08 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d4c9e62sm685303466b.155.2025.05.20.00.16.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 May 2025 00:16:06 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 7942BBE2DE0; Tue, 20 May 2025 09:16:05 +0200 (CEST)
-Date: Tue, 20 May 2025 09:16:05 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Christian Hesse <list@eworm.de>
-Cc: Roland Clobus <rclobus@rclobus.nl>, Lizhi Xu <lizhi.xu@windriver.com>,
-	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	1106070@bugs.debian.org, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: [6.12.y regression] loosetup: failed to set up loop device:
- Invalid argument after 184b147b9f7f ("loop: Add sanity check for
- read/write_iter")
-Message-ID: <aCwsNSEoxfs4DOvi@eldamar.lan>
-References: <3a333f27-6810-4313-8910-485df652e897@rclobus.nl>
- <aCwZy6leWNvr7EMd@eldamar.lan>
- <20250520083438.295e415a@leda.eworm.net>
+	s=arc-20240116; t=1747725810; c=relaxed/simple;
+	bh=MS1qEWwSc+cPpRwfnoFMRCjUsypxvDK/6MU7VIuNZbQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Dd9IDnwDXWouWVAUa63eOg0EjSzEXMARoyW5byV4FloTBYRMpjmIiigFSeO0oZN2LGIqkwZkPmfBaB8yZGafSDzjoZ5Yq1EEd8DIGqjPBGf/P/nzZiDiIstcqFoFVdpaIQrrzaergyCplN0pdP8XdUlbXqwo6vI5YJqubN/V8hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gUYcgP0I; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747725808; x=1779261808;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=MS1qEWwSc+cPpRwfnoFMRCjUsypxvDK/6MU7VIuNZbQ=;
+  b=gUYcgP0ImLivejhj9tgLoLWPScM8bqDgZARRMsBHUXt4Tz39O1CNWvTp
+   rmJWhGq4RDUohAxgWpxdjXB9S7ZX4V4S4IXaiZRd65ojsX6x89usdjPHM
+   RZG9Zqo0FxskaN5KOBID7NKGIiD0PSQnK+l3VDmsjR3hz2WLowMAKJ1bK
+   j3Nlo+3QKOJiGobqUhTNyppXxv/ZhgYT8VeMa15IX7IVOrOrblEEB40Km
+   tzJeK3Ci3vtDswFKfwTyGMo2SrzXa404JE+vzWEtgP0nzxAZTuVFqHEb+
+   FvKg6duw4MLWYwKvvHLwDYmD6m4zHjgMzKi9mH/NxeC2na4w3ltYzyFKC
+   w==;
+X-CSE-ConnectionGUID: POAf4anZRp6feL6bnQJEOg==
+X-CSE-MsgGUID: 2Wn9CJ70S66NZ4868AjIUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49746766"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="49746766"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 00:23:27 -0700
+X-CSE-ConnectionGUID: LEIX0AA8T1GIKxZ3HkqMHA==
+X-CSE-MsgGUID: yvjS7gC7Q2WubxgeH8/oYg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="140617559"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa009.fm.intel.com with ESMTP; 20 May 2025 00:23:25 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id E08B9209; Tue, 20 May 2025 10:23:23 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.14.y] mm/page_alloc: fix race condition in unaccepted memory handling
+Date: Tue, 20 May 2025 10:23:20 +0300
+Message-ID: <20250520072320.605775-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <2025051944-undone-repayment-6c7e@gregkh>
+References: <2025051944-undone-repayment-6c7e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250520083438.295e415a@leda.eworm.net>
+Content-Transfer-Encoding: 8bit
 
-H Christian,
+The page allocator tracks the number of zones that have unaccepted memory
+using static_branch_enc/dec() and uses that static branch in hot paths to
+determine if it needs to deal with unaccepted memory.
 
-On Tue, May 20, 2025 at 08:34:38AM +0200, Christian Hesse wrote:
-> Salvatore Bonaccorso <carnil@debian.org> on Tue, 2025/05/20 07:57:
-> > In Debian Roland Clobus reported a regression with setting up loop
-> > devices from a backing squashfs file lying on read-only mounted target
-> > directory from a iso.
-> > 
-> > The original report is at:
-> > https://bugs.debian.org/1106070
-> 
-> We are suffering the same for Arch Linux. Already reported here:
-> 
-> https://lore.kernel.org/all/20250519175640.2fcac001@leda.eworm.net/
+Borislav and Thomas pointed out that the tracking is racy: operations on
+static_branch are not serialized against adding/removing unaccepted pages
+to/from the zone.
 
-Sorry missed that one! Ack, so let's continue in that thread (worth
-looping in the regressions list though?)
+Sanity checks inside static_branch machinery detects it:
 
-Regards,
-Salvatore
+WARNING: CPU: 0 PID: 10 at kernel/jump_label.c:276 __static_key_slow_dec_cpuslocked+0x8e/0xa0
+
+The comment around the WARN() explains the problem:
+
+	/*
+	 * Warn about the '-1' case though; since that means a
+	 * decrement is concurrent with a first (0->1) increment. IOW
+	 * people are trying to disable something that wasn't yet fully
+	 * enabled. This suggests an ordering problem on the user side.
+	 */
+
+The effect of this static_branch optimization is only visible on
+microbenchmark.
+
+Instead of adding more complexity around it, remove it altogether.
+
+Link: https://lkml.kernel.org/r/20250506133207.1009676-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Link: https://lore.kernel.org/all/20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local
+Reported-by: Borislav Petkov <bp@alien8.de>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit fefc075182275057ce607effaa3daa9e6e3bdc73)
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ mm/page_alloc.c | 23 -----------------------
+ 1 file changed, 23 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 74a996a3508e..2cc8b3e36dc9 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6951,9 +6951,6 @@ bool has_managed_dma(void)
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 
+-/* Counts number of zones with unaccepted pages. */
+-static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
+-
+ static bool lazy_accept = true;
+ 
+ static int __init accept_memory_parse(char *p)
+@@ -6980,11 +6977,7 @@ static bool page_contains_unaccepted(struct page *page, unsigned int order)
+ static void __accept_page(struct zone *zone, unsigned long *flags,
+ 			  struct page *page)
+ {
+-	bool last;
+-
+ 	list_del(&page->lru);
+-	last = list_empty(&zone->unaccepted_pages);
+-
+ 	account_freepages(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
+ 	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
+ 	__ClearPageUnaccepted(page);
+@@ -6993,9 +6986,6 @@ static void __accept_page(struct zone *zone, unsigned long *flags,
+ 	accept_memory(page_to_phys(page), PAGE_SIZE << MAX_PAGE_ORDER);
+ 
+ 	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
+-
+-	if (last)
+-		static_branch_dec(&zones_with_unaccepted_pages);
+ }
+ 
+ void accept_page(struct page *page)
+@@ -7032,19 +7022,11 @@ static bool try_to_accept_memory_one(struct zone *zone)
+ 	return true;
+ }
+ 
+-static inline bool has_unaccepted_memory(void)
+-{
+-	return static_branch_unlikely(&zones_with_unaccepted_pages);
+-}
+-
+ static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ {
+ 	long to_accept, wmark;
+ 	bool ret = false;
+ 
+-	if (!has_unaccepted_memory())
+-		return false;
+-
+ 	if (list_empty(&zone->unaccepted_pages))
+ 		return false;
+ 
+@@ -7078,22 +7060,17 @@ static bool __free_unaccepted(struct page *page)
+ {
+ 	struct zone *zone = page_zone(page);
+ 	unsigned long flags;
+-	bool first = false;
+ 
+ 	if (!lazy_accept)
+ 		return false;
+ 
+ 	spin_lock_irqsave(&zone->lock, flags);
+-	first = list_empty(&zone->unaccepted_pages);
+ 	list_add_tail(&page->lru, &zone->unaccepted_pages);
+ 	account_freepages(zone, MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
+ 	__mod_zone_page_state(zone, NR_UNACCEPTED, MAX_ORDER_NR_PAGES);
+ 	__SetPageUnaccepted(page);
+ 	spin_unlock_irqrestore(&zone->lock, flags);
+ 
+-	if (first)
+-		static_branch_inc(&zones_with_unaccepted_pages);
+-
+ 	return true;
+ }
+ 
+-- 
+2.47.2
+
 
