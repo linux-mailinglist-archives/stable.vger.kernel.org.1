@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384F9ABDC7E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514CEABDBB5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310A91BA7637
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF8214C7988
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CCF24728E;
-	Tue, 20 May 2025 14:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9B02459F7;
+	Tue, 20 May 2025 14:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGOO/50x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDpeh/jK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7285C22D794;
-	Tue, 20 May 2025 14:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5818F2472BA;
+	Tue, 20 May 2025 14:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750705; cv=none; b=U7daskmexGFVUHs4qC7BZ/uwUf2TFnDDFCTU98KHHiGsrpflZyKt9R/E/Mgkc6Y+xNjG3f7n0dLWKbSvBJEJz46SYqlGHG9BU6NQBX0Sf+G7Djx5Ar0IQe5NbYb+MDxhgZ2hEpQy3N2OuGQ3TjMvv5MeJVY1nfAWtZmX9EW642I=
+	t=1747749984; cv=none; b=RP/NK0qRPrkdwcd5kY7FSbRp+Oh8HSFKagJ4D5Q7toPEApcopephVYKq5BGB+tLgAe/VFwsEGBabUW5effwg7sdT6vIrKVDw9R58mvCSbKsZNpqBIXE+wdip8hNKvKdzbYjGUtQE+wXVAVgunOn4veif4kNl6uG7a3SwSeHZF44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750705; c=relaxed/simple;
-	bh=urYACN+rCu6oi1U41MLFrc9A5LzDvTtSlppj04qtr2k=;
+	s=arc-20240116; t=1747749984; c=relaxed/simple;
+	bh=FNhHK+vIU626XLH9xWgj5KHoVOtz0RNejOxNugX8W3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mjk+nQNdo+8zQRUUAI/uhFKOeFmbsnQMIuPqxT3TgsCeqckrzdZobZvA7BJ5MzudAbGw4t0TZ4H7PTgFiatV3O7sOu607dkKtCG9b7HqKrYTu56X6SgtzHrruTZuets1W8M8yPHVRla6pWsapBMoz65YazDZqHqRkh5zMGs/reg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGOO/50x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0AEC4CEE9;
-	Tue, 20 May 2025 14:18:24 +0000 (UTC)
+	 MIME-Version; b=s2hk1X+EaJsDTeiLHM2jq2+sOxTgz9r68uvSIBJICIeCkJ0QxwxNHXEdlXPQ001ACg+U+lJWtNiM31KETeUIRJUTyYbpJBS6we41dxjrrNpOYi4WsR1li6cfh7szi9I28dOksx/22dthqoMQ7ZjgeejwSLlbl6C4k1QLU+/zxTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDpeh/jK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EB5C4CEF1;
+	Tue, 20 May 2025 14:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750705;
-	bh=urYACN+rCu6oi1U41MLFrc9A5LzDvTtSlppj04qtr2k=;
+	s=korg; t=1747749984;
+	bh=FNhHK+vIU626XLH9xWgj5KHoVOtz0RNejOxNugX8W3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGOO/50xwjdDjOEYsWvy0m/QGF298yVR3C0vt2SrOttAlP+yEglJbmbo2EKBdjdTV
-	 GhM4/F2RCpNtAJcCvmCBfR2JkqUIB20b8t2QClIN7HS3mXfniHRaJu3GaWcyZzJVSw
-	 f0m/fYcjfN+Ogr248t7pDKT1mdpBAM7W8Elief6Q=
+	b=bDpeh/jKnX3KpNAzgRyR+h0aL7unk3RNa3tmTXThiT4Y7qNqAJDBzMQKYq7sU82Q8
+	 bqxfRNkVbWqDTJFXEFRZwSdrkaHX32ly2Zr/f6yxZcy1lz7+opWmpuEy/eGrxYkOct
+	 h8iXlzS8Si08FTNV1k60zdMwdKJ3GmLCn67FKyIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	Kyoji Ogasawara <sawara04.o@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.14 077/145] btrfs: add back warning for mount option commit values exceeding 300
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Divya Indi <divya.indi@oracle.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 082/117] tracing: samples: Initialize trace_array_printk() with the correct function
 Date: Tue, 20 May 2025 15:50:47 +0200
-Message-ID: <20250520125813.602163824@linuxfoundation.org>
+Message-ID: <20250520125807.248591976@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyoji Ogasawara <sawara04.o@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 4ce2affc6ef9f84b4aebbf18bd5c57397b6024eb upstream.
+commit 1b0c192c92ea1fe2dcb178f84adf15fe37c3e7c8 upstream.
 
-The Btrfs documentation states that if the commit value is greater than
-300 a warning should be issued. The warning was accidentally lost in the
-new mount API update.
+When using trace_array_printk() on a created instance, the correct
+function to use to initialize it is:
 
-Fixes: 6941823cc878 ("btrfs: remove old mount API code")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+  trace_array_init_printk()
+
+Not
+
+  trace_printk_init_buffer()
+
+The former is a proper function to use, the latter is for initializing
+trace_printk() and causes the NOTICE banner to be displayed.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Divya Indi <divya.indi@oracle.com>
+Link: https://lore.kernel.org/20250509152657.0f6744d9@gandalf.local.home
+Fixes: 89ed42495ef4a ("tracing: Sample module to demonstrate kernel access to Ftrace instances.")
+Fixes: 38ce2a9e33db6 ("tracing: Add trace_array_init_printk() to initialize instance trace_printk() buffers")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/fs.h    |    1 +
- fs/btrfs/super.c |    4 ++++
- 2 files changed, 5 insertions(+)
+ samples/ftrace/sample-trace-array.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/fs.h
-+++ b/fs/btrfs/fs.h
-@@ -285,6 +285,7 @@ enum {
- #define BTRFS_FEATURE_INCOMPAT_SAFE_CLEAR		0ULL
+--- a/samples/ftrace/sample-trace-array.c
++++ b/samples/ftrace/sample-trace-array.c
+@@ -112,7 +112,7 @@ static int __init sample_trace_array_ini
+ 	/*
+ 	 * If context specific per-cpu buffers havent already been allocated.
+ 	 */
+-	trace_printk_init_buffers();
++	trace_array_init_printk(tr);
  
- #define BTRFS_DEFAULT_COMMIT_INTERVAL	(30)
-+#define BTRFS_WARNING_COMMIT_INTERVAL	(300)
- #define BTRFS_DEFAULT_MAX_INLINE	(2048)
- 
- struct btrfs_dev_replace {
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -569,6 +569,10 @@ static int btrfs_parse_param(struct fs_c
- 		break;
- 	case Opt_commit_interval:
- 		ctx->commit_interval = result.uint_32;
-+		if (ctx->commit_interval > BTRFS_WARNING_COMMIT_INTERVAL) {
-+			btrfs_warn(NULL, "excessive commit interval %u, use with care",
-+				   ctx->commit_interval);
-+		}
- 		if (ctx->commit_interval == 0)
- 			ctx->commit_interval = BTRFS_DEFAULT_COMMIT_INTERVAL;
- 		break;
+ 	simple_tsk = kthread_run(simple_thread, NULL, "sample-instance");
+ 	if (IS_ERR(simple_tsk)) {
 
 
 
