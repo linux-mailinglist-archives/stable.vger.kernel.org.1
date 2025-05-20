@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-145112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FD0ABDA0D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE3DABDA9A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AB991BA2B81
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5D4C7B3852
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342A8242D89;
-	Tue, 20 May 2025 13:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FF413635C;
+	Tue, 20 May 2025 13:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTZtnRy9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrA0XCmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E5422D7A8;
-	Tue, 20 May 2025 13:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043ABDDA9;
+	Tue, 20 May 2025 13:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749195; cv=none; b=fouzZ5kuzw6C12sR/f8PGZ8Sd6CkE1KVNoo/ko59tOiiipnDSWXUGCUiUyHfMqn1FsDlLZv77uguk1B25cAEat9e5h40BqcN/lXjRvCjCb3tTbnUF8EnZGZmLJl1601vIldyhRMjxX57AI7FIHS0MNpvJ2hVq44OPLzeVBbezDM=
+	t=1747749459; cv=none; b=KzGnROdx7FK3p1x14/tfHEbgVQUvV++z8VSd9bVqUIWc9fNCWygiLR6Sz5toi1MNlFbgy9twR71U7FU2xbipy5tBeAFYV53q973SgaPuQlKpoOAMmoSMm/v9cLErULAF4iBCdMJ1q2Z2M38y3Q4bDMNFrrC+VIelzH5W8LJhoJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749195; c=relaxed/simple;
-	bh=5F7jRrFwmrJYwgFkNJvCvXyQ+gEBYQnCP3olKuAU1CU=;
+	s=arc-20240116; t=1747749459; c=relaxed/simple;
+	bh=MEyGJPLysh1DfMBgwV/mEOEvOKevIkjQB/WTgNy82N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBwb8WWagWThRAmagKieApMy19ssbZsibKj8FmYsgcC4TvlNDxxTQpPqkoLRwMSTKFasGGOuPqIbCWlQS64aIPO+bOdbHmDr0LUUk8eiJf4cGDVelr8CTK+sWRxODflE0ZfCLtZr77w2398rq20RwwkpX+5pSO+5rKYUmyFdtgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTZtnRy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372ADC4CEE9;
-	Tue, 20 May 2025 13:53:14 +0000 (UTC)
+	 MIME-Version; b=rLs6zDRop93ekAb7WY5VfKZ7ARBaYjcbp6X5mjLB/QDYFBkv0d6EDf0P71OswDmPTwbRqKT1gY6TK7Knktih9eoVtFIOJX7qIWNO8D+EpU9CxTfKNsCIK8X9uc7mrJRd2c4tdXk5nTXO2gvMbHxy5MVxwxnl/X6lt85qbWdIQN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrA0XCmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46A1C4CEE9;
+	Tue, 20 May 2025 13:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749194;
-	bh=5F7jRrFwmrJYwgFkNJvCvXyQ+gEBYQnCP3olKuAU1CU=;
+	s=korg; t=1747749458;
+	bh=MEyGJPLysh1DfMBgwV/mEOEvOKevIkjQB/WTgNy82N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTZtnRy9O7jMsSf+d9Y29hl2kyK27Pe0i9xf88wJ6sBtiq7rhxUaW+OEJk/77pKI8
-	 0nIPT4odiJZBrPTqBKgEzm/fMg7Cgxecmq9BhTOJ0Sb11ME0v7B7lPAAbi0g9/CRQ9
-	 3goOdx+vJuiXIIybe1SsLHE9TmGzR6Bp5dcyR7go=
+	b=qrA0XCmLMwTP1EZOOjrxmtjDaQ5a+N2yB94AVGobYI8zcjLOxBqzZ5xgkXilXRISi
+	 XCc9GCejThylgL7dZn/LsUv12WpZFJydgCa1jYvz8FU99yVjit8AByVGjpLC8MUBWA
+	 9MgkXHq5gqQxKrd/kYqMakk0xAijqfZlz6Qum3vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 5.15 25/59] x86/its: Add "vmexit" option to skip mitigation on some CPUs
+	Michael Kelley <mhklinux@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 51/97] hv_netvsc: Preserve contiguous PFN grouping in the page buffer array
 Date: Tue, 20 May 2025 15:50:16 +0200
-Message-ID: <20250520125754.858805294@linuxfoundation.org>
+Message-ID: <20250520125802.655177617@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,144 +61,258 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit 2665281a07e19550944e8354a2024635a7b2714a upstream.
+commit 41a6328b2c55276f89ea3812069fd7521e348bbf upstream.
 
-Ice Lake generation CPUs are not affected by guest/host isolation part of
-ITS. If a user is only concerned about KVM guests, they can now choose a
-new cmdline option "vmexit" that will not deploy the ITS mitigation when
-CPU is not affected by guest/host isolation. This saves the performance
-overhead of ITS mitigation on Ice Lake gen CPUs.
+Starting with commit dca5161f9bd0 ("hv_netvsc: Check status in
+SEND_RNDIS_PKT completion message") in the 6.3 kernel, the Linux
+driver for Hyper-V synthetic networking (netvsc) occasionally reports
+"nvsp_rndis_pkt_complete error status: 2".[1] This error indicates
+that Hyper-V has rejected a network packet transmit request from the
+guest, and the outgoing network packet is dropped. Higher level
+network protocols presumably recover and resend the packet so there is
+no functional error, but performance is slightly impacted. Commit
+dca5161f9bd0 is not the cause of the error -- it only added reporting
+of an error that was already happening without any notice. The error
+has presumably been present since the netvsc driver was originally
+introduced into Linux.
 
-When "vmexit" option selected, if the CPU is affected by ITS guest/host
-isolation, the default ITS mitigation is deployed.
+The root cause of the problem is that the netvsc driver in Linux may
+send an incorrectly formatted VMBus message to Hyper-V when
+transmitting the network packet. The incorrect formatting occurs when
+the rndis header of the VMBus message crosses a page boundary due to
+how the Linux skb head memory is aligned. In such a case, two PFNs are
+required to describe the location of the rndis header, even though
+they are contiguous in guest physical address (GPA) space. Hyper-V
+requires that two rndis header PFNs be in a single "GPA range" data
+struture, but current netvsc code puts each PFN in its own GPA range,
+which Hyper-V rejects as an error.
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+The incorrect formatting occurs only for larger packets that netvsc
+must transmit via a VMBus "GPA Direct" message. There's no problem
+when netvsc transmits a smaller packet by copying it into a pre-
+allocated send buffer slot because the pre-allocated slots don't have
+page crossing issues.
+
+After commit 14ad6ed30a10 ("net: allow small head cache usage with
+large MAX_SKB_FRAGS values") in the 6.14-rc4 kernel, the error occurs
+much more frequently in VMs with 16 or more vCPUs. It may occur every
+few seconds, or even more frequently, in an ssh session that outputs a
+lot of text. Commit 14ad6ed30a10 subtly changes how skb head memory is
+allocated, making it much more likely that the rndis header will cross
+a page boundary when the vCPU count is 16 or more. The changes in
+commit 14ad6ed30a10 are perfectly valid -- they just had the side
+effect of making the netvsc bug more prominent.
+
+Current code in init_page_array() creates a separate page buffer array
+entry for each PFN required to identify the data to be transmitted.
+Contiguous PFNs get separate entries in the page buffer array, and any
+information about contiguity is lost.
+
+Fix the core issue by having init_page_array() construct the page
+buffer array to represent contiguous ranges rather than individual
+pages. When these ranges are subsequently passed to
+netvsc_build_mpb_array(), it can build GPA ranges that contain
+multiple PFNs, as required to avoid the error "nvsp_rndis_pkt_complete
+error status: 2". If instead the network packet is sent by copying
+into a pre-allocated send buffer slot, the copy proceeds using the
+contiguous ranges rather than individual pages, but the result of the
+copying is the same. Also fix rndis_filter_send_request() to construct
+a contiguous range, since it has its own page buffer array.
+
+This change has a side benefit in CoCo VMs in that netvsc_dma_map()
+calls dma_map_single() on each contiguous range instead of on each
+page. This results in fewer calls to dma_map_single() but on larger
+chunks of memory, which should reduce contention on the swiotlb.
+
+Since the page buffer array now contains one entry for each contiguous
+range instead of for each individual page, the number of entries in
+the array can be reduced, saving 208 bytes of stack space in
+netvsc_xmit() when MAX_SKG_FRAGS has the default value of 17.
+
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=217503
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217503
+Cc: <stable@vger.kernel.org> # 6.1.x
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/20250513000604.1396-4-mhklinux@outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |    2 ++
- arch/x86/include/asm/cpufeatures.h              |    1 +
- arch/x86/kernel/cpu/bugs.c                      |   11 +++++++++++
- arch/x86/kernel/cpu/common.c                    |   19 ++++++++++++-------
- 4 files changed, 26 insertions(+), 7 deletions(-)
+ drivers/net/hyperv/hyperv_net.h   |   12 +++++++
+ drivers/net/hyperv/netvsc_drv.c   |   65 +++++++++-----------------------------
+ drivers/net/hyperv/rndis_filter.c |   24 ++------------
+ 3 files changed, 33 insertions(+), 68 deletions(-)
 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1934,6 +1934,8 @@
- 			off:    Disable mitigation.
- 			force:	Force the ITS bug and deploy default
- 				mitigation.
-+			vmexit: Only deploy mitigation if CPU is affected by
-+				guest/host isolation part of ITS.
+--- a/drivers/net/hyperv/hyperv_net.h
++++ b/drivers/net/hyperv/hyperv_net.h
+@@ -891,6 +891,18 @@ struct nvsp_message {
+ 				 sizeof(struct nvsp_message))
+ #define NETVSC_MIN_IN_MSG_SIZE sizeof(struct vmpacket_descriptor)
  
- 			For details see:
- 			Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -485,4 +485,5 @@
- #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
- #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
- #define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
-+#define X86_BUG_ITS_NATIVE_ONLY		X86_BUG(1*32 + 6) /* CPU is affected by ITS, VMX is not affected */
- #endif /* _ASM_X86_CPUFEATURES_H */
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1158,15 +1158,18 @@ do_cmd_auto:
- enum its_mitigation_cmd {
- 	ITS_CMD_OFF,
- 	ITS_CMD_ON,
-+	ITS_CMD_VMEXIT,
- };
++/* Maximum # of contiguous data ranges that can make up a trasmitted packet.
++ * Typically it's the max SKB fragments plus 2 for the rndis packet and the
++ * linear portion of the SKB. But if MAX_SKB_FRAGS is large, the value may
++ * need to be limited to MAX_PAGE_BUFFER_COUNT, which is the max # of entries
++ * in a GPA direct packet sent to netvsp over VMBus.
++ */
++#if MAX_SKB_FRAGS + 2 < MAX_PAGE_BUFFER_COUNT
++#define MAX_DATA_RANGES (MAX_SKB_FRAGS + 2)
++#else
++#define MAX_DATA_RANGES MAX_PAGE_BUFFER_COUNT
++#endif
++
+ /* Estimated requestor size:
+  * out_ring_size/min_out_msg_size + in_ring_size/min_in_msg_size
+  */
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -325,43 +325,10 @@ static u16 netvsc_select_queue(struct ne
+ 	return txq;
+ }
  
- enum its_mitigation {
- 	ITS_MITIGATION_OFF,
-+	ITS_MITIGATION_VMEXIT_ONLY,
- 	ITS_MITIGATION_ALIGNED_THUNKS,
- };
+-static u32 fill_pg_buf(unsigned long hvpfn, u32 offset, u32 len,
+-		       struct hv_page_buffer *pb)
+-{
+-	int j = 0;
+-
+-	hvpfn += offset >> HV_HYP_PAGE_SHIFT;
+-	offset = offset & ~HV_HYP_PAGE_MASK;
+-
+-	while (len > 0) {
+-		unsigned long bytes;
+-
+-		bytes = HV_HYP_PAGE_SIZE - offset;
+-		if (bytes > len)
+-			bytes = len;
+-		pb[j].pfn = hvpfn;
+-		pb[j].offset = offset;
+-		pb[j].len = bytes;
+-
+-		offset += bytes;
+-		len -= bytes;
+-
+-		if (offset == HV_HYP_PAGE_SIZE && len) {
+-			hvpfn++;
+-			offset = 0;
+-			j++;
+-		}
+-	}
+-
+-	return j + 1;
+-}
+-
+ static u32 init_page_array(void *hdr, u32 len, struct sk_buff *skb,
+ 			   struct hv_netvsc_packet *packet,
+ 			   struct hv_page_buffer *pb)
+ {
+-	u32 slots_used = 0;
+-	char *data = skb->data;
+ 	int frags = skb_shinfo(skb)->nr_frags;
+ 	int i;
  
- static const char * const its_strings[] = {
- 	[ITS_MITIGATION_OFF]			= "Vulnerable",
-+	[ITS_MITIGATION_VMEXIT_ONLY]		= "Mitigation: Vulnerable, KVM: Not affected",
- 	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
- };
+@@ -370,28 +337,28 @@ static u32 init_page_array(void *hdr, u3
+ 	 * 2. skb linear data
+ 	 * 3. skb fragment data
+ 	 */
+-	slots_used += fill_pg_buf(virt_to_hvpfn(hdr),
+-				  offset_in_hvpage(hdr),
+-				  len,
+-				  &pb[slots_used]);
  
-@@ -1192,6 +1195,8 @@ static int __init its_parse_cmdline(char
- 	} else if (!strcmp(str, "force")) {
- 		its_cmd = ITS_CMD_ON;
- 		setup_force_cpu_bug(X86_BUG_ITS);
-+	} else if (!strcmp(str, "vmexit")) {
-+		its_cmd = ITS_CMD_VMEXIT;
- 	} else {
- 		pr_err("Ignoring unknown indirect_target_selection option (%s).", str);
++	pb[0].offset = offset_in_hvpage(hdr);
++	pb[0].len = len;
++	pb[0].pfn = virt_to_hvpfn(hdr);
+ 	packet->rmsg_size = len;
+-	packet->rmsg_pgcnt = slots_used;
++	packet->rmsg_pgcnt = 1;
+ 
+-	slots_used += fill_pg_buf(virt_to_hvpfn(data),
+-				  offset_in_hvpage(data),
+-				  skb_headlen(skb),
+-				  &pb[slots_used]);
++	pb[1].offset = offset_in_hvpage(skb->data);
++	pb[1].len = skb_headlen(skb);
++	pb[1].pfn = virt_to_hvpfn(skb->data);
+ 
+ 	for (i = 0; i < frags; i++) {
+ 		skb_frag_t *frag = skb_shinfo(skb)->frags + i;
+-
+-		slots_used += fill_pg_buf(page_to_hvpfn(skb_frag_page(frag)),
+-					  skb_frag_off(frag),
+-					  skb_frag_size(frag),
+-					  &pb[slots_used]);
++		struct hv_page_buffer *cur_pb = &pb[i + 2];
++		u64 pfn = page_to_hvpfn(skb_frag_page(frag));
++		u32 offset = skb_frag_off(frag);
++
++		cur_pb->offset = offset_in_hvpage(offset);
++		cur_pb->len = skb_frag_size(frag);
++		cur_pb->pfn = pfn + (offset >> HV_HYP_PAGE_SHIFT);
  	}
-@@ -1239,6 +1244,12 @@ static void __init its_select_mitigation
- 	case ITS_CMD_OFF:
- 		its_mitigation = ITS_MITIGATION_OFF;
- 		break;
-+	case ITS_CMD_VMEXIT:
-+		if (boot_cpu_has_bug(X86_BUG_ITS_NATIVE_ONLY)) {
-+			its_mitigation = ITS_MITIGATION_VMEXIT_ONLY;
-+			goto out;
-+		}
-+		fallthrough;
- 	case ITS_CMD_ON:
- 		its_mitigation = ITS_MITIGATION_ALIGNED_THUNKS;
- 		if (!boot_cpu_has(X86_FEATURE_RETPOLINE))
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1143,6 +1143,8 @@ static const __initconst struct x86_cpu_
- #define RFDS		BIT(7)
- /* CPU is affected by Indirect Target Selection */
- #define ITS		BIT(8)
-+/* CPU is affected by Indirect Target Selection, but guest-host isolation is not affected */
-+#define ITS_NATIVE_ONLY	BIT(9)
+-	return slots_used;
++	return frags + 2;
+ }
  
- static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
-@@ -1163,16 +1165,16 @@ static const struct x86_cpu_id cpu_vuln_
- 	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
- 	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
-@@ -1389,8 +1391,11 @@ static void __init cpu_set_bug_bits(stru
- 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
- 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
+ static int count_skb_frag_slots(struct sk_buff *skb)
+@@ -482,7 +449,7 @@ static int netvsc_xmit(struct sk_buff *s
+ 	struct net_device *vf_netdev;
+ 	u32 rndis_msg_size;
+ 	u32 hash;
+-	struct hv_page_buffer pb[MAX_PAGE_BUFFER_COUNT];
++	struct hv_page_buffer pb[MAX_DATA_RANGES];
  
--	if (vulnerable_to_its(x86_arch_cap_msr))
-+	if (vulnerable_to_its(x86_arch_cap_msr)) {
- 		setup_force_cpu_bug(X86_BUG_ITS);
-+		if (cpu_matches(cpu_vuln_blacklist, ITS_NATIVE_ONLY))
-+			setup_force_cpu_bug(X86_BUG_ITS_NATIVE_ONLY);
-+	}
+ 	/* If VF is present and up then redirect packets to it.
+ 	 * Skip the VF if it is marked down or has no carrier.
+--- a/drivers/net/hyperv/rndis_filter.c
++++ b/drivers/net/hyperv/rndis_filter.c
+@@ -225,8 +225,7 @@ static int rndis_filter_send_request(str
+ 				  struct rndis_request *req)
+ {
+ 	struct hv_netvsc_packet *packet;
+-	struct hv_page_buffer page_buf[2];
+-	struct hv_page_buffer *pb = page_buf;
++	struct hv_page_buffer pb;
+ 	int ret;
  
- 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
- 		return;
+ 	/* Setup the packet to send it */
+@@ -235,27 +234,14 @@ static int rndis_filter_send_request(str
+ 	packet->total_data_buflen = req->request_msg.msg_len;
+ 	packet->page_buf_cnt = 1;
+ 
+-	pb[0].pfn = virt_to_phys(&req->request_msg) >>
+-					HV_HYP_PAGE_SHIFT;
+-	pb[0].len = req->request_msg.msg_len;
+-	pb[0].offset = offset_in_hvpage(&req->request_msg);
+-
+-	/* Add one page_buf when request_msg crossing page boundary */
+-	if (pb[0].offset + pb[0].len > HV_HYP_PAGE_SIZE) {
+-		packet->page_buf_cnt++;
+-		pb[0].len = HV_HYP_PAGE_SIZE -
+-			pb[0].offset;
+-		pb[1].pfn = virt_to_phys((void *)&req->request_msg
+-			+ pb[0].len) >> HV_HYP_PAGE_SHIFT;
+-		pb[1].offset = 0;
+-		pb[1].len = req->request_msg.msg_len -
+-			pb[0].len;
+-	}
++	pb.pfn = virt_to_phys(&req->request_msg) >> HV_HYP_PAGE_SHIFT;
++	pb.len = req->request_msg.msg_len;
++	pb.offset = offset_in_hvpage(&req->request_msg);
+ 
+ 	trace_rndis_send(dev->ndev, 0, &req->request_msg);
+ 
+ 	rcu_read_lock_bh();
+-	ret = netvsc_send(dev->ndev, packet, NULL, pb, NULL, false);
++	ret = netvsc_send(dev->ndev, packet, NULL, &pb, NULL, false);
+ 	rcu_read_unlock_bh();
+ 
+ 	return ret;
 
 
 
