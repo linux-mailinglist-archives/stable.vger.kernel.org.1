@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4B3ABD9FA
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:52:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C8BABDA75
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B5E3B6B61
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:52:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64E5D1B672D9
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C782459FE;
-	Tue, 20 May 2025 13:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDA3243370;
+	Tue, 20 May 2025 13:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKQM7+9Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6DdNt+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F90B2459FD;
-	Tue, 20 May 2025 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4B72459DA;
+	Tue, 20 May 2025 13:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749153; cv=none; b=upnJngI62W+lqFLI7nQEySkFA7LHAGphGdY/VInYKHRe2ZYrb1OPpZg7WAv++Gw2kJBMkmUeF1eEsFYR4u3XZSSIyBKWcUSsj4PZ9n0+GXdwp0XAzrdZtdIljYfw5dS/FSaniOEB4zpr5OfSBk+03hesuJIHXlpQnSmvmaPkn2c=
+	t=1747749422; cv=none; b=N/k3S4daICVDBevoFCiTh9Ffyqefu+K5wtR4bWFHjRlkZq38QPzHdR8p5klgDUAuDK0OZhk2hPIDMUny6Fo6R1g6gbqZ1AQsBgLpbH5zA7cbt1upY9WDR/YLFJyV2dBU0fuz8n1d0mFeCB85ELjK3+43foitZElzXUrffIai570=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749153; c=relaxed/simple;
-	bh=z+9u8BILfVmReEGhEcpIxrlYM5s24fKa9+B/wmXnfbQ=;
+	s=arc-20240116; t=1747749422; c=relaxed/simple;
+	bh=3B2cRyrpTLalrkrhLy8h3HJt3qe4BV2qG+BZroVkrfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afn4lnaLhuZpL0RtTB5gCow0CUhIWl0gAU7asRngSxtg3NEnqR33RhcWC2DY0x8mv+ZkG8A4I2e1iTfhrMrtEgJpnnWHEf2DRNoWJ1rjBdSC2FBNG883/7AWPst3YvE46bR5gV4XgDXHjS1KwnwH5tLgoI6kp8xogi2LRG8jIk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKQM7+9Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5754BC4CEE9;
-	Tue, 20 May 2025 13:52:32 +0000 (UTC)
+	 MIME-Version; b=o8TqLaY8OsF2s4QCyrmk7eEaM5ajQ5VjnWQJffhl1leIPHpeF2LMOKjklTzmnMx10fYVjXxF1Cmqz60ViqTJnItlt2cJq0D3rQE6OM0I2f1A+L2fWEcK1FVKBSFdBuHcNWiqlUhQMVuAc7kQrSEQWjcJlOt/BwOglPDjYuty7ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6DdNt+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F2BC4CEE9;
+	Tue, 20 May 2025 13:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749152;
-	bh=z+9u8BILfVmReEGhEcpIxrlYM5s24fKa9+B/wmXnfbQ=;
+	s=korg; t=1747749422;
+	bh=3B2cRyrpTLalrkrhLy8h3HJt3qe4BV2qG+BZroVkrfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKQM7+9YZEUF6KHBtrJAQfCYjk3rGYM0qjGh9KCxd30WT2FxoHLSwGA4VykYOny4J
-	 ohsbsm0bxw1hwtj9fTXmkNiq2n0ZKKTtyKPWOJXDtbQ0KKV3O27pwcHY4XsH/xD2Qe
-	 OiJPQTvNzJpEyE7qHDD0stiz9aqJ81o6V2SBtpcc=
+	b=U6DdNt+wOqEidLg1WVPHO6zG+CkmuuwsY4MGIpnHnYiNk6dnfcUnjkBIsPWa8BaIg
+	 aHhvVgMrTFcjfcYmVmpgGjZUV4YtMZkt/61M2PBpOboV4KFiKvWV3Myu0LDKJbUsoR
+	 QlqJ/d/XJ1SJApLX0PFotoW/cy1Pz5SFlDCqMhAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.15 14/59] x86,nospec: Simplify {JMP,CALL}_NOSPEC
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 40/97] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
 Date: Tue, 20 May 2025 15:50:05 +0200
-Message-ID: <20250520125754.398559258@linuxfoundation.org>
+Message-ID: <20250520125802.231790569@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Nathan Lynch <nathan.lynch@amd.com>
 
-commit 09d09531a51a24635bc3331f56d92ee7092f5516 upstream.
+commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
 
-Have {JMP,CALL}_NOSPEC generate the same code GCC does for indirect
-calls and rely on the objtool retpoline patching infrastructure.
+Several issues with this change:
 
-There's no reason these should be alternatives while the vast bulk of
-compiler generated retpolines are not.
+* The analysis is flawed and it's unclear what problem is being
+  fixed. There is no difference between wait_event_freezable_timeout()
+  and wait_event_timeout() with respect to device interrupts. And of
+  course "the interrupt notifying the finish of an operation happens
+  during wait_event_freezable_timeout()" -- that's how it's supposed
+  to work.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+* The link at the "Closes:" tag appears to be an unrelated
+  use-after-free in idxd.
+
+* It introduces a regression: dmatest threads are meant to be
+  freezable and this change breaks that.
+
+See discussion here:
+https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
+
+Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
+Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
+Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nospec-branch.h |   24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/dma/dmatest.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -119,25 +119,37 @@
- .endm
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -827,9 +827,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
  
- /*
-+ * Equivalent to -mindirect-branch-cs-prefix; emit the 5 byte jmp/call
-+ * to the retpoline thunk with a CS prefix when the register requires
-+ * a RAX prefix byte to encode. Also see apply_retpolines().
-+ */
-+.macro __CS_PREFIX reg:req
-+	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
-+	.ifc \reg,\rs
-+	.byte 0x2e
-+	.endif
-+	.endr
-+.endm
-+
-+/*
-  * JMP_NOSPEC and CALL_NOSPEC macros can be used instead of a simple
-  * indirect jmp/call which may be susceptible to the Spectre variant 2
-  * attack.
-  */
- .macro JMP_NOSPEC reg:req
- #ifdef CONFIG_RETPOLINE
--	ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), \
--		      __stringify(jmp __x86_indirect_thunk_\reg), X86_FEATURE_RETPOLINE, \
--		      __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), X86_FEATURE_RETPOLINE_LFENCE
-+	__CS_PREFIX \reg
-+	jmp	__x86_indirect_thunk_\reg
- #else
- 	jmp	*%\reg
-+	int3
- #endif
- .endm
+-			wait_event_timeout(thread->done_wait,
+-					   done->done,
+-					   msecs_to_jiffies(params->timeout));
++			wait_event_freezable_timeout(thread->done_wait,
++					done->done,
++					msecs_to_jiffies(params->timeout));
  
- .macro CALL_NOSPEC reg:req
- #ifdef CONFIG_RETPOLINE
--	ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; call *%\reg), \
--		      __stringify(call __x86_indirect_thunk_\reg), X86_FEATURE_RETPOLINE, \
--		      __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; call *%\reg), X86_FEATURE_RETPOLINE_LFENCE
-+	__CS_PREFIX \reg
-+	call	__x86_indirect_thunk_\reg
- #else
- 	call	*%\reg
- #endif
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
 
 
 
