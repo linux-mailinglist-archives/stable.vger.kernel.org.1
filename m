@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D043AABDCE1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:29:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA3BABDC06
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCA4B8C42D0
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3967B1884C69
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FFA2517B8;
-	Tue, 20 May 2025 14:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D668824C09C;
+	Tue, 20 May 2025 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhqLAISW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPE6NI7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E9D2517AC;
-	Tue, 20 May 2025 14:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932C5248F41;
+	Tue, 20 May 2025 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750799; cv=none; b=QPC9sOpsIhoAw0lJxzpw0zhLi2+EIKPsIeGPzkegMmk+iFyk1FYglBwK+HQKhH99XbIxQbYZnBCviMvtSvjjJ1qTvyagnChOqdkjw197X5psE1GCXt4kpK1/d+qvPs4Tc6s9WcdOATTXq/F55hQNUKA0w6Gwp3uHJkc7mYDZFeM=
+	t=1747750424; cv=none; b=JvTK09fYUz1WdKphwSRtD6hC/N+p6jLjGu/6zeXQrq69bDNyt4T68O6SV40iOoT+f+5GMoL6fVeR6m+LJgcyfIEd/KbmdEm2HX0K/ODLPzrA/PQFHw2gCAouiV5dTdlzg9n3jDm2uzp2Csbpt2mL2U+yXDxl2Zsqa0hwbbyo9Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750799; c=relaxed/simple;
-	bh=VbzGW9/v/gEC11cqHCF2STw270qXZuaO6zKwvfin6II=;
+	s=arc-20240116; t=1747750424; c=relaxed/simple;
+	bh=9FZED7vHY7AXHiu6JZK5sOXIgcaUI/4xZgHV/K60xmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHD+wXPirzU6lSJJExbMb7P3xByegA4/NAVr5N5BNuCqMx3DN9JR9XFNFzSWJpmpGR4VVgq6AOloHFXS7/8wZmipjKI5jqMZ4UnDooIe3Ul8xZXLMJomt4Eleqm+EU/NoqWUx0JzRY/lPDFHO64vfRYJb1xVxJFjP43gslQm+lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhqLAISW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D8C4CEE9;
-	Tue, 20 May 2025 14:19:58 +0000 (UTC)
+	 MIME-Version; b=tcWbhAxUwm0WeLhThYC7cdZL7Vrr549H5Gy0BQ+jSpkOdE1dqf//EkeQ9+643Znnw/4cfq0JK9A/773eD1WNcxTXmCcXHwkWh+mm3/CEEv2hZ6wDdEd/XLBrwRiPZSaRvLR+VnJ2v98IMAz/yrSIIOGUqh0osaCtlhWDdFZGiRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPE6NI7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0189C4CEE9;
+	Tue, 20 May 2025 14:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750799;
-	bh=VbzGW9/v/gEC11cqHCF2STw270qXZuaO6zKwvfin6II=;
+	s=korg; t=1747750424;
+	bh=9FZED7vHY7AXHiu6JZK5sOXIgcaUI/4xZgHV/K60xmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhqLAISWg38lRud9mQPSETo0dWmKwxFbVh8Qjccezjii8ewp816IsKmxz3rPd8K/O
-	 Wzy2pwLSQCRWFrKt9Hp+Qd8NUgO2lP6KP8I0s9oLrDUcgszS7yFscNSpDOHzFiMJLZ
-	 nY5pbIddVb/SeAMXrJsplo1vIaoD0g9ToVVigxBc=
+	b=QPE6NI7v/Z5oCNcGDQVK++7z9A5tkfhY1l6IbM0e9TGWJB/iDRdnSaSSTNw1E/B1m
+	 T6tl95y8Yi9qOGqWo3rAZgNV69KIcskfvfP30M5n3pTJh5pbffIsFJwc2J1XHyc2T/
+	 Qa/V8Vrq+f9bvDgIKsR6FnZcIoxytblbsquoc9zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	dmaengine@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@legrand.com>
-Subject: [PATCH 6.14 125/145] dmaengine: ti: k3-udma: Add missing locking
+	Fabio Estevam <festevam@denx.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH 6.12 140/143] drm/tiny: panel-mipi-dbi: Use drm_client_setup_with_fourcc()
 Date: Tue, 20 May 2025 15:51:35 +0200
-Message-ID: <20250520125815.443772349@linuxfoundation.org>
+Message-ID: <20250520125815.520289974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@legrand.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit fca280992af8c2fbd511bc43f65abb4a17363f2f upstream.
+commit 9c1798259b9420f38f1fa1b83e3d864c3eb1a83e upstream.
 
-Recent kernels complain about a missing lock in k3-udma.c when the lock
-validator is enabled:
+Since commit 559358282e5b ("drm/fb-helper: Don't use the preferred depth
+for the BPP default"), RGB565 displays such as the CFAF240320X no longer
+render correctly: colors are distorted and the content is shown twice
+horizontally.
 
-[    4.128073] WARNING: CPU: 0 PID: 746 at drivers/dma/ti/../virt-dma.h:169 udma_start.isra.0+0x34/0x238
-[    4.137352] CPU: 0 UID: 0 PID: 746 Comm: kworker/0:3 Not tainted 6.12.9-arm64 #28
-[    4.144867] Hardware name: pp-v12 (DT)
-[    4.148648] Workqueue: events udma_check_tx_completion
-[    4.153841] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.160834] pc : udma_start.isra.0+0x34/0x238
-[    4.165227] lr : udma_start.isra.0+0x30/0x238
-[    4.169618] sp : ffffffc083cabcf0
-[    4.172963] x29: ffffffc083cabcf0 x28: 0000000000000000 x27: ffffff800001b005
-[    4.180167] x26: ffffffc0812f0000 x25: 0000000000000000 x24: 0000000000000000
-[    4.187370] x23: 0000000000000001 x22: 00000000e21eabe9 x21: ffffff8000fa0670
-[    4.194571] x20: ffffff8001b6bf00 x19: ffffff8000fa0430 x18: ffffffc083b95030
-[    4.201773] x17: 0000000000000000 x16: 00000000f0000000 x15: 0000000000000048
-[    4.208976] x14: 0000000000000048 x13: 0000000000000000 x12: 0000000000000001
-[    4.216179] x11: ffffffc08151a240 x10: 0000000000003ea1 x9 : ffffffc08046ab68
-[    4.223381] x8 : ffffffc083cabac0 x7 : ffffffc081df3718 x6 : 0000000000029fc8
-[    4.230583] x5 : ffffffc0817ee6d8 x4 : 0000000000000bc0 x3 : 0000000000000000
-[    4.237784] x2 : 0000000000000000 x1 : 00000000001fffff x0 : 0000000000000000
-[    4.244986] Call trace:
-[    4.247463]  udma_start.isra.0+0x34/0x238
-[    4.251509]  udma_check_tx_completion+0xd0/0xdc
-[    4.256076]  process_one_work+0x244/0x3fc
-[    4.260129]  process_scheduled_works+0x6c/0x74
-[    4.264610]  worker_thread+0x150/0x1dc
-[    4.268398]  kthread+0xd8/0xe8
-[    4.271492]  ret_from_fork+0x10/0x20
-[    4.275107] irq event stamp: 220
-[    4.278363] hardirqs last  enabled at (219): [<ffffffc080a27c7c>] _raw_spin_unlock_irq+0x38/0x50
-[    4.287183] hardirqs last disabled at (220): [<ffffffc080a1c154>] el1_dbg+0x24/0x50
-[    4.294879] softirqs last  enabled at (182): [<ffffffc080037e68>] handle_softirqs+0x1c0/0x3cc
-[    4.303437] softirqs last disabled at (177): [<ffffffc080010170>] __do_softirq+0x1c/0x28
-[    4.311559] ---[ end trace 0000000000000000 ]---
+This regression is due to the fbdev emulation layer defaulting to 32 bits
+per pixel, whereas the display expects 16 bpp (RGB565). As a result, the
+framebuffer data is incorrectly interpreted by the panel.
 
-This commit adds the missing locking.
+Fix the issue by calling drm_client_setup_with_fourcc() with a format
+explicitly selected based on the display's bits-per-pixel value. For 16
+bpp, use DRM_FORMAT_RGB565; for other values, fall back to the previous
+behavior. This ensures that the allocated framebuffer format matches the
+hardware expectations, avoiding color and layout corruption.
 
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: dmaengine@vger.kernel.org
+Tested on a CFAF240320X display with an RGB565 configuration, confirming
+correct colors and layout after applying this patch.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Ronald Wahl <ronald.wahl@legrand.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20250414173113.80677-1-rwahl@gmx.de
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 559358282e5b ("drm/fb-helper: Don't use the preferred depth for the BPP default")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250417103458.2496790-1-festevam@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/k3-udma.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/tiny/panel-mipi-dbi.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -1091,8 +1091,11 @@ static void udma_check_tx_completion(str
- 	u32 residue_diff;
- 	ktime_t time_diff;
- 	unsigned long delay;
-+	unsigned long flags;
+--- a/drivers/gpu/drm/tiny/panel-mipi-dbi.c
++++ b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
+@@ -390,7 +390,10 @@ static int panel_mipi_dbi_spi_probe(stru
  
- 	while (1) {
-+		spin_lock_irqsave(&uc->vc.lock, flags);
-+
- 		if (uc->desc) {
- 			/* Get previous residue and time stamp */
- 			residue_diff = uc->tx_drain.residue;
-@@ -1127,6 +1130,8 @@ static void udma_check_tx_completion(str
- 				break;
- 			}
+ 	spi_set_drvdata(spi, drm);
  
-+			spin_unlock_irqrestore(&uc->vc.lock, flags);
-+
- 			usleep_range(ktime_to_us(delay),
- 				     ktime_to_us(delay) + 10);
- 			continue;
-@@ -1143,6 +1148,8 @@ static void udma_check_tx_completion(str
+-	drm_client_setup(drm, NULL);
++	if (bpp == 16)
++		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB565);
++	else
++		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB888);
  
- 		break;
- 	}
-+
-+	spin_unlock_irqrestore(&uc->vc.lock, flags);
+ 	return 0;
  }
- 
- static irqreturn_t udma_ring_irq_handler(int irq, void *data)
 
 
 
