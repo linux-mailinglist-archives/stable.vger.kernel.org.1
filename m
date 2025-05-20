@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-145539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D56ABDD05
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:32:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B67BBABDC88
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A2C4E29FC
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:19:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05D497A2A9D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E0A253F0E;
-	Tue, 20 May 2025 14:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10572459F7;
+	Tue, 20 May 2025 14:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiebiHMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szlpVEdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1317E24E4D2;
-	Tue, 20 May 2025 14:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DAA242D73;
+	Tue, 20 May 2025 14:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750467; cv=none; b=aLnBxY18fS4i1L0vTdQgxDRAMwgaD20KnLCjGdsLYR+5HX0kqLOfEunK7kPJKzxCKT+UgpoaOTgiXjJIfwCdmVnti7NUoog6yNGRuj6OLuEKNKudIp5d1S9LUH/Lg6ivBb45ZyjALUIYgFgxgEetOWZkQWEqgaW92M7m67416SI=
+	t=1747750501; cv=none; b=mI00pm3onDId7rUTdniyKXb5KcpM6gTcfr7ZNm+0akEfX4osxg42cu/phVuXM5VMegCUxuOBhybkmb41J1MgJmophV7kmoviVt2Wt0nK7JoGzqsD/hFRzWCXCkeL3A/Zq4g3m8SGNA3F+VwkrreWxAv1JFh+aPJ2tNMFOeUCtX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750467; c=relaxed/simple;
-	bh=h0TPl0pgEVJNQMBbS+b2WL68bS+NIFa8b/MDPwSe1U0=;
+	s=arc-20240116; t=1747750501; c=relaxed/simple;
+	bh=wif6lSBP6qvGIoBTfFp1Cl7oKKuOIUfJTOcmcE/A7hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AMEAtu2rBEn+UiWfD7TFDUn1vHOfUe/XSNfGe9FKRn0y24vqrkpUZb6l/bJNdLqD9067f46V8wxMewwydDX8pszungm75wKCghymAZZ2/L4E/XmfNpqtcrL9MWhVCh3/cmwYCaDtZauPHg7qMgZ4YZ2OjVjtu94PxkhCEl5NHvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiebiHMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B63C4CEE9;
-	Tue, 20 May 2025 14:14:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RkWEMpYI/CTD18f+DCVZuc0qVqUFCTIW76pAkPUeKIoiAxtPCI9ewWBCK4yUdRog9PTOjRFlHujnBmEWlXbW1BxoudOEhMSgd6dLHy3yfYEEk1YtBQIghNQDsSugcVEoyFsY/HZqUddHRoaDSd4ZvJexE/5JAfkgN3fwST6EZBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szlpVEdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F63C4CEE9;
+	Tue, 20 May 2025 14:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750466;
-	bh=h0TPl0pgEVJNQMBbS+b2WL68bS+NIFa8b/MDPwSe1U0=;
+	s=korg; t=1747750501;
+	bh=wif6lSBP6qvGIoBTfFp1Cl7oKKuOIUfJTOcmcE/A7hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiebiHMvx9ZN1RacErS33O7XR57oe92d7J+rR/8XYhaV3SJnqwYDHmB7OWV9+RUoX
-	 /7uSitRYf4+hs3mQshm28/APtqioIMbupdZjl5gkHAqa3kWa+2HXkRZoXOLij3+Bqv
-	 Ao3CjdCZTZLeRgDqypU5sHJTA9wL5cGfHjAP0WF8=
+	b=szlpVEdUnwqeHAaolinmr9tgKd88JtAO7CdR4ymw9K0wHJH3Oh+rU8myHbK1Tfmz3
+	 biRoFijuYdCYrLhQ0uw+E0DIQyevt6GZQVyFFug+3bSt85CmM7xi5hffZO8+eu5qNM
+	 MSFI42iW46BYRlMC3yRzZ2LqJ82y+aFFui8CDXP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Xinhui Yang <cyan@cyano.uk>,
-	Rong Zhang <i@rong.moe>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Yemu Lu <prcups@krgm.moe>,
-	Runhua He <hua@aosc.io>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Armin Wolf <W_Armin@gmx.de>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 010/145] platform/x86/amd/pmc: Declare quirk_spurious_8042 for MECHREVO Wujie 14XA (GX4HRXL)
-Date: Tue, 20 May 2025 15:49:40 +0200
-Message-ID: <20250520125810.950492313@linuxfoundation.org>
+Subject: [PATCH 6.14 011/145] platform/x86: asus-wmi: Fix wlan_ctrl_by_user detection
+Date: Tue, 20 May 2025 15:49:41 +0200
+Message-ID: <20250520125810.988813961@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
 References: <20250520125810.535475500@linuxfoundation.org>
@@ -72,63 +68,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Runhua He <hua@aosc.io>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 0887817e4953885fbd6a5c1bec2fdd339261eb19 ]
+[ Upstream commit bfcfe6d335a967f8ea0c1980960e6f0205b5de6e ]
 
-MECHREVO Wujie 14XA (GX4HRXL) wakes up immediately after s2idle entry.
-This happens regardless of whether the laptop is plugged into AC power,
-or whether any peripheral is plugged into the laptop.
+The wlan_ctrl_by_user detection was introduced by commit a50bd128f28c
+("asus-wmi: record wlan status while controlled by userapp").
 
-Similar to commit a55bdad5dfd1 ("platform/x86/amd/pmc: Disable keyboard
-wakeup on AMD Framework 13"), the MECHREVO Wujie 14XA wakes up almost
-instantly after s2idle suspend entry (IRQ1 is the keyboard):
+Quoting from that commit's commit message:
 
-2025-04-18 17:23:57,588 DEBUG:  PM: Triggering wakeup from IRQ 9
-2025-04-18 17:23:57,588 DEBUG:  PM: Triggering wakeup from IRQ 1
+"""
+When you call WMIMethod(DSTS, 0x00010011) to get WLAN status, it may return
 
-Add this model to the spurious_8042 quirk to workaround this.
+(1) 0x00050001 (On)
+(2) 0x00050000 (Off)
+(3) 0x00030001 (On)
+(4) 0x00030000 (Off)
+(5) 0x00000002 (Unknown)
 
-This patch does not affect the wake-up function of the built-in keyboard.
-Because the firmware of this machine adds an insurance for keyboard
-wake-up events, as it always triggers an additional IRQ 9 to wake up the
-system.
+(1), (2) means that the model has hardware GPIO for WLAN, you can call
+WMIMethod(DEVS, 0x00010011, 1 or 0) to turn WLAN on/off.
+(3), (4) means that the model doesn’t have hardware GPIO, you need to use
+API or driver library to turn WLAN on/off, and call
+WMIMethod(DEVS, 0x00010012, 1 or 0) to set WLAN LED status.
+After you set WLAN LED status, you can see the WLAN status is changed with
+WMIMethod(DSTS, 0x00010011). Because the status is recorded lastly
+(ex: Windows), you can use it for synchronization.
+(5) means that the model doesn’t have WLAN device.
 
-Suggested-by: Mingcong Bai <jeffbai@aosc.io>
-Suggested-by: Xinhui Yang <cyan@cyano.uk>
-Suggested-by: Rong Zhang <i@rong.moe>
-Fixes: a55bdad5dfd1 ("platform/x86/amd/pmc: Disable keyboard wakeup on AMD Framework 13")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4166
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://zhuanldan.zhihu.com/p/730538041
-Tested-by: Yemu Lu <prcups@krgm.moe>
-Signed-off-by: Runhua He <hua@aosc.io>
-Link: https://lore.kernel.org/r/20250507100103.995395-1-hua@aosc.io
+WLAN is the ONLY special case with upper rule.
+"""
+
+The wlan_ctrl_by_user flag should be set on 0x0003000? ((3), (4) above)
+return values, but the flag mistakenly also gets set on laptops with
+0x0005000? ((1), (2)) return values. This is causing rfkill problems on
+laptops where 0x0005000? is returned.
+
+Fix the check to only set the wlan_ctrl_by_user flag for 0x0003000?
+return values.
+
+Fixes: a50bd128f28c ("asus-wmi: record wlan status while controlled by userapp")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219786
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250501131702.103360-2-hdegoede@redhat.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/platform/x86/asus-wmi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index b4f49720c87f6..2e3f6fc67c568 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -217,6 +217,13 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "03.05"),
- 		}
- 	},
-+	{
-+		.ident = "MECHREVO Wujie 14X (GX4HRXL)",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "WUJIE14-GX4HRXL"),
-+		}
-+	},
- 	{}
- };
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index 38ef778e8c19b..f66d152e265da 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -4777,7 +4777,8 @@ static int asus_wmi_add(struct platform_device *pdev)
+ 		goto fail_leds;
  
+ 	asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_WLAN, &result);
+-	if (result & (ASUS_WMI_DSTS_PRESENCE_BIT | ASUS_WMI_DSTS_USER_BIT))
++	if ((result & (ASUS_WMI_DSTS_PRESENCE_BIT | ASUS_WMI_DSTS_USER_BIT)) ==
++	    (ASUS_WMI_DSTS_PRESENCE_BIT | ASUS_WMI_DSTS_USER_BIT))
+ 		asus->driver->wlan_ctrl_by_user = 1;
+ 
+ 	if (!(asus->driver->wlan_ctrl_by_user && ashs_present())) {
 -- 
 2.39.5
 
