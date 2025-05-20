@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-145108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B800CABDA0E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB6DABDA80
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E6427B0461
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:51:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DCE94A2A07
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30384242D8B;
-	Tue, 20 May 2025 13:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C09D2459E3;
+	Tue, 20 May 2025 13:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElWyXZtw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMaD0wES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8FD241103;
-	Tue, 20 May 2025 13:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA3822D7A8;
+	Tue, 20 May 2025 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749183; cv=none; b=t6lXLXVWO80wtgt7BMfjyA98wciYAAnXBGokAA3ntSmSvY5VXkjsyOUtxAUZFdALRH2i2PmOpJx7E9ZACTNt1GsvyDezDu6BygDi+c0qPcjig3FSHEiRby81ia9WI5CBAZ91vsqc2DuyQBagyNJpTImEylir4CVhVh2zDE78TBY=
+	t=1747749447; cv=none; b=EYJ6j+t0MHmC3+reY9EpoLCrraB3qjKG8y8ih2YaB/SGhY6+2Lsqwr1nkwmqSNZkVfMQDsyNBulOVu0+WHzxGEOXNUE1w2ONC8ulxMLdTOxj/DKqgi20p9thQL0hs89gli0wJdFZSyx38pUH14fMkjYpHCkcnyUYihX2uS96q0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749183; c=relaxed/simple;
-	bh=7nhQ3/hl6y0LEFYBpE8EHwPytprFFdf3QAV0llBkcj4=;
+	s=arc-20240116; t=1747749447; c=relaxed/simple;
+	bh=PEh7cDZ5CRR7UqzFZgT19rS0fHSQJTUbKAJ9d6KbB5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0S55sYVv5/O+LhLJ5WxK6D7L6pWbcnqKc0gVRRrlvkKpxTkS+jeqcMw6fgTD3wg/RojVCP5ub1kndNO1pxWHedY0o7hsHdZ80NT2nSco6OUMJ7lDYm1cdvkK3aZkB0AwK/dF2/e6G6oHjLPJv8xFOOY7klE71qQHQP/CS8UpGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElWyXZtw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E527CC4CEE9;
-	Tue, 20 May 2025 13:53:01 +0000 (UTC)
+	 MIME-Version; b=XjddbZt9ylqF5q5jGbsobAEUrzz3rPa0IO0N/wl/o5DCzWZVL+B2if0mvccIOLMHLLKU3CiU97lQR75wns155PMViKOXXDU3nyppcIRUga9PkgD7nhN3u2u/1DEIobnEk/2hh+8Hq6heOkvMkZQjrYQdReFuxbYhWR+SokEA9c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMaD0wES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52819C4CEEB;
+	Tue, 20 May 2025 13:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749182;
-	bh=7nhQ3/hl6y0LEFYBpE8EHwPytprFFdf3QAV0llBkcj4=;
+	s=korg; t=1747749446;
+	bh=PEh7cDZ5CRR7UqzFZgT19rS0fHSQJTUbKAJ9d6KbB5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ElWyXZtwDZQoL2bSUL2isVCnPrgnIzsjnj7ulVZjsqOxaNYm/lIwWJmXFJ4OpEZIA
-	 SC2RY+tbKmDEnV08DJrNHF7wDfeI35KLTjyvgjtN7x2EzXI1iIaaba+mAOBvyC6kDE
-	 +ap+BLUv9iF1WNAn54qSG09369JF5JyAGm+oU6Bs=
+	b=kMaD0wESg8WgeSZpmA3LQ31weDhEVwA3DAReW0lws7e3fIdgTvPnXmsBGI09Ab9K8
+	 OXf+t6XAKnX1Ng/4vRG0tPOVUZOwFfyB+reaY+5Gl6u1wqrNdruGnGUnHC0Dn59pvT
+	 4No0VVO+n+FEVX44Q5pXwkppAo2+yXaB58J30VFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH 5.15 21/59] x86/alternative: Optimize returns patching
+	Christian Heusel <christian@heusel.eu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 47/97] ALSA: usb-audio: Add sample rate quirk for Audioengine D1
 Date: Tue, 20 May 2025 15:50:12 +0200
-Message-ID: <20250520125754.696741072@linuxfoundation.org>
+Message-ID: <20250520125802.503509748@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Christian Heusel <christian@heusel.eu>
 
-commit d2408e043e7296017420aa5929b3bba4d5e61013 upstream.
+commit 2b24eb060c2bb9ef79e1d3bcf633ba1bc95215d6 upstream.
 
-Instead of decoding each instruction in the return sites range only to
-realize that that return site is a jump to the default return thunk
-which is needed - X86_FEATURE_RETHUNK is enabled - lift that check
-before the loop and get rid of that loop overhead.
+A user reported on the Arch Linux Forums that their device is emitting
+the following message in the kernel journal, which is fixed by adding
+the quirk as submitted in this patch:
 
-Add comments about what gets patched, while at it.
+    > kernel: usb 1-2: current rate 8436480 is different from the runtime rate 48000
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230512120952.7924-1-bp@alien8.de
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+There also is an entry for this product line added long time ago.
+Their specific device has the following ID:
+
+    $ lsusb | grep Audio
+    Bus 001 Device 002: ID 1101:0003 EasyPass Industrial Co., Ltd Audioengine D1
+
+Link: https://bbs.archlinux.org/viewtopic.php?id=305494
+Fixes: 93f9d1a4ac593 ("ALSA: usb-audio: Apply sample rate quirk for Audioengine D1")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Link: https://patch.msgid.link/20250512-audioengine-quirk-addition-v1-1-4c370af6eff7@heusel.eu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/alternative.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -620,13 +620,12 @@ static int patch_return(void *addr, stru
- {
- 	int i = 0;
- 
-+	/* Patch the custom return thunks... */
- 	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
--		if (x86_return_thunk == __x86_return_thunk)
--			return -1;
--
- 		i = JMP32_INSN_SIZE;
- 		__text_gen_insn(bytes, JMP32_INSN_OPCODE, addr, x86_return_thunk, i);
- 	} else {
-+		/* ... or patch them out if not needed. */
- 		bytes[i++] = RET_INSN_OPCODE;
- 	}
- 
-@@ -639,6 +638,14 @@ void __init_or_module noinline apply_ret
- {
- 	s32 *s;
- 
-+	/*
-+	 * Do not patch out the default return thunks if those needed are the
-+	 * ones generated by the compiler.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_RETHUNK) &&
-+	    (x86_return_thunk == __x86_return_thunk))
-+		return;
-+
- 	for (s = start; s < end; s++) {
- 		void *dest = NULL, *addr = (void *)s + *s;
- 		struct insn insn;
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2146,6 +2146,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_FIXED_RATE),
+ 	DEVICE_FLG(0x0fd9, 0x0008, /* Hauppauge HVR-950Q */
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
++	DEVICE_FLG(0x1101, 0x0003, /* Audioengine D1 */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x1224, 0x2a25, /* Jieli Technology USB PHY 2.0 */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
+ 	DEVICE_FLG(0x1395, 0x740a, /* Sennheiser DECT */
 
 
 
