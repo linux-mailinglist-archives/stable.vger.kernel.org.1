@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB384ABDD22
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:34:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE45ABDB43
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9DD6170AF9
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:19:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4A598C2EC6
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D9F254861;
-	Tue, 20 May 2025 14:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2658635D;
+	Tue, 20 May 2025 14:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2tI+93w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKWe6a0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441D9253F25;
-	Tue, 20 May 2025 14:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC510242D92;
+	Tue, 20 May 2025 14:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750470; cv=none; b=qO6E43JWESISEAOYK5xyxWw0qKd0wa4xHwCOZ2pt+fqNQRbVVSix1b/2z5IaCyBlfDs/4BxJoTDpi5/PscFHa9oXerEKC63J4auHCLFGJs7jMG98dcGWBMb9VoUGpdJEInlBrAgGCiDx0BiEtFZlBxwksbXTAGVOLT1h4ufPjTY=
+	t=1747749770; cv=none; b=XtfNWFvaXfOi8naqbrUCpvLmvZzkk5EqSK4xWAKnFGqUuF0sp+eZL0HHS2BBw8F7vfus2M/1aaQ8oTC3MrWYkzYb1E6++tGrRHQFbd7wsHW8ezstej3Ed+tGVYFPtMZNe/dnLZwscIlo9L3T7ebc8Q3lJ1XpfTzeMPzb4YCGsFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750470; c=relaxed/simple;
-	bh=3pXymaAZX/YIEUkfApLWcZaimpsgjdmT3DQEI3H3qVM=;
+	s=arc-20240116; t=1747749770; c=relaxed/simple;
+	bh=K3akb0ELxL9O28CBr3MC7skzNCFiiwt7DnohKU/+d8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S2AU+aQDj4rGpANle1gK9xzcN9OtnXIIApdkuEegX2CT5pvy706NRNh03AYtz7Jiz0EdUNagUwoxfvhJbZVmxfzTZMmWUCIihQQisqPBPAgCqbKt0OKo7QdBmfuFw5ggaXqucRIL4Gd/OVUdKs2n0VJ2AJJFGC3NvtqCRCVHiw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2tI+93w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EA1C4CEE9;
-	Tue, 20 May 2025 14:14:29 +0000 (UTC)
+	 MIME-Version; b=aRLmqzRwlIg2P7Z4meVu1byhg7R6c3LdqKno56TU1zDDs5S/IIodfQ9tf6iwd1ufZRm9ocr83glEN0zA/PK4Qrtw96ORhUnp5mFtkoPmKwJ9Sar9VVNf2V7EhljGYkoyTsRiTnII4vAOsrRlKSHCppj1+03dN42G/KJkBMsLPyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKWe6a0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38BA8C4CEEA;
+	Tue, 20 May 2025 14:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750470;
-	bh=3pXymaAZX/YIEUkfApLWcZaimpsgjdmT3DQEI3H3qVM=;
+	s=korg; t=1747749770;
+	bh=K3akb0ELxL9O28CBr3MC7skzNCFiiwt7DnohKU/+d8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2tI+93wfUTEFSl24u/J64llOFCcjBaPrDUBfWxxDyfOHreX+qpoimIBGvwhRv2VU
-	 QocCx9mC5L3OONOCgMALLnYG0XIE2IW+lCYC7g9k4ASJ76AViCeYz4irB+ZXaKfA1T
-	 uXkQgOQaSABmg0G52U999pvCX7MlvKuVsVaoQ658=
+	b=hKWe6a0G8WOiRVlXV5/8ziPJQ04RQXgQvnXCgLz9yySlQPgt1i9taZfCzJHKp8mL5
+	 mQT8RgXjVOQqceQdFQ8m6v9aUuXxdX9HKH5P0FjfYS11PGYLn6yCz8RsWX2T5GmjSB
+	 p3OA25dGRFe/4Ry/wHvYLy/lR9CQnMwuh3D91DEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ma Jun <Jun.Ma2@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 019/145] iio: adc: ad7606: check for NULL before calling sw_mode_config()
+Subject: [PATCH 6.6 024/117] drm/amdgpu: Fix the runtime resume failure issue
 Date: Tue, 20 May 2025 15:49:49 +0200
-Message-ID: <20250520125811.306905853@linuxfoundation.org>
+Message-ID: <20250520125804.939032847@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 5257d80e22bf27009d6742e4c174f42cfe54e425 ]
+[ Upstream commit bbfaf2aea7164db59739728d62d9cc91d64ff856 ]
 
-Check that the sw_mode_config function pointer is not NULL before
-calling it. Not all buses define this callback, which resulted in a NULL
-pointer dereference.
+Don't set power state flag when system enter runtime suspend,
+or it may cause runtime resume failure issue.
 
-Fixes: e571c1902116 ("iio: adc: ad7606: move scale_setup as function pointer on chip-info")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250318-iio-adc-ad7606-improvements-v2-1-4b605427774c@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 3a9626c816db ("drm/amd: Stop evicting resources on APUs in suspend")
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Stable-dep-of: d0ce1aaa8531 ("Revert "drm/amd: Stop evicting resources on APUs in suspend"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 7985570ed1521..0339e27f92c32 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -1228,9 +1228,11 @@ static int ad7616_sw_mode_setup(struct iio_dev *indio_dev)
- 	st->write_scale = ad7616_write_scale_sw;
- 	st->write_os = &ad7616_write_os_sw;
- 
--	ret = st->bops->sw_mode_config(indio_dev);
--	if (ret)
--		return ret;
-+	if (st->bops->sw_mode_config) {
-+		ret = st->bops->sw_mode_config(indio_dev);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	/* Activate Burst mode and SEQEN MODE */
- 	return ad7606_write_mask(st, AD7616_CONFIGURATION_REGISTER,
-@@ -1261,6 +1263,9 @@ static int ad7606b_sw_mode_setup(struct iio_dev *indio_dev)
- 	st->write_scale = ad7606_write_scale_sw;
- 	st->write_os = &ad7606_write_os_sw;
- 
-+	if (!st->bops->sw_mode_config)
-+		return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+index 8b8e273662b39..a6fd52aed91ab 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -1534,6 +1534,9 @@ bool amdgpu_acpi_is_s0ix_active(struct amdgpu_device *adev)
+  */
+ void amdgpu_choose_low_power_state(struct amdgpu_device *adev)
+ {
++	if (adev->in_runpm)
++		return;
 +
- 	return st->bops->sw_mode_config(indio_dev);
- }
- 
+ 	if (amdgpu_acpi_is_s0ix_active(adev))
+ 		adev->in_s0ix = true;
+ 	else if (amdgpu_acpi_is_s3_active(adev))
 -- 
 2.39.5
 
