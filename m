@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC8EEABDC7C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CBEBABDC6F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 395621BA7172
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AA2E7B8A9C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966AE2472AF;
-	Tue, 20 May 2025 14:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8004E25393F;
+	Tue, 20 May 2025 14:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVBzlp5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IntQWaxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F3622D794;
-	Tue, 20 May 2025 14:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3988125333E;
+	Tue, 20 May 2025 14:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750696; cv=none; b=bBREZn1R20cEXirMICS2HwoFqDlhWytzhoQ0bgnQocsX1ejmc0Q0/GzxOfPNne95PexgDc8SygXDmfttQo3XtFQLYlgFhT9ZVoSn71au+KtZQvnex2g2itQz12ZFlGU38TlyVYPmwFppqsve1D+STXY+IcHQqGwifgFZBBxmi0Y=
+	t=1747750391; cv=none; b=Tis5p0x3rStgeoc1pQ6LeAuiRvST2b8775al296li0RaNGix/RKfyNGPrpukLXLxxVxKPoQ6Uukz+/6qSRkEAnXMPoebizn1wk3jWAoiVW+bC/1B7S5lJBeHdo6NBkBhvCKkvGAtwPHz4cJeNZnZG3OZfZfo6DpyYBLLKd3PlnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750696; c=relaxed/simple;
-	bh=W5KzE1JBc2kYp0JLfjyfcjS2H5+gmIa9925Whicv0zo=;
+	s=arc-20240116; t=1747750391; c=relaxed/simple;
+	bh=Ii81AJZjOWz9wsvfQVS7ZqtGwmnVwjBi05Q0k3Pm1v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5d41+hoq/D28KHS+wdeY60AhejuOx0IdSF6e9QwFKSyDPU0E4SspxHW1FWMx1dWU3YqSwdB4a9s61MHE3tDbA5W0abAYAixNoCbsMsOsLk9XAkwLkRwX3ujGITnRBxi+FMqU824zN1+a4nqSUz2dE59Ja62iELDEkjIccW9WDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVBzlp5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD619C4CEE9;
-	Tue, 20 May 2025 14:18:15 +0000 (UTC)
+	 MIME-Version; b=tQNKIZi+TvUhNcvdi5hnLhL3Ei1dhxlB2opYJUPKyFEabrwDHKEepD5fUROhd/an5iiHJGatflazCTsiDXtSFF7uRblSxOwEKNRV7/1sVDLoLvijcq4e2+A4U4wGl13sJw3mjZWQaeVjdqfU4IxnnMknnzpuPrkTYIdvwXhKn+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IntQWaxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44240C4CEE9;
+	Tue, 20 May 2025 14:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750696;
-	bh=W5KzE1JBc2kYp0JLfjyfcjS2H5+gmIa9925Whicv0zo=;
+	s=korg; t=1747750390;
+	bh=Ii81AJZjOWz9wsvfQVS7ZqtGwmnVwjBi05Q0k3Pm1v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVBzlp5fJ+mhbNSQUNnSSkFM/7ng/pHVMqz4V8S8snBbcISy0aGkAwYUEJMqPHbSU
-	 5gysj4mo4fIfagJ76eVsVhT6wrfl6XyU6+Vb7obpvgX9qdT7BtVYIdth/evSsYCW8m
-	 kenbBqbNYgxQMYyVO250Hb4KmVg30Ev2JBSdmP2I=
+	b=IntQWaxnqKj/YkVTDRJFJLvwHoq0mWMuNSyGt5smYx34ZIP6s1HgSxZd9IHMcmZn/
+	 pbyYKibwsntPa9O6yJY1bY5ka02zRusdAzt3+X6zZYjy81eMpWgi3edidcsEWYRg8T
+	 AVfP4zxm/pnVxjiLNWZAqaLj/uP0lne+6WZi+pQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuel Strobel <emanuel.strobel@yahoo.com>,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.14 092/145] arm64: dts: amlogic: dreambox: fix missing clkc_audio node
+	Ma Ke <make24@iscas.ac.cn>,
+	Thierry Reding <treding@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 107/143] phy: Fix error handling in tegra_xusb_port_init
 Date: Tue, 20 May 2025 15:51:02 +0200
-Message-ID: <20250520125814.170308947@linuxfoundation.org>
+Message-ID: <20250520125814.248820190@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hewitt <christianshewitt@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 0f67578587bb9e5a8eecfcdf6b8a501b5bd90526 upstream.
+commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
 
-Add the clkc_audio node to fix audio support on Dreambox One/Two.
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-Fixes: 83a6f4c62cb1 ("arm64: dts: meson: add initial support for Dreambox One/Two")
-CC: stable@vger.kernel.org
-Suggested-by: Emanuel Strobel <emanuel.strobel@yahoo.com>
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250503084443.3704866-1-christianshewitt@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-g12b-dreambox.dtsi |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/phy/tegra/xusb.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/amlogic/meson-g12b-dreambox.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-g12b-dreambox.dtsi
-@@ -116,6 +116,10 @@
- 	status = "okay";
- };
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -548,16 +548,16 @@ static int tegra_xusb_port_init(struct t
  
-+&clkc_audio {
-+	status = "okay";
-+};
-+
- &frddr_a {
- 	status = "okay";
- };
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	err = device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	return 0;
+ 
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
+ }
+ 
 
 
 
