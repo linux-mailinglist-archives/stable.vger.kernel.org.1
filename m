@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-145242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DFAABDAB0
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:00:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16595ABDA3F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9E801BA58F4
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0EBC1BA4F28
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12722459E3;
-	Tue, 20 May 2025 13:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC6424466C;
+	Tue, 20 May 2025 13:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0iafncq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqooVte5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB072441B4;
-	Tue, 20 May 2025 13:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8901D19F137;
+	Tue, 20 May 2025 13:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749591; cv=none; b=HFXgvLbBUb6FfX03SkW4UtsihnSKaHuPMT6TwL/KYnrCDGuFovwiA0n6b64k+DfplOtXmOucvoTDmps6y6dmTPnP1uLEvK66/Q5Ta7zOvXWhGv60s+oVEEbECQzIbKot3cB7Q8qM6KMt4SdgEAzBiaEbb/0NE9sFMjW8tU6lZ9s=
+	t=1747749319; cv=none; b=FZ43aYr5JZTJ4s27yG193MGXyi+y3enyxJhQjsZxqG3T8MhEzCu9Hi0gbiW8T7vv40NKOPGqG+btMnEtvNtoWX6zBciOPXbnZoKcTJGwPbnkRbvOrOz8W7enpo7MD/13qA+kKvrhG1PdQBRm2IeDle/JIikZzL/95n6IKdFnxIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749591; c=relaxed/simple;
-	bh=gKRpU9/XXGH0yiCw/hCN5EzeKhNx4Pg+qpGP+KxYZ/w=;
+	s=arc-20240116; t=1747749319; c=relaxed/simple;
+	bh=B01F6HrdMkRGLQkjGFWOz9KohssRjlzcQV3P9Gm6Z/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIiK3aQxQCtxOPW91RqgBs8MYAOQ4G3qBivdFDfs5SvyVP2SOOQuDVXRBvW0+gxYVHPPfvTUpJbBCLQAFDYPvR1JbTanyQrmKVVcsBchTGVZjGKsZv3LTMYNngP3Sp1+n8hZTb7tyBheHpiexij0aniOZ5torGEg9TWnqdmthcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0iafncq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075D0C4CEE9;
-	Tue, 20 May 2025 13:59:50 +0000 (UTC)
+	 MIME-Version; b=ojF1MC0QVYOf4n8ahfP+jh6KhV8RPT06VVzJmPEfspaCHQa6w1IN9/fE5CKVzVQnXv+d7qFSfIesAJvCCQAnqCpIS+N+Nv3Nj2Qj4YgE4Mah1NTm18w8CNMlqAVOFOS88X6jouo1lsOASkYSwHUOigrRI7zeeW7QjQp++KWinuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqooVte5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C4CC4CEE9;
+	Tue, 20 May 2025 13:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749591;
-	bh=gKRpU9/XXGH0yiCw/hCN5EzeKhNx4Pg+qpGP+KxYZ/w=;
+	s=korg; t=1747749319;
+	bh=B01F6HrdMkRGLQkjGFWOz9KohssRjlzcQV3P9Gm6Z/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0iafncqWIdYgCOl3FDfsKgU+Ox7xUy96pWL+9ojYuoXkJ4lxTW2kP9MvaRQ+HZK5
-	 9zUI2Jurek1EpjscdzyGN9OuVyeu9rweSm8G8HpMuq3h0qXHa2NVtvNdxXKxINwM8o
-	 rRDD16R8n8iIEGPqYaJtycqUkOgvX7ee8Xk03yHI=
+	b=BqooVte5SsSV4LIPM4GOHfY4Moh89qNT+XN48QyvDxq6ogjjw1Q/HwWXtwP2ZWK02
+	 dZ5KWpcvgCPbiN9dE8J6E0pBAz4YKE2xgx4SS1nYsQGAmZ8ogAVLBhjDXJTKH5rHag
+	 xLn35L3awNb9ZoXOQcNF4V4gucr9soVcGOrS3kMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.1 63/97] wifi: mt76: disable napi on driver removal
+	pengdonglin <dolinux.peng@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 37/59] ftrace: Fix preemption accounting for stacktrace filter command
 Date: Tue, 20 May 2025 15:50:28 +0200
-Message-ID: <20250520125803.119787954@linuxfoundation.org>
+Message-ID: <20250520125755.327060667@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: pengdonglin <pengdonglin@xiaomi.com>
 
-commit 78ab4be549533432d97ea8989d2f00b508fa68d8 upstream.
+commit 11aff32439df6ca5b3b891b43032faf88f4a6a29 upstream.
 
-A warning on driver removal started occurring after commit 9dd05df8403b
-("net: warn if NAPI instance wasn't shut down"). Disable tx napi before
-deleting it in mt76_dma_cleanup().
+The preemption count of the stacktrace filter command to trace ksys_read
+is consistently incorrect:
 
- WARNING: CPU: 4 PID: 18828 at net/core/dev.c:7288 __netif_napi_del_locked+0xf0/0x100
- CPU: 4 UID: 0 PID: 18828 Comm: modprobe Not tainted 6.15.0-rc4 #4 PREEMPT(lazy)
- Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
- RIP: 0010:__netif_napi_del_locked+0xf0/0x100
- Call Trace:
- <TASK>
- mt76_dma_cleanup+0x54/0x2f0 [mt76]
- mt7921_pci_remove+0xd5/0x190 [mt7921e]
- pci_device_remove+0x47/0xc0
- device_release_driver_internal+0x19e/0x200
- driver_detach+0x48/0x90
- bus_remove_driver+0x6d/0xf0
- pci_unregister_driver+0x2e/0xb0
- __do_sys_delete_module.isra.0+0x197/0x2e0
- do_syscall_64+0x7b/0x160
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+$ echo ksys_read:stacktrace > set_ftrace_filter
 
-Tested with mt7921e but the same pattern can be actually applied to other
-mt76 drivers calling mt76_dma_cleanup() during removal. Tx napi is enabled
-in their *_dma_init() functions and only toggled off and on again inside
-their suspend/resume/reset paths. So it should be okay to disable tx
-napi in such a generic way.
+   <...>-453     [004] ...1.    38.308956: <stack trace>
+=> ksys_read
+=> do_syscall_64
+=> entry_SYSCALL_64_after_hwframe
 
-Found by Linux Verification Center (linuxtesting.org).
+The root cause is that the trace framework disables preemption when
+invoking the filter command callback in function_trace_probe_call:
 
-Fixes: 2ac515a5d74f ("mt76: mt76x02: use napi polling for tx cleanup")
+   preempt_disable_notrace();
+   probe_ops->func(ip, parent_ip, probe_opsbe->tr, probe_ops, probe->data);
+   preempt_enable_notrace();
+
+Use tracing_gen_ctx_dec() to account for the preempt_disable_notrace(),
+which will output the correct preemption count:
+
+$ echo ksys_read:stacktrace > set_ftrace_filter
+
+   <...>-410     [006] .....    31.420396: <stack trace>
+=> ksys_read
+=> do_syscall_64
+=> entry_SYSCALL_64_after_hwframe
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Tested-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250506115540.19045-1-pchelkin@ispras.ru
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 36590c50b2d07 ("tracing: Merge irqflags + preempt counter.")
+Link: https://lore.kernel.org/20250512094246.1167956-2-dolinux.peng@gmail.com
+Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_functions.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -789,6 +789,7 @@ void mt76_dma_cleanup(struct mt76_dev *d
- 	int i;
+--- a/kernel/trace/trace_functions.c
++++ b/kernel/trace/trace_functions.c
+@@ -568,11 +568,7 @@ ftrace_traceoff(unsigned long ip, unsign
  
- 	mt76_worker_disable(&dev->tx_worker);
-+	napi_disable(&dev->tx_napi);
- 	netif_napi_del(&dev->tx_napi);
+ static __always_inline void trace_stack(struct trace_array *tr)
+ {
+-	unsigned int trace_ctx;
+-
+-	trace_ctx = tracing_gen_ctx();
+-
+-	__trace_stack(tr, trace_ctx, FTRACE_STACK_SKIP);
++	__trace_stack(tr, tracing_gen_ctx_dec(), FTRACE_STACK_SKIP);
+ }
  
- 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
+ static void
 
 
 
