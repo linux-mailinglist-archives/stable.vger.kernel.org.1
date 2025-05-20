@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F4DABDA7F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F427ABDA09
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A861B1BA55E1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8CBB17BF91
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04D9242D7D;
-	Tue, 20 May 2025 13:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378E224418E;
+	Tue, 20 May 2025 13:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzF2n8zA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laiwGl4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD33DDA9;
-	Tue, 20 May 2025 13:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A7A22D78C;
+	Tue, 20 May 2025 13:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749455; cv=none; b=R/Y+NQc7Zz83AZAnPP9TDLFcwQ1dFiHdKOjssyoy+HDGp0URuHvUHmAkH3opxztobAf58t19pnC4zjdMtqy6+7PzG45sVjLA1+xWhxi8JXstfdMRLJb6K9GOqVhCxvY6Z8Z4IbCJFJLXLrdGDE53050ysTS6ESQhrLmJ8rz5ON4=
+	t=1747749192; cv=none; b=n4sBrm+M3gMA6i0Yz+lHAnlKKW8YRCw9McWkKl/sDbagRWkSklPp9PB/1XpzxONnh7QqM53koJ2NklwI6qIGRldym89Jn7D0arWOBRk3IpoLuRcq5JW+uYhIu+Fg22U/iPZvNWzP1LU7/SNZ2Z5VJcZtLfPn/pSelxW+u6dxz5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749455; c=relaxed/simple;
-	bh=SmNO870M6Ey5f30PXkVBqpxZvqeWpNlyFAcr5F5QKrs=;
+	s=arc-20240116; t=1747749192; c=relaxed/simple;
+	bh=NJZIavoNqwO9PF/Vjo4fMV6I2e1LB1NDg0aMIERVP28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhgWjZCI9eJ7nWGzQvPtf6rghlX9FO1uzOjqFveoDTy0r4ehwIkTUn9hLvYhy7rC2wCCCZ6jgyyUwvo8QEHzXKUWs0icE9JPkhbMp1pnmMXL9hb0FVJV1BVxejW+dCbkWuUr3NGZB9HYsdaQX2bL+BFytjdfKo3kBnioWaGpnEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzF2n8zA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C7FC4CEEA;
-	Tue, 20 May 2025 13:57:34 +0000 (UTC)
+	 MIME-Version; b=LCbzotikaCmGc9hl9QlObn+CjWAF3rKhY3DK+2KBXaUA0ZUbcGEyn5Pn4PB7INs3nu4Y92PmjVwCqlcxf/0nfm69hvfnM1lg/n2rIj5SZKHPF1KE+AODrgldrzAANLCcyBKHwmLf49FzRdW6qQMvVoGic0gcq+alpxH4bKCqt6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laiwGl4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09220C4CEE9;
+	Tue, 20 May 2025 13:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749455;
-	bh=SmNO870M6Ey5f30PXkVBqpxZvqeWpNlyFAcr5F5QKrs=;
+	s=korg; t=1747749191;
+	bh=NJZIavoNqwO9PF/Vjo4fMV6I2e1LB1NDg0aMIERVP28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzF2n8zAfdWaKLnganC+/MxaV6a+0Ny3N8sckVbu1ex+nt6REWzN1/NqGgQHPg/EP
-	 cXEGjE7jduoyjD8BO2F8rkWrFGH5n/in1zTK+EIy9zIalE3lPYS865LZsWOgjp5fRj
-	 qX065eDhJzBYytysRRUdw4lDWFMApjhWVAydvRwQ=
+	b=laiwGl4o6LBoAvrHJ/h5tXTsYOlmtAJP07uR3823cLlWtD0u5Ei5uv1o1hru31RHi
+	 sgLKNNePxJHSYO5R/RVK7Wm0D6dlyR4E0cLY3e0h2rV4Gzif5PIB3VJWOK2DK0Q1Jt
+	 1ADmtSmMzaLeD9z4cyWVNA6PaLSZ8/gOaVG4/LiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 50/97] hv_netvsc: Use vmbus_sendpacket_mpb_desc() to send VMBus messages
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 5.15 24/59] x86/its: Enable Indirect Target Selection mitigation
 Date: Tue, 20 May 2025 15:50:15 +0200
-Message-ID: <20250520125802.615215921@linuxfoundation.org>
+Message-ID: <20250520125754.815964616@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +63,344 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 4f98616b855cb0e3b5917918bb07b44728eb96ea upstream.
+commit f4818881c47fd91fcb6d62373c57c7844e3de1c0 upstream.
 
-netvsc currently uses vmbus_sendpacket_pagebuffer() to send VMBus
-messages. This function creates a series of GPA ranges, each of which
-contains a single PFN. However, if the rndis header in the VMBus
-message crosses a page boundary, the netvsc protocol with the host
-requires that both PFNs for the rndis header must be in a single "GPA
-range" data structure, which isn't possible with
-vmbus_sendpacket_pagebuffer(). As the first step in fixing this, add a
-new function netvsc_build_mpb_array() to build a VMBus message with
-multiple GPA ranges, each of which may contain multiple PFNs. Use
-vmbus_sendpacket_mpb_desc() to send this VMBus message to the host.
+Indirect Target Selection (ITS) is a bug in some pre-ADL Intel CPUs with
+eIBRS. It affects prediction of indirect branch and RETs in the
+lower half of cacheline. Due to ITS such branches may get wrongly predicted
+to a target of (direct or indirect) branch that is located in the upper
+half of the cacheline.
 
-There's no functional change since higher levels of netvsc don't
-maintain or propagate knowledge of contiguous PFNs. Based on its
-input, netvsc_build_mpb_array() still produces a separate GPA range
-for each PFN and the behavior is the same as with
-vmbus_sendpacket_pagebuffer(). But the groundwork is laid for a
-subsequent patch to provide the necessary grouping.
+Scope of impact
+===============
 
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20250513000604.1396-3-mhklinux@outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Guest/host isolation
+--------------------
+When eIBRS is used for guest/host isolation, the indirect branches in the
+VMM may still be predicted with targets corresponding to branches in the
+guest.
+
+Intra-mode
+----------
+cBPF or other native gadgets can be used for intra-mode training and
+disclosure using ITS.
+
+User/kernel isolation
+---------------------
+When eIBRS is enabled user/kernel isolation is not impacted.
+
+Indirect Branch Prediction Barrier (IBPB)
+-----------------------------------------
+After an IBPB, indirect branches may be predicted with targets
+corresponding to direct branches which were executed prior to IBPB. This is
+mitigated by a microcode update.
+
+Add cmdline parameter indirect_target_selection=off|on|force to control the
+mitigation to relocate the affected branches to an ITS-safe thunk i.e.
+located in the upper half of cacheline. Also add the sysfs reporting.
+
+When retpoline mitigation is deployed, ITS safe-thunks are not needed,
+because retpoline sequence is already ITS-safe. Similarly, when call depth
+tracking (CDT) mitigation is deployed (retbleed=stuff), ITS safe return
+thunk is not used, as CDT prevents RSB-underflow.
+
+To not overcomplicate things, ITS mitigation is not supported with
+spectre-v2 lfence;jmp mitigation. Moreover, it is less practical to deploy
+lfence;jmp mitigation on ITS affected parts anyways.
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc.c |   50 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 45 insertions(+), 5 deletions(-)
+ Documentation/ABI/testing/sysfs-devices-system-cpu |    1 
+ Documentation/admin-guide/kernel-parameters.txt    |   13 ++
+ arch/x86/kernel/cpu/bugs.c                         |  128 ++++++++++++++++++++-
+ drivers/base/cpu.c                                 |    8 +
+ include/linux/cpu.h                                |    2 
+ 5 files changed, 149 insertions(+), 3 deletions(-)
 
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -1082,6 +1082,42 @@ static int netvsc_dma_map(struct hv_devi
- 	return 0;
- }
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -512,6 +512,7 @@ Description:	information about CPUs hete
  
-+/* Build an "array" of mpb entries describing the data to be transferred
-+ * over VMBus. After the desc header fields, each "array" entry is variable
-+ * size, and each entry starts after the end of the previous entry. The
-+ * "offset" and "len" fields for each entry imply the size of the entry.
-+ *
-+ * The pfns are in HV_HYP_PAGE_SIZE, because all communication with Hyper-V
-+ * uses that granularity, even if the system page size of the guest is larger.
-+ * Each entry in the input "pb" array must describe a contiguous range of
-+ * guest physical memory so that the pfns are sequential if the range crosses
-+ * a page boundary. The offset field must be < HV_HYP_PAGE_SIZE.
-+ */
-+static inline void netvsc_build_mpb_array(struct hv_page_buffer *pb,
-+				u32 page_buffer_count,
-+				struct vmbus_packet_mpb_array *desc,
-+				u32 *desc_size)
+ What:		/sys/devices/system/cpu/vulnerabilities
+ 		/sys/devices/system/cpu/vulnerabilities/gather_data_sampling
++		/sys/devices/system/cpu/vulnerabilities/indirect_target_selection
+ 		/sys/devices/system/cpu/vulnerabilities/itlb_multihit
+ 		/sys/devices/system/cpu/vulnerabilities/l1tf
+ 		/sys/devices/system/cpu/vulnerabilities/mds
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -1926,6 +1926,18 @@
+ 			different crypto accelerators. This option can be used
+ 			to achieve best performance for particular HW.
+ 
++	indirect_target_selection= [X86,Intel] Mitigation control for Indirect
++			Target Selection(ITS) bug in Intel CPUs. Updated
++			microcode is also required for a fix in IBPB.
++
++			on:     Enable mitigation (default).
++			off:    Disable mitigation.
++			force:	Force the ITS bug and deploy default
++				mitigation.
++
++			For details see:
++			Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
++
+ 	init=		[KNL]
+ 			Format: <full_path>
+ 			Run specified binary instead of /sbin/init as init
+@@ -3073,6 +3085,7 @@
+ 				improves system performance, but it may also
+ 				expose users to several CPU vulnerabilities.
+ 				Equivalent to: gather_data_sampling=off [X86]
++					       indirect_target_selection=off [X86]
+ 					       kpti=0 [ARM64]
+ 					       kvm.nx_huge_pages=off [X86]
+ 					       l1tf=off [X86]
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -48,6 +48,7 @@ static void __init srbds_select_mitigati
+ static void __init l1d_flush_select_mitigation(void);
+ static void __init gds_select_mitigation(void);
+ static void __init srso_select_mitigation(void);
++static void __init its_select_mitigation(void);
+ 
+ /* The base value of the SPEC_CTRL MSR without task-specific bits set */
+ u64 x86_spec_ctrl_base;
+@@ -66,6 +67,14 @@ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
+ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+ 
++static void __init set_return_thunk(void *thunk)
 +{
-+	struct hv_mpb_array *mpb_entry = &desc->range;
-+	int i, j;
++	if (x86_return_thunk != __x86_return_thunk)
++		pr_warn("x86/bugs: return thunk changed\n");
 +
-+	for (i = 0; i < page_buffer_count; i++) {
-+		u32 offset = pb[i].offset;
-+		u32 len = pb[i].len;
-+
-+		mpb_entry->offset = offset;
-+		mpb_entry->len = len;
-+
-+		for (j = 0; j < HVPFN_UP(offset + len); j++)
-+			mpb_entry->pfn_array[j] = pb[i].pfn + j;
-+
-+		mpb_entry = (struct hv_mpb_array *)&mpb_entry->pfn_array[j];
-+	}
-+
-+	desc->rangecount = page_buffer_count;
-+	*desc_size = (char *)mpb_entry - (char *)desc;
++	x86_return_thunk = thunk;
 +}
 +
- static inline int netvsc_send_pkt(
- 	struct hv_device *device,
- 	struct hv_netvsc_packet *packet,
-@@ -1124,6 +1160,9 @@ static inline int netvsc_send_pkt(
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+ {
+@@ -174,6 +183,7 @@ void __init cpu_select_mitigations(void)
+ 	 */
+ 	srso_select_mitigation();
+ 	gds_select_mitigation();
++	its_select_mitigation();
+ }
  
- 	packet->dma_range = NULL;
- 	if (packet->page_buf_cnt) {
-+		struct vmbus_channel_packet_page_buffer desc;
-+		u32 desc_size;
+ /*
+@@ -1081,7 +1091,7 @@ do_cmd_auto:
+ 		setup_force_cpu_cap(X86_FEATURE_UNRET);
+ 
+ 		if (IS_ENABLED(CONFIG_RETHUNK))
+-			x86_return_thunk = retbleed_return_thunk;
++			set_return_thunk(retbleed_return_thunk);
+ 
+ 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
+ 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+@@ -1143,6 +1153,105 @@ do_cmd_auto:
+ }
+ 
+ #undef pr_fmt
++#define pr_fmt(fmt)     "ITS: " fmt
 +
- 		if (packet->cp_partial)
- 			pb += packet->rmsg_pgcnt;
++enum its_mitigation_cmd {
++	ITS_CMD_OFF,
++	ITS_CMD_ON,
++};
++
++enum its_mitigation {
++	ITS_MITIGATION_OFF,
++	ITS_MITIGATION_ALIGNED_THUNKS,
++};
++
++static const char * const its_strings[] = {
++	[ITS_MITIGATION_OFF]			= "Vulnerable",
++	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
++};
++
++static enum its_mitigation its_mitigation __ro_after_init = ITS_MITIGATION_ALIGNED_THUNKS;
++
++static enum its_mitigation_cmd its_cmd __ro_after_init =
++	IS_ENABLED(CONFIG_MITIGATION_ITS) ? ITS_CMD_ON : ITS_CMD_OFF;
++
++static int __init its_parse_cmdline(char *str)
++{
++	if (!str)
++		return -EINVAL;
++
++	if (!IS_ENABLED(CONFIG_MITIGATION_ITS)) {
++		pr_err("Mitigation disabled at compile time, ignoring option (%s)", str);
++		return 0;
++	}
++
++	if (!strcmp(str, "off")) {
++		its_cmd = ITS_CMD_OFF;
++	} else if (!strcmp(str, "on")) {
++		its_cmd = ITS_CMD_ON;
++	} else if (!strcmp(str, "force")) {
++		its_cmd = ITS_CMD_ON;
++		setup_force_cpu_bug(X86_BUG_ITS);
++	} else {
++		pr_err("Ignoring unknown indirect_target_selection option (%s).", str);
++	}
++
++	return 0;
++}
++early_param("indirect_target_selection", its_parse_cmdline);
++
++static void __init its_select_mitigation(void)
++{
++	enum its_mitigation_cmd cmd = its_cmd;
++
++	if (!boot_cpu_has_bug(X86_BUG_ITS) || cpu_mitigations_off()) {
++		its_mitigation = ITS_MITIGATION_OFF;
++		return;
++	}
++
++	/* Exit early to avoid irrelevant warnings */
++	if (cmd == ITS_CMD_OFF) {
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++	if (spectre_v2_enabled == SPECTRE_V2_NONE) {
++		pr_err("WARNING: Spectre-v2 mitigation is off, disabling ITS\n");
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++	if (!IS_ENABLED(CONFIG_RETPOLINE) || !IS_ENABLED(CONFIG_RETHUNK)) {
++		pr_err("WARNING: ITS mitigation depends on retpoline and rethunk support\n");
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++	if (IS_ENABLED(CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B)) {
++		pr_err("WARNING: ITS mitigation is not compatible with CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B\n");
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++	if (boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE)) {
++		pr_err("WARNING: ITS mitigation is not compatible with lfence mitigation\n");
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++
++	switch (cmd) {
++	case ITS_CMD_OFF:
++		its_mitigation = ITS_MITIGATION_OFF;
++		break;
++	case ITS_CMD_ON:
++		its_mitigation = ITS_MITIGATION_ALIGNED_THUNKS;
++		if (!boot_cpu_has(X86_FEATURE_RETPOLINE))
++			setup_force_cpu_cap(X86_FEATURE_INDIRECT_THUNK_ITS);
++		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
++		set_return_thunk(its_return_thunk);
++		break;
++	}
++out:
++	pr_info("%s\n", its_strings[its_mitigation]);
++}
++
++#undef pr_fmt
+ #define pr_fmt(fmt)     "Spectre V2 : " fmt
  
-@@ -1133,11 +1172,12 @@ static inline int netvsc_send_pkt(
- 			goto exit;
- 		}
+ static enum spectre_v2_user_mitigation spectre_v2_user_stibp __ro_after_init =
+@@ -2592,10 +2701,10 @@ static void __init srso_select_mitigatio
  
--		ret = vmbus_sendpacket_pagebuffer(out_channel,
--						  pb, packet->page_buf_cnt,
--						  &nvmsg, sizeof(nvmsg),
--						  req_id);
--
-+		netvsc_build_mpb_array(pb, packet->page_buf_cnt,
-+				(struct vmbus_packet_mpb_array *)&desc,
-+				 &desc_size);
-+		ret = vmbus_sendpacket_mpb_desc(out_channel,
-+				(struct vmbus_packet_mpb_array *)&desc,
-+				desc_size, &nvmsg, sizeof(nvmsg), req_id);
- 		if (ret)
- 			netvsc_dma_unmap(ndev_ctx->device_ctx, packet);
- 	} else {
+ 			if (boot_cpu_data.x86 == 0x19) {
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
+-				x86_return_thunk = srso_alias_return_thunk;
++				set_return_thunk(srso_alias_return_thunk);
+ 			} else {
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO);
+-				x86_return_thunk = srso_return_thunk;
++				set_return_thunk(srso_return_thunk);
+ 			}
+ 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
+ 		} else {
+@@ -2775,6 +2884,11 @@ static ssize_t rfds_show_state(char *buf
+ 	return sysfs_emit(buf, "%s\n", rfds_strings[rfds_mitigation]);
+ }
+ 
++static ssize_t its_show_state(char *buf)
++{
++	return sysfs_emit(buf, "%s\n", its_strings[its_mitigation]);
++}
++
+ static char *stibp_state(void)
+ {
+ 	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
+@@ -2959,6 +3073,9 @@ static ssize_t cpu_show_common(struct de
+ 	case X86_BUG_RFDS:
+ 		return rfds_show_state(buf);
+ 
++	case X86_BUG_ITS:
++		return its_show_state(buf);
++
+ 	default:
+ 		break;
+ 	}
+@@ -3038,4 +3155,9 @@ ssize_t cpu_show_reg_file_data_sampling(
+ {
+ 	return cpu_show_common(dev, attr, buf, X86_BUG_RFDS);
+ }
++
++ssize_t cpu_show_indirect_target_selection(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	return cpu_show_common(dev, attr, buf, X86_BUG_ITS);
++}
+ #endif
+--- a/drivers/base/cpu.c
++++ b/drivers/base/cpu.c
+@@ -595,6 +595,12 @@ ssize_t __weak cpu_show_reg_file_data_sa
+ 	return sysfs_emit(buf, "Not affected\n");
+ }
+ 
++ssize_t __weak cpu_show_indirect_target_selection(struct device *dev,
++						  struct device_attribute *attr, char *buf)
++{
++	return sysfs_emit(buf, "Not affected\n");
++}
++
+ static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
+ static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
+ static DEVICE_ATTR(spectre_v2, 0444, cpu_show_spectre_v2, NULL);
+@@ -609,6 +615,7 @@ static DEVICE_ATTR(retbleed, 0444, cpu_s
+ static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
+ static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NULL);
+ static DEVICE_ATTR(reg_file_data_sampling, 0444, cpu_show_reg_file_data_sampling, NULL);
++static DEVICE_ATTR(indirect_target_selection, 0444, cpu_show_indirect_target_selection, NULL);
+ 
+ static struct attribute *cpu_root_vulnerabilities_attrs[] = {
+ 	&dev_attr_meltdown.attr,
+@@ -625,6 +632,7 @@ static struct attribute *cpu_root_vulner
+ 	&dev_attr_gather_data_sampling.attr,
+ 	&dev_attr_spec_rstack_overflow.attr,
+ 	&dev_attr_reg_file_data_sampling.attr,
++	&dev_attr_indirect_target_selection.attr,
+ 	NULL
+ };
+ 
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -76,6 +76,8 @@ extern ssize_t cpu_show_gds(struct devic
+ 			    struct device_attribute *attr, char *buf);
+ extern ssize_t cpu_show_reg_file_data_sampling(struct device *dev,
+ 					       struct device_attribute *attr, char *buf);
++extern ssize_t cpu_show_indirect_target_selection(struct device *dev,
++						  struct device_attribute *attr, char *buf);
+ 
+ extern __printf(4, 5)
+ struct device *cpu_device_create(struct device *parent, void *drvdata,
 
 
 
