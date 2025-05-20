@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-145504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB70FABDCA8
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:26:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134FFABDCBC
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:27:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82B3A4E053C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:17:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB1911BA777E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351FC2528FD;
-	Tue, 20 May 2025 14:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F08B1CCEE7;
+	Tue, 20 May 2025 14:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKkkT4iS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6fVqhQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61E72528F0;
-	Tue, 20 May 2025 14:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B953242D98;
+	Tue, 20 May 2025 14:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750369; cv=none; b=jsYYyMpgok01nZG2/2FApPyyGoTlPphqIlcdTJXEqMy2QZKKhiNqrFCR2p4SR8xIod8S1jzebB7ddVaYvboITrB6LbvsXYjJcJ4LPBymvlx4csM9kpmxYlEEKmVQ8kw5E/hPchQHSUTdVXdaJVOfoaVv+niI98huI7hvBdTa5XA=
+	t=1747750857; cv=none; b=KiG6BesLI9cBPizddw31whPvZ+XkEkpslqe01OgRJaCzTlGI8uqC+yAGHrbFec6KfMw0pZgE9FiL7oIcmCFJn3K4TksTUm0V64Ukykon4Fc7Tl2k6+26pMfAWrgHhqNPxu6iwyJ4aJVbo+n3uGuyZbGDVt/6j1NCHJQqZKubkM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750369; c=relaxed/simple;
-	bh=/J20561KZdhRPoTpoiL6mRl3k1o5S6Xz1/a1xYClCOc=;
+	s=arc-20240116; t=1747750857; c=relaxed/simple;
+	bh=h1eJ8Y3896EsGx9xKr3hiut7Q2XNGG3A2yQggg5arlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6vHZNaG98CNzRM5x8oOEhngjzRMg6sZ/Qf2+1YOHSVlRRLL/7tEWxky8SCW2xq4zvEdf1IH4IWRNrlFS21/mmtTmDy5Og9EwV1Hx0+/0qN47q8iuQe3YXZXh0k4qUCSoiwk5G7PVp/N/kkwUhSGvR0G06UeCD9RKohvLKzm2bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKkkT4iS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577F7C4CEE9;
-	Tue, 20 May 2025 14:12:48 +0000 (UTC)
+	 MIME-Version; b=gXuVf9SYWzK6Dmayc08JM5m0FjIeRDTowo7Y2PEnkQF90Xj28h1DFMDUVGw9YZHEJRJ3v+mXOCyRMpehfrBuWDABZubHTdrYmBfCRcb9U8+kwrtkpnMpPgzNopq5+/QW/u1MX/cLeFeTzp2/J36/BHEwu4zj/ApIcc+KMxsv0eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6fVqhQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1448C4CEE9;
+	Tue, 20 May 2025 14:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750368;
-	bh=/J20561KZdhRPoTpoiL6mRl3k1o5S6Xz1/a1xYClCOc=;
+	s=korg; t=1747750857;
+	bh=h1eJ8Y3896EsGx9xKr3hiut7Q2XNGG3A2yQggg5arlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKkkT4iSwlHLvBiGlHjmQxAoWHeWiZJa6k57kxDWMKvoejtyYwD9PeGUrM99OQ007
-	 mQ2xmuuMId6XtXKPShHgxk8bS4KRIS0FWb1zx/Z8OWckLiO6RAVu8zdpmmUejv2hGG
-	 fJXkUufojIa4w3MwFRAVmqSCaid78+IkszixTMIg=
+	b=r6fVqhQp9bgQevurG1n5RTdOsjSY8KF+VKReY58zNZtAIlNyZRmBYL+o9IAzV3634
+	 fFSUikK8k9Kgl/l1Im36E4fGephL9HgnYc8gHMufSq/tMOOwf94JFG5AAT62xBMTu/
+	 lJDPMqvbzy1HAaiSOvzPIH+GfVxQbiA4ge3d0RJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad <shyam.prasad@microsoft.com>,
-	Bharath S M <bharathsm@microsoft.com>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Ritvik Budhiraja <rbudhiraja@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH 6.12 129/143] CIFS: New mount option for cifs.upcall namespace resolution
+	Jethro Donaldson <devel@jro.nz>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 114/145] smb: client: fix memory leak during error handling for POSIX mkdir
 Date: Tue, 20 May 2025 15:51:24 +0200
-Message-ID: <20250520125815.093635018@linuxfoundation.org>
+Message-ID: <20250520125815.014095872@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,301 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritvik Budhiraja <rbudhiraja@microsoft.com>
+From: Jethro Donaldson <devel@jro.nz>
 
-commit db363b0a1d9e6b9dc556296f1b1007aeb496a8cf upstream.
+commit 1fe4a44b7fa3955bcb7b4067c07b778fe90d8ee7 upstream.
 
-In the current implementation, the SMB filesystem on a mount point can
-trigger upcalls from the kernel to the userspace to enable certain
-functionalities like spnego, dns_resolution, amongst others. These upcalls
-usually either happen in the context of the mount or in the context of an
-application/user. The upcall handler for cifs, cifs.upcall already has
-existing code which switches the namespaces to the caller's namespace
-before handling the upcall. This behaviour is expected for scenarios like
-multiuser mounts, but might not cover all single user scenario with
-services such as Kubernetes, where the mount can happen from different
-locations such as on the host, from an app container, or a driver pod
-which does the mount on behalf of a different pod.
+The response buffer for the CREATE request handled by smb311_posix_mkdir()
+is leaked on the error path (goto err_free_rsp_buf) because the structure
+pointer *rsp passed to free_rsp_buf() is not assigned until *after* the
+error condition is checked.
 
-This patch introduces a new mount option called upcall_target, to
-customise the upcall behaviour. upcall_target can take 'mount' and 'app'
-as possible values. This aids use cases like Kubernetes where the mount
-happens on behalf of the application in another container altogether.
-Having this new mount option allows the mount command to specify where the
-upcall should happen: 'mount' for resolving the upcall to the host
-namespace, and 'app' for resolving the upcall to the ns of the calling
-thread. This will enable both the scenarios where the Kerberos credentials
-can be found on the application namespace or the host namespace to which
-just the mount operation is "delegated".
+As *rsp is initialised to NULL, free_rsp_buf() becomes a no-op and the leak
+is instead reported by __kmem_cache_shutdown() upon subsequent rmmod of
+cifs.ko if (and only if) the error path has been hit.
 
-Reviewed-by: Shyam Prasad <shyam.prasad@microsoft.com>
-Reviewed-by: Bharath S M <bharathsm@microsoft.com>
-Reviewed-by: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Signed-off-by: Ritvik Budhiraja <rbudhiraja@microsoft.com>
+Pass rsp_iov.iov_base to free_rsp_buf() instead, similar to the code in
+other functions in smb2pdu.c for which *rsp is assigned late.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jethro Donaldson <devel@jro.nz>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_spnego.c |   16 ++++++++++++++++
- fs/smb/client/cifsfs.c      |   25 +++++++++++++++++++++++++
- fs/smb/client/cifsglob.h    |    7 +++++++
- fs/smb/client/connect.c     |   20 ++++++++++++++++++++
- fs/smb/client/fs_context.c  |   39 +++++++++++++++++++++++++++++++++++++++
- fs/smb/client/fs_context.h  |   10 ++++++++++
- 6 files changed, 117 insertions(+)
+ fs/smb/client/smb2pdu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/cifs_spnego.c
-+++ b/fs/smb/client/cifs_spnego.c
-@@ -82,6 +82,9 @@ struct key_type cifs_spnego_key_type = {
- /* strlen of ";pid=0x" */
- #define PID_KEY_LEN		7
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -2967,7 +2967,7 @@ replay_again:
+ 	/* Eventually save off posix specific response info and timestamps */
  
-+/* strlen of ";upcall_target=" */
-+#define UPCALL_TARGET_KEY_LEN	15
-+
- /* get a key struct with a SPNEGO security blob, suitable for session setup */
- struct key *
- cifs_get_spnego_key(struct cifs_ses *sesInfo,
-@@ -108,6 +111,11 @@ cifs_get_spnego_key(struct cifs_ses *ses
- 	if (sesInfo->user_name)
- 		desc_len += USER_KEY_LEN + strlen(sesInfo->user_name);
- 
-+	if (sesInfo->upcall_target == UPTARGET_MOUNT)
-+		desc_len += UPCALL_TARGET_KEY_LEN + 5; // strlen("mount")
-+	else
-+		desc_len += UPCALL_TARGET_KEY_LEN + 3; // strlen("app")
-+
- 	spnego_key = ERR_PTR(-ENOMEM);
- 	description = kzalloc(desc_len, GFP_KERNEL);
- 	if (description == NULL)
-@@ -158,6 +166,14 @@ cifs_get_spnego_key(struct cifs_ses *ses
- 	dp = description + strlen(description);
- 	sprintf(dp, ";pid=0x%x", current->pid);
- 
-+	if (sesInfo->upcall_target == UPTARGET_MOUNT) {
-+		dp = description + strlen(description);
-+		sprintf(dp, ";upcall_target=mount");
-+	} else {
-+		dp = description + strlen(description);
-+		sprintf(dp, ";upcall_target=app");
-+	}
-+
- 	cifs_dbg(FYI, "key description = %s\n", description);
- 	saved_cred = override_creds(spnego_cred);
- 	spnego_key = request_key(&cifs_spnego_key_type, description, "");
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -547,6 +547,30 @@ static int cifs_show_devname(struct seq_
- 	return 0;
- }
- 
-+static void
-+cifs_show_upcall_target(struct seq_file *s, struct cifs_sb_info *cifs_sb)
-+{
-+	if (cifs_sb->ctx->upcall_target == UPTARGET_UNSPECIFIED) {
-+		seq_puts(s, ",upcall_target=app");
-+		return;
-+	}
-+
-+	seq_puts(s, ",upcall_target=");
-+
-+	switch (cifs_sb->ctx->upcall_target) {
-+	case UPTARGET_APP:
-+		seq_puts(s, "app");
-+		break;
-+	case UPTARGET_MOUNT:
-+		seq_puts(s, "mount");
-+		break;
-+	default:
-+		/* shouldn't ever happen */
-+		seq_puts(s, "unknown");
-+		break;
-+	}
-+}
-+
- /*
-  * cifs_show_options() is for displaying mount options in /proc/mounts.
-  * Not all settable options are displayed but most of the important
-@@ -563,6 +587,7 @@ cifs_show_options(struct seq_file *s, st
- 	seq_show_option(s, "vers", tcon->ses->server->vals->version_string);
- 	cifs_show_security(s, tcon->ses);
- 	cifs_show_cache_flavor(s, cifs_sb);
-+	cifs_show_upcall_target(s, cifs_sb);
- 
- 	if (tcon->no_lease)
- 		seq_puts(s, ",nolease");
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -154,6 +154,12 @@ enum securityEnum {
- 	IAKerb,			/* Kerberos proxy */
- };
- 
-+enum upcall_target_enum {
-+	UPTARGET_UNSPECIFIED, /* not specified, defaults to app */
-+	UPTARGET_MOUNT, /* upcall to the mount namespace */
-+	UPTARGET_APP, /* upcall to the application namespace which did the mount */
-+};
-+
- enum cifs_reparse_type {
- 	CIFS_REPARSE_TYPE_NFS,
- 	CIFS_REPARSE_TYPE_WSL,
-@@ -1085,6 +1091,7 @@ struct cifs_ses {
- 	struct session_key auth_key;
- 	struct ntlmssp_auth *ntlmssp; /* ciphertext, flags, server challenge */
- 	enum securityEnum sectype; /* what security flavor was specified? */
-+	enum upcall_target_enum upcall_target; /* what upcall target was specified? */
- 	bool sign;		/* is signing required? */
- 	bool domainAuto:1;
- 	bool expired_pwd;  /* track if access denied or expired pwd so can know if need to update */
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2381,6 +2381,26 @@ retry_old_session:
- 
- 	ses->sectype = ctx->sectype;
- 	ses->sign = ctx->sign;
-+
-+	/*
-+	 *Explicitly marking upcall_target mount option for easier handling
-+	 * by cifs_spnego.c and eventually cifs.upcall.c
-+	 */
-+
-+	switch (ctx->upcall_target) {
-+	case UPTARGET_UNSPECIFIED: /* default to app */
-+	case UPTARGET_APP:
-+		ses->upcall_target = UPTARGET_APP;
-+		break;
-+	case UPTARGET_MOUNT:
-+		ses->upcall_target = UPTARGET_MOUNT;
-+		break;
-+	default:
-+		// should never happen
-+		ses->upcall_target = UPTARGET_APP;
-+		break;
-+	}
-+
- 	ses->local_nls = load_nls(ctx->local_nls->charset);
- 
- 	/* add server as first channel */
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -67,6 +67,12 @@ static const match_table_t cifs_secflavo
- 	{ Opt_sec_err, NULL }
- };
- 
-+static const match_table_t cifs_upcall_target = {
-+	{ Opt_upcall_target_mount, "mount" },
-+	{ Opt_upcall_target_application, "app" },
-+	{ Opt_upcall_target_err, NULL }
-+};
-+
- const struct fs_parameter_spec smb3_fs_parameters[] = {
- 	/* Mount options that take no arguments */
- 	fsparam_flag_no("user_xattr", Opt_user_xattr),
-@@ -179,6 +185,7 @@ const struct fs_parameter_spec smb3_fs_p
- 	fsparam_string("sec", Opt_sec),
- 	fsparam_string("cache", Opt_cache),
- 	fsparam_string("reparse", Opt_reparse),
-+	fsparam_string("upcall_target", Opt_upcalltarget),
- 
- 	/* Arguments that should be ignored */
- 	fsparam_flag("guest", Opt_ignore),
-@@ -249,6 +256,29 @@ cifs_parse_security_flavors(struct fs_co
- 	return 0;
- }
- 
-+static int
-+cifs_parse_upcall_target(struct fs_context *fc, char *value, struct smb3_fs_context *ctx)
-+{
-+	substring_t args[MAX_OPT_ARGS];
-+
-+	ctx->upcall_target = UPTARGET_UNSPECIFIED;
-+
-+	switch (match_token(value, cifs_upcall_target, args)) {
-+	case Opt_upcall_target_mount:
-+		ctx->upcall_target = UPTARGET_MOUNT;
-+		break;
-+	case Opt_upcall_target_application:
-+		ctx->upcall_target = UPTARGET_APP;
-+		break;
-+
-+	default:
-+		cifs_errorf(fc, "bad upcall target: %s\n", value);
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
- static const match_table_t cifs_cacheflavor_tokens = {
- 	{ Opt_cache_loose, "loose" },
- 	{ Opt_cache_strict, "strict" },
-@@ -1526,6 +1556,10 @@ static int smb3_fs_context_parse_param(s
- 		if (cifs_parse_security_flavors(fc, param->string, ctx) != 0)
- 			goto cifs_parse_mount_err;
- 		break;
-+	case Opt_upcalltarget:
-+		if (cifs_parse_upcall_target(fc, param->string, ctx) != 0)
-+			goto cifs_parse_mount_err;
-+		break;
- 	case Opt_cache:
- 		if (cifs_parse_cache_flavor(fc, param->string, ctx) != 0)
- 			goto cifs_parse_mount_err;
-@@ -1703,6 +1737,11 @@ static int smb3_fs_context_parse_param(s
- 	}
- 	/* case Opt_ignore: - is ignored as expected ... */
- 
-+	if (ctx->multiuser && ctx->upcall_target == UPTARGET_MOUNT) {
-+		cifs_errorf(fc, "multiuser mount option not supported with upcalltarget set as 'mount'\n");
-+		goto cifs_parse_mount_err;
-+	}
-+
- 	return 0;
- 
-  cifs_parse_mount_err:
---- a/fs/smb/client/fs_context.h
-+++ b/fs/smb/client/fs_context.h
-@@ -61,6 +61,12 @@ enum cifs_sec_param {
- 	Opt_sec_err
- };
- 
-+enum cifs_upcall_target_param {
-+	Opt_upcall_target_mount,
-+	Opt_upcall_target_application,
-+	Opt_upcall_target_err
-+};
-+
- enum cifs_param {
- 	/* Mount options that take no arguments */
- 	Opt_user_xattr,
-@@ -114,6 +120,8 @@ enum cifs_param {
- 	Opt_multichannel,
- 	Opt_compress,
- 	Opt_witness,
-+	Opt_is_upcall_target_mount,
-+	Opt_is_upcall_target_application,
- 
- 	/* Mount options which take numeric value */
- 	Opt_backupuid,
-@@ -157,6 +165,7 @@ enum cifs_param {
- 	Opt_sec,
- 	Opt_cache,
- 	Opt_reparse,
-+	Opt_upcalltarget,
- 
- 	/* Mount options to be ignored */
- 	Opt_ignore,
-@@ -198,6 +207,7 @@ struct smb3_fs_context {
- 	umode_t file_mode;
- 	umode_t dir_mode;
- 	enum securityEnum sectype; /* sectype requested via mnt opts */
-+	enum upcall_target_enum upcall_target; /* where to upcall for mount */
- 	bool sign; /* was signing requested via mnt opts? */
- 	bool ignore_signature:1;
- 	bool retry:1;
+ err_free_rsp_buf:
+-	free_rsp_buf(resp_buftype, rsp);
++	free_rsp_buf(resp_buftype, rsp_iov.iov_base);
+ 	kfree(pc_buf);
+ err_free_req:
+ 	cifs_small_buf_release(req);
 
 
 
