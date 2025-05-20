@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-145582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D45CABDCA2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:26:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A32CABDCA1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E148A701C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0BD9163CDA
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEFC250BF0;
-	Tue, 20 May 2025 14:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CC2246335;
+	Tue, 20 May 2025 14:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+AbXkIh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVdXIhj0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F92505CB;
-	Tue, 20 May 2025 14:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D22524EF96;
+	Tue, 20 May 2025 14:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750595; cv=none; b=U0FTb/4zK1U3lu6YOtZ9iKtUIewPwka1KwcESaruf8aktAVbXSFWGTdSHxwzhPNTX4drx9wIaBihd+JyeO1Mfw8jfMDqcEXFBpHk496vuSRTqLQga5UbTtOkJmxg9S/VNrLEj1jvoUU3X/S9FETf0BCrt3lHbmoNFtWpgVRVocs=
+	t=1747750294; cv=none; b=A6ZsoUYja7WeU/MfkeJxZ5IL1TQ3dwsScFSlmxtFJvN2mjX9S+G/diyPh1GY1sOMTHRvBPCmWYnN6XgKmZSroJAWMBoAo1Oa9J9YfrpiSA6+f9f1vu2oyc+U9WdrfEULVIs0oHZwT17cP2RVWC3WmxBSfHsPRjt3rQX5CxA77H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750595; c=relaxed/simple;
-	bh=1Kg8oiLF1/RfXjC1OqXmVJhzRf0XbQEe+JEui980py4=;
+	s=arc-20240116; t=1747750294; c=relaxed/simple;
+	bh=G1nF4hw05CLTysRvk8298vcrSgvuo1UKMfaRbcVk+zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQdQySbBgPjVr5mxjFDnmtDW1QDDGpzLbhCgIMRBr6DUJ84T9WSDtNMWefdpozJdK89M9xb75PgglkZ/qfOWhchQknj1D+zq9Kv3ijp8quwxWx7SjWfM5OstAFJXbNsnSxtJf6L4dJ9Pi4zJKOOjznLHfIEe+uKISNrXHrvTLoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+AbXkIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26046C4AF09;
-	Tue, 20 May 2025 14:16:33 +0000 (UTC)
+	 MIME-Version; b=aXJ3ZEKKIu55sYS5hTGV4GGjphFsT5e8eE9k38KQaXfi1pD27/l9r1WmluxJPk7WMbvP34A8QBNdEIAfs0HbtcxaIf29voSEc2Bu/uNtQVHDw5hgo7kOri1550K3M/lCm1SsfD7YuFKJeqKx0B/UCLiemJAXXxwyY1ai/LC+MDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVdXIhj0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB8FC4CEEF;
+	Tue, 20 May 2025 14:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750594;
-	bh=1Kg8oiLF1/RfXjC1OqXmVJhzRf0XbQEe+JEui980py4=;
+	s=korg; t=1747750294;
+	bh=G1nF4hw05CLTysRvk8298vcrSgvuo1UKMfaRbcVk+zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+AbXkIh2qLL4zUOgicF0+n5jISeWoBrPD+xnhG9Om+DcUXms2vunqcH5h8MReRBz
-	 Uc+RLbNY7hAjaQMEUw+qBYyrUEmZzBtQ2LU4gRTw0uMoZkz8Kt9SXRwKGmTG5CzqZS
-	 XRHjy0bRpWpqQJ5pEwP02rraj4hD+x0V+Ig+28dU=
+	b=FVdXIhj0Y83Qbh0zY84hjcG8LpGphokuFDsrTadDDiHbwqZMenFcANrAwyjg30lCB
+	 xRPs/JywtgeJM9zbR0M2JnDGiVwH3yKNbVyTYeUrCpznG9crooCRXdsHlavh6zptz1
+	 zdD7sveveJzqBbM7rZ7uCF/zEV/uwEU4KCguc9ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 060/145] ublk: fix dead loop when canceling io command
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 075/143] LoongArch: Save and restore CSR.CNTC for hibernation
 Date: Tue, 20 May 2025 15:50:30 +0200
-Message-ID: <20250520125812.933318416@linuxfoundation.org>
+Message-ID: <20250520125813.017652160@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit dd24f87f65c957f30e605e44961d2fd53a44c780 ]
+commit ceb9155d058a11242aa0572875c44e9713b1a2be upstream.
 
-Commit:
+Save and restore CSR.CNTC for hibernation which is similar to suspend.
 
-f40139fde527 ("ublk: fix race between io_uring_cmd_complete_in_task and
-		ublk_cancel_cmd")
+For host this is unnecessary because sched clock is ensured continuous,
+but for kvm guest sched clock isn't enough because rdtime.d should also
+be continuous.
 
-adds a request state check in ublk_cancel_cmd(), and if the request is
-started, skips canceling this uring_cmd.
+Host::rdtime.d = Host::CSR.CNTC + counter
+Guest::rdtime.d = Host::CSR.CNTC + Host::CSR.GCNTC + Guest::CSR.CNTC + counter
 
-However, the current uring_cmd may be in ACTIVE state, without block
-request coming to the uring command. Meantime, if the cached request in
-tag_set.tags[tag] has been delivered to ublk server and reycycled, then
-this uring_cmd can't be canceled.
+so,
 
-ublk requests are aborted in ublk char device release handler, which
-depends on canceling all ACTIVE uring_cmd. So it causes a dead loop.
+Guest::rdtime.d = Host::rdtime.d + Host::CSR.GCNTC + Guest::CSR.CNTC
 
-Fix this issue by not taking a stale request into account when canceling
-uring_cmd in ublk_cancel_cmd().
+To ensure Guest::rdtime.d continuous, Host::rdtime.d should be at first
+continuous, while Host::CSR.GCNTC / Guest::CSR.CNTC is maintained by KVM.
 
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/linux-block/mruqwpf4tqenkbtgezv5oxwq7ngyq24jzeyqy4ixzvivatbbxv@4oh2wzz4e6qn/
-Fixes: f40139fde527 ("ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250515162601.77346-1-ming.lei@redhat.com
-[axboe: rewording of commit message]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/ublk_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kernel/time.c     |    2 +-
+ arch/loongarch/power/hibernate.c |    3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 348c4feb7a2df..7bbfc20f116a4 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -1677,7 +1677,7 @@ static void ublk_cancel_cmd(struct ublk_queue *ubq, unsigned tag,
- 	 * that ublk_dispatch_req() is always called
- 	 */
- 	req = blk_mq_tag_to_rq(ub->tag_set.tags[ubq->q_id], tag);
--	if (req && blk_mq_request_started(req))
-+	if (req && blk_mq_request_started(req) && req->tag == tag)
- 		return;
+--- a/arch/loongarch/kernel/time.c
++++ b/arch/loongarch/kernel/time.c
+@@ -111,7 +111,7 @@ static unsigned long __init get_loops_pe
+ 	return lpj;
+ }
  
- 	spin_lock(&ubq->cancel_lock);
--- 
-2.39.5
-
+-static long init_offset __nosavedata;
++static long init_offset;
+ 
+ void save_counter(void)
+ {
+--- a/arch/loongarch/power/hibernate.c
++++ b/arch/loongarch/power/hibernate.c
+@@ -2,6 +2,7 @@
+ #include <asm/fpu.h>
+ #include <asm/loongson.h>
+ #include <asm/sections.h>
++#include <asm/time.h>
+ #include <asm/tlbflush.h>
+ #include <linux/suspend.h>
+ 
+@@ -14,6 +15,7 @@ struct pt_regs saved_regs;
+ 
+ void save_processor_state(void)
+ {
++	save_counter();
+ 	saved_crmd = csr_read32(LOONGARCH_CSR_CRMD);
+ 	saved_prmd = csr_read32(LOONGARCH_CSR_PRMD);
+ 	saved_euen = csr_read32(LOONGARCH_CSR_EUEN);
+@@ -26,6 +28,7 @@ void save_processor_state(void)
+ 
+ void restore_processor_state(void)
+ {
++	sync_counter();
+ 	csr_write32(saved_crmd, LOONGARCH_CSR_CRMD);
+ 	csr_write32(saved_prmd, LOONGARCH_CSR_PRMD);
+ 	csr_write32(saved_euen, LOONGARCH_CSR_EUEN);
 
 
 
