@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D39ABDAEC
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:03:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1138ABDA62
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC33C8C1F6C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABC127B1CE2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5382451C8;
-	Tue, 20 May 2025 14:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A41241103;
+	Tue, 20 May 2025 13:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUlp5WhC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1Pk9UsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95764157487;
-	Tue, 20 May 2025 14:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77D41922ED;
+	Tue, 20 May 2025 13:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749641; cv=none; b=L0aKwT+QGyss6CtCO0MCTaj6URcEfgYtQqpIp4A7xwX/neoIIDY+00sEH8Xf7Szy8kMgVyzlDPrlCHPKqCgUa8zMFb12nFjPXUU1SEiaZWiepqzTph/VpdeDXXfoUm90KFiisyd0LA7b5HVtDKjkShUdpJ/70eFDX4+qoz1/bmg=
+	t=1747749336; cv=none; b=WylFYzDepvBCTDbUk3OsnDAFJUU98hxU8pIm/yG2Od0/JW6Yc8GHSlivM+c/pc67nIUt/4XVdgv+pYX1gz6xrLBx7BHhFM+e082PklJ35xMjZuq48nb3Ved5ynFpatIldODJkTA0q5iMEu2A9E1tIBL01hgJedufy90mdM4F4D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749641; c=relaxed/simple;
-	bh=1uqAMZB3IdwJ7E17ZfbpiML+iluMfo8AGBKZ7p8VDRU=;
+	s=arc-20240116; t=1747749336; c=relaxed/simple;
+	bh=g1pXKAa3OJ8kifmUsPY9LsLuQz/2tQqpXCuuFcXvmJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/v4HZ4KVMXUKw2V53D7HBqLimGs6f25/8wrjG5/E8++iVIRYtNky3S2dNIVPPjD/5HcTI+vKFnLCV+0dYNl20/Nxek75+yfN0Vinf/yqLCCtlHsaEM8DGz53ZZdg2snH1HMrCWVzy52iYzb7qp6Ht4i9UxtdFRim8FgD8UmwfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUlp5WhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB76DC4CEE9;
-	Tue, 20 May 2025 14:00:40 +0000 (UTC)
+	 MIME-Version; b=tRTSGagA+Ng4hTgc6GK+/8ulXiyw2c42UuqiZ2B8FN92t7GEC6DmFeSVBM8wdLSWLYpiubfzrBZQtsREYw8RGQ7WoCJrfnoOetSrbOdO+BdL+mQ9W+48LL+AkoevEuuMTYo+2BkQyR0jOrg1u/N2SFPuI/pkDnbS7soUCUNu69U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1Pk9UsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E103C4CEE9;
+	Tue, 20 May 2025 13:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749641;
-	bh=1uqAMZB3IdwJ7E17ZfbpiML+iluMfo8AGBKZ7p8VDRU=;
+	s=korg; t=1747749336;
+	bh=g1pXKAa3OJ8kifmUsPY9LsLuQz/2tQqpXCuuFcXvmJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rUlp5WhCBnNG/0DI3Hu9VjukXLR4RfEsX87pzLPOhDGS+eU7lWjj1FztKCE+RduQ9
-	 3cjwBtc84PpBHrMI9Q0SMdE6vfPkoH+b+mhXBuopcvFgMzId7t7BL0UpP2N/u8mzGE
-	 ElcYK44wfaIoJRc/JSKXVGiAjA8aWA5JirDPwypk=
+	b=K1Pk9UsJzv13DjKp7PLQZ15G4cFjWg0IQmXid1ELI9icRwA51aosmW3fuA04bMRgQ
+	 Hfy38WgHpvyqjKEGOmF8J5mSReyfyCaYoYXOpH6GMvRmAGGSbuj8RGSESYO/TVhB3G
+	 PHfbCizBpcyGI0iImjPAPmgbzO/TiqH8XIYfDn6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
+	Michal Suchanek <msuchanek@suse.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/117] cgroup/cpuset: Extend kthread_is_per_cpu() check to all PF_NO_SETAFFINITY tasks
+Subject: [PATCH 6.1 12/97] tpm: tis: Double the timeout B to 4s
 Date: Tue, 20 May 2025 15:49:37 +0200
-Message-ID: <20250520125804.473364668@linuxfoundation.org>
+Message-ID: <20250520125801.148968450@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Michal Suchanek <msuchanek@suse.de>
 
-[ Upstream commit 39b5ef791d109dd54c7c2e6e87933edfcc0ad1ac ]
+[ Upstream commit 2f661f71fda1fc0c42b7746ca5b7da529eb6b5be ]
 
-Commit ec5fbdfb99d1 ("cgroup/cpuset: Enable update_tasks_cpumask()
-on top_cpuset") enabled us to pull CPUs dedicated to child partitions
-from tasks in top_cpuset by ignoring per cpu kthreads. However, there
-can be other kthreads that are not per cpu but have PF_NO_SETAFFINITY
-flag set to indicate that we shouldn't mess with their CPU affinity.
-For other kthreads, their affinity will be changed to skip CPUs dedicated
-to child partitions whether it is an isolating or a scheduling one.
+With some Infineon chips the timeouts in tpm_tis_send_data (both B and
+C) can reach up to about 2250 ms.
 
-As all the per cpu kthreads have PF_NO_SETAFFINITY set, the
-PF_NO_SETAFFINITY tasks are essentially a superset of per cpu kthreads.
-Fix this issue by dropping the kthread_is_per_cpu() check and checking
-the PF_NO_SETAFFINITY flag instead.
+Timeout C is retried since
+commit de9e33df7762 ("tpm, tpm_tis: Workaround failed command reception on Infineon devices")
 
-Fixes: ec5fbdfb99d1 ("cgroup/cpuset: Enable update_tasks_cpumask() on top_cpuset")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Timeout B still needs to be extended.
+
+The problem is most commonly encountered with context related operation
+such as load context/save context. These are issued directly by the
+kernel, and there is no retry logic for them.
+
+When a filesystem is set up to use the TPM for unlocking the boot fails,
+and restarting the userspace service is ineffective. This is likely
+because ignoring a load context/save context result puts the real TPM
+state and the TPM state expected by the kernel out of sync.
+
+Chips known to be affected:
+tpm_tis IFX1522:00: 2.0 TPM (device-id 0x1D, rev-id 54)
+Description: SLB9672
+Firmware Revision: 15.22
+
+tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1B, rev-id 22)
+Firmware Revision: 7.83
+
+tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1A, rev-id 16)
+Firmware Revision: 5.63
+
+Link: https://lore.kernel.org/linux-integrity/Z5pI07m0Muapyu9w@kitsune.suse.cz/
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm_tis_core.h | 2 +-
+ include/linux/tpm.h             | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 3646426c69e25..ad8b62202bdc4 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1229,9 +1229,11 @@ static void update_tasks_cpumask(struct cpuset *cs, struct cpumask *new_cpus)
+diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
+index be72681ab8ea2..5f29eebef52b8 100644
+--- a/drivers/char/tpm/tpm_tis_core.h
++++ b/drivers/char/tpm/tpm_tis_core.h
+@@ -53,7 +53,7 @@ enum tis_int_flags {
+ enum tis_defaults {
+ 	TIS_MEM_LEN = 0x5000,
+ 	TIS_SHORT_TIMEOUT = 750,	/* ms */
+-	TIS_LONG_TIMEOUT = 2000,	/* 2 sec */
++	TIS_LONG_TIMEOUT = 4000,	/* 4 secs */
+ 	TIS_TIMEOUT_MIN_ATML = 14700,	/* usecs */
+ 	TIS_TIMEOUT_MAX_ATML = 15000,	/* usecs */
+ };
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index dd0784a6e07d9..4a4112bb1d1b8 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -181,7 +181,7 @@ enum tpm2_const {
  
- 		if (top_cs) {
- 			/*
--			 * Percpu kthreads in top_cpuset are ignored
-+			 * PF_NO_SETAFFINITY tasks are ignored.
-+			 * All per cpu kthreads should have PF_NO_SETAFFINITY
-+			 * flag set, see kthread_set_per_cpu().
- 			 */
--			if (kthread_is_per_cpu(task))
-+			if (task->flags & PF_NO_SETAFFINITY)
- 				continue;
- 			cpumask_andnot(new_cpus, possible_mask, cs->subparts_cpus);
- 		} else {
+ enum tpm2_timeouts {
+ 	TPM2_TIMEOUT_A          =    750,
+-	TPM2_TIMEOUT_B          =   2000,
++	TPM2_TIMEOUT_B          =   4000,
+ 	TPM2_TIMEOUT_C          =    200,
+ 	TPM2_TIMEOUT_D          =     30,
+ 	TPM2_DURATION_SHORT     =     20,
 -- 
 2.39.5
 
