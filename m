@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3F3ABDC2A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B561ABDB46
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 530143BDC9D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 731BF4C491E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA762522A8;
-	Tue, 20 May 2025 14:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FA7242913;
+	Tue, 20 May 2025 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iV2I5mAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyqOs+Fz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D092248F50;
-	Tue, 20 May 2025 14:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC54A1D8E07;
+	Tue, 20 May 2025 14:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750303; cv=none; b=r/fVR/VxW83iAP3x+WRE7AGoCgRN3A5gboR/5m6zpa3GNFrR86nO/XBvmApJxdB26PQWeHSZYOQDjRmPDG6YXo56PGK1+w7M+X42ijrq2gvtxEAwjYNbmMbCvlx+7lKwGSNu5cZnOViFGTruPJBcHU10Wh7OZpzPH3tVhgHno8k=
+	t=1747749814; cv=none; b=QiYFaOAI2EDnGiNiHSKuJVQ1/gLL97eq8Opz8diXlq3QaSuikAC98MDFMKUQ6pJ5yN0SOU4MDl5zT/PkRsw5fo9pr1l13p536QXe5hEZ95WyCbChsHHj6yxpB7z02VRhev09nNlnAaY72DLQEr6OrowddCmcgG0nUlOymqEcGec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750303; c=relaxed/simple;
-	bh=hTGYU0BezZpSEG4Ut0muPhLtue5SD8VdXoGW1LiAe6k=;
+	s=arc-20240116; t=1747749814; c=relaxed/simple;
+	bh=VVptbzpPR80Xv+hjzF4jqEYToy0qJYt2QS7fjPsTt7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiwHhDLDJMDUmvjoY9HID+2mvck3KFHJU25c3A0YoDabtu9msUNFuc5nqlnw/45IC4BVsDf6SvVA25tVfixawfm7Z0yPIkXHw0bFuLXcg1VCafjo3doeNEl+kOuG6UIxQGFUgCa7kuusIZVjPkRzSqezMUuahrN8S0Bc4XBTeMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iV2I5mAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90E5C4CEFC;
-	Tue, 20 May 2025 14:11:42 +0000 (UTC)
+	 MIME-Version; b=k1pL9zmz3x9yfD4+M2Xnl2f8AYKRg9HaPTDwHLnrCa1Z8db74dlRZEwm0wbaLXS+NMRTpPGhfz3Ul9QAAyn9ZAro8iqEK6N3zNoGrTqyq9ukcRgEXVDpM4d1ViDfdPPuofx5IQ2PUUiVh7nvu9uxTAPOGh+va2dB1AZtcq89JBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyqOs+Fz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D72EC4CEE9;
+	Tue, 20 May 2025 14:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750303;
-	bh=hTGYU0BezZpSEG4Ut0muPhLtue5SD8VdXoGW1LiAe6k=;
+	s=korg; t=1747749813;
+	bh=VVptbzpPR80Xv+hjzF4jqEYToy0qJYt2QS7fjPsTt7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iV2I5mADR6APeMF1nY8NXx8rZvl05fpfBoTRlSqR1KEeCbcqpsYzqO2A1tx/X4qCG
-	 rPtYEWSskmPtpXu/PFrFFZwLCG7BC6xxRG05pZEcaW+0RXNU+cTD8a+OWjmqa0JOp4
-	 gKx5ZdDPGYrml4xAFemBM79dRflSrHqq8CGrgF3A=
+	b=HyqOs+FzHxLbXh9Lz42KYoU9KBB4QWP++QoiHm+HFtJvLOrXM+IdFdH6rtOXAVWkO
+	 gQ2ufv5wsdC92ah+3+qJ2ClWvDG+lTCwJXBsvWaIJjcFsK3jwPWQI4x/tshFEI/Jj0
+	 p2y/W6gPrUGWY+8YEqro6rqiLZvoaeMVtP9ejGdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 078/143] LoongArch: uprobes: Remove redundant code about resume_era
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 068/117] drm/amd/display: Correct the reply value when AUX write incomplete
 Date: Tue, 20 May 2025 15:50:33 +0200
-Message-ID: <20250520125813.134195852@linuxfoundation.org>
+Message-ID: <20250520125806.693154540@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 12614f794274f63fbdfe76771b2b332077d63848 upstream.
+commit d433981385c62c72080e26f1c00a961d18b233be upstream.
 
-arch_uprobe_skip_sstep() returns true if instruction was emulated, that
-is to say, there is no need to single step for the emulated instructions.
-regs->csr_era will point to the destination address directly after the
-exception, so the resume_era related code is redundant, just remove them.
+[Why]
+Now forcing aux->transfer to return 0 when incomplete AUX write is
+inappropriate. It should return bytes have been transferred.
 
+[How]
+aux->transfer is asked not to change original msg except reply field of
+drm_dp_aux_msg structure. Copy the msg->buffer when it's write request,
+and overwrite the first byte when sink reply 1 byte indicating partially
+written byte number. Then we can return the correct value without
+changing the original msg.
+
+Fixes: 3637e457eb00 ("drm/amd/display: Fix wrong handling for AUX_DEFER case")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Ray Wu <ray.wu@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7ac37f0dcd2e0b729fa7b5513908dc8ab802b540)
 Cc: stable@vger.kernel.org
-Fixes: 19bc6cb64092 ("LoongArch: Add uprobes support")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/uprobes.h |    1 -
- arch/loongarch/kernel/uprobes.c      |    7 +------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           |    3 ++-
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   10 ++++++++--
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/include/asm/uprobes.h
-+++ b/arch/loongarch/include/asm/uprobes.h
-@@ -15,7 +15,6 @@ typedef u32 uprobe_opcode_t;
- #define UPROBE_XOLBP_INSN	__emit_break(BRK_UPROBE_XOLBP)
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -11069,7 +11069,8 @@ int amdgpu_dm_process_dmub_aux_transfer_
+ 		/* The reply is stored in the top nibble of the command. */
+ 		payload->reply[0] = (adev->dm.dmub_notify->aux_reply.command >> 4) & 0xF;
  
- struct arch_uprobe {
--	unsigned long	resume_era;
- 	u32	insn[2];
- 	u32	ixol[2];
- 	bool	simulate;
---- a/arch/loongarch/kernel/uprobes.c
-+++ b/arch/loongarch/kernel/uprobes.c
-@@ -52,11 +52,7 @@ int arch_uprobe_post_xol(struct arch_upr
+-	if (!payload->write && p_notify->aux_reply.length)
++	/*write req may receive a byte indicating partially written number as well*/
++	if (p_notify->aux_reply.length)
+ 		memcpy(payload->data, p_notify->aux_reply.data,
+ 				p_notify->aux_reply.length);
  
- 	WARN_ON_ONCE(current->thread.trap_nr != UPROBE_TRAP_NR);
- 	current->thread.trap_nr = utask->autask.saved_trap_nr;
--
--	if (auprobe->simulate)
--		instruction_pointer_set(regs, auprobe->resume_era);
--	else
--		instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
-+	instruction_pointer_set(regs, utask->vaddr + LOONGARCH_INSN_SIZE);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -59,6 +59,7 @@ static ssize_t dm_dp_aux_transfer(struct
+ 	enum aux_return_code_type operation_result;
+ 	struct amdgpu_device *adev;
+ 	struct ddc_service *ddc;
++	uint8_t copy[16];
  
- 	return 0;
- }
-@@ -86,7 +82,6 @@ bool arch_uprobe_skip_sstep(struct arch_
+ 	if (WARN_ON(msg->size > 16))
+ 		return -E2BIG;
+@@ -74,6 +75,11 @@ static ssize_t dm_dp_aux_transfer(struct
+ 			(msg->request & DP_AUX_I2C_WRITE_STATUS_UPDATE) != 0;
+ 	payload.defer_delay = 0;
  
- 	insn.word = auprobe->insn[0];
- 	arch_simulate_insn(insn, regs);
--	auprobe->resume_era = regs->csr_era;
++	if (payload.write) {
++		memcpy(copy, msg->buffer, msg->size);
++		payload.data = copy;
++	}
++
+ 	result = dc_link_aux_transfer_raw(TO_DM_AUX(aux)->ddc_service, &payload,
+ 				      &operation_result);
  
- 	return true;
- }
+@@ -97,9 +103,9 @@ static ssize_t dm_dp_aux_transfer(struct
+ 	 */
+ 	if (payload.write && result >= 0) {
+ 		if (result) {
+-			/*one byte indicating partially written bytes. Force 0 to retry*/
++			/*one byte indicating partially written bytes*/
+ 			drm_info(adev_to_drm(adev), "amdgpu: AUX partially written\n");
+-			result = 0;
++			result = payload.data[0];
+ 		} else if (!payload.reply[0])
+ 			/*I2C_ACK|AUX_ACK*/
+ 			result = msg->size;
 
 
 
