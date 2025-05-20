@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6417ABDA82
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CE3ABDA0B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 398EC4A47F3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371193B6718
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA362441B4;
-	Tue, 20 May 2025 13:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04219242D94;
+	Tue, 20 May 2025 13:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbfyQFYK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hv0au0zw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC90EEC4;
-	Tue, 20 May 2025 13:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A1E242922;
+	Tue, 20 May 2025 13:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749461; cv=none; b=nmFnSIyLevlfRzWTpBBKqjVemFArSIetzYHOngWIO3pM/FerSxvs6E60pmVKJhPPpora8lQPz/t3Y5QcG6wl4BwagGt/5al3D4tdM4dAVltkNqyc5wC5lW4FZL7DVn1bYH+hV9GVaicmWmFFYbVpwXAdGIR1acB2154kGvT16dA=
+	t=1747749201; cv=none; b=XIu3zThWRu//WnQ/fn+6a0Pz8aYizwn1+jhVqTrEJncwZYQ6bSjw+By0vlVGCR0vRqZyMzQmWjIrn3kuNkibcWtZKIkfxCarPzK8kQVmdn0lDRg8zAg+kM1PVUMgwkQndCbrTV7dh82f6UeFUmTIoR8BJ1n8sm90xg8WLjgqKhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749461; c=relaxed/simple;
-	bh=UmYHASVCrKQAuugMi0jPM1TVji/sm9PRp6wZahqrhf8=;
+	s=arc-20240116; t=1747749201; c=relaxed/simple;
+	bh=Oufs6mnEbxcsG7UdLikqZvt1q0Rrjy03hsfE8v7rrlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGSfCGvZnIyItKf/28jQJqQOn9rn5PsQrWX/qgdDzro3vHvhQvzHYqkHqVxGOm4gsdg5NHXRDcgLmsBLvT198X2lNN0lY99LeHIO5Mq/t64EHQX1KsW8iOkGa9ZawXJy1iBy6eWZRKm7IXs8njBGFZ3R2eamWnKAg9I9YYYGgnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbfyQFYK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31A2C4CEE9;
-	Tue, 20 May 2025 13:57:40 +0000 (UTC)
+	 MIME-Version; b=KpTQv6uttp8pAHGFfQnWksTDbqz6CarxmbW42kwDpOfQjY1lQuvf+ve/UfC239XFmgWi0Xjb+PRJu63iB8IXS1MbKrl9lh+7/EiKWEgi+cTpccYowJQ0iqqE76cdK9o3hXRbHZgiLTb7yv8M8J2BwLFLVnT4zFakhfConpNrCIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hv0au0zw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934CBC4CEEA;
+	Tue, 20 May 2025 13:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749461;
-	bh=UmYHASVCrKQAuugMi0jPM1TVji/sm9PRp6wZahqrhf8=;
+	s=korg; t=1747749198;
+	bh=Oufs6mnEbxcsG7UdLikqZvt1q0Rrjy03hsfE8v7rrlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbfyQFYKhgSAU8vzuGcQyU0lXrl50jVTgiXU2dhOEJRCR5RWTYjyy2Q1QNpl+V38e
-	 T7dqb+fccPZPhPHQ+85O7X8+q3kPPnyaA9zMjGqdI/H0WPHiPHj1wXypoNikB0DdmA
-	 ROnMDXWr+w0YKEUH0yUgb/5mzg4n8nIKaIPtZ6Fk=
+	b=hv0au0zwMW1EnAPTXVVj/vm9UCgkIsaunkm2bGQ7dn/r1FEwdlw0dkQ2ZP5QJC/UU
+	 2hU4x6CJ25un3ikDUxMGvEkSnFS8+YjEfUV8sNvhCIUtPRj/aGZ2zs3YsQqAd6kevf
+	 aIIT2sMLzRde+daQ6/wZBc9axD3jUXKboGlyZDhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 52/97] hv_netvsc: Remove rmsg_pgcnt
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 5.15 26/59] x86/its: Align RETs in BHB clear sequence to avoid thunking
 Date: Tue, 20 May 2025 15:50:17 +0200
-Message-ID: <20250520125802.695116574@linuxfoundation.org>
+Message-ID: <20250520125754.901436583@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+References: <20250520125753.836407405@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 5bbc644bbf4e97a05bc0cb052189004588ff8a09 upstream.
+commit f0cd7091cc5a032c8870b4285305d9172569d126 upstream.
 
-init_page_array() now always creates a single page buffer array entry
-for the rndis message, even if the rndis message crosses a page
-boundary. As such, the number of page buffer array entries used for
-the rndis message must no longer be tracked -- it is always just 1.
-Remove the rmsg_pgcnt field and use "1" where the value is needed.
+The software mitigation for BHI is to execute BHB clear sequence at syscall
+entry, and possibly after a cBPF program. ITS mitigation thunks RETs in the
+lower half of the cacheline. This causes the RETs in the BHB clear sequence
+to be thunked as well, adding unnecessary branches to the BHB clear
+sequence.
 
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20250513000604.1396-5-mhklinux@outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Since the sequence is in hot path, align the RET instructions in the
+sequence to avoid thunking.
+
+This is how disassembly clear_bhb_loop() looks like after this change:
+
+   0x44 <+4>:     mov    $0x5,%ecx
+   0x49 <+9>:     call   0xffffffff81001d9b <clear_bhb_loop+91>
+   0x4e <+14>:    jmp    0xffffffff81001de5 <clear_bhb_loop+165>
+   0x53 <+19>:    int3
+   ...
+   0x9b <+91>:    call   0xffffffff81001dce <clear_bhb_loop+142>
+   0xa0 <+96>:    ret
+   0xa1 <+97>:    int3
+   ...
+   0xce <+142>:   mov    $0x5,%eax
+   0xd3 <+147>:   jmp    0xffffffff81001dd6 <clear_bhb_loop+150>
+   0xd5 <+149>:   nop
+   0xd6 <+150>:   sub    $0x1,%eax
+   0xd9 <+153>:   jne    0xffffffff81001dd3 <clear_bhb_loop+147>
+   0xdb <+155>:   sub    $0x1,%ecx
+   0xde <+158>:   jne    0xffffffff81001d9b <clear_bhb_loop+91>
+   0xe0 <+160>:   ret
+   0xe1 <+161>:   int3
+   0xe2 <+162>:   int3
+   0xe3 <+163>:   int3
+   0xe4 <+164>:   int3
+   0xe5 <+165>:   lfence
+   0xe8 <+168>:   pop    %rbp
+   0xe9 <+169>:   ret
+
+Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/hyperv_net.h |    1 -
- drivers/net/hyperv/netvsc.c     |    7 +++----
- drivers/net/hyperv/netvsc_drv.c |    1 -
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ arch/x86/entry/entry_64.S |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/drivers/net/hyperv/hyperv_net.h
-+++ b/drivers/net/hyperv/hyperv_net.h
-@@ -156,7 +156,6 @@ struct hv_netvsc_packet {
- 	u8 cp_partial; /* partial copy into send buffer */
- 
- 	u8 rmsg_size; /* RNDIS header and PPI size */
--	u8 rmsg_pgcnt; /* page count of RNDIS header and PPI */
- 	u8 page_buf_cnt;
- 
- 	u16 q_idx;
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -980,8 +980,7 @@ static void netvsc_copy_to_send_buf(stru
- 		     + pend_size;
- 	int i;
- 	u32 padding = 0;
--	u32 page_count = packet->cp_partial ? packet->rmsg_pgcnt :
--		packet->page_buf_cnt;
-+	u32 page_count = packet->cp_partial ? 1 : packet->page_buf_cnt;
- 	u32 remain;
- 
- 	/* Add padding */
-@@ -1164,7 +1163,7 @@ static inline int netvsc_send_pkt(
- 		u32 desc_size;
- 
- 		if (packet->cp_partial)
--			pb += packet->rmsg_pgcnt;
-+			pb++;
- 
- 		ret = netvsc_dma_map(ndev_ctx->device_ctx, packet, pb);
- 		if (ret) {
-@@ -1326,7 +1325,7 @@ int netvsc_send(struct net_device *ndev,
- 		packet->send_buf_index = section_index;
- 
- 		if (packet->cp_partial) {
--			packet->page_buf_cnt -= packet->rmsg_pgcnt;
-+			packet->page_buf_cnt--;
- 			packet->total_data_buflen = msd_len + packet->rmsg_size;
- 		} else {
- 			packet->page_buf_cnt = 0;
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -342,7 +342,6 @@ static u32 init_page_array(void *hdr, u3
- 	pb[0].len = len;
- 	pb[0].pfn = virt_to_hvpfn(hdr);
- 	packet->rmsg_size = len;
--	packet->rmsg_pgcnt = 1;
- 
- 	pb[1].offset = offset_in_hvpage(skb->data);
- 	pb[1].len = skb_headlen(skb);
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -1530,7 +1530,9 @@ SYM_CODE_END(rewind_stack_and_make_dead)
+  * ORC to unwind properly.
+  *
+  * The alignment is for performance and not for safety, and may be safely
+- * refactored in the future if needed.
++ * refactored in the future if needed. The .skips are for safety, to ensure
++ * that all RETs are in the second half of a cacheline to mitigate Indirect
++ * Target Selection, rather than taking the slowpath via its_return_thunk.
+  */
+ SYM_FUNC_START(clear_bhb_loop)
+ 	push	%rbp
+@@ -1540,10 +1542,22 @@ SYM_FUNC_START(clear_bhb_loop)
+ 	call	1f
+ 	jmp	5f
+ 	.align 64, 0xcc
++	/*
++	 * Shift instructions so that the RET is in the upper half of the
++	 * cacheline and don't take the slowpath to its_return_thunk.
++	 */
++	.skip 32 - (.Lret1 - 1f), 0xcc
+ 	ANNOTATE_INTRA_FUNCTION_CALL
+ 1:	call	2f
+-	RET
++.Lret1:	RET
+ 	.align 64, 0xcc
++	/*
++	 * As above shift instructions for RET at .Lret2 as well.
++	 *
++	 * This should be ideally be: .skip 32 - (.Lret2 - 2f), 0xcc
++	 * but some Clang versions (e.g. 18) don't like this.
++	 */
++	.skip 32 - 18, 0xcc
+ 2:	movl	$5, %eax
+ 3:	jmp	4f
+ 	nop
+@@ -1551,7 +1565,7 @@ SYM_FUNC_START(clear_bhb_loop)
+ 	jnz	3b
+ 	sub	$1, %ecx
+ 	jnz	1b
+-	RET
++.Lret2:	RET
+ 5:	lfence
+ 	pop	%rbp
+ 	RET
 
 
 
