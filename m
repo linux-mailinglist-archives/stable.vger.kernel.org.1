@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-145179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721B5ABDA66
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:57:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8BBABDAF6
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3020189DD39
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D7A78C2B3F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB1D2459EC;
-	Tue, 20 May 2025 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCE4242D79;
+	Tue, 20 May 2025 14:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwF/Rtfu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsF3hX59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578502459E3;
-	Tue, 20 May 2025 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D00A1D8E07;
+	Tue, 20 May 2025 14:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749397; cv=none; b=A1DQ3jqBJDK3BadwmnN2UzZAoVxEW6JbTjPpXvmON6d8SF8OTIouPj1TwWMWxdaXcepvyVe+4JWgbwqGrh/3ZwyryOWEBShfvkYh5+JpMv27EAK2WQxd00u0DO6GKZuxhpbL7jxMmhjhNiVE0Z3GQJXqqGX6BF1TENLiBScsaBw=
+	t=1747749668; cv=none; b=emzKfqaCR4KPZDLHpjgFrAkNc37NGG2fZHFpDi0n2RjBk6kWCnfM87uwEgAPSMmDTaZbcArqtFPqxfU9W9syZDEjN2QjKUyuOzZPhWqsaLj6WCGEBCEqGBh0Ip5fHIXjAVGmdoQ9hl9rcReXDfIHTC0UlLRhTJvADj23mCBfAu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749397; c=relaxed/simple;
-	bh=R5+Fpv74hDRbcyJ8ZNr9fyj6ot5rQt99nXZ1RFUxEOM=;
+	s=arc-20240116; t=1747749668; c=relaxed/simple;
+	bh=xKYX+BKWC1LOreJL/eAlIzAM4x8dFgL9S4vVf43Dcs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGgEbTwCLHhO6FGnpm4OJuXr2EBTuup8O8pqKodEXwqMKz94rkxezfHijJXC8r3PGLaU+eAG+7KJxfZJWlRxIuMN2UyCYhH+Y1YJfe/gr1BE39liWgBLUlzREKo1W9tEbRDHgHWEZJJ4cplOmYY/+MfzDh+lcWKbnCSch/J5Kws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwF/Rtfu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B43C4CEE9;
-	Tue, 20 May 2025 13:56:36 +0000 (UTC)
+	 MIME-Version; b=Hg+vnTWi7OhiX4k0eDo9evF57U4XTF26+r45IwRCuafz/KjEAZJjp4e9Lg98D5NdKKvyLlSYEmupZtiOWkX1fJYimfEf8CjZxbTvFf+/nmRNMEP4DJ4Hl1pwy9DQR/4HeEXMyYHupVkmJzTqrkMXEa6EzoZF/Hf0/dy1R6lr72Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsF3hX59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B282BC4CEE9;
+	Tue, 20 May 2025 14:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749396;
-	bh=R5+Fpv74hDRbcyJ8ZNr9fyj6ot5rQt99nXZ1RFUxEOM=;
+	s=korg; t=1747749668;
+	bh=xKYX+BKWC1LOreJL/eAlIzAM4x8dFgL9S4vVf43Dcs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwF/Rtfufhs2i2He0oXVKO7pD4+LOS7oCUAnLjtcH0XfbU1wet5eGNIahiqrM5/cg
-	 Xwu9bS+qIpLvaPQ8JC/QCGS+dUu3tF7soEntp+7LYdTn3EZWjSqpJmXYTN1qWwduMl
-	 ZrSSiQlVqV2JhIDIeecnORCnmb0q5ZRdWV1T1MKA=
+	b=IsF3hX59EuAMRa89V4I9oxvns6uZufz24UOQ7uZZO0YJnGs66G8ycI4tivyCGEjmY
+	 PPatPbCiCRa/ZGi8pMWskdXWpWHSnfu1yo5+6qqcAlit8KYWSN1CBqyBlqFKF8Npp+
+	 y1pyHXICl9zpBdXPcWaE7V4dK50BeqCCrqYVRC6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"H.J. Lu" <hjl.tools@gmail.com>,
 	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 08/97] binfmt_elf: Honor PT_LOAD alignment for static PIE
+Subject: [PATCH 6.6 008/117] binfmt_elf: Honor PT_LOAD alignment for static PIE
 Date: Tue, 20 May 2025 15:49:33 +0200
-Message-ID: <20250520125800.996332646@linuxfoundation.org>
+Message-ID: <20250520125804.317879693@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -109,10 +109,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 38 insertions(+), 6 deletions(-)
 
 diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 26abe256e91fb..fd3d800f69c1c 100644
+index 58c43a572df8b..2fa276e7da1b1 100644
 --- a/fs/binfmt_elf.c
 +++ b/fs/binfmt_elf.c
-@@ -1120,10 +1120,13 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1119,10 +1119,13 @@ static int load_elf_binary(struct linux_binprm *bprm)
  				goto out_free_dentry;
  			}
  
@@ -128,7 +128,7 @@ index 26abe256e91fb..fd3d800f69c1c 100644
  			 * _are_ the ELF interpreter). The loaders must
  			 * be loaded away from programs since the program
  			 * may otherwise collide with the loader (especially
-@@ -1143,15 +1146,44 @@ static int load_elf_binary(struct linux_binprm *bprm)
+@@ -1142,15 +1145,44 @@ static int load_elf_binary(struct linux_binprm *bprm)
  			 * without MAP_FIXED nor MAP_FIXED_NOREPLACE).
  			 */
  			if (interpreter) {
