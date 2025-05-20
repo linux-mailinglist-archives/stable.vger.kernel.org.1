@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6592DABDC63
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB0CABDC0B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7CFD1BA2D32
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C3E84E2B78
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A533C24BD00;
-	Tue, 20 May 2025 14:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C33246799;
+	Tue, 20 May 2025 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dj+VIwKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Svq3Sl4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6217A21D5BE;
-	Tue, 20 May 2025 14:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D22246773;
+	Tue, 20 May 2025 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750652; cv=none; b=tYFpe7JK7cPVhbtuPWT1oB/Y4TEty5TItWF+ACuHUm3SXqipXDeUnqBOAOUYq9e1QfNcXPmw59s1ajdqYd6cPVHnD8kW7AuFmNQadzr5UMXWbcVjQlsxtRK4g9fqEcjvaNlW+xVpV79Rg76T0KrDoLT2LCdWlIHqhAb3fs5OHGU=
+	t=1747750162; cv=none; b=R/K5WpX4dw1atKfJqd3aqZB90OEaf6g08qJuHofmJ9AF7YJPEW6zr9peR91+IeSD+SZTXYk/vgseylL5hiaQ2YNJY76M5WfgTmYUK0/E8x+Na5QOrfygivrH02zQ1DBx7Qqitw3vApRS6/B2Ci2p58KdR68mXIyEyclrTGmf6fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750652; c=relaxed/simple;
-	bh=LG/aG8Kadoew9UK1qlybc04nTR5W1e5aoL+7jba/eXQ=;
+	s=arc-20240116; t=1747750162; c=relaxed/simple;
+	bh=YsR3nBS630w788QaFwQDJKRja/zYTzXGgQBtq0pVew8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NonyUq9R7TTEw8t4QCMUjriprQ7BmI2yyRxIVFmxNxu7aYlpMlacq5fcWvZXBuvgY+5mS6TUrbCxKrcZ8P5Q0nsTBgVdlClykLVwf9uRJeO8mek+L+0tnLmRsLQUASYu4jH87rT9lPOrqDqoXqbBXWh1vImY+aPHHPpTOKkEp4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dj+VIwKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A17FC4CEE9;
-	Tue, 20 May 2025 14:17:31 +0000 (UTC)
+	 MIME-Version; b=F1EI8/rq4bKgd5013atIJhRmzeibg7/gVBy7Q3f7EkcQVkPXoErTkrWTircOHurczRM0ZnsOsidxQ3AuZzmBHalLCwQ3bAPXoSwnA5Z39JncQTk90AmHl/WAUSn96m7RwlbSa0LQip/yBWcfhL8V5JhcKVsfEM2tA9UiwW41gO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Svq3Sl4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE58AC4CEEB;
+	Tue, 20 May 2025 14:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750651;
-	bh=LG/aG8Kadoew9UK1qlybc04nTR5W1e5aoL+7jba/eXQ=;
+	s=korg; t=1747750162;
+	bh=YsR3nBS630w788QaFwQDJKRja/zYTzXGgQBtq0pVew8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dj+VIwKrKCQnsdXrp8YBF+XvcmnPcDk5P+55o3hVVpy+kKOTPgd2Hd3KSwsXy17+Q
-	 hvBFHwmtUTaRsUOgloVa2JHWRDLnlUh0X4c03U+hkw2+ITZoajBEFJyKNrKfgSluNc
-	 lFtmeizSpTUZfp8POec/R3dpOIyl6ldfhd0BAZjU=
+	b=Svq3Sl4HhMGbMiOQJe39CNUIxbbeCe3YqUYHRQ7q7ffS+Jbp1N3UJ6738OzYqs1EO
+	 fBm8KAiHtBRhkNECCAwHcJQewVrrxi2I5TCIvM2l4Y4ZutzUs8uX4HxuBltslMkJEO
+	 3+y9WDkzmQxpkpKySlTN5Jii2daT9P7acGZto1EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 047/145] octeontx2-pf: Fix ethtool support for SDP representors
+Subject: [PATCH 6.12 062/143] octeontx2-af: Fix CGX Receive counters
 Date: Tue, 20 May 2025 15:50:17 +0200
-Message-ID: <20250520125812.418646841@linuxfoundation.org>
+Message-ID: <20250520125812.492929301@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 314007549d89adebdd1e214a743d7e26edbd075e ]
+[ Upstream commit bf449f35e77fd44017abf991fac1f9ab7705bbe0 ]
 
-The hardware supports multiple MAC types, including RPM, SDP, and LBK.
-However, features such as link settings and pause frames are only available
-on RPM MAC, and not supported on SDP or LBK.
+Each CGX block supports 4 logical MACs (LMACS). Receive
+counters CGX_CMR_RX_STAT0-8 are per LMAC and CGX_CMR_RX_STAT9-12
+are per CGX.
 
-This patch updates the ethtool operations logic accordingly to reflect
-this behavior.
+Due a bug in previous patch, stale Per CGX counters values observed.
 
-Fixes: 2f7f33a09516 ("octeontx2-pf: Add representors for sdp MAC")
+Fixes: 66208910e57a ("octeontx2-af: Support to retrieve CGX LMAC stats")
 Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://patch.msgid.link/20250513071554.728922-1-hkelam@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index 2d53dc77ef1ef..b3f616a7f2e96 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -315,7 +315,7 @@ static void otx2_get_pauseparam(struct net_device *netdev,
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
- 	struct cgx_pause_frm_cfg *req, *rsp;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 8216f843a7cd5..e43c4608d3ba3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -707,6 +707,11 @@ int cgx_get_rx_stats(void *cgxd, int lmac_id, int idx, u64 *rx_stat)
  
--	if (is_otx2_lbkvf(pfvf->pdev))
-+	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
- 		return;
- 
- 	mutex_lock(&pfvf->mbox.lock);
-@@ -347,7 +347,7 @@ static int otx2_set_pauseparam(struct net_device *netdev,
- 	if (pause->autoneg)
- 		return -EOPNOTSUPP;
- 
--	if (is_otx2_lbkvf(pfvf->pdev))
-+	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
- 		return -EOPNOTSUPP;
- 
- 	if (pause->rx_pause)
-@@ -937,8 +937,8 @@ static u32 otx2_get_link(struct net_device *netdev)
- {
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
- 
--	/* LBK link is internal and always UP */
--	if (is_otx2_lbkvf(pfvf->pdev))
-+	/* LBK and SDP links are internal and always UP */
-+	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev))
- 		return 1;
- 	return pfvf->linfo.link_up;
+ 	if (!is_lmac_valid(cgx, lmac_id))
+ 		return -ENODEV;
++
++	/* pass lmac as 0 for CGX_CMR_RX_STAT9-12 */
++	if (idx >= CGX_RX_STAT_GLOBAL_INDEX)
++		lmac_id = 0;
++
+ 	*rx_stat =  cgx_read(cgx, lmac_id, CGXX_CMRX_RX_STAT0 + (idx * 8));
+ 	return 0;
  }
-@@ -1409,7 +1409,7 @@ static int otx2vf_get_link_ksettings(struct net_device *netdev,
- {
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
- 
--	if (is_otx2_lbkvf(pfvf->pdev)) {
-+	if (is_otx2_lbkvf(pfvf->pdev) || is_otx2_sdp_rep(pfvf->pdev)) {
- 		cmd->base.duplex = DUPLEX_FULL;
- 		cmd->base.speed = SPEED_100000;
- 	} else {
 -- 
 2.39.5
 
