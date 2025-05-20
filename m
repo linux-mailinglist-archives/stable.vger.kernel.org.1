@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-145101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD31ABD9FD
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:53:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEEEABDA8F
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFE553BC5D2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:52:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A83898C0F51
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75482459CF;
-	Tue, 20 May 2025 13:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0622024466C;
+	Tue, 20 May 2025 13:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ts5BF6O3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jnskb7kl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DACF2459CD;
-	Tue, 20 May 2025 13:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53DE244196;
+	Tue, 20 May 2025 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749156; cv=none; b=UdDtaSfBf5k9QcHGfO5+BGLh7+4SxnoHh0ao/gBCR2srDPk/bcTHHOSlLlQY4h446nZY1XHGdHPD0pbpR1v78Fi7idzekRZqGGtn9Ii5adOsuAo877Irl9WJlFMmf4ZmLn+mm4Cg4a1xlBd45sAoZKyZoqcdT/n3N/Rqd1L+QIo=
+	t=1747749425; cv=none; b=DUTeJjnYNq6vvuhPhOCmc9yXdD/4d5Tg71K9lYMEZuxoNThf0DBUeB3nV1D9RzxRByD2AXjOczVKUk08NAtG5Avsz9yb6FrT2h18VyXaJTMvfa0xUXvbDjBzNLfNQVE2crSjjZax0HP11fPlj+1rjZA6lOvzWLF8hCHNW9N0dB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749156; c=relaxed/simple;
-	bh=mtu/WJWRmVJIw8POt/2+/7ZdVLH8Q4sAz1CNNJGgTiY=;
+	s=arc-20240116; t=1747749425; c=relaxed/simple;
+	bh=/XxP9NvPsXi3TyG3PZPVHdSGhf/2cY2bKB/6xgN54ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkHz6OgBxKZyvYdIf7o6L0YneR9lXb0apgzIkMybWxMm51JM+B6Gju3K4u3PhHDAG3J9Cz6HHvdDMiFG9sv2coPAuuOcUpooQiVxGMsSBGqIPQLetsVepP13rNIzZ1w1cKKsEdwx8nriIcZ8NBt1Dfe4Q8dwHDdq0adpdxaW34c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ts5BF6O3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0CAC4CEE9;
-	Tue, 20 May 2025 13:52:35 +0000 (UTC)
+	 MIME-Version; b=UCp5eQCZjoiK182cbV2zli/2v/B40fOCopcgze+VWCy/v7KC+QTgr4k8ebHSwhxj0YLajormVkdRxZwVQq5mwzDHGdF/4QUxFAmbtiCtMdCmxbfst8gsnNyefWr8AVpyMKNHyzb3ID6hfUZ8/ckw5ZPpLWJwpIJ+CzrJlvTzchA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jnskb7kl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17F5C4CEE9;
+	Tue, 20 May 2025 13:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749155;
-	bh=mtu/WJWRmVJIw8POt/2+/7ZdVLH8Q4sAz1CNNJGgTiY=;
+	s=korg; t=1747749425;
+	bh=/XxP9NvPsXi3TyG3PZPVHdSGhf/2cY2bKB/6xgN54ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ts5BF6O3wn6Gzjbe1mLkU6D9KYbVEI8M/XSoHifICVBmwQ5V+dl9nm3GRdyRBlmLg
-	 mnDT5jeOPZGOXZttUr5uuIIiUp2x5RRvlEDNCLI8QkEZ/q1jmCdNNiJlTS25VuMBEV
-	 sIf1HMoEGUgWRMdKG6KJeNNDZdtbrbN5/p+EPDDY=
+	b=Jnskb7klH0Xt1NyU4SwVFFNYk9bkcNLaCeIat5z8INYEsf9ha+K1PjMOnmjE7kUoE
+	 Toys0+GJCpTzzvx6oJXfz2pMWcNNvdAsSoYnsi/fAAAj69chUdptMjiSUQQSiusYCH
+	 qn6iVFE3SdHWLblK7XzpAAFtYtwvyGpZTq53MANk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 15/59] x86/speculation: Simplify and make CALL_NOSPEC consistent
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 41/97] LoongArch: Fix MAX_REG_OFFSET calculation
 Date: Tue, 20 May 2025 15:50:06 +0200
-Message-ID: <20250520125754.437733640@linuxfoundation.org>
+Message-ID: <20250520125802.269276363@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit cfceff8526a426948b53445c02bcb98453c7330d upstream.
+commit 90436d234230e9a950ccd87831108b688b27a234 upstream.
 
-CALL_NOSPEC macro is used to generate Spectre-v2 mitigation friendly
-indirect branches. At compile time the macro defaults to indirect branch,
-and at runtime those can be patched to thunk based mitigations.
+Fix MAX_REG_OFFSET calculation, make it point to the last register
+in 'struct pt_regs' and not to the marker itself, which could allow
+regs_get_register() to return an invalid offset.
 
-This approach is opposite of what is done for the rest of the kernel, where
-the compile time default is to replace indirect calls with retpoline thunk
-calls.
-
-Make CALL_NOSPEC consistent with the rest of the kernel, default to
-retpoline thunk at compile time when CONFIG_RETPOLINE is
-enabled.
-
-  [ pawan: s/CONFIG_MITIGATION_RETPOLINE/CONFIG_RETPOLINE/ ]
-
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250228-call-nospec-v3-1-96599fed0f33@linux.intel.com
+Cc: stable@vger.kernel.org
+Fixes: 803b0fc5c3f2baa6e5 ("LoongArch: Add process management")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nospec-branch.h |   15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ arch/loongarch/include/asm/ptrace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -285,16 +285,11 @@ extern retpoline_thunk_t __x86_indirect_
-  * Inline asm uses the %V modifier which is only in newer GCC
-  * which is ensured when CONFIG_RETPOLINE is defined.
-  */
--# define CALL_NOSPEC						\
--	ALTERNATIVE_2(						\
--	ANNOTATE_RETPOLINE_SAFE					\
--	"call *%[thunk_target]\n",				\
--	"call __x86_indirect_thunk_%V[thunk_target]\n",		\
--	X86_FEATURE_RETPOLINE,					\
--	"lfence;\n"						\
--	ANNOTATE_RETPOLINE_SAFE					\
--	"call *%[thunk_target]\n",				\
--	X86_FEATURE_RETPOLINE_LFENCE)
-+#ifdef CONFIG_RETPOLINE
-+#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
-+#else
-+#define CALL_NOSPEC	"call *%[thunk_target]\n"
-+#endif
+--- a/arch/loongarch/include/asm/ptrace.h
++++ b/arch/loongarch/include/asm/ptrace.h
+@@ -54,7 +54,7 @@ static inline void instruction_pointer_s
  
- # define THUNK_TARGET(addr) [thunk_target] "r" (addr)
+ /* Query offset/name of register from its name/offset */
+ extern int regs_query_register_offset(const char *name);
+-#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
++#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last) - sizeof(unsigned long))
  
+ /**
+  * regs_get_register() - get register value from its offset
 
 
 
