@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44AEBABDD0E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:32:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C6CABDB7D
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389314C7791
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC4F3A43F5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250F6248878;
-	Tue, 20 May 2025 14:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7712424503E;
+	Tue, 20 May 2025 14:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GC7hd4iy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9ieEBfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A1022D794;
-	Tue, 20 May 2025 14:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338C62F37;
+	Tue, 20 May 2025 14:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750714; cv=none; b=TuKdJtg7UaLn+1qDCcjBBO+ekxKAlQQuYOA2PRkdzuFOcPnvnox5qDyJZMcj4z/71oGTQFGpdZB/942R52U4cVgT3yO2STjb1n89TfkcrlCm4r3XNMl4jHfjTVcOnk2n1Pq16wf3mquRN//HkYLJtVMoPYHOsVCiqoiQFhIJrLc=
+	t=1747749921; cv=none; b=czeoA0KckJNkzlo4aPYIKEXBZHWaPzP/JDa5fYC8lLtYw6klWNAZwLDtgBOJOH7iX9OreNEQsO8845mOlxsQ0tcS9ZxqiTGhrYIY+DnUioEToaTQDPR3I0FDbqwxxS76R4fII9fCDhbo04VGW1UJhcay5ygqhTrNfHJiJ1CqATk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750714; c=relaxed/simple;
-	bh=Fmm1CXzUjW5ENsCNP1Xqdl2cbx0WXFE3TUynv8/7SPw=;
+	s=arc-20240116; t=1747749921; c=relaxed/simple;
+	bh=Om0qtSjCkeBcorcpSADp/93V3yAegtQLGu43jMdfEfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7zHQqdH8KirG/BfoBKdn8e2E8zKhV5ZOQiQ5qeBzryIiJExYRK/lrKp8fehpMnQeX7HsXiUGDQZJ9e7LQ0Hm2wvOJ1vw1hotG1t6nH1TP84O5QIfjvQ2/mL9OoT/VobHMcKBeXdpuL80W1iow5hany4PCU7fbaghBT1ikiGW8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GC7hd4iy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BDDC4CEE9;
-	Tue, 20 May 2025 14:18:34 +0000 (UTC)
+	 MIME-Version; b=YuShbaAk8+TEjDG8H6vFdcmClz00nDzlBbM1JO+swMKNNtdMngxXIsWa8MNlo2xpsySnCYtLoiZnaPXlmO/eLXzFbT/f/hl8jGVGiZ+do2s5cEX0b1KINLaMnbjN5xC6furT5+l1WIxHaLt1z6js3ffLtpPGlbQ0Gy6C/8r5dJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9ieEBfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B78C4CEEA;
+	Tue, 20 May 2025 14:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750714;
-	bh=Fmm1CXzUjW5ENsCNP1Xqdl2cbx0WXFE3TUynv8/7SPw=;
+	s=korg; t=1747749921;
+	bh=Om0qtSjCkeBcorcpSADp/93V3yAegtQLGu43jMdfEfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GC7hd4iyN+qz7m1kzP2AbOYrWNoz7LfV7z71wmdXvv9WpUwhFaE/eI4nVIVTuEkhx
-	 cCzYx7KDglik7RpxEn9AmMZUZkrsa4fxzxd1PlAdfhkvETe7Q+qw4gCfkWiSuSZi+h
-	 n95gS5higtHhOdj++otnjrJYKT1eWsGnP46AeHto=
+	b=T9ieEBfDCLROTCrpjXP3QVF6L5mBELH2E73BzClg9aqnanPpkfiL7z1Pj5Od9Pku6
+	 uXT4ZDYLe1VKVjTd4hGmNzQbT8K4nLg6CZDqusfy7w3+7wuC78eSCkymZNsOmtrxCp
+	 JIUXKtTKnaNCTJ1CsuTUbQs1DKyqrBWUJ9iTsHZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 097/145] hv_netvsc: Remove rmsg_pgcnt
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 102/117] dmaengine: idxd: Refactor remove call with idxd_cleanup() helper
 Date: Tue, 20 May 2025 15:51:07 +0200
-Message-ID: <20250520125814.366836552@linuxfoundation.org>
+Message-ID: <20250520125808.041497768@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 5bbc644bbf4e97a05bc0cb052189004588ff8a09 upstream.
+commit a409e919ca321cc0e28f8abf96fde299f0072a81 upstream.
 
-init_page_array() now always creates a single page buffer array entry
-for the rndis message, even if the rndis message crosses a page
-boundary. As such, the number of page buffer array entries used for
-the rndis message must no longer be tracked -- it is always just 1.
-Remove the rmsg_pgcnt field and use "1" where the value is needed.
+The idxd_cleanup() helper cleans up perfmon, interrupts, internals and
+so on. Refactor remove call with the idxd_cleanup() helper to avoid code
+duplication. Note, this also fixes the missing put_device() for idxd
+groups, enginces and wqs.
 
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20250513000604.1396-5-mhklinux@outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data accelerators")
+Cc: stable@vger.kernel.org
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-10-xueshuai@linux.alibaba.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/hyperv_net.h |    1 -
- drivers/net/hyperv/netvsc.c     |    7 +++----
- drivers/net/hyperv/netvsc_drv.c |    1 -
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/dma/idxd/init.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/drivers/net/hyperv/hyperv_net.h
-+++ b/drivers/net/hyperv/hyperv_net.h
-@@ -158,7 +158,6 @@ struct hv_netvsc_packet {
- 	u8 cp_partial; /* partial copy into send buffer */
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -891,7 +891,6 @@ static void idxd_shutdown(struct pci_dev
+ static void idxd_remove(struct pci_dev *pdev)
+ {
+ 	struct idxd_device *idxd = pci_get_drvdata(pdev);
+-	struct idxd_irq_entry *irq_entry;
  
- 	u8 rmsg_size; /* RNDIS header and PPI size */
--	u8 rmsg_pgcnt; /* page count of RNDIS header and PPI */
- 	u8 page_buf_cnt;
+ 	idxd_unregister_devices(idxd);
+ 	/*
+@@ -904,21 +903,12 @@ static void idxd_remove(struct pci_dev *
+ 	get_device(idxd_confdev(idxd));
+ 	device_unregister(idxd_confdev(idxd));
+ 	idxd_shutdown(pdev);
+-	if (device_pasid_enabled(idxd))
+-		idxd_disable_system_pasid(idxd);
+ 	idxd_device_remove_debugfs(idxd);
+-
+-	irq_entry = idxd_get_ie(idxd, 0);
+-	free_irq(irq_entry->vector, irq_entry);
+-	pci_free_irq_vectors(pdev);
++	idxd_cleanup(idxd);
+ 	pci_iounmap(pdev, idxd->reg_base);
+-	if (device_user_pasid_enabled(idxd))
+-		idxd_disable_sva(pdev);
+-	pci_disable_device(pdev);
+-	destroy_workqueue(idxd->wq);
+-	perfmon_pmu_remove(idxd);
+ 	put_device(idxd_confdev(idxd));
+ 	idxd_free(idxd);
++	pci_disable_device(pdev);
+ }
  
- 	u16 q_idx;
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -953,8 +953,7 @@ static void netvsc_copy_to_send_buf(stru
- 		     + pend_size;
- 	int i;
- 	u32 padding = 0;
--	u32 page_count = packet->cp_partial ? packet->rmsg_pgcnt :
--		packet->page_buf_cnt;
-+	u32 page_count = packet->cp_partial ? 1 : packet->page_buf_cnt;
- 	u32 remain;
- 
- 	/* Add padding */
-@@ -1137,7 +1136,7 @@ static inline int netvsc_send_pkt(
- 		u32 desc_size;
- 
- 		if (packet->cp_partial)
--			pb += packet->rmsg_pgcnt;
-+			pb++;
- 
- 		ret = netvsc_dma_map(ndev_ctx->device_ctx, packet, pb);
- 		if (ret) {
-@@ -1299,7 +1298,7 @@ int netvsc_send(struct net_device *ndev,
- 		packet->send_buf_index = section_index;
- 
- 		if (packet->cp_partial) {
--			packet->page_buf_cnt -= packet->rmsg_pgcnt;
-+			packet->page_buf_cnt--;
- 			packet->total_data_buflen = msd_len + packet->rmsg_size;
- 		} else {
- 			packet->page_buf_cnt = 0;
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -342,7 +342,6 @@ static u32 init_page_array(void *hdr, u3
- 	pb[0].len = len;
- 	pb[0].pfn = virt_to_hvpfn(hdr);
- 	packet->rmsg_size = len;
--	packet->rmsg_pgcnt = 1;
- 
- 	pb[1].offset = offset_in_hvpage(skb->data);
- 	pb[1].len = skb_headlen(skb);
+ static struct pci_driver idxd_pci_driver = {
 
 
 
