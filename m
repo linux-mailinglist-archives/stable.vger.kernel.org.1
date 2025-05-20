@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76906ABDCEA
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:30:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ECC9ABDB53
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4AD88C5237
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 234A918890BB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01272550C4;
-	Tue, 20 May 2025 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2026244663;
+	Tue, 20 May 2025 14:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+L7u8Zu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDurpC48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6D91CAA79;
-	Tue, 20 May 2025 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDEA2F37;
+	Tue, 20 May 2025 14:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750841; cv=none; b=i1W9QZoGHBxaCTZ2BlP8kmQzmc+ayqaMVsmGRHDrc+H1XOa5hd2YSzkz1v9aeAybt8OfR1jobVPGMN+LnapKZ2g35rWgmHUItZ13osFZs0P3duo8kw8E5yYm0SG+zsye9Ei/lNyqJFwtSj2KhtvMt30L4h3vqS97GfKMfj5aJIw=
+	t=1747749987; cv=none; b=ogDmvo+n77dbu+yJUElmjKQcOeQmjUm1g1/ZAt4PGUoJgWMMgonbmbtd2Oq9zERfqbsTi9GjHLE1w+rn/JknLUwlLjf6yZjhCeuBuuyWtGw1MPvZ4pkOlmofkJYS2W65vogELQ/srp3CJCO46akQTb1t9S/kNl/V5zS16qLjZhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750841; c=relaxed/simple;
-	bh=jBEvZqPrVTwtOFbn1T52w7Zj2O012prgDflBBGIkLjs=;
+	s=arc-20240116; t=1747749987; c=relaxed/simple;
+	bh=29KATQd/TCHDHC2K7O61J+F0CeZSbFXuUI4P2OzWFPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2mKJTgf9sEQelVYrM0irmjQ+j95kvyArtqp2D8A1PufJ+yD0vJR14wDzEu/egfFMKkr/mFbrzHHBOUSz2ZLkCe5dgV8dzUbMjg+w1YCCyz8Zr83k5xlyY8X4K56zBcv5EdozLbtSwlWaXjmeFhNXx7TPGcMkVjJGcvFP3dh6wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+L7u8Zu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18304C4CEE9;
-	Tue, 20 May 2025 14:20:40 +0000 (UTC)
+	 MIME-Version; b=jb5gZYcgkq131yhuV/qx0D5NgvHQSoCR8HouM7tuPlUbWCclL3cv1dy2owwdaLR5XS5G8xCqNd3f3P9MGMY7gLdHVfslZw9uGKYA4oS2YXsLGnjwxupzImIZzmy1F4WCl7F/+S5hZBZiRSGpUGOhI/grvDYxPKObYcMwNHF0Kag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDurpC48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE69C4CEEB;
+	Tue, 20 May 2025 14:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750841;
-	bh=jBEvZqPrVTwtOFbn1T52w7Zj2O012prgDflBBGIkLjs=;
+	s=korg; t=1747749987;
+	bh=29KATQd/TCHDHC2K7O61J+F0CeZSbFXuUI4P2OzWFPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+L7u8ZuPJiodKgZ2YWmhVGp8EJIpDyErDGl7mx9/k5lyxOGaPFmwTJwceaDNlWoP
-	 Pi9I2VfMAsKn3ShegeWph7kVN8+BNOTlde27Krq1nrTcSse++ed0wF6Dz5MKxpC+16
-	 WaWqKZppVJlHc2EtMtGmClZs4SS+z1RaO6+azgOg=
+	b=NDurpC48HPK1lQTartnS7Pcio2gq6ha3P2vjWn6LgbwI6sDmjgSk+6CWvz3HGOPPp
+	 sJmaqc6FjCOjvcwCyLfBzsFwEo70Z88l9ouNwDSAB2GWPMP4IVhs3WN51tvDN6lxMp
+	 ViF3yrjn9fRL4NNQt52MIrf2486xYOoSP2nT6glo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.14 111/145] phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
+Subject: [PATCH 6.6 116/117] phy: tegra: xusb: remove a stray unlock
 Date: Tue, 20 May 2025 15:51:21 +0200
-Message-ID: <20250520125814.901645015@linuxfoundation.org>
+Message-ID: <20250520125808.599291309@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 54c4c58713aaff76c2422ff5750e557ab3b100d7 upstream.
+commit 83c178470e0bf690d34c8c08440f2421b82e881c upstream.
 
-It has been observed on the Renesas RZ/G3S SoC that unbinding and binding
-the PHY driver leads to role autodetection failures. This issue occurs when
-PHY 3 is the first initialized PHY. PHY 3 does not have an interrupt
-associated with the USB2_INT_ENABLE register (as
-rcar_gen3_int_enable[3] = 0). As a result, rcar_gen3_init_otg() is called
-to initialize OTG without enabling PHY interrupts.
+We used to take a lock in tegra186_utmi_bias_pad_power_on() but now we
+have moved the lock into the caller.  Unfortunately, when we moved the
+lock this unlock was left behind and it results in a double unlock.
+Delete it now.
 
-To resolve this, add rcar_gen3_is_any_otg_rphy_initialized() and call it in
-role_store(), role_show(), and rcar_gen3_init_otg(). At the same time,
-rcar_gen3_init_otg() is only called when initialization for a PHY with
-interrupt bits is in progress. As a result, the
-struct rcar_gen3_phy::otg_initialized is no longer needed.
-
-Fixes: 549b6b55b005 ("phy: renesas: rcar-gen3-usb2: enable/disable independent irqs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250507125032.565017-2-claudiu.beznea.uj@bp.renesas.com
+Fixes: b47158fb4295 ("phy: tegra: xusb: Use a bitmask for UTMI pad power state tracking")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/aAjmR6To4EnvRl4G@stanley.mountain
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c |   33 +++++++++++++------------------
- 1 file changed, 14 insertions(+), 19 deletions(-)
+ drivers/phy/tegra/xusb-tegra186.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -107,7 +107,6 @@ struct rcar_gen3_phy {
- 	struct rcar_gen3_chan *ch;
- 	u32 int_enable_bits;
- 	bool initialized;
--	bool otg_initialized;
- 	bool powered;
- };
- 
-@@ -320,16 +319,15 @@ static bool rcar_gen3_is_any_rphy_initia
- 	return false;
- }
- 
--static bool rcar_gen3_needs_init_otg(struct rcar_gen3_chan *ch)
-+static bool rcar_gen3_is_any_otg_rphy_initialized(struct rcar_gen3_chan *ch)
- {
--	int i;
--
--	for (i = 0; i < NUM_OF_PHYS; i++) {
--		if (ch->rphys[i].otg_initialized)
--			return false;
-+	for (enum rcar_gen3_phy_index i = PHY_INDEX_BOTH_HC; i <= PHY_INDEX_EHCI;
-+	     i++) {
-+		if (ch->rphys[i].initialized)
-+			return true;
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -656,8 +656,6 @@ static void tegra186_utmi_bias_pad_power
+ 	} else {
+ 		clk_disable_unprepare(priv->usb2_trk_clk);
  	}
- 
--	return true;
-+	return false;
+-
+-	mutex_unlock(&padctl->lock);
  }
  
- static bool rcar_gen3_are_all_rphys_power_off(struct rcar_gen3_chan *ch)
-@@ -351,7 +349,7 @@ static ssize_t role_store(struct device
- 	bool is_b_device;
- 	enum phy_mode cur_mode, new_mode;
- 
--	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
-+	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
- 		return -EIO;
- 
- 	if (sysfs_streq(buf, "host"))
-@@ -389,7 +387,7 @@ static ssize_t role_show(struct device *
- {
- 	struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
- 
--	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
-+	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
- 		return -EIO;
- 
- 	return sprintf(buf, "%s\n", rcar_gen3_is_host(ch) ? "host" :
-@@ -402,6 +400,9 @@ static void rcar_gen3_init_otg(struct rc
- 	void __iomem *usb2_base = ch->base;
- 	u32 val;
- 
-+	if (!ch->is_otg_channel || rcar_gen3_is_any_otg_rphy_initialized(ch))
-+		return;
-+
- 	/* Should not use functions of read-modify-write a register */
- 	val = readl(usb2_base + USB2_LINECTRL1);
- 	val = (val & ~USB2_LINECTRL1_DP_RPD) | USB2_LINECTRL1_DPRPD_EN |
-@@ -465,12 +466,9 @@ static int rcar_gen3_phy_usb2_init(struc
- 	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
- 	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
- 
--	/* Initialize otg part */
--	if (channel->is_otg_channel) {
--		if (rcar_gen3_needs_init_otg(channel))
--			rcar_gen3_init_otg(channel);
--		rphy->otg_initialized = true;
--	}
-+	/* Initialize otg part (only if we initialize a PHY with IRQs). */
-+	if (rphy->int_enable_bits)
-+		rcar_gen3_init_otg(channel);
- 
- 	rphy->initialized = true;
- 
-@@ -486,9 +484,6 @@ static int rcar_gen3_phy_usb2_exit(struc
- 
- 	rphy->initialized = false;
- 
--	if (channel->is_otg_channel)
--		rphy->otg_initialized = false;
--
- 	val = readl(usb2_base + USB2_INT_ENABLE);
- 	val &= ~rphy->int_enable_bits;
- 	if (!rcar_gen3_is_any_rphy_initialized(channel))
+ static void tegra186_utmi_bias_pad_power_off(struct tegra_xusb_padctl *padctl)
 
 
 
