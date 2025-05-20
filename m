@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7DBABDD73
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:41:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C014FABDBBF
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A64B84E67F1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:22:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E5B1889B55
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB81227BF83;
-	Tue, 20 May 2025 14:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CC724C061;
+	Tue, 20 May 2025 14:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgw7EJoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqB+1lgB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6855127B517;
-	Tue, 20 May 2025 14:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45332472A6;
+	Tue, 20 May 2025 14:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750616; cv=none; b=KNrA82Frzf3TJOVoQ+B0CbcLW6T09Y9KGKE9xNGcDN0gAwGXU2f4RqVeJ+PnNo9jS7Rtr6zhAsYGqLhp0Ahh+GbQ/HK1mNFmyKpC2nwCKMeEKma4zYisyUL4nXdCr3Qk0ucgG04Ujz/mGgTSBbPlg0EsJXuW8zCVBYCrnRnRg3Q=
+	t=1747750218; cv=none; b=EbjhAltbc5kl98iJ++s/1GDEyhIR9r1YqQ1Lx6zb4MXX9EyvidHAio4a8W2anI5+LW0ZOjsWWf9B28UcEnAPFJUytxXonggantY6kXAq6Hchg71/5dOOaCjPlxQZTxEfKIBiZqnXu1hXYDpwlqxpbLh0gt1/zzwHcXn1hJT7z8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750616; c=relaxed/simple;
-	bh=1jo7NQuKJFTM/O1aQvw592jRPVnk3N1vfeSEgQz+nWI=;
+	s=arc-20240116; t=1747750218; c=relaxed/simple;
+	bh=pNHLh8DS2lL+yQMHYaqCLZV+Iz0JxOlP+r7UCvmYTIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StLuY2iMVIMILHC2O9ioeeCaZRtYiIEOEAuuMVX6+FcGq8OY1T7kBIuKkn0rhI3pWiB7WLMuFpe6dEmqTfELZnLg24zcaqvuPuO/x2jFzo0uEZeOONy2+P4q/qRAlSDRRS6rnOQwkssS8T0nQUwSCGOeLJ6wzWIXXiz2wTM6WR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgw7EJoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5636AC4CEEF;
-	Tue, 20 May 2025 14:16:55 +0000 (UTC)
+	 MIME-Version; b=upZLVA3x6hfNReCIwEJxofSH7ahDeWSOsPGfjTKNfDQ+GGfcZny0vAbZJx7OiOOw9x66o3+eXnK5puCXH6/7kDeoJD7OzIso34YZj8fOiljEot7oprOqTwV1YVQME91pysMLOWpTzSDrJSOG7Vo3zP1IAuJQpoJ/Q+fey7gFFoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqB+1lgB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531EAC4CEE9;
+	Tue, 20 May 2025 14:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750615;
-	bh=1jo7NQuKJFTM/O1aQvw592jRPVnk3N1vfeSEgQz+nWI=;
+	s=korg; t=1747750218;
+	bh=pNHLh8DS2lL+yQMHYaqCLZV+Iz0JxOlP+r7UCvmYTIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgw7EJoKvcECWj/qjHe4r4dyuwhgVvjxdmJPRPcvnFQVAVS4eFNxeEzhuBidEzXNQ
-	 r3HujEhT5fbkn4vkOQZYa0xbJ/N7nG58Eklh0uEts4X5B2oDncC9KnR3d1Yivuw2BF
-	 drl1eDTzQsPXo9GMOqYC4GJ3BwjZKtNLZx8jxZSY=
+	b=VqB+1lgBekrMozQ9+ftpAlXdRXNKMEerRvPdXCTntJjT72XTsn5dUczcfU+7BiQEV
+	 zglXclNqjc/CCxELiWdb+fJpYMOGbvL2t7GQ8o405GCoQHlf8Hw5rED/q0AhknJtO5
+	 G8xdxVXJo5ZuUGnjqfJjeJqgNzr1tD730qKSrzwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <jdamato@fastly.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.14 066/145] fs/eventpoll: fix endless busy loop after timeout has expired
+	Qu Wenruo <wqu@suse.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Kyoji Ogasawara <sawara04.o@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 081/143] btrfs: add back warning for mount option commit values exceeding 300
 Date: Tue, 20 May 2025 15:50:36 +0200
-Message-ID: <20250520125813.166667247@linuxfoundation.org>
+Message-ID: <20250520125813.254731727@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Kyoji Ogasawara <sawara04.o@gmail.com>
 
-commit d9ec73301099ec5975505e1c3effbe768bab9490 upstream.
+commit 4ce2affc6ef9f84b4aebbf18bd5c57397b6024eb upstream.
 
-After commit 0a65bc27bd64 ("eventpoll: Set epoll timeout if it's in
-the future"), the following program would immediately enter a busy
-loop in the kernel:
+The Btrfs documentation states that if the commit value is greater than
+300 a warning should be issued. The warning was accidentally lost in the
+new mount API update.
 
-```
-int main() {
-  int e = epoll_create1(0);
-  struct epoll_event event = {.events = EPOLLIN};
-  epoll_ctl(e, EPOLL_CTL_ADD, 0, &event);
-  const struct timespec timeout = {.tv_nsec = 1};
-  epoll_pwait2(e, &event, 1, &timeout, 0);
-}
-```
-
-This happens because the given (non-zero) timeout of 1 nanosecond
-usually expires before ep_poll() is entered and then
-ep_schedule_timeout() returns false, but `timed_out` is never set
-because the code line that sets it is skipped.  This quickly turns
-into a soft lockup, RCU stalls and deadlocks, inflicting severe
-headaches to the whole system.
-
-When the timeout has expired, we don't need to schedule a hrtimer, but
-we should set the `timed_out` variable.  Therefore, I suggest moving
-the ep_schedule_timeout() check into the `timed_out` expression
-instead of skipping it.
-
-brauner: Note that there was an earlier fix by Joe Damato in response to
-my bug report in [1].
-
-Fixes: 0a65bc27bd64 ("eventpoll: Set epoll timeout if it's in the future")
-Cc: Joe Damato <jdamato@fastly.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Link: https://lore.kernel.org/20250429153419.94723-1-jdamato@fastly.com [1]
-Link: https://lore.kernel.org/20250429185827.3564438-1-max.kellermann@ionos.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 6941823cc878 ("btrfs: remove old mount API code")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Kyoji Ogasawara <sawara04.o@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/eventpoll.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/btrfs/fs.h    |    1 +
+ fs/btrfs/super.c |    4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -2111,9 +2111,10 @@ static int ep_poll(struct eventpoll *ep,
+--- a/fs/btrfs/fs.h
++++ b/fs/btrfs/fs.h
+@@ -285,6 +285,7 @@ enum {
+ #define BTRFS_FEATURE_INCOMPAT_SAFE_CLEAR		0ULL
  
- 		write_unlock_irq(&ep->lock);
+ #define BTRFS_DEFAULT_COMMIT_INTERVAL	(30)
++#define BTRFS_WARNING_COMMIT_INTERVAL	(300)
+ #define BTRFS_DEFAULT_MAX_INLINE	(2048)
  
--		if (!eavail && ep_schedule_timeout(to))
--			timed_out = !schedule_hrtimeout_range(to, slack,
--							      HRTIMER_MODE_ABS);
-+		if (!eavail)
-+			timed_out = !ep_schedule_timeout(to) ||
-+				!schedule_hrtimeout_range(to, slack,
-+							  HRTIMER_MODE_ABS);
- 		__set_current_state(TASK_RUNNING);
- 
- 		/*
+ struct btrfs_dev_replace {
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -570,6 +570,10 @@ static int btrfs_parse_param(struct fs_c
+ 		break;
+ 	case Opt_commit_interval:
+ 		ctx->commit_interval = result.uint_32;
++		if (ctx->commit_interval > BTRFS_WARNING_COMMIT_INTERVAL) {
++			btrfs_warn(NULL, "excessive commit interval %u, use with care",
++				   ctx->commit_interval);
++		}
+ 		if (ctx->commit_interval == 0)
+ 			ctx->commit_interval = BTRFS_DEFAULT_COMMIT_INTERVAL;
+ 		break;
 
 
 
