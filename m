@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B844ABDD2C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:34:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFB6ABDC37
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B666D4E793E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:25:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCF917B94C2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3638824E4AA;
-	Tue, 20 May 2025 14:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FF925394E;
+	Tue, 20 May 2025 14:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWDnnl3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUchNH+b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B9924EA85;
-	Tue, 20 May 2025 14:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DA2253946;
+	Tue, 20 May 2025 14:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750805; cv=none; b=eIHSYt/H1oha/Jl/5c160wLVR4JyZVYZe/I2Z5ZtXflBELsfj2plNCFJPMQfPj6luBuf3UHdSh8+oF+jDWDc7/saaOwswLM4B1tTdlDyI5QZCUlwVWd4o5mWNii+5DCHizhstloKsLs3zLuYTw+Q5hyRrBmCrfsV+EWO0sU6BVQ=
+	t=1747750430; cv=none; b=X1955L1FOffxVTGEqeE1Bd476eGLOxBlqt+saxI8+YDE09BFDcKmlkcv/aQbcevg4iQjuz9EwZLsjZG97txJYycz57ivND9BQNISvpiYTChlPOoCGT39mgc6sksjkXqRlp9+1vD3w41g1xlPEpOTEmAUIIUxIJKW5ejHRStWPrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750805; c=relaxed/simple;
-	bh=NxhqC0acUNIdErV2nW1DmV9nrjOeDBafOq/7uQSUYAs=;
+	s=arc-20240116; t=1747750430; c=relaxed/simple;
+	bh=9Sf9FbdS++8dKqXywbGp/6HTeuXTHKCZAVO/wJage8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBahNCFI0PIbrfI71SAfJjk2h7jwMFl5VEWGrbCXveBYG7nTXDSTV4ItAb4weH2qKmskA2zakApEJebvjix2L1VEE7huPu0LOb77Xu4T59u5OagMbBQofPtdKnQkcgeD+qq/UKtAMP2SVMkM0O1IPOfx2c2NJWI3i5s5An9Ztes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWDnnl3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77155C4CEE9;
-	Tue, 20 May 2025 14:20:04 +0000 (UTC)
+	 MIME-Version; b=N0XtCklqydgHJn5/VgeS4SeSt1mCS5pQ12P42/wJ3qU+z0hG62rtrLbKA+fPdvrP4tDlqQ42cbv5V3E+do+X89p/6QjPmB3RB6UJ+/oU/JwCFSOakMOP6dthAlzFsB0ICiiQthQF3d7Pn/cpcsYQmxNIB5T5QYVd6wR25AygNBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUchNH+b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DADC4CEE9;
+	Tue, 20 May 2025 14:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750804;
-	bh=NxhqC0acUNIdErV2nW1DmV9nrjOeDBafOq/7uQSUYAs=;
+	s=korg; t=1747750430;
+	bh=9Sf9FbdS++8dKqXywbGp/6HTeuXTHKCZAVO/wJage8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWDnnl3D35d9iqgVIv+axuVKA9XHTRwj+XB2oZ+Havcq71dnUmsOn3sVCpiGCcX63
-	 tQFMyhzpRcBv8Igas7O6TeZk6CZJa1mdgsMPmTgbNIOxbkz4djoa1LZd+Ad3uasrHV
-	 6f0P3gBGToAcy4MFpIQ54ed9KvvVEiitJ4wjxnJw=
+	b=DUchNH+bQQVZif8xXMkeORoE89aR4WTON2rsCPiAP3F8L0hwe/oYNj7nbS1Qljvnp
+	 e56s24gsdV/h9Zgveu69Vyu8cd0HC3OiP67lxUmwOumDgg7d3b2g7Yd3tjnLsdTEG5
+	 2xKA5IR391U1r3WOzEQa218MRc74MIY+L8TzUYJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fenghua Yu <fenghuay@nvidia.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.14 127/145] dmaengine: idxd: fix memory leak in error handling path of idxd_setup_wqs
+Subject: [PATCH 6.12 142/143] phy: tegra: xusb: remove a stray unlock
 Date: Tue, 20 May 2025 15:51:37 +0200
-Message-ID: <20250520125815.521565076@linuxfoundation.org>
+Message-ID: <20250520125815.594942441@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 3fd2f4bc010cdfbc07dd21018dc65bd9370eb7a4 upstream.
+commit 83c178470e0bf690d34c8c08440f2421b82e881c upstream.
 
-Memory allocated for wqs is not freed if an error occurs during
-idxd_setup_wqs(). To fix it, free the allocated memory in the reverse
-order of allocation before exiting the function in case of an error.
+We used to take a lock in tegra186_utmi_bias_pad_power_on() but now we
+have moved the lock into the caller.  Unfortunately, when we moved the
+lock this unlock was left behind and it results in a double unlock.
+Delete it now.
 
-Fixes: 7c5dd23e57c1 ("dmaengine: idxd: fix wq conf_dev 'struct device' lifetime")
-Fixes: 700af3a0a26c ("dmaengine: idxd: add 'struct idxd_dev' as wrapper for conf_dev")
-Fixes: de5819b99489 ("dmaengine: idxd: track enabled workqueues in bitmap")
-Fixes: b0325aefd398 ("dmaengine: idxd: add WQ operation cap restriction support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Link: https://lore.kernel.org/r/20250404120217.48772-2-xueshuai@linux.alibaba.com
+Fixes: b47158fb4295 ("phy: tegra: xusb: Use a bitmask for UTMI pad power state tracking")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/aAjmR6To4EnvRl4G@stanley.mountain
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/init.c |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ drivers/phy/tegra/xusb-tegra186.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -169,8 +169,8 @@ static int idxd_setup_wqs(struct idxd_de
- 
- 	idxd->wq_enable_map = bitmap_zalloc_node(idxd->max_wqs, GFP_KERNEL, dev_to_node(dev));
- 	if (!idxd->wq_enable_map) {
--		kfree(idxd->wqs);
--		return -ENOMEM;
-+		rc = -ENOMEM;
-+		goto err_bitmap;
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -656,8 +656,6 @@ static void tegra186_utmi_bias_pad_power
+ 	} else {
+ 		clk_disable_unprepare(priv->usb2_trk_clk);
  	}
- 
- 	for (i = 0; i < idxd->max_wqs; i++) {
-@@ -189,10 +189,8 @@ static int idxd_setup_wqs(struct idxd_de
- 		conf_dev->bus = &dsa_bus_type;
- 		conf_dev->type = &idxd_wq_device_type;
- 		rc = dev_set_name(conf_dev, "wq%d.%d", idxd->id, wq->id);
--		if (rc < 0) {
--			put_device(conf_dev);
-+		if (rc < 0)
- 			goto err;
--		}
- 
- 		mutex_init(&wq->wq_lock);
- 		init_waitqueue_head(&wq->err_queue);
-@@ -203,7 +201,6 @@ static int idxd_setup_wqs(struct idxd_de
- 		wq->enqcmds_retries = IDXD_ENQCMDS_RETRIES;
- 		wq->wqcfg = kzalloc_node(idxd->wqcfg_size, GFP_KERNEL, dev_to_node(dev));
- 		if (!wq->wqcfg) {
--			put_device(conf_dev);
- 			rc = -ENOMEM;
- 			goto err;
- 		}
-@@ -211,9 +208,8 @@ static int idxd_setup_wqs(struct idxd_de
- 		if (idxd->hw.wq_cap.op_config) {
- 			wq->opcap_bmap = bitmap_zalloc(IDXD_MAX_OPCAP_BITS, GFP_KERNEL);
- 			if (!wq->opcap_bmap) {
--				put_device(conf_dev);
- 				rc = -ENOMEM;
--				goto err;
-+				goto err_opcap_bmap;
- 			}
- 			bitmap_copy(wq->opcap_bmap, idxd->opcap_bmap, IDXD_MAX_OPCAP_BITS);
- 		}
-@@ -224,12 +220,28 @@ static int idxd_setup_wqs(struct idxd_de
- 
- 	return 0;
- 
-- err:
-+err_opcap_bmap:
-+	kfree(wq->wqcfg);
-+
-+err:
-+	put_device(conf_dev);
-+	kfree(wq);
-+
- 	while (--i >= 0) {
- 		wq = idxd->wqs[i];
-+		if (idxd->hw.wq_cap.op_config)
-+			bitmap_free(wq->opcap_bmap);
-+		kfree(wq->wqcfg);
- 		conf_dev = wq_confdev(wq);
- 		put_device(conf_dev);
-+		kfree(wq);
-+
- 	}
-+	bitmap_free(idxd->wq_enable_map);
-+
-+err_bitmap:
-+	kfree(idxd->wqs);
-+
- 	return rc;
+-
+-	mutex_unlock(&padctl->lock);
  }
  
+ static void tegra186_utmi_bias_pad_power_off(struct tegra_xusb_padctl *padctl)
 
 
 
