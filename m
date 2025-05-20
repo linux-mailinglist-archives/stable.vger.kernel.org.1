@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E13ABDD37
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:35:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA58CABDBA7
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6BF217A8C5
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:19:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAC8F8C76D1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6AD251797;
-	Tue, 20 May 2025 14:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443DF2459F7;
+	Tue, 20 May 2025 14:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6udUrOm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btBhoUVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2E524888F;
-	Tue, 20 May 2025 14:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28CD242907;
+	Tue, 20 May 2025 14:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750455; cv=none; b=serOUF1st3Lxxgm2jBJxEjzCWGxO95b7ZCJsCBFjsafKbttjakwBDkYeJhllQv2o2fNxkOQvFSSyJiIg5UFx87zLhCmWysF2jGGcK3I7E8pBRHgT2PX5kgrTVOzAe67pINtm30TFyjLPxCLPCqxgAakqHO80E6Bt9d/eLcymv5w=
+	t=1747750034; cv=none; b=RrcX7PKRLJ+VXl6L3MsaObhusTHC67sY/X7nrvzWzo7bOk2CKZ3+o437StgN78h5xeQIQB9L42aVGNAEp8hJC2b66d6VuL7BTyO0g+BIaj2lB740h0Fx9dqj2PyjPgISMYUu2ezBpdXtj76zYZe0lWr2bLuqs5VU20QWvJI0+Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750455; c=relaxed/simple;
-	bh=s2VASlfuuHTzkMBDnt7jMSC2/BK6h7VKziBNg92csO8=;
+	s=arc-20240116; t=1747750034; c=relaxed/simple;
+	bh=uDC30n3SAollFF5UrP+CLspnfRrvheieKqrQnnIptsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kNqX/mimdPJF9TGbqeumPzEXbNtMzbP7IZEXgQ8V9xushwNUZJap9nepsjsKkPzjENwGtmPFKO9gvTuNlhDGus1AJTmuuJef54qWxTYsa0IrSVDjoA1vHctfNBBEsuZqwv61d/xyzwBGKRLiR5RWjyyjwAZD4hfBM8OUG8eq47Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6udUrOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19631C4CEE9;
-	Tue, 20 May 2025 14:14:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ni0CROfuq1ThKvUCBjNeiV8Xa69PWmDgrsFbSqDxu6GdLAHe7cY17a7j7IK7AFWw36Jr+OSFKhvrhb7mmTiShahNlg4xnUnIs63VWVYc0iXOR4SGW67dKJ6YmWK+Kxyq3Y5qPOurxqJZMHWFQe1LFoLC6NeOu3zs2xfdYg5+4yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btBhoUVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E66C4CEEA;
+	Tue, 20 May 2025 14:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750454;
-	bh=s2VASlfuuHTzkMBDnt7jMSC2/BK6h7VKziBNg92csO8=;
+	s=korg; t=1747750033;
+	bh=uDC30n3SAollFF5UrP+CLspnfRrvheieKqrQnnIptsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6udUrOmnLD3HN2C7Vo2yChuHbbMQMlgWoNvfeejROQgLmMdMDHj+1zkQpeuV9l/2
-	 X5Sa+JPtM67JVksbALlb3kGyBqOSKSOTlhrPpvL5hjxvIjDJcVMyyyK9jY2bcCd2Bi
-	 XTDbBA+UxNqx3X+OGo5va9htp0JkssqvtcxX2etU=
+	b=btBhoUVw8c9veSbcB4HOli/ca4TnbCO04KG+bS5rsGHPMHUXb2R2m6tafMM0gaxax
+	 uJxfXc1INFfq/4/w9y8U7AUdj9gSgM4cqqWddrcwsUyViDIJB0x4/fD1lu3AIsHlvX
+	 dm4B1/4ZFytSOQeV5aPCjOASAqX4/Ki0G/X/fmXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
-	Gregory Price <gourry@gourry.net>,
-	Suma Hegde <suma.hegde@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 006/145] platform/x86/amd/hsmp: Make amd_hsmp and hsmp_acpi as mutually exclusive drivers
+Subject: [PATCH 6.12 021/143] xhci: dbc: Improve performance by removing delay in transfer event polling.
 Date: Tue, 20 May 2025 15:49:36 +0200
-Message-ID: <20250520125810.797034396@linuxfoundation.org>
+Message-ID: <20250520125810.889634705@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +63,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suma Hegde <suma.hegde@amd.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 0581d384f344ed0a963dd27cbff3c7af80c189e7 ]
+[ Upstream commit 03e3d9c2bd85cda941b3cf78e895c1498ac05c5f ]
 
-amd_hsmp and hsmp_acpi are intended to be mutually exclusive drivers and
-amd_hsmp is for legacy platforms. To achieve this, it is essential to
-check for the presence of the ACPI device in plat.c. If the hsmp ACPI
-device entry is found, allow the hsmp_acpi driver to manage the hsmp
-and return an error from plat.c.
+Queue event polling work with 0 delay in case there are pending transfers
+queued up. This is part 2 of a 3 part series that roughly triples dbc
+performace when using adb push and pull over dbc.
 
-Additionally, rename the driver from amd_hsmp to hsmp_acpi to prevent
-"Driver 'amd_hsmp' is already registered, aborting..." error in case
-both drivers are loaded simultaneously.
+Max/min push rate after patches is 210/118 MB/s, pull rate 171/133 MB/s,
+tested with large files (300MB-9GB) by Łukasz Bartosik
 
-Also, support both platform device based and ACPI based probing for
-family 0x1A models 0x00 to 0x0F, implement only ACPI based probing
-for family 0x1A, models 0x10 to 0x1F. Return false from
-legacy_hsmp_support() for this platform.
-This aligns with the condition check in is_f1a_m0h().
+First performance improvement patch was commit 31128e7492dc
+("xhci: dbc: add dbgtty request to end of list once it completes")
 
-Link: https://lore.kernel.org/platform-driver-x86/aALZxvHWmphNL1wa@gourry-fedora-PF4VCD3F/
-Fixes: 7d3135d16356 ("platform/x86/amd/hsmp: Create separate ACPI, plat and common drivers")
-Reviewed-by: Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>
-Co-developed-by: Gregory Price <gourry@gourry.net>
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Signed-off-by: Suma Hegde <suma.hegde@amd.com>
-Link: https://lore.kernel.org/r/20250425102357.266790-1-suma.hegde@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241227120142.1035206-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: cab63934c33b ("xhci: dbc: Avoid event polling busyloop if pending rx transfers are inactive.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/hsmp/acpi.c | 3 +--
- drivers/platform/x86/amd/hsmp/hsmp.h | 1 +
- drivers/platform/x86/amd/hsmp/plat.c | 6 +++++-
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/hsmp/acpi.c b/drivers/platform/x86/amd/hsmp/acpi.c
-index c1eccb3c80c5c..eaae044e4f824 100644
---- a/drivers/platform/x86/amd/hsmp/acpi.c
-+++ b/drivers/platform/x86/amd/hsmp/acpi.c
-@@ -27,9 +27,8 @@
- 
- #include "hsmp.h"
- 
--#define DRIVER_NAME		"amd_hsmp"
-+#define DRIVER_NAME		"hsmp_acpi"
- #define DRIVER_VERSION		"2.3"
--#define ACPI_HSMP_DEVICE_HID	"AMDI0097"
- 
- /* These are the strings specified in ACPI table */
- #define MSG_IDOFF_STR		"MsgIdOffset"
-diff --git a/drivers/platform/x86/amd/hsmp/hsmp.h b/drivers/platform/x86/amd/hsmp/hsmp.h
-index af8b21f821d66..d58d4f0c20d55 100644
---- a/drivers/platform/x86/amd/hsmp/hsmp.h
-+++ b/drivers/platform/x86/amd/hsmp/hsmp.h
-@@ -23,6 +23,7 @@
- 
- #define HSMP_CDEV_NAME		"hsmp_cdev"
- #define HSMP_DEVNODE_NAME	"hsmp"
-+#define ACPI_HSMP_DEVICE_HID    "AMDI0097"
- 
- struct hsmp_mbaddr_info {
- 	u32 base_addr;
-diff --git a/drivers/platform/x86/amd/hsmp/plat.c b/drivers/platform/x86/amd/hsmp/plat.c
-index b9782a078dbd2..81931e808bbc8 100644
---- a/drivers/platform/x86/amd/hsmp/plat.c
-+++ b/drivers/platform/x86/amd/hsmp/plat.c
-@@ -11,6 +11,7 @@
- 
- #include <asm/amd_hsmp.h>
- 
-+#include <linux/acpi.h>
- #include <linux/build_bug.h>
- #include <linux/device.h>
- #include <linux/module.h>
-@@ -266,7 +267,7 @@ static bool legacy_hsmp_support(void)
- 		}
- 	case 0x1A:
- 		switch (boot_cpu_data.x86_model) {
--		case 0x00 ... 0x1F:
-+		case 0x00 ... 0x0F:
- 			return true;
- 		default:
- 			return false;
-@@ -288,6 +289,9 @@ static int __init hsmp_plt_init(void)
- 		return ret;
- 	}
- 
-+	if (acpi_dev_present(ACPI_HSMP_DEVICE_HID, NULL, -1))
-+		return -ENODEV;
-+
- 	hsmp_pdev = get_hsmp_pdev();
- 	if (!hsmp_pdev)
- 		return -ENOMEM;
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index 241d7aa1fbc20..6b239b3770d15 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -954,7 +954,7 @@ static void xhci_dbc_handle_events(struct work_struct *work)
+ 		/* set fast poll rate if there are pending data transfers */
+ 		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
+ 		    !list_empty(&dbc->eps[BULK_IN].list_pending))
+-			poll_interval = 1;
++			poll_interval = 0;
+ 		break;
+ 	default:
+ 		dev_info(dbc->dev, "stop handling dbc events\n");
 -- 
 2.39.5
 
