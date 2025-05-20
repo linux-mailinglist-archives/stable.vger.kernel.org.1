@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D40ABDC25
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 644FEABDC78
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B53F97AFF95
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81EF81B64ED0
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B922505CB;
-	Tue, 20 May 2025 14:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0346427CB31;
+	Tue, 20 May 2025 14:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHF7eeAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QY9w1gUP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAEC2505A2;
-	Tue, 20 May 2025 14:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A89C25392E;
+	Tue, 20 May 2025 14:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750312; cv=none; b=ac+c30N11oWaA8vmYlixpep6ndYp31Xa2cNsWBRebul3QfTYAP0qJwRAU08ZDwED8ft1Ce0GOurkhgWq3wbnsSB5Hb0tKjXgbkk/m78/A2W0VkuZGQgM8k8kofrJNOldIk/BG4Fz1pAE5ZCQqKSoSpI70WnW4EvvJ2Rrx7pt8yQ=
+	t=1747750686; cv=none; b=lN0MyX0sqQGrmKFheyAoL8iVv1aAdMN+PnezaK9NCEkn5JW9PDHSzOA0pd5FDkLfFmJlmRxqdhxVj8XFvkrIwPVhE+JIFkvGlVCamc42EFnPn8CBmfpBMSWms5E5Y0dw9umSeD5Xa0oOBKQ13k49dzF5so+zB4JsMoOHrDpdlvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750312; c=relaxed/simple;
-	bh=hAA+pbsNOIu2mbHHweO0RHo2D1BWoQDXKG5fSVMYZT8=;
+	s=arc-20240116; t=1747750686; c=relaxed/simple;
+	bh=qwyDE2XhTKm3peViDY1F/XzFdH+IS/Lm1ch6idx2C7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpb4t6LCC7bidKvogyZM0RKVgHFCKFGWaEX2dhfEGxWMyxyumTPY+C0wkUvDhyko6+YwCpRDzW+q3WjllzwFqQxV+N6sgjOZWnbpLrFx0l8QjmshVNAU6ZAIT5qFmY27LkjHnYIWZqwIwZrokfixm912PoaZc68ihEWmelZMgUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHF7eeAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093F1C4CEEA;
-	Tue, 20 May 2025 14:11:51 +0000 (UTC)
+	 MIME-Version; b=gh3eQRCoxNlR/ITFk023lFDsCKh0SedVybcG63wU5HPIDyD9JNrt7nms7h8SrsDF4PISBnokcc27P6RSZlvO5xc8LvHh7pj5RR+ikSScBo0sr6RI2CXgpIrmNT05eLr4DqsogBrQmlS/G1tt4CkHRuD9X70UpT7T6gr9BumcalY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QY9w1gUP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109B4C4CEE9;
+	Tue, 20 May 2025 14:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750312;
-	bh=hAA+pbsNOIu2mbHHweO0RHo2D1BWoQDXKG5fSVMYZT8=;
+	s=korg; t=1747750686;
+	bh=qwyDE2XhTKm3peViDY1F/XzFdH+IS/Lm1ch6idx2C7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHF7eeALZG4aChDdJiSH1KgpqgRvbyKlxh0HzGARvZFEOMqaLhGra6j0sMByvMs4C
-	 NbJBn3N1QRGIsakfTaE5rFeOryElrh3Y6yA6WDxbeagsnsfIMvrIrmKIiEbV3XMOFh
-	 yv9zXR4NGbz2Lteuy5ml1URqOgoRt0eIW7hrZ6QQ=
+	b=QY9w1gUPq73vvxOzqrpnRYIbPF4GiTc8yyGVB9X6oSf49J0VyGtB6UyoPC1RNz3w3
+	 QPXC0cmtFsxq5+elKA325yoCf2Qop92KUU1BU70zBAwFhpqP9Mw/V53uFq944MkNy5
+	 qDYivwLg12dyx+C+CrgVBfYKDz+23k9jLk2a+i2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	pengdonglin <dolinux.peng@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 104/143] ftrace: Fix preemption accounting for stacktrace filter command
+	Christian Heusel <christian@heusel.eu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.14 089/145] ALSA: usb-audio: Add sample rate quirk for Audioengine D1
 Date: Tue, 20 May 2025 15:50:59 +0200
-Message-ID: <20250520125814.135463117@linuxfoundation.org>
+Message-ID: <20250520125814.059420339@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: pengdonglin <pengdonglin@xiaomi.com>
+From: Christian Heusel <christian@heusel.eu>
 
-commit 11aff32439df6ca5b3b891b43032faf88f4a6a29 upstream.
+commit 2b24eb060c2bb9ef79e1d3bcf633ba1bc95215d6 upstream.
 
-The preemption count of the stacktrace filter command to trace ksys_read
-is consistently incorrect:
+A user reported on the Arch Linux Forums that their device is emitting
+the following message in the kernel journal, which is fixed by adding
+the quirk as submitted in this patch:
 
-$ echo ksys_read:stacktrace > set_ftrace_filter
+    > kernel: usb 1-2: current rate 8436480 is different from the runtime rate 48000
 
-   <...>-453     [004] ...1.    38.308956: <stack trace>
-=> ksys_read
-=> do_syscall_64
-=> entry_SYSCALL_64_after_hwframe
+There also is an entry for this product line added long time ago.
+Their specific device has the following ID:
 
-The root cause is that the trace framework disables preemption when
-invoking the filter command callback in function_trace_probe_call:
+    $ lsusb | grep Audio
+    Bus 001 Device 002: ID 1101:0003 EasyPass Industrial Co., Ltd Audioengine D1
 
-   preempt_disable_notrace();
-   probe_ops->func(ip, parent_ip, probe_opsbe->tr, probe_ops, probe->data);
-   preempt_enable_notrace();
-
-Use tracing_gen_ctx_dec() to account for the preempt_disable_notrace(),
-which will output the correct preemption count:
-
-$ echo ksys_read:stacktrace > set_ftrace_filter
-
-   <...>-410     [006] .....    31.420396: <stack trace>
-=> ksys_read
-=> do_syscall_64
-=> entry_SYSCALL_64_after_hwframe
-
+Link: https://bbs.archlinux.org/viewtopic.php?id=305494
+Fixes: 93f9d1a4ac593 ("ALSA: usb-audio: Apply sample rate quirk for Audioengine D1")
 Cc: stable@vger.kernel.org
-Fixes: 36590c50b2d07 ("tracing: Merge irqflags + preempt counter.")
-Link: https://lore.kernel.org/20250512094246.1167956-2-dolinux.peng@gmail.com
-Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Link: https://patch.msgid.link/20250512-audioengine-quirk-addition-v1-1-4c370af6eff7@heusel.eu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_functions.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/trace/trace_functions.c
-+++ b/kernel/trace/trace_functions.c
-@@ -574,11 +574,7 @@ ftrace_traceoff(unsigned long ip, unsign
- 
- static __always_inline void trace_stack(struct trace_array *tr)
- {
--	unsigned int trace_ctx;
--
--	trace_ctx = tracing_gen_ctx();
--
--	__trace_stack(tr, trace_ctx, FTRACE_STACK_SKIP);
-+	__trace_stack(tr, tracing_gen_ctx_dec(), FTRACE_STACK_SKIP);
- }
- 
- static void
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2248,6 +2248,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_FIXED_RATE),
+ 	DEVICE_FLG(0x0fd9, 0x0008, /* Hauppauge HVR-950Q */
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
++	DEVICE_FLG(0x1101, 0x0003, /* Audioengine D1 */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x1224, 0x2a25, /* Jieli Technology USB PHY 2.0 */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
+ 	DEVICE_FLG(0x1395, 0x740a, /* Sennheiser DECT */
 
 
 
