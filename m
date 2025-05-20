@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-145253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F154ABDAE3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:02:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD74ABDB0A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41E024C457E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:00:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B241A7AA349
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC06C22DF87;
-	Tue, 20 May 2025 14:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8412C24676B;
+	Tue, 20 May 2025 14:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/IHduQc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neIWdEe7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D4A157487;
-	Tue, 20 May 2025 14:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E33624418D;
+	Tue, 20 May 2025 14:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749625; cv=none; b=MK2t7Aue9Shjn7MMctfnC+ds799l07RHfAeyGFQFE0cSof6H34kikmJJ+cKnr6YmF7wJRG6ySfwIOzIt5slK1Y/u5fE90OkcVo0WTBUi2ZoxUHb9phGmWAax4PUua/OhNvB0BNwfnXD5fd17jVWCibgto7taMaVvJ62PVw0SdjI=
+	t=1747749908; cv=none; b=ZZ2ettBk/ZpY8YaMTjBXtsuwfXulmrO3mDn8YbXC39zVXr9am9nBNPVA2Dg/Py2bvyMclgLZKhCdmZMJ4NYMdWvq8bNU8+ceaicpXkaKfB2aOOfFsIM/ObVoVqCq0oX89nBlvo5+8bXZN+BYBNRfWuyCqF5Dy2Qp06rPB1EYk+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749625; c=relaxed/simple;
-	bh=W6am4olFRId01orQB3pqTZ7FqmTF3Z1PporC6a4eYzE=;
+	s=arc-20240116; t=1747749908; c=relaxed/simple;
+	bh=gz/npWoWIqbI4jCV8MHuHU11XfYpDGD97UqnrLBgDWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwXXEwzBCY0EMtwu4kh8i+h8w9H0G06bl7gh/n8A+9tbn4lL9pY7620ZRnyPQkLCbcpSZ/mF94cVN8R0XCxxZ/AP1YoKgijHvfAPO/1mQ0LtPkgJC6rsE+whfU1eVlOgF66itnp2+UTEkOgSue3HneOW8Ob6ZWSe2pS0XzwuQoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/IHduQc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38752C4CEE9;
-	Tue, 20 May 2025 14:00:24 +0000 (UTC)
+	 MIME-Version; b=E5LD290Mbes1YZGi6aKh3C+mRaDkMdOcFXqdTDeKsnPwjymRwIxuJsFu82Lb7CAKxln7JUSXjG/ABbsBRaqXrNa7ylwlOYpiGsrPUJEjdyQmCpO7k0ppjQs/FxtzmpLdAP8xu1hP/tXf1jODZo13/dq3QS3q8UB6QosnyBev7xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neIWdEe7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97D4C4CEE9;
+	Tue, 20 May 2025 14:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749625;
-	bh=W6am4olFRId01orQB3pqTZ7FqmTF3Z1PporC6a4eYzE=;
+	s=korg; t=1747749908;
+	bh=gz/npWoWIqbI4jCV8MHuHU11XfYpDGD97UqnrLBgDWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/IHduQcN2oZYw4P+7ZcZmpn8oMEm0zbkeL9w1HPltnC7t0wOmfV2Ck+MdaiZ+qtp
-	 yZPCE76DrEhKPUEozEDiKy3WKwPC69w11p5S72mcx+/pDr31w+sjgffs6lEAYMwCbT
-	 Pr3rfKjTsj8p8+9lseJGinQMzNsNoRedwv5Gd4Rs=
+	b=neIWdEe7ZUkF8VIN6avM+TVcBb2mBL/uVf1EgetVPeLsheIg+nR41WcXzmYo0Dn50
+	 3a//f0EXcEG/vxilLYBDW+h/5BZCKF1v7aJT+BYFtnMktGOA8CieJ8X3O5uAVpvJgE
+	 I/nupdYYUO8Gq7MXeFD1OEaacEhnvVhYEymv8qKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 97/97] drm/amdgpu: fix pm notifier handling
-Date: Tue, 20 May 2025 15:51:02 +0200
-Message-ID: <20250520125804.453477539@linuxfoundation.org>
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 099/117] dmaengine: idxd: Add missing idxd cleanup to fix memory leak in remove call
+Date: Tue, 20 May 2025 15:51:04 +0200
+Message-ID: <20250520125807.918445820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
-References: <20250520125800.653047540@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 4aaffc85751da5722e858e4333e8cf0aa4b6c78f upstream.
+commit d5449ff1b04dfe9ed8e455769aa01e4c2ccf6805 upstream.
 
-Set the s3/s0ix and s4 flags in the pm notifier so that we can skip
-the resource evictions properly in pm prepare based on whether
-we are suspending or hibernating.  Drop the eviction as processes
-are not frozen at this time, we we can end up getting stuck trying
-to evict VRAM while applications continue to submit work which
-causes the buffers to get pulled back into VRAM.
+The remove call stack is missing idxd cleanup to free bitmap, ida and
+the idxd_device. Call idxd_free() helper routines to make sure we exit
+gracefully.
 
-v2: Move suspend flags out of pm notifier (Mario)
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4178
-Fixes: 2965e6355dcd ("drm/amd: Add Suspend/Hibernate notification callback support")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 06f2dcc241e7e5c681f81fbc46cacdf4bfd7d6d7)
+Fixes: bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data accelerators")
 Cc: stable@vger.kernel.org
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-9-xueshuai@linux.alibaba.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   18 +++++-------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |   10 +---------
- 2 files changed, 6 insertions(+), 22 deletions(-)
+ drivers/dma/idxd/init.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4199,28 +4199,20 @@ static int amdgpu_device_evict_resources
-  * @data: data
-  *
-  * This function is called when the system is about to suspend or hibernate.
-- * It is used to evict resources from the device before the system goes to
-- * sleep while there is still access to swap.
-+ * It is used to set the appropriate flags so that eviction can be optimized
-+ * in the pm prepare callback.
-  */
- static int amdgpu_device_pm_notifier(struct notifier_block *nb, unsigned long mode,
- 				     void *data)
- {
- 	struct amdgpu_device *adev = container_of(nb, struct amdgpu_device, pm_nb);
--	int r;
- 
- 	switch (mode) {
- 	case PM_HIBERNATION_PREPARE:
- 		adev->in_s4 = true;
--		fallthrough;
--	case PM_SUSPEND_PREPARE:
--		r = amdgpu_device_evict_resources(adev);
--		/*
--		 * This is considered non-fatal at this time because
--		 * amdgpu_device_prepare() will also fatally evict resources.
--		 * See https://gitlab.freedesktop.org/drm/amd/-/issues/3781
--		 */
--		if (r)
--			drm_warn(adev_to_drm(adev), "Failed to evict resources, freeze active processes if problems occur: %d\n", r);
-+		break;
-+	case PM_POST_HIBERNATION:
-+		adev->in_s4 = false;
- 		break;
- 	}
- 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2480,13 +2480,8 @@ static int amdgpu_pmops_freeze(struct de
- static int amdgpu_pmops_thaw(struct device *dev)
- {
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
--	struct amdgpu_device *adev = drm_to_adev(drm_dev);
--	int r;
- 
--	r = amdgpu_device_resume(drm_dev, true);
--	adev->in_s4 = false;
--
--	return r;
-+	return amdgpu_device_resume(drm_dev, true);
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -901,6 +901,7 @@ static void idxd_remove(struct pci_dev *
+ 	destroy_workqueue(idxd->wq);
+ 	perfmon_pmu_remove(idxd);
+ 	put_device(idxd_confdev(idxd));
++	idxd_free(idxd);
  }
  
- static int amdgpu_pmops_poweroff(struct device *dev)
-@@ -2499,9 +2494,6 @@ static int amdgpu_pmops_poweroff(struct
- static int amdgpu_pmops_restore(struct device *dev)
- {
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
--	struct amdgpu_device *adev = drm_to_adev(drm_dev);
--
--	adev->in_s4 = false;
- 
- 	return amdgpu_device_resume(drm_dev, true);
- }
+ static struct pci_driver idxd_pci_driver = {
 
 
 
