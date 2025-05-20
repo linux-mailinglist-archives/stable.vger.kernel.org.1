@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-145146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5594ABDA3D
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:55:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6F3ABDA89
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE288A3733
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:55:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0305E169130
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D686922C325;
-	Tue, 20 May 2025 13:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E9713635C;
+	Tue, 20 May 2025 13:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agZ6sl7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRueOz0n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C4222D78C;
-	Tue, 20 May 2025 13:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD85DDA9;
+	Tue, 20 May 2025 13:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749300; cv=none; b=aJJKr4LHJtFcKqcHWBG6tklHFGKcTNuDVSV1Nk4C8bvB5N1CY9ngGL90VyM7a/dClsl5S6hCm/8f9f/UvqBEeTqYUAU/Oanu68gWMDbvYsOu8lgubFReuzP9Yk2xa2pqDkAyLYUhDpTbXkJ7DDS+xTGuWt9gaWjzTW1r7BIhG3A=
+	t=1747749484; cv=none; b=EbdwBLC/KZ7SLmYMSIGFtGMH795r0NfBVqKAnN/Y5VzzUTBJoE8fyemP24NpB4TGWXO92q1bpx+LrL91eeiBrR8esmeBqIwrJ5ZHzaa5sP2bEMVzjm6XGTIxON5mpmkOPO/ipB5tccdnRLrdhkfwnzllPSCHUqudkORo46RNqmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749300; c=relaxed/simple;
-	bh=ai74d7Tjk9pfLwyRQyZ+JRUkzYGoG88tmm20BpWCZXA=;
+	s=arc-20240116; t=1747749484; c=relaxed/simple;
+	bh=GDeFuFcR/QRSKyeooZyP6jEGYpE+mmv5KD606OITWhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoCXu8L2aerAqwjRUSYEfSjSUVlno34E1/IVd3rX/YaqR9xnUx/s1g7UJKsrFkWX3Y7lBVa9E5X3DANZpMsIjO778VLLcxnnZgkHzUbkM8mS+BvuJO09jBnpPEGBRFJjVAqmz/6za5GQqIfSc8q7TdyebeoReP3NnWAaMO6vQd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agZ6sl7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABC0C4CEE9;
-	Tue, 20 May 2025 13:54:59 +0000 (UTC)
+	 MIME-Version; b=A50hFB4XNErErZvy6LdPmz1yP1wkk5tjiZgg1YS4JKYooZMy3lXuAsegHETonIEW2kSNj4ohwqaZxIxA8hAIXfc5vJ2QUHawI9R/AHWe+jPP7+yRbJANhAC4U2KKC14qHdNuk4H6gtUV/bQ0at9wTmAadr9OJ8GCwIQeHwprMv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRueOz0n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6322AC4CEE9;
+	Tue, 20 May 2025 13:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749300;
-	bh=ai74d7Tjk9pfLwyRQyZ+JRUkzYGoG88tmm20BpWCZXA=;
+	s=korg; t=1747749484;
+	bh=GDeFuFcR/QRSKyeooZyP6jEGYpE+mmv5KD606OITWhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agZ6sl7IrQ9xttug8si3Kw0gWsxqbTwz+AetsR3GMqHBxvO3XMIvnrBFMpCuUCwyZ
-	 fgve/G4dy8Po0JCB6JIS7mQzq1PbGJwXLfgCX3y4+cK4cP9ZKHSZ7nz0TTeJlOIjNt
-	 jU4fCgYb8HXc0eSqF9hvGJUK1ooUQetVZDIkAUHw=
+	b=BRueOz0n6y3woGYc00FZwcFNmtSm9rrFYyw3VcXtMheoLm62frsjnKGuFzgDe7dSv
+	 8fRzaGati2bQGe/fES+WSjN5dpHjtiHzvNG5RxQOt3GPhJ94se6Hy4iYfS0YYuC/dU
+	 6OrSgQQD0SkfvYgXm5J0NWKUictWv8jrc5RlHUv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 32/59] ACPI: PPTT: Fix processor subtable walk
+	Ma Ke <make24@iscas.ac.cn>,
+	Thierry Reding <treding@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 58/97] phy: Fix error handling in tegra_xusb_port_init
 Date: Tue, 20 May 2025 15:50:23 +0200
-Message-ID: <20250520125755.134904103@linuxfoundation.org>
+Message-ID: <20250520125802.929165661@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-References: <20250520125753.836407405@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Linton <jeremy.linton@arm.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit adfab6b39202481bb43286fff94def4953793fdb upstream.
+commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
 
-The original PPTT code had a bug where the processor subtable length
-was not correctly validated when encountering a truncated
-acpi_pptt_processor node.
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
-sizeof() calls") attempted to fix this by validating the size is as
-large as the acpi_pptt_processor node structure. This introduced a
-regression where the last processor node in the PPTT table is ignored
-if it doesn't contain any private resources. That results errors like:
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-  ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
-  ACPI: SPE must be homogeneous
+Found by code review.
 
-Furthermore, it fails in a common case where the node length isn't
-equal to the acpi_pptt_processor structure size, leaving the original
-bug in a modified form.
-
-Correct the regression by adjusting the loop termination conditions as
-suggested by the bug reporters. An additional check performed after
-the subtable node type is detected, validates the acpi_pptt_processor
-node is fully contained in the PPTT table. Repeating the check in
-acpi_pptt_leaf_node() is largely redundant as the node is already
-known to be fully contained in the table.
-
-The case where a final truncated node's parent property is accepted,
-but the node itself is rejected should not be considered a bug.
-
-Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls")
-Reported-by: Maximilian Heyne <mheyne@amazon.de>
-Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@mheyne-amazon/
-Reported-by: Yicong Yang <yangyicong@hisilicon.com>
-Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyicong@huawei.com/
-Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-Tested-by: Yicong Yang <yangyicong@hisilicon.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Maximilian Heyne <mheyne@amazon.de>
-Cc: All applicable <stable@vger.kernel.org> # 7ab4f0e37a0f4: ACPI PPTT: Fix coding mistakes ...
-Link: https://patch.msgid.link/20250508023025.1301030-1-jeremy.linton@arm.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/pptt.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/phy/tegra/xusb.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -219,16 +219,18 @@ static int acpi_pptt_leaf_node(struct ac
- 			     sizeof(struct acpi_table_pptt));
- 	proc_sz = sizeof(struct acpi_pptt_processor);
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -542,16 +542,16 @@ static int tegra_xusb_port_init(struct t
  
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	/* ignore subtable types that are smaller than a processor node */
-+	while ((unsigned long)entry + proc_sz <= table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
-+
- 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
- 		    cpu_node->parent == node_entry)
- 			return 0;
- 		if (entry->length == 0)
- 			return 0;
-+
- 		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
- 				     entry->length);
--
- 	}
- 	return 1;
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	err = device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	return 0;
+ 
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
  }
-@@ -261,15 +263,18 @@ static struct acpi_pptt_processor *acpi_
- 	proc_sz = sizeof(struct acpi_pptt_processor);
  
- 	/* find the processor structure associated with this cpuid */
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	while ((unsigned long)entry + proc_sz <= table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
- 
- 		if (entry->length == 0) {
- 			pr_warn("Invalid zero length subtable\n");
- 			break;
- 		}
-+		/* entry->length may not equal proc_sz, revalidate the processor structure length */
- 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
- 		    acpi_cpu_id == cpu_node->acpi_processor_id &&
-+		    (unsigned long)entry + entry->length <= table_end &&
-+		    entry->length == proc_sz + cpu_node->number_of_priv_resources * sizeof(u32) &&
- 		     acpi_pptt_leaf_node(table_hdr, cpu_node)) {
- 			return (struct acpi_pptt_processor *)entry;
- 		}
 
 
 
