@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-145526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFB6ABDC37
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:22:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDAAABDCE5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCF917B94C2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:17:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41A083B2B18
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FF925394E;
-	Tue, 20 May 2025 14:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30901ADC93;
+	Tue, 20 May 2025 14:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUchNH+b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geBQRctZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DA2253946;
-	Tue, 20 May 2025 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF477242D9A;
+	Tue, 20 May 2025 14:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750430; cv=none; b=X1955L1FOffxVTGEqeE1Bd476eGLOxBlqt+saxI8+YDE09BFDcKmlkcv/aQbcevg4iQjuz9EwZLsjZG97txJYycz57ivND9BQNISvpiYTChlPOoCGT39mgc6sksjkXqRlp9+1vD3w41g1xlPEpOTEmAUIIUxIJKW5ejHRStWPrE=
+	t=1747750811; cv=none; b=JQNMnleK0dETiifdYVab3/defxp1g8pynE31xrYJLjhls602pFAgQ2Sx+W4U+PZY+n1kRP98/tle+IVmBE47D6GUzQhnEM+lIJP/YDVcpteo+BVEqUY/lnLPaVEY2DmWfE7oVERkNj7RsnqIKIdBd5z6UkkYOfvt35Do4KS7ZAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750430; c=relaxed/simple;
-	bh=9Sf9FbdS++8dKqXywbGp/6HTeuXTHKCZAVO/wJage8k=;
+	s=arc-20240116; t=1747750811; c=relaxed/simple;
+	bh=gyR0w+iubeZT+nTzpjAnAKBn+utI2cLX+w9a3MNrtNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0XtCklqydgHJn5/VgeS4SeSt1mCS5pQ12P42/wJ3qU+z0hG62rtrLbKA+fPdvrP4tDlqQ42cbv5V3E+do+X89p/6QjPmB3RB6UJ+/oU/JwCFSOakMOP6dthAlzFsB0ICiiQthQF3d7Pn/cpcsYQmxNIB5T5QYVd6wR25AygNBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUchNH+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DADC4CEE9;
-	Tue, 20 May 2025 14:13:49 +0000 (UTC)
+	 MIME-Version; b=NJTZjqiWccRmLVK0QD7tjGznR4v3Q54je/aiiyDhZiG4X2MEV1Wjs1UG/mtPrrayybXUG6Js4aO7CbfkcLC4BKndzOQE/glOo1ZKvO/MhAXM47+Ktu+LJ7J0gQjQrhE5J0i3ct8SFL4qpowSnuKuMe6njBgi3AnCSdXEM3h9ZQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geBQRctZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2DFC4CEE9;
+	Tue, 20 May 2025 14:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750430;
-	bh=9Sf9FbdS++8dKqXywbGp/6HTeuXTHKCZAVO/wJage8k=;
+	s=korg; t=1747750811;
+	bh=gyR0w+iubeZT+nTzpjAnAKBn+utI2cLX+w9a3MNrtNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUchNH+bQQVZif8xXMkeORoE89aR4WTON2rsCPiAP3F8L0hwe/oYNj7nbS1Qljvnp
-	 e56s24gsdV/h9Zgveu69Vyu8cd0HC3OiP67lxUmwOumDgg7d3b2g7Yd3tjnLsdTEG5
-	 2xKA5IR391U1r3WOzEQa218MRc74MIY+L8TzUYJo=
+	b=geBQRctZw5PUqx6ru11RKU4Ycm89uXWNFSyYSqkdBu/iNWvTndGXPGSjHjmXgVBQC
+	 oqp7r468R21OuZI8/ASXV95rPogDpMOIkim6oMVWgMuNU2PiIqyTHmhuvdaeLLjzsy
+	 gqLDA/3yJmKTBRzwcHBLLYSi+eiDxv/ENpfFmqeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 142/143] phy: tegra: xusb: remove a stray unlock
-Date: Tue, 20 May 2025 15:51:37 +0200
-Message-ID: <20250520125815.594942441@linuxfoundation.org>
+Subject: [PATCH 6.14 128/145] dmaengine: idxd: fix memory leak in error handling path of idxd_setup_engines
+Date: Tue, 20 May 2025 15:51:38 +0200
+Message-ID: <20250520125815.558925399@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 83c178470e0bf690d34c8c08440f2421b82e881c upstream.
+commit 817bced19d1dbdd0b473580d026dc0983e30e17b upstream.
 
-We used to take a lock in tegra186_utmi_bias_pad_power_on() but now we
-have moved the lock into the caller.  Unfortunately, when we moved the
-lock this unlock was left behind and it results in a double unlock.
-Delete it now.
+Memory allocated for engines is not freed if an error occurs during
+idxd_setup_engines(). To fix it, free the allocated memory in the
+reverse order of allocation before exiting the function in case of an
+error.
 
-Fixes: b47158fb4295 ("phy: tegra: xusb: Use a bitmask for UTMI pad power state tracking")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/aAjmR6To4EnvRl4G@stanley.mountain
+Fixes: 75b911309060 ("dmaengine: idxd: fix engine conf_dev lifetime")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-3-xueshuai@linux.alibaba.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/dma/idxd/init.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -656,8 +656,6 @@ static void tegra186_utmi_bias_pad_power
- 	} else {
- 		clk_disable_unprepare(priv->usb2_trk_clk);
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -275,6 +275,7 @@ static int idxd_setup_engines(struct idx
+ 		rc = dev_set_name(conf_dev, "engine%d.%d", idxd->id, engine->id);
+ 		if (rc < 0) {
+ 			put_device(conf_dev);
++			kfree(engine);
+ 			goto err;
+ 		}
+ 
+@@ -288,7 +289,10 @@ static int idxd_setup_engines(struct idx
+ 		engine = idxd->engines[i];
+ 		conf_dev = engine_confdev(engine);
+ 		put_device(conf_dev);
++		kfree(engine);
  	}
--
--	mutex_unlock(&padctl->lock);
++	kfree(idxd->engines);
++
+ 	return rc;
  }
  
- static void tegra186_utmi_bias_pad_power_off(struct tegra_xusb_padctl *padctl)
 
 
 
