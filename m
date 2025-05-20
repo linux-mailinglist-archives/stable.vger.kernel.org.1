@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-145491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A2B3ABDC14
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:19:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A38ABDD66
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CB7F7B7500
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 161764E4913
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F5824886C;
-	Tue, 20 May 2025 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE41A2512E3;
+	Tue, 20 May 2025 14:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bWcCX7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/t9L7UZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D404247DEA;
-	Tue, 20 May 2025 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5AB24728A;
+	Tue, 20 May 2025 14:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750331; cv=none; b=QOe0muV+jGIL8Suc639VjdzpZuQf8AnQhhYC2BqoZl1h6Azi7Zfh+brTh5GrBWcVxdNZ3BVTaFcKjS3tEAzvkxB6NSqVKPNuRWstOQgbQzolYYMl6YD0HCrxabq4m0y7P0faCTRiBcSILdxcT5tRd2iZiyuxgakxgpXtUeq1yPg=
+	t=1747750736; cv=none; b=kjOvlpqUZ+nbtt4+jm055a/yx3NUgq2pqdxoX1NmwVfCOOJucQaKgq0XF1UsF5nTA8oY6boVPP5Yemv3VqWwt1E2NIPsJiasA2eSYxSB7CRTqvPOGAwHluajhl1hJW5J9Y4e+tcbp3ZN9/jmmHM35G29WhA+WxJr72kGaWnZ8s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750331; c=relaxed/simple;
-	bh=m9Q8UX9UqdvcrrzUgfQq0Y0JmYWpzTblGg4mWqOV2XI=;
+	s=arc-20240116; t=1747750736; c=relaxed/simple;
+	bh=fm5dFFw6En3PE+hRrJUOrViv13fy8Zs2qTHyhl+vzo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8vAj2tHCxh5NR676vVUQFFwydhDp64N7D8XmYjFD86htNtkFDTU7vhTPJU5C8WKPEWChUP7SsEjJt5NrNiiR056cQh2wVXEd/oqpmyfxMZKJKma43ajYwSb7QC4geTTXUHnkKmenZ87HqPraKEEMXGcqNENkJgbZGAnjoluw+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bWcCX7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D52C4CEE9;
-	Tue, 20 May 2025 14:12:10 +0000 (UTC)
+	 MIME-Version; b=LFHQK3lE5j1vhTCVNtnz82tBOLLDZOSMMfWNyKo8SyyMP/OpincMgWVGa+ZJ2ETCVnOo7CVo1op9zJrgJylAHo5kY4mCmUzmEXc9LR2/ELg5qHta8a2urPbIb/ReZ8Sc1OXsWxEyndiHYqLbr6AAX128C0z96rZUAD98M0CWWcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/t9L7UZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB07C4CEE9;
+	Tue, 20 May 2025 14:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750331;
-	bh=m9Q8UX9UqdvcrrzUgfQq0Y0JmYWpzTblGg4mWqOV2XI=;
+	s=korg; t=1747750736;
+	bh=fm5dFFw6En3PE+hRrJUOrViv13fy8Zs2qTHyhl+vzo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2bWcCX7mqW0Xiar7qTvlL2e5VCNnsHUpAY3l/VrVyUyrAuKpn+NLD9Kc/62H7OPG3
-	 clRpWXyO+WAHHbcDODhM3jtP6P4tTxDgxU3zB+Ve00Zqr39NshAHirbad0vMAO63UV
-	 XyGe6gWLQCfuIiHs+8+iGbg61oRr+hfl97JWu4/k=
+	b=Q/t9L7UZr+YI0ynTfUnia/9z3RucCpmRnDZmbNSUDgbFc9ZbfPdUhsEVwbLgvZMrq
+	 fUrDL8LqCXlwqZYwtHY0mAPHQjru7mRCArKo9mXKKXCBVBODGZatPHkF61v5CvpRF4
+	 1fKrQl9iJoZg3JEE+fTNUy0alJ2yXHs/ScolJkLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	dmaengine@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@legrand.com>
-Subject: [PATCH 6.12 118/143] dmaengine: ti: k3-udma: Add missing locking
-Date: Tue, 20 May 2025 15:51:13 +0200
-Message-ID: <20250520125814.670560098@linuxfoundation.org>
+	Ashish Kalra <ashish.kalra@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Srikanth Aithal <sraithal@amd.com>
+Subject: [PATCH 6.14 104/145] x86/sev: Do not touch VMSA pages during SNP guest memory kdump
+Date: Tue, 20 May 2025 15:51:14 +0200
+Message-ID: <20250520125814.636358254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +64,336 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@legrand.com>
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-commit fca280992af8c2fbd511bc43f65abb4a17363f2f upstream.
+commit d2062cc1b1c367d5d019f595ef860159e1301351 upstream.
 
-Recent kernels complain about a missing lock in k3-udma.c when the lock
-validator is enabled:
+When kdump is running makedumpfile to generate vmcore and dump SNP guest
+memory it touches the VMSA page of the vCPU executing kdump.
 
-[    4.128073] WARNING: CPU: 0 PID: 746 at drivers/dma/ti/../virt-dma.h:169 udma_start.isra.0+0x34/0x238
-[    4.137352] CPU: 0 UID: 0 PID: 746 Comm: kworker/0:3 Not tainted 6.12.9-arm64 #28
-[    4.144867] Hardware name: pp-v12 (DT)
-[    4.148648] Workqueue: events udma_check_tx_completion
-[    4.153841] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.160834] pc : udma_start.isra.0+0x34/0x238
-[    4.165227] lr : udma_start.isra.0+0x30/0x238
-[    4.169618] sp : ffffffc083cabcf0
-[    4.172963] x29: ffffffc083cabcf0 x28: 0000000000000000 x27: ffffff800001b005
-[    4.180167] x26: ffffffc0812f0000 x25: 0000000000000000 x24: 0000000000000000
-[    4.187370] x23: 0000000000000001 x22: 00000000e21eabe9 x21: ffffff8000fa0670
-[    4.194571] x20: ffffff8001b6bf00 x19: ffffff8000fa0430 x18: ffffffc083b95030
-[    4.201773] x17: 0000000000000000 x16: 00000000f0000000 x15: 0000000000000048
-[    4.208976] x14: 0000000000000048 x13: 0000000000000000 x12: 0000000000000001
-[    4.216179] x11: ffffffc08151a240 x10: 0000000000003ea1 x9 : ffffffc08046ab68
-[    4.223381] x8 : ffffffc083cabac0 x7 : ffffffc081df3718 x6 : 0000000000029fc8
-[    4.230583] x5 : ffffffc0817ee6d8 x4 : 0000000000000bc0 x3 : 0000000000000000
-[    4.237784] x2 : 0000000000000000 x1 : 00000000001fffff x0 : 0000000000000000
-[    4.244986] Call trace:
-[    4.247463]  udma_start.isra.0+0x34/0x238
-[    4.251509]  udma_check_tx_completion+0xd0/0xdc
-[    4.256076]  process_one_work+0x244/0x3fc
-[    4.260129]  process_scheduled_works+0x6c/0x74
-[    4.264610]  worker_thread+0x150/0x1dc
-[    4.268398]  kthread+0xd8/0xe8
-[    4.271492]  ret_from_fork+0x10/0x20
-[    4.275107] irq event stamp: 220
-[    4.278363] hardirqs last  enabled at (219): [<ffffffc080a27c7c>] _raw_spin_unlock_irq+0x38/0x50
-[    4.287183] hardirqs last disabled at (220): [<ffffffc080a1c154>] el1_dbg+0x24/0x50
-[    4.294879] softirqs last  enabled at (182): [<ffffffc080037e68>] handle_softirqs+0x1c0/0x3cc
-[    4.303437] softirqs last disabled at (177): [<ffffffc080010170>] __do_softirq+0x1c/0x28
-[    4.311559] ---[ end trace 0000000000000000 ]---
+It then results in unrecoverable #NPF/RMP faults as the VMSA page is
+marked busy/in-use when the vCPU is running and subsequently a causes
+guest softlockup/hang.
 
-This commit adds the missing locking.
+Additionally, other APs may be halted in guest mode and their VMSA pages
+are marked busy and touching these VMSA pages during guest memory dump
+will also cause #NPF.
 
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: dmaengine@vger.kernel.org
+Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
+of guest mode and then clear the VMSA bit on their VMSA pages.
+
+If the vCPU running kdump is an AP, mark it's VMSA page as offline to
+ensure that makedumpfile excludes that page while dumping guest memory.
+
+Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Tested-by: Srikanth Aithal <sraithal@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ronald Wahl <ronald.wahl@legrand.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20250414173113.80677-1-rwahl@gmx.de
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/20250428214151.155464-1-Ashish.Kalra@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/k3-udma.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/coco/sev/core.c |  244 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 158 insertions(+), 86 deletions(-)
 
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -1091,8 +1091,11 @@ static void udma_check_tx_completion(str
- 	u32 residue_diff;
- 	ktime_t time_diff;
- 	unsigned long delay;
-+	unsigned long flags;
- 
- 	while (1) {
-+		spin_lock_irqsave(&uc->vc.lock, flags);
-+
- 		if (uc->desc) {
- 			/* Get previous residue and time stamp */
- 			residue_diff = uc->tx_drain.residue;
-@@ -1127,6 +1130,8 @@ static void udma_check_tx_completion(str
- 				break;
- 			}
- 
-+			spin_unlock_irqrestore(&uc->vc.lock, flags);
-+
- 			usleep_range(ktime_to_us(delay),
- 				     ktime_to_us(delay) + 10);
- 			continue;
-@@ -1143,6 +1148,8 @@ static void udma_check_tx_completion(str
- 
- 		break;
- 	}
-+
-+	spin_unlock_irqrestore(&uc->vc.lock, flags);
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -959,6 +959,102 @@ void snp_accept_memory(phys_addr_t start
+ 	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
  }
  
- static irqreturn_t udma_ring_irq_handler(int irq, void *data)
++static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
++{
++	bool create = event != SVM_VMGEXIT_AP_DESTROY;
++	struct ghcb_state state;
++	unsigned long flags;
++	struct ghcb *ghcb;
++	int ret = 0;
++
++	local_irq_save(flags);
++
++	ghcb = __sev_get_ghcb(&state);
++
++	vc_ghcb_invalidate(ghcb);
++
++	if (create)
++		ghcb_set_rax(ghcb, vmsa->sev_features);
++
++	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
++	ghcb_set_sw_exit_info_1(ghcb,
++				((u64)apic_id << 32)	|
++				((u64)snp_vmpl << 16)	|
++				event);
++	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
++
++	sev_es_wr_ghcb_msr(__pa(ghcb));
++	VMGEXIT();
++
++	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
++	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
++		pr_err("SNP AP %s error\n", (create ? "CREATE" : "DESTROY"));
++		ret = -EINVAL;
++	}
++
++	__sev_put_ghcb(&state);
++
++	local_irq_restore(flags);
++
++	return ret;
++}
++
++static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
++{
++	int ret;
++
++	if (snp_vmpl) {
++		struct svsm_call call = {};
++		unsigned long flags;
++
++		local_irq_save(flags);
++
++		call.caa = this_cpu_read(svsm_caa);
++		call.rcx = __pa(va);
++
++		if (make_vmsa) {
++			/* Protocol 0, Call ID 2 */
++			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
++			call.rdx = __pa(caa);
++			call.r8  = apic_id;
++		} else {
++			/* Protocol 0, Call ID 3 */
++			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
++		}
++
++		ret = svsm_perform_call_protocol(&call);
++
++		local_irq_restore(flags);
++	} else {
++		/*
++		 * If the kernel runs at VMPL0, it can change the VMSA
++		 * bit for a page using the RMPADJUST instruction.
++		 * However, for the instruction to succeed it must
++		 * target the permissions of a lesser privileged (higher
++		 * numbered) VMPL level, so use VMPL1.
++		 */
++		u64 attrs = 1;
++
++		if (make_vmsa)
++			attrs |= RMPADJUST_VMSA_PAGE_BIT;
++
++		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
++	}
++
++	return ret;
++}
++
++static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
++{
++	int err;
++
++	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
++	if (err)
++		pr_err("clear VMSA page failed (%u), leaking page\n", err);
++	else
++		free_page((unsigned long)vmsa);
++}
++
+ static void set_pte_enc(pte_t *kpte, int level, void *va)
+ {
+ 	struct pte_enc_desc d = {
+@@ -1055,6 +1151,65 @@ void snp_kexec_begin(void)
+ 		pr_warn("Failed to stop shared<->private conversions\n");
+ }
+ 
++/*
++ * Shutdown all APs except the one handling kexec/kdump and clearing
++ * the VMSA tag on AP's VMSA pages as they are not being used as
++ * VMSA page anymore.
++ */
++static void shutdown_all_aps(void)
++{
++	struct sev_es_save_area *vmsa;
++	int apic_id, this_cpu, cpu;
++
++	this_cpu = get_cpu();
++
++	/*
++	 * APs are already in HLT loop when enc_kexec_finish() callback
++	 * is invoked.
++	 */
++	for_each_present_cpu(cpu) {
++		vmsa = per_cpu(sev_vmsa, cpu);
++
++		/*
++		 * The BSP or offlined APs do not have guest allocated VMSA
++		 * and there is no need  to clear the VMSA tag for this page.
++		 */
++		if (!vmsa)
++			continue;
++
++		/*
++		 * Cannot clear the VMSA tag for the currently running vCPU.
++		 */
++		if (this_cpu == cpu) {
++			unsigned long pa;
++			struct page *p;
++
++			pa = __pa(vmsa);
++			/*
++			 * Mark the VMSA page of the running vCPU as offline
++			 * so that is excluded and not touched by makedumpfile
++			 * while generating vmcore during kdump.
++			 */
++			p = pfn_to_online_page(pa >> PAGE_SHIFT);
++			if (p)
++				__SetPageOffline(p);
++			continue;
++		}
++
++		apic_id = cpuid_to_apicid[cpu];
++
++		/*
++		 * Issue AP destroy to ensure AP gets kicked out of guest mode
++		 * to allow using RMPADJUST to remove the VMSA tag on it's
++		 * VMSA page.
++		 */
++		vmgexit_ap_control(SVM_VMGEXIT_AP_DESTROY, vmsa, apic_id);
++		snp_cleanup_vmsa(vmsa, apic_id);
++	}
++
++	put_cpu();
++}
++
+ void snp_kexec_finish(void)
+ {
+ 	struct sev_es_runtime_data *data;
+@@ -1069,6 +1224,8 @@ void snp_kexec_finish(void)
+ 	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
+ 		return;
+ 
++	shutdown_all_aps();
++
+ 	unshare_all_memory();
+ 
+ 	/*
+@@ -1090,51 +1247,6 @@ void snp_kexec_finish(void)
+ 	}
+ }
+ 
+-static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
+-{
+-	int ret;
+-
+-	if (snp_vmpl) {
+-		struct svsm_call call = {};
+-		unsigned long flags;
+-
+-		local_irq_save(flags);
+-
+-		call.caa = this_cpu_read(svsm_caa);
+-		call.rcx = __pa(va);
+-
+-		if (make_vmsa) {
+-			/* Protocol 0, Call ID 2 */
+-			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
+-			call.rdx = __pa(caa);
+-			call.r8  = apic_id;
+-		} else {
+-			/* Protocol 0, Call ID 3 */
+-			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
+-		}
+-
+-		ret = svsm_perform_call_protocol(&call);
+-
+-		local_irq_restore(flags);
+-	} else {
+-		/*
+-		 * If the kernel runs at VMPL0, it can change the VMSA
+-		 * bit for a page using the RMPADJUST instruction.
+-		 * However, for the instruction to succeed it must
+-		 * target the permissions of a lesser privileged (higher
+-		 * numbered) VMPL level, so use VMPL1.
+-		 */
+-		u64 attrs = 1;
+-
+-		if (make_vmsa)
+-			attrs |= RMPADJUST_VMSA_PAGE_BIT;
+-
+-		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
+-	}
+-
+-	return ret;
+-}
+-
+ #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
+ #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
+ #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
+@@ -1166,24 +1278,10 @@ static void *snp_alloc_vmsa_page(int cpu
+ 	return page_address(p + 1);
+ }
+ 
+-static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
+-{
+-	int err;
+-
+-	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
+-	if (err)
+-		pr_err("clear VMSA page failed (%u), leaking page\n", err);
+-	else
+-		free_page((unsigned long)vmsa);
+-}
+-
+ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+ {
+ 	struct sev_es_save_area *cur_vmsa, *vmsa;
+-	struct ghcb_state state;
+ 	struct svsm_ca *caa;
+-	unsigned long flags;
+-	struct ghcb *ghcb;
+ 	u8 sipi_vector;
+ 	int cpu, ret;
+ 	u64 cr4;
+@@ -1297,33 +1395,7 @@ static int wakeup_cpu_via_vmgexit(u32 ap
+ 	}
+ 
+ 	/* Issue VMGEXIT AP Creation NAE event */
+-	local_irq_save(flags);
+-
+-	ghcb = __sev_get_ghcb(&state);
+-
+-	vc_ghcb_invalidate(ghcb);
+-	ghcb_set_rax(ghcb, vmsa->sev_features);
+-	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
+-	ghcb_set_sw_exit_info_1(ghcb,
+-				((u64)apic_id << 32)	|
+-				((u64)snp_vmpl << 16)	|
+-				SVM_VMGEXIT_AP_CREATE);
+-	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
+-
+-	sev_es_wr_ghcb_msr(__pa(ghcb));
+-	VMGEXIT();
+-
+-	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
+-	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
+-		pr_err("SNP AP Creation error\n");
+-		ret = -EINVAL;
+-	}
+-
+-	__sev_put_ghcb(&state);
+-
+-	local_irq_restore(flags);
+-
+-	/* Perform cleanup if there was an error */
++	ret = vmgexit_ap_control(SVM_VMGEXIT_AP_CREATE, vmsa, apic_id);
+ 	if (ret) {
+ 		snp_cleanup_vmsa(vmsa, apic_id);
+ 		vmsa = NULL;
 
 
 
