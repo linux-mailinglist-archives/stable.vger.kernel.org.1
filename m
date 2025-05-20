@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932CBABDC8A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D319ABDB78
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9401F3B9AB1
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 864917AB9E9
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2547724889F;
-	Tue, 20 May 2025 14:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3560224EABF;
+	Tue, 20 May 2025 14:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMiiR5Jn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLms76k7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5916246769;
-	Tue, 20 May 2025 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42E324EAA3;
+	Tue, 20 May 2025 14:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750540; cv=none; b=TuIJeDEwz/6izaIy8VKK+ni5BK3+Nz4d5GZI8Ij9cWi2Yx6fflEvg+ikhGSIjDlx6jDIc0SbL+vJl7DPcYay0LsyY9i0EKazgwnCoTlRqh+8B0Avz8sl69anN6ED/+UTbeqoe0mmat0CLz+PKIe631IpkMRWyy6Ig1WbPQAch2g=
+	t=1747750138; cv=none; b=uqdQjHanQPHImk8P2iOaI5ez+lWEar9G3I5YJL9YRM/u/W0ont4tfL20EbXTiW9afZq2kUwjL8OupjDDMcC+kb3g2AKo+pwv+WO+lPNxid3EADNgCXfi8iLG/Y0lx3KnkdlVSXaSs+MIxQQNlAQI0XYf4hay3W05aHTJtTvpL94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750540; c=relaxed/simple;
-	bh=rv3XWZfGZTJa7TRE0L5a3lUWIhVUs+CWPiRDIHlfrdw=;
+	s=arc-20240116; t=1747750138; c=relaxed/simple;
+	bh=03KcDSG0uCNuqAQPwuV830xyyHTA+CESuKdO17ECIsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hhyZ0R+lIeAVeHqZ+pCrDDoBZL69DzbYwEbQMwOftRj7H8Jb9wEVB5N2KKcfOWX5ib0h+MqmsD+K0e2GW1uWJSdztotgRuF5R6vEU0Uq9itxf+2OqNDOGP50cP/+Ep+93JeR5dOCqJ/Ic4c3MCGFIkjRVyh6a/9oexp2yloNt/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMiiR5Jn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6777EC4CEE9;
-	Tue, 20 May 2025 14:15:40 +0000 (UTC)
+	 MIME-Version; b=RFJJONEJvPIlKrEQ2YxGeqGANnkUwK9Oi+iv+TllamGCvn4zFIOn/peVoiXOTS1Cq+H+6RT9GOmMncfI92w+H43TJRsgBkwmSvgmUY9wLNjxcHM7TyJIDkGgmMOGnQLQZwGymzZdKxY+t8O+Ife8AP0fFnUDPTHDJvzRCx7kpRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLms76k7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6234AC4CEE9;
+	Tue, 20 May 2025 14:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750540;
-	bh=rv3XWZfGZTJa7TRE0L5a3lUWIhVUs+CWPiRDIHlfrdw=;
+	s=korg; t=1747750137;
+	bh=03KcDSG0uCNuqAQPwuV830xyyHTA+CESuKdO17ECIsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMiiR5Jn3PqXvl/1e0QHmenuqx2+1AAJjxaTZ6wKegZt0XX76vWHxACzkXgAFUlSe
-	 QC6aVlLVGtdQen78IMgkc8utg/4a0CbWtI9Ezc7f2UY1N4vgJBcSMbkxoWTGuMKwCD
-	 7SjQFcfPdNjDEQJj59DTN5KvQkQxumoQ/wDxWJm0=
+	b=LLms76k75cPyLXSNQ5hKnUPAHSoAeWinkflApnca+ezYHX3SuDZcCD+NVuXXNxamr
+	 T8Z/EO8Yct49MTsP8mqKd24jQ1sV/2az/mNezDTih8QoSSAa/KgB/YV7Wvys2pPlaH
+	 THrfhx6Ic0Ye+CKYgFRyWIOKfOZ6flY7mJ4bc4OY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Takashi Iwai <tiwai@suse.de>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 040/145] ALSA: sh: SND_AICA should depend on SH_DMA_API
+Subject: [PATCH 6.12 055/143] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
 Date: Tue, 20 May 2025 15:50:10 +0200
-Message-ID: <20250520125812.135773406@linuxfoundation.org>
+Message-ID: <20250520125812.210464234@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit 66e48ef6ef506c89ec1b3851c6f9f5f80b5835ff ]
+[ Upstream commit 9d8a99c5a7c7f4f7eca2c168a4ec254409670035 ]
 
-If CONFIG_SH_DMA_API=n:
+In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
+allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
+not freed. Fix that by jumping to the error path that frees them, by
+calling qlcnic_free_mbx_args(). This was found using static analysis.
 
-    WARNING: unmet direct dependencies detected for G2_DMA
-      Depends on [n]: SH_DREAMCAST [=y] && SH_DMA_API [=n]
-      Selected by [y]:
-      - SND_AICA [=y] && SOUND [=y] && SND [=y] && SND_SUPERH [=y] && SH_DREAMCAST [=y]
-
-SND_AICA selects G2_DMA.  As the latter depends on SH_DMA_API, the
-former should depend on SH_DMA_API, too.
-
-Fixes: f477a538c14d07f8 ("sh: dma: fix kconfig dependency for G2_DMA")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505131320.PzgTtl9H-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/b90625f8a9078d0d304bafe862cbe3a3fab40082.1747121335.git.geert+renesas@glider.be
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250512044829.36400-1-abdun.nihaal@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/sh/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/sh/Kconfig b/sound/sh/Kconfig
-index b75fbb3236a7b..f5fa09d740b4c 100644
---- a/sound/sh/Kconfig
-+++ b/sound/sh/Kconfig
-@@ -14,7 +14,7 @@ if SND_SUPERH
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+index 28d24d59efb84..d57b976b90409 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -1484,8 +1484,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
+ 	}
  
- config SND_AICA
- 	tristate "Dreamcast Yamaha AICA sound"
--	depends on SH_DREAMCAST
-+	depends on SH_DREAMCAST && SH_DMA_API
- 	select SND_PCM
- 	select G2_DMA
- 	help
+ 	cmd_op = (cmd.rsp.arg[0] & 0xff);
+-	if (cmd.rsp.arg[0] >> 25 == 2)
+-		return 2;
++	if (cmd.rsp.arg[0] >> 25 == 2) {
++		ret = 2;
++		goto out;
++	}
++
+ 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
+ 		set_bit(QLC_BC_VF_STATE, &vf->state);
+ 	else
 -- 
 2.39.5
 
