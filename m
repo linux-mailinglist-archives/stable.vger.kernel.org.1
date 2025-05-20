@@ -1,137 +1,113 @@
-Return-Path: <stable+bounces-145001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC05ABCE3F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 06:34:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD632ABCE58
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 06:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6F978A0F8F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 04:34:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F614A15A5
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 04:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AE6259CA5;
-	Tue, 20 May 2025 04:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF67F258CE5;
+	Tue, 20 May 2025 04:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAfjpNUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isuUUkja"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074DA1D90C8;
-	Tue, 20 May 2025 04:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9155D21D3C6;
+	Tue, 20 May 2025 04:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747715676; cv=none; b=A6lR05RWfBB9N7qF4CQiiuTqz83oLt8CgavrjV5z8T6Re6xGx7NzQsU1qS2zw2fwvMBXhvoAAmAAGReNPEOp2DvFje0IGB3mN2nMZXpnh0pIUehs4ss0r1APQvlIQcWPTl4JS2XTwSGRQqk/JtNuH8fOBYgU+E7e3Ezw0mtDd4s=
+	t=1747717097; cv=none; b=mAcXdlKFobKYrqvR1jcWH8H5Lglc3ylA/xy9pMNjZNCRyj0QS6TpWYkf5aursfV5dulNWRXJ5FywivlwWWJOAMFihKAJ2XIY/VKUl9x1mZkmdNn145BPtbVJl8VjYtO0GR5CnjdpM9Z/svLOAB/CQvWg11FwWLbBghqoTuACb9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747715676; c=relaxed/simple;
-	bh=yeGc+XD0k3LZ9UJmhqDSts9L4n+Fozk4dj67vHp5imw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AIf3G8WhWmaOD5TO6rqZb/z/19uAkYCRgrInI1fFoaLeANVnY1YhkoCF3vmS8CPRhDHs4FAhGaQXR4xF3XnY92f1hNlwaFNfmW8233vBSB+IklbhgM/GW3UpRtLeX0Cp6WpH6E+pgoBHl7WaH3bVAymNzWxHmH3Iz/uuBKOdJRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAfjpNUA; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e75668006b9so5370830276.3;
-        Mon, 19 May 2025 21:34:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747715673; x=1748320473; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KLdIEO3JhzFK3+pAV0v9OMiBG9saZVl50Zc3M7eZWJs=;
-        b=GAfjpNUA4VlvtaABDYx7D+bhiFosaXy3CWuMtv1O3coE2UNNb2ik74OIj0fN8+HngO
-         DgmjS36LwO/Cv+urjx8djQWuiOHa/Cd3NA8COyTaih62C9X0TEE7YxueThzLnOqAhEsv
-         XuPEttmuwsL6tKr8MCXSPpHkrirQtD40GGZy3SHYJSAly1nyBDQjaDFrhiqM/OtfWLDl
-         oXuFDkQ2o3j5e5q0hg2o2HLDjuPJe7Hco8OWOIHnf5/uowbEPTs6OqNOBXchXbxrMwNA
-         asrDAqaj18LeS5r29dfF5Baxu/1d4JETszqixOY2t+9FBMCXUXBA0gbL1UwuDc1xQ9iJ
-         ZVWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747715673; x=1748320473;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KLdIEO3JhzFK3+pAV0v9OMiBG9saZVl50Zc3M7eZWJs=;
-        b=ra6Hdx2zqxLz4XULf1xjNlXFbeDcg7sBa99bDUkf7139SCD0IMvi4hVqKgqnFkD+s3
-         0aXgQ8M1brR7SKZavh6WORzT1QmNl5hsm+fsi10lNkwXCz/9gQCXlwyThMJg0h3YuDl2
-         bC/20Q/+73MUT88/b+FAPOszOgSBKs+5wYQZ9Vju4AMG8UIlxyUp3Vd56/QHPhw+ur1f
-         zkB17xrsfFS25jd/bo6fA6CdXH4SBAJLPARO+GG19ThH8YpuLnYvbCUjszXbwyxcU6El
-         82La4iRR1QJ7FqN4ZH9MAjmZtOfqJbHQHHPdKdG3Pgb6XTzTQHu9n2bxiyTVm8pM98a8
-         Gb+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUTPOn772RCoABF4LURdhswz7PoUbpQVqs0ASuQHe507S/17jCNlhIPy9R1bPsNjPyRLX94jwKUPsmFR34M@vger.kernel.org, AJvYcCWTr2Zn5EoyCRNq1CbCklaS3Ye8VfD3uq9397wnhFwItmAT79/O+7U66nNhgaUVFmG+OqZXYrGVcjd3D/w=@vger.kernel.org, AJvYcCXY0dvTSo/ZgjvDCi5PdGjMHc2/3WqTFbqHac9UqAlnU1jJhz9fR2SSzeNQA/NzBHVHSV+WRVaB@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQpLnzvK/dzEvzhc4J5qOXHBnE9XN1e8oywqw5zkoA3hYXiJyN
-	iXHwaAwBfpKYrW7+Z+WJ7cdDQ7RUtTtr1N3oviP75WrSv/ZOoAv0NTIhQWa/HH0H6VAFAXtWP6d
-	mA6MfX/8BYn+E7MCtgRqO0TQIoxzGBzYLEA==
-X-Gm-Gg: ASbGncvmY79vqogWbNcJvKsHQvRX5C53NeNahKSJ7pRZj4R/Z8pxIkbQP5RBVLqQXlf
-	AVDtwK6yc0K/9ifnZTBYa3V7gYhDzpYtVHgeCjpjS3R0wi6u8mseJnL9/wUTretM07QjKHEwJF3
-	U28FAKo5R2+1PlkE0WtnrbOgqg6+W8ecgX
-X-Google-Smtp-Source: AGHT+IEx2HdcWVTUVwOuMeLPDKj8IZNpw5yYGNZx9DYx4yEeiOH/kPUiA83A02WG77XaxTg5xkdkMHTDx7HxMU2ZtyE=
-X-Received: by 2002:a05:6902:478e:b0:e7b:8add:805d with SMTP id
- 3f1490d57ef6-e7b8add8192mr13175077276.46.1747715672859; Mon, 19 May 2025
- 21:34:32 -0700 (PDT)
+	s=arc-20240116; t=1747717097; c=relaxed/simple;
+	bh=MBlWbA4wMpuoxg+pVoz6sHSDbF2DGVKREhsYA3mbNcI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SMY00AEFidlPbH906v0IQQjUarx3tEh7o9QfTGbFop3jp4fA891NXeEPROxBWZzCQ48Vqus4IGj/FxuDswOxHaPaNl8Hg8L3FiMR98PUS3Hr2czepjIDpWiEOvV+Rv6otE1tBLa4sXtm/088zAklS0vJq2kIJ45PrCDljBAyE7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isuUUkja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7877EC4CEE9;
+	Tue, 20 May 2025 04:58:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747717097;
+	bh=MBlWbA4wMpuoxg+pVoz6sHSDbF2DGVKREhsYA3mbNcI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=isuUUkjaaAfuWY8irVYPxqm7HEK05v+6Jrq1LuQDz9DjOm3BrzCyTIVXH0tg+DYdr
+	 VMe4gv00vUgQNl+dz1U96ATyYwHn/BI//mtf3uql8iWhYTwsSVWSpA4ymWvtiwokwm
+	 vFNDcarg78fLjImFKljmPk0Y1YtXvpHxxJJ7uc14=
+Date: Tue, 20 May 2025 06:56:27 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Justin Forbes <jmforbes@linuxtx.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	syzbot+6af973a3b8dfd2faefdc@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>, Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14 162/197] loop: Add sanity check for read/write_iter
+Message-ID: <2025052059-unsteady-octagon-9321@gregkh>
+References: <20250512172044.326436266@linuxfoundation.org>
+ <20250512172050.980575013@linuxfoundation.org>
+ <CAFxkdAq+5ur__TPi6ZW9uoOBv037hgn1d_9906cBeXWE=X3Sgw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250514051043.3178659-1-bbhushan2@marvell.com>
- <20250514051043.3178659-4-bbhushan2@marvell.com> <aCqzAQH06FAoYpYO@gondor.apana.org.au>
- <CAAeCc_=QShbySa8x9zU+QnDqn1SLK3JLXMD8RYNoax+gh3NVEQ@mail.gmail.com> <aCrfNdnRzlQSr6sy@gondor.apana.org.au>
-In-Reply-To: <aCrfNdnRzlQSr6sy@gondor.apana.org.au>
-From: Bharat Bhushan <bharatb.linux@gmail.com>
-Date: Tue, 20 May 2025 10:04:21 +0530
-X-Gm-Features: AX0GCFs8BgWCUV4foeRy_615K0bqYt6Ee4N9DJIR-VtGMkL2q1NFBzBtrDbDkDI
-Message-ID: <CAAeCc_mKDq2jSM+yZ816nx_BPsFSWiCjEswfuu9HBzXrv+V+WQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4 RESEND] crypto: octeontx2: Fix address alignment on
- CN10K A0/A1 and OcteonTX2
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Bharat Bhushan <bbhushan2@marvell.com>, bbrezillon@kernel.org, arno@natisbad.org, 
-	schalla@marvell.com, davem@davemloft.net, giovanni.cabiddu@intel.com, 
-	linux@treblig.org, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFxkdAq+5ur__TPi6ZW9uoOBv037hgn1d_9906cBeXWE=X3Sgw@mail.gmail.com>
 
-On Mon, May 19, 2025 at 1:05=E2=80=AFPM Herbert Xu <herbert@gondor.apana.or=
-g.au> wrote:
->
-> On Mon, May 19, 2025 at 11:47:18AM +0530, Bharat Bhushan wrote:
+On Mon, May 19, 2025 at 06:19:26PM -0600, Justin Forbes wrote:
+> On Mon, May 12, 2025 at 11:51 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
 > >
-> > > > +     /* Allocate extra memory for SG and response address alignmen=
-t */
-> > > > +     total_mem_len =3D ALIGN(info_len, OTX2_CPT_DPTR_RPTR_ALIGN) +=
- dlen;
+> > 6.14-stable review patch.  If anyone has any objections, please let me know.
 > >
-> > This add extra memory for 8-byte (OTX2_CPT_DPTR_RPTR_ALIGN) alignment
+> > ------------------
 > >
-> > > > +     total_mem_len =3D ALIGN(total_mem_len, OTX2_CPT_RES_ADDR_ALIG=
-N) +
-> > > > +                      sizeof(union otx2_cpt_res_s);
+> > From: Lizhi Xu <lizhi.xu@windriver.com>
 > >
-> > This add extra memory for 32-byte (OTX2_CPT_RES_ADDR_ALIGN))
-> > In case not observed,  OTX2_CPT_RES_ADDR_ALIGN is not the same as
-> > OTX2_CPT_DPTR_RPTR_ALIGN.
->
-> But it doesn't do that.  Look, assume that total_mem_len is 64,
-> then ALIGN(64, 32) will still be 64.  You're not adding any extra
-> space for the alignment padding.
->
-> OTOH, kmalloc can return something that has a page offset of 8,
-> and you will need 24 extra bytes in your structure to make it
-> align at 32.
->
-> Now of course if you're very lucky, and total_mem_len starts out
-> at 8, then it would work but that's purely by chance.
+> > [ Upstream commit f5c84eff634ba003326aa034c414e2a9dcb7c6a7 ]
+> >
+> > Some file systems do not support read_iter/write_iter, such as selinuxfs
+> > in this issue.
+> > So before calling them, first confirm that the interface is supported and
+> > then call it.
+> >
+> > It is releavant in that vfs_iter_read/write have the check, and removal
+> > of their used caused szybot to be able to hit this issue.
+> >
+> > Fixes: f2fed441c69b ("loop: stop using vfs_iter__{read,write} for buffered I/O")
+> > Reported-by: syzbot+6af973a3b8dfd2faefdc@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=6af973a3b8dfd2faefdc
+> > Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+> > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > Link: https://lore.kernel.org/r/20250428143626.3318717-1-lizhi.xu@windriver.com
+> > Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  drivers/block/loop.c | 23 +++++++++++++++++++++++
+> >  1 file changed, 23 insertions(+)
+> 
+> We have had an issue failing to set up loop devices with CI and Linus'
+> tree since rc6, and once this patch hit stable it proved to be the
+> culprit.  If I revert this patch, things work as they should. The
+> problem we are seeing is "
+> 
+> More information can be found in:
+> https://github.com/coreos/fedora-coreos-tracker/issues/1948
+> and
+> https://openqa.fedoraproject.org/tests/3438220#step/_boot_to_anaconda/5
 
-Thanks for explaining, will change in the next version.
+Sorry to hear that, please work with the developers to get this resolved
+in Linus's tree and then we will be glad to apply the needed fix from
+there.
 
-Thanks
--Bharat
+thanks,
 
->
-> Cheers,
-> --
-> Email: Herbert Xu <herbert@gondor.apana.org.au>
-> Home Page: http://gondor.apana.org.au/~herbert/
-> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+greg k-h
 
