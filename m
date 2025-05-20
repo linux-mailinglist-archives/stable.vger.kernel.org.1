@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F36ABDB09
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:05:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADA6ABDA8E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 15:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A7A44C4F80
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:02:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B2131BA5324
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 13:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BAA22C325;
-	Tue, 20 May 2025 14:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9C622D7A8;
+	Tue, 20 May 2025 13:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alY0yetr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCyGfK8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753AE242907;
-	Tue, 20 May 2025 14:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D13AEC4;
+	Tue, 20 May 2025 13:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747749711; cv=none; b=df+LCEMIDHb1Iv/BRzeZJXa9rUFn27BCpwMrWXp4xjcOfjW7KUqzpaiiNEWdK5j9AluzIFNgk19H4p+DG7cR1Qb4I7hdMZ6wXsexsmcMHGp7UuJi+CATAd/dR6NLyvzvg15ZZ7aNPZP4DYxxauy7vy0dvHC8eRUuoYPeng0JzEo=
+	t=1747749503; cv=none; b=h/wxXnHmi4jt98fNYH2Nu9jBgvqwDX48CY2eYQXKbhM6hv0kcQ6JjNKL9usdn5AufwVjWbFz+dffCgv1DF+jbrNydgBJwZ8ezMI+X+GIO/fp84YKBbRTBAMSI3J/S0VgzBb3QfYy0mU/xNXjq8OjL17haCOv1XPzWXln48N7h8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747749711; c=relaxed/simple;
-	bh=EG0etBje2BCMZ4IEGTo02xf9bguRtLOjOtTSGjUinI8=;
+	s=arc-20240116; t=1747749503; c=relaxed/simple;
+	bh=6EGn5U4JfgfczSaG02sjgyR2U7TefjPE7WtBEhqb06k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmOrdjsLUzqbGg2IfyIeG11wg0ORryAlWzIV/f7QKmfqUvb6HRb9A7sml505/yRRgI6RWf9PSggSXXRVR5JNERaUyLnX/FgjcZye+uITBmNjzCAeUmvOBfsUIMRswT6sa5I6Wq93SYfLw40ux1DDDURJO6lRx5JlekWgbXNRgCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alY0yetr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC37C4CEE9;
-	Tue, 20 May 2025 14:01:50 +0000 (UTC)
+	 MIME-Version; b=Q4bGyLTX1zEV6Fuho/eVhgEObwfzWqny464Fi96q2KqezrKZw2R85WJfTFSSLoa0k6NhuU2ebWkgQHKlJpoQ5Ir+uD3h55AtGu+vmsxSPOHfO1l9HiifFLKGvaymNDhGeDIpHp9xxLXmM1Wi6J7lNhYiAF5n65DikTAWBXe5mYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCyGfK8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF625C4CEE9;
+	Tue, 20 May 2025 13:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747749711;
-	bh=EG0etBje2BCMZ4IEGTo02xf9bguRtLOjOtTSGjUinI8=;
+	s=korg; t=1747749503;
+	bh=6EGn5U4JfgfczSaG02sjgyR2U7TefjPE7WtBEhqb06k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alY0yetrHv1XuA6HI/cph89gXZe83dsJmLsMah5rsesiGYRXGKgCV8PE4pFmfzSLt
-	 nDCKRFG1bTon/cGeS1kDf7I2fQD63Tjawuq2+5sJu/TWM0zmkTk6KVdkZkRXGXjyTo
-	 38FlKqS3/vAFZmAhPc76rulbeXbmaCCpgWqskRu4=
+	b=CCyGfK8CFjbcsn9HR36Pu/QvpKxT7hPYZf4ISFmOdVwj7qjbWufyjPr7F48S0EpSz
+	 GV/DFswG+WSIKNHFkykkOx9aK/5UwOQ6oRoiCe5gH9vP285lucvftPQjruc8zNpDsr
+	 U0nHhRzQAgsqIMb2d81rKa4kHU7Q1rwTrA4LSPec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/117] Bluetooth: MGMT: Fix MGMT_OP_ADD_DEVICE invalid device flags
+Subject: [PATCH 6.1 35/97] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
 Date: Tue, 20 May 2025 15:50:00 +0200
-Message-ID: <20250520125805.387756038@linuxfoundation.org>
+Message-ID: <20250520125802.035823781@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
-References: <20250520125803.981048184@linuxfoundation.org>
+In-Reply-To: <20250520125800.653047540@linuxfoundation.org>
+References: <20250520125800.653047540@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit 1e2e3044c1bc64a64aa0eaf7c17f7832c26c9775 ]
+[ Upstream commit 9d8a99c5a7c7f4f7eca2c168a4ec254409670035 ]
 
-Device flags could be updated in the meantime while MGMT_OP_ADD_DEVICE
-is pending on hci_update_passive_scan_sync so instead of setting the
-current_flags as cmd->user_data just do a lookup using
-hci_conn_params_lookup and use the latest stored flags.
+In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
+allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
+not freed. Fix that by jumping to the error path that frees them, by
+calling qlcnic_free_mbx_args(). This was found using static analysis.
 
-Fixes: a182d9c84f9c ("Bluetooth: MGMT: Fix Add Device to responding before completing")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250512044829.36400-1-abdun.nihaal@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 29e420e9754bb..589c3a481e4c1 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -7605,11 +7605,16 @@ static void add_device_complete(struct hci_dev *hdev, void *data, int err)
- 	struct mgmt_cp_add_device *cp = cmd->param;
- 
- 	if (!err) {
-+		struct hci_conn_params *params;
-+
-+		params = hci_conn_params_lookup(hdev, &cp->addr.bdaddr,
-+						le_addr_type(cp->addr.type));
-+
- 		device_added(cmd->sk, hdev, &cp->addr.bdaddr, cp->addr.type,
- 			     cp->action);
- 		device_flags_changed(NULL, hdev, &cp->addr.bdaddr,
- 				     cp->addr.type, hdev->conn_flags,
--				     PTR_UINT(cmd->user_data));
-+				     params ? params->flags : 0);
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+index 28d24d59efb84..d57b976b90409 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -1484,8 +1484,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
  	}
  
- 	mgmt_cmd_complete(cmd->sk, hdev->id, MGMT_OP_ADD_DEVICE,
-@@ -7712,8 +7717,6 @@ static int add_device(struct sock *sk, struct hci_dev *hdev,
- 		goto unlock;
- 	}
- 
--	cmd->user_data = UINT_PTR(current_flags);
--
- 	err = hci_cmd_sync_queue(hdev, add_device_sync, cmd,
- 				 add_device_complete);
- 	if (err < 0) {
+ 	cmd_op = (cmd.rsp.arg[0] & 0xff);
+-	if (cmd.rsp.arg[0] >> 25 == 2)
+-		return 2;
++	if (cmd.rsp.arg[0] >> 25 == 2) {
++		ret = 2;
++		goto out;
++	}
++
+ 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
+ 		set_bit(QLC_BC_VF_STATE, &vf->state);
+ 	else
 -- 
 2.39.5
 
