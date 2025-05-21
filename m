@@ -1,87 +1,87 @@
-Return-Path: <stable+bounces-145828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2453ABF420
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:19:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40327ABF42C
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9A437A86D2
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:17:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE8544E7E25
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32049267B9B;
-	Wed, 21 May 2025 12:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBB826A0F4;
+	Wed, 21 May 2025 12:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mqz9Zdas"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LaH+pyo1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E1D2641E2;
-	Wed, 21 May 2025 12:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFF4269813;
+	Wed, 21 May 2025 12:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747829832; cv=none; b=MAJ0/0juz/mGx7/Cu1c8RPnm63NfI0Bs8+O/axluhtPrRda9Um2Iz5su+ASJ23UYeiE7wK0sOqFo2RDofzexiJSsog0/FxbhvpAehih0YxVZ5/5z5WHaAvKBB6s6/5AJbhIShpN17/fY0Mn59azs3DNFoLxwm8/8/x8FoKhcfdg=
+	t=1747829852; cv=none; b=bnmBgcZxZI9yxb6Me/Eynn+w29VxZnqqs0YgY9ORo5Ao1CQj/ZAfTsvDBXikQYCb5D3X+gk0B7mNQnYXAoWifR9+eLMu4JSfudHsoazC4GMScAZu4ZPE0eHfCfYOqQqPyKGrdboSCvGjtj1NVbC7huAd02mHM2wkTpCw0R6ZrZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747829832; c=relaxed/simple;
-	bh=/kMUfLx0poTwBYSMDoarOfIRNsldt97iczgCvvC6xP0=;
+	s=arc-20240116; t=1747829852; c=relaxed/simple;
+	bh=Fb9BRWO1ogcE647To3q6WgSr60w6091YC7O9FyRF6gE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPA3qxfHerVDZhnD2X2HW45H1Agw27yqAawi+d3RYc7XNaKukngw99gzX42SjW2eSVthv03kXwdI4XFhO6GNqd9JR854jsGVSdWUoT4/5FIkZPmlNdNUNxD1G0QY06DblLRzDVDPw3gux8+MkmadEPiS5/jPmF0Gg4S8ctpFsWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mqz9Zdas; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version; b=GY2EhqB6wIt5YHRBHfvTEgwN8oaW0IAsqpQWI/GU/D1+iz0pm1IJexXtsMhufxUyyW2xwhPoarq6NO5gn/OQk+xp+wooYGeZBESkrhbPm2OpK00wkK4pfPzMFgVoHYmx9qHy2tbWQRT5dsOKAPOtOstIwzpjCyr1LzA2rBX1Pco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LaH+pyo1; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43ea40a6e98so70460525e9.1;
-        Wed, 21 May 2025 05:17:10 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-442ea95f738so56259515e9.3;
+        Wed, 21 May 2025 05:17:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747829828; x=1748434628; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747829846; x=1748434646; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DRam+fE/VU89y0aj77lDoghdmOHayQZt/SLAM/xjqow=;
-        b=Mqz9ZdasdVvLpqzy0Cj5jh9HKvq6IQm8QwuDL5TqrjSH2lBmbjpnc3u7EctKSI7ch2
-         5MUFiuJqAkNG3vGUAduuXwqJqFdh7VpKC86XTvY29zmCaEMcIHHKxNWL0tJv/FFk899Q
-         0n49+UOWWa6z3YhI51uFrk4E30S9wN+sn/lT2GPlpm+703mnJrR9nuu/47hUSriNonMa
-         jaFJl4PoHA6BOXeoE21LpNuf9uJKgz2NSExjNpfv81/C3FqgQADWqQ/luHdYpiKo+hur
-         CB2HFsL/TyHRFXtD++8ocYS8Osc4olgo25XHo75lYBxyKIkTtv2W4myGQgluKYePtniF
-         PndQ==
+        bh=94Ov1y6vudYSmo/RcJZAA1bs9J9A2lRPHxSejXpSw2Y=;
+        b=LaH+pyo1+VARtOsUGBtnBFs6t5c1dSnwTFrqabq6Bj76Zxm0j2IZm5FBJFwpIiJRtQ
+         uPEKxjFiMDnefWr1XO2qZXryzQzH8IaVtDX7lv/fZwlhgnCCj00poT1UWJU05YvRqAJu
+         012IH1qtAe92e4xQeVBmssXi+ZsTnjzwdH619KounmpMVVCdneTnIA8Hhaq8w0LXXNJ8
+         KvtwlDVjWz41HLunmIFDPg2UAq/AFivEVbZMg4VCq5Qa16nlhWF13K3rnubYInKSR8tM
+         57D4R2ic9TXlCynjTxGDK9kMGzYrZPVXap9MX4jL4b+bOM2ObKrEZQc8XocrDJQ0Ue4p
+         jbmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747829828; x=1748434628;
+        d=1e100.net; s=20230601; t=1747829846; x=1748434646;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DRam+fE/VU89y0aj77lDoghdmOHayQZt/SLAM/xjqow=;
-        b=Fh4dUhB1dpoDwh7Zcr8xzzgMVpsnapuaH2/LmrPC+SklMelgXswaluZakv0tdHih1r
-         v0Dnw6txMHZBkUy/LGLJPQiGKDVephj8k23N8xVIIVnjtKc3dr0JYOYIYDspUuGbSfcH
-         /zaVgaNjMSLFmFHRzh10mQesPqFKaw+r4ej1QskRZnjUrbrl67OWxfwJbOlqd/Ih5Wyc
-         /4NAC5I5Mofz2aiWBccZ55oQcAcu6wd0cnDWtGltpTD3UoGZCCk9HhuX1evzpPGSCMZe
-         pWYptKvlDnccP6SWX42j/oDx0MFIoZxmEwRD4IJmnxDz1pSmA/JgV754bprymQrMWG7i
-         9mLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVYbZvB38KThDXez4OrTYQcHr+0sM5+mkaNQNiiDF949j4a3Fmondm0N9KWgW2aE0HEE43vZvuLoeE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7zVAQYzm7Hd1fpc5Uqm00uuFpqe91NeMK26gXdDcxBPEHVYQ0
-	QFS4AZjjI0dDLL2pFabIoPnYfHyBmLYWK4cm8tOy2neneNyGBe7cZSWI
-X-Gm-Gg: ASbGncsfVRMkaOG5zSfWqy6rYEZL3Dgkb8m1L0gJLT6IC6FfYQNkND7FDgOxxB8W0N1
-	QgVUSN4c1w4bvhxMcWhmvaIoF9eQBtZgBdCMO3i7UUJK3pv6FaoK6F08JUiAtNY5vWELlwtuOd/
-	66gkmdm4WKWe/9a+oAUn9zZgERelc0Lguqm1wXf0G/j1ySsoVbGV1u8ZEMjtLih6QOR092CryBw
-	EjU2XqVgRa3uxNpQHVuoXnBghMg6qwa2x9fokU0RIVpqfQawNK28onfA62vxbNdI924rAyLSj5l
-	KVO8mjRwzitv1R+AKx9Q6/drGIk32P5hqXC3uuTDWK7737eMkV+8zgw1PeisMoZgVjNjZ1z2ClT
-	VUEFXXC2thi4=
-X-Google-Smtp-Source: AGHT+IEzMHiQy4kLbd1qaVdLnTN9romTOdAJ6htEpA53McvS7cppgcbTb/JCJ4mSXyxJg6ThT4djCA==
-X-Received: by 2002:a05:600c:b94:b0:43c:e7a7:aea0 with SMTP id 5b1f17b1804b1-442fe694699mr167390285e9.26.1747829828497;
-        Wed, 21 May 2025 05:17:08 -0700 (PDT)
+        bh=94Ov1y6vudYSmo/RcJZAA1bs9J9A2lRPHxSejXpSw2Y=;
+        b=Z9L+oq3ch68LDc+mJIhysgg0gfYSYTwGN5gCBJ9q/t9gcXIgzAaHWUY8QXq/foGp2W
+         2ZAKWmYMPiuCAcpH6H72gzN02VfqqtcxlOWdTb/yJdHjRhKY2Gr8K0AW/cFem0KGjs8g
+         SYVZDF97Pem49CieY8pAyR3DrfNbacBY0ipKvx3WS1lIKXtpfjMcsuAj/qWVuQp0tqzl
+         31i9SQoow6pA5yrEiQyC81bGjwUj7W8O9zs1AGnuobzKK6RscYk8L5M8kLDA6cPTLlez
+         7SfiKdCT/e60n3FodNDJLcyPeUCvkpktE6DjRbFg9gLhGCquu+Af4/GtHcnW5WIBp+9a
+         FDdw==
+X-Forwarded-Encrypted: i=1; AJvYcCXPTP9TkmWYDIcqmFnQULt3+7J1PDQSRhEq7rIhtvn8tH4nAAZFk6/P+q2DgItwhyGiIaVCUycc3Jw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGQ7+ics01MRL+PKiak68LRCgj9ImULujqC7ZN1AntxMYdWmo0
+	DOhHizrVpAqEsfAd5eRT842yKeVhUXqipbK2sIb7Sc9/n37WxrwlUVK1
+X-Gm-Gg: ASbGnctXRrKqBOSwwqn6Obw2IeYoIV1BtXUvQkFhuzekM30/noC3QbTYp3Jjr/snAo2
+	2phyLigfveSdBBZ58OCT/nNOsv5kMOsB6r1X7qJecsKiBHWFo2AFsvSQNtwT6ZIaL797/SXnScH
+	PKpaatPcnVYvKS7bchEYxZpzGUfRnDfAehP5ehQauOk1AOrdP36dG44bLIJ9veGaxuQZSKczaWg
+	YHwWZ+oKQ7s2XSWxK+nrIZod8I4tu3W0G7L3UIagh2cV/B/5Mk+oZSmiK1ImW1K0u9nUCiPOugL
+	658KqEk3oERcv/ubqi3JuxkaykKZf7HuEAAykFrId/bDNwDLbQN/YzM7mY47KOGhZs95r8LAB/G
+	N3kZB+D/DUmA=
+X-Google-Smtp-Source: AGHT+IHAcB1HgpHxoAMZuCpgwFNk499Y7O9muQyJdcKNacIh8Sbex7s/w1tWsc2n+LrN352qy8GdCQ==
+X-Received: by 2002:a05:600c:6285:b0:43d:683:8caa with SMTP id 5b1f17b1804b1-442fd63c726mr240296945e9.15.1747829846137;
+        Wed, 21 May 2025 05:17:26 -0700 (PDT)
 Received: from localhost.localdomain (82-64-73-52.subs.proxad.net. [82.64.73.52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6f0552esm66327845e9.11.2025.05.21.05.17.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6f0552esm66327845e9.11.2025.05.21.05.17.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 05:17:07 -0700 (PDT)
+        Wed, 21 May 2025 05:17:25 -0700 (PDT)
 From: Dave Penkler <dpenkler@gmail.com>
 To: gregkh@linuxfoundation.org,
 	linux-usb@vger.kernel.org
 Cc: stable@vger.kernel.org,
 	guido.kiener@rohde-schwarz.com,
 	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 1/2] usb: usbtmc: Fix read_stb function and get_stb ioctl
-Date: Wed, 21 May 2025 14:16:55 +0200
-Message-ID: <20250521121656.18174-3-dpenkler@gmail.com>
+Subject: [PATCH 2/2] usb: usbtmc: Fix timeout value in get_stb
+Date: Wed, 21 May 2025 14:16:56 +0200
+Message-ID: <20250521121656.18174-4-dpenkler@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250521121656.18174-1-dpenkler@gmail.com>
 References: <20250521121656.18174-1-dpenkler@gmail.com>
@@ -93,66 +93,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The usbtmc488_ioctl_read_stb function relied on a positive return from
-usbtmc_get_stb to reset the srq condition in the driver. The
-USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
-to the user.
+wait_event_interruptible_timeout requires a timeout argument
+in units of jiffies. It was being called in usbtmc_get_stb
+with the usb timeout value which is in units of milliseconds.
 
-Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
-error returns") changed the return value of usbtmc_get_stb to 0 on
-success instead of returning the value of usb_control_msg which is
-positive in the normal case. This change caused the function
-usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
-longer function correctly.
+Pass the timeout argument converted to jiffies.
 
-Change the test in usbtmc488_ioctl_read_stb to test for failure
-first and return the failure code immediately.
-Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
-instead of a positive value.
-
-Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
+Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
 Cc: stable@vger.kernel.org
 Signed-off-by: Dave Penkler <dpenkler@gmail.com>
 ---
- drivers/usb/class/usbtmc.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/usb/class/usbtmc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
-index 740d2d2b19fb..08511442a27f 100644
+index 08511442a27f..75de29725a45 100644
 --- a/drivers/usb/class/usbtmc.c
 +++ b/drivers/usb/class/usbtmc.c
-@@ -563,14 +563,15 @@ static int usbtmc488_ioctl_read_stb(struct usbtmc_file_data *file_data,
+@@ -483,6 +483,7 @@ static int usbtmc_get_stb(struct usbtmc_file_data *file_data, __u8 *stb)
+ 	u8 tag;
+ 	int rv;
+ 	long wait_rv;
++	unsigned long expire;
  
- 	rv = usbtmc_get_stb(file_data, &stb);
+ 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
+ 		data->iin_ep_present);
+@@ -512,10 +513,11 @@ static int usbtmc_get_stb(struct usbtmc_file_data *file_data, __u8 *stb)
+ 	}
  
--	if (rv > 0) {
--		srq_asserted = atomic_xchg(&file_data->srq_asserted,
--					srq_asserted);
--		if (srq_asserted)
--			stb |= 0x40; /* Set RQS bit */
-+	if (rv < 0)
-+		return rv;
-+
-+	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
-+	if (srq_asserted)
-+		stb |= 0x40; /* Set RQS bit */
-+
-+	rv = put_user(stb, (__u8 __user *)arg);
- 
--		rv = put_user(stb, (__u8 __user *)arg);
--	}
- 	return rv;
- 
- }
-@@ -2199,7 +2200,7 @@ static long usbtmc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 
- 	case USBTMC_IOCTL_GET_STB:
- 		retval = usbtmc_get_stb(file_data, &tmp_byte);
--		if (retval > 0)
-+		if (!retval)
- 			retval = put_user(tmp_byte, (__u8 __user *)arg);
- 		break;
- 
+ 	if (data->iin_ep_present) {
++		expire = msecs_to_jiffies(file_data->timeout);
+ 		wait_rv = wait_event_interruptible_timeout(
+ 			data->waitq,
+ 			atomic_read(&data->iin_data_valid) != 0,
+-			file_data->timeout);
++			expire);
+ 		if (wait_rv < 0) {
+ 			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
+ 			rv = wait_rv;
 -- 
 2.49.0
 
