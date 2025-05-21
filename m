@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-145818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269C9ABF3F4
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:15:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AC1ABF400
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 795053A4654
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:15:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6589C7B69C6
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8623A2343C9;
-	Wed, 21 May 2025 12:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFB4267F5D;
+	Wed, 21 May 2025 12:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blDLO7mS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXe3XsGH"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4677221FF58
-	for <Stable@vger.kernel.org>; Wed, 21 May 2025 12:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B97267B92
+	for <Stable@vger.kernel.org>; Wed, 21 May 2025 12:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747829754; cv=none; b=NuJ/9Xv351Doe4IuuJwvOxn2fjvldqSfxXYNcKhNUCs393VJdeltYBWmyKcFjkaDSjjTFx+C8F9KcWDALuNQKAzxu+Bj6cjREFf4Kd8kYApPXJhhcI0inG74nNDeRA4QHE9xVXejXR/lNJZG++rbzhh03CdAdFbdxlz/w6F1Y6g=
+	t=1747829760; cv=none; b=Hi9C9WXUxXvYwJ6WVQtHVgrJfiVW/O3L5ZfEev0bXXjWfJNQPH1uJ/zQoDd9NCKte82p1mAQsd+oljbyh/OkinJ5clBOkrPGMVFQIbCCXn80ffZs4EJtB6rOrqKRUe061agr/8Ofccr5LvRdPrDk6f27EpHP5ucY5XxzM3SAvqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747829754; c=relaxed/simple;
-	bh=Mqz28zEJYxKUZKOfyizt2hWDghirr0zTzKsqT9VxV/U=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=p6yyr5ixdmsKLAHUsPCzPp6JiXjR7SO++d9egcFkBlyVmsjAI927gLT42WEIT++gGZOB9xyNmMpNJlEXQYIYkxzmk0pJIjv3wTbp8CEB4B6ZPOduC8yKyKC46YK+HZg7rY/h7LPwIi/DxP7/blbIYLm+cdZy/P7HQq1WWMO+ZXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blDLO7mS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED2AC4CEE4;
-	Wed, 21 May 2025 12:15:53 +0000 (UTC)
+	s=arc-20240116; t=1747829760; c=relaxed/simple;
+	bh=K9Dn3vnTQ9QBcKTYKhUiaFJakmNUF2oQzU3fneB4TeY=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=BMHqt+v89Ig2Bj+AlUBRROyndQwK1AQAtIYgJjYNAMzdsV2SKrKQIhfHQamuysFQm4rT7zTQIYVO6rXSsWfS29vTvTURjVPu+jG9N7fMOzI/u3kpEzowRx7jS4UPII47My74WX7dwvvn8qUTfzC+2IXIFtDr9UaTeJey4h0Cs5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXe3XsGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB4EC4CEE7;
+	Wed, 21 May 2025 12:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747829753;
-	bh=Mqz28zEJYxKUZKOfyizt2hWDghirr0zTzKsqT9VxV/U=;
+	s=korg; t=1747829759;
+	bh=K9Dn3vnTQ9QBcKTYKhUiaFJakmNUF2oQzU3fneB4TeY=;
 	h=Subject:To:From:Date:From;
-	b=blDLO7mSuRhk7UN4xThEDgQEabKaK2f/iBxqJo8pfHGUyCppc24ZMesXAyKfpL9wV
-	 qpQEgBBZICjQ/FrKAY1NWzDr0mw7W717QU5cLFwrwDjGjGGEhZ2i0svaK+rS6b3j8q
-	 OrVtLTkuJLFPxW1EoDr1YyDE3qoHc/vxT+SkdfPc=
-Subject: patch "iio: adc: ad7606_spi: fix reg write value mask" added to char-misc-testing
-To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,adureghello@baylibre.com
+	b=oXe3XsGHeHw9rR1tQjIg52/jZq6pKHkM9L5ZWOxP/7lup+IjNTAU4GZK265l4kW0/
+	 DQld9CKF1aUgMM54FCnrpnLtfjJ2V8VCTYE33a0GKkpaLOzA7bFG2HAx7fNhkI0lYh
+	 0eQtC/fFUojEllEA8HmN78eUK5HIiOs1EMSHvWzs=
+Subject: patch "iio: imu: inv_icm42600: Fix temperature calculation" added to char-misc-testing
+To: sean@geanix.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,jean-baptiste.maneyrol@tdk.com
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 21 May 2025 14:15:48 +0200
-Message-ID: <2025052148-cornhusk-snowsuit-e6d3@gregkh>
+Date: Wed, 21 May 2025 14:15:49 +0200
+Message-ID: <2025052149-luncheon-clarinet-1fc3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad7606_spi: fix reg write value mask
+    iio: imu: inv_icm42600: Fix temperature calculation
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,38 +69,52 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 89944d88f8795c6c89b9514cb365998145511cd4 Mon Sep 17 00:00:00 2001
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 28 Apr 2025 20:55:34 -0500
-Subject: iio: adc: ad7606_spi: fix reg write value mask
+From e2f820014239df9360064079ae93f838ff3b7f8c Mon Sep 17 00:00:00 2001
+From: Sean Nyekjaer <sean@geanix.com>
+Date: Fri, 2 May 2025 11:37:26 +0200
+Subject: iio: imu: inv_icm42600: Fix temperature calculation
 
-Fix incorrect value mask for register write. Register values are 8-bit,
-not 9. If this function was called with a value > 0xFF and an even addr,
-it would cause writing to the next register.
+>From the documentation:
+"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
+Offset should be applied before multiplying scale, so divide offset by
+scale to make this correct.
 
-Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250428-iio-adc-ad7606_spi-fix-write-value-mask-v1-1-a2d5e85a809f@baylibre.com
+Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://patch.msgid.link/20250502-imu-v1-1-129b8391a4e3@geanix.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7606_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
-index 179115e90988..b37458ce3c70 100644
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -155,7 +155,7 @@ static int ad7606_spi_reg_write(struct ad7606_state *st,
- 	struct spi_device *spi = to_spi_device(st->dev);
- 
- 	st->d16[0] = cpu_to_be16((st->bops->rd_wr_cmd(addr, 1) << 8) |
--				  (val & 0x1FF));
-+				  (val & 0xFF));
- 
- 	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
- }
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+index 213cce1c3111..91f0f381082b 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT;
+ 	/*
+ 	 * T°C = (temp / 132.48) + 25
+-	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
++	 * Tm°C = 1000 * ((temp / 132.48) + 25)
++	 * Tm°C = 7.548309 * temp + 25000
++	 * Tm°C = (temp + 3312) * 7.548309
+ 	 * scale: 100000 / 13248 ~= 7.548309
+-	 * offset: 25000
++	 * offset: 3312
+ 	 */
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 7;
+ 		*val2 = 548309;
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = 25000;
++		*val = 3312;
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
 -- 
 2.49.0
 
