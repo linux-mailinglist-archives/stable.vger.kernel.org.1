@@ -1,65 +1,51 @@
-Return-Path: <stable+bounces-145813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25E1ABF2D1
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 13:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA26ABF309
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 13:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D608C4583
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 11:28:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 119603AD5DE
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 11:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D865262FE0;
-	Wed, 21 May 2025 11:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C48F263F5B;
+	Wed, 21 May 2025 11:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="mvSyopFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxNfRTss"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950FE262D0B;
-	Wed, 21 May 2025 11:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62FD239585;
+	Wed, 21 May 2025 11:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747826920; cv=none; b=WbWpdaVwfnuqk9uL3QzRC0KH11kDtolkys7AGWC+ndI/+6HjacduVRRd42jAEIbamfJJ+Ot+iomVjqSttx175WDNX8IMe1E7omJ8UypxId+APAFx74O7H+Di84T8YiFcgKvc3DG4AEqv/uadIOk7tsWtuoAPD7hQ7c/WTOMmGcQ=
+	t=1747827501; cv=none; b=BJWi8Pgrd9IYGIS7BjOhQp/57oF17ZNFcRqOSDOZnsgsERTJNPepOPPGaUU9L78kJ1Pj6rrTDohSsvr6UpnGMGAQk6kDsnJrpBPCEIHK656eyINYw5kQdiogB3dISggfrAgS0mY200JfsploBNBrA6fKtpPUh9uJcAYzKQsvmFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747826920; c=relaxed/simple;
-	bh=S9J75qZ9bJZpjs/7dCU9nfqhLhErtrlIyKhvRSHvv74=;
+	s=arc-20240116; t=1747827501; c=relaxed/simple;
+	bh=RTk6zZE4Ocqx64VCuCzzw2IhiKNg639tTa3vFSVixtU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p2vlVOaifQ5bE8WROPXeRk2QTFCRYF637F6N2efZ/iYuGcDjXsLbIXvMwCoXDVXKb6YVhNAYz8VnyX/6qRyWTqLrKSJNTFQg8leh30KB7M9CPctB5TX1Qm2k18l/KR6ImsWVido3+j2iXEvSbfPMfzbsC1p5woYaxPhTDXe0qjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=mvSyopFz; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=xRV7o4nf6uZfEwRx0m1diQcLpzdjD3YqmbdMSDeP5Y8=; b=mvSyopFzFt5x7LgmI5IrRknwWr
-	0ttg5XA6mQtvVHBPWlAohxD9VeSA4NJ1qTPHQk4Tqf5razQIgyietmDxM9VuVZOKc2mh/pnDMsni8
-	f7COgJkSN37Lqz2Pi+4A6ar27RIeAUZoF2Zw324x7Cp+s0aEOJxiTnt82ZyLXg/gr7b6K3Vijnlpo
-	XjGsSgpMO8U4HGnjcSULm550DdIMNRRie2VvA5qDsWJ/AwIzb8XQ8+R+yeGHPRm1UKjr4Z63AbMO9
-	Wwm1NVkWXIWmrY2cM0ijpEaBdsmGrPpAAeXDrQNz7TeUZPc4cAO98s8bzJ5YVxUnfhJoPDm6s2o2D
-	9k2V4Pqg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1uHhcR-007nYB-0o;
-	Wed, 21 May 2025 19:28:20 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 21 May 2025 19:28:19 +0800
-Date: Wed, 21 May 2025 19:28:19 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Bharat Bhushan <bbhushan2@marvell.com>
-Cc: bbrezillon@kernel.org, schalla@marvell.com, davem@davemloft.net,
-	giovanni.cabiddu@intel.com, linux@treblig.org,
-	bharatb.linux@gmail.com, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 3/4 v3] crypto: octeontx2: Fix address alignment on CN10K
- A0/A1 and OcteonTX2
-Message-ID: <aC2406qOlaI17_f3@gondor.apana.org.au>
-References: <20250521100447.94421-1-bbhushan2@marvell.com>
- <20250521100447.94421-4-bbhushan2@marvell.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=p0v2AQRv6wQ20t1PMCeV6BIGwBISH/AIidAdpogphdKTkrQhgUY46PL7A6+7N0FrMYmZOXMsw9KmvTYJEQIuS6JwhEFdxn2SnZQ8O+AC7F7bK9Vb4PgSdPfGzLtyzQAh8Lc35IhkVTgGVTSj1A93nT0johmjxKH3Cv3i8TTqL40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxNfRTss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81511C4CEE4;
+	Wed, 21 May 2025 11:38:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747827501;
+	bh=RTk6zZE4Ocqx64VCuCzzw2IhiKNg639tTa3vFSVixtU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rxNfRTss/fINM5OSrc1IzeDcbzVLjNTyGJ2ZXyqPPZI3R31361spKZ3bJx9IoENWS
+	 1PjRjk/ZJzqXHEoVoPXTMcLAEFf/w9X+D2oS8JVLWjFrfaFy6y9wy9eyQ2giQ2dQOI
+	 DIbtMm62iogL8wtCArxBDYdDZA7vwxD2osg8sGbA=
+Date: Wed, 21 May 2025 13:38:18 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Mans Rullgard <mans@mansr.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] tty: serial: 8250_omap: fix TX with DMA for am33xx
+Message-ID: <2025052101-lunchbox-catacomb-79fe@gregkh>
+References: <20250514072035.2757435-1-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,79 +54,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250521100447.94421-4-bbhushan2@marvell.com>
+In-Reply-To: <20250514072035.2757435-1-jirislaby@kernel.org>
 
-On Wed, May 21, 2025 at 03:34:46PM +0530, Bharat Bhushan wrote:
->
-> @@ -429,22 +431,51 @@ otx2_sg_info_create(struct pci_dev *pdev, struct otx2_cpt_req_info *req,
->  		return NULL;
->  	}
->  
-> -	g_sz_bytes = ((req->in_cnt + 3) / 4) *
-> -		      sizeof(struct otx2_cpt_sglist_component);
-> -	s_sz_bytes = ((req->out_cnt + 3) / 4) *
-> -		      sizeof(struct otx2_cpt_sglist_component);
-> +	/* Allocate memory to meet below alignment requirement:
-> +	 *  ----------------------------------
-> +	 * |    struct otx2_cpt_inst_info     |
-> +	 * |    (No alignment required)       |
-> +	 * |     -----------------------------|
-> +	 * |    | padding for 8B alignment    |
-> +	 * |----------------------------------|
+On Wed, May 14, 2025 at 09:20:35AM +0200, Jiri Slaby (SUSE) wrote:
+> Commit 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+> introduced an error in the TX DMA handling for 8250_omap.
+> 
+> When the OMAP_DMA_TX_KICK flag is set, the "skip_byte" is pulled from
+> the kfifo and emitted directly in order to start the DMA. While the
+> kfifo is updated, dma->tx_size is not decreased. This leads to
+> uart_xmit_advance() called in omap_8250_dma_tx_complete() advancing the
+> kfifo by one too much.
+> 
+> In practice, transmitting N bytes has been seen to result in the last
+> N-1 bytes being sent repeatedly.
+> 
+> This change fixes the problem by moving all of the dma setup after the
+> OMAP_DMA_TX_KICK handling and using kfifo_len() instead of the DMA size
+> for the 4-byte cutoff check. This slightly changes the behaviour at
+> buffer wraparound, but it still transmits the correct bytes somehow.
+> 
+> Now, the "skip_byte" would no longer be accounted to the stats. As
+> previously, dma->tx_size included also this skip byte, up->icount.tx was
+> updated by aforementioned uart_xmit_advance() in
+> omap_8250_dma_tx_complete(). Fix this by using the uart_fifo_out()
+> helper instead of bare kfifo_get().
+> 
+> Based on patch by Mans Rullgard <mans@mansr.com>
+> 
+> Fixes: 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+> Reported-by: Mans Rullgard <mans@mansr.com>
+> Cc: stable@vger.kernel.org
+> 
+> ---
 
-This should be updated to show that everything following this
-is on an 128-byte boundary.
+You forgot to sign off on this patch :(
 
-> +	 * |    SG List Gather/Input memory   |
-> +	 * |    Length = multiple of 32Bytes  |
-> +	 * |    Alignment = 8Byte             |
-> +	 * |----------------------------------|
-> +	 * |    SG List Scatter/Output memory |
-> +	 * |    Length = multiple of 32Bytes  |
-> +	 * |    Alignment = 8Byte             |
-> +	 * |    (padding for below alignment) |
-> +	 * |     -----------------------------|
-> +	 * |    | padding for 32B alignment   |
-> +	 * |----------------------------------|
-> +	 * |    Result response memory        |
-> +	 *  ----------------------------------
-> +	 */
->  
-> -	dlen = g_sz_bytes + s_sz_bytes + SG_LIST_HDR_SIZE;
-> -	align_dlen = ALIGN(dlen, align);
-> -	info_len = ALIGN(sizeof(*info), align);
-> -	total_mem_len = align_dlen + info_len + sizeof(union otx2_cpt_res_s);
-> +	info_len = sizeof(*info);
-> +
-> +	g_len = ((req->in_cnt + 3) / 4) *
-> +		 sizeof(struct otx2_cpt_sglist_component);
-> +	s_len = ((req->out_cnt + 3) / 4) *
-> +		 sizeof(struct otx2_cpt_sglist_component);
-> +
-> +	dlen = g_len + s_len + SG_LIST_HDR_SIZE;
-> +
-> +	/* Allocate extra memory for SG and response address alignment */
-> +	total_mem_len = ALIGN(info_len, ARCH_DMA_MINALIGN) + dlen;
-> +	total_mem_len = ALIGN(total_mem_len, OTX2_CPT_DPTR_RPTR_ALIGN);
-> +	total_mem_len += (OTX2_CPT_RES_ADDR_ALIGN - 1) &
-> +			  ~(OTX2_CPT_DPTR_RPTR_ALIGN - 1);
-> +	total_mem_len += sizeof(union otx2_cpt_res_s);
+Can you resend it with that?
 
-This calculation is wrong again.  It should be:
+thanks,
 
-	total_mem_len = ALIGN(info_len, OTX2_CPT_DPTR_RPTR_ALIGN);
-	total_mem_len += (ARCH_DMA_MINALIGN - 1) &
-			 ~(OTX2_CPT_DPTR_RPTR_ALIGN - 1);
-	total_mem_len += ALIGN(dlen, OTX2_CPT_RES_ADDR_ALIGN);
-	total_mem_len += sizeof(union otx2_cpt_res_s);
-
-Remember ALIGN may not actually give you extra memory.  So if you
-need to add memory for alignment padding, you will need to do it
-by hand.
-
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+greg k-h
 
