@@ -1,293 +1,128 @@
-Return-Path: <stable+bounces-145945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD8CABFF53
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 00:09:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F84AC00B4
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 01:32:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 836C21BA4023
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 22:10:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4DD34A01AC
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 23:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE992367AC;
-	Wed, 21 May 2025 22:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Tvst8qxL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9F6238C36;
+	Wed, 21 May 2025 23:32:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from neil.brown.name (neil.brown.name [103.29.64.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38529154C17;
-	Wed, 21 May 2025 22:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BA323716B;
+	Wed, 21 May 2025 23:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747865392; cv=none; b=h0YhcB2UE0bWRA7UoKivsRviJc2im6Ika/90+hMTKCcg1iXYiO+7UvfmQ9Njdpaodpfhwrgul/+BJZJWPbVoC7rEVE8oKrkkbxkI6LABAP5j43MPc90+ywAkM9dnGmC/3nP6zBrAiLqfwyzS6dxy0S4fMydDfCr1BmUYtN0BoV4=
+	t=1747870367; cv=none; b=mU1Q2qPmDRb4YTU5eYdoXTaCW9pDqlsnCVmCQ9iV9FR0Qy5ivFZqKDQUshNp1aqvW1rqMcDhszFBVu+oulDz7DZmyPXd8qRtziQBOdXdQAKZk4ADj2KnDPxUv8UcQCBCzALqIiyDnhGcK8Njh1xcQ9sail5acKYN+RNYHiP0obk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747865392; c=relaxed/simple;
-	bh=gyJtVqSWzcUESI8kIeu1YEyvysWQrxilFbUyVe6f1RI=;
-	h=Date:To:From:Subject:Message-Id; b=RALo9Z4Y+heghF2VIehag9cfNu7uRKdVOB1+pS0KrJGZV7dWfGTly829F7PRwvFbGA3WOK7bLOUG0vRMnWuBRc8PY5ap8uvZlWhVN2Xt85XKp7OrjUqSjIGFJag0MxlNNV1Mu+GLIZPhKxIzM1r/E+Fhn/h4OFyqvu8/nwfoZpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Tvst8qxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979ACC4CEE4;
-	Wed, 21 May 2025 22:09:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1747865391;
-	bh=gyJtVqSWzcUESI8kIeu1YEyvysWQrxilFbUyVe6f1RI=;
-	h=Date:To:From:Subject:From;
-	b=Tvst8qxLaMjPjppgecmhWk/RLmoFHs3dF/7Y2Pi11BYm3WHb3Z3eEgF8DYLpiLIZu
-	 llB8q7AfQJj3B+7uFYg0VYf3SmK1KoAJMVa//Z146+hh/ouZuVdSS52sf+tDiuwlbS
-	 CJAi2zaVPZdr2j5PjMiAFw/EY4P/AgGILccAOGv8=
-Date: Wed, 21 May 2025 15:09:50 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,revest@google.com,osalvador@suse.de,muchun.song@linux.dev,hughd@google.com,gshan@redhat.com,byungchul@sk.com,gavinguo@igalia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-hugetlb-fix-a-deadlock-with-pagecache_folio-and-hugetlb_fault_mutex_table.patch removed from -mm tree
-Message-Id: <20250521220951.979ACC4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1747870367; c=relaxed/simple;
+	bh=uCqvMDg1KiG4QopSJ9nmufRDSvCKfWNpPjdDCSGY+lQ=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=TUTmdZ8cNkc5QJnrbc525wsd9Yjhd4rfLBREKgrpWQV07qaKoqcUjQL9pOPQI7syIcY4aJYOxa83rzsG+stZ1JXCmdJ9WEnHDgCVIFPturWGBH98/41hbo12JUZNbWqYygEAF6ed/EORK4AzGDi38HeVayQ3Q0t2Vm890bBH+zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
+Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
+	by neil.brown.name with esmtp (Exim 4.95)
+	(envelope-from <mr@neil.brown.name>)
+	id 1uHsvS-007kbc-9J;
+	Wed, 21 May 2025 23:32:42 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: "NeilBrown" <neil@brown.name>
+To: "Yan, Haixiao (CN)" <haixiao.yan.cn@windriver.com>
+Cc:
+ chuck.lever@oracle.com, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: nfs mount failed with ipv6 addr
+In-reply-to: <6bb8f01e-628d-4353-8ed5-f77939e99df9@windriver.com>
+References: <6bb8f01e-628d-4353-8ed5-f77939e99df9@windriver.com>
+Date: Thu, 22 May 2025 09:32:42 +1000
+Message-id: <174787036205.62796.16633284882232555223@noble.neil.brown.name>
 
+On Thu, 22 May 2025, Yan, Haixiao (CN) wrote:
+> On linux-5.10.y, my testcase run failed:
+>=20
+> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mount -t n=
+fs [::1]:/mnt/nfs_root /mnt/v6 -o nfsvers=3D3
+> mount.nfs: requested NFS version or transport protocol is not supported
+>=20
+> The first bad commit is:
+>=20
+> commit 7229200f68662660bb4d55f19247eaf3c79a4217
+> Author: Chuck Lever <chuck.lever@oracle.com>
+> Date: =C2=A0 Mon Jun 3 10:35:02 2024 -0400
+>=20
+>  =C2=A0 nfsd: don't allow nfsd threads to be signalled.
+>=20
+>  =C2=A0 [ Upstream commit 3903902401451b1cd9d797a8c79769eb26ac7fe5 ]
+>=20
+>=20
+> Here is the test log:
+>=20
+> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# dd if=3D/d=
+ev/zero of=3D/tmp/nfs.img bs=3D1M count=3D100
+> 100+0 records in
+> 100+0 records out
+> 104857600 bytes (105 MB, 100 MiB) copied, 0.0386658 s, 2.7 GB/s
+> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mkfs /tmp/=
+nfs.img
+> mke2fs 1.46.1 (9-Feb-2021)
+> Discarding device blocks:   1024/102400=08=08=08=08=08=08=08=08=08=08=08=08=
+=08             =08=08=08=08=08=08=08=08=08=08=08=08=08done
+> Creating filesystem with 102400 1k blocks and 25688 inodes
+> Filesystem UUID: 77e3bc56-46bb-4e5c-9619-d9a0c0999958
+> Superblock backups stored on blocks:
+> 	8193, 24577, 40961, 57345, 73729
+>=20
+> Allocating group tables:  0/13=08=08=08=08=08     =08=08=08=08=08done
+> Writing inode tables:  0/13=08=08=08=08=08     =08=08=08=08=08done
+> Writing superblocks and filesystem accounting information:  0/13=08=08=08=
+=08=08     =08=08=08=08=08done
+> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mount /tmp=
+/nfs.img /mnt
+>=20
+> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mkdir /mnt=
+/nfs_root
+>=20
+> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# touch /etc=
+/exports
+>=20
+> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# echo '/mnt=
+/nfs_root *(insecure,rw,async,no_root_squash)' >> /etc/exports
+>=20
+> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# /opt/wr-te=
+st/bin/svcwp.sh nfsserver restart
+> stopping mountd: done
+> stopping nfsd: ..........failed
+>   using signal 9:
+> ..........failed
 
-The quilt patch titled
-     Subject: mm/hugetlb: fix a deadlock with pagecache_folio and hugetlb_fault_mutex_table
-has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-fix-a-deadlock-with-pagecache_folio-and-hugetlb_fault_mutex_table.patch
+What does your "nfsserver" script do to try to stop/restart the nfsd?
+For a very long time the approved way to stop nfsd has been to run
+"rpc.nfsd 0".  My guess is that whatever script you are using still
+trying to send a signal to nfsd.  That no longer works.
 
-This patch was dropped because an updated version will be issued
+Unfortunately the various sysv-init scripts for starting/stopping nfsd
+have never been part of nfs-utils so we were not able to update them.
+nfs-utils *does* contain systemd unit files for sites which use systemd.
 
-------------------------------------------------------
-From: Gavin Guo <gavinguo@igalia.com>
-Subject: mm/hugetlb: fix a deadlock with pagecache_folio and hugetlb_fault_mutex_table
-Date: Tue, 13 May 2025 17:34:48 +0800
+If you have a non-systemd way of starting/stopping nfsd, we would be
+happy to make the relevant scripts part of nfs-utils so that we can
+ensure they stay up to date.
 
-Fix a deadlock which can be triggered by an internal syzkaller [1]
-reproducer and captured by bpftrace script [2] and its log [3] in this
-scenario:
-
-Process 1                              Process 2
----				       ---
-hugetlb_fault
-  mutex_lock(B) // take B
-  filemap_lock_hugetlb_folio
-    filemap_lock_folio
-      __filemap_get_folio
-        folio_lock(A) // take A
-  hugetlb_wp
-    mutex_unlock(B) // release B
-    ...                                hugetlb_fault
-    ...                                  mutex_lock(B) // take B
-                                         filemap_lock_hugetlb_folio
-                                           filemap_lock_folio
-                                             __filemap_get_folio
-                                               folio_lock(A) // blocked
-    unmap_ref_private
-    ...
-    mutex_lock(B) // retake and blocked
-
-This is a ABBA deadlock involving two locks:
-- Lock A: pagecache_folio lock
-- Lock B: hugetlb_fault_mutex_table lock
-
-The deadlock occurs between two processes as follows:
-
-1. The first process (let's call it Process 1) is handling a
-   copy-on-write (COW) operation on a hugepage via hugetlb_wp.  Due to
-   insufficient reserved hugetlb pages, Process 1, owner of the reserved
-   hugetlb page, attempts to unmap a hugepage owned by another process
-   (non-owner) to satisfy the reservation.  Before unmapping, Process 1
-   acquires lock B (hugetlb_fault_mutex_table lock) and then lock A
-   (pagecache_folio lock).  To proceed with the unmap, it releases Lock B
-   but retains Lock A.  After the unmap, Process 1 tries to reacquire Lock
-   B.  However, at this point, Lock B has already been acquired by another
-   process.
-
-2. The second process (Process 2) enters the hugetlb_fault handler
-   during the unmap operation.  It successfully acquires Lock B
-   (hugetlb_fault_mutex_table lock) that was just released by Process 1,
-   but then attempts to acquire Lock A (pagecache_folio lock), which is
-   still held by Process 1.
-
-As a result, Process 1 (holding Lock A) is blocked waiting for Lock B
-(held by Process 2), while Process 2 (holding Lock B) is blocked waiting
-for Lock A (held by Process 1), constructing a ABBA deadlock scenario.
-
-The solution here is to unlock the pagecache_folio and provide the
-pagecache_folio_unlocked variable to the caller to have the visibility
-over the pagecache_folio status for subsequent handling.
-
-The error message:
-INFO: task repro_20250402_:13229 blocked for more than 64 seconds.
-      Not tainted 6.15.0-rc3+ #24
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:repro_20250402_ state:D stack:25856 pid:13229 tgid:13228 ppid:3513   task_flags:0x400040 flags:0x00004006
-Call Trace:
- <TASK>
- __schedule+0x1755/0x4f50
- schedule+0x158/0x330
- schedule_preempt_disabled+0x15/0x30
- __mutex_lock+0x75f/0xeb0
- hugetlb_wp+0xf88/0x3440
- hugetlb_fault+0x14c8/0x2c30
- trace_clock_x86_tsc+0x20/0x20
- do_user_addr_fault+0x61d/0x1490
- exc_page_fault+0x64/0x100
- asm_exc_page_fault+0x26/0x30
-RIP: 0010:__put_user_4+0xd/0x20
- copy_process+0x1f4a/0x3d60
- kernel_clone+0x210/0x8f0
- __x64_sys_clone+0x18d/0x1f0
- do_syscall_64+0x6a/0x120
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x41b26d
- </TASK>
-INFO: task repro_20250402_:13229 is blocked on a mutex likely owned by task repro_20250402_:13250.
-task:repro_20250402_ state:D stack:28288 pid:13250 tgid:13228 ppid:3513   task_flags:0x400040 flags:0x00000006
-Call Trace:
- <TASK>
- __schedule+0x1755/0x4f50
- schedule+0x158/0x330
- io_schedule+0x92/0x110
- folio_wait_bit_common+0x69a/0xba0
- __filemap_get_folio+0x154/0xb70
- hugetlb_fault+0xa50/0x2c30
- trace_clock_x86_tsc+0x20/0x20
- do_user_addr_fault+0xace/0x1490
- exc_page_fault+0x64/0x100
- asm_exc_page_fault+0x26/0x30
-RIP: 0033:0x402619
- </TASK>
-INFO: task repro_20250402_:13250 blocked for more than 65 seconds.
-      Not tainted 6.15.0-rc3+ #24
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:repro_20250402_ state:D stack:28288 pid:13250 tgid:13228 ppid:3513   task_flags:0x400040 flags:0x00000006
-Call Trace:
- <TASK>
- __schedule+0x1755/0x4f50
- schedule+0x158/0x330
- io_schedule+0x92/0x110
- folio_wait_bit_common+0x69a/0xba0
- __filemap_get_folio+0x154/0xb70
- hugetlb_fault+0xa50/0x2c30
- trace_clock_x86_tsc+0x20/0x20
- do_user_addr_fault+0xace/0x1490
- exc_page_fault+0x64/0x100
- asm_exc_page_fault+0x26/0x30
-RIP: 0033:0x402619
- </TASK>
-
-Showing all locks held in the system:
-1 lock held by khungtaskd/35:
- #0: ffffffff879a7440 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x30/0x180
-2 locks held by repro_20250402_/13229:
- #0: ffff888017d801e0 (&mm->mmap_lock){++++}-{4:4}, at: lock_mm_and_find_vma+0x37/0x300
- #1: ffff888000fec848 (&hugetlb_fault_mutex_table[i]){+.+.}-{4:4}, at: hugetlb_wp+0xf88/0x3440
-3 locks held by repro_20250402_/13250:
- #0: ffff8880177f3d08 (vm_lock){++++}-{0:0}, at: do_user_addr_fault+0x41b/0x1490
- #1: ffff888000fec848 (&hugetlb_fault_mutex_table[i]){+.+.}-{4:4}, at: hugetlb_fault+0x3b8/0x2c30
- #2: ffff8880129500e8 (&resv_map->rw_sema){++++}-{4:4}, at: hugetlb_fault+0x494/0x2c30
-
-Link: https://drive.google.com/file/d/1DVRnIW-vSayU5J1re9Ct_br3jJQU6Vpb/view?usp=drive_link [1]
-Link: https://github.com/bboymimi/bpftracer/blob/master/scripts/hugetlb_lock_debug.bt [2]
-Link: https://drive.google.com/file/d/1bWq2-8o-BJAuhoHWX7zAhI6ggfhVzQUI/view?usp=sharing [3]
-Link: https://lkml.kernel.org/r/20250513093448.592150-1-gavinguo@igalia.com
-Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Florent Revest <revest@google.com>
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-fix-a-deadlock-with-pagecache_folio-and-hugetlb_fault_mutex_table
-+++ a/mm/hugetlb.c
-@@ -6131,7 +6131,8 @@ static void unmap_ref_private(struct mm_
-  * Keep the pte_same checks anyway to make transition from the mutex easier.
-  */
- static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
--		       struct vm_fault *vmf)
-+		       struct vm_fault *vmf,
-+		       bool *pagecache_folio_unlocked)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct mm_struct *mm = vma->vm_mm;
-@@ -6229,6 +6230,22 @@ retry_avoidcopy:
- 
- 			folio_put(old_folio);
- 			/*
-+			 * The pagecache_folio needs to be unlocked to avoid
-+			 * deadlock and we won't re-lock it in hugetlb_wp(). The
-+			 * pagecache_folio could be truncated after being
-+			 * unlocked. So its state should not be relied
-+			 * subsequently.
-+			 *
-+			 * Setting *pagecache_folio_unlocked to true allows the
-+			 * caller to handle any necessary logic related to the
-+			 * folio's unlocked state.
-+			 */
-+			if (pagecache_folio) {
-+				folio_unlock(pagecache_folio);
-+				if (pagecache_folio_unlocked)
-+					*pagecache_folio_unlocked = true;
-+			}
-+			/*
- 			 * Drop hugetlb_fault_mutex and vma_lock before
- 			 * unmapping.  unmapping needs to hold vma_lock
- 			 * in write mode.  Dropping vma_lock in read mode
-@@ -6581,7 +6598,7 @@ static vm_fault_t hugetlb_no_page(struct
- 	hugetlb_count_add(pages_per_huge_page(h), mm);
- 	if ((vmf->flags & FAULT_FLAG_WRITE) && !(vma->vm_flags & VM_SHARED)) {
- 		/* Optimization, do the COW without a second fault */
--		ret = hugetlb_wp(folio, vmf);
-+		ret = hugetlb_wp(folio, vmf, NULL);
- 	}
- 
- 	spin_unlock(vmf->ptl);
-@@ -6653,6 +6670,7 @@ vm_fault_t hugetlb_fault(struct mm_struc
- 	struct hstate *h = hstate_vma(vma);
- 	struct address_space *mapping;
- 	int need_wait_lock = 0;
-+	bool pagecache_folio_unlocked = false;
- 	struct vm_fault vmf = {
- 		.vma = vma,
- 		.address = address & huge_page_mask(h),
-@@ -6807,7 +6825,8 @@ vm_fault_t hugetlb_fault(struct mm_struc
- 
- 	if (flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) {
- 		if (!huge_pte_write(vmf.orig_pte)) {
--			ret = hugetlb_wp(pagecache_folio, &vmf);
-+			ret = hugetlb_wp(pagecache_folio, &vmf,
-+					&pagecache_folio_unlocked);
- 			goto out_put_page;
- 		} else if (likely(flags & FAULT_FLAG_WRITE)) {
- 			vmf.orig_pte = huge_pte_mkdirty(vmf.orig_pte);
-@@ -6824,10 +6843,14 @@ out_put_page:
- out_ptl:
- 	spin_unlock(vmf.ptl);
- 
--	if (pagecache_folio) {
-+	/*
-+	 * If the pagecache_folio is unlocked in hugetlb_wp(), we skip
-+	 * folio_unlock() here.
-+	 */
-+	if (pagecache_folio && !pagecache_folio_unlocked)
- 		folio_unlock(pagecache_folio);
-+	if (pagecache_folio)
- 		folio_put(pagecache_folio);
--	}
- out_mutex:
- 	hugetlb_vma_unlock_read(vma);
- 
-_
-
-Patches currently in -mm which might be from gavinguo@igalia.com are
-
-
+Thanks,
+NeilBrown
 
