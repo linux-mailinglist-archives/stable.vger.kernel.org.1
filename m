@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-145920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E355BABFBD1
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 18:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79249ABFBD3
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 18:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 031031BC67F5
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 17:00:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF911BC6898
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 17:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71C4261588;
-	Wed, 21 May 2025 16:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F8426462B;
+	Wed, 21 May 2025 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="qemtN66r"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="S/mRet/6"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9C925B1DA;
-	Wed, 21 May 2025 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F46A242D66;
+	Wed, 21 May 2025 16:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747846771; cv=none; b=dLLgis0PofZI6zW+Il/cgDoTYO0ZDVOfBKX3Z12YMQTsDgRe5IEgceAV6Fl6wJ3ordMSihvmj9n9S1EqUbE83dkULbkx0+0egwHeW0vl2k0+rPCX9d6t7pC7gUwRfT8PQkyrKJtouZCV5omImtv74xinwzVdGfZdFNhPQy3xr/4=
+	t=1747846772; cv=none; b=kSMc+AwUBhgToCsgb924dwh0IcbZK26nDJq80V3uXmch13doAzubn+0OJyw1mEZZAYudtBXRXnCXeI522WpOJnSaT0C7oqT1F4lagNSwtiwbwMlk7W4feLOj9S96DTci0TegHjMKPFHNAwTVb9XpQygc8HN78rpctxihAOzzPz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747846771; c=relaxed/simple;
-	bh=7Of1OA5Yxg182QnsgLL7TbVWRBf475bH06Jde+Nb2M8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jBRkkFW/FC03DwadJKeGExF/p9wTC80OH4gUgWZ/5c7MolciPxCS7g0iWDEtMT3ueKXAHaWZ02E88S/xuzeo3nyT15RCOF6X9zUuSgorBe+USp2dZ8xjlFGvMFCSCs5e4P2JHlN4WeFUA34IIA0S3heInp8lv6uw+X3VPfjOlYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=qemtN66r; arc=none smtp.client-ip=83.149.199.84
+	s=arc-20240116; t=1747846772; c=relaxed/simple;
+	bh=7FSom9Ul9wKcwnb96HBov0gd1nVb2EdtLt8XTdRc9zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XnGoF9n8eTFYJhMdqYSiL98u96xpUaxSlFEOiL564MnQGl5xrrYYkAs1SeV/N+ccNOvc/u1JoJh0j/cJA3qi7UiLe7/QNmy/KN/vPFh47gQSevT5czTIqKNcjNNEEn/oyrj7rVBFHxB7ApSG/bLsxNG3G8T+VYTB6VJtM5l0xmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=S/mRet/6; arc=none smtp.client-ip=83.149.199.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Received: from fedora.intra.ispras.ru (unknown [10.10.165.10])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 5A9D2552F546;
-	Wed, 21 May 2025 16:59:19 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 5A9D2552F546
+	by mail.ispras.ru (Postfix) with ESMTPSA id A486E40737CA;
+	Wed, 21 May 2025 16:59:20 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A486E40737CA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1747846759;
-	bh=HLmlo26sE/2rMaJzaKatd95yXazpO/4KJbkvVO+Dkks=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qemtN66rg0n1LI5VCSYeOkDkVEOVabDx5Va1tkujpytq9DCvdo5viIUzzXvwHWnAN
-	 AV9MOHJf0DXH8oYVAVNL3MaZW0DKTuSyfle3qa6KKME3ArkOVSfAOp4tmxsHgudyw+
-	 acmhYVLY9utOmtg5phLsA8HBckC0BYsYLWw3IphE=
+	s=default; t=1747846760;
+	bh=4eBbU2ZUW5vwW+IHGX5MEb4AojIh2dKE1uLLXJR04hw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=S/mRet/6aBpZ70wl852kKxVBP2pbo+Q/tqtIewFZjuF9D98W5yWnTRprQjPDoNrK6
+	 18UczwUBGz5Y3XZ977eb9IsJwwrkXtn/Xy2liUdp4g6cOEXfmuDv6aOtYeg4h52CPG
+	 uYocCUw51/lOBjZZ87HiJMuNusDFemFrqCQdKaa4=
 From: Fedor Pchelkin <pchelkin@ispras.ru>
 To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -58,10 +59,12 @@ Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1 0/1] Oopses on module unload seen on 6.1.y
-Date: Wed, 21 May 2025 19:59:07 +0300
-Message-ID: <20250521165909.834545-1-pchelkin@ispras.ru>
+Subject: [PATCH 6.1 1/1] x86/modules: Set VM_FLUSH_RESET_PERMS in module_alloc()
+Date: Wed, 21 May 2025 19:59:08 +0300
+Message-ID: <20250521165909.834545-2-pchelkin@ispras.ru>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250521165909.834545-1-pchelkin@ispras.ru>
+References: <20250521165909.834545-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,84 +73,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 959cadf09dbae7b304f03e039b8d8e13c529e2dd
-Author: Peter Zijlstra <peterz@infradead.org>
-Date:   Mon Oct 14 10:05:48 2024 -0700
+commit 4c4eb3ecc91f4fee6d6bf7cfbc1e21f2e38d19ff upstream.
 
-    x86/its: Use dynamic thunks for indirect branches
-    
-    commit 872df34d7c51a79523820ea6a14860398c639b87 upstream.
+Instead of resetting permissions all over the place when freeing module
+memory tell the vmalloc code to do so. Avoids the exercise for the next
+upcoming user.
 
-was ported at v6.1.139 and leads to kernel crashes there after module
-unload operations.
-
-Example trace:
- BUG: unable to handle page fault for address: ffff8fcb47dd4000
- #PF: supervisor write access in kernel mode
- #PF: error_code(0x0003) - permissions violation
- PGD 34801067 P4D 34801067 PUD 100148063 PMD 107dd5063 PTE 8000000107dd4161
- Oops: 0003 [#1] PREEMPT SMP NOPTI
- CPU: 3 PID: 378 Comm: modprobe Not tainted 6.1.139-01446-g753bd4a5f9a9 #1
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
- RIP: 0010:__change_page_attr_set_clr+0x49d/0x1280
- Call Trace:
-  <TASK>
-  ? free_unref_page_prepare+0x80/0x4b0
-  set_direct_map_invalid_noflush+0x6e/0xa0
-  __vunmap+0x18c/0x3e0
-  __vfree+0x21/0xb0
-  vfree+0x2b/0x90
-  module_memfree+0x1b/0x50
-  free_module+0x17c/0x250
-  __do_sys_delete_module+0x337/0x4b0
-  __x64_sys_delete_module+0x15/0x30
-  x64_sys_call+0x3f9a/0x43a0
-  do_syscall_64+0x33/0x80
-  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
- RIP: 0033:0x7f70755c0807
-  </TASK>
- Modules linked in: dm_multipath scsi_dh_rdac scsi_dh_emc scsi_dh_alua [last unloaded: scsi_debug]
-
-
-As mentioned in the blamed patch comment describing the backport
-adaptations:
-
-[ pawan: CONFIG_EXECMEM and CONFIG_EXECMEM_ROX are not supported on
-        backport kernel, made changes to use module_alloc() and
-        set_memory_*() for dynamic thunks. ]
-
-module_alloc/module_memfree in conjunction with memory protection routines
-were used. The allocated memory is vmalloc-based, and it ends up being ROX
-upon release inside its_free_mod().
-
-Freeing of special permissioned memory in vmalloc requires its own
-handling. VM_FLUSH_RESET_PERMS flag was introduced for these purposes.
-
-In-kernel users dealing with the stuff had to care about this explicitly
-before commit 4c4eb3ecc91f ("x86/modules: Set VM_FLUSH_RESET_PERMS in
-module_alloc()").
-
-More recent kernels starting from 6.2 have the commit and are not affected.
-
-So port it as a followup for ITS mitigation 6.1-series to fix the
-aforementioned failures.
-
-The problem concerns 5.15-series (currently in stable-queue) as well. It
-needs its own patch to apply cleanly. Will send it shortly, too.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-
-Thomas Gleixner (1):
-  x86/modules: Set VM_FLUSH_RESET_PERMS in module_alloc()
-
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220915111143.406703869@infradead.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
  arch/x86/kernel/ftrace.c       | 2 --
  arch/x86/kernel/kprobes/core.c | 1 -
  arch/x86/kernel/module.c       | 9 +++++----
  3 files changed, 5 insertions(+), 7 deletions(-)
 
+diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+index e73743701530..48cf91625a16 100644
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -415,8 +415,6 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
+ 	/* ALLOC_TRAMP flags lets us know we created it */
+ 	ops->flags |= FTRACE_OPS_FL_ALLOC_TRAMP;
+ 
+-	set_vm_flush_reset_perms(trampoline);
+-
+ 	if (likely(system_state != SYSTEM_BOOTING))
+ 		set_memory_ro((unsigned long)trampoline, npages);
+ 	set_memory_x((unsigned long)trampoline, npages);
+diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+index 991f00c817e6..180c708879d2 100644
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -427,7 +427,6 @@ void *alloc_insn_page(void)
+ 	if (!page)
+ 		return NULL;
+ 
+-	set_vm_flush_reset_perms(page);
+ 	/*
+ 	 * First make the page read-only, and only then make it executable to
+ 	 * prevent it from being W+X in between.
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index 7728060b640c..c34ea5e028c4 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -74,10 +74,11 @@ void *module_alloc(unsigned long size)
+ 		return NULL;
+ 
+ 	p = __vmalloc_node_range(size, MODULE_ALIGN,
+-				    MODULES_VADDR + get_module_load_offset(),
+-				    MODULES_END, gfp_mask,
+-				    PAGE_KERNEL, VM_DEFER_KMEMLEAK, NUMA_NO_NODE,
+-				    __builtin_return_address(0));
++				 MODULES_VADDR + get_module_load_offset(),
++				 MODULES_END, gfp_mask, PAGE_KERNEL,
++				 VM_FLUSH_RESET_PERMS | VM_DEFER_KMEMLEAK,
++				 NUMA_NO_NODE, __builtin_return_address(0));
++
+ 	if (p && (kasan_alloc_module_shadow(p, size, gfp_mask) < 0)) {
+ 		vfree(p);
+ 		return NULL;
 -- 
 2.49.0
 
