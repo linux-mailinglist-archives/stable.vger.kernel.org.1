@@ -1,144 +1,130 @@
-Return-Path: <stable+bounces-145729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BADEABE906
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 03:23:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9568BABE90F
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 03:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D16148A674F
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 01:22:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B65771883C42
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 01:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCD6189BAC;
-	Wed, 21 May 2025 01:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC1F194124;
+	Wed, 21 May 2025 01:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="DIm1HgXz"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BDA1547D2;
-	Wed, 21 May 2025 01:21:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1EC19309E
+	for <stable@vger.kernel.org>; Wed, 21 May 2025 01:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747790503; cv=none; b=GQSlYcpTIj19O7TY2llMjQyXrU7Tx9LKdPjBViP68YghixcR3FJBe7UzoT4toY52WZbGIrXeeEQweiuFNkx2vNot1QzTGzyZhinv0noMmKTasvNzqXnOVKsQNvX/FEnPVhYilsYV4AENspY9jQrf79m0nK0Asv7kHYUMLHxv14Q=
+	t=1747790769; cv=none; b=ACPy7MKai7d0zRyPXI3KMa6TI8n9x31JiReQzCi1GERLwyr/BOcDE9GcM4p/d9pYC8CxDbLq1uBxFh25AVSkL9niDQW9ZNASRQtEaQ9spvMeal1LhrZGx9GBYJeuuxRY5xzzw1BJ4G3dqSbbh+Jgf9+VbR5NjyT3ywYtzMIlqGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747790503; c=relaxed/simple;
-	bh=1UfzN0drI/52aA/1kE18PAPZsjm6Wigacdpy3q4D0FY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KHcSVFnI/HaNJlIgThPpL6Dqppcbq5KwOzaIoGzZue7o6PFHg/dSBDKqlAecjzQMkCvDauBv1IxxSQV4SYNYA1g+JpoqpVyf+HYjXyUbzO4aXp0oJN7TduIW+V6LhA0JCHgKaBE2dZXxR/Y1ttuP9VYdXaM0bh0jyCqQGPYiXLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54L0VDx9014151;
-	Wed, 21 May 2025 01:21:29 GMT
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46rwfx0ka6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 21 May 2025 01:21:29 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Tue, 20 May 2025 18:21:10 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Tue, 20 May 2025 18:21:05 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <jianqi.ren.cn@windriver.com>, <robdclark@gmail.com>,
-        <quic_abhinavk@quicinc.com>, <dmitry.baryshkov@linaro.org>,
-        <sean@poorly.run>, <airlied@gmail.com>, <daniel@ffwll.ch>,
-        <sashal@kernel.org>, <quic_vpolimer@quicinc.com>,
-        <quic_jesszhan@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <freedreno@lists.freedesktop.org>,
-        <quic_kalyant@quicinc.com>
-Subject: [PATCH 6.1.y v2 2/2] drm/msm/dpu: move dpu_encoder's connector assignment to atomic_enable()
-Date: Wed, 21 May 2025 09:21:23 +0800
-Message-ID: <20250521012123.1977793-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1747790769; c=relaxed/simple;
+	bh=7QwfftoA4j5uvRIbqdfg10GeJqtkcsx7eM276hf1ueo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AShn2eL8XOKQvEqFcaVdepu60K5h7YIrc9hLs0z4cGvE9TRowl3P/s8oIXcgc/tnJ5L54zvlU2ZEwsvHEP5Q8M+kftmoqeLAaYXlaISqfL8M3YAazDQplCCu14u2geCskk73mchap4TCOnIkbmorMHQlX94K/dFMsHWCw93nENM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=DIm1HgXz; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6010a.ext.cloudfilter.net ([10.0.30.248])
+	by cmsmtp with ESMTPS
+	id HXoSunkmuVkcRHYDduWz8l; Wed, 21 May 2025 01:26:05 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id HYDcuZp6Z0jHiHYDdu5GTj; Wed, 21 May 2025 01:26:05 +0000
+X-Authority-Analysis: v=2.4 cv=Jsn3rt4C c=1 sm=1 tr=0 ts=682d2bad
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=qfBMeBQ8Qh9mIwLNFBIA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=WuMQeRygrW3RVlRP4YOXMSX3odtJw3dfHrbo3CA7HCg=; b=DIm1HgXzYfKB6TwZY1c4Fm1/lx
+	/hOLtf2eY9B/TEBewqObc/H/FD7UaQBbdGDc/WnIF5NpJj6Eqm3RrctIZQd/MqXrAq3X7xGt5sSYl
+	Nf1Jwl6bc3JNjIuJLLynPlCgvMstny6LTvedz1bT+6V/VNjV3t7eKoEzl3lL7ASyG0XTWdpH7qnSI
+	H/GnlOHxLZpQOG1gPByuwC9y6oSLn8XY6gUytUVz6el2b7hhQAv7+CCd+1bjOgnWX++wQFDcy1W38
+	AwniXDX7LRUwhEKlIv18moG7MjzHFhch8hGeSWNS63TjhsFacUd7+2aYBd4wMsXL2nqc6Jy9D0Myw
+	JKTVDPag==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:34418 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1uHYDa-00000000qu5-2ycI;
+	Tue, 20 May 2025 19:26:02 -0600
+Message-ID: <8132c38f-f0a7-4a7b-91bb-dee8ffb7409d@w6rz.net>
+Date: Tue, 20 May 2025 18:25:59 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=ObSYDgTY c=1 sm=1 tr=0 ts=682d2a99 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=dt9VzEwgFbYA:10 a=e5mUnYsNAAAA:8 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=KKAkSRfTAAAA:8 a=t7CeM3EgAAAA:8
- a=Il65ExNKTjwmHhc7HzsA:9 a=Vxmtnl_E_bksehYqCbjh:22 a=TjNXssC_j7lpFel5tvFf:22 a=cvBusfyB2V15izCimMoJ:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDAxMSBTYWx0ZWRfX2iVILvKWn5IQ 9jKTYADda3XzJTTlmc5FWJ/utr0h6TWpMbcqM+17kuqrW96sgV4/P/Ayi/p6WZLaA2K6Pf5oAka uMrQF70UoNROIymqV8OM0YND5WLP/4HQyc2DQQpCyUpvlwz8dGU4rL/JEn+lNyIneRpnTtgC9Eg
- 6ill9T8r2agg1n0mcRN+TD5D6lBLzcqB15y91ezU7W7cRa9Pxk9hj1aoQV/6OFhhDmsE8x2hs3D d6MrZoLe1Goy1gJF+cJ36j4hq3V/GjWpE5EY6zbb8WBfgvX6+aniUTN2KK9Z+T9e+Ar2D50EdA0 T5kNWzW3ChgcLoSJaozowM34KsAVdVtNrdn95VM2A7wd4iq2TcgnL2a02cEpychLCQunVpsHBdv
- W+qbODwNgYc0Trc5YfxWDIrtWUy0+uNCfiddCla6qXbI3PusSCgPszrlC9hTgjgnPoAkSniT
-X-Proofpoint-GUID: CvB6XweGdALzlTS_J06AkR2aQF6OlC55
-X-Proofpoint-ORIG-GUID: CvB6XweGdALzlTS_J06AkR2aQF6OlC55
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-21_01,2025-05-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- bulkscore=0 spamscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- adultscore=0 priorityscore=1501 suspectscore=0 clxscore=1015
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2505160000
- definitions=main-2505210011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 000/145] 6.14.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250520125810.535475500@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1uHYDa-00000000qu5-2ycI
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:34418
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCc7qtqidfKN7dKm6YUzt4Tdqnd5G/6Lew8yqFn0ImUBRGtKQTIg5j3s2pNXWJ6f/vtpwg6wvoAsx9dKqr1KT15YZfNZNZXSesAzweAWqRz3zKyKBs9E
+ Qk6wRtndFxiZT1lseLtU3h8s9lCqhiDqtTaeBHwpbMchVwcRIPM45Py9spPFkgpprYBBbBzg0AHZWw==
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+On 5/20/25 06:49, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.8 release.
+> There are 145 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-[ Upstream commit aedf02e46eb549dac8db4821a6b9f0c6bf6e3990 ]
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-For cases where the crtc's connectors_changed was set without enable/active
-getting toggled , there is an atomic_enable() call followed by an
-atomic_disable() but without an atomic_mode_set().
-
-This results in a NULL ptr access for the dpu_encoder_get_drm_fmt() call in
-the atomic_enable() as the dpu_encoder's connector was cleared in the
-atomic_disable() but not re-assigned as there was no atomic_mode_set() call.
-
-Fix the NULL ptr access by moving the assignment for atomic_enable() and also
-use drm_atomic_get_new_connector_for_encoder() to get the connector from
-the atomic_state.
-
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/59
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
-Patchwork: https://patchwork.freedesktop.org/patch/606729/
-Link: https://lore.kernel.org/r/20240731191723.3050932-1-quic_abhinavk@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test
----
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index c7fcd617b48c..94f352253c74 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -1101,8 +1101,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
- 
- 	cstate->num_mixers = num_lm;
- 
--	dpu_enc->connector = conn_state->connector;
--
- 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
- 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
- 
-@@ -1192,6 +1190,9 @@ static void dpu_encoder_virt_atomic_enable(struct drm_encoder *drm_enc,
- 	dpu_enc = to_dpu_encoder_virt(drm_enc);
- 
- 	mutex_lock(&dpu_enc->enc_lock);
-+
-+	dpu_enc->connector = drm_atomic_get_new_connector_for_encoder(state, drm_enc);
-+
- 	cur_mode = &dpu_enc->base.crtc->state->adjusted_mode;
- 
- 	trace_dpu_enc_enable(DRMID(drm_enc), cur_mode->hdisplay,
--- 
-2.34.1
+Tested-by: Ron Economos <re@w6rz.net>
 
 
