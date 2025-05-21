@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-145820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AC1ABF400
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:16:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17772ABF422
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6589C7B69C6
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:15:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C6558E509D
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFB4267F5D;
-	Wed, 21 May 2025 12:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39B626E16B;
+	Wed, 21 May 2025 12:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXe3XsGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ur7qePBI"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B97267B92
-	for <Stable@vger.kernel.org>; Wed, 21 May 2025 12:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7312726D4F4
+	for <Stable@vger.kernel.org>; Wed, 21 May 2025 12:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747829760; cv=none; b=Hi9C9WXUxXvYwJ6WVQtHVgrJfiVW/O3L5ZfEev0bXXjWfJNQPH1uJ/zQoDd9NCKte82p1mAQsd+oljbyh/OkinJ5clBOkrPGMVFQIbCCXn80ffZs4EJtB6rOrqKRUe061agr/8Ofccr5LvRdPrDk6f27EpHP5ucY5XxzM3SAvqo=
+	t=1747829766; cv=none; b=FB7uoANDpzRUUkU0FfftQRZ0xs53I8NtbLIyOSW/AF9bkOPowIBmEOjLNv0DrNRbzG5d+bpmsB55IdGRzMhQ0F5bDYNhpJmEZ+JA35jS2J0pOBL0yKXb90fgSUc3cTMnHRNKz4qhuZeqtlLvnXIa/HMuPsM5n9g4gVTIf2e/9Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747829760; c=relaxed/simple;
-	bh=K9Dn3vnTQ9QBcKTYKhUiaFJakmNUF2oQzU3fneB4TeY=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=BMHqt+v89Ig2Bj+AlUBRROyndQwK1AQAtIYgJjYNAMzdsV2SKrKQIhfHQamuysFQm4rT7zTQIYVO6rXSsWfS29vTvTURjVPu+jG9N7fMOzI/u3kpEzowRx7jS4UPII47My74WX7dwvvn8qUTfzC+2IXIFtDr9UaTeJey4h0Cs5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXe3XsGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB4EC4CEE7;
-	Wed, 21 May 2025 12:15:58 +0000 (UTC)
+	s=arc-20240116; t=1747829766; c=relaxed/simple;
+	bh=gmxAd3xNQ5a9ZCv/m5ylBehfAbVV6dEil9W25mWi9z8=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=nMmWXUqZ4gXkJehp2fkU0qgyqoAKU4snOJpU7CYuSKLh+acVwdnTHS8KERpUnyDlm2nnHHMmC0hJ85x/rV03oAfjfZeMEiZgTGzk7dGXnSkmoN6g/QZ1LbAp67j+sObXSbi5kzvZYfJOY4VDUx8kbKDQ1fpTzglCjrsMkpo7Fys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ur7qePBI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C84C4CEEF;
+	Wed, 21 May 2025 12:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747829759;
-	bh=K9Dn3vnTQ9QBcKTYKhUiaFJakmNUF2oQzU3fneB4TeY=;
+	s=korg; t=1747829765;
+	bh=gmxAd3xNQ5a9ZCv/m5ylBehfAbVV6dEil9W25mWi9z8=;
 	h=Subject:To:From:Date:From;
-	b=oXe3XsGHeHw9rR1tQjIg52/jZq6pKHkM9L5ZWOxP/7lup+IjNTAU4GZK265l4kW0/
-	 DQld9CKF1aUgMM54FCnrpnLtfjJ2V8VCTYE33a0GKkpaLOzA7bFG2HAx7fNhkI0lYh
-	 0eQtC/fFUojEllEA8HmN78eUK5HIiOs1EMSHvWzs=
-Subject: patch "iio: imu: inv_icm42600: Fix temperature calculation" added to char-misc-testing
-To: sean@geanix.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,jean-baptiste.maneyrol@tdk.com
+	b=ur7qePBIX59zaiLxJJz8do0FOBGpRsctd4MZTYcA3w4FquacTaiu9Mds1ILm3XT+5
+	 V1Yn+T0U2eScmuGQVMiCEk1ZPbszMlLpSVsOXExLOYDNfUexXXpJF/W8km8bCJb0Sz
+	 5YVGtsIRCvim/t7XuIGIoFbnS5Q4KqIyPQk9qy28=
+Subject: patch "iio: adc: ad7944: mask high bits on direct read" added to char-misc-testing
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 21 May 2025 14:15:49 +0200
-Message-ID: <2025052149-luncheon-clarinet-1fc3@gregkh>
+Date: Wed, 21 May 2025 14:15:50 +0200
+Message-ID: <2025052150-zone-diner-18ce@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: imu: inv_icm42600: Fix temperature calculation
+    iio: adc: ad7944: mask high bits on direct read
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,52 +69,43 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From e2f820014239df9360064079ae93f838ff3b7f8c Mon Sep 17 00:00:00 2001
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Fri, 2 May 2025 11:37:26 +0200
-Subject: iio: imu: inv_icm42600: Fix temperature calculation
+From 7cdfbc0113d087348b8e65dd79276d0f57b89a10 Mon Sep 17 00:00:00 2001
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 5 May 2025 13:28:40 -0500
+Subject: iio: adc: ad7944: mask high bits on direct read
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
->From the documentation:
-"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
-Offset should be applied before multiplying scale, so divide offset by
-scale to make this correct.
+Apply a mask to the raw value received over the SPI bus for unsigned
+direct reads. As we found recently, SPI controllers may not set unused
+bits to 0 when reading with bits_per_word != {8,16,32}. The ad7944 uses
+bits_per_word of 14 and 18, so we need to mask the value to be sure we
+returning the correct value to userspace during a direct read.
 
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://patch.msgid.link/20250502-imu-v1-1-129b8391a4e3@geanix.com
+Fixes: d1efcf8871db ("iio: adc: ad7944: add driver for AD7944/AD7985/AD7986")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250505-iio-adc-ad7944-max-high-bits-on-direct-read-v1-1-b173facceefe@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7944.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-index 213cce1c3111..91f0f381082b 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct iio_dev *indio_dev,
- 		return IIO_VAL_INT;
- 	/*
- 	 * T°C = (temp / 132.48) + 25
--	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
-+	 * Tm°C = 1000 * ((temp / 132.48) + 25)
-+	 * Tm°C = 7.548309 * temp + 25000
-+	 * Tm°C = (temp + 3312) * 7.548309
- 	 * scale: 100000 / 13248 ~= 7.548309
--	 * offset: 25000
-+	 * offset: 3312
- 	 */
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 7;
- 		*val2 = 548309;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = 25000;
-+		*val = 3312;
- 		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
+diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
+index 2f949fe55873..37a137bd8357 100644
+--- a/drivers/iio/adc/ad7944.c
++++ b/drivers/iio/adc/ad7944.c
+@@ -377,6 +377,8 @@ static int ad7944_single_conversion(struct ad7944_adc *adc,
+ 
+ 	if (chan->scan_type.sign == 's')
+ 		*val = sign_extend32(*val, chan->scan_type.realbits - 1);
++	else
++		*val &= GENMASK(chan->scan_type.realbits - 1, 0);
+ 
+ 	return IIO_VAL_INT;
+ }
 -- 
 2.49.0
 
