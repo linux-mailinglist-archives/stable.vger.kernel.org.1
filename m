@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-145747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635A4ABE972
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 04:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C173CABE97F
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 04:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D4661B67172
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 02:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB1AA188FDB1
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 02:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A79221FAD;
-	Wed, 21 May 2025 02:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F45221D8D;
+	Wed, 21 May 2025 02:03:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.168.213])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5F4221D9B
-	for <stable@vger.kernel.org>; Wed, 21 May 2025 02:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.168.213
+Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35571804A
+	for <stable@vger.kernel.org>; Wed, 21 May 2025 02:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747792812; cv=none; b=Rd6Bx8zaq9ybwaEDRdgcrliD+6YIHMBd9VfxGGZUDD+8AC/zTdvzRVdIZOt6KL5l6EPS32ibtsuiU3K5ieBh3t0TUyd8YN050SNAeYJtxP43PtoO9GdiLo+x7NeGQj3uP5nVh5CWmsyNGGHYafDELRrdJ00ibYXj9W++LMeJL9U=
+	t=1747792990; cv=none; b=B0xDS0mWCBTCQfQD2QeRzkj/j1UUh/sSHZZBKMw3uIIkbnacWBIvbB6OnnAgcSyamAU3Pz0olmNpiOvSCqmuFsUYTIm7iNP9jdvNiYaEnf3ZxOvmgqJOn4dEh0xhTrQ5KCjp5yUYcYq1mLJTKOR8JxLRNm0W/JgH9SVcre+WiKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747792812; c=relaxed/simple;
-	bh=3SXt9rOAFNEbPiXIK8nzqHLTAkfhUBzPYGLLNmKXhTM=;
+	s=arc-20240116; t=1747792990; c=relaxed/simple;
+	bh=f7QkmyYzHpfUpqA7PZdHa+TzYR7hN+HAjc1xVBE1jXI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kLkdcWCm+refUdZOh9AFehJN6Vvonke/1A4MUVjyraPGcgHMODrs7WqhOMJQOZgAWNHUxZyL8lY//fRPnAnrWXGIm61wJZ31o3DFAJPkt7gf668AcA3KNt3p0XFZ3sdryWBlsya/eDIFbQ0jnG77RKdS4XhImKFgoJWM2hih9Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=52.229.168.213
+	 MIME-Version; b=jXS7Gd46PiXh0zXRRXsHtizy/QQc0ZFIW/LeWxlI434Y/FebLvDAO5q/rm4uJB46uG6+KsQeM0UkW9v3MZn0cEeshnQc1bwbA+w6/s8HkbXcUC1nvGlNSoZFiTN/CL/taje510NjMGi/17ywicD1Exr2sMRXKAsLFtADL4efwWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=206.189.79.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
 Received: from hust.edu.cn (unknown [172.16.0.52])
-	by app2 (Coremail) with SMTP id HwEQrACHjXWeMy1oSSVdAQ--.25657S2;
-	Wed, 21 May 2025 09:59:58 +0800 (CST)
+	by app2 (Coremail) with SMTP id HwEQrAB3f3csNC1oDiddAQ--.25969S2;
+	Wed, 21 May 2025 10:02:20 +0800 (CST)
 Received: from ubuntu.localdomain (unknown [10.12.190.56])
-	by gateway (Coremail) with SMTP id _____wA3AgKZMy1ojEYfAw--.62593S4;
-	Wed, 21 May 2025 09:59:54 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____wDXSAopNC1o60sfAw--.9556S4;
+	Wed, 21 May 2025 10:02:17 +0800 (CST)
 From: Zhaoyang Li <lizy04@hust.edu.cn>
 To: stable@vger.kernel.org
 Cc: dzm91@hust.edu.cn,
@@ -42,12 +42,12 @@ Cc: dzm91@hust.edu.cn,
 	"Paul E . McKenney" <paulmck@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Zhaoyang Li <lizy04@hust.edu.cn>
-Subject: [PATCH 6.6.y] hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
-Date: Wed, 21 May 2025 09:59:34 +0800
-Message-Id: <20250521015934.538871-1-lizy04@hust.edu.cn>
+Subject: [PATCH 6.1.y] hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
+Date: Wed, 21 May 2025 10:02:16 +0800
+Message-Id: <20250521020216.539748-1-lizy04@hust.edu.cn>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2025021052-avenging-aflutter-192c@gregkh>
-References: <2025021052-avenging-aflutter-192c@gregkh>
+In-Reply-To: <2025021053-unranked-silt-0282@gregkh>
+References: <2025021053-unranked-silt-0282@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,27 +55,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrACHjXWeMy1oSSVdAQ--.25657S2
+X-CM-TRANSID:HwEQrAB3f3csNC1oDiddAQ--.25969S2
 Authentication-Results: app2; spf=neutral smtp.mail=lizy04@hust.edu.cn
 	;
 X-Coremail-Antispam: 1UD129KBjvJXoW3Zw4DtFWDAw1fZw43Xr1kKrg_yoWDWr1xpF
-	W8KrZxtr4kJrWDJa95JF4kZryaqw4xCr17Jr1fGF9YyF13GFyUJF40qF43XFWfurW09r42
-	vrWxtFyFkr4DAa7anT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	W8KrZxtr4kJrWDJa95JF4DZryaqw4xCr17Jr1fKF9YyF13GFyUJF40qF43XFWfurW09r42
+	vryxtF9Ykr4DAa7anT9S1TB71UUUUbUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUQSb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
 	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
 	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
 	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	1Y6r17M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
+	126r1DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
 	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
 	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtw
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUtVW8Zw
 	CF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Y
 	z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
 	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE
 	2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
 	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF
-	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUv6pPUUUUU
-X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQgJB2gr+2JRlwAAsb
+	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUkCedUUUUU
+X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQgJB2gr+2JSFQAAsa
 
 From: Frederic Weisbecker <frederic@kernel.org>
 
@@ -157,7 +157,7 @@ index 8f77bb0f4ae0..05f8b7d7d1e9 100644
  
  static inline void hrtimer_set_expires(struct hrtimer *timer, ktime_t time)
 diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 877535b06e73..6d9da768604d 100644
+index e60863ab74b5..b3860ec12450 100644
 --- a/kernel/time/hrtimer.c
 +++ b/kernel/time/hrtimer.c
 @@ -58,6 +58,8 @@
@@ -194,7 +194,7 @@ index 877535b06e73..6d9da768604d 100644
  /*
   * Functions and macros which are different for UP/SMP systems are kept in a
   * single place
-@@ -178,27 +189,54 @@ struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
+@@ -177,27 +188,54 @@ struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
  }
  
  /*
@@ -260,7 +260,7 @@ index 877535b06e73..6d9da768604d 100644
  #if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
  	if (static_branch_likely(&timers_migration_enabled) && !pinned)
  		return &per_cpu(hrtimer_bases, get_nohz_timer_target());
-@@ -249,8 +287,8 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
+@@ -248,8 +286,8 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
  		raw_spin_unlock(&base->cpu_base->lock);
  		raw_spin_lock(&new_base->cpu_base->lock);
  
@@ -271,7 +271,7 @@ index 877535b06e73..6d9da768604d 100644
  			raw_spin_unlock(&new_base->cpu_base->lock);
  			raw_spin_lock(&base->cpu_base->lock);
  			new_cpu_base = this_cpu_base;
-@@ -259,8 +297,7 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
+@@ -258,8 +296,7 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
  		}
  		WRITE_ONCE(timer->base, new_base);
  	} else {
@@ -281,7 +281,7 @@ index 877535b06e73..6d9da768604d 100644
  			new_cpu_base = this_cpu_base;
  			goto again;
  		}
-@@ -720,8 +757,6 @@ static inline int hrtimer_is_hres_enabled(void)
+@@ -718,8 +755,6 @@ static inline int hrtimer_is_hres_enabled(void)
  	return hrtimer_hres_enabled;
  }
  
@@ -290,7 +290,7 @@ index 877535b06e73..6d9da768604d 100644
  /*
   * Switch to high resolution mode
   */
-@@ -1208,6 +1243,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+@@ -1205,6 +1240,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
  				    u64 delta_ns, const enum hrtimer_mode mode,
  				    struct hrtimer_clock_base *base)
  {
@@ -298,7 +298,7 @@ index 877535b06e73..6d9da768604d 100644
  	struct hrtimer_clock_base *new_base;
  	bool force_local, first;
  
-@@ -1219,9 +1255,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+@@ -1216,9 +1252,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
  	 * and enforce reprogramming after it is queued no matter whether
  	 * it is the new first expiring timer again or not.
  	 */
@@ -315,7 +315,7 @@ index 877535b06e73..6d9da768604d 100644
  	/*
  	 * Remove an active timer from the queue. In case it is not queued
  	 * on the current CPU, make sure that remove_hrtimer() updates the
-@@ -1251,8 +1293,27 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+@@ -1248,8 +1290,27 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
  	}
  
  	first = enqueue_hrtimer(timer, new_base, mode);
