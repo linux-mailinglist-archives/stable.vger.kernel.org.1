@@ -1,351 +1,417 @@
-Return-Path: <stable+bounces-145748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C173CABE97F
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 04:03:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F619ABE9FF
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 04:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB1AA188FDB1
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 02:03:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C563A7A6928
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 02:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F45221D8D;
-	Wed, 21 May 2025 02:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249AC22B8A7;
+	Wed, 21 May 2025 02:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tZt82H6D"
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35571804A
-	for <stable@vger.kernel.org>; Wed, 21 May 2025 02:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747792990; cv=none; b=B0xDS0mWCBTCQfQD2QeRzkj/j1UUh/sSHZZBKMw3uIIkbnacWBIvbB6OnnAgcSyamAU3Pz0olmNpiOvSCqmuFsUYTIm7iNP9jdvNiYaEnf3ZxOvmgqJOn4dEh0xhTrQ5KCjp5yUYcYq1mLJTKOR8JxLRNm0W/JgH9SVcre+WiKQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747792990; c=relaxed/simple;
-	bh=f7QkmyYzHpfUpqA7PZdHa+TzYR7hN+HAjc1xVBE1jXI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jXS7Gd46PiXh0zXRRXsHtizy/QQc0ZFIW/LeWxlI434Y/FebLvDAO5q/rm4uJB46uG6+KsQeM0UkW9v3MZn0cEeshnQc1bwbA+w6/s8HkbXcUC1nvGlNSoZFiTN/CL/taje510NjMGi/17ywicD1Exr2sMRXKAsLFtADL4efwWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.52])
-	by app2 (Coremail) with SMTP id HwEQrAB3f3csNC1oDiddAQ--.25969S2;
-	Wed, 21 May 2025 10:02:20 +0800 (CST)
-Received: from ubuntu.localdomain (unknown [10.12.190.56])
-	by gateway (Coremail) with SMTP id _____wDXSAopNC1o60sfAw--.9556S4;
-	Wed, 21 May 2025 10:02:17 +0800 (CST)
-From: Zhaoyang Li <lizy04@hust.edu.cn>
-To: stable@vger.kernel.org
-Cc: dzm91@hust.edu.cn,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Vlad Poenaru <vlad.wing@gmail.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Zhaoyang Li <lizy04@hust.edu.cn>
-Subject: [PATCH 6.1.y] hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
-Date: Wed, 21 May 2025 10:02:16 +0800
-Message-Id: <20250521020216.539748-1-lizy04@hust.edu.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2025021053-unranked-silt-0282@gregkh>
-References: <2025021053-unranked-silt-0282@gregkh>
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2055.outbound.protection.outlook.com [40.107.92.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2D0224D6;
+	Wed, 21 May 2025 02:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747795345; cv=fail; b=Q8wEPHZe5J+7c/crqMH/UGCMaM5NnKXeqm9fjqsyndZm7ycxHly1D4A8HKEhMDX5GJyxZOWWBmyEUxpjC61Z0qKW+MsEcjSOZCiwgK3LbZjlaFoOf8QrH06PuVvog6poPo4BEYhewJl/U2hc/30IcWcYZj0et7X05bi78bB0QzM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747795345; c=relaxed/simple;
+	bh=VAjTh3T3o2qfL/2hHkCfhme4Ap5IWWJD+88ImerXFyo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=uj1V96+/Hc4rALgqjIVN2wsNkU7UaYMfjuikXQ1s5G5G9bLUSpnNCy0/1JQfe6tU9xEPyJEaVOOVd+5kpQ/4IVDS89sHQI3OTMnHZKNaqld9w9DKa+TUD6w0na0RBN1grkw8ulOQggOShqcsR8Pb4tiu5GsfBIWkOe6I0IY0lxQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tZt82H6D; arc=fail smtp.client-ip=40.107.92.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZY17QOeFHmrKm1V/zHNSRPAya2KNixjWo6kOPATWnqdeSMyh9ivlT+UuKOPwlYMOkfIwFEG/8EWiSmTb8B3p4hpFWSzUuEsr7U5+G1NnFsOGAeOBRqNrbAPN/v1H9ur7O7jm4CD0uqtofF02pBT5wAU2vxQQDgzYo36AP+O9OSLEzV5YmIoIwCPYfouNfrE7CsUqoEmralIeBGakCR4yBdiYKdFa9e+ueJoNRHMKNbb2XI5pidGYvtNmyKyDVdY2XysW3UbkmVVwC3S5LmfmRQhBp9/LYallT6QjrCfdDNR/gsYB22o+Ssbe7GikCsjunlifcMM/h6sXxWr9DXwJ/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=44TtuONdK6P1DhyETh2fQGl+uVnU+lppvovmfub6UJM=;
+ b=Idew9odSbJlGHjFzv00VKdKeYXmxVYex6MBXUPpDtD8DiQftB4lD2IIEe0RAF7evDC5qsJmAY+xlLKTi75Kbk6GTTLATr4wGB0qAHNiAgDPN6s3dBMinJ4R1uv3D1dkdQ4Wtdp2nziMFLtjgfl7GJ9RHasYnGA2X5luYPfE2luLBMFe//y7TvRD6GmFeA8SkdH4WtqxbZpOq2q/id1GM1in7hA1U1N9qu6k9vKPp7u+9GmkD7xOonUq3ADxx2uIDnUGLspCMvlrAwXDrO890NCaXZrHQHemZgbpqW073sSjpfkW9nx7N3z4Do24zDMdA1zITtUpX1/91Q0XDa2+eKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=44TtuONdK6P1DhyETh2fQGl+uVnU+lppvovmfub6UJM=;
+ b=tZt82H6DKClPN7KgLp4huJFqhpHMSfXddhwlhFa8a81HRtELJA8V1OP9vGotn4QpAL50eJf4+EKPwwKAaj3v/TZ6sBEgS7IwSRYdeOh6LPSDEuJ2t+z5PZ4Dq9QRlfVqiTWAIyRn876k7gXguWajhahg1VFQ0rGoVKArrCUqjU8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by DS2PR12MB9592.namprd12.prod.outlook.com (2603:10b6:8:27c::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Wed, 21 May
+ 2025 02:42:19 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%7]) with mapi id 15.20.8746.030; Wed, 21 May 2025
+ 02:42:19 +0000
+Message-ID: <c364e0d7-f3b2-484d-869b-095140e2537b@amd.com>
+Date: Tue, 20 May 2025 21:42:13 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 000/145] 6.14.8-rc1 review
+To: Eric Naim <dnaim@cachyos.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ David.Wu3@amd.com, alexander.deucher@amd.com
+References: <20250520125810.535475500@linuxfoundation.org>
+ <8db9b7cb-03ff-4aca-aafa-bcab4d1b5d82@cachyos.org>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <8db9b7cb-03ff-4aca-aafa-bcab4d1b5d82@cachyos.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS7PR05CA0056.namprd05.prod.outlook.com
+ (2603:10b6:8:2f::17) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrAB3f3csNC1oDiddAQ--.25969S2
-Authentication-Results: app2; spf=neutral smtp.mail=lizy04@hust.edu.cn
-	;
-X-Coremail-Antispam: 1UD129KBjvJXoW3Zw4DtFWDAw1fZw43Xr1kKrg_yoWDWr1xpF
-	W8KrZxtr4kJrWDJa95JF4DZryaqw4xCr17Jr1fKF9YyF13GFyUJF40qF43XFWfurW09r42
-	vryxtF9Ykr4DAa7anT9S1TB71UUUUbUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQSb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	126r1DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
-	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
-	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUtVW8Zw
-	CF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Y
-	z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF
-	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUkCedUUUUU
-X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQgJB2gr+2JSFQAAsa
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS2PR12MB9592:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c01aacd-0581-4877-fc3e-08dd98111b46
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bjZsYjhOWVJuN0FnSnp4WHBSUmppODVObnBJdmR3QzBPUDVFZVlrZmdtSUJF?=
+ =?utf-8?B?cWRUMWI5VTZFTi9pZTlISFk1TElXdW8wUzhzSGJqcHMwQldlNzlLWGl1Y21G?=
+ =?utf-8?B?T3NFMXJlRzFIYnpiYWp0RTlvRkpESTFzelNXVEVjbS9oT0JacGxiNDNyTWtR?=
+ =?utf-8?B?Si9oSFJDeW1PRDVaaENzRnV5eFBqRWhodnhRcnFGQ2Rpb2svVy9pcHYrNWI5?=
+ =?utf-8?B?MERkNEV4TmZLUlRSRWdSSmhRQlZ3WFFUcFVacHdNakU3bWVoa05uWFArNVht?=
+ =?utf-8?B?YVhTZzdBZ2JyVHJKczJrRVYzcjhMQmE5cFh5REI1RTFJZXlxcUxUYUtEbjZ5?=
+ =?utf-8?B?R2R4RDgwRFhtdEw3eFo4QmdWYmNCYkk1ajY1Zi9EZnZyL2dFS25WalNTdnJ4?=
+ =?utf-8?B?cDRTdHdrOXhKQWVkdDRJYnRTSHNHVGZNQlhxQVZWbm4vNjJMZ3JwSHJDRGRx?=
+ =?utf-8?B?WHVjaHJ0cVJuQ1AvNWIyRTBtd0tVMGpVcDdGSWNUTjl4VGR4S25hRnBMR1k5?=
+ =?utf-8?B?NElhMTVGeTFrd0xoMzk0ZlBQVWtYMmlkWXZRRklpSFV2QkFLVEYvajFaUWF5?=
+ =?utf-8?B?QUc3MW42VFJGMkJlS3l0bTVET0tVTnBtM29SNTVmbUZaalo5NE1IazZwR3Rh?=
+ =?utf-8?B?YS82YTV4MDBFNEo4WXlRYUZqWnNJM3VmNmoraGNrNkI3aVRtcWQ0QUtDRXVI?=
+ =?utf-8?B?UVFYTEtjZThjRjdPeE93QjU2VGxsN2U5S2xVZFUwWTU4dTFMbmpkVnZWd1ZW?=
+ =?utf-8?B?NnA5cEFqQ0Y4ekRSZlY5Y3VFajFqZFFaTWYwTmtIVm9OaWlLMmRSVlFnMDlQ?=
+ =?utf-8?B?dXlOQWJDc1JhN1d6a0FKVkh5MjVGemNDcmdGYUdSd2NoK3BVNWhaWlFnV0Zx?=
+ =?utf-8?B?c3ROOTNSMDZUQ0lBVDBlK1dKNkxpK3RqU1E0NDRXcWZxbUF1WE03NHF1MVNz?=
+ =?utf-8?B?QXNudXBSa2VNdllDNUFrWThaMzVlUUtaU0QvQXdyT2orY3pxRnJRdkxFSnZn?=
+ =?utf-8?B?UitZTTlRMFZ0U2hnRkYzMUtJUUxXNEFjRFVCTzVpN1ZYS2JOUU1heFE2Mng0?=
+ =?utf-8?B?aEpDaEFYenpKTDQrWWxydHRaYlZudjJGZUZKZjBSTnVPRE1VUW1QaE9wdzgx?=
+ =?utf-8?B?bkc3SGhUaVAvTVJaQXFBaGI4QnN0R0ZXM0lWbUVJd1VvSjdEU29XT1VRc29h?=
+ =?utf-8?B?OUFubmcwYjZsQ01iMSs5K2trN0M3bkJWb3oyWmNtaVB0QUt1djBOcWFWd25u?=
+ =?utf-8?B?SlJJWnUvYVM3azdLeDZob0dDZ2lKb29ZcVNYMmFySVFLd2FnR0xRMzc0ek94?=
+ =?utf-8?B?Q0luRWhlYjFJSnk3K2tzSnBKdzF3VG5nd2ZsRjd2WGZXR0xubm1nWTE2b2tN?=
+ =?utf-8?B?eU5YYStVb3M2RlpFd1BLeVhnZlJ3WU1FNkpURWxldFFKRlRmNGlLYVVOQ2VB?=
+ =?utf-8?B?Kzg4UlVuRHdZU3hHN2lHUGMwbklRNDBYeGgvMGRiRTBtaGRXazNNMXVBc0xR?=
+ =?utf-8?B?N3k4MkZJNXVBT2ZDMWlMSHdPK0ZOU3F3UGpXQ05hRkhuZUFJNHhyaGVBczk3?=
+ =?utf-8?B?cFFhMkp6Yjl2TUJKYWNhSU1vVndiQ0VabXRyTFo3a05ReGw1dnJmSVpoZEVm?=
+ =?utf-8?B?Mk1OVXFDTzZmSFRtSFBGV1ROVk9VM2hDUjc5MHJZWlk4T25UN0FzR2Q5aDRP?=
+ =?utf-8?B?Y2I3a2pPUkd2dUFIQmlwalNTQ1VRWVRhSEZNREwzcGFESnR1MXJuTzF3YWU2?=
+ =?utf-8?B?VEhoNW1ZaFlZYmlLNGdEOG05RExlVTZ2OThHdnovcUFQWUttdk5BMm5WZ1hX?=
+ =?utf-8?Q?VNkYs4+oMvubUBnuwCjU0UwyzsX/NowWfi4bg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Tmh1WUQ2RTFRUWVmNk0vVXV1N2RKbjBySnBWMldPajduWVBtVEZ4TENUR1lM?=
+ =?utf-8?B?T3JiRHRQMmlhVFl4YlRwdmxMSmVxbzNxNE9EN0hDMFFEVWExNThucWdseXpT?=
+ =?utf-8?B?UDZVeVVwVXA0QVlyNUNCSHczM242SWl3NUI2YXQxRDVZMlVhOXh2MXRrWGw1?=
+ =?utf-8?B?ZkZ3V250V3gwOGpGbWRzbjBDWEI5emhWRG55THloZ29YUFYyZnRFSXBNTlJZ?=
+ =?utf-8?B?OHVLc1F6UTZmNGpXNXJwZU84TjhFZzVhU2Y4aGFFeHhBVm5LQ2FjcXovdGE0?=
+ =?utf-8?B?NzM0eDI0WmpoUW04Wk5YZkh1c3BONzRmNkoxcUcwNWtDTStReEtDakh3TXZS?=
+ =?utf-8?B?R0F4cTcxNGJDSTQ2cm8wWlUvRER2K3pCVDFrTmFKUEVmY1hLa3QvZytTVWJB?=
+ =?utf-8?B?MHdQaVdiMFQ5azJxaGtBOElkV0hEMEVOUjU4eEJzMWdhNTF0T05aRjRoUDFo?=
+ =?utf-8?B?NG9wSDNBOWFwdEd0aXgvcVNDUW9RVVFoMXFXaWdmTjIyZHpZSitnUHpGN25S?=
+ =?utf-8?B?Nll6dDBwaGRhTi9qNnpqWGtPeDdGbXYwamo0QUlBWnUxbDN6YjFqejhKbUFn?=
+ =?utf-8?B?WHFCQWlCSHcyV21NUzhaeWk2Yk1kN2RXb21reWhrWU13bE9jamZzOW4zOVov?=
+ =?utf-8?B?a2pLN1V0SStSZlFKZGZsbzhOeW5nK1RjZ2JQNFZObXlhTUN3emc3clAwL2pM?=
+ =?utf-8?B?R3JnUko4ZjF6L0Yzc3JjOFVWYXJsM3l3bENCZ0JzeEVhU1ZCVG1Nd3JrUnlT?=
+ =?utf-8?B?UDdUc3hQby8waVU2b09zVHc2U2RlRUtnSEFBeFBkazB6V0NsVExMY2FGTzJZ?=
+ =?utf-8?B?ZnRJME9EU3V6RGtwR3dlZEh3Y241b3dhWGcvdGw4YzFMY2FmYW9mLzhMcGpU?=
+ =?utf-8?B?QnRGS29DUDN6UCtLTkw1YitmQWd5NVpodkFUdGVVSGNYamwrL09pZWhkS293?=
+ =?utf-8?B?UXpGelZFUGtGS2FBTjJnUUJSQTZRdlN6K3I1R1BMVmVLMVM3ejIvSzJaeENK?=
+ =?utf-8?B?MSs1UWhCM2VTbmFDWmJ3VW5oK1RjcmJ5TGJOcENwZVlEYlkvR1R5YW1TVmpk?=
+ =?utf-8?B?aUtIeEtwcDJNK1l3LzZOWDVXOVRDYkFoZFN4ZFZFZERWcnhsQjRTaVRFZDBG?=
+ =?utf-8?B?TTJvbEZ4QWlTNXhsNUE1SDE4b1Z5V0JiUnRnV2hYMUlCTVRSVzRLSDJyZmU3?=
+ =?utf-8?B?S25DdWhRWiszYjBLSGl4RnN4SnQzeFlpVVpMN2xZOUdOSytVMjlUUVNraGNu?=
+ =?utf-8?B?dGd3MkY1Tm9wSGVCK2xpMWxXUVMrcG5jc1lObVJUMTl1ajRTamhyUFRXTjlD?=
+ =?utf-8?B?eERaZU9rV2dFTVR1Q2hrRDdsbWEzVVpzV1hPOXRRUVVKY3paU0VGVWhhKy9i?=
+ =?utf-8?B?SVlMaHhDLzdCRUFBOEJIVzUvcmM0cHVibEpXb0JvekJMdGFpb1o5QVI0RWpT?=
+ =?utf-8?B?MGViM1YvRCtQalhaZ1lnV3lFMHBaUVlyUE9FZmN6aVE1RVJyNjVSazJ2VUl3?=
+ =?utf-8?B?UkoyUzN4YzFFcmpuUkIrOHYwaElKcFpreHpONmUrbGVKZWZVUDU0cnBRd0Fl?=
+ =?utf-8?B?a0dpTG5QWUc4OTNKNmZINVZLZjNmNUxFMm1nQk1oM3h4WHg4SGtOUGxLcmdh?=
+ =?utf-8?B?VjNYdC9sOFliZU1yQmU2RFpOS2tCdVozUzh1UHcxaGUrMGZoNlREc0dkK0lT?=
+ =?utf-8?B?SnRrS0Y4WE13dlJMdnNNUXhWUEZZTmlCREdtL2lLNFJ1VEMvYktrQXVaY0hL?=
+ =?utf-8?B?OWxqL1lmckFhSHBBOWluVkNVUE9uZjFlVlAyRi9ZZGh4MnR6L1VJdDYwQkFS?=
+ =?utf-8?B?NGh5aVJiT0xhY21jNW9vOE0vR1FnajU0NnNiY1BVdUdqVFplaWlhblErSnRX?=
+ =?utf-8?B?Nzh1TXpDQ0FqaTNhdEx3SmxMd1B0NDN4Q205QjJwVUFSZG85WFE3NzY0ODdG?=
+ =?utf-8?B?MUxGZ1FPREUzdE5LbnZ3bDVQTHlOS08yaXU3Z1l3blRUOXM1eXJaams0cnhm?=
+ =?utf-8?B?V0lrdlcvWXNMK1RMcFJlaWVnc2doVzFHbEVBVmV2NG5QZUpnNEVwVUszdGtl?=
+ =?utf-8?B?N2VDMFNRRXBLc09mTWd0RHh6RWlva2tWZHRsYUt3SU9yYkU4aUhuYjQwV2VR?=
+ =?utf-8?Q?Q0yeJmrahmvXGO85V5J/diFjw?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c01aacd-0581-4877-fc3e-08dd98111b46
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 02:42:19.7605
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8hn/RZAhVzC/UTtHoZ8BsBRrLDHvwid5EXJ+FJWqtWprga2bxGtEBAh6TiKTCl2kM1W0Mxz0izuUnp5mQ4cZ6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9592
 
-From: Frederic Weisbecker <frederic@kernel.org>
+On 5/20/2025 4:34 PM, Eric Naim wrote:
+> Hi Greg,
+> 
+> On 5/20/25 21:49, Greg Kroah-Hartman wrote:
+>> This is the start of the stable review cycle for the 6.14.8 release.
+>> There are 145 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>>
+>> Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.8-rc1.gz
+>> or in the git tree and branch at:
+>> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+>> and the diffstat can be found below.
+>>
+>> thanks,
+>>
+>> greg k-h
+>>
+>> -------------
+>> Pseudo-Shortlog of commits:
+>>
+>> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>      Linux 6.14.8-rc1
+>>
+>> Dan Carpenter <dan.carpenter@linaro.org>
+>>      phy: tegra: xusb: remove a stray unlock
+>>
+>> Tiezhu Yang <yangtiezhu@loongson.cn>
+>>      perf tools: Fix build error for LoongArch
+>>
+>> Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+>>      mm/page_alloc: fix race condition in unaccepted memory handling
+>>
+>> Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+>>      drm/xe/gsc: do not flush the GSC worker from the reset path
+>>
+>> Maciej Falkowski <maciej.falkowski@linux.intel.com>
+>>      accel/ivpu: Flush pending jobs of device's workqueues
+>>
+>> Karol Wachowski <karol.wachowski@intel.com>
+>>      accel/ivpu: Fix missing MMU events if file_priv is unbound
+>>
+>> Karol Wachowski <karol.wachowski@intel.com>
+>>      accel/ivpu: Fix missing MMU events from reserved SSID
+>>
+>> Karol Wachowski <karol.wachowski@intel.com>
+>>      accel/ivpu: Move parts of MMU event IRQ handling to thread handler
+>>
+>> Karol Wachowski <karol.wachowski@intel.com>
+>>      accel/ivpu: Dump only first MMU fault from single context
+>>
+>> Maciej Falkowski <maciej.falkowski@linux.intel.com>
+>>      accel/ivpu: Use workqueue for IRQ handling
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: Refactor remove call with idxd_cleanup() helper
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: fix memory leak in error handling path of idxd_pci_probe
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: fix memory leak in error handling path of idxd_alloc
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: Add missing idxd cleanup to fix memory leak in remove call
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: Add missing cleanups in cleanup internals
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: Add missing cleanup for early error out in idxd_setup_internals
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: fix memory leak in error handling path of idxd_setup_groups
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: fix memory leak in error handling path of idxd_setup_engines
+>>
+>> Shuai Xue <xueshuai@linux.alibaba.com>
+>>      dmaengine: idxd: fix memory leak in error handling path of idxd_setup_wqs
+>>
+>> Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+>>      dmaengine: ti: k3-udma: Use cap_mask directly from dma_device structure instead of a local copy
+>>
+>> Ronald Wahl <ronald.wahl@legrand.com>
+>>      dmaengine: ti: k3-udma: Add missing locking
+>>
+>> Barry Song <baohua@kernel.org>
+>>      mm: userfaultfd: correct dirty flags set for both present and swap pte
+>>
+>> Wupeng Ma <mawupeng1@huawei.com>
+>>      mm: hugetlb: fix incorrect fallback for subpool
+>>
+>> hexue <xue01.he@samsung.com>
+>>      io_uring/uring_cmd: fix hybrid polling initialization issue
+>>
+>> Jens Axboe <axboe@kernel.dk>
+>>      io_uring/memmap: don't use page_address() on a highmem page
+>>
+>> Nathan Chancellor <nathan@kernel.org>
+>>      net: qede: Initialize qede_ll_ops with designated initializer
+>>
+>> Steven Rostedt <rostedt@goodmis.org>
+>>      ring-buffer: Fix persistent buffer when commit page is the reader page
+>>
+>> Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+>>      wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl
+>>
+>> Fedor Pchelkin <pchelkin@ispras.ru>
+>>      wifi: mt76: disable napi on driver removal
+>>
+>> Jarkko Sakkinen <jarkko@kernel.org>
+>>      tpm: Mask TPM RC in tpm2_start_auth_session()
+>>
+>> Aaron Kling <webgeek1234@gmail.com>
+>>      spi: tegra114: Use value to check for invalid delays
+>>
+>> Jethro Donaldson <devel@jro.nz>
+>>      smb: client: fix memory leak during error handling for POSIX mkdir
+>>
+>> Steve Siwinski <ssiwinski@atto.com>
+>>      scsi: sd_zbc: block: Respect bio vector limits for REPORT ZONES buffer
+>>
+>> Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>      phy: renesas: rcar-gen3-usb2: Set timing registers only once
+>>
+>> Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>      phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
+>>
+>> Oleksij Rempel <o.rempel@pengutronix.de>
+>>      net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
+>>
+>> Oleksij Rempel <o.rempel@pengutronix.de>
+>>      net: dsa: microchip: let phylink manage PHY EEE configuration on KSZ switches
+>>
+>> Ma Ke <make24@iscas.ac.cn>
+>>      phy: Fix error handling in tegra_xusb_port_init
+>>
+>> Wayne Chang <waynec@nvidia.com>
+>>      phy: tegra: xusb: Use a bitmask for UTMI pad power state tracking
+>>
+>> Steven Rostedt <rostedt@goodmis.org>
+>>      tracing: samples: Initialize trace_array_printk() with the correct function
+>>
+>> Ashish Kalra <ashish.kalra@amd.com>
+>>      x86/sev: Make sure pages are not skipped during kdump
+>>
+>> Ashish Kalra <ashish.kalra@amd.com>
+>>      x86/sev: Do not touch VMSA pages during SNP guest memory kdump
+>>
+>> pengdonglin <pengdonglin@xiaomi.com>
+>>      ftrace: Fix preemption accounting for stacktrace filter command
+>>
+>> pengdonglin <pengdonglin@xiaomi.com>
+>>      ftrace: Fix preemption accounting for stacktrace trigger command
+>>
+>> Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>>      i2c: designware: Fix an error handling path in i2c_dw_pci_probe()
+>>
+>> Nathan Chancellor <nathan@kernel.org>
+>>      kbuild: Disable -Wdefault-const-init-unsafe
+>>
+>> Michael Kelley <mhklinux@outlook.com>
+>>      Drivers: hv: vmbus: Remove vmbus_sendpacket_pagebuffer()
+>>
+>> Michael Kelley <mhklinux@outlook.com>
+>>      Drivers: hv: Allow vmbus_sendpacket_mpb_desc() to create multiple ranges
+>>
+>> Michael Kelley <mhklinux@outlook.com>
+>>      hv_netvsc: Remove rmsg_pgcnt
+>>
+>> Michael Kelley <mhklinux@outlook.com>
+>>      hv_netvsc: Preserve contiguous PFN grouping in the page buffer array
+>>
+>> Michael Kelley <mhklinux@outlook.com>
+>>      hv_netvsc: Use vmbus_sendpacket_mpb_desc() to send VMBus messages
+>>
+>> Dragan Simic <dsimic@manjaro.org>
+>>      arm64: dts: rockchip: Remove overdrive-mode OPPs from RK3588J SoC dtsi
+>>
+>> Sam Edwards <cfsworks@gmail.com>
+>>      arm64: dts: rockchip: Allow Turing RK1 cooling fan to spin down
+>>
+>> Christian Hewitt <christianshewitt@gmail.com>
+>>      arm64: dts: amlogic: dreambox: fix missing clkc_audio node
+>>
+>> Hyejeong Choi <hjeong.choi@samsung.com>
+>>      dma-buf: insert memory barrier before updating num_fences
+>>
+>> Nicolas Chauvet <kwizart@gmail.com>
+>>      ALSA: usb-audio: Add sample rate quirk for Microdia JP001 USB Camera
+>>
+>> Christian Heusel <christian@heusel.eu>
+>>      ALSA: usb-audio: Add sample rate quirk for Audioengine D1
+>>
+>> Wentao Liang <vulab@iscas.ac.cn>
+>>      ALSA: es1968: Add error handling for snd_pcm_hw_constraint_pow2()
+>>
+>> Jeremy Linton <jeremy.linton@arm.com>
+>>      ACPI: PPTT: Fix processor subtable walk
+>>
+>> Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+>>      gpio: pca953x: fix IRQ storm on system wake up
+>>
+>> Alexey Makhalov <alexey.makhalov@broadcom.com>
+>>      MAINTAINERS: Update Alexey Makhalov's email address
+>>
+>> Wayne Lin <Wayne.Lin@amd.com>
+>>      drm/amd/display: Avoid flooding unnecessary info messages
+>>
+>> Wayne Lin <Wayne.Lin@amd.com>
+>>      drm/amd/display: Correct the reply value when AUX write incomplete
+>>
+>> Philip Yang <Philip.Yang@amd.com>
+>>      drm/amdgpu: csa unmap use uninterruptible lock
+>>
+>> Tim Huang <tim.huang@amd.com>
+>>      drm/amdgpu: fix incorrect MALL size for GFX1151
+>>
+>> David (Ming Qiang) Wu <David.Wu3@amd.com>
+>>      drm/amdgpu: read back register after written for VCN v4.0.5
+>>
+> 
+> This commit seems to breaking a couple of devices with the Phoenix APU, most notably the Ryzen AI chips. Note that this commit in mainline seems to work as intended, and after doing a little bit of digging, [1] landed in 6.15 and so this cherrypick may not be so trivial after all. Attached is a kernel trace highlighting the breakage caused by this commit, along with [2] for the full log.
+> 
+> Also adding Alex, David and Mario to Ccs.
+> 
 
-[ Upstream commit 53dac345395c0d2493cbc2f4c85fe38aef5b63f5 ]
+Just a minor correction - VCN 4.0.5 is on Strix.  So this report is not 
+likely from a Phoenix APU.
 
-hrtimers are migrated away from the dying CPU to any online target at
-the CPUHP_AP_HRTIMERS_DYING stage in order not to delay bandwidth timers
-handling tasks involved in the CPU hotplug forward progress.
+Nonetheless I agree; I suspect backporting 
+ecc9ab4e924b7eb9e2c4a668162aaa1d9d60d08c will help the issue.
 
-However wakeups can still be performed by the outgoing CPU after
-CPUHP_AP_HRTIMERS_DYING. Those can result again in bandwidth timers being
-armed. Depending on several considerations (crystal ball power management
-based election, earliest timer already enqueued, timer migration enabled or
-not), the target may eventually be the current CPU even if offline. If that
-happens, the timer is eventually ignored.
-
-The most notable example is RCU which had to deal with each and every of
-those wake-ups by deferring them to an online CPU, along with related
-workarounds:
-
-_ e787644caf76 (rcu: Defer RCU kthreads wakeup when CPU is dying)
-_ 9139f93209d1 (rcu/nocb: Fix RT throttling hrtimer armed from offline CPU)
-_ f7345ccc62a4 (rcu/nocb: Fix rcuog wake-up from offline softirq)
-
-The problem isn't confined to RCU though as the stop machine kthread
-(which runs CPUHP_AP_HRTIMERS_DYING) reports its completion at the end
-of its work through cpu_stop_signal_done() and performs a wake up that
-eventually arms the deadline server timer:
-
-   WARNING: CPU: 94 PID: 588 at kernel/time/hrtimer.c:1086 hrtimer_start_range_ns+0x289/0x2d0
-   CPU: 94 UID: 0 PID: 588 Comm: migration/94 Not tainted
-   Stopper: multi_cpu_stop+0x0/0x120 <- stop_machine_cpuslocked+0x66/0xc0
-   RIP: 0010:hrtimer_start_range_ns+0x289/0x2d0
-   Call Trace:
-   <TASK>
-     start_dl_timer
-     enqueue_dl_entity
-     dl_server_start
-     enqueue_task_fair
-     enqueue_task
-     ttwu_do_activate
-     try_to_wake_up
-     complete
-     cpu_stopper_thread
-
-Instead of providing yet another bandaid to work around the situation, fix
-it in the hrtimers infrastructure instead: always migrate away a timer to
-an online target whenever it is enqueued from an offline CPU.
-
-This will also allow to revert all the above RCU disgraceful hacks.
-
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Reported-by: Vlad Poenaru <vlad.wing@gmail.com>
-Reported-by: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/all/20250117232433.24027-1-frederic@kernel.org
-Closes: 20241213203739.1519801-1-usamaarif642@gmail.com
-
-Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
----
- include/linux/hrtimer.h |   1 +
- kernel/time/hrtimer.c   | 103 ++++++++++++++++++++++++++++++++--------
- 2 files changed, 83 insertions(+), 21 deletions(-)
-
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 8f77bb0f4ae0..05f8b7d7d1e9 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -237,6 +237,7 @@ struct hrtimer_cpu_base {
- 	ktime_t				softirq_expires_next;
- 	struct hrtimer			*softirq_next_timer;
- 	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
-+	call_single_data_t		csd;
- } ____cacheline_aligned;
- 
- static inline void hrtimer_set_expires(struct hrtimer *timer, ktime_t time)
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index e60863ab74b5..b3860ec12450 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -58,6 +58,8 @@
- #define HRTIMER_ACTIVE_SOFT	(HRTIMER_ACTIVE_HARD << MASK_SHIFT)
- #define HRTIMER_ACTIVE_ALL	(HRTIMER_ACTIVE_SOFT | HRTIMER_ACTIVE_HARD)
- 
-+static void retrigger_next_event(void *arg);
-+
- /*
-  * The timer bases:
-  *
-@@ -111,7 +113,8 @@ DEFINE_PER_CPU(struct hrtimer_cpu_base, hrtimer_bases) =
- 			.clockid = CLOCK_TAI,
- 			.get_time = &ktime_get_clocktai,
- 		},
--	}
-+	},
-+	.csd = CSD_INIT(retrigger_next_event, NULL)
- };
- 
- static const int hrtimer_clock_to_base_table[MAX_CLOCKS] = {
-@@ -124,6 +127,14 @@ static const int hrtimer_clock_to_base_table[MAX_CLOCKS] = {
- 	[CLOCK_TAI]		= HRTIMER_BASE_TAI,
- };
- 
-+static inline bool hrtimer_base_is_online(struct hrtimer_cpu_base *base)
-+{
-+	if (!IS_ENABLED(CONFIG_HOTPLUG_CPU))
-+		return true;
-+	else
-+		return likely(base->online);
-+}
-+
- /*
-  * Functions and macros which are different for UP/SMP systems are kept in a
-  * single place
-@@ -177,27 +188,54 @@ struct hrtimer_clock_base *lock_hrtimer_base(const struct hrtimer *timer,
- }
- 
- /*
-- * We do not migrate the timer when it is expiring before the next
-- * event on the target cpu. When high resolution is enabled, we cannot
-- * reprogram the target cpu hardware and we would cause it to fire
-- * late. To keep it simple, we handle the high resolution enabled and
-- * disabled case similar.
-+ * Check if the elected target is suitable considering its next
-+ * event and the hotplug state of the current CPU.
-+ *
-+ * If the elected target is remote and its next event is after the timer
-+ * to queue, then a remote reprogram is necessary. However there is no
-+ * guarantee the IPI handling the operation would arrive in time to meet
-+ * the high resolution deadline. In this case the local CPU becomes a
-+ * preferred target, unless it is offline.
-+ *
-+ * High and low resolution modes are handled the same way for simplicity.
-  *
-  * Called with cpu_base->lock of target cpu held.
-  */
--static int
--hrtimer_check_target(struct hrtimer *timer, struct hrtimer_clock_base *new_base)
-+static bool hrtimer_suitable_target(struct hrtimer *timer, struct hrtimer_clock_base *new_base,
-+				    struct hrtimer_cpu_base *new_cpu_base,
-+				    struct hrtimer_cpu_base *this_cpu_base)
- {
- 	ktime_t expires;
- 
-+	/*
-+	 * The local CPU clockevent can be reprogrammed. Also get_target_base()
-+	 * guarantees it is online.
-+	 */
-+	if (new_cpu_base == this_cpu_base)
-+		return true;
-+
-+	/*
-+	 * The offline local CPU can't be the default target if the
-+	 * next remote target event is after this timer. Keep the
-+	 * elected new base. An IPI will we issued to reprogram
-+	 * it as a last resort.
-+	 */
-+	if (!hrtimer_base_is_online(this_cpu_base))
-+		return true;
-+
- 	expires = ktime_sub(hrtimer_get_expires(timer), new_base->offset);
--	return expires < new_base->cpu_base->expires_next;
-+
-+	return expires >= new_base->cpu_base->expires_next;
- }
- 
--static inline
--struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *base,
--					 int pinned)
-+static inline struct hrtimer_cpu_base *get_target_base(struct hrtimer_cpu_base *base, int pinned)
- {
-+	if (!hrtimer_base_is_online(base)) {
-+		int cpu = cpumask_any_and(cpu_online_mask, housekeeping_cpumask(HK_TYPE_TIMER));
-+
-+		return &per_cpu(hrtimer_bases, cpu);
-+	}
-+
- #if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
- 	if (static_branch_likely(&timers_migration_enabled) && !pinned)
- 		return &per_cpu(hrtimer_bases, get_nohz_timer_target());
-@@ -248,8 +286,8 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 		raw_spin_unlock(&base->cpu_base->lock);
- 		raw_spin_lock(&new_base->cpu_base->lock);
- 
--		if (new_cpu_base != this_cpu_base &&
--		    hrtimer_check_target(timer, new_base)) {
-+		if (!hrtimer_suitable_target(timer, new_base, new_cpu_base,
-+					     this_cpu_base)) {
- 			raw_spin_unlock(&new_base->cpu_base->lock);
- 			raw_spin_lock(&base->cpu_base->lock);
- 			new_cpu_base = this_cpu_base;
-@@ -258,8 +296,7 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 		}
- 		WRITE_ONCE(timer->base, new_base);
- 	} else {
--		if (new_cpu_base != this_cpu_base &&
--		    hrtimer_check_target(timer, new_base)) {
-+		if (!hrtimer_suitable_target(timer, new_base,  new_cpu_base, this_cpu_base)) {
- 			new_cpu_base = this_cpu_base;
- 			goto again;
- 		}
-@@ -718,8 +755,6 @@ static inline int hrtimer_is_hres_enabled(void)
- 	return hrtimer_hres_enabled;
- }
- 
--static void retrigger_next_event(void *arg);
--
- /*
-  * Switch to high resolution mode
-  */
-@@ -1205,6 +1240,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 				    u64 delta_ns, const enum hrtimer_mode mode,
- 				    struct hrtimer_clock_base *base)
- {
-+	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
- 	struct hrtimer_clock_base *new_base;
- 	bool force_local, first;
- 
-@@ -1216,9 +1252,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	 * and enforce reprogramming after it is queued no matter whether
- 	 * it is the new first expiring timer again or not.
- 	 */
--	force_local = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
-+	force_local = base->cpu_base == this_cpu_base;
- 	force_local &= base->cpu_base->next_timer == timer;
- 
-+	/*
-+	 * Don't force local queuing if this enqueue happens on a unplugged
-+	 * CPU after hrtimer_cpu_dying() has been invoked.
-+	 */
-+	force_local &= this_cpu_base->online;
-+
- 	/*
- 	 * Remove an active timer from the queue. In case it is not queued
- 	 * on the current CPU, make sure that remove_hrtimer() updates the
-@@ -1248,8 +1290,27 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	}
- 
- 	first = enqueue_hrtimer(timer, new_base, mode);
--	if (!force_local)
--		return first;
-+	if (!force_local) {
-+		/*
-+		 * If the current CPU base is online, then the timer is
-+		 * never queued on a remote CPU if it would be the first
-+		 * expiring timer there.
-+		 */
-+		if (hrtimer_base_is_online(this_cpu_base))
-+			return first;
-+
-+		/*
-+		 * Timer was enqueued remote because the current base is
-+		 * already offline. If the timer is the first to expire,
-+		 * kick the remote CPU to reprogram the clock event.
-+		 */
-+		if (first) {
-+			struct hrtimer_cpu_base *new_cpu_base = new_base->cpu_base;
-+
-+			smp_call_function_single_async(new_cpu_base->cpu, &new_cpu_base->csd);
-+		}
-+		return 0;
-+	}
- 
- 	/*
- 	 * Timer was forced to stay on the current CPU to avoid
--- 
-2.25.1
 
 
