@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-145880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C579ABF971
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 17:34:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B7BABF975
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 17:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 979D61BC3323
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 15:33:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BE29501E45
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 15:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857EA1FF1CE;
-	Wed, 21 May 2025 15:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D36211710;
+	Wed, 21 May 2025 15:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHicAW/I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugP9L4sd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391C817BB0D;
-	Wed, 21 May 2025 15:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04D31607A4;
+	Wed, 21 May 2025 15:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747841559; cv=none; b=QTpdkx3fA8qyUUkOGUvLJwwKa9Fx2q2B3yh1EDNt6hrBXoxXt+HboiPjPrWtscB12WLBUY4BM9klWO/ecL6okpgJFXGgKdoyhWRG4Wcfr/UPbmd1yM7F2V2iB42pFtK6Ig10ave2oCvGbCUinp2h5KcmpK52uWKsYUmsb2cHRwU=
+	t=1747841565; cv=none; b=QqM8xHX4lcBoepHenY3mddOPbU1S6FqZ2ooEB9slGpEwW7TnecFF24w7mXYiPCX9jTfrj3H1cK97G2uK2OT36hIA7Acg2cMegNKac/xKAGDCGOK4LT3o3R6FSSXEryWUcDY3tQyiBuW2eq0yCGXVCdsQEBF3kAnsOhkvG734CNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747841559; c=relaxed/simple;
-	bh=ZAXKZ42zBWZyJ7kSkE/8V0bVlCWESw/XuUcLoE5rsKw=;
+	s=arc-20240116; t=1747841565; c=relaxed/simple;
+	bh=LkzJwLWakW+9qDe2Gz5b3l1g1z1NAf7iWtP6+sDm0ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFT/hVqx8z+W9x4FE176hZtec9llXEmzrhO5T6tBF/vK+biiyvJhtuEoUDc7xKlrau61/2zOPXHLmczM389NiXN82pQJRceLyWM4GnOaYnlrPUU0e16QBjYgvad/ievdlQ0acaty2P0dvs0eabq3CrRfGVLnh8rtwA5WguXRlSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHicAW/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928DDC4CEE7;
-	Wed, 21 May 2025 15:32:35 +0000 (UTC)
+	 MIME-Version; b=pJw9cxZqaADk0DDW1asoFZsNMuFXQrDZ3MQxMOtJ/L6V2wFLHewl7mQqHsgRPeM+w6cDzyFcQV1D4O5RnoKZnMCSahiLQPLdCIKJSoNo8NCMmzvtuMVyrHdFHQiB2jZSO1w+n2tcqQpNNHumx5ep/A3/pna+al4SGU6xFa3jd24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugP9L4sd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964FCC4CEE4;
+	Wed, 21 May 2025 15:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747841558;
-	bh=ZAXKZ42zBWZyJ7kSkE/8V0bVlCWESw/XuUcLoE5rsKw=;
+	s=k20201202; t=1747841565;
+	bh=LkzJwLWakW+9qDe2Gz5b3l1g1z1NAf7iWtP6+sDm0ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHicAW/ICNtkp+fmKZ9/4QZpzC4GhxiUrtZbZfsEXmCNiUyQP7K1sXci9tQkSo1kF
-	 JIHUBSKbv6X9XlvzvRDayf1FrBrpuxXM8E17sD53ufPFrIBxYWrokQWWy+T9rkORYI
-	 egdZ+GQY1xobkRZCn5TWKm5LYTfSyOtxdx0AopaAg2YcfnRKVQW4cHf1ZKDH+5OXQB
-	 h4/xt+h1K3AHg+W2TE7c07DNKndW9etEYas7vOFFE6piunA4ZakCnV6Aw7JqRuLr7c
-	 GfiC54XVrXwLALvfKYa/jY75j+yBLDOnJ7wuRx79A2LBR1ICdO8cnlMLhIZc3W5bKz
-	 3DvrJeLGcL+gQ==
+	b=ugP9L4sdt1CrtPS/yWJtyRvdDa1rwBVnXDgM8WDhHBRbda/l1fp5h5Jl+LPGHKLGT
+	 +21h00aRhGT0C8fIRb3wQFcjfdQE3kNfWpD1IZRznyHCyKhVMGfTOpiuoeNfbxUVC4
+	 X981UkruXdeYWnm6hkNabqnkAvkHgtRBc5c/A2xgbtd9cY8i2SDUoin+C4gcLCQy/r
+	 fmbzggFQ+qQ1ijyiXFvVXwzBZt/qQ93BPRrlxvuKVSncpNWYc1iYTPMM3cLSlqPWlt
+	 1C0T94pPSeb/pI7PP93ZtuJ/RmVJ+kaTkyqfdMFPdsUwR+cow+Rfs/fXbNOAsptN0h
+	 xhUvnYHygGQbA==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -54,13 +54,13 @@ To: lee@kernel.org,
 	Sasha Levin <sashal@kernel.org>,
 	Michal Luczaj <mhal@rbox.co>,
 	Rao Shoaib <Rao.Shoaib@oracle.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
 Cc: stable@vger.kernel.org
-Subject: [PATCH v6.1 03/27] af_unix: Run GC on only one CPU.
-Date: Wed, 21 May 2025 16:27:02 +0100
-Message-ID: <20250521152920.1116756-4-lee@kernel.org>
+Subject: [PATCH v6.1 04/27] af_unix: Try to run GC async.
+Date: Wed, 21 May 2025 16:27:03 +0100
+Message-ID: <20250521152920.1116756-5-lee@kernel.org>
 X-Mailer: git-send-email 2.49.0.1143.g0be31eac6b-goog
 In-Reply-To: <20250521152920.1116756-1-lee@kernel.org>
 References: <20250521152920.1116756-1-lee@kernel.org>
@@ -74,7 +74,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 8b90a9f819dc2a06baae4ec1a64d875e53b824ec ]
+[ Upstream commit d9f21b3613337b55cc9d4a6ead484dca68475143 ]
 
 If more than 16000 inflight AF_UNIX sockets exist and the garbage
 collector is not running, unix_(dgram|stream)_sendmsg() call unix_gc().
@@ -84,119 +84,195 @@ In unix_gc(), all inflight AF_UNIX sockets are traversed at least once,
 and more if they are the GC candidate.  Thus, sendmsg() significantly
 slows down with too many inflight AF_UNIX sockets.
 
-There is a small window to invoke multiple unix_gc() instances, which
-will then be blocked by the same spinlock except for one.
+However, if a process sends data with no AF_UNIX FD, the sendmsg() call
+does not need to wait for GC.  After this change, only the process that
+meets the condition below will be blocked under such a situation.
 
-Let's convert unix_gc() to use struct work so that it will not consume
-CPUs unnecessarily.
+  1) cmsg contains AF_UNIX socket
+  2) more than 32 AF_UNIX sent by the same user are still inflight
 
-Note WRITE_ONCE(gc_in_progress, true) is moved before running GC.
-If we leave the WRITE_ONCE() as is and use the following test to
-call flush_work(), a process might not call it.
+Note that even a sendmsg() call that does not meet the condition but has
+AF_UNIX FD will be blocked later in unix_scm_to_skb() by the spinlock,
+but we allow that as a bonus for sane users.
 
-    CPU 0                                     CPU 1
-    ---                                       ---
-                                              start work and call __unix_gc()
-    if (work_pending(&unix_gc_work) ||        <-- false
-        READ_ONCE(gc_in_progress))            <-- false
-            flush_work();                     <-- missed!
-	                                      WRITE_ONCE(gc_in_progress, true)
+The results below are the time spent in unix_dgram_sendmsg() sending 1
+byte of data with no FD 4096 times on a host where 32K inflight AF_UNIX
+sockets exist.
+
+Without series: the sane sendmsg() needs to wait gc unreasonably.
+
+  $ sudo /usr/share/bcc/tools/funclatency -p 11165 unix_dgram_sendmsg
+  Tracing 1 functions for "unix_dgram_sendmsg"... Hit Ctrl-C to end.
+  ^C
+       nsecs               : count     distribution
+  [...]
+      524288 -> 1048575    : 0        |                                        |
+     1048576 -> 2097151    : 3881     |****************************************|
+     2097152 -> 4194303    : 214      |**                                      |
+     4194304 -> 8388607    : 1        |                                        |
+
+  avg = 1825567 nsecs, total: 7477526027 nsecs, count: 4096
+
+With series: the sane sendmsg() can finish much faster.
+
+  $ sudo /usr/share/bcc/tools/funclatency -p 8702  unix_dgram_sendmsg
+  Tracing 1 functions for "unix_dgram_sendmsg"... Hit Ctrl-C to end.
+  ^C
+       nsecs               : count     distribution
+  [...]
+         128 -> 255        : 0        |                                        |
+         256 -> 511        : 4092     |****************************************|
+         512 -> 1023       : 2        |                                        |
+        1024 -> 2047       : 0        |                                        |
+        2048 -> 4095       : 0        |                                        |
+        4096 -> 8191       : 1        |                                        |
+        8192 -> 16383      : 1        |                                        |
+
+  avg = 410 nsecs, total: 1680510 nsecs, count: 4096
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240123170856.41348-5-kuniyu@amazon.com
+Link: https://lore.kernel.org/r/20240123170856.41348-6-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 8b90a9f819dc2a06baae4ec1a64d875e53b824ec)
+(cherry picked from commit d9f21b3613337b55cc9d4a6ead484dca68475143)
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- net/unix/garbage.c | 54 +++++++++++++++++++++++-----------------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ include/net/af_unix.h | 12 ++++++++++--
+ include/net/scm.h     |  1 +
+ net/core/scm.c        |  5 +++++
+ net/unix/af_unix.c    |  6 ++++--
+ net/unix/garbage.c    | 10 +++++++++-
+ 5 files changed, 29 insertions(+), 5 deletions(-)
 
+diff --git a/include/net/af_unix.h b/include/net/af_unix.h
+index 52ae023c3e93..be488d627531 100644
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -8,12 +8,20 @@
+ #include <linux/refcount.h>
+ #include <net/sock.h>
+ 
++#if IS_ENABLED(CONFIG_UNIX)
++struct unix_sock *unix_get_socket(struct file *filp);
++#else
++static inline struct unix_sock *unix_get_socket(struct file *filp)
++{
++	return NULL;
++}
++#endif
++
+ void unix_inflight(struct user_struct *user, struct file *fp);
+ void unix_notinflight(struct user_struct *user, struct file *fp);
+ void unix_destruct_scm(struct sk_buff *skb);
+ void unix_gc(void);
+-void wait_for_unix_gc(void);
+-struct unix_sock *unix_get_socket(struct file *filp);
++void wait_for_unix_gc(struct scm_fp_list *fpl);
+ struct sock *unix_peer_get(struct sock *sk);
+ 
+ #define UNIX_HASH_MOD	(256 - 1)
+diff --git a/include/net/scm.h b/include/net/scm.h
+index 585adc1346bd..a5c26008fcec 100644
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -23,6 +23,7 @@ struct scm_creds {
+ 
+ struct scm_fp_list {
+ 	short			count;
++	short			count_unix;
+ 	short			max;
+ 	struct user_struct	*user;
+ 	struct file		*fp[SCM_MAX_FD];
+diff --git a/net/core/scm.c b/net/core/scm.c
+index a877c4ef4c25..bb25052624ee 100644
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -36,6 +36,7 @@
+ #include <net/compat.h>
+ #include <net/scm.h>
+ #include <net/cls_cgroup.h>
++#include <net/af_unix.h>
+ 
+ 
+ /*
+@@ -85,6 +86,7 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
+ 			return -ENOMEM;
+ 		*fplp = fpl;
+ 		fpl->count = 0;
++		fpl->count_unix = 0;
+ 		fpl->max = SCM_MAX_FD;
+ 		fpl->user = NULL;
+ 	}
+@@ -109,6 +111,9 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
+ 			fput(file);
+ 			return -EINVAL;
+ 		}
++		if (unix_get_socket(file))
++			fpl->count_unix++;
++
+ 		*fpp++ = file;
+ 		fpl->count++;
+ 	}
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 5ce60087086c..f74f7878b3fe 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1875,11 +1875,12 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	long timeo;
+ 	int err;
+ 
+-	wait_for_unix_gc();
+ 	err = scm_send(sock, msg, &scm, false);
+ 	if (err < 0)
+ 		return err;
+ 
++	wait_for_unix_gc(scm.fp);
++
+ 	err = -EOPNOTSUPP;
+ 	if (msg->msg_flags&MSG_OOB)
+ 		goto out;
+@@ -2145,11 +2146,12 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	bool fds_sent = false;
+ 	int data_len;
+ 
+-	wait_for_unix_gc();
+ 	err = scm_send(sock, msg, &scm, false);
+ 	if (err < 0)
+ 		return err;
+ 
++	wait_for_unix_gc(scm.fp);
++
+ 	err = -EOPNOTSUPP;
+ 	if (msg->msg_flags & MSG_OOB) {
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
 diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 438f5d9b9173..bf628bfb6d35 100644
+index bf628bfb6d35..2934d7b68036 100644
 --- a/net/unix/garbage.c
 +++ b/net/unix/garbage.c
-@@ -86,7 +86,6 @@
- /* Internal data structures and random procedures: */
- 
- static LIST_HEAD(gc_candidates);
--static DECLARE_WAIT_QUEUE_HEAD(unix_gc_wait);
- 
- static void scan_inflight(struct sock *x, void (*func)(struct unix_sock *),
- 			  struct sk_buff_head *hitlist)
-@@ -182,23 +181,8 @@ static void inc_inflight_move_tail(struct unix_sock *u)
+@@ -335,8 +335,9 @@ void unix_gc(void)
  }
  
- static bool gc_in_progress;
--#define UNIX_INFLIGHT_TRIGGER_GC 16000
--
+ #define UNIX_INFLIGHT_TRIGGER_GC 16000
++#define UNIX_INFLIGHT_SANE_USER (SCM_MAX_FD * 8)
+ 
 -void wait_for_unix_gc(void)
--{
--	/* If number of inflight sockets is insane,
--	 * force a garbage collect right now.
--	 * Paired with the WRITE_ONCE() in unix_inflight(),
--	 * unix_notinflight() and gc_in_progress().
--	 */
--	if (READ_ONCE(unix_tot_inflight) > UNIX_INFLIGHT_TRIGGER_GC &&
--	    !READ_ONCE(gc_in_progress))
--		unix_gc();
--	wait_event(unix_gc_wait, !READ_ONCE(gc_in_progress));
--}
- 
--/* The external entry point: unix_gc() */
--void unix_gc(void)
-+static void __unix_gc(struct work_struct *work)
++void wait_for_unix_gc(struct scm_fp_list *fpl)
  {
- 	struct sk_buff *next_skb, *skb;
- 	struct unix_sock *u;
-@@ -209,13 +193,6 @@ void unix_gc(void)
+ 	/* If number of inflight sockets is insane,
+ 	 * force a garbage collect right now.
+@@ -348,6 +349,13 @@ void wait_for_unix_gc(void)
+ 	    !READ_ONCE(gc_in_progress))
+ 		unix_gc();
  
- 	spin_lock(&unix_gc_lock);
- 
--	/* Avoid a recursive GC. */
--	if (gc_in_progress)
--		goto out;
--
--	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
--	WRITE_ONCE(gc_in_progress, true);
--
- 	/* First, select candidates for garbage collection.  Only
- 	 * in-flight sockets are considered, and from those only ones
- 	 * which don't have any external reference.
-@@ -346,8 +323,31 @@ void unix_gc(void)
- 	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
- 	WRITE_ONCE(gc_in_progress, false);
- 
--	wake_up(&unix_gc_wait);
--
-- out:
- 	spin_unlock(&unix_gc_lock);
- }
-+
-+static DECLARE_WORK(unix_gc_work, __unix_gc);
-+
-+void unix_gc(void)
-+{
-+	WRITE_ONCE(gc_in_progress, true);
-+	queue_work(system_unbound_wq, &unix_gc_work);
-+}
-+
-+#define UNIX_INFLIGHT_TRIGGER_GC 16000
-+
-+void wait_for_unix_gc(void)
-+{
-+	/* If number of inflight sockets is insane,
-+	 * force a garbage collect right now.
-+	 *
-+	 * Paired with the WRITE_ONCE() in unix_inflight(),
-+	 * unix_notinflight(), and __unix_gc().
++	/* Penalise users who want to send AF_UNIX sockets
++	 * but whose sockets have not been received yet.
 +	 */
-+	if (READ_ONCE(unix_tot_inflight) > UNIX_INFLIGHT_TRIGGER_GC &&
-+	    !READ_ONCE(gc_in_progress))
-+		unix_gc();
++	if (!fpl || !fpl->count_unix ||
++	    READ_ONCE(fpl->user->unix_inflight) < UNIX_INFLIGHT_SANE_USER)
++		return;
 +
-+	if (READ_ONCE(gc_in_progress))
-+		flush_work(&unix_gc_work);
-+}
+ 	if (READ_ONCE(gc_in_progress))
+ 		flush_work(&unix_gc_work);
+ }
 -- 
 2.49.0.1143.g0be31eac6b-goog
 
