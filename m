@@ -1,90 +1,78 @@
-Return-Path: <stable+bounces-145769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00AEABEC01
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 08:34:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BBFABECDB
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 09:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AB517A6A60
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 06:34:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C59DD4A4EFD
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 07:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D3F232367;
-	Wed, 21 May 2025 06:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168C122D783;
+	Wed, 21 May 2025 07:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nCCxO5sR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GU4mcS9C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DE0219EB;
-	Wed, 21 May 2025 06:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1028F199EAF;
+	Wed, 21 May 2025 07:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747809286; cv=none; b=IJhWslnn5TULtaeD5ZU4i3hwXpF/Rn8No6DuqW/okUzE6EdKcYP6vQYE5+oKUUAfq2DtQ1i1OZI6fWeNCTcfqkmEw8irATPUKfGUItZtaUPofFTcaMplIw6FkILysAknX06O0mtqHRkrFBDO/saF7P1qTbNxIVPasJGCyvJEH0w=
+	t=1747811740; cv=none; b=t2vjC1/qk4NjjHTVqgupJp7jKIy+l4RSDwPDV6lLn8Sz3cgzrcNC583XEo9MGrbSw8lLJ015Nm4KbcDPbfj+YCIc6AuQoM0IxB/+a4TrK5+CZUEDNKRUFv/dB+OBBHc0q17ucDGG+wpkTOtwV5Rjm4EZV21zr3itvXB+v2m8/H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747809286; c=relaxed/simple;
-	bh=PXVta0mCTYq6yt9jSQRdHzSV6a2PJ/jUqh30SUGtbZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oWkNYG0x0AgcChU1RVFQl1FVK2j5WkiOSTc/xljrQ52kuQfGDHqagDf8V//nC80uP2SOZobMqQwyu50aHnw6Vtod0jGbNAhXflLKNWV7xt2v4dP8rPE+VWEQCE1nEtddVkFjgyUSI5SJ/x8j0QaBvIqTFGqo6ibxq4fWmIjUXZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nCCxO5sR; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54298ec925bso9879939e87.3;
-        Tue, 20 May 2025 23:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747809282; x=1748414082; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CzYuom+zI5De3oMnCByXzViMDJT8mx4FU1edPifGipU=;
-        b=nCCxO5sRFIMB1Q1UbCmRnBCpA1Z3BlVQZtNWEDAlu71EsbjVO8bh1mvtOB4UvfuUAF
-         A5uFXRy9983XDu7WtJomT6azSGrrOGxn5Kl2fMSuIsqQ/lMNr6aNwrtSLhs3MwijR2gx
-         H69hDBAZz+o7iBAwDvXwOz9Dd5YD9n0AKgNoXkFzpBz/g8DgGYeO9Bt5RF7/RSV68Lm+
-         wmJlKoV6j4kEElf4FbNB9FxaM/is5yq8E2Io3pkklJfMcC7AHVxxEFc+V4CGd1AyPVT/
-         Cj/aWk19PoHJQGY8euQtanOPQcVLcQb/91IIIMhfLLj4KdojhC2w+Zh0wRdxTMQVlSzh
-         LnrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747809282; x=1748414082;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CzYuom+zI5De3oMnCByXzViMDJT8mx4FU1edPifGipU=;
-        b=B2mwju6nji/auTjQMa6SVEEuxJ6MFOumbdkHSC6JJXXWkyFscdEbuT/c8V5GjJSGnW
-         t8viK3+jEw21y1eiDI0xsMCPcds7GnpAnSTLJAxfnUnPHVpwSMkxrNGSH0NRGCM0kfZW
-         TNBJ2yOGRwTIbYcHWR6P1pQMRdDulwbMSdA28M+TtkpAA6Rz9jn5HZecM6WzmrsOEpzy
-         tqaADzanoiU5UNhB9I76dze89jOKbeDZstsOuRaDoF34d26eh4LPK7vGdBSHvqBf+6u+
-         VvGfO6yDbCcdohABSa+bn/3ILRXn3+H1nPazfHf3dfznkhyl9Llfx8tjsfTpYT786COf
-         vt3w==
-X-Forwarded-Encrypted: i=1; AJvYcCW838OXmO9WJ2HuA+s5zdFGbAFy0srPt4mHX1BVQ17+ngDnReECZ3sEbpzNlv/4PaREV/19qXIp@vger.kernel.org, AJvYcCXVY/HWffbh71W4YWLDTBEP5CnkCLzlX1XsbrSoMMVouNa/xfdJ290aZmL/PEdoWiSRdUNJAdsdjcSJjzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq7HCAAKe1rd6C7N/deCUfLIFLS9PvT8SqMiMBCy7LJTdUiEkr
-	Dx2oLFMRkJcDuwg64Mc+f3iQA8DNZuvtJ95JczgNDq6qHBybHC5MrjMB
-X-Gm-Gg: ASbGncvmqCnk7tKWllrr2hE7cMGm9zuxU8U0YbF1fkvfAMF3yYKi7yJ795I8Q8HzZip
-	fESaO6zjlgrYO4xPeINYgQ/GvbP6pajmSnuzWg2fkFk4pKKlqLts0jZ8PVdwVoATn01WrYojW/8
-	YmGodDUEOBw9un7UDJCA1xNiV/b1e/Ux7bs1WFBnyziCQfkpYjKdT1WzsJStp9MOrQolU9cQk6/
-	mQfS0oinwG4MWSlZM7ALyTbo3mrbEgnXTJnI6QN2GsusbgvqYZc7wimZE30R/drO9xOw/NmttmN
-	rCjcVVoqEedcUyJNwKKszc86on/Fykivqc81hlp4RrCmNyIL0IZedDT6GNFB2fp1bG2boQpU7FW
-	XEVm8jGGD/Eg=
-X-Google-Smtp-Source: AGHT+IFXHe4PWXlcmE49bZfwmBLGRPRzztLBYCczKRWtpTZGGJTw5C4nvUmzzCCub+1cMSMYYFoMmw==
-X-Received: by 2002:a05:6512:461b:b0:547:6733:b5a3 with SMTP id 2adb3069b0e04-550e71d6b1fmr5100149e87.28.1747809281807;
-        Tue, 20 May 2025 23:34:41 -0700 (PDT)
-Received: from localhost.localdomain ([91.197.2.199])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e702f462sm2690508e87.209.2025.05.20.23.34.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 May 2025 23:34:41 -0700 (PDT)
-From: Andrey Kriulin <kitotavrik.s@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Andrey Kriulin <kitotavrik.s@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	NeilBrown <neilb@suse.de>,
-	Jan Kara <jack@suse.cz>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+	s=arc-20240116; t=1747811740; c=relaxed/simple;
+	bh=0fo+PyTyAPW8D2o+IjPBOYqUeUIvEeG1x4XAcEZ/+4U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SWcTSiEQQb+iGw9gTf8nPqOAMFAjY/+98nAzgOBldAk0VAUsTUc3JkOR6dbXVBS7C0eHBuUwcfVFdZu5ev29WOI2qV81Xz/MdrtKsSGpv8cuYQMumrRA3Dwu9NP3Iee/Ol37FgHbwrtMOS5hZyP/lRcuajKDqACtny+Y4VJA0xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GU4mcS9C; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747811740; x=1779347740;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0fo+PyTyAPW8D2o+IjPBOYqUeUIvEeG1x4XAcEZ/+4U=;
+  b=GU4mcS9CcthECvikVYevjnLLEY2JNyHdd6kJgZ4rFY6T2ykphnKHVMfB
+   3lt/yfFxkWtOE5IN+MP3KHBVBPNTaFeS+qAkkxB66qRluhueiEIhPaopF
+   73AoK/JqoWnQ4BJZ2TNdAmKJMJC6/YDG0lOAyUrwP2Ylr7qTVtkY5vUN7
+   fgXXPNKzKahKLbA8t/JNTg3jodbm2l+YVzNRRFRGRyf+hHwRcjtggYAhb
+   7Y9Crr757gghWy1aFqBCDWf01AyIrLbiv90jCrgTKKAKrJvU6xnKCu+Wq
+   1yWKc2+9bmQsfSkHNWpDgVopkyBMdFnQdExAPtBr947R/WxXCw1B2mI38
+   w==;
+X-CSE-ConnectionGUID: uwja/7rXQHOeT4fMvFzs+w==
+X-CSE-MsgGUID: gHbfGiquTJumPw439ByJmg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="60007259"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
+   d="scan'208";a="60007259"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 00:15:32 -0700
+X-CSE-ConnectionGUID: O0dAtafdT5imdYMm5b4/xA==
+X-CSE-MsgGUID: KYUzfv2ZQAe+L8ACyUyO0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
+   d="scan'208";a="170939369"
+Received: from bjledic266.bj.intel.com ([172.16.127.175])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 00:15:28 -0700
+From: Dongcheng Yan <dongcheng.yan@intel.com>
+To: linux-media@vger.kernel.org,
+	sakari.ailus@linux.intel.com,
+	hverkuil@xs4all.nl,
+	hdegoede@redhat.com,
+	laurent.pinchart@ideasonboard.com,
+	mchehab@kernel.org,
+	bingbu.cao@linux.intel.com
+Cc: xiaohong.zou@intel.com,
+	dongcheng.yan@linux.intel.com,
+	hao.yao@intel.com,
 	stable@vger.kernel.org
-Subject: [PATCH v4] fs: minix: Fix handling of corrupted directories
-Date: Wed, 21 May 2025 09:34:31 +0300
-Message-ID: <20250521063435.3217-1-kitotavrik.s@gmail.com>
-X-Mailer: git-send-email 2.47.2
+Subject: [PATCH v1] media: i2c: set lt6911uxe's reset_gpio to GPIOD_OUT_LOW
+Date: Wed, 21 May 2025 15:15:19 +0800
+Message-Id: <20250521071519.2611242-1-dongcheng.yan@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,60 +81,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the directory is corrupted and the number of nlinks is less than 2
-(valid nlinks have at least 2), then when the directory is deleted, the
-minix_rmdir will try to reduce the nlinks(unsigned int) to a negative
-value.
+reset_gpio needs to be an output and set to GPIOD_OUT_LOW, to ensure
+lt6911uxe is in reset state during probe.
 
-Make nlinks validity check for directories.
+This issue was found on the onboard lt6911uxe, where the reset_pin was
+not reset, causing the lt6911uxe to fail to probe.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: e49563c3be09d4 ("media: i2c: add lt6911uxe hdmi bridge driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Kriulin <kitotavrik.s@gmail.com>
+Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
 ---
-v4: Add nlinks check for parent dirictory to minix_rmdir per Jan
-Kara <jack@suse.cz> request.
-v3: Move nlinks validaty check to minix_rmdir and minix_rename per Jan
-Kara <jack@suse.cz> request.
-v2: Move nlinks validaty check to V[12]_minix_iget() per Jan Kara
-<jack@suse.cz> request. Change return error code to EUCLEAN. Don't block
-directory in r/o mode per Al Viro <viro@zeniv.linux.org.uk> request.
+ drivers/media/i2c/lt6911uxe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- fs/minix/namei.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+diff --git a/drivers/media/i2c/lt6911uxe.c b/drivers/media/i2c/lt6911uxe.c
+index c5b40bb58a37..4e2109db0145 100644
+--- a/drivers/media/i2c/lt6911uxe.c
++++ b/drivers/media/i2c/lt6911uxe.c
+@@ -600,7 +600,7 @@ static int lt6911uxe_probe(struct i2c_client *client)
+ 
+ 	v4l2_i2c_subdev_init(&lt6911uxe->sd, client, &lt6911uxe_subdev_ops);
+ 
+-	lt6911uxe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_IN);
++	lt6911uxe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(lt6911uxe->reset_gpio))
+ 		return dev_err_probe(dev, PTR_ERR(lt6911uxe->reset_gpio),
+ 				     "failed to get reset gpio\n");
 
-diff --git a/fs/minix/namei.c b/fs/minix/namei.c
-index 8938536d8d3c..ab86fd16e548 100644
---- a/fs/minix/namei.c
-+++ b/fs/minix/namei.c
-@@ -161,8 +161,12 @@ static int minix_unlink(struct inode * dir, struct dentry *dentry)
- static int minix_rmdir(struct inode * dir, struct dentry *dentry)
- {
- 	struct inode * inode = d_inode(dentry);
--	int err = -ENOTEMPTY;
-+	int err = -EUCLEAN;
- 
-+	if (inode->i_nlink < 2 || dir->i_nlink <= 2)
-+		return err;
-+
-+	err = -ENOTEMPTY;
- 	if (minix_empty_dir(inode)) {
- 		err = minix_unlink(dir, dentry);
- 		if (!err) {
-@@ -235,6 +239,10 @@ static int minix_rename(struct mnt_idmap *idmap,
- 	mark_inode_dirty(old_inode);
- 
- 	if (dir_de) {
-+		if (old_dir->i_nlink <= 2) {
-+			err = -EUCLEAN;
-+			goto out_dir;
-+		}
- 		err = minix_set_link(dir_de, dir_folio, new_dir);
- 		if (!err)
- 			inode_dec_link_count(old_dir);
+base-commit: f2151613e040973c868d28c8b00885dfab69eb75
+prerequisite-patch-id: 6cade6d98fab1ea36ed59fe5502d7d2457180ca5
 -- 
-2.47.2
+2.34.1
 
 
