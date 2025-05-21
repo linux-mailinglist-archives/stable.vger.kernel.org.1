@@ -1,51 +1,65 @@
-Return-Path: <stable+bounces-145846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0A9ABF7C9
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 16:24:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7231ABF829
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 16:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD6B71BA44A8
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:24:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 991204E603A
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726C81A3166;
-	Wed, 21 May 2025 14:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1931D9324;
+	Wed, 21 May 2025 14:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJsOElDh"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C3628682;
-	Wed, 21 May 2025 14:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FC81537C6;
+	Wed, 21 May 2025 14:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747837471; cv=none; b=T60WB2/ruCKOj6Twtsrq7twDsV4x3yee5+u+ZWNfvSyK2CTPovZXy6OEVctVwKLJaTmHzhm7cqCqyTo/A5fI5cMnjavE96k6dtbHvcdSrWCS2U+ENs91LehcEMsKsKYLz42hPuMxJFrzXHjevf2YMpI5QFkM+vqz/8MOA4THbjw=
+	t=1747838966; cv=none; b=I38Whf2Vw7zHmWi1hr684V5pz58+vLHuOMl2ziWOVOvw4SGTnWPQnWF7kZ6NU4xemh/bcUTSztLjJXpQ3a/QSqJy8ds8QXZqYxhQvIA9XCvo9IuXCxSyzpgvtlMPotsHFHJmE6zocMlwm75e8gkrgYMySfmGZ3G9Gk2LrQYm+ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747837471; c=relaxed/simple;
-	bh=Ourow4OK6/2Cln7586tL43/CJb5AAk27N8xfphvkees=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dDGkD6m+0D1gY+PYAdjIuV4xhcanH+2/PCri8hNXNqBI0IH40AbLaVPbcxh02gU3YVtNATEQWBy5VKJB3z7EVcztkfAhBOKFktg3L77sxx/B0+9o8+hejypGlkNjb4i1kxYFMhX5Xy4EHmXF8F3qxnR60/EkB0jLkawfOOqxwvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowABHtcQT4i1oHRX6AQ--.16951S2;
-	Wed, 21 May 2025 22:24:20 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: andersson@kernel.org,
-	mathieu.poirier@linaro.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com
-Cc: linux-remoteproc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
+	s=arc-20240116; t=1747838966; c=relaxed/simple;
+	bh=Ikd7c90aq2jxYEaiZ15DovdKivS9lNNSecfO21RFtbE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jk6jDFOQVGGTAz4xrVJfsnJbUJV7UU62DPHSzXcHHEnzNDVktCWXfvLL3G5rJZp7whxm+IdFKVNNeG/+gKfS0WdKeGT9bFD5zgcewrLO7OVRkCkucM/AnRtzEOZrTbEQyp+2OxxDshxZvymbexgL7N2iMYoDUPqxJMbZ6KUO8Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJsOElDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94617C4CEE4;
+	Wed, 21 May 2025 14:49:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747838966;
+	bh=Ikd7c90aq2jxYEaiZ15DovdKivS9lNNSecfO21RFtbE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UJsOElDhFoFiAmm7sWz27VVd8viwyB1H/fnSSPvRNTxZC3r4jUFrQevIZdjbJfOkI
+	 JIfvs95PyVyI6/QeHmji4PmXRktqlMKVRjh0AcEQwxe9nSq+V3m9eqn6s65Qmvq1vj
+	 3s14fISOWdsFC1m2gDbHGdMKrbkuV0Sx73atF1aaMr8rAeL3MihoRF/ex9AsQlhl7/
+	 s+ovqQ9fO8WKuDVrxL0Ep3EniBeKLUv3VY/aNpxsJzbCXnvIBcNndgkvqxTwAJO31T
+	 YJoivbrwzIAlrhX7jaolbKCiOF5Dm92uHxcrx250EvwDdVs52E2XnufoEqocvdBoH0
+	 ahe/C0YVrEXZQ==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Rao Shoaib <Rao.Shoaib@oracle.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] remoteproc: mediatek: Add SCP watchdog handler in IRQ processing
-Date: Wed, 21 May 2025 22:24:03 +0800
-Message-ID: <20250521142404.1077-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	netdev@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Lee Jones <joneslee@google.com>
+Subject: [PATCH v6.6 00/26] af_unix: Align with upstream to avoid a potential UAF
+Date: Wed, 21 May 2025 14:45:08 +0000
+Message-ID: <20250521144803.2050504-1-lee@kernel.org>
+X-Mailer: git-send-email 2.49.0.1112.g889b7c5bd8-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,55 +67,137 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABHtcQT4i1oHRX6AQ--.16951S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GFWkXr4xCr4DGFWrXry5Arb_yoWkZrX_ua
-	s0gFZrWF1vga1Yy34IyrsavFZa9ry8Wry8KFySqas8t39xXa47try0vF4kuw1DXF15uFy5
-	Zr4v9F4fuF4xujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbTkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW5XwCF04k20xvY0x0EwIxGrw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxK
-	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI
-	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUSdgAUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAUJA2gtsvlq+gACsf
 
-In mt8195_scp_c1_irq_handler(), only the IPC interrupt bit
-(MT8192_SCP_IPC_INT_BIT) was checked., but does not handle
-when this bit is not set. This could lead to unhandled watchdog
-events. This could lead to unhandled watchdog events. A proper
-implementation can be found in mt8183_scp_irq_handler().
+From: Lee Jones <joneslee@google.com>
 
-Add a new branch to handle SCP watchdog events when the IPC
-interrupt bit is not set.
+This is the second attempt at achieving the same goal.  This time, the
+submission avoids forking the current code base, ensuring it remains
+easier to maintain over time.
 
-Fixes: 6a1c9aaf04eb ("remoteproc: mediatek: Add MT8195 SCP core 1 operations")
-Cc: stable@vger.kernel.org # v6.7
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/remoteproc/mtk_scp.c | 2 ++
- 1 file changed, 2 insertions(+)
+The set has been tested using the SCM_RIGHTS test suite [1] using QEMU
+and has been seen to successfully mitigate a UAF on on a top tier
+handset.
 
-diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-index 0f4a7065d0bd..316e8c98a503 100644
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -273,6 +273,8 @@ static void mt8195_scp_c1_irq_handler(struct mtk_scp *scp)
- 
- 	if (scp_to_host & MT8192_SCP_IPC_INT_BIT)
- 		scp_ipi_handler(scp);
-+	else
-+		scp_wdt_handler(scp, scp_to_host);
- 
- 	writel(scp_to_host, scp->cluster->reg_base + MT8195_SSHUB2APMCU_IPC_CLR);
- }
+RESULTS:
+
+  TAP version 13
+  1..20
+  # Starting 20 tests from 5 test cases.
+  #  RUN           scm_rights.dgram.self_ref ...
+  #            OK  scm_rights.dgram.self_ref
+  ok 1 scm_rights.dgram.self_ref
+  #  RUN           scm_rights.dgram.triangle ...
+  #            OK  scm_rights.dgram.triangle
+  ok 2 scm_rights.dgram.triangle
+  #  RUN           scm_rights.dgram.cross_edge ...
+  #            OK  scm_rights.dgram.cross_edge
+  ok 3 scm_rights.dgram.cross_edge
+  #  RUN           scm_rights.dgram.backtrack_from_scc ...
+  #            OK  scm_rights.dgram.backtrack_from_scc
+  ok 4 scm_rights.dgram.backtrack_from_scc
+  #  RUN           scm_rights.stream.self_ref ...
+  #            OK  scm_rights.stream.self_ref
+  ok 5 scm_rights.stream.self_ref
+  #  RUN           scm_rights.stream.triangle ...
+  #            OK  scm_rights.stream.triangle
+  ok 6 scm_rights.stream.triangle
+  #  RUN           scm_rights.stream.cross_edge ...
+  #            OK  scm_rights.stream.cross_edge
+  ok 7 scm_rights.stream.cross_edge
+  #  RUN           scm_rights.stream.backtrack_from_scc ...
+  #            OK  scm_rights.stream.backtrack_from_scc
+  ok 8 scm_rights.stream.backtrack_from_scc
+  #  RUN           scm_rights.stream_oob.self_ref ...
+  #            OK  scm_rights.stream_oob.self_ref
+  ok 9 scm_rights.stream_oob.self_ref
+  #  RUN           scm_rights.stream_oob.triangle ...
+  #            OK  scm_rights.stream_oob.triangle
+  ok 10 scm_rights.stream_oob.triangle
+  #  RUN           scm_rights.stream_oob.cross_edge ...
+  #            OK  scm_rights.stream_oob.cross_edge
+  ok 11 scm_rights.stream_oob.cross_edge
+  #  RUN           scm_rights.stream_oob.backtrack_from_scc ...
+  #            OK  scm_rights.stream_oob.backtrack_from_scc
+  ok 12 scm_rights.stream_oob.backtrack_from_scc
+  #  RUN           scm_rights.stream_listener.self_ref ...
+  #            OK  scm_rights.stream_listener.self_ref
+  ok 13 scm_rights.stream_listener.self_ref
+  #  RUN           scm_rights.stream_listener.triangle ...
+  #            OK  scm_rights.stream_listener.triangle
+  ok 14 scm_rights.stream_listener.triangle
+  #  RUN           scm_rights.stream_listener.cross_edge ...
+  #            OK  scm_rights.stream_listener.cross_edge
+  ok 15 scm_rights.stream_listener.cross_edge
+  #  RUN           scm_rights.stream_listener.backtrack_from_scc ...
+  #            OK  scm_rights.stream_listener.backtrack_from_scc
+  ok 16 scm_rights.stream_listener.backtrack_from_scc
+  #  RUN           scm_rights.stream_listener_oob.self_ref ...
+  #            OK  scm_rights.stream_listener_oob.self_ref
+  ok 17 scm_rights.stream_listener_oob.self_ref
+  #  RUN           scm_rights.stream_listener_oob.triangle ...
+  #            OK  scm_rights.stream_listener_oob.triangle
+  ok 18 scm_rights.stream_listener_oob.triangle
+  #  RUN           scm_rights.stream_listener_oob.cross_edge ...
+  #            OK  scm_rights.stream_listener_oob.cross_edge
+  ok 19 scm_rights.stream_listener_oob.cross_edge
+  #  RUN           scm_rights.stream_listener_oob.backtrack_from_scc ...
+  #            OK  scm_rights.stream_listener_oob.backtrack_from_scc
+  ok 20 scm_rights.stream_listener_oob.backtrack_from_scc
+  # PASSED: 20 / 20 tests passed.
+  # Totals: pass:20 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+[0] https://lore.kernel.org/all/20250304030149.82265-1-kuniyu@amazon.com/
+[1] https://lore.kernel.org/all/20240325202425.60930-16-kuniyu@amazon.com/
+
+Kuniyuki Iwashima (24):
+  af_unix: Return struct unix_sock from unix_get_socket().
+  af_unix: Run GC on only one CPU.
+  af_unix: Try to run GC async.
+  af_unix: Replace BUG_ON() with WARN_ON_ONCE().
+  af_unix: Remove io_uring code for GC.
+  af_unix: Remove CONFIG_UNIX_SCM.
+  af_unix: Allocate struct unix_vertex for each inflight AF_UNIX fd.
+  af_unix: Allocate struct unix_edge for each inflight AF_UNIX fd.
+  af_unix: Link struct unix_edge when queuing skb.
+  af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
+  af_unix: Iterate all vertices by DFS.
+  af_unix: Detect Strongly Connected Components.
+  af_unix: Save listener for embryo socket.
+  af_unix: Fix up unix_edge.successor for embryo socket.
+  af_unix: Save O(n) setup of Tarjan's algo.
+  af_unix: Skip GC if no cycle exists.
+  af_unix: Avoid Tarjan's algorithm if unnecessary.
+  af_unix: Assign a unique index to SCC.
+  af_unix: Detect dead SCC.
+  af_unix: Replace garbage collection algorithm.
+  af_unix: Remove lock dance in unix_peek_fds().
+  af_unix: Try not to hold unix_gc_lock during accept().
+  af_unix: Don't access successor in unix_del_edges() during GC.
+  af_unix: Add dead flag to struct scm_fp_list.
+
+Michal Luczaj (1):
+  af_unix: Fix garbage collection of embryos carrying OOB with
+    SCM_RIGHTS
+
+Shigeru Yoshida (1):
+  af_unix: Fix uninit-value in __unix_walk_scc()
+
+ include/net/af_unix.h |  49 ++-
+ include/net/scm.h     |  11 +
+ net/Makefile          |   2 +-
+ net/core/scm.c        |  17 ++
+ net/unix/Kconfig      |   5 -
+ net/unix/Makefile     |   2 -
+ net/unix/af_unix.c    | 120 +++++---
+ net/unix/garbage.c    | 691 +++++++++++++++++++++++++++++-------------
+ net/unix/scm.c        | 161 ----------
+ net/unix/scm.h        |  10 -
+ 10 files changed, 617 insertions(+), 451 deletions(-)
+ delete mode 100644 net/unix/scm.c
+ delete mode 100644 net/unix/scm.h
+
+
 -- 
-2.42.0.windows.2
+2.49.0.1112.g889b7c5bd8-goog
 
 
