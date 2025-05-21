@@ -1,231 +1,313 @@
-Return-Path: <stable+bounces-145759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56331ABEB78
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 07:45:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64650ABEB4D
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 07:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 033A616A4AF
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 05:45:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B99957A7DA7
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 05:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8554222FAFD;
-	Wed, 21 May 2025 05:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9C922FDE8;
+	Wed, 21 May 2025 05:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWTWqe/y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp01.aussiebb.com.au (smtp01.aussiebb.com.au [121.200.0.92])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDE6230BC0;
-	Wed, 21 May 2025 05:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.200.0.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC41148827;
+	Wed, 21 May 2025 05:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747806312; cv=none; b=Fh1peBFnMfO9339SjT8qMPLioHExPVuUUp/YCCIdaVA9lZS6S6LUP0QRH+LIWPBMlPv/Vj674UYoWq8YIUlAy69yQfXqBtjC5W06TGQUe4NJHFxaNLnKjtgMapvsbboA8g1l3FSMiwRUiw9pfxxcDvVN9cWQkyxvrqH/K3+PCtk=
+	t=1747805719; cv=none; b=rTzJVzxMGm0rLBdaXpAuf8gNAHQg+oiE+7y8f+HJkphfbBHrs/omGX157N7Ouwt5x0rW2k2+tWRI4a/cNKTEiXfZDD97v7Drud9vNmP2pW2ramQoSoNyDZYmpMnPYV0MBeRaX0bgosS/DgRQbEO8DL0l7MeOhMCg83cUX8NNgqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747806312; c=relaxed/simple;
-	bh=4HkLYWOsf+KFAlrO53Rwzj64dyrRJwyoObLm6cr2DQ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=JmehYf3f2EojOrzW2JW6ODa9JMQBTc1zJxicFD/uSBRLY2enu13+oLX1Pv+Kfh9Jsw6OBFdyfSU8d3FH8s/JUDVrVl2yHxqrcYiEJt5YT+AJ1G/bCyLudcRKHqgo6LQK4PjSbTWfHPCin2nA/4hYFnW012Q+dav92FAJjJAuIcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=themaw.net; spf=fail smtp.mailfrom=themaw.net; arc=none smtp.client-ip=121.200.0.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=themaw.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=themaw.net
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by smtp01.aussiebb.com.au (Postfix) with ESMTP id 8BF4B1004A3;
-	Wed, 21 May 2025 15:35:16 +1000 (AEST)
-X-Virus-Scanned: Debian amavisd-new at smtp01.aussiebb.com.au
-Received: from smtp01.aussiebb.com.au ([127.0.0.1])
-	by localhost (smtp01.aussiebb.com.au [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id r3nvpw_bx252; Wed, 21 May 2025 15:35:16 +1000 (AEST)
-Received: by smtp01.aussiebb.com.au (Postfix, from userid 116)
-	id 728121004AD; Wed, 21 May 2025 15:35:16 +1000 (AEST)
-X-Spam-Level: 
-Received: from [192.168.68.229] (159-196-82-144.9fc452.per.static.aussiebb.net [159.196.82.144])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: ian146@aussiebb.com.au)
-	by smtp01.aussiebb.com.au (Postfix) with ESMTPSA id 0B9391004A3;
-	Wed, 21 May 2025 15:35:13 +1000 (AEST)
-Message-ID: <c36cb32c-9434-4978-af75-ff6f04468c44@themaw.net>
-Date: Wed, 21 May 2025 13:35:12 +0800
+	s=arc-20240116; t=1747805719; c=relaxed/simple;
+	bh=I7zxNZxt7RH9ds2Y8P9laZHGDaSM5tGlcu93i7mcc5w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fd5Ci4xvAX6NAwZf91eUdFOUXl3KvffVzy3dzyPbaFOxaAuM3FWL38d4HKmKc7DMzUI9ATmdeTkSKjKAtkp+CXNA7ATp2jXxbG3S5WNmYZI1iwh8Q6zxY1y+JABRyX8f5F2lcg7Sm0bDGp1qEN+RBwz8NBXDPwVuuMXiOApsotY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWTWqe/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7700BC4CEE4;
+	Wed, 21 May 2025 05:35:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747805719;
+	bh=I7zxNZxt7RH9ds2Y8P9laZHGDaSM5tGlcu93i7mcc5w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dWTWqe/y/uQmzKO8woZ8deKbifnN7EG3AlC7ntUoOsBdAIvDs09IhR1GWOv766xXW
+	 ek0Qtcsq0eb+D7sv/Fey6VnF7+Mat8faeUCHBldREHn2UN8KbUj1yhMPz4YaTt0yNL
+	 o8Jg0frSNb0UDGY5V+zg2TBSGFE3XdC4fPip2Xbk=
+Date: Wed, 21 May 2025 07:35:16 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Eric Naim <dnaim@cachyos.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, David.Wu3@amd.com,
+	alexander.deucher@amd.com
+Subject: Re: [PATCH 6.14 000/145] 6.14.8-rc1 review
+Message-ID: <2025052153-bleach-ouch-0e59@gregkh>
+References: <20250520125810.535475500@linuxfoundation.org>
+ <8db9b7cb-03ff-4aca-aafa-bcab4d1b5d82@cachyos.org>
+ <c364e0d7-f3b2-484d-869b-095140e2537b@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 0/5] kernfs: backport locking and concurrency
- improvement
-To: Qingfang Deng <dqfext@gmail.com>, stable@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>,
- linux-kernel@vger.kernel.org
-References: <20250521015336.3450911-1-dqfext@gmail.com>
-Content-Language: en-US
-From: Ian Kent <raven@themaw.net>
-Autocrypt: addr=raven@themaw.net; keydata=
- xsFNBE6c/ycBEADdYbAI5BKjE+yw+dOE+xucCEYiGyRhOI9JiZLUBh+PDz8cDnNxcCspH44o
- E7oTH0XPn9f7Zh0TkXWA8G6BZVCNifG7mM9K8Ecp3NheQYCk488ucSV/dz6DJ8BqX4psd4TI
- gpcs2iDQlg5CmuXDhc5z1ztNubv8hElSlFX/4l/U18OfrdTbbcjF/fivBkzkVobtltiL+msN
- bDq5S0K2KOxRxuXGaDShvfbz6DnajoVLEkNgEnGpSLxQNlJXdQBTE509MA30Q2aGk6oqHBQv
- zxjVyOu+WLGPSj7hF8SdYOjizVKIARGJzDy8qT4v/TLdVqPa2d0rx7DFvBRzOqYQL13/Zvie
- kuGbj3XvFibVt2ecS87WCJ/nlQxCa0KjGy0eb3i4XObtcU23fnd0ieZsQs4uDhZgzYB8LNud
- WXx9/Q0qsWfvZw7hEdPdPRBmwRmt2O1fbfk5CQN1EtNgS372PbOjQHaIV6n+QQP2ELIa3X5Z
- RnyaXyzwaCt6ETUHTslEaR9nOG6N3sIohIwlIywGK6WQmRBPyz5X1oF2Ld9E0crlaZYFPMRH
- hQtFxdycIBpTlc59g7uIXzwRx65HJcyBflj72YoTzwchN6Wf2rKq9xmtkV2Eihwo8WH3XkL9
- cjVKjg8rKRmqIMSRCpqFBWJpT1FzecQ8EMV0fk18Q5MLj441yQARAQABzRtJYW4gS2VudCA8
- cmF2ZW5AdGhlbWF3Lm5ldD7CwXsEEwECACUCGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheA
- BQJOnjOcAhkBAAoJEOdnc4D1T9iphrYQALHK3J5rjzy4qPiLJ0EE9eJkyV1rqtzct5Ah9pu6
- LSkqxgQCfN3NmKOoj+TpbXGagg28qTGjkFvJSlpNY7zAj+fA11UVCxERgQBOJcPrbgaeYZua
- E4ST+w/inOdatNZRnNWGugqvez80QGuxFRQl1ttMaky7VxgwNTXcFNjClW3ifdD75gHlrU0V
- ZUULa1a0UVip0rNc7mFUKxhEUk+8NhowRZUk0nt1JUwezlyIYPysaN7ToVeYE4W0VgpWczmA
- tHtkRGIAgwL7DCNNJ6a+H50FEsyixmyr/pMuNswWbr3+d2MiJ1IYreZLhkGfNq9nG/+YK/0L
- Q2/OkIsz8bOrkYLTw8WwzfTz2RXV1N2NtsMKB/APMcuuodkSI5bzzgyu1cDrGLz43faFFmB9
- xAmKjibRLk6ChbmrZhuCYL0nn+RkL036jMLw5F1xiu2ltEgK2/gNJhm29iBhvScUKOqUnbPw
- DSMZ2NipMqj7Xy3hjw1CStEy3pCXp8/muaB8KRnf92VvjO79VEls29KuX6rz32bcBM4qxsVn
- cOqyghSE69H3q4SY7EbhdIfacUSEUV+m/pZK5gnJIl6n1Rh6u0MFXWttvu0j9JEl92Ayj8u8
- J/tYvFMpag3nTeC3I+arPSKpeWDX08oisrEp0Yw15r+6jbPjZNz7LvrYZ2fa3Am6KRn0zsFN
- BE6c/ycBEADZzcb88XlSiooYoEt3vuGkYoSkz7potX864MSNGekek1cwUrXeUdHUlw5zwPoC
- 4H5JF7D8q7lYoelBYJ+Mf0vdLzJLbbEtN5+v+s2UEbkDlnUQS1yRo1LxyNhJiXsQVr7WVA/c
- 8qcDWUYX7q/4Ckg77UO4l/eHCWNnHu7GkvKLVEgRjKPKroIEnjI0HMK3f6ABDReoc741RF5X
- X3qwmCgKZx0AkLjObXE3W769dtbNbWmW0lgFKe6dxlYrlZbq25Aubhcu2qTdQ/okx6uQ41+v
- QDxgYtocsT/CG1u0PpbtMeIm3mVQRXmjDFKjKAx9WOX/BHpk7VEtsNQUEp1lZo6hH7jeo5me
- CYFzgIbXdsMA9TjpzPpiWK9GetbD5KhnDId4ANMrWPNuGC/uPHDjtEJyf0cwknsRFLhL4/NJ
- KvqAuiXQ57x6qxrkuuinBQ3S9RR3JY7R7c3rqpWyaTuNNGPkIrRNyePky/ZTgTMA5of8Wioy
- z06XNhr6mG5xT+MHztKAQddV3xFy9f3Jrvtd6UvFbQPwG7Lv+/UztY5vPAzp7aJGz2pDbb0Q
- BC9u1mrHICB4awPlja/ljn+uuIb8Ow3jSy+Sx58VFEK7ctIOULdmnHXMFEihnOZO3NlNa6q+
- XZOK7J00Ne6y0IBAaNTM+xMF+JRc7Gx6bChES9vxMyMbXwARAQABwsFfBBgBAgAJBQJOnP8n
- AhsMAAoJEOdnc4D1T9iphf4QAJuR1jVyLLSkBDOPCa3ejvEqp4H5QUogl1ASkEboMiWcQJQd
- LaH6zHNySMnsN6g/UVhuviANBxtW2DFfANPiydox85CdH71gLkcOE1J7J6Fnxgjpc1Dq5kxh
- imBSqa2hlsKUt3MLXbjEYL5OTSV2RtNP04KwlGS/xMfNwQf2O2aJoC4mSs4OeZwsHJFVF8rK
- XDvL/NzMCnysWCwjVIDhHBBIOC3mecYtXrasv9nl77LgffyyaAAQZz7yZcvn8puj9jH9h+mr
- L02W+gd+Sh6Grvo5Kk4ngzfT/FtscVGv9zFWxfyoQHRyuhk0SOsoTNYN8XIWhosp9GViyDtE
- FXmrhiazz7XHc32u+o9+WugpTBZktYpORxLVwf9h1PY7CPDNX4EaIO64oyy9O3/huhOTOGha
- nVvqlYHyEYCFY7pIfaSNhgZs2aV0oP13XV6PGb5xir5ah+NW9gQk/obnvY5TAVtgTjAte5tZ
- +coCSBkOU1xMiW5Td7QwkNmtXKHyEF6dxCAMK1KHIqxrBaZO27PEDSHaIPHePi7y4KKq9C9U
- 8k5V5dFA0mqH/st9Sw6tFbqPkqjvvMLETDPVxOzinpU2VBGhce4wufSIoVLOjQnbIo1FIqWg
- Dx24eHv235mnNuGHrG+EapIh7g/67K0uAzwp17eyUYlE5BMcwRlaHMuKTil6
-In-Reply-To: <20250521015336.3450911-1-dqfext@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c364e0d7-f3b2-484d-869b-095140e2537b@amd.com>
 
-On 21/5/25 09:53, Qingfang Deng wrote:
-> KCSAN reports concurrent accesses to inode->i_mode:
->
-> ==================================================================
-> BUG: KCSAN: data-race in generic_permission / kernfs_iop_permission
->
-> write to 0xffffffe001129590 of 2 bytes by task 2477 on cpu 1:
->   kernfs_iop_permission+0x72/0x1a0
->   link_path_walk.part.0.constprop.0+0x348/0x420
->   path_openat+0xee/0x10f0
->   do_filp_open+0xaa/0x160
->   do_sys_openat2+0x252/0x380
->   sys_openat+0x4c/0xa0
->   ret_from_syscall+0x0/0x2
->
-> read to 0xffffffe001129590 of 2 bytes by task 3902 on cpu 3:
->   generic_permission+0x26/0x120
->   kernfs_iop_permission+0x150/0x1a0
->   link_path_walk.part.0.constprop.0+0x348/0x420
->   path_lookupat+0x58/0x280
->   filename_lookup+0xae/0x1f0
->   user_path_at_empty+0x3a/0x70
->   vfs_statx+0x82/0x170
->   __do_sys_newfstatat+0x36/0x70
->   sys_newfstatat+0x2e/0x50
->   ret_from_syscall+0x0/0x2
->
-> Reported by Kernel Concurrency Sanitizer on:
-> CPU: 3 PID: 3902 Comm: ls Not tainted 5.10.104+ #0
-> ==================================================================
+On Tue, May 20, 2025 at 09:42:13PM -0500, Mario Limonciello wrote:
+> On 5/20/2025 4:34 PM, Eric Naim wrote:
+> > Hi Greg,
+> > 
+> > On 5/20/25 21:49, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 6.14.8 release.
+> > > There are 145 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
+> > > Anything received after that time might be too late.
+> > > 
+> > > The whole patch series can be found in one patch at:
+> > > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.8-rc1.gz
+> > > or in the git tree and branch at:
+> > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> > > and the diffstat can be found below.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > > 
+> > > -------------
+> > > Pseudo-Shortlog of commits:
+> > > 
+> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > >      Linux 6.14.8-rc1
+> > > 
+> > > Dan Carpenter <dan.carpenter@linaro.org>
+> > >      phy: tegra: xusb: remove a stray unlock
+> > > 
+> > > Tiezhu Yang <yangtiezhu@loongson.cn>
+> > >      perf tools: Fix build error for LoongArch
+> > > 
+> > > Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > >      mm/page_alloc: fix race condition in unaccepted memory handling
+> > > 
+> > > Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> > >      drm/xe/gsc: do not flush the GSC worker from the reset path
+> > > 
+> > > Maciej Falkowski <maciej.falkowski@linux.intel.com>
+> > >      accel/ivpu: Flush pending jobs of device's workqueues
+> > > 
+> > > Karol Wachowski <karol.wachowski@intel.com>
+> > >      accel/ivpu: Fix missing MMU events if file_priv is unbound
+> > > 
+> > > Karol Wachowski <karol.wachowski@intel.com>
+> > >      accel/ivpu: Fix missing MMU events from reserved SSID
+> > > 
+> > > Karol Wachowski <karol.wachowski@intel.com>
+> > >      accel/ivpu: Move parts of MMU event IRQ handling to thread handler
+> > > 
+> > > Karol Wachowski <karol.wachowski@intel.com>
+> > >      accel/ivpu: Dump only first MMU fault from single context
+> > > 
+> > > Maciej Falkowski <maciej.falkowski@linux.intel.com>
+> > >      accel/ivpu: Use workqueue for IRQ handling
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: Refactor remove call with idxd_cleanup() helper
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: fix memory leak in error handling path of idxd_pci_probe
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: fix memory leak in error handling path of idxd_alloc
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: Add missing idxd cleanup to fix memory leak in remove call
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: Add missing cleanups in cleanup internals
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: Add missing cleanup for early error out in idxd_setup_internals
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: fix memory leak in error handling path of idxd_setup_groups
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: fix memory leak in error handling path of idxd_setup_engines
+> > > 
+> > > Shuai Xue <xueshuai@linux.alibaba.com>
+> > >      dmaengine: idxd: fix memory leak in error handling path of idxd_setup_wqs
+> > > 
+> > > Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+> > >      dmaengine: ti: k3-udma: Use cap_mask directly from dma_device structure instead of a local copy
+> > > 
+> > > Ronald Wahl <ronald.wahl@legrand.com>
+> > >      dmaengine: ti: k3-udma: Add missing locking
+> > > 
+> > > Barry Song <baohua@kernel.org>
+> > >      mm: userfaultfd: correct dirty flags set for both present and swap pte
+> > > 
+> > > Wupeng Ma <mawupeng1@huawei.com>
+> > >      mm: hugetlb: fix incorrect fallback for subpool
+> > > 
+> > > hexue <xue01.he@samsung.com>
+> > >      io_uring/uring_cmd: fix hybrid polling initialization issue
+> > > 
+> > > Jens Axboe <axboe@kernel.dk>
+> > >      io_uring/memmap: don't use page_address() on a highmem page
+> > > 
+> > > Nathan Chancellor <nathan@kernel.org>
+> > >      net: qede: Initialize qede_ll_ops with designated initializer
+> > > 
+> > > Steven Rostedt <rostedt@goodmis.org>
+> > >      ring-buffer: Fix persistent buffer when commit page is the reader page
+> > > 
+> > > Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+> > >      wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl
+> > > 
+> > > Fedor Pchelkin <pchelkin@ispras.ru>
+> > >      wifi: mt76: disable napi on driver removal
+> > > 
+> > > Jarkko Sakkinen <jarkko@kernel.org>
+> > >      tpm: Mask TPM RC in tpm2_start_auth_session()
+> > > 
+> > > Aaron Kling <webgeek1234@gmail.com>
+> > >      spi: tegra114: Use value to check for invalid delays
+> > > 
+> > > Jethro Donaldson <devel@jro.nz>
+> > >      smb: client: fix memory leak during error handling for POSIX mkdir
+> > > 
+> > > Steve Siwinski <ssiwinski@atto.com>
+> > >      scsi: sd_zbc: block: Respect bio vector limits for REPORT ZONES buffer
+> > > 
+> > > Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > >      phy: renesas: rcar-gen3-usb2: Set timing registers only once
+> > > 
+> > > Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > >      phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
+> > > 
+> > > Oleksij Rempel <o.rempel@pengutronix.de>
+> > >      net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
+> > > 
+> > > Oleksij Rempel <o.rempel@pengutronix.de>
+> > >      net: dsa: microchip: let phylink manage PHY EEE configuration on KSZ switches
+> > > 
+> > > Ma Ke <make24@iscas.ac.cn>
+> > >      phy: Fix error handling in tegra_xusb_port_init
+> > > 
+> > > Wayne Chang <waynec@nvidia.com>
+> > >      phy: tegra: xusb: Use a bitmask for UTMI pad power state tracking
+> > > 
+> > > Steven Rostedt <rostedt@goodmis.org>
+> > >      tracing: samples: Initialize trace_array_printk() with the correct function
+> > > 
+> > > Ashish Kalra <ashish.kalra@amd.com>
+> > >      x86/sev: Make sure pages are not skipped during kdump
+> > > 
+> > > Ashish Kalra <ashish.kalra@amd.com>
+> > >      x86/sev: Do not touch VMSA pages during SNP guest memory kdump
+> > > 
+> > > pengdonglin <pengdonglin@xiaomi.com>
+> > >      ftrace: Fix preemption accounting for stacktrace filter command
+> > > 
+> > > pengdonglin <pengdonglin@xiaomi.com>
+> > >      ftrace: Fix preemption accounting for stacktrace trigger command
+> > > 
+> > > Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> > >      i2c: designware: Fix an error handling path in i2c_dw_pci_probe()
+> > > 
+> > > Nathan Chancellor <nathan@kernel.org>
+> > >      kbuild: Disable -Wdefault-const-init-unsafe
+> > > 
+> > > Michael Kelley <mhklinux@outlook.com>
+> > >      Drivers: hv: vmbus: Remove vmbus_sendpacket_pagebuffer()
+> > > 
+> > > Michael Kelley <mhklinux@outlook.com>
+> > >      Drivers: hv: Allow vmbus_sendpacket_mpb_desc() to create multiple ranges
+> > > 
+> > > Michael Kelley <mhklinux@outlook.com>
+> > >      hv_netvsc: Remove rmsg_pgcnt
+> > > 
+> > > Michael Kelley <mhklinux@outlook.com>
+> > >      hv_netvsc: Preserve contiguous PFN grouping in the page buffer array
+> > > 
+> > > Michael Kelley <mhklinux@outlook.com>
+> > >      hv_netvsc: Use vmbus_sendpacket_mpb_desc() to send VMBus messages
+> > > 
+> > > Dragan Simic <dsimic@manjaro.org>
+> > >      arm64: dts: rockchip: Remove overdrive-mode OPPs from RK3588J SoC dtsi
+> > > 
+> > > Sam Edwards <cfsworks@gmail.com>
+> > >      arm64: dts: rockchip: Allow Turing RK1 cooling fan to spin down
+> > > 
+> > > Christian Hewitt <christianshewitt@gmail.com>
+> > >      arm64: dts: amlogic: dreambox: fix missing clkc_audio node
+> > > 
+> > > Hyejeong Choi <hjeong.choi@samsung.com>
+> > >      dma-buf: insert memory barrier before updating num_fences
+> > > 
+> > > Nicolas Chauvet <kwizart@gmail.com>
+> > >      ALSA: usb-audio: Add sample rate quirk for Microdia JP001 USB Camera
+> > > 
+> > > Christian Heusel <christian@heusel.eu>
+> > >      ALSA: usb-audio: Add sample rate quirk for Audioengine D1
+> > > 
+> > > Wentao Liang <vulab@iscas.ac.cn>
+> > >      ALSA: es1968: Add error handling for snd_pcm_hw_constraint_pow2()
+> > > 
+> > > Jeremy Linton <jeremy.linton@arm.com>
+> > >      ACPI: PPTT: Fix processor subtable walk
+> > > 
+> > > Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> > >      gpio: pca953x: fix IRQ storm on system wake up
+> > > 
+> > > Alexey Makhalov <alexey.makhalov@broadcom.com>
+> > >      MAINTAINERS: Update Alexey Makhalov's email address
+> > > 
+> > > Wayne Lin <Wayne.Lin@amd.com>
+> > >      drm/amd/display: Avoid flooding unnecessary info messages
+> > > 
+> > > Wayne Lin <Wayne.Lin@amd.com>
+> > >      drm/amd/display: Correct the reply value when AUX write incomplete
+> > > 
+> > > Philip Yang <Philip.Yang@amd.com>
+> > >      drm/amdgpu: csa unmap use uninterruptible lock
+> > > 
+> > > Tim Huang <tim.huang@amd.com>
+> > >      drm/amdgpu: fix incorrect MALL size for GFX1151
+> > > 
+> > > David (Ming Qiang) Wu <David.Wu3@amd.com>
+> > >      drm/amdgpu: read back register after written for VCN v4.0.5
+> > > 
+> > 
+> > This commit seems to breaking a couple of devices with the Phoenix APU, most notably the Ryzen AI chips. Note that this commit in mainline seems to work as intended, and after doing a little bit of digging, [1] landed in 6.15 and so this cherrypick may not be so trivial after all. Attached is a kernel trace highlighting the breakage caused by this commit, along with [2] for the full log.
+> > 
+> > Also adding Alex, David and Mario to Ccs.
+> > 
+> 
+> Just a minor correction - VCN 4.0.5 is on Strix.  So this report is not
+> likely from a Phoenix APU.
+> 
+> Nonetheless I agree; I suspect backporting
+> ecc9ab4e924b7eb9e2c4a668162aaa1d9d60d08c will help the issue.
 
-It's been soo long since this was merged.
+If it is required, someone is going to need to provide a working
+version, as that does not apply cleanly as-is.
 
-I seem to vaguely remember something along these lines and after 
-analyzing it
+thanks,
 
-came to the conclusion it was a false positive.
-
-Let me think about it for a while and see if I can remember the reasoning.
-
-
-Ian
-
->
-> kernfs_iop_permission+0x72/0x1a0:
->
-> kernfs_refresh_inode at fs/kernfs/inode.c:174
->   169 	
->   170 	static void kernfs_refresh_inode(struct kernfs_node *kn, struct inode *inode)
->   171 	{
->   172 		struct kernfs_iattrs *attrs = kn->iattr;
->   173 	
->> 174<		inode->i_mode = kn->mode;
->   175 		if (attrs)
->   176 			/*
->   177 			 * kernfs_node has non-default attributes get them from
->   178 			 * persistent copy in kernfs_node.
->   179 			 */
->
-> (inlined by) kernfs_iop_permission at fs/kernfs/inode.c:285
->   280 			return -ECHILD;
->   281 	
->   282 		kn = inode->i_private;
->   283 	
->   284 		mutex_lock(&kernfs_mutex);
->> 285<		kernfs_refresh_inode(kn, inode);
->   286 		mutex_unlock(&kernfs_mutex);
->   287 	
->   288 		return generic_permission(inode, mask);
->   289 	}
->   290 	
->
-> generic_permission+0x26/0x120:
->
-> acl_permission_check at fs/namei.c:298
->   293 	 * Note that the POSIX ACL check cares about the MAY_NOT_BLOCK bit,
->   294 	 * for RCU walking.
->   295 	 */
->   296 	static int acl_permission_check(struct inode *inode, int mask)
->   297 	{
->> 298<		unsigned int mode = inode->i_mode;
->   299 	
->   300 		/* Are we the owner? If so, ACL's don't matter */
->   301 		if (likely(uid_eq(current_fsuid(), inode->i_uid))) {
->   302 			mask &= 7;
->   303 			mode >>= 6;
->
-> (inlined by) generic_permission at fs/namei.c:353
->   348 		int ret;
->   349 	
->   350 		/*
->   351 		 * Do the basic permission checks.
->   352 		 */
->> 353<		ret = acl_permission_check(inode, mask);
->   354 		if (ret != -EACCES)
->   355 			return ret;
->   356 	
->   357 		if (S_ISDIR(inode->i_mode)) {
->   358 			/* DACs are overridable for directories */
->
-> Backport the series from 5.15 to fix the concurrency bug.
-> https://lore.kernel.org/all/162642752894.63632.5596341704463755308.stgit@web.messagingengine.com
->
-> Ian Kent (5):
->    kernfs: add a revision to identify directory node changes
->    kernfs: use VFS negative dentry caching
->    kernfs: switch kernfs to use an rwsem
->    kernfs: use i_lock to protect concurrent inode updates
->    kernfs: dont call d_splice_alias() under kernfs node lock
->
->   fs/kernfs/dir.c             | 153 ++++++++++++++++++++----------------
->   fs/kernfs/file.c            |   4 +-
->   fs/kernfs/inode.c           |  26 +++---
->   fs/kernfs/kernfs-internal.h |  24 +++++-
->   fs/kernfs/mount.c           |  12 +--
->   fs/kernfs/symlink.c         |   4 +-
->   include/linux/kernfs.h      |   7 +-
->   7 files changed, 138 insertions(+), 92 deletions(-)
->
+greg k-h
 
