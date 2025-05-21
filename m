@@ -1,320 +1,156 @@
-Return-Path: <stable+bounces-145800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA0DABF145
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:17:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A3AABF17C
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A93189026B
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C66A71BC257C
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACC525B1DA;
-	Wed, 21 May 2025 10:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B381C25C80A;
+	Wed, 21 May 2025 10:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d27iojJS"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="eWeJQa6e"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4725C804
-	for <stable@vger.kernel.org>; Wed, 21 May 2025 10:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E55625C814;
+	Wed, 21 May 2025 10:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747822589; cv=none; b=rEVYFHvnxj+G0eRuXHB+IeQykGqnh2GNt04pBcOic/RVO99f2iMZvLMtyuSApMt5iYiWTqHNSRBHO6zCk6Qxu7zrSb8OKJwUfweVFBY6yIlWVrwqoIHTxWCs7gXkN33IgQghEnRaXDnxrY2rdKHFngCGJCpvBUuhcjXvgD+srJ8=
+	t=1747823109; cv=none; b=lW9HozleZIcCy1IaapBOVuQfRwJPYCphXcQRK13eY2+mTiAGTdf6XQ35vg6mxBPLgo0LFM+D+Ru1H4lXKfucOBfW8PFnzoRspdKMYR1rbFDf4j3XvaAFj8Mx4dKQXjDbo0A5SSzXENcWc0zDdyi16yx+am+0I8GSZ/8TQJ9gozw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747822589; c=relaxed/simple;
-	bh=XhkOnIFSZzfz8vBD/tR/JxVR+GPcZ8tyc76NnJLwy9M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WQetfxMWhGd9kOY03DfQxAzx1hAqzCLfWA0DRtlb6W+8ACtillt9VQbg2Hk+FSiqCjFjZbwcjAPr+l/tFXbF+siulCsmkMZIna8b3Bh+FmqLaCT7qlzaUacDx1B+USJWz2MLiLwcpssD0YK/r1zcOb1vLY6RwcfAiE+owkj+L94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d27iojJS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747822586;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9kkU7Xfk94mr2Cbd+PQ9YPHZhQWHng6qRUMVT0EvtHU=;
-	b=d27iojJSNSKwVtoGVgCJzhDZCPT8ssTSNgaT7ek8dhH3EY4vLgAQ2R8SsVKSKT3nuINls5
-	30qFDq4Bkn2OtZ2CGGMytkDfCmmFK+OiXKUxTTezAxSY6Lgu31oSlXVuLR0yya7ihNmEN9
-	5IAWfD3+9KMS65uPoOUQoWcjBBzxEH4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-wcE2gGmaMA2gQkzPV27zrA-1; Wed, 21 May 2025 06:16:25 -0400
-X-MC-Unique: wcE2gGmaMA2gQkzPV27zrA-1
-X-Mimecast-MFC-AGG-ID: wcE2gGmaMA2gQkzPV27zrA_1747822584
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a3696a0d3aso1605474f8f.2
-        for <stable@vger.kernel.org>; Wed, 21 May 2025 03:16:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747822584; x=1748427384;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9kkU7Xfk94mr2Cbd+PQ9YPHZhQWHng6qRUMVT0EvtHU=;
-        b=Gk29Xo8p3o9C/P20xU9E14IRfvHhW9YT+iVJ24Utbzc2lw0+ChK+jIfcT4qpQcPTkz
-         URlqbKchHZCSnILGPP5O6iGfBWwx9h5yKad3LnQojDaIXIGuVnI4KmKIMT7GlsJrbqVN
-         f2m/tpxAal9l4gcS3bKVqyNFmxsT3c2eaSFK8QGVnMpunxBVj++6kMNCy8NjEw/Dvlbk
-         kzndQNdAQdaz9T9btK3pmsP2ZnE+BXOH0szqIkcJUdKuSWZZE8AaHJE7ZTqB6tXUgAbf
-         wsb6OVtlAO+zNOp+c9mz5tfrNEq+yn7Wf1LuzuWhJaAurlK0GWTnCcYpWyUkpumb7lUf
-         eLQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUucrrH8UsoNig7k1P6HLk1jMgIEoSuMjDE1FZGhV3ezLk9TqUO/hJfAanf5Tiht32JcH0MMfk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyK0uKpZGz9Sx/6OJqxJwQYVpTHdX1OooOaYVMUwLCns6GHxdp0
-	ciSZyeEvnY9VngRRNAiF8tDbGcAwhyU1Mfq54x1U7D7cRRGARfKg5Ueo9AZPDcno1N9KaFRRWoy
-	5s3Ko5Fbp3vsKpQIffKywsQ+R3cNMGXc9vbdppjJEzb2MF6XvLfsz7KG7jQ==
-X-Gm-Gg: ASbGncuHEszAZmChIYvEkNUlBXvecZauGllilShQB6av61rt1ucLYD3hHxwsxKcdpLw
-	HyQu/jhJ7KjZC8ukK2O4T+nmZ99ctGWGcN/hFFSFk6OeA96qcNGZ7tPnGoL89UxSfL6FeoRtaIx
-	AGjz+DgusuKAOH5mM1eRIgC1Nfz45PPBqcUNKXSICY3xST1WuPRbeAS7eaw6el7f1DTP61S9JMU
-	8KsZzNFZoPGuDr6ICpqTqok1fYKAkJnpynzEMmByMYcx4UMWsjYnUm0Nlk74LtSk4jDJoFe0ZkI
-	PeMS2g==
-X-Received: by 2002:a05:6000:1881:b0:3a2:595:e8cb with SMTP id ffacd0b85a97d-3a35ffd28c6mr16271027f8f.45.1747822583794;
-        Wed, 21 May 2025 03:16:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHl5MRnm/anUQ/+Mk3nQZ83R7M1qg6DNqqWQEJvci6mEU3aauLFjKYMXFRTCdchPrjbC/Gz5Q==
-X-Received: by 2002:a05:6000:1881:b0:3a2:595:e8cb with SMTP id ffacd0b85a97d-3a35ffd28c6mr16270982f8f.45.1747822583350;
-        Wed, 21 May 2025 03:16:23 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca5a04csm19026409f8f.23.2025.05.21.03.16.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 03:16:22 -0700 (PDT)
-Date: Wed, 21 May 2025 06:16:19 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Parav Pandit <parav@nvidia.com>
-Cc: "stefanha@redhat.com" <stefanha@redhat.com>,
-	"axboe@kernel.dk" <axboe@kernel.dk>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Israel Rukshin <israelr@nvidia.com>
-Subject: Re: [PATCH v1] virtio_blk: Fix disk deletion hang on device surprise
- removal
-Message-ID: <20250521061236-mutt-send-email-mst@kernel.org>
-References: <20250521062744.1361774-1-parav@nvidia.com>
- <20250521041506-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195F56A84CAF0D486B82239DC9EA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250521051556-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195A306A9A8CFE8FFC1B033DC9EA@CY8PR12MB7195.namprd12.prod.outlook.com>
+	s=arc-20240116; t=1747823109; c=relaxed/simple;
+	bh=5HlH8MNJv3syXIN/vHnN2vVQp8Ri0Bh049wtA3tHBCE=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=F1jFZlYmdjy/1hQJTJuTKU0si8mkmh+UabbGCCZsu+SDqdO5uKMgUZAaziTniLc8dG+bEYfl+4OOcpy12+dK2514KTrUfo3JunB3K7S+/r08oW3eK9JeGX4Adu0goKfKVLU2FJ6+4zTyDmKZHc3hLxXPN1MQ2vZbjpiqp3NrEaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=eWeJQa6e; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+	id C8E8C206832E; Wed, 21 May 2025 03:25:06 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C8E8C206832E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1747823106;
+	bh=QR4U2caREfe4Ci0S/IeCgwAGch4AUN3kUS6ReAl1HII=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eWeJQa6ex5RvTfbojYleEB1LCyZwvno5vXiEyXQi32dqUJu2w3hOass/vOFcuQ845
+	 byn7nsXClFZKcu9Me+QeA2wBWBk9sjRvBlwpzz5Pp1mgHqtjYRwPBH5J5TQ/WhIjFl
+	 gnoMDBCZt1cafttyeupHhDqUm91PSgNEJ3DLnBSQ=
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	kuniyu@amazon.com,
+	ahmed.zaki@intel.com,
+	aleksander.lobakin@intel.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: ssengar@microsoft.com,
+	stable@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>
+Subject: [PATCH net,v2] hv_netvsc: fix potential deadlock in netvsc_vf_setxdp()
+Date: Wed, 21 May 2025 03:25:03 -0700
+Message-Id: <1747823103-3420-1-git-send-email-ssengar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY8PR12MB7195A306A9A8CFE8FFC1B033DC9EA@CY8PR12MB7195.namprd12.prod.outlook.com>
 
-On Wed, May 21, 2025 at 09:32:30AM +0000, Parav Pandit wrote:
-> > From: Michael S. Tsirkin <mst@redhat.com>
-> > Sent: Wednesday, May 21, 2025 2:49 PM
-> > To: Parav Pandit <parav@nvidia.com>
-> > Cc: stefanha@redhat.com; axboe@kernel.dk; virtualization@lists.linux.dev;
-> > linux-block@vger.kernel.or; stable@vger.kernel.org; NBU-Contact-Li Rongqing
-> > (EXTERNAL) <lirongqing@baidu.com>; Chaitanya Kulkarni
-> > <chaitanyak@nvidia.com>; xuanzhuo@linux.alibaba.com;
-> > pbonzini@redhat.com; jasowang@redhat.com; Max Gurtovoy
-> > <mgurtovoy@nvidia.com>; Israel Rukshin <israelr@nvidia.com>
-> > Subject: Re: [PATCH v1] virtio_blk: Fix disk deletion hang on device surprise
-> > removal
-> > 
-> > On Wed, May 21, 2025 at 09:14:31AM +0000, Parav Pandit wrote:
-> > > > From: Michael S. Tsirkin <mst@redhat.com>
-> > > > Sent: Wednesday, May 21, 2025 1:48 PM
-> > > >
-> > > > On Wed, May 21, 2025 at 06:37:41AM +0000, Parav Pandit wrote:
-> > > > > When the PCI device is surprise removed, requests may not complete
-> > > > > the device as the VQ is marked as broken. Due to this, the disk
-> > > > > deletion hangs.
-> > > > >
-> > > > > Fix it by aborting the requests when the VQ is broken.
-> > > > >
-> > > > > With this fix now fio completes swiftly.
-> > > > > An alternative of IO timeout has been considered, however when the
-> > > > > driver knows about unresponsive block device, swiftly clearing
-> > > > > them enables users and upper layers to react quickly.
-> > > > >
-> > > > > Verified with multiple device unplug iterations with pending
-> > > > > requests in virtio used ring and some pending with the device.
-> > > > >
-> > > > > Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of
-> > > > > virtio pci device")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Reported-by: lirongqing@baidu.com
-> > > > > Closes:
-> > > > >
-> > > > https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca9b4
-> > > > 74
-> > > > > 1@baidu.com/
-> > > > > Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
-> > > > > Reviewed-by: Israel Rukshin <israelr@nvidia.com>
-> > > > > Signed-off-by: Parav Pandit <parav@nvidia.com>
-> > > > > ---
-> > > > > changelog:
-> > > > > v0->v1:
-> > > > > - Fixed comments from Stefan to rename a cleanup function
-> > > > > - Improved logic for handling any outstanding requests
-> > > > >   in bio layer
-> > > > > - improved cancel callback to sync with ongoing done()
-> > > >
-> > > > thanks for the patch!
-> > > > questions:
-> > > >
-> > > >
-> > > > > ---
-> > > > >  drivers/block/virtio_blk.c | 95
-> > > > > ++++++++++++++++++++++++++++++++++++++
-> > > > >  1 file changed, 95 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/block/virtio_blk.c
-> > > > > b/drivers/block/virtio_blk.c index 7cffea01d868..5212afdbd3c7
-> > > > > 100644
-> > > > > --- a/drivers/block/virtio_blk.c
-> > > > > +++ b/drivers/block/virtio_blk.c
-> > > > > @@ -435,6 +435,13 @@ static blk_status_t virtio_queue_rq(struct
-> > > > blk_mq_hw_ctx *hctx,
-> > > > >  	blk_status_t status;
-> > > > >  	int err;
-> > > > >
-> > > > > +	/* Immediately fail all incoming requests if the vq is broken.
-> > > > > +	 * Once the queue is unquiesced, upper block layer flushes any
-> > > > pending
-> > > > > +	 * queued requests; fail them right away.
-> > > > > +	 */
-> > > > > +	if (unlikely(virtqueue_is_broken(vblk->vqs[qid].vq)))
-> > > > > +		return BLK_STS_IOERR;
-> > > > > +
-> > > > >  	status = virtblk_prep_rq(hctx, vblk, req, vbr);
-> > > > >  	if (unlikely(status))
-> > > > >  		return status;
-> > > >
-> > > > just below this:
-> > > >         spin_lock_irqsave(&vblk->vqs[qid].lock, flags);
-> > > >         err = virtblk_add_req(vblk->vqs[qid].vq, vbr);
-> > > >         if (err) {
-> > > >
-> > > >
-> > > > and virtblk_add_req calls virtqueue_add_sgs, so it will fail on a broken vq.
-> > > >
-> > > > Why do we need to check it one extra time here?
-> > > >
-> > > It may work, but for some reason if the hw queue is stopped in this flow, it
-> > can hang the IOs flushing.
-> > 
-> > > I considered it risky to rely on the error code ENOSPC returned by non virtio-
-> > blk driver.
-> > > In other words, if lower layer changed for some reason, we may end up in
-> > stopping the hw queue when broken, and requests would hang.
-> > >
-> > > Compared to that one-time entry check seems more robust.
-> > 
-> > I don't get it.
-> > Checking twice in a row is more robust?
-> No. I am not confident on the relying on the error code -ENOSPC from layers outside of virtio-blk driver.
+The MANA driver's probe registers netdevice via the following call chain:
 
-You can rely on virtio core to return an error on a broken vq.
-The error won't be -ENOSPC though, why would it?
+mana_probe()
+  register_netdev()
+    register_netdevice()
 
-> If for a broken VQ, ENOSPC arrives, then hw queue is stopped and requests could be stuck.
+register_netdevice() calls notifier callback for netvsc driver,
+holding the netdev mutex via netdev_lock_ops().
 
-Can you describe the scenario in more detail pls?
-where does ENOSPC arrive from? when is the vq get broken ...
+Further this netvsc notifier callback end up attempting to acquire the
+same lock again in dev_xdp_propagate() leading to deadlock.
 
+netvsc_netdev_event()
+  netvsc_vf_setxdp()
+    dev_xdp_propagate()
 
-> > What am I missing?
-> > Can you describe the scenario in more detail?
-> > 
-> > >
-> > > >
-> > > >
-> > > > > @@ -508,6 +515,11 @@ static void virtio_queue_rqs(struct rq_list
-> > *rqlist)
-> > > > >  	while ((req = rq_list_pop(rqlist))) {
-> > > > >  		struct virtio_blk_vq *this_vq = get_virtio_blk_vq(req-
-> > > > >mq_hctx);
-> > > > >
-> > > > > +		if (unlikely(virtqueue_is_broken(this_vq->vq))) {
-> > > > > +			rq_list_add_tail(&requeue_list, req);
-> > > > > +			continue;
-> > > > > +		}
-> > > > > +
-> > > > >  		if (vq && vq != this_vq)
-> > > > >  			virtblk_add_req_batch(vq, &submit_list);
-> > > > >  		vq = this_vq;
-> > > >
-> > > > similarly
-> > > >
-> > > The error code is not surfacing up here from virtblk_add_req().
-> > 
-> > 
-> > but wait a sec:
-> > 
-> > static void virtblk_add_req_batch(struct virtio_blk_vq *vq,
-> >                 struct rq_list *rqlist)
-> > {
-> >         struct request *req;
-> >         unsigned long flags;
-> >         bool kick;
-> > 
-> >         spin_lock_irqsave(&vq->lock, flags);
-> > 
-> >         while ((req = rq_list_pop(rqlist))) {
-> >                 struct virtblk_req *vbr = blk_mq_rq_to_pdu(req);
-> >                 int err;
-> > 
-> >                 err = virtblk_add_req(vq->vq, vbr);
-> >                 if (err) {
-> >                         virtblk_unmap_data(req, vbr);
-> >                         virtblk_cleanup_cmd(req);
-> >                         blk_mq_requeue_request(req, true);
-> >                 }
-> >         }
-> > 
-> >         kick = virtqueue_kick_prepare(vq->vq);
-> >         spin_unlock_irqrestore(&vq->lock, flags);
-> > 
-> >         if (kick)
-> >                 virtqueue_notify(vq->vq); }
-> > 
-> > 
-> > it actually handles the error internally?
-> > 
-> For all the errors it requeues the request here.
+This deadlock was not observed so far because net_shaper_ops was never set,
+and thus the lock was effectively a no-op in this case. Fix this by using
+netif_xdp_propagate() instead of dev_xdp_propagate() to avoid recursive
+locking in this path.
 
-ok and they will not prevent removal will they?
+Also, clean up the unregistration path by removing the unnecessary call to
+netvsc_vf_setxdp(), since unregister_netdevice_many_notify() already
+performs this cleanup via dev_xdp_uninstall().
 
+Fixes: 97246d6d21c2 ("net: hold netdev instance lock during ndo_bpf")
+Cc: stable@vger.kernel.org
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Tested-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+---
+[V2]
+ - Modified commit message
 
-> > 
-> > 
-> > 
-> > > It would end up adding checking for special error code here as well to abort
-> > by translating broken VQ -> EIO to break the loop in virtblk_add_req_batch().
-> > >
-> > > Weighing on specific error code-based data path that may require audit from
-> > lower layers now and future, an explicit check of broken in this layer could be
-> > better.
-> > >
-> > > [..]
-> > 
-> > 
-> > Checking add was successful is preferred because it has to be done
-> > *anyway* - device can get broken after you check before add.
-> > 
-> > So I would like to understand why are we also checking explicitly and I do not
-> > get it so far.
-> 
-> checking explicitly to not depend on specific error code-based logic.
+ drivers/net/hyperv/netvsc_bpf.c | 2 +-
+ drivers/net/hyperv/netvsc_drv.c | 2 --
+ net/core/dev.c                  | 1 +
+ 3 files changed, 2 insertions(+), 3 deletions(-)
 
-
-I do not understand. You must handle vq add errors anyway.
-
+diff --git a/drivers/net/hyperv/netvsc_bpf.c b/drivers/net/hyperv/netvsc_bpf.c
+index e01c5997a551..1dd3755d9e6d 100644
+--- a/drivers/net/hyperv/netvsc_bpf.c
++++ b/drivers/net/hyperv/netvsc_bpf.c
+@@ -183,7 +183,7 @@ int netvsc_vf_setxdp(struct net_device *vf_netdev, struct bpf_prog *prog)
+ 	xdp.command = XDP_SETUP_PROG;
+ 	xdp.prog = prog;
+ 
+-	ret = dev_xdp_propagate(vf_netdev, &xdp);
++	ret = netif_xdp_propagate(vf_netdev, &xdp);
+ 
+ 	if (ret && prog)
+ 		bpf_prog_put(prog);
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index d8b169ac0343..ee3aaf9c10e6 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2462,8 +2462,6 @@ static int netvsc_unregister_vf(struct net_device *vf_netdev)
+ 
+ 	netdev_info(ndev, "VF unregistering: %s\n", vf_netdev->name);
+ 
+-	netvsc_vf_setxdp(vf_netdev, NULL);
+-
+ 	reinit_completion(&net_device_ctx->vf_add);
+ 	netdev_rx_handler_unregister(vf_netdev);
+ 	netdev_upper_dev_unlink(vf_netdev, ndev);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index fccf2167b235..8c6c9d7fba26 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9953,6 +9953,7 @@ int netif_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
+ 
+ 	return dev->netdev_ops->ndo_bpf(dev, bpf);
+ }
++EXPORT_SYMBOL_GPL(netif_xdp_propagate);
+ 
+ u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode)
+ {
 -- 
-MST
+2.43.0
 
 
