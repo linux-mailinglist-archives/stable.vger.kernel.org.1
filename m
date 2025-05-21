@@ -1,130 +1,200 @@
-Return-Path: <stable+bounces-145740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256CCABE957
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 03:53:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2AB4ABE958
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 03:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACB9E4E18D1
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 01:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 001DC1BA742A
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 01:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7581C5D7B;
-	Wed, 21 May 2025 01:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19F922129F;
+	Wed, 21 May 2025 01:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="FaJoIMIv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="irbx//Nb"
 X-Original-To: stable@vger.kernel.org
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5A318AE2
-	for <stable@vger.kernel.org>; Wed, 21 May 2025 01:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30564221286;
+	Wed, 21 May 2025 01:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747792400; cv=none; b=P6lrkEgmY0xmFZdpCdVohMdCQKwuK45Jk+57qOX/NaTv2xnPBFc/n4x+UaqQQ0oH7w6LUop9UfRShLTu8z36Y5fXw5R1Oxt6Y4JTyzuacqN/AljgX6bkEIwOCcMOhE8zXTNfdH1RPfsjU8GW+NcbUYF/TC4iiraufs5pg+4II1c=
+	t=1747792423; cv=none; b=GwyFa07i1qc+mVK+80wx6xHCkAsvHqrXB3sf8J0lids4Ogrz3xaRZ7Qi1uTh7QciqXwuQ/eybIr8c+lXG1wAbzU3uojSPuJqxPJTXvqMwiOEOHY7td2pcUh2t2cr4M1UqNpmsvZn3IQ0T8sS6Czsfm//DaV8su1DlImg/nWvH8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747792400; c=relaxed/simple;
-	bh=BFUsm+CtFzkYoOFT0IcD/3GeiYNyfD5Fu+25O0J820Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=naLpJtgTQAY09PlBv0iw1KuJVX/ycMHyC19hHwEjV10kWYoRtmQlkkArLMFr2tXYh/Ie3eMIQ+mqpGeaNvPXb6nb7wERY75jZGdXH+g9Qz/+E11ZB+dvaNP/kiIOwxHHnTJvbxr0YpvRlf3PaLFDVpHWtcJ4TroHkSECsQgwcOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=FaJoIMIv; arc=none smtp.client-ip=35.89.44.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
-	by cmsmtp with ESMTPS
-	id HX1yuPUeEWuHKHYdxuCc08; Wed, 21 May 2025 01:53:17 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id HYdwusJybDd4SHYdxu8ueg; Wed, 21 May 2025 01:53:17 +0000
-X-Authority-Analysis: v=2.4 cv=CZUO5qrl c=1 sm=1 tr=0 ts=682d320d
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=qfBMeBQ8Qh9mIwLNFBIA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ljAXeLh7IWEQrb6v9uD9cqDfEuhMh2lQAo2hYNlKG1s=; b=FaJoIMIv0K55E8uzkpiEFPbuwZ
-	lvGAf9cs+pn8+TtkEJt3FYvJzJ3Zea/toWNenhV3Am6nSzBGvyVjf+lgBxLVcFlIRREcrSsMlp2gL
-	0XRzSYqKsxiQ5VhKP7lxKP7CBxiXbKgz2gNU9X1tKXVRo4L3zbLBJmZ57nzP3RaChBz6PKwCXz6CB
-	jtO/GZFR1OEjek2aLUF8iqAWIxvjM4Ym8m9RF/xqr83zQDzX+sIdki8bSa2V0N+7CY1Hf0f3V0s7H
-	4VSQFpSdLEU5QGMXdX7tLG1ms21DSLfib04AeZYMOOFTa8V4119K4n8mzPQ2bl3r2XbNssRjJhR3G
-	0AmIZ9iA==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:40880 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <re@w6rz.net>)
-	id 1uHYdu-000000010dX-3Ca7;
-	Tue, 20 May 2025 19:53:14 -0600
-Message-ID: <769775bb-4dcc-4181-a220-76fc28aae773@w6rz.net>
-Date: Tue, 20 May 2025 18:53:11 -0700
+	s=arc-20240116; t=1747792423; c=relaxed/simple;
+	bh=Gc2wLsdZJ4VVOoyDiAr1GedMXVn4tXBAilIiIQ/pmTM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qine+MWKNQ/J/VXapeeydcxbLYwi7XskU2S3F6Dyz6J+abKAbFJycbjz4xz7xanpSvgurlSo8ECEJYa1acSucqg9uuWSbsU7agO3rkcf5pgA2Q8P90Cby4BguA6tVNPclR8Km8cMy6K6fVdl6GLO6Lv9ERvKg9h9Z/FxSnZrOlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=irbx//Nb; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-af908bb32fdso4876127a12.1;
+        Tue, 20 May 2025 18:53:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747792421; x=1748397221; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ujs5YQiN17yXDchSOgu6Dh0Fh8aXzQ/St/pxD5vMTxg=;
+        b=irbx//NbWjLpR9RJ5EFQ2E+AH5wk3CIi8eotcpl8/LiGIfGUgPKzCnZ9tUyKxOKh7E
+         i1xjUUmw1G4jGfDX1ljYrklejZY7sc/4oSbDDdEcGrXOScJCpb7qg+U9xGmDkpA9dE0N
+         V+rcfD9+Y2vj35YNVdVGDQe8z2Uf1e0oHGI8AcEkDk7EQkzw4sNG7BuCP6ULXseg0btM
+         XQBk46ijbFjDh7+KYXLsKat5B97w7SXdYILgOxzVxGxyiJbEqAqnAceFcTteu5azjM1s
+         x4eRQ7gij+dS6f7i1alupgdm0qJl8q7DWwNKO6Q4p9fQouHRc7pfcB7MQk45wWWMs168
+         hrNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747792421; x=1748397221;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ujs5YQiN17yXDchSOgu6Dh0Fh8aXzQ/St/pxD5vMTxg=;
+        b=hbYkFDykYx8dsgtKmVc40bhh6yRL8TtjfVq5Dzbq21r0jIQFndoKgqsKvgC9jB+CBY
+         DGDP4x38vtQVZN6GuCr6X00Db7o99SkE0zmUnmuW0GlnjvccUmCPTPvjfxNt5kEqnf36
+         G9S839T7cMg1rMyOVuFl94ihoQry/kjeIAn5cv3buZfkg/q/HukY57sY7BAMt9arguu9
+         S1nBC3acTqIpB5B0/LV2/4rH0OzVb9biGFVVBX/yHDY5pcpeATgWhBciflDPZ1KS88yd
+         oTHufOjb2FHoTcuRO7+GwadvdZa64XCJBdGlf8Fl/uIZWaIPkwF7/GkZY/UnVRO7zUvg
+         CVyA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7IOcqEtvBeYazr4vbl+KYSnRgNRBUJT6AOapBcWWOQXEj6qSVWmH8uLKuCjt+bxNO2Os9Z+FSkM6Joik=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxliyw/tPxkkJUt1xH5Wc4nxs2xoMXteQwndpSg0/Ct9uTNs2uP
+	0gMl6JciyK21zfqYRjetE8iw6XaQqIs2zZFOUDT2yy7PYwnoIE2lnKFzjM71OWdKkYU=
+X-Gm-Gg: ASbGncto1Mttf7emcNVA2wpgguM8GhRlmTeOkTGlEPty0GjEMTIvH5YMvJf9Cjg2/yA
+	JCjKOTQne3WfNDW0xNe5OvyfckYqE6ED5JwpBr2C3Fs0sRRvTXk09Uhe/eDjCDWp5hffz4+n7Rj
+	qFIRIiKGexKXNjC+ocYaju62IK7YhXOERfWiNxs/9dHfNDsAajwTEmIJOSZsaFYZfzrOW3XHwAY
+	j7fFvRbk3JPbgOdeG7e1v7IlLIcwBOzZaahLd+03lI13ptuV8H6tM7KVugfQDnh4167wghYmTCO
+	IXZ+df+/7nbPIkaPvmgzj1zVoZMaR+i6cAEAmPYKZB7F
+X-Google-Smtp-Source: AGHT+IE/fM9Dhokgf8e/cW4T9LW4ZBUzfphuRhX5MPSmDDLthJi5DSrQ807/7jyljfnvW9DIAdVrLA==
+X-Received: by 2002:a17:903:17c7:b0:215:58be:3349 with SMTP id d9443c01a7336-231d4d24ec5mr289947695ad.14.1747792421183;
+        Tue, 20 May 2025 18:53:41 -0700 (PDT)
+Received: from gmail.com ([116.237.135.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4eedb59sm82796665ad.257.2025.05.20.18.53.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 May 2025 18:53:40 -0700 (PDT)
+From: Qingfang Deng <dqfext@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: Ian Kent <raven@themaw.net>
+Subject: [PATCH 5.10 0/5] kernfs: backport locking and concurrency improvement
+Date: Wed, 21 May 2025 09:53:30 +0800
+Message-ID: <20250521015336.3450911-1-dqfext@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/59] 5.15.184-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250520125753.836407405@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1uHYdu-000000010dX-3Ca7
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:40880
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 94
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfFJavWwjXG5pJMG/bC9pUgdVLilkcCg2SEbQ5Y0vHxv3dUmH347n75JUEYdb9nYRtJR8iBKPPBDmyx+o1gj3vNjL0ZjOy0eDkZEZ0omxCzE8eH6zDtbI
- xpwVa2qwZbC8RHLa2iECXELkUpiScyOkxZT8mbt+Lrzz/Nn/OpWsqc043FhKTTClGkug4pPEaSPfWQ==
+Content-Transfer-Encoding: 8bit
 
-On 5/20/25 06:49, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.184 release.
-> There are 59 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.184-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+KCSAN reports concurrent accesses to inode->i_mode:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+==================================================================
+BUG: KCSAN: data-race in generic_permission / kernfs_iop_permission
 
-Tested-by: Ron Economos <re@w6rz.net>
+write to 0xffffffe001129590 of 2 bytes by task 2477 on cpu 1:
+ kernfs_iop_permission+0x72/0x1a0
+ link_path_walk.part.0.constprop.0+0x348/0x420
+ path_openat+0xee/0x10f0
+ do_filp_open+0xaa/0x160
+ do_sys_openat2+0x252/0x380
+ sys_openat+0x4c/0xa0
+ ret_from_syscall+0x0/0x2
+
+read to 0xffffffe001129590 of 2 bytes by task 3902 on cpu 3:
+ generic_permission+0x26/0x120
+ kernfs_iop_permission+0x150/0x1a0
+ link_path_walk.part.0.constprop.0+0x348/0x420
+ path_lookupat+0x58/0x280
+ filename_lookup+0xae/0x1f0
+ user_path_at_empty+0x3a/0x70
+ vfs_statx+0x82/0x170
+ __do_sys_newfstatat+0x36/0x70
+ sys_newfstatat+0x2e/0x50
+ ret_from_syscall+0x0/0x2
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 3 PID: 3902 Comm: ls Not tainted 5.10.104+ #0
+==================================================================
+
+kernfs_iop_permission+0x72/0x1a0:
+
+kernfs_refresh_inode at fs/kernfs/inode.c:174
+ 169 	
+ 170 	static void kernfs_refresh_inode(struct kernfs_node *kn, struct inode *inode)
+ 171 	{
+ 172 		struct kernfs_iattrs *attrs = kn->iattr;
+ 173 	
+>174<		inode->i_mode = kn->mode;
+ 175 		if (attrs)
+ 176 			/*
+ 177 			 * kernfs_node has non-default attributes get them from
+ 178 			 * persistent copy in kernfs_node.
+ 179 			 */
+
+(inlined by) kernfs_iop_permission at fs/kernfs/inode.c:285
+ 280 			return -ECHILD;
+ 281 	
+ 282 		kn = inode->i_private;
+ 283 	
+ 284 		mutex_lock(&kernfs_mutex);
+>285<		kernfs_refresh_inode(kn, inode);
+ 286 		mutex_unlock(&kernfs_mutex);
+ 287 	
+ 288 		return generic_permission(inode, mask);
+ 289 	}
+ 290 	
+
+generic_permission+0x26/0x120:
+
+acl_permission_check at fs/namei.c:298
+ 293 	 * Note that the POSIX ACL check cares about the MAY_NOT_BLOCK bit,
+ 294 	 * for RCU walking.
+ 295 	 */
+ 296 	static int acl_permission_check(struct inode *inode, int mask)
+ 297 	{
+>298<		unsigned int mode = inode->i_mode;
+ 299 	
+ 300 		/* Are we the owner? If so, ACL's don't matter */
+ 301 		if (likely(uid_eq(current_fsuid(), inode->i_uid))) {
+ 302 			mask &= 7;
+ 303 			mode >>= 6;
+
+(inlined by) generic_permission at fs/namei.c:353
+ 348 		int ret;
+ 349 	
+ 350 		/*
+ 351 		 * Do the basic permission checks.
+ 352 		 */
+>353<		ret = acl_permission_check(inode, mask);
+ 354 		if (ret != -EACCES)
+ 355 			return ret;
+ 356 	
+ 357 		if (S_ISDIR(inode->i_mode)) {
+ 358 			/* DACs are overridable for directories */
+
+Backport the series from 5.15 to fix the concurrency bug.
+https://lore.kernel.org/all/162642752894.63632.5596341704463755308.stgit@web.messagingengine.com
+
+Ian Kent (5):
+  kernfs: add a revision to identify directory node changes
+  kernfs: use VFS negative dentry caching
+  kernfs: switch kernfs to use an rwsem
+  kernfs: use i_lock to protect concurrent inode updates
+  kernfs: dont call d_splice_alias() under kernfs node lock
+
+ fs/kernfs/dir.c             | 153 ++++++++++++++++++++----------------
+ fs/kernfs/file.c            |   4 +-
+ fs/kernfs/inode.c           |  26 +++---
+ fs/kernfs/kernfs-internal.h |  24 +++++-
+ fs/kernfs/mount.c           |  12 +--
+ fs/kernfs/symlink.c         |   4 +-
+ include/linux/kernfs.h      |   7 +-
+ 7 files changed, 138 insertions(+), 92 deletions(-)
+
+-- 
+2.43.0
+
 
 
