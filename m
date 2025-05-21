@@ -1,273 +1,244 @@
-Return-Path: <stable+bounces-145791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8FFABEF6D
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 11:19:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E074DABEFB2
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 11:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47FA63B2CAA
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 09:19:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06C777B7043
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 09:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0437423C517;
-	Wed, 21 May 2025 09:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC012405ED;
+	Wed, 21 May 2025 09:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IewRUBxP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JVzBGURi"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B098A23C4F9
-	for <stable@vger.kernel.org>; Wed, 21 May 2025 09:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F8423D2B7
+	for <stable@vger.kernel.org>; Wed, 21 May 2025 09:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747819167; cv=none; b=lentTn4/WGnfENoT4o8q6npaLZHZlIsWP1mIK8gmgPWh1CaGeGR6HCQ/TMk0MJr9IKfa6YpHio8573qCr2UHPn2rfJmXl5GwcMDEKf2qmJ0ILcb//lxnZvO+6XUgQ8VvIyiInInykvWbwBfU5kR+HJYba9PPHCKdiOdKu/EllO0=
+	t=1747819501; cv=none; b=OgHNeI+VYG3yY+Tfb/rGGE3Wrs1mOxssiWtvsrxXZULlj6c5FEP2jXGNeFO2/wK0NLa24HN4VR+U80ynxOYb3pqdDvn8SXW/UElnBYzy255q7sgqpHgofY+HWGrPTmavsrtZ6Ym4H6n9m9bvLZL4yPrSqfvplS1BVu9UiEshBso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747819167; c=relaxed/simple;
-	bh=B7wXPyXUP2w07U8Up6D4wr9emBg7GtP6vgGU4Rn9vb4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LYuAI96l8qbuw0B0WOWheCdJjCsu+o3baJY3HRfef40m3/8wx3a9Hfzd1kh/sxgGnnaTx+iIvXdUt4r7tClcCSJ6tcC53exvSlLu9If5V47YSNXpKjHMgcK6i5KwL8EwlqbY4PM/qPIv4JcaXd+LrEMdPGypwDZ/G6MTyDjp4Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IewRUBxP; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747819164;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z/o09y9SC9Ywr/vW/q2zNIFJBJF7X0kmooxajrWqv/s=;
-	b=IewRUBxPcrP8Z2LV9yz7vevwl7FMJXgYSNWgfs9L/wJWmF32yBcyWfbAl/rS5cRL0KdsgM
-	9WWLZG2j20Fk8XTi3yTi+KFHf6fWFMfsLgEFx5kp4LKCwE4m3h/UTE2VNDNKPCpLgNZbCn
-	Vo+zFxjCtuAyeqSDB6xic7lvQZSBq8U=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-aoh3WExKO3ySvf0nbXV6pw-1; Wed, 21 May 2025 05:19:23 -0400
-X-MC-Unique: aoh3WExKO3ySvf0nbXV6pw-1
-X-Mimecast-MFC-AGG-ID: aoh3WExKO3ySvf0nbXV6pw_1747819162
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a371fb826cso1478213f8f.1
-        for <stable@vger.kernel.org>; Wed, 21 May 2025 02:19:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747819162; x=1748423962;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1747819501; c=relaxed/simple;
+	bh=SavTODshLkzYqwL86QGyu6EkUkeSNhbB+u+NcCVLQV4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D+G4qJPNIKgMV0BA3z/gUrjB/LJ09DdOixqTdL/wkbT0lMZXKh0jvX2v6LQc7dTUmmFgFV5+5jmmsrm2bGSCydyR86fPVrqwGOq+/0wvaZsYfyJqC3HE4YR12+o8HwfMpbVNvCtB3hWaJDXPB+6pxRuj7jADss1bWa/XzWTYcx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JVzBGURi; arc=none smtp.client-ip=209.85.217.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-4e15f5a86dfso2861285137.3
+        for <stable@vger.kernel.org>; Wed, 21 May 2025 02:24:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1747819497; x=1748424297; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Z/o09y9SC9Ywr/vW/q2zNIFJBJF7X0kmooxajrWqv/s=;
-        b=VQrDllBOr26OUJaEK4BuXn2i5Q0fTrrz9LNwPS2n3dJUXGvRJ3NCfg9vK0fV3RK1wz
-         4WIjqeVSkQ26256G7Hs7meGqzrgJwyDghWu/msVhVNI5tty4fGxNBrURAw7RFtyj7+zf
-         2g6JMjPv2Yb1kt23FmqXjmU0bJZuK5L9RGbKYoVkSPE22q/s9e3DAUnFZuRlUwFVkCEU
-         jVvGmmrhKOqrF/e5vYV4fpzg2SUoACpOAXLSNWWy45xmMuJtS66WzGTj0Z32YK4DGOoL
-         sK/nAOf4GDksKnwcMNZJnqPsWwdBX1yYAsn0eFoc2WD0YVIqjYcf3cXtvZw/S2EN8tV4
-         f09w==
-X-Forwarded-Encrypted: i=1; AJvYcCVQjtqKGqyRJA1Wf2rwioQ/E4cU4CCBo9vM/BSL+zJHAIzbcdV8Cj7PVKDQhocrPW8wyxHiV98=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7XrfhTblwB1mxk0QxibvT+kIGm7rQ6E1e2qftBHrG0eGIKDuk
-	7gff89E8ld3Qk4YqvlvHP2FrAJ7F1/NyrN6QOvxllODyK4Pu8R7MotnQoZ22S/m+4o4E/GiNasd
-	p7o14jdIcl8x69z+oLlrpeOieuDT0TxEAU39oKKjEpaeHTDTfQDEd4Q/2gQ==
-X-Gm-Gg: ASbGncuNDOxjMbZBvShGVJA5GG8c3xefBlGVCSytuI7xUWTth/J00x3519l6Bh53n1c
-	FUmKf/KeWpi6wjowc380YDRr+p/tgg/v53BabPtHzIIS5nQ7X4xcjoyps7tp6wsiAE1VnPCL5nL
-	qU4VD1sctIbdhRjYh1avhSwnXA0Q11BI43nqhRhJbRcO6RkKi0B4Ivtl1WPyELJ/fGJu5pwwqoX
-	yRjO7+Wv/W/eU6LzJTit0yTRAYo4uxqJYbFFNCGqrKa6WG9/T8hiagRpIi4B1m+6oJ6dLgcXuam
-	0Or+QA==
-X-Received: by 2002:a05:6000:3103:b0:3a3:6415:96c8 with SMTP id ffacd0b85a97d-3a364159712mr14162627f8f.41.1747819161456;
-        Wed, 21 May 2025 02:19:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLmTcHyyqMuzgg9O5ETbsMsgVAw3A3cvgRdzmCanUIuc6/dYk73VWGritQ97Q4VSUoXhdZCA==
-X-Received: by 2002:a05:6000:3103:b0:3a3:6415:96c8 with SMTP id ffacd0b85a97d-3a364159712mr14162590f8f.41.1747819161026;
-        Wed, 21 May 2025 02:19:21 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6ffaa6esm63402155e9.16.2025.05.21.02.19.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 02:19:20 -0700 (PDT)
-Date: Wed, 21 May 2025 05:19:17 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Parav Pandit <parav@nvidia.com>
-Cc: "stefanha@redhat.com" <stefanha@redhat.com>,
-	"axboe@kernel.dk" <axboe@kernel.dk>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"linux-block@vger.kernel.or" <linux-block@vger.kernel.or>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Israel Rukshin <israelr@nvidia.com>
-Subject: Re: [PATCH v1] virtio_blk: Fix disk deletion hang on device surprise
- removal
-Message-ID: <20250521051556-mutt-send-email-mst@kernel.org>
-References: <20250521062744.1361774-1-parav@nvidia.com>
- <20250521041506-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195F56A84CAF0D486B82239DC9EA@CY8PR12MB7195.namprd12.prod.outlook.com>
+        bh=Y3hWC1VK1BIw070IJJezvDB/VqZ9aNqLVgo32LJ2soE=;
+        b=JVzBGURihtaTNHo49WFRic1f06Li1PnLlst0nBxdCXcUpneC0KTds+UdVeDLywlH/U
+         pP5cVPSjOCSsr/2HfmCszLit6Pz/kNurwCvXlFYs77v5rAIchWEBwo5n8cTh3BKKh6Ll
+         6YSs7OMahVTSwmoTxlfgd8HJ0hqWXwNNzuLvo1JPVAcJbxyeGGRj6k9+3TPK/DB6OvbG
+         L4paxdYmQPpmdsUuGjWjOA1bnIHcZblhZ7CEZjmc9x9ZFoVsYITY9shdVeHqJ48BuegO
+         RKUAbcs1wt8ykxYfk8bJBluxJnPEby3U+MtwyqPmiqOrC++TiO2eh7A5ptMpo4n11QVy
+         T/ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747819497; x=1748424297;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y3hWC1VK1BIw070IJJezvDB/VqZ9aNqLVgo32LJ2soE=;
+        b=Vq7skCzjCEgliuNQQaCzkvNYh5ZbiRJPJjIcePQjeSqrQBFyuy16q81gRSRJfxIN3+
+         n8NGdGRee66HJuyqllZaV8Khihtt4N/vdALa4JCY4q+clC8P9BoHlCGievuuqZolsm2E
+         vCSKa9C1PzJe/ghjFuhb9IknYr8OZdVh2vleTHz+xF/S6aIk8Qyj+LqBnOYiO9NxiqZu
+         +Zy76PprNhQDd8fonR/7KjJK2NjrMWJhYcyzPJS5VofXxLslm9Xlf+GlmJieyNK+RLVf
+         8nCY+1nefDKjqAY8M2yBIVri5nVvCkaAJTkuut9cO2rnKQ8jy46Q2irUgZZrWKi8LSzK
+         8UZw==
+X-Gm-Message-State: AOJu0YzJJleSojw/7240sqAvssZ7z1+5X9jAChP8MGCFJU3MeqHZQtsT
+	A4B8gesGEM0EQ8DVrOQzRUTnPe5t9uVnjuTR/DescG31wiMVuHS1d+T6WMz+gZqNCJcLsR36S00
+	M5CHQqdT3wm54zBFMt3qPtVIgQdQWcYhsihaCAkz/mg==
+X-Gm-Gg: ASbGnctEV879/stvtNv4zmZx0eCxd1hKMf079/77NsE1qSfTSgV48RBT9qjgxrECROl
+	eMTOWmd1ghHZvEjxUmNZDZ2H0pHzYPt4PnyBP0dEA9F2qksAL38Ks9kMGE2yDaBsGLCQYFUlVyu
+	vLmgluOLCIIO3bjNkgMgiy71p/sYtFA4Kd
+X-Google-Smtp-Source: AGHT+IHybR48EbvrBa29y9puviflM6BTRI7N0qtLYKnfE4iwghlm6IPecE8XTgSi4fNgHyd9vdOk97NIcw1zz+FQxY4=
+X-Received: by 2002:a05:6102:370a:b0:4db:154e:ad1d with SMTP id
+ ada2fe7eead31-4dfa6aa8a8fmr19845230137.2.1747819496744; Wed, 21 May 2025
+ 02:24:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY8PR12MB7195F56A84CAF0D486B82239DC9EA@CY8PR12MB7195.namprd12.prod.outlook.com>
+References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 21 May 2025 14:54:45 +0530
+X-Gm-Features: AX0GCFskf24dlsDWbKHkhQN63sjnMSpcZ3dtlC-TQcODUS0EOjnNNGC3AAtyqw8
+Message-ID: <CA+G9fYuQf1dvNFru8dtiJnvJZjfKuMwN1DhN0EKrCLCR6DNbnw@mail.gmail.com>
+Subject: Re: [PATCH 6.14 000/145] 6.14.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 21, 2025 at 09:14:31AM +0000, Parav Pandit wrote:
-> > From: Michael S. Tsirkin <mst@redhat.com>
-> > Sent: Wednesday, May 21, 2025 1:48 PM
-> > 
-> > On Wed, May 21, 2025 at 06:37:41AM +0000, Parav Pandit wrote:
-> > > When the PCI device is surprise removed, requests may not complete the
-> > > device as the VQ is marked as broken. Due to this, the disk deletion
-> > > hangs.
-> > >
-> > > Fix it by aborting the requests when the VQ is broken.
-> > >
-> > > With this fix now fio completes swiftly.
-> > > An alternative of IO timeout has been considered, however when the
-> > > driver knows about unresponsive block device, swiftly clearing them
-> > > enables users and upper layers to react quickly.
-> > >
-> > > Verified with multiple device unplug iterations with pending requests
-> > > in virtio used ring and some pending with the device.
-> > >
-> > > Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio
-> > > pci device")
-> > > Cc: stable@vger.kernel.org
-> > > Reported-by: lirongqing@baidu.com
-> > > Closes:
-> > >
-> > https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca9b474
-> > > 1@baidu.com/
-> > > Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
-> > > Reviewed-by: Israel Rukshin <israelr@nvidia.com>
-> > > Signed-off-by: Parav Pandit <parav@nvidia.com>
-> > > ---
-> > > changelog:
-> > > v0->v1:
-> > > - Fixed comments from Stefan to rename a cleanup function
-> > > - Improved logic for handling any outstanding requests
-> > >   in bio layer
-> > > - improved cancel callback to sync with ongoing done()
-> > 
-> > thanks for the patch!
-> > questions:
-> > 
-> > 
-> > > ---
-> > >  drivers/block/virtio_blk.c | 95
-> > > ++++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 95 insertions(+)
-> > >
-> > > diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-> > > index 7cffea01d868..5212afdbd3c7 100644
-> > > --- a/drivers/block/virtio_blk.c
-> > > +++ b/drivers/block/virtio_blk.c
-> > > @@ -435,6 +435,13 @@ static blk_status_t virtio_queue_rq(struct
-> > blk_mq_hw_ctx *hctx,
-> > >  	blk_status_t status;
-> > >  	int err;
-> > >
-> > > +	/* Immediately fail all incoming requests if the vq is broken.
-> > > +	 * Once the queue is unquiesced, upper block layer flushes any
-> > pending
-> > > +	 * queued requests; fail them right away.
-> > > +	 */
-> > > +	if (unlikely(virtqueue_is_broken(vblk->vqs[qid].vq)))
-> > > +		return BLK_STS_IOERR;
-> > > +
-> > >  	status = virtblk_prep_rq(hctx, vblk, req, vbr);
-> > >  	if (unlikely(status))
-> > >  		return status;
-> > 
-> > just below this:
-> >         spin_lock_irqsave(&vblk->vqs[qid].lock, flags);
-> >         err = virtblk_add_req(vblk->vqs[qid].vq, vbr);
-> >         if (err) {
-> > 
-> > 
-> > and virtblk_add_req calls virtqueue_add_sgs, so it will fail on a broken vq.
-> > 
-> > Why do we need to check it one extra time here?
-> > 
-> It may work, but for some reason if the hw queue is stopped in this flow, it can hang the IOs flushing.
+On Tue, 20 May 2025 at 19:44, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.14.8 release.
+> There are 145 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.14.8-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> I considered it risky to rely on the error code ENOSPC returned by non virtio-blk driver.
-> In other words, if lower layer changed for some reason, we may end up in stopping the hw queue when broken, and requests would hang.
-> 
-> Compared to that one-time entry check seems more robust.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-I don't get it.
-Checking twice in a row is more robust?
-What am I missing?
-Can you describe the scenario in more detail?
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-> 
-> > 
-> > 
-> > > @@ -508,6 +515,11 @@ static void virtio_queue_rqs(struct rq_list *rqlist)
-> > >  	while ((req = rq_list_pop(rqlist))) {
-> > >  		struct virtio_blk_vq *this_vq = get_virtio_blk_vq(req-
-> > >mq_hctx);
-> > >
-> > > +		if (unlikely(virtqueue_is_broken(this_vq->vq))) {
-> > > +			rq_list_add_tail(&requeue_list, req);
-> > > +			continue;
-> > > +		}
-> > > +
-> > >  		if (vq && vq != this_vq)
-> > >  			virtblk_add_req_batch(vq, &submit_list);
-> > >  		vq = this_vq;
-> > 
-> > similarly
-> > 
-> The error code is not surfacing up here from virtblk_add_req().
+## Build
+* kernel: 6.14.8-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 75456e272f58170ba9694debd95bb643fc199e6d
+* git describe: v6.14.7-146-g75456e272f58
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14=
+.7-146-g75456e272f58
 
+## Test Regressions (compared to v6.14.6-198-g6f7a299729d3)
 
-but wait a sec:
+## Metric Regressions (compared to v6.14.6-198-g6f7a299729d3)
 
-static void virtblk_add_req_batch(struct virtio_blk_vq *vq,
-                struct rq_list *rqlist)
-{       
-        struct request *req; 
-        unsigned long flags;
-        bool kick;
-        
-        spin_lock_irqsave(&vq->lock, flags);
-        
-        while ((req = rq_list_pop(rqlist))) {
-                struct virtblk_req *vbr = blk_mq_rq_to_pdu(req);
-                int err;
-                        
-                err = virtblk_add_req(vq->vq, vbr);
-                if (err) {
-                        virtblk_unmap_data(req, vbr);
-                        virtblk_cleanup_cmd(req);
-                        blk_mq_requeue_request(req, true);
-                }
-        }
+## Test Fixes (compared to v6.14.6-198-g6f7a299729d3)
 
-        kick = virtqueue_kick_prepare(vq->vq);
-        spin_unlock_irqrestore(&vq->lock, flags);
+## Metric Fixes (compared to v6.14.6-198-g6f7a299729d3)
 
-        if (kick)
-                virtqueue_notify(vq->vq);
-}
+## Test result summary
+total: 238113, pass: 213864, fail: 4515, skip: 19096, xfail: 638
 
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 137 passed, 2 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 18 total, 16 passed, 2 failed
+* mips: 34 total, 33 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 40 passed, 0 failed
+* riscv: 25 total, 22 passed, 3 failed
+* s390: 22 total, 22 passed, 0 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 42 passed, 7 failed
 
-it actually handles the error internally?
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* modules
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
 
-
-
-
-> It would end up adding checking for special error code here as well to abort by translating broken VQ -> EIO to break the loop in virtblk_add_req_batch().
-> 
-> Weighing on specific error code-based data path that may require audit from lower layers now and future, an explicit check of broken in this layer could be better.
-> 
-> [..]
-
-
-Checking add was successful is preferred because it has to be done
-*anyway* - device can get broken after you check before add.
-
-So I would like to understand why are we also checking explicitly and I
-do not get it so far.
-
+--
+Linaro LKFT
+https://lkft.linaro.org
 
