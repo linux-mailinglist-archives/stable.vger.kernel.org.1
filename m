@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-145879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075DDABF965
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 17:33:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C579ABF971
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 17:34:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F4E9E080E
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 15:32:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 979D61BC3323
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 15:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5927A21A459;
-	Wed, 21 May 2025 15:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857EA1FF1CE;
+	Wed, 21 May 2025 15:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vAfo93rf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHicAW/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C8B218EBF;
-	Wed, 21 May 2025 15:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391C817BB0D;
+	Wed, 21 May 2025 15:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747841552; cv=none; b=RjmNATmiDkgvgE9C4cLnMJVJ/C6AiGbQlGXVn1VhpmtUluMLTad69JibX7zdNS13Hf7Rp7KKJLqSqtmV6bVGRZJemfiM3/icupgQ5ry6jjoIyufe6BSdukWxLm6L2hsfLAGT+GCPZFthg5NcWk/GqXmSH1Hq+lD/WWW+IjV5svY=
+	t=1747841559; cv=none; b=QTpdkx3fA8qyUUkOGUvLJwwKa9Fx2q2B3yh1EDNt6hrBXoxXt+HboiPjPrWtscB12WLBUY4BM9klWO/ecL6okpgJFXGgKdoyhWRG4Wcfr/UPbmd1yM7F2V2iB42pFtK6Ig10ave2oCvGbCUinp2h5KcmpK52uWKsYUmsb2cHRwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747841552; c=relaxed/simple;
-	bh=dl4/jVpEjwuOyn5OIckbpyVPjbDVzVffI1XGjQPselI=;
+	s=arc-20240116; t=1747841559; c=relaxed/simple;
+	bh=ZAXKZ42zBWZyJ7kSkE/8V0bVlCWESw/XuUcLoE5rsKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtIS4qXhLhYKi5OHNcytaeomZcSdA6G9uKJPytIRe71hRjJXluQ0bAk1Jeu38CTYUAE+wH1zxP+1N9Mnm4xmjCXJpnq65zpRdAUn4DoQql1AIiR75A9BO39v7IyUUdebdryOwppt7dWB+vHVQpLNSK1rr/4l37tuVrdb9qz1ryA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vAfo93rf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D567C4AF0C;
-	Wed, 21 May 2025 15:32:28 +0000 (UTC)
+	 MIME-Version; b=nFT/hVqx8z+W9x4FE176hZtec9llXEmzrhO5T6tBF/vK+biiyvJhtuEoUDc7xKlrau61/2zOPXHLmczM389NiXN82pQJRceLyWM4GnOaYnlrPUU0e16QBjYgvad/ievdlQ0acaty2P0dvs0eabq3CrRfGVLnh8rtwA5WguXRlSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHicAW/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928DDC4CEE7;
+	Wed, 21 May 2025 15:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747841551;
-	bh=dl4/jVpEjwuOyn5OIckbpyVPjbDVzVffI1XGjQPselI=;
+	s=k20201202; t=1747841558;
+	bh=ZAXKZ42zBWZyJ7kSkE/8V0bVlCWESw/XuUcLoE5rsKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vAfo93rfwi8tR5zMMbkAXxRq/O/qSPaWusN2ajbt3w2cPBmjq16hrYyybnUIklsUP
-	 xk5uByeilYrZE3S6GZc9c5Dl4FTykaiLs082mQG6iddGQUV4qDbOEm9TWU7gOkm18l
-	 PGQDXF08nZyYqZt3o0UFQMIH+8Qxt1zgS/YmxQ/pVAZHeuXJHpUAIVEOr8K70W3X+t
-	 PK8ZULVDYLHeQq5b57XW4CCRNv3c9X4brN1wCmvZqisl3AQ/CGJQNFXQgk/mQXrndS
-	 6j0X1U5Vvb7M2HtRFM9ECN/qJOXlCPTWqELgMzPKBk4LOp+Yxjsu5Pl0/r0cxzb/wK
-	 +weNqO5upSi/A==
+	b=VHicAW/ICNtkp+fmKZ9/4QZpzC4GhxiUrtZbZfsEXmCNiUyQP7K1sXci9tQkSo1kF
+	 JIHUBSKbv6X9XlvzvRDayf1FrBrpuxXM8E17sD53ufPFrIBxYWrokQWWy+T9rkORYI
+	 egdZ+GQY1xobkRZCn5TWKm5LYTfSyOtxdx0AopaAg2YcfnRKVQW4cHf1ZKDH+5OXQB
+	 h4/xt+h1K3AHg+W2TE7c07DNKndW9etEYas7vOFFE6piunA4ZakCnV6Aw7JqRuLr7c
+	 GfiC54XVrXwLALvfKYa/jY75j+yBLDOnJ7wuRx79A2LBR1ICdO8cnlMLhIZc3W5bKz
+	 3DvrJeLGcL+gQ==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -57,11 +57,10 @@ To: lee@kernel.org,
 	Pavel Begunkov <asml.silence@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH v6.1 02/27] af_unix: Return struct unix_sock from unix_get_socket().
-Date: Wed, 21 May 2025 16:27:01 +0100
-Message-ID: <20250521152920.1116756-3-lee@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: [PATCH v6.1 03/27] af_unix: Run GC on only one CPU.
+Date: Wed, 21 May 2025 16:27:02 +0100
+Message-ID: <20250521152920.1116756-4-lee@kernel.org>
 X-Mailer: git-send-email 2.49.0.1143.g0be31eac6b-goog
 In-Reply-To: <20250521152920.1116756-1-lee@kernel.org>
 References: <20250521152920.1116756-1-lee@kernel.org>
@@ -75,131 +74,129 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 5b17307bd0789edea0675d524a2b277b93bbde62 ]
+[ Upstream commit 8b90a9f819dc2a06baae4ec1a64d875e53b824ec ]
 
-Currently, unix_get_socket() returns struct sock, but after calling
-it, we always cast it to unix_sk().
+If more than 16000 inflight AF_UNIX sockets exist and the garbage
+collector is not running, unix_(dgram|stream)_sendmsg() call unix_gc().
+Also, they wait for unix_gc() to complete.
 
-Let's return struct unix_sock from unix_get_socket().
+In unix_gc(), all inflight AF_UNIX sockets are traversed at least once,
+and more if they are the GC candidate.  Thus, sendmsg() significantly
+slows down with too many inflight AF_UNIX sockets.
+
+There is a small window to invoke multiple unix_gc() instances, which
+will then be blocked by the same spinlock except for one.
+
+Let's convert unix_gc() to use struct work so that it will not consume
+CPUs unnecessarily.
+
+Note WRITE_ONCE(gc_in_progress, true) is moved before running GC.
+If we leave the WRITE_ONCE() as is and use the following test to
+call flush_work(), a process might not call it.
+
+    CPU 0                                     CPU 1
+    ---                                       ---
+                                              start work and call __unix_gc()
+    if (work_pending(&unix_gc_work) ||        <-- false
+        READ_ONCE(gc_in_progress))            <-- false
+            flush_work();                     <-- missed!
+	                                      WRITE_ONCE(gc_in_progress, true)
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240123170856.41348-4-kuniyu@amazon.com
+Link: https://lore.kernel.org/r/20240123170856.41348-5-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 5b17307bd0789edea0675d524a2b277b93bbde62)
+(cherry picked from commit 8b90a9f819dc2a06baae4ec1a64d875e53b824ec)
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- include/net/af_unix.h |  2 +-
- net/unix/garbage.c    | 19 +++++++------------
- net/unix/scm.c        | 19 +++++++------------
- 3 files changed, 15 insertions(+), 25 deletions(-)
+ net/unix/garbage.c | 54 +++++++++++++++++++++++-----------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index e7d71a516bd4..52ae023c3e93 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -13,7 +13,7 @@ void unix_notinflight(struct user_struct *user, struct file *fp);
- void unix_destruct_scm(struct sk_buff *skb);
- void unix_gc(void);
- void wait_for_unix_gc(void);
--struct sock *unix_get_socket(struct file *filp);
-+struct unix_sock *unix_get_socket(struct file *filp);
- struct sock *unix_peer_get(struct sock *sk);
- 
- #define UNIX_HASH_MOD	(256 - 1)
 diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index d2fc795394a5..438f5d9b9173 100644
+index 438f5d9b9173..bf628bfb6d35 100644
 --- a/net/unix/garbage.c
 +++ b/net/unix/garbage.c
-@@ -105,20 +105,15 @@ static void scan_inflight(struct sock *x, void (*func)(struct unix_sock *),
+@@ -86,7 +86,6 @@
+ /* Internal data structures and random procedures: */
  
- 			while (nfd--) {
- 				/* Get the socket the fd matches if it indeed does so */
--				struct sock *sk = unix_get_socket(*fp++);
-+				struct unix_sock *u = unix_get_socket(*fp++);
+ static LIST_HEAD(gc_candidates);
+-static DECLARE_WAIT_QUEUE_HEAD(unix_gc_wait);
  
--				if (sk) {
--					struct unix_sock *u = unix_sk(sk);
-+				/* Ignore non-candidates, they could have been added
-+				 * to the queues after starting the garbage collection
-+				 */
-+				if (u && test_bit(UNIX_GC_CANDIDATE, &u->gc_flags)) {
-+					hit = true;
- 
--					/* Ignore non-candidates, they could
--					 * have been added to the queues after
--					 * starting the garbage collection
--					 */
--					if (test_bit(UNIX_GC_CANDIDATE, &u->gc_flags)) {
--						hit = true;
--
--						func(u);
--					}
-+					func(u);
- 				}
- 			}
- 			if (hit && hitlist != NULL) {
-diff --git a/net/unix/scm.c b/net/unix/scm.c
-index 4eff7da9f6f9..693817a31ad8 100644
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -21,9 +21,8 @@ EXPORT_SYMBOL(gc_inflight_list);
- DEFINE_SPINLOCK(unix_gc_lock);
- EXPORT_SYMBOL(unix_gc_lock);
- 
--struct sock *unix_get_socket(struct file *filp)
-+struct unix_sock *unix_get_socket(struct file *filp)
- {
--	struct sock *u_sock = NULL;
- 	struct inode *inode = file_inode(filp);
- 
- 	/* Socket ? */
-@@ -33,10 +32,10 @@ struct sock *unix_get_socket(struct file *filp)
- 
- 		/* PF_UNIX ? */
- 		if (s && sock->ops && sock->ops->family == PF_UNIX)
--			u_sock = s;
-+			return unix_sk(s);
- 	}
- 
--	return u_sock;
-+	return NULL;
+ static void scan_inflight(struct sock *x, void (*func)(struct unix_sock *),
+ 			  struct sk_buff_head *hitlist)
+@@ -182,23 +181,8 @@ static void inc_inflight_move_tail(struct unix_sock *u)
  }
- EXPORT_SYMBOL(unix_get_socket);
  
-@@ -45,13 +44,11 @@ EXPORT_SYMBOL(unix_get_socket);
-  */
- void unix_inflight(struct user_struct *user, struct file *fp)
+ static bool gc_in_progress;
+-#define UNIX_INFLIGHT_TRIGGER_GC 16000
+-
+-void wait_for_unix_gc(void)
+-{
+-	/* If number of inflight sockets is insane,
+-	 * force a garbage collect right now.
+-	 * Paired with the WRITE_ONCE() in unix_inflight(),
+-	 * unix_notinflight() and gc_in_progress().
+-	 */
+-	if (READ_ONCE(unix_tot_inflight) > UNIX_INFLIGHT_TRIGGER_GC &&
+-	    !READ_ONCE(gc_in_progress))
+-		unix_gc();
+-	wait_event(unix_gc_wait, !READ_ONCE(gc_in_progress));
+-}
+ 
+-/* The external entry point: unix_gc() */
+-void unix_gc(void)
++static void __unix_gc(struct work_struct *work)
  {
--	struct sock *s = unix_get_socket(fp);
-+	struct unix_sock *u = unix_get_socket(fp);
+ 	struct sk_buff *next_skb, *skb;
+ 	struct unix_sock *u;
+@@ -209,13 +193,6 @@ void unix_gc(void)
  
  	spin_lock(&unix_gc_lock);
  
--	if (s) {
--		struct unix_sock *u = unix_sk(s);
+-	/* Avoid a recursive GC. */
+-	if (gc_in_progress)
+-		goto out;
 -
-+	if (u) {
- 		if (!u->inflight) {
- 			BUG_ON(!list_empty(&u->link));
- 			list_add_tail(&u->link, &gc_inflight_list);
-@@ -68,13 +65,11 @@ void unix_inflight(struct user_struct *user, struct file *fp)
- 
- void unix_notinflight(struct user_struct *user, struct file *fp)
- {
--	struct sock *s = unix_get_socket(fp);
-+	struct unix_sock *u = unix_get_socket(fp);
- 
- 	spin_lock(&unix_gc_lock);
- 
--	if (s) {
--		struct unix_sock *u = unix_sk(s);
+-	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
+-	WRITE_ONCE(gc_in_progress, true);
 -
-+	if (u) {
- 		BUG_ON(!u->inflight);
- 		BUG_ON(list_empty(&u->link));
+ 	/* First, select candidates for garbage collection.  Only
+ 	 * in-flight sockets are considered, and from those only ones
+ 	 * which don't have any external reference.
+@@ -346,8 +323,31 @@ void unix_gc(void)
+ 	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
+ 	WRITE_ONCE(gc_in_progress, false);
  
+-	wake_up(&unix_gc_wait);
+-
+- out:
+ 	spin_unlock(&unix_gc_lock);
+ }
++
++static DECLARE_WORK(unix_gc_work, __unix_gc);
++
++void unix_gc(void)
++{
++	WRITE_ONCE(gc_in_progress, true);
++	queue_work(system_unbound_wq, &unix_gc_work);
++}
++
++#define UNIX_INFLIGHT_TRIGGER_GC 16000
++
++void wait_for_unix_gc(void)
++{
++	/* If number of inflight sockets is insane,
++	 * force a garbage collect right now.
++	 *
++	 * Paired with the WRITE_ONCE() in unix_inflight(),
++	 * unix_notinflight(), and __unix_gc().
++	 */
++	if (READ_ONCE(unix_tot_inflight) > UNIX_INFLIGHT_TRIGGER_GC &&
++	    !READ_ONCE(gc_in_progress))
++		unix_gc();
++
++	if (READ_ONCE(gc_in_progress))
++		flush_work(&unix_gc_work);
++}
 -- 
 2.49.0.1143.g0be31eac6b-goog
 
