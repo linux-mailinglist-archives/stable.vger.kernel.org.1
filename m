@@ -1,118 +1,140 @@
-Return-Path: <stable+bounces-145758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA43ABEB57
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 07:39:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C9AABEB7B
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 07:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBB991B6595D
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 05:39:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E37177A8294
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 05:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF1A22FDE8;
-	Wed, 21 May 2025 05:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6963F22FAFD;
+	Wed, 21 May 2025 05:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZEPVcKp7"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WCMsXdri"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC4722FDEA;
-	Wed, 21 May 2025 05:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E1832C85;
+	Wed, 21 May 2025 05:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747805948; cv=none; b=YS+oWeWbOJAnCogrrKOH+4UpeDjylSvymX6XWLJJctBPtpTC58pYpT8NYCwNV844+xFVepY4d6gfLTmo6J4wU/YARJ+GElo3NkXpnBDUyPanchM+mDEE6HNyDF7+nL8nCnDh7I+NEOvj4SU7hLNL/rNW9c9Mk1Eo6tImslemF2w=
+	t=1747806603; cv=none; b=Rvh95PR44cnhxU1pfJ8ZE3EOywt0nIJeJsBkEZ8FnFfc9CPBJw3h3r91DdOxXtbhCofXAMNcXJtmEVMTqoLesoeX3Vy4cszmaaQ0w35BVgtYhNJ+Zsj7OkBpQTYOV1sKmqTemoITwTKuebNkETiavtFYwQqeFljJ7NQISuvLQKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747805948; c=relaxed/simple;
-	bh=rJoHwVdmu70bBttowc9ovSLMST2TXYUrOme1AYIzTw4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=amL53zLacZAD2gPTcQ0r5kmvhs51ZJQIRnLtFLd2o2V7kYHIuzRzZ6n/3jsU0PSA8SHrSei9ANRc3S/wktGu2er6xUSOMjN/SB+Yvlxr7OrIemvOIMVTx1uEBoOyD3WGZsuQJClIU3x3ko4TXbLkCOLZv0hsyraE3jA3n1LOtJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZEPVcKp7; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e7b9a3d85b9so2793595276.0;
-        Tue, 20 May 2025 22:39:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747805945; x=1748410745; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cwi1TKu0MzTX9DMGvQifU91RHt6vK7DQSE6M6IhUvCs=;
-        b=ZEPVcKp7QSVT2NqCVDO8zAwfpfJHoYnLMJAXB+gG2ZY/tAHzdQQBSyW+PZ4nVTKkJJ
-         rUfdMrb/MUuJoShxXYOm6xyh8IFr0KSjubv62/Ll9HypsskWL8J9Dy9uJWnBxHkPjGm4
-         DYUDNByYh0EzMOCFeLtaxkItWtAVQFlJ6mpPQo2tBDV4qwApVWF2v7ll8tENjyHBMxvJ
-         fSgWPmCzysya4ncKQN1cF1d4Y3A1v5jdfWyfnz2VM21AXkWGsAJZNVJLV3mSVK8/Txsw
-         16K0joc2C8cO8uP6iH450SvD3PFMohTZjIeSw84uA6nBwGSzFBuFGCP6ChDvAKvb/xlA
-         x9PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747805945; x=1748410745;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Cwi1TKu0MzTX9DMGvQifU91RHt6vK7DQSE6M6IhUvCs=;
-        b=GVUvz0nMPE2KKLq68/brIeg/T5WxvMj5k3GdhUWltU9gB+xbr4+OqKKxFmxExMvCc9
-         R4XkPoIaP07uX8tiCmzfX1mk/pB8szevRT2EUc6LTvNANLCgABNdxm2Ojo3Uch55rpdN
-         02VPtqLoxGx+s0x3YsU6+5fwbSEsWtFr5Ob0xBwoojzIH2LL87q1ifiHUlo28u7niX7p
-         OusgyjKuO6/rnDcWEmPOoemo81/e6f1o3q6oiXoL93j4NkiaQvDvpJIfQJNskjsLdVS4
-         U/o8U9kvwi09fjLH8iomFm8hvWhZim+GAVYtCKmtiphBepY6mVBoSis+W8YoWdgHU3Gp
-         r+rw==
-X-Forwarded-Encrypted: i=1; AJvYcCVMDDU2gyIQHHlYtZhlPuG9lFW8mwcOXtuxUlmGJMjd60Bs1xELtmcRUWm4pZmpjaTtjkGNcHRz@vger.kernel.org, AJvYcCVN/NySxsUb6Cw/vN63B8GaRB3VLQl/sVZQNSU1VdHnbtowfON+eTh+taiLHXrgfLwMg3LDvr/ka+MZfqI=@vger.kernel.org, AJvYcCWqF2U+zH18C9BHetwDWZSV7uZZPk1kX4k4wBuKJWFd5HCc3ASCVXz8TD7sDG3YlXJLDpCV7Lffeggkeuie@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+VNzydA/Kq9mSw3j1J+1zmUQOwhzMT/9Ha5RcyIJ9DEZLTqKs
-	dgShDX3/7LCH7q86jhtzti8jp0Gva298RLgM5sj2UsELR3ojy99QOASwEQXAFBETEpdAfoi55+i
-	5/OPeZ5M3O8M0WtkTeXo9mC6Ic/EesmumrA==
-X-Gm-Gg: ASbGnculXsTubnf/SiLaCvqYLwgj5m/RZ3SKBZvZNPsVSXDQtBzr3z9hFxcYYQqg8w9
-	yEsYyVRLvqee4g8xfFUO1nX/8WsRp3/oN/L3lLZ0vlKjxSWN4+D9DelZ9XDOrtu4jyLmrJr7yg6
-	7aSHzV49h2/jlRhtFOMGV6Z0uzfxWNZ0c=
-X-Google-Smtp-Source: AGHT+IGgzD7CKFw8OUIVR1AtCawdPAvyoq5kif11vGmUaW6UgrO2N7MmgFJ6Es69Q3ma9sPvy1SwqBIMn6DqYvI7LUk=
-X-Received: by 2002:a05:6902:2181:b0:e6d:f4c8:7fab with SMTP id
- 3f1490d57ef6-e7b6d554875mr20507447276.37.1747805945382; Tue, 20 May 2025
- 22:39:05 -0700 (PDT)
+	s=arc-20240116; t=1747806603; c=relaxed/simple;
+	bh=jBiZ01pex1Im3tkQ9vn6tyF27fv4w7THik48ltgXgoQ=;
+	h=Date:To:From:Subject:Message-Id; b=Wk4MyVNlH++rApRyeUaPCh0hIJZwbr5uqu5Z2xj7oow/SKBgw5DY5LSbWx0mbZkEL+N7N1BhVt7EhZv5fhuNw9w9NQoOjx0a//SfkNBe4AExxKzTVYrrOMuf/W7pSNqan3mCsx9S6/22i/xjESqzXi9WANQopN3dV0Ik7Xoo/wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WCMsXdri; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1D3C4CEE4;
+	Wed, 21 May 2025 05:50:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1747806602;
+	bh=jBiZ01pex1Im3tkQ9vn6tyF27fv4w7THik48ltgXgoQ=;
+	h=Date:To:From:Subject:From;
+	b=WCMsXdrinNF/B+rgEgFHUqBErC5JuJz0BXR0oLLqvblSMja9UvQglL2MiVjsOjSV2
+	 1lOWSlt8z+jhwHhvv+dd4jvc3uLJhFUJo5zdomcn3bZUaZDrCNNxMLdkiLajluCsw1
+	 WKZhmXG/UfrNoG2l/D523Ay6FTIJvMShYNKZ1y+Q=
+Date: Tue, 20 May 2025 22:50:01 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,zhangtianyang@loongson.cn,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-page_allocc-avoid-infinite-retries-caused-by-cpuset-race.patch removed from -mm tree
+Message-Id: <20250521055002.7D1D3C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250520130737.4181994-1-bbhushan2@marvell.com>
- <20250520130737.4181994-4-bbhushan2@marvell.com> <aC0KdBdslZM8m2Ox@gondor.apana.org.au>
-In-Reply-To: <aC0KdBdslZM8m2Ox@gondor.apana.org.au>
-From: Bharat Bhushan <bharatb.linux@gmail.com>
-Date: Wed, 21 May 2025 11:08:53 +0530
-X-Gm-Features: AX0GCFuhNlG-J3vC3RuGk-CuapO2lbxSI7JUvkzX_hl9f90ZXIHLJZrJZKDtIOs
-Message-ID: <CAAeCc_nLSuDrHTPNt39mK4Ea_PD6fO4a=x21kgQoMVWWPNvbPg@mail.gmail.com>
-Subject: Re: [PATCH 3/4 v2] crypto: octeontx2: Fix address alignment on CN10K
- A0/A1 and OcteonTX2
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Bharat Bhushan <bbhushan2@marvell.com>, bbrezillon@kernel.org, schalla@marvell.com, 
-	davem@davemloft.net, giovanni.cabiddu@intel.com, linux@treblig.org, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 21, 2025 at 4:34=E2=80=AFAM Herbert Xu <herbert@gondor.apana.or=
-g.au> wrote:
->
-> On Tue, May 20, 2025 at 06:37:36PM +0530, Bharat Bhushan wrote:
-> >
-> > +     info->in_buffer =3D PTR_ALIGN((u8 *)info + info_len,
-> > +                                 OTX2_CPT_DPTR_RPTR_ALIGN);
->
-> Any address that's used for bidirectional or from-device DMA
-> needs to be aligned to ARCH_DMA_MINALIGN.
->
-> Sorry I missed this during the first round.
 
-Will change in the next version.
+The quilt patch titled
+     Subject: mm/page_alloc.c: avoid infinite retries caused by cpuset race
+has been removed from the -mm tree.  Its filename was
+     mm-page_allocc-avoid-infinite-retries-caused-by-cpuset-race.patch
 
-Thanks
--Bharat
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
->
-> Cheers,
-> --
-> Email: Herbert Xu <herbert@gondor.apana.org.au>
-> Home Page: http://gondor.apana.org.au/~herbert/
-> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+------------------------------------------------------
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
+Subject: mm/page_alloc.c: avoid infinite retries caused by cpuset race
+Date: Wed, 16 Apr 2025 16:24:05 +0800
+
+__alloc_pages_slowpath has no change detection for ac->nodemask in the
+part of retry path, while cpuset can modify it in parallel.  For some
+processes that set mempolicy as MPOL_BIND, this results ac->nodemask
+changes, and then the should_reclaim_retry will judge based on the latest
+nodemask and jump to retry, while the get_page_from_freelist only
+traverses the zonelist from ac->preferred_zoneref, which selected by a
+expired nodemask and may cause infinite retries in some cases
+
+cpu 64:
+__alloc_pages_slowpath {
+        /* ..... */
+retry:
+        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
+        if (alloc_flags & ALLOC_KSWAPD)
+                wake_all_kswapds(order, gfp_mask, ac);
+        /* cpu 1:
+        cpuset_write_resmask
+            update_nodemask
+                update_nodemasks_hier
+                    update_tasks_nodemask
+                        mpol_rebind_task
+                         mpol_rebind_policy
+                          mpol_rebind_nodemask
+		// mempolicy->nodes has been modified,
+		// which ac->nodemask point to
+
+        */
+        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
+        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+                                 did_some_progress > 0, &no_progress_loops))
+                goto retry;
+}
+
+Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
+this issue on a multi node server when the maximum memory pressure is
+reached and the swap is enabled
+
+Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
+Fixes: c33d6c06f60f ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/page_alloc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+--- a/mm/page_alloc.c~mm-page_allocc-avoid-infinite-retries-caused-by-cpuset-race
++++ a/mm/page_alloc.c
+@@ -4562,6 +4562,14 @@ restart:
+ 	}
+ 
+ retry:
++	/*
++	 * Deal with possible cpuset update races or zonelist updates to avoid
++	 * infinite retries.
++	 */
++	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
++	    check_retry_zonelist(zonelist_iter_cookie))
++		goto restart;
++
+ 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
+ 	if (alloc_flags & ALLOC_KSWAPD)
+ 		wake_all_kswapds(order, gfp_mask, ac);
+_
+
+Patches currently in -mm which might be from zhangtianyang@loongson.cn are
+
+
 
