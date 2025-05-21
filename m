@@ -1,217 +1,165 @@
-Return-Path: <stable+bounces-145798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27310ABF0CC
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:05:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77FDABF0F5
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 12:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50AF11BA7DF1
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:06:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 857A7169961
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB3825CC59;
-	Wed, 21 May 2025 10:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5DF23D285;
+	Wed, 21 May 2025 10:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="BwKsgdgJ"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="2dU7QpD+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E84B25B1EA;
-	Wed, 21 May 2025 10:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EDD22FDFF
+	for <stable@vger.kernel.org>; Wed, 21 May 2025 10:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747821923; cv=none; b=VGT/G2PzgoQRQF4TA9XoUL+kXRYItgjal3BDfyEqIui/gNdf+pE0N7BO9t3rrYIdcD80k3BHLza3F/FiOoRXlu1R/dxpY9f1cJOkxxp6JxXbK8NHeuswZ9TzOG4WCaUp2m8K0Ygycjm6K2x2iFNEJg/Ett0LnxQZsszRscnv5JY=
+	t=1747822133; cv=none; b=re21RGsOPwgEdaXEwJeIGz9tIt9qcMjDpoPsYAbNKm+Zx+yORj7NNGyYpntIzVSO03WBYI3r+HHXM9BojvhUosVAqc2VmNlu21Ga/H4PcAfpc9yV1kWIjkICyZVKnbD6PfzV6zlbQWriIok2wdCjcsB6avpsveZU1oP/BNGJrno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747821923; c=relaxed/simple;
-	bh=2H03yKDDvvwtWlinswlpG3uXjN8cIEkKDUEOnDM+ajA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DZBmglhimAOauubleJ9AbQZAeNzsompo0vUF+cW1idz2Za1tYmcOgBojGNQofnUAX4dsxWXR8F//rTpDTw1dM9m+ARl6Ds9SzFwwUzv0u8tYKxuqcak0n/rphwFHlFfV9YhHi4HFVhsUKElR/5U8szh7qiGoEjuODwyECuor0O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=BwKsgdgJ; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54L9qf7s001293;
-	Wed, 21 May 2025 03:05:10 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=5
-	h67ACRos9ZKJi9QI0mKH4MWoBBeFr3X92v5NevNtLY=; b=BwKsgdgJfmvCsonly
-	cNdAZQeenPCea93V3tk76Mn52f9D3oL/Cv/SrOsE3iNS4dhLa2D3J5rvjZgT1Vai
-	SgQNzNcUox/jCg7bUWw22MYs9BDWp1aZJpczyodN/MyEi97oAmNw21w1GzxaVHMv
-	9V/vmWeJ6LRY/N9Twss+gRLPiv06d2wEbj5wlHdF/azD6TdXnYmLPFREXaahAVul
-	QyTQO0Oss0sTV4DvghaWze7WK6l1Yd2txJNz5AavqzS7BUWZE4RaoH3Jy1sBrA4J
-	f61pbr6bJXNT8B+2qPx8S2mIIvDI9PmZBiAXVNx3a9GIAzUyhxXf89JRX1dUWLQL
-	fmVtA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 46sbxkr31q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 May 2025 03:05:09 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Wed, 21 May 2025 03:05:09 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Wed, 21 May 2025 03:05:09 -0700
-Received: from bharat-OptiPlex-Tower-Plus-7020.. (unknown [10.28.34.254])
-	by maili.marvell.com (Postfix) with ESMTP id 75C763F70B3;
-	Wed, 21 May 2025 03:05:05 -0700 (PDT)
-From: Bharat Bhushan <bbhushan2@marvell.com>
-To: <bbrezillon@kernel.org>, <schalla@marvell.com>,
-        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <giovanni.cabiddu@intel.com>, <linux@treblig.org>,
-        <bharatb.linux@gmail.com>, <linux-crypto@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Bharat Bhushan <bbhushan2@marvell.com>, <stable@vger.kernel.org>
-Subject: [PATCH 4/4 v3] crypto: octeontx2: Fix address alignment on CN10KB and CN10KA-B0
-Date: Wed, 21 May 2025 15:34:47 +0530
-Message-ID: <20250521100447.94421-5-bbhushan2@marvell.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250521100447.94421-1-bbhushan2@marvell.com>
-References: <20250521100447.94421-1-bbhushan2@marvell.com>
+	s=arc-20240116; t=1747822133; c=relaxed/simple;
+	bh=ZNGSUOdcii+cKMzGlqFP+c7iJmTif4FWJDsPrVxtNrg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S8EY8BpwZ6152qE5qjo4tw63fz4q/nmCqhqzWJpWQLcGGMtoORMQEmkt44v6uwOcmvyPv+iVJ4FDpxMaHIZ/an7DkbBNrVBMpgzh+j7Az82dvsMIUXabwPcn8XuLGCNVLaYxePRZJ8jePeYVZdzl+OQvHTJdAOWiAvOjoZdxvSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=2dU7QpD+; arc=none smtp.client-ip=212.227.126.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1747822112; x=1748426912; i=christian@heusel.eu;
+	bh=ZNGSUOdcii+cKMzGlqFP+c7iJmTif4FWJDsPrVxtNrg=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=2dU7QpD+lk+8uR0Ti1q/aD4V2Ob066WA6Xe+LUY+LEomKkiI1TaIKWJtDu5JYcTk
+	 oy3ccCuPsg1zN5FV5+pqCqjdgcB2tbU+ypQiiN4LGYxr9c+Ode9lA3G10svmrUf1e
+	 XvbBXuLQJE1H9064dxQsoLgyA25pNe2aknBax7ww5UrQ1a0s1KzOlqQvzSTdCaL3V
+	 SYHnehwmI1IsxckCDBfz11GVGGWvw1c2eISNZsybyj8CGq7z9qWh8CAwg3k0Ipgkv
+	 GInCu3es9ITUcnYZ/MuC9B7Qcw+Zud7VxygrgT/VZ6JffvAuD8iG6bz1gRLSo2SUl
+	 cROvZmcII1Qpy3E9pw==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([89.244.90.42]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1Mbzhv-1unioB3UTf-00nMR1; Wed, 21 May 2025 12:08:32 +0200
+Date: Wed, 21 May 2025 12:08:32 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Maud Spierings <maud_spierings@hotmail.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
+	linus.walleij@linaro.org
+Subject: Re: Panic with a lis2dw12 accelerometer
+Message-ID: <60a9ea8a-edb1-4426-ae0e-385f46888b3b@heusel.eu>
+References: <AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+ <8d249485-61f6-4081-82e0-63ae280c98c1@heusel.eu>
+ <3352738d-9c0e-4c23-aa9a-61e1d3d67a50@hotmail.com>
+ <AM7P189MB10092C41B59EF58CBCB290A2E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: T-ZA3YICQCQWRdu41o4EuZmPu5SxJows
-X-Proofpoint-GUID: T-ZA3YICQCQWRdu41o4EuZmPu5SxJows
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDA5OSBTYWx0ZWRfX7OhwUDQvbuyg NrVfVVSm4k7LJqG300VL+m/XkMUN8nLkK7jvleRr0nQp10SoMsPqsLBu/kIlxAZ2YBwGiiTDP7h fFtIqacdY51m+pxGE2FS2Kx+pLB3AJo2EBIZsabHnVCeMWSfPKx2BvWXxav5AbXfocDrMWpL/SS
- 0HHbg6N3itSdgOKh8RbKutnOheoGUicSIsAqgc8RmI75rtiPsWEACFlkuseeAhKMifPwbOOeNa1 HsI6oFn4blWLFd3H234NE6ULea5k8aD+OMtJyXagf13lwSD7mD5K6pk+zn7aw4Alu8lJa7y2Neu 7zNAEYQOB7MCTKuyUCYrbQpQisLtgjQoR2wNnpspCjG5qHLplpe74Eb3yyv+1qh/N67yr8+eFhb
- u5gMOCPGddD6XxMr8370KyFioz50XeRfaswjZJocjQM8tIxv7k7+76FLjtkwQEXa0lv2g2gI
-X-Authority-Analysis: v=2.4 cv=U72SDfru c=1 sm=1 tr=0 ts=682da555 cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=dt9VzEwgFbYA:10 a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8 a=BhrP5AWxFkdJNdVQK0QA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-21_03,2025-05-20_03,2025-03-28_01
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="e2cmn7d5gfxkbkv6"
+Content-Disposition: inline
+In-Reply-To: <AM7P189MB10092C41B59EF58CBCB290A2E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+X-Provags-ID: V03:K1:kKV/kZ2L9JUJKSGg+6Wrs3pnVW/3Yi3r6H/kHpAsc0bN9Cgc03+
+ oys+nKw76VhMtQkrN5xR0+URcufQ0Znn6Bwc7amzAmyd912eiI0+SH+Jt5wPtx/uURKuYeD
+ X9Z/xkZJVJUpGQIK1oZI3nOceqat2YNLLm96rz1q6rf0oEVZOTZ6QyGlwM1gYcneirDaUgH
+ OVmm6Kmo98tBGtky7OWEQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:DfMuGtnVmLs=;l6BibFYsHTIlLWSRnqah510w/Bx
+ xruhOLOf6AI4HsStNZR1bq22ov8HdbRNATaSxwy9mc2CP9SykY+8rYLNeIPKd05gOOTeEM++a
+ CpJeH6TmHR0FjBlxmNSrUMWiu/k4vMgl6k0CUYzAU//4npM5zREEbJkBKg4kQrX3Ebb5TTgYs
+ adPXsd/GmtJGWvToxsk4jpqcFhjNXAbw8HjRRjRYUj6IwI9MRrXOmtoQ3jrnRbvsecsTkMEty
+ 66lUDLu0w7/WN+t1tp5REN17S/8HSwHResr7MqK9Xpz3EjCIQ7VjzpkiPqqo5pFmRYIgWjDUW
+ F9oUq+d906Bz7xLsv32SkN4xj3OWRotCbq6kbF0U47HfcXwd+phl8q0zeOEDW9yEfuWd1VXMo
+ QoTZSGdM+6lf3N9nw6vAXVqhFGOyhZU1FOxC7b7Xnn0sJLcIa59hK7tSTTcduS0JyX7LI8Wo0
+ 6aq2JnPOrFbBF0EHf9w+EjqY36xseHXYo20Fz5/btnJDMehKkvA+bTFNTxb8AnvkcnDUJ6cnS
+ zHXdQnufWgeHyfxn2/A4CjycUfeZSMoPYC+UldqXDU1S6QNUgp4uYXrVDJMrMci/duL2J+gHu
+ 1EiiVpRUxqu2e1OOqPRGlVGvdF0sVMKjQgNZagcLH8jNmyz7ZI3bYy+rZGAQ/i1uCxTqfM/EI
+ W8LZdj/2Z+uIEB4prbgo9DTvr4GVRSHLX82UbnCA8bGO+NonE1t8AIpWKSSSPKKrNeCtwzeea
+ YpOwjw4VeG/mrv62/+R63ySw5MiDhiNqr/N+bPvPHqDs0+9F1EhVzxFmo+LE20vM1kNfG8ZHR
+ mBdKBBg8HdliMz6GjwNcOdJAZd5HGmFtCEruy6AZaw0BUqWdIqcKGtVOuuws3DM1V2gUkILMl
+ tErrh3yJO2DHCeGs36LvuDxZurHGT9BVCFdklmrIVevbJb+p1B7OpEqRK6PSMmQqt3lXww5/I
+ cROhVBAG4GLfN33INlmYjWAeEFaEqHVpzVPAmcVUP4HR0dKeLmtOzihF1KWHnVvJkT+fnkHEP
+ KWUkoccgGaI66bIF1F9TFHGk1jtmVinEmFzqyNGU/Mh2ZYblGloUxGNz2Nv0AKtkRrRzOmg45
+ NlPjmK3UDv0oJUlDKMnoSBIEpy8IKtD3ff5XhiqKH14ePXdIxo+XR7ELuog3DNnkm4+XDTn3K
+ 7EqNHxhH1qjhkEzN6p6lBgve0BjL85Wdx+iutUAjzpUrseUeYd9KC7lt7FTgxotyiaomXs75u
+ JC6VszMHguGaY96rEX19rmnkbWWMa8+cu7LSGWIF3mUWBh/l4LoXLsc1XpSETskfksuKCz2T4
+ 1bDiH46WvnmIFKDx/Xr1quMmzjFhh4b1FKz0l/8+Z0r3VWljJ8ckK4D4lcbYGXs2WXaOU89hW
+ aUAbwp4WsWv13RlFfvUtvX8djvN3OQXb1mND2qllNULhzIvwuT6T2DW1yM
 
-octeontx2 crypto driver allocates memory using kmalloc/kzalloc,
-and uses this memory for dma (does dma_map_single()). It assumes
-that kmalloc/kzalloc will return 128-byte aligned address. But
-kmalloc/kzalloc returns 8-byte aligned address after below changes:
-  "9382bc44b5f5 arm64: allow kmalloc() caches aligned to the
-   smaller cache_line_size()
 
-Memory allocated are used for following purpose:
- - Input data or scatter list address - 8-Byte alignment
- - Output data or gather list address - 8-Byte alignment
- - Completion address - 32-Byte alignment.
+--e2cmn7d5gfxkbkv6
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Panic with a lis2dw12 accelerometer
+MIME-Version: 1.0
 
-This patch ensures all addresses are aligned as mentioned above.
+On 25/05/21 12:03PM, Maud Spierings wrote:
+> On 5/21/25 11:48, Maud Spierings wrote:
+> > On 5/21/25 11:29, Christian Heusel wrote:
+> > > On 25/05/21 10:53AM, Maud Spierings wrote:
+> > > > I've just experienced an Issue that I think may be a regression.
+> > > >=20
+> > > > I'm enabling a device which incorporates a lis2dw12
+> > > > accelerometer, currently
+> > > > I am running 6.12 lts, so 6.12.29 as of typing this message.
+> > >=20
+> > > Could you check whether the latest mainline release (at the time this=
+ is
+> > > v6.15-rc7) is also affected? If that's not the case the bug might
+> > > already be fixed ^_^
+> >=20
+> > Unfortunately doesn't seem to be the case, still gets the panic. I also
+> > tried 6.12(.0), but that also has the panic, so it is definitely older
+> > than this lts.
+> >=20
+> > > Also as you said that this is a regression, what is the last revision
+> > > that the accelerometer worked with?
+> >=20
+> > Thats a difficult one to pin down, I'm moving from the nxp vendor kernel
+> > to mainline, the last working one that I know sure is 5.10.72 of that
+> > vendor kernel.
+>=20
+> I did some more digging and the latest lts it seems to work with is 6.1.1=
+39,
+> 6.6.91 also crashes. So it seems to be a very old regression.
 
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Cc: <stable@vger.kernel.org> #v6.8+
----
-v2->v3:
- - Align DMA memory to ARCH_DMA_MINALIGN as that is mapped as
-   bidirectional
- 
-v1->v2:
- - Fixed memory padding size calculation as per review comment
+Could you check whether the issue also exists for 6.1 & 6.6 and bisect
+the issue between those two? Knowing which commit caused the breakage is
+the best way of getting a fix for the issue!
 
- .../marvell/octeontx2/otx2_cpt_reqmgr.h       | 58 ++++++++++++++-----
- 1 file changed, 43 insertions(+), 15 deletions(-)
+Also see https://docs.kernel.org/admin-guide/bug-bisect.html for that,
+feel free to ask if you need help with it!
 
-diff --git a/drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h b/drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h
-index 204a31755710..8e95036e91d9 100644
---- a/drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cpt_reqmgr.h
-@@ -350,22 +350,47 @@ static inline struct otx2_cpt_inst_info *
- cn10k_sgv2_info_create(struct pci_dev *pdev, struct otx2_cpt_req_info *req,
- 		       gfp_t gfp)
- {
--	u32 dlen = 0, g_len, sg_len, info_len;
--	int align = OTX2_CPT_DMA_MINALIGN;
-+	u32 dlen = 0, g_len, s_len, sg_len, info_len;
- 	struct otx2_cpt_inst_info *info;
--	u16 g_sz_bytes, s_sz_bytes;
- 	u32 total_mem_len;
- 	int i;
- 
--	g_sz_bytes = ((req->in_cnt + 2) / 3) *
--		      sizeof(struct cn10kb_cpt_sglist_component);
--	s_sz_bytes = ((req->out_cnt + 2) / 3) *
--		      sizeof(struct cn10kb_cpt_sglist_component);
-+	/* Allocate memory to meet below alignment requirement:
-+	 *  ----------------------------------
-+	 * |    struct otx2_cpt_inst_info     |
-+	 * |    (No alignment required)       |
-+	 * |     -----------------------------|
-+	 * |    | padding for 8B alignment    |
-+	 * |----------------------------------|
-+	 * |    SG List Gather/Input memory   |
-+	 * |    Length = multiple of 32Bytes  |
-+	 * |    Alignment = 8Byte             |
-+	 * |----------------------------------|
-+	 * |    SG List Scatter/Output memory |
-+	 * |    Length = multiple of 32Bytes  |
-+	 * |    Alignment = 8Byte             |
-+	 * |    (padding for below alignment) |
-+	 * |     -----------------------------|
-+	 * |    | padding for 32B alignment   |
-+	 * |----------------------------------|
-+	 * |    Result response memory        |
-+	 *  ----------------------------------
-+	 */
-+
-+	info_len = sizeof(*info);
-+
-+	g_len = ((req->in_cnt + 2) / 3) *
-+		 sizeof(struct cn10kb_cpt_sglist_component);
-+	s_len = ((req->out_cnt + 2) / 3) *
-+		 sizeof(struct cn10kb_cpt_sglist_component);
-+	sg_len = g_len + s_len;
- 
--	g_len = ALIGN(g_sz_bytes, align);
--	sg_len = ALIGN(g_len + s_sz_bytes, align);
--	info_len = ALIGN(sizeof(*info), align);
--	total_mem_len = sg_len + info_len + sizeof(union otx2_cpt_res_s);
-+	/* Allocate extra memory for SG and response address alignment */
-+	total_mem_len = ALIGN(info_len, ARCH_DMA_MINALIGN) + sg_len;
-+	total_mem_len = ALIGN(total_mem_len, OTX2_CPT_DPTR_RPTR_ALIGN);
-+	total_mem_len += (OTX2_CPT_RES_ADDR_ALIGN - 1) &
-+			  ~(OTX2_CPT_DPTR_RPTR_ALIGN - 1);
-+	total_mem_len += sizeof(union otx2_cpt_res_s);
- 
- 	info = kzalloc(total_mem_len, gfp);
- 	if (unlikely(!info))
-@@ -375,7 +400,8 @@ cn10k_sgv2_info_create(struct pci_dev *pdev, struct otx2_cpt_req_info *req,
- 		dlen += req->in[i].size;
- 
- 	info->dlen = dlen;
--	info->in_buffer = (u8 *)info + info_len;
-+	info->in_buffer = PTR_ALIGN((u8 *)info + info_len, ARCH_DMA_MINALIGN);
-+	info->out_buffer = info->in_buffer + g_len;
- 	info->gthr_sz = req->in_cnt;
- 	info->sctr_sz = req->out_cnt;
- 
-@@ -387,7 +413,7 @@ cn10k_sgv2_info_create(struct pci_dev *pdev, struct otx2_cpt_req_info *req,
- 	}
- 
- 	if (sgv2io_components_setup(pdev, req->out, req->out_cnt,
--				    &info->in_buffer[g_len])) {
-+				    info->out_buffer)) {
- 		dev_err(&pdev->dev, "Failed to setup scatter list\n");
- 		goto destroy_info;
- 	}
-@@ -404,8 +430,10 @@ cn10k_sgv2_info_create(struct pci_dev *pdev, struct otx2_cpt_req_info *req,
- 	 * Get buffer for union otx2_cpt_res_s response
- 	 * structure and its physical address
- 	 */
--	info->completion_addr = info->in_buffer + sg_len;
--	info->comp_baddr = info->dptr_baddr + sg_len;
-+	info->completion_addr = PTR_ALIGN((info->in_buffer + sg_len),
-+					  OTX2_CPT_RES_ADDR_ALIGN);
-+	info->comp_baddr = ALIGN((info->dptr_baddr + sg_len),
-+				 OTX2_CPT_RES_ADDR_ALIGN);
- 
- 	return info;
- 
--- 
-2.34.1
+--e2cmn7d5gfxkbkv6
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmgtpiAACgkQwEfU8yi1
+JYVN4Q/+Iu7REEHHAYr03kANWHoMO75OQSdByTLWR0Jd7qCqurhNj3uBJkcxsANd
+whpEJbISJvk/qATKzvXFv5rq3KjEFJy+369DD5N2Ou8/PkUh3brrZ5v1wXxqFCde
+xGmbtUNbHPyYO5ldI3MLsBnqWMM3kPTyiamRVGrxBsUUU0jZASSMpxGLoRLT/s3n
+QS0wJFgZehSb94gqgksKjtNsdXECUQtljBBORXizY+zE4JTNNCRitAeUAfnfSNsB
+See6q+pqEm3ouAvIe+4TE12hDxPpcZ4UgRFnUnQnyxbLN5ZSv3qxexLRnCGiVsIi
+ClEpD4PQ+nVfHE/+LTFc/2KM5x39/aKSzf6nIDVvWggiTy2sO5UWOXPIzstO6VXt
+ev8C7W4aSMgESrskF+T5ylzLQ/ESS3WRVyYKho1i9Cz7yXQjWynuSXpZuf3y/pTi
+fmn7HtQD2l9dooyh8Hs4znBQn2FZllMFtYXDUhG8/e/1g7veHoCA0mveGdXO8T5m
+/80jpmMXKeW0pX8wZFd4qoOYxLmKwiZZkdgiBCHNyVhEq/0uAil2lpRiBwC5XJBr
+/3sssUr5gE4jWDQSkL0DwpX+IXDMdOiz4WFj5NNidUVJPdTIYM5y+N9k5tVDXxzK
+B0SjStteN6UiRLSQyP8PIyecXDkC6VAKY8Fzw8J1b4hkn3iYXrw=
+=pP8S
+-----END PGP SIGNATURE-----
+
+--e2cmn7d5gfxkbkv6--
 
