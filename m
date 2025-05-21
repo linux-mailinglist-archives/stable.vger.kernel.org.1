@@ -1,376 +1,193 @@
-Return-Path: <stable+bounces-145794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144DBABEFD3
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 11:32:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E56DABF069
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 11:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 311511BA4418
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 09:32:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E867C4E436B
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 09:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30633241673;
-	Wed, 21 May 2025 09:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3890E259C8A;
+	Wed, 21 May 2025 09:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mmkr+fxd"
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="Rji5KwVG"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2056.outbound.protection.outlook.com [40.107.244.56])
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03olkn2068.outbound.protection.outlook.com [40.92.58.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF12238179;
-	Wed, 21 May 2025 09:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B23F20ADF8
+	for <stable@vger.kernel.org>; Wed, 21 May 2025 09:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.58.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747819955; cv=fail; b=UE1S2fNNEPkqIEBN52kYMjNkBwtnqZgZxv3gWbBMLpO9EYu+g/iHEUECRtV1Wf1WYF0l+jaEgTloZLyTHdordQ8e68XTOZWI06SIG8w6gHjbQgDuHL1gdNz2j42tFoYoOKYoAQ7v/LjmLSG7HK6gab/aszIlV4EASz6DfI6GG1M=
+	t=1747820910; cv=fail; b=jljOV/WxIcEschL+UEygcXOQr/vw/uUnvIW4PS1B1HJPbgSb+a9K3ZNcdgiX4bbFNFu3FwwNUJs18MzFhuGmZQSTXuaNqO6QYqRQirOeKgpse+jTrMtDpTDd6sidOhkkMWGNXvtqL+QCrVYPyM/P1I1uJnwIp8368Z9AzsjRTJ4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747819955; c=relaxed/simple;
-	bh=QY1/O5BeedKYIcmcPEtU168Q0hrMAmc/io/0w1qJQYE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ipSsMJDik4EiSx25tKVXdQdK59APT4j7LEbHIovkKtKQGxdPy+Uciv3CxuuH5dqaT5yCNOGDhBOAHSGm/8xbshnXqfoU/tOb6mVhwutmHcl7kxyFkfKfQM4a7VbsuZJEUrsZqeg+CjXpkhl3xWY00Tbfh41d5zi9js++4V0dLY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mmkr+fxd; arc=fail smtp.client-ip=40.107.244.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1747820910; c=relaxed/simple;
+	bh=mNx+OJ1oLHxK9yuU+VpemgyAm5VnDOf9cHwMDf14A4s=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=WZS3jGgYkwWePg8NalPWXHhpdjIA+KJT6fFnOO5OJUkJl9wbCMrtXgeHwGP6JgTj6dJ+wpWypN94qEZbFMD38ICqY3fwbhKG+lOHfWlR2cScod0CvUIhA+8RoG8YkxkutKK/x0vlCkODHwvoH4MXgbPNQeqqeh15KQhYAhTgwB8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=Rji5KwVG; arc=fail smtp.client-ip=40.92.58.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ACrpBa9asludfbuzpmhI5WoISj4Cv+G1f8SdnwNvADzTlcmuILvCb7uDkQaiYqASM9wzlXkQPNjDtanMj1FBsJzuNGeUyUYf4aHYlng72nEAHQVDXDPkgmGvaWZJQxgV9vJ2aDl3llah7ip1dgdwZvdP2np5JqBnZCq6bUvBHfBUC3oN8zMzHgdZW4/J+rokhva5G6ZY58rUFbKmHRBzgwPyGnE5f9P7bQVuSKBoVcXzd33NDvW9uHqGf+nNnJmPeNIep1P+RvMsk5iBEDmrR76n+IxRUAb4HjG7KgldmZe0Cwe1JhmFJkkks1x75Eq77rusl2LE7QYr8yGHLkFbCg==
+ b=W/szV0HR4P2yWhZ458Dx3WD24stmvCluu8Szs+G6vhGCIP+1/G3FSKi8yINom8Qzsk8Ms5bkkNFBdgI1ichre/jPNCaenstmXtDLPU4KEA+ZPYFRpgw+oaA9ZEQ/QHwJXH31c+QRo709p8eDN2/Jwjj2UyQ3Kk+LbQ+WgfIDvpj20Fs/gyknXsqXz4oLgTsEk/jDtmM3/P1F/1SX9G+xYhEVKBwN6tw77GHBY6/uyb5N5rA356QpwzvsoTzbzU9SBT4XJJFuA+UThCDALcD6Q7BblsiDfJQk1MjOMn3n+sqdsjqx898jHIxChBF5gywfS0m/Lq5tld2v1w4HLo5Xhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=igN7A/MvKOlv0kT6EH0PXOkQHXwh0cnwljSBivibY28=;
- b=m1ChudEfx6H2gjMDsx8Pec7SJK2GOdYAPpJlHEgarbEZrX6bwQpruMbxMddvUD/2FioLNDjDxWjUbogn792uDhSu3npIGgrjNyqgCARA3sGdYrl37Q9GYk5sNbf9nhXCGKsltO77f1VamdjxjiS1Mr4JS9XqRbYlf1871nlKWg18BxuPdaMre8ZZ9xXj3FIs7astwf7rT1z2lwwPEH3jfE78fkPbhpUame/PVcEBNKXd4ZOrxEeOFX5di2bLbwvou1bFsfp34Pafg4+1foAYDBU6r0blKutML7DdPnuNXiSW0njHOQlAv5uT6WU0FtQr428xdAtIe9mOYns7SiNEDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=kb67Mjtdzr+c1CfW0Hao86gL11Sra5T/CITHlCRyBDM=;
+ b=H5J1OURbsvdX7W85fHaHjmxDmrHGvWSzkmXvg7279qFw0yr4X/iahGO1voXmJpLoNV6UNs2PGEl/PPdF/qMcJVec7Y/1K/ZasIeFoGPJX9US4fGnhUeJY7qjKwvM25Wc5nnIpWbzA+1KNS5EETjqtkjL42FDybObXhTE0cTVq3XLdMxQTzVoNbMU5TMKz+RPjDGmBp4+vYIi0ZbDrSGCpXjLDeNQeyv1kkU9YwsPj2+ZICVrP2arxJjR4UNNnlO6OzesSdkp2FYye6aE8WNAi9NM3sPBMWoA48c7612MChOtjooAzQgjHtGHc8tGi/dMkYpvLawd/+FCPEIpjDyacQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=igN7A/MvKOlv0kT6EH0PXOkQHXwh0cnwljSBivibY28=;
- b=mmkr+fxdQi8e/jdGHXDv5h4uq1IIms8I4/0Lf0PgV+O8nnjdMp4GettO4FQbvnGpL+SwIbrBzRmnOOUJ01eXtrYabAptoauiTsPbHmJwWtBG87ooEr+NKhesfOFa7dE7DB9zDKxbCQnpTRiKMnVoVXBFhZBU1XPOYCwDkq3ZcNtSKafbT8Lxgmk09jEhQPtzvun8my8u46kbRcWkmZoAOZYvwLZarNBRqmJlNbUW8PyZzF25gCLeSt/rAFh4J7hY6odEoN2+CSUu+yp3MNEHL7ULyPiQrBcsI+BcRTftAnHiRfVkT8rm1DiMXZDUMRoJu+oyQGgq23sxZaC9nsjPYg==
-Received: from CY8PR12MB7195.namprd12.prod.outlook.com (2603:10b6:930:59::11)
- by DS0PR12MB9397.namprd12.prod.outlook.com (2603:10b6:8:1bd::15) with
+ bh=kb67Mjtdzr+c1CfW0Hao86gL11Sra5T/CITHlCRyBDM=;
+ b=Rji5KwVGWznN+OJBgYj/HDqTZoeDoSvpPg8D9V7Zn4nMGx5v88F7+oiRNOFKZzVMSGylIYRJtWn0ZuZz4l4XR0QN6nDbz5fQd4sL+peVmDGXGo7K2m4SO7C1QzZGq4/MUTUJapkmLukcacW+WahBAyHzkj2XYqdGcMPP3yqbyScMghBqXq3BPWhU6JkuTBb9VOMzIg5OUaIN9urD4w+29fX+jDaUy9UlcExOdAVAQYhnp8HuLTyWFiNQvx6PBW1q7BSjyGz8nPnHct7HFgRI2E5Ku0SCPWcBc1+8S4eJ8QTNlV8kKfQz4EojibLDN18mW8BmRQZ8n06lam+ccDWd9Q==
+Received: from AM7P189MB1009.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:175::17)
+ by AS8P189MB2096.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:52d::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.35; Wed, 21 May
- 2025 09:32:30 +0000
-Received: from CY8PR12MB7195.namprd12.prod.outlook.com
- ([fe80::c06c:905a:63f8:9cd]) by CY8PR12MB7195.namprd12.prod.outlook.com
- ([fe80::c06c:905a:63f8:9cd%4]) with mapi id 15.20.8699.026; Wed, 21 May 2025
- 09:32:30 +0000
-From: Parav Pandit <parav@nvidia.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: "stefanha@redhat.com" <stefanha@redhat.com>, "axboe@kernel.dk"
-	<axboe@kernel.dk>, "virtualization@lists.linux.dev"
-	<virtualization@lists.linux.dev>, "linux-block@vger.kernel.org"
-	<linux-block@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "NBU-Contact-Li Rongqing (EXTERNAL)"
-	<lirongqing@baidu.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "jasowang@redhat.com"
-	<jasowang@redhat.com>, Max Gurtovoy <mgurtovoy@nvidia.com>, Israel Rukshin
-	<israelr@nvidia.com>
-Subject: RE: [PATCH v1] virtio_blk: Fix disk deletion hang on device surprise
- removal
-Thread-Topic: [PATCH v1] virtio_blk: Fix disk deletion hang on device surprise
- removal
-Thread-Index: AQHbyhrdL96Oqawka0G+Ryv5JzR6PLPcvXWAgAALoUCAAAWOgIAAALHg
-Date: Wed, 21 May 2025 09:32:30 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Wed, 21 May
+ 2025 09:48:26 +0000
+Received: from AM7P189MB1009.EURP189.PROD.OUTLOOK.COM
+ ([fe80::e9f1:a878:e797:ee1a]) by AM7P189MB1009.EURP189.PROD.OUTLOOK.COM
+ ([fe80::e9f1:a878:e797:ee1a%5]) with mapi id 15.20.8769.019; Wed, 21 May 2025
+ 09:48:26 +0000
 Message-ID:
- <CY8PR12MB7195A306A9A8CFE8FFC1B033DC9EA@CY8PR12MB7195.namprd12.prod.outlook.com>
-References: <20250521062744.1361774-1-parav@nvidia.com>
- <20250521041506-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195F56A84CAF0D486B82239DC9EA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250521051556-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250521051556-mutt-send-email-mst@kernel.org>
-Accept-Language: en-US
+ <AM7P189MB1009CE7CC28220254CB7FE8BE39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+Date: Wed, 21 May 2025 11:48:25 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: Panic with a lis2dw12 accelerometer
+To: Christian Heusel <christian@heusel.eu>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ linus.walleij@linaro.org
+References: <AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+ <8d249485-61f6-4081-82e0-63ae280c98c1@heusel.eu>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR12MB7195:EE_|DS0PR12MB9397:EE_
-x-ms-office365-filtering-correlation-id: 82e3d6ed-9a41-4560-9ef6-08dd984a68a1
-x-ld-processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?MxUCcIPZducfyfaAm+9LgNAh4ziz5zSWf1Zz8NBmuOG14rL3WT2YOVTLEsV3?=
- =?us-ascii?Q?vxM2eZc37JTbBPFf64kNlv/rk2AJhwsyqU7GRwtd/+GNoLUhF0wpdiH3e/jt?=
- =?us-ascii?Q?WGh9hs5d2zx558zIxFAMjA1/FLK4HYWedFtainpOVIU1KXH7oivJnkkXD2lT?=
- =?us-ascii?Q?7R88y36RtwybR116GrBGsNgbyKgHzNlfpiiCVOA06GinrNNjrv4ef7TTNtHK?=
- =?us-ascii?Q?D75xWwYTgoChZjrzWh5WsEJeiMKh87RGm2WrVQXV6aj/RnXTM2vHLo6sO4dt?=
- =?us-ascii?Q?vAI8ogYMiAcc+Yk4AzRINCHySAG+aMS1D4E44jjnUcv76cHya6Uy4oqgp1KM?=
- =?us-ascii?Q?eS/jh0MriPOzTN7vB4XB9fXxyrcb2Jke1CbTOAWAGZbglpiGzsPrkEjbSkSQ?=
- =?us-ascii?Q?fCwB/6yh1r2rZ5Pta08smBObAhjnm9z5ci9ROvsRRQ6jNrjzwnDRO0gVszIM?=
- =?us-ascii?Q?YGDqiVDQFIXJilbaNDUu0wTzhIvHsUZKmIgY2qcX97QRi62xV8LPq5kIXGkd?=
- =?us-ascii?Q?UBf3nbp9a9Mo0E0LbNJlM5/ccel31d6+VFKCXEOCPG2hHpBpdoX2zFpafVwL?=
- =?us-ascii?Q?7EHxD4WQpSJaI83shfWyBzFi7EE+H2EcxH1XekhSWe1ncqb7fL3/+3IsVi78?=
- =?us-ascii?Q?9Cj2c62TQ03A08U33Lpvx9Ps0Q02URwQBSPwYKFdDs8VzbzRf7uk5EqQb4kq?=
- =?us-ascii?Q?DqtSlG88FMOXnycZIgvoS2lx+KDfEFE4rU69xqOWp6ETwHlbXWVOFTRuGy6i?=
- =?us-ascii?Q?ib78flRw1VtAJ57j0A1ZJbI8Sa81C8GiE4uvdqvK0Mz6BDk5rtME72Ng37V5?=
- =?us-ascii?Q?MBTeWWoT6+CpAgh1JVwlLIFQBnk9hGbej4+9dYS+tjiiiF5YGaC9XGd7xbwX?=
- =?us-ascii?Q?K5/GuAnY0phgDCk2qlVorQOyix7HeXmkWZnPsYxXmTZkkarIkiVQ4ZnCaKU7?=
- =?us-ascii?Q?X+apZ00coD+28gmPsoO7hD0TRr/yW1T1+uEdzjNpX73/3wI3/MtWK9pkWxul?=
- =?us-ascii?Q?P02ImQ3NImv9NG1MFFLD3cIkK1cTXwq4iwRauOB9ay3yfpNyC9ecUSo0RWSQ?=
- =?us-ascii?Q?tOqiV72r5/8TH4SefOH3RuhW75ULAxT6V9BHlG9nrz4MQuqkPsipdVuwx3Qs?=
- =?us-ascii?Q?PqIvycSJQDTWa8US7aJh9yVNq5pMXmyFx3fE2ht0aYYAOiJDeAVwQmJFMDvT?=
- =?us-ascii?Q?wMYheHQKwfStdVclKW+okhvThbm5aftoCnJKian0a5Z8+RfM/oPBJgtmXk2x?=
- =?us-ascii?Q?xMZhFSgHF4vy2U7gI70cCkACtFC1qI9Zoi3vsdBnmTOSvuwVLftZXEC2QuaV?=
- =?us-ascii?Q?9BJ0QhUONkIPfQ3wmjE8S9rk6Ro9kmHz0T28vr+wC+j4QKZibgKmR4hfbjnC?=
- =?us-ascii?Q?fd4ly9GUWPGSRjmwqbF+SRY4vUZqR8sFbo7LPb2pAZdCIENAUBEAl+mt7rdj?=
- =?us-ascii?Q?qiiVDqiEFKD25Ndvg40Ayi7tr7VkjpqHbORYwpH+vm/Ql/DAP0WttQsxWHG6?=
- =?us-ascii?Q?XinLadVJzE6ytN0=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7195.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?vnMQSvNzYGprFNv7wpN73HgX8il+x16q7hYDcvaZIdt7DkjzScTwukWBGspJ?=
- =?us-ascii?Q?RCFc6UCJcUNgYmTh07oFQtUEJEExeDM6KoB9AE0GK1mojjW9cMZFkBbpiLgR?=
- =?us-ascii?Q?P0vr+doZC1x9Yv9cDhSXbWgluRZ0yq4LG7epw+eAhgat9MzogzJn+xnDSLAt?=
- =?us-ascii?Q?HaseML1MiOtTNnIaeiXqf2jaTUepwTQigEhz1HQZDc2a+2tYSP59cokpqqwF?=
- =?us-ascii?Q?xqOt0WxGPPe/dXEqVk0eH5dyzPW6tsfGA9a12hpFLtE2NSZireBy8P/AMaDJ?=
- =?us-ascii?Q?2Xq8BsbMjZPgEVY6PIldUNe6cPGSRCaGzjLIm0DZdlACu+kTEZ8LIfSQzq4l?=
- =?us-ascii?Q?h+Js0QlcdE6coujtYiBt2dd4oOFw9fu8P1Vmxk++EqcgMg9De2PkS3+ebBFQ?=
- =?us-ascii?Q?nvTtb08VPOf2PM8otZ6s6HTARSW2/SGWxGDWHSWkqXoeToXSVWYnRT8fGfT9?=
- =?us-ascii?Q?TkmjCwgIWum4uy3B5W4G13QMC7NDv7cORA8fF9SDcEzYBnrLaSwKrXLO3Rn1?=
- =?us-ascii?Q?LgKXJRo37EOxW+vHA2taD4PAS0mPD9VNMILu8VYijUh1Ufqrkx8/UNvsxogV?=
- =?us-ascii?Q?S4JGD4maehbAN9gLv/h4bQMg025H+EHkOaPMH7X+T5WhCsSJLwO9VaOWwfAV?=
- =?us-ascii?Q?Sn2x5p38IIJqmPVuYyXX6vp4xKCsDcP5BnWJE8NMfRDYkAeLVUnYiFHMEWVr?=
- =?us-ascii?Q?UvjmMfoLn5Q4fKIfhjTMsREFWXVICbJZ3Hp8nZ/DJhzph9wc27Odgfwx84aL?=
- =?us-ascii?Q?ieMl5K7aNlpLwN2KvOdLFbniZcl6OZtLq9lHqgB3QDB4GW8DFB0ZP+jSTQQj?=
- =?us-ascii?Q?RH7ECGqCurKmMIwKq01cZhkq711G8Ki0AwUl0Ru0Yz2qoSus9L62CsUKF7za?=
- =?us-ascii?Q?VKM04H0N1lqTLKASmIZrwNCBhm4aWiqDcvjpoPUMlhLDq1h+DATq/YGbm6Bu?=
- =?us-ascii?Q?q+0kjsYj7uLVqnBLe/3WNC1w2GP8II2nr0ZhQynvQjp1ZhgWALVFOFqsLPA0?=
- =?us-ascii?Q?DePWkwm5PKHzU8Dv7OyICkszsiwWqHP8E3dhkuQsnCMm5HQO2yCBu9c7lZ4v?=
- =?us-ascii?Q?TqssheTptZhUZVrkW53pCitbNPH1rOtUcAA7woQv7suM3a0/OJn8DCRMIKgL?=
- =?us-ascii?Q?rIWsu4VF3GbRU0q2avtdPLPBO+Uh9iwTk/1TLf0RDh6mbf/bk9dhR8TNk4FY?=
- =?us-ascii?Q?f5zuHMH1sKerWDh+lc2Z0XbZuH9m8DMCWW4ZfdPUiHOifGsNlK/gHKXC9P6A?=
- =?us-ascii?Q?DiPGUm2v0UidrI+mPH6hlyIYh4tJrngvGUiRgRB9blmeXsCfPmgEwZ+EyDRh?=
- =?us-ascii?Q?JWKQehoV0v+Q6KutsGt5yWzRjQwr2OJWxT9bKBRmN4zjUMhbhX+2yxZyly/N?=
- =?us-ascii?Q?fJfWiapO1jscUEf0aABPO55Lv71EtmONf9uwQkicR74qJMIC3HAYI0JrFmwA?=
- =?us-ascii?Q?uVkKJj8BKU0TBtiMfO+R46XdhZNI9rqMWNi3t/ylunm+hmupNvPXWXeq+uEC?=
- =?us-ascii?Q?/apcCsQkpOM2oUjwBvbyAL6Z0fFeqyMyYFEgt3PGH2nFZu2F7x+VmKr5Hc+V?=
- =?us-ascii?Q?r4o9KaY/a4RZw03tEmo=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: Maud Spierings <maud_spierings@hotmail.com>
+In-Reply-To: <8d249485-61f6-4081-82e0-63ae280c98c1@heusel.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM9P195CA0008.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21f::13) To AM7P189MB1009.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:175::17)
+X-Microsoft-Original-Message-ID:
+ <3352738d-9c0e-4c23-aa9a-61e1d3d67a50@hotmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7P189MB1009:EE_|AS8P189MB2096:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c9de8b9-5e7f-43cf-a3bd-08dd984ca1bf
+X-MS-Exchange-SLBlob-MailProps:
+	gMiuAN0LASIScjX/aS/OnauL17RJFM5J8dhTNfLLJNxixSIGGbcCJb9oC5WRI5fLJsXol6LoQpUYecBHSs0e3DSdPgDJgbE7nB6y/sdmq5nVh46xNJFkPRFTQuAJR0XG5xJBRppppp9FD7oFLLtXmG7qd4hGirmLCGb8TsqQ1pSy3zH+AuY4i6iYUZCR8jTB7Q1/x4gZfBE2V23qhbgl4r8gfSJuYIj+iAY2ZBsHQ3U7gblNjyxvB9p8IS7M0pWLrtr/cU53prfrTHmO0m7ZAn7Cq80mcILLYQW1VJTbYoXCGFVyBsAM84iBNYwLJJBZxETGLRAA3ybm0JogWiaMOGWO5M13JZrYclWlGn50w26CkHo0FK5hZk3bXPm+jNGWzTkUyiHBuYDsluIRAYMD7ydfxn8zvtQQbyzCEucsIaZSvAlymObu5N+r8NAp2EhiwWYKIWev9T6Qcqml1/6uNYtry2d9pGNcKuQ2PF5vwNb9SZtdHvYFA+mKsTKK6KNx/iiMDcZATCjmCoD+pk2nL4DUi+1EptCfKyujJFPSN3euyrIw9rUpX/sj+Nhc2RpVv6HKVNJKZoYStn8x3Zi9PVhD4gj8wJ1diyd7kUD/iQioQGlvfxB3H0v+CTczH2lPyp0BiVYRD6V3MJvBb3soEroimnCyTmoALv9v3VqbUKB/AC7JuQ8L5PrruhpzfksqItV9qw+NpIXIwz8GRKiXhA==
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|6090799003|461199028|8060799009|19110799006|15080799009|5072599009|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WUw5d1FHdkYrVXl2NkdtYUtOakpwUzRmRW1BME9ZN3p2V0dvV0E3U3NnTVVx?=
+ =?utf-8?B?aHZXeWVjTWl3QnlVOU1TSlZFd2s4SVNNUmxMcjl5V1lpaDdxMFpGT0QycDN0?=
+ =?utf-8?B?ZWM1RGNaeXIzU0ZQUFQzd1lnS1JNblpUcTZpVUlWd3hja3lkYk8vQ0NEUGth?=
+ =?utf-8?B?QUZZMFZna21SZnpNMk5kV0hWM2dyWklMeUp1eUg2VzdwU2NpSzJ6Qy94NGRj?=
+ =?utf-8?B?RE83ZStxV21MVlNqKzRmVTMxMGgwdUVVQXNGNExyR1ZnUVdwVGRoK3hBaHNs?=
+ =?utf-8?B?eDVLbjNlUnBNcFllVUJidkFseWN0VUt2cUhJT3JLdzJjUG5CZHpWakFtYW5j?=
+ =?utf-8?B?cnh3YTZnMEErVXZGZ0tmbDlFOEFVVDYzalE2RDRPMmlPRkRuK3dTcC9HZWZO?=
+ =?utf-8?B?VmZEMFJNYkhNSUJqT212NVBtQ2lCQVhDT0x6eCttRUhZaWtnRTY2b3pJckRq?=
+ =?utf-8?B?cDZ4RmJSSEVYMDIvT2tZUEhnbzMreUVZeXNJVHE5aERsS3lCOXZLWmUwVWM5?=
+ =?utf-8?B?RUkvREdOd2s1UnRVMjVDcjFvb1J3anUrVTRmeFB3akhFN3JucHBqN0ZDK1VM?=
+ =?utf-8?B?ZUZCeE1SL1BaWm1scGMxSVRSWmpUci9Ib1B0bjBPdElHWlQxS3dyWFQyYTA5?=
+ =?utf-8?B?RUkyUWIvaUl4WWRmT1EyWG5CcVAzdXZpb3lpbk52Z2tOZ0VnNlFxRmhRdTM3?=
+ =?utf-8?B?R1hBbDFSZzFHY1dyK3hhcExTczZjeXI2NmNlK293MmQrTXBJQ21SbFVFaldw?=
+ =?utf-8?B?c2RNU0E4eHk0T2R0MjZlZDA5MTFqZGpPcTJpcWlydXRlS3RkLy9aQTRIYlpv?=
+ =?utf-8?B?V1FFZjdVcEtKNUxudCtRYVh3Y2hzWXNENzdPcWRnUjlOQm9rNHJ0OTBTTmwy?=
+ =?utf-8?B?MWNhcEpMR2ZGUEEyQnMwZktsbnF4ejdySEsxeWxDZWwyWmJBTTk0TVBaTldR?=
+ =?utf-8?B?dCtHQmV6aDJleHVVbXB6aUZhUzBvNGVyM3poTXV5N09mbFlMKzQ3YVBwcHg3?=
+ =?utf-8?B?ejlsbmpXUVdqMlFvMHYwRkpYbDlTalRDR1p1Z24rYlRBREtzUHI4Z3gwMGpV?=
+ =?utf-8?B?dGE2SDNnYVBPZis4MWY0dFdVOW5KRmIwUUV1RGhtVmZpMTFWRVY0My9RNXo2?=
+ =?utf-8?B?NWJ4N2tFUm5mSVBDbzd0a0lLK0Excno2TWZlbTkzQWhPaC9CNXJkM21Gb3lE?=
+ =?utf-8?B?U2VNRWk1bmVnd3hFUGFnWnJ4SXZoNzdrSGpjT2s0VjJiTm5XRUlLV3FwTVUv?=
+ =?utf-8?B?STJBLzFTeklxakhVU2hIYzczUHo2dnNERFJGZVhEdkFRUGducHZKQXJwUVRh?=
+ =?utf-8?B?cDcxaEVEKyt1YXlqcEU5WnFiQ00rVjc3SVJOdmVoWHNwS2lCRnJYeVhLMlhL?=
+ =?utf-8?B?c25XOXpWcjZ6VDJETElOWWRjOGVUVUIyZmUyVDBlMGlNN3FDVndiQm5qdEQ1?=
+ =?utf-8?B?K2xFN1dmMTFEM25hSHFwdURSdWFHL0xLaUNSalFGY0lnZnN4cm91QlVycktj?=
+ =?utf-8?Q?zdERTE=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bGV1WWY4b3J1ckFvcTZGQnh0aFl0ZEZSRUNEdmFDZ1NOc21meThGUzRwWUph?=
+ =?utf-8?B?aFBLV0pmVTRSNmJoaFBiMHFpMUtWZFk3VTliTDZSNGpZcWRoYm9mdXZOeE9P?=
+ =?utf-8?B?bENURkJReVNnRUs0MUtYb0tJRjM2U3lwejhNQSs5NkhqU2s1dmlxVXE1QlFa?=
+ =?utf-8?B?WE15aGhGRnVDMnEwS2tGUklhMU9ydFZMWG4xaWplZW5FWHZSQnpSS2h3cWw3?=
+ =?utf-8?B?TG1CdTg3Y2U0UDRMQUdIejUzd3E5Vi9ZT2czMkpVVVlSUWIwMzZjM3Q1L2h4?=
+ =?utf-8?B?M0N2MTZ5ankrVE5YaHBMQ3lzVkJMY0lrYi9oYXlwT0Q5Vm9DajBsa0tQZTY1?=
+ =?utf-8?B?YVRXbWdJaVR1TTkyYXMwei9XY045UnFvY3o0Ri94cE01N1d0dSthUlp3Um41?=
+ =?utf-8?B?RmZ4TnhURVdmUWY3N01TQVpoZE1QY3RUTzZzVExsL2xCM1hWckRET0tNVGJu?=
+ =?utf-8?B?ZTNuMWw3UzhhaVF5OFhJejZNdWJPMGI4MnIyYlVCNmR3RUtSdlQ4MmV6cGN5?=
+ =?utf-8?B?U1Y1a0YvTG9zSTlYbmhDR2FQSVRxcXBNdC91RWhsSGhtRXpBVThlK3JDWmJG?=
+ =?utf-8?B?aEs0ZXhrUWZlV0FYUjZYQy8vNngwVjdhdngweTZLV0pYMWNQTlFSVlJFdWtu?=
+ =?utf-8?B?amRPSStnQWRIM0YwNjFNbkpsQ05NeW5JYVRod2J4UTZodVNwWmt0Mk1jUDhR?=
+ =?utf-8?B?cVJ1ajVuN0xaUE0yZkRHUTB3Qjg1elRiRnR0cUZoNzBKYXlEa2FXSzZqay9S?=
+ =?utf-8?B?TlFNejdHaTVxTGZ3Rk8vMFRUZm9CNFdUc3A3dXR6YU1kZVhDcTBFdjdLNHM0?=
+ =?utf-8?B?LzNEZHFBSGFha1J0bUNEdEJ2WXlqZ0lqUUJ3aVJodE9ldkgzV0Y3alVEK2U4?=
+ =?utf-8?B?TzIxU214cWN6WDlsSTZnbHo1YUhocGtsMjB3dDNUaVhjbStpTUNYVlB5ZlpH?=
+ =?utf-8?B?Mld5RFVlMjFDcHpxeUFWbmkzeUprSStVTzEvS2VQMWFQMG9DN3NBcVF4M0Er?=
+ =?utf-8?B?WHZwMjlhRUxXTklSTjNRcWpGU01jN3V3RTVaOGlHSmYxVFlUenFNWklnd1lE?=
+ =?utf-8?B?dnJxUXM2UTRXU3pQRmJQRldzWlJWWFdycUtqNVh6WThHQmNQLzNiRUx4K094?=
+ =?utf-8?B?dHdaSU5UaDc2c2lzQXN2Tnl4R1hYemNwSnhnWHRPTEFFdEtRVzErOXFpSFc1?=
+ =?utf-8?B?Vkk5ZHdyZTBjcko5QmE4QjJuajF4V3p4YXNZdDg4S1RXeGk4U0N6S0tqaUR5?=
+ =?utf-8?B?cmcwdnZ2Yk1tbmI0YTd0TnlSVDJiYXRmRzZ2K2VLMG56V0dEQVZ4blZHYmpI?=
+ =?utf-8?B?WU9HbDR3cnQzV0hUbHpUcWVVUzB5VVRkNzVLOHZEYXUyOVpDUWw0d0Q2N1Jv?=
+ =?utf-8?B?NlhTNXZCM1diK295dzdNU01EbUZydTV3bjFjNmxCM0hrdTNiYXh3WmxRTDdi?=
+ =?utf-8?B?disvanhoODdrcHYzTEZVSXJJZTB6VytCeGoxdUF1ZGdiekgyMVp2aTNNWm9Z?=
+ =?utf-8?B?REFIZmJKVDI0bkxaR1hROGZOb3gyYjB0V1dsR1drOXRJem9ieFRueUdHV3F0?=
+ =?utf-8?B?NktxQlNoN1BiUU1ja2M5SlRuS05sdFNWYnNYb1hWWm9WSFRtVHRlVGxSZzhK?=
+ =?utf-8?B?VHluZytVWTM5Zy9neVlOSTdwOGtaNWtac3RyUzJwTW5XdGduWXVWSjNJdERv?=
+ =?utf-8?B?SWNlSDdtMU81Z1dNUTlqQ1RwQjIrbFVORXlneEcyNmpJQnN4ajFocGZLZ0lU?=
+ =?utf-8?Q?o58HX6pwwGv9VO2dLSa/lUxc10qXYJBmItEaqS9?=
+X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-2ef4d.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c9de8b9-5e7f-43cf-a3bd-08dd984ca1bf
+X-MS-Exchange-CrossTenant-AuthSource: AM7P189MB1009.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7195.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82e3d6ed-9a41-4560-9ef6-08dd984a68a1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2025 09:32:30.6520
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 09:48:26.0394
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: B2qQJcRSy2Jj6yCUW9wlVEBgnnGhx0G3NxIgRFrxVjnVbnvI77FkVP2HyhFeXBYR60Yrr+m2tsW2kU6qu+C2uA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9397
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P189MB2096
 
-> From: Michael S. Tsirkin <mst@redhat.com>
-> Sent: Wednesday, May 21, 2025 2:49 PM
-> To: Parav Pandit <parav@nvidia.com>
-> Cc: stefanha@redhat.com; axboe@kernel.dk; virtualization@lists.linux.dev;
-> linux-block@vger.kernel.or; stable@vger.kernel.org; NBU-Contact-Li Rongqi=
-ng
-> (EXTERNAL) <lirongqing@baidu.com>; Chaitanya Kulkarni
-> <chaitanyak@nvidia.com>; xuanzhuo@linux.alibaba.com;
-> pbonzini@redhat.com; jasowang@redhat.com; Max Gurtovoy
-> <mgurtovoy@nvidia.com>; Israel Rukshin <israelr@nvidia.com>
-> Subject: Re: [PATCH v1] virtio_blk: Fix disk deletion hang on device surp=
-rise
-> removal
->=20
-> On Wed, May 21, 2025 at 09:14:31AM +0000, Parav Pandit wrote:
-> > > From: Michael S. Tsirkin <mst@redhat.com>
-> > > Sent: Wednesday, May 21, 2025 1:48 PM
-> > >
-> > > On Wed, May 21, 2025 at 06:37:41AM +0000, Parav Pandit wrote:
-> > > > When the PCI device is surprise removed, requests may not complete
-> > > > the device as the VQ is marked as broken. Due to this, the disk
-> > > > deletion hangs.
-> > > >
-> > > > Fix it by aborting the requests when the VQ is broken.
-> > > >
-> > > > With this fix now fio completes swiftly.
-> > > > An alternative of IO timeout has been considered, however when the
-> > > > driver knows about unresponsive block device, swiftly clearing
-> > > > them enables users and upper layers to react quickly.
-> > > >
-> > > > Verified with multiple device unplug iterations with pending
-> > > > requests in virtio used ring and some pending with the device.
-> > > >
-> > > > Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of
-> > > > virtio pci device")
-> > > > Cc: stable@vger.kernel.org
-> > > > Reported-by: lirongqing@baidu.com
-> > > > Closes:
-> > > >
-> > > https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca9b4
-> > > 74
-> > > > 1@baidu.com/
-> > > > Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
-> > > > Reviewed-by: Israel Rukshin <israelr@nvidia.com>
-> > > > Signed-off-by: Parav Pandit <parav@nvidia.com>
-> > > > ---
-> > > > changelog:
-> > > > v0->v1:
-> > > > - Fixed comments from Stefan to rename a cleanup function
-> > > > - Improved logic for handling any outstanding requests
-> > > >   in bio layer
-> > > > - improved cancel callback to sync with ongoing done()
-> > >
-> > > thanks for the patch!
-> > > questions:
-> > >
-> > >
-> > > > ---
-> > > >  drivers/block/virtio_blk.c | 95
-> > > > ++++++++++++++++++++++++++++++++++++++
-> > > >  1 file changed, 95 insertions(+)
-> > > >
-> > > > diff --git a/drivers/block/virtio_blk.c
-> > > > b/drivers/block/virtio_blk.c index 7cffea01d868..5212afdbd3c7
-> > > > 100644
-> > > > --- a/drivers/block/virtio_blk.c
-> > > > +++ b/drivers/block/virtio_blk.c
-> > > > @@ -435,6 +435,13 @@ static blk_status_t virtio_queue_rq(struct
-> > > blk_mq_hw_ctx *hctx,
-> > > >  	blk_status_t status;
-> > > >  	int err;
-> > > >
-> > > > +	/* Immediately fail all incoming requests if the vq is broken.
-> > > > +	 * Once the queue is unquiesced, upper block layer flushes any
-> > > pending
-> > > > +	 * queued requests; fail them right away.
-> > > > +	 */
-> > > > +	if (unlikely(virtqueue_is_broken(vblk->vqs[qid].vq)))
-> > > > +		return BLK_STS_IOERR;
-> > > > +
-> > > >  	status =3D virtblk_prep_rq(hctx, vblk, req, vbr);
-> > > >  	if (unlikely(status))
-> > > >  		return status;
-> > >
-> > > just below this:
-> > >         spin_lock_irqsave(&vblk->vqs[qid].lock, flags);
-> > >         err =3D virtblk_add_req(vblk->vqs[qid].vq, vbr);
-> > >         if (err) {
-> > >
-> > >
-> > > and virtblk_add_req calls virtqueue_add_sgs, so it will fail on a bro=
-ken vq.
-> > >
-> > > Why do we need to check it one extra time here?
-> > >
-> > It may work, but for some reason if the hw queue is stopped in this flo=
-w, it
-> can hang the IOs flushing.
->=20
-> > I considered it risky to rely on the error code ENOSPC returned by non =
-virtio-
-> blk driver.
-> > In other words, if lower layer changed for some reason, we may end up i=
-n
-> stopping the hw queue when broken, and requests would hang.
-> >
-> > Compared to that one-time entry check seems more robust.
->=20
-> I don't get it.
-> Checking twice in a row is more robust?
-No. I am not confident on the relying on the error code -ENOSPC from layers=
- outside of virtio-blk driver.
+On 5/21/25 11:29, Christian Heusel wrote:
+> On 25/05/21 10:53AM, Maud Spierings wrote:
+>> I've just experienced an Issue that I think may be a regression.
+>>
+>> I'm enabling a device which incorporates a lis2dw12 accelerometer, currently
+>> I am running 6.12 lts, so 6.12.29 as of typing this message.
+> 
+> Could you check whether the latest mainline release (at the time this is
+> v6.15-rc7) is also affected? If that's not the case the bug might
+> already be fixed ^_^
 
-If for a broken VQ, ENOSPC arrives, then hw queue is stopped and requests c=
-ould be stuck.
+Unfortunately doesn't seem to be the case, still gets the panic. I also 
+tried 6.12(.0), but that also has the panic, so it is definitely older 
+than this lts.
 
-> What am I missing?
-> Can you describe the scenario in more detail?
->=20
-> >
-> > >
-> > >
-> > > > @@ -508,6 +515,11 @@ static void virtio_queue_rqs(struct rq_list
-> *rqlist)
-> > > >  	while ((req =3D rq_list_pop(rqlist))) {
-> > > >  		struct virtio_blk_vq *this_vq =3D get_virtio_blk_vq(req-
-> > > >mq_hctx);
-> > > >
-> > > > +		if (unlikely(virtqueue_is_broken(this_vq->vq))) {
-> > > > +			rq_list_add_tail(&requeue_list, req);
-> > > > +			continue;
-> > > > +		}
-> > > > +
-> > > >  		if (vq && vq !=3D this_vq)
-> > > >  			virtblk_add_req_batch(vq, &submit_list);
-> > > >  		vq =3D this_vq;
-> > >
-> > > similarly
-> > >
-> > The error code is not surfacing up here from virtblk_add_req().
->=20
->=20
-> but wait a sec:
->=20
-> static void virtblk_add_req_batch(struct virtio_blk_vq *vq,
->                 struct rq_list *rqlist)
-> {
->         struct request *req;
->         unsigned long flags;
->         bool kick;
->=20
->         spin_lock_irqsave(&vq->lock, flags);
->=20
->         while ((req =3D rq_list_pop(rqlist))) {
->                 struct virtblk_req *vbr =3D blk_mq_rq_to_pdu(req);
->                 int err;
->=20
->                 err =3D virtblk_add_req(vq->vq, vbr);
->                 if (err) {
->                         virtblk_unmap_data(req, vbr);
->                         virtblk_cleanup_cmd(req);
->                         blk_mq_requeue_request(req, true);
->                 }
->         }
->=20
->         kick =3D virtqueue_kick_prepare(vq->vq);
->         spin_unlock_irqrestore(&vq->lock, flags);
->=20
->         if (kick)
->                 virtqueue_notify(vq->vq); }
->=20
->=20
-> it actually handles the error internally?
->=20
-For all the errors it requeues the request here.
+> Also as you said that this is a regression, what is the last revision
+> that the accelerometer worked with?
 
->=20
->=20
->=20
-> > It would end up adding checking for special error code here as well to =
-abort
-> by translating broken VQ -> EIO to break the loop in virtblk_add_req_batc=
-h().
-> >
-> > Weighing on specific error code-based data path that may require audit =
-from
-> lower layers now and future, an explicit check of broken in this layer co=
-uld be
-> better.
-> >
-> > [..]
->=20
->=20
-> Checking add was successful is preferred because it has to be done
-> *anyway* - device can get broken after you check before add.
->=20
-> So I would like to understand why are we also checking explicitly and I d=
-o not
-> get it so far.
+Thats a difficult one to pin down, I'm moving from the nxp vendor kernel 
+to mainline, the last working one that I know sure is 5.10.72 of that 
+vendor kernel.
 
-checking explicitly to not depend on specific error code-based logic.
+>> This is where my ability to fix thing fizzles out and so here I am asking
+>> for assistance.
+>>
+>> Kind regards,
+>> Maud
+> 
+> Cheers,
+> Chris
+
 
