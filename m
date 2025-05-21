@@ -1,110 +1,123 @@
-Return-Path: <stable+bounces-145784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3CCABEE2F
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:41:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB44BABEE93
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:52:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4261886C2F
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 08:42:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 632927B4C97
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 08:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01E323716B;
-	Wed, 21 May 2025 08:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE19E237A3B;
+	Wed, 21 May 2025 08:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Te1UzWPM"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="I++XWayz"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA7922DF8C;
-	Wed, 21 May 2025 08:41:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FED1231852
+	for <stable@vger.kernel.org>; Wed, 21 May 2025 08:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747816903; cv=none; b=WHeuHYXtDSVDNWuDYJxS6cnGF1NaUoIW3LxmPurf1GHtZsZd696sgh1klzcgTEIPLLJv65iE3iisHQnThUrgOJ1svJyfDiHCDolovFP4GszdjeXZIg4JlGPfKgRF68y8csc7pLlctVbsnSD+oD3ksU5z3x16SOujn0fxtfN6ngI=
+	t=1747817532; cv=none; b=IFdfk7UkmiZWjLxjxxgnX8odyl2jXT+wBRaFcSf+CbBtgfxtFbA9eCWg7oxKsqte2DbTRAeBpnlg1BEknQZ/UMRgeh6KkI/H6gMg4GGB13/isZx7FhumzZxj/xpNhoxn0AihOxuPJMN+EJ5EUfnLr2wB9VqYMPlQTNw4l19glZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747816903; c=relaxed/simple;
-	bh=uDw+ZJwPUxdSq79IaOADCgJrAkenZYaEAEllmnA9MDk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eA/bmtPtoZroSfbvZRVWjaZdsZtr68irX14ZaUXZDw+xxPzCt+ubn8oQwaMEQ2QyTnZlap/lXM3QsezxqhQvLqqgswZhRLXOBtcPLZkyZtZ4Agp/aA0nZrwSLPfZR3IkGZhYQyC4HE668zmFRncUSOX1Vi7jbfZsNisdgmwY1gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Te1UzWPM; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 85448206832E; Wed, 21 May 2025 01:41:41 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 85448206832E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1747816901;
-	bh=tm3MPeyl5HQEq5tXrQRcuuPXKgXrLcNsWDnrjbtd2j8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Te1UzWPMJbaE7ikWZF5NBSuS4LtcbCPuwnIeM7MGge51yMYKZt47Mv25LGNXiuHwd
-	 fpV0GNyvDTyo6ID/nGVU90BzMl8A1TpX9F8Jd+q1qt5vwCSL5cVH1gpLXPAJHitAru
-	 9pPqZyvMre1TESFttWl5kkfXE1jRtvY5qdCCdYUQ=
-Date: Wed, 21 May 2025 01:41:41 -0700
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: Saurabh Sengar <ssengar@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, kuniyu@amazon.com,
-	ahmed.zaki@intel.com, aleksander.lobakin@intel.com,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	ssengar@microsoft.com, stable@vger.kernel.org
-Subject: Re: [PATCH net] hv_netvsc: fix potential deadlock in
- netvsc_vf_setxdp()
-Message-ID: <20250521084141.GA10135@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1747540070-11086-1-git-send-email-ssengar@linux.microsoft.com>
+	s=arc-20240116; t=1747817532; c=relaxed/simple;
+	bh=jB4nCt7Z0gWD+wh6PSkjO6o6UVMXIPdej+zQdqt9pEU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dYQgmg4BzJso6KwPTfaEOqEcLLHWXkhiHhxyvMSQKdJ3Y/zk7evBYtmDMumnXY1mQ8UuDCjRXl2t1nx3PXgGFU2teJAUAjpp46qZTL4CiCZzICv/4LA1ESWg4g8tiFXuiUYfknzUC8SCmACqX7zUOCRD1e8U8PEJDp66JSU1Gqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=I++XWayz; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54L8SorW026372;
+	Wed, 21 May 2025 08:51:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=As9JDv7IWpzCSGWcv7pVzMu79+syJ
+	SOzE0AhtTJB65E=; b=I++XWayzFyWrJYK66Tzza35MAfJ2CaKGttV9QI7/oxUtB
+	l375Oby7JSFX8L+pFaFh3mgavZH7T4L/fC3lZapPqGUSBuvTiblnNQFSJvD6fx8g
+	aCXvEvtCVeUqRY8qlN0H99lfFXD7R2gbQyMfbmS6I4mTwQJOgSp7lmzsw6uVh1IM
+	xp49ycZ38GX5vbrQT+RuBfYzaRT1Y3YP5fgwH9MnyQobbSt7rZJ9qigo1mN3W1pt
+	kHsgEH2/Ctpxv7xjZZbFvv7HfgS2N0iFiscJlR1LpeKfDjErF6NjVChCWXC5yRj0
+	N9ladLl1FeEpFhqdlOIfwUhdtjwq4iB9HPjSLlt+Q==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46sahbg660-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 May 2025 08:51:57 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 54L7sbuL034540;
+	Wed, 21 May 2025 08:51:46 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 46rwepjaqp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 May 2025 08:51:46 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54L8pjuh027328;
+	Wed, 21 May 2025 08:51:46 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 46rwepjaq9-1;
+	Wed, 21 May 2025 08:51:45 +0000
+From: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+To: jgross@suse.com, sstabellini@kernel.org, boris.ostrovsky@oracle.com
+Cc: harshvardhan.j.jha@oracle.com, xen-devel@lists.xenproject.org,
+        iommu@lists.linux.dev, stable@vger.kernel.org
+Subject: [PATCH 5.15.y v3 0/1] Manual Backport of 099606a7b2d5 to 5.15
+Date: Wed, 21 May 2025 01:51:43 -0700
+Message-ID: <20250521085144.1578880-1-harshvardhan.j.jha@oracle.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1747540070-11086-1-git-send-email-ssengar@linux.microsoft.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-21_02,2025-05-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 spamscore=0
+ suspectscore=0 adultscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2505210086
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDA4NyBTYWx0ZWRfXzIBt0qr/N4Qv vtKmnRNDXYddRLaThAtraoQY5Ts2KnLUq+9lkUMOUS44CD+Qp/QiSGM3q6I+To4yk87t8eX7CnI GaRj7y7bh864o3LN6+1XB8IF4dAzADcrcrtYfvEtO2ln0IgtNpSaD+Pz8VwmismULbC+zQUHmkb
+ EEjrSvqLfHLYNr2e4MddNio5O/N/zFwAm/Jd+2Wesq2q9eeQC1AUGykwTs7xOLz5nvDlrSUrl+N nPtJx2Kb3Y+U3U45Wy4V1YOKqGoVRdpoTIiKUqXOxxgH+gCiRqB8O5h7yPhZeUr+Isa5q6kqX3O zmvu/DlXSRqoHEkinOS3KLO9tSX5byTdJowoj5V9lLPh34seiyMOAXGV/0Z4WUe1JNXtzM4Rnsf
+ k6gVseQRX90J2GCS+j4ZnqRCT9QkAP0oXo0PJsSVGkDJrZhzqMep+z3ixRPVT2ZgmSEiDTob
+X-Authority-Analysis: v=2.4 cv=VY/3PEp9 c=1 sm=1 tr=0 ts=682d942d b=1 cx=c_pps a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17 a=dt9VzEwgFbYA:10 a=rs8Xjf8ku5-kuHtvfxMA:9 a=zZCYzV9kfG8A:10 cc=ntf awl=host:13206
+X-Proofpoint-GUID: dthhuNeQH1ofGErp_6-Hlq4B32MpNnHS
+X-Proofpoint-ORIG-GUID: dthhuNeQH1ofGErp_6-Hlq4B32MpNnHS
 
-On Sat, May 17, 2025 at 08:47:50PM -0700, Saurabh Sengar wrote:
-> The MANA driver's probe registers netdevice via the following call chain:
-> 
-> mana_probe()
->   register_netdev()
->     register_netdevice()
-> 
-> register_netdevice() calls notifier callback for netvsc driver,
-> holding the netdev mutex via netdev_lock_ops().
-> 
-> Further this netvsc notifier callback end up attempting to acquire the
-> same lock again in dev_xdp_propagate() leading to deadlock.
-> 
-> netvsc_netdev_event()
->   netvsc_vf_setxdp()
->     dev_xdp_propagate()
-> 
-> This deadlock was not observed so far because net_shaper_ops was never
-> set and this lock in noop in this case. Fix this by using
-> netif_xdp_propagate instead of dev_xdp_propagate to avoid recursive
-> locking in this path.
-> 
-> This issue has not observed so far because net_shaper_ops was unset,
-> making the lock path effectively a no-op. To prevent recursive locking
-> and avoid this deadlock, replace dev_xdp_propagate() with
-> netif_xdp_propagate(), which does not acquire the lock again.
-> 
-> Also, clean up the unregistration path by removing unnecessary call to
-> netvsc_vf_setxdp(), since unregister_netdevice_many_notify() already
-> performs this cleanup via dev_xdp_uninstall.
-> 
-> Fixes: 97246d6d21c2 ("net: hold netdev instance lock during ndo_bpf")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> ---
+The patch 099606a7b2d5 didn't cleanly apply to 5.15 due to the
+significant difference in codebases.
 
-Built and booted successfully. 
+I've tried to manually bring it back to 5.15 via some minor conflict
+resolution but also invoking the newly introduced API using inverted
+logic as the conditional statements present in 5.15 are the opposite of
+those in 6.1 xen/swiotlib.
 
-Tested-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com> 
+v2 of this patch was added and dropped due to some issues in testing.
+However, after further verification this version seems to be right as
+is.
 
-Thanks!
+I kindly request Juergen's ack specifically before this is added to
+stable queue as this patch differs quite significantly compared to the
+original.
+
+Changes in v2:
+Include correct upstream SHA in the commit message
+
+Changes in v3:
+Patch remains the same, however further verification and testing was
+done.
+
+Harshvardhan Jha (1):
+  xen/swiotlb: relax alignment requirements
+
+ drivers/xen/swiotlb-xen.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+-- 
+2.47.1
+
 
