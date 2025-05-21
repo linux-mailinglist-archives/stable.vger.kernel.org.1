@@ -1,184 +1,289 @@
-Return-Path: <stable+bounces-145776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D30ABEDC4
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:23:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DDCABEDAA
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB6B87AECBA
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 08:22:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 656894A3A74
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 08:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F1F238145;
-	Wed, 21 May 2025 08:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AF7234987;
+	Wed, 21 May 2025 08:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iF31CoGF"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558582367D5
-	for <stable@vger.kernel.org>; Wed, 21 May 2025 08:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA0F22D4F2
+	for <stable@vger.kernel.org>; Wed, 21 May 2025 08:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747815787; cv=none; b=ZkWU5gDKK76Zz6CDRTz9xbJJ74U2do2BK+6r9C3A44mPo7xZEEh87et0ynaUyQmFbmj0KpO8hk1Pyqywm75oQB7w0dp10gfmio2R1B/6p3p4Rjwd+bLyo/WwwHwubpmwdjm1uTUvnQaMtdITkOteDN3ociK6Ke45dR6+qfnYuzE=
+	t=1747815477; cv=none; b=jnaDbgkkpfegi21HRF8EAuSfdwMyOvraSJ791eq6TJF3kN7vc0DMkOrsvECHejCpRsycHrtZNrNKInWLCmI2tAdhAINOKN1l2NTUz9eIn/EYHp1GBnDoQ3+nEjNtDhczR32I+8/XZ8kVoNcvo9wNknzr1bvOAGyGLN7DG1fFGVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747815787; c=relaxed/simple;
-	bh=8xOr9S6yQTV1LJ7OlLB1jbsHxVL2XCYQMFKqucXQMnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S819xP6KYkuFMFP6mRAcCTbxlhXON0a17b1iWFlTELc0h84CRVgxUeOq9jrhD7UgfUkA0NPu8KYH/T0VpJOC+lycM2KYR2tFhEjy2Dokzd+pnsKgkCGkBlRQ5NJsjgaM4k10NI1k3NAbET3hPxhXUXUy8gCPPQkiGVcz6JHiIdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uHej4-0003Jq-2C
-	for stable@vger.kernel.org; Wed, 21 May 2025 10:22:58 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uHej3-000XfL-2c
-	for stable@vger.kernel.org;
-	Wed, 21 May 2025 10:22:57 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 754474166A8
-	for <stable@vger.kernel.org>; Wed, 21 May 2025 08:22:57 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 1D14541668A;
-	Wed, 21 May 2025 08:22:55 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 1cef31f0;
-	Wed, 21 May 2025 08:22:52 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Carlos Sanchez <carlossanchez@geotab.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 4/4] can: slcan: allow reception of short error messages
-Date: Wed, 21 May 2025 10:14:28 +0200
-Message-ID: <20250521082239.341080-6-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250521082239.341080-2-mkl@pengutronix.de>
-References: <20250521082239.341080-2-mkl@pengutronix.de>
+	s=arc-20240116; t=1747815477; c=relaxed/simple;
+	bh=/Md1wVc8jsu8RCloniLIcrAHX4lRcINHKYCHDmb1GT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uwI7KjIIPWwbSsJSQSRiVi5sSPd7EgbshO9U9Y2b1nRiW1fxylglqjgh1AxRhbPlpSOQu9QXj9hHJTkpzVGPDxuYPzUQbAfnQaGdQxA9AM8/e3aVxVt5sFLJog3QhgDzp+LXzj8Y6YWWC4+wfSIdjAPrsV11AXI6Rn4rOAWbSok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iF31CoGF; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747815474;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5XzrO8wxMVXlpPsshH+MqZE9AXciR/wR4/zf6Sx4tJ8=;
+	b=iF31CoGFJHKw9efrhZJ9m5P7ajbmb0Lo8DykJ6NI4+Oti1elrWPgeMYxm8NDFWzzF6JT96
+	lMDSK7NWmAkrEcjnjoI/bq+/gxDtMQaLLg/CirbaWhh53XLyjg70rQ+cwyDst5xbeC2Zp+
+	o/V3Vfd6qh7aeM7BM2lGZsxYcBC1BJE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-215-By6axXOkNBK_cKCgFFMFWA-1; Wed, 21 May 2025 04:17:53 -0400
+X-MC-Unique: By6axXOkNBK_cKCgFFMFWA-1
+X-Mimecast-MFC-AGG-ID: By6axXOkNBK_cKCgFFMFWA_1747815472
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43d0a037f97so38848185e9.2
+        for <stable@vger.kernel.org>; Wed, 21 May 2025 01:17:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747815472; x=1748420272;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5XzrO8wxMVXlpPsshH+MqZE9AXciR/wR4/zf6Sx4tJ8=;
+        b=C02xEkMv3oB+QB4kPoeS1OCZwnuMR0rn+uDyE5yD0pghHQSDzp1azB3kAfH5O0U4SM
+         jh+/UE1lS5cMtJsFSQFXB5/G+jD2fpiu6WaOEqPY74AGWR7kzhoTs2wRHJxgfW4tqAw0
+         eCYh8Kw/8uoWdyHqo3RP8yFMOzJDlX93xGLElnUdbZLDaHLmjOwFNJ0Bu7s1/N51fiWz
+         7mlyeQPgsbALbyS3SWGnHt1lyWy7Ru0GmcF97KA/MzGFfz0eda3Mmle/VHKS25s+ShL5
+         zhNaxyXbuZxCxdTcQyE8GKOaOYoBggmUyor6S162cLKP0r2jBHcWasFOD1BvlrsJzubW
+         hDVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVYrRKQRFx9FX3wK19Q9IABVA0xRkJAPNpNJ4k5jEit9OWA+tRvaXIXCgsobOFCASabszzAgZU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBc3qqI9ZuOVfIZodLwRbdoEFEg+WU2r8OKvJ5pEAz41OdUaSP
+	H8TEdRMgK/1KmeiKQmink4maGFgwgmmLWtvi/wFKbVAIlx2qc/a2wfOOe4qvkntMQF3jLLXb0Wo
+	OzX8nU7YEakITRF/pqvhWVGp2f1OuS3RXnUI42ZksTJDMiX3D9fCtvubygA==
+X-Gm-Gg: ASbGncsGkOinCSddmZrWQjDpQx69U3iAOdsqRJvtOHvd4XJx4BDNsm4wvXoiqsoxeVW
+	ZCQwJAUXJ/x4eKzMvNvJfZlg9k0dGVi3VQYJyZstrGeTTKrabSOGskDFcPezg1qXn4cSbTnsY0j
+	+cg8tsrt0Bb+ft3kAiSdHACWmvb8N/ZwCoat3wRMRqHNsr5YETioPtQK6pA81iqmnWrBnNYdJA5
+	ZJBcR5qfpSiF0Nf0C2GfIOzGiyikR33LHzBLo14RGyT08TZh+ggImHgYtuIbiBKLYknU8NV5iaF
+	lrKsMw==
+X-Received: by 2002:a05:600c:4e14:b0:43d:563:6fef with SMTP id 5b1f17b1804b1-442ff031969mr162418325e9.21.1747815471659;
+        Wed, 21 May 2025 01:17:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8z097l9PyFs5Kuqq7TGJjpdpAXxCe0BbGPvzb+M7qRUc6JXFhcT9Qb/VQ01c59gV3kROxQQ==
+X-Received: by 2002:a05:600c:4e14:b0:43d:563:6fef with SMTP id 5b1f17b1804b1-442ff031969mr162417805e9.21.1747815471129;
+        Wed, 21 May 2025 01:17:51 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f73d3defsm58843485e9.18.2025.05.21.01.17.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 May 2025 01:17:50 -0700 (PDT)
+Date: Wed, 21 May 2025 04:17:47 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Parav Pandit <parav@nvidia.com>
+Cc: stefanha@redhat.com, axboe@kernel.dk, virtualization@lists.linux.dev,
+	linux-block@vger.kernel.or, stable@vger.kernel.org,
+	lirongqing@baidu.com, kch@nvidia.com, xuanzhuo@linux.alibaba.com,
+	pbonzini@redhat.com, jasowang@redhat.com,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Israel Rukshin <israelr@nvidia.com>
+Subject: Re: [PATCH v1] virtio_blk: Fix disk deletion hang on device surprise
+ removal
+Message-ID: <20250521041506-mutt-send-email-mst@kernel.org>
+References: <20250521062744.1361774-1-parav@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250521062744.1361774-1-parav@nvidia.com>
 
-From: Carlos Sanchez <carlossanchez@geotab.com>
+On Wed, May 21, 2025 at 06:37:41AM +0000, Parav Pandit wrote:
+> When the PCI device is surprise removed, requests may not complete
+> the device as the VQ is marked as broken. Due to this, the disk
+> deletion hangs.
+> 
+> Fix it by aborting the requests when the VQ is broken.
+> 
+> With this fix now fio completes swiftly.
+> An alternative of IO timeout has been considered, however
+> when the driver knows about unresponsive block device, swiftly clearing
+> them enables users and upper layers to react quickly.
+> 
+> Verified with multiple device unplug iterations with pending requests in
+> virtio used ring and some pending with the device.
+> 
+> Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio pci device")
+> Cc: stable@vger.kernel.org
+> Reported-by: lirongqing@baidu.com
+> Closes: https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca9b4741@baidu.com/
+> Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+> Reviewed-by: Israel Rukshin <israelr@nvidia.com>
+> Signed-off-by: Parav Pandit <parav@nvidia.com>
+> ---
+> changelog:
+> v0->v1:
+> - Fixed comments from Stefan to rename a cleanup function
+> - Improved logic for handling any outstanding requests
+>   in bio layer
+> - improved cancel callback to sync with ongoing done()
 
-Allows slcan to receive short messages (typically errors) from the serial
-interface.
+thanks for the patch!
+questions:
 
-When error support was added to slcan protocol in
-b32ff4668544e1333b694fcc7812b2d7397b4d6a ("can: slcan: extend the protocol
-with error info") the minimum valid message size changed from 5 (minimum
-standard can frame tIII0) to 3 ("e1a" is a valid protocol message, it is
-one of the examples given in the comments for slcan_bump_err() ), but the
-check for minimum message length prodicating all decoding was not adjusted.
-This makes short error messages discarded and error frames not being
-generated.
 
-This patch changes the minimum length to the new minimum (3 characters,
-excluding terminator, is now a valid message).
+> ---
+>  drivers/block/virtio_blk.c | 95 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 95 insertions(+)
+> 
+> diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+> index 7cffea01d868..5212afdbd3c7 100644
+> --- a/drivers/block/virtio_blk.c
+> +++ b/drivers/block/virtio_blk.c
+> @@ -435,6 +435,13 @@ static blk_status_t virtio_queue_rq(struct blk_mq_hw_ctx *hctx,
+>  	blk_status_t status;
+>  	int err;
+>  
+> +	/* Immediately fail all incoming requests if the vq is broken.
+> +	 * Once the queue is unquiesced, upper block layer flushes any pending
+> +	 * queued requests; fail them right away.
+> +	 */
+> +	if (unlikely(virtqueue_is_broken(vblk->vqs[qid].vq)))
+> +		return BLK_STS_IOERR;
+> +
+>  	status = virtblk_prep_rq(hctx, vblk, req, vbr);
+>  	if (unlikely(status))
+>  		return status;
 
-Signed-off-by: Carlos Sanchez <carlossanchez@geotab.com>
-Fixes: b32ff4668544 ("can: slcan: extend the protocol with error info")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250520102305.1097494-1-carlossanchez@geotab.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/slcan/slcan-core.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+just below this:
+        spin_lock_irqsave(&vblk->vqs[qid].lock, flags);
+        err = virtblk_add_req(vblk->vqs[qid].vq, vbr);
+        if (err) {
 
-diff --git a/drivers/net/can/slcan/slcan-core.c b/drivers/net/can/slcan/slcan-core.c
-index 24c6622d36bd..58ff2ec1d975 100644
---- a/drivers/net/can/slcan/slcan-core.c
-+++ b/drivers/net/can/slcan/slcan-core.c
-@@ -71,12 +71,21 @@ MODULE_AUTHOR("Dario Binacchi <dario.binacchi@amarulasolutions.com>");
- #define SLCAN_CMD_LEN 1
- #define SLCAN_SFF_ID_LEN 3
- #define SLCAN_EFF_ID_LEN 8
-+#define SLCAN_DATA_LENGTH_LEN 1
-+#define SLCAN_ERROR_LEN 1
- #define SLCAN_STATE_LEN 1
- #define SLCAN_STATE_BE_RXCNT_LEN 3
- #define SLCAN_STATE_BE_TXCNT_LEN 3
--#define SLCAN_STATE_FRAME_LEN       (1 + SLCAN_CMD_LEN + \
--				     SLCAN_STATE_BE_RXCNT_LEN + \
--				     SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_STATE_MSG_LEN     (SLCAN_CMD_LEN +		\
-+                                 SLCAN_STATE_LEN +		\
-+                                 SLCAN_STATE_BE_RXCNT_LEN +	\
-+                                 SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_ERROR_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_ERROR_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
-+#define SLCAN_FRAME_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_SFF_ID_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
- struct slcan {
- 	struct can_priv         can;
- 
-@@ -176,6 +185,9 @@ static void slcan_bump_frame(struct slcan *sl)
- 	u32 tmpid;
- 	char *cmd = sl->rbuff;
- 
-+	if (sl->rcount < SLCAN_FRAME_MSG_LEN_MIN)
-+		return;
-+
- 	skb = alloc_can_skb(sl->dev, &cf);
- 	if (unlikely(!skb)) {
- 		sl->dev->stats.rx_dropped++;
-@@ -281,7 +293,7 @@ static void slcan_bump_state(struct slcan *sl)
- 		return;
- 	}
- 
--	if (state == sl->can.state || sl->rcount < SLCAN_STATE_FRAME_LEN)
-+	if (state == sl->can.state || sl->rcount != SLCAN_STATE_MSG_LEN)
- 		return;
- 
- 	cmd += SLCAN_STATE_BE_RXCNT_LEN + SLCAN_CMD_LEN + 1;
-@@ -328,6 +340,9 @@ static void slcan_bump_err(struct slcan *sl)
- 	bool rx_errors = false, tx_errors = false, rx_over_errors = false;
- 	int i, len;
- 
-+	if (sl->rcount < SLCAN_ERROR_MSG_LEN_MIN)
-+		return;
-+
- 	/* get len from sanitized ASCII value */
- 	len = cmd[1];
- 	if (len >= '0' && len < '9')
-@@ -456,8 +471,7 @@ static void slcan_bump(struct slcan *sl)
- static void slcan_unesc(struct slcan *sl, unsigned char s)
- {
- 	if ((s == '\r') || (s == '\a')) { /* CR or BEL ends the pdu */
--		if (!test_and_clear_bit(SLF_ERROR, &sl->flags) &&
--		    sl->rcount > 4)
-+		if (!test_and_clear_bit(SLF_ERROR, &sl->flags))
- 			slcan_bump(sl);
- 
- 		sl->rcount = 0;
--- 
-2.47.2
 
+and virtblk_add_req calls virtqueue_add_sgs, so it will fail
+on a broken vq.
+
+Why do we need to check it one extra time here?
+
+
+
+> @@ -508,6 +515,11 @@ static void virtio_queue_rqs(struct rq_list *rqlist)
+>  	while ((req = rq_list_pop(rqlist))) {
+>  		struct virtio_blk_vq *this_vq = get_virtio_blk_vq(req->mq_hctx);
+>  
+> +		if (unlikely(virtqueue_is_broken(this_vq->vq))) {
+> +			rq_list_add_tail(&requeue_list, req);
+> +			continue;
+> +		}
+> +
+>  		if (vq && vq != this_vq)
+>  			virtblk_add_req_batch(vq, &submit_list);
+>  		vq = this_vq;
+
+similarly
+
+> @@ -1554,6 +1566,87 @@ static int virtblk_probe(struct virtio_device *vdev)
+>  	return err;
+>  }
+>  
+> +static bool virtblk_request_cancel(struct request *rq, void *data)
+> +{
+> +	struct virtblk_req *vbr = blk_mq_rq_to_pdu(rq);
+> +	struct virtio_blk *vblk = data;
+> +	struct virtio_blk_vq *vq;
+> +	unsigned long flags;
+> +
+> +	vq = &vblk->vqs[rq->mq_hctx->queue_num];
+> +
+> +	spin_lock_irqsave(&vq->lock, flags);
+> +
+> +	vbr->in_hdr.status = VIRTIO_BLK_S_IOERR;
+> +	if (blk_mq_request_started(rq) && !blk_mq_request_completed(rq))
+> +		blk_mq_complete_request(rq);
+> +
+> +	spin_unlock_irqrestore(&vq->lock, flags);
+> +	return true;
+> +}
+> +
+> +static void virtblk_broken_device_cleanup(struct virtio_blk *vblk)
+> +{
+> +	struct request_queue *q = vblk->disk->queue;
+> +
+> +	if (!virtqueue_is_broken(vblk->vqs[0].vq))
+> +		return;
+> +
+> +	/* Start freezing the queue, so that new requests keeps waitng at the
+> +	 * door of bio_queue_enter(). We cannot fully freeze the queue because
+> +	 * freezed queue is an empty queue and there are pending requests, so
+> +	 * only start freezing it.
+> +	 */
+> +	blk_freeze_queue_start(q);
+> +
+> +	/* When quiescing completes, all ongoing dispatches have completed
+> +	 * and no new dispatch will happen towards the driver.
+> +	 * This ensures that later when cancel is attempted, then are not
+> +	 * getting processed by the queue_rq() or queue_rqs() handlers.
+> +	 */
+> +	blk_mq_quiesce_queue(q);
+> +
+> +	/*
+> +	 * Synchronize with any ongoing VQ callbacks, effectively quiescing
+> +	 * the device and preventing it from completing further requests
+> +	 * to the block layer. Any outstanding, incomplete requests will be
+> +	 * completed by virtblk_request_cancel().
+> +	 */
+> +	virtio_synchronize_cbs(vblk->vdev);
+> +
+> +	/* At this point, no new requests can enter the queue_rq() and
+> +	 * completion routine will not complete any new requests either for the
+> +	 * broken vq. Hence, it is safe to cancel all requests which are
+> +	 * started.
+> +	 */
+> +	blk_mq_tagset_busy_iter(&vblk->tag_set, virtblk_request_cancel, vblk);
+> +	blk_mq_tagset_wait_completed_request(&vblk->tag_set);
+> +
+> +	/* All pending requests are cleaned up. Time to resume so that disk
+> +	 * deletion can be smooth. Start the HW queues so that when queue is
+> +	 * unquiesced requests can again enter the driver.
+> +	 */
+> +	blk_mq_start_stopped_hw_queues(q, true);
+> +
+> +	/* Unquiescing will trigger dispatching any pending requests to the
+> +	 * driver which has crossed bio_queue_enter() to the driver.
+> +	 */
+> +	blk_mq_unquiesce_queue(q);
+> +
+> +	/* Wait for all pending dispatches to terminate which may have been
+> +	 * initiated after unquiescing.
+> +	 */
+> +	blk_mq_freeze_queue_wait(q);
+> +
+> +	/* Mark the disk dead so that once queue unfreeze, the requests
+> +	 * waiting at the door of bio_queue_enter() can be aborted right away.
+> +	 */
+> +	blk_mark_disk_dead(vblk->disk);
+> +
+> +	/* Unfreeze the queue so that any waiting requests will be aborted. */
+> +	blk_mq_unfreeze_queue_nomemrestore(q);
+> +}
+> +
+>  static void virtblk_remove(struct virtio_device *vdev)
+>  {
+>  	struct virtio_blk *vblk = vdev->priv;
+> @@ -1561,6 +1654,8 @@ static void virtblk_remove(struct virtio_device *vdev)
+>  	/* Make sure no work handler is accessing the device. */
+>  	flush_work(&vblk->config_work);
+>  
+> +	virtblk_broken_device_cleanup(vblk);
+> +
+>  	del_gendisk(vblk->disk);
+>  	blk_mq_free_tag_set(&vblk->tag_set);
+>  
+> -- 
+> 2.34.1
 
 
