@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-145738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD4AABE948
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 03:49:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A0EABE953
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 03:51:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E5174E16E9
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 01:49:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8961D3AC6AA
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 01:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E881AC43A;
-	Wed, 21 May 2025 01:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1131A5BB7;
+	Wed, 21 May 2025 01:51:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363E51854
-	for <stable@vger.kernel.org>; Wed, 21 May 2025 01:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D511BE251
+	for <stable@vger.kernel.org>; Wed, 21 May 2025 01:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747792174; cv=none; b=gQ1x2k65js2KAM8pdrQIw/VSHKUpa85rdxoCgu42ll5NUzbdEYpyMeyeVdsvgIiV6r8Mjto5hB5ya1M6nu5e+plAm1XROWhZFwB50Mz+3BfjFQkxvxbHBkcAXq1EaR0fO561I1UBa3s1jgZQASOooTjcH8WYun1Z3K1svCZEX8U=
+	t=1747792270; cv=none; b=fkE8TKgbu9C2eV8hOBdGUSiRvSc7IWVzrnpbinmhjwGl5shN8HsIl5JmhkJEOQ3TocUH7Wf144g3A6DPjyxWvHajK7cY9IZXbsmS+WgOD31zVujDNbl21kH3rwj2sVgPW4mSSOo4JUN0ZAtxosnLBgbIET5gX58XgghI74kXass=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747792174; c=relaxed/simple;
-	bh=4VO02Zo6mozWEPRy9F/XIOqfNsssJzqvI8yB/T6+pTk=;
+	s=arc-20240116; t=1747792270; c=relaxed/simple;
+	bh=EIEHBct1LRjrFIpG+dMizkc2dYcslIuMANipXN0AZ7M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Pvzr150qBIm9GIk+f//32t7Nya4KPR3iXnGSUbo612tw+oWpn6S5iSQwx7kbbu75OmP6Q4Tsagn/gDf6Ux5urdr2CO6zc0AagwvQzSO4Eq/mt0IVUqXgdTngNzoERrQUaFKjn57OdkG5cOMEeTk7JqsD/+ux1DfJVRD4Bo7crzI=
+	 MIME-Version; b=n1LukDozsos43tUHpC77yE6HMkdR23elG6U9efIK/9Ya/ZPIa4HYvmD9kTDFgd6NjxypeXz3j7IMldJuNeQG++rzusgWYhi56E+NVQ6IS921zXoFJZ/nizdTiHLhUjupY3eK/OkcNAFcLKX9qEt61XL7mOZeflnb8MebGmZdCyQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=206.189.21.223
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
 Received: from hust.edu.cn (unknown [172.16.0.52])
-	by app2 (Coremail) with SMTP id HwEQrADHzXXSMC1oFiBdAQ--.25933S2;
-	Wed, 21 May 2025 09:48:02 +0800 (CST)
+	by app1 (Coremail) with SMTP id HgEQrAAnLRV1MS1o0iglCQ--.13980S2;
+	Wed, 21 May 2025 09:50:45 +0800 (CST)
 Received: from ubuntu.localdomain (unknown [10.12.190.56])
-	by gateway (Coremail) with SMTP id _____wDn7wPQMC1oxzAfAw--.57707S4;
-	Wed, 21 May 2025 09:48:01 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____wCH9wh1MS1owTYfAw--.43522S4;
+	Wed, 21 May 2025 09:50:45 +0800 (CST)
 From: Zhaoyang Li <lizy04@hust.edu.cn>
 To: stable@vger.kernel.org
 Cc: dzm91@hust.edu.cn,
@@ -40,12 +40,12 @@ Cc: dzm91@hust.edu.cn,
 	Qu Wenruo <wqu@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Zhaoyang Li <lizy04@hust.edu.cn>
-Subject: [PATCH 6.6.y] btrfs: check folio mapping after unlock in relocate_one_folio()
-Date: Wed, 21 May 2025 09:47:58 +0800
-Message-Id: <20250521014758.532799-1-lizy04@hust.edu.cn>
+Subject: [PATCH 6.1.y] btrfs: check folio mapping after unlock in relocate_one_folio()
+Date: Wed, 21 May 2025 09:50:43 +0800
+Message-Id: <20250521015043.533471-1-lizy04@hust.edu.cn>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2024123042-limelight-doily-8703@gregkh>
-References: <2024123042-limelight-doily-8703@gregkh>
+In-Reply-To: <2024123045-parka-sublet-a95d@gregkh>
+References: <2024123045-parka-sublet-a95d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,27 +53,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrADHzXXSMC1oFiBdAQ--.25933S2
-Authentication-Results: app2; spf=neutral smtp.mail=lizy04@hust.edu.cn
+X-CM-TRANSID:HgEQrAAnLRV1MS1o0iglCQ--.13980S2
+Authentication-Results: app1; spf=neutral smtp.mail=lizy04@hust.edu.cn
 	;
 X-Coremail-Antispam: 1UD129KBjvJXoWxXrWkurW5Zw43Ar18AF48Crg_yoWrXF43pr
-	yUGr1UKr48Jr1UJr4xJ3W0yr1rK3WDAay7XrWxZrn3Z3W3Jwn8t34DJryjyFyUtr4kJrW2
-	qws8tw10qrn8AaUanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQab7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	y7Gr1DKr48Jr1UJr4xJ3Wjyr1rK3WDZay7XrWxZrn3Z3W3Jwn8t34DGr1jyFyUtr4ktrW2
+	qws8tw10qrn8AaUanT9S1TB71UUUUjJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQSb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
 	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
 	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
 	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	1Y6r17M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
+	126r1DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
 	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
 	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtw
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUtVW8Zw
 	CF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Y
 	z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
 	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
+	2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
 	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
-	7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07bIiiDUUUUU=
-X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQYJB2gr+2JQsAABsy
+	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUkCedUUUUU
+X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQgJB2gr+2JQ3wABsT
 
 From: Boris Burkov <boris@bur.io>
 
@@ -151,10 +151,10 @@ Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
  1 file changed, 6 insertions(+)
 
 diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 537e184b4b1d..474758c878fc 100644
+index d6cda0b2e925..fd6ea3fcab33 100644
 --- a/fs/btrfs/relocation.c
 +++ b/fs/btrfs/relocation.c
-@@ -2931,6 +2931,7 @@ static int relocate_one_page(struct inode *inode, struct file_ra_state *ra,
+@@ -2977,6 +2977,7 @@ static int relocate_one_page(struct inode *inode, struct file_ra_state *ra,
  	int ret;
  
  	ASSERT(page_index <= last_index);
@@ -162,7 +162,7 @@ index 537e184b4b1d..474758c878fc 100644
  	page = find_lock_page(inode->i_mapping, page_index);
  	if (!page) {
  		page_cache_sync_readahead(inode->i_mapping, ra, NULL,
-@@ -2952,6 +2953,11 @@ static int relocate_one_page(struct inode *inode, struct file_ra_state *ra,
+@@ -2998,6 +2999,11 @@ static int relocate_one_page(struct inode *inode, struct file_ra_state *ra,
  			ret = -EIO;
  			goto release_page;
  		}
