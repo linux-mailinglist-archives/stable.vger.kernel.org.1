@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-145869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4126ABF88E
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 17:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CB4ABF894
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 17:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C516C3AF1E0
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:56:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A3203B9967
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 14:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE12220687;
-	Wed, 21 May 2025 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8AE1FFC7B;
+	Wed, 21 May 2025 14:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jT33xGSt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xb22h8zi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED08A1FF61E;
-	Wed, 21 May 2025 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F3D1DF72C;
+	Wed, 21 May 2025 14:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747839135; cv=none; b=MlufZkWp7O5TzOfyXAvXjH58NyPh/OJlapj9KUlskiXft4cSxZMyMaykBKGWh0Rn/Dz7GZq8P5tD9u9cOiqoC0PE64cctvnvY5Ao2BoLJA4IJT2cWIeTkBZYri1ADuqTO9mJHFZjADtSH37l0A0k7tqcMnh03f5rGdfI/h/9izM=
+	t=1747839143; cv=none; b=Kv5dhFnSt8eha5KfM3K3kBor38Y5fHTUEV/+u7EM7E05PLNFSGrDED9NFyaesw0CVoFpeww36ffcK/qIeZvc3D3wDpP7xoZ5C5f4wAx5keJEbzxnlx6nqhQrZPmXRVkXb0oxU6UVGoGL++rBc+16Z33YlgReki8WsCJhKkMp/7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747839135; c=relaxed/simple;
-	bh=Cj77OU4/P+Re9+XycqfKs1pRkE+Tyv4YPPPvDrFfbYM=;
+	s=arc-20240116; t=1747839143; c=relaxed/simple;
+	bh=RnbPGbaa6Hknh4pccWuYX64BmotyweWnfw3AQVu6Co0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjKke2FFkmZqqjQ0v3huoEEFj5JklYl0zoF0XJbjzYYOgzWFpYGL6L9JgHCmzLt1hwSHxQVHRK8UfU/O+0jUOqusUuZKfH79/Q0XqrDrivtX4mrkduV4CBEhFUEPpJRcnxSlzO++YW1jz2ruVDTWubIgYK67YVyNx2X/pcVZ+PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jT33xGSt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A21C4CEE4;
-	Wed, 21 May 2025 14:52:11 +0000 (UTC)
+	 MIME-Version; b=MqCjJWu7qob+4W9aCGd2UFznj/Av2moTWqL3c1nigtoekZs4JzZm5ky3OfdUSDFmnT1JS/AM8e7qCP3ina7/xsJ0k6f1NDYVpHrIH1tkwe6F9TcJL5oHmm8UD/2DSpl+f0wOFLKTLZeqScCsWuFb0GKWL+5z50rgjA0eYzHeAoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xb22h8zi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE77C4CEE7;
+	Wed, 21 May 2025 14:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747839134;
-	bh=Cj77OU4/P+Re9+XycqfKs1pRkE+Tyv4YPPPvDrFfbYM=;
+	s=k20201202; t=1747839142;
+	bh=RnbPGbaa6Hknh4pccWuYX64BmotyweWnfw3AQVu6Co0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jT33xGSt2sT+jMeCZx+oiEjeZfdxTxD2wPqJLvLdPIff5VHMH9U22T+WnkR6qcdkF
-	 LoZvWgLnvT6BfuXzA2zhaAOwJITrVUi7h6OtTY/3TcuAWPpYNrm/logPJwyAsRVdyp
-	 LddDyrtLP3vyFuPszeoduKNNZsUTvvTuSb6I1CrpJdPNB1UtakACEkc12OIyamUvl9
-	 CiadC2BNC1+cGM+nvowsWWqIQOKMR36fkeiPfqNXLiPOAvjxKjQ7eq09KbO/PF8RTX
-	 zgzcl4qsUuuDoyIWzuICMxOvUiiA5SSHjox6gZ0fU8cbRSyFtmOBjdsnR/ouUwCe0w
-	 /TZvxDRCF13kw==
+	b=Xb22h8zixqnmPeWnCSK2OQFlkuvR23yIBlw3xDpHutktiBjTjuujlSK4fan4bp77o
+	 9V5lrtASD2uBn3EvCbMReBvy1QsbRw6My1tOeTV84H0taROhUvw4v1yDvF+wNZy2/p
+	 +Hrsw7izbMQDY1zxKXbrdEH0f75sgxBK1Ixr2ZNxNvX42g9VfrclhZUTpxNONjshbO
+	 BZX1wTk+MpC80uLuoijZZx1hBn9ER75PY60pdlc2JBOicoRX/8Z4hvVbQqeYPttVGR
+	 udaGVtl8O1qUhYNIAxhO+gysJ2FNzLeiSvW8ySRqJ6hdnaPr00Ed7wFa52SfQr/A5q
+	 T5UgJ8aZXuDmg==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -52,14 +52,14 @@ To: lee@kernel.org,
 	Sasha Levin <sashal@kernel.org>,
 	Michal Luczaj <mhal@rbox.co>,
 	Rao Shoaib <Rao.Shoaib@oracle.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
 Cc: stable@vger.kernel.org,
-	kernel test robot <oliver.sang@intel.com>
-Subject: [PATCH v6.6 22/26] af_unix: Try not to hold unix_gc_lock during accept().
-Date: Wed, 21 May 2025 14:45:30 +0000
-Message-ID: <20250521144803.2050504-23-lee@kernel.org>
+	syzbot+f3f3eef1d2100200e593@syzkaller.appspotmail.com
+Subject: [PATCH v6.6 23/26] af_unix: Don't access successor in unix_del_edges() during GC.
+Date: Wed, 21 May 2025 14:45:31 +0000
+Message-ID: <20250521144803.2050504-24-lee@kernel.org>
 X-Mailer: git-send-email 2.49.0.1112.g889b7c5bd8-goog
 In-Reply-To: <20250521144803.2050504-1-lee@kernel.org>
 References: <20250521144803.2050504-1-lee@kernel.org>
@@ -73,122 +73,228 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit fd86344823b521149bb31d91eba900ba3525efa6 ]
+[ Upstream commit 1af2dface5d286dd1f2f3405a0d6fa9f2c8fb998 ]
 
-Commit dcf70df2048d ("af_unix: Fix up unix_edge.successor for embryo
-socket.") added spin_lock(&unix_gc_lock) in accept() path, and it
-caused regression in a stress test as reported by kernel test robot.
+syzbot reported use-after-free in unix_del_edges().  [0]
 
-If the embryo socket is not part of the inflight graph, we need not
-hold the lock.
+What the repro does is basically repeat the following quickly.
 
-To decide that in O(1) time and avoid the regression in the normal
-use case,
+  1. pass a fd of an AF_UNIX socket to itself
 
-  1. add a new stat unix_sk(sk)->scm_stat.nr_unix_fds
+    socketpair(AF_UNIX, SOCK_DGRAM, 0, [3, 4]) = 0
+    sendmsg(3, {..., msg_control=[{cmsg_len=20, cmsg_level=SOL_SOCKET,
+                                   cmsg_type=SCM_RIGHTS, cmsg_data=[4]}], ...}, 0) = 0
 
-  2. count the number of inflight AF_UNIX sockets in the receive
-     queue under unix_state_lock()
+  2. pass other fds of AF_UNIX sockets to the socket above
 
-  3. move unix_update_edges() call under unix_state_lock()
+    socketpair(AF_UNIX, SOCK_SEQPACKET, 0, [5, 6]) = 0
+    sendmsg(3, {..., msg_control=[{cmsg_len=48, cmsg_level=SOL_SOCKET,
+                                   cmsg_type=SCM_RIGHTS, cmsg_data=[5, 6]}], ...}, 0) = 0
 
-  4. avoid locking if nr_unix_fds is 0 in unix_update_edges()
+  3. close all sockets
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202404101427.92a08551-oliver.sang@intel.com
+Here, two skb are created, and every unix_edge->successor is the first
+socket.  Then, __unix_gc() will garbage-collect the two skb:
+
+  (a) free skb with self-referencing fd
+  (b) free skb holding other sockets
+
+After (a), the self-referencing socket will be scheduled to be freed
+later by the delayed_fput() task.
+
+syzbot repeated the sequences above (1. ~ 3.) quickly and triggered
+the task concurrently while GC was running.
+
+So, at (b), the socket was already freed, and accessing it was illegal.
+
+unix_del_edges() accesses the receiver socket as edge->successor to
+optimise GC.  However, we should not do it during GC.
+
+Garbage-collecting sockets does not change the shape of the rest
+of the graph, so we need not call unix_update_graph() to update
+unix_graph_grouped when we purge skb.
+
+However, if we clean up all loops in the unix_walk_scc_fast() path,
+unix_graph_maybe_cyclic remains unchanged (true), and __unix_gc()
+will call unix_walk_scc_fast() continuously even though there is no
+socket to garbage-collect.
+
+To keep that optimisation while fixing UAF, let's add the same
+updating logic of unix_graph_maybe_cyclic in unix_walk_scc_fast()
+as done in unix_walk_scc() and __unix_walk_scc().
+
+Note that when unix_del_edges() is called from other places, the
+receiver socket is always alive:
+
+  - sendmsg: the successor's sk_refcnt is bumped by sock_hold()
+             unix_find_other() for SOCK_DGRAM, connect() for SOCK_STREAM
+
+  - recvmsg: the successor is the receiver, and its fd is alive
+
+[0]:
+BUG: KASAN: slab-use-after-free in unix_edge_successor net/unix/garbage.c:109 [inline]
+BUG: KASAN: slab-use-after-free in unix_del_edge net/unix/garbage.c:165 [inline]
+BUG: KASAN: slab-use-after-free in unix_del_edges+0x148/0x630 net/unix/garbage.c:237
+Read of size 8 at addr ffff888079c6e640 by task kworker/u8:6/1099
+
+CPU: 0 PID: 1099 Comm: kworker/u8:6 Not tainted 6.9.0-rc4-next-20240418-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Workqueue: events_unbound __unix_gc
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ unix_edge_successor net/unix/garbage.c:109 [inline]
+ unix_del_edge net/unix/garbage.c:165 [inline]
+ unix_del_edges+0x148/0x630 net/unix/garbage.c:237
+ unix_destroy_fpl+0x59/0x210 net/unix/garbage.c:298
+ unix_detach_fds net/unix/af_unix.c:1811 [inline]
+ unix_destruct_scm+0x13e/0x210 net/unix/af_unix.c:1826
+ skb_release_head_state+0x100/0x250 net/core/skbuff.c:1127
+ skb_release_all net/core/skbuff.c:1138 [inline]
+ __kfree_skb net/core/skbuff.c:1154 [inline]
+ kfree_skb_reason+0x16d/0x3b0 net/core/skbuff.c:1190
+ __skb_queue_purge_reason include/linux/skbuff.h:3251 [inline]
+ __skb_queue_purge include/linux/skbuff.h:3256 [inline]
+ __unix_gc+0x1732/0x1830 net/unix/garbage.c:575
+ process_one_work kernel/workqueue.c:3218 [inline]
+ process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3299
+ worker_thread+0x86d/0xd70 kernel/workqueue.c:3380
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+Allocated by task 14427:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ unpoison_slab_object mm/kasan/common.c:312 [inline]
+ __kasan_slab_alloc+0x66/0x80 mm/kasan/common.c:338
+ kasan_slab_alloc include/linux/kasan.h:201 [inline]
+ slab_post_alloc_hook mm/slub.c:3897 [inline]
+ slab_alloc_node mm/slub.c:3957 [inline]
+ kmem_cache_alloc_noprof+0x135/0x290 mm/slub.c:3964
+ sk_prot_alloc+0x58/0x210 net/core/sock.c:2074
+ sk_alloc+0x38/0x370 net/core/sock.c:2133
+ unix_create1+0xb4/0x770
+ unix_create+0x14e/0x200 net/unix/af_unix.c:1034
+ __sock_create+0x490/0x920 net/socket.c:1571
+ sock_create net/socket.c:1622 [inline]
+ __sys_socketpair+0x33e/0x720 net/socket.c:1773
+ __do_sys_socketpair net/socket.c:1822 [inline]
+ __se_sys_socketpair net/socket.c:1819 [inline]
+ __x64_sys_socketpair+0x9b/0xb0 net/socket.c:1819
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 1805:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:579
+ poison_slab_object+0xe0/0x150 mm/kasan/common.c:240
+ __kasan_slab_free+0x37/0x60 mm/kasan/common.c:256
+ kasan_slab_free include/linux/kasan.h:184 [inline]
+ slab_free_hook mm/slub.c:2190 [inline]
+ slab_free mm/slub.c:4393 [inline]
+ kmem_cache_free+0x145/0x340 mm/slub.c:4468
+ sk_prot_free net/core/sock.c:2114 [inline]
+ __sk_destruct+0x467/0x5f0 net/core/sock.c:2208
+ sock_put include/net/sock.h:1948 [inline]
+ unix_release_sock+0xa8b/0xd20 net/unix/af_unix.c:665
+ unix_release+0x91/0xc0 net/unix/af_unix.c:1049
+ __sock_release net/socket.c:659 [inline]
+ sock_close+0xbc/0x240 net/socket.c:1421
+ __fput+0x406/0x8b0 fs/file_table.c:422
+ delayed_fput+0x59/0x80 fs/file_table.c:445
+ process_one_work kernel/workqueue.c:3218 [inline]
+ process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3299
+ worker_thread+0x86d/0xd70 kernel/workqueue.c:3380
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+The buggy address belongs to the object at ffff888079c6e000
+ which belongs to the cache UNIX of size 1920
+The buggy address is located 1600 bytes inside of
+ freed 1920-byte region [ffff888079c6e000, ffff888079c6e780)
+
+Reported-by: syzbot+f3f3eef1d2100200e593@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f3f3eef1d2100200e593
+Fixes: 77e5593aebba ("af_unix: Skip GC if no cycle exists.")
+Fixes: fd86344823b5 ("af_unix: Try not to hold unix_gc_lock during accept().")
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240413021928.20946-1-kuniyu@amazon.com
+Link: https://lore.kernel.org/r/20240419235102.31707-1-kuniyu@amazon.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-(cherry picked from commit fd86344823b521149bb31d91eba900ba3525efa6)
+(cherry picked from commit 1af2dface5d286dd1f2f3405a0d6fa9f2c8fb998)
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- include/net/af_unix.h |  1 +
- net/unix/af_unix.c    |  2 +-
- net/unix/garbage.c    | 20 ++++++++++++++++----
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ net/unix/garbage.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index 47042de4a2a9c..b6eedf7650da5 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -67,6 +67,7 @@ struct unix_skb_parms {
- 
- struct scm_stat {
- 	atomic_t nr_fds;
-+	unsigned long nr_unix_fds;
- };
- 
- #define UNIXCB(skb)	(*(struct unix_skb_parms *)&((skb)->cb))
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index df70d8a7ee837..236a2cd2bc93d 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1703,12 +1703,12 @@ static int unix_accept(struct socket *sock, struct socket *newsock, int flags,
- 	}
- 
- 	tsk = skb->sk;
--	unix_update_edges(unix_sk(tsk));
- 	skb_free_datagram(sk, skb);
- 	wake_up_interruptible(&unix_sk(sk)->peer_wait);
- 
- 	/* attach accepted sock to socket */
- 	unix_state_lock(tsk);
-+	unix_update_edges(unix_sk(tsk));
- 	newsock->state = SS_CONNECTED;
- 	unix_sock_inherit_flags(sock, newsock);
- 	sock_graft(tsk, newsock);
 diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 12a4ec27e0d4d..95240a59808f2 100644
+index 95240a59808f2..d76450133e4f0 100644
 --- a/net/unix/garbage.c
 +++ b/net/unix/garbage.c
-@@ -209,6 +209,7 @@ void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
- 		unix_add_edge(fpl, edge);
- 	} while (i < fpl->count_unix);
+@@ -158,11 +158,14 @@ static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+ 	unix_update_graph(unix_edge_successor(edge));
+ }
  
-+	receiver->scm_stat.nr_unix_fds += fpl->count_unix;
- 	WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + fpl->count_unix);
- out:
- 	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight + fpl->count);
-@@ -222,6 +223,7 @@ void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
- 
- void unix_del_edges(struct scm_fp_list *fpl)
++static bool gc_in_progress;
++
+ static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
  {
-+	struct unix_sock *receiver;
- 	int i = 0;
+ 	struct unix_vertex *vertex = edge->predecessor->vertex;
  
- 	spin_lock(&unix_gc_lock);
-@@ -235,6 +237,8 @@ void unix_del_edges(struct scm_fp_list *fpl)
+-	unix_update_graph(unix_edge_successor(edge));
++	if (!gc_in_progress)
++		unix_update_graph(unix_edge_successor(edge));
+ 
+ 	list_del(&edge->vertex_entry);
+ 	vertex->out_degree--;
+@@ -237,8 +240,10 @@ void unix_del_edges(struct scm_fp_list *fpl)
  		unix_del_edge(fpl, edge);
  	} while (i < fpl->count_unix);
  
-+	receiver = fpl->edges[0].successor;
-+	receiver->scm_stat.nr_unix_fds -= fpl->count_unix;
+-	receiver = fpl->edges[0].successor;
+-	receiver->scm_stat.nr_unix_fds -= fpl->count_unix;
++	if (!gc_in_progress) {
++		receiver = fpl->edges[0].successor;
++		receiver->scm_stat.nr_unix_fds -= fpl->count_unix;
++	}
  	WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - fpl->count_unix);
  out:
  	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight - fpl->count);
-@@ -246,10 +250,18 @@ void unix_del_edges(struct scm_fp_list *fpl)
+@@ -526,6 +531,8 @@ static void unix_walk_scc(struct sk_buff_head *hitlist)
  
- void unix_update_edges(struct unix_sock *receiver)
+ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
  {
--	spin_lock(&unix_gc_lock);
--	unix_update_graph(unix_sk(receiver->listener)->vertex);
--	receiver->listener = NULL;
--	spin_unlock(&unix_gc_lock);
-+	/* nr_unix_fds is only updated under unix_state_lock().
-+	 * If it's 0 here, the embryo socket is not part of the
-+	 * inflight graph, and GC will not see it, so no lock needed.
-+	 */
-+	if (!receiver->scm_stat.nr_unix_fds) {
-+		receiver->listener = NULL;
-+	} else {
-+		spin_lock(&unix_gc_lock);
-+		unix_update_graph(unix_sk(receiver->listener)->vertex);
-+		receiver->listener = NULL;
-+		spin_unlock(&unix_gc_lock);
-+	}
++	unix_graph_maybe_cyclic = false;
++
+ 	while (!list_empty(&unix_unvisited_vertices)) {
+ 		struct unix_vertex *vertex;
+ 		struct list_head scc;
+@@ -543,6 +550,8 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
+ 
+ 		if (scc_dead)
+ 			unix_collect_skb(&scc, hitlist);
++		else if (!unix_graph_maybe_cyclic)
++			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
+ 
+ 		list_del(&scc);
+ 	}
+@@ -550,8 +559,6 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
+ 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
  }
  
- int unix_prepare_fpl(struct scm_fp_list *fpl)
+-static bool gc_in_progress;
+-
+ static void __unix_gc(struct work_struct *work)
+ {
+ 	struct sk_buff_head hitlist;
 -- 
 2.49.0.1112.g889b7c5bd8-goog
 
