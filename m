@@ -1,119 +1,110 @@
-Return-Path: <stable+bounces-145783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755B2ABEE27
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:41:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3CCABEE2F
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 10:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ACDC7A4755
-	for <lists+stable@lfdr.de>; Wed, 21 May 2025 08:40:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4261886C2F
+	for <lists+stable@lfdr.de>; Wed, 21 May 2025 08:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6188223875D;
-	Wed, 21 May 2025 08:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01E323716B;
+	Wed, 21 May 2025 08:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="sleVw0vy"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Te1UzWPM"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2E1237172;
-	Wed, 21 May 2025 08:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA7922DF8C;
+	Wed, 21 May 2025 08:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747816840; cv=none; b=PkEsAaSId80fq8hbjV/1oEjMyW57V0paZ+9YrjoYIwihv33zfQrtLQMSa3rQoSvz8vAxYfggvWYbP/NCcT46lRzulNQBcf5TE5ZPSCPWqURZmEPhoHdvCXTRT+2zyH89yzqavwzgQCa2Sxwm3IHH9uuXvIn6ghY5a9nUGTolvEk=
+	t=1747816903; cv=none; b=WHeuHYXtDSVDNWuDYJxS6cnGF1NaUoIW3LxmPurf1GHtZsZd696sgh1klzcgTEIPLLJv65iE3iisHQnThUrgOJ1svJyfDiHCDolovFP4GszdjeXZIg4JlGPfKgRF68y8csc7pLlctVbsnSD+oD3ksU5z3x16SOujn0fxtfN6ngI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747816840; c=relaxed/simple;
-	bh=FcZ4rj0HTHRfpV6mo76/+aaCSsr4jpuW3NYUeTQzbVA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=JSu1oocy2JX6QPJkjJo91HDdzolfHCZwe7tPekPiTu5OCvpJghsPrjYw82hIDzQ4ta8kizpFL8GVf6BLgPVssmIs70y/ly1uT+WkrJtJp4TKA7JChj93ihrvy0DelB+ah7c0aK9N5nN8S8wW3CgjGj/41z2DCTzv8YsNflKyLfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=sleVw0vy; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 54L8dtGbB4069531, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1747816796; bh=FcZ4rj0HTHRfpV6mo76/+aaCSsr4jpuW3NYUeTQzbVA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=sleVw0vyhjq7ckYs5nE7D6HDhONa8BxVs0Ulx3QMAM+4XpP2eBLKr5lF2riXlZtDq
-	 mX6JPMK0bdRRJyemuCdKaeDwvB7VoN7/Q0RZiVyh/oEboReDdLLeFRvDFKGiHVH1GQ
-	 E9jb4Tta4iiakzQy3m4FPziHfe2raz9apw27YyGE9EBZ6ZlTImQOTOicZdBic13xZB
-	 sOWW0oxCoZKxyGUMFtTngb2mnPicRHFtvhvlJgIbEu304YYI3ZOcE3xLtqsPzNyinG
-	 dmT6DHKM1IRdDPFC7dII2bAPgA/IxzSZSOd4koQ2Rm0ys/hDJ99Q182uUCIVQ4xj6o
-	 O6lc9U143LFeQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 54L8dtGbB4069531
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 May 2025 16:39:55 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 21 May 2025 16:39:56 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 21 May 2025 16:39:55 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Wed, 21 May 2025 16:39:55 +0800
-From: Hayes Wang <hayeswang@realtek.com>
-To: Wentao Liang <vulab@iscas.ac.cn>,
-        "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org"
-	<kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "ste3ls@gmail.com" <ste3ls@gmail.com>
-CC: "dianders@chromium.org" <dianders@chromium.org>,
-        "gmazyland@gmail.com"
-	<gmazyland@gmail.com>,
-        "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>,
-        "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2] r8152: Add wake up function for RTL8153
-Thread-Topic: [PATCH v2] r8152: Add wake up function for RTL8153
-Thread-Index: AQHbxgL3hH/sIcTMKEyDGu9tnvFmWLPcxKAQ
-Date: Wed, 21 May 2025 08:39:55 +0000
-Message-ID: <8654b1d586ef48f081f7d3931cbc5ea9@realtek.com>
-References: <20250516013552.798-1-vulab@iscas.ac.cn>
-In-Reply-To: <20250516013552.798-1-vulab@iscas.ac.cn>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1747816903; c=relaxed/simple;
+	bh=uDw+ZJwPUxdSq79IaOADCgJrAkenZYaEAEllmnA9MDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eA/bmtPtoZroSfbvZRVWjaZdsZtr68irX14ZaUXZDw+xxPzCt+ubn8oQwaMEQ2QyTnZlap/lXM3QsezxqhQvLqqgswZhRLXOBtcPLZkyZtZ4Agp/aA0nZrwSLPfZR3IkGZhYQyC4HE668zmFRncUSOX1Vi7jbfZsNisdgmwY1gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Te1UzWPM; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 85448206832E; Wed, 21 May 2025 01:41:41 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 85448206832E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1747816901;
+	bh=tm3MPeyl5HQEq5tXrQRcuuPXKgXrLcNsWDnrjbtd2j8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Te1UzWPMJbaE7ikWZF5NBSuS4LtcbCPuwnIeM7MGge51yMYKZt47Mv25LGNXiuHwd
+	 fpV0GNyvDTyo6ID/nGVU90BzMl8A1TpX9F8Jd+q1qt5vwCSL5cVH1gpLXPAJHitAru
+	 9pPqZyvMre1TESFttWl5kkfXE1jRtvY5qdCCdYUQ=
+Date: Wed, 21 May 2025 01:41:41 -0700
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: Saurabh Sengar <ssengar@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	john.fastabend@gmail.com, sdf@fomichev.me, kuniyu@amazon.com,
+	ahmed.zaki@intel.com, aleksander.lobakin@intel.com,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	ssengar@microsoft.com, stable@vger.kernel.org
+Subject: Re: [PATCH net] hv_netvsc: fix potential deadlock in
+ netvsc_vf_setxdp()
+Message-ID: <20250521084141.GA10135@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1747540070-11086-1-git-send-email-ssengar@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1747540070-11086-1-git-send-email-ssengar@linux.microsoft.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Wentao Liang <vulab@iscas.ac.cn>
-> Sent: Friday, May 16, 2025 9:36 AM
-[...]
-> In rtl8153_runtime_enable(), the runtime enable/disable logic for RTL8153
-> devices was incomplete, missing r8153_queue_wake() to enable or disable
-> the automatic wake-up function. A proper implementation can be found in
-> rtl8156_runtime_enable().
+On Sat, May 17, 2025 at 08:47:50PM -0700, Saurabh Sengar wrote:
+> The MANA driver's probe registers netdevice via the following call chain:
+> 
+> mana_probe()
+>   register_netdev()
+>     register_netdevice()
+> 
+> register_netdevice() calls notifier callback for netvsc driver,
+> holding the netdev mutex via netdev_lock_ops().
+> 
+> Further this netvsc notifier callback end up attempting to acquire the
+> same lock again in dev_xdp_propagate() leading to deadlock.
+> 
+> netvsc_netdev_event()
+>   netvsc_vf_setxdp()
+>     dev_xdp_propagate()
+> 
+> This deadlock was not observed so far because net_shaper_ops was never
+> set and this lock in noop in this case. Fix this by using
+> netif_xdp_propagate instead of dev_xdp_propagate to avoid recursive
+> locking in this path.
+> 
+> This issue has not observed so far because net_shaper_ops was unset,
+> making the lock path effectively a no-op. To prevent recursive locking
+> and avoid this deadlock, replace dev_xdp_propagate() with
+> netif_xdp_propagate(), which does not acquire the lock again.
+> 
+> Also, clean up the unregistration path by removing unnecessary call to
+> netvsc_vf_setxdp(), since unregister_netdevice_many_notify() already
+> performs this cleanup via dev_xdp_uninstall.
+> 
+> Fixes: 97246d6d21c2 ("net: hold netdev instance lock during ndo_bpf")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+> ---
 
-r8153_queue_wake() is used to prevent the loss of wake-up events about link=
-ing
-change during the process of runtime suspend. And, I don't think RTL8153A
-supports it. Does this fix something?
+Built and booted successfully. 
 
-Best Regards,
-Hayes
+Tested-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com> 
 
+Thanks!
 
