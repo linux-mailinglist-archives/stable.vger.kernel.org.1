@@ -1,237 +1,357 @@
-Return-Path: <stable+bounces-146098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16F4AC0E5C
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 16:38:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70F52AC0E61
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 16:39:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D45111C0041A
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:38:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 948CEA40B49
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3C428DF4A;
-	Thu, 22 May 2025 14:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B417328E571;
+	Thu, 22 May 2025 14:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="v2K71i5F"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H2iLbwOn"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2074.outbound.protection.outlook.com [40.107.20.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6AA28D8C3;
-	Thu, 22 May 2025 14:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747924585; cv=fail; b=Q9fbIafKKm0UR6YlTJGYpzIa919gKA+1LH6C9zRK0Sn9TKHRu8q0FM7ajLIqowP9YEEwQrz8FamSJRppV0g/ced4MLOTPfKLb8+R3fzr4X76OzwxtrgQrKdirWQ4qVJlz4gR0Lo7/bT9MegAuSSih/QzZ5L/w9FFS7qI7NMOKr4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747924585; c=relaxed/simple;
-	bh=YneiCF4vE40XKjl+xpFf7sQB89VRFhnHTMAr4Ofbw/M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DOykpm43kVubHT9EMbsT1KO8eroFWVmSN8cga2ksDRjQHd1VUY5S/6ojq8E3RPmY4BuqYLPfeGJ4dIYysbW3oKeqkdyEK61DtQ0dhofR15rufg/6yHolxzt+RzQgSUV5oygO2m2acdIiGNCkJyXkn3zU7dETzA2Z40PBMD7UEjk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com; spf=fail smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=v2K71i5F; arc=fail smtp.client-ip=40.107.20.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=mt.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JLgb9NDgN3vzhIXdGKCQBOfOiWOMXAY98JNzgAf/QyVNAkEgx9h/PzgYPX8uAbX7QsE9bUPeQajxdkT2txYaSvyZ4DwVtlxzfRfAHeUCZRDKZNg7/hyOGUnPtgZggQEbKOo41bSFPZzx5pxiZlqT3fhTraAaKxPflHYALSMkWdjfRffhhSdYPTHPsYtkSM0gJF5rjGhcLKBP3jSLTF1tghg5esGKZHQBWcgDioo6sZcZZmxiTL7Jtrn8x6Gp5Q8DCiC0X+KviuTIn1tnsrschOPiabnVEC2zLw3BlljEqr9VnUgGLqOO4Jc2GOpzXffu8NhMT7wc53+lJPwdP5V4ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QeoL+AkUHHYsziBlbpL4bK3vrxkf6d/3FmYe1hnZQlU=;
- b=lf+vBZ+Qr0caB8OekjTNgRfWD17ixX8eZ0XODJBBFk4rvTaAZjcL9HoSiiRd8R3wOh7LK4E95/aQzG2Jfx97QySDwxxfvX6TzKFSfCrNsgfznqoH87ai/qR/b0yIguEGxyUVwZrDT7zIeN+WnM/Fnuh5HetDhmpjfn7zsmOzZltZgy+YfC5aGCbwn7+Q2ZgjvXgNvtnr7VttGlszwBR9SDjUHQWzMmIXuJ2xuJxaHwzH55SYWmA0AxLAJXql1lwS2Ckhz3tVGV+Hc/y02SCGDteg7y2r/JQiECgRhyL3bj+itLKQMEsYzRnLcXheDGOH82c6p/Urs2VEA6pK8us6tQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
- header.d=mt.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QeoL+AkUHHYsziBlbpL4bK3vrxkf6d/3FmYe1hnZQlU=;
- b=v2K71i5F2l//LgFQfs8/COxZXPCJjutSqoQY1A96/cJPMjG5+r05Oqa0Y8i6UvhLGdk/GSNbTUKQcxFeIK9EDGrkaDLK10wKgociIeYWQ1dy/h5FQBP6Mtwuwn6HmJjUbIYzDemx+Ho6wc3y/C7m5QPUrT8qQe9Rneqr0wpjXLQfAcSmBhak9tXL53g7eu/YV2yAVUt0GgV26XkV2+9fB76GDimrwSG/VL5dOgjk1R2sHAb8KSNeFCE14qceNuJ/0vaMOXOGy6orLQtwcsJibjKOGdpD+UFUqq3ZHddmOPcDrfeNz/PQRW11roWdc0xK13yGgABZF+BtiqAaR+PLfg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mt.com;
-Received: from DBBPR03MB10396.eurprd03.prod.outlook.com (2603:10a6:10:53a::11)
- by AS8PR03MB9912.eurprd03.prod.outlook.com (2603:10a6:20b:636::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.20; Thu, 22 May
- 2025 14:36:21 +0000
-Received: from DBBPR03MB10396.eurprd03.prod.outlook.com
- ([fe80::ee3c:c9be:681:c0bf]) by DBBPR03MB10396.eurprd03.prod.outlook.com
- ([fe80::ee3c:c9be:681:c0bf%2]) with mapi id 15.20.8746.030; Thu, 22 May 2025
- 14:36:21 +0000
-From: Mathis Foerst <mathis.foerst@mt.com>
-To: linux-kernel@vger.kernel.org
-Cc: Mathis Foerst <mathis.foerst@mt.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	manuel.traut@mt.com,
-	mathis.foerst@zuehlke.com,
-	stable@vger.kernel.org
-Subject: [PATCH v6 6/7] media: mt9m114: Fix deadlock in get_frame_interval/set_frame_interval
-Date: Thu, 22 May 2025 16:35:10 +0200
-Message-Id: <20250522143512.112043-7-mathis.foerst@mt.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250522143512.112043-1-mathis.foerst@mt.com>
-References: <20250522143512.112043-1-mathis.foerst@mt.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZR0P278CA0030.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:1c::17) To DBBPR03MB10396.eurprd03.prod.outlook.com
- (2603:10a6:10:53a::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B06128C842;
+	Thu, 22 May 2025 14:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747924597; cv=none; b=n6iuZRa+H7XV5Wh/E+TYQC5bIeg7moJj3Lv9rJqo7mwjNSH6AKEIcrSskfxafYPKaJ/sY7pn2M7E6wd5IOBMyU3A526PNBchsTI2eYOXcNGJAEdvbkWKHimb3cvWFWszPCqLgQRMLxNodrjeWhZaJVEaAweXOqlVwYMmtj8cJyM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747924597; c=relaxed/simple;
+	bh=hjMDXompomdT07wCvFBZpFtruJvwktFdHUs/2Q0O7VA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DVXrNYjkolkahvmeNgm/IgCOPaYtLxmp152npWSF7WNv5el87d1mG8VGONrh4uTqgjjvaSMclznrtKETmYHSIxIxolWtPc+mC+ITPK807AXdpEKoqs/Bvly67vT7RvYSUK/xXjIdIzijoL6hK1+fKnMN/zmc4QSObXKC6X+8wI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H2iLbwOn; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5efe8d9ebdfso15022573a12.3;
+        Thu, 22 May 2025 07:36:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747924592; x=1748529392; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lMpuUERD0otnom5mTOjs5MBvYsJ1hRyHhSqMmAzCudk=;
+        b=H2iLbwOnbmEnVJYcfMqFts5XWNxvGIuInK0Vjo7OMEqTgkPpnB7wu1xTKuj8Nby8lo
+         G3+DCQANTAl9hhIyVI0LlbYAdun+MH8uo+4HPeXGR2IV5tjbCgPXisZRy2i6cqty8+UG
+         ksP9L9u5DfBABSm9gJXDEfwGbPOy9fMJ1JTavA5USAxjPheErscXfrtcAjd/LKsbz4eU
+         MbaCk5CJ1XcH2bA74u4QOMBx3+RMPfjaU6hD0UAVbaRfiM/2sdJZvePg+vzSzi+8f4iZ
+         JDJQBPlPSg1j01yCnpMTii//m6hqHTAa8gsL6e/tojfYwTRp6lZKUcpp0jEPMjeGmj2H
+         Rm5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747924592; x=1748529392;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lMpuUERD0otnom5mTOjs5MBvYsJ1hRyHhSqMmAzCudk=;
+        b=LFWUBWnpsp2rBfqhI6oav5YMAOyUnRcLAYWL439753TLtv0XZc891zO4rT49pGomr9
+         GM4NrqLrDowyo8PoGF60xk6dJbGdSG+k9vp8lhNWPraGg3pLrYiyJQheqwy78XdBO+Kz
+         ob3MM55XHeSe6ogzi27UCE7M/oo86gIDfI76XufDJ4DbLzjBP5azpAyDHz3aVq2pw5pL
+         T6EDjHBhkCIvmw6xW8gqYUkVq6F+bP+TCOJ+ePApXHuHq8971gJi0bW4EKMHc4PBdwyy
+         XiO86lJ+QXa4Eo6576V+D7W1cIBLhdfR915MGSy3s6EzGu3q6fHywGMJ10dDTu4Zg092
+         uNzg==
+X-Forwarded-Encrypted: i=1; AJvYcCVz/7h2pG4DcwBmNlGexlXhK8Df3bMEMvoNFHo+qhipRfmPuErSLiOpq2CGUy+NzUnNrt2IgW3T@vger.kernel.org, AJvYcCXrjOOCg534/B+wYG2qZkq7E7ki745vGUOMnQRkB1HlxoqD3/IFJCnMp9gRcGX6rQz6VVv42bm7bgH3nQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw293J8hLvdmb8t5cWLYuTWR/wEsGYWICwAACxQwfJBDZS7nl22
+	v1A71LqsnC5UmRX5lFW8XUDTHEx6xzjiHaKUIaXpQBsxSx6BpcuLbI1oQKTaezuiAQf50H7H7Lg
+	veWVdiA3of3jjaYNEz95iCDXroll5etM=
+X-Gm-Gg: ASbGncs07q8zrpnfFdVD6xNAmXkr8T5pYsHUF1u2k00FG5E2kb846sk32uCM2fNFo/g
+	nlPpPcRrxt9Kc9PTSjzydv+OY4DdybLt4st58U/Z1QaZUTtI34TEwowPn/kJc5nOOLFNNDRAuMv
+	e3DB3m+RIHe3j/dQGAPVBbCFXksXHwQGk=
+X-Google-Smtp-Source: AGHT+IEVbRuUqCU+iqgBjw+TaWgbx2tIzgczBL5l/AjjK9wyN8bAKHExCEE5hoWSfCqKfaIhcjyYduO7+nrxkYfkb3Y=
+X-Received: by 2002:a05:6402:40d2:b0:602:2e21:634e with SMTP id
+ 4fb4d7f45d1cf-6022e2167ecmr7301133a12.17.1747924592098; Thu, 22 May 2025
+ 07:36:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR03MB10396:EE_|AS8PR03MB9912:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9fa5c8cc-26e8-4a84-769c-08dd993e051e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PYMMl9KjMTcCiOl4ldztkXNQNhyonM7HSxQ8BrPkpZxzF1tg8YCXsJrnSllu?=
- =?us-ascii?Q?IZduV0FI/TvSL5lLEWlSP+v5NjkANICiN2jGHEgzEthLGwLec4daxthEXBAb?=
- =?us-ascii?Q?pkyXl+B5dNodm3vEnsCOhuzoWYsng6e+fuGLLX7WviFpmhFV8RPhwlUIt0YC?=
- =?us-ascii?Q?5qStoQGJgJGMAuHX4sLvNV8XCoKw9Czt/QA5GwtgAFufcK5W5bzzx54KU9nf?=
- =?us-ascii?Q?3mO6Hidb6eLHVxADbfI3gLEajAJWAGWy2XuFrbxpz2GyXnIoWf7mZyhT0faZ?=
- =?us-ascii?Q?3Z57+n2Rdf5frwjrVyTwIflC5xnyqiOpnUxPWmKWMu73Z3XRvpBaXnEzko/y?=
- =?us-ascii?Q?oS0D7L10lSp++vI35Whe1thYzTSQQXQHihQr987CnY+PJW2gFJ6DGOpT7g5c?=
- =?us-ascii?Q?NX7Rockf3dLS2KMXu3P9kMahsSAkNBYiVS1CSYHyF4oq+OgOQDb9AjmDvxdq?=
- =?us-ascii?Q?6ZN7elqbUFNpJm3aV/4eak/6r91vFUXTkfmCz59GvEARFhVZCX+LD5e6IS+O?=
- =?us-ascii?Q?/W0ZIg2Psgd+xo/wDft4Agdiak3eIn5zct1qIcB8u4ngRvrRPqPHJUqxz7lp?=
- =?us-ascii?Q?VmIz8bdSgXmvwR2i5/kN4Q9lEbTl6rU/YjkxNeDEd0ClLvgq3ggJe9CuXcMH?=
- =?us-ascii?Q?5tX223W0rvrsZ4zTZRu1zzbqlZiNtNTHQndpYokQvptMBtZR5R3fTjIbDnGY?=
- =?us-ascii?Q?OmjuTG9zcepZI3asqBsdsyPf6TkPZJz/2GheL8ozyZ9i1Dco7SoVfVyZCND8?=
- =?us-ascii?Q?MRLUiX3A2jiMaIn0a7+dOAmOYGTog0NwRd8IVWnXNC15ADmYsHZWWS1dHI2J?=
- =?us-ascii?Q?GD8nPz8XrOLCFviujiH4K02bEK2aGR6wAFW5scU96F+xgOz9g5g99jyU2QhU?=
- =?us-ascii?Q?S5rDdVVzz6DkgcvhXdvNAo/LlAHG3CrQN3JL+w2abyQWQT29GaqI7DmjQmIA?=
- =?us-ascii?Q?/jNJ6d16ElwqbtFcpLudumz7P/8LlvdgbjhMzfH+udQRi/TCS45UslGxroh7?=
- =?us-ascii?Q?p0mKPD7oQHUF+KO8olReen/9n0c9/PUlwHHC+GBrJxN27eBtEmpmpDB3fsGF?=
- =?us-ascii?Q?zunpPhykEl2GhWqkSGpJj09UVsDkJjWDg1etI7vjUi0P2Eb6Nh/W11nVMJLR?=
- =?us-ascii?Q?r0Z0doVMoX619XtHGTqyWd4FXPHOBzkbthlrni2mxO3pCmbVJMG79g/rvk7t?=
- =?us-ascii?Q?ehf6Jk79oE9DHvr3sDALqh3Qz+byliVa3bwukfrboEVgUwT35C1O0GQDm5Zu?=
- =?us-ascii?Q?1xiZAfhlbjHPniuhEeoXC5fn42yA7ptydgHDliOtMAV82/VRHFwKuWZJhJVW?=
- =?us-ascii?Q?YHbyirO+qDFk401xNQPr0SJmDaMv+ifxKLb3EEW85LfYNfyFiTBFcIo/ub8n?=
- =?us-ascii?Q?8UJYRSogi5E4sOhp1t0n1a6QHJ1O0nlnnKpsEOkBY1oeI8FJrTlGayvJIxpx?=
- =?us-ascii?Q?ziGoYuYTBUtm+3FRxSxRwlOarW9Ma5bVMwEbtUsUEKCzz4O3tkG6DQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR03MB10396.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pRJc2tto8qKnPSEacKnnbEp+Yzr0bmv+MmFWg0MZc+Oj5WT0Bt599Mygp2vO?=
- =?us-ascii?Q?UxtB70n3JZtd66nR6HyTr7NsNqlQsWgX26EO4V/gT49bY8kJ4H4MTBreEklY?=
- =?us-ascii?Q?a1jKCosPB+sa+uIH7KixgHUfU9YOOzVpUPm+dI8KsAkWoEwczc5rgTm+Vpmq?=
- =?us-ascii?Q?jm4UaktyHI/WSnMIn6uAq3nMnGD6pIiFM1XMDkYeL6qpn4/0fACABdK/JtJ5?=
- =?us-ascii?Q?qFHdxTpef2u7G5SLJPheEwuIKHUlhgBou+hh6XdK3NYu7akNDxn0jTIZc/Rz?=
- =?us-ascii?Q?XWcVJPtRw77rmxbDSqYfSbc9zJ6ww8Kbs1q5Xyd0xB4HhCM1U8p+iwJKYgwG?=
- =?us-ascii?Q?E1J/LKKHcd2zKLSgkW+cCCvLf7M/t2JRRKyOIdn0b2GTrBuUPopVjfIGFX0e?=
- =?us-ascii?Q?OJLZoM+c608qam4Gpg+glDiR9Ze2RvEeGNNmBgxc74LY8MKHsEuVu3cIaq21?=
- =?us-ascii?Q?GzwiDR8C++UGDFOGhSprg6WphfIl3XTW0d4lhjU4LLjTpU3Vymn4gUJ/aBBm?=
- =?us-ascii?Q?3Txv9Ejw4NwQ2nz9AK1UOWtkC5z0ok178+o6XUA0pL8zNnWUs5ZA+hduPz92?=
- =?us-ascii?Q?Rv/zORMeWTLZKPiCufbTl9xcrDTvjEN/viUAc9hp3QgnI+Q0ELsxN8clFolW?=
- =?us-ascii?Q?vxccne99Acns51JFdj0b4SDCBqHs/Vwg7MVvoPq5WdZHYmo7d/V0YiqOBr+/?=
- =?us-ascii?Q?fVFCwONuEfxRtKDY0uJylq9SSI+2l3OwvWJN5u1jde54P8+EjaXp1BweSjC1?=
- =?us-ascii?Q?QhkmTcZ8cG4olB+IV++c40sIihn+w3OEclrP1cgvcgWT8BLoDlVundqCxSZR?=
- =?us-ascii?Q?fSpW2AMfoqEHPbd0Pr7QOPjfb/6tZEKopdHr8qBy23gegOMfsYK4Ml+Nb1z1?=
- =?us-ascii?Q?bfeXvXhs8C9b3Q6o8JNxYWKSvE0zDZnJbDeNsdxOiQJYZw/4Y04WlURz4qn9?=
- =?us-ascii?Q?NXn73WLHMvPAerVl2L5XDERrTDzA/LFUd+vGs5bR2QAiwdt2VXalcBNvyMA5?=
- =?us-ascii?Q?NdwUgTiMvW9VGVAOJAhhaC3x7M8r0gJ+stjnEW3jSHjlub4/0vQdbO5gNsC9?=
- =?us-ascii?Q?WHa0ig6YwueZlLsUkFmlsvHKYug0JaX9cUD9OeDGGXAXpJZjlx+7MKHH6OgT?=
- =?us-ascii?Q?b9hzAqtRvL+Ygivtmre3NGWICqXKgx2huYfzJEjm2Mwls8N7FURKlv3Vx4Qf?=
- =?us-ascii?Q?bpL3McF32oTH9rFyU3LG5jzxVMTQ4u9eYWpMnfw5d6cunFhmdm+ScZw6DaC8?=
- =?us-ascii?Q?U9+vM3j5Yedt+nOzkRgk63yB9KhEYlUbJteAQvJR00Rg9wCk9D77wwln70Mf?=
- =?us-ascii?Q?dDUVepwj1YZBYv3cvBglS5GPg+6jc2VavJCeox9W3p2TSrEjHrVOljyI1AoB?=
- =?us-ascii?Q?bW4GESkscpBgHsS7+SeZPyhXYgld5DLgZrqkz4/rClMgkeN75NedyUCxex/+?=
- =?us-ascii?Q?kY+ZNzbx4jSes7qg4Kn5cx3P/FkA8RJiCGaN3ocuh4Nb/jq6dVKxAIZLTFjG?=
- =?us-ascii?Q?gMu/Wxpul6ZCzk1O8q1KY3SUezvJQiIYcDA0mhs4I8PdKrjpghAIrK0X0KPu?=
- =?us-ascii?Q?jmGWzleTgbyGlMnJMbed+3eTxONMp9b6eKBA089h?=
-X-OriginatorOrg: mt.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fa5c8cc-26e8-4a84-769c-08dd993e051e
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR03MB10396.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2025 14:36:21.0954
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B4D1drWQsuAh6q+MS9Sqc57Okitxhzu3CC4M6RmvhBggYWyS4rH9CBesPOTR36/c/2yPqO6RujbbfpEaFjySEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB9912
+References: <20250521062744.1361774-1-parav@nvidia.com> <20250521145635.GA120766@fedora>
+ <CY8PR12MB7195DE1F8F11675CD2584D22DC99A@CY8PR12MB7195.namprd12.prod.outlook.com>
+In-Reply-To: <CY8PR12MB7195DE1F8F11675CD2584D22DC99A@CY8PR12MB7195.namprd12.prod.outlook.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 22 May 2025 10:36:19 -0400
+X-Gm-Features: AX0GCFvXrPZQ5sB9s01EpTgI6VkuP4piXmnDsgQRV8Gsc3BZYQoomWKwefuwIY8
+Message-ID: <CAJSP0QXxspELYnToMuP1w86rayQgPDRccVo892C258y9UbH_Hg@mail.gmail.com>
+Subject: Re: [PATCH v1] virtio_blk: Fix disk deletion hang on device surprise removal
+To: Parav Pandit <parav@nvidia.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, "mst@redhat.com" <mst@redhat.com>, 
+	"axboe@kernel.dk" <axboe@kernel.dk>, 
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, 
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, 
+	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"jasowang@redhat.com" <jasowang@redhat.com>, Max Gurtovoy <mgurtovoy@nvidia.com>, 
+	Israel Rukshin <israelr@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Getting / Setting the frame interval using the V4L2 subdev pad ops
-get_frame_interval/set_frame_interval causes a deadlock, as the
-subdev state is locked in the [1] but also in the driver itself.
+On Wed, May 21, 2025 at 10:57=E2=80=AFPM Parav Pandit <parav@nvidia.com> wr=
+ote:
+> > From: Stefan Hajnoczi <stefanha@redhat.com>
+> > Sent: Wednesday, May 21, 2025 8:27 PM
+> >
+> > On Wed, May 21, 2025 at 06:37:41AM +0000, Parav Pandit wrote:
+> > > When the PCI device is surprise removed, requests may not complete th=
+e
+> > > device as the VQ is marked as broken. Due to this, the disk deletion
+> > > hangs.
+> > >
+> > > Fix it by aborting the requests when the VQ is broken.
+> > >
+> > > With this fix now fio completes swiftly.
+> > > An alternative of IO timeout has been considered, however when the
+> > > driver knows about unresponsive block device, swiftly clearing them
+> > > enables users and upper layers to react quickly.
+> > >
+> > > Verified with multiple device unplug iterations with pending requests
+> > > in virtio used ring and some pending with the device.
+> > >
+> > > Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio
+> > > pci device")
+> > > Cc: stable@vger.kernel.org
+> > > Reported-by: lirongqing@baidu.com
+> > > Closes:
+> > > https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca9b47=
+4
+> > > 1@baidu.com/
+> > > Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+> > > Reviewed-by: Israel Rukshin <israelr@nvidia.com>
+> > > Signed-off-by: Parav Pandit <parav@nvidia.com>
+> > > ---
+> > > changelog:
+> > > v0->v1:
+> > > - Fixed comments from Stefan to rename a cleanup function
+> > > - Improved logic for handling any outstanding requests
+> > >   in bio layer
+> > > - improved cancel callback to sync with ongoing done()
+> > >
+> > > ---
+> > >  drivers/block/virtio_blk.c | 95
+> > > ++++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 95 insertions(+)
+> > >
+> > > diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+> > > index 7cffea01d868..5212afdbd3c7 100644
+> > > --- a/drivers/block/virtio_blk.c
+> > > +++ b/drivers/block/virtio_blk.c
+> > > @@ -435,6 +435,13 @@ static blk_status_t virtio_queue_rq(struct
+> > blk_mq_hw_ctx *hctx,
+> > >     blk_status_t status;
+> > >     int err;
+> > >
+> > > +   /* Immediately fail all incoming requests if the vq is broken.
+> > > +    * Once the queue is unquiesced, upper block layer flushes any
+> > pending
+> > > +    * queued requests; fail them right away.
+> > > +    */
+> > > +   if (unlikely(virtqueue_is_broken(vblk->vqs[qid].vq)))
+> > > +           return BLK_STS_IOERR;
+> > > +
+> > >     status =3D virtblk_prep_rq(hctx, vblk, req, vbr);
+> > >     if (unlikely(status))
+> > >             return status;
+> > > @@ -508,6 +515,11 @@ static void virtio_queue_rqs(struct rq_list *rql=
+ist)
+> > >     while ((req =3D rq_list_pop(rqlist))) {
+> > >             struct virtio_blk_vq *this_vq =3D get_virtio_blk_vq(req-
+> > >mq_hctx);
+> > >
+> > > +           if (unlikely(virtqueue_is_broken(this_vq->vq))) {
+> > > +                   rq_list_add_tail(&requeue_list, req);
+> > > +                   continue;
+> > > +           }
+> > > +
+> > >             if (vq && vq !=3D this_vq)
+> > >                     virtblk_add_req_batch(vq, &submit_list);
+> > >             vq =3D this_vq;
+> > > @@ -1554,6 +1566,87 @@ static int virtblk_probe(struct virtio_device
+> > *vdev)
+> > >     return err;
+> > >  }
+> > >
+> > > +static bool virtblk_request_cancel(struct request *rq, void *data) {
+> > > +   struct virtblk_req *vbr =3D blk_mq_rq_to_pdu(rq);
+> > > +   struct virtio_blk *vblk =3D data;
+> > > +   struct virtio_blk_vq *vq;
+> > > +   unsigned long flags;
+> > > +
+> > > +   vq =3D &vblk->vqs[rq->mq_hctx->queue_num];
+> > > +
+> > > +   spin_lock_irqsave(&vq->lock, flags);
+> > > +
+> > > +   vbr->in_hdr.status =3D VIRTIO_BLK_S_IOERR;
+> > > +   if (blk_mq_request_started(rq) && !blk_mq_request_completed(rq))
+> > > +           blk_mq_complete_request(rq);
+> > > +
+> > > +   spin_unlock_irqrestore(&vq->lock, flags);
+> > > +   return true;
+> > > +}
+> > > +
+> > > +static void virtblk_broken_device_cleanup(struct virtio_blk *vblk) {
+> > > +   struct request_queue *q =3D vblk->disk->queue;
+> > > +
+> > > +   if (!virtqueue_is_broken(vblk->vqs[0].vq))
+> > > +           return;
+> >
+> > Can a subset of virtqueues be broken? If so, then this code doesn't han=
+dle it.
+> On device removal all the VQs are broken. This check only uses a VQ to de=
+cide on.
+> In future may be more elaborate API to have virtio_dev_broken() can be ad=
+ded.
+> Prefer to keep this patch without extending many APIs given it has Fixes =
+tag.
 
-In [2] it's described that the caller is responsible to acquire and
-release the lock in this case. Therefore, acquiring the lock in the
-driver is wrong.
+virtblk_remove() is called not just when a PCI device is hot
+unplugged. For example, removing the virtio_blk kernel module or
+unbinding a specific virtio device instance also calls it.
 
-Remove the lock acquisitions/releases from mt9m114_ifp_get_frame_interval()
-and mt9m114_ifp_set_frame_interval().
+My concern is that virtblk_broken_device_cleanup() is only intended
+for the cases where all virtqueues are broken or none are broken. If
+just the first virtqueue is broken then it completes requests on
+operational virtqueues and they may still raise an interrupt.
 
-[1] drivers/media/v4l2-core/v4l2-subdev.c - line 1129
-[2] Documentation/driver-api/media/v4l2-subdev.rst
+The use-after-free I'm thinking about is when virtblk_request_cancel()
+-> ... -> blk_mq_end_request() has been called on a virtqueue that is
+not broken, followed by virtblk_done() using the struct request
+obtained from blk_mq_rq_from_pdu().
 
-Fixes: 24d756e914fc ("media: i2c: Add driver for onsemi MT9M114 camera sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
- drivers/media/i2c/mt9m114.c | 8 --------
- 1 file changed, 8 deletions(-)
+Maybe just adding a virtqueue_is_broken() check in
+virtblk_request_cancel() is enough to skip requests that are still
+in-flight on operational virtqueues.
 
-diff --git a/drivers/media/i2c/mt9m114.c b/drivers/media/i2c/mt9m114.c
-index e909c1227e51..9ff46c72dbc1 100644
---- a/drivers/media/i2c/mt9m114.c
-+++ b/drivers/media/i2c/mt9m114.c
-@@ -1652,13 +1652,9 @@ static int mt9m114_ifp_get_frame_interval(struct v4l2_subdev *sd,
- 	if (interval->which != V4L2_SUBDEV_FORMAT_ACTIVE)
- 		return -EINVAL;
- 
--	mutex_lock(sensor->ifp.hdl.lock);
--
- 	ival->numerator = 1;
- 	ival->denominator = sensor->ifp.frame_rate;
- 
--	mutex_unlock(sensor->ifp.hdl.lock);
--
- 	return 0;
- }
- 
-@@ -1677,8 +1673,6 @@ static int mt9m114_ifp_set_frame_interval(struct v4l2_subdev *sd,
- 	if (interval->which != V4L2_SUBDEV_FORMAT_ACTIVE)
- 		return -EINVAL;
- 
--	mutex_lock(sensor->ifp.hdl.lock);
--
- 	if (ival->numerator != 0 && ival->denominator != 0)
- 		sensor->ifp.frame_rate = min_t(unsigned int,
- 					       ival->denominator / ival->numerator,
-@@ -1692,8 +1686,6 @@ static int mt9m114_ifp_set_frame_interval(struct v4l2_subdev *sd,
- 	if (sensor->streaming)
- 		ret = mt9m114_set_frame_rate(sensor);
- 
--	mutex_unlock(sensor->ifp.hdl.lock);
--
- 	return ret;
- }
- 
--- 
-2.34.1
+>
+> >
+> > > +
+> > > +   /* Start freezing the queue, so that new requests keeps waitng at
+> > > +the
+> >
+> > s/waitng/waiting/
+> >
+> Ack.
+>
+> > > +    * door of bio_queue_enter(). We cannot fully freeze the queue
+> > because
+> > > +    * freezed queue is an empty queue and there are pending requests=
+,
+> > so
+> > > +    * only start freezing it.
+> > > +    */
+> > > +   blk_freeze_queue_start(q);
+> > > +
+> > > +   /* When quiescing completes, all ongoing dispatches have complete=
+d
+> > > +    * and no new dispatch will happen towards the driver.
+> > > +    * This ensures that later when cancel is attempted, then are not
+> > > +    * getting processed by the queue_rq() or queue_rqs() handlers.
+> > > +    */
+> > > +   blk_mq_quiesce_queue(q);
+> > > +
+> > > +   /*
+> > > +    * Synchronize with any ongoing VQ callbacks, effectively quiesci=
+ng
+> > > +    * the device and preventing it from completing further requests
+> > > +    * to the block layer. Any outstanding, incomplete requests will =
+be
+> > > +    * completed by virtblk_request_cancel().
+> > > +    */
+> > > +   virtio_synchronize_cbs(vblk->vdev);
+> > > +
+> > > +   /* At this point, no new requests can enter the queue_rq() and
+> > > +    * completion routine will not complete any new requests either f=
+or
+> > the
+> > > +    * broken vq. Hence, it is safe to cancel all requests which are
+> > > +    * started.
+> > > +    */
+> > > +   blk_mq_tagset_busy_iter(&vblk->tag_set, virtblk_request_cancel,
+> > > +vblk);
+> >
+> > Although virtio_synchronize_cbs() was called, a broken/malicious device=
+ can
+> > still raise IRQs. Would that lead to use-after-free or similar undefine=
+d
+> > behavior for requests that have been submitted to the device?
+> >
+> It shouldn't because vring_interrupt() also checks for the broken VQ befo=
+re invoking the _done().
+> Once the VQ is broken and even if _done() is invoked, it wont progress fu=
+rther on get_buf().
+> And VQs are freed later in del_vq() after the device is reset as you sugg=
+ested.
 
+See above about a scenario where a race can happen.
+
+>
+> > It seems safer to reset the device before marking the requests as faile=
+d.
+> >
+> Such addition should be avoided because when the device is surprise remov=
+ed, even reset will not complete.
+
+The virtblk_remove() function modified by this patch calls
+virtio_reset_device(). Is the expected behavior after this patch that
+virtblk_remove() spins forever?
+
+>
+> > > +   blk_mq_tagset_wait_completed_request(&vblk->tag_set);
+> > > +
+> > > +   /* All pending requests are cleaned up. Time to resume so that di=
+sk
+> > > +    * deletion can be smooth. Start the HW queues so that when queue
+> > is
+> > > +    * unquiesced requests can again enter the driver.
+> > > +    */
+> > > +   blk_mq_start_stopped_hw_queues(q, true);
+> > > +
+> > > +   /* Unquiescing will trigger dispatching any pending requests to t=
+he
+> > > +    * driver which has crossed bio_queue_enter() to the driver.
+> > > +    */
+> > > +   blk_mq_unquiesce_queue(q);
+> > > +
+> > > +   /* Wait for all pending dispatches to terminate which may have be=
+en
+> > > +    * initiated after unquiescing.
+> > > +    */
+> > > +   blk_mq_freeze_queue_wait(q);
+> > > +
+> > > +   /* Mark the disk dead so that once queue unfreeze, the requests
+> > > +    * waiting at the door of bio_queue_enter() can be aborted right
+> > away.
+> > > +    */
+> > > +   blk_mark_disk_dead(vblk->disk);
+> > > +
+> > > +   /* Unfreeze the queue so that any waiting requests will be aborte=
+d.
+> > */
+> > > +   blk_mq_unfreeze_queue_nomemrestore(q);
+> > > +}
+> > > +
+> > >  static void virtblk_remove(struct virtio_device *vdev)  {
+> > >     struct virtio_blk *vblk =3D vdev->priv; @@ -1561,6 +1654,8 @@ sta=
+tic
+> > > void virtblk_remove(struct virtio_device *vdev)
+> > >     /* Make sure no work handler is accessing the device. */
+> > >     flush_work(&vblk->config_work);
+> > >
+> > > +   virtblk_broken_device_cleanup(vblk);
+> > > +
+> > >     del_gendisk(vblk->disk);
+> > >     blk_mq_free_tag_set(&vblk->tag_set);
+> > >
+> > > --
+> > > 2.34.1
+> > >
+>
 
