@@ -1,144 +1,177 @@
-Return-Path: <stable+bounces-146139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC26AC1715
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 01:01:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA36AC18DA
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 02:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 243D01C03BCF
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 23:01:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9772E505376
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 00:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE1B2BF3DE;
-	Thu, 22 May 2025 23:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BMfATcO8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAB0137E;
+	Fri, 23 May 2025 00:05:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from neil.brown.name (neil.brown.name [103.29.64.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF1FCA52;
-	Thu, 22 May 2025 23:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AD419A;
+	Fri, 23 May 2025 00:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747954866; cv=none; b=OhOD3dvMcEOcmhRb4wImZROxTIypVL/rTmgeyTwBB/IXYBxP8VEjt78LKRpyGQFVT6/3Bq2HGH1sGELbdyNsUu56+gbsYf00Ot1Jd3UeBHo/Q0WX/7xUbpWjC031S36J7Sv1q1bZ98rvMnftc7qZZOg6UH3yWQwLob5wO+T3AfE=
+	t=1747958740; cv=none; b=PBeTV1ehs/Unx79Z/t/QWrkVKzBJayIF+lrli7tTP/bv1DEIGKfsYWoZ3Jx91fabed7yuvNF5XF0r+FxBYHF2zcj2u+Y15znLpjFRMlfwdGVkE3IKwwdoxGkzGmirWaBH3VFnYPwttJDfCE4mDQhcs9K7DFEQteChYEkrK2yplk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747954866; c=relaxed/simple;
-	bh=3fRB2zOy7dZMiB2pgHhbWuTftCpMtbw7N8zj6z8r4Qc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ho2K2OAKzWUf0nkpRt0N80aiVSUKv8Gtgg6hFKvD5LszQxVd2wTITFfpKfSWDkrJwAraiIkIcyvpNUFTGjbxXYfMbxBJ+B86DRddKHcJa1hRBgaa2NtIBTr11rffdPm6kEqBVcBj4ArRtWDepD4r/YLf83vrZRdHtu13Ekw0IF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BMfATcO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E67C4CEE4;
-	Thu, 22 May 2025 23:01:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747954866;
-	bh=3fRB2zOy7dZMiB2pgHhbWuTftCpMtbw7N8zj6z8r4Qc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BMfATcO8CnYfsabtv73NyLu8Q/VgTqoeRF1Yql2xHfLMvR3wQ3UMVSjyltQmbtEGZ
-	 q7TYahpbsxmn92DCKkDaxKLNV4vinG4feRA87uhU1zYiskVyhBVJQf5wWiLDWO9SPr
-	 GIlw/JnfG2LP0Dm67xtrhRkevVCOG1/3TgukVTzC/ZDVm+YKDu5KHxkR0vfE6UxKsb
-	 ZrgfX+kd/rvVGUNPIi1xCP+tQKq2La8dZIbKdAupGql0H1ojiymbEw1mkTojEw3nTO
-	 X8/zx9UdIInjycFlHWCbj+LWUnaoSNzTutvlLNSqy2smnFhU4XtvNJDLkSkAE52Np2
-	 g51Q7Pz+p7Pyw==
-Date: Thu, 22 May 2025 16:01:01 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Cc: stable-commits@vger.kernel.org, brgerst@gmail.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Subject: Re: Patch "x86/relocs: Handle R_X86_64_REX_GOTPCRELX relocations"
- has been added to the 6.14-stable tree
-Message-ID: <20250522230101.GA1911411@ax162>
-References: <20250522213009.3137023-1-sashal@kernel.org>
+	s=arc-20240116; t=1747958740; c=relaxed/simple;
+	bh=FKJEwrRMLguey2BvAvV40YEjlFi9E5GX6RFzd6ghb0I=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=XSwCzJhcO4iD2HzSTUS/5AOMPinvwfIwVrSCUW+27K8EHR8KK3UgYF5+JeXQ1sKMaH1IBwFOzZqVHUB7yqG8B/Yw91jv/0P6HfG/d/zv3EChNIuQaaRyaWRt2R5oWWaB4R2MOXEd5Sfw7DbDnyC9ZW/vE0s9UjLolVIdnL30WNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
+Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
+	by neil.brown.name with esmtp (Exim 4.95)
+	(envelope-from <mr@neil.brown.name>)
+	id 1uIFDv-008Vm2-4u;
+	Thu, 22 May 2025 23:21:15 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250522213009.3137023-1-sashal@kernel.org>
+From: "NeilBrown" <neil@brown.name>
+To: "Haixiao Yan" <haixiao.yan.cn@windriver.com>
+Cc:
+ chuck.lever@oracle.com, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: nfs mount failed with ipv6 addr
+In-reply-to: <faf777ea-3667-45c7-b7f2-111b9f789e73@windriver.com>
+References: <>, <faf777ea-3667-45c7-b7f2-111b9f789e73@windriver.com>
+Date: Fri, 23 May 2025 09:21:14 +1000
+Message-id: <174795607490.608730.5673295992775861610@noble.neil.brown.name>
 
-On Thu, May 22, 2025 at 05:30:09PM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     x86/relocs: Handle R_X86_64_REX_GOTPCRELX relocations
-> 
-> to the 6.14-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      x86-relocs-handle-r_x86_64_rex_gotpcrelx-relocations.patch
-> and it can be found in the queue-6.14 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit d8e603969259e50aa632d1a3fde8883f41e26150
-> Author: Brian Gerst <brgerst@gmail.com>
-> Date:   Thu Jan 23 14:07:37 2025 -0500
-> 
->     x86/relocs: Handle R_X86_64_REX_GOTPCRELX relocations
->     
->     [ Upstream commit cb7927fda002ca49ae62e2782c1692acc7b80c67 ]
->     
->     Clang may produce R_X86_64_REX_GOTPCRELX relocations when redefining the
->     stack protector location.  Treat them as another type of PC-relative
->     relocation.
->     
->     Signed-off-by: Brian Gerst <brgerst@gmail.com>
->     Signed-off-by: Ingo Molnar <mingo@kernel.org>
->     Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
->     Cc: Linus Torvalds <torvalds@linux-foundation.org>
->     Link: https://lore.kernel.org/r/20250123190747.745588-6-brgerst@gmail.com
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
-> index e937be979ec86..92a1e503305ef 100644
-> --- a/arch/x86/tools/relocs.c
-> +++ b/arch/x86/tools/relocs.c
-> @@ -32,6 +32,11 @@ static struct relocs		relocs32;
->  static struct relocs		relocs32neg;
->  static struct relocs		relocs64;
->  # define FMT PRIu64
-> +
-> +#ifndef R_X86_64_REX_GOTPCRELX
-> +# define R_X86_64_REX_GOTPCRELX 42
-> +#endif
-> +
->  #else
->  # define FMT PRIu32
->  #endif
-> @@ -227,6 +232,7 @@ static const char *rel_type(unsigned type)
->  		REL_TYPE(R_X86_64_PC16),
->  		REL_TYPE(R_X86_64_8),
->  		REL_TYPE(R_X86_64_PC8),
-> +		REL_TYPE(R_X86_64_REX_GOTPCRELX),
->  #else
->  		REL_TYPE(R_386_NONE),
->  		REL_TYPE(R_386_32),
-> @@ -861,6 +867,7 @@ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
->  
->  	case R_X86_64_PC32:
->  	case R_X86_64_PLT32:
-> +	case R_X86_64_REX_GOTPCRELX:
->  		/*
->  		 * PC relative relocations don't need to be adjusted unless
->  		 * referencing a percpu symbol.
+On Thu, 22 May 2025, Haixiao Yan wrote:
+> On 2025/5/22 07:32, NeilBrown wrote:
+> > CAUTION: This email comes from a non Wind River email account!
+> > Do not click links or open attachments unless you recognize the sender an=
+d know the content is safe.
+> >
+> > On Thu, 22 May 2025, Yan, Haixiao (CN) wrote:
+> >> On linux-5.10.y, my testcase run failed:
+> >>
+> >> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mount -=
+t nfs [::1]:/mnt/nfs_root /mnt/v6 -o nfsvers=3D3
+> >> mount.nfs: requested NFS version or transport protocol is not supported
+> >>
+> >> The first bad commit is:
+> >>
+> >> commit 7229200f68662660bb4d55f19247eaf3c79a4217
+> >> Author: Chuck Lever <chuck.lever@oracle.com>
+> >> Date:   Mon Jun 3 10:35:02 2024 -0400
+> >>
+> >>     nfsd: don't allow nfsd threads to be signalled.
+> >>
+> >>     [ Upstream commit 3903902401451b1cd9d797a8c79769eb26ac7fe5 ]
+> >>
+> >>
+> >> Here is the test log:
+> >>
+> >> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# dd if=
+=3D/dev/zero of=3D/tmp/nfs.img bs=3D1M count=3D100
+> >> 100+0 records in
+> >> 100+0 records out
+> >> 104857600 bytes (105 MB, 100 MiB) copied, 0.0386658 s, 2.7 GB/s
+> >> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mkfs /t=
+mp/nfs.img
+> >> mke2fs 1.46.1 (9-Feb-2021)
+> >> Discarding device blocks:   1024/102400=08=08=08=08=08=08=08=08=08=08=08=
+=08=08             =08=08=08=08=08=08=08=08=08=08=08=08=08done
+> >> Creating filesystem with 102400 1k blocks and 25688 inodes
+> >> Filesystem UUID: 77e3bc56-46bb-4e5c-9619-d9a0c0999958
+> >> Superblock backups stored on blocks:
+> >>        8193, 24577, 40961, 57345, 73729
+> >>
+> >> Allocating group tables:  0/13=08=08=08=08=08     =08=08=08=08=08done
+> >> Writing inode tables:  0/13=08=08=08=08=08     =08=08=08=08=08done
+> >> Writing superblocks and filesystem accounting information:  0/13=08=08=
+=08=08=08     =08=08=08=08=08done
+> >> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mount /=
+tmp/nfs.img /mnt
+> >>
+> >> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mkdir /=
+mnt/nfs_root
+> >>
+> >> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# touch /=
+etc/exports
+> >>
+> >> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# echo '/=
+mnt/nfs_root *(insecure,rw,async,no_root_squash)' >> /etc/exports
+> >>
+> >> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# /opt/wr=
+-test/bin/svcwp.sh nfsserver restart
+> >> stopping mountd: done
+> >> stopping nfsd: ..........failed
+> >>    using signal 9:
+> >> ..........failed
+> > What does your "nfsserver" script do to try to stop/restart the nfsd?
+> > For a very long time the approved way to stop nfsd has been to run
+> > "rpc.nfsd 0".  My guess is that whatever script you are using still
+> > trying to send a signal to nfsd.  That no longer works.
+> >
+> > Unfortunately the various sysv-init scripts for starting/stopping nfsd
+> > have never been part of nfs-utils so we were not able to update them.
+> > nfs-utils *does* contain systemd unit files for sites which use systemd.
+> >
+> > If you have a non-systemd way of starting/stopping nfsd, we would be
+> > happy to make the relevant scripts part of nfs-utils so that we can
+> > ensure they stay up to date.
+>=20
+> Actually, we use=C2=A0 service nfsserver restart=C2=A0 =3D>
+> /etc/init.d/nfsserver =3D>
+>=20
+> stop_nfsd(){
+>  =C2=A0=C2=A0 =C2=A0# WARNING: this kills any process with the executable
+>  =C2=A0=C2=A0 =C2=A0# name 'nfsd'.
+>  =C2=A0=C2=A0 =C2=A0echo -n 'stopping nfsd: '
+>  =C2=A0=C2=A0 =C2=A0start-stop-daemon --stop --quiet --signal 1 --name nfsd
+>  =C2=A0=C2=A0 =C2=A0if delay_nfsd || {
+>  =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 echo failed
+>  =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 echo ' using signal 9: '
+>  =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 start-stop-daemon --stop --quiet --s=
+ignal 9 --name nfsd
+>  =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 delay_nfsd
+>  =C2=A0=C2=A0 =C2=A0}
+>  =C2=A0=C2=A0 =C2=A0then
+>  =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 echo done
+>  =C2=A0=C2=A0 =C2=A0else
+>  =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 echo failed
+>  =C2=A0=C2=A0 =C2=A0fi
+The above should all be changed to
+   echo -n 'stopping nfsd: '
+   rpc.nfsd 0
+   echo done
 
-Didn't Ard just say this has no purpose in stable?
+or similar.  What distro are you using?
 
-https://lore.kernel.org/CAMj1kXGtasdqRPn8koNN095VEEU4K409QvieMdgGXNUK0kPgkw@mail.gmail.com/
+I can't see how this would affect your problem with IPv6 but it would be
+nice if you could confirm that IPv6 still doesn't work even after
+changing the above.
+What version of nfs-utils are you using?
+Are you should that the kernel has IPv6 enabled?  Does "ping6 ::1" work?
 
-Cheers,
-Nathan
+NeilBrown
+
+
+> }
+>=20
+> Thanks,
+>=20
+> Haixiao
+>=20
+> > Thanks,
+> > NeilBrown
+>=20
+
 
