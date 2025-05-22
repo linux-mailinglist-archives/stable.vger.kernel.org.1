@@ -1,154 +1,187 @@
-Return-Path: <stable+bounces-146029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AF7AC0442
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 07:51:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 168FAAC045B
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 08:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB0F13A7646
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 05:51:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E8B3A21007
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 06:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A376D1C3C04;
-	Thu, 22 May 2025 05:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79648221294;
+	Thu, 22 May 2025 06:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hVs4ryAz"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="H5NGUBFI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60411ADC8D;
-	Thu, 22 May 2025 05:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BE4221291;
+	Thu, 22 May 2025 06:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747893082; cv=none; b=UMsD0Im9TZrBQe11dsBDrhIknVn4o4fkxwg87tH+BF7D3Af71qa1/rKOBFQFXxLOXafOcz+R/RgvN/XFg+ymqMvGVDYsZpJLH0kd3dQ/j9w1aveeWJzsqmbylamyaRahxgH8Y63iyEuJW5uWMqvLLTT64dHBBHxbMFPVJ5RdDqI=
+	t=1747894006; cv=none; b=QRk/4LaPzzC0xtBCnWaIJaUTe7CzFBZ3EXEoCkImEfryAmDx9k4HEUSJYYJ7XZj5lf875jBo4ScdY8fRm7rPa+mTs3aoGmED0C0yaWw08O+QwA5rF3MyUqicWzq9rjXtIptQA5FAS17+BnymNQur+tWRIvsxCBGbk/RXqZpRQGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747893082; c=relaxed/simple;
-	bh=Qk3Cj6CjpTeR1BLwEsG6FyzR/LoZ8ntda/gWEYFIi3k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IJMBDbEHHKedu8HRd/oqBvArFDeaM9fVXSmKY+Bca74R88b+akpjtvXpZc9ZfjOdef8xW6LBWS4zonxELFIMUZ1hEcp+a70KPWJXa21h4vCpyJNiXwnspdKBU9OM38sNZzVQrmF+svjOqrBgery1qHN3PIQBj101voR4FnbwVJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hVs4ryAz; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-442f5b3c710so62663865e9.1;
-        Wed, 21 May 2025 22:51:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747893079; x=1748497879; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EFkH/rgOWDPIhpLW46/ZrUMu9US2LAcRye9M5MU5gzo=;
-        b=hVs4ryAztzVow+oUckIFV/qUoOzIuJM+YERFPtOWMrqyHOUH3seB3m1Kn9ubE5LQVH
-         DxdKijmmh9Y8XXpzvLOIGxDRWBUD/2C8mty84UgrKlBXty9OwDIMWD8sPztbD8ZBo3Pm
-         CUX/sxMRWkfe7PR9UHH5fMY4/l8p3UxRE6x15z/eEmMzcXTjY+z53/a+ILRqustUgzy6
-         gK256YhFWFHEVA28heeae7AGB3g094bCwksfi1ldgwpX9H9sYdlevSc1cfXvlgCesi/c
-         dfhaj1jg76T0uBr7o43NO/lQmETH50O7BTIXNUsb5HrLwQjLCptTR/JKwd2l7Tjn4n5s
-         BBGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747893079; x=1748497879;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EFkH/rgOWDPIhpLW46/ZrUMu9US2LAcRye9M5MU5gzo=;
-        b=mvRbkhkgPT9VazfKLz23nqF+7o3zsq+AiaVhbpdo2vpexk238pB6qOnfTlnT3mua6R
-         CD2F1MKW6swVcL79jWIVon+jkjNrnRrKXibMzv8OjYJfMWo25KQMDXfg1TXwettHo27e
-         whm+XjF8fSNsDBD3vx54d5XqeicGd0HHJ0EKt0h+p77qlFKfDthckkZvLK2/g8sG2oba
-         b7OUPUwGKX583vY6KU/LRVihUUeQPf7s9vRrwKxgSAeu7MJthNFE+epl9a/9sngOOvNZ
-         53ni8vAzpGURIq6dnHm+SxDPRs6y/865B0RfCjIK7vkTVvzusvcJPCENlKkv1xOFYBDU
-         nBbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQk3IiOqLBgylx40FRPNJsKmVwIrywukC3SiDjirgpx2qI8NiUvlG3ys6YhQZyHCarjxoJ6MS1XQLwYg==@vger.kernel.org, AJvYcCWVBkaBGvPut1HZsKEbfOWSN2Wb07VthYuMPm6cLTTZB5/0cpjUgeUjsvaUSUOBVhrB21hESRS4Sbg+5IM=@vger.kernel.org, AJvYcCX6juvNnVlCvPTYwMMBzB5hHK+tmrvkwa8sBh5xfg6NH9GLdjVPzuxE2DuK/Q2SnK4Tpcdk2z7r@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGQlsLOnsg/dO9Glh8FXdSt8mdHsMyInRbtdQkf622Yle8vo9i
-	4oa5C7ON7RCO9O/7fTDrpIuxcOpZnertsv04uyGK45OnbSnAw2f63le9
-X-Gm-Gg: ASbGnctZ9J2ODXKOdkeMhsOWOqbXkdUUO+OGksloItNNsuHsiX/8+XusH/Y3yZaOCBW
-	scS2a7Dz8DCDWEKZN8NFgnLN8Pe3bsfWD978QZtzv/qadS3ZBDCwrIcodG2fpCHFOCBkVB0iPab
-	bj2mAz5O+97uwASF8ffz6KdJL1wsabOhIAQPV3xVmf6rVOHSAR7Ra0wCwQhWg/PLlzt0Y4nAvAF
-	vktkRtXoI9diCGmUPOprjCFhatK0qc0PDJ+2PTRDcw+G/dX1okrouK1wW4X4jCYvhjSEzIIS5iW
-	qp3yX1A+TczpKZ0mykDh/uM22agPcEvnnsIUbThEBVqIVbZDU8kYFy2GJAOv61B3uuRR6fzQ
-X-Google-Smtp-Source: AGHT+IHKIbmkS6l4fFZZXIBbRHnh8Bt5u7zbUY+LWiOyC6l6/kWioi4tFG8o3ruNOBmuPO8dnPkbHw==
-X-Received: by 2002:a05:600c:3e0e:b0:43c:ee3f:2c3 with SMTP id 5b1f17b1804b1-442fd60a57cmr227327665e9.7.1747893078670;
-        Wed, 21 May 2025 22:51:18 -0700 (PDT)
-Received: from [172.27.21.230] ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f6f05581sm91601715e9.13.2025.05.21.22.51.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 May 2025 22:51:18 -0700 (PDT)
-Message-ID: <5f09fbd0-819a-42df-abf5-02e1286ce2a5@gmail.com>
-Date: Thu, 22 May 2025 08:51:15 +0300
+	s=arc-20240116; t=1747894006; c=relaxed/simple;
+	bh=3uUHyRfLJdztYTGkPTgVR06e+kcwhGsy67DGZV9gnFw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fnbw2N72/Ak6BKseUxVLPoOP46STSJxrR175g7GBFBF/9y8t1J59ojrwQ1uajMSiqYHOZ/6DKm+Pjzswhy9fLD0oCj2F+9CVSjdX9GdIhUfAd7Fvs8xq7a4LPwDzsz9jK0j+VhfJK7F0SSDCB4bAGShVcuHBCZbYCoofuKFwcwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=H5NGUBFI; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54M65nLE2882454
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Wed, 21 May 2025 23:05:53 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54M65nLE2882454
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1747893954;
+	bh=GQTgfqy03dtf8ijZGWz/fIIJUeISRIP8iFihkxPHWMg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H5NGUBFIK5zY4FDUe+DbLzCAL64ab8Cyb3uFQCLT651fRUVqSMMszk0H/RpCmmm3z
+	 anOmTzeSrwvdtr8KJx3NyMg4fk3f2MSbT5LxPKj/kj53CC8I5/DDBXedz0Q1S/irXc
+	 6/TRSSkJBWHWaxRcq7KudlWi3qSCrggMZ734aLE6jQxVZBIdgkblfWSPFl/wBpVnSE
+	 N326IAs305uU44TebfAJmUtVhB4+eLa2NEFGDwlu5Vx8+b6h29n9LXEWSSqB+Ue17r
+	 qs/gMGCymkveE0kCZEmuX8PDiBcyzDtdvrZ3VlIyG5fh61G3t7XwTBUvIxxRp9dj/0
+	 d+X7vvccOOwIw==
+From: "Xin Li (Intel)" <xin@zytor.com>
+To: linux-kernel@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        peterz@infradead.org, andrew.cooper3@citrix.com,
+        stable@vger.kernel.org
+Subject: [PATCH v1 1/1] x86/fred/signal: Prevent single-step upon ERETU completion
+Date: Wed, 21 May 2025 23:05:49 -0700
+Message-ID: <20250522060549.2882444-1-xin@zytor.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] net/mlx5_core: Add error handling
- inmlx5_query_nic_vport_qkey_viol_cntr()
-To: Wentao Liang <vulab@iscas.ac.cn>, saeedm@nvidia.com, leon@kernel.org,
- tariqt@nvidia.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250521133620.912-1-vulab@iscas.ac.cn>
-Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <20250521133620.912-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Xin Li <xin@zytor.com>
 
+Clear the software event flag in the augmented SS to prevent infinite
+SIGTRAP handler loop if TF is used without an external debugger.
 
-On 21/05/2025 16:36, Wentao Liang wrote:
-> The function mlx5_query_nic_vport_qkey_viol_cntr() calls the function
-> mlx5_query_nic_vport_context() but does not check its return value. This
-> could lead to undefined behavior if the query fails. A proper
-> implementation can be found in mlx5_nic_vport_query_local_lb().
-> 
-> Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-> the out buffer via kvfree() and return error code.
-> 
-> Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-> Cc: stable@vger.kernel.org # v4.5
-> Target: net
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
-> v3: Explicitly mention target branch. Change improper code.
-> v2: Remove redundant reassignment. Fix RCT.
-> 
->   drivers/net/ethernet/mellanox/mlx5/core/vport.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-> index 66e44905c1f0..e4b86633d2fe 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-> @@ -522,19 +522,22 @@ int mlx5_query_nic_vport_qkey_viol_cntr(struct mlx5_core_dev *mdev,
->   {
->   	u32 *out;
->   	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-> +	int err;
->   
->   	out = kvzalloc(outlen, GFP_KERNEL);
->   	if (!out)
->   		return -ENOMEM;
->   
-> -	mlx5_query_nic_vport_context(mdev, 0, out);
-> +	err = mlx5_query_nic_vport_context(mdev, 0, out);
-> +	if (err)
-> +		goto out;
->   
->   	*qkey_viol_cntr = MLX5_GET(query_nic_vport_context_out, out,
->   				   nic_vport_context.qkey_violation_counter);
-> -
-> +out:
->   	kvfree(out);
->   
-> -	return 0;
-> +	return err;
->   }
->   EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_qkey_viol_cntr);
->   
+Following is a typical single-stepping flow for a user process:
 
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+1) The user process is prepared for single-stepping by setting
+   RFLAGS.TF = 1.
+2) When any instruction in user space completes, a #DB is triggered.
+3) The kernel handles the #DB and returns to user space, invoking the
+   SIGTRAP handler with RFLAGS.TF = 0.
+4) After the SIGTRAP handler finishes, the user process performs a
+   sigreturn syscall, restoring the original state, including
+   RFLAGS.TF = 1.
+5) Goto step 2.
 
-Thanks.
+According to the FRED specification:
+
+A) Bit 17 in the augmented SS is designated as the software event
+   flag, which is set to 1 for FRED event delivery of SYSCALL,
+   SYSENTER, or INT n.
+B) If bit 17 of the augmented SS is 1 and ERETU would result in
+   RFLAGS.TF = 1, a single-step trap will be pending upon completion
+   of ERETU.
+
+In step 4) above, the software event flag is set upon the sigreturn
+syscall, and its corresponding ERETU would restore RFLAGS.TF = 1.
+This combination causes a pending single-step trap upon completion of
+ERETU.  Therefore, another #DB is triggered before any user space
+instruction is executed, which leads to an infinite loop in which the
+SIGTRAP handler keeps being invoked on the same user space IP.
+
+Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/include/asm/sighandling.h | 20 ++++++++++++++++++++
+ arch/x86/kernel/signal_32.c        |  4 ++++
+ arch/x86/kernel/signal_64.c        |  4 ++++
+ 3 files changed, 28 insertions(+)
+
+diff --git a/arch/x86/include/asm/sighandling.h b/arch/x86/include/asm/sighandling.h
+index e770c4fc47f4..ecb0411fe88c 100644
+--- a/arch/x86/include/asm/sighandling.h
++++ b/arch/x86/include/asm/sighandling.h
+@@ -24,4 +24,24 @@ int ia32_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs);
+ int x64_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs);
+ int x32_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs);
+ 
++/*
++ * To prevent infinite SIGTRAP handler loop if TF is used without an external
++ * debugger, clear the software event flag in the augmented SS, ensuring no
++ * single-step trap is pending upon ERETU completion.
++ *
++ * Note, this function should be called in sigreturn() before the original state
++ * is restored to make sure the TF is read from the entry frame.
++ */
++static __always_inline void prevent_single_step_upon_eretu(struct pt_regs *regs)
++{
++	/*
++	 * If the trap flag (TF) is set, i.e., the sigreturn() SYSCALL instruction
++	 * is being single-stepped, do not clear the software event flag in the
++	 * augmented SS, thus a debugger won't skip over the following instruction.
++	 */
++	if (IS_ENABLED(CONFIG_X86_FRED) && cpu_feature_enabled(X86_FEATURE_FRED) &&
++	    !(regs->flags & X86_EFLAGS_TF))
++		regs->fred_ss.swevent = 0;
++}
++
+ #endif /* _ASM_X86_SIGHANDLING_H */
+diff --git a/arch/x86/kernel/signal_32.c b/arch/x86/kernel/signal_32.c
+index 98123ff10506..42bbc42bd350 100644
+--- a/arch/x86/kernel/signal_32.c
++++ b/arch/x86/kernel/signal_32.c
+@@ -152,6 +152,8 @@ SYSCALL32_DEFINE0(sigreturn)
+ 	struct sigframe_ia32 __user *frame = (struct sigframe_ia32 __user *)(regs->sp-8);
+ 	sigset_t set;
+ 
++	prevent_single_step_upon_eretu(regs);
++
+ 	if (!access_ok(frame, sizeof(*frame)))
+ 		goto badframe;
+ 	if (__get_user(set.sig[0], &frame->sc.oldmask)
+@@ -175,6 +177,8 @@ SYSCALL32_DEFINE0(rt_sigreturn)
+ 	struct rt_sigframe_ia32 __user *frame;
+ 	sigset_t set;
+ 
++	prevent_single_step_upon_eretu(regs);
++
+ 	frame = (struct rt_sigframe_ia32 __user *)(regs->sp - 4);
+ 
+ 	if (!access_ok(frame, sizeof(*frame)))
+diff --git a/arch/x86/kernel/signal_64.c b/arch/x86/kernel/signal_64.c
+index ee9453891901..d483b585c6c6 100644
+--- a/arch/x86/kernel/signal_64.c
++++ b/arch/x86/kernel/signal_64.c
+@@ -250,6 +250,8 @@ SYSCALL_DEFINE0(rt_sigreturn)
+ 	sigset_t set;
+ 	unsigned long uc_flags;
+ 
++	prevent_single_step_upon_eretu(regs);
++
+ 	frame = (struct rt_sigframe __user *)(regs->sp - sizeof(long));
+ 	if (!access_ok(frame, sizeof(*frame)))
+ 		goto badframe;
+@@ -366,6 +368,8 @@ COMPAT_SYSCALL_DEFINE0(x32_rt_sigreturn)
+ 	sigset_t set;
+ 	unsigned long uc_flags;
+ 
++	prevent_single_step_upon_eretu(regs);
++
+ 	frame = (struct rt_sigframe_x32 __user *)(regs->sp - 8);
+ 
+ 	if (!access_ok(frame, sizeof(*frame)))
+
+base-commit: 6a7c3c2606105a41dde81002c0037420bc1ddf00
+-- 
+2.49.0
+
 
