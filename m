@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C15DAC020E
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005CCAC0211
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37E044A7437
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:04:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5234F9E52E3
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4656E35953;
-	Thu, 22 May 2025 02:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF313F9FB;
+	Thu, 22 May 2025 02:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSem4sX3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHJHm48/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042671758B
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC7A1758B
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879483; cv=none; b=H2TdDWFuN9TrewUBpjwcou1ju72JJ7fUgbC9mnfCCb3w4ANJ/eNDT1pAg8SVrgTf+GlBzkqbRwPYR9tUiJmK3F9Rc69vIZzJpIf+1PHZKs5a4X2lYwwR7LjzFMSdzdp39dkptTdaqE9bopaOC/f2SX0l2YMFRR3EINYhUQSFplA=
+	t=1747879487; cv=none; b=s8IEHcPyynQywid+5euAS0Q2Ul5+7TNDxncmuBXPvJwas8m3bZ+ULFPlodkDr95ySGsNlCgp859VHX++IG0FFVejUfpRZjO9Q5vhVn1h8W1llSkURZqItAM+a26iuIthwicWfUZe2QmyQhBRlklKHoiJ6cqXlb59Z3kIfPx1cig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879483; c=relaxed/simple;
-	bh=lINvzRY6WFAhKrs0bj4SO3VqkmymozwjVcnvRJObC7g=;
+	s=arc-20240116; t=1747879487; c=relaxed/simple;
+	bh=SmWUuClSv6l92aabDHTIILhwoON8LpqzMjmbZr41/MM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ihW8CBtuYu2yymg6eZmu+jx/mkjTVMukU2DUJrxMLw3HyZeQy6alIz9aI5QOR4C6XbPO0xfZTsp+HGNu7T3lGWqjUko3Id+4zHoQ8Umvjq/99K2VOZcqOBvl/hVHQGuqGwxSX3ZiE+ej2xh3E4IXNz41CdC03iG9ZEH5i664dKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSem4sX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C1EC4CEE4;
-	Thu, 22 May 2025 02:04:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p+iQHvfqLXj8obX73DZjoSl8SBIaddc3gflALLqO5WXGoWJo0QHztFJtBH8vB37sYo8nGrfKqZ0NtNOkcT0HZibQIMi1UK1CM43JmjSn/zIKLxClUqoNsyNWWK8pEq/w71WODVD6BEZYYd8k9lKY5ei1SFahnBabYgFPC3nYxl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHJHm48/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBBBC4CEE4;
+	Thu, 22 May 2025 02:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879482;
-	bh=lINvzRY6WFAhKrs0bj4SO3VqkmymozwjVcnvRJObC7g=;
+	s=k20201202; t=1747879487;
+	bh=SmWUuClSv6l92aabDHTIILhwoON8LpqzMjmbZr41/MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSem4sX388f3vNA2Q2I6H2cjwTmQNYRL+D7Aj4Z5o/izsJzE8Z4rWYoH8sTXNycP3
-	 TvyrL3qozEoUdKCreL9RzNkdAyLe8+IGLariB2DHRLaoD+GW2UQrx7tiLAei+B+5cF
-	 QuluOWjxjPzBCu6mRlkYvrEFWJkoKQ4qLke9KDLWV/9oQXhla1W4CUdvwN6KDegCry
-	 XoAZUv9nJAD4mDLv86o18RFg2xiwVhsWU/c6OiUySuWNV6lb2U1FFdXojYDNIpYeIN
-	 WQbqcofL3P52IfA7p6Tehqv9LMMs6SJdOKfPunVIezWUqacAfJHgPgeFvSnTiI+Qf+
-	 Ljne77fD3QFqw==
+	b=qHJHm48/KYf0+zoZvRLpsgek37HDnmtzrReORJDF02mACq2XU7WPnditiSpAs9L0P
+	 qFlsZcq17jAhgpIJVCDoBqFgeFWakK021lXEjZ8AlJDrinvBlRDk/bBvA7440Wogu6
+	 WZFhohztL11gCyvVi8eNWTc1C6QqXKZVE4JeQj4UlbfSM9jYg5nSHV3mpSP5BQyLcM
+	 clRuNpe2VXip3fgIIEOloCtGof9h8jFWFwF9VdXs7xvQrmcayn4fWh90ZRrGwfTeXU
+	 LxenFeuH5gih2WoxeY66mHIBLitjU73ov3lcGQJYiiBgMsLslkUzy3fVzgOxEKo9w4
+	 gc8Z8TZuvVbcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.1 19/27] af_unix: Assign a unique index to SCC.
-Date: Wed, 21 May 2025 22:04:38 -0400
-Message-Id: <20250521211025-bd4d24081ae41780@stable.kernel.org>
+Subject: Re: [PATCH v6.6 15/26] af_unix: Save O(n) setup of Tarjan's algo.
+Date: Wed, 21 May 2025 22:04:43 -0400
+Message-Id: <20250521175355-480f609a88ccdcac@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521152920.1116756-20-lee@kernel.org>
+In-Reply-To:  <20250521144803.2050504-16-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: bfdb01283ee8f2f3089656c3ff8f62bb072dabb2
+The upstream commit SHA1 provided is correct: ba31b4a4e1018f5844c6eb31734976e2184f2f9a
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -76,25 +76,24 @@ Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  bfdb01283ee8f ! 1:  a0878968a63fd af_unix: Assign a unique index to SCC.
+1:  ba31b4a4e1018 ! 1:  f5cf8e02384b4 af_unix: Save O(n) setup of Tarjan's algo.
     @@ Metadata
       ## Commit message ##
-         af_unix: Assign a unique index to SCC.
+         af_unix: Save O(n) setup of Tarjan's algo.
      
-    +    [ Upstream commit bfdb01283ee8f2f3089656c3ff8f62bb072dabb2 ]
+    +    [ Upstream commit ba31b4a4e1018f5844c6eb31734976e2184f2f9a ]
     +
-         The definition of the lowlink in Tarjan's algorithm is the
-         smallest index of a vertex that is reachable with at most one
-         back-edge in SCC.  This is not useful for a cross-edge.
+         Before starting Tarjan's algorithm, we need to mark all vertices
+         as unvisited.  We can save this O(n) setup by reserving two special
+         indices (0, 1) and using two variables.
     @@ Commit message
          Acked-by: Paolo Abeni <pabeni@redhat.com>
-         Link: https://lore.kernel.org/r/20240325202425.60930-13-kuniyu@amazon.com
+         Link: https://lore.kernel.org/r/20240325202425.60930-10-kuniyu@amazon.com
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit bfdb01283ee8f2f3089656c3ff8f62bb072dabb2)
+    +    (cherry picked from commit ba31b4a4e1018f5844c6eb31734976e2184f2f9a)
     +    Signed-off-by: Lee Jones <lee@kernel.org>
      
       ## include/net/af_unix.h ##
@@ -105,5 +104,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
