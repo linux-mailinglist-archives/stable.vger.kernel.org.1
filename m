@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CB7AC0215
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:05:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD4EAC0217
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA31A4A7573
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:05:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD3AF7AC085
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF99818E3F;
-	Thu, 22 May 2025 02:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490CE35953;
+	Thu, 22 May 2025 02:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CtBvQqIf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8qv43u1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7CD1758B
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ADE18E3F
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879506; cv=none; b=ujvtJRvc9L6LMfGwxJd3+GFNL0AxdepqF7ejek59R/THIfHmJQzhZ1gsrUwec3+mpSWW3j6LkOd0jiN38SAuZUKZS6xKvs85+pkKYKd5I9fuW079RFRDf95QowAKdg3ulOumbBOZGizIw/ZRYG5yLevbPjFj5DNJLbHpO6KoA6M=
+	t=1747879510; cv=none; b=WzJD7k0O/x7MCSLdxZlY494Qs7C/TYOCWd9V/hyeWQMDxDPo8JbCPuo2nR4EB7lN6DU+jolaZOMkfmTkjurlvJoYcbHTjwjWRY9yy4pTz2zmXnbEmFeJ6VIIgU1bQ3pqd7Tx0V5v4/QCv++YljQgSwOMwGWCZ2piUNIIdKZDbGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879506; c=relaxed/simple;
-	bh=SEjdKYqW4ox8eMLrmbson6BaqZEk1/8LQ+qA1qcRUhY=;
+	s=arc-20240116; t=1747879510; c=relaxed/simple;
+	bh=FdJrTPUf1mQ1cWUcqlRRCuGOj4ouHyIGEYhKj/XWp2s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tJw4AB20/d8X1w7kojFmO8t06pZiSfZ9DOSsEoCgfR8u17H2weiIj4xISswckNSf4nkptT5Cf0eKgopYS+KMoPDqrCFbeshRTsHKPZ2AK98AAZKoHsVEFW99UGnvQnomDRqxw1L2+aEGBgeNQQ7JNbkwPpcvnmmKEzKuyPGcvG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CtBvQqIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030D0C4CEE4;
-	Thu, 22 May 2025 02:05:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DjBTm0cneWUKdvt3CQq4lfaK0vvAb2HmfJTKxVrgqi89w3/sQtkZIMXdvDADCXzekdmYrOI0TytrcGWJjeohY6qwoO+YBa6/jnVQp+tBC+LZuXJB/x0W9xXLN6YB1BnXopEm7s5jeDDmGXCVulIpooCsb4xMJNGaBnuH9G0JJOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8qv43u1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7163BC4CEE4;
+	Thu, 22 May 2025 02:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879506;
-	bh=SEjdKYqW4ox8eMLrmbson6BaqZEk1/8LQ+qA1qcRUhY=;
+	s=k20201202; t=1747879509;
+	bh=FdJrTPUf1mQ1cWUcqlRRCuGOj4ouHyIGEYhKj/XWp2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtBvQqIfPS0GpzZqg0eK4vWAH83oTHI3WZaTRDRORauXs8J14ZrcF2vrrFOK86Hk6
-	 zUeLz+dnvxIyj////FX5fypT/yLznb3+KarKgv3FyaEl4Qy+d7o1FEL15arlybN4xQ
-	 P/uRnJbrNr/molITPuIs2nJk/cW9PDaGJNWqnkhNCvp1atGVWPIUvfJcVpMMhJXvJA
-	 tiXGHk9WnYnibAaU201I27Zay1cJuLnsK0eo+b+Sw+VZM92VLRrCRAXa+3HH1+4VIa
-	 li0/szDPB/hGHJhMlptlu+ZShC09FwqCGmvwZmdM+pmnvGr+Kkh61CWzjH04NWGXxU
-	 cB9UIN7F05Mxw==
+	b=E8qv43u1vqGBPxdodh3KuPazCHjGTgRVUu4VtclBpgKmMaUnMnqI7v9dh4hERl2Ep
+	 y2O6uNdgjBxlOa+UMVZQ/IdgrPjF0ZofbWUk3N2vbKIn3KSHG9Znu8gRRKbItnJ15k
+	 IoD1yrlMiL/72erSVpGzBm37HkwHvxhQJw9JN2maMnc3oqR0GGfZ3kjdqyEiso1xvO
+	 RrE0JudDJON2+1f0rcc20rAoW5cahfluUC+zjFNgiUU52TQHg3B/8YIO6WSpDS23kf
+	 fNamXb+WIuxs+J87EqOWax7/8VkwMcTPnvmnvzEYTDOe8AMH2KQWHx4VYmZLdaxFGM
+	 TjNPFxVw0hEKw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.6 19/26] af_unix: Detect dead SCC.
-Date: Wed, 21 May 2025 22:05:04 -0400
-Message-Id: <20250521181253-c582934357441bab@stable.kernel.org>
+Subject: Re: [PATCH v6.1 06/27] af_unix: Remove io_uring code for GC.
+Date: Wed, 21 May 2025 22:05:06 -0400
+Message-Id: <20250521193529-edf67856ebed56ad@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521144803.2050504-20-lee@kernel.org>
+In-Reply-To:  <20250521152920.1116756-7-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: a15702d8b3aad8ce5268c565bd29f0e02fd2db83
+The upstream commit SHA1 provided is correct: 11498715f266a3fb4caabba9dd575636cbcaa8f1
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -76,33 +76,69 @@ Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  a15702d8b3aad ! 1:  496ff0e634226 af_unix: Detect dead SCC.
+1:  11498715f266a ! 1:  70f88da83e058 af_unix: Remove io_uring code for GC.
     @@ Metadata
       ## Commit message ##
-         af_unix: Detect dead SCC.
+         af_unix: Remove io_uring code for GC.
      
-    +    [ Upstream commit a15702d8b3aad8ce5268c565bd29f0e02fd2db83 ]
+    +    [ Upstream commit 11498715f266a3fb4caabba9dd575636cbcaa8f1 ]
     +
-         When iterating SCC, we call unix_vertex_dead() for each vertex
-         to check if the vertex is close()d and has no bridge to another
-         SCC.
+         Since commit 705318a99a13 ("io_uring/af_unix: disable sending
+         io_uring over sockets"), io_uring's unix socket cannot be passed
+         via SCM_RIGHTS, so it does not contribute to cyclic reference and
     @@ Commit message
-         Acked-by: Paolo Abeni <pabeni@redhat.com>
-         Link: https://lore.kernel.org/r/20240325202425.60930-14-kuniyu@amazon.com
+         Acked-by: Jens Axboe <axboe@kernel.dk>
+         Link: https://lore.kernel.org/r/20240129190435.57228-3-kuniyu@amazon.com
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit a15702d8b3aad8ce5268c565bd29f0e02fd2db83)
+    -
+    - ## include/net/af_unix.h ##
+    -@@ include/net/af_unix.h: static inline struct unix_sock *unix_get_socket(struct file *filp)
+    - void unix_inflight(struct user_struct *user, struct file *fp);
+    - void unix_notinflight(struct user_struct *user, struct file *fp);
+    - void unix_destruct_scm(struct sk_buff *skb);
+    --void io_uring_destruct_scm(struct sk_buff *skb);
+    - void unix_gc(void);
+    - void wait_for_unix_gc(struct scm_fp_list *fpl);
+    - struct sock *unix_peer_get(struct sock *sk);
+    +    (cherry picked from commit 11498715f266a3fb4caabba9dd575636cbcaa8f1)
     +    Signed-off-by: Lee Jones <lee@kernel.org>
      
       ## net/unix/garbage.c ##
-     @@ net/unix/garbage.c: void unix_destroy_fpl(struct scm_fp_list *fpl)
+     @@ net/unix/garbage.c: static bool gc_in_progress;
+    @@ net/unix/garbage.c: static void __unix_gc(struct work_struct *work)
+     -	 * release.path eventually putting registered files.
+     -	 */
+     -	skb_queue_walk_safe(&hitlist, skb, next_skb) {
+    --		if (skb->destructor == io_uring_destruct_scm) {
+    +-		if (skb->scm_io_uring) {
+     -			__skb_unlink(skb, &hitlist);
+     -			skb_queue_tail(&skb->sk->sk_receive_queue, skb);
+     -		}
+    @@ net/unix/garbage.c: static void __unix_gc(struct work_struct *work)
+      	/* All candidates should have been detached by now. */
+      	WARN_ON_ONCE(!list_empty(&gc_candidates));
+      
+    -
+    - ## net/unix/scm.c ##
+    -@@ net/unix/scm.c: void unix_destruct_scm(struct sk_buff *skb)
+    - 	sock_wfree(skb);
+    - }
+    - EXPORT_SYMBOL(unix_destruct_scm);
+    --
+    --void io_uring_destruct_scm(struct sk_buff *skb)
+    --{
+    --	unix_destruct_scm(skb);
+    --}
+    --EXPORT_SYMBOL(io_uring_destruct_scm);
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
