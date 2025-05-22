@@ -1,178 +1,184 @@
-Return-Path: <stable+bounces-146068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3808BAC0978
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 12:08:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC96FAC098C
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 12:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F861698C8
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 10:08:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAC1D3BCDBA
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 10:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD54288C1A;
-	Thu, 22 May 2025 10:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEF4288C03;
+	Thu, 22 May 2025 10:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmFGi1G/"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="svP685j2";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8l/rmVdx";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CQk9PPjZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="13aXx17F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B242857DC;
-	Thu, 22 May 2025 10:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74FB2882BF
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 10:14:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747908502; cv=none; b=PpQEwYbUG3Wr8vdPA+3lByAwLH4ieqLt5ITRBZvp/JcMFcxqHiotT8bKnPXAc/HF8s+yFzWSsOPXebrPwIo8gg4m4pGBfytScaC1EAWYjRAjenj79YO3hR5bPk7wxPXnZfWVTpinIxvlDxQeKjTeCRWecFtTsUVZdS0aSHdHInY=
+	t=1747908842; cv=none; b=Wuwi1aU4LAM4rX86nbFsQFcW13m4Iw53nK5xnmghNmRCfZXtCa2l+437NPacHNo45F1nzSP52x9wAdDE9WO41vTpSCRsjwAFLpfHvf7OSO1oSrSASwDMMWBPPJ5kG2JTQX6664FUCAUKqo2zZwWVcFSdHEY3KC84tg5aPsbTGfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747908502; c=relaxed/simple;
-	bh=AsDzyl49LK629MmRklC5I4eoPWBY9T1tNQJDljXq6Tk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IpBGXDuH25VEnuPQh5onggcqCbYf+FU/zLGXa/GOJ/zuBYhO7vToafwLun5ELuy+Be/fAPhFBOrZdu9mEMAU++x96Rg1MOCvLQ8qa5krkJz4w6qdoruqJ1zQpZBeqIGE/AnLS+IFgE2j7RelacF/Q5osYwzVzLUJaPxApAtFr4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmFGi1G/; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e740a09eb00so6925166276.0;
-        Thu, 22 May 2025 03:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747908500; x=1748513300; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H+ekVzBJjiUUVKOSvdTf3XQZFnehy6dFyVQdqspB96E=;
-        b=HmFGi1G/A0GNN1x6RZrWcz9qdTew4hXZbAaj94Sbhe8Mq7wWhYjbw5lxgqGKtEP50q
-         P5MBR8ZR0+kg9b28yKtfgvslHFJgGn1YsDc1Wdi0VhAlFhpV3hdxjd3l5T0CgyYvMVaL
-         vy18F5M4itCP1x9KB8VXSUa3RETxMX1xcdOSurtoE5okIOIoRyz565gGxbJCAtNahoHp
-         YVWEJkeEvZjKXvN5TdmSFj64irXZff9hT4VBYo5154uuAL2mVvZfEiTZRcE3917BDZ90
-         I47P42Y3+VqHhgA47kxpJnWB84CM/YjszzK2xNM3W4P/9/6xIA24AUQTqbCgcqtYCtHy
-         OMQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747908500; x=1748513300;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H+ekVzBJjiUUVKOSvdTf3XQZFnehy6dFyVQdqspB96E=;
-        b=lx4l8SnRVIa3PGIevlXxjgaQzErBscrDF5tV/ORs4OgCsWYG0J8t4+4JpiFUZ0wElG
-         e5tDP5jVvT19Pf4gh3Ew0+ktwB0glboYR9mknQRfUtKx6/30a+NP2k6aUgZ4y9N6MyO5
-         2/NoQ+iVcRjABeVTI7v1bydTFUKxeCrNFHomPhmIDNHEzHTYutUQSWHVBGepz8DiTPTD
-         0A8kRsueXtnfmHCUkzsJfWOwoviXpXk4rOMxRXhKlOzPwlBnS5AtNjD4ubxHNuryayHt
-         H4ed+xlVTyBEC8IUIjbLHZA9GjA3S84LdFkJcu0VUcSP2yDjMkK/5fH6ljuODXOyU1ks
-         o4Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVDBTxH6blpAJ8OiaTEdPu7mzsa9Hkj+fKtIrCMbeH2n5hfPunSos/x1yJcZyDVhqkvQ8zSg+VbCSOX9k=@vger.kernel.org, AJvYcCVni8pqXZ6VtfhUvZ/jyh0kT60HPUYgMgnp01B+IH6z7V4wCk6PW6Jvg4VFicMg4aEfIZdZNzJWdch9Ssd8@vger.kernel.org, AJvYcCWbeTeMX9M7dfA3x2U6YvnR6m8eybjtYIkYLEHfQ82TAfSqNBNKPONkdfD7TvpcGvtlmbWfHWXv@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywb3JFNZGPp7nuftZgEQgvfWBRkkLxhREBv8GPjr9ec+89RnLRF
-	woGK0aAQzo6rS69eKwf5nHhWlTelq/bxIrU/LY6qaZbjvtqF1Sjle3RFiMioYWc2q0sPejNUlfE
-	LMQxKmM+S/aAWbdh11xm8G3K5H6QLbUw=
-X-Gm-Gg: ASbGnct1lsysn/4kBoKG9T0My3+Xsi0wmpLEluZg2n9wrXWe02igftyy3Ciu/xnPwXB
-	uOqy8shLzxBKDwXv027yNgUxhaOm9N9zkKILXcDGGazuH9yCLH+TnTryDzYem6iA+cxgSzsqNtG
-	0wFaViiT2qXejWmbymxhh2pFuFi7dhraGG
-X-Google-Smtp-Source: AGHT+IFkLoMJ1W0sbpI/K9v0M/MWV+36N3rfaHzGPKsXVp/Y7TE6hM8ko1y1I3d8GfWS6EwCQP05jJt8knmWz+KK4JY=
-X-Received: by 2002:a05:6902:2290:b0:e7d:600c:dd39 with SMTP id
- 3f1490d57ef6-e7d600ce014mr5736241276.19.1747908499816; Thu, 22 May 2025
- 03:08:19 -0700 (PDT)
+	s=arc-20240116; t=1747908842; c=relaxed/simple;
+	bh=mU+1lrLV/UCuvsDQ9kNhrLKhkDT2B/4yK5q5d22eY44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LRjsPHc8KI92SnOErbmzOQMuAS14IP5ueLYemnxe+DtqWwysDu9rSx+RVI4F0SLlO64UL08x99wmAjlpNX72OK/8ozxY8toozVj/4I9rsl4/WIc+DunvAs96El+9o0g1da4eYr276n3FdkLr5y7pcDtCsLkO+WMhrjvhjduGJco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=svP685j2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8l/rmVdx; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CQk9PPjZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=13aXx17F; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E4C64219AF;
+	Thu, 22 May 2025 10:13:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1747908839; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TTj530S0+pt4TB23fjg5olxByY/4NarPybW7KGHkyhc=;
+	b=svP685j2KPgsEpvtXT51KJY5WgnxyyO+0y1IG00r8tOBeCBFrcTJdWQJx9PeMBaYFl31ic
+	JWLFLU+Hrlau5TgTIWfO7ymgliTXfxy6eB0VZ0UtjwEAI90zICTxxkWrvBt3MLMho9Qe1h
+	cwTL9TiFTEPoQ9ARW91GP6+TdEGCXJw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1747908839;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TTj530S0+pt4TB23fjg5olxByY/4NarPybW7KGHkyhc=;
+	b=8l/rmVdxqLqueF90g4p+EwikrOPcb1Y/TGbkPU80Tlvfgzo4NCjkURkda/+8hLceyXhMXw
+	ArfTvlGtz8e+4zDA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CQk9PPjZ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=13aXx17F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1747908838; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TTj530S0+pt4TB23fjg5olxByY/4NarPybW7KGHkyhc=;
+	b=CQk9PPjZlFADxCr7gK9SEIWJiU+uc1WV6fdhK3OD3y/ufSpu1cAEcbe71na17dMBBZZ2q2
+	UUBF0DBNvVXfxMcEzS1ISCbGnfGQvKv/o6lmVlcfklx08GKmM8gcNIc/ztPKMIqbzmrcE5
+	MGeuNfW6YemilOI2ZceRmyB2Fxn4MoE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1747908838;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TTj530S0+pt4TB23fjg5olxByY/4NarPybW7KGHkyhc=;
+	b=13aXx17FFBz1wfQvf8jdKLSxkc/F4/CE32sBzuuseWCidgW3Y0yEwwOQrquIczXobEx7Br
+	hZHWF93PHkHdmHBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A7F50137B8;
+	Thu, 22 May 2025 10:13:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gxzxJ+b4LmhAPwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Thu, 22 May 2025 10:13:58 +0000
+Date: Thu, 22 May 2025 12:13:57 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: yangge1116@126.com, akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	21cnbao@gmail.com, david@redhat.com, baolin.wang@linux.alibaba.com,
+	liuzixing@hygon.cn
+Subject: Re: [PATCH] mm/hugetlb: fix kernel NULL pointer dereference when
+ replacing free hugetlb folios
+Message-ID: <aC745T00Ft3g7e7G@localhost.localdomain>
+References: <1747884137-26685-1-git-send-email-yangge1116@126.com>
+ <644FF836-9DC7-42B4-BACE-C433E637B885@linux.dev>
+ <aC63fmFKK84K7YiZ@localhost.localdomain>
+ <065093C4-3599-456F-84B7-EDCC1A3E8AFC@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250521100447.94421-1-bbhushan2@marvell.com> <20250521100447.94421-4-bbhushan2@marvell.com>
- <aC2406qOlaI17_f3@gondor.apana.org.au>
-In-Reply-To: <aC2406qOlaI17_f3@gondor.apana.org.au>
-From: Bharat Bhushan <bharatb.linux@gmail.com>
-Date: Thu, 22 May 2025 15:38:08 +0530
-X-Gm-Features: AX0GCFssFL6oJgfjgRymvpi41c5m1fHTzYicNAQL3OlyUme3fr3SGEa8EPrH6SE
-Message-ID: <CAAeCc_kxhT-JHn+U2BNeh2E+DNukMXWfypW+-D_x5f1OcZ9Hmw@mail.gmail.com>
-Subject: Re: [PATCH 3/4 v3] crypto: octeontx2: Fix address alignment on CN10K
- A0/A1 and OcteonTX2
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Bharat Bhushan <bbhushan2@marvell.com>, bbrezillon@kernel.org, schalla@marvell.com, 
-	davem@davemloft.net, giovanni.cabiddu@intel.com, linux@treblig.org, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <065093C4-3599-456F-84B7-EDCC1A3E8AFC@linux.dev>
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Rspamd-Queue-Id: E4C64219AF
+X-Spam-Score: -1.51
+X-Spam-Flag: NO
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_ENVRCPT(0.00)[126.com,gmail.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[126.com,linux-foundation.org,kvack.org,vger.kernel.org,gmail.com,redhat.com,linux.alibaba.com,hygon.cn];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,suse.de:email,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
 
-On Wed, May 21, 2025 at 4:58=E2=80=AFPM Herbert Xu <herbert@gondor.apana.or=
-g.au> wrote:
->
-> On Wed, May 21, 2025 at 03:34:46PM +0530, Bharat Bhushan wrote:
-> >
-> > @@ -429,22 +431,51 @@ otx2_sg_info_create(struct pci_dev *pdev, struct =
-otx2_cpt_req_info *req,
-> >               return NULL;
-> >       }
-> >
-> > -     g_sz_bytes =3D ((req->in_cnt + 3) / 4) *
-> > -                   sizeof(struct otx2_cpt_sglist_component);
-> > -     s_sz_bytes =3D ((req->out_cnt + 3) / 4) *
-> > -                   sizeof(struct otx2_cpt_sglist_component);
-> > +     /* Allocate memory to meet below alignment requirement:
-> > +      *  ----------------------------------
-> > +      * |    struct otx2_cpt_inst_info     |
-> > +      * |    (No alignment required)       |
-> > +      * |     -----------------------------|
-> > +      * |    | padding for 8B alignment    |
-> > +      * |----------------------------------|
->
-> This should be updated to show that everything following this
-> is on an 128-byte boundary.
->
-> > +      * |    SG List Gather/Input memory   |
-> > +      * |    Length =3D multiple of 32Bytes  |
-> > +      * |    Alignment =3D 8Byte             |
-> > +      * |----------------------------------|
-> > +      * |    SG List Scatter/Output memory |
-> > +      * |    Length =3D multiple of 32Bytes  |
-> > +      * |    Alignment =3D 8Byte             |
-> > +      * |    (padding for below alignment) |
-> > +      * |     -----------------------------|
-> > +      * |    | padding for 32B alignment   |
-> > +      * |----------------------------------|
-> > +      * |    Result response memory        |
-> > +      *  ----------------------------------
-> > +      */
-> >
-> > -     dlen =3D g_sz_bytes + s_sz_bytes + SG_LIST_HDR_SIZE;
-> > -     align_dlen =3D ALIGN(dlen, align);
-> > -     info_len =3D ALIGN(sizeof(*info), align);
-> > -     total_mem_len =3D align_dlen + info_len + sizeof(union otx2_cpt_r=
-es_s);
-> > +     info_len =3D sizeof(*info);
-> > +
-> > +     g_len =3D ((req->in_cnt + 3) / 4) *
-> > +              sizeof(struct otx2_cpt_sglist_component);
-> > +     s_len =3D ((req->out_cnt + 3) / 4) *
-> > +              sizeof(struct otx2_cpt_sglist_component);
-> > +
-> > +     dlen =3D g_len + s_len + SG_LIST_HDR_SIZE;
-> > +
-> > +     /* Allocate extra memory for SG and response address alignment */
-> > +     total_mem_len =3D ALIGN(info_len, ARCH_DMA_MINALIGN) + dlen;
-> > +     total_mem_len =3D ALIGN(total_mem_len, OTX2_CPT_DPTR_RPTR_ALIGN);
-> > +     total_mem_len +=3D (OTX2_CPT_RES_ADDR_ALIGN - 1) &
-> > +                       ~(OTX2_CPT_DPTR_RPTR_ALIGN - 1);
-> > +     total_mem_len +=3D sizeof(union otx2_cpt_res_s);
->
-> This calculation is wrong again.  It should be:
->
->         total_mem_len =3D ALIGN(info_len, OTX2_CPT_DPTR_RPTR_ALIGN);
->         total_mem_len +=3D (ARCH_DMA_MINALIGN - 1) &
->                          ~(OTX2_CPT_DPTR_RPTR_ALIGN - 1);
->         total_mem_len +=3D ALIGN(dlen, OTX2_CPT_RES_ADDR_ALIGN);
->         total_mem_len +=3D sizeof(union otx2_cpt_res_s);
->
-> Remember ALIGN may not actually give you extra memory.  So if you
-> need to add memory for alignment padding, you will need to do it
-> by hand.
+On Thu, May 22, 2025 at 03:13:31PM +0800, Muchun Song wrote:
+> 
+> 
+> > On May 22, 2025, at 13:34, Oscar Salvador <osalvador@suse.de> wrote:
+> > 
+> > On Thu, May 22, 2025 at 11:47:05AM +0800, Muchun Song wrote:
+> >> Thanks for fixing this problem. BTW, in order to catch future similar problem,
+> >> it is better to add WARN_ON into folio_hstate() to assert if hugetlb_lock
+> >> is not held when folio's reference count is zero. For this fix, LGTM.
+> > 
+> > Why cannot we put all the burden in alloc_and_dissolve_hugetlb_folio(),
+> > which will again check things under the lock?
+> 
+> I've also considered about this choice, because there is another similar
+> case in isolate_or_dissolve_huge_page() which could benefit from this
+> change. I am fine with both approaches. Anyway, adding an assertion into
+> folio_hstate() is an improvement for capturing invalid users in the future.
+> Because any user of folio_hstate() should hold a reference to folio or
+> hold the hugetlb_lock to make sure it returns a valid hstate for a hugetlb
+> folio.
 
-Will do changes as proposed above, Thanks for reviewing.
+Yes, I am not arguing about that, it makes perfect sense to me, but I am
+just kinda against these micro-optimizations for taking the lock to check
+things when we are calling in a function that will again the lock to
+check things.
 
-Thanks
--Bharat
+Actually, I think that the folio_test_hugetlb() check in
+replace_free_hugepage_folios() was put there to try tro be smart and save cycles in
+case we were not dealing with a hugetlb page (so freed under us).
+Now that we learnt that we cannot do that without 1) taking a refcount
+2) or holding the lock, that becomes superfluos, so I would just wipe that
+out.
 
->
-> Cheers,
-> --
-> Email: Herbert Xu <herbert@gondor.apana.org.au>
-> Home Page: http://gondor.apana.org.au/~herbert/
-> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
