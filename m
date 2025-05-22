@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE7FAC0202
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8390AC0203
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64A81B62FCC
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:04:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 883C94A7348
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94D22B9B7;
-	Thu, 22 May 2025 02:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359252B9B7;
+	Thu, 22 May 2025 02:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFSi+4h+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="no/PAwre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8804F1758B
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E461758B
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879439; cv=none; b=a53uJRMTsFzHxKNe8PT7Or3Yl5Rd3iQqsIGhebHJZ6bHmMSvE67ODBxxLzDcHNdwuDvVDKEQyFBZzX/wLflsMokXKNy3txtMbkW1w7Xv4acW41KMleOAz5gVYH9RZUky6nzfWb/10HTh0eBGGNyqnJS3ympcol8s4t1Ec35XsAo=
+	t=1747879443; cv=none; b=DRp5FrwKl5tgttkycsjHD49WLWMxG9XUo+ZJG57TUEmy4ApnuTj0oRfwtPzn85AC1t3PBJ+aTJQurPP4OMNN8UgEreyTYYRDOjzvPZ9zFV/awng3X8XG9YegThvkJ0yfNBHFPvB2Ljbj8kjrKRORT/gZRuJM/h+ZdA4yMZjG0W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879439; c=relaxed/simple;
-	bh=ou4iJ3cFn1i0vsP6VJ6gPgAUPLoN1aGp8UoMfjkeZg4=;
+	s=arc-20240116; t=1747879443; c=relaxed/simple;
+	bh=74nUvxgYM/sQZet6E8dNrbcmhxiQhySX9V50ZmvJVdk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dmvz8ZOKoaRf+fAwAzqNdcWQ71MuPaiyqYfYZBk3Fok5eWs4p1m3mCHUCZ8tRw3MA7asiVfCFcGIwJV0LVkQUMKJyrZExkk0aEDbPAgBW98lAVjf69abLYeGf4rPaYq/H99KX9ntWc0i4eJP69HgqPsQqcOa7dYVB2HAzdLHETs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFSi+4h+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3E8C4CEE4;
-	Thu, 22 May 2025 02:03:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mPN8ofLOJpn3nAfxVYvGPdee8k52ubTCHDsT9Whv/lSI0PtoPAtchd2hKgcIO/RpzUgQwFq9Rv44C10mggdSNovOdtntPkywX8SQKWWLgQ8nM7KqyNoblLn7l51bIzaAsim4T+vTgkQ7ECcH3iuDSj9Vx+1HoI/JrmJjCWKyQsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=no/PAwre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9CAC4CEE4;
+	Thu, 22 May 2025 02:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879438;
-	bh=ou4iJ3cFn1i0vsP6VJ6gPgAUPLoN1aGp8UoMfjkeZg4=;
+	s=k20201202; t=1747879442;
+	bh=74nUvxgYM/sQZet6E8dNrbcmhxiQhySX9V50ZmvJVdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFSi+4h+EP5akH/ETqZrFxT6tblVvjc5aAhoWv+p6zZOQjP+zDVdMBdlPTZFbLRZk
-	 l1xVpnfE9syFeTq/EpMfH+aQosxo0Q9MoD0Irn5zzl8rel4PxuX5G881IvFjgrJTl1
-	 fQmtF5IKkT26deCHtyvGW3oQN0sMEESWMWzf8AzBxQDlHRh/K5fSuxDTxwJvAyQupX
-	 pF//VMERrufGbLeyvxDOUYmT15cfhRTetrbDKdto/LOfnuBAsoJWXxDwbEWnfeaZTq
-	 yda7vOjX3qauMx6V9j98wXLireQgwXhuvRSR74ZzUDNFEGIh6l+3Cva8SSyJVUrUOh
-	 QM1g6HPER7f2Q==
+	b=no/PAwre4CbUHlvz+MYPUzCHJeN0NrZJYYcPJz5EzBiVkZcEJczC5n6y7gvtrfGnB
+	 3g/9HOKnKZjV9Yl5CiiceV/pxGw3h63noW8+mG9W/ay5/b7VHGic5mTQOoIzxhpnCz
+	 AFxwf4xGqZYS3Q1TrIEelt/FOo7E+6Ap410Z4c8pfmDqYaEGpaIsM3v+w/0D8UR/t8
+	 pxtx3zX94i8TvQooDzYv4m2dyizf9T1zEcX9QXe1F/kkOuDjw+iy61R2tMdq6UKAoX
+	 zAE+OWGC4zNBAsMiOrbtg/vvFPg1/lOy7pztOCz4T0wuaB1hvf8/oCFz8dfDqVR+TJ
+	 m5/rcwIhJF5nw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Zhaoyang Li <lizy04@hust.edu.cn>,
+Cc: Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
-Date: Wed, 21 May 2025 22:03:54 -0400
-Message-Id: <20250521135218-49533875d0300317@stable.kernel.org>
+Subject: Re: [PATCH v6.6 06/26] af_unix: Remove CONFIG_UNIX_SCM.
+Date: Wed, 21 May 2025 22:03:59 -0400
+Message-Id: <20250521164626-011f5c224366ba1b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521015934.538871-1-lizy04@hust.edu.cn>
+In-Reply-To:  <20250521144803.2050504-7-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,54 +67,62 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 53dac345395c0d2493cbc2f4c85fe38aef5b63f5
+The upstream commit SHA1 provided is correct: 99a7a5b9943ea2d05fb0dee38e4ae2290477ed83
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Zhaoyang Li<lizy04@hust.edu.cn>
-Commit author: Frederic Weisbecker<frederic@kernel.org>
+Backport author: Lee Jones<lee@kernel.org>
+Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: e456a88bddae)
+6.12.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  53dac345395c0 ! 1:  1e8712284e346 hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
+1:  99a7a5b9943ea ! 1:  82c52547bf774 af_unix: Remove CONFIG_UNIX_SCM.
     @@ Metadata
       ## Commit message ##
-         hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
+         af_unix: Remove CONFIG_UNIX_SCM.
      
-    +    [ Upstream commit 53dac345395c0d2493cbc2f4c85fe38aef5b63f5 ]
+    +    [ Upstream commit 99a7a5b9943ea2d05fb0dee38e4ae2290477ed83 ]
     +
-         hrtimers are migrated away from the dying CPU to any online target at
-         the CPUHP_AP_HRTIMERS_DYING stage in order not to delay bandwidth timers
-         handling tasks involved in the CPU hotplug forward progress.
+         Originally, the code related to garbage collection was all in garbage.c.
+     
+         Commit f4e65870e5ce ("net: split out functions related to registering
     @@ Commit message
-         Link: https://lore.kernel.org/all/20250117232433.24027-1-frederic@kernel.org
-         Closes: 20241213203739.1519801-1-usamaarif642@gmail.com
+         Acked-by: Jens Axboe <axboe@kernel.dk>
+         Link: https://lore.kernel.org/r/20240129190435.57228-4-kuniyu@amazon.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    (cherry picked from commit 99a7a5b9943ea2d05fb0dee38e4ae2290477ed83)
+    +    Signed-off-by: Lee Jones <lee@kernel.org>
      
-    - ## include/linux/hrtimer_defs.h ##
-    -@@ include/linux/hrtimer_defs.h: struct hrtimer_cpu_base {
-    +    Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
-    +
-    + ## include/linux/hrtimer.h ##
-    +@@ include/linux/hrtimer.h: struct hrtimer_cpu_base {
-      	ktime_t				softirq_expires_next;
-      	struct hrtimer			*softirq_next_timer;
-      	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
-     +	call_single_data_t		csd;
-      } ____cacheline_aligned;
-      
-    - 
-    + static inline void hrtimer_set_expires(struct hrtimer *timer, ktime_t time)
+      ## include/net/af_unix.h ##
+     @@ include/net/af_unix.h: static inline struct unix_sock *unix_get_socket(struct file *filp)
+    @@ net/Makefile: obj-$(CONFIG_NETFILTER)		+= netfilter/
+     -obj-$(CONFIG_UNIX_SCM)		+= unix/
+     +obj-$(CONFIG_UNIX)		+= unix/
+      obj-y				+= ipv6/
+    + obj-$(CONFIG_BPFILTER)		+= bpfilter/
+      obj-$(CONFIG_PACKET)		+= packet/
+    - obj-$(CONFIG_NET_KEY)		+= key/
      
-      ## kernel/time/hrtimer.c ##
+      ## net/unix/Kconfig ##
+     @@ net/unix/Kconfig: config UNIX
+    @@ net/unix/Makefile: unix-$(CONFIG_BPF_SYSCALL) += unix_bpf.o
+     
+      ## net/unix/af_unix.c ##
      @@
+    + #include <linux/file.h>
+      #include <linux/btf_ids.h>
+    - #include <linux/bpf-cgroup.h>
+      
+     -#include "scm.h"
+     -
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
