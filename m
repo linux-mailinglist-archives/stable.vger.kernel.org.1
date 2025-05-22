@@ -1,143 +1,163 @@
-Return-Path: <stable+bounces-146100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECEE3AC0EA6
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 16:48:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E79AC0ECC
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 16:52:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 257BC9E14ED
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:47:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A68FA188B160
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB5D28C877;
-	Thu, 22 May 2025 14:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E0B28C870;
+	Thu, 22 May 2025 14:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wBCU4rzY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kdiCYPFw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7DF1F94C
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 14:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC23128C877
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 14:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747925277; cv=none; b=J6OA9GwfrFzydD/ePVsPv90Y/BNt10468rZjpeY5CYphcp/oBRiVp5MkYxMG25eFZ7FwspcOk9iGf+Hj84oKN0fgn0Mqk0C401VnjHX7ufkQunhrjXofdWa7hiuP/ZfpXyooAO1AWduw6lQIr7mmHIn1yZRh6QigPjdruUAhA3k=
+	t=1747925513; cv=none; b=bIvb8UxsfC2NVd7jBvbMKFVg3wDTZcLdPPkoZdR2kBPlMcudLNDbIbGnYtJ8b06BDkQM1QtoMPViawvju5cwTOeL2xyMmFew4hpynt2AZbHhouNNZmbyJTjsYAGur5g2rENpV3UNh+XXE4KrziFc0R7ygXr5CVhnh9r+8Knnscw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747925277; c=relaxed/simple;
-	bh=CSsSHfl39dvzw3cAIhZcsGAqNS/b3pZ0v69mn2DAeOo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VPQ07XwhX6a/tJZ52r3rnUmzOb/NBpZaKRoETQS2g+qixNw+P6701fc3zehJrOwKrcDjKjXn6aRWJPgvrvzWHC1FOMBOg8ACJdoanJj1M4AKq9nMCjepn2fpIh/YjX6jUXfogs5/+Vj7gyFtJVbZy3wuZvqWE3YI1QcvGkr42f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wBCU4rzY; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1747925513; c=relaxed/simple;
+	bh=NEGa2Lvo0VHyrDn2dfZSXfnMD3VzC1tI27MkvHbZIKo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bCVdLwBPJWrrdr+aP0cokVcLkSIWaoo+O6FM1Ds/wBphed2sxfQCUJSQhVATkVu6Elbir+5b+d5Zx9uvXaE5izAzNxJfN6B3Wym8cbLKZ8RPoug/CLEQoGVz9QjgyKitv/3eU880xRaiP1nEyatdBKxNtiTwngM9NTD5l1MxG6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kdiCYPFw; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-30e5430ed0bso7965454a91.3
-        for <stable@vger.kernel.org>; Thu, 22 May 2025 07:47:55 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ad52dfe06ceso730001866b.3
+        for <stable@vger.kernel.org>; Thu, 22 May 2025 07:51:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747925275; x=1748530075; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Z1fJZAnO5gbEdE9pm7QO/Ig7e59PsYGFh5eZL9ezsU=;
-        b=wBCU4rzY8FAyQcxLPAi+lZkNEPsfzQAEdI6CXToqa5fMegOxAI70MMHULs4H9p1YGR
-         746qSOuJejwR1suwG3gph9THZ2KWGr14xnzt9zFEk6cOTEuyChnFY1TqeKRYerfqEzcH
-         2TdlcB3rLGkPgeWmMyeDofdw0CUvA9lYsSoXmvZ7flFaTBTtQ73VAJN+gbfiJZB5MbW0
-         vGcc2m1rYrmM8gLcyoXm4eNf2l7Ftu3uuScKOx6cC+GEpW5GWsfQxByH3tyFKa2rEEK0
-         8AVxKcFOIO4zU5qoT7QtA3TqHjwjDp28tBmEtmezm+FcD0chVKVxHsC4U5hXSwGI8UYx
-         6Spw==
+        d=linaro.org; s=google; t=1747925510; x=1748530310; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=if965oZYMwcs5T6DXjAoq7MGEz2mOJ2Vn9bNEq+AKGA=;
+        b=kdiCYPFwh/BzNTGN726u5e7M7b5UHKkMGeJtbVoa+X9FGbEqniIf3QM+6+Ab19QMXE
+         /hCkE0bvYc58O69B04iiiQABmK2AUh3VUUfib7NdbfmTNvVDJCKgDcmJuV1/daZ5M+Mt
+         X02CX71mlwD1QsnpjAtrfSug/MM7grNxd+M0Ok9aLWul/jS03u4BnTAvVL0tecKo/pHi
+         C1uENx+wmrXVng+gOZm4/kby6gUzZQwWVeaGaUzibzO7BSue4MA/Qwo2HnAOlmLKELm9
+         PRRJ1ISgpJ+pnuC0/DZR3+/p1HKqhjDqq1lpmavoxHBBTieDkYNa2NGKaySG0MlhiFyZ
+         ggjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747925275; x=1748530075;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0Z1fJZAnO5gbEdE9pm7QO/Ig7e59PsYGFh5eZL9ezsU=;
-        b=RcirO5BWRBot5DHi1CWsL3CMxpJue36ghSteTkA6HILgr0fAJ6U4C3YbAwOsm/o6PD
-         4JKv7i2hIH7vMFAckGse0Au+zz4k+5DHfmmEeV+Mv+GVUURQOPV4k8rKaQdPcL2KhSfJ
-         68QU5smBiKIZEZ8PpnZ80jC7BVzxOCrQ9JSeh+nCJl/F5x3FbYP1F4UPY4d7Zg4+aS1e
-         uLIghWpMIn0ar+Xigy6XGbxlLH+3+w3Qys/QEYYZk6Xd3kFaMK5D5AmCm/bmBtOoycVL
-         tkIMx7WyVO+mqgH0z8T0FabCoyczU/xfBWhzbPwA4q2mZPFbIvy6PdPkW/aG4E0Dnm6x
-         ylng==
-X-Forwarded-Encrypted: i=1; AJvYcCUzy0QwcZCY/9h/Vml6Fuxav+nh6OPPqHGMPCHAOXyxuC3o3usUenUP/k+N73PFZA5d9QbXKss=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZnkxQmLyqiyELbX84gTq6z3C21EQGbHkzffpPbjRoxw03Ohi/
-	L+aip2bGpN9yuw+RS5JYcR6ZgpyAo+B9AmcZJuo/yi35vzTvsKXfKsJD9nEAYmlqOuM=
-X-Gm-Gg: ASbGncsklvxoU2zk+IYmKv0FwPM9lS14/2wSwQv7mqUlktu1JdaWDPSnQGUCU2StMH+
-	DkSNhvcMQ6D7vCxECu+7lhmzBY0k7XC4iHBDc/5/5h7hWhxrwFkXzpMTMFXIKVA4973LQqWRcla
-	cbysia4cL5L/Bf4LGyTB4raSzK+WGhKoaipAPdmH2E7bp0vdWgnLQoQNPT4lvqvrb2wOrvk3paK
-	7YT8TRFV1p+9X6Qt3UHLB5Jj7bkPFPsNhUd1qI6THNnGktSFTIG3k4+9sTAp8Jg8NEOXnGcTrG2
-	ln9hMQNoLIiCn4zsHPLrmCUd++F+tjXSFOiSj6xs+ByujoCKNHH/z8c=
-X-Google-Smtp-Source: AGHT+IG5YDZqJMGCNUR1bl3lh55nwJynldcZarNJfaMbRBZQnBUy0qDHzLUmT4VJ7H8G0EhPmNRC+w==
-X-Received: by 2002:a17:90b:33c2:b0:2ff:58b8:5c46 with SMTP id 98e67ed59e1d1-30e830f7b18mr38271134a91.8.1747925273816;
-        Thu, 22 May 2025 07:47:53 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:adb8:3fc6:e0a3:9f52])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30f36365d9esm5641713a91.7.2025.05.22.07.47.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 07:47:53 -0700 (PDT)
-Date: Thu, 22 May 2025 08:47:51 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: andersson@kernel.org, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-remoteproc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] remoteproc: mediatek: Add SCP watchdog handler in IRQ
- processing
-Message-ID: <aC85F1Rua2dn_qTY@p14s>
-References: <20250521142404.1077-1-vulab@iscas.ac.cn>
+        d=1e100.net; s=20230601; t=1747925510; x=1748530310;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=if965oZYMwcs5T6DXjAoq7MGEz2mOJ2Vn9bNEq+AKGA=;
+        b=oGnwaexCMMO5sJM5ODvPpa0VyceHH+uz9rg9VHLNa5csq55wG8Wx4v39vQDsgENkuT
+         IcmIKbCV6ZAaRiAZkjeoQrFzCY2I+v/mGmPlPgB06zta5BtTwkN4BypXjCfG9VE8aQbT
+         5iIJUk/W7Yo0LLNMB5yawOv0AUmyJ+ARDgtMYc2QSc84aP8N8uaqsXWHVoe5ABR5GemG
+         qaVZdz7FI5hqloJmOBy6fYlaP+9LXPKvpw5NNofOWzDleNwl25pfcrWd+fKq6osVXkmD
+         HOfx9LkPnugNhpE6vylBTx+d4rfqU6kZgIikn4hCr2sKe3fjEt/fykU/AQcg+dFZNg/t
+         dbFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWiEEjZyMg16v7ftzPKGW0ogkoQligHA+Dkp/drzjy7GTjGhEF5uBVkp5H6hxA8pquwg+xvLPk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM04EVIcdhVfUKTdcKVZPD1fsEopNUap4BmrK2kGtYoCvA6OI2
+	V1pbtnSJ5bdPb4Lv4CLuNQWbrjedxus6soXho/2Z2XjG/Zr0yPjb7sfdAbOeUF2vnd2hvhTmN5Q
+	J2UOis+u6YSFVEmwH+VjSt3HohsM012R+fDLHr3rBWA==
+X-Gm-Gg: ASbGnct7YnNb31aAucxNNkEXOPvXN9Y594CGDYD5j83Va5TuIH57iYsB7d2WlIHfFDd
+	94HMu2tjrE8QlK9M9Cdv+V7r3c+WKU/Y7dby+3tSCXjQ7sMTORk/QVwSLe1BbR7eF4XSP7nE+Yh
+	lBmO6c6dwoKFNeGG/unNR6FRHsgotMOerzA1Tu9zv01Wj9LvD+4CMPY+4JDsc=
+X-Google-Smtp-Source: AGHT+IEWWodIXY6RPzmgsLl29LtMjEztepnXSAqOidAoBrsS8Lw4awvNzuVYZIqKaYEoqKapvbrKCUHcq2jJyT9DmhA=
+X-Received: by 2002:a17:906:6a14:b0:ac3:bf36:80e2 with SMTP id
+ a640c23a62f3a-ad52d4c2ed3mr2316934866b.20.1747925510014; Thu, 22 May 2025
+ 07:51:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250521142404.1077-1-vulab@iscas.ac.cn>
+References: <AA29CA6A-EC92-4B45-85F5-A9DE760F0A92@ateme.com>
+ <4c0f13ab-c9cd-42c4-84bd-244365b450e2@amd.com> <996ca8cb-3ac8-4f1b-93f1-415f43922d7a@ateme.com>
+ <3daac950-3656-4ec4-bbee-7a3bbad6d631@amd.com> <CAKfTPtBovA700=_0BajnzkdDP6MkdgLU=E3M0GTq4zoLW=RGhA@mail.gmail.com>
+ <de22462b-cda6-400f-b28c-4d1b9b244eec@amd.com> <CAKfTPtC6siPqX=vBweKz+dt2zoGiSQEGo32yh+MGhxNLSSW1_w@mail.gmail.com>
+ <c0e87c08-f863-47f3-8016-c44e3dce2811@amd.com> <db7b5ad7-3dad-4e7c-a323-d0128ae818eb@ateme.com>
+In-Reply-To: <db7b5ad7-3dad-4e7c-a323-d0128ae818eb@ateme.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Thu, 22 May 2025 16:51:34 +0200
+X-Gm-Features: AX0GCFvdXP-4idhTJtDESTwuQOtxpJxvvZ6RDqVKNRr-ZF6A0JkBHH_UMh9yOgw
+Message-ID: <CAKfTPtDkmsFD=1uG+dGOrYfdaap4SWupc8kVV8LanwaXSbxruA@mail.gmail.com>
+Subject: Re: IPC drop down on AMD epyc 7702P
+To: Jean-Baptiste Roquefere <jb.roquefere@ateme.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>, Peter Zijlstra <peterz@infradead.org>, 
+	"mingo@kernel.org" <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>, Swapnil Sapkal <swapnil.sapkal@amd.com>, 
+	Valentin Schneider <vschneid@redhat.com>, 
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Good day,
+Hi Jean-Baptiste,
 
-On Wed, May 21, 2025 at 10:24:03PM +0800, Wentao Liang wrote:
-> In mt8195_scp_c1_irq_handler(), only the IPC interrupt bit
-> (MT8192_SCP_IPC_INT_BIT) was checked., but does not handle
-> when this bit is not set. This could lead to unhandled watchdog
-> events. This could lead to unhandled watchdog events. A proper
-> implementation can be found in mt8183_scp_irq_handler().
+On Fri, 16 May 2025 at 17:05, Jean-Baptiste Roquefere
+<jb.roquefere@ateme.com> wrote:
 >
+> Hello Prateek,
+> long time no see... I've been very busy lately.
+>
+> Did he try with relax_domain_level=3, i.e. prevent newilde idle
+>
+>
+> >> balance between LLC ? I don't see results showing that it's not enough
+> >> to prevent newly idle migration between LLC
+> >
+> > I don't think he did. JB if it isn't too much trouble, could you please
+> > try running with "relax_domain_level=3" in kernel cmdline and see if
+> > the performance is similar to "relax_domain_level=2".
+>
+> I just tried relax_domain_level=3 on my payload. As you can see
+> relax_domain_level=3 performances are more or less the same
 
-As pointed out by Markus, this changelog needs work.
+As there is no difference between level2 and level3, I assume that the
+problem is not linked to a core to core migration but only the
+migration between LLC.
 
-> Add a new branch to handle SCP watchdog events when the IPC
-> interrupt bit is not set.
-> 
-> Fixes: 6a1c9aaf04eb ("remoteproc: mediatek: Add MT8195 SCP core 1 operations")
-> Cc: stable@vger.kernel.org # v6.7
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/remoteproc/mtk_scp.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-> index 0f4a7065d0bd..316e8c98a503 100644
-> --- a/drivers/remoteproc/mtk_scp.c
-> +++ b/drivers/remoteproc/mtk_scp.c
-> @@ -273,6 +273,8 @@ static void mt8195_scp_c1_irq_handler(struct mtk_scp *scp)
->  
->  	if (scp_to_host & MT8192_SCP_IPC_INT_BIT)
->  		scp_ipi_handler(scp);
-> +	else
-> +		scp_wdt_handler(scp, scp_to_host);
+As said previously, I don't see an obvious connection between commit
+16b0a7a1a0af  ("sched/fair: Ensure tasks spreading in LLC during LB")
+which mainly ensures a better usage of CPUs inside a LLC. Do you have
+cpufreq and freq scaling enabled ? The only link that I could think
+of, is that the spread of task inside a llc favors inter LLC newly
+idle load balance
 
-I would much rather see a test for the watchdog bit than just assuming it is
-a watchdog interrupt.  And while at it, please refactor the bit definition to be
-platform agnostic rather than reusing 8192 definitions on an 8195 platform.
-
-Thanks,
-Mathieu
-
->  
->  	writel(scp_to_host, scp->cluster->reg_base + MT8195_SSHUB2APMCU_IPC_CLR);
->  }
-> -- 
-> 2.42.0.windows.2
-> 
+>
+> +--------------------+---------------------+---------------------+
+> | Kernel             | 6.12.17 relax dom 2 | 6.12.17 relax dom 3 |
+> +--------------------+---------------------+---------------------+
+> | Utilization (%)    | 52,01               | 52,15 |
+> | CPU effective freq | 1 294,12            | 1 309,85 |
+> | IPC                | 1,42                | 1,40 |
+> | L2 access (pti)    | 38,18               | 38,03 |
+> | L2 miss   (pti)    | 7,78                | 7,90 |
+> | L3 miss   (abs)    | 33 929 609 924,00   | 33 705 899 797,00 |
+> | Mem (GB/s)         | 49,10               | 48,91 |
+> | Context switches   | 107 896 729,00      | 106 441 463,00 |
+> | CPU migrations     | 16 075 947,00       | 18 129 700,00 |
+> | Real time (s)      | 193,39              | 193,41 |
+> +--------------------+---------------------+---------------------+
+>
+> We got the point that tuning this variable is not a good solution, but
+> for now it's the only one we can apply.
+>
+> Without this tuning our solution loses real time video processing. With
+> : we keep real time on.
+>
+>
+> Thanks for your help, I'll stay alert on this thread if someday a better
+> solution can emerge.
+>
+>
+> Regards,
+>
+>
+> jb
+>
 
