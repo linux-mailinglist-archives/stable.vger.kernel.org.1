@@ -1,212 +1,265 @@
-Return-Path: <stable+bounces-146122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542D7AC14BB
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 21:20:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B6EAC14DC
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 21:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03D544E15B8
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 19:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C589E05C4
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 19:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0667D1E47A8;
-	Thu, 22 May 2025 19:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044922BDC33;
+	Thu, 22 May 2025 19:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kz1ddCio"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Axt7BNJR";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FJaHp1pQ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Axt7BNJR";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FJaHp1pQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13615198E9B
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 19:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125031917C2
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 19:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747941619; cv=none; b=BgK5xHPxJap0QJa3bOLXnB7stYWsTuGkq+qNglg5J2aXTOfIXrAAYT273MtQMhJn/ho6aYGDK80lFTSkeVfb3cN88KoIMtrWzsI41QWacrnEoadIvUnu5spGZxGYch49AAJZBwAjCJ3A7MIDE+oQmTte0jeziFz4/2jn+BHRZUk=
+	t=1747942382; cv=none; b=lmFGLhaPkSvmI3onz7YjFfUO/+8P9+9eEz0iA2vr/LxElYB0U1DFqdgl+zFTrOCz5R7nE1o8v74DjJX6TSJNECKSP8Iesy2r7Bnj97RhXszd9tnKz8TWOS9KMcbPui/lkaNHCr3e0IR+ckbTRwswCyrlO97bDma7X9u/0QYuTTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747941619; c=relaxed/simple;
-	bh=Flu/isAmyCbTrz9xwLn13hoRVk9PwsB7V2D3/wlR9aE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F0YjbKi8tXC0DQ4ppiv/jMFoLKKZPAT7Ex7t4BPxJhWBnhxcshZWWjVf3uyrG4jB+50DWWWXk1O32Idit3HNKNZ1LVUFW43Tm2ca/y4B56kVbhoRR8FShvJXh6yVxWPHPDy2fznMfn9DdtV4IOZREgCWV3yBXDylVrfMalJRlgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kz1ddCio; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6f8b10b807fso91427226d6.1
-        for <stable@vger.kernel.org>; Thu, 22 May 2025 12:20:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747941617; x=1748546417; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PgIZQIPQ0j6raACnSoKFPNh2DzvC29iIOKiCMVH+gE8=;
-        b=Kz1ddCio8Wg6juUFw3ZmZyvlB8xlyqBYYUdchO6LhII0ZV4DRwiyr76eJXnFRG+hoO
-         elC8V1mbezzrlEHIKqZcUfQ3idyrN1jgBnxmbXl6a1JuZ6lowKhRDaTWEETCQ83eaDQS
-         XL17dW1jw7dxZl/UrecyXvGHZJuA9hFYZuo0sIVpQtMWEwn46CxPa+C4KxOh0HOyYNYf
-         SzQTenoVJO7ZtTb12PSKawsXDi/28va9Kqh+qzSIWzQLgx7db3KgJimnSdMv4Uz6DTcT
-         4mDc9vXOlLfHHWyK36rE9/ghJpEXWijuUBtPzGB4uACRmck4NXIcr7n+5/jYHNf/ZWbA
-         v3Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747941617; x=1748546417;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PgIZQIPQ0j6raACnSoKFPNh2DzvC29iIOKiCMVH+gE8=;
-        b=reyiqvG2vz+TcT6ZQoN62aS5CDIrfTBGTdIjtfgpWTMTMO5XtkbVWAYn3THbZaqolY
-         u42yCsuIzT/5YlQQvhiR6QkX2aZ0y60tME6ZlpfEWrPHCUHTHRbQXcH8DxWl0oRn2YVp
-         AabAwN7Xgia2jVylOTfWEZ+V3LgtGtGYRyCshODcvYadJPBPvfw6wPxRe4W2Jr+qzB22
-         ONcAWLC4o3mUBp3N/z+IWY/J2EYL2Y9YeqQNxUl2Uwpy1gl6SLYvfUf70I/Fu+QUmaJg
-         lzpoghGSzLTEuqExqLzyVKqPtIJXvuP22sgBXzxEhFDst4pVWZEsCLYBr1hrzMeY7G3l
-         CL/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXI+V5l72pk5e3VQyDovNL37XsaJ4lfzB7NwZ44xTNzCnPDMV87O0wgGG0WU5mflXylCAqiKlM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAVjqHer78sYSrcCQCnq2C6Eg0ytBCX4Xfo8mOxBC4crAgpfTd
-	Eq1D/RAFplGT5x9bOyeBPFJ4fMqFNY+81iYLnDDx/scbW4NOB4wDcNR/rEuuGNYsZ9V7n520WUP
-	neM8JsSs0mIsw61QtSdflM6F9Nnm3P1ubb0iToYQE
-X-Gm-Gg: ASbGncviFsifXdSXPu/ovVxDuFjQ9JuJxyj3subklwrxZQIFeNhIQOG2Bg3ChBK6Hgn
-	4CxvRM6bPkLiUZSmOdTvWEJL/OiqrFq188iuh9CiU6pc7LPTjuK60JO5ip/IPNOM/5gjCjxBSjG
-	8mBQrz4NdyU/YLwvLxDP86+S6hjqW5iLu1mjoAEe8wWpXXZvNDCeUQqhAVJfW0ApZzfUTKqTVwn
-	bRv+lYq5z6+
-X-Google-Smtp-Source: AGHT+IGm1Btmu3cb/tiOOdp0UebQ2jl7A41+6mFY13R7UjK0iunERZC6D0vXs4YT7J5HKX2YgiexhtSR0yQfkPA2JxA=
-X-Received: by 2002:a05:6214:2345:b0:6f8:a7c2:bb11 with SMTP id
- 6a1803df08f44-6fa93a29fddmr4939596d6.6.1747941616531; Thu, 22 May 2025
- 12:20:16 -0700 (PDT)
+	s=arc-20240116; t=1747942382; c=relaxed/simple;
+	bh=fvfJJlLK+8OMCA9XCJtW+WPv9Bz75BCRfHdnweufkxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aQ3duNFI+nzvAaJkx2sLuj9GQmClk/y1oJS5cOgeMqtIeytwbgPND7VrU3iJ4pwByz+B7DQwREYnE8C+P+2pykO0cJnldfW3KczWnA5S6yFtmfayDaI54gK7ymjRi2LDHFK7LZ4CkGg2iEU0nxzwn6cmocm2AsuPil+PR5H9+yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Axt7BNJR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FJaHp1pQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Axt7BNJR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FJaHp1pQ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 21CA921757;
+	Thu, 22 May 2025 19:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1747942379; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XoGriKZH/KeIHMAtr2DMyXbRh64tZ6X3COoz6omsFrg=;
+	b=Axt7BNJRz/6WYLTpf/+9XmUnNIYnbRDuHiuXK/p7w1iYNvLXKhs9Kpb9BK3HCluXopi+55
+	eRHGQyOWxUvi7iRxzqVjnJvqEOKJC+vvfCsoeMCAvDbQ8K7TX40Eca2JNrrIsnuNJg8rLI
+	4zgJOAcHKMXs8GIj5R+0Ku2HGstCPIU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1747942379;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XoGriKZH/KeIHMAtr2DMyXbRh64tZ6X3COoz6omsFrg=;
+	b=FJaHp1pQ9ZFGJhQVY9TOIdfDRhcpaoLrDppHgkz8CqruLQD3rNM6OWWJGUeueYmtZx4Gg+
+	7xIuflG7Rx4UKdAg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Axt7BNJR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FJaHp1pQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1747942379; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XoGriKZH/KeIHMAtr2DMyXbRh64tZ6X3COoz6omsFrg=;
+	b=Axt7BNJRz/6WYLTpf/+9XmUnNIYnbRDuHiuXK/p7w1iYNvLXKhs9Kpb9BK3HCluXopi+55
+	eRHGQyOWxUvi7iRxzqVjnJvqEOKJC+vvfCsoeMCAvDbQ8K7TX40Eca2JNrrIsnuNJg8rLI
+	4zgJOAcHKMXs8GIj5R+0Ku2HGstCPIU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1747942379;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XoGriKZH/KeIHMAtr2DMyXbRh64tZ6X3COoz6omsFrg=;
+	b=FJaHp1pQ9ZFGJhQVY9TOIdfDRhcpaoLrDppHgkz8CqruLQD3rNM6OWWJGUeueYmtZx4Gg+
+	7xIuflG7Rx4UKdAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0EA313433;
+	Thu, 22 May 2025 19:32:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qg3OGuh7L2j6awAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Thu, 22 May 2025 19:32:56 +0000
+Date: Thu, 22 May 2025 21:32:48 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Ge Yang <yangge1116@126.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, 21cnbao@gmail.com, david@redhat.com,
+	baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
+Subject: Re: [PATCH] mm/hugetlb: fix kernel NULL pointer dereference when
+ replacing free hugetlb folios
+Message-ID: <aC974OtOuj9Tqzsa@localhost.localdomain>
+References: <1747884137-26685-1-git-send-email-yangge1116@126.com>
+ <644FF836-9DC7-42B4-BACE-C433E637B885@linux.dev>
+ <aC63fmFKK84K7YiZ@localhost.localdomain>
+ <ff6bd560-d249-418f-81f4-7cbe055a25ec@126.com>
+ <aC8PRkyd3y74Ph5R@localhost.localdomain>
+ <3B8641A1-5345-44A5-B610-9BCBC980493D@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250517043942.372315-1-royluo@google.com> <8f023425-3f9b-423c-9459-449d0835c608@linux.intel.com>
- <CAMTwNXB0QLP-b=RmLPtRJo=T_efN_3H4dd5AiMNYrJDXddJkMA@mail.gmail.com>
- <fbf92981-6601-4ee9-a494-718e322ac1b9@linux.intel.com> <CA+zupgyU2czaczPcqavYBi=NrPqKqgp7SbrUocy0qbJ0m9np6g@mail.gmail.com>
- <6bfee225-7519-41ab-8ae9-99267c5ce06e@intel.com>
-In-Reply-To: <6bfee225-7519-41ab-8ae9-99267c5ce06e@intel.com>
-From: Roy Luo <royluo@google.com>
-Date: Thu, 22 May 2025 12:19:40 -0700
-X-Gm-Features: AX0GCFuJzBzMPdmywUarQdKbXYdF5W_yqGe-afth_QCS9OITwqZ39S_C5IBtRsY
-Message-ID: <CA+zupgxkvm9HxG4Aj1avPA-ZgjVxmg3T3GtbfnV=rXk9P7-pFQ@mail.gmail.com>
-Subject: Re: [PATCH v1] Revert "usb: xhci: Implement xhci_handshake_check_state()
- helper"
-To: Mathias Nyman <mathias.nyman@intel.com>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, 
-	Udipto Goswami <udipto.goswami@oss.qualcomm.com>, quic_ugoswami@quicinc.com, 
-	Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, michal.pecio@gmail.com, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3B8641A1-5345-44A5-B610-9BCBC980493D@linux.dev>
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 21CA921757
+X-Spam-Score: -1.51
+X-Spam-Flag: NO
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[126.com,gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[126.com,linux-foundation.org,kvack.org,vger.kernel.org,gmail.com,redhat.com,linux.alibaba.com,hygon.cn];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
 
-On Thu, May 22, 2025 at 5:24=E2=80=AFAM Mathias Nyman <mathias.nyman@intel.=
-com> wrote:
->
-> On 22.5.2025 5.21, Roy Luo wrote:
-> >>>> Udipto Goswami, can you recall the platforms that needed this workar=
-oud?
-> >>>> and do we have an easy way to detect those?
-> >>>
-> >>> Hi Mathias,
-> >>>
-> >>>   From what I recall, we saw this issue coming up on our QCOM mobile
-> >>> platforms but it was not consistent. It was only reported in long run=
-s
-> >>> i believe. The most recent instance when I pushed this patch was with
-> >>> platform SM8650, it was a watchdog timeout issue where xhci_reset() -=
->
-> >>> xhci_handshake() polling read timeout upon xhci remove. Unfortunately
-> >>> I was not able to simulate the scenario for more granular testing and
-> >>> had validated it with long hours stress testing.
-> >>> The callstack was like so:
-> >>>
-> >>> Full call stack on core6:
-> >>> -000|readl([X19] addr =3D 0xFFFFFFC03CC08020)
-> >>> -001|xhci_handshake(inline)
-> >>> -001|xhci_reset([X19] xhci =3D 0xFFFFFF8942052250, [X20] timeout_us =
-=3D 10000000)
-> >>> -002|xhci_resume([X20] xhci =3D 0xFFFFFF8942052250, [?] hibernated =
-=3D ?)
-> >>> -003|xhci_plat_runtime_resume([locdesc] dev =3D ?)
-> >>> -004|pm_generic_runtime_resume([locdesc] dev =3D ?)
-> >>> -005|__rpm_callback([X23] cb =3D 0xFFFFFFE3F09307D8, [X22] dev =3D
-> >>> 0xFFFFFF890F619C10)
-> >>> -006|rpm_callback(inline)
-> >>> -006|rpm_resume([X19] dev =3D 0xFFFFFF890F619C10,
-> >>> [NSD:0xFFFFFFC041453AD4] rpmflags =3D 4)
-> >>> -007|__pm_runtime_resume([X20] dev =3D 0xFFFFFF890F619C10, [X19] rpmf=
-lags =3D 4)
-> >>> -008|pm_runtime_get_sync(inline)
-> >>> -008|xhci_plat_remove([X20] dev =3D 0xFFFFFF890F619C00)
-> >>
-> >> Thank you for clarifying this.
-> >>
-> >> So patch avoids the long timeout by always cutting xhci reinit path sh=
-ort in
-> >> xhci_resume() if resume was caused by pm_runtime_get_sync() call in
-> >> xhci_plat_remove()
-> >>
-> >> void xhci_plat_remove(struct platform_device *dev)
-> >> {
-> >>          xhci->xhc_state |=3D XHCI_STATE_REMOVING;
-> >>          pm_runtime_get_sync(&dev->dev);
-> >>          ...
-> >> }
-> >>
-> >> I think we can revert this patch, and just make sure that we don't res=
-et the
-> >> host in the reinit path of xhci_resume() if XHCI_STATE_REMOVING is set=
-.
-> >> Just return immediately instead.
-> >>
-> >
-> > Just to be sure, are you proposing that we skip xhci_reset() within
-> > the reinit path
-> > of xhci_resume()? If we do that, could that lead to issues with
-> > subsequent operations
-> > in the reinit sequence, such as xhci_init() or xhci_run()?
->
-> I suggest to only skip xhci_reset in xhci_resume() if XHCI_STATE_REMOVING=
- is set.
->
-> This should be similar to what is going on already.
->
-> xhci_reset() currently returns -ENODEV if XHCI_STATE_REMOVING is set, unl=
-ess reset
-> completes extremely fast. xhci_resume() bails out if xhci_reset() returns=
- error:
->
-> xhci_resume()
->    ...
->    if (power_lost) {
->      ...
->      retval =3D xhci_reset(xhci, XHCI_RESET_LONG_USEC);
->      spin_unlock_irq(&xhci->lock);
->      if (retval)
->        return retval;
-> >
-> > Do you prefer to group the change to skip xhci_reset() within the
-> > reinit path together
-> > with this revert? or do you want it to be sent and reviewed separately?
->
-> First a patch that bails out from xhci_resume() if XHCI_STATE_REMOVING is=
- set
-> and we are in the reinit (power_lost) path about to call xhci_reset();
->
-> Then a second patch that reverts 6ccb83d6c497 ("usb: xhci: Implement
-> xhci_handshake_check_state()
->
-> Does this sound reasonable?
->
-> should avoid the QCOM 10sec watchdog issue as next xhci_rest() called
-> in xhci_remove() path has a short 250ms timeout, and ensure the
-> SNPS DWC3 USB regression won't trigger.
->
-> Thanks
-> Mathias
->
+On Thu, May 22, 2025 at 08:39:39PM +0800, Muchun Song wrote:
+> But I think we could use "folio_order() > MAX_PAGE_ORDER" to replace the check
+> of hstate_is_gigantic(), right? Then ee could remove the first parameter of hstate
+> from alloc_and_dissolve_hugetlb_folio() and obtain hstate in it.
 
-Thanks for the clarification! SGTM.
-I've sent out a new patchset accordingly
-https://lore.kernel.org/linux-usb/20250522190912.457583-1-royluo@google.com=
-/
+Yes, I think we can do that.
+So something like the following (compily-tested only) maybe?
 
-Thanks,
-Roy
+ From d7199339e905f83b54d22849e8f21f631916ce94 Mon Sep 17 00:00:00 2001
+ From: Oscar Salvador <osalvador@suse.de>
+ Date: Thu, 22 May 2025 19:51:04 +0200
+ Subject: [PATCH] TMP
+ 
+ ---
+  mm/hugetlb.c | 38 +++++++++-----------------------------
+  1 file changed, 9 insertions(+), 29 deletions(-)
+ 
+ diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+ index bd8971388236..20f08de9e37d 100644
+ --- a/mm/hugetlb.c
+ +++ b/mm/hugetlb.c
+ @@ -2787,15 +2787,13 @@ void restore_reserve_on_error(struct hstate *h, struct vm_area_struct *vma,
+  /*
+   * alloc_and_dissolve_hugetlb_folio - Allocate a new folio and dissolve
+   * the old one
+ - * @h: struct hstate old page belongs to
+   * @old_folio: Old folio to dissolve
+   * @list: List to isolate the page in case we need to
+   * Returns 0 on success, otherwise negated error.
+   */
+ -static int alloc_and_dissolve_hugetlb_folio(struct hstate *h,
+ -			struct folio *old_folio, struct list_head *list)
+ +static int alloc_and_dissolve_hugetlb_folio(struct folio *old_folio, struct list_head *list)
+  {
+ -	gfp_t gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
+ +	struct hstate *h;
+  	int nid = folio_nid(old_folio);
+  	struct folio *new_folio = NULL;
+  	int ret = 0;
+ @@ -2829,7 +2827,11 @@ static int alloc_and_dissolve_hugetlb_folio(struct hstate *h,
+  		cond_resched();
+  		goto retry;
+  	} else {
+ +		h = folio_hstate(old_folio);
+ +
+  		if (!new_folio) {
+ +			gfp_t gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
+ +
+  			spin_unlock_irq(&hugetlb_lock);
+  			new_folio = alloc_buddy_hugetlb_folio(h, gfp_mask, nid,
+  							      NULL, NULL);
+ @@ -2874,35 +2876,20 @@ static int alloc_and_dissolve_hugetlb_folio(struct hstate *h,
+  
+  int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list)
+  {
+ -	struct hstate *h;
+  	int ret = -EBUSY;
+  
+ -	/*
+ -	 * The page might have been dissolved from under our feet, so make sure
+ -	 * to carefully check the state under the lock.
+ -	 * Return success when racing as if we dissolved the page ourselves.
+ -	 */
+ -	spin_lock_irq(&hugetlb_lock);
+ -	if (folio_test_hugetlb(folio)) {
+ -		h = folio_hstate(folio);
+ -	} else {
+ -		spin_unlock_irq(&hugetlb_lock);
+ -		return 0;
+ -	}
+ -	spin_unlock_irq(&hugetlb_lock);
+ -
+  	/*
+  	 * Fence off gigantic pages as there is a cyclic dependency between
+  	 * alloc_contig_range and them. Return -ENOMEM as this has the effect
+  	 * of bailing out right away without further retrying.
+  	 */
+ -	if (hstate_is_gigantic(h))
+ +	if (folio_order(folio) > MAX_PAGE_ORDER)
+  		return -ENOMEM;
+  
+  	if (folio_ref_count(folio) && folio_isolate_hugetlb(folio, list))
+  		ret = 0;
+  	else if (!folio_ref_count(folio))
+ -		ret = alloc_and_dissolve_hugetlb_folio(h, folio, list);
+ +		ret = alloc_and_dissolve_hugetlb_folio(folio, list);
+  
+  	return ret;
+  }
+ @@ -2916,7 +2903,6 @@ int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list)
+   */
+  int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
+  {
+ -	struct hstate *h;
+  	struct folio *folio;
+  	int ret = 0;
+  
+ @@ -2924,15 +2910,9 @@ int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
+  
+  	while (start_pfn < end_pfn) {
+  		folio = pfn_folio(start_pfn);
+ -		if (folio_test_hugetlb(folio)) {
+ -			h = folio_hstate(folio);
+ -		} else {
+ -			start_pfn++;
+ -			continue;
+ -		}
+  
+  		if (!folio_ref_count(folio)) {
+ -			ret = alloc_and_dissolve_hugetlb_folio(h, folio,
+ +			ret = alloc_and_dissolve_hugetlb_folio(folio,
+  							       &isolate_list);
+  			if (ret)
+  				break;
+ -- 
+ 2.49.0
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
