@@ -1,128 +1,179 @@
-Return-Path: <stable+bounces-146081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B0EAC0B74
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:17:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E22AC0B8A
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:24:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95DF41891254
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 12:17:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD2DB1674D7
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 12:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1921289E2E;
-	Thu, 22 May 2025 12:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF12028A708;
+	Thu, 22 May 2025 12:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="AY1gHKJF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ie84OimI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1391E51D
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 12:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91348268682;
+	Thu, 22 May 2025 12:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747916232; cv=none; b=gQkYFlG3juzgZmKLR0kjKZvyCEYEs/yD5FIZl5v84mMz0iADMD82DGADPwS7xcfjFGbSljtQlAjoClvW+UI9L4El/XalO4Z814Y0WLCWxjTyM9pVRi5pi4+cfMebRKEqwEkFkm+NXtODDL6LYXMtbq+OT0/eRU/bw/jUT+ExRtE=
+	t=1747916650; cv=none; b=QlYxOMqkjSmjUXBMGs8wvk8/DX6w8S7qczaFYgTogH9CrY1MyraFNquRhtDvqHyfjQouqo5L3vf+sO6CrDKqW6oCSEci0vjAky1LHWoVHtCGkMKZsStTjHNLsA80WaJtew4tq5wCqpdIRYw8CkVFU+Yjq6ha4JQNfB3UxBAbvW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747916232; c=relaxed/simple;
-	bh=eiUAPtWkklVAkMrYR4Bk7yeefVmpei03jtQi4YPJahM=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=nNNpxLdOgRVmb5jgqQblEx6wHZihyQB3Kxz3UG8M+v2lfFxGC6pd1c8OYB/5bSIovH+GJcdPgrR/SRllX4ajF9IiXpccsFfOK+tWwifXoamdmpnVot9EofdAQa9CMdQIgQUJ/OgL87/KmsVUCILlufOk/3tnuP9+x8ZAKfLWPIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=AY1gHKJF; arc=none smtp.client-ip=209.85.218.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-ad5767b448aso55246666b.3
-        for <stable@vger.kernel.org>; Thu, 22 May 2025 05:17:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1747916228; x=1748521028; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :subject:cc:to:from:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eiUAPtWkklVAkMrYR4Bk7yeefVmpei03jtQi4YPJahM=;
-        b=AY1gHKJFaUKV1+1KsHChtdmUTfeaq/+H16DnkSa1m5DDXNl/HWhdJMBGVfhbh1V79x
-         3YkMTNCWAru9XSIKBjkKHKgRbPtQ+iAAIefvK9g5l6IldZpr9u0Iplk9jjPdB8FLdaly
-         b7k7R3uV7dtKeUD3xCg5KFJZCBs2QQXXsSPl8SQY65L8GpJG9NspaO9U8hx2ToUmdSQd
-         9Z2SPFBjLPwtheRGFVB087xtrwsp6oNe0cmIHkwdia4YE1+5zCx2Yn7oFHtdMZ5X84fG
-         ogFsyBk7NHGUPjPD3SC737mSu6QdnOBUDSdKa8OxUWlN6bG7Uq/kPLpg75wjek0iezUP
-         tRzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747916228; x=1748521028;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :subject:cc:to:from:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eiUAPtWkklVAkMrYR4Bk7yeefVmpei03jtQi4YPJahM=;
-        b=VusHr38DHotctp8KHpthdv/LnVhWZbEdvHpRjZfykD3XN1k1llX4HABY0XD9VYB3lt
-         u4TzGK3T5wa7Z04czRpeCAQ+1z4dulkasxGj/hFF3JKYNnFPpRlr+TpGNm6CRJN8F9IA
-         ECjvh/oFtZp8HeCns0uLfDGrYZq1TjFHu920tL/0grD7xeHhsLa7nsLfCpEEOzk2pBOv
-         1gTeRhevhKaQhtbOJs3t8jMKflm/HHI6sOxJ0R1liTov4oCSMDB95Cu0oHshhZbRsrwU
-         xCWh1OSyitOExzuMkcl0JdnT3T0gOkeR66Vzc2s3lA9tSqcDQxJ4b6v6AXPFV23kRN7K
-         D+ww==
-X-Forwarded-Encrypted: i=1; AJvYcCUhYq8O2d1d82yFfe3knmW88PPKd9NdLvvNAhOxqVHQF7pHiuw47PY/rkReiuys6lyowNKrDUE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXY1aspgT8rK2tnX/Nkfe1PupHwWVfb24K4E6gm7L5hoYYkY1C
-	EFnjiGM9XDRSnEZBkpxEACtPtRJvFoyQS7M2WBFNnZsM/+0a2TxcW+a9VAxxwkJFZEs=
-X-Gm-Gg: ASbGncvYPgoEP1ltZlw+Xv7XNX7ZlhE0Mghf+fyn2y2J/nkJyTrWelxK/1OnEO2xT5/
-	r0KvjSB5VE2j/sQ5G2BanJp4byZ5gR+G/ZRW02U11lNFgA4uL4kVYNUDJMZe7OnxoyBkrZaJ0M0
-	EqmViKe06wOxM7+g+KYZVYSzJnDsaWETf6nYkNVyPPgVxnVV8Qhl2+fP8Ud1qOybk4KVWvrF3QZ
-	VFtNIhbG/iapomf3AKufzLsjmNvZbl95W6F9ZyMVvVLXbyt0nQOcpcZ9hbz8KbuSUPeEGDrpFFI
-	VEFqb7JraO+q7xJWMJafBvfqudul7THpcbKD5rTSv8E+H5/RJilz7QbOIVATM96LrSeHCcIchA=
-	=
-X-Google-Smtp-Source: AGHT+IGlOm7kKNiIMa4LYQU01uE9DXQXr/EXxT9p4EDhhkg8mLhr6eFDmP3LkE+YOmae5nnJZU74TQ==
-X-Received: by 2002:a17:907:28d1:b0:acb:7de1:28b9 with SMTP id a640c23a62f3a-ad52d49b404mr686859466b.5.1747916228283;
-        Thu, 22 May 2025 05:17:08 -0700 (PDT)
-Received: from lb02065.fkb.profitbricks.net ([212.227.34.98])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d047bd6sm1055733066b.29.2025.05.22.05.17.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 05:17:08 -0700 (PDT)
-Message-ID: <682f15c4.170a0220.3893a.e498@mx.google.com>
-X-Google-Original-Message-ID: <20250521165909.834545-2-pchelkin@ispras.ru> (raw)
-From: Jack Wang <jinpu.wang@ionos.com>
-To: pchelkin@ispras.ru,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Cc: bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	mark.rutland@arm.com,
-	mhiramat@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	tglx@linutronix.de,
-	x86@kernel.org
-Subject: [PATCH 6.1 1/1] x86/modules: Set VM_FLUSH_RESET_PERMS in module_alloc()
-Date: Thu, 22 May 2025 14:17:06 +0200
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250521165909.834545-1-pchelkin@ispras.ru>
-References: <20250521165909.834545-2-pchelkin@ispras.ru>
+	s=arc-20240116; t=1747916650; c=relaxed/simple;
+	bh=M42ZpmGj6WOB9FCiYWfWW4REKJAyVSHfmZWm5I0db3s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rfindJI6NTGdSQEA/dsLkf7HNoxJ5Jp34VPioJS2IxZeFzaRyoGl+H4ZoLR6pF8UzrPKZBrgDP+UZlbu5Lbyf0ik2pfTHkAWlmk7dnVx7sZqG4jpb6D5gverDiVCusN6fZgVvT8K7zx4X64zC1RTjz+C1XAMRUCg3Li5jexpmD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ie84OimI; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747916649; x=1779452649;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=M42ZpmGj6WOB9FCiYWfWW4REKJAyVSHfmZWm5I0db3s=;
+  b=ie84OimI00igOWLdplzHaxMV7Kb2u8vJjwf9ZehfQvj9gWubTNBsvslS
+   A4sHWSmAMNnwj9Axy/4x1lANMO/XI7bfPpMsRD9xppZBmBO5tQpcY0ENh
+   hpwduho2srREeZFgT3UgS+XgoP2a5PcU8PW8NpWe7YdzcjfqdLmjYeOnF
+   eqLTvL5X6gyPGXeg0IsACMxEAxUr5kskIWfTskP82iaNebx2fQ79PzeSP
+   ep3sNzjuTa4NFFjzyHSkFWxTt8ZLKlOy7iRJLijGkLbwnFOqAjxYMEiR1
+   TIjo15b7u9efpHbwdBFroY9zIPWnYaPCy01wd5DCq3bKsEjkaRUMxxmR4
+   w==;
+X-CSE-ConnectionGUID: t5VNgwlcTaenVrGak1/wTw==
+X-CSE-MsgGUID: gLH7eQV6RnGAklQbP6bNBA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="50080685"
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; 
+   d="scan'208";a="50080685"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 05:24:08 -0700
+X-CSE-ConnectionGUID: vPTXhtDoQMezQzTFOO6dpQ==
+X-CSE-MsgGUID: rxbfBXteSbe4kcTj9+cTEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,306,1739865600"; 
+   d="scan'208";a="163841604"
+Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmviesa002.fm.intel.com with ESMTP; 22 May 2025 05:24:05 -0700
+Message-ID: <6bfee225-7519-41ab-8ae9-99267c5ce06e@intel.com>
+Date: Thu, 22 May 2025 15:24:04 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] Revert "usb: xhci: Implement
+ xhci_handshake_check_state() helper"
+To: Roy Luo <royluo@google.com>, Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: Udipto Goswami <udipto.goswami@oss.qualcomm.com>,
+ quic_ugoswami@quicinc.com, Thinh.Nguyen@synopsys.com,
+ gregkh@linuxfoundation.org, michal.pecio@gmail.com,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250517043942.372315-1-royluo@google.com>
+ <8f023425-3f9b-423c-9459-449d0835c608@linux.intel.com>
+ <CAMTwNXB0QLP-b=RmLPtRJo=T_efN_3H4dd5AiMNYrJDXddJkMA@mail.gmail.com>
+ <fbf92981-6601-4ee9-a494-718e322ac1b9@linux.intel.com>
+ <CA+zupgyU2czaczPcqavYBi=NrPqKqgp7SbrUocy0qbJ0m9np6g@mail.gmail.com>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@intel.com>
+In-Reply-To: <CA+zupgyU2czaczPcqavYBi=NrPqKqgp7SbrUocy0qbJ0m9np6g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+On 22.5.2025 5.21, Roy Luo wrote:
+>>>> Udipto Goswami, can you recall the platforms that needed this workaroud?
+>>>> and do we have an easy way to detect those?
+>>>
+>>> Hi Mathias,
+>>>
+>>>   From what I recall, we saw this issue coming up on our QCOM mobile
+>>> platforms but it was not consistent. It was only reported in long runs
+>>> i believe. The most recent instance when I pushed this patch was with
+>>> platform SM8650, it was a watchdog timeout issue where xhci_reset() ->
+>>> xhci_handshake() polling read timeout upon xhci remove. Unfortunately
+>>> I was not able to simulate the scenario for more granular testing and
+>>> had validated it with long hours stress testing.
+>>> The callstack was like so:
+>>>
+>>> Full call stack on core6:
+>>> -000|readl([X19] addr = 0xFFFFFFC03CC08020)
+>>> -001|xhci_handshake(inline)
+>>> -001|xhci_reset([X19] xhci = 0xFFFFFF8942052250, [X20] timeout_us = 10000000)
+>>> -002|xhci_resume([X20] xhci = 0xFFFFFF8942052250, [?] hibernated = ?)
+>>> -003|xhci_plat_runtime_resume([locdesc] dev = ?)
+>>> -004|pm_generic_runtime_resume([locdesc] dev = ?)
+>>> -005|__rpm_callback([X23] cb = 0xFFFFFFE3F09307D8, [X22] dev =
+>>> 0xFFFFFF890F619C10)
+>>> -006|rpm_callback(inline)
+>>> -006|rpm_resume([X19] dev = 0xFFFFFF890F619C10,
+>>> [NSD:0xFFFFFFC041453AD4] rpmflags = 4)
+>>> -007|__pm_runtime_resume([X20] dev = 0xFFFFFF890F619C10, [X19] rpmflags = 4)
+>>> -008|pm_runtime_get_sync(inline)
+>>> -008|xhci_plat_remove([X20] dev = 0xFFFFFF890F619C00)
+>>
+>> Thank you for clarifying this.
+>>
+>> So patch avoids the long timeout by always cutting xhci reinit path short in
+>> xhci_resume() if resume was caused by pm_runtime_get_sync() call in
+>> xhci_plat_remove()
+>>
+>> void xhci_plat_remove(struct platform_device *dev)
+>> {
+>>          xhci->xhc_state |= XHCI_STATE_REMOVING;
+>>          pm_runtime_get_sync(&dev->dev);
+>>          ...
+>> }
+>>
+>> I think we can revert this patch, and just make sure that we don't reset the
+>> host in the reinit path of xhci_resume() if XHCI_STATE_REMOVING is set.
+>> Just return immediately instead.
+>>
+> 
+> Just to be sure, are you proposing that we skip xhci_reset() within
+> the reinit path
+> of xhci_resume()? If we do that, could that lead to issues with
+> subsequent operations
+> in the reinit sequence, such as xhci_init() or xhci_run()?
 
-From: Thomas Gleixner <tglx@linutronix.de>
+I suggest to only skip xhci_reset in xhci_resume() if XHCI_STATE_REMOVING is set.
 
-commit 4c4eb3ecc91f4fee6d6bf7cfbc1e21f2e38d19ff upstream.
+This should be similar to what is going on already.
 
-Instead of resetting permissions all over the place when freeing module
-memory tell the vmalloc code to do so. Avoids the exercise for the next
-upcoming user.
+xhci_reset() currently returns -ENODEV if XHCI_STATE_REMOVING is set, unless reset
+completes extremely fast. xhci_resume() bails out if xhci_reset() returns error:
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220915111143.406703869@infradead.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+xhci_resume()
+   ...
+   if (power_lost) {
+     ...
+     retval = xhci_reset(xhci, XHCI_RESET_LONG_USEC);
+     spin_unlock_irq(&xhci->lock);
+     if (retval)
+       return retval;
+> 
+> Do you prefer to group the change to skip xhci_reset() within the
+> reinit path together
+> with this revert? or do you want it to be sent and reviewed separately?
 
-I confirm this patch fixed the random crashing ontop of 6.1.139 I've experienced
-on our Icelake and Cascadelake servers, servers are working fine after appling
-the fix, thx!
+First a patch that bails out from xhci_resume() if XHCI_STATE_REMOVING is set
+and we are in the reinit (power_lost) path about to call xhci_reset();
 
-Tested-by: Jack Wang <jinpu.wang@ionos.com>
+Then a second patch that reverts 6ccb83d6c497 ("usb: xhci: Implement
+xhci_handshake_check_state()
+
+Does this sound reasonable?
+
+should avoid the QCOM 10sec watchdog issue as next xhci_rest() called
+in xhci_remove() path has a short 250ms timeout, and ensure the
+SNPS DWC3 USB regression won't trigger.
+
+Thanks
+Mathias
+
 
