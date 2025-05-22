@@ -1,184 +1,95 @@
-Return-Path: <stable+bounces-146134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C0B7AC1671
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 00:10:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4484BAC1677
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 00:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3A761BC6C4E
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 22:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C6B84E6992
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 22:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5613826A1C3;
-	Thu, 22 May 2025 22:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB1C26C395;
+	Thu, 22 May 2025 22:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ofiNd/dk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QayDC5Eg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1187A26A0F6;
-	Thu, 22 May 2025 22:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D193926B970;
+	Thu, 22 May 2025 22:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747951810; cv=none; b=P8J/RkndN1E3tAYqpRLEKU3nBTr7rd5AIQqNWQMaU7/WOyjba68hZE1uTvNpxnwqhMGVwB9VGgJfrw0e082vYlICae8lYpl1NUMQhzwZTAXqLSq9Q6qAdALdzyT+a5JylqIDIJ6I6gyJApezj5DeR9d6vkFR6UJSyzks5pjWorU=
+	t=1747952028; cv=none; b=A+/v3Jf/REaegTvsegUzCLc7WEzxjhhe1jNW2iFI2GfEC4wlt2+GLtU4N53UQxuW9JfD9z7kdszeVbt6mkWrsx7wcfcRLDoR/Iu3NzMkY45n3OFkPjIujj1TxGTGeDetxSQzSSVAHYr62ISLGq3kj+GlCVCIqKkgbOPYJeQ9VGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747951810; c=relaxed/simple;
-	bh=dXTYcC4RYMGN2fdM3NbtSp+tXzTSTWld932ILimsJS4=;
-	h=Date:To:From:Subject:Message-Id; b=umCck701sj428C8SQV8aRS7eN6jkhY1TkvsYBMzf+E84l7tt8rFWE/Ag0SeF4mq8y8PI+jz7DD/ZCYgcJ+oPhuVksz2tNPu1vrJwMj2tW72ORy4hS2JrCTnEHbTWy8bul14eWvNsJPCwqxtBd1j5F9S5wsUd6d7oLk8crzBxZAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ofiNd/dk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB46C4CEEB;
-	Thu, 22 May 2025 22:10:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1747951809;
-	bh=dXTYcC4RYMGN2fdM3NbtSp+tXzTSTWld932ILimsJS4=;
-	h=Date:To:From:Subject:From;
-	b=ofiNd/dk4myOvW2F/3yFBls88VOh95Ih6SkGatXFM9XI3/mDF+cuJF55wTXwX6uOH
-	 LAEkquMr2YY07tkdoTIZNdowA2VxeV3g8a62grpcYCBRIxXllolDAuPiiV/sTwgmOU
-	 LJohsreeijkmlBRPwOcHUH/H+uNUDI+v3ZrWRcAQ=
-Date: Thu, 22 May 2025 15:10:08 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,baolin.wang@linux.alibaba.com,21cnbao@gmail.com,yangge1116@126.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-fix-kernel-null-pointer-dereference-when-replacing-free-hugetlb-folios.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250522221009.6CB46C4CEEB@smtp.kernel.org>
+	s=arc-20240116; t=1747952028; c=relaxed/simple;
+	bh=0gNOwm+ixznGLcCYt/xPhR3d4d4LaGz5vTfy/hu3DeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TgVEYI/itjKn/xWlQLfQ2NpPy/b2sc5xUjeITaPHSmdNzbF/28wKO7M1iYPDxII5+FZHj1LcfzqrOjZGjwE4ZvNg7/hYSxltcMNMuMllY2yWtoabaAmRcLnsQ+NaxLKOfKVktCOkXdWx6wV2KQJWGuNGxEqdfnJ6+NdV37l8uKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QayDC5Eg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEE9C4CEF1;
+	Thu, 22 May 2025 22:13:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747952028;
+	bh=0gNOwm+ixznGLcCYt/xPhR3d4d4LaGz5vTfy/hu3DeU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QayDC5EgTGqTHm0LyhLO+93nYto8xwaXxnmHWOcLfK9JGJs5wwNjDt8zRihB8Bsaf
+	 WI0+IvnCEntuufcLV0Niu8z93wdydo3Lz1HcO7+x9qUBS7yFR9NMMhYoGnI0WF33Z4
+	 Y2Okq3RJ/2dobr+h9w0/Y7z8G2WXPuv6s07o2aWzKNqx4zB2n6LgB8fhpKMm2v6fZZ
+	 zWF9jyp1KxIi+4qsjfrTZAGcDwrZhufzJO5ICENGEeK/NhKfUhjnu8+LFOK3sZFkdx
+	 0PjqtGz4RitRwfzkVSqXwcSgUIwwzKjhcSxt1zmR3w8JEmGNyU7S2vdAy7cyCplqqo
+	 V6Gd3sU0/yn1g==
+Date: Thu, 22 May 2025 15:13:46 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Saurabh Sengar <ssengar@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, kuniyu@amazon.com, ahmed.zaki@intel.com,
+ aleksander.lobakin@intel.com, linux-hyperv@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ ssengar@microsoft.com, stable@vger.kernel.org
+Subject: Re: [PATCH net,v2] hv_netvsc: fix potential deadlock in
+ netvsc_vf_setxdp()
+Message-ID: <20250522151346.57390f40@kernel.org>
+In-Reply-To: <1747823103-3420-1-git-send-email-ssengar@linux.microsoft.com>
+References: <1747823103-3420-1-git-send-email-ssengar@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Wed, 21 May 2025 03:25:03 -0700 Saurabh Sengar wrote:
+> The MANA driver's probe registers netdevice via the following call chain:
+> 
+> mana_probe()
+>   register_netdev()
+>     register_netdevice()
+> 
+> register_netdevice() calls notifier callback for netvsc driver,
+> holding the netdev mutex via netdev_lock_ops().
+> 
+> Further this netvsc notifier callback end up attempting to acquire the
+> same lock again in dev_xdp_propagate() leading to deadlock.
+> 
+> netvsc_netdev_event()
+>   netvsc_vf_setxdp()
+>     dev_xdp_propagate()
+> 
+> This deadlock was not observed so far because net_shaper_ops was never set,
 
-The patch titled
-     Subject: mm/hugetlb: fix kernel NULL pointer dereference when replacing free hugetlb folios
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-fix-kernel-null-pointer-dereference-when-replacing-free-hugetlb-folios.patch
+The lock is on the VF, I think you meant to say that no device you use
+in Azure is ops locked?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-kernel-null-pointer-dereference-when-replacing-free-hugetlb-folios.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ge Yang <yangge1116@126.com>
-Subject: mm/hugetlb: fix kernel NULL pointer dereference when replacing free hugetlb folios
-Date: Thu, 22 May 2025 11:22:17 +0800
-
-A kernel crash was observed when replacing free hugetlb folios:
-
-BUG: kernel NULL pointer dereference, address: 0000000000000028
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-CPU: 28 UID: 0 PID: 29639 Comm: test_cma.sh Tainted 6.15.0-rc6-zp #41 PREEMPT(voluntary)
-RIP: 0010:alloc_and_dissolve_hugetlb_folio+0x1d/0x1f0
-RSP: 0018:ffffc9000b30fa90 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000342cca RCX: ffffea0043000000
-RDX: ffffc9000b30fb08 RSI: ffffea0043000000 RDI: 0000000000000000
-RBP: ffffc9000b30fb20 R08: 0000000000001000 R09: 0000000000000000
-R10: ffff88886f92eb00 R11: 0000000000000000 R12: ffffea0043000000
-R13: 0000000000000000 R14: 00000000010c0200 R15: 0000000000000004
-FS:  00007fcda5f14740(0000) GS:ffff8888ec1d8000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000028 CR3: 0000000391402000 CR4: 0000000000350ef0
-Call Trace:
-<TASK>
- replace_free_hugepage_folios+0xb6/0x100
- alloc_contig_range_noprof+0x18a/0x590
- ? srso_return_thunk+0x5/0x5f
- ? down_read+0x12/0xa0
- ? srso_return_thunk+0x5/0x5f
- cma_range_alloc.constprop.0+0x131/0x290
- __cma_alloc+0xcf/0x2c0
- cma_alloc_write+0x43/0xb0
- simple_attr_write_xsigned.constprop.0.isra.0+0xb2/0x110
- debugfs_attr_write+0x46/0x70
- full_proxy_write+0x62/0xa0
- vfs_write+0xf8/0x420
- ? srso_return_thunk+0x5/0x5f
- ? filp_flush+0x86/0xa0
- ? srso_return_thunk+0x5/0x5f
- ? filp_close+0x1f/0x30
- ? srso_return_thunk+0x5/0x5f
- ? do_dup2+0xaf/0x160
- ? srso_return_thunk+0x5/0x5f
- ksys_write+0x65/0xe0
- do_syscall_64+0x64/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-There is a potential race between __update_and_free_hugetlb_folio() and
-replace_free_hugepage_folios():
-
-CPU1                              CPU2
-__update_and_free_hugetlb_folio   replace_free_hugepage_folios
-                                    folio_test_hugetlb(folio)
-                                    -- It's still hugetlb folio.
-
-  __folio_clear_hugetlb(folio)
-  hugetlb_free_folio(folio)
-                                    h = folio_hstate(folio)
-                                    -- Here, h is NULL pointer
-
-When the above race condition occurs, folio_hstate(folio) returns NULL,
-and subsequent access to this NULL pointer will cause the system to crash.
-To resolve this issue, execute folio_hstate(folio) under the protection
-of the hugetlb_lock lock, ensuring that folio_hstate(folio) does not
-return NULL.
-
-Link: https://lkml.kernel.org/r/1747884137-26685-1-git-send-email-yangge1116@126.com
-Fixes: 04f13d241b8b ("mm: replace free hugepage folios after migration")
-Signed-off-by: Ge Yang <yangge1116@126.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
-
---- a/mm/hugetlb.c~mm-hugetlb-fix-kernel-null-pointer-dereference-when-replacing-free-hugetlb-folios
-+++ a/mm/hugetlb.c
-@@ -2949,12 +2949,20 @@ int replace_free_hugepage_folios(unsigne
- 
- 	while (start_pfn < end_pfn) {
- 		folio = pfn_folio(start_pfn);
-+
-+		/*
-+		 * The folio might have been dissolved from under our feet, so make sure
-+		 * to carefully check the state under the lock.
-+		 */
-+		spin_lock_irq(&hugetlb_lock);
- 		if (folio_test_hugetlb(folio)) {
- 			h = folio_hstate(folio);
- 		} else {
-+			spin_unlock_irq(&hugetlb_lock);
- 			start_pfn++;
- 			continue;
- 		}
-+		spin_unlock_irq(&hugetlb_lock);
- 
- 		if (!folio_ref_count(folio)) {
- 			ret = alloc_and_dissolve_hugetlb_folio(h, folio,
-_
-
-Patches currently in -mm which might be from yangge1116@126.com are
-
-mm-hugetlb-fix-kernel-null-pointer-dereference-when-replacing-free-hugetlb-folios.patch
-
+There's also the call to netvsc_register_vf() on probe path, please
+fix or explain why it doesn't need locking in the commit message.
+-- 
+pw-bot: cr
 
