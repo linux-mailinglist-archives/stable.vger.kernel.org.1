@@ -1,80 +1,78 @@
-Return-Path: <stable+bounces-146113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612BFAC123B
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 19:39:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246DDAC12AC
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 19:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B0AF3B137A
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 17:38:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AFEE189436C
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 17:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9807618FDBE;
-	Thu, 22 May 2025 17:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0751607B4;
+	Thu, 22 May 2025 17:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="LG1VvoQo"
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="SUFtu+YG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A49E189F57
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 17:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB2726AFB
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 17:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747935536; cv=none; b=UksLY2tTLKezdqiI/VoWHCH4eNPVqJXSAkrsaVgb2kOdGMEcdLXk2+P28tNkAkiHasKrBkLboqmooFnGAaqu3lRqIKrRu8QiPpoGKCvfjc5ziGzPKQsdhicxR+SBc9c89g7qf6hdqW3JSbdwLXZJxP+nFWCK2ns8R7T+PjJGsNM=
+	t=1747936323; cv=none; b=ltsA9XGuyjBvV8PeAhwLGxfvEL2orqiTmxnY5WNGobbl50yA8g5+Q6FOA2ybkKJNk4Q8RfjJkfof/1b8skKJkWd2CDdpC3A6ItokYPDktl9klOlTShex1PdoZ+HsBB/pAspGVb5gCC3wuUmI4oZUTsR4JH6XqvN19UD+T2+o9pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747935536; c=relaxed/simple;
-	bh=mPNvJWQfwSWJIqhLs1HlrDn/WYuYPmB8wfxtTNGfuDo=;
+	s=arc-20240116; t=1747936323; c=relaxed/simple;
+	bh=Na405tLBQE2M4JgPZr2eDoKOSH0qTpUEu/oe9KHBawY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jp/8ZoBN0y2cBurcYm8o0R83OPPdx+i/HZnljixjm8MsTVwkg295flSGPT7tXjzChKN3sH0BHGLjV08jP6cssQfHO0qgOBHC8+8+uannuR6+ja7x9kvBaYDB7dZlJhiL/WN9yOzc3nJIlnNh/0evblsfqbARJCQEUjjPI3/9I3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=LG1VvoQo; arc=none smtp.client-ip=209.85.166.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-8647a81e683so203650339f.1
-        for <stable@vger.kernel.org>; Thu, 22 May 2025 10:38:53 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=UMPyj92CRAGP5wxcTbwWQF3vhN5bUYNS6SnyHlZYIs+t4uWq6WmFatiJ22ctqQ2FrrTEJ/8vNLUiUGd69WquBvNtJQY5WulzUyTwmf/BiFxtTGQklB898De1ZJXO8L4RRNCePRS73OuS8bLMZZq6xjvRUXNfR2wqT/f7aGo2RKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=SUFtu+YG; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5efe8d9ebdfso15449940a12.3
+        for <stable@vger.kernel.org>; Thu, 22 May 2025 10:52:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1747935533; x=1748540333; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nM6gVpWW7hwcfcfH51deVSV04V713QkHpPw2pc8ZGq0=;
-        b=LG1VvoQoDhqaMS4RWdQx94vF+mu/UYVO0FnOsD3JF0toWz9MjUzjIYKnl7/XHPKErf
-         ZdCNevR+O8TMusd0tQPQTjWFhabBk6GckLrwIMRr+5T4S22Xk0tjEpNZsx47DdmZN+aK
-         SgmeKJe46M9ssZApIJVJsxf15hAFiP6c79CRqLlP5M9tL+c0o9C15qOe9GuGik7hOuHS
-         Kp7fR5rxjE6GkPGchRPJU6OkCEYGl3JzFNFZb/2ydoLHrFONZtAAiBa+Dnn3vMHYywot
-         DUjV5fVw3+aTmV9R0viM0RReHocOThudTOlcN5DvBqFCPIeiBV026/vc64T2JeQH0N3U
-         gY9w==
+        d=citrix.com; s=google; t=1747936319; x=1748541119; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Na405tLBQE2M4JgPZr2eDoKOSH0qTpUEu/oe9KHBawY=;
+        b=SUFtu+YGFUAVjNvQruS/oTpwb5HHZqOMNHGCfKMnwUfSZHOXAn9VC09Dnn9+yFONEP
+         9OpxKS2EeeMNApDShc5sD2dr+uq/YBH/E3GEmNLHhoqSCHFLICQHBXkiUhG+0bsOe+Tu
+         +6L3TcOuAyE9Dje5Qg4pX1TnNoHCyi1NECY0g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747935533; x=1748540333;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nM6gVpWW7hwcfcfH51deVSV04V713QkHpPw2pc8ZGq0=;
-        b=b+L4rL0eIKoPSdD1rzKKpTdDjDcYQqq00IwgpUkzLV3tDlu12HjQ5R8e+kDd9UzuVA
-         bucQFNo0NORp/4EwYKVXSGlny0UG7JivgGWbVtkMi4dMWa9vhsZl3lLkpAVvEOjN7UOV
-         zeIaIGqzciFE8BLzJ6AZmW5Lnro1DgSWcC+9H183d7IufAGiEZrO9v0Den2zUz/Bi0gh
-         beMrm+zSORZHfNMWXKyUUWIKp5QZMWIqiAN1qG35ITlVn7hHuOcCafi0pl5RMftPH9CF
-         UmqeWna/8CeGKgG2lTbydhFb2q/MZcUpLeT/lcW9I7HeC9XdGZv+UtS/54k0xj31RH8Q
-         ug9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV+odoTG8axcE3HMPoihSZPvKxENMH1CcxuN1uNLQjqTXAN7Ro2GbSymb08DNTFV/ZnyUTf5oM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykqD5TCzKfYG3kyxqlOuo0ij1VM8at6uxXvNUQvBs/AT/lRKVt
-	43lSj7R6+sz28jZpp1wRRsCMcgPveJ5UTs8iK5xaBZuofejtF5OdRtV5LSHvhnxotgw3rMnoUNP
-	isP+f
-X-Gm-Gg: ASbGncsz9ANfKK22d32Wcx5XsqxTJZvZfuN5V2S2oS59dSlB2QU8DqSIBAKty4vWd7q
-	E4gZMoaEP5pLnByhRfo8rR7zA/UaIJSLD5Ufy6DI772emLvrf/zDbgzLQ/YlwhbyJZgLiWhqJzj
-	RkeQWVzmDg1NcEmpxLaggHXdlX1XMyPC4FBrnVqa7o28sNfeKHiJPem38jMUPU4Nd4w9IAf24WE
-	0Wgd3Ui4M6kNNqi1jRNdLem3wF4Cel5rVUNlTlbi1URxhQ1MLoTh5x4BwM3vBY2Hxs0HMtfV0w2
-	KthV3nDKmdBME2pSZjKSz+OTnn2QDEG19fdohBwyDg3xq2w=
-X-Google-Smtp-Source: AGHT+IF6b+fW8vRi48fyuKhfYCPzjJZNoYLDWjSHJ031JPvz5fE62vULtRWlBoHyfcTLf0e9Puh3Xg==
-X-Received: by 2002:a05:6602:371b:b0:85b:3f1a:30aa with SMTP id ca18e2360f4ac-86a23229aabmr3343648039f.9.1747935532879;
-        Thu, 22 May 2025 10:38:52 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-86a236e69acsm313856039f.31.2025.05.22.10.38.51
+        d=1e100.net; s=20230601; t=1747936319; x=1748541119;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Na405tLBQE2M4JgPZr2eDoKOSH0qTpUEu/oe9KHBawY=;
+        b=pC+ykmCuZ1xN3geA7PUdWrGLWAAut/JTiUqs0309WBXt6r7yzKfvS8q3+lrz6Gw51j
+         W0Jw4jko+Lq6b7fYmlEjHkImxCohlVFrrdRteyJ1hOO8zGqQ2jAqC7CZ3i9f95Yky7Mm
+         LJmJoGDZ+YkiXMXl6AdHfLJNQpA9yDaWl5lFr6KQFM8WKMH3s1t91nps7FR7OaLyYe7+
+         4/egj0gLRdAMydwccsrGHR0GXHBjBDdrUmA44ZtkZ1xH1vBfMYzxmzgRVKKcg2McutSZ
+         k2DmeIWcD0SixIxZDbknfWH3Oiio+dNgCbzVTkdMxaA7y69qZsfY7kbx838jONo6nuEf
+         mXGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCrvU9fAcmlsTT3UCfV5fvV0RpHnJG1UisFUkdnqhbQWGDVGswlvFvJxa3sAGokjTKwrmakCU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL02A8eXm3cpXbZjnKxOGyqBri9B/q31ZG1TMqVepFYWkbMU1P
+	PhVdnU6/oWRZzAcn91hHigJCzDsslCxdN6uc6H6fw3FxCbvdh8T7bM4vZ/KcU0Upjaw=
+X-Gm-Gg: ASbGncuTUTiL3DXOa2OQ2pk/a2k0YtWDnPxa3yEyp/QZnozJ66sZX01CDENnucDVSGB
+	sMPSbWw6/ubsSDpFh9yjOu1XzT+F3KJVJLoN5zCiq9MhEOnQ5TYwYpbDL0tflb4VFkGZ3I4iGCn
+	QbSFunCjsTon2g0tNeLGe64rL7+k/yYgmL/4ogujEVlhQIYwGvIOs1pAr7myhFLs1s9Soii7wPl
+	sbdf8tICyFkryS/H+0YvrwF0fVe7P5E2JCnXFFJ66j+73wW5eJhcMOiOfNLaXAJ0Vwtpv0ipRve
+	L6+cALf5GzxXes4saLSDqRc9lGYMRtq2DYvcVvXL7bYRuAyw2i3ozG2DSLneaRGOMn+mQoFKNrx
+	PzkeOrBLydwyBAn2t
+X-Google-Smtp-Source: AGHT+IFKZgwXCUTYpLcjUDx7t410Bco0xIZLm/OSG82CavP4uf8WvCP67Q6fkOArRMyQSNJuvppxzw==
+X-Received: by 2002:a17:907:d716:b0:ad2:55e4:4558 with SMTP id a640c23a62f3a-ad536ffbaf6mr2449232066b.56.1747936319031;
+        Thu, 22 May 2025 10:51:59 -0700 (PDT)
+Received: from [192.168.1.183] (host-92-26-98-202.as13285.net. [92.26.98.202])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d04af1esm1100078866b.20.2025.05.22.10.51.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 May 2025 10:38:52 -0700 (PDT)
-Message-ID: <b1ea4120-e16a-47c8-b10c-ff6c9d5feb69@kernel.dk>
-Date: Thu, 22 May 2025 11:38:51 -0600
+        Thu, 22 May 2025 10:51:58 -0700 (PDT)
+Message-ID: <005d4d4c-f385-42e0-8a30-62c6d77ff0f0@citrix.com>
+Date: Thu, 22 May 2025 18:51:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,123 +80,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: Fix a deadlock related freezing zoned storage
- devices
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Damien Le Moal <dlemoal@kernel.org>, Yu Kuai <yukuai1@huaweicloud.com>,
- Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org
-References: <20250522171405.3239141-1-bvanassche@acm.org>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20250522171405.3239141-1-bvanassche@acm.org>
+Subject: Re: [PATCH v1 1/1] x86/fred/signal: Prevent single-step upon ERETU
+ completion
+To: Xin Li <xin@zytor.com>, kernel test robot <lkp@intel.com>,
+ linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ peterz@infradead.org, stable@vger.kernel.org
+References: <20250522060549.2882444-1-xin@zytor.com>
+ <202505230141.4YBHhrPI-lkp@intel.com>
+ <83b013fb-2057-4097-ac8c-b5c38d019a0f@zytor.com>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <83b013fb-2057-4097-ac8c-b5c38d019a0f@zytor.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/22/25 11:14 AM, Bart Van Assche wrote:
-> blk_mq_freeze_queue() never terminates if one or more bios are on the plug
-> list and if the block device driver defines a .submit_bio() method.
-> This is the case for device mapper drivers. The deadlock happens because
-> blk_mq_freeze_queue() waits for q_usage_counter to drop to zero, because
-> a queue reference is held by bios on the plug list and because the
-> __bio_queue_enter() call in __submit_bio() waits for the queue to be
-> unfrozen.
-> 
-> This patch fixes the following deadlock:
-> 
-> Workqueue: dm-51_zwplugs blk_zone_wplug_bio_work
-> Call trace:
->  __schedule+0xb08/0x1160
->  schedule+0x48/0xc8
->  __bio_queue_enter+0xcc/0x1d0
->  __submit_bio+0x100/0x1b0
->  submit_bio_noacct_nocheck+0x230/0x49c
->  blk_zone_wplug_bio_work+0x168/0x250
->  process_one_work+0x26c/0x65c
->  worker_thread+0x33c/0x498
->  kthread+0x110/0x134
->  ret_from_fork+0x10/0x20
-> 
-> Call trace:
->  __switch_to+0x230/0x410
->  __schedule+0xb08/0x1160
->  schedule+0x48/0xc8
->  blk_mq_freeze_queue_wait+0x78/0xb8
->  blk_mq_freeze_queue+0x90/0xa4
->  queue_attr_store+0x7c/0xf0
->  sysfs_kf_write+0x98/0xc8
->  kernfs_fop_write_iter+0x12c/0x1d4
->  vfs_write+0x340/0x3ac
->  ksys_write+0x78/0xe8
-> 
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Damien Le Moal <dlemoal@kernel.org>
-> Cc: Yu Kuai <yukuai1@huaweicloud.com>
-> Cc: Ming Lei <ming.lei@redhat.com>
-> Cc: stable@vger.kernel.org
-> Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
-> 
-> Changes compared to v1: fixed a race condition. Call bio_zone_write_plugging()
->   only before submitting the bio and not after it has been submitted.
-> 
->  block/blk-core.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/block/blk-core.c b/block/blk-core.c
-> index b862c66018f2..713fb3865260 100644
-> --- a/block/blk-core.c
-> +++ b/block/blk-core.c
-> @@ -621,6 +621,13 @@ static inline blk_status_t blk_check_zone_append(struct request_queue *q,
->  	return BLK_STS_OK;
->  }
->  
-> +/*
-> + * Do not call bio_queue_enter() if the BIO_ZONE_WRITE_PLUGGING flag has been
-> + * set because this causes blk_mq_freeze_queue() to deadlock if
-> + * blk_zone_wplug_bio_work() submits a bio. Calling bio_queue_enter() for bios
-> + * on the plug list is not necessary since a q_usage_counter reference is held
-> + * while a bio is on the plug list.
-> + */
->  static void __submit_bio(struct bio *bio)
->  {
->  	/* If plug is not used, add new plug here to cache nsecs time. */
-> @@ -633,8 +640,12 @@ static void __submit_bio(struct bio *bio)
->  
->  	if (!bdev_test_flag(bio->bi_bdev, BD_HAS_SUBMIT_BIO)) {
->  		blk_mq_submit_bio(bio);
-> -	} else if (likely(bio_queue_enter(bio) == 0)) {
-> +	} else {
->  		struct gendisk *disk = bio->bi_bdev->bd_disk;
-> +		bool zwp = bio_zone_write_plugging(bio);
-> +
-> +		if (unlikely(!zwp && bio_queue_enter(bio) != 0))
-> +			goto finish_plug;
->  	
->  		if ((bio->bi_opf & REQ_POLLED) &&
->  		    !(disk->queue->limits.features & BLK_FEAT_POLL)) {
-> @@ -643,9 +654,12 @@ static void __submit_bio(struct bio *bio)
->  		} else {
->  			disk->fops->submit_bio(bio);
->  		}
-> -		blk_queue_exit(disk->queue);
-> +
-> +		if (!zwp)
-> +			blk_queue_exit(disk->queue);
->  	}
+On 22/05/2025 6:33 pm, Xin Li wrote:
+> On 5/22/2025 10:20 AM, kernel test robot wrote:
+>> Hi Xin,
+>>
+>> kernel test robot noticed the following build errors:
+>>
+>> [auto build test ERROR on 6a7c3c2606105a41dde81002c0037420bc1ddf00]
+>>
+>> url:   
+>> https://github.com/intel-lab-lkp/linux/commits/Xin-Li-Intel/x86-fred-signal-Prevent-single-step-upon-ERETU-completion/20250522-140954
+>> base:   6a7c3c2606105a41dde81002c0037420bc1ddf00
+>> patch link:   
+>> https://lore.kernel.org/r/20250522060549.2882444-1-xin%40zytor.com
+>> patch subject: [PATCH v1 1/1] x86/fred/signal: Prevent single-step
+>> upon ERETU completion
+>> config: i386-buildonly-randconfig-003-20250522
+>> (https://download.01.org/0day-ci/archive/20250523/202505230141.4YBHhrPI-lkp@intel.com/config)
+>> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+>> reproduce (this is a W=1 build):
+>> (https://download.01.org/0day-ci/archive/20250523/202505230141.4YBHhrPI-lkp@intel.com/reproduce)
+>>
+>> If you fix the issue in a separate patch/commit (i.e. not just a new
+>> version of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <lkp@intel.com>
+>> | Closes:
+>> https://lore.kernel.org/oe-kbuild-all/202505230141.4YBHhrPI-lkp@intel.com/
+>>
+>> All errors (new ones prefixed by >>):
+>>
+>>     In file included from arch/x86/kernel/signal_32.c:32:
+>>     arch/x86/include/asm/sighandling.h: In function
+>> 'prevent_single_step_upon_eretu':
+>>>> arch/x86/include/asm/sighandling.h:44:21: error: 'struct pt_regs'
+>>>> has no member named 'fred_ss'
+>>        44 |                 regs->fred_ss.swevent = 0;
+>>           |                     ^~
+>>
+>
+> Hmm, this statement is under IS_ENABLED(CONFIG_X86_FRED), which should
+> be a compile time FALSE with i386.  Why it is still being compiled?
 
-This is pretty ugly, and I honestly absolutely hate how there's quite a
-bit of zoned_whatever sprinkling throughout the core code. What's the
-reason for not unplugging here, unaligned writes? Because you should
-presumable have the exact same issues on non-zoned devices if they have
-IO stuck in a plug (and doesn't get unplugged) while someone is waiting
-on a freeze.
+Because what the compiler is seeing is:
 
-A somewhat similar case was solved for IOPOLL and queue entering. That
-would be another thing to look at. Maybe a live enter could work if the
-plug itself pins it?
+if (0 && ...)
+    regs->fred_ss.swevent = 0;
 
--- 
-Jens Axboe
+and the bad field name is found at parse time, while the whole
+expression is only discarded during optimisation.
+
+The one thing you can't IS_ENABLED() around is conditional fields.  That
+needs to be full #ifdef.
+
+~Andrew
 
