@@ -1,180 +1,117 @@
-Return-Path: <stable+bounces-146041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1F0AC05CE
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 09:34:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF17AC05DE
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 09:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1AF8189FE38
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 07:34:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 053C33B7781
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 07:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C20C202988;
-	Thu, 22 May 2025 07:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1FA2222C0;
+	Thu, 22 May 2025 07:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TcK4ltp4"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA523234
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 07:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE822094
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 07:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747899263; cv=none; b=Psea2U63hSbdgdwpimd0tcjOjuysy+U+wzZd7SVYdH3CqA1inHYXJPr+6x4h5leOOhUjTV1xhKvGund1cFNIf21rU9uIPqaeE31IITgs2LASyRebRXickrRDXzU+pvMAqXuyC4n0iU3Y2LAndA9opOLJRUpxyd0VIjIJ9xj0/s4=
+	t=1747899489; cv=none; b=UrouhpH/68M4ZqkPdTxGcNfEd6wh/Yvf32xE85XCy4Egd1zuTgIxra6UQN4lucQGWWPIUbudKrAxqIFnLpWhxn2iFwoor9y7PsK5IiK2qcRkaMbsI41p3WJm0x8+cUpUVb8Zoj6iCrdCoKDVybedUlaFdDQJLqodw3RLjkDmnNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747899263; c=relaxed/simple;
-	bh=Rl02TV6I3aXWggJ4v+3QpCNqmOU4o6334NWRF8ai0zw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kXEemCE0bq0VVYyiKH1V99ap1JDgDNOnSJPIoeaNHCbnNq8mCuN49hWAAPHz3vYgnTmthM1vjvPSCDqpVhv2V/oB33BXl74JOAgmJtcxxWY23lB8VFXxXxKJXfKt1e4fAm6bcz7EYuO/oBJR4pTBhoT3DZsViK/wQil4Orm8tSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dev-suse.. (unknown [210.73.43.2])
-	by APP-03 (Coremail) with SMTP id rQCowAAndvFh0y5oZTxgAg--.2470S2;
-	Thu, 22 May 2025 15:33:53 +0800 (CST)
-From: Jingwei Wang <wangjingwei@iscas.ac.cn>
-To: linux-riscv@lists.infradead.org
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Jesse Taube <jesse@rivosinc.com>,
-	Yixun Lan <dlan@gentoo.org>,
-	Tsukasa OI <research_trasio@irq.a4lg.com>,
-	stable@vger.kernel.org,
-	Jingwei Wang <wangjingwei@iscas.ac.cn>
-Subject: [PATCH v2] riscv: hwprobe: Fix stale vDSO data for late-initialized keys at boot
-Date: Thu, 22 May 2025 15:33:06 +0800
-Message-ID: <20250522073327.246668-1-wangjingwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1747899489; c=relaxed/simple;
+	bh=XtJi0uKXdHylZlJUU9ERu6ayN9jjJLrc1iOA+RBhoNs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r9TeQFtB6vVLsFV0IacgldDrAT8WvuVyjhhf5pTO5V4C/c4rLidYCplh3nkPc3TQE5krTs5ZX0D9voUQebEJEphVcv791EOR7jFFQDYLbOXhHsJsFA3944HfLiHLm0RnmAFuVV2/QVtIZ7WWPSAThKZHDgl2e9ALZ/thJKzICJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TcK4ltp4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F087CC4CEE4;
+	Thu, 22 May 2025 07:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747899488;
+	bh=XtJi0uKXdHylZlJUU9ERu6ayN9jjJLrc1iOA+RBhoNs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TcK4ltp4jbSMTfK2dkyh1pMb8pXECk5FEWCdsntXOzvGvJhnPkUcNKh51uxtezsAZ
+	 lKmgoNlgou9AEJLbkJuVleirQZRjWwxO8CwS05fe9nIsrf+KiAqQ10Q0K/ZP0+l4Ho
+	 q7JdDxjM/ygTsUw8NyXb5GHBuXEJbp+UsiHd4hN1ENXvGrmugFZ35a+poIC4sbRO1R
+	 6On/opKTwMuEZ8wU5U+cpnv0xGIY7pX18pdAesHZuvFW+SUIYXeK1Mb/AKaD5RLQID
+	 kGpe7/TWPoi1/oQepypM/g0j0wjHyFF+KTpFn/5f2G24wEKB51wm0eDp/WwOG34321
+	 5FHTdm4IgZPDg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Eric Naim <dnaim@cachyos.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 2/2] drm/amdgpu: read back register after written for VCN v4.0.5
+Date: Thu, 22 May 2025 03:38:04 -0400
+Message-Id: <20250521233459-363ebb04fd975b3a@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250521165421.293820-2-dnaim@cachyos.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAndvFh0y5oZTxgAg--.2470S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXr1UXr4UAr47XFy8Gw48Zwb_yoWrArW5pa
-	yDCrsIqFW5GF4xWay5K3s7uF18K3Z5Gr13GF1qk343ZrW7A343Ar9aqr47Zryqyryvga4r
-	CFsagF4Fyry7Zw7anT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE
-	6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72
-	CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7
-	M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVAFwVW8Cw
-	CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUXVWU
-	AwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1V
-	AFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4
-	A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU
-	0xZFpf9x0pR89NcUUUUU=
-X-CM-SenderInfo: pzdqwy5lqj4v3l6l2u1dvotugofq/
 
-The riscv_hwprobe vDSO data is populated by init_hwprobe_vdso_data(),
-an arch_initcall_sync. However, underlying data for some keys, like
-RISCV_HWPROBE_KEY_MISALIGNED_VECTOR_PERF, is determined asynchronously.
+[ Sasha's backport helper bot ]
 
-Specifically, the per_cpu(vector_misaligned_access, cpu) values are set
-by the vec_check_unaligned_access_speed_all_cpus kthread. This kthread
-is spawned by an earlier arch_initcall (check_unaligned_access_all_cpus)
-and may complete its benchmark *after* init_hwprobe_vdso_data() has
-already populated the vDSO with default/stale values.
+Hi,
 
-So, refresh the vDSO data for specified keys (e.g.,
-MISALIGNED_VECTOR_PERF) ensuring it reflects the final boot-time values.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Test by comparing vDSO and syscall results for affected keys
-(e.g., MISALIGNED_VECTOR_PERF), which now match their final
-boot-time values.
+The upstream commit SHA1 provided is correct: ee7360fc27d6045510f8fe459b5649b2af27811a
 
-Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
-Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Eric Naim<dnaim@cachyos.org>
+Commit author: David (Ming Qiang) Wu<David.Wu3@amd.com>
+
+Note: The patch differs from the upstream commit:
 ---
-Changes in v2:
-  - Addressed feedback from Yixun's regarding #ifdef CONFIG_MMU usage.
-  - Updated commit message to provide a high-level summary.
-  - Added Fixes tag for commit e7c9d66e313b.
+1:  ee7360fc27d60 ! 1:  d66acea470dc1 drm/amdgpu: read back register after written for VCN v4.0.5
+    @@ Metadata
+      ## Commit message ##
+         drm/amdgpu: read back register after written for VCN v4.0.5
+     
+    +    commit ee7360fc27d6045510f8fe459b5649b2af27811a upstream
+    +
+         On VCN v4.0.5 there is a race condition where the WPTR is not
+         updated after starting from idle when doorbell is used. Adding
+         register read-back after written at function end is to ensure
+    @@ Commit message
+         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+         (cherry picked from commit 07c9db090b86e5211188e1b351303fbc673378cf)
+         Cc: stable@vger.kernel.org
+    +    Tested-by: Eric Naim <dnaim@cachyos.org>
+    +    Signed-off-by: Eric Naim <dnaim@cachyos.org>
+     
+      ## drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c ##
+    -@@ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c: static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
+    +@@ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c: static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, b
+      			ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__SHIFT |
+      			VCN_RB1_DB_CTRL__EN_MASK);
+      
+    @@ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c: static int vcn_v4_0_5_start_dpg_mode(st
+      	return 0;
+      }
+      
+    -@@ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c: static int vcn_v4_0_5_start(struct amdgpu_vcn_inst *vinst)
+    +@@ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c: static int vcn_v4_0_5_start(struct amdgpu_device *adev, int i)
+      	WREG32_SOC15(VCN, i, regVCN_RB_ENABLE, tmp);
+      	fw_shared->sq.queue_mode &= ~(FW_QUEUE_RING_RESET | FW_QUEUE_DPG_HOLD_OFF);
+      
+---
 
-v1: https://lore.kernel.org/linux-riscv/20250521052754.185231-1-wangjingwei@iscas.ac.cn/T/#u
+Results of testing on various branches:
 
- arch/riscv/include/asm/hwprobe.h           |  6 ++++++
- arch/riscv/kernel/sys_hwprobe.c            | 16 ++++++++++++++++
- arch/riscv/kernel/unaligned_access_speed.c |  2 +-
- 3 files changed, 23 insertions(+), 1 deletion(-)
-
-diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hwprobe.h
-index 1f690fea0e03de6a..58dc847d86c7f2b0 100644
---- a/arch/riscv/include/asm/hwprobe.h
-+++ b/arch/riscv/include/asm/hwprobe.h
-@@ -40,4 +40,10 @@ static inline bool riscv_hwprobe_pair_cmp(struct riscv_hwprobe *pair,
- 	return pair->value == other_pair->value;
- }
- 
-+#ifdef CONFIG_MMU
-+void riscv_hwprobe_vdso_sync(__s64 sync_key);
-+#else
-+static inline void riscv_hwprobe_vdso_sync(__s64 sync_key) { };
-+#endif /* CONFIG_MMU */
-+
- #endif
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index 249aec8594a92a80..2e3e612b7ac6fd57 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -17,6 +17,7 @@
- #include <asm/vector.h>
- #include <asm/vendor_extensions/thead_hwprobe.h>
- #include <vdso/vsyscall.h>
-+#include <vdso/datapage.h>
- 
- 
- static void hwprobe_arch_id(struct riscv_hwprobe *pair,
-@@ -500,6 +501,21 @@ static int __init init_hwprobe_vdso_data(void)
- 
- arch_initcall_sync(init_hwprobe_vdso_data);
- 
-+void riscv_hwprobe_vdso_sync(__s64 sync_key)
-+{
-+	struct vdso_arch_data *avd = vdso_k_arch_data;
-+	struct riscv_hwprobe pair;
-+
-+	pair.key = sync_key;
-+	hwprobe_one_pair(&pair, cpu_online_mask);
-+	/*
-+	 * Update vDSO data for the given key.
-+	 * Currently for non-ID key updates (e.g. MISALIGNED_VECTOR_PERF),
-+	 * so 'homogeneous_cpus' is not re-evaluated here.
-+	 */
-+	avd->all_cpu_hwprobe_values[sync_key] = pair.value;
-+}
-+
- #endif /* CONFIG_MMU */
- 
- SYSCALL_DEFINE5(riscv_hwprobe, struct riscv_hwprobe __user *, pairs,
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 585d2dcf2dab1ccb..81bc4997350acc87 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -375,7 +375,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
- {
- 	schedule_on_each_cpu(check_vector_unaligned_access);
--
-+	riscv_hwprobe_vdso_sync(RISCV_HWPROBE_KEY_MISALIGNED_VECTOR_PERF);
- 	return 0;
- }
- #else /* CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS */
--- 
-2.49.0
-
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.4.y        |  Success    |  Success   |
 
