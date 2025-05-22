@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C739CAC021E
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:05:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFCACAC021F
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6D01B64375
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:05:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72B9C4A75F1
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0404144C7C;
-	Thu, 22 May 2025 02:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06FB2D7BF;
+	Thu, 22 May 2025 02:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adTlfIpI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfg5tsOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68DB35977
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3A518E3F
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879535; cv=none; b=VgmMpzMHER6SWph6/JsQtllajk55lIX5sc/QX25mEZBZseHd3Pw+stAg3vD724UOdOna6JaSA5mPpauocT6fxXA8+KCTvw8VernYOSIK+MDdXukaxVJT3Ct54HvBjMAb4tz39ZKTw53pi4Cm4KWngS0dJuLct+LKSaCwQCwamrc=
+	t=1747879542; cv=none; b=pdBQ2YPdpo9twMoekFduaRPmLu+vjgoEoLoeFk5icC7NwwBMyrQ/5cu9wDMaQZyzDgJfNrtCjx4Zvg9FgAbRvsIi1y0kvi0lYvF8XPfC4pQILy6IlXOpGBpoL4knfkKK0g5PvORsIwTy85deMpOD98hYNfWYHdX4tk5ybB6uY24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879535; c=relaxed/simple;
-	bh=/mhsdzUmtdARU3dtQ7Cz33nC3s0yHIeBjPKczPA31Sc=;
+	s=arc-20240116; t=1747879542; c=relaxed/simple;
+	bh=d4aY2DNjR1rCxbJY9u3765i2iRjrK11lfiEQzcYd23U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fn6uwFrSk8N6AQ6M+dqcEAD/+ZMUS4vCa4JtGo9Ttb2xpCHWzY04C59lYU4wtqFE02N3Pp6VmFu/yvditD7ZjJN5MizPfYYfBpDv997wgdIRId/uzd9fy3Ki5Ar6ae89hjltb8dcU2dFIAugTPWebIdY8s4ZMb/ZNrwsEmNZmSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adTlfIpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13266C4CEE4;
-	Thu, 22 May 2025 02:05:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KtMs0rUo2GPWb7RwpHKEgCsrYo2CF9kiCZuCqFSlbBmcBk6LDDj0W5qybuDnDxmUdAUF2NgirWuH+3+w6EzZ6D1pyATYKYzhTVwnobiUj9BMOGqDCtRk7akRooSz5BaDE5pAFRZz4MZ21KB5Ol4VgHNR9pg1fpvbwdJaWoiNyFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfg5tsOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78245C4CEE4;
+	Thu, 22 May 2025 02:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879535;
-	bh=/mhsdzUmtdARU3dtQ7Cz33nC3s0yHIeBjPKczPA31Sc=;
+	s=k20201202; t=1747879539;
+	bh=d4aY2DNjR1rCxbJY9u3765i2iRjrK11lfiEQzcYd23U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adTlfIpIdI2+JWUNHthbVyNUh4ty2uC1i6CeZ0g88CMu2qBhNj44G9dcVvWi8jR10
-	 qS7+RT9VwvypOwYj1lSCrhcBPXuXxgb7svX/YebxFlRY+LVFipIKe908WEIFXx5Ptm
-	 hoXgLOCFObRzgpbmPetdBk6Ku4ND4Wc5qMXgBWk9+zV97+TuQvyhYxIQoKFQLlv/Xr
-	 TnY8t6MJjnvRBDvIa42i5izdF3uxzAZNhDwwRThRQGS6Q8Pkv0WePSjes3YE3v0TLE
-	 wIOKAoPUNSoxf0fz/p3JL59bv59NPEl8bTss/w/KLb2ngChLkPjFMqL2fnJuG4fza9
-	 gErbNKRd1xWFQ==
+	b=jfg5tsOOiGVNzye/oKnFu/RhtXFjGU2NbpgdTZcSVGDIi497PO+nAd+wM5j59gVzu
+	 jbKi1U6v77lyEbTxcM64SswjiprUYyOsu3AnXG4lSFPlR5gx/6QmfdJGi1YR43uD2Z
+	 toyB+jTP42jFPxLjriYIp++06VOyyhMe+JdUJ50NIgMXr2Hzf2AV9lfyeD/N+qHjnU
+	 x7mFHNQEHzH1hjWiVxPR2N2Th0gLmXwFinOFlsd52yYDKz95+glNpPhKGnFycmUPL/
+	 1svse4yppMNxK5OEpPI45kcc1JIB2DEg1GEJDqUBz0S1ghLSYa5n2K08gQceGtXeP8
+	 TiPB+bgXQWCMA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.1 05/27] af_unix: Replace BUG_ON() with WARN_ON_ONCE().
-Date: Wed, 21 May 2025 22:05:31 -0400
-Message-Id: <20250521193104-44c0865b191af9be@stable.kernel.org>
+Subject: Re: [PATCH v6.1 11/27] af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
+Date: Wed, 21 May 2025 22:05:35 -0400
+Message-Id: <20250521203337-9e8486e58c6b53f4@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521152920.1116756-6-lee@kernel.org>
+In-Reply-To:  <20250521152920.1116756-12-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: d0f6dc26346863e1f4a23117f5468614e54df064
+The upstream commit SHA1 provided is correct: 22c3c0c52d32f41cc38cd936ea0c93f22ced3315
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -80,34 +80,25 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  d0f6dc2634686 ! 1:  8d734ba6e6dbe af_unix: Replace BUG_ON() with WARN_ON_ONCE().
+1:  22c3c0c52d32f ! 1:  98babb0b1635c af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
     @@ Metadata
       ## Commit message ##
-         af_unix: Replace BUG_ON() with WARN_ON_ONCE().
+         af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
      
-    +    [ Upstream commit d0f6dc26346863e1f4a23117f5468614e54df064 ]
+    +    [ Upstream commit 22c3c0c52d32f41cc38cd936ea0c93f22ced3315 ]
     +
-         This is a prep patch for the last patch in this series so that
-         checkpatch will not warn about BUG_ON().
-     
+         Currently, we track the number of inflight sockets in two variables.
+         unix_tot_inflight is the total number of inflight AF_UNIX sockets on
+         the host, and user->unix_inflight is the number of inflight fds per
     @@ Commit message
-         Acked-by: Jens Axboe <axboe@kernel.dk>
-         Link: https://lore.kernel.org/r/20240129190435.57228-2-kuniyu@amazon.com
+         Acked-by: Paolo Abeni <pabeni@redhat.com>
+         Link: https://lore.kernel.org/r/20240325202425.60930-5-kuniyu@amazon.com
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit d0f6dc26346863e1f4a23117f5468614e54df064)
+    +    (cherry picked from commit 22c3c0c52d32f41cc38cd936ea0c93f22ced3315)
     +    Signed-off-by: Lee Jones <lee@kernel.org>
      
       ## net/unix/garbage.c ##
-     @@ net/unix/garbage.c: static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
-    @@ net/unix/garbage.c: static void scan_children(struct sock *x, void (*func)(struc
-      		spin_unlock(&x->sk_receive_queue.lock);
-     @@ net/unix/garbage.c: static void __unix_gc(struct work_struct *work)
-      
-    - 		total_refs = file_count(u->sk.sk_socket->file);
-    + 		total_refs = file_count(sk->sk_socket->file);
-      
-     -		BUG_ON(!u->inflight);
-     -		BUG_ON(total_refs < u->inflight);
+     @@ net/unix/garbage.c: static void unix_free_vertices(struct scm_fp_list *fpl)
 ---
 
 Results of testing on various branches:
