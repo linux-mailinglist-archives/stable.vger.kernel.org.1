@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 005CCAC0211
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E491BAC0210
 	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5234F9E52E3
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:04:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4D981B640CF
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF313F9FB;
-	Thu, 22 May 2025 02:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF1C5D8F0;
+	Thu, 22 May 2025 02:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHJHm48/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTs0yg5R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC7A1758B
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E046B1758B
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879487; cv=none; b=s8IEHcPyynQywid+5euAS0Q2Ul5+7TNDxncmuBXPvJwas8m3bZ+ULFPlodkDr95ySGsNlCgp859VHX++IG0FFVejUfpRZjO9Q5vhVn1h8W1llSkURZqItAM+a26iuIthwicWfUZe2QmyQhBRlklKHoiJ6cqXlb59Z3kIfPx1cig=
+	t=1747879492; cv=none; b=MQucfY94iz16tdROt4D/+bZalXdVfsQjBS/Y1ST3TmnX4T8AUD58zgQDBEkj9d971D4iD9Wk7fXRgK5SEhrQHuqPNsfifx5PL7iIYvhIWeltLN8Ekderfa40J/nsNJ/Wacy51qvqxAX8tF48HvXpakFqvRf1V9ZPZB9LZIZ5d80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879487; c=relaxed/simple;
-	bh=SmWUuClSv6l92aabDHTIILhwoON8LpqzMjmbZr41/MM=;
+	s=arc-20240116; t=1747879492; c=relaxed/simple;
+	bh=oGjO23zVixLDEnXIFcBrUY/uHK/AmG0KSYkCbXZkYZc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p+iQHvfqLXj8obX73DZjoSl8SBIaddc3gflALLqO5WXGoWJo0QHztFJtBH8vB37sYo8nGrfKqZ0NtNOkcT0HZibQIMi1UK1CM43JmjSn/zIKLxClUqoNsyNWWK8pEq/w71WODVD6BEZYYd8k9lKY5ei1SFahnBabYgFPC3nYxl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHJHm48/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBBBC4CEE4;
-	Thu, 22 May 2025 02:04:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CnaNn6bIN4pRZPY1toVrwy1miqmPUwGfEikkfkIJLAdSHLjWB27n6IGJB5z5Vh1niya2aiDP5fXYPJTg8/pFu3D4fwEJaX1PcUnG3fvAL0l25yAyocuucf1E2Q3uKYYKdqGnpVTsTUSC4wjI8rMPF1dQlOJjeud2mMkYJgwjG7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTs0yg5R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FF6C4CEE4;
+	Thu, 22 May 2025 02:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879487;
-	bh=SmWUuClSv6l92aabDHTIILhwoON8LpqzMjmbZr41/MM=;
+	s=k20201202; t=1747879491;
+	bh=oGjO23zVixLDEnXIFcBrUY/uHK/AmG0KSYkCbXZkYZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHJHm48/KYf0+zoZvRLpsgek37HDnmtzrReORJDF02mACq2XU7WPnditiSpAs9L0P
-	 qFlsZcq17jAhgpIJVCDoBqFgeFWakK021lXEjZ8AlJDrinvBlRDk/bBvA7440Wogu6
-	 WZFhohztL11gCyvVi8eNWTc1C6QqXKZVE4JeQj4UlbfSM9jYg5nSHV3mpSP5BQyLcM
-	 clRuNpe2VXip3fgIIEOloCtGof9h8jFWFwF9VdXs7xvQrmcayn4fWh90ZRrGwfTeXU
-	 LxenFeuH5gih2WoxeY66mHIBLitjU73ov3lcGQJYiiBgMsLslkUzy3fVzgOxEKo9w4
-	 gc8Z8TZuvVbcQ==
+	b=hTs0yg5RgBBxsU3zlT1tK0HQ3aeD+SM8MYzXf/NtPMHIiwCZmWksklVqOckDsJaYn
+	 UFiR0vO1KHB3bB9MuLBL7tejYYJ8RPWDlpzQx2IB/bVHOeCeYbM48/HSZErBmPh9Jd
+	 IXTNFaiZxogtdk8OOlDJcpMZpiKfDvW12zyU7jB8+JzvQqOB2Wb6BFyWwOLHLevoyN
+	 Ovc52kxBvObRumjeahPvSANNTdNhNxnpH05KAKuU9Bo2J7tywdKGiuM3cED8P8heWb
+	 Sa+CJX22O9MKMMRczHlUti5Ngv7PhlEkdmJBRXkOMtUNBMKrMEcA63xR4MNgWjfKuP
+	 WcNyiXZplW3TQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.6 15/26] af_unix: Save O(n) setup of Tarjan's algo.
-Date: Wed, 21 May 2025 22:04:43 -0400
-Message-Id: <20250521175355-480f609a88ccdcac@stable.kernel.org>
+Subject: Re: [PATCH v6.1 09/27] af_unix: Allocate struct unix_edge for each inflight AF_UNIX fd.
+Date: Wed, 21 May 2025 22:04:47 -0400
+Message-Id: <20250521201605-c0b152cf72c52420@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521144803.2050504-16-lee@kernel.org>
+In-Reply-To:  <20250521152920.1116756-10-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: ba31b4a4e1018f5844c6eb31734976e2184f2f9a
+The upstream commit SHA1 provided is correct: 29b64e354029cfcf1eea4d91b146c7b769305930
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -76,33 +76,17 @@ Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ba31b4a4e1018 ! 1:  f5cf8e02384b4 af_unix: Save O(n) setup of Tarjan's algo.
-    @@ Metadata
-      ## Commit message ##
-         af_unix: Save O(n) setup of Tarjan's algo.
-     
-    +    [ Upstream commit ba31b4a4e1018f5844c6eb31734976e2184f2f9a ]
-    +
-         Before starting Tarjan's algorithm, we need to mark all vertices
-         as unvisited.  We can save this O(n) setup by reserving two special
-         indices (0, 1) and using two variables.
-    @@ Commit message
-         Acked-by: Paolo Abeni <pabeni@redhat.com>
-         Link: https://lore.kernel.org/r/20240325202425.60930-10-kuniyu@amazon.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit ba31b4a4e1018f5844c6eb31734976e2184f2f9a)
-    +    Signed-off-by: Lee Jones <lee@kernel.org>
-     
-      ## include/net/af_unix.h ##
-     @@ include/net/af_unix.h: struct unix_vertex {
+1:  29b64e354029c < -:  ------------- af_unix: Allocate struct unix_edge for each inflight AF_UNIX fd.
+-:  ------------- > 1:  325285d9fc869 Linux 6.1.139
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
