@@ -1,54 +1,80 @@
-Return-Path: <stable+bounces-146112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9318AC122B
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 19:34:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612BFAC123B
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 19:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70C8C501352
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 17:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B0AF3B137A
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 17:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0142818DB16;
-	Thu, 22 May 2025 17:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9807618FDBE;
+	Thu, 22 May 2025 17:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="h2YhO322"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="LG1VvoQo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4977418A953;
-	Thu, 22 May 2025 17:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A49E189F57
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 17:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747935247; cv=none; b=N6XTuo68rraoraZpm0JJBNUZvbVB54whIBqPa+HYLFglG7OaCRZ2wJZF0Nmc9jDJYRf2691+GPOUdI/b+mAguUBmwjvMZAU1ZdKFWbm6Gu+eV3AZP1MEFhvP1HaLBZ1LTCGPBN+ycBqGnNL4ZTI1ln7BAFRfdOmRCojnkswTKvQ=
+	t=1747935536; cv=none; b=UksLY2tTLKezdqiI/VoWHCH4eNPVqJXSAkrsaVgb2kOdGMEcdLXk2+P28tNkAkiHasKrBkLboqmooFnGAaqu3lRqIKrRu8QiPpoGKCvfjc5ziGzPKQsdhicxR+SBc9c89g7qf6hdqW3JSbdwLXZJxP+nFWCK2ns8R7T+PjJGsNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747935247; c=relaxed/simple;
-	bh=kyEjFb/X6MFMPK9SDnmdY55VU+U7kclm6F3WTL6NvXs=;
+	s=arc-20240116; t=1747935536; c=relaxed/simple;
+	bh=mPNvJWQfwSWJIqhLs1HlrDn/WYuYPmB8wfxtTNGfuDo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qaCpCjH0LTJo+9pg7zsTtk1n7pc/deUTz4t+H4y7y2011p8bYeHdiDPuGt2jkdj4lDBHzf3UbkfxMflFn38hfxZZpSJBlEjxS/IdI2tPTyLm9nRrVVvSg8W2ObxfNil3AFnrgZLsF4BOr5RfWIBDyOhT7awGCLXMzNfxFjwr354=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=h2YhO322; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54MHXanw3087605
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 22 May 2025 10:33:37 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54MHXanw3087605
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1747935218;
-	bh=mQqHwVKFb6dr1hLOfIrFDJS5wccc1ddOjmF9Hl44AOg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=h2YhO322mS6R8+/b50RFlBFg1Ax2mf4pU54cG87mgRjdVzZFyqBLJWyMiZQqw/OC3
-	 9ZZiPfsAgsDnVuPircVJFveyHpjqRqBBtPM9oyoGzsDthOS9CnlR/LHZO1Jbdu5rDv
-	 dWfT4PbefjWBojeNDSIdUe9lhpZVSgJRhtkvPLSdiauSG0QWlzi4899apE8UAh7aPi
-	 KkN6FoE2hn7Kx6ULFsdEibMyFlfsIwxS+oOu/17wFpOYhnLCAO0VkV/93J5NYzwhpU
-	 kOtmYvbFcjWxWjsdPW8TQFJl6v6ncVeVz8OekwSy8aodbwuO0/Ciirbw9KpSPd5+6q
-	 HsiRy0KJBr3fw==
-Message-ID: <83b013fb-2057-4097-ac8c-b5c38d019a0f@zytor.com>
-Date: Thu, 22 May 2025 10:33:36 -0700
+	 In-Reply-To:Content-Type; b=jp/8ZoBN0y2cBurcYm8o0R83OPPdx+i/HZnljixjm8MsTVwkg295flSGPT7tXjzChKN3sH0BHGLjV08jP6cssQfHO0qgOBHC8+8+uannuR6+ja7x9kvBaYDB7dZlJhiL/WN9yOzc3nJIlnNh/0evblsfqbARJCQEUjjPI3/9I3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=LG1VvoQo; arc=none smtp.client-ip=209.85.166.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-8647a81e683so203650339f.1
+        for <stable@vger.kernel.org>; Thu, 22 May 2025 10:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1747935533; x=1748540333; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nM6gVpWW7hwcfcfH51deVSV04V713QkHpPw2pc8ZGq0=;
+        b=LG1VvoQoDhqaMS4RWdQx94vF+mu/UYVO0FnOsD3JF0toWz9MjUzjIYKnl7/XHPKErf
+         ZdCNevR+O8TMusd0tQPQTjWFhabBk6GckLrwIMRr+5T4S22Xk0tjEpNZsx47DdmZN+aK
+         SgmeKJe46M9ssZApIJVJsxf15hAFiP6c79CRqLlP5M9tL+c0o9C15qOe9GuGik7hOuHS
+         Kp7fR5rxjE6GkPGchRPJU6OkCEYGl3JzFNFZb/2ydoLHrFONZtAAiBa+Dnn3vMHYywot
+         DUjV5fVw3+aTmV9R0viM0RReHocOThudTOlcN5DvBqFCPIeiBV026/vc64T2JeQH0N3U
+         gY9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747935533; x=1748540333;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nM6gVpWW7hwcfcfH51deVSV04V713QkHpPw2pc8ZGq0=;
+        b=b+L4rL0eIKoPSdD1rzKKpTdDjDcYQqq00IwgpUkzLV3tDlu12HjQ5R8e+kDd9UzuVA
+         bucQFNo0NORp/4EwYKVXSGlny0UG7JivgGWbVtkMi4dMWa9vhsZl3lLkpAVvEOjN7UOV
+         zeIaIGqzciFE8BLzJ6AZmW5Lnro1DgSWcC+9H183d7IufAGiEZrO9v0Den2zUz/Bi0gh
+         beMrm+zSORZHfNMWXKyUUWIKp5QZMWIqiAN1qG35ITlVn7hHuOcCafi0pl5RMftPH9CF
+         UmqeWna/8CeGKgG2lTbydhFb2q/MZcUpLeT/lcW9I7HeC9XdGZv+UtS/54k0xj31RH8Q
+         ug9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV+odoTG8axcE3HMPoihSZPvKxENMH1CcxuN1uNLQjqTXAN7Ro2GbSymb08DNTFV/ZnyUTf5oM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykqD5TCzKfYG3kyxqlOuo0ij1VM8at6uxXvNUQvBs/AT/lRKVt
+	43lSj7R6+sz28jZpp1wRRsCMcgPveJ5UTs8iK5xaBZuofejtF5OdRtV5LSHvhnxotgw3rMnoUNP
+	isP+f
+X-Gm-Gg: ASbGncsz9ANfKK22d32Wcx5XsqxTJZvZfuN5V2S2oS59dSlB2QU8DqSIBAKty4vWd7q
+	E4gZMoaEP5pLnByhRfo8rR7zA/UaIJSLD5Ufy6DI772emLvrf/zDbgzLQ/YlwhbyJZgLiWhqJzj
+	RkeQWVzmDg1NcEmpxLaggHXdlX1XMyPC4FBrnVqa7o28sNfeKHiJPem38jMUPU4Nd4w9IAf24WE
+	0Wgd3Ui4M6kNNqi1jRNdLem3wF4Cel5rVUNlTlbi1URxhQ1MLoTh5x4BwM3vBY2Hxs0HMtfV0w2
+	KthV3nDKmdBME2pSZjKSz+OTnn2QDEG19fdohBwyDg3xq2w=
+X-Google-Smtp-Source: AGHT+IF6b+fW8vRi48fyuKhfYCPzjJZNoYLDWjSHJ031JPvz5fE62vULtRWlBoHyfcTLf0e9Puh3Xg==
+X-Received: by 2002:a05:6602:371b:b0:85b:3f1a:30aa with SMTP id ca18e2360f4ac-86a23229aabmr3343648039f.9.1747935532879;
+        Thu, 22 May 2025 10:38:52 -0700 (PDT)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-86a236e69acsm313856039f.31.2025.05.22.10.38.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 May 2025 10:38:52 -0700 (PDT)
+Message-ID: <b1ea4120-e16a-47c8-b10c-ff6c9d5feb69@kernel.dk>
+Date: Thu, 22 May 2025 11:38:51 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,87 +82,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] x86/fred/signal: Prevent single-step upon ERETU
- completion
-To: kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, peterz@infradead.org, andrew.cooper3@citrix.com,
-        stable@vger.kernel.org
-References: <20250522060549.2882444-1-xin@zytor.com>
- <202505230141.4YBHhrPI-lkp@intel.com>
+Subject: Re: [PATCH] block: Fix a deadlock related freezing zoned storage
+ devices
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: linux-block@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Damien Le Moal <dlemoal@kernel.org>, Yu Kuai <yukuai1@huaweicloud.com>,
+ Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org
+References: <20250522171405.3239141-1-bvanassche@acm.org>
 Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <202505230141.4YBHhrPI-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20250522171405.3239141-1-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/22/2025 10:20 AM, kernel test robot wrote:
-> Hi Xin,
+On 5/22/25 11:14 AM, Bart Van Assche wrote:
+> blk_mq_freeze_queue() never terminates if one or more bios are on the plug
+> list and if the block device driver defines a .submit_bio() method.
+> This is the case for device mapper drivers. The deadlock happens because
+> blk_mq_freeze_queue() waits for q_usage_counter to drop to zero, because
+> a queue reference is held by bios on the plug list and because the
+> __bio_queue_enter() call in __submit_bio() waits for the queue to be
+> unfrozen.
 > 
-> kernel test robot noticed the following build errors:
+> This patch fixes the following deadlock:
 > 
-> [auto build test ERROR on 6a7c3c2606105a41dde81002c0037420bc1ddf00]
+> Workqueue: dm-51_zwplugs blk_zone_wplug_bio_work
+> Call trace:
+>  __schedule+0xb08/0x1160
+>  schedule+0x48/0xc8
+>  __bio_queue_enter+0xcc/0x1d0
+>  __submit_bio+0x100/0x1b0
+>  submit_bio_noacct_nocheck+0x230/0x49c
+>  blk_zone_wplug_bio_work+0x168/0x250
+>  process_one_work+0x26c/0x65c
+>  worker_thread+0x33c/0x498
+>  kthread+0x110/0x134
+>  ret_from_fork+0x10/0x20
 > 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Xin-Li-Intel/x86-fred-signal-Prevent-single-step-upon-ERETU-completion/20250522-140954
-> base:   6a7c3c2606105a41dde81002c0037420bc1ddf00
-> patch link:    https://lore.kernel.org/r/20250522060549.2882444-1-xin%40zytor.com
-> patch subject: [PATCH v1 1/1] x86/fred/signal: Prevent single-step upon ERETU completion
-> config: i386-buildonly-randconfig-003-20250522 (https://download.01.org/0day-ci/archive/20250523/202505230141.4YBHhrPI-lkp@intel.com/config)
-> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250523/202505230141.4YBHhrPI-lkp@intel.com/reproduce)
+> Call trace:
+>  __switch_to+0x230/0x410
+>  __schedule+0xb08/0x1160
+>  schedule+0x48/0xc8
+>  blk_mq_freeze_queue_wait+0x78/0xb8
+>  blk_mq_freeze_queue+0x90/0xa4
+>  queue_attr_store+0x7c/0xf0
+>  sysfs_kf_write+0x98/0xc8
+>  kernfs_fop_write_iter+0x12c/0x1d4
+>  vfs_write+0x340/0x3ac
+>  ksys_write+0x78/0xe8
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202505230141.4YBHhrPI-lkp@intel.com/
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Damien Le Moal <dlemoal@kernel.org>
+> Cc: Yu Kuai <yukuai1@huaweicloud.com>
+> Cc: Ming Lei <ming.lei@redhat.com>
+> Cc: stable@vger.kernel.org
+> Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
 > 
-> All errors (new ones prefixed by >>):
+> Changes compared to v1: fixed a race condition. Call bio_zone_write_plugging()
+>   only before submitting the bio and not after it has been submitted.
 > 
->     In file included from arch/x86/kernel/signal_32.c:32:
->     arch/x86/include/asm/sighandling.h: In function 'prevent_single_step_upon_eretu':
->>> arch/x86/include/asm/sighandling.h:44:21: error: 'struct pt_regs' has no member named 'fred_ss'
->        44 |                 regs->fred_ss.swevent = 0;
->           |                     ^~
+>  block/blk-core.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
 > 
+> diff --git a/block/blk-core.c b/block/blk-core.c
+> index b862c66018f2..713fb3865260 100644
+> --- a/block/blk-core.c
+> +++ b/block/blk-core.c
+> @@ -621,6 +621,13 @@ static inline blk_status_t blk_check_zone_append(struct request_queue *q,
+>  	return BLK_STS_OK;
+>  }
+>  
+> +/*
+> + * Do not call bio_queue_enter() if the BIO_ZONE_WRITE_PLUGGING flag has been
+> + * set because this causes blk_mq_freeze_queue() to deadlock if
+> + * blk_zone_wplug_bio_work() submits a bio. Calling bio_queue_enter() for bios
+> + * on the plug list is not necessary since a q_usage_counter reference is held
+> + * while a bio is on the plug list.
+> + */
+>  static void __submit_bio(struct bio *bio)
+>  {
+>  	/* If plug is not used, add new plug here to cache nsecs time. */
+> @@ -633,8 +640,12 @@ static void __submit_bio(struct bio *bio)
+>  
+>  	if (!bdev_test_flag(bio->bi_bdev, BD_HAS_SUBMIT_BIO)) {
+>  		blk_mq_submit_bio(bio);
+> -	} else if (likely(bio_queue_enter(bio) == 0)) {
+> +	} else {
+>  		struct gendisk *disk = bio->bi_bdev->bd_disk;
+> +		bool zwp = bio_zone_write_plugging(bio);
+> +
+> +		if (unlikely(!zwp && bio_queue_enter(bio) != 0))
+> +			goto finish_plug;
+>  	
+>  		if ((bio->bi_opf & REQ_POLLED) &&
+>  		    !(disk->queue->limits.features & BLK_FEAT_POLL)) {
+> @@ -643,9 +654,12 @@ static void __submit_bio(struct bio *bio)
+>  		} else {
+>  			disk->fops->submit_bio(bio);
+>  		}
+> -		blk_queue_exit(disk->queue);
+> +
+> +		if (!zwp)
+> +			blk_queue_exit(disk->queue);
+>  	}
 
-Hmm, this statement is under IS_ENABLED(CONFIG_X86_FRED), which should
-be a compile time FALSE with i386.  Why it is still being compiled?
+This is pretty ugly, and I honestly absolutely hate how there's quite a
+bit of zoned_whatever sprinkling throughout the core code. What's the
+reason for not unplugging here, unaligned writes? Because you should
+presumable have the exact same issues on non-zoned devices if they have
+IO stuck in a plug (and doesn't get unplugged) while someone is waiting
+on a freeze.
 
-Thanks!
-     Xin
+A somewhat similar case was solved for IOPOLL and queue entering. That
+would be another thing to look at. Maybe a live enter could work if the
+plug itself pins it?
+
+-- 
+Jens Axboe
 
