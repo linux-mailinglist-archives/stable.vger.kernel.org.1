@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-146127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C49AC15D7
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 23:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9EEAC15D8
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 23:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A89511C0127E
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 21:19:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4088E1C01662
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 21:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B7F25485E;
-	Thu, 22 May 2025 21:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DAB254B06;
+	Thu, 22 May 2025 21:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GFLOi7dm"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Q1FYkYuk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8CB25485C
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 21:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2CF7DA73
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 21:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747948774; cv=none; b=S7yee032pEg+1906spiAJSrWIfaRMP20UOf5mbT8Yi42YVo+Bh/hwsJ7t54dc1SbHD+VX9TUUyx7VfWCuj+Y6QtkwgSqSEc/esuaosZnTzMrS1iKPK96y1F4jRU3h/EKuBu28x6eUfnjjbD12VI9IBNrfJH9WXTCUmIl5+K2piw=
+	t=1747948889; cv=none; b=V5PSEma5l24/G+D0ykqoA9QzN+I1O5YJI4gjzA19hjXtTP2q7TJrkho/2K8V+YNi/S33DJIL0poN+q0ZQ2dt2vJDt/cbgLpOrfIBtCJ9s314eSK4grmZqaReBZ3s3r7A9Hw8M+P/DKsc9iR9lnjAdFvX/uvD7cdeK5XP+oOmY8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747948774; c=relaxed/simple;
-	bh=BBKnRAPi0e7QaTOeCgBTonUanVg649xIKwDJZfoFIBE=;
+	s=arc-20240116; t=1747948889; c=relaxed/simple;
+	bh=eQUm987GAOifXtJQfRQfYju0hvoo0t1YRLhADJaixnc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mcaAiyOWd4aV4aE1n4gEEFvNzHMALK/FJkEWQQCiq36ZUZoxqHzO2CUruBShrVK38e0wKqxIRZ6JVM3ukBWrMaCR+EencLLysEaOmFexVyqPhYrFO0S+wtBOaYuYArT7nphLXkI3JqGx3RO2H2qrsegyavgYFjuzUt1OZWHbIDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GFLOi7dm; arc=none smtp.client-ip=209.85.221.44
+	 In-Reply-To:Content-Type; b=Uho/lKvLdf6ojqJ2mkgu+Wrge/X1BTObvQdoncDrwplPhEEG2z0xpCvALWR0oU9aZ7ubsBNkKZuqcs5vkrEcSX1FUA0+5ExgZaLIdapBxnxeXl8fxlY8UgbWGULZVVq3G2ijItb5+bTpU1YKV2Z1AA8+qX3uff3fdQK/GPmbsgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Q1FYkYuk; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a36e090102so2998478f8f.2
-        for <stable@vger.kernel.org>; Thu, 22 May 2025 14:19:30 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a37d24e607so2698088f8f.1
+        for <stable@vger.kernel.org>; Thu, 22 May 2025 14:21:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1747948769; x=1748553569; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1747948885; x=1748553685; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PH2YmKea+8HaOzYmFyz3BV5iotiuHGfzl2DuRWMm2O8=;
-        b=GFLOi7dmjxhKJzcgnnnLBNUyk4QTCawM4T63bNnCAN0pm0VJo+j6SyaqIYnZ+3fdFp
-         j6N1CoZcHtZiGG6wUEY8VQvTqRs/nJka2m/Kqbs2rJzDlXFEoXl16y9Ia5muy/3qaVmC
-         dNrdCxZi0ydsvO3csyOaOcWd/qisLBaPkGqLNp4Jon/B1alR0o9DeaHAd2J9KzWUJ8Pp
-         DugVsdByDnie6D1IXkEA/rO1Ro2lVO0XFgn3WoA543fBCh7eviNz0MSJc+TpbesgAr9L
-         9CqYOankH+9iwR0ZZ2IgilwJCmUUKGxLZG0Aufmao9P5eh30biT8oJ7PQ/0r5U6SZMdX
-         g+iA==
+        bh=2hE3UTfZkn0Pd/k44vtU6byVe7DQxOh/y6oJzEXkOhE=;
+        b=Q1FYkYukLO4XsRYIw/FRrvegNzQmLX2mLk4YLwG/Kt1hdZ0/mHIPZSnlj4CkBa+T2s
+         OKLC3QhXI5J0+XPW8oJY2U0bS2nwjA2E+BnPYL8fi3RX/6Y9NINoa/jJYEc+K40Csbm8
+         4Yzf02H1tvfS++zlqWerRcokCweIyGyC+h4h5zcSbowt5/ISw5B6IzqcAezz/YylXcVZ
+         KbVz8Gxj3S+eesfYiGhD6jRqbAoZ+J/QoaSGnhWOsW4Zm++dy+N0B+qFrL4aSm7VHO/H
+         j7jCIpiDlBb+vpTftcJ5t3g9w0D93TFFkMn0AlEW2IANAl/WBhYejPXg8lh0Ihc7g6UK
+         levw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747948769; x=1748553569;
+        d=1e100.net; s=20230601; t=1747948885; x=1748553685;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PH2YmKea+8HaOzYmFyz3BV5iotiuHGfzl2DuRWMm2O8=;
-        b=SO4icsKYSgasNJLG0t7p4A/IEJIRjPrpMK5DociUnXTjvPbHtIj6ODq1zAb8Coil7k
-         oOC9jPMNi9kRU95M1FWqQ62p5b754YAZruGyHnfpIPnTGLVjF/p0ZeStVqiGobAmYPef
-         zBDttsuqL98OhMbF0DyAgpd/Hyz23RjpReisNIZcGZg0YzfMUG5DBR0y591Jz52BnrEk
-         lKw7kyvVm/ZpnkLjrJCZnH21e3CVKQZlkyCld+JWUOLMMeKLROQ8nUQHl3VnFCs++tMP
-         AeLlDm13U1ExQVMUqSeY0fmYmwQpqM4obemlUJ5lHTjoZ8OC2RjhFO6AWT+F2qa/q9/D
-         aaiw==
-X-Gm-Message-State: AOJu0YzPdntQCzK89I9+Ra1LK2lcA8QBID6OWFoTLL6rL5RCJhci+tCU
-	AN1e0PuHAUsURCqHWamyfQox7lYe2jh9RHuSoWl6DkCd8Iuj4gYEfnuN/9uM78nYXjVvkI4QsGt
-	l84He
-X-Gm-Gg: ASbGncstgasoP+zc87hZWZkTdbJt0VyCr5Ohknss5S5qbc0NcM2WMZWDAyuj258Tq9Y
-	sJ5TXTb5Ux40jWv6gXPoPFwLPVi6GJX/ggkIAG4zC4z3wBVl4tJc5zI8v+dLcISKuTlyatP/krF
-	iHvaseYNDM1s2seSGDhY+6PK2a1Ho8gQ61mxRkVXNYmgLuOSr3mXHDp8yF9eeCVPs/lPUxQ1nJY
-	qcZpaSUf4kwuL3+o3t7TBdlzeLedbmEq9gpc6g58Zcch0YTFZ9BRFza1sgaYtkqCP4dQX8NMqp1
-	ieaoXH4+TQGYxWgregGDuaiTWbKnVI1YSaEYrGk5F/owAhV2vHFtBPlwAgeSrkBKKvcjwdC9RET
-	zTik=
-X-Google-Smtp-Source: AGHT+IFiJRqKBWXRCCJxY4D1AJIRiJbmZ8E7qgzAhmex0nlgl/IP/1IrQwbTN1IoUl56SOi3jdqQbA==
-X-Received: by 2002:a05:6000:2011:b0:3a3:6f1a:b8f9 with SMTP id ffacd0b85a97d-3a36f1aba52mr15953429f8f.15.1747948769365;
-        Thu, 22 May 2025 14:19:29 -0700 (PDT)
+        bh=2hE3UTfZkn0Pd/k44vtU6byVe7DQxOh/y6oJzEXkOhE=;
+        b=LJZtuomqeZzk8A9k8isWNjpTUhfgDQecfV2pgA9WFUrMXtVeyQV+e+JsM2FJKR2IVK
+         HyU8OZcmK5zzgewvjmMf9oFH1JkFjNbu82kJpbIC3xXnOdJ59ZKeGHSME5RVJfXVGhpo
+         7vkJNoAVuqIwEUePRnipnguNZKzk6c67D2IeUrFf/yKSdZ+i1HNne5DPufoqrAgiN+rB
+         TWsZYUqU6YKd1OGd3LgE1CGfKKC/J+YC9oFiR7rh6M+Vvmfv71sRlCJSPAAsp8wn6wOk
+         HPdABbagXPYhgL21ctV2nYJybgYuDrhw9B3uP2M6CISJ4VTZ/FvS2d7JpVFL5a7bta/v
+         Topw==
+X-Gm-Message-State: AOJu0Yx7NzsoctmwQfIO3JYcmzHPRzpMVEvLgcAdxNDKk01vSMTZfRQa
+	Tm5qS+qSSal0Jy+Tlola58z1T9M/Tp6Z+y6Bt8kreK95V83Ek/kRDeYjhMyXaoKLp0QtAz0Md8l
+	ok1Cg
+X-Gm-Gg: ASbGncu2XFVdlPg6PWijc6zxTrBJOkn7B6cB1AJF65gMW+pCKLfnoD0boG001EVhxn8
+	uLlDVFPCNNxrtmsioW6Qyv1Fn9uWD8qJJCXonHohXQ9Bln12w60Lxim8chIO0DztWioR/0rNcC3
+	LVlL+rua/NgkIyk7soNWTLmDikjaUB6M3vWKhoJ90ItB0mBSLdVcgtysiP/HVvoHoaw03gX+/33
+	PmMzASo0gzrBkv5YiNd1mlVyTXUWqgHi9GjW5QIzpHFN2ZbfMYlbGPt47Lk2iBKym1OuhlsqZf3
+	i50ke0M1bHKeVbg5AGOtQ14ELLdo4ha+uBJKu+aO6Dc7NIoWKtBo3X6rO7otHr2ySEiGDT5XAJS
+	6sOCDthYgckvzUg==
+X-Google-Smtp-Source: AGHT+IFK7+m3RiuyLSTeGlsVXt796+b9KbSzqz1MbOhhnoyik6YS5m2jiZxuMC3jGxiRYIuCzSTjow==
+X-Received: by 2002:a05:6000:40c9:b0:3a1:fc5c:dec7 with SMTP id ffacd0b85a97d-3a35fe67788mr22345225f8f.21.1747948885352;
+        Thu, 22 May 2025 14:21:25 -0700 (PDT)
 Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30f364907d4sm5997273a91.24.2025.05.22.14.19.26
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b26eb081b06sm11756903a12.52.2025.05.22.14.21.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 May 2025 14:19:28 -0700 (PDT)
-Message-ID: <3f1db027-b4df-4035-9d10-af6999d27f7f@suse.com>
-Date: Fri, 23 May 2025 06:49:11 +0930
+        Thu, 22 May 2025 14:21:24 -0700 (PDT)
+Message-ID: <6377b61b-c16e-4d10-becc-53ac4af72725@suse.com>
+Date: Fri, 23 May 2025 06:51:18 +0930
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,12 +83,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "btrfs: prevent inline data extents read from touching
- blocks beyond its range" has been added to the 6.14-stable tree
+Subject: Re: Patch "btrfs: allow buffered write to avoid full page read if
+ it's block aligned" has been added to the 6.14-stable tree
 To: stable@vger.kernel.org, stable-commits@vger.kernel.org
 Cc: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
  David Sterba <dsterba@suse.com>
-References: <20250522210553.3118311-1-sashal@kernel.org>
+References: <20250522210549.3118269-1-sashal@kernel.org>
 Content-Language: en-US
 From: Qu Wenruo <wqu@suse.com>
 Autocrypt: addr=wqu@suse.com; keydata=
@@ -115,7 +115,7 @@ Autocrypt: addr=wqu@suse.com; keydata=
  /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
  o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
  JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <20250522210553.3118311-1-sashal@kernel.org>
+In-Reply-To: <20250522210549.3118269-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
@@ -124,145 +124,147 @@ Content-Transfer-Encoding: 8bit
 在 2025/5/23 06:35, Sasha Levin 写道:
 > This is a note to let you know that I've just added the patch titled
 > 
->      btrfs: prevent inline data extents read from touching blocks beyond its range
+>      btrfs: allow buffered write to avoid full page read if it's block aligned
 > 
 > to the 6.14-stable tree which can be found at:
 >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > 
 > The filename of the patch is:
->       btrfs-prevent-inline-data-extents-read-from-touching.patch
+>       btrfs-allow-buffered-write-to-avoid-full-page-read-i.patch
 > and it can be found in the queue-6.14 subdirectory.
 > 
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
 
-Please drop this patch.
+Please drop this patch from all stable branches.
 
-This is again a preparation patch for larger folios support of btrfs, 
-and the optimization to dirty a block without reading the full page.
+Although this patch mentions a failure in fstests, it acts more like an 
+optimization for btrfs.
 
-This patch alone doesn't cause any difference for older kernels and 
-should not be backported.
+Furthermore it relies quite some patches that may not be in stable kernels.
+
+Without all the dependency, this can lead to data corruption.
+
+Please drop this one from all stable kernels.
 
 Thanks,
 Qu
 
-
 > 
 > 
 > 
-> commit 6a2d904623a8d1711b6b5065845d52cb3f2be60a
+> commit de0860d610aaaee77a8c5c713c41fea584ac83b3
 > Author: Qu Wenruo <wqu@suse.com>
-> Date:   Fri Nov 15 19:15:34 2024 +1030
+> Date:   Wed Oct 30 17:04:02 2024 +1030
 > 
->      btrfs: prevent inline data extents read from touching blocks beyond its range
+>      btrfs: allow buffered write to avoid full page read if it's block aligned
 >      
->      [ Upstream commit 1a5b5668d711d3d1ef447446beab920826decec3 ]
+>      [ Upstream commit 0d31ca6584f21821c708752d379871b9fce2dc48 ]
 >      
->      Currently reading an inline data extent will zero out the remaining
->      range in the page.
+>      [BUG]
+>      Since the support of block size (sector size) < page size for btrfs,
+>      test case generic/563 fails with 4K block size and 64K page size:
 >      
->      This is not yet causing problems even for block size < page size
->      (subpage) cases because:
+>        --- tests/generic/563.out     2024-04-25 18:13:45.178550333 +0930
+>        +++ /home/adam/xfstests-dev/results//generic/563.out.bad      2024-09-30 09:09:16.155312379 +0930
+>        @@ -3,7 +3,8 @@
+>         read is in range
+>         write is in range
+>         write -> read/write
+>        -read is in range
+>        +read has value of 8388608
+>        +read is NOT in range -33792 .. 33792
+>         write is in range
+>        ...
 >      
->      1) An inline data extent always starts at file offset 0
->         Meaning at page read, we always read the inline extent first, before
->         any other blocks in the page. Then later blocks are properly read out
->         and re-fill the zeroed out ranges.
+>      [CAUSE]
+>      The test case creates a 8MiB file, then does buffered write into the 8MiB
+>      using 4K block size, to overwrite the whole file.
 >      
->      2) Currently btrfs will read out the whole page if a buffered write is
->         not page aligned
->         So a page is either fully uptodate at buffered write time (covers the
->         whole page), or we will read out the whole page first.
->         Meaning there is nothing to lose for such an inline extent read.
+>      On 4K page sized systems, since the write range covers the full block and
+>      page, btrfs will not bother reading the page, just like what XFS and EXT4
+>      do.
 >      
->      But it's still not ideal:
+>      But on 64K page sized systems, although the 4K sized write is still block
+>      aligned, it's not page aligned anymore, thus btrfs will read the full
+>      page, which will be accounted by cgroup and fail the test.
 >      
->      - We're zeroing out the page twice
->        Once done by read_inline_extent()/uncompress_inline(), once done by
->        btrfs_do_readpage() for ranges beyond i_size.
+>      As the test case itself expects such 4K block aligned write should not
+>      trigger any read.
 >      
->      - We're touching blocks that don't belong to the inline extent
->        In the incoming patches, we can have a partial uptodate folio, of
->        which some dirty blocks can exist while the page is not fully uptodate:
+>      Such expected behavior is an optimization to reduce folio reads when
+>      possible, and unfortunately btrfs does not implement such optimization.
 >      
->        The page size is 16K and block size is 4K:
+>      [FIX]
+>      To skip the full page read, we need to do the following modification:
 >      
->        0         4K        8K        12K        16K
->        |         |         |/////////|          |
+>      - Do not trigger full page read as long as the buffered write is block
+>        aligned
+>        This is pretty simple by modifying the check inside
+>        prepare_uptodate_page().
 >      
->        And range [8K, 12K) is dirtied by a buffered write, the remaining
->        blocks are not uptodate.
+>      - Skip already uptodate blocks during full page read
+>        Or we can lead to the following data corruption:
 >      
->        If range [0, 4K) contains an inline data extent, and we try to read
->        the whole page, the current behavior will overwrite range [8K, 12K)
->        with zero and cause data loss.
+>        0       32K        64K
+>        |///////|          |
 >      
->      So to make the behavior more consistent and in preparation for future
->      changes, limit the inline data extents read to only zero out the range
->      inside the first block, not the whole page.
+>        Where the file range [0, 32K) is dirtied by buffered write, the
+>        remaining range [32K, 64K) is not.
+>      
+>        When reading the full page, since [0,32K) is only dirtied but not
+>        written back, there is no data extent map for it, but a hole covering
+>        [0, 64k).
+>      
+>        If we continue reading the full page range [0, 64K), the dirtied range
+>        will be filled with 0 (since there is only a hole covering the whole
+>        range).
+>        This causes the dirtied range to get lost.
+>      
+>      With this optimization, btrfs can pass generic/563 even if the page size
+>      is larger than fs block size.
 >      
 >      Reviewed-by: Filipe Manana <fdmanana@suse.com>
 >      Signed-off-by: Qu Wenruo <wqu@suse.com>
 >      Signed-off-by: David Sterba <dsterba@suse.com>
 >      Signed-off-by: Sasha Levin <sashal@kernel.org>
 > 
-> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-> index 9a648fb130230..a7136311a13c6 100644
-> --- a/fs/btrfs/inode.c
-> +++ b/fs/btrfs/inode.c
-> @@ -6779,6 +6779,7 @@ static noinline int uncompress_inline(struct btrfs_path *path,
+> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+> index 06922529f19dc..13b5359ea1b77 100644
+> --- a/fs/btrfs/extent_io.c
+> +++ b/fs/btrfs/extent_io.c
+> @@ -974,6 +974,10 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
+>   			end_folio_read(folio, true, cur, iosize);
+>   			break;
+>   		}
+> +		if (btrfs_folio_test_uptodate(fs_info, folio, cur, blocksize)) {
+> +			end_folio_read(folio, true, cur, blocksize);
+> +			continue;
+> +		}
+>   		em = get_extent_map(BTRFS_I(inode), folio, cur, end - cur + 1, em_cached);
+>   		if (IS_ERR(em)) {
+>   			end_folio_read(folio, false, cur, end + 1 - cur);
+> diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+> index cd4e40a719186..61ad1a79e5698 100644
+> --- a/fs/btrfs/file.c
+> +++ b/fs/btrfs/file.c
+> @@ -804,14 +804,15 @@ static int prepare_uptodate_folio(struct inode *inode, struct folio *folio, u64
 >   {
->   	int ret;
->   	struct extent_buffer *leaf = path->nodes[0];
-> +	const u32 blocksize = leaf->fs_info->sectorsize;
->   	char *tmp;
->   	size_t max_size;
->   	unsigned long inline_size;
-> @@ -6795,7 +6796,7 @@ static noinline int uncompress_inline(struct btrfs_path *path,
+>   	u64 clamp_start = max_t(u64, pos, folio_pos(folio));
+>   	u64 clamp_end = min_t(u64, pos + len, folio_pos(folio) + folio_size(folio));
+> +	const u32 blocksize = inode_to_fs_info(inode)->sectorsize;
+>   	int ret = 0;
 >   
->   	read_extent_buffer(leaf, tmp, ptr, inline_size);
+>   	if (folio_test_uptodate(folio))
+>   		return 0;
 >   
-> -	max_size = min_t(unsigned long, PAGE_SIZE, max_size);
-> +	max_size = min_t(unsigned long, blocksize, max_size);
->   	ret = btrfs_decompress(compress_type, tmp, folio, 0, inline_size,
->   			       max_size);
+>   	if (!force_uptodate &&
+> -	    IS_ALIGNED(clamp_start, PAGE_SIZE) &&
+> -	    IS_ALIGNED(clamp_end, PAGE_SIZE))
+> +	    IS_ALIGNED(clamp_start, blocksize) &&
+> +	    IS_ALIGNED(clamp_end, blocksize))
+>   		return 0;
 >   
-> @@ -6807,14 +6808,15 @@ static noinline int uncompress_inline(struct btrfs_path *path,
->   	 * cover that region here.
->   	 */
->   
-> -	if (max_size < PAGE_SIZE)
-> -		folio_zero_range(folio, max_size, PAGE_SIZE - max_size);
-> +	if (max_size < blocksize)
-> +		folio_zero_range(folio, max_size, blocksize - max_size);
->   	kfree(tmp);
->   	return ret;
->   }
->   
->   static int read_inline_extent(struct btrfs_path *path, struct folio *folio)
->   {
-> +	const u32 blocksize = path->nodes[0]->fs_info->sectorsize;
->   	struct btrfs_file_extent_item *fi;
->   	void *kaddr;
->   	size_t copy_size;
-> @@ -6829,14 +6831,14 @@ static int read_inline_extent(struct btrfs_path *path, struct folio *folio)
->   	if (btrfs_file_extent_compression(path->nodes[0], fi) != BTRFS_COMPRESS_NONE)
->   		return uncompress_inline(path, folio, fi);
->   
-> -	copy_size = min_t(u64, PAGE_SIZE,
-> +	copy_size = min_t(u64, blocksize,
->   			  btrfs_file_extent_ram_bytes(path->nodes[0], fi));
->   	kaddr = kmap_local_folio(folio, 0);
->   	read_extent_buffer(path->nodes[0], kaddr,
->   			   btrfs_file_extent_inline_start(fi), copy_size);
->   	kunmap_local(kaddr);
-> -	if (copy_size < PAGE_SIZE)
-> -		folio_zero_range(folio, copy_size, PAGE_SIZE - copy_size);
-> +	if (copy_size < blocksize)
-> +		folio_zero_range(folio, copy_size, blocksize - copy_size);
->   	return 0;
->   }
->   
+>   	ret = btrfs_read_folio(NULL, folio);
 
 
