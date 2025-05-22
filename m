@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF649AC0233
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:07:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 987BBAC022F
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B38E41BC3922
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 564359E303C
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECA18BEC;
-	Thu, 22 May 2025 02:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D37539A;
+	Thu, 22 May 2025 02:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KYJLwgu4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXTPFOCL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA842B9B7
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DD56FBF
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879623; cv=none; b=rIFENFEekCmdgSq4qq4HMTFzE6g6+yeazm01fZ3ERIjod28GAN7KTCOI0jsWMIUQlD/FbzlPqnjUCk9Jtactkf7QBhta70nv411+JfufGxlHQ56mTo/jZJwzYL4LM/O45KMo4ugIrwW6VYEDLh+9hjooPzzeB7C7GsRkj42zgl4=
+	t=1747879627; cv=none; b=Sd57xdr7Y4Tpc1wMJb8vp/x4mZJC29LeQ/Ugkz9Osc2tVz83m85Drb29Ia0RUY+sAwgCVIhespO7tsP90weXxJtw2rEyecAkbrJRATtBBNXCr1RPv4FFmoAp1hAvSaXRbTbMm3w3qrbPzYwIyU6O0tus+UGG4yUQ4scccLhmFrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879623; c=relaxed/simple;
-	bh=YCPP4mQG8zuMZ3QQw32GNqSpjby+tGED4B+1v7/NODs=;
+	s=arc-20240116; t=1747879627; c=relaxed/simple;
+	bh=ZAx3a1ZQu2/vYu9heKy7mkPKeyBs9MsX/fambDQM0MA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sj7WqAhIGDSpCyE68U9FEOXAi/SrJJadMYpEvSOLyyNCZ2nuxH3o5A72x63AQrDbpfM5Ms3aeWSkfMNgWwb6NqDplWutPAowAn61IpNeNSyyDDYSpkJXsnNZ9TJH+5Qf2bTrX8F+On55br9Z5psli0KVQmrt5MutCOTfhtPi7JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KYJLwgu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FFCC4CEE4;
-	Thu, 22 May 2025 02:07:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J5DcINTxZ24S1FHIeR4SMC9KcGvrApH5Tv8k8pts+7UYfprUTqRbAy1nfiOIy/XIGyhTeTZq2sxiP5AZ8KXad5qEE1+ki7Nw3q4B8AmXHbhGkwp4sOAyl2+tSHdPuULeY5qAy5K47IFWFZbm9MtS4Q0hJTFBlMYMP/TKuPMwT5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXTPFOCL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1AEC4CEE7;
+	Thu, 22 May 2025 02:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879623;
-	bh=YCPP4mQG8zuMZ3QQw32GNqSpjby+tGED4B+1v7/NODs=;
+	s=k20201202; t=1747879627;
+	bh=ZAx3a1ZQu2/vYu9heKy7mkPKeyBs9MsX/fambDQM0MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYJLwgu4mEQoxneR+F7AfRv7UF+532YfOpuhUv9Lq95WtYfBwcGmtrFp52F0ABdk9
-	 FLQ6g96m9DCxuwuh/f2538BCwEn4r4JZyhCknUXqLG52Wzca2rf1eb2//Iz1W6xGLa
-	 3C9ip8FvV8FDazuLxKBrZY8JMXy+Ibcd7iBgKXf9EamYuyLVou33y6gtyokKCdCx9k
-	 0QTGZzdBTO98BqfaudJlpMI1NhWlWsp6BLfYWDwapHVVh9ivzUzp3rCwfEe8KgdRbt
-	 lh3oJ/hXCV3bo+wzt0ffj7eyQnSC4tkv4rR51WDeKVJXvb7ootcT9i6yfV0QIRhFTk
-	 QYLoC+1jGv7DQ==
+	b=CXTPFOCLoIJ6XZ+1/+5Zp8y6+qkyzYprBG9q+lxlPG+Z1iTOVsMak5117/mn1bf/u
+	 226E3lxla+qI+B038cAbNgF6tTTPsvFF52b1JK1/Xo17h2oNwjlAmcSr2eYWIZlKyt
+	 1rPPqmLfHVUyE4NnWGwVj0ZGkZ/kj+w86QmWN6QUgmfkMhBSOarzXEZlCB2sJYCNho
+	 aG1S0HX5Erttvq6SpOVbvfdvXQeSPqeoJoBzXULsK1AdMrVrXVaJp+pJj0nDx/4Myy
+	 1/6+Oc79WomBxR03J6b2/IlMUmj2ujSm/trb1dZDUqNfrknvpEhoZ470mEjNWxbXQI
+	 5qIWhd5Q2ZNJA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.1 12/27] af_unix: Iterate all vertices by DFS.
-Date: Wed, 21 May 2025 22:06:58 -0400
-Message-Id: <20250521203819-55d7b9c0b00d3047@stable.kernel.org>
+To: stable@vger.kernel.org,
+	lee@kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH v6.1 21/27] af_unix: Replace garbage collection algorithm.
+Date: Wed, 21 May 2025 22:07:03 -0400
+Message-Id: <20250521211957-b55d025cab4bc4ca@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521152920.1116756-13-lee@kernel.org>
+In-Reply-To:  <20250521152920.1116756-22-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,10 +64,11 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+ℹ️ This is part 21/27 of a series
+⚠️ Found follow-up fixes in mainline
 
-The upstream commit SHA1 provided is correct: 6ba76fd2848e107594ea4f03b737230f74bc23ea
+The upstream commit SHA1 provided is correct: 4090fa373f0e763c43610853d2774b5979915959
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -78,28 +79,70 @@ Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
 6.6.y | Not found
 
+Found fixes commits:
+041933a1ec7b af_unix: Fix garbage collection of embryos carrying OOB with SCM_RIGHTS
+
 Note: The patch differs from the upstream commit:
 ---
-1:  6ba76fd2848e1 ! 1:  81c21430d5b6f af_unix: Iterate all vertices by DFS.
+1:  4090fa373f0e7 ! 1:  5bd268b2b0ecc af_unix: Replace garbage collection algorithm.
     @@ Metadata
       ## Commit message ##
-         af_unix: Iterate all vertices by DFS.
+         af_unix: Replace garbage collection algorithm.
      
-    +    [ Upstream commit 6ba76fd2848e107594ea4f03b737230f74bc23ea ]
+    +    [ Upstream commit 4090fa373f0e763c43610853d2774b5979915959 ]
     +
-         The new GC will use a depth first search graph algorithm to find
-         cyclic references.  The algorithm visits every vertex exactly once.
+         If we find a dead SCC during iteration, we call unix_collect_skb()
+         to splice all skb in the SCC to the global sk_buff_head, hitlist.
      
     @@ Commit message
          Acked-by: Paolo Abeni <pabeni@redhat.com>
-         Link: https://lore.kernel.org/r/20240325202425.60930-6-kuniyu@amazon.com
+         Link: https://lore.kernel.org/r/20240325202425.60930-15-kuniyu@amazon.com
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit 6ba76fd2848e107594ea4f03b737230f74bc23ea)
+    +    (cherry picked from commit 4090fa373f0e763c43610853d2774b5979915959)
     +    Signed-off-by: Lee Jones <lee@kernel.org>
      
       ## include/net/af_unix.h ##
-     @@ include/net/af_unix.h: struct unix_vertex {
+     @@ include/net/af_unix.h: static inline struct unix_sock *unix_get_socket(struct file *filp)
+    @@ net/unix/garbage.c: static void unix_walk_scc_fast(void)
+     -	 * receive queues.  Other, non candidate sockets _can_ be
+     -	 * added to queue, so we must make sure only to touch
+     -	 * candidates.
+    +-	 *
+    +-	 * Embryos, though never candidates themselves, affect which
+    +-	 * candidates are reachable by the garbage collector.  Before
+    +-	 * being added to a listener's queue, an embryo may already
+    +-	 * receive data carrying SCM_RIGHTS, potentially making the
+    +-	 * passed socket a candidate that is not yet reachable by the
+    +-	 * collector.  It becomes reachable once the embryo is
+    +-	 * enqueued.  Therefore, we must ensure that no SCM-laden
+    +-	 * embryo appears in a (candidate) listener's queue between
+    +-	 * consecutive scan_children() calls.
+     -	 */
+     -	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
+    +-		struct sock *sk = &u->sk;
+     -		long total_refs;
+     -
+    --		total_refs = file_count(u->sk.sk_socket->file);
+    +-		total_refs = file_count(sk->sk_socket->file);
+     -
+     -		WARN_ON_ONCE(!u->inflight);
+     -		WARN_ON_ONCE(total_refs < u->inflight);
+    @@ net/unix/garbage.c: static void unix_walk_scc_fast(void)
+     -			list_move_tail(&u->link, &gc_candidates);
+     -			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
+     -			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
+    +-
+    +-			if (sk->sk_state == TCP_LISTEN) {
+    +-				unix_state_lock_nested(sk, U_LOCK_GC_LISTENER);
+    +-				unix_state_unlock(sk);
+    +-			}
+     -		}
+     -	}
+     -
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
