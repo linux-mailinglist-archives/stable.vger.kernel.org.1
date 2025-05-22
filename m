@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C17AC01FC
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:03:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71B9AC01FD
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EC4D1B62B33
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:03:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27F049E0FC2
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620312B9B7;
-	Thu, 22 May 2025 02:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62CC2B9B7;
+	Thu, 22 May 2025 02:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mT1wnB08"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X82pV0nf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2CD1758B
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F491758B
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879412; cv=none; b=tgnl+UuCAmpRcpUp7TBMHqqkeonmR6AGSJqzjqu3SEcnH87STOFXBdMY7cWfmAQui0SxuI2zWEw4tu4bwCjqXX5ZBntvAxid1Y3C1x+EmAw0jR2aIpM0qlNxCf6vIZAKvKMgRr2iTCqlkU53RIpY9MpqCfdMD7GFymRKdyNyj/c=
+	t=1747879418; cv=none; b=m9IBA2Uf9YYYomTY+LASESP8du+L+NHlySTPcyHhrExLGXpzqRzz1Mu6acvg+gmC0hpxuDA/I8QEFjwJjNlVx0WofyWwr4cp+DOKaFisdoH6ubjG068h95hD2Ix8iQeLwohL3aujTpG0mthQZBN+xpHrRHs6rtgHou0Xl5jNT8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879412; c=relaxed/simple;
-	bh=IbnZERFKBivPy6OTEJddJQUt0VxR0LU5FlPkIO3Ab34=;
+	s=arc-20240116; t=1747879418; c=relaxed/simple;
+	bh=0d+tkEv3E9PS0KrjIyGmQ3FtFN1/q9AEDFef2HTYBOU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tsmfQrBJVvkG49tRtbAEVsJYWwifKvTCnYA8HdkxW3K2RXfxSPD4LJzdakthUCkNr4+BEApumxXxF+DzcVMJ+ud9vCy+QtbDUb7p5Ra0q+P6Z2T8BxKJmKRzx2z5rKutahLQVo4pfxiFS39/m32ug0nW9mLkTPKaqzLCAw27gT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mT1wnB08; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18BD2C4CEE4;
-	Thu, 22 May 2025 02:03:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jschVuWFVvnSzQ+rP9VieVBW74sirgSHDy0KgrFL8F+3qjcPtgccUC7RAF7ETfDMsYroiLaANNO2aS3WUGajAhfvGQJL5c17HjsywgEzRUVDC8XvkBjvSEjJWF7WI5Rnlv65lLChh3rKSLx7XPQ/1Uhifg+YnnpUhHy4DZ/huz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X82pV0nf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F42EC4CEE4;
+	Thu, 22 May 2025 02:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879411;
-	bh=IbnZERFKBivPy6OTEJddJQUt0VxR0LU5FlPkIO3Ab34=;
+	s=k20201202; t=1747879418;
+	bh=0d+tkEv3E9PS0KrjIyGmQ3FtFN1/q9AEDFef2HTYBOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mT1wnB08KBSRr+RbnpYd3GzCIQkJAG3JoLr1g/bdURgWYYTVgj1Wcwc1Uh5LCK28z
-	 yb9QyT89LVyrvMg29rO08UbgqLXQogQcm2K/m8dPHwvklkJTxRKX9eltzqY4LEbyJ3
-	 rIHUAvsi1mZB2MMatfIgcRL7GMJIuv17A1KYpRHPyYHpSAZ37kWsB7siRp5yiMnGbH
-	 qD6Er/po1MvOBOCdXSN/999PAu/5Gz3gQqrutUO9j9Drcxjz5lgveOk00uxD0krjc1
-	 JShFGLqsKq5Vrui8PjBMNPXjvNklgoK1jAIwRQrjdegkvd4c9wAb5u/0Z2L6JTsDTc
-	 yFTzvNFz3aDAw==
+	b=X82pV0nfIC7Ee6dRPir4NsffhHeiXwqlNWLguA7ViDr50i6m8VIMgwKxopJkbgXy0
+	 GX+2s8D6HowZWpsL5k8JAI1gnzyFoTf3CituU8x6kr7Af5FdbKrmz4o6rPqk8cloci
+	 7KCZtZMLAdMvxItXkDPVJoP5r/b2JuiqTVY+i52XWps7nYDMIf6awbcLbPxUVbsFxD
+	 lLFsBlT4j7rik6cadGuNYRUXxTF1wuG8JMJvh2regATJrFfk614mABMFC5bLpPXRDQ
+	 fi0dPLfTrR5O5jDTqtUO5w+UITwTrbgPcGLZUlucAt7LSaT0Dfe5nU0YkZorbPUf2v
+	 AIQhKW7Qpw0Ww==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Lee Jones <lee@kernel.org>,
+Cc: Zhaoyang Li <lizy04@hust.edu.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.6 01/26] af_unix: Return struct unix_sock from unix_get_socket().
-Date: Wed, 21 May 2025 22:03:26 -0400
-Message-Id: <20250521160729-f4d331b8410a6093@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] btrfs: check folio mapping after unlock in relocate_one_folio()
+Date: Wed, 21 May 2025 22:03:31 -0400
+Message-Id: <20250521123937-2da3bd3ff246e8b7@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521144803.2050504-2-lee@kernel.org>
+In-Reply-To:  <20250521014758.532799-1-lizy04@hust.edu.cn>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,37 +67,20 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 5b17307bd0789edea0675d524a2b277b93bbde62
+The upstream commit SHA1 provided is correct: 3e74859ee35edc33a022c3f3971df066ea0ca6b9
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Lee Jones<lee@kernel.org>
-Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
+Backport author: Zhaoyang Li<lizy04@hust.edu.cn>
+Commit author: Boris Burkov<boris@bur.io>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: d508e5627038)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  5b17307bd0789 ! 1:  83b10061bb064 af_unix: Return struct unix_sock from unix_get_socket().
-    @@ Metadata
-      ## Commit message ##
-         af_unix: Return struct unix_sock from unix_get_socket().
-     
-    +    [ Upstream commit 5b17307bd0789edea0675d524a2b277b93bbde62 ]
-    +
-         Currently, unix_get_socket() returns struct sock, but after calling
-         it, we always cast it to unix_sk().
-     
-    @@ Commit message
-         Reviewed-by: Simon Horman <horms@kernel.org>
-         Link: https://lore.kernel.org/r/20240123170856.41348-4-kuniyu@amazon.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit 5b17307bd0789edea0675d524a2b277b93bbde62)
-    +    Signed-off-by: Lee Jones <lee@kernel.org>
-     
-      ## include/net/af_unix.h ##
-     @@ include/net/af_unix.h: void unix_destruct_scm(struct sk_buff *skb);
+1:  3e74859ee35ed < -:  ------------- btrfs: check folio mapping after unlock in relocate_one_folio()
+-:  ------------- > 1:  3381f0a428658 btrfs: check folio mapping after unlock in relocate_one_folio()
 ---
 
 Results of testing on various branches:
