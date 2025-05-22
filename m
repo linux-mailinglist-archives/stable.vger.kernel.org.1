@@ -1,207 +1,220 @@
-Return-Path: <stable+bounces-146056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77A7AC0834
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 11:09:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F239AC088B
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 11:23:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AE9D1BC2521
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 09:09:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF9C81B687B7
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 09:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2991022DA18;
-	Thu, 22 May 2025 09:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDAC268C55;
+	Thu, 22 May 2025 09:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ND3MxZ/t"
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="MeFKXjiC";
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="H7NRlwt2"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mailhub9-fb.kaspersky-labs.com (mailhub9-fb.kaspersky-labs.com [195.122.169.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB676ADD;
-	Thu, 22 May 2025 09:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24A92638BC;
+	Thu, 22 May 2025 09:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.122.169.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747904958; cv=none; b=P1lnRaulK+pBj+mVIfvO+6sWoyyEViXcNHfNZVWFZBI1YTM8qXcGk3sNR2QEDD+LVzW5murwG4GezfoBCikshWFdGQ9vh90Ks302QjLFyJvBH1DuLV3fMVbLs153KgCC3h/HCV4Tgg4oU6vkfAoj49nDaWZlrCui8uKyfCGGcOI=
+	t=1747905759; cv=none; b=aYlP/7IkhihbEAJkB4SGHXYkpklNEXsHC4aQSwwM2vBgxKkrN8lSmyezEgpkJYZ/TYf//42f3wehnzCzInQFnlSWX46kBI+UIjJPUHuoTVB//WZPZvxqMCN34KEJ8oy6jMtk+ykph1nbGvov9VZE5+cHkSNDwQanOxfK3A40s3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747904958; c=relaxed/simple;
-	bh=rxTDaiNJYwNwKKI2kaGugKm2yPS6ivdx+om4hngYV+Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pUt04A8UWYFNR9yLGH3llIIraZh5tyJLJrPBO+6qd6VutrVGhdEB858zrQKl3wM8XB7XpOu7h9P/MOfgQiU5s1efiKA79yqynxwnMm8Q1KEX/yjaXqTQjf38IxY8PF7Z0kRpYnTeXyv8IAHhdgJN79PxIslze/7qePRQCKZP47c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ND3MxZ/t; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id F3C3856D;
-	Thu, 22 May 2025 11:08:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1747904930;
-	bh=rxTDaiNJYwNwKKI2kaGugKm2yPS6ivdx+om4hngYV+Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ND3MxZ/t6SpNbNh1Uw+S2z4HcpS8HxfgWbbWxcSqzy3SmbdUoV9HI8neIpLGszBUF
-	 P0gld3phzuuFPDpgbjvGQjGpeuGrkEpeWjqxHEOHZnB47cbXbcXnsuxccoxfqG3rF8
-	 W7DygPkpknbNSecd5fOv3RMzjVbX6ECtZcLgF4zs=
-Message-ID: <546ef388-299b-4d97-8633-9508fab4475a@ideasonboard.com>
-Date: Thu, 22 May 2025 12:09:08 +0300
+	s=arc-20240116; t=1747905759; c=relaxed/simple;
+	bh=qigQEnNqaQWtRiBqtpmRRtl7HMDzo/ebfQTJy3XHors=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oihKjGcBYy5fpGeAgLkch98jeyeXCKaSAeP+vLqx5IYaZSwu1XwS++jwH2fU6+73IY3/Y+0YKEyzqfWo5BCR9X9kDqYny5iLOSnO9Irjha2zPRDMDW2SwSdq5+Eiapmd9CzGpOjw6lqdDOgcnX5lRDs1BCjIb90BZn6uurYu+Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=MeFKXjiC; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=H7NRlwt2; arc=none smtp.client-ip=195.122.169.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202502; t=1747905381;
+	bh=xqG5r0/5jevHvz5MUnt00ucOWx3cyvf6DBRXeCPlpz4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=MeFKXjiCaegQfGQuT+JuetKoPMd7t5lP3fd8+bvODAjJY1MzscvaKJzN9VTz/0yjK
+	 k6jeIBv2yIsiY4PRuZ9ADgIRZNWztV3cUzAi+ukvuN1rbO80Fu4zxmyLlSjIknOBBF
+	 R1Zv8BlHn6IiiI6TiGiaoc2xHVetBgJ0H3a3LL/NAm61mUANqA1XKokpS7UQBiSz3i
+	 QJaB3tBSp0tX3LU8LmvkwM5SGQjgnDHikd57yYtnTxabg1ayIGVvWteaC7x4cfMIvE
+	 GYfKdw1GJckfAuY44ikl5biA8L6E+yWLDorBHE+Lppuyc/ForHpZ85efyVqOUz/83I
+	 ed+b56NZKawPQ==
+Received: from mailhub9-fb.kaspersky-labs.com (localhost [127.0.0.1])
+	by mailhub9-fb.kaspersky-labs.com (Postfix) with ESMTP id 28D40906584;
+	Thu, 22 May 2025 12:16:21 +0300 (MSK)
+Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "mx13.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub9-fb.kaspersky-labs.com (Postfix) with ESMTPS id EB21E902838;
+	Thu, 22 May 2025 12:16:20 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202502; t=1747905373;
+	bh=xqG5r0/5jevHvz5MUnt00ucOWx3cyvf6DBRXeCPlpz4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=H7NRlwt2NbcaSDpNOOrPSUWVritlgUKCeDn0dIsswbR4kC5E/NaaOqdeeVW8Rz/7g
+	 cZHdx0zXrTPClkbydACTtgzyTgiL5ugujmEYfbKl/QkZ/TaUYBH1N6vXuIyjbQI0aM
+	 6XOnrpiYqzPxGzuHyOk1MdcEC1gstqBXNIMscJVak6P7AkV61y283CvzDxDG9nv6wj
+	 PFhEnXuS8yZyTbY36MpefkbIXqHiKifWSDKKpLRiuVhNvA2x1+cYj3Uufh7ZFGNrYL
+	 0PHkATdK8p2pc/xRkfEoJldgIyNmJVF7RoFuWN3UgEmlMGpSYTFI2OZ/KtDGc7/vHk
+	 gyRhjMBKjMc3A==
+Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay13.kaspersky-labs.com (Postfix) with ESMTP id 40E233E1CA6;
+	Thu, 22 May 2025 12:16:13 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id 95CFB3E1BEF;
+	Thu, 22 May 2025 12:16:12 +0300 (MSK)
+Received: from moskovkin-pc.avp.ru (10.16.49.191) by HQMAILSRV1.avp.ru
+ (10.64.57.51) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 22 May
+ 2025 12:15:47 +0300
+From: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
+To: MyungJoo Ham <myungjoo.ham@samsung.com>
+CC: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>, Chanwoo Choi
+	<cw00.choi@samsung.com>, =?UTF-8?q?Pawe=C5=82=20Chmiel?=
+	<pawel.mikolaj.chmiel@gmail.com>, Jonathan Bakker <xc-racer2@live.ca>, Tomasz
+ Figa <tomasz.figa@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
+Subject: [PATCH] extcon: fsa9480: Avoid buffer overflow in fsa9480_handle_change()
+Date: Thu, 22 May 2025 12:14:56 +0300
+Message-ID: <20250522091456.2402795-1-Vladimir.Moskovkin@kaspersky.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] drm/bridge: cdns-dsi: Replace deprecated
- UNIVERSAL_DEV_PM_OPS()
-To: Vitor Soares <ivitro@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: Vitor Soares <vitor.soares@toradex.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Aradhya Bhatia <aradhya.bhatia@linux.dev>,
- Jayesh Choudhary <j-choudhary@ti.com>, stable@vger.kernel.org
-References: <20250512083215.436149-1-ivitro@gmail.com>
-Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- xsFNBE6ms0cBEACyizowecZqXfMZtnBniOieTuFdErHAUyxVgtmr0f5ZfIi9Z4l+uUN4Zdw2
- wCEZjx3o0Z34diXBaMRJ3rAk9yB90UJAnLtb8A97Oq64DskLF81GCYB2P1i0qrG7UjpASgCA
- Ru0lVvxsWyIwSfoYoLrazbT1wkWRs8YBkkXQFfL7Mn3ZMoGPcpfwYH9O7bV1NslbmyJzRCMO
- eYV258gjCcwYlrkyIratlHCek4GrwV8Z9NQcjD5iLzrONjfafrWPwj6yn2RlL0mQEwt1lOvn
- LnI7QRtB3zxA3yB+FLsT1hx0va6xCHpX3QO2gBsyHCyVafFMrg3c/7IIWkDLngJxFgz6DLiA
- G4ld1QK/jsYqfP2GIMH1mFdjY+iagG4DqOsjip479HCWAptpNxSOCL6z3qxCU8MCz8iNOtZk
- DYXQWVscM5qgYSn+fmMM2qN+eoWlnCGVURZZLDjg387S2E1jT/dNTOsM/IqQj+ZROUZuRcF7
- 0RTtuU5q1HnbRNwy+23xeoSGuwmLQ2UsUk7Q5CnrjYfiPo3wHze8avK95JBoSd+WIRmV3uoO
- rXCoYOIRlDhg9XJTrbnQ3Ot5zOa0Y9c4IpyAlut6mDtxtKXr4+8OzjSVFww7tIwadTK3wDQv
- Bus4jxHjS6dz1g2ypT65qnHen6mUUH63lhzewqO9peAHJ0SLrQARAQABzTBUb21pIFZhbGtl
- aW5lbiA8dG9taS52YWxrZWluZW5AaWRlYXNvbmJvYXJkLmNvbT7CwY4EEwEIADgWIQTEOAw+
- ll79gQef86f6PaqMvJYe9QUCX/HruAIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRD6
- PaqMvJYe9WmFD/99NGoD5lBJhlFDHMZvO+Op8vCwnIRZdTsyrtGl72rVh9xRfcSgYPZUvBuT
- VDxE53mY9HaZyu1eGMccYRBaTLJSfCXl/g317CrMNdY0k40b9YeIX10feiRYEWoDIPQ3tMmA
- 0nHDygzcnuPiPT68JYZ6tUOvAt7r6OX/litM+m2/E9mtp8xCoWOo/kYO4mOAIoMNvLB8vufi
- uBB4e/AvAjtny4ScuNV5c5q8MkfNIiOyag9QCiQ/JfoAqzXRjVb4VZG72AKaElwipiKCWEcU
- R4+Bu5Qbaxj7Cd36M/bI54OrbWWETJkVVSV1i0tghCd6HHyquTdFl7wYcz6cL1hn/6byVnD+
- sR3BLvSBHYp8WSwv0TCuf6tLiNgHAO1hWiQ1pOoXyMEsxZlgPXT+wb4dbNVunckwqFjGxRbl
- Rz7apFT/ZRwbazEzEzNyrBOfB55xdipG/2+SmFn0oMFqFOBEszXLQVslh64lI0CMJm2OYYe3
- PxHqYaztyeXsx13Bfnq9+bUynAQ4uW1P5DJ3OIRZWKmbQd/Me3Fq6TU57LsvwRgE0Le9PFQs
- dcP2071rMTpqTUteEgODJS4VDf4lXJfY91u32BJkiqM7/62Cqatcz5UWWHq5xeF03MIUTqdE
- qHWk3RJEoWHWQRzQfcx6Fn2fDAUKhAddvoopfcjAHfpAWJ+ENc7BTQROprNHARAAx0aat8GU
- hsusCLc4MIxOQwidecCTRc9Dz/7U2goUwhw2O5j9TPqLtp57VITmHILnvZf6q3QAho2QMQyE
- DDvHubrdtEoqaaSKxKkFie1uhWNNvXPhwkKLYieyL9m2JdU+b88HaDnpzdyTTR4uH7wk0bBa
- KbTSgIFDDe5lXInypewPO30TmYNkFSexnnM3n1PBCqiJXsJahE4ZQ+WnV5FbPUj8T2zXS2xk
- 0LZ0+DwKmZ0ZDovvdEWRWrz3UzJ8DLHb7blPpGhmqj3ANXQXC7mb9qJ6J/VSl61GbxIO2Dwb
- xPNkHk8fwnxlUBCOyBti/uD2uSTgKHNdabhVm2dgFNVuS1y3bBHbI/qjC3J7rWE0WiaHWEqy
- UVPk8rsph4rqITsj2RiY70vEW0SKePrChvET7D8P1UPqmveBNNtSS7In+DdZ5kUqLV7rJnM9
- /4cwy+uZUt8cuCZlcA5u8IsBCNJudxEqBG10GHg1B6h1RZIz9Q9XfiBdaqa5+CjyFs8ua01c
- 9HmyfkuhXG2OLjfQuK+Ygd56mV3lq0aFdwbaX16DG22c6flkkBSjyWXYepFtHz9KsBS0DaZb
- 4IkLmZwEXpZcIOQjQ71fqlpiXkXSIaQ6YMEs8WjBbpP81h7QxWIfWtp+VnwNGc6nq5IQDESH
- mvQcsFS7d3eGVI6eyjCFdcAO8eMAEQEAAcLBXwQYAQIACQUCTqazRwIbDAAKCRD6PaqMvJYe
- 9fA7EACS6exUedsBKmt4pT7nqXBcRsqm6YzT6DeCM8PWMTeaVGHiR4TnNFiT3otD5UpYQI7S
- suYxoTdHrrrBzdlKe5rUWpzoZkVK6p0s9OIvGzLT0lrb0HC9iNDWT3JgpYDnk4Z2mFi6tTbq
- xKMtpVFRA6FjviGDRsfkfoURZI51nf2RSAk/A8BEDDZ7lgJHskYoklSpwyrXhkp9FHGMaYII
- m9EKuUTX9JPDG2FTthCBrdsgWYPdJQvM+zscq09vFMQ9Fykbx5N8z/oFEUy3ACyPqW2oyfvU
- CH5WDpWBG0s5BALp1gBJPytIAd/pY/5ZdNoi0Cx3+Z7jaBFEyYJdWy1hGddpkgnMjyOfLI7B
- CFrdecTZbR5upjNSDvQ7RG85SnpYJTIin+SAUazAeA2nS6gTZzumgtdw8XmVXZwdBfF+ICof
- 92UkbYcYNbzWO/GHgsNT1WnM4sa9lwCSWH8Fw1o/3bX1VVPEsnESOfxkNdu+gAF5S6+I6n3a
- ueeIlwJl5CpT5l8RpoZXEOVtXYn8zzOJ7oGZYINRV9Pf8qKGLf3Dft7zKBP832I3PQjeok7F
- yjt+9S+KgSFSHP3Pa4E7lsSdWhSlHYNdG/czhoUkSCN09C0rEK93wxACx3vtxPLjXu6RptBw
- 3dRq7n+mQChEB1am0BueV1JZaBboIL0AGlSJkm23kw==
-In-Reply-To: <20250512083215.436149-1-ivitro@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HQMAILSRV2.avp.ru (10.64.57.52) To HQMAILSRV1.avp.ru
+ (10.64.57.51)
+X-KSE-ServerInfo: HQMAILSRV1.avp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 05/22/2025 08:39:06
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 193520 [May 22 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: Vladimir.Moskovkin@kaspersky.com
+X-KSE-AntiSpam-Info: LuaCore: 59 0.3.59
+ 65f85e645735101144875e459092aa877af15aaa
+X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;moskovkin-pc.avp.ru:7.1.1,5.0.1;kaspersky.com:7.1.1,5.0.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {Tracking_white_helo}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 05/22/2025 08:42:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 5/22/2025 8:29:00 AM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/05/22 05:45:00 #27780458
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
 
-On 12/05/2025 11:32, Vitor Soares wrote:
-> From: Vitor Soares <vitor.soares@toradex.com>
-> 
-> The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
-> for both runtime PM and system sleep. This causes the DSI clocks to be
-> disabled twice: once during runtime suspend and again during system
-> suspend, resulting in a WARN message from the clock framework when
-> attempting to disable already-disabled clocks.
-> 
-> [   84.384540] clk:231:5 already disabled
-> [   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181 clk_core_disable+0xa4/0xac
-> ...
-> [   84.579183] Call trace:
-> [   84.581624]  clk_core_disable+0xa4/0xac
-> [   84.585457]  clk_disable+0x30/0x4c
-> [   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
-> [   84.593651]  pm_generic_suspend+0x2c/0x44
-> [   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
-> [   84.601670]  dpm_run_callback+0x8c/0x14c
-> [   84.605588]  __device_suspend+0x1a0/0x56c
-> [   84.609594]  dpm_suspend+0x17c/0x21c
-> [   84.613165]  dpm_suspend_start+0xa0/0xa8
-> [   84.617083]  suspend_devices_and_enter+0x12c/0x634
-> [   84.621872]  pm_suspend+0x1fc/0x368
-> 
-> To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
-> SET_RUNTIME_PM_OPS(), enabling suspend/resume handling through the
-> _enable()/_disable() hooks managed by the DRM framework for both
-> runtime and system-wide PM.
-> 
-> Cc: <stable@vger.kernel.org> # 6.1.x
-> Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> ---
-> v2 -> v3
->   - Fix warning: 'cdns_dsi_suspend' defined but not used [-Wunused-function]
->   - Fix warning: 'cdns_dsi_resume' defined but not used [-Wunused-function]
-> 
-> v1 -> v2
->   - Rely only on SET_RUNTIME_PM_OPS() for the PM.
-> 
->   drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> index b022dd6e6b6e..6429d541889c 100644
-> --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> +++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> @@ -1258,7 +1258,7 @@ static const struct mipi_dsi_host_ops cdns_dsi_ops = {
->   	.transfer = cdns_dsi_transfer,
->   };
->   
-> -static int __maybe_unused cdns_dsi_resume(struct device *dev)
-> +static int cdns_dsi_resume(struct device *dev)
->   {
->   	struct cdns_dsi *dsi = dev_get_drvdata(dev);
->   
-> @@ -1269,7 +1269,7 @@ static int __maybe_unused cdns_dsi_resume(struct device *dev)
->   	return 0;
->   }
->   
-> -static int __maybe_unused cdns_dsi_suspend(struct device *dev)
-> +static int cdns_dsi_suspend(struct device *dev)
->   {
->   	struct cdns_dsi *dsi = dev_get_drvdata(dev);
->   
-> @@ -1279,8 +1279,9 @@ static int __maybe_unused cdns_dsi_suspend(struct device *dev)
->   	return 0;
->   }
->   
-> -static UNIVERSAL_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend, cdns_dsi_resume,
-> -			    NULL);
-> +static const struct dev_pm_ops cdns_dsi_pm_ops = {
-> +	RUNTIME_PM_OPS(cdns_dsi_suspend, cdns_dsi_resume, NULL)
-> +};
->   
->   static int cdns_dsi_drm_probe(struct platform_device *pdev)
->   {
-> @@ -1427,7 +1428,7 @@ static struct platform_driver cdns_dsi_platform_driver = {
->   	.driver = {
->   		.name   = "cdns-dsi",
->   		.of_match_table = cdns_dsi_of_match,
-> -		.pm = &cdns_dsi_pm_ops,
-> +		.pm = pm_ptr(&cdns_dsi_pm_ops),
->   	},
->   };
->   module_platform_driver(cdns_dsi_platform_driver);
+Bit 7 of the 'Device Type 2' (0Bh) register is reserved in the FSA9480
+device, but is used by the FSA880 and TSU6111 devices.
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From FSA9480 datasheet, Table 18. Device Type 2:
 
-  Tomi
+Reset Value: x0000000
+===========================================================================
+ Bit # |     Name     | Size (Bits) |             Description
+---------------------------------------------------------------------------
+   7   |   Reserved   |      1      | NA
+
+From FSA880 datasheet, Table 13. Device Type 2:
+
+Reset Value: 0xxx0000
+===========================================================================
+ Bit # |     Name     | Size (Bits) |             Description
+---------------------------------------------------------------------------
+   7   | Unknown      |      1      | 1: Any accessory detected as unknown
+       | Accessory    |             |    or an accessory that cannot be
+       |              |             |    detected as being valid even
+       |              |             |    though ID_CON is not floating
+       |              |             | 0: Unknown accessory not detected
+
+From TSU6111 datasheet, Device Type 2:
+
+Reset Value:x0000000
+===========================================================================
+ Bit # |     Name     | Size (Bits) |             Description
+---------------------------------------------------------------------------
+   7   | Audio Type 3 |      1      | Audio device type 3
+
+So the value obtained from the FSA9480_REG_DEV_T2 register in the
+fsa9480_detect_dev() function may have the 7th bit set.
+In this case, the 'dev' parameter in the fsa9480_handle_change() function
+will be 15. And this will cause the 'cable_types' array to overflow when
+accessed at this index.
+
+Extend the 'cable_types' array with a new value 'DEV_RESERVED' as
+specified in the FSA9480 datasheet. Do not use it as it serves for
+various purposes in the listed devices.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: bad5b5e707a5 ("extcon: Add fsa9480 extcon driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
+---
+ drivers/extcon/extcon-fsa9480.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/extcon/extcon-fsa9480.c b/drivers/extcon/extcon-fsa9480.c
+index b11b43171063..30972a7214f7 100644
+--- a/drivers/extcon/extcon-fsa9480.c
++++ b/drivers/extcon/extcon-fsa9480.c
+@@ -68,6 +68,7 @@
+ #define DEV_T1_CHARGER_MASK     (DEV_DEDICATED_CHG | DEV_USB_CHG)
+ 
+ /* Device Type 2 */
++#define DEV_RESERVED            15
+ #define DEV_AV                  14
+ #define DEV_TTY                 13
+ #define DEV_PPD                 12
+@@ -133,6 +134,7 @@ static const u64 cable_types[] = {
+ 	[DEV_USB] = BIT_ULL(EXTCON_USB) | BIT_ULL(EXTCON_CHG_USB_SDP),
+ 	[DEV_AUDIO_2] = BIT_ULL(EXTCON_JACK_LINE_OUT),
+ 	[DEV_AUDIO_1] = BIT_ULL(EXTCON_JACK_LINE_OUT),
++	[DEV_RESERVED] = 0,
+ 	[DEV_AV] = BIT_ULL(EXTCON_JACK_LINE_OUT)
+ 		   | BIT_ULL(EXTCON_JACK_VIDEO_OUT),
+ 	[DEV_TTY] = BIT_ULL(EXTCON_JIG),
+@@ -228,7 +230,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
+ 		dev_err(usbsw->dev, "%s: failed to read registers", __func__);
+ 		return;
+ 	}
+-	val = val2 << 8 | val1;
++	val = val2 << 8 | (val1 & 0xFF);
+ 
+ 	dev_info(usbsw->dev, "dev1: 0x%x, dev2: 0x%x\n", val1, val2);
+ 
+-- 
+2.25.1
 
 
