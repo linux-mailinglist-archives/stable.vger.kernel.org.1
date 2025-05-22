@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355F1AC020B
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CBAAC020F
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE57A7A713B
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:03:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5884E7A5E31
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C062B9B7;
-	Thu, 22 May 2025 02:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2676412DD95;
+	Thu, 22 May 2025 02:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOtoj6rg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+L/XL8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087601758B
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80CC3F9FB
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879474; cv=none; b=LBTI21UDVSSvmKBm848kOVeMb6KzKT8839MjlwiC9csBC/0nM2JUO+uvmxK/xGhZ9JmH0SfgsY7bZFaOsENLGNnD8dpKk7Zz7V9v6fWAc0SGrAT8T/dsv5qS/WWVxO5d5lkUZ+ET6HsyYdfd2v1gRLUx5LmrG7/Sau8S7lOgfWo=
+	t=1747879478; cv=none; b=ly3VxSESFXb2H3MJPLo4D/3oiJm/xRF2wIMhcZyZHy65Fag1hQMTRaZVYYNqGRXJbxyp1E4iOwov8iDK3s9hDerWTHEi1YL621LueIsgsUF/wI/2yedoOnHVh8ToaLf6jzCW6syWiZjwGCI7hD4Pd8dIBvfmurH3reNbJiyBKQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879474; c=relaxed/simple;
-	bh=gOQ6yznFDahh86L1LmFuyN27Q8bxaZ+EDHEz32x8++k=;
+	s=arc-20240116; t=1747879478; c=relaxed/simple;
+	bh=zC+T6CT1xM1JPlhF5iTFHOZlqRqFQXfYlE8duBbbuIs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rxnng7wBtyqN1maFTaqZ0UNo5gFun6W0qI96c0sfIDrrrhxlbuM7g6Qq7QbAsawHqXEoOygJMuuNdKOTZzoPlxPDU5C5K3hm6iLhnOnIw0AJcJQzoVJsno4+zfjpVLx6YY6G4lmrGb0kT9LzI6YiDg3STs29eQhSO3tISRsVHDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOtoj6rg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B04C4CEE4;
-	Thu, 22 May 2025 02:04:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t11F5lVW9RTlnCdw2vjoW52nLsWLEPD0rPwNt+kDD5nU+PrA/Ps7vNp5Q+f4atiBbnTYJdFxK856r/j46/7ZhFoG1lkX7/D/N3452BMJ8LcwI0Ka7Fb0Mqs3IzDFhOIqrg/WuLsDecZSX6Ll25g5KC9a8dVly+XuTJht48CKwSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+L/XL8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75C5C4CEE4;
+	Thu, 22 May 2025 02:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879473;
-	bh=gOQ6yznFDahh86L1LmFuyN27Q8bxaZ+EDHEz32x8++k=;
+	s=k20201202; t=1747879478;
+	bh=zC+T6CT1xM1JPlhF5iTFHOZlqRqFQXfYlE8duBbbuIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOtoj6rgUwRceAISC+0AeDjBCIzWEmzbCa8oGNqQANKUbaiBnEXhcjHzkkPRzkMMz
-	 T/mvddRi7lfJlP5xbNIbTNetFSTq59tqumc0c0q5skBBXI1c7QdBFLJIsxansPOo/d
-	 sAgBqpkKVFNCqBg0/HdUb/XrrJvlg2vsvScJCdkgSvpoW+lWwrtScUHdAacOXIuuuN
-	 rOeuCprnWtrQbdUzRkysXs/J23KwQc2GL+dOXnQ/m/ezbK5x9q8kyLZfx4pH+Eup9j
-	 LjBAMtelEg1sX+LMkaUPPfMg8KaILT4PllblsrblKR3SUvje+npQCWAmU3fBvvYTWN
-	 bEDqpupTdspcw==
+	b=i+L/XL8w7U+/l/bbyyS8Msr/cJVDkItNVfA7wdtN8YpcOF11w57OHZJn2N2giR1Us
+	 OWwVhOrbGpSoxRtyGx8v7L5uwChTskP0zdmwts12v2mtSkT01WI/u2Ben3vOX+NdDx
+	 HyizmAI+fj26LbW2HWEefxlftqBoBV06ByoWncLURSJ5rGxRJ3WKx5uheTQF5pQJe1
+	 1xmVmPMzwfwduCYfloaNAAXph71s1u9gPXCYti8zjCHNZyVgkU/qmEuv1jOIrUWL7P
+	 aQukivjVBbXSZz97WRyAeHuiQxuTzaGRzLCbNdY5Uwmx7qf7V9TnFZB40cJshkDw8R
+	 +2dwc4g9+lQNA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	lee@kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.1 13/27] af_unix: Detect Strongly Connected Components.
-Date: Wed, 21 May 2025 22:04:29 -0400
-Message-Id: <20250521204252-0e0c4235f78e66fa@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH v6.6 17/26] af_unix: Avoid Tarjan's algorithm if unnecessary.
+Date: Wed, 21 May 2025 22:04:34 -0400
+Message-Id: <20250521180404-ff1b22b7ff07b92f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521152920.1116756-14-lee@kernel.org>
+In-Reply-To:  <20250521144803.2050504-18-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,11 +64,10 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 13/27 of a series
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 3484f063172dd88776b062046d721d7c2ae1af7c
+The upstream commit SHA1 provided is correct: ad081928a8b0f57f269df999a28087fce6f2b6ce
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -77,40 +76,33 @@ Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Not found
-
-Found fixes commits:
-927fa5b3e4f5 af_unix: Fix uninit-value in __unix_walk_scc()
 
 Note: The patch differs from the upstream commit:
 ---
-1:  3484f063172dd ! 1:  3c8c9bc58de2c af_unix: Detect Strongly Connected Components.
+1:  ad081928a8b0f ! 1:  2e226e9098825 af_unix: Avoid Tarjan's algorithm if unnecessary.
     @@ Metadata
       ## Commit message ##
-         af_unix: Detect Strongly Connected Components.
+         af_unix: Avoid Tarjan's algorithm if unnecessary.
      
-    +    [ Upstream commit 3484f063172dd88776b062046d721d7c2ae1af7c ]
+    +    [ Upstream commit ad081928a8b0f57f269df999a28087fce6f2b6ce ]
     +
-         In the new GC, we use a simple graph algorithm, Tarjan's Strongly
-         Connected Components (SCC) algorithm, to find cyclic references.
+         Once a cyclic reference is formed, we need to run GC to check if
+         there is dead SCC.
      
     @@ Commit message
          Acked-by: Paolo Abeni <pabeni@redhat.com>
-         Link: https://lore.kernel.org/r/20240325202425.60930-7-kuniyu@amazon.com
+         Link: https://lore.kernel.org/r/20240325202425.60930-12-kuniyu@amazon.com
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit 3484f063172dd88776b062046d721d7c2ae1af7c)
+    +    (cherry picked from commit ad081928a8b0f57f269df999a28087fce6f2b6ce)
     +    Signed-off-by: Lee Jones <lee@kernel.org>
      
-      ## include/net/af_unix.h ##
-     @@ include/net/af_unix.h: void wait_for_unix_gc(struct scm_fp_list *fpl);
+      ## net/unix/garbage.c ##
+     @@ net/unix/garbage.c: static struct unix_vertex *unix_edge_successor(struct unix_edge *edge)
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
