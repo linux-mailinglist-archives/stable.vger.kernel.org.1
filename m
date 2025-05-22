@@ -1,133 +1,104 @@
-Return-Path: <stable+bounces-146054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FC5AC073F
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 10:37:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D432AC0796
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 10:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3591176C80
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 08:37:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 049D89E669D
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 08:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3305EEA6;
-	Thu, 22 May 2025 08:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8671D23507D;
+	Thu, 22 May 2025 08:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7N7bSC/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lwgcMULs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CB21AB531
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 08:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355FE233722;
+	Thu, 22 May 2025 08:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747903019; cv=none; b=fuA+c62lf7PzwH+jOqMozULsvKh/fYdU+B1AklZZ7/Jliwp6hKslLxVh2HmSkDHfaqSgr+dwYjDqOmrdVez42BRiNWoAwHBiGZeL79GgH8K9wj/URrtLDurBxcp12n1jN878vVjkImXWg2K08xYEuGa97ng97Ojti+d99Y5YaSk=
+	t=1747903528; cv=none; b=BOT4yx53SYynkR1nz6YJ99KLgyFsX74x8PsQVCHerppzsjOCG4WOFjaYd+33lKNvqkkx8jpH9isjhrSocr0UFtEXHXefsumwsa2iFeNd2bDL+VGWQ7Hq8s+Ge2lUwqzhVeBVtew4Z9NRZuRSLxAjDLAvg0CwBi9o4EFbKQBHqt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747903019; c=relaxed/simple;
-	bh=An+dEAtLMaFGZNb8W8IbNOIsto8UV0PUE0ai0DTqzfg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QDAyC01szri9ni+gW3qPIXju2OQHNY7F6PT7tPthUv9IsWBoViraEFFFWIqUJoVU+xE0/al09wT7E7QALVa5zN0qKjnHfxlKrM0Da9FR0Doc/uLan4RctDPm5yQPXqi+kusQf1Jb1eJlLcj7wk03cq6lS2QvMsEsxXiMQ/DWFx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7N7bSC/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E5DC4CEE4;
-	Thu, 22 May 2025 08:36:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747903019;
-	bh=An+dEAtLMaFGZNb8W8IbNOIsto8UV0PUE0ai0DTqzfg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=w7N7bSC/eJYB/r/NCU2LHHUX5Qr/JeaEew/qEI5UukhUh605+JsuXlADb/W2kkKq1
-	 rE2DmQl8aL/d2CxQp+du+Zo9sx4LWTG3xQGFXRzDiYzo9kCAg4Ut1WnDyMbTrXGIO5
-	 Cn2N2EZJTCRvFkCyOJWca6hFCEYwMOAnEdIyfxkE=
-Date: Thu, 22 May 2025 10:36:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: He Zhe <zhe.he@windriver.com>
-Cc: Feng Liu <Feng.Liu3@windriver.com>, adobriyan@gmail.com,
-	kees@kernel.org, sashal@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 5.10.y/5.15.y] ELF: fix kernel.randomize_va_space double
- read
-Message-ID: <2025052230-okay-announcer-3746@gregkh>
-References: <20250509061415.435740-1-Feng.Liu3@windriver.com>
- <2025052021-freebee-clever-8fef@gregkh>
- <fc8f61c6-eb98-4102-bf81-a924df303efb@windriver.com>
+	s=arc-20240116; t=1747903528; c=relaxed/simple;
+	bh=texjXElObw+GNasUGILZClaSk8zqAXIuhZPQBXgKUE8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=B7MB1f300csLv4jJnfn86hEG+BQwnko37iytUxgyIjxxE0UgC4tzTNzzng1+iimyc0qkhijXZ5xLDBzS78/HxtJJdYzdnoHtskitnRAzbYKUdZF87kKsw8zrn5FboSD/H9ZQZu5pvZjgcUkqI/A9wtP89e9ndFHc46LOxBR0ono=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lwgcMULs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED283C4CEE4;
+	Thu, 22 May 2025 08:45:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747903527;
+	bh=texjXElObw+GNasUGILZClaSk8zqAXIuhZPQBXgKUE8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=lwgcMULsr2hRhzZpY/gYNy4WCPQR69Ik0BAcL+Hm2D7x/OYgOR9rE6INLg67zskEQ
+	 BOANIM+3l4/rkgwKzPqkuzr332RkZ227HcZSmzB8SK//EATxIUXDFrcgqE/PmXA6OC
+	 yfneQSzQ+luR6AU/9tC++Ix23nprKIYVfAWQJwIsX09bTvVPEUTia61uUGhQ2VcZcb
+	 A94c1d6IdWiPBkOhw+mrpQ7yXxJ2+AW53UrU6I4b8ZfXZ5D/PQb+MWQ3SWgLIm4+SJ
+	 l1fyE01QpTlDt/IpS894Byh7KdPnf9T6jQoR1AHjk1ggJXpPKFyONA59XWyzckuBMv
+	 EeV8uJ2jcQbHw==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ Srinivas Kandagatla <srini@kernel.org>, Wentao Liang <vulab@iscas.ac.cn>
+Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20250519075739.1458-1-vulab@iscas.ac.cn>
+References: <20250519075739.1458-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] ASoC: qcom: sdm845: Add error handling in
+ sdm845_slim_snd_hw_params()
+Message-Id: <174790352570.11863.6206484772425321934.b4-ty@kernel.org>
+Date: Thu, 22 May 2025 09:45:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fc8f61c6-eb98-4102-bf81-a924df303efb@windriver.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c25d1
 
-On Thu, May 22, 2025 at 03:40:16PM +0800, He Zhe wrote:
+On Mon, 19 May 2025 15:57:39 +0800, Wentao Liang wrote:
+> The function sdm845_slim_snd_hw_params() calls the functuion
+> snd_soc_dai_set_channel_map() but does not check its return
+> value. A proper implementation can be found in msm_snd_hw_params().
 > 
+> Add error handling for snd_soc_dai_set_channel_map(). If the
+> function fails and it is not a unsupported error, return the
+> error code immediately.
 > 
-> On 2025/5/20 19:25, Greg KH wrote:
-> > On Fri, May 09, 2025 at 02:14:15PM +0800, Feng Liu wrote:
-> >> From: Alexey Dobriyan <adobriyan@gmail.com>
-> >>
-> >> [ Upstream commit 2a97388a807b6ab5538aa8f8537b2463c6988bd2 ]
-> >>
-> >> ELF loader uses "randomize_va_space" twice. It is sysctl and can change
-> >> at any moment, so 2 loads could see 2 different values in theory with
-> >> unpredictable consequences.
-> >>
-> >> Issue exactly one load for consistent value across one exec.
-> >>
-> >> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-> >> Link: https://lore.kernel.org/r/3329905c-7eb8-400a-8f0a-d87cff979b5b@p183
-> >> Signed-off-by: Kees Cook <kees@kernel.org>
-> >> Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
-> >> Signed-off-by: He Zhe <Zhe.He@windriver.com>
-> >> ---
-> >> Verified the build test.
-> > No you did not!  This breaks the build.
-> >
-> > This is really really annoying as it breaks the workflow on our side
-> > when you submit code that does not work at all.
-> >
-> > Please go and retest all of the outstanding commits that you all have
-> > submitted and fix them up and resend them.  I'm dropping all of the rest
-> > of them from my pending queue as this shows a total lack of testing
-> > happening which implies that I can't trust any of these at all.
-> >
-> > And I want you all to prove that you have actually tested the code, not
-> > just this bland "Verified the build test" which is a _very_ low bar,
-> > that is not even happening here at all :(
-> 
-> Sorry for any inconvenience.
-> 
-> We did do some build test on Ubuntu22.04 with the default GCC 11.4.0 and
-> defconfig on an x86_64 machine against the latest linux-stable before sending
-> the patch out. And we just redid the build test and caught below warning that
-> we missed before:
+> [...]
 
-That is a very old version of gcc, and why are you using ubuntu when
-this all should be tested on your version of Linux as that's what you
-are backporting these patches for, right?  Shouldn't you be doing this
-work for the portions of the kernel that you are actually using so that
-you can properly test this stuff?
+Applied to
 
-> ../fs/binfmt_elf.c: In function ‘load_elf_binary’:
-> ../fs/binfmt_elf.c:1011:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
->  1011 |         const int snapshot_randomize_va_space = READ_ONCE(randomize_va_space);
->       |   
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Do you think adding a new warning is ok?
+Thanks!
 
-> Just to be clear, is this the issue that breaks the build from your side?
+[1/1] ASoC: qcom: sdm845: Add error handling in sdm845_slim_snd_hw_params()
+      commit: 688abe2860fd9c644705b9e11cb9649eb891b879
 
-I don't remember, given that it was many hundreds of patches ago.  But
-probably.  Try it yourself and see!
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> We just used the default config and didn't manually enable -WERROR which is
-> disabled by default for 5.10 and 5.15. After searching around we feel that
-> we should have enabled it as suggested by
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b9080ba4a6ec56447f263082825a4fddb873316b
-> even for 5.10 and 5.15, so that such case wouldn't go unnoticed.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Default configs for x86 are very limited, please do better testing.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-greg k-h
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
