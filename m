@@ -1,184 +1,156 @@
-Return-Path: <stable+bounces-146053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CD5AC06F7
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 10:24:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C249CAC06E7
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 10:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC434E37F7
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 08:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C64F18938B1
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 08:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F643269D06;
-	Thu, 22 May 2025 08:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1B22620CE;
+	Thu, 22 May 2025 08:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zgx9RXJZ"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896B7264625
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 08:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06E117A2E1
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 08:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747902241; cv=none; b=A/uGz2L5XHmNaJjymNOf4iVc88XKu3ByLnyMLVkM0P+zXeDU7REfkptNhqBcHyvKtY9n6sn0iqspRswAxCuIoBEVMhDyq3dYAec63NVcu8p1+FWM0w1hJra+PDz/TNga6iXAV32G/txe0s2hHoYfmAJtVeHRLMjbZKunLvJv48w=
+	t=1747902109; cv=none; b=MtCLrtDepgmprctQgpZsjPhNd0zHG5+o482NTRKEDp/oXarsUGpiig5Nip+jODDlXiUxRmzoNw/osiw1tZp660u3DnG9HVJi++5l0Fj+bKYfm+k7ZsS4qpeRh/0O5nDJzciNz9obfRyT/I3XFMD7ZjkYsJX47OThPkZL23BbDZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747902241; c=relaxed/simple;
-	bh=8xOr9S6yQTV1LJ7OlLB1jbsHxVL2XCYQMFKqucXQMnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7RH34UIP3zUaaGgkwXydoqtiYkD83Qx8G4J1IzmzimaG/gDbm8LUCINHT4c4srkPm2MoDVPA3PW4mIpXB03YSWsXUn0xb95opDMnj7qQGhovXG8zoP1Yyjr4LstBwbt6qTfW9cFebgQGpQYwMqLX1dKe9+oEEDXoXAGMNs6flo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uI1DT-0002GH-Ni
-	for stable@vger.kernel.org; Thu, 22 May 2025 10:23:51 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uI1DT-000haX-1D
-	for stable@vger.kernel.org;
-	Thu, 22 May 2025 10:23:51 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 11A784171FE
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 08:23:51 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 9CF7E4171E1;
-	Thu, 22 May 2025 08:23:48 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f289c61f;
-	Thu, 22 May 2025 08:23:45 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Carlos Sanchez <carlossanchez@geotab.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 4/4] can: slcan: allow reception of short error messages
-Date: Thu, 22 May 2025 10:01:34 +0200
-Message-ID: <20250522082344.490913-5-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250522082344.490913-1-mkl@pengutronix.de>
-References: <20250522082344.490913-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1747902109; c=relaxed/simple;
+	bh=VqOCPkWUr9CZnMaCodKIveASZIVnzNQmiel7M9LF6tI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=keOBDo8Ckq0BDtIiTs2pjQ1LiPXLYg0N5o+sBinqV43AgwdMCqpLSXT5AeUg7BDtbDgJ59hKuwg1Zo5vns9WpZyr3GjEl0JrwPzbig9CcPzNbbMtjfpp0lQMiJYUwdBCpv0wEQN7+w2AVQuG6fLwgJ54ZG3CAtOxla3nq30aeWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zgx9RXJZ; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32934448e8bso19787051fa.3
+        for <stable@vger.kernel.org>; Thu, 22 May 2025 01:21:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1747902106; x=1748506906; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TW+uhUhcGi/qFjEIYz1RUaPA9UVbNHNQ6EqB73r6lsU=;
+        b=zgx9RXJZI1d3FlZ2KYrhi/F0k5D3jJLrkx2ICqEflj4T6/IriMv5lo3UKLjRDQdUZt
+         fM9n1oUyZUeAlClkx0qGJDU9JdYnBWyd+U9NF1zeW4ypFCuKFPEMfB3gLEkQj0rlgdpB
+         rNPAhW/iLL1hduej8xykxfyBEG/X80YAA5WHLjjIjcgyV4mngZax+je2sK3z56PwBtND
+         Y3P50F4vRswVfHx9DzfXpDwvxPb2rKogfl2EKHubuY6mx9fKLZ8lagFh4qg0cH5TZP2D
+         LSePS8P/mYtPvnL0nYJWUI5BB8ezE2Uh8F+3LABuDcwB5nWsMiQS4WtynPjtScv/wHgg
+         cPCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747902106; x=1748506906;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TW+uhUhcGi/qFjEIYz1RUaPA9UVbNHNQ6EqB73r6lsU=;
+        b=PdkWCwX4D13yuO6QpeooLu+LgRN8bnS7ah8NbKrVjjEu4IQmhRDG96IIk476FbGFtF
+         33nSbAAusi07KPnirK22X0ZKDWRH5yHo+eWI0KNNt+slHu9ZegQyO4jKWUl8PdDpvdpY
+         3wyAnViTGemb3WriCqzdlyHb5RAhe5BDdNxBXTW09FYYI/TdTgNsiW51w5nbnpGgDiaP
+         Nn1oL2TY3QI5pRYTVtRdZuvf29HaKVD5jx2vAlYj607VWhGHRzeKO9+6PzBn879pxMom
+         SNg8VDJCHG+e1YpuR8/eSIBJrZ6YOXitxO34nD9rZp4jVQoJDY9eVilOyI1Vv9O6wk8T
+         VWJw==
+X-Forwarded-Encrypted: i=1; AJvYcCXI7PSeNd3zKVjWSJYLH8A7lz+0i7Mt408Fk91bjLhzy+YyONSXyESyP6Y+uZDymR8LBoAxgq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpaqBPKWjzQWOUWHFRV6UyjFhX3uSwJiK1p/7t+A/SAe2b1cLe
+	mXT5O7TaD58niWukZXZv1ya0HoT9U3HS3qjJdeDxSRE1ixRViU3G9vZl17i5dXQcpaqo+DVdQpU
+	iYSvryeSpb3vKZJHK9GGEqm94+Lj0gGB/AbNBauoNGajJ9RVmAGxeAxU=
+X-Gm-Gg: ASbGnctNCCVdNjCIxNw7L5KrTjcO0H7ntuFEoh+pPyvH+NIEPxL0SssYeak0dWAPoFB
+	+hyhy8zy9IrBRsGao+4aEhj0F/ZFj9kWggnlvdUMb8QsXfX7thmiLeWnF4UrT/5AIP273BjK3Jl
+	uFlzfMt3aEiztloZfLDh1hClEZBCeTCAj6
+X-Google-Smtp-Source: AGHT+IFuVWqRIf+xf4DijNOl0IDx8Qgv/jtCzf68FUzLuSbdLNyij11XpLfpriSkG3Sjekzh/okS+B8fvY52d+Rfu1M=
+X-Received: by 2002:a05:651c:2214:b0:30c:518e:452 with SMTP id
+ 38308e7fff4ca-3280771e0c9mr84948681fa.13.1747902105732; Thu, 22 May 2025
+ 01:21:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+References: <AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+ <8d249485-61f6-4081-82e0-63ae280c98c1@heusel.eu> <3352738d-9c0e-4c23-aa9a-61e1d3d67a50@hotmail.com>
+ <AM7P189MB10092C41B59EF58CBCB290A2E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+ <60a9ea8a-edb1-4426-ae0e-385f46888b3b@heusel.eu> <AM7P189MB1009A8754E90E4DE198DAC32E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+ <AM7P189MB100943AF796568B45AB7099AE399A@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+In-Reply-To: <AM7P189MB100943AF796568B45AB7099AE399A@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 22 May 2025 10:21:34 +0200
+X-Gm-Features: AX0GCFts_N2nJIo0yBksSJy-pd69zxVe0kQhRD0A3krKVPkQ2gCk7ftDFl_F9N8
+Message-ID: <CACRpkdaG5NNbfPhBMgCRUXqy_j5f=KaT75r9iQMg1HAyrAipoQ@mail.gmail.com>
+Subject: Re: Panic with a lis2dw12 accelerometer
+To: Maud Spierings <maud_spierings@hotmail.com>
+Cc: Christian Heusel <christian@heusel.eu>, stable@vger.kernel.org, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Carlos Sanchez <carlossanchez@geotab.com>
+On Thu, May 22, 2025 at 9:15=E2=80=AFAM Maud Spierings
+<maud_spierings@hotmail.com> wrote:
 
-Allows slcan to receive short messages (typically errors) from the serial
-interface.
+> I have found a fix but I don't know if it is correct to do. This deals
+> with the deferred probe correctly, no longer panics and registers the
+> device properly. This is the patch I have come up with:
+>
+> diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c
+> b/drivers/iio/common/st_sensors/st_sensors_core.c
+> index 1b4287991d00a..494206f8de5b0 100644
+> --- a/drivers/iio/common/st_sensors/st_sensors_core.c
+> +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+> @@ -231,7 +231,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev=
+)
+>                                               ARRAY_SIZE(regulator_names)=
+,
+>                                               regulator_names);
+>          if (err)
+> -               return dev_err_probe(&indio_dev->dev, err,
+> +               return dev_err_probe(parent, err,
+>                                       "unable to enable supplies\n");
+>
+>          return 0;
 
-When error support was added to slcan protocol in
-b32ff4668544e1333b694fcc7812b2d7397b4d6a ("can: slcan: extend the protocol
-with error info") the minimum valid message size changed from 5 (minimum
-standard can frame tIII0) to 3 ("e1a" is a valid protocol message, it is
-one of the examples given in the comments for slcan_bump_err() ), but the
-check for minimum message length prodicating all decoding was not adjusted.
-This makes short error messages discarded and error frames not being
-generated.
+It's the right fix.
 
-This patch changes the minimum length to the new minimum (3 characters,
-excluding terminator, is now a valid message).
+If you look in drivers/iio/accel/st_accel_i2c.c clearly the driver enables
+the power before calling st_accel_common_probe() which is where
+devm_iio_device_register() is finally called and the IIO struct
+device get initialized.
 
-Signed-off-by: Carlos Sanchez <carlossanchez@geotab.com>
-Fixes: b32ff4668544 ("can: slcan: extend the protocol with error info")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250520102305.1097494-1-carlossanchez@geotab.com
+And that's not all: st_sensors_init_sensor is also called before the
+iio device is present, so this:
+
+        } else
+                dev_info(&indio_dev->dev, "Full-scale not possible\n");
+
+and this:
+
+                dev_info(&indio_dev->dev,
+                         "set interrupt line to open drain mode on pin %d\n=
+",
+                         sdata->drdy_int_pin);
+
+is also unacceptable.
+
+I hope there are not more...
+
+They also need to use indio_dev->dev.parent, or a local copy of
+that struct device *, so please fix them too in the same patch.
+
+I tried to chase down a Fixes: candidate but this misunderstanding
+goes way back and such prints were introduced several times.
+
+I would just tag on
 Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/slcan/slcan-core.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+and be done with it.
 
-diff --git a/drivers/net/can/slcan/slcan-core.c b/drivers/net/can/slcan/slcan-core.c
-index 24c6622d36bd..58ff2ec1d975 100644
---- a/drivers/net/can/slcan/slcan-core.c
-+++ b/drivers/net/can/slcan/slcan-core.c
-@@ -71,12 +71,21 @@ MODULE_AUTHOR("Dario Binacchi <dario.binacchi@amarulasolutions.com>");
- #define SLCAN_CMD_LEN 1
- #define SLCAN_SFF_ID_LEN 3
- #define SLCAN_EFF_ID_LEN 8
-+#define SLCAN_DATA_LENGTH_LEN 1
-+#define SLCAN_ERROR_LEN 1
- #define SLCAN_STATE_LEN 1
- #define SLCAN_STATE_BE_RXCNT_LEN 3
- #define SLCAN_STATE_BE_TXCNT_LEN 3
--#define SLCAN_STATE_FRAME_LEN       (1 + SLCAN_CMD_LEN + \
--				     SLCAN_STATE_BE_RXCNT_LEN + \
--				     SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_STATE_MSG_LEN     (SLCAN_CMD_LEN +		\
-+                                 SLCAN_STATE_LEN +		\
-+                                 SLCAN_STATE_BE_RXCNT_LEN +	\
-+                                 SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_ERROR_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_ERROR_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
-+#define SLCAN_FRAME_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_SFF_ID_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
- struct slcan {
- 	struct can_priv         can;
- 
-@@ -176,6 +185,9 @@ static void slcan_bump_frame(struct slcan *sl)
- 	u32 tmpid;
- 	char *cmd = sl->rbuff;
- 
-+	if (sl->rcount < SLCAN_FRAME_MSG_LEN_MIN)
-+		return;
-+
- 	skb = alloc_can_skb(sl->dev, &cf);
- 	if (unlikely(!skb)) {
- 		sl->dev->stats.rx_dropped++;
-@@ -281,7 +293,7 @@ static void slcan_bump_state(struct slcan *sl)
- 		return;
- 	}
- 
--	if (state == sl->can.state || sl->rcount < SLCAN_STATE_FRAME_LEN)
-+	if (state == sl->can.state || sl->rcount != SLCAN_STATE_MSG_LEN)
- 		return;
- 
- 	cmd += SLCAN_STATE_BE_RXCNT_LEN + SLCAN_CMD_LEN + 1;
-@@ -328,6 +340,9 @@ static void slcan_bump_err(struct slcan *sl)
- 	bool rx_errors = false, tx_errors = false, rx_over_errors = false;
- 	int i, len;
- 
-+	if (sl->rcount < SLCAN_ERROR_MSG_LEN_MIN)
-+		return;
-+
- 	/* get len from sanitized ASCII value */
- 	len = cmd[1];
- 	if (len >= '0' && len < '9')
-@@ -456,8 +471,7 @@ static void slcan_bump(struct slcan *sl)
- static void slcan_unesc(struct slcan *sl, unsigned char s)
- {
- 	if ((s == '\r') || (s == '\a')) { /* CR or BEL ends the pdu */
--		if (!test_and_clear_bit(SLF_ERROR, &sl->flags) &&
--		    sl->rcount > 4)
-+		if (!test_and_clear_bit(SLF_ERROR, &sl->flags))
- 			slcan_bump(sl);
- 
- 		sl->rcount = 0;
--- 
-2.47.2
+Thanks for drilling into this!
 
-
+Yours,
+Linus Walleij
 
