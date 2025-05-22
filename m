@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC14BAC0237
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:07:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC8D4AC0238
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 699AF4E00A1
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:07:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC7871887258
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F26C2B9B7;
-	Thu, 22 May 2025 02:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A651F2D7BF;
+	Thu, 22 May 2025 02:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MbqwUgXj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPL3kh6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04366FBF
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A93539A
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879655; cv=none; b=CRNGUjandjVB6VOg5drLKOWXdNu4MIkctx2Xi9Sbe2QEmsPXrptHfFcZOwRdPje5bIaO4mYfpeSV5SqArUqVIxR+xsLiJmy/3EWSwhiLb4gGeRXxdSCNy7vc9jZXk3IjcwTyhK672LviuxUlNW79qlFyAF7mEfIhAbYJcKkLV4s=
+	t=1747879658; cv=none; b=qkq+oeWKPZfi5Bs829U+se2XC2NNf4SsY5lEU6w1BLudxttnx9nKlLLk+cXFSqu+oSsS/CQKWk9Ra6a8LBVIfQ0Mkw2Q80f4lR2FMHMUQ05oD5Kf2bxEv6MC/nUQ3yMxOFQmEcv2nuMjkxNxUJUEI8mV3sw5bEGLKU6cSE3TjjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879655; c=relaxed/simple;
-	bh=0ZI2dlrF9iZxGxjxn4RRSilb4V9nJ8h2i6sXiWvdLX0=;
+	s=arc-20240116; t=1747879658; c=relaxed/simple;
+	bh=jEUQ0clIwxdIxapAJvKOaIXK2KMWsLXzaL6cmrPYmic=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JwfpRC648BlBezs2HSNsAzrqxwrr47LKbRte3jOkO70xi4tCof9IaJubGMlJvGExt/ShkI0wtbDrzXPMNxqAcx+Tbojayw4FQBw9eoWouKTgtH7nx+YwjK7JL5aeP+ldo+6/0UcvG5fpZQJuv/48g/lh1JvlQjn17lveRR7ctQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MbqwUgXj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6641AC4CEE4;
-	Thu, 22 May 2025 02:07:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=exaKNzl30Skp47qGlJqRrVIA73k8jPw1v7WM+JoAkYz280/V1uYsJGKG8yLiZy3GfaViqbTPwPXG60rIGVZ6bO/T9gYPYT4P1YhYi9nTMjs9LoCdc36WUarB+KWnwAIawDrYxFIYc/nS17tzg4XLrGet0ScPIhbxaKikq3/5Ous=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPL3kh6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12F8C4CEE4;
+	Thu, 22 May 2025 02:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879654;
-	bh=0ZI2dlrF9iZxGxjxn4RRSilb4V9nJ8h2i6sXiWvdLX0=;
+	s=k20201202; t=1747879658;
+	bh=jEUQ0clIwxdIxapAJvKOaIXK2KMWsLXzaL6cmrPYmic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbqwUgXjzDTRJCDxVs8MzsXexOK6jNJji5H+gm05un7/hvWp95g36BOPu4/pLfPzV
-	 iAfG8exgthRLKVRlZSaa1yuWpMvWZJFSg3DOzQJ3rUnEd2/nku4xkKb359oRSSgXg/
-	 xDc+N6Vk0JlqY62ZarQGiF5VobBvA4Ocr3SNAY1gLpB9QVD5k4WJLelVCKj8c00n16
-	 +kTfAtwzPjLrvt2vlbJRwUcG5P+CsAY9b4wf7b6Js4pYJZg+Rzx/06EG3LtgVBPKTn
-	 yUaVs9THeU+tjNabRAfO2j2tU4IBXteMOhMXCd6Rtrge9hfKBZ7H5Fsb2boxUdLHMN
-	 ImyMUJvxEbxQg==
+	b=UPL3kh6maJiEu/nW1PiU/X6h1Hzp+gxaSvkf7SAFrvG02tnnNEXdy5OOOZdtd4G6l
+	 AY1vuMaTgSsBQRYS7bTgP97BxMjggVVX8RwA5cwpviorb3BefkjFL//gkzQAaYOU/R
+	 Edl+V94vm3prJib7BzSJ4ruwRMFIDXA3gz2wI20PzVQKznGXWHyQdlHfHTSQEqT9J1
+	 sf4Ybjn1pBBAR6PLHPFScnoTWv3IT+OTOTXRPJcH1poqRbKuKORv3MwHq/QJgeIYQz
+	 CWq1+zIawp74hjz1PZKvWCalo6/0lMDfB7N1mtYsvH0Ws5R2gzOwycwVm20F4yzf4w
+	 mw/eYVHAuKXqw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Lee Jones <lee@kernel.org>,
+Cc: Qingfang Deng <dqfext@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.6 18/26] af_unix: Assign a unique index to SCC.
-Date: Wed, 21 May 2025 22:07:30 -0400
-Message-Id: <20250521180833-4ab23d902a5351ac@stable.kernel.org>
+Subject: Re: [PATCH 5.10 4/5] kernfs: use i_lock to protect concurrent inode updates
+Date: Wed, 21 May 2025 22:07:35 -0400
+Message-Id: <20250521154826-f1c70bd2e346436b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521144803.2050504-19-lee@kernel.org>
+In-Reply-To:  <20250521015336.3450911-5-dqfext@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,42 +67,78 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: bfdb01283ee8f2f3089656c3ff8f62bb072dabb2
+The upstream commit SHA1 provided is correct: 47b5c64d0ab5e7136db2b78c6ec710e0d8a5a36b
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Lee Jones<lee@kernel.org>
-Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
+Backport author: Qingfang Deng<dqfext@gmail.com>
+Commit author: Ian Kent<raven@themaw.net>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  bfdb01283ee8f ! 1:  eea9db6abacdf af_unix: Assign a unique index to SCC.
+1:  47b5c64d0ab5e ! 1:  3ab6e3573bab5 kernfs: use i_lock to protect concurrent inode updates
     @@ Metadata
       ## Commit message ##
-         af_unix: Assign a unique index to SCC.
+         kernfs: use i_lock to protect concurrent inode updates
      
-    +    [ Upstream commit bfdb01283ee8f2f3089656c3ff8f62bb072dabb2 ]
+    +    Commit 47b5c64d0ab5e7136db2b78c6ec710e0d8a5a36b upstream.
     +
-         The definition of the lowlink in Tarjan's algorithm is the
-         smallest index of a vertex that is reachable with at most one
-         back-edge in SCC.  This is not useful for a cross-edge.
+         The inode operations .permission() and .getattr() use the kernfs node
+         write lock but all that's needed is the read lock to protect against
+         partial updates of these kernfs node fields which are all done under
     @@ Commit message
-         Acked-by: Paolo Abeni <pabeni@redhat.com>
-         Link: https://lore.kernel.org/r/20240325202425.60930-13-kuniyu@amazon.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit bfdb01283ee8f2f3089656c3ff8f62bb072dabb2)
-    +    Signed-off-by: Lee Jones <lee@kernel.org>
+         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
      
-      ## include/net/af_unix.h ##
-     @@ include/net/af_unix.h: struct unix_vertex {
+      ## fs/kernfs/inode.c ##
+    -@@ fs/kernfs/inode.c: int kernfs_iop_getattr(struct user_namespace *mnt_userns,
+    +@@ fs/kernfs/inode.c: int kernfs_iop_getattr(const struct path *path, struct kstat *stat,
+      	struct inode *inode = d_inode(path->dentry);
+      	struct kernfs_node *kn = inode->i_private;
+      
+    @@ fs/kernfs/inode.c: int kernfs_iop_getattr(struct user_namespace *mnt_userns,
+      	kernfs_refresh_inode(kn, inode);
+     -	up_write(&kernfs_rwsem);
+     -
+    - 	generic_fillattr(&init_user_ns, inode, stat);
+    + 	generic_fillattr(inode, stat);
+     +	spin_unlock(&inode->i_lock);
+     +	up_read(&kernfs_rwsem);
+     +
+      	return 0;
+      }
+      
+    -@@ fs/kernfs/inode.c: int kernfs_iop_permission(struct user_namespace *mnt_userns,
+    - 			  struct inode *inode, int mask)
+    +@@ fs/kernfs/inode.c: void kernfs_evict_inode(struct inode *inode)
+    + int kernfs_iop_permission(struct inode *inode, int mask)
+      {
+      	struct kernfs_node *kn;
+     +	int ret;
+    @@ fs/kernfs/inode.c: int kernfs_iop_permission(struct user_namespace *mnt_userns,
+     +	spin_lock(&inode->i_lock);
+      	kernfs_refresh_inode(kn, inode);
+     -	up_write(&kernfs_rwsem);
+    -+	ret = generic_permission(&init_user_ns, inode, mask);
+    ++	ret = generic_permission(inode, mask);
+     +	spin_unlock(&inode->i_lock);
+     +	up_read(&kernfs_rwsem);
+      
+    --	return generic_permission(&init_user_ns, inode, mask);
+    +-	return generic_permission(inode, mask);
+     +	return ret;
+      }
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
