@@ -1,377 +1,143 @@
-Return-Path: <stable+bounces-146060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F48EAC08CE
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 11:34:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A687AC08D7
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 11:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEC0C7AAA6A
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 09:33:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D6083A65CA
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 09:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2027121ADA0;
-	Thu, 22 May 2025 09:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411E7267F5D;
+	Thu, 22 May 2025 09:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPTobsBZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SDdnXFq3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF44267F5D;
-	Thu, 22 May 2025 09:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBD533DB
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 09:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747906464; cv=none; b=UnAtK5WzUdRlu4FdwqrL0M9TrZX9tmYirqr+zev/b7t2IzO/f2XhzoVeTeSycrBNVdxRmLoVsf0CRvrbnuS4E/AhgDCUJQKeUpj1kMlRMGpgYOpP5M4FjE53cOGpEBNH+Vs4iIPftoWFiLI+PWMFTekSGG5f4/LJvr0rcuYdy60=
+	t=1747906513; cv=none; b=kAPvzmdvQoRk93i6bbLCvWMt2arvdNItz2dzT69IvtKHdJpS/0IKY4prK80CDuxKrvrCmA0CSFtQxtmbntqjUpGsSqr5dTXOlphXkJBKxiccg/KGtomw33s5RofgeqhyyKao7pPuzsOekO1aPKRerC7auhKT/ALteKgHB4uLpYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747906464; c=relaxed/simple;
-	bh=hpKXOtyoSf4xG6o4qNfJQnxtdgo+kFGkLBW9Di51cYE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UVSZQdIm2JhEWAoxUCwq9RL3trMJ/BMXdN3t+zEbyrNHzjSx6phbjeFmCnyq7cqpVkejOVfrIlKlTscaQ8NbvUTLPIJTVYgrwkQgP5oqHRFYk1y8bb/e6WR1ie4oH8dsMbO83lCVLUtcpRuAbSvwsXFvE+LVSvZakSmtY9LntN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPTobsBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 26BCAC4CEE4;
-	Thu, 22 May 2025 09:34:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747906464;
-	bh=hpKXOtyoSf4xG6o4qNfJQnxtdgo+kFGkLBW9Di51cYE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=HPTobsBZmNNXzg4IQi7m/PU0mzqUkGF8d4NrOD+UdtSumuSzsatIPNefF5sp+9TIt
-	 YtXTYDRYQUd5oebdUX6IETeNi4BBLkNCJ71z+ZZrSF61/M7lv6+eJOmekeDW+leIVr
-	 6UO8/NGWBO/3KCfPBJnSAisUtNI5oxFJEGuXqnmjn17SWB+71SqGElpaN7XHusxhG+
-	 qw8QlLjfTqdoLk5mMjWxCHar0m4gPbY6hnHCqEm/lJVoJLRjxGXkzg3fo6OLRgUTpb
-	 IxlpBkWlBHuhV/FO8DIQdYW7PFkmqdZOmxcjkOgNGdECTbEB7Y28VYnzkt0+5mM5sH
-	 GJ/hSZRr3UVtg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1356FC54E65;
-	Thu, 22 May 2025 09:34:24 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Thu, 22 May 2025 11:34:20 +0200
-Subject: [PATCH] iio: common: st_sensors: Fix use of uninitialize device
- structs
+	s=arc-20240116; t=1747906513; c=relaxed/simple;
+	bh=Z+jLKNsxkqIWqQE8myT0MpIZfPTXS0E7a1P5MPHCQjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xwe4BMHDolGStheoMLyl9b8e8Vv9c63hmnAeeRQfzai/PY7Cs467ly6pezBSuNR36sGjQzXzceI6+eF0IvKNgR56xbF3a6Qy1c21as/s8B1E6fsJe7GbfXmTZc33ozyjeRZZyek7HrOWPgldeX2OUqLjWDEzFPHjwGKZInsQP4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SDdnXFq3; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747906512; x=1779442512;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Z+jLKNsxkqIWqQE8myT0MpIZfPTXS0E7a1P5MPHCQjA=;
+  b=SDdnXFq3iRCeq0a1PJc5nwFD3Na3o4/fu+FigtApeWcIi58KFBxokf4A
+   VKxmEUASfxTVKuPQ5GbjHBx17jiVW7/DF5nGBy10T+22Y1FaApdqYQpB6
+   CASFkt4lTsV2LC00nI769UtgcGI+st8dXJn689qxHl2C66Npv5iIIq8/1
+   EVqrr2iGyE8rrXDh5+n9ugjtBGSINX6wkPtAxK/t3uoYMKEHjoJLegK0E
+   DqpwBLWq86aL6Y85e4XbqsIUSWTuTV7uTYOWzJNND3UULfO3yrqFnlcfB
+   gZpjtijMHDOW9dludqA4dkDWGn1IHo+AhVa4AFihmmQcdIXLOISz6B2Fk
+   g==;
+X-CSE-ConnectionGUID: 76QsREm3SlSgDbgPQufKIg==
+X-CSE-MsgGUID: obZzDpwIT3ekklLRWAJ4tQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="72446650"
+X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; 
+   d="scan'208";a="72446650"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 02:35:10 -0700
+X-CSE-ConnectionGUID: j+Fzz2/8Q8qgd8dpaZ+2+w==
+X-CSE-MsgGUID: WUskt9GISkaCGl1a8MdVKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; 
+   d="scan'208";a="145666591"
+Received: from oandoniu-mobl3.ger.corp.intel.com (HELO stinkbox) ([10.245.245.173])
+  by orviesa005.jf.intel.com with SMTP; 22 May 2025 02:35:07 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Thu, 22 May 2025 12:35:05 +0300
+Date: Thu, 22 May 2025 12:35:05 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tursulin@ursulin.net>,
+	stable@vger.kernel.org, Matthew Auld <matthew.auld@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>
+Subject: Re: [PATCH v2 1/2] drm/i915/gem: Allow EXEC_CAPTURE on recoverable
+ contexts on DG1
+Message-ID: <aC7vyURBb6k8TqBI@intel.com>
+References: <20250411144313.11660-1-ville.syrjala@linux.intel.com>
+ <20250411144313.11660-2-ville.syrjala@linux.intel.com>
+ <174789510455.12498.1410930072009074388@jlahtine-mobl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250522-st_iio_fix-v1-1-d689b35f1612@gocontroll.com>
-X-B4-Tracking: v=1; b=H4sIAJvvLmgC/x2MQQqAIBAAvyJ7TtBFIfpKhISutRcNjQjEvycdZ
- 2CmQaXCVGERDQo9XDmnAXoS4M89HSQ5DAZUaJVFlPV2zNlFfqX2do4hmGBQwQiuQkP/s3Xr/QP
- 0XjgnXAAAAA==
-X-Change-ID: 20250522-st_iio_fix-1c58fdd4d420
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Christian Heusel <christian@heusel.eu>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Maud Spierings <maudspierings@gocontroll.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747906463; l=10759;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=Mdj2WfRjKzTBET/uFBcIR1a0EOi/GvllTkbb92crl9w=;
- b=UpaCA0nqrYIws4zb0iA5LinivK852Q8vvz2NyyjZMtTtPE7oTKBn2WDCZ5MCM7BjC7hOxRQ1f
- WIbnuPH2E2/B8jPsbrl8t4yZcKYxYy2UyDBC0CX5LCcPPqaiTvcO28F
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <174789510455.12498.1410930072009074388@jlahtine-mobl>
+X-Patchwork-Hint: comment
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+On Thu, May 22, 2025 at 09:25:04AM +0300, Joonas Lahtinen wrote:
+> (+ Tvrkto)
+> 
+> Quoting Ville Syrjala (2025-04-11 17:43:12)
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > The intel-media-driver is currently broken on DG1 because
+> > it uses EXEC_CAPTURE with recovarable contexts. Relax the
+> > check to allow that.
+> > 
+> > I've also submitted a fix for the intel-media-driver:
+> > https://github.com/intel/media-driver/pull/1920
+> > 
+> > Cc: stable@vger.kernel.org
+> > Cc: Matthew Auld <matthew.auld@intel.com>
+> > Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> > Testcase: igt/gem_exec_capture/capture-invisible
+> > Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
+> > Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > ---
+> >  drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> > index ca7e9216934a..ea9d5063ce78 100644
+> > --- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> > +++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> > @@ -2013,7 +2013,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
+> >                         continue;
+> >  
+> >                 if (i915_gem_context_is_recoverable(eb->gem_context) &&
+> > -                   (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
+> > +                   GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
+> 
+> The IS_DGFX check was there because the error capture is expected to be
+> broken on anything with VRAM.
 
-Throughout the various probe functions &indio_dev->dev is used before it
-is initialized. This caused a kernel panic in st_sensors_power_enable
-when the call to devm_regulator_bulk_get_enable() fails and then calls
-dev_err_probe() with the uninitialized device.
+I don't care. It's a regression that prevents current userspace
+from working.
 
-This seems to only cause a panic with dev_err_probe(), dev_err,
-dev_warn and dev_info don't seem to cause a panic, but are fixed
-as well.
+> 
+> If we have already submitted an userspace fix to remove that flag, that
+> would be the right way to go.
 
----
-When I search for general &indio_dev->dev usage, I see quite a lot more
-hits, but I am not sure if there are issues with those too.
+There has a been an open pull request for that for who knows how long
+without any action.
 
-This issue has existed for a long time it seems and therefore it is
-nearly impossible to find a proper fixes tag. I would love to see it at
-least backported to 6.12 as that is where I encountered it, and I
-believe the patch should apply without conflicts.
+> 
+> So reverting this for now.
 
-The investigation into this issue can be found in this thread [1]
+*You* make sure a userspace fix actually gets released then.
 
-[1]: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/
-
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
----
- drivers/iio/accel/st_accel_core.c                  | 10 +++----
- drivers/iio/common/st_sensors/st_sensors_core.c    | 35 +++++++++++-----------
- drivers/iio/common/st_sensors/st_sensors_trigger.c | 18 +++++------
- 3 files changed, 31 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index 99cb661fabb2d9cc1943fa8d0a6f3becb71126e6..a7961c610ed203d039bbf298c8883031a578fb0b 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1353,6 +1353,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	union acpi_object *ont;
- 	union acpi_object *elements;
- 	acpi_status status;
-+	struct device *parent = indio_dev->dev.parent;
- 	int ret = -EINVAL;
- 	unsigned int val;
- 	int i, j;
-@@ -1371,7 +1372,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	};
- 
- 
--	adev = ACPI_COMPANION(indio_dev->dev.parent);
-+	adev = ACPI_COMPANION(parent);
- 	if (!adev)
- 		return -ENXIO;
- 
-@@ -1380,8 +1381,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	if (status == AE_NOT_FOUND) {
- 		return -ENXIO;
- 	} else if (ACPI_FAILURE(status)) {
--		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
--			 status);
-+		dev_warn(parent, "failed to execute _ONT: %d\n", status);
- 		return status;
- 	}
- 
-@@ -1457,12 +1457,12 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	}
- 
- 	ret = 0;
--	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
-+	dev_info(parent, "computed mount matrix from ACPI\n");
- 
- out:
- 	kfree(buffer.pointer);
- 	if (ret)
--		dev_dbg(&indio_dev->dev,
-+		dev_dbg(parent,
- 			"failed to apply ACPI orientation data: %d\n", ret);
- 
- 	return ret;
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index 8ce1dccfea4f5aaff45d3d40f6542323dd1f0b09..11cbf561b16d41f429745abb516c137cfbb302bb 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(struct iio_dev *indio_dev, unsigned int fs)
- 	return err;
- 
- st_accel_set_fullscale_error:
--	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
-+	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
- 	return err;
- }
- 
-@@ -231,7 +231,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
- 					     ARRAY_SIZE(regulator_names),
- 					     regulator_names);
- 	if (err)
--		return dev_err_probe(&indio_dev->dev, err,
-+		return dev_err_probe(parent, err,
- 				     "unable to enable supplies\n");
- 
- 	return 0;
-@@ -241,13 +241,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable, "IIO_ST_SENSORS");
- static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 
- 	/* Sensor does not support interrupts */
- 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
- 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
- 		if (pdata->drdy_int_pin)
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
- 				 pdata->drdy_int_pin);
- 		return 0;
-@@ -256,29 +257,27 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 	switch (pdata->drdy_int_pin) {
- 	case 1:
- 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT1 not available.\n");
-+			dev_err(parent, "DRDY on INT1 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 1;
- 		break;
- 	case 2:
- 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT2 not available.\n");
-+			dev_err(parent, "DRDY on INT2 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 2;
- 		break;
- 	default:
--		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
-+		dev_err(parent, "DRDY on pdata not valid.\n");
- 		return -EINVAL;
- 	}
- 
- 	if (pdata->open_drain) {
- 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
- 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"open drain requested but unsupported.\n");
- 		else
- 			sdata->int_pin_open_drain = true;
-@@ -336,6 +335,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_probe, "IIO_ST_SENSORS");
- int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 	struct st_sensors_platform_data *of_pdata;
- 	int err = 0;
-@@ -343,7 +343,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 	mutex_init(&sdata->odr_lock);
- 
- 	/* If OF/DT pdata exists, it will take precedence of anything else */
--	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
-+	of_pdata = st_sensors_dev_probe(parent, pdata);
- 	if (IS_ERR(of_pdata))
- 		return PTR_ERR(of_pdata);
- 	if (of_pdata)
-@@ -370,7 +370,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 		if (err < 0)
- 			return err;
- 	} else
--		dev_info(&indio_dev->dev, "Full-scale not possible\n");
-+		dev_info(parent, "Full-scale not possible\n");
- 
- 	err = st_sensors_set_odr(indio_dev, sdata->odr);
- 	if (err < 0)
-@@ -405,7 +405,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
- 		}
- 
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "set interrupt line to open drain mode on pin %d\n",
- 			 sdata->drdy_int_pin);
- 		err = st_sensors_write_data_with_mask(indio_dev, addr,
-@@ -593,21 +593,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings_index, "IIO_ST_SENSORS");
- int st_sensors_verify_id(struct iio_dev *indio_dev)
- {
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
-+	struct device *parent = indio_dev->dev.parent;
- 	int wai, err;
- 
- 	if (sdata->sensor_settings->wai_addr) {
- 		err = regmap_read(sdata->regmap,
- 				  sdata->sensor_settings->wai_addr, &wai);
- 		if (err < 0) {
--			dev_err(&indio_dev->dev,
--				"failed to read Who-Am-I register.\n");
--			return err;
-+			return dev_err_probe(parent, err,
-+					     "failed to read Who-Am-I register.\n");
- 		}
- 
- 		if (sdata->sensor_settings->wai != wai) {
--			dev_warn(&indio_dev->dev,
--				"%s: WhoAmI mismatch (0x%x).\n",
--				indio_dev->name, wai);
-+			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
-+				 indio_dev->name, wai);
- 		}
- 	}
- 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-index 9d4bf822a15dfcdd6c2835f6b9d7698cd3cb0b08..32c3278968089699dff5329e943d92b151b55fdf 100644
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
- 					     indio_dev->name);
- 	if (sdata->trig == NULL) {
--		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
-+		dev_err(parent, "failed to allocate iio trigger.\n");
- 		return -ENOMEM;
- 	}
- 
-@@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	case IRQF_TRIGGER_FALLING:
- 	case IRQF_TRIGGER_LOW:
- 		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
- 			if (irq_trig == IRQF_TRIGGER_FALLING)
- 				irq_trig = IRQF_TRIGGER_RISING;
-@@ -156,21 +156,21 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
- 			if (err < 0)
- 				return err;
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "interrupts on the falling edge or active low level\n");
- 		}
- 		break;
- 	case IRQF_TRIGGER_RISING:
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "interrupts on the rising edge\n");
- 		break;
- 	case IRQF_TRIGGER_HIGH:
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "interrupts active high level\n");
- 		break;
- 	default:
- 		/* This is the most preferred mode, if possible */
--		dev_err(&indio_dev->dev,
-+		dev_err(parent,
- 			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
- 		irq_trig = IRQF_TRIGGER_RISING;
- 	}
-@@ -179,7 +179,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	if (irq_trig == IRQF_TRIGGER_FALLING ||
- 	    irq_trig == IRQF_TRIGGER_RISING) {
- 		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"edge IRQ not supported w/o stat register.\n");
- 			return -EOPNOTSUPP;
- 		}
-@@ -214,13 +214,13 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 					sdata->trig->name,
- 					sdata->trig);
- 	if (err) {
--		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
-+		dev_err(parent, "failed to request trigger IRQ.\n");
- 		return err;
- 	}
- 
- 	err = devm_iio_trigger_register(parent, sdata->trig);
- 	if (err < 0) {
--		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
-+		dev_err(parent, "failed to register iio trigger.\n");
- 		return err;
- 	}
- 	indio_dev->trig = iio_trigger_get(sdata->trig);
-
----
-base-commit: 7bac2c97af4078d7a627500c9bcdd5b033f97718
-change-id: 20250522-st_iio_fix-1c58fdd4d420
-
-Best regards,
 -- 
-Maud Spierings <maudspierings@gocontroll.com>
-
-
+Ville Syrjälä
+Intel
 
