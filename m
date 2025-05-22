@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228D2AC0235
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:07:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FAFAC0236
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 672AE9E84CE
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:07:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFF377B2F61
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB449443;
-	Thu, 22 May 2025 02:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4948BEC;
+	Thu, 22 May 2025 02:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bszClCvO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OiSODB8b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794608BEC
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48906FBF
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879648; cv=none; b=UGzUkm6OwIUOKtmUc/KbDWWwtTj4Wlv53bOPk9d5prAgh0lMlVDfBzOMK5FjGXd5XmrfPi6F6Af36h/cKOvYxgP3kSsQJv2vS7RCUMINMNELfrGiUTRebSsZgxsnz0dntn6yUEW7BeLindRMM/KouOnmj7DmXzg//QDwr+l3b78=
+	t=1747879651; cv=none; b=RCn/9U5RFtvR0YAjVrwcDS2aj+l6+POJS+MAlhyph6cJQokN9WqQrmA30SAAJSW1+E5+hWGdEPSXqBO6ouOpNv2k15fLxRS9rhQhdlasZ+dPaz8UVWG/BVEdJ9xOYgq6nHHyMrFwaO+/zwezaSVXJ5yLEoF3Pf5wiv5xG00hUko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879648; c=relaxed/simple;
-	bh=Ppv/XGek3LeGtFj3/sB5bWcMDJMljP2ewstQyqPIl+U=;
+	s=arc-20240116; t=1747879651; c=relaxed/simple;
+	bh=lP/jrXEWXmfTZ6uFLZsq9npbkXmLc+kcZuwSUqhSzuY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LFV+z0FtkVQBPZD4AbLzjBmJryowIZnDpT576r3dqQ3UH+xfBF3kZt0QrJNTquY8hzr//ZKOUrzsAcsJxrj6LnPIuL7sE/5LxAhH7cW0K+zL0NuwQDh2cqYSqbyn4DOtetqkSJMIrHbQyZilVqRvh9f3v7KSMqyr2U+z8OSZjH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bszClCvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F510C4CEE4;
-	Thu, 22 May 2025 02:07:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WlJUv7aMC4z+6Nrzvhj9FfdwL9N5Lx2HsiVcPUx/AraYjHjosHWfQ5DBry378p9E7CRBR/6JnjNHQ82Rg49NDY7XTCg/beWzDax1pGvgXNeqg5g9YfvOsMjNZbihS7VmJ0x0ORL3X5U86VgJOUwq9NGRzPO/a0s0EilMtDCTfjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OiSODB8b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25DDC4CEE4;
+	Thu, 22 May 2025 02:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879648;
-	bh=Ppv/XGek3LeGtFj3/sB5bWcMDJMljP2ewstQyqPIl+U=;
+	s=k20201202; t=1747879650;
+	bh=lP/jrXEWXmfTZ6uFLZsq9npbkXmLc+kcZuwSUqhSzuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bszClCvOn6WwThYqPBy/aOeSiD9TNK2SA4Tf1uDpGGOBokUjIgGYMdxsmu0bpWQYT
-	 8aMTq1hi600sIcIOVcAKS3ssSlBP6pyauW2K5gfM3EvCpZVtJcr9oBEiLi4OAYwcOr
-	 pOijp5s3b9m2LIo3QfpLbCP6CTDWkAFN56GXpLmfHmlPEAmeWvUM1q87EEg4X9yP3r
-	 RmMhvuQgwO+Zu7L7VyNqcYBDGzA2JMDlb2/ndKS+QXVEpAuqFI7QYQm21cdTZepC/u
-	 rzUEDzD9wFpet/Z9t5oMNXt4HQ81N/wd2zZS+5JGdJnlMq/UvFxbM6uUPMuUhWroFR
-	 YjqaELWuwixjQ==
+	b=OiSODB8bvCrZbM6TdAyLIH27rhP/VJebQ7VySqglTEy6ai7rDLBAT7kTFKiyBYO7s
+	 FrZAP+pjsSvEalLFQ9wsVdFZTxrgA7ZGST48A8jlsI25P/wlQxepMBkouxJu9/1c6T
+	 FwcYR3NeSLE2wwErz1SHzNk3nz3YpahPS4Yhr/GzliRm0ZOUbZf472ZELTNVEpOBBD
+	 QZoimUI5sxrc6Os2FMt0kJkFNgc4snu6e4g3mcksEfGLWRnkzzYmusjWzXIDGGlvO8
+	 OeSu9MrKlg72qZKB6/WylQIAlPMCbfFI1QdBTQa1DBAwEOR+kCU5WbdBJ0XtFjEhQ6
+	 9yYzB4zFPwNJw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	lee@kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.6 22/26] af_unix: Try not to hold unix_gc_lock during accept().
-Date: Wed, 21 May 2025 22:07:24 -0400
-Message-Id: <20250521182608-55876aa62776fc7c@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Qingfang Deng <dqfext@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 1/5] kernfs: add a revision to identify directory node changes
+Date: Wed, 21 May 2025 22:07:28 -0400
+Message-Id: <20250521153013-255373cb29c075e6@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521144803.2050504-23-lee@kernel.org>
+In-Reply-To:  <20250521015336.3450911-2-dqfext@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,52 +64,39 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 22/26 of a series
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: fd86344823b521149bb31d91eba900ba3525efa6
+The upstream commit SHA1 provided is correct: 895adbec302e92086359e6fd92611ac3be6d92c3
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Lee Jones<lee@kernel.org>
-Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
+Backport author: Qingfang Deng<dqfext@gmail.com>
+Commit author: Ian Kent<raven@themaw.net>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-
-Found fixes commits:
-1af2dface5d2 af_unix: Don't access successor in unix_del_edges() during GC.
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  fd86344823b52 ! 1:  62abdb8ad3ff4 af_unix: Try not to hold unix_gc_lock during accept().
+1:  895adbec302e9 ! 1:  384581c600ad7 kernfs: add a revision to identify directory node changes
     @@ Metadata
       ## Commit message ##
-         af_unix: Try not to hold unix_gc_lock during accept().
+         kernfs: add a revision to identify directory node changes
      
-    +    [ Upstream commit fd86344823b521149bb31d91eba900ba3525efa6 ]
+    +    Commit 895adbec302e92086359e6fd92611ac3be6d92c3 upstream.
     +
-         Commit dcf70df2048d ("af_unix: Fix up unix_edge.successor for embryo
-         socket.") added spin_lock(&unix_gc_lock) in accept() path, and it
-         caused regression in a stress test as reported by kernel test robot.
-    @@ Commit message
-         Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-         Link: https://lore.kernel.org/r/20240413021928.20946-1-kuniyu@amazon.com
-         Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-    +    (cherry picked from commit fd86344823b521149bb31d91eba900ba3525efa6)
-    +    Signed-off-by: Lee Jones <lee@kernel.org>
-     
-      ## include/net/af_unix.h ##
-     @@ include/net/af_unix.h: struct unix_skb_parms {
+         Add a revision counter to kernfs directory nodes so it can be used
+         to detect if a directory node has changed during negative dentry
+         revalidation.
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
