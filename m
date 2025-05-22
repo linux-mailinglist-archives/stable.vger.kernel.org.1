@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CBAAC020F
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C15DAC020E
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5884E7A5E31
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:03:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37E044A7437
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2676412DD95;
-	Thu, 22 May 2025 02:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4656E35953;
+	Thu, 22 May 2025 02:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+L/XL8w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSem4sX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80CC3F9FB
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042671758B
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879478; cv=none; b=ly3VxSESFXb2H3MJPLo4D/3oiJm/xRF2wIMhcZyZHy65Fag1hQMTRaZVYYNqGRXJbxyp1E4iOwov8iDK3s9hDerWTHEi1YL621LueIsgsUF/wI/2yedoOnHVh8ToaLf6jzCW6syWiZjwGCI7hD4Pd8dIBvfmurH3reNbJiyBKQM=
+	t=1747879483; cv=none; b=H2TdDWFuN9TrewUBpjwcou1ju72JJ7fUgbC9mnfCCb3w4ANJ/eNDT1pAg8SVrgTf+GlBzkqbRwPYR9tUiJmK3F9Rc69vIZzJpIf+1PHZKs5a4X2lYwwR7LjzFMSdzdp39dkptTdaqE9bopaOC/f2SX0l2YMFRR3EINYhUQSFplA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879478; c=relaxed/simple;
-	bh=zC+T6CT1xM1JPlhF5iTFHOZlqRqFQXfYlE8duBbbuIs=;
+	s=arc-20240116; t=1747879483; c=relaxed/simple;
+	bh=lINvzRY6WFAhKrs0bj4SO3VqkmymozwjVcnvRJObC7g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t11F5lVW9RTlnCdw2vjoW52nLsWLEPD0rPwNt+kDD5nU+PrA/Ps7vNp5Q+f4atiBbnTYJdFxK856r/j46/7ZhFoG1lkX7/D/N3452BMJ8LcwI0Ka7Fb0Mqs3IzDFhOIqrg/WuLsDecZSX6Ll25g5KC9a8dVly+XuTJht48CKwSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+L/XL8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75C5C4CEE4;
-	Thu, 22 May 2025 02:04:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ihW8CBtuYu2yymg6eZmu+jx/mkjTVMukU2DUJrxMLw3HyZeQy6alIz9aI5QOR4C6XbPO0xfZTsp+HGNu7T3lGWqjUko3Id+4zHoQ8Umvjq/99K2VOZcqOBvl/hVHQGuqGwxSX3ZiE+ej2xh3E4IXNz41CdC03iG9ZEH5i664dKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSem4sX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C1EC4CEE4;
+	Thu, 22 May 2025 02:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879478;
-	bh=zC+T6CT1xM1JPlhF5iTFHOZlqRqFQXfYlE8duBbbuIs=;
+	s=k20201202; t=1747879482;
+	bh=lINvzRY6WFAhKrs0bj4SO3VqkmymozwjVcnvRJObC7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+L/XL8w7U+/l/bbyyS8Msr/cJVDkItNVfA7wdtN8YpcOF11w57OHZJn2N2giR1Us
-	 OWwVhOrbGpSoxRtyGx8v7L5uwChTskP0zdmwts12v2mtSkT01WI/u2Ben3vOX+NdDx
-	 HyizmAI+fj26LbW2HWEefxlftqBoBV06ByoWncLURSJ5rGxRJ3WKx5uheTQF5pQJe1
-	 1xmVmPMzwfwduCYfloaNAAXph71s1u9gPXCYti8zjCHNZyVgkU/qmEuv1jOIrUWL7P
-	 aQukivjVBbXSZz97WRyAeHuiQxuTzaGRzLCbNdY5Uwmx7qf7V9TnFZB40cJshkDw8R
-	 +2dwc4g9+lQNA==
+	b=PSem4sX388f3vNA2Q2I6H2cjwTmQNYRL+D7Aj4Z5o/izsJzE8Z4rWYoH8sTXNycP3
+	 TvyrL3qozEoUdKCreL9RzNkdAyLe8+IGLariB2DHRLaoD+GW2UQrx7tiLAei+B+5cF
+	 QuluOWjxjPzBCu6mRlkYvrEFWJkoKQ4qLke9KDLWV/9oQXhla1W4CUdvwN6KDegCry
+	 XoAZUv9nJAD4mDLv86o18RFg2xiwVhsWU/c6OiUySuWNV6lb2U1FFdXojYDNIpYeIN
+	 WQbqcofL3P52IfA7p6Tehqv9LMMs6SJdOKfPunVIezWUqacAfJHgPgeFvSnTiI+Qf+
+	 Ljne77fD3QFqw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.6 17/26] af_unix: Avoid Tarjan's algorithm if unnecessary.
-Date: Wed, 21 May 2025 22:04:34 -0400
-Message-Id: <20250521180404-ff1b22b7ff07b92f@stable.kernel.org>
+Subject: Re: [PATCH v6.1 19/27] af_unix: Assign a unique index to SCC.
+Date: Wed, 21 May 2025 22:04:38 -0400
+Message-Id: <20250521211025-bd4d24081ae41780@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521144803.2050504-18-lee@kernel.org>
+In-Reply-To:  <20250521152920.1116756-20-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: ad081928a8b0f57f269df999a28087fce6f2b6ce
+The upstream commit SHA1 provided is correct: bfdb01283ee8f2f3089656c3ff8f62bb072dabb2
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -76,33 +76,34 @@ Commit author: Kuniyuki Iwashima<kuniyu@amazon.com>
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ad081928a8b0f ! 1:  2e226e9098825 af_unix: Avoid Tarjan's algorithm if unnecessary.
+1:  bfdb01283ee8f ! 1:  a0878968a63fd af_unix: Assign a unique index to SCC.
     @@ Metadata
       ## Commit message ##
-         af_unix: Avoid Tarjan's algorithm if unnecessary.
+         af_unix: Assign a unique index to SCC.
      
-    +    [ Upstream commit ad081928a8b0f57f269df999a28087fce6f2b6ce ]
+    +    [ Upstream commit bfdb01283ee8f2f3089656c3ff8f62bb072dabb2 ]
     +
-         Once a cyclic reference is formed, we need to run GC to check if
-         there is dead SCC.
-     
+         The definition of the lowlink in Tarjan's algorithm is the
+         smallest index of a vertex that is reachable with at most one
+         back-edge in SCC.  This is not useful for a cross-edge.
     @@ Commit message
          Acked-by: Paolo Abeni <pabeni@redhat.com>
-         Link: https://lore.kernel.org/r/20240325202425.60930-12-kuniyu@amazon.com
+         Link: https://lore.kernel.org/r/20240325202425.60930-13-kuniyu@amazon.com
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit ad081928a8b0f57f269df999a28087fce6f2b6ce)
+    +    (cherry picked from commit bfdb01283ee8f2f3089656c3ff8f62bb072dabb2)
     +    Signed-off-by: Lee Jones <lee@kernel.org>
      
-      ## net/unix/garbage.c ##
-     @@ net/unix/garbage.c: static struct unix_vertex *unix_edge_successor(struct unix_edge *edge)
+      ## include/net/af_unix.h ##
+     @@ include/net/af_unix.h: struct unix_vertex {
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
