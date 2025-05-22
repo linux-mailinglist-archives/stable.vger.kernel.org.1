@@ -1,150 +1,165 @@
-Return-Path: <stable+bounces-146017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D63AC02BA
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 05:13:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F20AC030F
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 05:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0F671B62083
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 03:13:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5CC2A21FE9
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 03:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703A9149C4A;
-	Thu, 22 May 2025 03:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDD6482F2;
+	Thu, 22 May 2025 03:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NMG928al"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="XGKUyIWg"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504C23A1B6;
-	Thu, 22 May 2025 03:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2126C1CD3F;
+	Thu, 22 May 2025 03:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747883575; cv=none; b=uYpCIR3A412svsyCeIEJiHJMHovwIDcxIC+k+7Fu0p1D7USsuToM6t1EJClcnk8H6xCjkeBhsedHUfmOZod+YLcxbioHj5hUZU5vcy3ULDlOgstQv7hqoC3IPtvubHXM5V9hoyEtgYdg2wI2c5z23H5uq3+njYJijzdbIrjN8l8=
+	t=1747885095; cv=none; b=IRgf+KMGSEZ/RZHfw6VofJfuQRYjudsuwMmXEZRqNJXPvEj70WSDdgivJBmbnXlxYu7I2frRaNXaK+ztRySo3GDIJWN12rnTLsBT1HEic6L8b+vfa0Bzizp+Nq5g5VxMYZQt5GlLfpJuIwJf6lkPWidLkdV5cL5paj4gF6A1Npg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747883575; c=relaxed/simple;
-	bh=5/LiaP+uX/OsJwwbgqyM+MuEPY85wwD6eLPaxD/gW/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r+8QmTHLwEuB+UjxDhvav6lOzao1MWZut9ym6JFTEoyKu2P8tbY9m4UGfAiDq0BDxrg3sw5sbMBoSgRV5vp/Eofsl1n41+Xs0fzeN1wMRaq5QUGO76RQaFDVFw7xPs5/SE6tQ8rFzYlKbj51q9Qn3MgC1/kg0OLemMPb2J9Dn5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NMG928al; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747883572; x=1779419572;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5/LiaP+uX/OsJwwbgqyM+MuEPY85wwD6eLPaxD/gW/o=;
-  b=NMG928alRp4OyDLV7ObVfvCfjJMRRrqcZMP5e9vRWYbWZy87pXUKvwFK
-   f1HmCVLvofD2EgywWvtG8ScZI7KcMfYEGmmT6otQt2sb15b9QOdp9i9Yb
-   i07W7043bnS+NXtJliEfirXK8IZvJ2CBDFQp6GNVSfexwJU3gsZE2765U
-   4o1T6uWh3XPiVzuEmhWV762vpe7k8TMDectZCs9BZIHAIZzTsZwZoB7Dv
-   AHUu2CO3CdViiJxnKpyhXZ9ORrts5WBTM8DAr20NnE1YZNe9lYy+MJcDE
-   gMGc7gSWliDzo8wR4qfkyPRSmxtRqTUN3LxiecmBz/exqmMdB2c4VrGHX
-   A==;
-X-CSE-ConnectionGUID: 4qdnsOX1TIOCME1jXslAng==
-X-CSE-MsgGUID: h82ngtgGRYaFfh1Gopvc8w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="72414850"
-X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; 
-   d="scan'208";a="72414850"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 20:12:52 -0700
-X-CSE-ConnectionGUID: FuZxdP3RQWym+in8/eOzWA==
-X-CSE-MsgGUID: /6oOLcPMQtWU4RDqyGpVAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; 
-   d="scan'208";a="177541262"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 21 May 2025 20:12:48 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uHwMP-000OsC-0J;
-	Thu, 22 May 2025 03:12:45 +0000
-Date: Thu, 22 May 2025 11:12:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>, saeedm@nvidia.com, leon@kernel.org,
-	tariqt@nvidia.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] net/mlx5: Add error handling in
- mlx5_query_nic_vport_node_guid()
-Message-ID: <202505221016.r93lwUfJ-lkp@intel.com>
-References: <20250521132343.844-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1747885095; c=relaxed/simple;
+	bh=/N6NpaGRC/vAjWVcJTFfLMaFhy7yjofCS0LyfPci9cA=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=eq+rzj3GBCwGh+JT4c5mfxy9BuXAO+P164o2KOLQJ/htRcLEAwgW4JjXBLIlTTcUNMshvUw6Y1eMIVoRpj7u7IDUeTepO5WTV1hmz9yiIwU14EzP/gSC4BmtSYQKimMDF0J6YqFzeIQ2IgzyxU1/3ysMlVlQ/j8dfjr3NHjtRIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=XGKUyIWg; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id; bh=Cb+hzfIc+9S7u++
+	Rf7aEoQ+l3gR236pxB/DTraEd8HU=; b=XGKUyIWgdrFRtonTjjghJzjzOY7WYg+
+	uAxCSb3JXSgtfAFZ7Ul2YHV3yrGQWm7fGTNnnt+HZX+UYjcyMzKAAF82lDElH9zI
+	mvj1GRjb4G9nIFRE46mY/4u80LGEU3/BRqsHBAmar962kC6aS5Ytb9JF1l21cMfs
+	TI+wRVKMoHgA=
+Received: from hg-OptiPlex-7040.hygon.cn (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD375FsmC5oHGIhAg--.58174S2;
+	Thu, 22 May 2025 11:22:21 +0800 (CST)
+From: yangge1116@126.com
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	21cnbao@gmail.com,
+	david@redhat.com,
+	baolin.wang@linux.alibaba.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	liuzixing@hygon.cn,
+	Ge Yang <yangge1116@126.com>
+Subject: [PATCH] mm/hugetlb: fix kernel NULL pointer dereference when replacing free hugetlb folios
+Date: Thu, 22 May 2025 11:22:17 +0800
+Message-Id: <1747884137-26685-1-git-send-email-yangge1116@126.com>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID:_____wD375FsmC5oHGIhAg--.58174S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZw1fJF45uF4rur45urWfXwb_yoW5tr1rpr
+	y7Krs8KrWkJryDAF47JF15Jrn0yrZ8ZF4jqFWxKrnrZFn8Jw1DGryDXw4jva1rArs7JF4x
+	JFs0qa1vqF1UJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRoGQDUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhBVG2gulPN6iwAAs0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250521132343.844-1-vulab@iscas.ac.cn>
 
-Hi Wentao,
+From: Ge Yang <yangge1116@126.com>
 
-kernel test robot noticed the following build errors:
+A kernel crash was observed when replacing free hugetlb folios:
 
-[auto build test ERROR on net-next/main]
-[also build test ERROR on net/main linus/master v6.15-rc7 next-20250521]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+BUG: kernel NULL pointer dereference, address: 0000000000000028
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 28 UID: 0 PID: 29639 Comm: test_cma.sh Tainted 6.15.0-rc6-zp #41 PREEMPT(voluntary)
+RIP: 0010:alloc_and_dissolve_hugetlb_folio+0x1d/0x1f0
+RSP: 0018:ffffc9000b30fa90 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000342cca RCX: ffffea0043000000
+RDX: ffffc9000b30fb08 RSI: ffffea0043000000 RDI: 0000000000000000
+RBP: ffffc9000b30fb20 R08: 0000000000001000 R09: 0000000000000000
+R10: ffff88886f92eb00 R11: 0000000000000000 R12: ffffea0043000000
+R13: 0000000000000000 R14: 00000000010c0200 R15: 0000000000000004
+FS:  00007fcda5f14740(0000) GS:ffff8888ec1d8000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000028 CR3: 0000000391402000 CR4: 0000000000350ef0
+Call Trace:
+<TASK>
+ replace_free_hugepage_folios+0xb6/0x100
+ alloc_contig_range_noprof+0x18a/0x590
+ ? srso_return_thunk+0x5/0x5f
+ ? down_read+0x12/0xa0
+ ? srso_return_thunk+0x5/0x5f
+ cma_range_alloc.constprop.0+0x131/0x290
+ __cma_alloc+0xcf/0x2c0
+ cma_alloc_write+0x43/0xb0
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb2/0x110
+ debugfs_attr_write+0x46/0x70
+ full_proxy_write+0x62/0xa0
+ vfs_write+0xf8/0x420
+ ? srso_return_thunk+0x5/0x5f
+ ? filp_flush+0x86/0xa0
+ ? srso_return_thunk+0x5/0x5f
+ ? filp_close+0x1f/0x30
+ ? srso_return_thunk+0x5/0x5f
+ ? do_dup2+0xaf/0x160
+ ? srso_return_thunk+0x5/0x5f
+ ksys_write+0x65/0xe0
+ do_syscall_64+0x64/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/net-mlx5-Add-error-handling-in-mlx5_query_nic_vport_node_guid/20250521-212557
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250521132343.844-1-vulab%40iscas.ac.cn
-patch subject: [PATCH v3] net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid()
-config: loongarch-randconfig-002-20250522 (https://download.01.org/0day-ci/archive/20250522/202505221016.r93lwUfJ-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250522/202505221016.r93lwUfJ-lkp@intel.com/reproduce)
+There is a potential race between __update_and_free_hugetlb_folio()
+and replace_free_hugepage_folios():
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505221016.r93lwUfJ-lkp@intel.com/
+CPU1                              CPU2
+__update_and_free_hugetlb_folio   replace_free_hugepage_folios
+                                    folio_test_hugetlb(folio)
+                                    -- It's still hugetlb folio.
 
-All errors (new ones prefixed by >>):
+  __folio_clear_hugetlb(folio)
+  hugetlb_free_folio(folio)
+                                    h = folio_hstate(folio)
+                                    -- Here, h is NULL pointer
 
-   drivers/net/ethernet/mellanox/mlx5/core/vport.c: In function 'mlx5_query_nic_vport_node_guid':
->> drivers/net/ethernet/mellanox/mlx5/core/vport.c:474:9: error: 'ret' undeclared (first use in this function); did you mean 'net'?
-     474 |         ret = mlx5_query_nic_vport_context(mdev, 0, out);
-         |         ^~~
-         |         net
-   drivers/net/ethernet/mellanox/mlx5/core/vport.c:474:9: note: each undeclared identifier is reported only once for each function it appears in
+When the above race condition occurs, folio_hstate(folio) returns
+NULL, and subsequent access to this NULL pointer will cause the
+system to crash. To resolve this issue, execute folio_hstate(folio)
+under the protection of the hugetlb_lock lock, ensuring that
+folio_hstate(folio) does not return NULL.
 
+Fixes: 04f13d241b8b ("mm: replace free hugepage folios after migration")
+Signed-off-by: Ge Yang <yangge1116@126.com>
+Cc: <stable@vger.kernel.org>
+---
+ mm/hugetlb.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-vim +474 drivers/net/ethernet/mellanox/mlx5/core/vport.c
-
-   463	
-   464	int mlx5_query_nic_vport_node_guid(struct mlx5_core_dev *mdev, u64 *node_guid)
-   465	{
-   466		u32 *out;
-   467		int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-   468		int err;
-   469	
-   470		out = kvzalloc(outlen, GFP_KERNEL);
-   471		if (!out)
-   472			return -ENOMEM;
-   473	
- > 474		ret = mlx5_query_nic_vport_context(mdev, 0, out);
-   475		if (err)
-   476			goto out;
-   477	
-   478		*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
-   479					nic_vport_context.node_guid);
-   480	out:
-   481		kvfree(out);
-   482	
-   483		return err;
-   484	}
-   485	EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
-   486	
-
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 3d3ca6b..6c2e007 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2924,12 +2924,20 @@ int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
+ 
+ 	while (start_pfn < end_pfn) {
+ 		folio = pfn_folio(start_pfn);
++
++		/*
++		 * The folio might have been dissolved from under our feet, so make sure
++		 * to carefully check the state under the lock.
++		 */
++		spin_lock_irq(&hugetlb_lock);
+ 		if (folio_test_hugetlb(folio)) {
+ 			h = folio_hstate(folio);
+ 		} else {
++			spin_unlock_irq(&hugetlb_lock);
+ 			start_pfn++;
+ 			continue;
+ 		}
++		spin_unlock_irq(&hugetlb_lock);
+ 
+ 		if (!folio_ref_count(folio)) {
+ 			ret = alloc_and_dissolve_hugetlb_folio(h, folio,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.7.4
+
 
