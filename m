@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-146111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710E2AC1212
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 19:27:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9318AC122B
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 19:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAFA91BA16E1
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 17:27:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70C8C501352
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 17:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF90191F89;
-	Thu, 22 May 2025 17:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0142818DB16;
+	Thu, 22 May 2025 17:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="WPyHj2sa"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="h2YhO322"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADA517A2F3;
-	Thu, 22 May 2025 17:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4977418A953;
+	Thu, 22 May 2025 17:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747934842; cv=none; b=MAgWx5I+Mdp25ZK1Q6q7GEMZSGZnsqV4Z83X5xyWfPYJ1iu5q939+eo08Lv7IPvMycGK56wwaeipKzmJ3iAC4niMX9UGbq17YR31TLXoyrBcpg8Qib0yWbV0qeWYrPB8+WEQQhsmNNXz9lXjDtE7bFG6whybsnudzzAFu8uMy+0=
+	t=1747935247; cv=none; b=N6XTuo68rraoraZpm0JJBNUZvbVB54whIBqPa+HYLFglG7OaCRZ2wJZF0Nmc9jDJYRf2691+GPOUdI/b+mAguUBmwjvMZAU1ZdKFWbm6Gu+eV3AZP1MEFhvP1HaLBZ1LTCGPBN+ycBqGnNL4ZTI1ln7BAFRfdOmRCojnkswTKvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747934842; c=relaxed/simple;
-	bh=5m+1dswdpMSCZHEkGiGlZuYL9sPQHZZiMkcUPBPJhxE=;
+	s=arc-20240116; t=1747935247; c=relaxed/simple;
+	bh=kyEjFb/X6MFMPK9SDnmdY55VU+U7kclm6F3WTL6NvXs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=koXPnh0HtvPa3uMT5I7YEONqPyuNTHbY09oFV/uc+xzsBJxf1bH0CMHd7tqDO7hd1c9onPfbjDuGTH/D4juYoCM32MSp27yk/nuPbziSwxaPaTpHx1FiOb32iM10p2YQirW5lvaOmHLJpsrnJpidRv+oEaRmp6iBuIJBxz8rPu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=WPyHj2sa; arc=none smtp.client-ip=198.137.202.136
+	 In-Reply-To:Content-Type; b=qaCpCjH0LTJo+9pg7zsTtk1n7pc/deUTz4t+H4y7y2011p8bYeHdiDPuGt2jkdj4lDBHzf3UbkfxMflFn38hfxZZpSJBlEjxS/IdI2tPTyLm9nRrVVvSg8W2ObxfNil3AFnrgZLsF4BOr5RfWIBDyOhT7awGCLXMzNfxFjwr354=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=h2YhO322; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from [192.168.7.202] ([71.202.166.45])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54MHQqkR3086342
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54MHXanw3087605
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 22 May 2025 10:26:53 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54MHQqkR3086342
+	Thu, 22 May 2025 10:33:37 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54MHXanw3087605
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1747934814;
-	bh=A+5nsgssQpSKaHKmYY2mOkTz8tks1M64J8VdfMIlj9k=;
+	s=2025042001; t=1747935218;
+	bh=mQqHwVKFb6dr1hLOfIrFDJS5wccc1ddOjmF9Hl44AOg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WPyHj2sa0JjXbqK2SzXu3+JHgwsxLcIsMfyvFhve4yTFjWMiOXScxZIFVzCNCgAK4
-	 hUNBa/Vo7E0c/m1DIuj022yHk0R7+WXKz8+pTi8Ipmgs8kANu9TTSyAk6UBFIWgGLH
-	 qRzCNFCBDX9M1XEHAUZIWPCwbevV3GEWh0zEQJN8bVewnaaxSO/VFzF8Ac9/O3xGWm
-	 1vo1ZkQzYdJrdw7uvdRVPh6hd+3wTRcxXZbEIK11j+LpyUOyYv3Bm/h0lIzFhMkgHC
-	 KsINiEWRRBYdqEmoJam++cv/VGHGsyJSz8/KS3JN90Iu3b65jqx6VFAe+wAWQ36/kd
-	 15vdc4fzJ3SeA==
-Message-ID: <037c6541-a50b-445f-a82d-1cbcc94a3244@zytor.com>
-Date: Thu, 22 May 2025 10:26:52 -0700
+	b=h2YhO322mS6R8+/b50RFlBFg1Ax2mf4pU54cG87mgRjdVzZFyqBLJWyMiZQqw/OC3
+	 9ZZiPfsAgsDnVuPircVJFveyHpjqRqBBtPM9oyoGzsDthOS9CnlR/LHZO1Jbdu5rDv
+	 dWfT4PbefjWBojeNDSIdUe9lhpZVSgJRhtkvPLSdiauSG0QWlzi4899apE8UAh7aPi
+	 KkN6FoE2hn7Kx6ULFsdEibMyFlfsIwxS+oOu/17wFpOYhnLCAO0VkV/93J5NYzwhpU
+	 kOtmYvbFcjWxWjsdPW8TQFJl6v6ncVeVz8OekwSy8aodbwuO0/Ciirbw9KpSPd5+6q
+	 HsiRy0KJBr3fw==
+Message-ID: <83b013fb-2057-4097-ac8c-b5c38d019a0f@zytor.com>
+Date: Thu, 22 May 2025 10:33:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,15 +56,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] x86/fred/signal: Prevent single-step upon ERETU
+Subject: Re: [PATCH v1 1/1] x86/fred/signal: Prevent single-step upon ERETU
  completion
-To: Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        peterz@infradead.org, andrew.cooper3@citrix.com,
+To: kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, peterz@infradead.org, andrew.cooper3@citrix.com,
         stable@vger.kernel.org
-References: <20250522171754.3082061-1-xin@zytor.com>
- <e4f1120b-0bff-4f01-8fe7-5e394a254020@intel.com>
+References: <20250522060549.2882444-1-xin@zytor.com>
+ <202505230141.4YBHhrPI-lkp@intel.com>
 Content-Language: en-US
 From: Xin Li <xin@zytor.com>
 Autocrypt: addr=xin@zytor.com; keydata=
@@ -101,22 +101,41 @@ Autocrypt: addr=xin@zytor.com; keydata=
  PYbAkjBbm+tuJ/Sm+5Yp5T/BnKz21FoCS8uvTiziHj2H7Cuekn6F8EYhegONm+RVg3vikOpn
  gao85i4HwQTK9/D1wgJIQkdwWXVMZ6q/OALaBp82vQ2U9sjTyFXgDjglgh00VRAHP7u1Rcu4
  l75w1xInsg==
-In-Reply-To: <e4f1120b-0bff-4f01-8fe7-5e394a254020@intel.com>
+In-Reply-To: <202505230141.4YBHhrPI-lkp@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 5/22/2025 10:22 AM, Dave Hansen wrote:
-> On 5/22/25 10:17, Xin Li (Intel) wrote:
->> Clear the software event flag in the augmented SS to prevent infinite
->> SIGTRAP handler loop if TF is used without an external debugger.
+On 5/22/2025 10:20 AM, kernel test robot wrote:
+> Hi Xin,
 > 
-> Do you have a test case for this? It seems like the kind of thing we'd
-> want in selftests/.
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on 6a7c3c2606105a41dde81002c0037420bc1ddf00]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Xin-Li-Intel/x86-fred-signal-Prevent-single-step-upon-ERETU-completion/20250522-140954
+> base:   6a7c3c2606105a41dde81002c0037420bc1ddf00
+> patch link:    https://lore.kernel.org/r/20250522060549.2882444-1-xin%40zytor.com
+> patch subject: [PATCH v1 1/1] x86/fred/signal: Prevent single-step upon ERETU completion
+> config: i386-buildonly-randconfig-003-20250522 (https://download.01.org/0day-ci/archive/20250523/202505230141.4YBHhrPI-lkp@intel.com/config)
+> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250523/202505230141.4YBHhrPI-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202505230141.4YBHhrPI-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>     In file included from arch/x86/kernel/signal_32.c:32:
+>     arch/x86/include/asm/sighandling.h: In function 'prevent_single_step_upon_eretu':
+>>> arch/x86/include/asm/sighandling.h:44:21: error: 'struct pt_regs' has no member named 'fred_ss'
+>        44 |                 regs->fred_ss.swevent = 0;
+>           |                     ^~
+> 
 
-Ah, good point!
-
-The issue was found during an internal LASS test, I will convert it to a
-selftest.
+Hmm, this statement is under IS_ENABLED(CONFIG_X86_FRED), which should
+be a compile time FALSE with i386.  Why it is still being compiled?
 
 Thanks!
      Xin
