@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-146000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED0EAC0239
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:07:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA248AC023A
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30CA71890500
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:07:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7561B7B3476
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA593F9FB;
-	Thu, 22 May 2025 02:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB5E8BEC;
+	Thu, 22 May 2025 02:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGsVgkmf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aB7NblXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED07539A
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC00539A
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879662; cv=none; b=IbNrcK+Jfqi9MZvplhpVRgM/6ZmHDXfnR4SrCaym5inYSEx6pJQPIBnHOFj/KDInk4nry0s+DCyTJgdgNiklWitKLQEX2hqiqyKXrcDH1yxRocMoIVtOzVVnnWjpoFv3ZaWbRW+XA4zQSnPogT73AmfhHcmdiiNjnsKIZ900KMY=
+	t=1747879667; cv=none; b=tuSbcX1ykK2aMygvhBSA6M+hw+y1eyD3Qd96KVfRahMctExHz4HRjh0VvR5qWg826Nujfc8/0Ay20A3S5ZVcLQIGh20XFV5G7ohK+i8GtgdlxFjoYLZBAAYLIlTmS/Sc2X2cXRsFetC+abGvQJL+21/YwW36Yqyhh8oVkX77kl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879662; c=relaxed/simple;
-	bh=7iBwzblathlMLRMRyp0egMKVlzsdsaFlWv/xnzyecU4=;
+	s=arc-20240116; t=1747879667; c=relaxed/simple;
+	bh=mwUCftyrfkuZsoeC4630Sn1HwbpLeuAOzYUyRFeqX44=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lehcK1aH6/SnoN0OlXkSsTnBFNjrPNMfwYjNBrqwYaBkO5D4AylewJUeWOuwG+cCcbdogtO1ayGjGOL4NVu9TcyNORwezTKTu2nJVZAI4ClxCXOovYJeque16xFztKyVguBsijrkxdK/olbvQM86fskfnHMscn2wtFDKPspQM18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGsVgkmf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F46C4CEE4;
-	Thu, 22 May 2025 02:07:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rLQ5ZCHq5TQGsN75nKVaqSyyGlKe33Xo6lG7vioiCAn3xQZxEIn9qu0KATcpx9wcBNfDme/H3R7Mg1bZKoGJsrUiKnR79zdXWYUJwFSYyIX4ki0ymMAygMevQJ/E7lvSgCaWOV5OdTEEW2y1blj+7B/3Wxcjpbak1tPB/W5AX+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aB7NblXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D70C4CEE4;
+	Thu, 22 May 2025 02:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879662;
-	bh=7iBwzblathlMLRMRyp0egMKVlzsdsaFlWv/xnzyecU4=;
+	s=k20201202; t=1747879667;
+	bh=mwUCftyrfkuZsoeC4630Sn1HwbpLeuAOzYUyRFeqX44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGsVgkmfU5Qy70x1mP/735pMImkCZHHT9t9mXn6MLl2qetFp1M4BZR1tJAVJLLARQ
-	 agI1XQUxab4/6pI3jLTlUwNAGOYx61mtXxETcErfp3o0oYmqRZBT/XxRThiHSPpHfO
-	 jS5tsc0c+7XyqE/7mag6xOj+R+wzd96yiypte3CGfPMQay3s5aUqwN9Iqqw/iGJt0T
-	 o6Yvbb3uu/HkeN8k7JJud5SZAlUIEVynAfv7lWobce8TzO7nE1ay8OALM/ut6wYo2a
-	 /0M0zfM6qsW8B5iOdnjdWNB9+yS2u1fSDFSaZKAjNfE8FuhiXLvdDLFpGcX2IjdS6k
-	 1iq2vZ3rSs7sQ==
+	b=aB7NblXneiqh+tyI4WduiUHxPyR8O2ZY6Kxfy4bmfqes7LXxxEMl3u04neONvP4nH
+	 ha131QEupDjt3EVEVcMmhU3/JdlN8zZAe7SVAsDrdMl9tGh/PXyoseejGNJhe+ajEm
+	 bjIBC74quB6dgx941t7jU/DPFnvFz0tHTP6SroEE+ZtW+aPpkhhteqvdCioVRt2i86
+	 HgmE9nQhYnleY5vDR2panCq8oZNneTcwIuKtlsn+SqR8TtVig0dT+Phi07M+36Yn5p
+	 F6UeiUzMQ9VHTVMxD6ag4klpW7faOh+AOMC6GqnWjQluS0xld0U+HQ4pfl028ZZkhO
+	 LKcTiRH3t7mbw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	lee@kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.6 16/26] af_unix: Skip GC if no cycle exists.
-Date: Wed, 21 May 2025 22:07:38 -0400
-Message-Id: <20250521175943-416478c0c229d520@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH v6.6 21/26] af_unix: Remove lock dance in unix_peek_fds().
+Date: Wed, 21 May 2025 22:07:42 -0400
+Message-Id: <20250521182141-10936d0f27efc3bb@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521144803.2050504-17-lee@kernel.org>
+In-Reply-To:  <20250521144803.2050504-22-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,11 +64,10 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 16/26 of a series
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 77e5593aebba823bcbcf2c4b58b07efcd63933b8
+The upstream commit SHA1 provided is correct: 118f457da9ed58a79e24b73c2ef0aa1987241f0e
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -78,34 +77,28 @@ Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
 
-Found fixes commits:
-1af2dface5d2 af_unix: Don't access successor in unix_del_edges() during GC.
-
 Note: The patch differs from the upstream commit:
 ---
-1:  77e5593aebba8 ! 1:  7a31b6c2f5f1e af_unix: Skip GC if no cycle exists.
+1:  118f457da9ed5 ! 1:  c078e92698845 af_unix: Remove lock dance in unix_peek_fds().
     @@ Metadata
       ## Commit message ##
-         af_unix: Skip GC if no cycle exists.
+         af_unix: Remove lock dance in unix_peek_fds().
      
-    +    [ Upstream commit 77e5593aebba823bcbcf2c4b58b07efcd63933b8 ]
+    +    [ Upstream commit 118f457da9ed58a79e24b73c2ef0aa1987241f0e ]
     +
-         We do not need to run GC if there is no possible cyclic reference.
-         We use unix_graph_maybe_cyclic to decide if we should run GC.
+         In the previous GC implementation, the shape of the inflight socket
+         graph was not expected to change while GC was in progress.
      
     @@ Commit message
-         Acked-by: Paolo Abeni <pabeni@redhat.com>
-         Link: https://lore.kernel.org/r/20240325202425.60930-11-kuniyu@amazon.com
+         Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+         Link: https://lore.kernel.org/r/20240401173125.92184-3-kuniyu@amazon.com
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit 77e5593aebba823bcbcf2c4b58b07efcd63933b8)
+    +    (cherry picked from commit 118f457da9ed58a79e24b73c2ef0aa1987241f0e)
     +    Signed-off-by: Lee Jones <lee@kernel.org>
      
-      ## net/unix/garbage.c ##
-     @@ net/unix/garbage.c: static struct unix_vertex *unix_edge_successor(struct unix_edge *edge)
+      ## include/net/af_unix.h ##
+     @@ include/net/af_unix.h: static inline struct unix_sock *unix_get_socket(struct file *filp)
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
