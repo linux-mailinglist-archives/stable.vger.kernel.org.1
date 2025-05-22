@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD4EAC0217
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:05:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEE7AC0219
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 04:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD3AF7AC085
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:03:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68AC51B64F24
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 02:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490CE35953;
-	Thu, 22 May 2025 02:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA20D126BFF;
+	Thu, 22 May 2025 02:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8qv43u1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OVgXPmBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ADE18E3F
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E9C84D34
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 02:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747879510; cv=none; b=WzJD7k0O/x7MCSLdxZlY494Qs7C/TYOCWd9V/hyeWQMDxDPo8JbCPuo2nR4EB7lN6DU+jolaZOMkfmTkjurlvJoYcbHTjwjWRY9yy4pTz2zmXnbEmFeJ6VIIgU1bQ3pqd7Tx0V5v4/QCv++YljQgSwOMwGWCZ2piUNIIdKZDbGk=
+	t=1747879514; cv=none; b=mlhcAIAtqhPHgygruLFIpcwmdKKsQzTbQfoFtbzvx9jzxD2njPbvn4SPgbteekTcd1H7ejDGdsQQQdGTaJdiZ4Bs3a3BzDaqDRTa6HFrUxdpO88m811/0hk5q5M7YWIkDk4pXPmR14W3Iy4L0pATtsB5/7LWIiTlcQvUY3RgUec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747879510; c=relaxed/simple;
-	bh=FdJrTPUf1mQ1cWUcqlRRCuGOj4ouHyIGEYhKj/XWp2s=;
+	s=arc-20240116; t=1747879514; c=relaxed/simple;
+	bh=2fAgNr39788oLJKIAkbX5f/K0PmwrlJSBRzyeUYgC84=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DjBTm0cneWUKdvt3CQq4lfaK0vvAb2HmfJTKxVrgqi89w3/sQtkZIMXdvDADCXzekdmYrOI0TytrcGWJjeohY6qwoO+YBa6/jnVQp+tBC+LZuXJB/x0W9xXLN6YB1BnXopEm7s5jeDDmGXCVulIpooCsb4xMJNGaBnuH9G0JJOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8qv43u1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7163BC4CEE4;
-	Thu, 22 May 2025 02:05:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b6I/rE67/VhNB6vlZT/c9BGPdV2w+cpCSTPcBh9ajgCXOPRsnMqYcFPU414A/CCsylgRenWXZufmEUlsHDB/13AGH/7YCCfgDX2kQ++n9ginjBN0qNDu/6HdcnOcqcRr/7zRXWHbTnuEhDozmc5kgYY09x8qX1hod13/FzynKxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OVgXPmBY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEA9C4CEE7;
+	Thu, 22 May 2025 02:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747879509;
-	bh=FdJrTPUf1mQ1cWUcqlRRCuGOj4ouHyIGEYhKj/XWp2s=;
+	s=k20201202; t=1747879514;
+	bh=2fAgNr39788oLJKIAkbX5f/K0PmwrlJSBRzyeUYgC84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8qv43u1vqGBPxdodh3KuPazCHjGTgRVUu4VtclBpgKmMaUnMnqI7v9dh4hERl2Ep
-	 y2O6uNdgjBxlOa+UMVZQ/IdgrPjF0ZofbWUk3N2vbKIn3KSHG9Znu8gRRKbItnJ15k
-	 IoD1yrlMiL/72erSVpGzBm37HkwHvxhQJw9JN2maMnc3oqR0GGfZ3kjdqyEiso1xvO
-	 RrE0JudDJON2+1f0rcc20rAoW5cahfluUC+zjFNgiUU52TQHg3B/8YIO6WSpDS23kf
-	 fNamXb+WIuxs+J87EqOWax7/8VkwMcTPnvmnvzEYTDOe8AMH2KQWHx4VYmZLdaxFGM
-	 TjNPFxVw0hEKw==
+	b=OVgXPmBY84AtQo1LdRA9CWUWBu0fXfxt9hHd1+4z4mPf6Us6gv5AYwGPc3OdHlOlE
+	 g8wRJqKDjlHcBpnrXUn8rdISR2055GmSGlZ4oS2vFomedGVEzVFJgH6lzE88J6mcva
+	 W6W2FQ6lWGz+aTZBfKcS/Ww8OUyzabT3AUx7OiY2PHD/WZRheIysnRyruVLT0rEdF0
+	 HQRsFHKGGNpAs0W3HRbsDT42tI9mqXoxUlsoN3VzEgyhWnj2VlzPat6Q34ZkOj/Jf8
+	 EVnASubair34iUZs0ai+lDCwVTXCjgQFfM+XsJopOXdsFwqn+feTBoUGuKI/3DXx0S
+	 kNal1vp6ZN7jQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.1 06/27] af_unix: Remove io_uring code for GC.
-Date: Wed, 21 May 2025 22:05:06 -0400
-Message-Id: <20250521193529-edf67856ebed56ad@stable.kernel.org>
+Subject: Re: [PATCH v6.1 18/27] af_unix: Avoid Tarjan's algorithm if unnecessary.
+Date: Wed, 21 May 2025 22:05:10 -0400
+Message-Id: <20250521210543-a805415e11660195@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250521152920.1116756-7-lee@kernel.org>
+In-Reply-To:  <20250521152920.1116756-19-lee@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 11498715f266a3fb4caabba9dd575636cbcaa8f1
+The upstream commit SHA1 provided is correct: ad081928a8b0f57f269df999a28087fce6f2b6ce
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Lee Jones<lee@kernel.org>
@@ -80,60 +80,25 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  11498715f266a ! 1:  70f88da83e058 af_unix: Remove io_uring code for GC.
+1:  ad081928a8b0f ! 1:  ecaebb7bb5591 af_unix: Avoid Tarjan's algorithm if unnecessary.
     @@ Metadata
       ## Commit message ##
-         af_unix: Remove io_uring code for GC.
+         af_unix: Avoid Tarjan's algorithm if unnecessary.
      
-    +    [ Upstream commit 11498715f266a3fb4caabba9dd575636cbcaa8f1 ]
+    +    [ Upstream commit ad081928a8b0f57f269df999a28087fce6f2b6ce ]
     +
-         Since commit 705318a99a13 ("io_uring/af_unix: disable sending
-         io_uring over sockets"), io_uring's unix socket cannot be passed
-         via SCM_RIGHTS, so it does not contribute to cyclic reference and
+         Once a cyclic reference is formed, we need to run GC to check if
+         there is dead SCC.
+     
     @@ Commit message
-         Acked-by: Jens Axboe <axboe@kernel.dk>
-         Link: https://lore.kernel.org/r/20240129190435.57228-3-kuniyu@amazon.com
+         Acked-by: Paolo Abeni <pabeni@redhat.com>
+         Link: https://lore.kernel.org/r/20240325202425.60930-12-kuniyu@amazon.com
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    -
-    - ## include/net/af_unix.h ##
-    -@@ include/net/af_unix.h: static inline struct unix_sock *unix_get_socket(struct file *filp)
-    - void unix_inflight(struct user_struct *user, struct file *fp);
-    - void unix_notinflight(struct user_struct *user, struct file *fp);
-    - void unix_destruct_scm(struct sk_buff *skb);
-    --void io_uring_destruct_scm(struct sk_buff *skb);
-    - void unix_gc(void);
-    - void wait_for_unix_gc(struct scm_fp_list *fpl);
-    - struct sock *unix_peer_get(struct sock *sk);
-    +    (cherry picked from commit 11498715f266a3fb4caabba9dd575636cbcaa8f1)
+    +    (cherry picked from commit ad081928a8b0f57f269df999a28087fce6f2b6ce)
     +    Signed-off-by: Lee Jones <lee@kernel.org>
      
       ## net/unix/garbage.c ##
-     @@ net/unix/garbage.c: static bool gc_in_progress;
-    @@ net/unix/garbage.c: static void __unix_gc(struct work_struct *work)
-     -	 * release.path eventually putting registered files.
-     -	 */
-     -	skb_queue_walk_safe(&hitlist, skb, next_skb) {
-    --		if (skb->destructor == io_uring_destruct_scm) {
-    +-		if (skb->scm_io_uring) {
-     -			__skb_unlink(skb, &hitlist);
-     -			skb_queue_tail(&skb->sk->sk_receive_queue, skb);
-     -		}
-    @@ net/unix/garbage.c: static void __unix_gc(struct work_struct *work)
-      	/* All candidates should have been detached by now. */
-      	WARN_ON_ONCE(!list_empty(&gc_candidates));
-      
-    -
-    - ## net/unix/scm.c ##
-    -@@ net/unix/scm.c: void unix_destruct_scm(struct sk_buff *skb)
-    - 	sock_wfree(skb);
-    - }
-    - EXPORT_SYMBOL(unix_destruct_scm);
-    --
-    --void io_uring_destruct_scm(struct sk_buff *skb)
-    --{
-    --	unix_destruct_scm(skb);
-    --}
-    --EXPORT_SYMBOL(io_uring_destruct_scm);
+     @@ net/unix/garbage.c: static struct unix_vertex *unix_edge_successor(struct unix_edge *edge)
 ---
 
 Results of testing on various branches:
