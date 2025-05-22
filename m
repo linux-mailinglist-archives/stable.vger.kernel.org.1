@@ -1,217 +1,128 @@
-Return-Path: <stable+bounces-146079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E996AC0ACC
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 13:50:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B0EAC0B74
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D391DA242A2
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 11:50:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95DF41891254
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 12:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F8023E320;
-	Thu, 22 May 2025 11:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1921289E2E;
+	Thu, 22 May 2025 12:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="irwFkRwR";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qIw0Zecc";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="irwFkRwR";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qIw0Zecc"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="AY1gHKJF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EA223C8D5
-	for <stable@vger.kernel.org>; Thu, 22 May 2025 11:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1391E51D
+	for <stable@vger.kernel.org>; Thu, 22 May 2025 12:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747914651; cv=none; b=B7aa3kdD5Sc4/6rkS67+xwQ+X18kKP4UDlhSlFQ0hFhWW7GRw3PGbw8KorcrFTY4cNAkRnxhQ+xzlIY3m5aiaJgL08zmSp3RoJCKDW0dCawvZ+ePTUgX0k2qcp2uh/7u9pKMJ1MqhzFzT1QVrmFIQhBH0D+ciK3p9NQEMoO4Nmw=
+	t=1747916232; cv=none; b=gQkYFlG3juzgZmKLR0kjKZvyCEYEs/yD5FIZl5v84mMz0iADMD82DGADPwS7xcfjFGbSljtQlAjoClvW+UI9L4El/XalO4Z814Y0WLCWxjTyM9pVRi5pi4+cfMebRKEqwEkFkm+NXtODDL6LYXMtbq+OT0/eRU/bw/jUT+ExRtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747914651; c=relaxed/simple;
-	bh=FBTTavlraf/ZwANWkyI3BTSLcPAEcO0frlp/GeE2pVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYhu3L9LFKVjGhOyg1nCvzc3IuG8yFReJqr1ZhW8JORuTCG8lW0+joKjfGWJP2+jqN844Q/HLuGthyzs6Rk1XK7fgXl+4GxXtiaEBrQSvUVwCJ0TNHSXFgGxTrTdA+eZEonN9DPDhxiADSoU2JaKlLy4X2fxJZx4CXt8lwpoGbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=irwFkRwR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qIw0Zecc; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=irwFkRwR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qIw0Zecc; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4B41221747;
-	Thu, 22 May 2025 11:50:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1747914648; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aqfFb7aK5wWv+PjAW7cUNT1XItHnqm9XAvP8CT8uiFI=;
-	b=irwFkRwR78YdAdBzJhnPdhCYe4TwWr4Zd6Q39WUs0NGaRcgybXIGFSlQtjIE9xzvGvsKeN
-	bOdxhYYj9kqnrzkRF910A60PkCgsgX/d3iMx9BPxjrgRZ5bHNhvX9eWw0EzEPyBK7BlWVj
-	VmwA3ipshvx/3UIXy1S4YG4hcS9TpOE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1747914648;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aqfFb7aK5wWv+PjAW7cUNT1XItHnqm9XAvP8CT8uiFI=;
-	b=qIw0ZeccYt35p1CAYOgTazsYXc7LIbDJLJqYHRfL0f/CiyGjYfLRZvpnhE3nA9rWAHS/6E
-	p5jcztEBttJ6x3AQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=irwFkRwR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qIw0Zecc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1747914648; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aqfFb7aK5wWv+PjAW7cUNT1XItHnqm9XAvP8CT8uiFI=;
-	b=irwFkRwR78YdAdBzJhnPdhCYe4TwWr4Zd6Q39WUs0NGaRcgybXIGFSlQtjIE9xzvGvsKeN
-	bOdxhYYj9kqnrzkRF910A60PkCgsgX/d3iMx9BPxjrgRZ5bHNhvX9eWw0EzEPyBK7BlWVj
-	VmwA3ipshvx/3UIXy1S4YG4hcS9TpOE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1747914648;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aqfFb7aK5wWv+PjAW7cUNT1XItHnqm9XAvP8CT8uiFI=;
-	b=qIw0ZeccYt35p1CAYOgTazsYXc7LIbDJLJqYHRfL0f/CiyGjYfLRZvpnhE3nA9rWAHS/6E
-	p5jcztEBttJ6x3AQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 21507137B8;
-	Thu, 22 May 2025 11:50:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id p+hqB5gPL2izYwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Thu, 22 May 2025 11:50:48 +0000
-Date: Thu, 22 May 2025 13:50:46 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: yangge1116@126.com
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	21cnbao@gmail.com, david@redhat.com, baolin.wang@linux.alibaba.com,
-	muchun.song@linux.dev, liuzixing@hygon.cn
-Subject: Re: [PATCH] mm/hugetlb: fix kernel NULL pointer dereference when
- replacing free hugetlb folios
-Message-ID: <aC8Pls7jidHCOMJq@localhost.localdomain>
-References: <1747884137-26685-1-git-send-email-yangge1116@126.com>
+	s=arc-20240116; t=1747916232; c=relaxed/simple;
+	bh=eiUAPtWkklVAkMrYR4Bk7yeefVmpei03jtQi4YPJahM=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=nNNpxLdOgRVmb5jgqQblEx6wHZihyQB3Kxz3UG8M+v2lfFxGC6pd1c8OYB/5bSIovH+GJcdPgrR/SRllX4ajF9IiXpccsFfOK+tWwifXoamdmpnVot9EofdAQa9CMdQIgQUJ/OgL87/KmsVUCILlufOk/3tnuP9+x8ZAKfLWPIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=AY1gHKJF; arc=none smtp.client-ip=209.85.218.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-ad5767b448aso55246666b.3
+        for <stable@vger.kernel.org>; Thu, 22 May 2025 05:17:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1747916228; x=1748521028; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:date
+         :subject:cc:to:from:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eiUAPtWkklVAkMrYR4Bk7yeefVmpei03jtQi4YPJahM=;
+        b=AY1gHKJFaUKV1+1KsHChtdmUTfeaq/+H16DnkSa1m5DDXNl/HWhdJMBGVfhbh1V79x
+         3YkMTNCWAru9XSIKBjkKHKgRbPtQ+iAAIefvK9g5l6IldZpr9u0Iplk9jjPdB8FLdaly
+         b7k7R3uV7dtKeUD3xCg5KFJZCBs2QQXXsSPl8SQY65L8GpJG9NspaO9U8hx2ToUmdSQd
+         9Z2SPFBjLPwtheRGFVB087xtrwsp6oNe0cmIHkwdia4YE1+5zCx2Yn7oFHtdMZ5X84fG
+         ogFsyBk7NHGUPjPD3SC737mSu6QdnOBUDSdKa8OxUWlN6bG7Uq/kPLpg75wjek0iezUP
+         tRzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747916228; x=1748521028;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:date
+         :subject:cc:to:from:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eiUAPtWkklVAkMrYR4Bk7yeefVmpei03jtQi4YPJahM=;
+        b=VusHr38DHotctp8KHpthdv/LnVhWZbEdvHpRjZfykD3XN1k1llX4HABY0XD9VYB3lt
+         u4TzGK3T5wa7Z04czRpeCAQ+1z4dulkasxGj/hFF3JKYNnFPpRlr+TpGNm6CRJN8F9IA
+         ECjvh/oFtZp8HeCns0uLfDGrYZq1TjFHu920tL/0grD7xeHhsLa7nsLfCpEEOzk2pBOv
+         1gTeRhevhKaQhtbOJs3t8jMKflm/HHI6sOxJ0R1liTov4oCSMDB95Cu0oHshhZbRsrwU
+         xCWh1OSyitOExzuMkcl0JdnT3T0gOkeR66Vzc2s3lA9tSqcDQxJ4b6v6AXPFV23kRN7K
+         D+ww==
+X-Forwarded-Encrypted: i=1; AJvYcCUhYq8O2d1d82yFfe3knmW88PPKd9NdLvvNAhOxqVHQF7pHiuw47PY/rkReiuys6lyowNKrDUE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXY1aspgT8rK2tnX/Nkfe1PupHwWVfb24K4E6gm7L5hoYYkY1C
+	EFnjiGM9XDRSnEZBkpxEACtPtRJvFoyQS7M2WBFNnZsM/+0a2TxcW+a9VAxxwkJFZEs=
+X-Gm-Gg: ASbGncvYPgoEP1ltZlw+Xv7XNX7ZlhE0Mghf+fyn2y2J/nkJyTrWelxK/1OnEO2xT5/
+	r0KvjSB5VE2j/sQ5G2BanJp4byZ5gR+G/ZRW02U11lNFgA4uL4kVYNUDJMZe7OnxoyBkrZaJ0M0
+	EqmViKe06wOxM7+g+KYZVYSzJnDsaWETf6nYkNVyPPgVxnVV8Qhl2+fP8Ud1qOybk4KVWvrF3QZ
+	VFtNIhbG/iapomf3AKufzLsjmNvZbl95W6F9ZyMVvVLXbyt0nQOcpcZ9hbz8KbuSUPeEGDrpFFI
+	VEFqb7JraO+q7xJWMJafBvfqudul7THpcbKD5rTSv8E+H5/RJilz7QbOIVATM96LrSeHCcIchA=
+	=
+X-Google-Smtp-Source: AGHT+IGlOm7kKNiIMa4LYQU01uE9DXQXr/EXxT9p4EDhhkg8mLhr6eFDmP3LkE+YOmae5nnJZU74TQ==
+X-Received: by 2002:a17:907:28d1:b0:acb:7de1:28b9 with SMTP id a640c23a62f3a-ad52d49b404mr686859466b.5.1747916228283;
+        Thu, 22 May 2025 05:17:08 -0700 (PDT)
+Received: from lb02065.fkb.profitbricks.net ([212.227.34.98])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d047bd6sm1055733066b.29.2025.05.22.05.17.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 May 2025 05:17:08 -0700 (PDT)
+Message-ID: <682f15c4.170a0220.3893a.e498@mx.google.com>
+X-Google-Original-Message-ID: <20250521165909.834545-2-pchelkin@ispras.ru> (raw)
+From: Jack Wang <jinpu.wang@ionos.com>
+To: pchelkin@ispras.ru,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org
+Cc: bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	mark.rutland@arm.com,
+	mhiramat@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	rostedt@goodmis.org,
+	rppt@kernel.org,
+	tglx@linutronix.de,
+	x86@kernel.org
+Subject: [PATCH 6.1 1/1] x86/modules: Set VM_FLUSH_RESET_PERMS in module_alloc()
+Date: Thu, 22 May 2025 14:17:06 +0200
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250521165909.834545-1-pchelkin@ispras.ru>
+References: <20250521165909.834545-2-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1747884137-26685-1-git-send-email-yangge1116@126.com>
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[126.com,gmail.com];
-	FREEMAIL_TO(0.00)[126.com];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kvack.org,vger.kernel.org,gmail.com,redhat.com,linux.alibaba.com,linux.dev,hygon.cn];
-	DKIM_TRACE(0.00)[suse.de:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_DN_NONE(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,localhost.localdomain:mid]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 4B41221747
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 22, 2025 at 11:22:17AM +0800, yangge1116@126.com wrote:
-> From: Ge Yang <yangge1116@126.com>
-> 
-> A kernel crash was observed when replacing free hugetlb folios:
-> 
-> BUG: kernel NULL pointer dereference, address: 0000000000000028
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP NOPTI
-> CPU: 28 UID: 0 PID: 29639 Comm: test_cma.sh Tainted 6.15.0-rc6-zp #41 PREEMPT(voluntary)
-> RIP: 0010:alloc_and_dissolve_hugetlb_folio+0x1d/0x1f0
-> RSP: 0018:ffffc9000b30fa90 EFLAGS: 00010286
-> RAX: 0000000000000000 RBX: 0000000000342cca RCX: ffffea0043000000
-> RDX: ffffc9000b30fb08 RSI: ffffea0043000000 RDI: 0000000000000000
-> RBP: ffffc9000b30fb20 R08: 0000000000001000 R09: 0000000000000000
-> R10: ffff88886f92eb00 R11: 0000000000000000 R12: ffffea0043000000
-> R13: 0000000000000000 R14: 00000000010c0200 R15: 0000000000000004
-> FS:  00007fcda5f14740(0000) GS:ffff8888ec1d8000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000000028 CR3: 0000000391402000 CR4: 0000000000350ef0
-> Call Trace:
-> <TASK>
->  replace_free_hugepage_folios+0xb6/0x100
->  alloc_contig_range_noprof+0x18a/0x590
->  ? srso_return_thunk+0x5/0x5f
->  ? down_read+0x12/0xa0
->  ? srso_return_thunk+0x5/0x5f
->  cma_range_alloc.constprop.0+0x131/0x290
->  __cma_alloc+0xcf/0x2c0
->  cma_alloc_write+0x43/0xb0
->  simple_attr_write_xsigned.constprop.0.isra.0+0xb2/0x110
->  debugfs_attr_write+0x46/0x70
->  full_proxy_write+0x62/0xa0
->  vfs_write+0xf8/0x420
->  ? srso_return_thunk+0x5/0x5f
->  ? filp_flush+0x86/0xa0
->  ? srso_return_thunk+0x5/0x5f
->  ? filp_close+0x1f/0x30
->  ? srso_return_thunk+0x5/0x5f
->  ? do_dup2+0xaf/0x160
->  ? srso_return_thunk+0x5/0x5f
->  ksys_write+0x65/0xe0
->  do_syscall_64+0x64/0x170
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> There is a potential race between __update_and_free_hugetlb_folio()
-> and replace_free_hugepage_folios():
-> 
-> CPU1                              CPU2
-> __update_and_free_hugetlb_folio   replace_free_hugepage_folios
->                                     folio_test_hugetlb(folio)
->                                     -- It's still hugetlb folio.
-> 
->   __folio_clear_hugetlb(folio)
->   hugetlb_free_folio(folio)
->                                     h = folio_hstate(folio)
->                                     -- Here, h is NULL pointer
-> 
-> When the above race condition occurs, folio_hstate(folio) returns
-> NULL, and subsequent access to this NULL pointer will cause the
-> system to crash. To resolve this issue, execute folio_hstate(folio)
-> under the protection of the hugetlb_lock lock, ensuring that
-> folio_hstate(folio) does not return NULL.
-> 
-> Fixes: 04f13d241b8b ("mm: replace free hugepage folios after migration")
-> Signed-off-by: Ge Yang <yangge1116@126.com>
-> Cc: <stable@vger.kernel.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+From: Thomas Gleixner <tglx@linutronix.de>
 
+commit 4c4eb3ecc91f4fee6d6bf7cfbc1e21f2e38d19ff upstream.
 
--- 
-Oscar Salvador
-SUSE Labs
+Instead of resetting permissions all over the place when freeing module
+memory tell the vmalloc code to do so. Avoids the exercise for the next
+upcoming user.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220915111143.406703869@infradead.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+
+I confirm this patch fixed the random crashing ontop of 6.1.139 I've experienced
+on our Icelake and Cascadelake servers, servers are working fine after appling
+the fix, thx!
+
+Tested-by: Jack Wang <jinpu.wang@ionos.com>
 
