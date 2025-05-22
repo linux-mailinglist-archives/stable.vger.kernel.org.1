@@ -1,134 +1,200 @@
-Return-Path: <stable+bounces-146064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFB7AC0921
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 11:56:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02407AC096C
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 12:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C5A63BC05E
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 09:55:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A31244A579B
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 10:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C261EDA3A;
-	Thu, 22 May 2025 09:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFAD288CAF;
+	Thu, 22 May 2025 10:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T+D+mimX"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="WfdPNCag"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE181C3C04;
-	Thu, 22 May 2025 09:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13125288CA1;
+	Thu, 22 May 2025 10:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747907762; cv=none; b=Vv5d9aT8nJ8L9lc8BtXbfFxx10xT0UPrJh78E0XQ4gUzutoIeFVwa4I4yDp9JR3hb8oE90jrwjIOEAu77mV4B2ZOe3Dk39BobPNn3vVitAElvbxsJs4Iet8cImbXPYwy4+cGS1MjsgBEUkzq9VI4yH/dHsH4gt2LCAytnLXq0QM=
+	t=1747908424; cv=none; b=NAT9LUtuB7+z1ubeC9QytU4Oiqv+1G6WGMNCyI+4AvthfzubX7hUMZNGKenektUj0/nHS7/Hm4NKYPHJ/+49dijxV3tpqJUGnFRF5xN077SPvyIWQsBWpn2yBu6TkN8qcA+FQYXZnWAqzZ6tzmyzLhUjlK4pqBEu7QHePUUb6Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747907762; c=relaxed/simple;
-	bh=zZQDvy6Qo42/2W4QwFrXPUZcYGV2s/FRajduLAvDQCw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J+Lfgf7f+44C4TVVhp4Xw/vWDZdcDqaZht+lUnUSxf0IEDHBup5gh3sA7xFzuCufKkrkvr2fp1v/kMDMoWTyuYRrLa9FckJuGzgdfB+SekWcTmPgcg3tLcnHlVfa0IxiL8lbiw4D54nB2u3NrBydgY/hXqSVFQY3eSRGtnSUji0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T+D+mimX; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-23179999d4aso7267805ad.1;
-        Thu, 22 May 2025 02:56:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747907760; x=1748512560; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G09KB2onuKyHVmfE50lXFfjm4aLc9EdRitHUC4rY5fE=;
-        b=T+D+mimXQ46By4fAZkutHRPKovk9gCqPHKQto/nypip1KEu2bvlhtaQwQ0s+Icz/do
-         mQjSAbdXsOflzFt4QL73H5lA03x4MYJ8GChmX0D8p4vRrC1eyZ0W0zNjYBgSCYmFo2EJ
-         Bu5Yc00O/Y72nN+aGZFxs2QZq0TDOZbcVC5sjk0dKysdhErTP5zshz0LGHk3oRZ1lqv3
-         C4sAufye0lSEgHL7PdZwXn6PKvbKyBypX67v4svSpiyL7g3vStdjdxdQIxgWbaJYxEfw
-         bPphNio599WbK09AsRV0IhhrmQgk0lXGHYjAyQGDDJ03F5QL3EYMXq9EXqZJD1C9jx8O
-         Ky+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747907760; x=1748512560;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G09KB2onuKyHVmfE50lXFfjm4aLc9EdRitHUC4rY5fE=;
-        b=r7loNg5bKTSHA2YiPiTtu+zvmy7jPC2j+mXYzFRnGBUf13NuqHK/fmLkqYBpum50O7
-         DtwdeYtI5LFiM7XhylwEFVsQToviR2XH1+NuDracaWCAzKyimrEHMtWV/m6tugCjXKJf
-         2aZxsMpW9JSGnU51I9AcsQyOsyo9iSSq/mJwgbTSwAU09lc5z1x5fj4qvwL48nO1tPDu
-         bCG8DsQMQd0/luz9EvaFunlzE+Pg7v7h4H4cDqJCTwj9uPOHY0iXnX8z0EL0UE5IQBcU
-         EswDELAW7+J1oXNSav3wGhpEkimSunEKWEme9nK4D3jycYtSWcf6PM7RNVTvyXaOPf2W
-         kplw==
-X-Forwarded-Encrypted: i=1; AJvYcCV76uNjzKErdG2y3L9Xwxh0kVptu3vvU8+GQW/5TeXsnHc0XNliyf/GBM8L7Mr1LwHeG2iKP1FUuXPo13pG4A8=@vger.kernel.org, AJvYcCVev0TBH15CS65D1FdHkCcklitwgDHiWZi0q2/HWYnYyXoDzjrkpHO0E6bMIT2fG5aVMa+V5VZ07PsnzhQ=@vger.kernel.org, AJvYcCXAAE4xFgPCCUPQ8YW+Iu5PRofMmUwawi1aelOQW4nNsoYSaOpRlUfxPr0g/HhcviiZ1eQaNbAg@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9TiuonZZzRH5IC1/llKRUSawtWpE4GR9Xqsu5CfVnZRSmTD3I
-	b3o/hXGugEQuFWR8MViLXavfE3fonuCm0+uvFUKDjQfG15fHBG/kaASUqTvCCnjg/Sb+1ZUGXlg
-	D/Io2kvGvuP4h/Ui8xGkVh+xuIQmRzUA=
-X-Gm-Gg: ASbGncshv4oM9h7V4pvwppUa7WK1qD0StpaPvqTa7cdfLYlUkF9QiyU7RbrWfNBUhoj
-	C7OQ9yKKVuJFDN6RnFCxWjM9nzVi0iOQ5oMIvTZa7Pwvi5m1pFdHgtE8I5xQEdcJnRp8jT8WStP
-	JpFc6jrdAOgNFgFMzAnGJHOp1GD2OBavcZ
-X-Google-Smtp-Source: AGHT+IFYIWC+n60Jh+NK0oH7ocg0CH8rKVpjvpng/mDoRMQvt9OfeYljH/Z2woY7cuOpizBcWnXFwX5FdQwCp7RVY2c=
-X-Received: by 2002:a17:902:fc48:b0:224:88c:9255 with SMTP id
- d9443c01a7336-231d438c7f1mr136853785ad.3.1747907759865; Thu, 22 May 2025
- 02:55:59 -0700 (PDT)
+	s=arc-20240116; t=1747908424; c=relaxed/simple;
+	bh=mtboeDMY5otbNjIXDqs9HEzEdkdlvsdHOhf4Wb6sTCU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=unaJsnzfRo5DlIy7XSXW4w2kR7lsIKedDmnAm/u7eDw1hE29uTaMXRAS6ysa2bMSty0uWdVbSSwdSiS49MtfRYqM9/5OLf2cxKbJQfJkU3lOEYayrlOL8XUBFIF8m930+zAQuofgNxT/qLU5MX3nQ7mKy0V4vYKIL0pSVqjtxzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=WfdPNCag; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M5K8rc014360;
+	Thu, 22 May 2025 03:06:42 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=B
+	em5GbQzb8pFdcLi28ckFrDdVlDIhuU/H/j2UJ2eTA0=; b=WfdPNCagjHGPWSR3T
+	UQxp5oYjKh2ka5GSdrLc8zWcS4VNPZZpJVQL2czyVmK+cX5RDVsdzO4w4Nd73wd4
+	KBMDzlIMrhn/5JEt6mMNQUcZF5+wZCSBFsZIymCRPH2m82I6pOIGhWb23f9CRPsf
+	cBIOx9iDmZWm9IX5wDV0TNqxETSYFxPFVo/zZXUSLmxdw/tT4JgIxjEHm8EGzMA4
+	AYOs6FndNermZ8Arka8Eqgn0oW15HkvREh7WUdL0lhgivzmVm54lYYfuPWOwkbFd
+	1QBTi4zvl5+uV4/erWc4vD4v3psuG+FjnPcDWp/1j+lXhrxgUB6i0Fj3KKSC+u15
+	whQqg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 46swp68ge2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 May 2025 03:06:42 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Thu, 22 May 2025 03:06:41 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Thu, 22 May 2025 03:06:41 -0700
+Received: from bharat-OptiPlex-Tower-Plus-7020.. (unknown [10.28.34.254])
+	by maili.marvell.com (Postfix) with ESMTP id 912623F704D;
+	Thu, 22 May 2025 03:06:37 -0700 (PDT)
+From: Bharat Bhushan <bbhushan2@marvell.com>
+To: <bbrezillon@kernel.org>, <schalla@marvell.com>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <giovanni.cabiddu@intel.com>, <linux@treblig.org>,
+        <bharatb.linux@gmail.com>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Bharat Bhushan <bbhushan2@marvell.com>, <stable@vger.kernel.org>
+Subject: [PATCH 2/4 v4] crypto: octeontx2: Fix address alignment issue on ucode loading
+Date: Thu, 22 May 2025 15:36:25 +0530
+Message-ID: <20250522100627.175210-3-bbhushan2@marvell.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250522100627.175210-1-bbhushan2@marvell.com>
+References: <20250522100627.175210-1-bbhushan2@marvell.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250520185555.825242-1-ojeda@kernel.org>
-In-Reply-To: <20250520185555.825242-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 22 May 2025 11:55:46 +0200
-X-Gm-Features: AX0GCFt5zXlczwrJWYedrmHdatCH6TtH7LDmwwL7WwbulsfmTEouK13Fcs43C90
-Message-ID: <CANiq72mPJDA55t=TGz3wFBBch9iPxjQ0V_CV30XR6XijWnh3dw@mail.gmail.com>
-Subject: Re: [PATCH] objtool/rust: relax slice condition to cover more
- `noreturn` Rust functions
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Kane York <kanepyork@gmail.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: LwY1sFshyr7NSYurl1e65pB6wLFNNMA1
+X-Authority-Analysis: v=2.4 cv=DO+P4zNb c=1 sm=1 tr=0 ts=682ef732 cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=dt9VzEwgFbYA:10 a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8 a=ub5NSpVJfYrinLkKqRIA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDEwMSBTYWx0ZWRfX+EsRKjsVKzPS Tp3vUi9Bj97rOPyqLq9Ze5OpuZrglvTYKwXNuuAMCzU+hchuFre3/VqGs8RIcKe/GHUNnK3y1wY V7RzH3M75fNz1SHiE8Eiuc0ic1lmfRRg2EDODeEGC00Z5bD7q1cEbk1RE2gR72KK8kBjm9Cm5WL
+ hyQ/3E2/s6qbzjMzHi36s6Zu8kR1n9f+aZOJuaOzB5XGYuBybmVG0ccgqOkwHorXeqLYLu3oo8f kdZ3/6a+hWgt6LYoUgRaaTRRviEg9ttxW1eJOpyRL5q0i6SzH9ku1mAkCwrzsYaDU3KQ2QVNYu7 12Yom/MTHJolKggfvV6/jSbNLhxkt6qyTdUetbrXMBjj6TzHXJF5fZOZ6qyfhi+GrKr0cc0AFhs
+ fQmBYMq5n5cTEC3hFzZKVX/JB91fdkyzcNHziYdUaNKJ9nItziiVB5fRSQRZ2bSZQ+K5DrkA
+X-Proofpoint-ORIG-GUID: LwY1sFshyr7NSYurl1e65pB6wLFNNMA1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-22_05,2025-05-22_01,2025-03-28_01
 
-On Tue, May 20, 2025 at 8:56=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Developers are indeed hitting other of the `noreturn` slice symbols in
-> Nova [1], thus relax the last check in the list so that we catch all of
-> them, i.e.
->
->     *_4core5slice5index22slice_index_order_fail
->     *_4core5slice5index24slice_end_index_len_fail
->     *_4core5slice5index26slice_start_index_len_fail
->     *_4core5slice5index29slice_end_index_overflow_fail
->     *_4core5slice5index31slice_start_index_overflow_fail
->
-> These all exist since at least Rust 1.78.0, thus backport it too.
->
-> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-> for more details.
->
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Timur Tabi <ttabi@nvidia.com>
-> Cc: Kane York <kanepyork@gmail.com>
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Reported-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Link: https://lore.kernel.org/rust-for-linux/20250513180757.GA1295002@joe=
-lnvbox/ [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+octeontx2 crypto driver allocates memory using kmalloc/kzalloc,
+and uses this memory for dma (does dma_map_single()). It assumes
+that kmalloc/kzalloc will return 128-byte aligned address. But
+kmalloc/kzalloc returns 8-byte aligned address after below changes:
+  "9382bc44b5f5 arm64: allow kmalloc() caches aligned to the
+   smaller cache_line_size()"
 
-Applied to `rust-next` early so that others can benefit on -next --
-thanks everyone!
+Completion address should be 32-Byte alignment when loading
+microcode.
 
-    Fixes: 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Cc: <stable@vger.kernel.org> # v6.5+
+---
+v2->v3:
+ - Align DMA memory to ARCH_DMA_MINALIGN as that is mapped as
+   bidirectional
 
-Cheers,
-Miguel
+ .../marvell/octeontx2/otx2_cptpf_ucode.c      | 35 +++++++++++--------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+index 3a818ac89295..88f0f72a4462 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+@@ -1491,12 +1491,13 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
+ 	union otx2_cpt_opcode opcode;
+ 	union otx2_cpt_res_s *result;
+ 	union otx2_cpt_inst_s inst;
++	dma_addr_t result_baddr;
+ 	dma_addr_t rptr_baddr;
+ 	struct pci_dev *pdev;
+-	u32 len, compl_rlen;
+ 	int timeout = 10000;
++	void *base, *rptr;
+ 	int ret, etype;
+-	void *rptr;
++	u32 len;
+ 
+ 	/*
+ 	 * We don't get capabilities if it was already done
+@@ -1521,22 +1522,28 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
+ 	if (ret)
+ 		goto delete_grps;
+ 
+-	compl_rlen = ALIGN(sizeof(union otx2_cpt_res_s), OTX2_CPT_DMA_MINALIGN);
+-	len = compl_rlen + LOADFVC_RLEN;
++	/* Allocate extra memory for "rptr" and "result" pointer alignment */
++	len = LOADFVC_RLEN + ARCH_DMA_MINALIGN +
++	       sizeof(union otx2_cpt_res_s) + OTX2_CPT_RES_ADDR_ALIGN;
+ 
+-	result = kzalloc(len, GFP_KERNEL);
+-	if (!result) {
++	base = kzalloc(len, GFP_KERNEL);
++	if (!base) {
+ 		ret = -ENOMEM;
+ 		goto lf_cleanup;
+ 	}
+-	rptr_baddr = dma_map_single(&pdev->dev, (void *)result, len,
+-				    DMA_BIDIRECTIONAL);
++
++	rptr = PTR_ALIGN(base, ARCH_DMA_MINALIGN);
++	rptr_baddr = dma_map_single(&pdev->dev, rptr, len, DMA_BIDIRECTIONAL);
+ 	if (dma_mapping_error(&pdev->dev, rptr_baddr)) {
+ 		dev_err(&pdev->dev, "DMA mapping failed\n");
+ 		ret = -EFAULT;
+-		goto free_result;
++		goto free_rptr;
+ 	}
+-	rptr = (u8 *)result + compl_rlen;
++
++	result = (union otx2_cpt_res_s *)PTR_ALIGN(rptr + LOADFVC_RLEN,
++						   OTX2_CPT_RES_ADDR_ALIGN);
++	result_baddr = ALIGN(rptr_baddr + LOADFVC_RLEN,
++			     OTX2_CPT_RES_ADDR_ALIGN);
+ 
+ 	/* Fill in the command */
+ 	opcode.s.major = LOADFVC_MAJOR_OP;
+@@ -1548,14 +1555,14 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
+ 	/* 64-bit swap for microcode data reads, not needed for addresses */
+ 	cpu_to_be64s(&iq_cmd.cmd.u);
+ 	iq_cmd.dptr = 0;
+-	iq_cmd.rptr = rptr_baddr + compl_rlen;
++	iq_cmd.rptr = rptr_baddr;
+ 	iq_cmd.cptr.u = 0;
+ 
+ 	for (etype = 1; etype < OTX2_CPT_MAX_ENG_TYPES; etype++) {
+ 		result->s.compcode = OTX2_CPT_COMPLETION_CODE_INIT;
+ 		iq_cmd.cptr.s.grp = otx2_cpt_get_eng_grp(&cptpf->eng_grps,
+ 							 etype);
+-		otx2_cpt_fill_inst(&inst, &iq_cmd, rptr_baddr);
++		otx2_cpt_fill_inst(&inst, &iq_cmd, result_baddr);
+ 		lfs->ops->send_cmd(&inst, 1, &cptpf->lfs.lf[0]);
+ 		timeout = 10000;
+ 
+@@ -1578,8 +1585,8 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
+ 
+ error_no_response:
+ 	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
+-free_result:
+-	kfree(result);
++free_rptr:
++	kfree(base);
+ lf_cleanup:
+ 	otx2_cptlf_shutdown(lfs);
+ delete_grps:
+-- 
+2.34.1
+
 
