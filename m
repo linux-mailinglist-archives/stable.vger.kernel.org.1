@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-146096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1167AC0DD3
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 16:14:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51DB7AC0E07
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 16:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3361E3AF5A1
-	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07DED16B052
+	for <lists+stable@lfdr.de>; Thu, 22 May 2025 14:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F345328C029;
-	Thu, 22 May 2025 14:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8F528C5A0;
+	Thu, 22 May 2025 14:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHESKPPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0zBi7no"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B173A28A700
-	for <Stable@vger.kernel.org>; Thu, 22 May 2025 14:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A23428A1D8
+	for <Stable@vger.kernel.org>; Thu, 22 May 2025 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747923272; cv=none; b=AwfCiOdYJ0nT7xliU0jvCHrs6o6Q9cyJ52LrOKj5R1kcA/xPpEJS9d2sBQX0xEnOyyhx3t4wmyLsc9z1RkOTQpeN/DfZytrEtULzmQWHiVVqlB7xoB5WYxooTGyJrQlTyKuL5p8ZtIf6jF9R2ZT7xC9vHk1U9V9dpoaFtFYVzIc=
+	t=1747924057; cv=none; b=OcMZ5Tk3FzHuMSLKJ1ChvZCRIwidfeufrAKsxNKtJab7Vk/RG3lO0qXAa12/CSfRYwcEh3aMjFBXpYvdeUOTzVPa0pZk5sEbIpYV1X3lrnrMzEHnEB7Pvfg5TZbhCUuPqYnO+lgZEn/HIPIPzR8n/gBRTXeTNRs8pf7ywZz4BVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747923272; c=relaxed/simple;
-	bh=PAFbB9PP2YkkGoELwTSiymwn5hK3QxSZGr5SfJ5IA8M=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=m2saHlehzGL0vBf3SlFC1VRfG/E5RnDBmeChaDtS9Flr3NyKIpKtE32+chNQ/5+8lO2uU8+gjHjkFnGdclsB5O1p+tAuvfx7JFzl/MBUGeqZdhSzn2QUtvjNMvtXYCk7GKKJ2YelNvZR318svLy8r+ChUHxbYljmucn1xnGY28E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHESKPPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6932C4CEE4;
-	Thu, 22 May 2025 14:14:31 +0000 (UTC)
+	s=arc-20240116; t=1747924057; c=relaxed/simple;
+	bh=dhGwMOWUftF4xNNfIpkwf3M6fYfSNgfesAPSdHiazOE=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=bNDzP2iIjUMDQzA2tV65+ZNar7GJ8pjUU+stQDQOT7MBls1peDPuzbyu9btFeJplI8looqlV0pQ4k2aBSZOiZculeFUwtSKUp+FyGtfZiUJyJ63oQwtR+HENpJ+ZkhCwgYX+9uoQalUBGtG92tLVGFiT3CueCOg9j6ItUADoBUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0zBi7no; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7A8C4CEEB;
+	Thu, 22 May 2025 14:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747923272;
-	bh=PAFbB9PP2YkkGoELwTSiymwn5hK3QxSZGr5SfJ5IA8M=;
+	s=korg; t=1747924056;
+	bh=dhGwMOWUftF4xNNfIpkwf3M6fYfSNgfesAPSdHiazOE=;
 	h=Subject:To:From:Date:From;
-	b=VHESKPPUWUnQBT05c2XLt6/9BC71xhMz2eLiQt642hNpb8HTytwiML1Hke0DbYN7f
-	 rIL9d5s06vLS79pGU+7WWFXTjzw3tFCig6j94Z4t8PZXmQc6AiiXph3pSLBc4n4aNw
-	 QQbovNAYrM9o9rYX/vZ1bj45tftF3p/R0LW+qPSE=
-Subject: patch "iio: adc: ti-ads1298: Kconfig: add kfifo dependency to fix module" added to char-misc-testing
+	b=F0zBi7noTeTzQ3wK2NQifwyrCqnlxRQR4PiToglbhFNlNHBBKh/qSFmtQr3i2deIq
+	 QXCegGwEmjU6rvZfO2UYwI5l4EnD1d5prC+9KgLorsixQpOWGFpxoBRHEK4Jk6T9TJ
+	 hLbnMMRF39IL2EGojQBSwoyZdvBm/q0CGqFhYptk=
+Subject: patch "iio: adc: ti-ads1298: Kconfig: add kfifo dependency to fix module" added to char-misc-next
 To: r2.arthur.prince@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,mariana.valerio2@hotmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 22 May 2025 15:58:43 +0200
-Message-ID: <2025052243-stride-cannot-37de@gregkh>
+Date: Thu, 22 May 2025 16:02:17 +0200
+Message-ID: <2025052217-diffusion-palpitate-d22a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,13 +58,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+in the char-misc-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
