@@ -1,105 +1,120 @@
-Return-Path: <stable+bounces-146174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEB6AC1E15
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 09:59:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0A3AC1E07
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 09:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C1227BA6E5
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 07:56:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DCF54E7158
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 07:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76706289360;
-	Fri, 23 May 2025 07:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA77283FE8;
+	Fri, 23 May 2025 07:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="RWOC6MXW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ctx1TFa0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505A72882DD
-	for <stable@vger.kernel.org>; Fri, 23 May 2025 07:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1925F27FD7D;
+	Fri, 23 May 2025 07:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747987027; cv=none; b=SFpFYKHK7eXAl7U1vho2YjZJMDScEycnZYPOwKR4hUp48NmT5NO+lJtlOFWrwI1p/PWzIiOgRi+oeKxSLXhN/cADLvv0raxRIjNEvr4OlbN3Winsn2srxEQALQ8nmkcFRN2oodYLq/eP3Fb1IxKm9fzCp9DlR72NU2gQzM/3Rps=
+	t=1747987019; cv=none; b=PXofgVujxqDuJ/0UPMT0/06+Ps8f5pV+dlksLufSrpRQ91TyBpe1NFHBlba3pxTCn9f+sLdNqwVQMWr1bfbZB69jPytc3fYAiyHxDe+Z2aysNr39C8TJtrlJyQO1Uvm2yoCK5deW2L2Ph2EoMKIPKX81yOQtDuRpvOhoyxRxpQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747987027; c=relaxed/simple;
-	bh=rR3vPAPlUJEfRssL5GiwmgHjwvovtafRJtml2i1CacQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ml9eVSjga/N9J8nZ9vEDZL5pNcLS7YOwinYJQTfba7We9dqkhBeI4m4+c3ghBj6cILkEBc2BxijNnm/JGrVkZ/G7+Bf+cTapk7sCH7AzU7ezLjI32bks5LNkKzWCMrgrr2QQSE6N05Lkd6ayfI6QiOVRtLAkDrWV444p2yAIdBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=RWOC6MXW; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id A22B61C118D
-	for <stable@vger.kernel.org>; Fri, 23 May 2025 10:50:24 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1747986624; x=
-	1748850625; bh=rR3vPAPlUJEfRssL5GiwmgHjwvovtafRJtml2i1CacQ=; b=R
-	WOC6MXWGK/aGAD99+5hQcItRKFJ9kimi5SIaD3qRP6w7Q1M7w55Fe2UdlkZYbWQV
-	AzGq5aOtJPyk9WZPAkg0dw3cEbUMBsM5nIN/h7PTGiEUyVNeXJb4kO8ozZZCC2+4
-	FKB8yUNWiQKmfA2rTi0xClR/weL/40x5qb8buzw8Gs=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Or81gyhgdHhQ for <stable@vger.kernel.org>;
-	Fri, 23 May 2025 10:50:24 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 91B471C0DAB;
-	Fri, 23 May 2025 10:50:22 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: Lyude Paul <lyude@redhat.com>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/nouveau/mmu: fix potential overflow in PFN size calculation
-Date: Fri, 23 May 2025 07:50:14 +0000
-Message-ID: <20250523075015.884716-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1747987019; c=relaxed/simple;
+	bh=2Iq3z0X5R3bizHxa30uwclq6qACe1q2NN63KWDE86jE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EDXs3B+k/B66JZpP/khFlXKb7eNIagX+6iOiiBPJZ5zFCTbpiSp7HxN0/auGv4V2r6sdMKcrR9NFzsqUZG2CDwljcvANucUkCR3414Y1YLgutKlSP1+2RStKAgYPBIM9QoprTdiwVaVIYEbljDHFRP5lX4NA6xRwDtw7gvFs008=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ctx1TFa0; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=vJipil0cqUzIO5C86s9nT5sWioLswuLrRSkBtn/rbWc=; b=ctx1TFa098sAO70pCD4kM7Zwx2
+	tEVOM954qdunTTATCokfjyAj36gajiC0F8OAvEuM3ocfsfh7p0DMg5gBefJaIp2rYreWN20POdHLF
+	fifkUbsDWzfQoIs7lNfWHNN8V1ItcYs98XVvcAaWHPzhlEeVeL8h/YEsGsYKIgtBiT1GBkGXCA4Vx
+	oWv8gwCZvugND3LMvcRytWoixEpKx9VVWZNJM4LBF6ZOkLRgTCQpR7dLeEPfTWxxoOGsX6SaqalXf
+	J/EBfX0dTt7Iusy3QC/xZMdqfPTE2djQAb/SUqdHp+AOCjnux1eGjS9dbQYNCPM4+HRMAUeb3IDLA
+	/EAMwg6w==;
+Received: from 53.red-81-38-30.dynamicip.rima-tde.net ([81.38.30.53] helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1uINGe-00C54C-BZ; Fri, 23 May 2025 09:56:36 +0200
+From: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
+Date: Fri, 23 May 2025 09:56:18 +0200
+Subject: [PATCH] mm: fix copy_vma() error handling for hugetlb mappings
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20250523-warning_in_page_counter_cancel-v1-1-b221eb61a402@igalia.com>
+X-B4-Tracking: v=1; b=H4sIACEqMGgC/x3NWwrCMBBG4a2UeTbQRqvBrYiEcfyNAzItE29Qu
+ neDj9/LOQtVuKLSsVvI8daqkzUMm47kzlYQ9NpMsY9jP8Zt+LCbWslqeeaCLNPLnvAsbIJHQJL
+ DwPvLTlKiFpkdN/3+B6fzuv4AICXyZ3AAAAA=
+X-Change-ID: 20250523-warning_in_page_counter_cancel-e8c71a6b4c88
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>
+Cc: revest@google.com, kernel-dev@igalia.com, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-On most Linux-supported platforms, `int` is 32-bit, making (1 << 47)
-undefined and potentially dangerous. To ensure defined behavior and
-correct 64-bit arithmetic, replace `1` with `1ULL`.
+If, during a mremap() operation for a hugetlb-backed memory mapping,
+copy_vma() fails after the source vma has been duplicated and
+opened (ie. vma_link() fails), the error is handled by closing the new
+vma. This updates the hugetlbfs reservation counter of the reservation
+map which at this point is referenced by both the source vma and the new
+copy. As a result, once the new vma has been freed and copy_vma()
+returns, the reservation counter for the source vma will be incorrect.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This patch addresses this corner case by clearing the hugetlb private
+page reservation reference for the new vma and decrementing the
+reference before closing the vma, so that vma_close() won't update the
+reservation counter.
 
-Cc: stable@vger.kernel.org # v5.1+
-Fixes: a5ff307fe1f2 ("drm/nouveau/mmu: add a privileged method to directly manage PTEs")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+The issue was reported by a private syzbot instance, see the error
+report log [1] and reproducer [2]. Possible duplicate of public syzbot
+report [3].
+
+Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+Cc: stable@vger.kernel.org # 6.12+
+Link: https://people.igalia.com/rcn/kernel_logs/20250422__WARNING_in_page_counter_cancel.txt [1]
+Link: https://people.igalia.com/rcn/kernel_logs/20250422__WARNING_in_page_counter_cancel__repro.c [2]
+Link: https://lore.kernel.org/all/67000a50.050a0220.49194.048d.GAE@google.com/ [3]
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/vma.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmm.c b/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmm.c
-index 9c97800fe037..29da1acbe3a8 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmm.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmm.c
-@@ -1383,7 +1383,7 @@ nvkm_vmm_pfn_map(struct nvkm_vmm *vmm, u8 shift, u64 addr, u64 size, u64 *pfn)
- 			 */
- 			while (size) {
- 				pfn[pi++] = NVKM_VMM_PFN_NONE;
--				size -= 1 << page->shift;
-+				size -= 1ULL << page->shift;
- 			}
- 		} else {
- 			pi += size >> page->shift;
--- 
-2.43.0
+diff --git a/mm/vma.c b/mm/vma.c
+index 839d12f02c885d3338d8d233583eb302d82bb80b..9d9f699ace977c9c869e5da5f88f12be183adcfb 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -1834,6 +1834,8 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 	return new_vma;
+ 
+ out_vma_link:
++	if (is_vm_hugetlb_page(new_vma))
++		clear_vma_resv_huge_pages(new_vma);
+ 	vma_close(new_vma);
+ 
+ 	if (new_vma->vm_file)
+
+---
+base-commit: 94305e83eccb3120c921cd3a015cd74731140bac
+change-id: 20250523-warning_in_page_counter_cancel-e8c71a6b4c88
 
 
