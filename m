@@ -1,61 +1,47 @@
-Return-Path: <stable+bounces-146154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441E7AC1AE0
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:06:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C8DAC1AED
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DABDCA25450
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 04:06:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA0703B2950
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 04:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB527221F25;
-	Fri, 23 May 2025 04:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qteADHn1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6243215181;
+	Fri, 23 May 2025 04:21:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572E8367;
-	Fri, 23 May 2025 04:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8C12DCBF2;
+	Fri, 23 May 2025 04:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747973174; cv=none; b=DGHy8RNLIT5lwu5gDPB08gSUAPCD+CIapmej8GpKXdTn3b6qmz52Swnn8uUBB3iN9KgQZAL2gIV8dmXSx1TRLS3owE/bHjT7fjGioh2n1AmdUYIIoNSxwmWHYCmmSYW8dpRxf3zmW+XVYlnQlyJDRkmq6LEtyoR81M8HDx6NBZs=
+	t=1747974112; cv=none; b=shdEYx5EZx9hf/zSunbRhwIj9wzTBuUv0kOfwjTxTm3uZVyfKvhF2OvC3+aQTkpCoFVH7N/AK0cGlipW4dT3WR1bpJxsjBBiO6nPfzWT5fS1jD7Fo061iwp/5kL+zUZQC5NksEg3YDy34/TKPPpg6acN3CM/lz06C68OuEKp0uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747973174; c=relaxed/simple;
-	bh=Dd6hg5anYs4NDvtjZ+7fjfMWyb/P3mJi/lIxyob4a0o=;
+	s=arc-20240116; t=1747974112; c=relaxed/simple;
+	bh=gfH9VASWiU+xdAzCcVxY4Maje43Wg/KxuK5fI80t3aY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MW0jwiBID1s5SaoEvzWpeaYjuJUR9+YYN6tWP7VSlA4V+5xgEotFPvKr+MlSsrc67+IhBcz/YhrJq+xzBspclIxlP3qHMJ5qqQfu0hn+73i70O+x4epp3aBMii6rWfIxGLyqrae4TWRDiKxboSU+qgo5HjAs1jpfVQxg1juX5pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qteADHn1; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1127)
-	id DD8C5201DB37; Thu, 22 May 2025 21:06:06 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DD8C5201DB37
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1747973166;
-	bh=NAc+eegSvTa3ay9n8M4zgkCmIydrJCYRiYijS0bKWHY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qteADHn1rWU9VHl2Z/C4U8p+yUZcUHpD1HTu6F5tS2wBexDJ3bi5X9adO6ru9agQ6
-	 3ksSh2+9mxpgeP5AK491vtaBbjHdzBmbrEMLo4D3JEGN1S/gRXNEWItDhKAk1Siuw9
-	 oA+4VyzttcT6utUrI+yZWEe8O2iLUhyLdpZjHBgI=
-Date: Thu, 22 May 2025 21:06:06 -0700
-From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, kuniyu@amazon.com,
-	ahmed.zaki@intel.com, aleksander.lobakin@intel.com,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	ssengar@microsoft.com, stable@vger.kernel.org
-Subject: Re: [PATCH net,v2] hv_netvsc: fix potential deadlock in
- netvsc_vf_setxdp()
-Message-ID: <20250523040606.GA25497@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1747823103-3420-1-git-send-email-ssengar@linux.microsoft.com>
- <20250522151346.57390f40@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=c/RqvwoIBRE1dB2FL0g2bl+Oy6NzQMzzmOpZutlLC1/NdDokllA5JmnyotiIl6OqVkVtonKtpiZzHKsH5/hqtph7ma9vZdXQSnu3mwBzm3KjrvGouYi2ioipRPl/M6arY4orbaDquqtziwAoqht3u2gMZrIxdZmnWzeAB9sZZJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 4E1D467373; Fri, 23 May 2025 06:21:45 +0200 (CEST)
+Date: Fri, 23 May 2025 06:21:45 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>,
+	Yu Kuai <yukuai1@huaweicloud.com>, Ming Lei <ming.lei@redhat.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] block: Make __submit_bio_noacct() preserve the bio
+ submission order
+Message-ID: <20250523042145.GA6344@lst.de>
+References: <20250514202937.2058598-1-bvanassche@acm.org> <20250514202937.2058598-2-bvanassche@acm.org> <20250516044754.GA12964@lst.de> <47b24ea0-ef8f-441f-b405-a062b986ce93@acm.org> <20250520135624.GA8472@lst.de> <d28b6138-7618-4092-8e05-66be2625ecd9@acm.org> <20250521055319.GA3109@lst.de> <24b5163c-1fc2-47a6-9dc7-2ba85d1b1f97@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,67 +50,16 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250522151346.57390f40@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <24b5163c-1fc2-47a6-9dc7-2ba85d1b1f97@acm.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Thu, May 22, 2025 at 03:13:46PM -0700, Jakub Kicinski wrote:
-> On Wed, 21 May 2025 03:25:03 -0700 Saurabh Sengar wrote:
-> > The MANA driver's probe registers netdevice via the following call chain:
-> > 
-> > mana_probe()
-> >   register_netdev()
-> >     register_netdevice()
-> > 
-> > register_netdevice() calls notifier callback for netvsc driver,
-> > holding the netdev mutex via netdev_lock_ops().
-> > 
-> > Further this netvsc notifier callback end up attempting to acquire the
-> > same lock again in dev_xdp_propagate() leading to deadlock.
-> > 
-> > netvsc_netdev_event()
-> >   netvsc_vf_setxdp()
-> >     dev_xdp_propagate()
-> > 
-> > This deadlock was not observed so far because net_shaper_ops was never set,
-> 
-> The lock is on the VF, I think you meant to say that no device you use
-> in Azure is ops locked?
-> 
-> There's also the call to netvsc_register_vf() on probe path, please
-> fix or explain why it doesn't need locking in the commit message.
+On Wed, May 21, 2025 at 02:18:12PM -0700, Bart Van Assche wrote:
+> The following pull request includes a test that triggers the deadlock
+> fixed by patch 2/2 reliably:
+>
+> https://github.com/osandov/blktests/pull/171
 
-This patch specifically addresses the netvsc_register_vf() path only.
-I omitted the mention of netvsc_register_vf() in the commit message
-to keep the function path shorter. The full stack trace is provided below:
+Can you post the pathc please?  I've not found any obvious way
+to download a patch from the above website.
 
-[   92.542180]  dev_xdp_propagate+0x2c/0x1b0
-[   92.542185]  netvsc_vf_setxdp+0x10d/0x180 [hv_netvsc]
-[   92.542192]  netvsc_register_vf.part.0+0x179/0x200 [hv_netvsc]
-[   92.542196]  netvsc_netdev_event+0x267/0x340 [hv_netvsc]
-[   92.542200]  notifier_call_chain+0x5f/0xc0
-[   92.542203]  raw_notifier_call_chain+0x16/0x20
-[   92.542205]  call_netdevice_notifiers_info+0x52/0xa0
-[   92.542209]  register_netdevice+0x7c8/0xaa0
-[   92.542211]  register_netdev+0x1f/0x40
-[   92.542214]  mana_probe+0x6e2/0x8e0 [mana]
-[   92.542220]  mana_gd_probe+0x187/0x220 [mana]
-
-If you prefer I can update the stack trace in commit meesage
-From:
-
-netvsc_netdev_event()
-  netvsc_vf_setxdp()
-    dev_xdp_propagate()
-
-To:
-
-netvsc_netdev_event()
-  netvsc_register_vf()
-    netvsc_vf_setxdp()
-      dev_xdp_propagate()
-
-- Saurabh
-
-> -- 
-> pw-bot: cr
 
