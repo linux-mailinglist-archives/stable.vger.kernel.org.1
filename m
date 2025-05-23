@@ -1,122 +1,130 @@
-Return-Path: <stable+bounces-146153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EE2AC1AD6
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 05:57:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441E7AC1AE0
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DDFF3B1569
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 03:56:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DABDCA25450
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 04:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EF317ADF8;
-	Fri, 23 May 2025 03:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB527221F25;
+	Fri, 23 May 2025 04:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="S9OzoP15"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qteADHn1"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D502DCBE7
-	for <stable@vger.kernel.org>; Fri, 23 May 2025 03:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572E8367;
+	Fri, 23 May 2025 04:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747972631; cv=none; b=GbM8SFewL1WrDgZgMzCd7uYY3c1P9YL1qCPOsUsXop+c18lPI75dB5GS3SMpOSvmHFmbxi1Z5urlLOkSTP4myPj/eov+4iE7HZW0QJShZP1mAcZD4IW/5prOe+gFRvs+ay9BSZOtgpqqR/uQok0z3RXlgX8xhz77zkwx+gv/xZs=
+	t=1747973174; cv=none; b=DGHy8RNLIT5lwu5gDPB08gSUAPCD+CIapmej8GpKXdTn3b6qmz52Swnn8uUBB3iN9KgQZAL2gIV8dmXSx1TRLS3owE/bHjT7fjGioh2n1AmdUYIIoNSxwmWHYCmmSYW8dpRxf3zmW+XVYlnQlyJDRkmq6LEtyoR81M8HDx6NBZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747972631; c=relaxed/simple;
-	bh=1wmftH4+1CyP4uZ75vOAyuBVMc6P1BmvNKUb+IESNQc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=nwG2iuJ6HnaeUWhRsHpxd502XuQcz8/NTJcF7gZDSEuayvMr4glwgztD0DrOTIXwaSw302bDxXLHYWOIQdHs3SlYPyQfap8GJWp2FgUnbtPFhypNKZt1d9DyTo3Z61Kn4Gly6wOgnv1Nkob0x/57wtpqHnnmfENzjQhGxFoDmeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=S9OzoP15; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1747972614;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u6qNdPv7J8gfgypOptH2B2wxSfGN00CcXcZhVQxMpKw=;
-	b=S9OzoP15OwVpDAPDuHOpq6gcuxnTztYLM95nwFD4B9AK0NZwuCkeMbRE0EBh8cROyAudfN
-	T88Cj2bQRKe0iodB9Lo34vZXtKv8Zoa2alqS/LtQ+5NS4kLuvg4xwkpuyC996wzkPdrQ1s
-	DL+c8yhMEtO6U1+kbnDaI1lCJxj1EMM=
+	s=arc-20240116; t=1747973174; c=relaxed/simple;
+	bh=Dd6hg5anYs4NDvtjZ+7fjfMWyb/P3mJi/lIxyob4a0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MW0jwiBID1s5SaoEvzWpeaYjuJUR9+YYN6tWP7VSlA4V+5xgEotFPvKr+MlSsrc67+IhBcz/YhrJq+xzBspclIxlP3qHMJ5qqQfu0hn+73i70O+x4epp3aBMii6rWfIxGLyqrae4TWRDiKxboSU+qgo5HjAs1jpfVQxg1juX5pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qteADHn1; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+	id DD8C5201DB37; Thu, 22 May 2025 21:06:06 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DD8C5201DB37
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1747973166;
+	bh=NAc+eegSvTa3ay9n8M4zgkCmIydrJCYRiYijS0bKWHY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qteADHn1rWU9VHl2Z/C4U8p+yUZcUHpD1HTu6F5tS2wBexDJ3bi5X9adO6ru9agQ6
+	 3ksSh2+9mxpgeP5AK491vtaBbjHdzBmbrEMLo4D3JEGN1S/gRXNEWItDhKAk1Siuw9
+	 oA+4VyzttcT6utUrI+yZWEe8O2iLUhyLdpZjHBgI=
+Date: Thu, 22 May 2025 21:06:06 -0700
+From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	john.fastabend@gmail.com, sdf@fomichev.me, kuniyu@amazon.com,
+	ahmed.zaki@intel.com, aleksander.lobakin@intel.com,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	ssengar@microsoft.com, stable@vger.kernel.org
+Subject: Re: [PATCH net,v2] hv_netvsc: fix potential deadlock in
+ netvsc_vf_setxdp()
+Message-ID: <20250523040606.GA25497@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1747823103-3420-1-git-send-email-ssengar@linux.microsoft.com>
+ <20250522151346.57390f40@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH] mm/hugetlb: fix kernel NULL pointer dereference when
- replacing free hugetlb folios
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <4e408146-7c77-4f6d-90e8-bb311d7ab53d@126.com>
-Date: Fri, 23 May 2025 11:56:11 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- akpm@linux-foundation.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- 21cnbao@gmail.com,
- david@redhat.com,
- baolin.wang@linux.alibaba.com,
- liuzixing@hygon.cn
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <299A777D-DC94-4724-BAD7-DD02F7CDBAFA@linux.dev>
-References: <1747884137-26685-1-git-send-email-yangge1116@126.com>
- <644FF836-9DC7-42B4-BACE-C433E637B885@linux.dev>
- <aC63fmFKK84K7YiZ@localhost.localdomain>
- <ff6bd560-d249-418f-81f4-7cbe055a25ec@126.com>
- <aC8PRkyd3y74Ph5R@localhost.localdomain>
- <3B8641A1-5345-44A5-B610-9BCBC980493D@linux.dev>
- <aC974OtOuj9Tqzsa@localhost.localdomain>
- <DF103E57-601C-4CBB-99CA-088E1C29F517@linux.dev>
- <4e408146-7c77-4f6d-90e8-bb311d7ab53d@126.com>
-To: Ge Yang <yangge1116@126.com>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250522151346.57390f40@kernel.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
+On Thu, May 22, 2025 at 03:13:46PM -0700, Jakub Kicinski wrote:
+> On Wed, 21 May 2025 03:25:03 -0700 Saurabh Sengar wrote:
+> > The MANA driver's probe registers netdevice via the following call chain:
+> > 
+> > mana_probe()
+> >   register_netdev()
+> >     register_netdevice()
+> > 
+> > register_netdevice() calls notifier callback for netvsc driver,
+> > holding the netdev mutex via netdev_lock_ops().
+> > 
+> > Further this netvsc notifier callback end up attempting to acquire the
+> > same lock again in dev_xdp_propagate() leading to deadlock.
+> > 
+> > netvsc_netdev_event()
+> >   netvsc_vf_setxdp()
+> >     dev_xdp_propagate()
+> > 
+> > This deadlock was not observed so far because net_shaper_ops was never set,
+> 
+> The lock is on the VF, I think you meant to say that no device you use
+> in Azure is ops locked?
+> 
+> There's also the call to netvsc_register_vf() on probe path, please
+> fix or explain why it doesn't need locking in the commit message.
 
+This patch specifically addresses the netvsc_register_vf() path only.
+I omitted the mention of netvsc_register_vf() in the commit message
+to keep the function path shorter. The full stack trace is provided below:
 
-> On May 23, 2025, at 11:46, Ge Yang <yangge1116@126.com> wrote:
->=20
->=20
->=20
-> =E5=9C=A8 2025/5/23 11:27, Muchun Song =E5=86=99=E9=81=93:
->>> On May 23, 2025, at 03:32, Oscar Salvador <osalvador@suse.de> wrote:
->>>=20
->>> On Thu, May 22, 2025 at 08:39:39PM +0800, Muchun Song wrote:
->>>> But I think we could use "folio_order() > MAX_PAGE_ORDER" to =
-replace the check
->>>> of hstate_is_gigantic(), right? Then ee could remove the first =
-parameter of hstate
->>>> from alloc_and_dissolve_hugetlb_folio() and obtain hstate in it.
->>>=20
->>> Yes, I think we can do that.
->>> So something like the following (compily-tested only) maybe?
->>>=20
->>> =46rom d7199339e905f83b54d22849e8f21f631916ce94 Mon Sep 17 00:00:00 =
-2001
->>> From: Oscar Salvador <osalvador@suse.de>
->>> Date: Thu, 22 May 2025 19:51:04 +0200
->>> Subject: [PATCH] TMP
->>>=20
->>> ---
->>>  mm/hugetlb.c | 38 +++++++++-----------------------------
->>>  1 file changed, 9 insertions(+), 29 deletions(-)
->> Pretty simple. The code LGTM.
->> Thanks.
->=20
-> Thanks.
->=20
-> The implementation of alloc_and_dissolve_hugetlb_folio differs between =
-kernel 6.6 and kernel 6.15. To facilitate backporting, I'm planning to =
-submit another patch based on Oscar Salvador's suggestion.
+[   92.542180]  dev_xdp_propagate+0x2c/0x1b0
+[   92.542185]  netvsc_vf_setxdp+0x10d/0x180 [hv_netvsc]
+[   92.542192]  netvsc_register_vf.part.0+0x179/0x200 [hv_netvsc]
+[   92.542196]  netvsc_netdev_event+0x267/0x340 [hv_netvsc]
+[   92.542200]  notifier_call_chain+0x5f/0xc0
+[   92.542203]  raw_notifier_call_chain+0x16/0x20
+[   92.542205]  call_netdevice_notifiers_info+0x52/0xa0
+[   92.542209]  register_netdevice+0x7c8/0xaa0
+[   92.542211]  register_netdev+0x1f/0x40
+[   92.542214]  mana_probe+0x6e2/0x8e0 [mana]
+[   92.542220]  mana_gd_probe+0x187/0x220 [mana]
 
-A separate improving patch LGTM.
+If you prefer I can update the stack trace in commit meesage
+From:
 
->=20
+netvsc_netdev_event()
+  netvsc_vf_setxdp()
+    dev_xdp_propagate()
 
+To:
+
+netvsc_netdev_event()
+  netvsc_register_vf()
+    netvsc_vf_setxdp()
+      dev_xdp_propagate()
+
+- Saurabh
+
+> -- 
+> pw-bot: cr
 
