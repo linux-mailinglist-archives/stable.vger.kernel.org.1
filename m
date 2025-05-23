@@ -1,120 +1,92 @@
-Return-Path: <stable+bounces-146173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0A3AC1E07
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 09:57:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C49EAC1E49
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 10:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DCF54E7158
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 07:57:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A27E21B662C6
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 08:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA77283FE8;
-	Fri, 23 May 2025 07:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D233E2882D8;
+	Fri, 23 May 2025 08:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ctx1TFa0"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="SKPOna0M"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1925F27FD7D;
-	Fri, 23 May 2025 07:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C03213235;
+	Fri, 23 May 2025 08:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747987019; cv=none; b=PXofgVujxqDuJ/0UPMT0/06+Ps8f5pV+dlksLufSrpRQ91TyBpe1NFHBlba3pxTCn9f+sLdNqwVQMWr1bfbZB69jPytc3fYAiyHxDe+Z2aysNr39C8TJtrlJyQO1Uvm2yoCK5deW2L2Ph2EoMKIPKX81yOQtDuRpvOhoyxRxpQI=
+	t=1747987722; cv=none; b=Zz5QONXXHnhnNOgJ4N0199B7rH7g+v5RFGlK7plTt4D+66gU/RwO/z1aV/R+DdKkxv1uzTLe+xLK2STDfA3F5cK/wKKLLgLpWsBxM+2Bf7Ss/TIm1Vxs2KVuIb7va1EOlbuB7eJvNDLmXKPMRiQ10sB4CeUQakUMsG/snBsCcqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747987019; c=relaxed/simple;
-	bh=2Iq3z0X5R3bizHxa30uwclq6qACe1q2NN63KWDE86jE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EDXs3B+k/B66JZpP/khFlXKb7eNIagX+6iOiiBPJZ5zFCTbpiSp7HxN0/auGv4V2r6sdMKcrR9NFzsqUZG2CDwljcvANucUkCR3414Y1YLgutKlSP1+2RStKAgYPBIM9QoprTdiwVaVIYEbljDHFRP5lX4NA6xRwDtw7gvFs008=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ctx1TFa0; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=vJipil0cqUzIO5C86s9nT5sWioLswuLrRSkBtn/rbWc=; b=ctx1TFa098sAO70pCD4kM7Zwx2
-	tEVOM954qdunTTATCokfjyAj36gajiC0F8OAvEuM3ocfsfh7p0DMg5gBefJaIp2rYreWN20POdHLF
-	fifkUbsDWzfQoIs7lNfWHNN8V1ItcYs98XVvcAaWHPzhlEeVeL8h/YEsGsYKIgtBiT1GBkGXCA4Vx
-	oWv8gwCZvugND3LMvcRytWoixEpKx9VVWZNJM4LBF6ZOkLRgTCQpR7dLeEPfTWxxoOGsX6SaqalXf
-	J/EBfX0dTt7Iusy3QC/xZMdqfPTE2djQAb/SUqdHp+AOCjnux1eGjS9dbQYNCPM4+HRMAUeb3IDLA
-	/EAMwg6w==;
-Received: from 53.red-81-38-30.dynamicip.rima-tde.net ([81.38.30.53] helo=localhost.localdomain)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1uINGe-00C54C-BZ; Fri, 23 May 2025 09:56:36 +0200
-From: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
-Date: Fri, 23 May 2025 09:56:18 +0200
-Subject: [PATCH] mm: fix copy_vma() error handling for hugetlb mappings
+	s=arc-20240116; t=1747987722; c=relaxed/simple;
+	bh=MgVgCl1iX1UzjCpwnuVxFoJJLNutyQ18+npIzepKsvg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZzZ6Ck0mXLIgslm3dI3omN/jfu9mMNb60AGeNnD+zxTBHyv5Yvlswm2dd50axiV8X9KsoTMeFYDZw1vaVzz1c2vZhdQIn1RsrtcxONMT9XJL/exEkIKgIkB9zymGCmPsoIqXfEYyMC93J7nW3bi2ICyOhNR5DrKQ/Vjl4wTeZE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=SKPOna0M; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=fYdsG1Zlzgn0Ck8jGE+RvNMGqHp4epmhTOfgvqbXWA0=;
+	b=SKPOna0MvG79ANsXTA6n6MYbRIXPQHyD5dRORt9kesK+6/5ult/spC7nHzd4wF
+	H++Hp26nQA53CZoWVckQbY3usXw0ZJxmeBmTK+PjXp3qI2AJZa1mZcQ4d5A6sJJh
+	m0h0nncV4TWqCQVWH6tT5zOvjqCg5LGYpWDDiUEb+Gqns=
+Received: from [172.19.20.199] (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDXP6PfLDBo7NZQAg--.42231S2;
+	Fri, 23 May 2025 16:08:00 +0800 (CST)
+Message-ID: <ffb3b8ae-ab18-4680-8a76-1d3ae1685ab7@126.com>
+Date: Fri, 23 May 2025 16:07:59 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hugetlb: fix kernel NULL pointer dereference when
+ replacing free hugetlb folios
+To: Oscar Salvador <osalvador@suse.de>
+Cc: Muchun Song <muchun.song@linux.dev>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, david@redhat.com, baolin.wang@linux.alibaba.com,
+ liuzixing@hygon.cn
+References: <1747884137-26685-1-git-send-email-yangge1116@126.com>
+ <644FF836-9DC7-42B4-BACE-C433E637B885@linux.dev>
+ <aC63fmFKK84K7YiZ@localhost.localdomain>
+ <ff6bd560-d249-418f-81f4-7cbe055a25ec@126.com>
+ <aC8PRkyd3y74Ph5R@localhost.localdomain>
+ <3B8641A1-5345-44A5-B610-9BCBC980493D@linux.dev>
+ <aC974OtOuj9Tqzsa@localhost.localdomain>
+ <DF103E57-601C-4CBB-99CA-088E1C29F517@linux.dev>
+ <4e408146-7c77-4f6d-90e8-bb311d7ab53d@126.com>
+ <aDAH7nI8H_JfGExm@localhost.localdomain>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <aDAH7nI8H_JfGExm@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250523-warning_in_page_counter_cancel-v1-1-b221eb61a402@igalia.com>
-X-B4-Tracking: v=1; b=H4sIACEqMGgC/x3NWwrCMBBG4a2UeTbQRqvBrYiEcfyNAzItE29Qu
- neDj9/LOQtVuKLSsVvI8daqkzUMm47kzlYQ9NpMsY9jP8Zt+LCbWslqeeaCLNPLnvAsbIJHQJL
- DwPvLTlKiFpkdN/3+B6fzuv4AICXyZ3AAAAA=
-X-Change-ID: 20250523-warning_in_page_counter_cancel-e8c71a6b4c88
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>
-Cc: revest@google.com, kernel-dev@igalia.com, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
+X-CM-TRANSID:_____wDXP6PfLDBo7NZQAg--.42231S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxD73UUUUU
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbidRBWG2gwKKR7LAABsq
 
-If, during a mremap() operation for a hugetlb-backed memory mapping,
-copy_vma() fails after the source vma has been duplicated and
-opened (ie. vma_link() fails), the error is handled by closing the new
-vma. This updates the hugetlbfs reservation counter of the reservation
-map which at this point is referenced by both the source vma and the new
-copy. As a result, once the new vma has been freed and copy_vma()
-returns, the reservation counter for the source vma will be incorrect.
 
-This patch addresses this corner case by clearing the hugetlb private
-page reservation reference for the new vma and decrementing the
-reference before closing the vma, so that vma_close() won't update the
-reservation counter.
 
-The issue was reported by a private syzbot instance, see the error
-report log [1] and reproducer [2]. Possible duplicate of public syzbot
-report [3].
+在 2025/5/23 13:30, Oscar Salvador 写道:
+> On Fri, May 23, 2025 at 11:46:51AM +0800, Ge Yang wrote:
+>> The implementation of alloc_and_dissolve_hugetlb_folio differs between
+>> kernel 6.6 and kernel 6.15. To facilitate backporting, I'm planning to
+>> submit another patch based on Oscar Salvador's suggestion.
+> 
+> If the code differs a lot between a stable version and upstream, the way
+> to go is to submit a specific patch for the stable one that applies
+> to that tree, e.g: [PATCH 6.6]...
+> 
+> 
 
-Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Cc: stable@vger.kernel.org # 6.12+
-Link: https://people.igalia.com/rcn/kernel_logs/20250422__WARNING_in_page_counter_cancel.txt [1]
-Link: https://people.igalia.com/rcn/kernel_logs/20250422__WARNING_in_page_counter_cancel__repro.c [2]
-Link: https://lore.kernel.org/all/67000a50.050a0220.49194.048d.GAE@google.com/ [3]
----
- mm/vma.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/vma.c b/mm/vma.c
-index 839d12f02c885d3338d8d233583eb302d82bb80b..9d9f699ace977c9c869e5da5f88f12be183adcfb 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -1834,6 +1834,8 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
- 	return new_vma;
- 
- out_vma_link:
-+	if (is_vm_hugetlb_page(new_vma))
-+		clear_vma_resv_huge_pages(new_vma);
- 	vma_close(new_vma);
- 
- 	if (new_vma->vm_file)
-
----
-base-commit: 94305e83eccb3120c921cd3a015cd74731140bac
-change-id: 20250523-warning_in_page_counter_cancel-e8c71a6b4c88
+Ok, thanks.
 
 
