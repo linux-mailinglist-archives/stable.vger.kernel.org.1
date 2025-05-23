@@ -1,200 +1,685 @@
-Return-Path: <stable+bounces-146222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EECAC2B40
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 23:14:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74414AC2B43
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 23:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2CEE4E7A4F
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 21:14:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703AE3BB0BB
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 21:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0971F5852;
-	Fri, 23 May 2025 21:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583D719F121;
+	Fri, 23 May 2025 21:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R1rxmZJC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAYMociB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F427482;
-	Fri, 23 May 2025 21:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1207129A0;
+	Fri, 23 May 2025 21:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748034863; cv=none; b=KGB4j4S7yJuXrNlIXahESvW3JS3Xqt/BA6W2H1f73beUbtbx7Yg9ICE5VTEdwUeQSLu9mxuATga0hk+/QnHnRcYy4YWJeTrkUHz56o2LQAELl9CCo5jBLQUVKF9BHjVt98cExL81gfX4TcC8/GjfNg6tM4LPXY+KNe0GS1tliME=
+	t=1748035038; cv=none; b=s3udhSVMBczcdH/m/6V87TNWMRm9dCRl3H4BLmxe/FgIiyomjHOn+OIe9d30cy7/mDnYdi5aLs7/kxRDPirV+uDRcoyTvdM6M9emjjQXG90aAOA+0ayweC26K6fjRujuyBUtn9BpmQXtZQ17d5q9GYGZu8d5ZL4wYvUtrPBEcAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748034863; c=relaxed/simple;
-	bh=hMNht2ITzVXRMNNi8WKcH1SnXd5YaalUM0z6OlrAXCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PjQ/9p8p2MwkArWBBdmvhiVLz3TRvfprbUs78Of3mY9VPlbISiHmzbGdF3Cjhi3/PkZ1ODLagkEh0k4OgDgEOdtPQgvm6yig1k+hhXW52YfnDw0PEXjboBlAuw3w93SFcbMINMz5+lJPdxyBfky6XyOcCLdKpTNRZUss0HW+BFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R1rxmZJC; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43ea40a6e98so2256115e9.1;
-        Fri, 23 May 2025 14:14:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748034860; x=1748639660; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K4M15ENUe5F7Tt92onDS6a+eZzL9Ufa/rc3FCe0HiWM=;
-        b=R1rxmZJC95gMJPjWyipx3KPfJFTkV0p1B/pRpvfT333LBPgLUBCZYVya2hZEu61tZf
-         dV8Zpe8+7U9exn4oN8B3RPRKfQfPuywoSZ0ycsrDsA8qo/xKW5YC81O4Q3USQhPybb58
-         xphqqvFuChK4iEbl9t+BWmWmOiNyt8uG2Ei7Uo1hRfGyggvSSFAnUXpdebGBbxNeQkwV
-         UBvmd5/5wS6WENNb8FoZ78GhRPQIxeiyGxHN+kTo/Jv5jFs8ED9EKEdG6RmflxLkCZ+v
-         LJd7sFKr6TH1qKNAywB621qjcGgkXySKJy5uuS08uLap/bfH3TrYWXg9sCYUdegtYwhn
-         txFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748034860; x=1748639660;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K4M15ENUe5F7Tt92onDS6a+eZzL9Ufa/rc3FCe0HiWM=;
-        b=MFDLicjgyfFmt2SWRXG4pBgf+aG47ZQjPv6G5pE++oKs+iU3JCO9N1lx/etJL5xFOG
-         m//Wf6yelVbb2/q7QALlOsgn2SOljz1pE2g5CfrBCSoH32ZO+LjKD17Ha0kHT5JRKd/U
-         1FxUrifwmSDpi8mG/RUXamxKUSJMeDz+JET23uWbUq17inDdgFkKydIg2WcLxZnw4+rZ
-         I70+xLKE5DBbIKKWXeMdftoawnJIlLIQA0SzynLGWtoIPw6Sn5j8o0KCkrsNsKbfUYWe
-         eEDdqs1CUlEXVnS40LVJ+fUXHEUbkC0UuvhX2gBVb8IRD9uBcomhvEM12mcKrdc+1yXb
-         TcGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVrYtA7bHxpIR0j3ik0OWMIGbb3Gy2tZYMZcOoE+Bwz6yJ51EqCIEVbqiDOXxhl9X5efJGDN6ZG@vger.kernel.org, AJvYcCW6trIVFaI7nFUyL5WDyMC6LLfA9nvscguT39l1gOBWyH60Bvk9NJUpCHdNn9LoiTuxk9Sr7UWvhknw0fQ=@vger.kernel.org, AJvYcCXhnuHCmnJZOjLJhMwKa4AANBnA9KaCbPUutmPEsKHSHJ7W2YYEns4sSbY+SMDFDKvlC2zRqPN/@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQBlm3RWoLIYIryYRtAx2BOZeIUGkg1AMIm2JjBSI4cv1bARmI
-	cuLa8y8RT/WEHE93YcvVMmwASFiV4QpI8T9n5NxiXwhaXcftlBbWaPcY
-X-Gm-Gg: ASbGnctW9cpYcNPCN3woWhjExbm5t42SBhzdVL6m/GUe49j5qIy9Dmo8RXhcZFrLIWe
-	RS2nCfKElynRWweRBsegjvEKu8OwfGIIA6C8WpYrPw2VLIwueDpeF0XFMQpcKHywBIWFASoIA6J
-	Jjcs3G3Q1buGhyhc/H9ocKmVw8DCQlYRQiVU1dnuHtjin2YdmlNPd6WDQDz8r9NcQ+bFR/1u/Ks
-	3227ecmljBaBp4+2IB94bLq4mpIJPZ7aqxIkXjL/JkF1NBU0K2rRXSV/X30IOCKikMmHWO7AdIK
-	nGAz/2Qf/4m24B6BAeSSpQQgc2/d/kVTUb5wBeNV2/SQpDK8NK1fILJwFe7x9MFaE1TjNySWwAN
-	+en5N+Y0GZKCelQ==
-X-Google-Smtp-Source: AGHT+IGPNXHgQPH+t+a7zbToFCeMprVY77XgSiiZZCtrK9j88dVi9oyzaAIdoyF9y6RBaUSD5DnDSw==
-X-Received: by 2002:a05:600c:5286:b0:43b:c0fa:f9cd with SMTP id 5b1f17b1804b1-44c91ad6c06mr4338205e9.7.1748034859750;
-        Fri, 23 May 2025 14:14:19 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f73d25b8sm160122845e9.17.2025.05.23.14.14.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 May 2025 14:14:19 -0700 (PDT)
-Date: Fri, 23 May 2025 22:14:18 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Lee Jones <lee@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Christian Brauner <brauner@kernel.org>, Kuniyuki
- Iwashima <kuniyu@amazon.com>, Alexander Mikhalitsyn
- <aleksandr.mikhalitsyn@canonical.com>, Jens Axboe <axboe@kernel.dk>, Sasha
- Levin <sashal@kernel.org>, Michal Luczaj <mhal@rbox.co>, Rao Shoaib
- <Rao.Shoaib@oracle.com>, Simon Horman <horms@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v6.1 05/27] af_unix: Replace BUG_ON() with
- WARN_ON_ONCE().
-Message-ID: <20250523221418.6de8c601@pumpkin>
-In-Reply-To: <20250521152920.1116756-6-lee@kernel.org>
-References: <20250521152920.1116756-1-lee@kernel.org>
-	<20250521152920.1116756-6-lee@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1748035038; c=relaxed/simple;
+	bh=jsJXsnsa2gVmvh8N+NLxnQF9KF3/rO9S7PYJ7JW6vnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=KtZPWR2q80XU4MBbN4kvExP5+gNXiDodWJaqQrPArdZEU+Ramfj+TEmr7is6kpYxFzT7zoLWm6Wp7y8cI5mnpnXXA7VmPzsuV61d3XT7ntd3+rP/VS0ic4EP1wiKJ9GumcP7z38NvZalIbGKQP684S5FyFnDXTsX/Jm7vucrUbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAYMociB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAE9C4CEE9;
+	Fri, 23 May 2025 21:17:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748035034;
+	bh=jsJXsnsa2gVmvh8N+NLxnQF9KF3/rO9S7PYJ7JW6vnM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=NAYMociB8LpymzmMqqXUKDaHwh6TGeisj9DZ/2OlsiKe98XCOrXGc6B4YOiOmEPmq
+	 AKgDTppSJtCE1Jk5TKEzN7vWpsfrdAdzucok6fiirQHCFt85qCBkdHgup8yzlAIGtg
+	 VTvEEWT/NhfzH3zqkQzHGZS/yBw09HBKcwn95Al358cl1PDuQvaIbI3Viy5Rayhzve
+	 ltcYd937vjClwEmOUGD6QsFwp0BfXPCnaMePYOJPV5bpXUvRHSRjyuHxnF177DvOyx
+	 ZCt/QZttFKHcBjm2rXjxd0F1WWQj7l+SraM2+ct/FlchzR11h/e7hIzyT1wkjHfRxV
+	 ny1tdm8hOTo3A==
+Date: Fri, 23 May 2025 14:17:10 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, llvm@lists.linux.dev
+Subject: Backports of d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca for 6.6 and
+ older
+Message-ID: <20250523211710.GA873401@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="y4G31SeDmXdUpk33"
+Content-Disposition: inline
 
-On Wed, 21 May 2025 16:27:04 +0100
-Lee Jones <lee@kernel.org> wrote:
 
-> From: Kuniyuki Iwashima <kuniyu@amazon.com>
-> 
-> [ Upstream commit d0f6dc26346863e1f4a23117f5468614e54df064 ]
-> 
-> This is a prep patch for the last patch in this series so that
-> checkpatch will not warn about BUG_ON().
+--y4G31SeDmXdUpk33
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Does any of this actually make any sense?
-Either the BUG_ON() should be just deleted because it can't happen
-(or doesn't matter) or there should be an error path.
-Blindly replacing with WARN_ON_ONCE() can't be right.
+Hi Greg and Sasha,
 
-The last change (repeated here)
->  	if (u) {
-> -		BUG_ON(!u->inflight);
-> -		BUG_ON(list_empty(&u->link));
-> +		WARN_ON_ONCE(!u->inflight);
-> +		WARN_ON_ONCE(list_empty(&u->link));
->  
->  		u->inflight--;
->  		if (!u->inflight)
-is clearly just plain wrong.
-If 'inflight' is zero then 'decrementing' it to ~0 is just going
-to 'crash and burn' very badly not much later on.
+Please find attached backports of commit d0afcfeb9e38 ("kbuild: Disable
+-Wdefault-const-init-unsafe") for 6.6 and older, which is needed for tip
+of tree versions of LLVM. Please let me know if there are any questions.
 
-	David
+Cheers,
+Nathan
 
-> 
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-> Acked-by: Jens Axboe <axboe@kernel.dk>
-> Link: https://lore.kernel.org/r/20240129190435.57228-2-kuniyu@amazon.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> (cherry picked from commit d0f6dc26346863e1f4a23117f5468614e54df064)
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> ---
->  net/unix/garbage.c | 8 ++++----
->  net/unix/scm.c     | 8 ++++----
->  2 files changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-> index 2934d7b68036..7eeaac165e85 100644
-> --- a/net/unix/garbage.c
-> +++ b/net/unix/garbage.c
-> @@ -145,7 +145,7 @@ static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
->  			/* An embryo cannot be in-flight, so it's safe
->  			 * to use the list link.
->  			 */
-> -			BUG_ON(!list_empty(&u->link));
-> +			WARN_ON_ONCE(!list_empty(&u->link));
->  			list_add_tail(&u->link, &embryos);
->  		}
->  		spin_unlock(&x->sk_receive_queue.lock);
-> @@ -224,8 +224,8 @@ static void __unix_gc(struct work_struct *work)
->  
->  		total_refs = file_count(sk->sk_socket->file);
->  
-> -		BUG_ON(!u->inflight);
-> -		BUG_ON(total_refs < u->inflight);
-> +		WARN_ON_ONCE(!u->inflight);
-> +		WARN_ON_ONCE(total_refs < u->inflight);
->  		if (total_refs == u->inflight) {
->  			list_move_tail(&u->link, &gc_candidates);
->  			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
-> @@ -318,7 +318,7 @@ static void __unix_gc(struct work_struct *work)
->  		list_move_tail(&u->link, &gc_inflight_list);
->  
->  	/* All candidates should have been detached by now. */
-> -	BUG_ON(!list_empty(&gc_candidates));
-> +	WARN_ON_ONCE(!list_empty(&gc_candidates));
->  
->  	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
->  	WRITE_ONCE(gc_in_progress, false);
-> diff --git a/net/unix/scm.c b/net/unix/scm.c
-> index 693817a31ad8..6f446dd2deed 100644
-> --- a/net/unix/scm.c
-> +++ b/net/unix/scm.c
-> @@ -50,10 +50,10 @@ void unix_inflight(struct user_struct *user, struct file *fp)
->  
->  	if (u) {
->  		if (!u->inflight) {
-> -			BUG_ON(!list_empty(&u->link));
-> +			WARN_ON_ONCE(!list_empty(&u->link));
->  			list_add_tail(&u->link, &gc_inflight_list);
->  		} else {
-> -			BUG_ON(list_empty(&u->link));
-> +			WARN_ON_ONCE(list_empty(&u->link));
->  		}
->  		u->inflight++;
->  		/* Paired with READ_ONCE() in wait_for_unix_gc() */
-> @@ -70,8 +70,8 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
->  	spin_lock(&unix_gc_lock);
->  
+--y4G31SeDmXdUpk33
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=5.4-d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca.patch
 
+From 163300e375a1e1809ea72c348d6a78026d365731 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 6 May 2025 14:02:01 -0700
+Subject: [PATCH 5.4] kbuild: Disable -Wdefault-const-init-unsafe
+
+commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
+
+A new on by default warning in clang [1] aims to flags instances where
+const variables without static or thread local storage or const members
+in aggregate types are not initialized because it can lead to an
+indeterminate value. This is quite noisy for the kernel due to
+instances originating from header files such as:
+
+  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+     62 |         typecheck(typeof(ring->size), next);
+        |         ^
+  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
+     10 | ({      type __dummy; \
+        |              ^
+
+  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+        |                            ^
+  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
+    138 | #define time_before(a,b)        time_after(b,a)
+        |                                 ^
+  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
+    128 |         (typecheck(unsigned long, a) && \
+        |          ^
+  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+     11 |         typeof(x) __dummy2; \
+        |                   ^
+
+  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
+    409 |         struct list_head *next = smp_load_acquire(&head->next);
+        |                                  ^
+  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
+    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
+        |                             ^
+  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
+    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
+        |                                                                  ^
+  include/linux/list.h:409:27: note: member '__val' declared 'const' here
+
+  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+     66 |         struct scatter_walk walk;
+        |                             ^
+  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
+    112 |                 void *const addr;
+        |                             ^
+
+  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+    733 |         struct vm_area_struct pseudo_vma;
+        |                               ^
+  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
+    803 |                 const vm_flags_t vm_flags;
+        |                                  ^
+
+Silencing the instances from typecheck.h is difficult because '= {}' is
+not available in older but supported compilers and '= {0}' would cause
+warnings about a literal 0 being treated as NULL. While it might be
+possible to come up with a local hack to silence the warning for
+clang-21+, it may not be worth it since -Wuninitialized will still
+trigger if an uninitialized const variable is actually used.
+
+In all audited cases of the "field" variant of the warning, the members
+are either not used in the particular call path, modified through other
+means such as memset() / memcpy() because the containing object is not
+const, or are within a union with other non-const members.
+
+Since this warning does not appear to have a high signal to noise ratio,
+just disable it.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Apply change to Makefile instead of scripts/Makefile.extrawarn
+         due to lack of e88ca24319e4 in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 70d2e8cc6f9f..55b6f6bbc4f5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -770,6 +770,18 @@ KBUILD_CFLAGS += -Wno-tautological-compare
+ # source of a reference will be _MergedGlobals and not on of the whitelisted names.
+ # See modpost pattern 2
+ KBUILD_CFLAGS += -mno-global-merge
++
++# Clang may emit a warning when a const variable, such as the dummy variables
++# in typecheck(), or const member of an aggregate type are not initialized,
++# which can result in unexpected behavior. However, in many audited cases of
++# the "field" variant of the warning, this is intentional because the field is
++# never used within a particular call path, the field is within a union with
++# other non-const members, or the containing object is not const so the field
++# can be modified via memcpy() / memset(). While the variable warning also gets
++# disabled with this same switch, there should not be too much coverage lost
++# because -Wuninitialized will still flag when an uninitialized const variable
++# is used.
++KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
+ else
+ 
+ # Warn about unmarked fall-throughs in switch statement.
+
+base-commit: 2c8115e4757809ffd537ed9108da115026d3581f
+-- 
+2.49.0
+
+
+--y4G31SeDmXdUpk33
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=5.10-d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca.patch
+
+From 3b25f5705a71b11c73c3bb0e8cbe2bfa10a0a58a Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 6 May 2025 14:02:01 -0700
+Subject: [PATCH 5.10] kbuild: Disable -Wdefault-const-init-unsafe
+
+commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
+
+A new on by default warning in clang [1] aims to flags instances where
+const variables without static or thread local storage or const members
+in aggregate types are not initialized because it can lead to an
+indeterminate value. This is quite noisy for the kernel due to
+instances originating from header files such as:
+
+  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+     62 |         typecheck(typeof(ring->size), next);
+        |         ^
+  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
+     10 | ({      type __dummy; \
+        |              ^
+
+  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+        |                            ^
+  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
+    138 | #define time_before(a,b)        time_after(b,a)
+        |                                 ^
+  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
+    128 |         (typecheck(unsigned long, a) && \
+        |          ^
+  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+     11 |         typeof(x) __dummy2; \
+        |                   ^
+
+  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
+    409 |         struct list_head *next = smp_load_acquire(&head->next);
+        |                                  ^
+  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
+    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
+        |                             ^
+  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
+    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
+        |                                                                  ^
+  include/linux/list.h:409:27: note: member '__val' declared 'const' here
+
+  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+     66 |         struct scatter_walk walk;
+        |                             ^
+  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
+    112 |                 void *const addr;
+        |                             ^
+
+  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+    733 |         struct vm_area_struct pseudo_vma;
+        |                               ^
+  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
+    803 |                 const vm_flags_t vm_flags;
+        |                                  ^
+
+Silencing the instances from typecheck.h is difficult because '= {}' is
+not available in older but supported compilers and '= {0}' would cause
+warnings about a literal 0 being treated as NULL. While it might be
+possible to come up with a local hack to silence the warning for
+clang-21+, it may not be worth it since -Wuninitialized will still
+trigger if an uninitialized const variable is actually used.
+
+In all audited cases of the "field" variant of the warning, the members
+are either not used in the particular call path, modified through other
+means such as memset() / memcpy() because the containing object is not
+const, or are within a union with other non-const members.
+
+Since this warning does not appear to have a high signal to noise ratio,
+just disable it.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Apply change to Makefile instead of scripts/Makefile.extrawarn
+         due to lack of e88ca24319e4 in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index b0e2f455eb87..4687dae9cd82 100644
+--- a/Makefile
++++ b/Makefile
+@@ -795,6 +795,18 @@ KBUILD_CFLAGS += -Wno-gnu
+ # source of a reference will be _MergedGlobals and not on of the whitelisted names.
+ # See modpost pattern 2
+ KBUILD_CFLAGS += -mno-global-merge
++
++# Clang may emit a warning when a const variable, such as the dummy variables
++# in typecheck(), or const member of an aggregate type are not initialized,
++# which can result in unexpected behavior. However, in many audited cases of
++# the "field" variant of the warning, this is intentional because the field is
++# never used within a particular call path, the field is within a union with
++# other non-const members, or the containing object is not const so the field
++# can be modified via memcpy() / memset(). While the variable warning also gets
++# disabled with this same switch, there should not be too much coverage lost
++# because -Wuninitialized will still flag when an uninitialized const variable
++# is used.
++KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
+ else
+ 
+ # Warn about unmarked fall-throughs in switch statement.
+
+base-commit: 024a4a45fdf87218e3c0925475b05a27bcea103f
+-- 
+2.49.0
+
+
+--y4G31SeDmXdUpk33
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=5.15-d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca.patch
+
+From 0e0cf9509b6e754fbf7bf45524292c17c9e4b64b Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 6 May 2025 14:02:01 -0700
+Subject: [PATCH 5.15] kbuild: Disable -Wdefault-const-init-unsafe
+
+commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
+
+A new on by default warning in clang [1] aims to flags instances where
+const variables without static or thread local storage or const members
+in aggregate types are not initialized because it can lead to an
+indeterminate value. This is quite noisy for the kernel due to
+instances originating from header files such as:
+
+  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+     62 |         typecheck(typeof(ring->size), next);
+        |         ^
+  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
+     10 | ({      type __dummy; \
+        |              ^
+
+  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+        |                            ^
+  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
+    138 | #define time_before(a,b)        time_after(b,a)
+        |                                 ^
+  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
+    128 |         (typecheck(unsigned long, a) && \
+        |          ^
+  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+     11 |         typeof(x) __dummy2; \
+        |                   ^
+
+  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
+    409 |         struct list_head *next = smp_load_acquire(&head->next);
+        |                                  ^
+  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
+    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
+        |                             ^
+  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
+    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
+        |                                                                  ^
+  include/linux/list.h:409:27: note: member '__val' declared 'const' here
+
+  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+     66 |         struct scatter_walk walk;
+        |                             ^
+  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
+    112 |                 void *const addr;
+        |                             ^
+
+  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+    733 |         struct vm_area_struct pseudo_vma;
+        |                               ^
+  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
+    803 |                 const vm_flags_t vm_flags;
+        |                                  ^
+
+Silencing the instances from typecheck.h is difficult because '= {}' is
+not available in older but supported compilers and '= {0}' would cause
+warnings about a literal 0 being treated as NULL. While it might be
+possible to come up with a local hack to silence the warning for
+clang-21+, it may not be worth it since -Wuninitialized will still
+trigger if an uninitialized const variable is actually used.
+
+In all audited cases of the "field" variant of the warning, the members
+are either not used in the particular call path, modified through other
+means such as memset() / memcpy() because the containing object is not
+const, or are within a union with other non-const members.
+
+Since this warning does not appear to have a high signal to noise ratio,
+just disable it.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Apply change to Makefile instead of scripts/Makefile.extrawarn
+         due to lack of e88ca24319e4 in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 0840259608be..2894ed66c4e5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -814,6 +814,18 @@ KBUILD_CFLAGS += -Wno-gnu
+ # source of a reference will be _MergedGlobals and not on of the whitelisted names.
+ # See modpost pattern 2
+ KBUILD_CFLAGS += -mno-global-merge
++
++# Clang may emit a warning when a const variable, such as the dummy variables
++# in typecheck(), or const member of an aggregate type are not initialized,
++# which can result in unexpected behavior. However, in many audited cases of
++# the "field" variant of the warning, this is intentional because the field is
++# never used within a particular call path, the field is within a union with
++# other non-const members, or the containing object is not const so the field
++# can be modified via memcpy() / memset(). While the variable warning also gets
++# disabled with this same switch, there should not be too much coverage lost
++# because -Wuninitialized will still flag when an uninitialized const variable
++# is used.
++KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
+ else
+ 
+ # Warn about unmarked fall-throughs in switch statement.
+
+base-commit: 98f47d0e9b8c557d3063d3ea661cbea1489af330
+-- 
+2.49.0
+
+
+--y4G31SeDmXdUpk33
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=6.1-d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca.patch
+
+From 76144f38354290f26ec39f139464bd48409815b9 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 6 May 2025 14:02:01 -0700
+Subject: [PATCH 6.1] kbuild: Disable -Wdefault-const-init-unsafe
+
+commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
+
+A new on by default warning in clang [1] aims to flags instances where
+const variables without static or thread local storage or const members
+in aggregate types are not initialized because it can lead to an
+indeterminate value. This is quite noisy for the kernel due to
+instances originating from header files such as:
+
+  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+     62 |         typecheck(typeof(ring->size), next);
+        |         ^
+  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
+     10 | ({      type __dummy; \
+        |              ^
+
+  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+        |                            ^
+  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
+    138 | #define time_before(a,b)        time_after(b,a)
+        |                                 ^
+  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
+    128 |         (typecheck(unsigned long, a) && \
+        |          ^
+  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+     11 |         typeof(x) __dummy2; \
+        |                   ^
+
+  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
+    409 |         struct list_head *next = smp_load_acquire(&head->next);
+        |                                  ^
+  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
+    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
+        |                             ^
+  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
+    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
+        |                                                                  ^
+  include/linux/list.h:409:27: note: member '__val' declared 'const' here
+
+  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+     66 |         struct scatter_walk walk;
+        |                             ^
+  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
+    112 |                 void *const addr;
+        |                             ^
+
+  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+    733 |         struct vm_area_struct pseudo_vma;
+        |                               ^
+  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
+    803 |                 const vm_flags_t vm_flags;
+        |                                  ^
+
+Silencing the instances from typecheck.h is difficult because '= {}' is
+not available in older but supported compilers and '= {0}' would cause
+warnings about a literal 0 being treated as NULL. While it might be
+possible to come up with a local hack to silence the warning for
+clang-21+, it may not be worth it since -Wuninitialized will still
+trigger if an uninitialized const variable is actually used.
+
+In all audited cases of the "field" variant of the warning, the members
+are either not used in the particular call path, modified through other
+means such as memset() / memcpy() because the containing object is not
+const, or are within a union with other non-const members.
+
+Since this warning does not appear to have a high signal to noise ratio,
+just disable it.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Apply change to Makefile instead of scripts/Makefile.extrawarn
+         due to lack of e88ca24319e4 in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ Makefile | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index f86e26fa0b31..9a7bc4372e35 100644
+--- a/Makefile
++++ b/Makefile
+@@ -875,6 +875,18 @@ ifdef CONFIG_CC_IS_CLANG
+ KBUILD_CPPFLAGS += -Qunused-arguments
+ # The kernel builds with '-std=gnu11' so use of GNU extensions is acceptable.
+ KBUILD_CFLAGS += -Wno-gnu
++
++# Clang may emit a warning when a const variable, such as the dummy variables
++# in typecheck(), or const member of an aggregate type are not initialized,
++# which can result in unexpected behavior. However, in many audited cases of
++# the "field" variant of the warning, this is intentional because the field is
++# never used within a particular call path, the field is within a union with
++# other non-const members, or the containing object is not const so the field
++# can be modified via memcpy() / memset(). While the variable warning also gets
++# disabled with this same switch, there should not be too much coverage lost
++# because -Wuninitialized will still flag when an uninitialized const variable
++# is used.
++KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
+ else
+ 
+ # gcc inanely warns about local variables called 'main'
+
+base-commit: da3c5173c55f7a0cf65c967d864386c79dcba3f7
+-- 
+2.49.0
+
+
+--y4G31SeDmXdUpk33
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=6.6-d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca.patch
+
+From 42684bf0c008808893c873f57246c6e2b3cb57c8 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Tue, 6 May 2025 14:02:01 -0700
+Subject: [PATCH 6.6] kbuild: Disable -Wdefault-const-init-unsafe
+
+commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
+
+A new on by default warning in clang [1] aims to flags instances where
+const variables without static or thread local storage or const members
+in aggregate types are not initialized because it can lead to an
+indeterminate value. This is quite noisy for the kernel due to
+instances originating from header files such as:
+
+  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+     62 |         typecheck(typeof(ring->size), next);
+        |         ^
+  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
+     10 | ({      type __dummy; \
+        |              ^
+
+  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+        |                            ^
+  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
+    138 | #define time_before(a,b)        time_after(b,a)
+        |                                 ^
+  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
+    128 |         (typecheck(unsigned long, a) && \
+        |          ^
+  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+     11 |         typeof(x) __dummy2; \
+        |                   ^
+
+  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
+    409 |         struct list_head *next = smp_load_acquire(&head->next);
+        |                                  ^
+  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
+    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
+        |                             ^
+  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
+    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
+        |                                                                  ^
+  include/linux/list.h:409:27: note: member '__val' declared 'const' here
+
+  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+     66 |         struct scatter_walk walk;
+        |                             ^
+  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
+    112 |                 void *const addr;
+        |                             ^
+
+  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+    733 |         struct vm_area_struct pseudo_vma;
+        |                               ^
+  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
+    803 |                 const vm_flags_t vm_flags;
+        |                                  ^
+
+Silencing the instances from typecheck.h is difficult because '= {}' is
+not available in older but supported compilers and '= {0}' would cause
+warnings about a literal 0 being treated as NULL. While it might be
+possible to come up with a local hack to silence the warning for
+clang-21+, it may not be worth it since -Wuninitialized will still
+trigger if an uninitialized const variable is actually used.
+
+In all audited cases of the "field" variant of the warning, the members
+are either not used in the particular call path, modified through other
+means such as memset() / memcpy() because the containing object is not
+const, or are within a union with other non-const members.
+
+Since this warning does not appear to have a high signal to noise ratio,
+just disable it.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Fix conflicts due to lack of 738fc998b639 in 6.6 and earlier]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ scripts/Makefile.extrawarn | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 0ea3281a92e1..570f64e2ddf1 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -29,6 +29,18 @@ KBUILD_CFLAGS-$(CONFIG_CC_NO_ARRAY_BOUNDS) += -Wno-array-bounds
+ ifdef CONFIG_CC_IS_CLANG
+ # The kernel builds with '-std=gnu11' so use of GNU extensions is acceptable.
+ KBUILD_CFLAGS += -Wno-gnu
++
++# Clang may emit a warning when a const variable, such as the dummy variables
++# in typecheck(), or const member of an aggregate type are not initialized,
++# which can result in unexpected behavior. However, in many audited cases of
++# the "field" variant of the warning, this is intentional because the field is
++# never used within a particular call path, the field is within a union with
++# other non-const members, or the containing object is not const so the field
++# can be modified via memcpy() / memset(). While the variable warning also gets
++# disabled with this same switch, there should not be too much coverage lost
++# because -Wuninitialized will still flag when an uninitialized const variable
++# is used.
++KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
+ else
+ 
+ # gcc inanely warns about local variables called 'main'
+
+base-commit: ffaf6178137b9cdcc9742d6677b70be164dfeb8c
+-- 
+2.49.0
+
+
+--y4G31SeDmXdUpk33--
 
