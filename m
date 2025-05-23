@@ -1,182 +1,145 @@
-Return-Path: <stable+bounces-146145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B05AC19C9
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 03:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E6E4AC19F8
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 04:10:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0670A25177
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 01:40:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D6183ADBDB
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 02:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A591518E362;
-	Fri, 23 May 2025 01:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D5C1F91D6;
+	Fri, 23 May 2025 02:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QGEwkJOv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NmrllPoh"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0A82DCC12
-	for <stable@vger.kernel.org>; Fri, 23 May 2025 01:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826F72DCBE6
+	for <stable@vger.kernel.org>; Fri, 23 May 2025 02:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747964455; cv=none; b=rvJ+OJ1ZLR2Soja1XuMBfVh5jLIDK929lx+crZo6fd6/15RMBrJQWBOL15T29H9eUPysA/IcaMvaLWhVF5hlyijU4uE7G85XE/guohzbuhN+kYcTb7+CqW09dLyCi8Pfd/Ao0u0ATgz9m0T1by/NN2d48bmkNdnrki2+TVXSpJU=
+	t=1747966249; cv=none; b=GVrT2Z5fD74zprbW45iMPyvgzZs+iyJZYGuA2cpd/6nwCRtH/JOobvBJ48F22vzI9P7PJ3khQKDYBLq6P2rSWfJQphTAhI1XwErUtSFCNYE+h3Eot5wxfMhAnM7x8xKpIb1BiOrhlwhtU3yolA5ZwGjuSnYEQfftQY5kDz6I6G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747964455; c=relaxed/simple;
-	bh=X1rvREMtb/EqPoj7GYl9pDZBv+bHOTNdlcUGRNOgkW0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jGfeKwskPWuyWvNpZfv1OU/67A/N8A5I47HeGNDODiWUnBXOwvAck4L+JzECq41kYubhs5NkayugSaqYARl5jmhSwr+f9plTgUpCqYf2w2V0q7KNnHa9e6qea7EuNRKj5beou4PyzcY8pGXKjBO1d/4Xdjxp1ROFuhRgPQ5DTSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QGEwkJOv; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <5b17ca6d-73c8-408a-83e5-9951d5d53517@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1747964449;
+	s=arc-20240116; t=1747966249; c=relaxed/simple;
+	bh=WScc3Jb3venQUdG3A3pwXOXbFu+pfD8ipZw5q1RUaEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W2X+m5KPI7ejTDgzLtvOdH2+CYyyuzRvEsVPuynfjdA0zXcD0FmYIDcPYV/VURDiPRJmiDg34wAwSLr2aIkOzOEJmj39uAp2l49YE00qyU5BjAD/XrVPXSwksdGv1nZKKiogi0xxlLHRlrVFaSnuB385z1GKSgGZ0Iko34ulmIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NmrllPoh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747966245;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RlSzJG3XR72UGdbIGS63Mnadz4DZpeLnkGG1eAC+Cnk=;
-	b=QGEwkJOvSM9OVTV7F9p9Cfo8jgCyNT7IPNNTnO2Gz3sDEe/l3QovquAXtyP+IArsOfkS5c
-	sQp7GcQsxT0kc8V+XePVezuvVQyyAR54mbjBgFWI703fy/U6Nq4gs64DNbu+YGstODfUVN
-	Bl0dVew3Dby+ctfGkwqNqtzLWNx61gI=
-Date: Fri, 23 May 2025 09:40:41 +0800
+	bh=ZD21kWlXVkCXTQ6qIIyjvZ+QVrc2Nl+Bw+5u37lzorw=;
+	b=NmrllPohRIAl/GbKjUFrYpdXGaaWBBXfgyemBTVqNBcB1p+lXqC5rYni6eEZLpODr0jtzR
+	NkU4QpRjLRQG5wxpX8GVCeDZMqt25QjK6LS84jAd0AIRmUejOSePRMYfKi0+utisGVxprw
+	yJhz0ItRiXuEXltFf3qE3bW0gyJXx0w=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-UNJrGfp4OYGpALiuVO3ung-1; Thu,
+ 22 May 2025 22:10:41 -0400
+X-MC-Unique: UNJrGfp4OYGpALiuVO3ung-1
+X-Mimecast-MFC-AGG-ID: UNJrGfp4OYGpALiuVO3ung_1747966239
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14EB9195608A;
+	Fri, 23 May 2025 02:10:39 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.55])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F185D19560AD;
+	Fri, 23 May 2025 02:10:33 +0000 (UTC)
+Date: Fri, 23 May 2025 10:10:28 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>,
+	Yu Kuai <yukuai1@huaweicloud.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] block: Fix a deadlock related freezing zoned storage
+ devices
+Message-ID: <aC_ZFIICdxzSOxCt@fedora>
+References: <20250522171405.3239141-1-bvanassche@acm.org>
+ <b1ea4120-e16a-47c8-b10c-ff6c9d5feb69@kernel.dk>
+ <78244478-3ce3-4671-b28f-c67c5b21dba9@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] riscv: hwprobe: Fix stale vDSO data for
- late-initialized keys at boot
-To: Jingwei Wang <wangjingwei@iscas.ac.cn>, linux-riscv@lists.infradead.org
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <ajones@ventanamicro.com>,
- Conor Dooley <conor.dooley@microchip.com>,
- =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
- Charlie Jenkins <charlie@rivosinc.com>, Jesse Taube <jesse@rivosinc.com>,
- Yixun Lan <dlan@gentoo.org>, Tsukasa OI <research_trasio@irq.a4lg.com>,
- stable@vger.kernel.org
-References: <20250522073327.246668-1-wangjingwei@iscas.ac.cn>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yanteng Si <si.yanteng@linux.dev>
-In-Reply-To: <20250522073327.246668-1-wangjingwei@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <78244478-3ce3-4671-b28f-c67c5b21dba9@acm.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-在 5/22/25 3:33 PM, Jingwei Wang 写道:
-> The riscv_hwprobe vDSO data is populated by init_hwprobe_vdso_data(),
-> an arch_initcall_sync. However, underlying data for some keys, like
-> RISCV_HWPROBE_KEY_MISALIGNED_VECTOR_PERF, is determined asynchronously.
+On Thu, May 22, 2025 at 11:32:58AM -0700, Bart Van Assche wrote:
+> On 5/22/25 10:38 AM, Jens Axboe wrote:
+> > On 5/22/25 11:14 AM, Bart Van Assche wrote:
+> > >   static void __submit_bio(struct bio *bio)
+> > >   {
+> > >   	/* If plug is not used, add new plug here to cache nsecs time. */
+> > > @@ -633,8 +640,12 @@ static void __submit_bio(struct bio *bio)
+> > >   	if (!bdev_test_flag(bio->bi_bdev, BD_HAS_SUBMIT_BIO)) {
+> > >   		blk_mq_submit_bio(bio);
+> > > -	} else if (likely(bio_queue_enter(bio) == 0)) {
+> > > +	} else {
+> > >   		struct gendisk *disk = bio->bi_bdev->bd_disk;
+> > > +		bool zwp = bio_zone_write_plugging(bio);
+> > > +
+> > > +		if (unlikely(!zwp && bio_queue_enter(bio) != 0))
+> > > +			goto finish_plug;
+> > >   	
+> > >   		if ((bio->bi_opf & REQ_POLLED) &&
+> > >   		    !(disk->queue->limits.features & BLK_FEAT_POLL)) {
+> > > @@ -643,9 +654,12 @@ static void __submit_bio(struct bio *bio)
+> > >   		} else {
+> > >   			disk->fops->submit_bio(bio);
+> > >   		}
+> > > -		blk_queue_exit(disk->queue);
+> > > +
+> > > +		if (!zwp)
+> > > +			blk_queue_exit(disk->queue);
+> > >   	}
+> > 
+> > This is pretty ugly, and I honestly absolutely hate how there's quite a
+> > bit of zoned_whatever sprinkling throughout the core code. What's the
+> > reason for not unplugging here, unaligned writes? Because you should
+> > presumable have the exact same issues on non-zoned devices if they have
+> > IO stuck in a plug (and doesn't get unplugged) while someone is waiting
+> > on a freeze.
+> > 
+> > A somewhat similar case was solved for IOPOLL and queue entering. That
+> > would be another thing to look at. Maybe a live enter could work if the
+> > plug itself pins it?
 > 
-> Specifically, the per_cpu(vector_misaligned_access, cpu) values are set
-> by the vec_check_unaligned_access_speed_all_cpus kthread. This kthread
-> is spawned by an earlier arch_initcall (check_unaligned_access_all_cpus)
-> and may complete its benchmark *after* init_hwprobe_vdso_data() has
-> already populated the vDSO with default/stale values.
+> Hi Jens,
 > 
-> So, refresh the vDSO data for specified keys (e.g.,
-> MISALIGNED_VECTOR_PERF) ensuring it reflects the final boot-time values.
+> q->q_usage_counter is not increased for bios on current->plug_list.
+> q->q_usage_counter is increased before a bio is added to the zoned pluglist.
+> So these two cases are different.
 > 
-> Test by comparing vDSO and syscall results for affected keys
-> (e.g., MISALIGNED_VECTOR_PERF), which now match their final
-> boot-time values.
-> 
-> Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
-> Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
-> Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
-> ---
-> Changes in v2:
->    - Addressed feedback from Yixun's regarding #ifdef CONFIG_MMU usage.
->    - Updated commit message to provide a high-level summary.
->    - Added Fixes tag for commit e7c9d66e313b.
-> 
-> v1: https://lore.kernel.org/linux-riscv/20250521052754.185231-1-wangjingwei@iscas.ac.cn/T/#u
-> 
->   arch/riscv/include/asm/hwprobe.h           |  6 ++++++
->   arch/riscv/kernel/sys_hwprobe.c            | 16 ++++++++++++++++
->   arch/riscv/kernel/unaligned_access_speed.c |  2 +-
->   3 files changed, 23 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hwprobe.h
-> index 1f690fea0e03de6a..58dc847d86c7f2b0 100644
-> --- a/arch/riscv/include/asm/hwprobe.h
-> +++ b/arch/riscv/include/asm/hwprobe.h
-> @@ -40,4 +40,10 @@ static inline bool riscv_hwprobe_pair_cmp(struct riscv_hwprobe *pair,
->   	return pair->value == other_pair->value;
->   }
->   
-> +#ifdef CONFIG_MMU
-> +void riscv_hwprobe_vdso_sync(__s64 sync_key);
-> +#else
-> +static inline void riscv_hwprobe_vdso_sync(__s64 sync_key) { };
-> +#endif /* CONFIG_MMU */
-> +
->   #endif
-> diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-> index 249aec8594a92a80..2e3e612b7ac6fd57 100644
-> --- a/arch/riscv/kernel/sys_hwprobe.c
-> +++ b/arch/riscv/kernel/sys_hwprobe.c
-> @@ -17,6 +17,7 @@
->   #include <asm/vector.h>
->   #include <asm/vendor_extensions/thead_hwprobe.h>
->   #include <vdso/vsyscall.h>
-> +#include <vdso/datapage.h>
->   
->   
->   static void hwprobe_arch_id(struct riscv_hwprobe *pair,
-> @@ -500,6 +501,21 @@ static int __init init_hwprobe_vdso_data(void)
->   
->   arch_initcall_sync(init_hwprobe_vdso_data);
->   
-> +void riscv_hwprobe_vdso_sync(__s64 sync_key)
-> +{
-> +	struct vdso_arch_data *avd = vdso_k_arch_data;
-> +	struct riscv_hwprobe pair;
-> +
-> +	pair.key = sync_key;
-> +	hwprobe_one_pair(&pair, cpu_online_mask);
-> +	/*
-> +	 * Update vDSO data for the given key.
-> +	 * Currently for non-ID key updates (e.g. MISALIGNED_VECTOR_PERF),
-> +	 * so 'homogeneous_cpus' is not re-evaluated here.
-> +	 */
-> +	avd->all_cpu_hwprobe_values[sync_key] = pair.value;
-> +}
-> +
->   #endif /* CONFIG_MMU */
->   
->   SYSCALL_DEFINE5(riscv_hwprobe, struct riscv_hwprobe __user *, pairs,
-> diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-> index 585d2dcf2dab1ccb..81bc4997350acc87 100644
-> --- a/arch/riscv/kernel/unaligned_access_speed.c
-> +++ b/arch/riscv/kernel/unaligned_access_speed.c
-> @@ -375,7 +375,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
->   static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
->   {
->   	schedule_on_each_cpu(check_vector_unaligned_access);
-> -
+> I think it is important to hold a q->q_usage_counter reference for bios
+> on the zoned plug list because bios are added to that list after bio
+> splitting happened. Hence, request queue limits must not change while
+> any bio is on the zoned plug list.
 
-Although no one stipulates that a blank line must be left
-before the return value, this patch is not intended to solve
-this problem in the first place, so let's not delete this
-blank line in the patch？
-> +	riscv_hwprobe_vdso_sync(RISCV_HWPROBE_KEY_MISALIGNED_VECTOR_PERF);
->   	return 0;
->   }
->   #else /* CONFIG_RISCV_PROBE_VECTOR_UNALIGNED_ACCESS */
+Hi Bart,
 
-LGTM, So
+Can you share why request queue limit can't be changed after bio is added
+to zoned plug list?
 
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+If it is really true, we may have to drain zoned plug list when freezing
+queue.
 
-Thanks,
-Yanteng
+
+Thanks, 
+Ming
+
 
