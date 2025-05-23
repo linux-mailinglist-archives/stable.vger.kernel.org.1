@@ -1,197 +1,161 @@
-Return-Path: <stable+bounces-146160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E18AC1BB0
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 07:02:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E457FAC1BDA
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 07:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33C6C3B4CB5
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 05:02:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E8A81BA7397
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 05:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC66D189BB5;
-	Fri, 23 May 2025 05:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB72218E02A;
+	Fri, 23 May 2025 05:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="DcU684R3"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EYpysIYY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pdWkQdAl";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EYpysIYY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pdWkQdAl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658322DCBF1;
-	Fri, 23 May 2025 05:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DC42DCBF6
+	for <stable@vger.kernel.org>; Fri, 23 May 2025 05:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747976555; cv=none; b=tEeX0uMO3iFtc2Gu4qFvxd+KEmHtY9F9tNg8F4Untigfz6m6Kqn/6x9ft3+OfeO6ivbZ8rT2HJGCxqzccGzq6uk1heH7fwmWrAY4LTe1DpPIOkRbbksfz+BuWLRiEjT8hbtiTkfmpYjCrKLq4ug1mfsYQZrG/L+shJPn0un51+c=
+	t=1747978236; cv=none; b=A8EBpi0ZaIIbrcap5eQwXrwKpJ6ChzM21QhpUOh0bJQMPaQOvfMP4pw3loF8dTCtj49VoPar6H4klfk21Q0Ur3FZdUVYA1YQUW2weEhWCMsP9jqScSL0DccyS5Hc+oR2lescBafvW8Pgj+efvCBXCVwmqmVrIQlwvMRrQxBErkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747976555; c=relaxed/simple;
-	bh=oby8KwQ4gk+q6weVsvqPbed2bT/+eHP2saei4FibLrI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hVLIitLnmTcr9zAn5VFDlRSb+4eYV/xdk45OJNSY4NxY4Ksusx/MrivjZS0tulCAxwAPJcWdGEF2enWBS0fvxz0uVcv7aE68K1HGWLcbLRfHXmO12W7xS7KYjRFDjOSP+HIK+HoOP0AXmBMe/lBigjDhM9TrWaCO/H0vp7XO2L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=DcU684R3; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54N51sMF3308249
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Thu, 22 May 2025 22:02:01 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54N51sMF3308249
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1747976522;
-	bh=W9w7bOpXazmhXPjuABhCDB2V/WXl7eem9TP5RUH5XiY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=DcU684R3QEZTrgy+Iio8VvKkxCrePylER2WzTvclXsF2zKoT6NQzv6e0QsNvprO+Z
-	 SYUXnteoBgrPg5PboSX4gezKO/iciAxeIACFG8MuARZ8pMj0d/ATUCLBqaTpMt1Q+D
-	 E6WiHPbOV2tzw/GypK0e7+LTOF5CqGUqbIXuNrErwHujBsws7IrOl7S55iy1D2mXs1
-	 dvup1CyS3bhVTAjcopwSg1fT90j1GxUzRLQFBYGZ/JwCCGNHP5TuTcXyvfKZVff5H4
-	 iILebTVpr5t9mRHV6YuA+xoW/rS+YymlPQvsFb0bWT5u92gz6FN+e32eq3j+g2sCwc
-	 mDzn+/JG1UaOw==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        peterz@infradead.org, andrew.cooper3@citrix.com,
-        stable@vger.kernel.org
-Subject: [PATCH v3 1/1] x86/fred/signal: Prevent single-step upon ERETU completion
-Date: Thu, 22 May 2025 22:01:53 -0700
-Message-ID: <20250523050153.3308237-1-xin@zytor.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1747978236; c=relaxed/simple;
+	bh=tzr1bN8lxnYyPZLjxelQ9v+WLhRicw0PA7d/BeZlYnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i+U6f3wwbHK8zgtRf/cLh0p/kD8hqcebC1+ONEXajYEbsjRsXMg2+5FjrXqgZjGqCHGrUOcQr93Qw5OPwuxz/8ENiCVdKecPpEwshOVauz4Mmu04Qp7q9JG3MFt1QmwlNu8il5+XSNRe/eBqtYJmUBRfSb2Wt9zaotXLuReO4TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EYpysIYY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pdWkQdAl; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EYpysIYY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pdWkQdAl; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D5FF1F453;
+	Fri, 23 May 2025 05:30:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1747978232; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+zdohR9pkpuw32Z26HDZF6h+Z7FMzq1QFEgW1OfhB6Y=;
+	b=EYpysIYYr3A+uz2pamcWcFC3MZvZXrvSu5vhphRjv+xRB9rqHrMAvwV1Gbw8iv880gy/L7
+	qALd3xZZmfD6yDvquSJ3QT2oY0PEEgMCbAaBwgdDNZMllmlAbBE8rTBT4plNKU2KhORoX1
+	yrIvOPNZe/ae60h8Zo8Nuz+fSOCrBcc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1747978232;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+zdohR9pkpuw32Z26HDZF6h+Z7FMzq1QFEgW1OfhB6Y=;
+	b=pdWkQdAlQ0POeFGMaEt4UsyVuING4gSVFB4WFsoWzNUgFoKPjVCw8o0OUZjRqh8Onx78if
+	uJQk69nfnkEYtVAw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EYpysIYY;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pdWkQdAl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1747978232; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+zdohR9pkpuw32Z26HDZF6h+Z7FMzq1QFEgW1OfhB6Y=;
+	b=EYpysIYYr3A+uz2pamcWcFC3MZvZXrvSu5vhphRjv+xRB9rqHrMAvwV1Gbw8iv880gy/L7
+	qALd3xZZmfD6yDvquSJ3QT2oY0PEEgMCbAaBwgdDNZMllmlAbBE8rTBT4plNKU2KhORoX1
+	yrIvOPNZe/ae60h8Zo8Nuz+fSOCrBcc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1747978232;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+zdohR9pkpuw32Z26HDZF6h+Z7FMzq1QFEgW1OfhB6Y=;
+	b=pdWkQdAlQ0POeFGMaEt4UsyVuING4gSVFB4WFsoWzNUgFoKPjVCw8o0OUZjRqh8Onx78if
+	uJQk69nfnkEYtVAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D2CC213A3F;
+	Fri, 23 May 2025 05:30:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WC6yMPcHMGh2eQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Fri, 23 May 2025 05:30:31 +0000
+Date: Fri, 23 May 2025 07:30:22 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Ge Yang <yangge1116@126.com>
+Cc: Muchun Song <muchun.song@linux.dev>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, 21cnbao@gmail.com, david@redhat.com,
+	baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
+Subject: Re: [PATCH] mm/hugetlb: fix kernel NULL pointer dereference when
+ replacing free hugetlb folios
+Message-ID: <aDAH7nI8H_JfGExm@localhost.localdomain>
+References: <1747884137-26685-1-git-send-email-yangge1116@126.com>
+ <644FF836-9DC7-42B4-BACE-C433E637B885@linux.dev>
+ <aC63fmFKK84K7YiZ@localhost.localdomain>
+ <ff6bd560-d249-418f-81f4-7cbe055a25ec@126.com>
+ <aC8PRkyd3y74Ph5R@localhost.localdomain>
+ <3B8641A1-5345-44A5-B610-9BCBC980493D@linux.dev>
+ <aC974OtOuj9Tqzsa@localhost.localdomain>
+ <DF103E57-601C-4CBB-99CA-088E1C29F517@linux.dev>
+ <4e408146-7c77-4f6d-90e8-bb311d7ab53d@126.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4e408146-7c77-4f6d-90e8-bb311d7ab53d@126.com>
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 6D5FF1F453
+X-Spam-Score: -1.51
+X-Spam-Flag: NO
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_TO(0.00)[126.com];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[126.com,gmail.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,kvack.org,vger.kernel.org,gmail.com,redhat.com,linux.alibaba.com,hygon.cn];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
 
-From: Xin Li <xin@zytor.com>
+On Fri, May 23, 2025 at 11:46:51AM +0800, Ge Yang wrote:
+> The implementation of alloc_and_dissolve_hugetlb_folio differs between
+> kernel 6.6 and kernel 6.15. To facilitate backporting, I'm planning to
+> submit another patch based on Oscar Salvador's suggestion.
 
-Clear the software event flag in the augmented SS to prevent infinite
-SIGTRAP handler loop if TF is used without an external debugger.
+If the code differs a lot between a stable version and upstream, the way
+to go is to submit a specific patch for the stable one that applies
+to that tree, e.g: [PATCH 6.6]...
 
-Following is a typical single-stepping flow for a user process:
 
-1) The user process is prepared for single-stepping by setting
-   RFLAGS.TF = 1.
-2) When any instruction in user space completes, a #DB is triggered.
-3) The kernel handles the #DB and returns to user space, invoking the
-   SIGTRAP handler with RFLAGS.TF = 0.
-4) After the SIGTRAP handler finishes, the user process performs a
-   sigreturn syscall, restoring the original state, including
-   RFLAGS.TF = 1.
-5) Goto step 2.
-
-According to the FRED specification:
-
-A) Bit 17 in the augmented SS is designated as the software event
-   flag, which is set to 1 for FRED event delivery of SYSCALL,
-   SYSENTER, or INT n.
-B) If bit 17 of the augmented SS is 1 and ERETU would result in
-   RFLAGS.TF = 1, a single-step trap will be pending upon completion
-   of ERETU.
-
-In step 4) above, the software event flag is set upon the sigreturn
-syscall, and its corresponding ERETU would restore RFLAGS.TF = 1.
-This combination causes a pending single-step trap upon completion of
-ERETU.  Therefore, another #DB is triggered before any user space
-instruction is executed, which leads to an infinite loop in which the
-SIGTRAP handler keeps being invoked on the same user space IP.
-
-Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Cc: stable@vger.kernel.org
----
-
-Change in v3:
-*) Use "#ifdef CONFIG_X86_FRED" instead of IS_ENABLED(CONFIG_X86_FRED)
-   (Intel LKP).
-
-Change in v2:
-*) Remove the check cpu_feature_enabled(X86_FEATURE_FRED), because
-   regs->fred_ss.swevent will always be 0 otherwise (H. Peter Anvin).
----
- arch/x86/include/asm/sighandling.h | 21 +++++++++++++++++++++
- arch/x86/kernel/signal_32.c        |  4 ++++
- arch/x86/kernel/signal_64.c        |  4 ++++
- 3 files changed, 29 insertions(+)
-
-diff --git a/arch/x86/include/asm/sighandling.h b/arch/x86/include/asm/sighandling.h
-index e770c4fc47f4..530eecc371fc 100644
---- a/arch/x86/include/asm/sighandling.h
-+++ b/arch/x86/include/asm/sighandling.h
-@@ -24,4 +24,25 @@ int ia32_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs);
- int x64_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs);
- int x32_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs);
- 
-+/*
-+ * To prevent infinite SIGTRAP handler loop if TF is used without an external
-+ * debugger, clear the software event flag in the augmented SS, ensuring no
-+ * single-step trap is pending upon ERETU completion.
-+ *
-+ * Note, this function should be called in sigreturn() before the original state
-+ * is restored to make sure the TF is read from the entry frame.
-+ */
-+static __always_inline void prevent_single_step_upon_eretu(struct pt_regs *regs)
-+{
-+	/*
-+	 * If the trap flag (TF) is set, i.e., the sigreturn() SYSCALL instruction
-+	 * is being single-stepped, do not clear the software event flag in the
-+	 * augmented SS, thus a debugger won't skip over the following instruction.
-+	 */
-+#ifdef CONFIG_X86_FRED
-+	if (!(regs->flags & X86_EFLAGS_TF))
-+		regs->fred_ss.swevent = 0;
-+#endif
-+}
-+
- #endif /* _ASM_X86_SIGHANDLING_H */
-diff --git a/arch/x86/kernel/signal_32.c b/arch/x86/kernel/signal_32.c
-index 98123ff10506..42bbc42bd350 100644
---- a/arch/x86/kernel/signal_32.c
-+++ b/arch/x86/kernel/signal_32.c
-@@ -152,6 +152,8 @@ SYSCALL32_DEFINE0(sigreturn)
- 	struct sigframe_ia32 __user *frame = (struct sigframe_ia32 __user *)(regs->sp-8);
- 	sigset_t set;
- 
-+	prevent_single_step_upon_eretu(regs);
-+
- 	if (!access_ok(frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__get_user(set.sig[0], &frame->sc.oldmask)
-@@ -175,6 +177,8 @@ SYSCALL32_DEFINE0(rt_sigreturn)
- 	struct rt_sigframe_ia32 __user *frame;
- 	sigset_t set;
- 
-+	prevent_single_step_upon_eretu(regs);
-+
- 	frame = (struct rt_sigframe_ia32 __user *)(regs->sp - 4);
- 
- 	if (!access_ok(frame, sizeof(*frame)))
-diff --git a/arch/x86/kernel/signal_64.c b/arch/x86/kernel/signal_64.c
-index ee9453891901..d483b585c6c6 100644
---- a/arch/x86/kernel/signal_64.c
-+++ b/arch/x86/kernel/signal_64.c
-@@ -250,6 +250,8 @@ SYSCALL_DEFINE0(rt_sigreturn)
- 	sigset_t set;
- 	unsigned long uc_flags;
- 
-+	prevent_single_step_upon_eretu(regs);
-+
- 	frame = (struct rt_sigframe __user *)(regs->sp - sizeof(long));
- 	if (!access_ok(frame, sizeof(*frame)))
- 		goto badframe;
-@@ -366,6 +368,8 @@ COMPAT_SYSCALL_DEFINE0(x32_rt_sigreturn)
- 	sigset_t set;
- 	unsigned long uc_flags;
- 
-+	prevent_single_step_upon_eretu(regs);
-+
- 	frame = (struct rt_sigframe_x32 __user *)(regs->sp - 8);
- 
- 	if (!access_ok(frame, sizeof(*frame)))
-
-base-commit: 6a7c3c2606105a41dde81002c0037420bc1ddf00
 -- 
-2.49.0
-
+Oscar Salvador
+SUSE Labs
 
