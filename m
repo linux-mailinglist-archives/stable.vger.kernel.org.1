@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-146165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC586AC1CEC
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 08:24:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3AAAC1CEE
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 08:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7860A21D88
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:24:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C561A21ECD
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28096225A3E;
-	Fri, 23 May 2025 06:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5DA225A3B;
+	Fri, 23 May 2025 06:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="XsCNw4n1"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="cwnmVX1J"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031932DCBF9;
-	Fri, 23 May 2025 06:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EA52DCBF9;
+	Fri, 23 May 2025 06:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747981472; cv=none; b=UdrU74F8g7EDJ+Wxm4FbJiJBMJqvCyTRGNvD11Fxjh6K8skjp1aHBsoJn64Q9nYjW2YI4gMTiezRXrpWoHGdRcZigT0gGaxAG2A8a6X+2fITJFq84CogCOq/dvRBBco/W9+3n05zF3NZmWdMAnRtDtjOFe8zfMDiH7tVu1Crutg=
+	t=1747981484; cv=none; b=dHEwxsqQsBaVpYPEnH2Q2K+nhggO7CRbHnyxuRdjw0JEJvvnTWICB1vNRLtg3evZraVoUftkprCgFJO2lfqLwY2wLOmU/F5rU0oDmNoAHjJoZ8uFULfxHjINBAv3npQEkC5mnkqzK5P+WniYphCq7Gb+D8OKcNBQJ019xYkH9fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747981472; c=relaxed/simple;
-	bh=vcbOFAtxUBDkEdAWJqQHqJrbVgEUXO+diVOFf+nGBKA=;
+	s=arc-20240116; t=1747981484; c=relaxed/simple;
+	bh=dhAD58QiqxdIkktt490FDXebtU8D0LLlDDTsR6RK3Vs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VFWGnRKfjbQwRNmAdcHXotRVp7vYOgZw//p2OoQd74KbjxV7yWt/0lIC7nJTND4yu9/lOZPxS1kA8P0O6BijtlZ+RaI3a4/qinJbl3LbFFvNOF6fwMVn8bN9xdzCE1HmtxdZDmjQnG99Z6y3GezBgrrTZZr/xFzdfpXJMe6gTQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=XsCNw4n1; arc=none smtp.client-ip=198.137.202.136
+	 In-Reply-To:Content-Type; b=Mt8yW+QhMPPZ8QCEuGA5QZScy6M17e0zOkEOObTbOX04DkCkCnVtsArBLeGbN0s4D6002ez0USPD559m0YT56TX9Y7MssTi0QtxHN15nYMaVKdpgAm6GqOmKArlk4n20nZmWhg+IfmWVPCOK0DOrgc/hJUMfwSwT72607pIIotY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=cwnmVX1J; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from [192.168.7.202] ([71.202.166.45])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54N6NUq83337630
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54N6OIen3339879
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 22 May 2025 23:23:31 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54N6NUq83337630
+	Thu, 22 May 2025 23:24:18 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54N6OIen3339879
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1747981412;
-	bh=wnyZuODJByEqpzXIq2BlNFfzd2lgJUg6GSxaV1xq9rE=;
+	s=2025042001; t=1747981459;
+	bh=F9i6l/k+byGdn+lk6QU2i/jGFYFgQ0oLeWrPUIo4pQA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XsCNw4n1ssDTJReaTMTvbM2c7QkmubHLKX2tkB+DBrWGHejtY5GWbmWvIglLe9q3Z
-	 Qe2y0D6zeoxrz8lYv/X39uGcjQ89CjZ/3E0JHPt5V3JRCjN51u1P/WfGoGGVxRP0yh
-	 +OW3vegTptZjEzl6pzmCdWAVwzw9nyqnoi93zP133qMc40kU+gRcQAAcRD82SvdNc8
-	 m9+3WmGIHwTznMxjN4dGUxt50jDmETfD0zKwKay+YK5ecxaBfhy/GztcucAk+6GnHr
-	 f9x7KzsTJjr0Z1seSEHECNGFiks0CiVu8e0n8GIJzD5fgDFLIWz1exGL82FqCjjfhj
-	 NKRWfZ9d64tzQ==
-Message-ID: <98baeeed-345d-4ae9-9418-61df6c689516@zytor.com>
-Date: Thu, 22 May 2025 23:23:30 -0700
+	b=cwnmVX1Jrwvs8cGCvNzLhuGcRtnknxLxTFjc8K5KE4StRQ8jjyXt/F3MydWTVA+Ph
+	 4u1AP4u+hJyyILRGsURNnbrUiJ7cR1LZgbUCEdjxHLQ70FUG5BQuDYFBqwv4CI8AgY
+	 985A2ZPpLi5DrZ+UyFc7bghE6BTstIdfv9j971VQd6Ep6q/C6vjMAaPz2SvRFlqxKK
+	 zUbh/28cItWFFfDUa4MzueREOJnyPNg9o5NNOf0xvyrVhoQXlReiieB3LwskIkyslv
+	 7peJw/drJ7BwHThbP+wlOqseyKuRZ2d7FyCdTLXzuVZG8XYLqU0aa86GVi6XKTdq71
+	 11ssQ4mjigOCw==
+Message-ID: <84724098-adaf-4e35-9289-6c8c1aac1056@zytor.com>
+Date: Thu, 22 May 2025 23:24:18 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,15 +58,16 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 1/1] x86/fred/signal: Prevent single-step upon ERETU
  completion
-To: Andrew Cooper <andrew.cooper3@citrix.com>,
-        kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org
+To: Dave Hansen <dave.hansen@intel.com>, kernel test robot <lkp@intel.com>,
+        linux-kernel@vger.kernel.org
 Cc: oe-kbuild-all@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
         bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, peterz@infradead.org, stable@vger.kernel.org
+        hpa@zytor.com, peterz@infradead.org, andrew.cooper3@citrix.com,
+        stable@vger.kernel.org
 References: <20250522060549.2882444-1-xin@zytor.com>
  <202505230141.4YBHhrPI-lkp@intel.com>
  <83b013fb-2057-4097-ac8c-b5c38d019a0f@zytor.com>
- <005d4d4c-f385-42e0-8a30-62c6d77ff0f0@citrix.com>
+ <8342ee1c-5adc-4a6a-b4ee-f7d3b42a6528@intel.com>
 Content-Language: en-US
 From: Xin Li <xin@zytor.com>
 Autocrypt: addr=xin@zytor.com; keydata=
@@ -103,12 +104,12 @@ Autocrypt: addr=xin@zytor.com; keydata=
  PYbAkjBbm+tuJ/Sm+5Yp5T/BnKz21FoCS8uvTiziHj2H7Cuekn6F8EYhegONm+RVg3vikOpn
  gao85i4HwQTK9/D1wgJIQkdwWXVMZ6q/OALaBp82vQ2U9sjTyFXgDjglgh00VRAHP7u1Rcu4
  l75w1xInsg==
-In-Reply-To: <005d4d4c-f385-42e0-8a30-62c6d77ff0f0@citrix.com>
+In-Reply-To: <8342ee1c-5adc-4a6a-b4ee-f7d3b42a6528@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
->>>      arch/x86/include/asm/sighandling.h: In function
->>> 'prevent_single_step_upon_eretu':
+On 5/22/2025 10:54 AM, Dave Hansen wrote:
+> On 5/22/25 10:33, Xin Li wrote:
 >>>>> arch/x86/include/asm/sighandling.h:44:21: error: 'struct pt_regs'
 >>>>> has no member named 'fred_ss'
 >>>         44 |                 regs->fred_ss.swevent = 0;
@@ -116,20 +117,18 @@ Content-Transfer-Encoding: 8bit
 >>>
 >>
 >> Hmm, this statement is under IS_ENABLED(CONFIG_X86_FRED), which should
->> be a compile time FALSE with i386.  Why it is still being compiled?
 > 
-> Because what the compiler is seeing is:
+> The compiler still _compiles_ unreachable statements:
 > 
-> if (0 && ...)
->      regs->fred_ss.swevent = 0;
+> 	if (0)
+> 		foo = bar.bar;
 > 
-> and the bad field name is found at parse time, while the whole
-> expression is only discarded during optimisation.
-> 
-> The one thing you can't IS_ENABLED() around is conditional fields.  That
-> needs to be full #ifdef.
+> An #ifdef will keep the compiler out completely, of course. That's
+> probably the best thing in this case, especially since it'll be tucked
+> away in a header.
 
-Thanks a lot for the explanation.  Just sent out v3 using #ifdef.
+Thanks a lot for the explanation.
 
      Xin
+
 
