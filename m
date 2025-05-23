@@ -1,330 +1,184 @@
-Return-Path: <stable+bounces-146181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92772AC1F25
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 11:01:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7E6AC1FB2
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 11:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 523C17B9902
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 09:00:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E4C61BA3966
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 09:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505A81EB196;
-	Fri, 23 May 2025 09:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFF1224AE9;
+	Fri, 23 May 2025 09:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hExjUL8o"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0164A1A314F;
-	Fri, 23 May 2025 09:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747990886; cv=fail; b=GvcNwOfa9nxv1zFdkWWe/flVybAJ1pf+uowxySiZPrKvcjgGpMspI7j/6q+cqCXb/1zDXrXKEMxUZ3GJf1hV9OVRq740esRWFJ/uuN2jFXfQpdxSr5R6+/SMqUr4WB2L/nxZ5yCsywCp8i1FeyqYjjaoqZr6uAaMpP2eee+D2tY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747990886; c=relaxed/simple;
-	bh=PfmGA2VYh6+rdQMgCbp2iebGiPy2fWGeXcaRH8/23MU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RIVbsnOcqo003k8ei6wmMLMjwK9vZN34btTG7BC/MwmbwUfYibQhzSINHWswNfX1shMYfimevlCOCBbsOH74z/ZNIhpv+D4+DpgboxVxwL0YoZPdv+OPwE+Kb3//Jau1sBsd6Mr5ekNRO5awXUG9JLngrpRSgNM2TMoepN5YPmI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54N503Qi011965;
-	Fri, 23 May 2025 09:01:08 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11on2085.outbound.protection.outlook.com [40.107.236.85])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46rwfwun10-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 May 2025 09:01:07 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gyNYQK88kf7GsZ1Y5DumtAZuop09apRq/3TdvbLSKxTQypP3uck4dSPCq+G71TEeKMMFWIN9mlBJMWAtlsyjw98n/UrdvC3deM1Vo//NLZI8QiN2Ly0ji3wBeoiZIkvDX5OIAEuGTMYVf0ZiPMOYLwHQhipPHz8L5wlf9VE7OaBoJbPKoBBF9fiOhtE+PVRJAIoOZ/Q/wWIOGCsAqWoQHhKrE1X3tX/DnlxmnAS4G9PoozeyeaQ8QNX7297E2n0e5Kq5lC5Sp8UIN5RjuCdtrpwTKyJrFrqv4YqYRlkMcD42uqtS7Jo8uNxPRMEIpsLIY3UTv+mOqolgeX7RQfYseg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WLSHwlXP/xM15/zkQ9urOrIITGxt8yqagDe4FJYO5KM=;
- b=eRxKxywCGO9skbXsw3/unHt29W+kQBqNthDKOfFu3+0RUH09L9O1haOJvtTmH4yGUveWJP/s8o42nevFOoCqZoqvfaMII+7UvsszAzIWkxjZ8zPB+IMJKMTOK84B8XUQm1RSA69XAJ8yL2SOGAzYrRRuMeSy6ZoASokeycM8cHLD3cbB2j52+vtY3ZijQ3OS8oQfYUAXMu8a51WtoAVSWbQWs+fH1DMBLXdlc1y7PCTGxz6bVQwWljEt/yRoKrHAorIpURC9k6tKJQEU9ygdD+k5WebyHFA05lweVOTKp1RSnZi36tkSyyFlAjlzTE3cvnOTxeeMV7KKwe/ZPPwnpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CH0PR11MB8189.namprd11.prod.outlook.com (2603:10b6:610:18d::13)
- by PH8PR11MB8106.namprd11.prod.outlook.com (2603:10b6:510:255::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.20; Fri, 23 May
- 2025 09:01:04 +0000
-Received: from CH0PR11MB8189.namprd11.prod.outlook.com
- ([fe80::4025:23a:33d9:30a4]) by CH0PR11MB8189.namprd11.prod.outlook.com
- ([fe80::4025:23a:33d9:30a4%4]) with mapi id 15.20.8769.021; Fri, 23 May 2025
- 09:01:04 +0000
-Message-ID: <ba4f9f5d-0688-4537-b721-7b2bda8ead8c@windriver.com>
-Date: Fri, 23 May 2025 17:00:40 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: nfs mount failed with ipv6 addr
-To: NeilBrown <neil@brown.name>
-Cc: chuck.lever@oracle.com, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <> <73509a8c-7141-49d7-b6d4-25a271fbad2c@windriver.com>
- <174798616079.608730.9700383239346135852@noble.neil.brown.name>
-Content-Language: en-US
-From: "Yan, Haixiao (CN)" <haixiao.yan.cn@windriver.com>
-In-Reply-To: <174798616079.608730.9700383239346135852@noble.neil.brown.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TY2PR02CA0001.apcprd02.prod.outlook.com
- (2603:1096:404:56::13) To CH0PR11MB8189.namprd11.prod.outlook.com
- (2603:10b6:610:18d::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F04B5D8F0;
+	Fri, 23 May 2025 09:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747992324; cv=none; b=hIVu4L3Eer5DaLSrM7Xemxc7p76xczz0fVqvbI3q6n6vQ5AFRkfCwJCwdrvVlzkkx1XmYYHb7OuKueN3Ag6JLzeTKeA89bbPaHVQvDqsE+XWeU+qe0XpB/STpv8vmhmLZTXCB6/sHTQzWGBCXDK2HMnZE66kqjzAYlX/nCRBn94=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747992324; c=relaxed/simple;
+	bh=PGA0Ad3C1HpTjHVROgn9fZ9oWXGJ/ly5wqU3G/dAykY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QHz0Mtlaa+Fcepkz6QMTt3gVKSon9fqgIbIzdNwlurmPGO+7DJjbH3WVeu6WLfvGmG5lqJV63GtwE6dj8s1YEqEeeWvGQSU5k1p4uQ6ga/Ct4cmVREapYc18tcSQQfKrvs6dT2XTnySZcIGcXMDI8b315lUgKI+ktWRN22zhheU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hExjUL8o; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7406c6dd2b1so584295b3a.0;
+        Fri, 23 May 2025 02:25:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747992322; x=1748597122; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=4yPM5GHZurT6WiMDMIjRa6sRdT6oGbPUbwT9Dc0gQR0=;
+        b=hExjUL8oGT9jSw/dpTR04eCsUjBIRMTBx519qGxmxpxm9unbytgdGhBG9gKic9rJ4T
+         gZ/v9o6kCKYeE96vASWpie2kI03yJUUov3f7ii/SR7y3fuqk4Ky7XkArWuK/sgOfGqlI
+         OFtb4JeXY8/y18kceHN3yvSq6b7lV6Q/IQHqMfJ4zirkBMjzo5JMBMqGTycGbGrFUX6l
+         f0iUaNeoFCiTasF9jMi6NCrMs+b/W3ktOETV/6e2j2rJPUsbhjKwgRng/kLwkFF6SpXO
+         REor9BM/lQB3izObuhDOg07pd5Zy2R8nNkJ5EuFZjmhCisYFw17FiD/jfKFWGYZc4d81
+         o0LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747992322; x=1748597122;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4yPM5GHZurT6WiMDMIjRa6sRdT6oGbPUbwT9Dc0gQR0=;
+        b=mYxDUBe9IMAlUOv+AlU8kUuZtmaTcSjszz4r+joYxm0IigjzMR04uq0H0B7cbuu4AY
+         JYzL0QuQ01pHbAKVLHLkFQxdethG6hwXAi9MQodzzjhAViBACOrQ+kfXaYKqvkwwgQq1
+         WMwfpRuXGldC1/OkdJK7E44dVLUvR1kwl5lH5unGW5G4oatmM3R9UlFcx4O3rq83mxLi
+         j145m0642t7PVZb743Zx4m1WUZAMHsvUZ8GNe+oRPdjO5DFA/O+tFB6ljh070j+zkdu/
+         k/d+K802CUu8McpuTr+T9lYjuy2RS+5cj02hMDr9lLEg5AZrLhGJokswyDb1rPinzkF8
+         4+zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWr6S3wU4IUX6qOpirbfWnd/Zxp57+DH2LLbSAlhQhGCQE6CTHRgg/epgPCK8CBEupNaQrwgET0m8+vvfg=@vger.kernel.org, AJvYcCXKsNL1V8V5/DLMDHYJjAJ2bT35uH7D2lcHZLpXzhYF/CkxLoqIZ5s5ZZOpFHSHLXGILmA9I6t8@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0zDxyyu+2eZXa2lD6q6UyaENCK9nGtI6Qr6S8lz+taavcP0mY
+	aGyUcUaIRBVlnx2EUG4XDqzsOJYDE0zbg/BElaHSumPkeQY0061g8OGl
+X-Gm-Gg: ASbGncsgv9DWg9Z48itnduPwtCr9BLXV01ofRYYEOSJLGaZp/Z77wneEphTYN8CVS3s
+	55t1kXupblwxAUfvhyxm1uAAZzze+BgdaVNZjVGn7X6DM6ZySDleq0rMJ/nQL7Hp6kZk/7FBud0
+	JXZY60rhXY5gA+MaM5sHQ3FJz2psfJWUIJEb2URfOddkN1/kozB9itfPJxX8Wdwc5sRzsjtg7DA
+	plsMlL4MXFw9K8csfUJhcoNvJ6fu6SR1g4+8z1VUNFzDxE3y5m9OzlI34zjCmdhEEeIWD2Qlb9m
+	ZZJO5mfvtf+4bo07KyHnOy+OAaHUnHVMvAN7T1sGs7NfmFaDn596AB0l2IDxGs9FXLT1rOQQhGX
+	+wg97M+9txL/oX3Ok0Wwmitmf
+X-Google-Smtp-Source: AGHT+IEhjREyA9R1vAN2c4/XfdKgzwcSq1mlFAlayao0uKzK/2HNIFI6IHqVfNJCeEOSTbLaiN65VA==
+X-Received: by 2002:a05:6a20:12d2:b0:1e1:9e9f:ae4 with SMTP id adf61e73a8af0-21877ab0e3dmr4125419637.13.1747992321797;
+        Fri, 23 May 2025 02:25:21 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a98770eesm12335068b3a.154.2025.05.23.02.25.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 May 2025 02:25:21 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net>
+Date: Fri, 23 May 2025 02:25:19 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB8189:EE_|PH8PR11MB8106:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef1985c4-d18c-4945-7895-08dd99d858cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QzBRV29ZK0dkOUlBNWNLN3hMTGMzUU9rdk82QkExNVBLSXRpZmZmamlqbEpR?=
- =?utf-8?B?UGliWUpBbzBJUEd0Y0dDNFBHNEUwUHp2M3puRTRwaVRSSm5tTUJHb3p6QjUy?=
- =?utf-8?B?N2FJZTBPaEllRkJVNlhqZ1pyeUtWOXdyVTdpaytSWno5aE9CM042UWNDZWFx?=
- =?utf-8?B?b1A4eWZtR1MwdEJldkJVbDMvWWg4RHh4RjJqTHkya2oxZ0Q2V0dObEVsMjF2?=
- =?utf-8?B?ekdrZW9RdExpbEo5TDlLZnExZ2gzeWdGQkMvTURxcXJwcnovbk4yTW5uZ3No?=
- =?utf-8?B?MjhMdFA2V2tvL1BUYWxLWWh6dmhhSm1pMDZFWi85cUlyeGZzaHJQUHA5UVcr?=
- =?utf-8?B?clJHaEh2bytiLzhqY01ZS1JuT1ZPbVBwZ1VyWERoQkY3aHV2ZUlMMWtzNSt6?=
- =?utf-8?B?WUl6RlRZR0hEZDZiMnRUd0prTFhQZGJndjlJbzJXdnZ4d2ZiRmVLaE1ldTZx?=
- =?utf-8?B?V2pHekNIUmRTNFBJV2E4Tm1IaUMzMTJ3RkV1U2NHdTROdTZHdjJsWHBwYmdI?=
- =?utf-8?B?Mk1YNXJQV1A5R3Avc0FJeXB6RXYxRmpPVHZxNzFhdnVOcXNIUUt6Z0FDdnJN?=
- =?utf-8?B?alU2M1RFTW5ieU9qY0VuZThoYjI5aTR0WWU3TWhDd0FJUUp5bS9HcDh1VGJK?=
- =?utf-8?B?bVVWVStSd3Y4VUNOblhtakR1SW9ReVZXUlF3ekc3amd0dDBVR3Q0SkI1WlVB?=
- =?utf-8?B?elYxem5UTEhDYmJYYXo5RlAzeG5kNXRZT2VyK1B5THEvdkVQcFFxWk12dnQ5?=
- =?utf-8?B?Z2hZcU1YYTRyVGduYWd3R1c2ZW1FS0VPbDk2WENDRFVjR0RoZVZDZE5IdFUv?=
- =?utf-8?B?UlVNbWdVcTRMRjFTR2tqblN0KzR0aFFhZG5iZmMrdjNqeXI1WHBuZ1dJeXVm?=
- =?utf-8?B?SFRsc3dQeERxc0VLa0pTT2plaXkvd2NCOTVKR1krNlJsUXJ1UDd1QXV6clNM?=
- =?utf-8?B?SmM3OS9aUC8rZ2Y4YnVBWStmVnp4ejdRWklILzJHQ3R0SjVGMTE1R0NPMDFC?=
- =?utf-8?B?T3JhUWFmQ1ZTUEhKSGVSYVlxMklUU1NJbDRRMCtvZ1p5eVNEV2ROSFdWZGpu?=
- =?utf-8?B?ZGRYM01wR1ZzMFVlb2VaaDVJc0JSVFh0c2huSWdpdU8weVRzUkJIZ21uYkRm?=
- =?utf-8?B?bjArK201VGR4NHE0V1ROektLY1BVcXVpRHBXZk5sQVdXeHZ4ME4yUUZEYkNS?=
- =?utf-8?B?YXRpMjJickNwNVhsNjBkK0hwbGtyc0RZYVBMZGZZTUdoNVp1dmRsZENTaEFB?=
- =?utf-8?B?SFF2OXpaK05IL3Y3a1pRamQ4TWVzRy9uTEMwZnZ0eDJzbkdQbjRQcTU5RlN2?=
- =?utf-8?B?a25HYkU5YjdzN0hGY0xOOTgxVFlibmdNL010OTJzNDlTVWE5K25GbVoycXhv?=
- =?utf-8?B?dVVnamdZbkJCYXp2SklxRU9TUnlVNDNQb2hMZ3hTWnZzSkltQzRuOFY0K2xy?=
- =?utf-8?B?dVc1ZU1PQ01lQnlPNG5DTHRncGlnRlFEOUlCeDNEckRtWWcxZG9zSXRyYmtG?=
- =?utf-8?B?Z3k0bmk4cnA4bnQ5V00vL2VGblR4WEdML0l3UVRDbHU3ZVYwS0JyMUtsZGFR?=
- =?utf-8?B?QzFHMUN0dnMxVEg2b3lmMmVWK1VBaWwxM0Q3S0dRSm5FME0yYUY2bWh1dXdR?=
- =?utf-8?B?WERnQm9ITjljNGZuVUVKazJhcGZOQisvYzNXS0ZvU3VDRnJjOGpDVW80dzl6?=
- =?utf-8?B?dUxOVFg2ZXJoZ3RoRkEvbjdlQ0pONmhEcm0xT3N5T0RPUUdsSTRZQzdSMUw2?=
- =?utf-8?B?VkVBaXlZd3JsaWtDWHlEMHNqZThuVXVwY0xQRldLdDlrTWVML25QWEZWYUFI?=
- =?utf-8?B?SXhhdGdmZUFseWJPTWs2UWord1RJUkZBZjFhdksraWc2NU8wZUZtOW9uakJX?=
- =?utf-8?B?QWhDc3pnZEg2Q0FLVExnVkZNZUgvQlhTRGFqR1dVc1lMMTQ1Z3BuZlZmRUxF?=
- =?utf-8?Q?l9IScX25vfU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB8189.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QnhCVmpBUGthTnk5QnFZazk0Y3JUYVZGTFl6cGwvc0FaMVVpdHZaYmEzSmlQ?=
- =?utf-8?B?S01pQVRKVmlNT1Bva3NETUl1VVRhRy9TTzg3UGNsMFpDNzJSSGZTb3ByT05G?=
- =?utf-8?B?MzQ1L1BCVGVVOUcyamgyMUtRZEY1RERQRUhIY25vc2VmQTQyWWg0bVh2a2pI?=
- =?utf-8?B?Mnp2a1Njc1k3UGVybStLZGpBTlArOTNKUjZDT01TS2xGOEhFQU8wOVg1akJM?=
- =?utf-8?B?VUxIYTVGMDdjWTVtU0w5N082S1dHYnVLQzB1bitKMlNKN1lBWm9NMzM0R1Bu?=
- =?utf-8?B?VWJwZG5KN0FTbDRCQVZZYXZ6OXBzWjlZVTZkTGJRSjBXdHh2UDlGbnNKT1Rm?=
- =?utf-8?B?SFlWN1k0NDJRejZJdlNRZ1lTRjMvdUlTR1RKMlgrTnRlVCs0VWJKSXpmbnZi?=
- =?utf-8?B?REVsNE1STUxEZmxwWmdjM0FFOWNkcS8zK00rbzFaQ0dQV1NqMDJveHhwMkcv?=
- =?utf-8?B?TWk4ZGp2dnBxbUtTbUhleXRpbWowV0hMaTBIeHNKb1d3UWgwK3hxRjRuVVVT?=
- =?utf-8?B?WW9NYys0VFZhang4cmVFOVp0eWhEZGE5dTdwUHc4d2tEKzIxT29Xa2ZhZzBu?=
- =?utf-8?B?YVBQeElEa1FmMzRvUDJJM1o4ZjBoZXZ6R0s4NTNPdDIrMDJnbVlLMXk4ck5t?=
- =?utf-8?B?QWxQTitBekIzMUJ4QmdzWHdmYnZTYTZVQ0Nsa25pNU5pRkl6M3gvK3l1cXZo?=
- =?utf-8?B?bmFxd1ZCZlBhUTAwWXNMb01MeWJhWHhpV3I2Wm5EWjE5dmpPZTNUb1JhdU9l?=
- =?utf-8?B?UGlidTZlRi8yZVYrN04rVksrMlFXK0tjSmUzZ2JvNVZ2Y0pzK3doWDZlaTZs?=
- =?utf-8?B?SkxHdzZYb0t4N0VyT1R5RTBVK2FhTm1tdkg2bDBNazFvUWdSbFk4SmxPcjFt?=
- =?utf-8?B?OTI2UlBlNzlENVlkbDFjMjc5S08rWWw1UTRMUXNXbS83UVVpTVN6cFFrR24r?=
- =?utf-8?B?U1BJVTVmVWMxZ2lVSDloejc3S2h2bjhMZEFTTlA3K1I2YVpsL0Y0dWdhdEdP?=
- =?utf-8?B?TkN2WCtZd2NXNWh3QXNJTEpFVkhjZ3o2U045WEFGTlRDV2tnZjRvMW9CRkR6?=
- =?utf-8?B?OUlmT1VPK3lHZyswWk9XdSt1TDEwM3RYazlFQU9SMmNzR0h2Y3NEVm80enZZ?=
- =?utf-8?B?Rnh3ZTJuc0tMSWNISjBuOHIvWkl3d0drSFdwSktkRHYwcFp4dWpVaGM4VkFB?=
- =?utf-8?B?WWdTZlhLc1IzR3ovMkUzZEJxVS8veG5lVE9UT1dNUUltR043eWo4WUEwTDl1?=
- =?utf-8?B?U0VGY1d6azlZZ1FlaDI5clh4UFUzOFRHUFFETS93dmFubW91b1JXR2prYVU5?=
- =?utf-8?B?SEllcGt0UXhqVko0Nk1RR1NHTmlDY1hnZ1hyUGQ5ZTBLUDcwVy9Mb0Rrc01J?=
- =?utf-8?B?aWtBZVVoN3dzWEZWMGtVbEd2dHdrRThXcHlQY2lUY2JjTmlBTnhmbDlHVmw4?=
- =?utf-8?B?WC92Zi83UTZJbldGYmxadUg5bHhjSE1CZC8zV05NLzIvVms1bTFCcm5pVjQ4?=
- =?utf-8?B?by9FUS9jbFBBNVg3bjVkMGZ1N3ZuaVQ3TnNsMUFmbFNoRXluOVlpNVN2bG9O?=
- =?utf-8?B?bzhxclU5RUVNZ0hZVk1MZGppeDhtL2krakJTYkZBbHJ6eUZPRVRPaDU1d2p3?=
- =?utf-8?B?RTNiaEUxeGJaOE8rWXFlbDdObGJnc21Ca3V2STJqaVBkeVdXRVk0N01jRlRh?=
- =?utf-8?B?L2hxcHVBNmgyNS8wamJOZHdCU1lXeXhEcXhxQjJLc01rdTdYeDlrTVl1aUMr?=
- =?utf-8?B?bTdaM3pENGlKc214b0pVNklxUE5UY3ZSVHhHQy9CK3NKdVUyeFYwYytBc3p5?=
- =?utf-8?B?bkFoTVNuUEhraFpJbnFqUXNFcHZSQTBBNUV6RkNyUDR2bG1PVGY5SnpwSE1L?=
- =?utf-8?B?anRzWWpvZ25ib25WODN4UVp4TmpFQkc2UVJIQlJMdzRxQ3AzKzlWZVJwb0FR?=
- =?utf-8?B?TjAyc0tHUGxjZ0NJRUh5ay9CZTlHSU84UXZHWHFDTTB1VEhLWVRsZDlBZUNN?=
- =?utf-8?B?OUlZcURiZldnWkI3blFmMHJadG5va1VHM3FabWZJMTNwZE16NCtoeTdyd1hL?=
- =?utf-8?B?MlpLaVVYcldvb2NaQ1d5YzJnVDR5RXpwUDcvdUFDT0FaSG1IL3hvVW9PMWhy?=
- =?utf-8?B?T3gwWHVTOTA2M1p4Um9xRUd5QTRmQlNVWlYvZ1RqNEpJODdWeXFjNkNDM1Vx?=
- =?utf-8?B?M0E9PQ==?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef1985c4-d18c-4945-7895-08dd99d858cc
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB8189.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2025 09:01:03.9249
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KQgAp8ZqUqKWTlPWMcr8KgwDsCRGP0G5sxGgNRHJDhyQ34MUZZSrmDziDHfD0zLXzTaEK6yPz2sL7Xt/5/xkAOuPCP2oWhFvI5fnG7LlneE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8106
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIzMDA3OSBTYWx0ZWRfXw618FFA9uBW6 25WG6FCqrAmJikXz8pNy8v1iF6flAXj3e3DPLytELsEtPspAybrUFyFQzIeH9yopHOooLplTV/j Eyw5yrdTqGFeuGHoV9xMUXscnxUvZ9IhWQhqs0P8CgKgwjxDd8e32ro/DBbGC9gFEsvPjFrzg9k
- soyqyYBzrYPXOxCZF37t64v5ju53dx5Y0Hs5UwPeXFshPGTIPRYtOFCCBLCtQuCRptKF4oL4KAp g3/b8idmwE+K7UsAPXZRx/CUMRyWT/gADPg8E7BWAzgdl1WMVLaPKo1N+Kbe88XCwQD9ATk0dRu 0rtwBGcZ+EH4r93LG/Ii2ZflNrFlFx5Gu0vVIej4xSvUWg3HBe/QPs0ObGywBRFCBNiFJxFMl9M
- cDHDNHJk+oyOK9OgPI7iUF3gSOjdowHZ4YWXjHtPpMRHs10zpNxu+7xFxYH42GLYZd3O8FBu
-X-Proofpoint-ORIG-GUID: DZlaE-4j4bfYdnc9cGLlPXpJhP5Z4sCi
-X-Proofpoint-GUID: DZlaE-4j4bfYdnc9cGLlPXpJhP5Z4sCi
-X-Authority-Analysis: v=2.4 cv=b6Cy4sGx c=1 sm=1 tr=0 ts=68303953 cx=c_pps a=7NYwoM2WOJnlZ5JcLxGZDA==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=n58jSPn0ql7obAd6v0kA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-23_02,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 spamscore=0 mlxscore=0 mlxlogscore=999 impostorscore=0
- suspectscore=0 malwarescore=0 clxscore=1015 phishscore=0
- priorityscore=1501 bulkscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.21.0-2505160000 definitions=main-2505230079
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/59] 5.15.184-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org
+References: <20250520125753.836407405@linuxfoundation.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20250520125753.836407405@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 5/20/25 06:49, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.184 release.
+> There are 59 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
+> Anything received after that time might be too late.
+> 
 
-On 5/23/2025 3:42 PM, NeilBrown wrote:
-> CAUTION: This email comes from a non Wind River email account!
-> Do not click links or open attachments unless you recognize the sender and know the content is safe.
->
-> On Fri, 23 May 2025, Yan, Haixiao (CN) wrote:
->> On 5/23/2025 7:21 AM, NeilBrown wrote:
->>> CAUTION: This email comes from a non Wind River email account!
->>> Do not click links or open attachments unless you recognize the sender and know the content is safe.
->>>
->>> On Thu, 22 May 2025, Haixiao Yan wrote:
->>>> On 2025/5/22 07:32, NeilBrown wrote:
->>>>> CAUTION: This email comes from a non Wind River email account!
->>>>> Do not click links or open attachments unless you recognize the sender and know the content is safe.
->>>>>
->>>>> On Thu, 22 May 2025, Yan, Haixiao (CN) wrote:
->>>>>> On linux-5.10.y, my testcase run failed:
->>>>>>
->>>>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mount -t nfs [::1]:/mnt/nfs_root /mnt/v6 -o nfsvers=3
->>>>>> mount.nfs: requested NFS version or transport protocol is not supported
->>>>>>
->>>>>> The first bad commit is:
->>>>>>
->>>>>> commit 7229200f68662660bb4d55f19247eaf3c79a4217
->>>>>> Author: Chuck Lever <chuck.lever@oracle.com>
->>>>>> Date:   Mon Jun 3 10:35:02 2024 -0400
->>>>>>
->>>>>>       nfsd: don't allow nfsd threads to be signalled.
->>>>>>
->>>>>>       [ Upstream commit 3903902401451b1cd9d797a8c79769eb26ac7fe5 ]
->>>>>>
->>>>>>
->>>>>> Here is the test log:
->>>>>>
->>>>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# dd if=/dev/zero of=/tmp/nfs.img bs=1M count=100
->>>>>> 100+0 records in
->>>>>> 100+0 records out
->>>>>> 104857600 bytes (105 MB, 100 MiB) copied, 0.0386658 s, 2.7 GB/s
->>>>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mkfs /tmp/nfs.img
->>>>>> mke2fs 1.46.1 (9-Feb-2021)
->>>>>> Discarding device blocks:   1024/102400             done
->>>>>> Creating filesystem with 102400 1k blocks and 25688 inodes
->>>>>> Filesystem UUID: 77e3bc56-46bb-4e5c-9619-d9a0c0999958
->>>>>> Superblock backups stored on blocks:
->>>>>>          8193, 24577, 40961, 57345, 73729
->>>>>>
->>>>>> Allocating group tables:  0/13     done
->>>>>> Writing inode tables:  0/13     done
->>>>>> Writing superblocks and filesystem accounting information:  0/13     done
->>>>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mount /tmp/nfs.img /mnt
->>>>>>
->>>>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mkdir /mnt/nfs_root
->>>>>>
->>>>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# touch /etc/exports
->>>>>>
->>>>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# echo '/mnt/nfs_root *(insecure,rw,async,no_root_squash)' >> /etc/exports
->>>>>>
->>>>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# /opt/wr-test/bin/svcwp.sh nfsserver restart
->>>>>> stopping mountd: done
->>>>>> stopping nfsd: ..........failed
->>>>>>      using signal 9:
->>>>>> ..........failed
->>>>> What does your "nfsserver" script do to try to stop/restart the nfsd?
->>>>> For a very long time the approved way to stop nfsd has been to run
->>>>> "rpc.nfsd 0".  My guess is that whatever script you are using still
->>>>> trying to send a signal to nfsd.  That no longer works.
->>>>>
->>>>> Unfortunately the various sysv-init scripts for starting/stopping nfsd
->>>>> have never been part of nfs-utils so we were not able to update them.
->>>>> nfs-utils *does* contain systemd unit files for sites which use systemd.
->>>>>
->>>>> If you have a non-systemd way of starting/stopping nfsd, we would be
->>>>> happy to make the relevant scripts part of nfs-utils so that we can
->>>>> ensure they stay up to date.
->>>> Actually, we use  service nfsserver restart  =>
->>>> /etc/init.d/nfsserver =>
->>>>
->>>> stop_nfsd(){
->>>>        # WARNING: this kills any process with the executable
->>>>        # name 'nfsd'.
->>>>        echo -n 'stopping nfsd: '
->>>>        start-stop-daemon --stop --quiet --signal 1 --name nfsd
->>>>        if delay_nfsd || {
->>>>            echo failed
->>>>            echo ' using signal 9: '
->>>>            start-stop-daemon --stop --quiet --signal 9 --name nfsd
->>>>            delay_nfsd
->>>>        }
->>>>        then
->>>>            echo done
->>>>        else
->>>>            echo failed
->>>>        fi
->>> The above should all be changed to
->>>      echo -n 'stopping nfsd: '
->>>      rpc.nfsd 0
->>>      echo done
->>>
->>> or similar.  What distro are you using?
->>>
->>> I can't see how this would affect your problem with IPv6 but it would be
->>> nice if you could confirm that IPv6 still doesn't work even after
->>> changing the above.
->>> What version of nfs-utils are you using?
->>> Are you should that the kernel has IPv6 enabled?  Does "ping6 ::1" work?
->>>
->>> NeilBrown
->>>
->> It works as expected.
->>
->> My distro is Yocto and nfs-utils 2.5.3.
-> Thanks.  I've sent a patch to openembedded to change the nfsserver
-> script.
->
-> Can you make the change to nfsserver and let me know if it fixes your
-> problem?
+Build reference: v5.15.184
+Compiler version: x86_64-linux-gcc (GCC) 12.4.0
+Assembler version: GNU assembler (GNU Binutils) 2.40
 
-What's the version of your nfs-utils?
+Configuration file workarounds:
+     "s/CONFIG_FRAME_WARN=.*/CONFIG_FRAME_WARN=0/"
 
-The patch failed to apply.
+Building i386:defconfig ... passed
+Building i386:allyesconfig ... failed
+--------------
+Error log:
+x86_64-linux-ld: arch/x86/kernel/static_call.o: in function `__static_call_transform':
+static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
+make[1]: [Makefile:1234: vmlinux] Error 1 (ignored)
+--------------
+Building i386:allmodconfig ... failed
+--------------
+Error log:
+x86_64-linux-ld: arch/x86/kernel/static_call.o: in function `__static_call_transform':
+static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
+make[1]: [Makefile:1234: vmlinux] Error 1 (ignored)
+--------------
 
-$ git am '[PATCH OE-core] nfs-utils don'\''t use signals to shut down 
-nfs server. - '\''NeilBrown '\'' (neil@brown.name) - 2025-05-23 
-1541.eml' Applying: nfs-utils: don't use signals to shut down nfs 
-server. error: patch failed: 
-meta/recipes-connectivity/nfs-utils/nfs-utils/nfsserver:89 error: 
-meta/recipes-connectivity/nfs-utils/nfs-utils/nfsserver: patch does not 
-apply Patch failed at 0001 nfs-utils: don't use signals to shut down nfs 
-server. hint: Use 'git am --show-current-patch=diff' to see the failed 
-patch When you have resolved this problem, run "git am --continue". If 
-you prefer to skip this patch, run "git am --skip" instead. To restore 
-the original branch and stop patching, run "git am --abort".
+In v5.15.y, cpu_wants_rethunk_at is only built if CONFIG_STACK_VALIDATION=y,
+but that is not supported for i386 builds. The dummy function in
+arch/x86/include/asm/alternative.h doesn't take that dependency into account.
 
-Thanks,
+Guenter
 
-Haixiao
-
->
-> Thanks,
-> NeilBrown
 
