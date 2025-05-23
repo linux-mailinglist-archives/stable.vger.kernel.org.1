@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-146164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32605AC1CC7
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 08:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC586AC1CEC
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 08:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5468D3A7B23
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:06:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7860A21D88
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6829F221F09;
-	Fri, 23 May 2025 06:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28096225A3E;
+	Fri, 23 May 2025 06:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GV2yyoTc"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="XsCNw4n1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF9C17A2F6;
-	Fri, 23 May 2025 06:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031932DCBF9;
+	Fri, 23 May 2025 06:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747980403; cv=none; b=sKW+9ypYhw5L1lGKWMWpUZEI9knMx2IWUGTyDgsxtEopxt4yi892P3N6liuhqTg5wIk35wqPFxhNVvTYHMocPIPMwXvKRCY+IQOYvOr270Mc0hRZhlwsgu0ye/LFxBNXsu72Bz+HyfUmbPQEsG1imZlJ+myRqRB2UkOCc1flM98=
+	t=1747981472; cv=none; b=UdrU74F8g7EDJ+Wxm4FbJiJBMJqvCyTRGNvD11Fxjh6K8skjp1aHBsoJn64Q9nYjW2YI4gMTiezRXrpWoHGdRcZigT0gGaxAG2A8a6X+2fITJFq84CogCOq/dvRBBco/W9+3n05zF3NZmWdMAnRtDtjOFe8zfMDiH7tVu1Crutg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747980403; c=relaxed/simple;
-	bh=92eAN8csFAkBa/h97hweMHUpwVrSxLPQX1gSWGO2pWY=;
+	s=arc-20240116; t=1747981472; c=relaxed/simple;
+	bh=vcbOFAtxUBDkEdAWJqQHqJrbVgEUXO+diVOFf+nGBKA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wxehl+zWc3CRXi3vq5b6dkOuIRhYrho4ymMn1Ip4DPjdegRAjjzuGmtIPPGt2pxhI8ZqPtIxxbq1++Jfz4I5x+r3zU3EwY9ZEhjgbZvRgvNRNXsGGLT+x+eOERoHkByz6RvPKkueryauy3CLsWWhkeDHubq+M6SkEcQPaBxAwXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GV2yyoTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADFBC4CEE9;
-	Fri, 23 May 2025 06:06:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747980402;
-	bh=92eAN8csFAkBa/h97hweMHUpwVrSxLPQX1gSWGO2pWY=;
+	 In-Reply-To:Content-Type; b=VFWGnRKfjbQwRNmAdcHXotRVp7vYOgZw//p2OoQd74KbjxV7yWt/0lIC7nJTND4yu9/lOZPxS1kA8P0O6BijtlZ+RaI3a4/qinJbl3LbFFvNOF6fwMVn8bN9xdzCE1HmtxdZDmjQnG99Z6y3GezBgrrTZZr/xFzdfpXJMe6gTQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=XsCNw4n1; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [192.168.7.202] ([71.202.166.45])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54N6NUq83337630
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 22 May 2025 23:23:31 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54N6NUq83337630
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1747981412;
+	bh=wnyZuODJByEqpzXIq2BlNFfzd2lgJUg6GSxaV1xq9rE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GV2yyoTcTNGOfgbctyC/bsDUvh2PxzfK82GvxAZCWIDAiQ8/QTwHAG9ObjB7i79Ep
-	 CdCAElfDbdDvfLiowQ06KQ4DzBrxocBU82de6MVyf5V6nIn9Ey0rbfsiT5aF2v/BfR
-	 a8W8m+nw+4oWIE/hdC41oodBoLfdQSH1lziEH1+YVI7aDfvSFTtqBYs9w+EE6ZWTmc
-	 gAqeEx3UCHFHL3WOypXeaSaFFpjmlZ/BeXIiQBlr8OX/XNHRLMFQd7NlEVhIEfE+Dn
-	 TNLZ3lOAaafvqj+qGTBKDXOTHPCVEZFcaqDgiFADwz9gZ1lv3C/fi4LP+Pq91TaUl8
-	 mwYDDFy1EVyBQ==
-Message-ID: <1359a818-f95f-4827-9f8a-7e5f362b8e87@kernel.org>
-Date: Fri, 23 May 2025 08:06:38 +0200
+	b=XsCNw4n1ssDTJReaTMTvbM2c7QkmubHLKX2tkB+DBrWGHejtY5GWbmWvIglLe9q3Z
+	 Qe2y0D6zeoxrz8lYv/X39uGcjQ89CjZ/3E0JHPt5V3JRCjN51u1P/WfGoGGVxRP0yh
+	 +OW3vegTptZjEzl6pzmCdWAVwzw9nyqnoi93zP133qMc40kU+gRcQAAcRD82SvdNc8
+	 m9+3WmGIHwTznMxjN4dGUxt50jDmETfD0zKwKay+YK5ecxaBfhy/GztcucAk+6GnHr
+	 f9x7KzsTJjr0Z1seSEHECNGFiks0CiVu8e0n8GIJzD5fgDFLIWz1exGL82FqCjjfhj
+	 NKRWfZ9d64tzQ==
+Message-ID: <98baeeed-345d-4ae9-9418-61df6c689516@zytor.com>
+Date: Thu, 22 May 2025 23:23:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,102 +56,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: Fix a deadlock related freezing zoned storage
- devices
-To: Ming Lei <ming.lei@redhat.com>, Bart Van Assche <bvanassche@acm.org>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Yu Kuai <yukuai1@huaweicloud.com>,
- stable@vger.kernel.org
-References: <20250522171405.3239141-1-bvanassche@acm.org>
- <b1ea4120-e16a-47c8-b10c-ff6c9d5feb69@kernel.dk>
- <78244478-3ce3-4671-b28f-c67c5b21dba9@acm.org> <aC_ZFIICdxzSOxCt@fedora>
-From: Damien Le Moal <dlemoal@kernel.org>
+Subject: Re: [PATCH v1 1/1] x86/fred/signal: Prevent single-step upon ERETU
+ completion
+To: Andrew Cooper <andrew.cooper3@citrix.com>,
+        kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, peterz@infradead.org, stable@vger.kernel.org
+References: <20250522060549.2882444-1-xin@zytor.com>
+ <202505230141.4YBHhrPI-lkp@intel.com>
+ <83b013fb-2057-4097-ac8c-b5c38d019a0f@zytor.com>
+ <005d4d4c-f385-42e0-8a30-62c6d77ff0f0@citrix.com>
 Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <aC_ZFIICdxzSOxCt@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Xin Li <xin@zytor.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <005d4d4c-f385-42e0-8a30-62c6d77ff0f0@citrix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 5/23/25 04:10, Ming Lei wrote:
-> On Thu, May 22, 2025 at 11:32:58AM -0700, Bart Van Assche wrote:
->> On 5/22/25 10:38 AM, Jens Axboe wrote:
->>> On 5/22/25 11:14 AM, Bart Van Assche wrote:
->>>>   static void __submit_bio(struct bio *bio)
->>>>   {
->>>>   	/* If plug is not used, add new plug here to cache nsecs time. */
->>>> @@ -633,8 +640,12 @@ static void __submit_bio(struct bio *bio)
->>>>   	if (!bdev_test_flag(bio->bi_bdev, BD_HAS_SUBMIT_BIO)) {
->>>>   		blk_mq_submit_bio(bio);
->>>> -	} else if (likely(bio_queue_enter(bio) == 0)) {
->>>> +	} else {
->>>>   		struct gendisk *disk = bio->bi_bdev->bd_disk;
->>>> +		bool zwp = bio_zone_write_plugging(bio);
->>>> +
->>>> +		if (unlikely(!zwp && bio_queue_enter(bio) != 0))
->>>> +			goto finish_plug;
->>>>   	
->>>>   		if ((bio->bi_opf & REQ_POLLED) &&
->>>>   		    !(disk->queue->limits.features & BLK_FEAT_POLL)) {
->>>> @@ -643,9 +654,12 @@ static void __submit_bio(struct bio *bio)
->>>>   		} else {
->>>>   			disk->fops->submit_bio(bio);
->>>>   		}
->>>> -		blk_queue_exit(disk->queue);
->>>> +
->>>> +		if (!zwp)
->>>> +			blk_queue_exit(disk->queue);
->>>>   	}
+>>>      arch/x86/include/asm/sighandling.h: In function
+>>> 'prevent_single_step_upon_eretu':
+>>>>> arch/x86/include/asm/sighandling.h:44:21: error: 'struct pt_regs'
+>>>>> has no member named 'fred_ss'
+>>>         44 |                 regs->fred_ss.swevent = 0;
+>>>            |                     ^~
 >>>
->>> This is pretty ugly, and I honestly absolutely hate how there's quite a
->>> bit of zoned_whatever sprinkling throughout the core code. What's the
->>> reason for not unplugging here, unaligned writes? Because you should
->>> presumable have the exact same issues on non-zoned devices if they have
->>> IO stuck in a plug (and doesn't get unplugged) while someone is waiting
->>> on a freeze.
->>>
->>> A somewhat similar case was solved for IOPOLL and queue entering. That
->>> would be another thing to look at. Maybe a live enter could work if the
->>> plug itself pins it?
 >>
->> Hi Jens,
->>
->> q->q_usage_counter is not increased for bios on current->plug_list.
->> q->q_usage_counter is increased before a bio is added to the zoned pluglist.
->> So these two cases are different.
->>
->> I think it is important to hold a q->q_usage_counter reference for bios
->> on the zoned plug list because bios are added to that list after bio
->> splitting happened. Hence, request queue limits must not change while
->> any bio is on the zoned plug list.
+>> Hmm, this statement is under IS_ENABLED(CONFIG_X86_FRED), which should
+>> be a compile time FALSE with i386.  Why it is still being compiled?
 > 
-> Hi Bart,
+> Because what the compiler is seeing is:
 > 
-> Can you share why request queue limit can't be changed after bio is added
-> to zoned plug list?
-
-Because BIOs on a zone write plug list have already been split according to the
-current request queue limits. So until these BIOs are executed, we cannot change
-the limits as that potentially would require again splitting and that would
-completely messup the zone write pointer tracking of zone write plugging.
-
-> If it is really true, we may have to drain zoned plug list when freezing
-> queue.
-
-Yes, that is what we need. But we currently endup deadlocking on a queue freeze
-because the internal issuing of plugged zone write BIOs uses
-submit_bio_noacct_nocheck() which calls __submit_bio() and that function will
-call blk_queue_enter() again for DM device BIOs. We need to somehow cleanly
-avoid calling that queue enter without sprinkling around lots of zone stuff in
-this core block layer submission path.
-
+> if (0 && ...)
+>      regs->fred_ss.swevent = 0;
 > 
+> and the bad field name is found at parse time, while the whole
+> expression is only discarded during optimisation.
 > 
-> Thanks, 
-> Ming
-> 
+> The one thing you can't IS_ENABLED() around is conditional fields.  That
+> needs to be full #ifdef.
 
+Thanks a lot for the explanation.  Just sent out v3 using #ifdef.
 
--- 
-Damien Le Moal
-Western Digital Research
+     Xin
 
