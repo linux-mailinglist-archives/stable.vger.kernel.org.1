@@ -1,183 +1,182 @@
-Return-Path: <stable+bounces-146172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13432AC1DD3
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 09:43:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F72AC1DD1
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 09:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 429537BAB24
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 07:41:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA78D1896E1E
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 07:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A75221D9A;
-	Fri, 23 May 2025 07:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="a6nfq8v7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1405B20FAB0;
+	Fri, 23 May 2025 07:42:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from neil.brown.name (neil.brown.name [103.29.64.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC2F20FAB0;
-	Fri, 23 May 2025 07:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3B02036ED;
+	Fri, 23 May 2025 07:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747986178; cv=none; b=jbIlOza5VCekcRZp71sSI8fsCCU/DX3S6xzCzX9RNm66ryjpiIGPGwQ2cVYc2blgoJOwzplZqJ+LbX3bdME3SrErjBMoy8sMPQNW4HasJHSSKiqUDPnW19d+CuyI/U6/kJ/oBy395RIFXuuQmYYjBO35gWS0d38fM4UEfR1/bwI=
+	t=1747986166; cv=none; b=ADp6s1BnqVe3uN5FlvMmgAqDb3rgRDcbg2CE/JRY16B4ForqfNa1XyKngdTz4vkEpqhu2EOoUv3sqUVl7PLdjUhsTK+yLCL4Cxbqqh6/cXp40SNgUsBVu/RH9C1EjOKjaycG/NH3WYAl5w/egycxh/hu6K9zz/E4oSqQ/A0RYow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747986178; c=relaxed/simple;
-	bh=nO5bS3m889863mTMqoB3Tw6lBy3U+hB0upXUCnQInyE=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ji/qaHZNlGABG/dDF8QFmE12S/DnD/W74MILD7/JYjyGlUGdbKVnD4AUE+fhr2uhRLt2+q8LRytZJl9E/R9F+KKJR3jb/iA1leFYmDeYMYhJ0IYlzGQ3J6q1eVJm9yeA7eEeLGjjawXh7ET3AUt96FoImM5fjj6u1NZgxqg6CZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=a6nfq8v7; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54N7gK7d3364546
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 23 May 2025 00:42:20 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54N7gK7d3364546
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025052101; t=1747986141;
-	bh=aDMCxKnUjVpfH+Z6QVUbrzej9Ot/D3RMUg29EMy0pV4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=a6nfq8v7yVU7GUBZeX57FsM8kQJp4lMfy2951or1z87WQ0NyqOfcMsnBsViIqYhI/
-	 cKG4UlJoJaGNhBH82P4+KWGW8WGExCQKoW3xTau2AuqX3YfZliudd4FVEZjhTq5UN4
-	 iqCbwXygldOxihvlZK9lvAxP68N6Zt30wNfWl2bfScU9DEFln8vC+Y1dDqGS0Fk4kk
-	 24v8hOCJWnREV76ALvQSU+G6HUy4Ti/QBOKNFwZumpaNz4DyQ4qNzpLAzWCEKSyraj
-	 B6i9RjiMz1WWMz2Jq2h5LUK+cZhZ4NRQup3uyzdVf+FwWi8TmshXsHzlWKfixzcQTz
-	 EdE4HPbTRehcQ==
-Date: Fri, 23 May 2025 00:42:18 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>,
-        Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org
-CC: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, peterz@infradead.org,
-        stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/1=5D_x86/fred/signal=3A_Pr?=
- =?US-ASCII?Q?event_single-step_upon_ERETU_completion?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <97a86550-844d-41c8-bc5e-b3b7b20ef6c9@zytor.com>
-References: <20250522171754.3082061-1-xin@zytor.com> <e4f1120b-0bff-4f01-8fe7-5e394a254020@intel.com> <ad8d3a12-25f3-4d57-8f34-950b7967f92b@citrix.com> <97a86550-844d-41c8-bc5e-b3b7b20ef6c9@zytor.com>
-Message-ID: <F535D469-6B77-47CC-8D04-FA6D8D7E937D@zytor.com>
+	s=arc-20240116; t=1747986166; c=relaxed/simple;
+	bh=SOhrDQ8XUaAcb81YDu7fSBLPcvirijmOaA1uBw7l+h8=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=m0DW7MsHN6KoljHUxy4EiwMS58UL59LldyLFBnAXnRD7OUQtJMFL6ThngcWycNLQsXkXJhwKicyLFSixvvUP5Gw6wvLGrolE2R0imWwSyXIEKXqQZxaBwjNVm0+O8wt2XKdq0pU2hmzIMLbNCQUWOxlBgjayycywy6r/ciuf94E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
+Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
+	by neil.brown.name with esmtp (Exim 4.95)
+	(envelope-from <mr@neil.brown.name>)
+	id 1uIN3B-008sAy-0k;
+	Fri, 23 May 2025 07:42:41 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: "NeilBrown" <neil@brown.name>
+To: "Yan, Haixiao (CN)" <haixiao.yan.cn@windriver.com>
+Cc:
+ chuck.lever@oracle.com, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: nfs mount failed with ipv6 addr
+In-reply-to: <73509a8c-7141-49d7-b6d4-25a271fbad2c@windriver.com>
+References: <>, <73509a8c-7141-49d7-b6d4-25a271fbad2c@windriver.com>
+Date: Fri, 23 May 2025 17:42:40 +1000
+Message-id: <174798616079.608730.9700383239346135852@noble.neil.brown.name>
 
-On May 22, 2025 5:57:31 PM PDT, Xin Li <xin@zytor=2Ecom> wrote:
->On 5/22/2025 10:53 AM, Andrew Cooper wrote:
->> This was a behaviour intentionally changed in FRED so traps wouldn't ge=
-t
->> lost if an exception where to occur=2E
->>=20
->> What precise case is triggering this?
->
->Following is the test code:
->
->// SPDX-License-Identifier: GPL-2=2E0-or-later
->/*
-> *  Copyright (C) 2025 Intel Corporation
-> */
->#define _GNU_SOURCE
->
->#include <err=2Eh>
->#include <signal=2Eh>
->#include <stdio=2Eh>
->#include <stdlib=2Eh>
->#include <string=2Eh>
->#include <sys/ucontext=2Eh>
->
->static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *)=
-, int flags)
->{
->	struct sigaction sa;
->
->	memset(&sa, 0, sizeof(sa));
->	sa=2Esa_sigaction =3D handler;
->	sa=2Esa_flags =3D SA_SIGINFO | flags;
->	sigemptyset(&sa=2Esa_mask);
->
->	if (sigaction(sig, &sa, 0))
->		err(1, "sigaction");
->
->	return;
->}
->
->static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
->{
->	ucontext_t *ctx =3D (ucontext_t *)ctx_void;
->	static unsigned long last_trap_ip;
->	static unsigned int loop_count_on_same_ip;
->
->	if (last_trap_ip =3D=3D ctx->uc_mcontext=2Egregs[REG_RIP]) {
->		printf("trapped on %016lx\n", last_trap_ip);
->
->		if (++loop_count_on_same_ip > 10) {
->			printf("trap loop detected, test failed\n");
->			exit(2);
->		}
->
->		return;
->	}
->
->	loop_count_on_same_ip =3D 0;
->	last_trap_ip =3D ctx->uc_mcontext=2Egregs[REG_RIP];
->	printf("trapped on %016lx\n", last_trap_ip);
->}
->
->int main(int argc, char *argv[])
->{
->	sethandler(SIGTRAP, sigtrap, 0);
->
->	asm volatile("push $0x302\n\t"
->		     "popf\n\t"
->		     "nop\n\t"
->		     "nop\n\t"
->		     "push $0x202\n\t"
->		     "popf\n\t");
->
->	printf("test passed\n");
->}
->
->
->W/o the fix when FRED enabled, I get:
->xin@fred-ubt:~$ =2E/lass_test
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trapped on 00000000004012fe
->trap loop detected, test failed
->
->
->W/ the fix when FRED enabled:
->[xin@dev ~]$ =2E/lass_test
->trapped on 00000000004012fe
->trapped on 00000000004012ff
->trapped on 0000000000401304
->trapped on 0000000000401305
->test passed
->
->Obviously the test passes on IDT=2E
->
->As Dave asked, I will integrate this test into selftests=2E
->
->Thanks!
->    Xin
+On Fri, 23 May 2025, Yan, Haixiao (CN) wrote:
+> On 5/23/2025 7:21 AM, NeilBrown wrote:
+> > CAUTION: This email comes from a non Wind River email account!
+> > Do not click links or open attachments unless you recognize the sender an=
+d know the content is safe.
+> >
+> > On Thu, 22 May 2025, Haixiao Yan wrote:
+> >> On 2025/5/22 07:32, NeilBrown wrote:
+> >>> CAUTION: This email comes from a non Wind River email account!
+> >>> Do not click links or open attachments unless you recognize the sender =
+and know the content is safe.
+> >>>
+> >>> On Thu, 22 May 2025, Yan, Haixiao (CN) wrote:
+> >>>> On linux-5.10.y, my testcase run failed:
+> >>>>
+> >>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mount=
+ -t nfs [::1]:/mnt/nfs_root /mnt/v6 -o nfsvers=3D3
+> >>>> mount.nfs: requested NFS version or transport protocol is not supported
+> >>>>
+> >>>> The first bad commit is:
+> >>>>
+> >>>> commit 7229200f68662660bb4d55f19247eaf3c79a4217
+> >>>> Author: Chuck Lever <chuck.lever@oracle.com>
+> >>>> Date:   Mon Jun 3 10:35:02 2024 -0400
+> >>>>
+> >>>>      nfsd: don't allow nfsd threads to be signalled.
+> >>>>
+> >>>>      [ Upstream commit 3903902401451b1cd9d797a8c79769eb26ac7fe5 ]
+> >>>>
+> >>>>
+> >>>> Here is the test log:
+> >>>>
+> >>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# dd if=
+=3D/dev/zero of=3D/tmp/nfs.img bs=3D1M count=3D100
+> >>>> 100+0 records in
+> >>>> 100+0 records out
+> >>>> 104857600 bytes (105 MB, 100 MiB) copied, 0.0386658 s, 2.7 GB/s
+> >>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mkfs =
+/tmp/nfs.img
+> >>>> mke2fs 1.46.1 (9-Feb-2021)
+> >>>> Discarding device blocks:   1024/102400=08=08=08=08=08=08=08=08=08=08=
+=08=08=08             =08=08=08=08=08=08=08=08=08=08=08=08=08done
+> >>>> Creating filesystem with 102400 1k blocks and 25688 inodes
+> >>>> Filesystem UUID: 77e3bc56-46bb-4e5c-9619-d9a0c0999958
+> >>>> Superblock backups stored on blocks:
+> >>>>         8193, 24577, 40961, 57345, 73729
+> >>>>
+> >>>> Allocating group tables:  0/13=08=08=08=08=08     =08=08=08=08=08done
+> >>>> Writing inode tables:  0/13=08=08=08=08=08     =08=08=08=08=08done
+> >>>> Writing superblocks and filesystem accounting information:  0/13=08=08=
+=08=08=08     =08=08=08=08=08done
+> >>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mount=
+ /tmp/nfs.img /mnt
+> >>>>
+> >>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# mkdir=
+ /mnt/nfs_root
+> >>>>
+> >>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# touch=
+ /etc/exports
+> >>>>
+> >>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# echo =
+'/mnt/nfs_root *(insecure,rw,async,no_root_squash)' >> /etc/exports
+> >>>>
+> >>>> root@intel-x86-64:/opt/wr-test/testcases/userspace/nfs-utils_v6# /opt/=
+wr-test/bin/svcwp.sh nfsserver restart
+> >>>> stopping mountd: done
+> >>>> stopping nfsd: ..........failed
+> >>>>     using signal 9:
+> >>>> ..........failed
+> >>> What does your "nfsserver" script do to try to stop/restart the nfsd?
+> >>> For a very long time the approved way to stop nfsd has been to run
+> >>> "rpc.nfsd 0".  My guess is that whatever script you are using still
+> >>> trying to send a signal to nfsd.  That no longer works.
+> >>>
+> >>> Unfortunately the various sysv-init scripts for starting/stopping nfsd
+> >>> have never been part of nfs-utils so we were not able to update them.
+> >>> nfs-utils *does* contain systemd unit files for sites which use systemd.
+> >>>
+> >>> If you have a non-systemd way of starting/stopping nfsd, we would be
+> >>> happy to make the relevant scripts part of nfs-utils so that we can
+> >>> ensure they stay up to date.
+> >> Actually, we use  service nfsserver restart  =3D>
+> >> /etc/init.d/nfsserver =3D>
+> >>
+> >> stop_nfsd(){
+> >>       # WARNING: this kills any process with the executable
+> >>       # name 'nfsd'.
+> >>       echo -n 'stopping nfsd: '
+> >>       start-stop-daemon --stop --quiet --signal 1 --name nfsd
+> >>       if delay_nfsd || {
+> >>           echo failed
+> >>           echo ' using signal 9: '
+> >>           start-stop-daemon --stop --quiet --signal 9 --name nfsd
+> >>           delay_nfsd
+> >>       }
+> >>       then
+> >>           echo done
+> >>       else
+> >>           echo failed
+> >>       fi
+> > The above should all be changed to
+> >     echo -n 'stopping nfsd: '
+> >     rpc.nfsd 0
+> >     echo done
+> >
+> > or similar.  What distro are you using?
+> >
+> > I can't see how this would affect your problem with IPv6 but it would be
+> > nice if you could confirm that IPv6 still doesn't work even after
+> > changing the above.
+> > What version of nfs-utils are you using?
+> > Are you should that the kernel has IPv6 enabled?  Does "ping6 ::1" work?
+> >
+> > NeilBrown
+> >
+> It works as expected.
+>=20
+> My distro is Yocto and nfs-utils 2.5.3.
 
-Btw, make the test work on 32 bits as well (just a matter of using a diffe=
-rent ucontext=2E) 
+Thanks.  I've sent a patch to openembedded to change the nfsserver
+script.
+
+Can you make the change to nfsserver and let me know if it fixes your
+problem?
+
+Thanks,
+NeilBrown
 
