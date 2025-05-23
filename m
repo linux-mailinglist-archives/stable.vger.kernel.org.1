@@ -1,85 +1,65 @@
-Return-Path: <stable+bounces-146203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E685AC2615
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 17:13:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26ED1AC269D
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 17:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B58543A6A1E
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 15:13:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C5EC1BA6160
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 15:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C7829375A;
-	Fri, 23 May 2025 15:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632F6293720;
+	Fri, 23 May 2025 15:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="OfFpnZrb"
+	dkim=pass (1024-bit key) header.d=perex.cz header.i=@perex.cz header.b="iyqdDaIy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+Received: from mail1.perex.cz (mail1.perex.cz [77.48.224.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014C6294A04;
-	Fri, 23 May 2025 15:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8075C14286;
+	Fri, 23 May 2025 15:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.48.224.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748013221; cv=none; b=O1ugJW7z4KQ/s+nuVZadUVgczVEz2FxdBbvii77TU+B9EEu82120AkJgJMFQPONCPKdNyCnLDhPNBp59Up0wIAEJNUDgwK5gqLtlg9Bolxosa39zyqyLcaGUkYdQnuWfTZKoYX9rv2LxqCG8UR2wO9Sw1sicMq2MwMKoBsd/eGY=
+	t=1748014932; cv=none; b=tGC7Lt8fCDNhe8/BNwnP+SD5k/zIpDWz+I1QGavS3iePO82jnEGiqgVEjDHW0bAvRxOL4M01nbFbO7AZ3mFHG5HKXx5v1K2yq6sog2xlrZHH3kI83DQdHvbbM1aPqpolbICSkGJEGntxvaj9pTkpfjF0bYj6Ur+SGKgemHPHC7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748013221; c=relaxed/simple;
-	bh=uOyGonm8yfbgp7OskrM4idTKpYUF1yuzrPmOindvKvQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=seWxPKhggnPPq1nRAkVdim5WS/aUZ+M3ApTF+p0JToCNeQvedg14BcJRg9Q6roY0HxtJwqj6HJOOCrSOMGobTQscamfncDKXsN6Gg5Ow6x2sXc0blE2aJ6rntM4SWCIAd07239QjWBZF8fLo3gy/jL8zxDF84y4Yt+yJqpWf2qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=OfFpnZrb; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1748013220; x=1779549220;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kMQVGktvP85IOY8wbmsxvLHMIbtjRyeUimHH5aWtTag=;
-  b=OfFpnZrbgYP/G7YxW/xDd4896gmeKlKDLSQtQdg6JQDOdZKcaYjiAGsD
-   KTjgd8TYRvd40+fp+LP3/52OaF4cvguNgOWLgLqDjU/rXAS1xUDufR2A/
-   2bNzv6mpiq3JkegVN5dGfPFLojHuvuddHiIlXHVzpGCqwU2irLX/bdZJN
-   sGKYMZPE/8iJaoCJzxBrMumL9d2QbT6XzLcNlGRuLdcqeqLFYXiqZJ7Hk
-   DOE1yMJDVlL97aPj+cHMvMwEw5UpY5fkUqP8f3ygSLyJKBWTOnCNKcH2m
-   XMaCBL1h2mKalHaSLg2bCJsfSJBatO/YcyhPOYI0FJ61SyWSQX8rJXKwo
-   w==;
-X-IronPort-AV: E=Sophos;i="6.15,309,1739836800"; 
-   d="scan'208";a="501964899"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 15:13:35 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [10.0.10.100:56144]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.46.128:2525] with esmtp (Farcaster)
- id adef3589-d368-455d-826d-d2152f3e5521; Fri, 23 May 2025 15:13:31 +0000 (UTC)
-X-Farcaster-Flow-ID: adef3589-d368-455d-826d-d2152f3e5521
-Received: from EX19D031EUB002.ant.amazon.com (10.252.61.105) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Fri, 23 May 2025 15:13:31 +0000
-Received: from dev-dsk-hmushi-1a-0c348132.eu-west-1.amazon.com
- (172.19.124.218) by EX19D031EUB002.ant.amazon.com (10.252.61.105) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Fri, 23 May 2025
- 15:13:23 +0000
-From: Mushahid Hussain <hmushi@amazon.co.uk>
-To: <efault@gmx.de>
-CC: <akpm@linux-foundation.org>, <anders.roxell@linaro.org>, <arnd@arndb.de>,
-	<broonie@kernel.org>, <conor@kernel.org>, <dan.carpenter@linaro.org>,
-	<f.fainelli@gmail.com>, <gregkh@linuxfoundation.org>, <hargar@microsoft.com>,
-	<jonathanh@nvidia.com>, <linux-kernel@vger.kernel.org>, <linux@roeck-us.net>,
-	<lkft-triage@lists.linaro.org>, <naresh.kamboju@linaro.org>,
-	<patches@kernelci.org>, <patches@lists.linux.dev>, <pavel@denx.de>,
-	<peterz@infradead.org>, <re@w6rz.net>, <rwarsow@gmx.de>, <shuah@kernel.org>,
-	<srw@sladewatkins.net>, <stable@vger.kernel.org>,
-	<sudipm.mukherjee@gmail.com>, <torvalds@linux-foundation.org>,
-	<vincent.guittot@linaro.org>, <hmushi@amazon.co.uk>,
-	<nh-open-source@amazon.com>, <sieberf@amazon.com>
-Subject: Re: [PATCH 6.12 000/122] 6.12.11-rc1 review
-Date: Fri, 23 May 2025 15:13:10 +0000
-Message-ID: <20250523151310.59864-1-hmushi@amazon.co.uk>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <b51f217d565609ae87395c8e23e62b15e489a0a4.camel@gmx.de>
-References: <b51f217d565609ae87395c8e23e62b15e489a0a4.camel@gmx.de>
+	s=arc-20240116; t=1748014932; c=relaxed/simple;
+	bh=/UK5PYr744dePV1rFCC+Hgw1hlnlpRDNs9zQXqxW5cA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XOIZNtjLlsSsBXbnptoifUObeG1+oYT7lJUHRNCcpoa8Zl7Cyw8VIVv3Wg7z0SaBJ2m81B2r/DnwAkdX+3OPfTf5Hl/HIalMnjc4nYIH1rM1z1oUAS9/IHFvCZm79MVmAKUfJBDZG1dT7sH/CmqoSf2RKm/Zi5b8jUfB7o3R644=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=perex.cz; spf=pass smtp.mailfrom=perex.cz; dkim=pass (1024-bit key) header.d=perex.cz header.i=@perex.cz header.b=iyqdDaIy; arc=none smtp.client-ip=77.48.224.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=perex.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perex.cz
+Received: from mail1.perex.cz (localhost [127.0.0.1])
+	by smtp1.perex.cz (Perex's E-mail Delivery System) with ESMTP id 5640F3CA38;
+	Fri, 23 May 2025 17:42:05 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.perex.cz 5640F3CA38
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=perex.cz; s=default;
+	t=1748014925; bh=8nnAngucW82YJxML0K9DCe0FvHzDoybvzHLDgAhGUwo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iyqdDaIyjbSzZknRRGtYiFEipVQFU3NOr6f5TCaDaFe7BjDTkzAP5B95Kwk03J169
+	 BztDaBRKyKj37P1C581qgIOjuaQE607d6O7vrC1BtygtbnrYDgJUjnOwCT5JAol+Ie
+	 ioRjj6QE5DI4GDaJh0yu0dP9u8D7GTzDiMM4eHVA=
+Received: from p1gen4.perex-int.cz (unknown [192.168.100.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: perex)
+	by mail1.perex.cz (Perex's E-mail Delivery System) with ESMTPSA;
+	Fri, 23 May 2025 17:41:57 +0200 (CEST)
+From: Jaroslav Kysela <perex@perex.cz>
+To: Linux Sound ML <linux-sound@vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	patches@opensource.cirrus.com,
+	stable@vger.kernel.org
+Subject: [PATCH] firmware: cs_dsp: Fix OOB memory read access in KUnit test (ctl cache)
+Date: Fri, 23 May 2025 17:41:51 +0200
+Message-ID: <20250523154151.1252585-1-perex@perex.cz>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,36 +67,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWB003.ant.amazon.com (10.13.139.172) To
- EX19D031EUB002.ant.amazon.com (10.252.61.105)
 
-> On Tue, 2025-01-28 at 15:39 +0100, Peter Zijlstra wrote:
-> > On Tue, Jan 28, 2025 at 12:46:07PM +0100, Mike Galbraith wrote:
-> >
-> >> Seems 6.13 is gripe free thanks to it containing 4423af84b297.
-> >>
-> >> I stumbled upon a reproducer for my x86_64 desktop box: all I need do
-> >> is fire up a kvm guest in an enterprise configured host.  That inspires
-> >> libvirt goop to engage group scheduling, splat follows instantly.
-> >>
-> >> Back 4423af84b297 out of 6.13, it starts griping, add it to a 6.12 tree
-> >> containing 6d71a9c61604, it stops doing so.
-> >
-> > Ooh, does something like the below (+- reverse-renames as applicable to
-> > .12) also help?
+KASAN reported out of bounds access - cs_dsp_ctl_cache_init_multiple_offsets().
+The code uses mock_coeff_template.length_bytes (4 bytes) for register value
+allocations. But later, this length is set to 8 bytes which causes
+test code failures.
 
->Yup, seems to, 6.13 sans 4423af84b297 stopped griping.
+As fix, just remove the lenght override, keeping the original value 4
+for all operations.
 
-Hi Peter,
-Are there any plans to backport this patch and 6d71a9c61604 into LTS versions
-as well? I'm seeing the exact same issue on 6.6 as well, where the bug in
-reweight results in incorrect vruntime calculation, leading to the deadline
-always being in future, rather than decreasing on each scheduler tick. This
-causes a task to run for a longer amount of time, starving other tasks on
-the runqueue.
+Cc: Simon Trimmer <simont@opensource.cirrus.com>
+Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: Richard Fitzgerald <rf@opensource.cirrus.com>
+Cc: patches@opensource.cirrus.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Jaroslav Kysela <perex@perex.cz>
+---
+ drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-The issue disappears when testing with 4423af84b297 and your patch to avoid
-tripping on WARN in place_entity(). I'm happy to push the backported patches
-into 6.12 and 6.6, if that's alright.
+diff --git a/drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c b/drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c
+index 83386cc978e3..ebca3a4ab0f1 100644
+--- a/drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c
++++ b/drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c
+@@ -776,7 +776,6 @@ static void cs_dsp_ctl_cache_init_multiple_offsets(struct kunit *test)
+ 					      "dummyalg", NULL);
+ 
+ 	/* Create controls identical except for offset */
+-	def.length_bytes = 8;
+ 	def.offset_dsp_words = 0;
+ 	def.shortname = "CtlA";
+ 	cs_dsp_mock_wmfw_add_coeff_desc(local->wmfw_builder, &def);
+-- 
+2.49.0
+
 
