@@ -1,139 +1,144 @@
-Return-Path: <stable+bounces-146158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8CCAC1BA7
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:52:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76DF4AC1BAA
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 06:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04B401C02A69
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 04:52:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 042F2500E9D
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 04:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCED223DCC;
-	Fri, 23 May 2025 04:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428E32236F2;
+	Fri, 23 May 2025 04:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mVjheUK3"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="EfiZDZwK";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OmLZFlZm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468092DCBF2;
-	Fri, 23 May 2025 04:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955382248BE;
+	Fri, 23 May 2025 04:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747975952; cv=none; b=NLit7wEhZr/T3tR/QlPqXe453FdvOPrlvxWkieUvxxfGWSeAVXmFX3dhWcjrgikKtKHgi2vXA29MRNQR7hj6/yuqDZx10Tb1FD+q3BxSHTMkXV7wOSvmtI4AkKE9LgCd7xs4TXyqJXHA/2BGCJ8mcSf2/I9vmopRn+76RokmYUc=
+	t=1747975955; cv=none; b=RAlJdNN+z6BWduIi4LIq+ooaZ5nOpJI6dyHaBDJ7Z9LWgnGZyFAqjtSSGlC+h43ZkBi0FnH2thi4qAIavKTeyoDwHNj13zmatcpaysOCJgZ8W93H1S8dgY/HSmOaPvZIl0m+I+v2PYVkD5bt06w+IhpzVa+jWu5Gs5Oi2HO0TuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747975952; c=relaxed/simple;
-	bh=0c+kIPvS6RoW+r58sZUF2YO2NBcXGNhW3/L80dui7hc=;
+	s=arc-20240116; t=1747975955; c=relaxed/simple;
+	bh=ZteS8kRhMdAwufpGY+Iwq0uzOEYrQzTuwlqR/INtplM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NcS32Lc98gqGF2Ih5t3Ycv0yvlR4JaaooNazJhYU9Q4k5BuIT2c32AGQTM3jFMXUeWdj4HezW/Ezj1nlLhMiSJ5WzfSLXCtrwpwzXi1c6MEjkrCMw5PlH3+XJskNtQwzMSSGxONjNRcQHH40KhJz0eiBp/xPkdLziHFWv9fRe/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mVjheUK3; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747975950; x=1779511950;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0c+kIPvS6RoW+r58sZUF2YO2NBcXGNhW3/L80dui7hc=;
-  b=mVjheUK3mwsowQKZJVWIFZsUd2Z2REmtUlXaujU9Qo/r5zOL9Jlodqfa
-   7eQsN84Mnj77DPWKSmuh+yyFMCvYRKA8YOOFscj3XvsXiMBpmDfKgvmyw
-   g+aiuwU49vLYNHAtcPgm1M/RshoWg5bMCDXjeropLiFmhbf5EYPDCpWW3
-   YAxd/W+bpOLJpcXGGoOuiNfORMK/CjNIOW2pPKh2ewHYNFnjvFHs3KPf8
-   9NTo+dBq6mUIT1F08xc9cO2YbEYjT0u/ZcQwqT614z77y65yU5xy+PnP1
-   0bxJ7rIkQJFGUFXaogf+sK8oEFlpUzNv/pDeEMpc1zUr58DAQscguxN5G
-   A==;
-X-CSE-ConnectionGUID: GN8dG0vQTpGHbaJCKfXpgg==
-X-CSE-MsgGUID: v8qPSW82SBWKrdyqh9cssg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="60677841"
-X-IronPort-AV: E=Sophos;i="6.15,307,1739865600"; 
-   d="scan'208";a="60677841"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 21:52:29 -0700
-X-CSE-ConnectionGUID: cMHTX6XNQqqVWyAzImDssg==
-X-CSE-MsgGUID: yOUfxNrBQkeGo40IKOXGdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,307,1739865600"; 
-   d="scan'208";a="140825990"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 21:52:26 -0700
-Date: Fri, 23 May 2025 06:51:51 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] net/mlx5: Add error handling in
- mlx5_query_nic_vport_node_guid()
-Message-ID: <aC/+51369a/LgCdU@mev-dev.igk.intel.com>
-References: <20250523024304.1216-1-vulab@iscas.ac.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UrcKYEwsBh/EyILFKxsdcVEPk3leOosyaXpkngNvCT2kljvm3HWGjb077cu6pLvyNnSw5BQ3/7uhuscVg+n2A9A0fZi698EdOsPp3MtUbYEVZIgT5CgtYySQc9sHMLaEPYY2UAoReimPHHlFHUihg5K3T9139cm4uU3qFNhaUNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=EfiZDZwK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OmLZFlZm; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 0F0B92540118;
+	Fri, 23 May 2025 00:52:31 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 23 May 2025 00:52:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1747975950;
+	 x=1748062350; bh=0ClJm+/YNEDEgXWEHcjEhQmkdi9HLEXaXq1Oo4O9Dgc=; b=
+	EfiZDZwKeH4PWxQExvCctmMsvOQZ3XgBsUzHUrzXpF5rJNY7oU4EkzAHWZ8MWdvg
+	c/vcGHxHarhosb0WPIkv4DFqoSkfD4ivuMXwFEGDaSN062cj1FEhzH1Jm+a2kffJ
+	wW8917JTMvcjSwyQc9X8Ykt5ZFf86KFnjRY8NfIfh/ipBTJIQ7ZVXnj+qBA1OjlN
+	PcJ016hU64DHQNyEIgcVUaBm5RcL50izb5pUKuC2dNO5vS+DPxRaehjcMvaOk9Ei
+	ChUvZoDMPX07zHrEyaMd/zGEKiLTHcK8cJ+qUs6lC0KcJ2teM6qQNCyTGXulgV4F
+	zl8W8xgSpIL4MLfrV0M4NQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1747975950; x=
+	1748062350; bh=0ClJm+/YNEDEgXWEHcjEhQmkdi9HLEXaXq1Oo4O9Dgc=; b=O
+	mLZFlZmAfH4gANVWkrJ4Z3kStcNp7FEV16laI38jCJwV0fZ1GAVyS4UJCDwJ8Dg6
+	K/HVDzh+pcbNqlHm6wCDiXCKILvO5+13yEE5XGLTSypA0vnycQ6iQ59GMmC7QFJK
+	suU5bdKoLjmMZwMKbbm1SqGdi/TSKNjNvsNh4VlfOoE/c5FygzYD4LyWh6Mq+5sw
+	cKM3boNQWO/t9vAwmeGImoAgzU4TnVFm0KgGq2824sS7yPmsATeQjbLjZ1Yh5Y2i
+	4XN8Dw+T6qCHIaJQE3iPwlRPiC/eSVApC6cvvhOJdyXwgN7tS5UseCNottZykSfw
+	cVqJo6hbcUpeg1kcFcl5w==
+X-ME-Sender: <xms:Dv8vaGKi9Z8zGOZGfqIii1YfplHsJcS2eMcSZ_Ef5fRGEvQMijnSHA>
+    <xme:Dv8vaOJLyMFS1Ru0SGuJPiOOPBuBVjG5NnkAluXhTWlCNiPmqD_VBqGUmRx5fQ8Wf
+    ODWL3JZoMSMyQ>
+X-ME-Received: <xmr:Dv8vaGuzLV4LkFH37g3v3uLU0ziG-UMAGMH9NZ2aK-PVPbi-Vws4vvKYmH8Qhf-kFEQ7gkqlBwCsZ2jVeBhR6v-ExHW0Y-U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdejledvucdltddurdegfedvrddttd
+    dmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgf
+    nhhsuhgsshgtrhhisggvpdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttd
+    enucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhgg
+    tggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrh
+    horghhrdgtohhmqeenucggtffrrghtthgvrhhnpeelkeehjeejieehjedvteehjeevkedu
+    geeuiefgfedufefgfffhfeetueeikedufeenucffohhmrghinhepkhgvrhhnvghlrdhorh
+    hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhr
+    vghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtph
+    houhhtpdhrtghpthhtohepfihquhesshhushgvrdgtohhmpdhrtghpthhtohepshhtrggs
+    lhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvqdgtoh
+    hmmhhithhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghlmhesfhgs
+    rdgtohhmpdhrtghpthhtohepjhhoshgvfhesthhogihitghprghnuggrrdgtohhmpdhrtg
+    hpthhtohepughsthgvrhgsrgesshhushgvrdgtohhm
+X-ME-Proxy: <xmx:Dv8vaLbyLp4qqGZ-ilZrYjDZ_3HalOU9Pevja46ErNfzqPIk2BGJtQ>
+    <xmx:Dv8vaNafGFgnf3zJjGE7WeJ3siv9kdGr4laNpksXeHfzEKfwunnZmw>
+    <xmx:Dv8vaHDuRBBNkJEvfnOX-ixmraiPoUMElCxmF0h_LZzzH7DXaclkIg>
+    <xmx:Dv8vaDa3bz1Zltf0ssNHqq9vGs3FARL7f03TVsH32LWdM4uGGQAQOQ>
+    <xmx:Dv8vaL8MbgAjit0a5TIGVXZg-409RCVEH9voWgTbjNfMQ45T2U327yAd>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 23 May 2025 00:52:30 -0400 (EDT)
+Date: Fri, 23 May 2025 06:52:28 +0200
+From: Greg KH <greg@kroah.com>
+To: Qu Wenruo <wqu@suse.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: Re: Patch "btrfs: allow buffered write to avoid full page read if
+ it's block aligned" has been added to the 6.14-stable tree
+Message-ID: <2025052321-prepay-defog-2986@gregkh>
+References: <20250522210549.3118269-1-sashal@kernel.org>
+ <6377b61b-c16e-4d10-becc-53ac4af72725@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250523024304.1216-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6377b61b-c16e-4d10-becc-53ac4af72725@suse.com>
 
-On Fri, May 23, 2025 at 10:43:04AM +0800, Wentao Liang wrote:
-> The function mlx5_query_nic_vport_node_guid() calls the function
-> mlx5_query_nic_vport_context() but does not check its return value.
-> A proper implementation can be found in mlx5_nic_vport_query_local_lb().
+On Fri, May 23, 2025 at 06:51:18AM +0930, Qu Wenruo wrote:
 > 
-> Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-> the out buffer via kvfree() and return error code.
 > 
-> Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-> Cc: stable@vger.kernel.org # v4.5
-> Target: net
+> 在 2025/5/23 06:35, Sasha Levin 写道:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >      btrfs: allow buffered write to avoid full page read if it's block aligned
+> > 
+> > to the 6.14-stable tree which can be found at:
+> >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >       btrfs-allow-buffered-write-to-avoid-full-page-read-i.patch
+> > and it can be found in the queue-6.14 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> 
+> Please drop this patch from all stable branches.
+> 
+> Although this patch mentions a failure in fstests, it acts more like an
+> optimization for btrfs.
+> 
+> Furthermore it relies quite some patches that may not be in stable kernels.
+> 
+> Without all the dependency, this can lead to data corruption.
+> 
+> Please drop this one from all stable kernels.
 
-You forgot to drop this tag (Simon replay to v3:
-https://lore.kernel.org/netdev/20250522154057.GI365796@horms.kernel.org/#R)
+Now dropped, thanks.
 
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
-> v4: Fix code error.
-> v3: Explicitly mention target branch. Change improper code.
-> v2: Remove redundant reassignment. Fix typo error.
-> 
->  drivers/net/ethernet/mellanox/mlx5/core/vport.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-> index 0d5f750faa45..c34cd9a1a79b 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-> @@ -465,19 +465,22 @@ int mlx5_query_nic_vport_node_guid(struct mlx5_core_dev *mdev, u64 *node_guid)
->  {
->  	u32 *out;
->  	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-> +	int err;
->  
->  	out = kvzalloc(outlen, GFP_KERNEL);
->  	if (!out)
->  		return -ENOMEM;
->  
-> -	mlx5_query_nic_vport_context(mdev, 0, out);
-> +	err = mlx5_query_nic_vport_context(mdev, 0, out);
-> +	if (err)
-> +		goto out;
->  
->  	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
->  				nic_vport_context.node_guid);
-> -
-> +out:
->  	kvfree(out);
->  
-> -	return 0;
-> +	return err;
->  }
->  EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
->  
-> -- 
-> 2.42.0.windows.2
+greg k-h
 
