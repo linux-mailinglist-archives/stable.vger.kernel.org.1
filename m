@@ -1,99 +1,84 @@
-Return-Path: <stable+bounces-146218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3919AC2938
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 20:01:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F043AAC2993
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 20:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99929A405BA
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 18:00:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 699307BD042
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 18:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB45A299A87;
-	Fri, 23 May 2025 18:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01036295D85;
+	Fri, 23 May 2025 18:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XmgGvhJf"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="GMd+ofqT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B650629995C;
-	Fri, 23 May 2025 18:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4204293736;
+	Fri, 23 May 2025 18:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748023251; cv=none; b=MXP9qZSgktbtkNm0IYPGIqmSPwPa9ZHK2AYuGAmx9LBo9dy5fPw/oKILVf4lUj/q/tOtstdWWANreRJ4UqGmCC+uoztLsb6aGEmHauChiLAVrvUOcfheIx3AlTvE2iZW4m/jmj0CmnFO/Q/4mCZdzWjswpblqNM32RBuHyV/oGA=
+	t=1748024615; cv=none; b=NZ4evkFD9CfcV58c4nBB1tk9RV0aiHBcAR5Lp9Pg8b+yHbvgaiXhabUldojQZE/UGmmQKCvYYDQPXUz1HlTsW/W9hUDnwqxfOSNM7z3SnIKYxY0i3ceIGqQX05u9SBAjChtD208vQiqW4OphL9/VtMdN+6efEflVr4LcObTmQBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748023251; c=relaxed/simple;
-	bh=P17Zfxz2n2RfzH4WAydSBcFAFtqOObw31Vg112Y7hKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMfT++xr+CqY/dXnUjh7aEX76pwnJRtoXzHzen/FPdzyhtTDrou9+KqhN11v4cxNlH64ZnvaWEoOKgYKrNnzrIZfdSDavqK9TbgI6DEbS6b2G3Xi3K9w5en16uFV+EqqnSEGwuZ/6iIkKcDKAEHVyrmQXnpVgMCMcLmHTzhIRRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XmgGvhJf; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-550eb498fbbso169204e87.2;
-        Fri, 23 May 2025 11:00:49 -0700 (PDT)
+	s=arc-20240116; t=1748024615; c=relaxed/simple;
+	bh=kk1IdyuvQHEYLkwFxKS16QH/uS4bDTicb8ITJd/htD4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JMYXAcyRN5GbFcEKBvvtg8QkDIZv1VoQyTE76G0nUAq+pMsxG7aD00hjYLpJVEGb1kZHrNdpEzPNqisv8WTmzkOypQ9xZuI1cxOILfRKZw20G3wHw7yBHEUzwbeVt7WqnTP4wsqfja/vhNzLbaytaQrU8T99ENoglvEF/9IxaFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=GMd+ofqT; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748023248; x=1748628048; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VxVuqRBC1GBPpIyaNgOIVdlRRiSNj7gXg2aZMTV46j0=;
-        b=XmgGvhJfqT6TSQYnGmeifJN4N9MtNXy3UZfrqRZV/Xe93XAQaZ5mkiUpwkhLt4hJdp
-         LaptWl24UIzqcuqMYmCmuZ5bNszeWpbzgdTQMOxzEu8r0lxSOBU42OAuIy3hQVY1Cmy4
-         3tHdrIhENSLQ+g+DDYgIuH3VKG3kC1GdJpihudDWE3bf6coEdlcKI8TK+BV9NDYFssWg
-         4CCJbOZB6U14z9PnOcTpiDnRdvvP9RLSTJNUsCpnDH/IhBha5vPeOgHdsQxnFqI91RAe
-         AjZqoB3kq1QKIBUWA/EYod9CCEGwcn1OJD0MfTxUEG9uqEwnd+eQ/ZtgiCBitncLnx+s
-         yoJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748023248; x=1748628048;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VxVuqRBC1GBPpIyaNgOIVdlRRiSNj7gXg2aZMTV46j0=;
-        b=UcOZgOHR359Fknut+82zn2BwgfTUxSvlMXEp8/nf640ZUHWrCSgEarBRM3Ku7jtiUH
-         ealjNZkLFkSp6iX3ytOMz8diriaYb1fB4XCZSqWc/97zjWrEpBWWG0mfJ1osBkkdR9PP
-         q5OygZDc0hoDnh2mv8+N5SYrHE1B25GRLm8D/FxM4p10Ignq5Xnz3HFOjxTQjlm3ttXA
-         rLPDWgiEGnG+iL64dGrQTIzLXGVzV/cy0010BSQsuaOlL4hJ7RooyIfo8h5IsMi2oUne
-         hIV92QcP2XUsaGY3skun0e2bGW5SKZDIzYWyMLCwowPAjw6XW++NG1U4QNf/6lSSBxZ8
-         plvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbBfuqKhntAlb+KBxlqReoXXvB6lIyHIAy+6YL+2Cndie8njCP8r3nr4o61SjjI8ROHI/lWwav7+3/cEA=@vger.kernel.org, AJvYcCXF6SUPieM7Loge9NzFpVsb63Hlo3imMkBx/A7JZ5ipd1Cg2fxMGoOlawx8V9Hakbbv6flrqdHn@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG6w23Pn1vp7+YPcjbWON9P+KHRV6Bh1N0P6Atznol79GY6QCZ
-	PYeeiklTC0QSsikVxH3bw4tfDijqAv2tsfuDzzF6une1qhGPwDj7/kPY
-X-Gm-Gg: ASbGncsqF2tHdTVhSPbaXhhNCDckcBgnMtG8cK/VOpoYJFgh0T44s5e+c0f2/QNhVkq
-	/KCQFjYlFB4f1dviZvauorB6MCf9Uq/sDvRSsi6VKnlkN7y+/dSLKK2jrDJewL5ate/4yzCtMEy
-	ONornTPH5heul5z/75kxWgrAKOH1BE+af5vN7Xk8EEnTb0Nz/Ez1+iFHLnOGadOcjCHBLZdssCp
-	A6A3Uk0jaZooAK4/52yw4ZI/425UU+Ei0hbP5m2lzZ+n1OJZJl+S96VR7SoY21h9JVapVQMIi0j
-	IyengI4BVJ4RyIfkfyEgru6fBz+EWibLyz7OqVyN8bqbB+AZFCurdCe7otIDIeWIG6My3DRvUAS
-	pXWY=
-X-Google-Smtp-Source: AGHT+IEE1zg3DVaFvcNyPaaw6b4BYZM56iOOj2+zeBW01gJZmH3b+cTO9ttWG5h1srT2FQxw42y55Q==
-X-Received: by 2002:a05:6512:b8f:b0:54f:c055:dd7e with SMTP id 2adb3069b0e04-5521c7ba351mr113411e87.31.1748023247387;
-        Fri, 23 May 2025 11:00:47 -0700 (PDT)
-Received: from localhost.localdomain ([176.33.69.152])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e6f3148csm3943316e87.66.2025.05.23.11.00.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 May 2025 11:00:46 -0700 (PDT)
-From: Alper Ak <alperyasinak1@gmail.com>
-To: shannon.nelson@amd.com,
-	brett.creeley@amd.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	alperyasinak1@gmail.com,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/1] pds_core: Prevent possible adminq overflow/stuck condition
-Date: Fri, 23 May 2025 20:58:35 +0300
-Message-ID: <20250523175835.3522650-2-alperyasinak1@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250523175835.3522650-1-alperyasinak1@gmail.com>
-References: <20250523175835.3522650-1-alperyasinak1@gmail.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1748024614; x=1779560614;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ae8iei/MxNZ1GAywSlI3IUvxi3FmxgZOmA0ImXXwfDo=;
+  b=GMd+ofqTXuOFD/Yzak3KREAqLtV86NjcXX7Ru3XFGL/6TwgyBw3mHUrn
+   X5dZuYJsFrfHz6/cUyLZAuEDU13bJ5h9j+MIy4N+H1X9jCw09Wyz9WZbc
+   +C8WKdkTZrYGcyu95FO5PLMZOts1mIGOrAN+RVBF7HOH2soTzJ0VcKK+O
+   6GR9cdRPiZP+W7QvFrFkZcw1tEJyE8RSRn686ohsFbTYUpvglkZ8dmZMf
+   x/m5bFx/Rk1qLShA8E2AEFhyAV1GWrUmclMN1lf1RthKakGw2zm4oMrRQ
+   CWAB8ZkJN1zRqmkQQQG/CKtrnSilgxlu8Q5gNJS4c8YTyzZ8PjP42tWUi
+   g==;
+X-IronPort-AV: E=Sophos;i="6.15,309,1739836800"; 
+   d="scan'208";a="96732876"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 18:23:28 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:47636]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.22:2525] with esmtp (Farcaster)
+ id f65fbf90-224c-415e-a7b2-3925684c748d; Fri, 23 May 2025 18:23:27 +0000 (UTC)
+X-Farcaster-Flow-ID: f65fbf90-224c-415e-a7b2-3925684c748d
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 23 May 2025 18:23:27 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.142.204.12) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 23 May 2025 18:23:23 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>
+CC: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
+	"Keith Busch" <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>, Christoph
+ Hellwig <hch@lst.de>, Wenjia Zhang <wenjia@linux.ibm.com>, Jan Karcher
+	<jaka@linux.ibm.com>, Steve French <sfrench@samba.org>,
+	<netdev@vger.kernel.org>, <mptcp@lists.linux.dev>,
+	<linux-nfs@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-nvme@lists.infradead.org>, <stable@vger.kernel.org>
+Subject: [PATCH v2 net-next 4/7] smb: client: Add missing net_passive_dec().
+Date: Fri, 23 May 2025 11:21:10 -0700
+Message-ID: <20250523182128.59346-5-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250523182128.59346-1-kuniyu@amazon.com>
+References: <20250523182128.59346-1-kuniyu@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,75 +86,39 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D044UWB004.ant.amazon.com (10.13.139.134) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Brett Creeley <brett.creeley@amd.com>
+While reverting commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock
+after rmmod"), I should have added net_passive_dec(), which was added
+between the original commit and the revert by commit 5c70eb5c593d ("net:
+better track kernel sockets lifetime").
 
-[ Upstream commit d9e2f070d8af60f2c8c02b2ddf0a9e90b4e9220c ]
+Let's call net_passive_dec() in generic_ip_connect().
 
-The pds_core's adminq is protected by the adminq_lock, which prevents
-more than 1 command to be posted onto it at any one time. This makes it
-so the client drivers cannot simultaneously post adminq commands.
-However, the completions happen in a different context, which means
-multiple adminq commands can be posted sequentially and all waiting
-on completion.
+Note that this commit is only needed for 6.14+.
 
-On the FW side, the backing adminq request queue is only 16 entries
-long and the retry mechanism and/or overflow/stuck prevention is
-lacking. This can cause the adminq to get stuck, so commands are no
-longer processed and completions are no longer sent by the FW.
-
-As an initial fix, prevent more than 16 outstanding adminq commands so
-there's no way to cause the adminq from getting stuck. This works
-because the backing adminq request queue will never have more than 16
-pending adminq commands, so it will never overflow. This is done by
-reducing the adminq depth to 16.
-
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250421174606.3892-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-(cherry picked from commit 2982e07ad72b48eb12c29a87a3f2126ea552688c)
-Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+Fixes: 95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock after rmmod"")
+Cc: <stable@vger.kernel.org> # 6.14.x
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 ---
- drivers/net/ethernet/amd/pds_core/core.c | 5 +----
- drivers/net/ethernet/amd/pds_core/core.h | 2 +-
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ fs/smb/client/connect.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index b3fa867c8ccd..c2ef55cff6b3 100644
---- a/drivers/net/ethernet/amd/pds_core/core.c
-+++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -413,10 +413,7 @@ int pdsc_setup(struct pdsc *pdsc, bool init)
- 	if (err)
- 		return err;
-
--	/* Scale the descriptor ring length based on number of CPUs and VFs */
--	numdescs = max_t(int, PDSC_ADMINQ_MIN_LENGTH, num_online_cpus());
--	numdescs += 2 * pci_sriov_get_totalvfs(pdsc->pdev);
--	numdescs = roundup_pow_of_two(numdescs);
-+	numdescs = PDSC_ADMINQ_MAX_LENGTH;
- 	err = pdsc_qcq_alloc(pdsc, PDS_CORE_QTYPE_ADMINQ, 0, "adminq",
- 			     PDS_CORE_QCQ_F_CORE | PDS_CORE_QCQ_F_INTR,
- 			     numdescs,
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index 61ee607ee48a..421371408503 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -16,7 +16,7 @@
-
- #define PDSC_WATCHDOG_SECS	5
- #define PDSC_QUEUE_NAME_MAX_SZ  16
--#define PDSC_ADMINQ_MIN_LENGTH	16	/* must be a power of two */
-+#define PDSC_ADMINQ_MAX_LENGTH	16	/* must be a power of two */
- #define PDSC_NOTIFYQ_LENGTH	64	/* must be a power of two */
- #define PDSC_TEARDOWN_RECOVERY	false
- #define PDSC_TEARDOWN_REMOVING	true
---
-2.43.0
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 37a2ba38f10e..afac23a5a3ec 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3359,6 +3359,7 @@ generic_ip_connect(struct TCP_Server_Info *server)
+ 
+ 		sk = server->ssocket->sk;
+ 		__netns_tracker_free(net, &sk->ns_tracker, false);
++		net_passive_dec(net);
+ 		sk->sk_net_refcnt = 1;
+ 		get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
+ 		sock_inuse_add(net, 1);
+-- 
+2.49.0
 
 
