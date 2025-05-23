@@ -1,108 +1,122 @@
-Return-Path: <stable+bounces-146152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7951AC1AC8
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 05:49:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EE2AC1AD6
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 05:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321C31B68446
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 03:50:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DDFF3B1569
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 03:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42EF22129A;
-	Fri, 23 May 2025 03:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EF317ADF8;
+	Fri, 23 May 2025 03:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="KsvorOcf"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="S9OzoP15"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E8519ADBF;
-	Fri, 23 May 2025 03:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D502DCBE7
+	for <stable@vger.kernel.org>; Fri, 23 May 2025 03:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747972166; cv=none; b=q7tY1Jxh73GqjMuwRT430GCtbXAhgK5c6nTb3JcS5RbFpxQbbtVtZlIruBy1Z1wCt0L3usqqXDp3Tc/vJX/Wws/RramYu5ANR6c3V/5plRJzVHUnEBcFnAGXgnZVR1KOBQ7tEvi7HtAQX1X0YwfxFVC7eCE+2su5IH+cvPaQG5I=
+	t=1747972631; cv=none; b=GbM8SFewL1WrDgZgMzCd7uYY3c1P9YL1qCPOsUsXop+c18lPI75dB5GS3SMpOSvmHFmbxi1Z5urlLOkSTP4myPj/eov+4iE7HZW0QJShZP1mAcZD4IW/5prOe+gFRvs+ay9BSZOtgpqqR/uQok0z3RXlgX8xhz77zkwx+gv/xZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747972166; c=relaxed/simple;
-	bh=DpSrGOdy7vLavJphaFDZF+lJ+ZUz8BU9EXeH3ZXqCNs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IZniTkMhIvoXFkKyOrYS0oJS2wRR2eO90/gjlsg2ubUpIK6GXvJeQY+gVvzM7FrsfXkVoFaAEvHYgWf6Qu7Ir8HzzTZreBphF8YqTso+Hr9HdjvF60nxddqo6e4oc92jRV/MYVSmMRQ967yUYXPZVG76BempN/NtwJIe6O37qV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=KsvorOcf; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [IPV6:2601:646:8081:9485:40c5:16f6:92c4:44cf] ([IPv6:2601:646:8081:9485:40c5:16f6:92c4:44cf])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54N3mnmB3287516
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 22 May 2025 20:48:50 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54N3mnmB3287516
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1747972131;
-	bh=0+y2JN5llR4Gfib/fV4eg/92zfayiIPRRtSpX9qWiZM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KsvorOcfwMjV5DhjJYlk6PqGAVVBpdo0Ay1mKoNEc4uDj+UAZiqUPyoqsmCWbxXBt
-	 5AozE/rs2TmbAPrLdB12URBcs+Vcnv5nz3AmXmCznoSOCmSYQNwGRQdolL6KivCIEN
-	 TKMLmne7KOEZIffr+Q0zBIqTAVIiTOgxDdNR0X6Q5vONA9ugMDa+3ZiXmsaF3dg4GQ
-	 UhGlekNxErudGxzw7RhnGfX3WYh/DQogo2GKhQnIS9hJ21mDzZGjHVjV7EK9NfrI/Z
-	 qsGxMXEdA6qTSFht5d+dKN/MKJp+OIJTxX6KPMfh8Z+1IepQhAqHj25oMSi807WIlZ
-	 j/ZI9lBARF8JA==
-Message-ID: <ec1af0a2-d07a-4963-bae7-8a7f559798bd@zytor.com>
-Date: Thu, 22 May 2025 20:48:44 -0700
+	s=arc-20240116; t=1747972631; c=relaxed/simple;
+	bh=1wmftH4+1CyP4uZ75vOAyuBVMc6P1BmvNKUb+IESNQc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=nwG2iuJ6HnaeUWhRsHpxd502XuQcz8/NTJcF7gZDSEuayvMr4glwgztD0DrOTIXwaSw302bDxXLHYWOIQdHs3SlYPyQfap8GJWp2FgUnbtPFhypNKZt1d9DyTo3Z61Kn4Gly6wOgnv1Nkob0x/57wtpqHnnmfENzjQhGxFoDmeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=S9OzoP15; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1747972614;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u6qNdPv7J8gfgypOptH2B2wxSfGN00CcXcZhVQxMpKw=;
+	b=S9OzoP15OwVpDAPDuHOpq6gcuxnTztYLM95nwFD4B9AK0NZwuCkeMbRE0EBh8cROyAudfN
+	T88Cj2bQRKe0iodB9Lo34vZXtKv8Zoa2alqS/LtQ+5NS4kLuvg4xwkpuyC996wzkPdrQ1s
+	DL+c8yhMEtO6U1+kbnDaI1lCJxj1EMM=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] x86/fred/signal: Prevent single-step upon ERETU
- completion
-To: Andrew Cooper <andrew.cooper3@citrix.com>,
-        Dave Hansen <dave.hansen@intel.com>, "Xin Li (Intel)" <xin@zytor.com>,
-        linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, peterz@infradead.org,
-        stable@vger.kernel.org
-References: <20250522171754.3082061-1-xin@zytor.com>
- <e4f1120b-0bff-4f01-8fe7-5e394a254020@intel.com>
- <ad8d3a12-25f3-4d57-8f34-950b7967f92b@citrix.com>
- <3D4D48D6-D6E7-4391-8DCF-6B9D307FE2E2@zytor.com>
- <0a4db439-e402-4b6a-8aba-79a3c0398d9a@citrix.com>
-Content-Language: en-US
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <0a4db439-e402-4b6a-8aba-79a3c0398d9a@citrix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
+Subject: Re: [PATCH] mm/hugetlb: fix kernel NULL pointer dereference when
+ replacing free hugetlb folios
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <4e408146-7c77-4f6d-90e8-bb311d7ab53d@126.com>
+Date: Fri, 23 May 2025 11:56:11 +0800
+Cc: Oscar Salvador <osalvador@suse.de>,
+ akpm@linux-foundation.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ 21cnbao@gmail.com,
+ david@redhat.com,
+ baolin.wang@linux.alibaba.com,
+ liuzixing@hygon.cn
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <299A777D-DC94-4724-BAD7-DD02F7CDBAFA@linux.dev>
+References: <1747884137-26685-1-git-send-email-yangge1116@126.com>
+ <644FF836-9DC7-42B4-BACE-C433E637B885@linux.dev>
+ <aC63fmFKK84K7YiZ@localhost.localdomain>
+ <ff6bd560-d249-418f-81f4-7cbe055a25ec@126.com>
+ <aC8PRkyd3y74Ph5R@localhost.localdomain>
+ <3B8641A1-5345-44A5-B610-9BCBC980493D@linux.dev>
+ <aC974OtOuj9Tqzsa@localhost.localdomain>
+ <DF103E57-601C-4CBB-99CA-088E1C29F517@linux.dev>
+ <4e408146-7c77-4f6d-90e8-bb311d7ab53d@126.com>
+To: Ge Yang <yangge1116@126.com>
+X-Migadu-Flow: FLOW_OUT
 
-On 5/22/25 17:10, Andrew Cooper wrote:
->>>
->>> ~Andrew
->> SIGTRAP → sigreturn. Basically, we have to uplevel the suppression behavior to the kernel (where it belongs) instead of doing it at the ISA level. 
-> 
-> So the problem is specifically that we're in a SYSCALL context (from
-> FRED's point of view), and we rewrite state in the FRED FRAME to be
-> another context which happened to have eflags.TF set.
-> 
-> And the combination of these two triggers a new singlestep to be pending
-> immediately.
-> 
-> I have to admit that I didn't like the implication from the SYSCALL bit,
-> and argued to have it handled differently, but alas.  I think the real
-> bug here is trying to ERETU with a splice of two different contexts
-> worth of FRED state.
-> 
 
-To some degree it is, yes. And it is sigreturn that does that splicing.
 
-But it is desirable to be able to single-step across sigreturn if one is
-debugging from inside the signal handler, hence we should not clearing
-TF if it is set on sigreturn entry.
+> On May 23, 2025, at 11:46, Ge Yang <yangge1116@126.com> wrote:
+>=20
+>=20
+>=20
+> =E5=9C=A8 2025/5/23 11:27, Muchun Song =E5=86=99=E9=81=93:
+>>> On May 23, 2025, at 03:32, Oscar Salvador <osalvador@suse.de> wrote:
+>>>=20
+>>> On Thu, May 22, 2025 at 08:39:39PM +0800, Muchun Song wrote:
+>>>> But I think we could use "folio_order() > MAX_PAGE_ORDER" to =
+replace the check
+>>>> of hstate_is_gigantic(), right? Then ee could remove the first =
+parameter of hstate
+>>>> from alloc_and_dissolve_hugetlb_folio() and obtain hstate in it.
+>>>=20
+>>> Yes, I think we can do that.
+>>> So something like the following (compily-tested only) maybe?
+>>>=20
+>>> =46rom d7199339e905f83b54d22849e8f21f631916ce94 Mon Sep 17 00:00:00 =
+2001
+>>> From: Oscar Salvador <osalvador@suse.de>
+>>> Date: Thu, 22 May 2025 19:51:04 +0200
+>>> Subject: [PATCH] TMP
+>>>=20
+>>> ---
+>>>  mm/hugetlb.c | 38 +++++++++-----------------------------
+>>>  1 file changed, 9 insertions(+), 29 deletions(-)
+>> Pretty simple. The code LGTM.
+>> Thanks.
+>=20
+> Thanks.
+>=20
+> The implementation of alloc_and_dissolve_hugetlb_folio differs between =
+kernel 6.6 and kernel 6.15. To facilitate backporting, I'm planning to =
+submit another patch based on Oscar Salvador's suggestion.
 
-This is in fact exactly analogous to ERETU ignoring the syscall bit if
-TF is set before ERETU is executed, just one abstraction level higher up
-in the stack.
+A separate improving patch LGTM.
 
-	-hpa
+>=20
 
 
