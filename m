@@ -1,75 +1,78 @@
-Return-Path: <stable+bounces-146217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6654AC2935
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 20:00:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3919AC2938
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 20:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72A284A7F9E
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 18:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99929A405BA
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 18:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2968F22A1CD;
-	Fri, 23 May 2025 18:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB45A299A87;
+	Fri, 23 May 2025 18:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wy3lQNxD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XmgGvhJf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E9C2DCBF6;
-	Fri, 23 May 2025 18:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B650629995C;
+	Fri, 23 May 2025 18:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748023246; cv=none; b=QM0Xm0BdOemV8/a1jHll0P+f8hQiXLxpN5Bllqz5GGnFcXTNi5T0INufymxJyOHuHdLI9sT417w/j0MdSjSallI/36lc68yCTsuIb0Z63Q4gDO1qO+RBypAMcXUJnn+oN9Y7Xp3IL+uaGz5eiZkGxBKiXx5L57C/LsgTB0HOwAM=
+	t=1748023251; cv=none; b=MXP9qZSgktbtkNm0IYPGIqmSPwPa9ZHK2AYuGAmx9LBo9dy5fPw/oKILVf4lUj/q/tOtstdWWANreRJ4UqGmCC+uoztLsb6aGEmHauChiLAVrvUOcfheIx3AlTvE2iZW4m/jmj0CmnFO/Q/4mCZdzWjswpblqNM32RBuHyV/oGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748023246; c=relaxed/simple;
-	bh=QCpCSBDhQej3trndo9Ibzvgcf9+JjnB5ospzS8yGK9U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FgwX4G8rx2Ixv5e8cir/cR3PJV6/qgt8vlgcnXUnWlJo/wSSHuhdHhOyVCAxGdnqN77cuqDA6Lqey29BvR9Dtwdlrb5dv7TKKj84+EQMpwf68bUauwT8hk81WZMyGozbllVlBTsMbnmgnupOeOZCqtTqhw4VpFeLYyBQ0GzI/vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wy3lQNxD; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1748023251; c=relaxed/simple;
+	bh=P17Zfxz2n2RfzH4WAydSBcFAFtqOObw31Vg112Y7hKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dMfT++xr+CqY/dXnUjh7aEX76pwnJRtoXzHzen/FPdzyhtTDrou9+KqhN11v4cxNlH64ZnvaWEoOKgYKrNnzrIZfdSDavqK9TbgI6DEbS6b2G3Xi3K9w5en16uFV+EqqnSEGwuZ/6iIkKcDKAEHVyrmQXnpVgMCMcLmHTzhIRRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XmgGvhJf; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54d6f933152so202228e87.1;
-        Fri, 23 May 2025 11:00:44 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-550eb498fbbso169204e87.2;
+        Fri, 23 May 2025 11:00:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748023243; x=1748628043; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=l0GAQf5NDAvpon6mZ8MBJ1SaeprvmNs6Ca8YavpQKvk=;
-        b=Wy3lQNxD/f1tbc4U+OX6OrMcqg3EC2Sl3Hvj4m060j+VS6rMhZQvXckFG8+ghY48/4
-         G/sVOVCU96t78FTBQXsbiLtKopRolJepOEyOPTJZcWu8UUp4u4zHSGeipQTO++ZukwKU
-         3ttGsa3pEEunwt7q1nK2Zj1PxHzyZzv5fC0tdGfHPvj8VejnGFOcsVDHOBMWIAKu/9Gb
-         xlxevSc7wzXUooS+2NldIncAClXh9zd2E+wxc432c48oIURcLxp2Q0HUmm7CsSYoRfj8
-         DPYO6U0q1KHb2+kGb3JGZ1Du4IYZ0vmbePS/VpI386luNdH3z2hlvGHAymziO7UQ3kFs
-         CNSw==
+        d=gmail.com; s=20230601; t=1748023248; x=1748628048; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VxVuqRBC1GBPpIyaNgOIVdlRRiSNj7gXg2aZMTV46j0=;
+        b=XmgGvhJfqT6TSQYnGmeifJN4N9MtNXy3UZfrqRZV/Xe93XAQaZ5mkiUpwkhLt4hJdp
+         LaptWl24UIzqcuqMYmCmuZ5bNszeWpbzgdTQMOxzEu8r0lxSOBU42OAuIy3hQVY1Cmy4
+         3tHdrIhENSLQ+g+DDYgIuH3VKG3kC1GdJpihudDWE3bf6coEdlcKI8TK+BV9NDYFssWg
+         4CCJbOZB6U14z9PnOcTpiDnRdvvP9RLSTJNUsCpnDH/IhBha5vPeOgHdsQxnFqI91RAe
+         AjZqoB3kq1QKIBUWA/EYod9CCEGwcn1OJD0MfTxUEG9uqEwnd+eQ/ZtgiCBitncLnx+s
+         yoJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748023243; x=1748628043;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l0GAQf5NDAvpon6mZ8MBJ1SaeprvmNs6Ca8YavpQKvk=;
-        b=ukVjMfMh5YnB43UtKEerQEQs4DrLzBGQCQ4Zj3/Y7lsntnUnlCqmt2uNcEOeGDTDVi
-         RePo4OR0jS1rRP/TrEtAjDW7KNLRPj0VJw75BcPvYflwckIJV+JAh8jBRNJhnzcSOHmF
-         N9QuPKiv9deni7cG2K29/ZeYLPVqoSOFcINl7J34Pxxlw7a1EMmvDKAak97jynneKKTC
-         g49SxPACyl8yS8pk73Hk8nV7NCvBNBrsTdPxSnmf+Yj0LA9zGSJkbcLYfGT6kQQabjZv
-         u3mkYviifTd/rOUELEJS48e6apfypDbqIkALuUiX2iZ6RNw6MHnrKY916DIHR/pXtBVn
-         Pv2w==
-X-Forwarded-Encrypted: i=1; AJvYcCURCmfza93viapokrfGQA6yB4mxd3EQyhvmW2vcdXF6OkzhM2P6R+xxHU9Yr2sfsHTHgCaC4CYZ@vger.kernel.org, AJvYcCXHELe/QW4ReALkA8Nwuy8qssxmzyPOosmYbWcClhZ8fa+S/jqN95MPtqiouXcA3//XO8mLepUAnT6g3vg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7weCNeJk/m8EnnfdhS8NGMp4VoUXJCQvs5NtVEUEt5aTdncI9
-	1CwnvfqiVOs9rlLBs29WAS5qIeQaWGXVYPQLCe8MhjKpgwEgtuBETr6r
-X-Gm-Gg: ASbGncszqRDMnjDyWz9HF6VFSsuBXqfkj0fAxNfz4HAxkjjFXvUBfQwLg02vt7NAaOW
-	/1CYiWwpAZXQn4p2rJGLN37AJ4yS6D8d33wdE7fcG3wu4Pmxrc5gMCw34saK/RxHPVvzcB9KI8C
-	k8ktCNt7v8EWtI7bekgk9ZGz0QGVWQS11Ca8Ug3RPP+KTd/nTOKtZRFi+mWq26IclJ5CORzSGhl
-	FEYeMJf4bPFjwZvnbii5NaDCin8VSeqxHFP65jMWnnSAuU8MikJdrGPYehH3/khiIpvdMpM53MF
-	CFTqNTLNIk2tWUxyBb3c9NNgRdXOWjeW3ItomGAeO33IDNjHvB1VbkFWeMox4o26t86g
-X-Google-Smtp-Source: AGHT+IGFhbS3jl095+ZHhuX4XAw3gePGjRtWE+YRvcmbEVMpC3GVc3BQQFmzkYTUfPbpuvMeyFiiXA==
-X-Received: by 2002:a05:6512:39c3:b0:54b:117c:1356 with SMTP id 2adb3069b0e04-5521cbafc09mr85664e87.56.1748023242940;
-        Fri, 23 May 2025 11:00:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748023248; x=1748628048;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VxVuqRBC1GBPpIyaNgOIVdlRRiSNj7gXg2aZMTV46j0=;
+        b=UcOZgOHR359Fknut+82zn2BwgfTUxSvlMXEp8/nf640ZUHWrCSgEarBRM3Ku7jtiUH
+         ealjNZkLFkSp6iX3ytOMz8diriaYb1fB4XCZSqWc/97zjWrEpBWWG0mfJ1osBkkdR9PP
+         q5OygZDc0hoDnh2mv8+N5SYrHE1B25GRLm8D/FxM4p10Ignq5Xnz3HFOjxTQjlm3ttXA
+         rLPDWgiEGnG+iL64dGrQTIzLXGVzV/cy0010BSQsuaOlL4hJ7RooyIfo8h5IsMi2oUne
+         hIV92QcP2XUsaGY3skun0e2bGW5SKZDIzYWyMLCwowPAjw6XW++NG1U4QNf/6lSSBxZ8
+         plvw==
+X-Forwarded-Encrypted: i=1; AJvYcCWbBfuqKhntAlb+KBxlqReoXXvB6lIyHIAy+6YL+2Cndie8njCP8r3nr4o61SjjI8ROHI/lWwav7+3/cEA=@vger.kernel.org, AJvYcCXF6SUPieM7Loge9NzFpVsb63Hlo3imMkBx/A7JZ5ipd1Cg2fxMGoOlawx8V9Hakbbv6flrqdHn@vger.kernel.org
+X-Gm-Message-State: AOJu0YwG6w23Pn1vp7+YPcjbWON9P+KHRV6Bh1N0P6Atznol79GY6QCZ
+	PYeeiklTC0QSsikVxH3bw4tfDijqAv2tsfuDzzF6une1qhGPwDj7/kPY
+X-Gm-Gg: ASbGncsqF2tHdTVhSPbaXhhNCDckcBgnMtG8cK/VOpoYJFgh0T44s5e+c0f2/QNhVkq
+	/KCQFjYlFB4f1dviZvauorB6MCf9Uq/sDvRSsi6VKnlkN7y+/dSLKK2jrDJewL5ate/4yzCtMEy
+	ONornTPH5heul5z/75kxWgrAKOH1BE+af5vN7Xk8EEnTb0Nz/Ez1+iFHLnOGadOcjCHBLZdssCp
+	A6A3Uk0jaZooAK4/52yw4ZI/425UU+Ei0hbP5m2lzZ+n1OJZJl+S96VR7SoY21h9JVapVQMIi0j
+	IyengI4BVJ4RyIfkfyEgru6fBz+EWibLyz7OqVyN8bqbB+AZFCurdCe7otIDIeWIG6My3DRvUAS
+	pXWY=
+X-Google-Smtp-Source: AGHT+IEE1zg3DVaFvcNyPaaw6b4BYZM56iOOj2+zeBW01gJZmH3b+cTO9ttWG5h1srT2FQxw42y55Q==
+X-Received: by 2002:a05:6512:b8f:b0:54f:c055:dd7e with SMTP id 2adb3069b0e04-5521c7ba351mr113411e87.31.1748023247387;
+        Fri, 23 May 2025 11:00:47 -0700 (PDT)
 Received: from localhost.localdomain ([176.33.69.152])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e6f3148csm3943316e87.66.2025.05.23.11.00.40
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e6f3148csm3943316e87.66.2025.05.23.11.00.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 May 2025 11:00:42 -0700 (PDT)
+        Fri, 23 May 2025 11:00:46 -0700 (PDT)
 From: Alper Ak <alperyasinak1@gmail.com>
 To: shannon.nelson@amd.com,
 	brett.creeley@amd.com,
@@ -80,11 +83,17 @@ To: shannon.nelson@amd.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org,
-	alperyasinak1@gmail.com
-Subject: [PATCH 6.6.y 0/1] pds_core: Prevent possible adminq overflow/stuck condition
-Date: Fri, 23 May 2025 20:58:34 +0300
-Message-ID: <20250523175835.3522650-1-alperyasinak1@gmail.com>
+	alperyasinak1@gmail.com,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/1] pds_core: Prevent possible adminq overflow/stuck condition
+Date: Fri, 23 May 2025 20:58:35 +0300
+Message-ID: <20250523175835.3522650-2-alperyasinak1@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250523175835.3522650-1-alperyasinak1@gmail.com>
+References: <20250523175835.3522650-1-alperyasinak1@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,18 +102,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The breaking commit has been present since v6.4.
+From: Brett Creeley <brett.creeley@amd.com>
 
-Although the fix is present in v6.15-rc4, v6.12.26 and v6.14.5
-it is still missing in 6.6.y stable tree.
+[ Upstream commit d9e2f070d8af60f2c8c02b2ddf0a9e90b4e9220c ]
 
-Brett Creeley (1):
-  pds_core: Prevent possible adminq overflow/stuck condition
+The pds_core's adminq is protected by the adminq_lock, which prevents
+more than 1 command to be posted onto it at any one time. This makes it
+so the client drivers cannot simultaneously post adminq commands.
+However, the completions happen in a different context, which means
+multiple adminq commands can be posted sequentially and all waiting
+on completion.
 
+On the FW side, the backing adminq request queue is only 16 entries
+long and the retry mechanism and/or overflow/stuck prevention is
+lacking. This can cause the adminq to get stuck, so commands are no
+longer processed and completions are no longer sent by the FW.
+
+As an initial fix, prevent more than 16 outstanding adminq commands so
+there's no way to cause the adminq from getting stuck. This works
+because the backing adminq request queue will never have more than 16
+pending adminq commands, so it will never overflow. This is done by
+reducing the adminq depth to 16.
+
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250421174606.3892-2-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+(cherry picked from commit 2982e07ad72b48eb12c29a87a3f2126ea552688c)
+Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+---
  drivers/net/ethernet/amd/pds_core/core.c | 5 +----
  drivers/net/ethernet/amd/pds_core/core.h | 2 +-
  2 files changed, 2 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
+index b3fa867c8ccd..c2ef55cff6b3 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.c
++++ b/drivers/net/ethernet/amd/pds_core/core.c
+@@ -413,10 +413,7 @@ int pdsc_setup(struct pdsc *pdsc, bool init)
+ 	if (err)
+ 		return err;
+
+-	/* Scale the descriptor ring length based on number of CPUs and VFs */
+-	numdescs = max_t(int, PDSC_ADMINQ_MIN_LENGTH, num_online_cpus());
+-	numdescs += 2 * pci_sriov_get_totalvfs(pdsc->pdev);
+-	numdescs = roundup_pow_of_two(numdescs);
++	numdescs = PDSC_ADMINQ_MAX_LENGTH;
+ 	err = pdsc_qcq_alloc(pdsc, PDS_CORE_QTYPE_ADMINQ, 0, "adminq",
+ 			     PDS_CORE_QCQ_F_CORE | PDS_CORE_QCQ_F_INTR,
+ 			     numdescs,
+diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+index 61ee607ee48a..421371408503 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.h
++++ b/drivers/net/ethernet/amd/pds_core/core.h
+@@ -16,7 +16,7 @@
+
+ #define PDSC_WATCHDOG_SECS	5
+ #define PDSC_QUEUE_NAME_MAX_SZ  16
+-#define PDSC_ADMINQ_MIN_LENGTH	16	/* must be a power of two */
++#define PDSC_ADMINQ_MAX_LENGTH	16	/* must be a power of two */
+ #define PDSC_NOTIFYQ_LENGTH	64	/* must be a power of two */
+ #define PDSC_TEARDOWN_RECOVERY	false
+ #define PDSC_TEARDOWN_REMOVING	true
 --
 2.43.0
 
