@@ -1,145 +1,130 @@
-Return-Path: <stable+bounces-146146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6E4AC19F8
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 04:10:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE6EAC1A30
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 04:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D6183ADBDB
-	for <lists+stable@lfdr.de>; Fri, 23 May 2025 02:10:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD14F9E39C3
+	for <lists+stable@lfdr.de>; Fri, 23 May 2025 02:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D5C1F91D6;
-	Fri, 23 May 2025 02:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NmrllPoh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A4B213235;
+	Fri, 23 May 2025 02:43:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826F72DCBE6
-	for <stable@vger.kernel.org>; Fri, 23 May 2025 02:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CF62036EC;
+	Fri, 23 May 2025 02:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747966249; cv=none; b=GVrT2Z5fD74zprbW45iMPyvgzZs+iyJZYGuA2cpd/6nwCRtH/JOobvBJ48F22vzI9P7PJ3khQKDYBLq6P2rSWfJQphTAhI1XwErUtSFCNYE+h3Eot5wxfMhAnM7x8xKpIb1BiOrhlwhtU3yolA5ZwGjuSnYEQfftQY5kDz6I6G0=
+	t=1747968231; cv=none; b=MpPyIXb4wjD2w/4gFsOcvV/NSUgXSG/Cmq9ijt5qPGur1B42q8UOnmrAd0LkptLfa+Bq5XzOuCXQUZyFmJ3EdTRY2d645KektyE9rseqwGaqCyNEcCTohSdtzkZnMCaSRRbCT9BkJgIjurNy3oP1Z58BBb+0VooMe9+dktjiKGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747966249; c=relaxed/simple;
-	bh=WScc3Jb3venQUdG3A3pwXOXbFu+pfD8ipZw5q1RUaEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W2X+m5KPI7ejTDgzLtvOdH2+CYyyuzRvEsVPuynfjdA0zXcD0FmYIDcPYV/VURDiPRJmiDg34wAwSLr2aIkOzOEJmj39uAp2l49YE00qyU5BjAD/XrVPXSwksdGv1nZKKiogi0xxlLHRlrVFaSnuB385z1GKSgGZ0Iko34ulmIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NmrllPoh; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747966245;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZD21kWlXVkCXTQ6qIIyjvZ+QVrc2Nl+Bw+5u37lzorw=;
-	b=NmrllPohRIAl/GbKjUFrYpdXGaaWBBXfgyemBTVqNBcB1p+lXqC5rYni6eEZLpODr0jtzR
-	NkU4QpRjLRQG5wxpX8GVCeDZMqt25QjK6LS84jAd0AIRmUejOSePRMYfKi0+utisGVxprw
-	yJhz0ItRiXuEXltFf3qE3bW0gyJXx0w=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-UNJrGfp4OYGpALiuVO3ung-1; Thu,
- 22 May 2025 22:10:41 -0400
-X-MC-Unique: UNJrGfp4OYGpALiuVO3ung-1
-X-Mimecast-MFC-AGG-ID: UNJrGfp4OYGpALiuVO3ung_1747966239
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14EB9195608A;
-	Fri, 23 May 2025 02:10:39 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.55])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F185D19560AD;
-	Fri, 23 May 2025 02:10:33 +0000 (UTC)
-Date: Fri, 23 May 2025 10:10:28 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>,
-	Yu Kuai <yukuai1@huaweicloud.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] block: Fix a deadlock related freezing zoned storage
- devices
-Message-ID: <aC_ZFIICdxzSOxCt@fedora>
-References: <20250522171405.3239141-1-bvanassche@acm.org>
- <b1ea4120-e16a-47c8-b10c-ff6c9d5feb69@kernel.dk>
- <78244478-3ce3-4671-b28f-c67c5b21dba9@acm.org>
+	s=arc-20240116; t=1747968231; c=relaxed/simple;
+	bh=R8lOQ3fgmIDT6B3qCyZt9+V0MTvZUd4Z8lh1XJTmVgo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bGKOy2Kki1UFTrOvzbWiCxVoA1Y0zWP1kzGh1hWxMQrXhdDRVm8NmZIHmOXHNk6TyOF/2z3gt+H6lNIiGaZI8Q/CAs/JXZvI1nQh74gpZbgC9KD9V/89LGiU9i3MU0LEg05KloufdI3V2FpHC92J+WVUY3P/X0zBB4eZLeVT3cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-03 (Coremail) with SMTP id rQCowADHETHN4C9o+dNcAA--.174S2;
+	Fri, 23 May 2025 10:43:30 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid()
+Date: Fri, 23 May 2025 10:43:04 +0800
+Message-ID: <20250523024304.1216-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78244478-3ce3-4671-b28f-c67c5b21dba9@acm.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowADHETHN4C9o+dNcAA--.174S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr4rCF1DWr1DGF48uw4xXrb_yoW8ArW8pF
+	47tr9rCrykJa4rX3409FWrZrn5u3yjyayj9a47tw13Xr4ktr4qyr4Ykr9FgrWUuFW0ka9Y
+	yr42y3Z8AFn8C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwsLA2gvpLnHvQAAsk
 
-On Thu, May 22, 2025 at 11:32:58AM -0700, Bart Van Assche wrote:
-> On 5/22/25 10:38 AM, Jens Axboe wrote:
-> > On 5/22/25 11:14 AM, Bart Van Assche wrote:
-> > >   static void __submit_bio(struct bio *bio)
-> > >   {
-> > >   	/* If plug is not used, add new plug here to cache nsecs time. */
-> > > @@ -633,8 +640,12 @@ static void __submit_bio(struct bio *bio)
-> > >   	if (!bdev_test_flag(bio->bi_bdev, BD_HAS_SUBMIT_BIO)) {
-> > >   		blk_mq_submit_bio(bio);
-> > > -	} else if (likely(bio_queue_enter(bio) == 0)) {
-> > > +	} else {
-> > >   		struct gendisk *disk = bio->bi_bdev->bd_disk;
-> > > +		bool zwp = bio_zone_write_plugging(bio);
-> > > +
-> > > +		if (unlikely(!zwp && bio_queue_enter(bio) != 0))
-> > > +			goto finish_plug;
-> > >   	
-> > >   		if ((bio->bi_opf & REQ_POLLED) &&
-> > >   		    !(disk->queue->limits.features & BLK_FEAT_POLL)) {
-> > > @@ -643,9 +654,12 @@ static void __submit_bio(struct bio *bio)
-> > >   		} else {
-> > >   			disk->fops->submit_bio(bio);
-> > >   		}
-> > > -		blk_queue_exit(disk->queue);
-> > > +
-> > > +		if (!zwp)
-> > > +			blk_queue_exit(disk->queue);
-> > >   	}
-> > 
-> > This is pretty ugly, and I honestly absolutely hate how there's quite a
-> > bit of zoned_whatever sprinkling throughout the core code. What's the
-> > reason for not unplugging here, unaligned writes? Because you should
-> > presumable have the exact same issues on non-zoned devices if they have
-> > IO stuck in a plug (and doesn't get unplugged) while someone is waiting
-> > on a freeze.
-> > 
-> > A somewhat similar case was solved for IOPOLL and queue entering. That
-> > would be another thing to look at. Maybe a live enter could work if the
-> > plug itself pins it?
-> 
-> Hi Jens,
-> 
-> q->q_usage_counter is not increased for bios on current->plug_list.
-> q->q_usage_counter is increased before a bio is added to the zoned pluglist.
-> So these two cases are different.
-> 
-> I think it is important to hold a q->q_usage_counter reference for bios
-> on the zoned plug list because bios are added to that list after bio
-> splitting happened. Hence, request queue limits must not change while
-> any bio is on the zoned plug list.
+The function mlx5_query_nic_vport_node_guid() calls the function
+mlx5_query_nic_vport_context() but does not check its return value.
+A proper implementation can be found in mlx5_nic_vport_query_local_lb().
 
-Hi Bart,
+Add error handling for mlx5_query_nic_vport_context(). If it fails, free
+the out buffer via kvfree() and return error code.
 
-Can you share why request queue limit can't be changed after bio is added
-to zoned plug list?
+Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
+Cc: stable@vger.kernel.org # v4.5
+Target: net
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+v4: Fix code error.
+v3: Explicitly mention target branch. Change improper code.
+v2: Remove redundant reassignment. Fix typo error.
 
-If it is really true, we may have to drain zoned plug list when freezing
-queue.
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-
-Thanks, 
-Ming
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+index 0d5f750faa45..c34cd9a1a79b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -465,19 +465,22 @@ int mlx5_query_nic_vport_node_guid(struct mlx5_core_dev *mdev, u64 *node_guid)
+ {
+ 	u32 *out;
+ 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
++	int err;
+ 
+ 	out = kvzalloc(outlen, GFP_KERNEL);
+ 	if (!out)
+ 		return -ENOMEM;
+ 
+-	mlx5_query_nic_vport_context(mdev, 0, out);
++	err = mlx5_query_nic_vport_context(mdev, 0, out);
++	if (err)
++		goto out;
+ 
+ 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
+ 				nic_vport_context.node_guid);
+-
++out:
+ 	kvfree(out);
+ 
+-	return 0;
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
+ 
+-- 
+2.42.0.windows.2
 
 
