@@ -1,101 +1,107 @@
-Return-Path: <stable+bounces-146241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D3FAC3027
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 17:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA52BAC302B
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 17:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EB55189C654
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 15:36:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CA28189CB27
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 15:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9C0191F8F;
-	Sat, 24 May 2025 15:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEC31DE3C4;
+	Sat, 24 May 2025 15:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sh3bcpw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jah2Dz4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF93564D
-	for <stable@vger.kernel.org>; Sat, 24 May 2025 15:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7BE18787A
+	for <stable@vger.kernel.org>; Sat, 24 May 2025 15:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748100981; cv=none; b=tPJ98gmyovW74Fy6eakUp2SvbwPp0JBmmMkNIfMqFNaWbayexH1QUWparKH9dugq4BCVB2k9RULNMODStwrdr3YWFh+mVbgA3tPC8Bq/8H5MbC/nWZ1WOdAcG6BSoDpQC4EXeztKkQRE49V8xc/iaO4bSnprlzBpyRSqiRIip1k=
+	t=1748101639; cv=none; b=n81AH1qz7jeC+ksFbW4C3GT+cOQgm+fT9ehb5koyY/kEbCm9J0aFyJoTY+vkCtl715TFebDaBC067djbyFDd9Gpd6bc491H5b4f0vPK/rzPUAHG1Qp98pvMN1bYJB0Gd1Epc2w53O2TZ8hNlxHipe+QqkDj6c7SMQuhrh/TURe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748100981; c=relaxed/simple;
-	bh=05UjM/UZI8K4y+mNupMqBrXrwln9jkhX8eCO8QocWvc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RqjSPBUR4KPLIDtuydS6a5zshrRxH96QQf7EBzzmR2QQfty4SMHw8+1uZ7nwVufcfGsxequbpkizRqE6oj2PZWbBoBK+rr7dUNn92fWNJsH1/34sn91uwoh2Vg4jFXdASw/DJFujgca2Q6XoO1FP+s4/nVXUxDPoq0+SIEl4N5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sh3bcpw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A83C4CEE4;
-	Sat, 24 May 2025 15:36:19 +0000 (UTC)
+	s=arc-20240116; t=1748101639; c=relaxed/simple;
+	bh=Puhx5YR18JwczzayYahWfqIEjdXqwOG3GnuwyCpPXbM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZV1lR6VC9KhKSjP+jh0UFtWG7BVkSUqFo07dxCD95r/s4EwZv2ki9ljwWp6wAHEwraBDuOOWbM2xzSUzi1bdNM5i+JabjBA00X6slU8ylJrtfiYZTxCd96e3YgpoR/k3HPX8IJqzOmmKdn9T/vXihKAj1om/x2z5FrxOTBBFwrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jah2Dz4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A412C4CEE4;
+	Sat, 24 May 2025 15:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748100980;
-	bh=05UjM/UZI8K4y+mNupMqBrXrwln9jkhX8eCO8QocWvc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sh3bcpw9Ru12A04D8ILBwQBZYUzaUxrpnf0ECTNzGnZjHBfyoz4dPx/4m1hrZmNMB
-	 Qbs7whNp59E4fy7nfS/P+vD/kYkObXR52x80+Kgf/zPvDpa4uqogDH2vx9UwN+oxin
-	 ouLdlldadzWPNnDgiGGG6EBiZYiv9WghWI9BPt7c=
-Date: Sat, 24 May 2025 17:36:17 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jeff LaBundy <jeff@labundy.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] Input: iqs7222 - preserve system status register
-Message-ID: <2025052405-unreeling-shelving-1531@gregkh>
-References: <aDHip8uMZlBzg6kb@nixie71>
+	s=korg; t=1748101637;
+	bh=Puhx5YR18JwczzayYahWfqIEjdXqwOG3GnuwyCpPXbM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Jah2Dz4Ya4EKjIGqKL6aKnGHE26h5+DdkxXdQg+GtDl2FF7/h9FMjgYdStNJpmYMz
+	 pG2TuEpuXiS0DO2Y+5gAkhRyEUC6uDuGqWc9lNw544Tx3zkbKWFSd4L7M4loNFXmiQ
+	 9iPGiXwJmylFdhdx1OlHAuwnHsRpfniY9UjNmkkA=
+Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led" failed to apply to 6.14-stable tree
+To: chris.chiu@canonical.com,stable@vger.kernel.org,tiwai@suse.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 24 May 2025 17:47:14 +0200
+Message-ID: <2025052414-rubbed-footing-28ca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aDHip8uMZlBzg6kb@nixie71>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 24, 2025 at 10:15:51AM -0500, Jeff LaBundy wrote:
-> Some register groups reserve a byte at the end of their continuous
-> address space. Depending on the variant of silicon, this field may
-> share the same memory space as the lower byte of the system status
-> register (0x10).
-> 
-> In these cases, caching the reserved byte and writing it later may
-> effectively reset the device depending on what happened in between
-> the read and write operations.
-> 
-> Solve this problem by avoiding any access to this last byte within
-> offending register groups. This method replaces a workaround which
-> attempted to write the reserved byte with up-to-date contents, but
-> left a small window in which updates by the device could have been
-> clobbered.
-> 
-> Now that the driver does not touch these reserved bytes, the order
-> in which the device's registers are written no longer matters, and
-> they can be written in their natural order. The new method is also
-> much more generic, and can be more easily extended to new variants
-> of silicon with different register maps.
-> 
-> As part of this change, the register read and write functions must
-> be gently updated to support byte access instead of word access.
-> 
-> Fixes: 2e70ef525b73 ("Input: iqs7222 - acknowledge reset before writing registers")
-> Signed-off-by: Jeff LaBundy <jeff@labundy.com>
-> Link: https://lore.kernel.org/r/Z85Alw+d9EHKXx2e@nixie71
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> ---
->  drivers/input/misc/iqs7222.c | 47 +++++++++++++++---------------------
->  1 file changed, 19 insertions(+), 28 deletions(-)
-> 
 
-<formletter>
+The patch below does not apply to the 6.14-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-</formletter>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git checkout FETCH_HEAD
+git cherry-pick -x f709b78aecab519dbcefa9a6603b94ad18c553e3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025052414-rubbed-footing-28ca@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f709b78aecab519dbcefa9a6603b94ad18c553e3 Mon Sep 17 00:00:00 2001
+From: Chris Chiu <chris.chiu@canonical.com>
+Date: Tue, 20 May 2025 21:21:01 +0800
+Subject: [PATCH] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led
+ fixup
+
+New HP ZBook with Realtek HDA codec ALC3247 needs the quirk
+ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
+
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250520132101.120685-1-chris.chiu@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 69788dd9a1ec..20ab1fb2195f 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10885,6 +10885,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC245_FIXUP_HP_ZBOOK_FIREFLY_G12A),
+ 	SND_PCI_QUIRK(0x103c, 0x8e1b, "HP EliteBook G12", ALC245_FIXUP_HP_ZBOOK_FIREFLY_G12A),
+ 	SND_PCI_QUIRK(0x103c, 0x8e1c, "HP EliteBook G12", ALC245_FIXUP_HP_ZBOOK_FIREFLY_G12A),
++	SND_PCI_QUIRK(0x103c, 0x8e1d, "HP ZBook X Gli 16 G12", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e2c, "HP EliteBook 16 G12", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e36, "HP 14 Enstrom OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8e37, "HP 16 Piston OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
+
 
