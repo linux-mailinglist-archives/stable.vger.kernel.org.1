@@ -1,192 +1,130 @@
-Return-Path: <stable+bounces-146283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99830AC3072
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 18:20:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C71AC3078
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 18:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D54E3BFA39
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 16:19:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D939B1709FE
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 16:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8411EDA35;
-	Sat, 24 May 2025 16:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBg+tzQd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53951E833E;
+	Sat, 24 May 2025 16:35:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3358C11
-	for <stable@vger.kernel.org>; Sat, 24 May 2025 16:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358523D984;
+	Sat, 24 May 2025 16:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748103608; cv=none; b=lliU6E9sdAPXCjVz31DO3sf/qmGOOluQQq2at1ZlnR4oVvhlWt4StFzMooBXnlNDV4/Jg1G1F5agb0z1wcVpNhDu+tmHZQK6VnSK314cU7jsVUadHzXVFhb+mnMrVzY9IrNe3DbDPj+A6uXVBtwt6Igcopd30sIH0iyRTeVHQ7A=
+	t=1748104532; cv=none; b=UFeUyOgABPd4/a2Ld8E+UtjA8013vge7RiYae+gZDqnJdmdeBRjM6V1h5GGoYwNSk4SlZHY23lmZKMPFRcHTdEqo8F3SlFmJjVYMErmX7XQcJu1W9WkSklpv1onr6sEDIWP9PPacaSg+xh7RJmFwcQKsbaLMlOpvEB4GLUYqRMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748103608; c=relaxed/simple;
-	bh=k3wx97sPd4S2Uiq9waM0fJDqc6qknCaABXDqNe2eVgc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=u+m/Pq6xhFjM8v2YnVYXjdfXYtL5D3UnmT1BSdL2yo4mVlACEMgb6Z5XCWM6i000uaRcvOg0J4VHihZwdYj2gnELKSkphWIxGBLRwcSYHHDrekwGTbstDC009dROnWZaQ9Uavgrp+6bRQg7TbJt938IvjEHWxsC7CkdPiSRFac0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBg+tzQd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E59C4CEE4;
-	Sat, 24 May 2025 16:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748103607;
-	bh=k3wx97sPd4S2Uiq9waM0fJDqc6qknCaABXDqNe2eVgc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=fBg+tzQd31GC2vUK4W31cnVFUgqN3rFNqf5AFOyNAQgXWcz/dWRLaiC8Lif1/VEzt
-	 IZA7rC+xZ9Z1QcokqXKqTnKluyZjts/Ow2oB679ZaQTU+SpJEQxX1dcsUSmrxd6yt6
-	 5HSMX+1x0+GSe2o4SpNGULBIjU5rhSEPc6H8zxJE=
-Subject: FAILED: patch "[PATCH] iommu: Skip PASID validation for devices without PASID" failed to apply to 6.6-stable tree
-To: tdave@nvidia.com,baolu.lu@linux.intel.com,jroedel@suse.de,vasant.hegde@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 24 May 2025 18:19:54 +0200
-Message-ID: <2025052454-kinship-reiterate-9e47@gregkh>
+	s=arc-20240116; t=1748104532; c=relaxed/simple;
+	bh=FS0RFh6BU5nRfwod9N2G1Nb4fqqbZi9dSd11mSJYXDU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m7FZfzcbWHVXWVY5OMW+XXpksiYg3dY7fWNYUZ1uQKLogMrRdn6ijp6UYhA3xNbN6bjcEmswP05bOJj7stx4keHBo2PNeP27L9w/efi3cVk8uTeY9OViefGON4IdWpX9h50SsaQ6d068FH0EaOcQS76+2MX00DTJ/xUATQG40Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.201.46.250])
+	by APP-01 (Coremail) with SMTP id qwCowADXMBM09TFoXmgZAQ--.23843S2;
+	Sun, 25 May 2025 00:35:06 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net v5] net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid()
+Date: Sun, 25 May 2025 00:34:25 +0800
+Message-ID: <20250524163425.1695-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADXMBM09TFoXmgZAQ--.23843S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr4rCF1DWr1DGF48uw4xXrb_yoW8ArWkpF
+	47tr9rCrWkJa4rX3409FWfZrn5u3yjyay09a47tw43Xr4ktr4qyr4YkF9FgrWUCFW0ka9a
+	yr42y3Z8AFn8C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+	Yx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
+	WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7Cj
+	xVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4I
+	kC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
+	WwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr
+	0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
+	JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
+	IYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgsMA2gx4KUkwQAAs7
 
+The function mlx5_query_nic_vport_node_guid() calls the function
+mlx5_query_nic_vport_context() but does not check its return value.
+A proper implementation can be found in mlx5_nic_vport_query_local_lb().
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Add error handling for mlx5_query_nic_vport_context(). If it fails, free
+the out buffer via kvfree() and return error code.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
+Cc: stable@vger.kernel.org # v4.5
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+v5: Remove error tag.
+v4: Fix code error.
+v3: Explicitly mention target branch. Change improper code.
+v2: Remove redundant reassignment. Fix typo error.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x b3f6fcd8404f9f92262303369bb877ec5d188a81
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025052454-kinship-reiterate-9e47@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From b3f6fcd8404f9f92262303369bb877ec5d188a81 Mon Sep 17 00:00:00 2001
-From: Tushar Dave <tdave@nvidia.com>
-Date: Mon, 19 May 2025 18:19:37 -0700
-Subject: [PATCH] iommu: Skip PASID validation for devices without PASID
- capability
-
-Generally PASID support requires ACS settings that usually create
-single device groups, but there are some niche cases where we can get
-multi-device groups and still have working PASID support. The primary
-issue is that PCI switches are not required to treat PASID tagged TLPs
-specially so appropriate ACS settings are required to route all TLPs to
-the host bridge if PASID is going to work properly.
-
-pci_enable_pasid() does check that each device that will use PASID has
-the proper ACS settings to achieve this routing.
-
-However, no-PASID devices can be combined with PASID capable devices
-within the same topology using non-uniform ACS settings. In this case
-the no-PASID devices may not have strict route to host ACS flags and
-end up being grouped with the PASID devices.
-
-This configuration fails to allow use of the PASID within the iommu
-core code which wrongly checks if the no-PASID device supports PASID.
-
-Fix this by ignoring no-PASID devices during the PASID validation. They
-will never issue a PASID TLP anyhow so they can be ignored.
-
-Fixes: c404f55c26fc ("iommu: Validate the PASID in iommu_attach_device_pasid()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tushar Dave <tdave@nvidia.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20250520011937.3230557-1-tdave@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 4f91a740c15f..9d728800a862 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -3366,10 +3366,12 @@ static int __iommu_set_group_pasid(struct iommu_domain *domain,
- 	int ret;
- 
- 	for_each_group_device(group, device) {
--		ret = domain->ops->set_dev_pasid(domain, device->dev,
--						 pasid, old);
--		if (ret)
--			goto err_revert;
-+		if (device->dev->iommu->max_pasids > 0) {
-+			ret = domain->ops->set_dev_pasid(domain, device->dev,
-+							 pasid, old);
-+			if (ret)
-+				goto err_revert;
-+		}
- 	}
- 
- 	return 0;
-@@ -3379,15 +3381,18 @@ static int __iommu_set_group_pasid(struct iommu_domain *domain,
- 	for_each_group_device(group, device) {
- 		if (device == last_gdev)
- 			break;
--		/*
--		 * If no old domain, undo the succeeded devices/pasid.
--		 * Otherwise, rollback the succeeded devices/pasid to the old
--		 * domain. And it is a driver bug to fail attaching with a
--		 * previously good domain.
--		 */
--		if (!old || WARN_ON(old->ops->set_dev_pasid(old, device->dev,
-+		if (device->dev->iommu->max_pasids > 0) {
-+			/*
-+			 * If no old domain, undo the succeeded devices/pasid.
-+			 * Otherwise, rollback the succeeded devices/pasid to
-+			 * the old domain. And it is a driver bug to fail
-+			 * attaching with a previously good domain.
-+			 */
-+			if (!old ||
-+			    WARN_ON(old->ops->set_dev_pasid(old, device->dev,
- 							    pasid, domain)))
--			iommu_remove_dev_pasid(device->dev, pasid, domain);
-+				iommu_remove_dev_pasid(device->dev, pasid, domain);
-+		}
- 	}
- 	return ret;
- }
-@@ -3398,8 +3403,10 @@ static void __iommu_remove_group_pasid(struct iommu_group *group,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+index 0d5f750faa45..c34cd9a1a79b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -465,19 +465,22 @@ int mlx5_query_nic_vport_node_guid(struct mlx5_core_dev *mdev, u64 *node_guid)
  {
- 	struct group_device *device;
+ 	u32 *out;
+ 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
++	int err;
  
--	for_each_group_device(group, device)
--		iommu_remove_dev_pasid(device->dev, pasid, domain);
-+	for_each_group_device(group, device) {
-+		if (device->dev->iommu->max_pasids > 0)
-+			iommu_remove_dev_pasid(device->dev, pasid, domain);
-+	}
+ 	out = kvzalloc(outlen, GFP_KERNEL);
+ 	if (!out)
+ 		return -ENOMEM;
+ 
+-	mlx5_query_nic_vport_context(mdev, 0, out);
++	err = mlx5_query_nic_vport_context(mdev, 0, out);
++	if (err)
++		goto out;
+ 
+ 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
+ 				nic_vport_context.node_guid);
+-
++out:
+ 	kvfree(out);
+ 
+-	return 0;
++	return err;
  }
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
  
- /*
-@@ -3440,7 +3447,13 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
- 
- 	mutex_lock(&group->mutex);
- 	for_each_group_device(group, device) {
--		if (pasid >= device->dev->iommu->max_pasids) {
-+		/*
-+		 * Skip PASID validation for devices without PASID support
-+		 * (max_pasids = 0). These devices cannot issue transactions
-+		 * with PASID, so they don't affect group's PASID usage.
-+		 */
-+		if ((device->dev->iommu->max_pasids > 0) &&
-+		    (pasid >= device->dev->iommu->max_pasids)) {
- 			ret = -EINVAL;
- 			goto out_unlock;
- 		}
+-- 
+2.42.0.windows.2
 
 
