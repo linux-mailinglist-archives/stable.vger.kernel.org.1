@@ -1,130 +1,147 @@
-Return-Path: <stable+bounces-146284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C71AC3078
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 18:35:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0397AC31C0
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 00:08:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D939B1709FE
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 16:35:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55A8D189B3D0
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 22:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53951E833E;
-	Sat, 24 May 2025 16:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA181E835C;
+	Sat, 24 May 2025 22:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WgOCmoQR"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358523D984;
-	Sat, 24 May 2025 16:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C731DDA0C
+	for <stable@vger.kernel.org>; Sat, 24 May 2025 22:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748104532; cv=none; b=UFeUyOgABPd4/a2Ld8E+UtjA8013vge7RiYae+gZDqnJdmdeBRjM6V1h5GGoYwNSk4SlZHY23lmZKMPFRcHTdEqo8F3SlFmJjVYMErmX7XQcJu1W9WkSklpv1onr6sEDIWP9PPacaSg+xh7RJmFwcQKsbaLMlOpvEB4GLUYqRMs=
+	t=1748124506; cv=none; b=h5DGpbVebUTeXFf2fGRiQUGo4/ILAXARQgOisSkwKV2oG2wzdcGqG6DxArkcTBfJF75X34Upk0TpBNgvPtu0eILvFhII7byneO3AG3ivm41jgPuDYVhZeqp03sKFaEoZ0XDLHUsZup4UkqSDrx/x5ZHeBOJyB1hVqjGVv0Nom7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748104532; c=relaxed/simple;
-	bh=FS0RFh6BU5nRfwod9N2G1Nb4fqqbZi9dSd11mSJYXDU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m7FZfzcbWHVXWVY5OMW+XXpksiYg3dY7fWNYUZ1uQKLogMrRdn6ijp6UYhA3xNbN6bjcEmswP05bOJj7stx4keHBo2PNeP27L9w/efi3cVk8uTeY9OViefGON4IdWpX9h50SsaQ6d068FH0EaOcQS76+2MX00DTJ/xUATQG40Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.201.46.250])
-	by APP-01 (Coremail) with SMTP id qwCowADXMBM09TFoXmgZAQ--.23843S2;
-	Sun, 25 May 2025 00:35:06 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v5] net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid()
-Date: Sun, 25 May 2025 00:34:25 +0800
-Message-ID: <20250524163425.1695-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1748124506; c=relaxed/simple;
+	bh=tZs7NRKsUJ2NMCg2LzJ97LxL4RE+ttC9dN2NrHYBeGo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IXqrgza3UAMrJC+hioqWaR29V1CqKlSflIqcbUy4YzROUgqM2kUUjaKwlBqLC3LcW1EGvhtE/NVgZqCmUAiK8F/LFL+WTH6nQCIaJ1UU7N7DKUL4fiFFr1oyZkwK8i8kMoStHAtMNDbQKktdo3KGwmSldAQlMwxRGKDDxDWzF54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WgOCmoQR; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-31147652b1eso184063a91.3
+        for <stable@vger.kernel.org>; Sat, 24 May 2025 15:08:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748124504; x=1748729304; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iskZ0wbtxEgIO67o7SDMCe9ZJO7/1YZczvX+o4kIFTo=;
+        b=WgOCmoQRqIQWB9LNRWUhGOUThZ0I76zqFCO4uwxmMP5ylG3RYVONNVnZ/anvrLSiAP
+         121JnwbowfBERy5phioyJmhWAt5GCNPQ4Ra8cZ9vd9Y6Xx+bKkVbFcBWxmoFIfA95PTw
+         0f54woSIV+GXxx3hrHkQE9SkdQ7CozJV10ubPV86DRptF46bA0xf0pqlYiJJ0aPpXs/b
+         zGPrO/WqoiR3CzmkYf+E+uIWypcdzFZR9T4WAa/zZs+2WWak9RV6pRMNwp0ltou/Yc8b
+         in0hnuyJvZdZISRFVKEzI/1HSnF/gK3ZOHoqMnGLkgtR+mQT47g8d2K0vmiibrFwD2yO
+         lkWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748124504; x=1748729304;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iskZ0wbtxEgIO67o7SDMCe9ZJO7/1YZczvX+o4kIFTo=;
+        b=bdrWRXaYwpngqLtC6IpUrrAFwXRzW7UzB88qx7qj4PvF1OTn3U9frmxM9bdmFjUiAa
+         sQrRVYrqXINHVOyoQp5PqXXLOG+D/jKQkRGSErfHtlDYsBaXHaTOe7gzJxYM4tUgNgJl
+         4yRljh+krpabsrObC6xrKytDgYaRpB7zMON1Qak6tWE3GijpN0mAs0TxCU5IpdjEXlDH
+         j1KGnBLSHOpb0E+6TE0/z2yOBlSBNjT4NYanVh7pabTVnI7AVYH2j0F7L2xlc+smN0QH
+         ++4RQRcTIigI9MfNLRP2APIE7RaDmaDWKy4oZ3O1t5pZ6NMnTUcmhywrhT7l42Mb2b8n
+         1Cqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUywXQ964p8jxrFbxkR7LDgCC/o+VI00Hz205gKp1Z+DS6swqEpvuIJtwcqz9p62nYGCtyulnc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIdjU1h/3TjtUKJQ1h3BMQPWuvHaiR3sUqJv51TYyMWpv2GLmE
+	+E4ZPqAayAoOY+aM4BJnmcvz8np17kW2/kLhnWIb8vXVBoQS3KdDncGPOx8B6hh7F2HCU1r8x7C
+	jL6PasV5GoTZnhA==
+X-Google-Smtp-Source: AGHT+IFSOu2l1RSQyb5J33cvCnuI8bwGn0Pmrl610mWwBVpPxY+L0tTl9KYax7U1Qo44s1kzSSsp1UIViDf/DA==
+X-Received: from pjbqo12.prod.google.com ([2002:a17:90b:3dcc:b0:2ea:3a1b:f493])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:1d88:b0:310:f340:79d8 with SMTP id 98e67ed59e1d1-311104b6599mr4040692a91.22.1748124504610;
+ Sat, 24 May 2025 15:08:24 -0700 (PDT)
+Date: Sat, 24 May 2025 22:07:58 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADXMBM09TFoXmgZAQ--.23843S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr4rCF1DWr1DGF48uw4xXrb_yoW8ArWkpF
-	47tr9rCrWkJa4rX3409FWfZrn5u3yjyay09a47tw43Xr4ktr4qyr4YkF9FgrWUCFW0ka9a
-	yr42y3Z8AFn8C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
-	WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7Cj
-	xVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4I
-	kC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
-	WwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr
-	0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
-	JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
-	IYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgsMA2gx4KUkwQAAs7
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.1151.ga128411c76-goog
+Message-ID: <20250524220758.915028-1-cmllamas@google.com>
+Subject: [PATCH] binder: fix yet another UAF in binder_devices
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Li Li <dualli@google.com>
+Cc: kernel-team@android.com, stable@vger.kernel.org, 
+	syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com, 
+	"open list:ANDROID DRIVERS" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-The function mlx5_query_nic_vport_node_guid() calls the function
-mlx5_query_nic_vport_context() but does not check its return value.
-A proper implementation can be found in mlx5_nic_vport_query_local_lb().
+Commit e77aff5528a18 ("binderfs: fix use-after-free in binder_devices")
+addressed a use-after-free where devices could be released without first
+being removed from the binder_devices list. However, there is a similar
+path in binder_free_proc() that was missed:
 
-Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-the out buffer via kvfree() and return error code.
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in binder_remove_device+0xd4/0x100
+  Write of size 8 at addr ffff0000c773b900 by task umount/467
+  CPU: 12 UID: 0 PID: 467 Comm: umount Not tainted 6.15.0-rc7-00138-g57483a362741 #9 PREEMPT
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   binder_remove_device+0xd4/0x100
+   binderfs_evict_inode+0x230/0x2f0
+   evict+0x25c/0x5dc
+   iput+0x304/0x480
+   dentry_unlink_inode+0x208/0x46c
+   __dentry_kill+0x154/0x530
+   [...]
 
-Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-Cc: stable@vger.kernel.org # v4.5
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+  Allocated by task 463:
+   __kmalloc_cache_noprof+0x13c/0x324
+   binderfs_binder_device_create.isra.0+0x138/0xa60
+   binder_ctl_ioctl+0x1ac/0x230
+  [...]
+
+  Freed by task 215:
+   kfree+0x184/0x31c
+   binder_proc_dec_tmpref+0x33c/0x4ac
+   binder_deferred_func+0xc10/0x1108
+   process_one_work+0x520/0xba4
+  [...]
+  ==================================================================
+
+Call binder_remove_device() within binder_free_proc() to ensure the
+device is removed from the binder_devices list before being kfreed.
+
+Cc: stable@vger.kernel.org
+Fixes: 12d909cac1e1 ("binderfs: add new binder devices to binder_devices")
+Reported-by: syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4af454407ec393de51d6
+Tested-by: syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
-v5: Remove error tag.
-v4: Fix code error.
-v3: Explicitly mention target branch. Change improper code.
-v2: Remove redundant reassignment. Fix typo error.
+ drivers/android/binder.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/net/ethernet/mellanox/mlx5/core/vport.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-index 0d5f750faa45..c34cd9a1a79b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -465,19 +465,22 @@ int mlx5_query_nic_vport_node_guid(struct mlx5_core_dev *mdev, u64 *node_guid)
- {
- 	u32 *out;
- 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-+	int err;
- 
- 	out = kvzalloc(outlen, GFP_KERNEL);
- 	if (!out)
- 		return -ENOMEM;
- 
--	mlx5_query_nic_vport_context(mdev, 0, out);
-+	err = mlx5_query_nic_vport_context(mdev, 0, out);
-+	if (err)
-+		goto out;
- 
- 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
- 				nic_vport_context.node_guid);
--
-+out:
- 	kvfree(out);
- 
--	return 0;
-+	return err;
- }
- EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
- 
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 682bbe4ad550..c463ca4a8fff 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -5241,6 +5241,7 @@ static void binder_free_proc(struct binder_proc *proc)
+ 			__func__, proc->outstanding_txns);
+ 	device = container_of(proc->context, struct binder_device, context);
+ 	if (refcount_dec_and_test(&device->ref)) {
++		binder_remove_device(device);
+ 		kfree(proc->context->name);
+ 		kfree(device);
+ 	}
 -- 
-2.42.0.windows.2
+2.49.0.1151.ga128411c76-goog
 
 
