@@ -1,76 +1,60 @@
-Return-Path: <stable+bounces-146229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D08AC2D9E
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 07:56:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EAEAC2E14
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 09:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 225644E1C0C
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 05:56:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CED34E0014
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 07:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118791C84BE;
-	Sat, 24 May 2025 05:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAD81DF261;
+	Sat, 24 May 2025 07:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="JknxajH6"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kTo4zrev"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522B01459F7
-	for <stable@vger.kernel.org>; Sat, 24 May 2025 05:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FF38C11;
+	Sat, 24 May 2025 07:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748066195; cv=none; b=cQgQu1l1nUIn2Sm4DqcEPz/I9UmdNUETW9bAPwy5aOB4/no6ym5kV1ceI1Sux9o3gFxNcX5YqhhhzjPDgBqweJhXXqaJ327Hmh6xs7QeLZOGziXSGHz/zj6iMWsqWoYjtSep8pCPhuCf8y+miz+JYSkoV2BGNuW0byTJjFKd/cU=
+	t=1748071677; cv=none; b=ZoIRzo2RAtBWHCqHfdkx7MNE1tzxP4d5vGKWxisD052ek0A/XrHgd3vH466NwtFHRs4ZXL6fWTSEYrSWzt5S34FfNEHNOcCuebXN5bVK+7iUKFQEQ3xtxz28WRtA2sF7zMgqaytqw/t/PNwVtguZPTFe6n+qsGJpeKCg+wsiDcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748066195; c=relaxed/simple;
-	bh=TIAcbocg9y14Fob0XJ0paDnaJ106oWT1NBjEKKkFB2Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SfCIt2/eyjYiOZhrV1eomn+L776FIV3TnIsp1k5KXa+sA+IvHJ1JUxJJEpC8M/6qTUazep0OIh1WdcgzChRh0h2lHIzI2d1Q+M7t7U8JhOT7pym4FNw/jNhr2OJQVEOyIYDUOYBWR8uv58mMYyXOWTy8EcjDJZyuOqDBAdtGFpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=JknxajH6; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id CC9761C1194
-	for <stable@vger.kernel.org>; Sat, 24 May 2025 08:56:17 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1748066175; x=
-	1748930176; bh=TIAcbocg9y14Fob0XJ0paDnaJ106oWT1NBjEKKkFB2Q=; b=J
-	knxajH6o6SWKV4ih/upwc3o+WpFJfc9cYqeJg1ihNvC991VsIFZaX7kvrwqJARHf
-	MYCCByTiiLqAP1D/pvwJUhLbBg1eALwdHgkFSiHQy7CYFFo5Lvqsn3jotMxvDily
-	2nXy8qestNqeZoFKQb0H9R2amFx7t/VJVSMzFhKfeE=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id qyn8Poa9JE5a for <stable@vger.kernel.org>;
-	Sat, 24 May 2025 08:56:15 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 0F5151C114E;
-	Sat, 24 May 2025 08:55:56 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: Alex Deucher <alexander.deucher@amd.com>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Sunil Khatri <sunil.khatri@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Jiadong Zhu <Jiadong.Zhu@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Prike Liang <Prike.Liang@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1748071677; c=relaxed/simple;
+	bh=QsHCdBici6uZQb0MMP/UeIRDZiWNUzkYoYcveEjC4rU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TASr3t3com/js+Rd+AwutJzSL84rxCFeX8YEnUgBuQIJ+vKHiZTTcIuqmRm6Mwgl3n/m8hQHz7Tef+WFJrRqhiqfSqEuTGMyzg0pknrldYnJXCM6cHD5IK1yA+ZtvLB0NpLw3vHEbgSGnhXfEQrjRquaseQbge9QNV+q5jfhMQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kTo4zrev; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Hu
+	286s57mP1NPRtFysQLi/doib7qC4IDVyR6e/Hyw78=; b=kTo4zrevTgjipbrONC
+	5E8JWrSIjZ5R3+wDOjHE7BVrCcnQThZgLl3PBWAHEBXfId7ntFqu5S733kmCpxo8
+	bGTNCao/v0r58BcWLXaVHWxfTz7rF09XECe4bOjHFe7/O5H9v04qoC8VvIyiCe9e
+	7/D7hV+M1EOnFW31KUxtdAWPI=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wCH2R_DdDFow8_GDg--.1286S4;
+	Sat, 24 May 2025 15:27:00 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	sergey.temerkhanov@intel.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/amdgpu: fix NULL dereference in gfx_v9_0_kcq() and kiq_init_queue()
-Date: Sat, 24 May 2025 05:55:43 +0000
-Message-ID: <20250524055546.1001268-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
+Date: Sat, 24 May 2025 15:26:58 +0800
+Message-Id: <20250524072658.3586149-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,63 +62,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCH2R_DdDFow8_GDg--.1286S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWruF1fXw1Duw47JFyftFyrJFb_yoWDJrcE9w
+	4SvFyfJrW5KryFv3yYkr47Z34SyF1DXr9Y9ay2939a9wnxGryDXwnrZr93Xr47WFyDuF9r
+	Ars7ta42va42qjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNvtCUUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0g9TbmgtChXmaQABs0
 
-A potential NULL pointer dereference may occur when accessing 
-tmp_mqd->cp_hqd_pq_control without verifying that tmp_mqd is non-NULL.
-This may happen if mqd_backup[mqd_idx] is unexpectedly NULL.
+Add check for the return value of devm_kmemdup()
+to prevent potential null pointer dereference.
 
-Although a NULL check for mqd_backup[mqd_idx] existed previously, it was
-moved to a position after the dereference in a recent commit, which
-renders it ineffective.
-
-Add an explicit NULL check for tmp_mqd before dereferencing its members.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: a330b52a9e59 ("drm/amdgpu: Init the cp MQD if it's not be initialized before")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Fixes: 2ffd87d38d6b ("ice: Move support DDP code out of ice_flex_pipe.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ddp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index d7db4cb907ae..134cab16a00d 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -3817,10 +3817,9 @@ static int gfx_v9_0_kiq_init_queue(struct amdgpu_ring *ring)
- 	 * check mqd->cp_hqd_pq_control since this value should not be 0
- 	 */
- 	tmp_mqd = (struct v9_mqd *)adev->gfx.kiq[0].mqd_backup;
--	if (amdgpu_in_reset(adev) && tmp_mqd->cp_hqd_pq_control){
-+	if (amdgpu_in_reset(adev) && tmp_mqd && tmp_mqd->cp_hqd_pq_control) {
- 		/* for GPU_RESET case , reset MQD to a clean status */
--		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(struct v9_mqd_allocation));
-+		memcpy(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(struct v9_mqd_allocation));
+diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
+index 59323c019544..351824dc3c62 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ddp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
+@@ -2301,6 +2301,8 @@ enum ice_ddp_state ice_copy_and_init_pkg(struct ice_hw *hw, const u8 *buf,
+ 		return ICE_DDP_PKG_ERR;
  
- 		/* reset ring buffer */
- 		ring->wptr = 0;
-@@ -3863,7 +3862,7 @@ static int gfx_v9_0_kcq_init_queue(struct amdgpu_ring *ring, bool restore)
- 	 */
- 	tmp_mqd = (struct v9_mqd *)adev->gfx.mec.mqd_backup[mqd_idx];
+ 	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
++	if (!buf_copy)
++		return ICE_DDP_PKG_ERR;
  
--	if (!restore && (!tmp_mqd->cp_hqd_pq_control ||
-+	if (!restore && tmp_mqd && (!tmp_mqd->cp_hqd_pq_control ||
- 	    (!amdgpu_in_reset(adev) && !adev->in_suspend))) {
- 		memset((void *)mqd, 0, sizeof(struct v9_mqd_allocation));
- 		((struct v9_mqd_allocation *)mqd)->dynamic_cu_mask = 0xFFFFFFFF;
-@@ -3874,8 +3873,7 @@ static int gfx_v9_0_kcq_init_queue(struct amdgpu_ring *ring, bool restore)
- 		soc15_grbm_select(adev, 0, 0, 0, 0, 0);
- 		mutex_unlock(&adev->srbm_mutex);
- 
--		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(struct v9_mqd_allocation));
-+		memcpy(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(struct v9_mqd_allocation));
- 	} else {
- 		/* restore MQD to a clean status */
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
+ 	state = ice_init_pkg(hw, buf_copy, len);
+ 	if (!ice_is_init_pkg_successful(state)) {
 -- 
-2.43.0
+2.25.1
 
 
