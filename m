@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-146272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703ABAC304D
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 17:53:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7B8AC304F
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 17:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06F80189CB71
-	for <lists+stable@lfdr.de>; Sat, 24 May 2025 15:53:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B44F9E57AC
+	for <lists+stable@lfdr.de>; Sat, 24 May 2025 15:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0AD1EB5EA;
-	Sat, 24 May 2025 15:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC88D1EBFF0;
+	Sat, 24 May 2025 15:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRzQ/ICm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPJsSyGr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31AB288A5
-	for <stable@vger.kernel.org>; Sat, 24 May 2025 15:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0011EB9E8
+	for <stable@vger.kernel.org>; Sat, 24 May 2025 15:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748102000; cv=none; b=NsfZIQdQoC5T3hjPLJJaIhBxY+nFSJX7LlrMgGAD/L/DOxl+1q6+MLD+7YlirZcRflh+EbWrLG9qwLP39bvol+/qIx69Q2YUI81Cw5Ztjt+sbPuxILjHoumadMB41xOYY0mt8E3isS9fkE7O1rxPhkyWlgU47ifstD5HKG57Frk=
+	t=1748102038; cv=none; b=X4dXNx95Q57cqeLa7DB0x47VjAVybRedfvxFwo1Dqp2fuED7hDaUA349NmV1FTiuEiE0ucOiFckHyNfVdjqqslYlBWQcOl9/mqo6AEr3OtCMKZIx5yKGCKPnNBzpmzJzkxdlYy88qHpbctiiFNhkHaFWIhgyAYnuJ48AF383zVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748102000; c=relaxed/simple;
-	bh=6ivMdMdXGOPdblUXncuEjUqmxhdAlzod+rtwN7TSFI0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hgB4Y6Y0PoAibgNxBHvYl44CdP3Nk/gfofSOv44GWmHJ6vSAGLN0ChMjktmmIjyE9cbYa3CcI6qbnwYZ9ualvAqVt0MM1cA9z9q56ckB1QKc/cOYnwH27KNfy8LzK5BEPc73oQqiSwaZpJhRqX3SsADhk41vBumHeNJ0kOdaQxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRzQ/ICm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D35C4CEE4;
-	Sat, 24 May 2025 15:53:19 +0000 (UTC)
+	s=arc-20240116; t=1748102038; c=relaxed/simple;
+	bh=VT8dfmf9LBMI53USyTws0woVojIMibkgNa5nKDj0F+k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dZMYfUxlXhMZdvRFu7Az9srdsA0qsMXN+wTlULzaLk7K5a8g2T4aZgvLthrd7IBfZ7M7zTgAM8yaT+J+DKtU/xxOxhMStnhKL1YErXYnnlZoXNGcXZL6s+8sOTtKo4YS9amo27oEnWXkrvclXvxgvvBn+k24usISwepO88+bzKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPJsSyGr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AA7C4CEE4;
+	Sat, 24 May 2025 15:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748101999;
-	bh=6ivMdMdXGOPdblUXncuEjUqmxhdAlzod+rtwN7TSFI0=;
+	s=korg; t=1748102038;
+	bh=VT8dfmf9LBMI53USyTws0woVojIMibkgNa5nKDj0F+k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uRzQ/ICmaBrGxWdlGGH1dmyhpdIAixMW2DSXkaZsv56WxfOWSZQ+tWaIZ5njzGTaJ
-	 A/qZDXVWvokqYIBZAmx+CnPysnbl5+UuSdWK/bMC6pjgey8qqzxolopblPjBsj/iS0
-	 qM1xHWk4m0nykf+p/EqEZtW8yVIQTCVIUVp/rf9I=
-Subject: FAILED: patch "[PATCH] pmdomain: core: Fix error checking in" failed to apply to 5.10-stable tree
-To: dan.carpenter@linaro.org,ulf.hansson@linaro.org
+	b=hPJsSyGrl3DXGvArbBIXXl+1tG79IUn2/N8ytEij1rh9ZCq1z5ACplhVQIxEqiHzK
+	 knXusd3gJ85cyDB9x7XArOv7C792z4XgKpN0TGN2+6c1QL0laSNyXtWEU4c3owxdwc
+	 AGbHhioSHKoXwlQ5zCcvPwZUN6p1gib49m2P143w=
+Subject: FAILED: patch "[PATCH] smb: client: Fix use-after-free in cifs_fill_dirent" failed to apply to 5.15-stable tree
+To: wangzhaolong1@huawei.com,pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 24 May 2025 17:52:00 +0200
-Message-ID: <2025052459-bully-agreeing-45f1@gregkh>
+Date: Sat, 24 May 2025 17:53:32 +0200
+Message-ID: <2025052432-deafening-parted-13e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe
+git cherry-pick -x a7a8fe56e932a36f43e031b398aef92341bf5ea0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025052459-bully-agreeing-45f1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025052432-deafening-parted-13e0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,38 +77,168 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@linaro.org>
-Date: Thu, 8 May 2025 09:29:23 +0300
-Subject: [PATCH] pmdomain: core: Fix error checking in
- genpd_dev_pm_attach_by_id()
+From a7a8fe56e932a36f43e031b398aef92341bf5ea0 Mon Sep 17 00:00:00 2001
+From: Wang Zhaolong <wangzhaolong1@huawei.com>
+Date: Fri, 16 May 2025 17:12:55 +0800
+Subject: [PATCH] smb: client: Fix use-after-free in cifs_fill_dirent
 
-The error checking for of_count_phandle_with_args() does not handle
-negative error codes correctly.  The problem is that "index" is a u32 so
-in the condition "if (index >= num_domains)" negative error codes stored
-in "num_domains" are type promoted to very high positive values and
-"index" is always going to be valid.
+There is a race condition in the readdir concurrency process, which may
+access the rsp buffer after it has been released, triggering the
+following KASAN warning.
 
-Test for negative error codes first and then test if "index" is valid.
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in cifs_fill_dirent+0xb03/0xb60 [cifs]
+ Read of size 4 at addr ffff8880099b819c by task a.out/342975
 
-Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+ CPU: 2 UID: 0 PID: 342975 Comm: a.out Not tainted 6.15.0-rc6+ #240 PREEMPT(full)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x53/0x70
+  print_report+0xce/0x640
+  kasan_report+0xb8/0xf0
+  cifs_fill_dirent+0xb03/0xb60 [cifs]
+  cifs_readdir+0x12cb/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f996f64b9f9
+ Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89
+ f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+ f0 ff ff  0d f7 c3 0c 00 f7 d8 64 89 8
+ RSP: 002b:00007f996f53de78 EFLAGS: 00000207 ORIG_RAX: 000000000000004e
+ RAX: ffffffffffffffda RBX: 00007f996f53ecdc RCX: 00007f996f64b9f9
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+ RBP: 00007f996f53dea0 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000207 R12: ffffffffffffff88
+ R13: 0000000000000000 R14: 00007ffc8cd9a500 R15: 00007f996f51e000
+  </TASK>
+
+ Allocated by task 408:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  __kasan_slab_alloc+0x6e/0x70
+  kmem_cache_alloc_noprof+0x117/0x3d0
+  mempool_alloc_noprof+0xf2/0x2c0
+  cifs_buf_get+0x36/0x80 [cifs]
+  allocate_buffers+0x1d2/0x330 [cifs]
+  cifs_demultiplex_thread+0x22b/0x2690 [cifs]
+  kthread+0x394/0x720
+  ret_from_fork+0x34/0x70
+  ret_from_fork_asm+0x1a/0x30
+
+ Freed by task 342979:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  kasan_save_free_info+0x3b/0x60
+  __kasan_slab_free+0x37/0x50
+  kmem_cache_free+0x2b8/0x500
+  cifs_buf_release+0x3c/0x70 [cifs]
+  cifs_readdir+0x1c97/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents64+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ The buggy address belongs to the object at ffff8880099b8000
+  which belongs to the cache cifs_request of size 16588
+ The buggy address is located 412 bytes inside of
+  freed 16588-byte region [ffff8880099b8000, ffff8880099bc0cc)
+
+ The buggy address belongs to the physical page:
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x99b8
+ head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+ anon flags: 0x80000000000040(head|node=0|zone=1)
+ page_type: f5(slab)
+ raw: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ raw: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ head: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000003 ffffea0000266e01 00000000ffffffff 00000000ffffffff
+ head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffff8880099b8080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ >ffff8880099b8180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                             ^
+  ffff8880099b8200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ==================================================================
+
+POC is available in the link [1].
+
+The problem triggering process is as follows:
+
+Process 1                       Process 2
+-----------------------------------------------------------------
+cifs_readdir
+  /* file->private_data == NULL */
+  initiate_cifs_search
+    cifsFile = kzalloc(sizeof(struct cifsFileInfo), GFP_KERNEL);
+    smb2_query_dir_first ->query_dir_first()
+      SMB2_query_directory
+        SMB2_query_directory_init
+        cifs_send_recv
+        smb2_parse_query_directory
+          srch_inf->ntwrk_buf_start = (char *)rsp;
+          srch_inf->srch_entries_start = (char *)rsp + ...
+          srch_inf->last_entry = (char *)rsp + ...
+          srch_inf->smallBuf = true;
+  find_cifs_entry
+    /* if (cfile->srch_inf.ntwrk_buf_start) */
+    cifs_small_buf_release(cfile->srch_inf // free
+
+                        cifs_readdir  ->iterate_shared()
+                          /* file->private_data != NULL */
+                          find_cifs_entry
+                            /* in while (...) loop */
+                            smb2_query_dir_next  ->query_dir_next()
+                              SMB2_query_directory
+                                SMB2_query_directory_init
+                                cifs_send_recv
+                                  compound_send_recv
+                                    smb_send_rqst
+                                    __smb_send_rqst
+                                      rc = -ERESTARTSYS;
+                                      /* if (fatal_signal_pending()) */
+                                      goto out;
+                                      return rc
+                            /* if (cfile->srch_inf.last_entry) */
+                            cifs_save_resume_key()
+                              cifs_fill_dirent // UAF
+                            /* if (rc) */
+                            return -ENOENT;
+
+Fix this by ensuring the return code is checked before using pointers
+from the srch_inf.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220131 [1]
+Fixes: a364bc0b37f1 ("[CIFS] fix saving of resume key before CIFSFindNext")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index 9b2f28b34bb5..d6c1ddb807b2 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -3126,7 +3126,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
- 	/* Verify that the index is within a valid range. */
- 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
- 						 "#power-domain-cells");
--	if (index >= num_domains)
-+	if (num_domains < 0 || index >= num_domains)
- 		return NULL;
- 
- 	/* Allocate and register device on the genpd bus. */
+diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
+index 50f96259d9ad..67d7dd64b5e2 100644
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -756,11 +756,11 @@ find_cifs_entry(const unsigned int xid, struct cifs_tcon *tcon, loff_t pos,
+ 		rc = server->ops->query_dir_next(xid, tcon, &cfile->fid,
+ 						 search_flags,
+ 						 &cfile->srch_inf);
++		if (rc)
++			return -ENOENT;
+ 		/* FindFirst/Next set last_entry to NULL on malformed reply */
+ 		if (cfile->srch_inf.last_entry)
+ 			cifs_save_resume_key(cfile->srch_inf.last_entry, cfile);
+-		if (rc)
+-			return -ENOENT;
+ 	}
+ 	if (index_to_find < cfile->srch_inf.index_of_last_entry) {
+ 		/* we found the buffer that contains the entry */
 
 
