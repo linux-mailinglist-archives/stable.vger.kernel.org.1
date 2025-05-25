@@ -1,180 +1,188 @@
-Return-Path: <stable+bounces-146304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F60AC3450
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 13:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16774AC349F
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 14:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07F9518959C7
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 11:56:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 939DF1892057
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 12:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977A61F2C44;
-	Sun, 25 May 2025 11:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A121E1DF254;
+	Sun, 25 May 2025 12:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LVTVfpgY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xohIoSca"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56451DF26B;
-	Sun, 25 May 2025 11:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205B723741
+	for <stable@vger.kernel.org>; Sun, 25 May 2025 12:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748174164; cv=none; b=bPnu3c12W8JDGiv0SSjl7LVh6LkE/1Ytdzcb1Sx+4Cyv+cLC4EUhsyxeQWFrYTfm2eZGOMGCW+kVEeqQkyA8SK5oRXCN2m/SGmvsaUr+CqP7l0ykE/0AtLC6M8VlNMHmkQsXcoKnM3SpCrv1y/4lvoaZh9tmR3qf9O2VeMYvHNo=
+	t=1748176569; cv=none; b=WZ2R2SP+OmjeCQKdPjna4ryui+ePl3I30KYVLQyFJzCXQ8K1MYL/UYAzsMDBiJa54a/iJ4U5mXzVEMOcRvkz+TMjeCyqbAdinMajGdvPjvbZq/7E5IJhW+ZHfQet0gfoCAeHMJsdB+czAakP5QEl9FiwmD4wb7N9irWkPcsgR+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748174164; c=relaxed/simple;
-	bh=E+2/fZKdPaU7ca49FSsfP9AXKnBpKjmWYrsoU/icpF8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bqWSlQpxdeW4K+NJWR9djfy4deVNYhdGzOx5WGFTnOtb8WGFbYzv+VWFtRw9O78xPCiHcJYFhvSXEoyLBBCRMO/NGDwqYlGRMFejMe2z0XNfFrYtnKdFmlLLRUvaBwTrCN57Q8RAwZqsi4UC2AXfivxB1pS/VHUtl1iUNn7JfP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LVTVfpgY; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-87dfe906a87so40610241.0;
-        Sun, 25 May 2025 04:56:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748174161; x=1748778961; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lVs56YPAZB6QL9nW64t7FObev9+e4WZttWHfdkbTmtc=;
-        b=LVTVfpgYfxyPUVibfWrhZDwJdxO5jyiD6y2F6Tqe3Nd73/LxQRwHZ/j3tZC1ZlnPoq
-         FVcuT1q6EwndV7TqaDuRP+ARlqYbeQlJnWVhP4Fg4LgU21YbbdZTWNvVKkgJ9vxOhMU5
-         9KVbYvxImgdUculte0aX/Vk7fR4kX294jMcz9bMo9kuP8C+mXsFdDBUWTO+woxKaEylE
-         arodDKnwzIbzkRNBnQ2EV4xo6yTW1QoIz6QePtHC1vcRRO9Uwtn7jzxO9OkYqAgOpBT8
-         UxJSwPh8VGAsFwGOhbVDH9EWIaXSlknRyymjQq3nO4QHYBsiL8sWvlUP1k95EI7Rcwel
-         EG1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748174161; x=1748778961;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lVs56YPAZB6QL9nW64t7FObev9+e4WZttWHfdkbTmtc=;
-        b=ip10/o8CNtUw29qP5x1W67/LP4cDsSRYRGcZwRLa+EIhBfCnwXjDsAHNjPt4x6zhXd
-         LucQ1TcEfTgfAtkjay76wW7hY1uJnWrXzPIOuEHirSUsbjAGadrTRqjfgXLNc3Q/OHMJ
-         CiOccS6EhUwWLr9aTOq6xkd7L1AwBKdfHZZYqO3i29vPfGKaH4RAqVsH+a18qHt+jDtg
-         CPnJIqMJcxQwpXfhgcPfEl1tTdzI88zqZj++0jj1HdExrfitkVuODelMxmq4OtV9X0Fv
-         2zvBQBVzhExATwyF3b1jPDgDXRDYUaIsrQER5aRmi7v72f4H3WHA49h1dtBtpXPkTEMC
-         tdfw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/6TkLXlfrOWw3IFf1JYhr2mpX/6QEsmYrt4jKnR/P/T0BLhsEkLUZ/pa99scJwzMiI/7fjWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAgEFfGHRM7z3ED/iqxQmppoxbrhiTO/hnYAPxqscJ7WWZGVb0
-	Kk3TRurbp2yOkuQZR96dLpnhfSbWQqhYCC+uUvRh/Yju5a4YHuA0+IGsQ0wsAA==
-X-Gm-Gg: ASbGncv8MJtzn3JCBAHLgbvUuXLi0xr4JLWipdacmCS/NtrHEJe7pSHzf0PyC0McO+o
-	2RMZ+0P++cdECLjnNQ1k6hewVKVgvk3JO4azYF33cxpWXVjThDfBNlHHXf1yQV6sP697v1cvtms
-	01s8zuA+QQ4tkk6LfIlFIO6GqyxsAG4uWm1DdbihzgDsinmXXhqyADOnqKoGf/a12V8k8ZGLx4n
-	uRTbN4SphnJZXZnFNqfn1wwVtqFT/S9JB6JvU5bC+wzbbmdmAG5lTI0QA/ZPGcN/mpRkatMHgV3
-	G6/2Tk5Cj2cqe58rFtea3aNlsVEzR+G+1bpsTsN8MSaSJipbsE2Mfkz7hgj8JNT4TQ==
-X-Google-Smtp-Source: AGHT+IGtFBZcfM4iabDS1xJZX3T6vNAXm8ytKMPiifbdERLDdpIkbafrzmpCqPCTtZYEiK/qd1MYHg==
-X-Received: by 2002:a05:6102:3e91:b0:4c1:91e0:d5d6 with SMTP id ada2fe7eead31-4e4240bc2f4mr4294459137.12.1748174161654;
-        Sun, 25 May 2025 04:56:01 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:fe1b:24a1:48d2:8bd2])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87dede7d81fsm2185872241.23.2025.05.25.04.55.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 May 2025 04:56:01 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	mazziesaccount@gmail.com,
-	Fabio Estevam <festevam@denx.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] iio: adc: max1363: Reorder mode_list[] entries
-Date: Sun, 25 May 2025 08:55:46 -0300
-Message-Id: <20250525115546.2368007-2-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250525115546.2368007-1-festevam@gmail.com>
-References: <20250525115546.2368007-1-festevam@gmail.com>
+	s=arc-20240116; t=1748176569; c=relaxed/simple;
+	bh=/lWOTGntgK5qHpYkNR+Qc16fJm6kwIBO/NIcBAaOGao=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IbJO+udMSfZ00iE2je0rznr1+fcX0/mOkS95Js2wXaY/cuZUlBje7EisWG/OdyCS5YZf88rbK1a2sGsSOn75BPnJJthqWIdY3VAyo2oPm/FqtkR9lDLnI8UJlDZYJDt/pdmJdNvck/Gv50seZOXx16GntoDbTOmGF2onVA8Ply8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xohIoSca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BF9C4CEEA;
+	Sun, 25 May 2025 12:36:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748176568;
+	bh=/lWOTGntgK5qHpYkNR+Qc16fJm6kwIBO/NIcBAaOGao=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xohIoScaHBwldv9ofQVo+Kb0JtCzmogsThfzNWh1ZCLBxmqdLJSbsX8sNHfMcGFXH
+	 JU/Yd9zlgYWoUC/1rEJrhIZ36CU+4jKmCj7FGrvlS1FyB+sOjApw2H3hpJlLgIThz9
+	 mC4HpQzz4CG8WlKH/OAWtJ5/WN3QSSHYrK/WHF4s=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-of-dwcmshc: add PD workaround on RK3576" failed to apply to 6.12-stable tree
+To: nicolas.frattaroli@collabora.com,adrian.hunter@intel.com,shawn.lin@rock-chips.com,stable@vger.kernel.org,ulf.hansson@linaro.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 25 May 2025 14:34:15 +0200
+Message-ID: <2025052515-headdress-overcome-c741@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Fabio Estevam <festevam@denx.de>
 
-The IIO core issues warnings when a scan mask is a subset of a previous
-entry in the available_scan_masks array.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On a board using a MAX11601, the following warning is observed:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-max1363 1-0064: available_scan_mask 7 subset of 6. Never used
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 08f959759e1e6e9c4b898c51a7d387ac3480630b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025052515-headdress-overcome-c741@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-This occurs because the entries in the max11607_mode_list[] array are not
-ordered correctly. To fix this, reorder the entries so that no scan mask is
-a subset of an earlier one.
+Possible dependencies:
 
-While at it, reorder the mode_list[] arrays for other supported chips as
-well, to prevent similar warnings on different variants.
 
-Cc: <stable@vger.kernel.org> #6.12
-Signed-off-by: Fabio Estevam <festevam@denx.de>
----
-Changes since v2:
-- Removed incorrect Fixes: tag (Matti)
 
-Changes since v1:
-- Also reorder other mode_list entries. (Jonathan)
+thanks,
 
- drivers/iio/adc/max1363.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+greg k-h
 
-diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-index bc44b4604ef4..9dd547e62b6c 100644
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -532,23 +532,23 @@ static const struct iio_chan_spec max1363_channels[] =
- /* Applies to max1236, max1237 */
- static const enum max1363_modes max1236_mode_list[] = {
- 	_s0, _s1, _s2, _s3,
--	s0to1, s0to2, s0to3,
-+	s0to1, s0to2, s2to3, s0to3,
- 	d0m1, d2m3, d1m0, d3m2,
- 	d0m1to2m3, d1m0to3m2,
--	s2to3,
+------------------ original commit in Linus's tree ------------------
+
+From 08f959759e1e6e9c4b898c51a7d387ac3480630b Mon Sep 17 00:00:00 2001
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Date: Wed, 23 Apr 2025 09:53:32 +0200
+Subject: [PATCH] mmc: sdhci-of-dwcmshc: add PD workaround on RK3576
+
+RK3576's power domains have a peculiar design where the PD_NVM power
+domain, of which the sdhci controller is a part, seemingly does not have
+idempotent runtime disable/enable. The end effect is that if PD_NVM gets
+turned off by the generic power domain logic because all the devices
+depending on it are suspended, then the next time the sdhci device is
+unsuspended, it'll hang the SoC as soon as it tries accessing the CQHCI
+registers.
+
+RK3576's UFS support needed a new dev_pm_genpd_rpm_always_on function
+added to the generic power domains API to handle what appears to be a
+similar hardware design.
+
+Use this new function to ask for the same treatment in the sdhci
+controller by giving rk3576 its own platform data with its own postinit
+function. The benefit of doing this instead of marking the power domains
+always on in the power domain core is that we only do this if we know
+the platform we're running on actually uses the sdhci controller. For
+others, keeping PD_NVM always on would be a waste, as they won't run
+into this specific issue. The only other IP in PD_NVM that could be
+affected is FSPI0. If it gets a mainline driver, it will probably want
+to do the same thing.
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Fixes: cfee1b507758 ("pmdomain: rockchip: Add support for RK3576 SoC")
+Cc: <stable@vger.kernel.org> # v6.15+
+Link: https://lore.kernel.org/r/20250423-rk3576-emmc-fix-v3-1-0bf80e29967f@collabora.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index 09b9ab15e499..a20d03fdd6a9 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -17,6 +17,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/sizes.h>
+@@ -745,6 +746,29 @@ static void dwcmshc_rk35xx_postinit(struct sdhci_host *host, struct dwcmshc_priv
+ 	}
+ }
+ 
++static void dwcmshc_rk3576_postinit(struct sdhci_host *host, struct dwcmshc_priv *dwc_priv)
++{
++	struct device *dev = mmc_dev(host->mmc);
++	int ret;
++
++	/*
++	 * This works around the design of the RK3576's power domains, which
++	 * makes the PD_NVM power domain, which the sdhci controller on the
++	 * RK3576 is in, never come back the same way once it's run-time
++	 * suspended once. This can happen during early kernel boot if no driver
++	 * is using either PD_NVM or its child power domain PD_SDGMAC for a
++	 * short moment, leading to it being turned off to save power. By
++	 * keeping it on, sdhci suspending won't lead to PD_NVM becoming a
++	 * candidate for getting turned off.
++	 */
++	ret = dev_pm_genpd_rpm_always_on(dev, true);
++	if (ret && ret != -EOPNOTSUPP)
++		dev_warn(dev, "failed to set PD rpm always on, SoC may hang later: %pe\n",
++			 ERR_PTR(ret));
++
++	dwcmshc_rk35xx_postinit(host, dwc_priv);
++}
++
+ static int th1520_execute_tuning(struct sdhci_host *host, u32 opcode)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+@@ -1176,6 +1200,18 @@ static const struct dwcmshc_pltfm_data sdhci_dwcmshc_rk35xx_pdata = {
+ 	.postinit = dwcmshc_rk35xx_postinit,
  };
  
- /* Applies to max1238, max1239 */
- static const enum max1363_modes max1238_mode_list[] = {
- 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7, _s8, _s9, _s10, _s11,
- 	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6,
-+	s6to7, s6to8, s6to9, s6to10, s6to11,
- 	s0to7, s0to8, s0to9, s0to10, s0to11,
- 	d0m1, d2m3, d4m5, d6m7, d8m9, d10m11,
- 	d1m0, d3m2, d5m4, d7m6, d9m8, d11m10,
--	d0m1to2m3, d0m1to4m5, d0m1to6m7, d0m1to8m9, d0m1to10m11,
--	d1m0to3m2, d1m0to5m4, d1m0to7m6, d1m0to9m8, d1m0to11m10,
--	s6to7, s6to8, s6to9, s6to10, s6to11,
--	d6m7to8m9, d6m7to10m11, d7m6to9m8, d7m6to11m10,
-+	d0m1to2m3, d0m1to4m5, d0m1to6m7, d6m7to8m9,
-+	d0m1to8m9, d6m7to10m11, d0m1to10m11, d1m0to3m2,
-+	d1m0to5m4, d1m0to7m6, d7m6to9m8, d1m0to9m8,
-+	d7m6to11m10, d1m0to11m10,
- };
- 
- #define MAX1363_12X_CHANS(bits) {				\
-@@ -584,16 +584,15 @@ static const struct iio_chan_spec max1238_channels[] = MAX1363_12X_CHANS(12);
- 
- static const enum max1363_modes max11607_mode_list[] = {
- 	_s0, _s1, _s2, _s3,
--	s0to1, s0to2, s0to3,
--	s2to3,
-+	s0to1, s0to2, s2to3,
-+	s0to3,
- 	d0m1, d2m3, d1m0, d3m2,
- 	d0m1to2m3, d1m0to3m2,
- };
- 
- static const enum max1363_modes max11608_mode_list[] = {
- 	_s0, _s1, _s2, _s3, _s4, _s5, _s6, _s7,
--	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s0to7,
--	s6to7,
-+	s0to1, s0to2, s0to3, s0to4, s0to5, s0to6, s6to7, s0to7,
- 	d0m1, d2m3, d4m5, d6m7,
- 	d1m0, d3m2, d5m4, d7m6,
- 	d0m1to2m3, d0m1to4m5, d0m1to6m7,
--- 
-2.34.1
++static const struct dwcmshc_pltfm_data sdhci_dwcmshc_rk3576_pdata = {
++	.pdata = {
++		.ops = &sdhci_dwcmshc_rk35xx_ops,
++		.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
++			  SDHCI_QUIRK_BROKEN_TIMEOUT_VAL,
++		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++			   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
++	},
++	.init = dwcmshc_rk35xx_init,
++	.postinit = dwcmshc_rk3576_postinit,
++};
++
+ static const struct dwcmshc_pltfm_data sdhci_dwcmshc_th1520_pdata = {
+ 	.pdata = {
+ 		.ops = &sdhci_dwcmshc_th1520_ops,
+@@ -1274,6 +1310,10 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
+ 		.compatible = "rockchip,rk3588-dwcmshc",
+ 		.data = &sdhci_dwcmshc_rk35xx_pdata,
+ 	},
++	{
++		.compatible = "rockchip,rk3576-dwcmshc",
++		.data = &sdhci_dwcmshc_rk3576_pdata,
++	},
+ 	{
+ 		.compatible = "rockchip,rk3568-dwcmshc",
+ 		.data = &sdhci_dwcmshc_rk35xx_pdata,
 
 
