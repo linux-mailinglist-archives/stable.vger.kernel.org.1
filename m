@@ -1,110 +1,121 @@
-Return-Path: <stable+bounces-146308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68FCAC34D9
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 15:17:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86BB8AC358A
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 17:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 825953A571F
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 13:17:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8229718954F9
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 15:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676091F1932;
-	Sun, 25 May 2025 13:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/SsL96Q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F831F8ADD;
+	Sun, 25 May 2025 15:54:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AD31E871;
-	Sun, 25 May 2025 13:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8526712B73;
+	Sun, 25 May 2025 15:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748179069; cv=none; b=Jnllc3BuD3s4E8TMncG0mBtNZOFEOjEJnSNsRMKmF1XcfRoXhFswzJCperxOCuImcpwW6WHGmryVZKS3C6nHTcVLzGLvZSHHSArgSHFQnsmP2BCfZPDOeYkR/WPI2nJdO3FgnjsXf50rwE6JMB7YZmNCeqZp5/LWQqZ2hts6Ygc=
+	t=1748188477; cv=none; b=Il/zkvZmuIp/XtWfY2G1j/K+mffNT2bSr4RoFQvFquna1dvh6LZRfp5YQqky8u36WyfaNbglQ+eWfxoZClLZCHAa5XGahsZq7naDMtXXKX+5MSsVpgG8vaa+X24IufBqk9c83Al0jeQsiLk4O28P1isTD/Ih9Xu3vJ2yZF91woQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748179069; c=relaxed/simple;
-	bh=evmyeAQqgK356FnOm009PBsdEoCq2cCc2iofF1wjQG4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jv5l/jZiJwMf7fMGLphlB9X3Ddf6O/4+WidEHsYCD6pVQap3xZ3khkRQur+17KCvg0cngbAlEB/tvfeMiwN00Lvf/ZLi9XDEmFZvELR3wra6tQNAEamjp0h4e/CDnzgO4QgWIv3eGh5z4XryvMZyCIfSBc1n4Fjli2pNw9jH+k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/SsL96Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D3CC4CEEA;
-	Sun, 25 May 2025 13:17:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748179068;
-	bh=evmyeAQqgK356FnOm009PBsdEoCq2cCc2iofF1wjQG4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S/SsL96QKRHqDtde5fqUG2JcF41WGesL6+EzYx1YRssmG2Twd6bu0401JyLxivBVC
-	 3WsDEgQJbJgGbKrOMJLpv6ni2E5VHFucfAA/NA7X8ZAh9RX2Rz969g6OkzOeNsgMv8
-	 7ULvAQTWjkvTmdQTBzolnzeeu3NykCQkCuKLhOzEVBQdpVBrMeq9PQiHC60RWXGJoo
-	 2CAOfhGsfYn4lx9X9J9A0RZ+PyotVDANjCtFf+yaRS8RueRESvHl6dqVPaT3IPZG79
-	 pvGZA9LNBqFiUa3W4tjHOtSUzrGPZoS3lJ0kpEox5tIUk/2z/AHg7xFGJP5ltJMmaK
-	 N3s4NAld8RDxg==
-Date: Sun, 25 May 2025 14:17:40 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: linux-iio@vger.kernel.org, mazziesaccount@gmail.com, Fabio Estevam
- <festevam@denx.de>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] iio: adc: max1363: Fix
- MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
-Message-ID: <20250525141740.3c85e146@jic23-huawei>
-In-Reply-To: <20250525115546.2368007-1-festevam@gmail.com>
-References: <20250525115546.2368007-1-festevam@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1748188477; c=relaxed/simple;
+	bh=vrH5fpvU7vRjZ/W60VBI3qyQYO/Wlt462x6MyH8dQh8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fRNKvp74JiZC7S4MPW04KQzueT8rkW/Uyq6vi/pmo93KGhC+6vPvTGgpX5s0IGk3kdJzJZqNTW6bUMR1bL1DY7hyqTC9R46LT45tRqRZNZlcuRL0CJfUAC+0fNnNW3tJ+KY2ph+D6MqL69wy10LL7jkfnV8yJRYe16AVwgAGZKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.199.70.239])
+	by APP-03 (Coremail) with SMTP id rQCowADHETEfPTNoi+BnAQ--.40252S2;
+	Sun, 25 May 2025 23:54:11 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: af_key: Add error check in set_sadb_address()
+Date: Sun, 25 May 2025 23:53:50 +0800
+Message-ID: <20250525155350.1948-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowADHETEfPTNoi+BnAQ--.40252S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AFyDAryDKw4xur1UZrW3GFg_yoW8Gw4Up3
+	W3Gr1fXrn8Jw15ua1fGr1Fg3W5A34kKFyj9rW8KF4YkwsYgr1rZw45Cw4fWa4UJrZ3Xa1x
+	trWYgrZ5GF40vFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkNA2gzMwUSfgAAsB
 
-On Sun, 25 May 2025 08:55:45 -0300
-Fabio Estevam <festevam@gmail.com> wrote:
+The function set_sadb_address() calls the function
+pfkey_sockaddr_fill(), but does not check its return value.
+A proper implementation can be found in set_sadb_kmaddress().
 
-> From: Fabio Estevam <festevam@denx.de>
-> 
-> Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
-> booting a board populated with a MAX11601 results in a flood of warnings:
-> 
-> max1363 1-0064: available_scan_mask 8 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 9 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 10 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 11 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 12 subset of 0. Never used
-> max1363 1-0064: available_scan_mask 13 subset of 0. Never used
-> ...
-> 
-> These warnings are caused by incorrect offsets used for differential
-> channels in the MAX1363_4X_CHANS() and MAX1363_8X_CHANS() macros.
-> 
-> The max1363_mode_table[] defines the differential channel mappings as
-> follows:
-> 
-> MAX1363_MODE_DIFF_SINGLE(0, 1, 1 << 12),
-> MAX1363_MODE_DIFF_SINGLE(2, 3, 1 << 13),
-> MAX1363_MODE_DIFF_SINGLE(4, 5, 1 << 14),
-> MAX1363_MODE_DIFF_SINGLE(6, 7, 1 << 15),
-> MAX1363_MODE_DIFF_SINGLE(8, 9, 1 << 16),
-> MAX1363_MODE_DIFF_SINGLE(10, 11, 1 << 17),
-> MAX1363_MODE_DIFF_SINGLE(1, 0, 1 << 18),
-> MAX1363_MODE_DIFF_SINGLE(3, 2, 1 << 19),
-> MAX1363_MODE_DIFF_SINGLE(5, 4, 1 << 20),
-> MAX1363_MODE_DIFF_SINGLE(7, 6, 1 << 21),
-> MAX1363_MODE_DIFF_SINGLE(9, 8, 1 << 22),
-> MAX1363_MODE_DIFF_SINGLE(11, 10, 1 << 23),
-> 
-> Update the macros to follow this same pattern, ensuring that the scan masks
-> are valid and preventing the warnings.
-> 
-> Cc: <stable@vger.kernel.org> #6.12
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-I dropped the fixes tags and applied these already.
+Add an error check for set_sadb_address(), return error code
+if the function fails.
 
-Thanks,
+Fixes: e5b56652c11b ("key: Share common code path to fill sockaddr{}.")
+Cc: stable@vger.kernel.org # v2.6
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ net/key/af_key.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-Jonathan
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index c56bb4f451e6..537c9604e356 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3474,15 +3474,17 @@ static int set_sadb_address(struct sk_buff *skb, int sasize, int type,
+ 	switch (type) {
+ 	case SADB_EXT_ADDRESS_SRC:
+ 		addr->sadb_address_prefixlen = sel->prefixlen_s;
+-		pfkey_sockaddr_fill(&sel->saddr, 0,
+-				    (struct sockaddr *)(addr + 1),
+-				    sel->family);
++		if (!pfkey_sockaddr_fill(&sel->saddr, 0,
++					 (struct sockaddr *)(addr + 1),
++					 sel->family))
++			return -EINVAL;
+ 		break;
+ 	case SADB_EXT_ADDRESS_DST:
+ 		addr->sadb_address_prefixlen = sel->prefixlen_d;
+-		pfkey_sockaddr_fill(&sel->daddr, 0,
+-				    (struct sockaddr *)(addr + 1),
+-				    sel->family);
++		if (!pfkey_sockaddr_fill(&sel->daddr, 0,
++					 (struct sockaddr *)(addr + 1),
++					 sel->family))
++			return -EINVAL;
+ 		break;
+ 	default:
+ 		return -EINVAL;
+-- 
+2.42.0.windows.2
+
 
