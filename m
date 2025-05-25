@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917AAAC34C8
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 15:10:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A68FCAC34D9
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 15:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43028175A7D
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 13:10:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 825953A571F
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 13:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA591F1931;
-	Sun, 25 May 2025 13:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676091F1932;
+	Sun, 25 May 2025 13:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qh0ykMCE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/SsL96Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFDA1F1524;
-	Sun, 25 May 2025 13:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AD31E871;
+	Sun, 25 May 2025 13:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748178612; cv=none; b=FMe8FtQGOL4iOWIB88n+r6w5DrP2wG7FYsnJAgNZJmHeXbs58IKEcH4n1liWxPXLwv6nlQXM+XPsgwvEpjQqej3bgZ1BDWpbt3nvCN5x+O8Jq0LgYL+fFlFnVrjJyCIoo1icioWPwIU4oHpmXJh5LYUrq7kcQgF/Aj8CbZHtJl4=
+	t=1748179069; cv=none; b=Jnllc3BuD3s4E8TMncG0mBtNZOFEOjEJnSNsRMKmF1XcfRoXhFswzJCperxOCuImcpwW6WHGmryVZKS3C6nHTcVLzGLvZSHHSArgSHFQnsmP2BCfZPDOeYkR/WPI2nJdO3FgnjsXf50rwE6JMB7YZmNCeqZp5/LWQqZ2hts6Ygc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748178612; c=relaxed/simple;
-	bh=B3rfBSmnDxasENP82FF9YWBJj6fxCwTp8LVgBxidQD4=;
+	s=arc-20240116; t=1748179069; c=relaxed/simple;
+	bh=evmyeAQqgK356FnOm009PBsdEoCq2cCc2iofF1wjQG4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pf0i5acKdD2q50K6du9pcyIv1Y+euyIJne0Zpa01mSFKdI3SXJknSQAWIkdLN/xq5JzoJEOPvWoXxLFEIjTYh+844NO+HxJRUYXzR/8/kseznHQAXv0ZaSbtKN0+NRyOPnQC2iJfhYKkbKbNjI3FbyGpJr685zFgyPKf7F4W4rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qh0ykMCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7845C4CEEA;
-	Sun, 25 May 2025 13:10:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jv5l/jZiJwMf7fMGLphlB9X3Ddf6O/4+WidEHsYCD6pVQap3xZ3khkRQur+17KCvg0cngbAlEB/tvfeMiwN00Lvf/ZLi9XDEmFZvELR3wra6tQNAEamjp0h4e/CDnzgO4QgWIv3eGh5z4XryvMZyCIfSBc1n4Fjli2pNw9jH+k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/SsL96Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D3CC4CEEA;
+	Sun, 25 May 2025 13:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748178611;
-	bh=B3rfBSmnDxasENP82FF9YWBJj6fxCwTp8LVgBxidQD4=;
+	s=k20201202; t=1748179068;
+	bh=evmyeAQqgK356FnOm009PBsdEoCq2cCc2iofF1wjQG4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Qh0ykMCEf7n7XkeCkHYM6jkJsFE2MeoO+HwdddZevR4dcuGqCFw+wakR+t9LRJA6e
-	 1d6imUcKxRfAAi80wlXIHvRqzYOqsMspmqsZ0/1506J/HpFbRZ3d/gbjye56hbdHqc
-	 cStkvUsv8qXutACTA1II6JLgRqiIlmzemQKB1HqckHjoV2X6JrL+74s2THdhFqX2Tk
-	 QAPB8NlWVuR2lmxPu+hxXbiHf0CkOIGFT/M0sMka9G0uhyzLyi+xmR0SkIjG/nDtMd
-	 9PfcZs1Pa061kQ5raa2AHCl+egeQ4iG+g2PF2lCBmoxwi/RG/ju+d5k8OCSLmincgb
-	 HHWJSDs+b6Zpw==
-Date: Sun, 25 May 2025 14:10:05 +0100
+	b=S/SsL96QKRHqDtde5fqUG2JcF41WGesL6+EzYx1YRssmG2Twd6bu0401JyLxivBVC
+	 3WsDEgQJbJgGbKrOMJLpv6ni2E5VHFucfAA/NA7X8ZAh9RX2Rz969g6OkzOeNsgMv8
+	 7ULvAQTWjkvTmdQTBzolnzeeu3NykCQkCuKLhOzEVBQdpVBrMeq9PQiHC60RWXGJoo
+	 2CAOfhGsfYn4lx9X9J9A0RZ+PyotVDANjCtFf+yaRS8RueRESvHl6dqVPaT3IPZG79
+	 pvGZA9LNBqFiUa3W4tjHOtSUzrGPZoS3lJ0kpEox5tIUk/2z/AHg7xFGJP5ltJMmaK
+	 N3s4NAld8RDxg==
+Date: Sun, 25 May 2025 14:17:40 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Fabio Estevam <festevam@gmail.com>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>, linux-iio@vger.kernel.org,
- Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: adc: max1363: Fix
+Cc: linux-iio@vger.kernel.org, mazziesaccount@gmail.com, Fabio Estevam
+ <festevam@denx.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: adc: max1363: Fix
  MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
-Message-ID: <20250525141005.626ac223@jic23-huawei>
-In-Reply-To: <CAOMZO5CtcmpH6sMpHboEyP50iPG3qGAyzg+TEoR7w2-ykU44_g@mail.gmail.com>
-References: <20250516173900.677821-1-festevam@gmail.com>
-	<a41491e0-595a-4614-a03e-34848446a815@gmail.com>
-	<CAOMZO5CtcmpH6sMpHboEyP50iPG3qGAyzg+TEoR7w2-ykU44_g@mail.gmail.com>
+Message-ID: <20250525141740.3c85e146@jic23-huawei>
+In-Reply-To: <20250525115546.2368007-1-festevam@gmail.com>
+References: <20250525115546.2368007-1-festevam@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,36 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 19 May 2025 21:31:22 -0300
+On Sun, 25 May 2025 08:55:45 -0300
 Fabio Estevam <festevam@gmail.com> wrote:
 
-> Hi Matti,
->=20
-> On Mon, May 19, 2025 at 2:01=E2=80=AFAM Matti Vaittinen
-> <mazziesaccount@gmail.com> wrote:
->=20
-> > I could argue the problem which is fixed is not related to the
-> > 2718f15403fb. I'd say the problem has been the commit which introduced
-> > the 'offending' masks instead. The 2718f15403fb is not fixed by this
-> > change. It could help identifying the faulty releases if correct commit
-> > was pointed here. =20
->=20
-> Fair enough, thanks.
->=20
-> I am going through this driver's history, and it looks like the masks
-> have been always wrong, since the beginning.
->=20
-> I was not able to point to an exact commit, though.
->=20
-> Maybe I can remove the Fixes line. Jonathan?
+> From: Fabio Estevam <festevam@denx.de>
+> 
+> Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
+> booting a board populated with a MAX11601 results in a flood of warnings:
+> 
+> max1363 1-0064: available_scan_mask 8 subset of 0. Never used
+> max1363 1-0064: available_scan_mask 9 subset of 0. Never used
+> max1363 1-0064: available_scan_mask 10 subset of 0. Never used
+> max1363 1-0064: available_scan_mask 11 subset of 0. Never used
+> max1363 1-0064: available_scan_mask 12 subset of 0. Never used
+> max1363 1-0064: available_scan_mask 13 subset of 0. Never used
+> ...
+> 
+> These warnings are caused by incorrect offsets used for differential
+> channels in the MAX1363_4X_CHANS() and MAX1363_8X_CHANS() macros.
+> 
+> The max1363_mode_table[] defines the differential channel mappings as
+> follows:
+> 
+> MAX1363_MODE_DIFF_SINGLE(0, 1, 1 << 12),
+> MAX1363_MODE_DIFF_SINGLE(2, 3, 1 << 13),
+> MAX1363_MODE_DIFF_SINGLE(4, 5, 1 << 14),
+> MAX1363_MODE_DIFF_SINGLE(6, 7, 1 << 15),
+> MAX1363_MODE_DIFF_SINGLE(8, 9, 1 << 16),
+> MAX1363_MODE_DIFF_SINGLE(10, 11, 1 << 17),
+> MAX1363_MODE_DIFF_SINGLE(1, 0, 1 << 18),
+> MAX1363_MODE_DIFF_SINGLE(3, 2, 1 << 19),
+> MAX1363_MODE_DIFF_SINGLE(5, 4, 1 << 20),
+> MAX1363_MODE_DIFF_SINGLE(7, 6, 1 << 21),
+> MAX1363_MODE_DIFF_SINGLE(9, 8, 1 << 22),
+> MAX1363_MODE_DIFF_SINGLE(11, 10, 1 << 23),
+> 
+> Update the macros to follow this same pattern, ensuring that the scan masks
+> are valid and preventing the warnings.
+> 
+> Cc: <stable@vger.kernel.org> #6.12
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
+I dropped the fixes tags and applied these already.
 
-Hmm.  I agree this one is misleading and the history
-get it right complex (and depends on introduction of various devices
-over time.
+Thanks,
 
-I'll drop the fixes tag and apply. Note this will only go upstream
-after rc1.
+Jonathan
 
