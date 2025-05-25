@@ -1,95 +1,188 @@
-Return-Path: <stable+bounces-146287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D33AAC321E
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 04:03:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5684AC3223
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 04:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3F4E173A40
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 02:03:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49B091894358
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 02:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EDD54279;
-	Sun, 25 May 2025 02:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC8472622;
+	Sun, 25 May 2025 02:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVLGQtfI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7151E219E0
-	for <stable@vger.kernel.org>; Sun, 25 May 2025 02:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9394E376;
+	Sun, 25 May 2025 02:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748138584; cv=none; b=TR5J6CLcOF5Q9qMB5RVJiQ/9WLVF0u8nsz8uXqceWqNymA/QHxdLm3p7nhSSZUAHYUJH9tGOeHsZUVG5jgKw8rghdixpSdSeHFGLNmJAib2qKGJH2Vpox1wTjhMjZeHbwjtH/ND6zID+f2MoIjixLDRBUzwUDibjHAxjI0u/zH4=
+	t=1748139816; cv=none; b=Bv7n5EBdo3LCRa5NLpBdrHyPnzDFrJu7h6ylEgratmPMvxlqtbq8FsuQEW9pZsftjHYew1705PAkXVUN3l3dNfC2vcSHdhREkZkjPupHt9YEeSEaHeR/lkmwLjlQ9ZBQuMMv91+ztA1wO3wg28lH2q6te6PuITlZGlYBDN9DEPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748138584; c=relaxed/simple;
-	bh=mIwIq9csUCbYIa5JwR59zeSsHmN9250kQ9AODSs2xFU=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=CT+mmbc1ZDqE4C0tx76Sg86bneaSzf9QJG7WjOvr6u7hUk9QobWDxKg4qb4S0/3WclKk9Njs2VRt0JCvR/kzp4WE3NNnL8gMAJ7tdrZZ4kru7xKUZk1cDgfEEqNn1OpjCgPTiAh/aRMmcedtOVaYeNCXaKJxAtAM+n1to1s39ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-86176e300fdso114096639f.1
-        for <stable@vger.kernel.org>; Sat, 24 May 2025 19:03:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748138582; x=1748743382;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xqwBE7NrD1Kufa5s4oZy50TlLnntMQm9pBp/V84mvy8=;
-        b=bKlo6Z/Gd8Joyx40M+iPEfc9w6dCZ8+i2dPrYQeedoh47r2ugtf0pZZstBNVhDDmwI
-         6VvdDGA3wD/2o+rjBGEAAGMabYI0lDMsDinxR/ibT3+UDtBERD4MXYU0hz08iQ3FSHDm
-         LomMUtXKgPzTgJOBpt05RFYXK4+45Hvg46a9epoklR7KVYZYUJc8Xu7+I6n3NLd+flbe
-         zKFFZ2Vc/DeE5AUVbX3rBfYAxMF/aqd/UBXpJihnTa99JL6G8t3Ke1MgeoKJxOFJb8qz
-         cpPdXkdBb/NGlDguySHsXMhifqaQrwhpvf50jL/C/3lv2UnkfkvmkPU3ebU3dBxiWxMd
-         vCAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3gQn6yVVB861qHUNKhr4fNaK3hs3VRxHfVzTas+rpaxnlAa+BB6SXQmKEHlZ4lxw1Qq4XUeQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRbifLyzHfE8Uu8BjBM8ZI1p4ADBCyrU0/7jXfgUgJX7YOfDis
-	+BdAE2KfFJk6u6B5lMMFx5kaXB9sedmlkcf+a3AXNtElpWCuU3aaNw4CfBJvWRIHo5jZ2zUmQUv
-	eT4ppY8VX33HN1GYAeLATPEWvvNjDxO4LxQwPQz01kBzKYKDvU9e89+wWoxw=
-X-Google-Smtp-Source: AGHT+IGwwU+ncHev+YJC1P/NAvgpkbXzBLDQ67Y3hqwwBYDABZVgs+9V3HnLzuT63uQqOG5/uSEeL1aNAGafwsyOB4bKptXcShHT
+	s=arc-20240116; t=1748139816; c=relaxed/simple;
+	bh=1cfNEG0UCWBQAA7qNRsrYyvpBd8oaOSgCrpCEd5TqMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bvAir8IlW9kgPVtxWX3ZMFVYW8MKUIoCgDD8uYq04eM9b/UBrIpFuZWQ0zEJ+yhs5VKHpLSKiIIKIMfaADzTRWR5egEjlRXpsVFGPh3t5YS6yiGJmrjy/fUvcAFvC+IdcjTLrBnrW4hKy3EbmjNqy2+jr60DMYkRWOMTEUQhJ94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVLGQtfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DDBC4CEEE;
+	Sun, 25 May 2025 02:23:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748139816;
+	bh=1cfNEG0UCWBQAA7qNRsrYyvpBd8oaOSgCrpCEd5TqMY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RVLGQtfIMYcFNjNrM5hObrRU/2bot4tnksuN8PAa/IXzMVlWDrew/feA0yzA891Dt
+	 7wXBzCtM9nhJ3BlM4/ghSqI1STQ5y1UQpUixZr1ruQ3lM9zIuF+7AswPOatZpsK+3h
+	 TGzRTV/0E2v4MjqQX+fijiVQWcbw75gxuIzeVlojbCqeJGFE0p2uJeyit6EF7cCzL7
+	 S5NYHgVLbHOH8jbcLd/HG4DxF8UcKk0aaBUGtYfICq0OcziyWMB4TkCl8j1cTNIxIi
+	 tOxccasfZ1FqRCR+Z/vLLfGkmDQknNFndTG0a2tHQe++IfZTy6KQUze9Iw+/foCJ0K
+	 Wn05c+ez/uRYA==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-604533a2f62so1348532a12.3;
+        Sat, 24 May 2025 19:23:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVf/yo5TYL734SihObMe0znu6Q3pgPzBWzLlJ/y+lCmApe+9A9k0RyrbNDEE97D8fMw/aYLdgzA@vger.kernel.org, AJvYcCXLseuzsJ+qgib4bx9A51K9ZLcjBYwprUUqZDpWFqHeQRn94N/4V9ygZWtAtW79Mp4mx05b9uxynx7mPU4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxaHXA3Wwdk2ofF+THMpdc80rgprCfBtYDMx51BEl2ubsvBMgW
+	pdXF8W2kyMjUzfZ4iHGzhO3at7loVHkqVAqf9mbphF5ahVfgGY0HfysQNGDzKZ5fz+WvuGEXCpE
+	t4TBnvpvPGfIfqb/prIiJsMVCMncfG9g=
+X-Google-Smtp-Source: AGHT+IHR5Pd7VftI9ROXkdi3jJwV1V1TcZBGuknhr9JV1+8yAt5BhRufkA0ggfUqNBlVx4kHt34h1EFbIE/knX54PVQ=
+X-Received: by 2002:a05:6402:909:b0:5ff:abf8:3563 with SMTP id
+ 4fb4d7f45d1cf-602d9afa16bmr3076073a12.14.1748139814362; Sat, 24 May 2025
+ 19:23:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:4c85:b0:864:627a:3d85 with SMTP id
- ca18e2360f4ac-86cbb889a02mr386102239f.11.1748138582604; Sat, 24 May 2025
- 19:03:02 -0700 (PDT)
-Date: Sat, 24 May 2025 19:03:02 -0700
-In-Reply-To: <6831b67f.a70a0220.253bc2.006f.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68327a56.a70a0220.29d4a0.07fc.GAE@google.com>
-Subject: Re: [syzbot] [kernel?] KASAN: slab-use-after-free Write in binder_remove_device
-From: syzbot <syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com>
-To: aliceryhl@google.com, arve@android.com, brauner@kernel.org, 
-	cmllamas@google.com, dualli@google.com, gregkh@linuxfoundation.org, 
-	joel@joelfernandes.org, joelagnelf@nvidia.com, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, maco@android.com, stable@vger.kernel.org, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, tkjos@android.com
+References: <20250524142345.8045-1-chenhuacai@loongson.cn> <CAHirt9hF8zZUh+mm=XQvPwG56r4RDuqvJ6WVGfKEEivfJSiZig@mail.gmail.com>
+In-Reply-To: <CAHirt9hF8zZUh+mm=XQvPwG56r4RDuqvJ6WVGfKEEivfJSiZig@mail.gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sun, 25 May 2025 10:23:22 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H76MgYT0dk-A4bhBdTmyanUn4J28gCUL2+Wacv-ahYSFg@mail.gmail.com>
+X-Gm-Features: AX0GCFtavRmZCKxux0RnlcPw9q5LAZ8Jij0x_nPlq-ruoEB1YkIXCGvEuOV_rJ8
+Message-ID: <CAAhV-H76MgYT0dk-A4bhBdTmyanUn4J28gCUL2+Wacv-ahYSFg@mail.gmail.com>
+Subject: Re: [PATCH V2] LoongArch: Avoid using $r0/$r1 as "mask" for csrxchg
+To: WANG Rui <wangrui@loongson.cn>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
+	Xuefeng Li <lixuefeng@loongson.cn>, Guo Ren <guoren@kernel.org>, 
+	Xuerui Wang <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Yanteng Si <si.yanteng@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot has bisected this issue to:
+On Sun, May 25, 2025 at 10:01=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wro=
+te:
+>
+> On Sat, May 24, 2025 at 10:24=E2=80=AFPM Huacai Chen <chenhuacai@loongson=
+.cn> wrote:
+> >
+> > When building kernel with LLVM there are occasionally such errors:
+> >
+> > In file included from ./include/linux/spinlock.h:59:
+> > In file included from ./include/linux/irqflags.h:17:
+> > arch/loongarch/include/asm/irqflags.h:38:3: error: must not be $r0 or $=
+r1
+> >    38 |                 "csrxchg %[val], %[mask], %[reg]\n\t"
+> >       |                 ^
+> > <inline asm>:1:16: note: instantiated into assembly here
+> >     1 |         csrxchg $a1, $ra, 0
+> >       |                       ^
+> >
+> >
+> > To prevent the compiler from allocating $r0 or $r1 for the "mask" of th=
+e
+> > csrxchg instruction, the 'q' constraint must be used but Clang < 22 doe=
+s
+> > not support it. So force to use $t0 in the inline asm, in order to avoi=
+d
+> > using $r0/$r1 while keeping the backward compatibility.
+>
+> Clang < 21
+OK, V3 sent.
 
-commit 12d909cac1e1c4147cc3417fee804ee12fc6b984
-Author: Li Li <dualli@google.com>
-Date:   Wed Dec 18 21:29:34 2024 +0000
-
-    binderfs: add new binder devices to binder_devices
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=107228e8580000
-start commit:   176e917e010c Add linux-next specific files for 20250523
-git tree:       linux-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=127228e8580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=147228e8580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e7902c752bef748
-dashboard link: https://syzkaller.appspot.com/bug?extid=4af454407ec393de51d6
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=108b55f4580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1145e5f4580000
-
-Reported-by: syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com
-Fixes: 12d909cac1e1 ("binderfs: add new binder devices to binder_devices")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Huacai
+>
+> >
+> > Cc: stable@vger.kernel.org
+> > Link: https://github.com/llvm/llvm-project/pull/141037
+> > Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+> > Suggested-by: WANG Rui <wangrui@loongson.cn>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> > V2: Update commit messages.
+> >
+> >  arch/loongarch/include/asm/irqflags.h | 16 ++++++++++++----
+> >  1 file changed, 12 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/arch/loongarch/include/asm/irqflags.h b/arch/loongarch/inc=
+lude/asm/irqflags.h
+> > index 319a8c616f1f..003172b8406b 100644
+> > --- a/arch/loongarch/include/asm/irqflags.h
+> > +++ b/arch/loongarch/include/asm/irqflags.h
+> > @@ -14,40 +14,48 @@
+> >  static inline void arch_local_irq_enable(void)
+> >  {
+> >         u32 flags =3D CSR_CRMD_IE;
+> > +       register u32 mask asm("t0") =3D CSR_CRMD_IE;
+> > +
+> >         __asm__ __volatile__(
+> >                 "csrxchg %[val], %[mask], %[reg]\n\t"
+> >                 : [val] "+r" (flags)
+> > -               : [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CR=
+MD)
+> > +               : [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+> >                 : "memory");
+> >  }
+> >
+> >  static inline void arch_local_irq_disable(void)
+> >  {
+> >         u32 flags =3D 0;
+> > +       register u32 mask asm("t0") =3D CSR_CRMD_IE;
+> > +
+> >         __asm__ __volatile__(
+> >                 "csrxchg %[val], %[mask], %[reg]\n\t"
+> >                 : [val] "+r" (flags)
+> > -               : [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CR=
+MD)
+> > +               : [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+> >                 : "memory");
+> >  }
+> >
+> >  static inline unsigned long arch_local_irq_save(void)
+> >  {
+> >         u32 flags =3D 0;
+> > +       register u32 mask asm("t0") =3D CSR_CRMD_IE;
+> > +
+> >         __asm__ __volatile__(
+> >                 "csrxchg %[val], %[mask], %[reg]\n\t"
+> >                 : [val] "+r" (flags)
+> > -               : [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CR=
+MD)
+> > +               : [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+> >                 : "memory");
+> >         return flags;
+> >  }
+> >
+> >  static inline void arch_local_irq_restore(unsigned long flags)
+> >  {
+> > +       register u32 mask asm("t0") =3D CSR_CRMD_IE;
+> > +
+> >         __asm__ __volatile__(
+> >                 "csrxchg %[val], %[mask], %[reg]\n\t"
+> >                 : [val] "+r" (flags)
+> > -               : [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CR=
+MD)
+> > +               : [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+> >                 : "memory");
+> >  }
+> >
+> > --
+> > 2.47.1
+> >
+> >
+>
 
