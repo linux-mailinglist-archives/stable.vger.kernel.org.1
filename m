@@ -1,188 +1,166 @@
-Return-Path: <stable+bounces-146288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5684AC3223
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 04:23:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7454DAC3226
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 04:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49B091894358
-	for <lists+stable@lfdr.de>; Sun, 25 May 2025 02:23:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAAC33BCB50
+	for <lists+stable@lfdr.de>; Sun, 25 May 2025 02:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC8472622;
-	Sun, 25 May 2025 02:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVLGQtfI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6835C72622;
+	Sun, 25 May 2025 02:23:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9394E376;
-	Sun, 25 May 2025 02:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DB0A47;
+	Sun, 25 May 2025 02:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748139816; cv=none; b=Bv7n5EBdo3LCRa5NLpBdrHyPnzDFrJu7h6ylEgratmPMvxlqtbq8FsuQEW9pZsftjHYew1705PAkXVUN3l3dNfC2vcSHdhREkZkjPupHt9YEeSEaHeR/lkmwLjlQ9ZBQuMMv91+ztA1wO3wg28lH2q6te6PuITlZGlYBDN9DEPs=
+	t=1748139827; cv=none; b=ZwiLBjKR/7S5a52UltUpA2vzfC0ikrzf/7+e1mTU6QdpK4YCl3BqIUFYITD9rp/5bPYA5aJZFebIa2qwTnmwaoDvI1eC3hUQQsC0nOuaLrbqbY0Hkfb7SrBkiamH1kkQOTyf0EYMfgcAUX76JNjt9wmue/vLkXWzACjYj5mw1qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748139816; c=relaxed/simple;
-	bh=1cfNEG0UCWBQAA7qNRsrYyvpBd8oaOSgCrpCEd5TqMY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bvAir8IlW9kgPVtxWX3ZMFVYW8MKUIoCgDD8uYq04eM9b/UBrIpFuZWQ0zEJ+yhs5VKHpLSKiIIKIMfaADzTRWR5egEjlRXpsVFGPh3t5YS6yiGJmrjy/fUvcAFvC+IdcjTLrBnrW4hKy3EbmjNqy2+jr60DMYkRWOMTEUQhJ94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVLGQtfI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DDBC4CEEE;
-	Sun, 25 May 2025 02:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748139816;
-	bh=1cfNEG0UCWBQAA7qNRsrYyvpBd8oaOSgCrpCEd5TqMY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RVLGQtfIMYcFNjNrM5hObrRU/2bot4tnksuN8PAa/IXzMVlWDrew/feA0yzA891Dt
-	 7wXBzCtM9nhJ3BlM4/ghSqI1STQ5y1UQpUixZr1ruQ3lM9zIuF+7AswPOatZpsK+3h
-	 TGzRTV/0E2v4MjqQX+fijiVQWcbw75gxuIzeVlojbCqeJGFE0p2uJeyit6EF7cCzL7
-	 S5NYHgVLbHOH8jbcLd/HG4DxF8UcKk0aaBUGtYfICq0OcziyWMB4TkCl8j1cTNIxIi
-	 tOxccasfZ1FqRCR+Z/vLLfGkmDQknNFndTG0a2tHQe++IfZTy6KQUze9Iw+/foCJ0K
-	 Wn05c+ez/uRYA==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-604533a2f62so1348532a12.3;
-        Sat, 24 May 2025 19:23:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVf/yo5TYL734SihObMe0znu6Q3pgPzBWzLlJ/y+lCmApe+9A9k0RyrbNDEE97D8fMw/aYLdgzA@vger.kernel.org, AJvYcCXLseuzsJ+qgib4bx9A51K9ZLcjBYwprUUqZDpWFqHeQRn94N/4V9ygZWtAtW79Mp4mx05b9uxynx7mPU4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxaHXA3Wwdk2ofF+THMpdc80rgprCfBtYDMx51BEl2ubsvBMgW
-	pdXF8W2kyMjUzfZ4iHGzhO3at7loVHkqVAqf9mbphF5ahVfgGY0HfysQNGDzKZ5fz+WvuGEXCpE
-	t4TBnvpvPGfIfqb/prIiJsMVCMncfG9g=
-X-Google-Smtp-Source: AGHT+IHR5Pd7VftI9ROXkdi3jJwV1V1TcZBGuknhr9JV1+8yAt5BhRufkA0ggfUqNBlVx4kHt34h1EFbIE/knX54PVQ=
-X-Received: by 2002:a05:6402:909:b0:5ff:abf8:3563 with SMTP id
- 4fb4d7f45d1cf-602d9afa16bmr3076073a12.14.1748139814362; Sat, 24 May 2025
- 19:23:34 -0700 (PDT)
+	s=arc-20240116; t=1748139827; c=relaxed/simple;
+	bh=tOa1RezbqxcE1EV5iKc3IbCwta9WIxyugED05gugQ/0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g1dedPcGGDvNYPPmymGRuFL9kcjhqXMPYlxsvEB3kPtd+aB2tR1GXFVJ6lbKbuJDb/2GEzjyL1mG/5J2/1LYKe8LQb4+lb+XZx5Lmot51lWUDcxXxpFJ14fIscJCz9R6mfagKTfMdM16kzfHInFgHy0TgyWNTg+5Q3D9Ys8dwN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.3])
+	by gateway (Coremail) with SMTP id _____8DxbKwufzJoFE_7AA--.12402S3;
+	Sun, 25 May 2025 10:23:42 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.3])
+	by front1 (Coremail) with SMTP id qMiowMDx+xonfzJolMjvAA--.26182S2;
+	Sun, 25 May 2025 10:23:40 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Yanteng Si <si.yanteng@linux.dev>,
+	WANG Rui <wangrui@loongson.cn>
+Subject: [PATCH V3] LoongArch: Avoid using $r0/$r1 as "mask" for csrxchg
+Date: Sun, 25 May 2025 10:23:25 +0800
+Message-ID: <20250525022325.170964-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250524142345.8045-1-chenhuacai@loongson.cn> <CAHirt9hF8zZUh+mm=XQvPwG56r4RDuqvJ6WVGfKEEivfJSiZig@mail.gmail.com>
-In-Reply-To: <CAHirt9hF8zZUh+mm=XQvPwG56r4RDuqvJ6WVGfKEEivfJSiZig@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 25 May 2025 10:23:22 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H76MgYT0dk-A4bhBdTmyanUn4J28gCUL2+Wacv-ahYSFg@mail.gmail.com>
-X-Gm-Features: AX0GCFtavRmZCKxux0RnlcPw9q5LAZ8Jij0x_nPlq-ruoEB1YkIXCGvEuOV_rJ8
-Message-ID: <CAAhV-H76MgYT0dk-A4bhBdTmyanUn4J28gCUL2+Wacv-ahYSFg@mail.gmail.com>
-Subject: Re: [PATCH V2] LoongArch: Avoid using $r0/$r1 as "mask" for csrxchg
-To: WANG Rui <wangrui@loongson.cn>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
-	Xuefeng Li <lixuefeng@loongson.cn>, Guo Ren <guoren@kernel.org>, 
-	Xuerui Wang <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Yanteng Si <si.yanteng@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMDx+xonfzJolMjvAA--.26182S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxXrW5Gw15ZFWxJr48Ww4UAwc_yoW5Xw47pr
+	WDCr48KFs5WFyxA3yqqFnI93W3Wr97Gw4IyayDC397KFyqvr18ArZ5CF90qFWUJa1vva4I
+	vFWYyw4SvF1DJabCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+	6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+	0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
+	Ja73UjIFyTuYvjxU2MKZDUUUU
 
-On Sun, May 25, 2025 at 10:01=E2=80=AFAM WANG Rui <wangrui@loongson.cn> wro=
-te:
->
-> On Sat, May 24, 2025 at 10:24=E2=80=AFPM Huacai Chen <chenhuacai@loongson=
-.cn> wrote:
-> >
-> > When building kernel with LLVM there are occasionally such errors:
-> >
-> > In file included from ./include/linux/spinlock.h:59:
-> > In file included from ./include/linux/irqflags.h:17:
-> > arch/loongarch/include/asm/irqflags.h:38:3: error: must not be $r0 or $=
-r1
-> >    38 |                 "csrxchg %[val], %[mask], %[reg]\n\t"
-> >       |                 ^
-> > <inline asm>:1:16: note: instantiated into assembly here
-> >     1 |         csrxchg $a1, $ra, 0
-> >       |                       ^
-> >
-> >
-> > To prevent the compiler from allocating $r0 or $r1 for the "mask" of th=
-e
-> > csrxchg instruction, the 'q' constraint must be used but Clang < 22 doe=
-s
-> > not support it. So force to use $t0 in the inline asm, in order to avoi=
-d
-> > using $r0/$r1 while keeping the backward compatibility.
->
-> Clang < 21
-OK, V3 sent.
+When building kernel with LLVM there are occasionally such errors:
 
-Huacai
->
-> >
-> > Cc: stable@vger.kernel.org
-> > Link: https://github.com/llvm/llvm-project/pull/141037
-> > Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
-> > Suggested-by: WANG Rui <wangrui@loongson.cn>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > ---
-> > V2: Update commit messages.
-> >
-> >  arch/loongarch/include/asm/irqflags.h | 16 ++++++++++++----
-> >  1 file changed, 12 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/arch/loongarch/include/asm/irqflags.h b/arch/loongarch/inc=
-lude/asm/irqflags.h
-> > index 319a8c616f1f..003172b8406b 100644
-> > --- a/arch/loongarch/include/asm/irqflags.h
-> > +++ b/arch/loongarch/include/asm/irqflags.h
-> > @@ -14,40 +14,48 @@
-> >  static inline void arch_local_irq_enable(void)
-> >  {
-> >         u32 flags =3D CSR_CRMD_IE;
-> > +       register u32 mask asm("t0") =3D CSR_CRMD_IE;
-> > +
-> >         __asm__ __volatile__(
-> >                 "csrxchg %[val], %[mask], %[reg]\n\t"
-> >                 : [val] "+r" (flags)
-> > -               : [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CR=
-MD)
-> > +               : [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
-> >                 : "memory");
-> >  }
-> >
-> >  static inline void arch_local_irq_disable(void)
-> >  {
-> >         u32 flags =3D 0;
-> > +       register u32 mask asm("t0") =3D CSR_CRMD_IE;
-> > +
-> >         __asm__ __volatile__(
-> >                 "csrxchg %[val], %[mask], %[reg]\n\t"
-> >                 : [val] "+r" (flags)
-> > -               : [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CR=
-MD)
-> > +               : [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
-> >                 : "memory");
-> >  }
-> >
-> >  static inline unsigned long arch_local_irq_save(void)
-> >  {
-> >         u32 flags =3D 0;
-> > +       register u32 mask asm("t0") =3D CSR_CRMD_IE;
-> > +
-> >         __asm__ __volatile__(
-> >                 "csrxchg %[val], %[mask], %[reg]\n\t"
-> >                 : [val] "+r" (flags)
-> > -               : [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CR=
-MD)
-> > +               : [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
-> >                 : "memory");
-> >         return flags;
-> >  }
-> >
-> >  static inline void arch_local_irq_restore(unsigned long flags)
-> >  {
-> > +       register u32 mask asm("t0") =3D CSR_CRMD_IE;
-> > +
-> >         __asm__ __volatile__(
-> >                 "csrxchg %[val], %[mask], %[reg]\n\t"
-> >                 : [val] "+r" (flags)
-> > -               : [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CR=
-MD)
-> > +               : [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
-> >                 : "memory");
-> >  }
-> >
-> > --
-> > 2.47.1
-> >
-> >
->
+In file included from ./include/linux/spinlock.h:59:
+In file included from ./include/linux/irqflags.h:17:
+arch/loongarch/include/asm/irqflags.h:38:3: error: must not be $r0 or $r1
+   38 |                 "csrxchg %[val], %[mask], %[reg]\n\t"
+      |                 ^
+<inline asm>:1:16: note: instantiated into assembly here
+    1 |         csrxchg $a1, $ra, 0
+      |                       ^
+
+To prevent the compiler from allocating $r0 or $r1 for the "mask" of the
+csrxchg instruction, the 'q' constraint must be used but Clang < 21 does
+not support it. So force to use $t0 in the inline asm, in order to avoid
+using $r0/$r1 while keeping the backward compatibility.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/pull/141037
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Suggested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+V2: Update commit messages.
+V3: Update commit messages again.
+
+ arch/loongarch/include/asm/irqflags.h | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/arch/loongarch/include/asm/irqflags.h b/arch/loongarch/include/asm/irqflags.h
+index 319a8c616f1f..003172b8406b 100644
+--- a/arch/loongarch/include/asm/irqflags.h
++++ b/arch/loongarch/include/asm/irqflags.h
+@@ -14,40 +14,48 @@
+ static inline void arch_local_irq_enable(void)
+ {
+ 	u32 flags = CSR_CRMD_IE;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
+ 
+ static inline void arch_local_irq_disable(void)
+ {
+ 	u32 flags = 0;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
+ 
+ static inline unsigned long arch_local_irq_save(void)
+ {
+ 	u32 flags = 0;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ 	return flags;
+ }
+ 
+ static inline void arch_local_irq_restore(unsigned long flags)
+ {
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
+ 
+-- 
+2.47.1
+
 
