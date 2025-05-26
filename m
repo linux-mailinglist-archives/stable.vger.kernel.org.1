@@ -1,165 +1,101 @@
-Return-Path: <stable+bounces-146364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FE4AC3EF4
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 13:52:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD061AC3F4C
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 14:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAB253B5614
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 11:52:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48F59188CCEF
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 12:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4051FBCA7;
-	Mon, 26 May 2025 11:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B731D1F4C94;
+	Mon, 26 May 2025 12:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdRUSMXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njfRuKg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC611F7904;
-	Mon, 26 May 2025 11:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F261DFE8
+	for <stable@vger.kernel.org>; Mon, 26 May 2025 12:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748260336; cv=none; b=CafvVxSKKOL5opjhRGnnG4N10rQE4OieBH9oJGj3viPbzoqxFbo6CnpP+Yk9aiRfRNUmzTvqSmDfj1QKC4r2vQlsSTmbvrJr5C82fudYTx+e+nf25C7IiJOdhO8irsYvT3b3gPMwwdlXPqhicC6Ovjuqca0ZVCiN8U3RTFEdvq4=
+	t=1748262186; cv=none; b=DK8mf1AbdtK5txxMX6pUX93xg+dEvgn3zEcisGa6xvvEszD7ixR41GkhdzQMqwfm888CPQmnCIJjtPAAltGBHmEZAqSG1w8NFDCCI1jluAG4F6dghbiX+ivLt9aC4oHs8g7eRn27t++LEQVURwtilNEuZN8veUcqCqoy003TwGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748260336; c=relaxed/simple;
-	bh=PerCT+iLxD5zsw5LMxLFNaQeXnIW4oHIuRshGvuczYo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdIY8AMKwHZKFVAasqRM1jwaW29gPwtfdRFk3fyCbqkB0n57DnxTKbRACC+Sp+Gh0jpeK9pg4QsTmGK11LxWM2zMmDusGmSjBDwE9/Cl+edU0KgIx9eBeBeQ3ie7YbFvDLbqB/bnfnPBIt+fCYVXeMixF80diqHmlTikX5esDqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdRUSMXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5701AC4CEEF;
-	Mon, 26 May 2025 11:52:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748260336;
-	bh=PerCT+iLxD5zsw5LMxLFNaQeXnIW4oHIuRshGvuczYo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdRUSMXv6KQLm9B35acLeX2FNOh3q2aBIQYLdcSP9kM0HRmMdLdcPLev302MCgbea
-	 XY0dPc9kuLMHPDIg0MxLjyVurTAdwG81Wn8NId9xd6as8/NZZIq7x359PIzHiJJsBB
-	 4oPxmlKiM8zOwnNwiz8Gkgba5Ufj3t/WlpiNxTzk+v/UK2f7UJOPjiGqfs6hsX7qbl
-	 TqIKzeskWILxkW0MxIHzOUA+9bGuT35AY1bzHRG5l87TX5hpweGSAe0TpRHTnuyYG9
-	 LyAJ7sMducBK9TV8anKItVGYHDLuNXGyk3YxAlhXNs5qJNVL4G6m/eoKy1amWMBvmz
-	 CFYLg+uozcg6Q==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1uJWNN-000000000fG-3sio;
-	Mon, 26 May 2025 13:52:17 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
-	Remi Pommarel <repk@triplefau.lt>,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] wifi: ath12k: fix dest ring-buffer corruption
-Date: Mon, 26 May 2025 13:51:36 +0200
-Message-ID: <20250526115137.2490-2-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250526115137.2490-1-johan+linaro@kernel.org>
-References: <20250526115137.2490-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1748262186; c=relaxed/simple;
+	bh=B9BHtoWjn+0cIwJk6D0xoZApJxX8CS1VdLVB1JSpfLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fQa9MZ1SNISg+7ZXvy5n3ZHeTKbM6NBCqsOgHAcBHhu/EUOUUf4dqYbiI/XL75fc3uo30GDCvf6+TbSue5oz72jE6TLdVzPGGmLHNb/828w4zJFMXA0k0VbncIRGcWFFXqYJMYzaMCvs71JTP4Hr1Krfa5Vjl2zngcRdcUo6cyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njfRuKg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD584C4CEE7;
+	Mon, 26 May 2025 12:23:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748262186;
+	bh=B9BHtoWjn+0cIwJk6D0xoZApJxX8CS1VdLVB1JSpfLU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=njfRuKg6Cl+nF8IYlz4YRejL6yvv3bmFddc/yXYLOjoLIcV7pdiDzC2QBIeyIrH2u
+	 hu8KV36Pqd8qsu/JsV4d3FqoA65L1VNWroTBcp+Baa5pfnQ4V7YBM0PgJrymstbQXU
+	 Vz4H2W82a5VYmJXCOTqJy29W+Io1aQPJCUFcUnqg=
+Date: Mon, 26 May 2025 14:23:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hendrik Donner <hd@os-cillation.de>
+Cc: stable@vger.kernel.org
+Subject: Re: Request to backport b3bee1e7c3f2b1b77182302c7b2131c804175870
+ (x86/boot: Compile boot code with -std=gnu11 too)
+Message-ID: <2025052621-unclip-monogram-c439@gregkh>
+References: <8fab7dc7-a99f-4168-8dff-9ef8443faf38@os-cillation.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8fab7dc7-a99f-4168-8dff-9ef8443faf38@os-cillation.de>
 
-Add the missing memory barriers to make sure that destination ring
-descriptors are read after the head pointers to avoid using stale data
-on weakly ordered architectures like aarch64.
+On Mon, May 26, 2025 at 12:59:20PM +0200, Hendrik Donner wrote:
+> Hello,
+> 
+> with gcc 15.1.1 i see the following build issue on 6.6.91:
+> 
+>   CC      arch/x86/boot/a20.o
+> In file included from ./include/uapi/linux/posix_types.h:5,
+>                  from ./include/uapi/linux/types.h:14,
+>                  from ./include/linux/types.h:6,
+>                  from arch/x86/boot/boot.h:22,
+>                  from arch/x86/boot/a20.c:14:
+> ./include/linux/stddef.h:11:9: error: cannot use keyword 'false' as
+> enumeration constant
+>    11 |         false   = 0,
+>       |         ^~~~~
+> ./include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23'
+> onwards
+> ./include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+>    35 | typedef _Bool                   bool;
+>       |                                 ^~~~
+> ./include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23'
+> onwards
+> ./include/linux/types.h:35:1: warning: useless type name in empty
+> declaration
+>    35 | typedef _Bool                   bool;
+>       | ^~~~~~~
+> make[2]: *** [scripts/Makefile.build:243: arch/x86/boot/a20.o] Error 1
+> make[1]: *** [arch/x86/Makefile:284: bzImage] Error 2
+> 
+> Fixed by b3bee1e7c3f2b1b77182302c7b2131c804175870 (x86/boot: Compile boot
+> code with -std=gnu11 too), which hasn't been backported yet.
+> 
+> Should probably go into all stable trees.z
 
-Note that this may fix the empty descriptor issue recently worked around
-by commit 51ad34a47e9f ("wifi: ath12k: Add drop descriptor handling for
-monitor ring").
+Is this the only change that is needed to get gcc15 working on this
+kernel tree?  What about newer kernel branches, they seem to be failing
+on gcc15 still, which implies that 6.6.y still needs more changes,
+right?
 
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+thanks,
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org	# 6.3
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/net/wireless/ath/ath12k/dp_mon.c |  3 +++
- drivers/net/wireless/ath/ath12k/dp_rx.c  | 12 ++++++++++++
- drivers/net/wireless/ath/ath12k/dp_tx.c  |  3 +++
- 3 files changed, 18 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index d22800e89485..90a7763502c8 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -3258,6 +3258,9 @@ int ath12k_dp_mon_srng_process(struct ath12k *ar, int *budget,
- 	spin_lock_bh(&srng->lock);
- 	ath12k_hal_srng_access_begin(ab, srng);
- 
-+	/* Make sure descriptor is read after the head pointer. */
-+	dma_rmb();
-+
- 	while (likely(*budget)) {
- 		*budget -= 1;
- 		mon_dst_desc = ath12k_hal_srng_dst_peek(ab, srng);
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 75bf4211ad42..68fceb4201d7 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2753,6 +2753,9 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
- try_again:
- 	ath12k_hal_srng_access_begin(ab, srng);
- 
-+	/* Make sure descriptor is read after the head pointer. */
-+	dma_rmb();
-+
- 	while ((desc = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
- 		struct rx_mpdu_desc *mpdu_info;
- 		struct rx_msdu_desc *msdu_info;
-@@ -3599,6 +3602,9 @@ int ath12k_dp_rx_process_err(struct ath12k_base *ab, struct napi_struct *napi,
- 
- 	ath12k_hal_srng_access_begin(ab, srng);
- 
-+	/* Make sure descriptor is read after the head pointer. */
-+	dma_rmb();
-+
- 	while (budget &&
- 	       (reo_desc = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
- 		drop = false;
-@@ -3941,6 +3947,9 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
- 
- 	ath12k_hal_srng_access_begin(ab, srng);
- 
-+	/* Make sure descriptor is read after the head pointer. */
-+	dma_rmb();
-+
- 	while (budget) {
- 		rx_desc = ath12k_hal_srng_dst_get_next_entry(ab, srng);
- 		if (!rx_desc)
-@@ -4122,6 +4131,9 @@ void ath12k_dp_rx_process_reo_status(struct ath12k_base *ab)
- 
- 	ath12k_hal_srng_access_begin(ab, srng);
- 
-+	/* Make sure descriptor is read after the head pointer. */
-+	dma_rmb();
-+
- 	while ((hdr = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
- 		tag = le64_get_bits(hdr->tl, HAL_SRNG_TLV_HDR_TAG);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index ced232bf4aed..3124eafa0201 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -853,6 +853,9 @@ void ath12k_dp_tx_completion_handler(struct ath12k_base *ab, int ring_id)
- 
- 	ath12k_hal_srng_access_begin(ab, status_ring);
- 
-+	/* Make sure descriptor is read after the head pointer. */
-+	dma_rmb();
-+
- 	while (ATH12K_TX_COMPL_NEXT(tx_ring->tx_status_head) != tx_ring->tx_status_tail) {
- 		desc = ath12k_hal_srng_dst_get_next_entry(ab, status_ring);
- 		if (!desc)
--- 
-2.49.0
-
+greg k-h
 
