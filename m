@@ -1,168 +1,269 @@
-Return-Path: <stable+bounces-146370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D75FAC4010
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 15:12:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD85AC402E
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 15:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CE537A9AEE
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 13:11:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A593E173F51
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 13:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C5B202C5D;
-	Mon, 26 May 2025 13:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07B91FC0EA;
+	Mon, 26 May 2025 13:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q5sLfTHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asbrtxuy"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD0D1FFC4B
-	for <stable@vger.kernel.org>; Mon, 26 May 2025 13:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824A84207F
+	for <stable@vger.kernel.org>; Mon, 26 May 2025 13:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748265132; cv=none; b=AuEiW1iYuaBJVaRqYlj8SjAg0e3B0BMRGbXjX3t7xlmixzEr3EirdYKWm+5WaklgRssIagVSjZ0GZFr8007aePt7PcT3pVnlTc8mRoHWBOcRa0tYRRnrc7uHvbNF1i16a8RSgeazpaOs6UDgxJLK4SiMRBBgEHPYKQm8XoblU9g=
+	t=1748265590; cv=none; b=cmte8tLa3+RtyWO1SK65QsDGo8PLcAJfeXKJx2KkW7Ztrztco0mfvsDjgLSeEMcvkcULz0wwuu+CRKODK3YydrAbIoP7PgF0TykTVKJZ2z7PicdYtuxxJCEZY2vhfPAVMZKMbjgf9gPCzhsaRKSH2RGGlunO6MRYmlGpwTCf2RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748265132; c=relaxed/simple;
-	bh=44bXjYgEx472ZLSVxB8lwvgofdNnAFTyYjXw5ZsM7p4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i7E2v2pgIkDHb5kv1fhpoeVbtYWcCgcCD+wLyPN7DY7SeMXVfS85Uq0PQuoz2+QLkrMldUXqHAjbv67Ej1sKKrHQIXkb5pzCSNe7h/DrkAqPlAP4cIZAPTNsgeK7UyOO989tysW1wgQEGIMWpv4hiXp73rvVdqWhiP1ZppJpWcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q5sLfTHG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748265129;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xq9c/4s+1JsjImWn/4Dy2VS9W8X+CykJQ3FUvjdqC4o=;
-	b=Q5sLfTHG0RnVFe0GZ6yitAYAfZsXPsgnghR75dW4Pev16vWv88u8LvSbYTRKpviYcwxpl/
-	beXcafZZv0Mjibuut7jYNnjUbI5//5xlqdAgtcRur/8ZEuIT5HkVMXAqI8HkPlhx3lLLyo
-	1RhUjJyYYL+KGF0zZoAlAM+91pYYFOM=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-JqUoottpMByAOFIgJoDZlg-1; Mon, 26 May 2025 09:12:07 -0400
-X-MC-Unique: JqUoottpMByAOFIgJoDZlg-1
-X-Mimecast-MFC-AGG-ID: JqUoottpMByAOFIgJoDZlg_1748265126
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-acb61452b27so176039666b.2
-        for <stable@vger.kernel.org>; Mon, 26 May 2025 06:12:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748265126; x=1748869926;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xq9c/4s+1JsjImWn/4Dy2VS9W8X+CykJQ3FUvjdqC4o=;
-        b=P/kxoGgRD0jz20/NPjYcWNrDxWjiJ4bumPld3nMtK1X0o++kqPeSaw3LgR0/NlGnYj
-         1WBENkdnABxNMWSQbTDGpf+EBYCfuULEoaN4nq1UuCqSh+N7RadQS1c1rAFey0/8uAe0
-         fr8XIU9lb/agVR6ODVuIYp5hJOhpOQ8jEwHKvSKk6ssjOzynU7l+jlwLHfNmMaXClybU
-         COJjP0ZuChTo93ELTZaK0qg2ZbKEtiv98GPVk2j0Uxx8Om1L4L/poNrtY/wwAbIBcl/T
-         F14cCNhngDIh/kZQQGoEAvi1GzBHmOSu1oi6BpE5pQ5n/ZrnXZfn8a9K0GLmvsa4N3wK
-         5VIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUuCqP18+K6BBWvT0oXf75R3ZQMobgc0z0XO4thXrtX8o2RJ43/3vX2cSItXRHLrWtP5Zeiojg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlS48IPkFcztqPOFGMkmudhNuPpIHd1uGxOxl6ZwIY81CGXT3N
-	5Xm03xpuE76pYA41fohB6YGq8JFddfzKV+M8bIjHX22zBMrvXc4ktkf+JrX+rRi6JqCaz+q0InQ
-	RC4u1em7CZ3/pMxFTjF3DaSQKy4qURdcDuxDhJRIzP1zam2/YM+/BpvyCtw==
-X-Gm-Gg: ASbGncsUx2edQfz5N9B/dp9s7Sb3RVSqZ3TqlT3pE0lkXgzaFR5+3iUdmeo3zDN0lIk
-	+XKdzCAqGELNMGhKTWlL/3l+ijowDaNHOTdFSTHO1JGENbhc7B65oFKk1tB4JG+TEpisRYUreNU
-	TElTbt9mU9T96lLoQlNGtXej0kQ1i0qRISWi2zXFtwF68qsfRA2WpgZbGeNOyRahMmuVEnwmH/N
-	psknPIdut9iMDXIEFRCrrxDc2TgQ2oTiyoLI7AHao45MCXKLC17wohGY00/v/9xJ558S4n8IW5S
-	aXNs0YU5uN62mzY=
-X-Received: by 2002:a17:907:c26:b0:ad2:43b6:dd6d with SMTP id a640c23a62f3a-ad85b051c94mr849211666b.12.1748265125718;
-        Mon, 26 May 2025 06:12:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHTalOSdIadkbqa2qSmFa/eDGnX0/I30Frc7K2IlJnfyDCKJR+uuIozDsv6EgrW7jIXkRBXUA==
-X-Received: by 2002:a17:907:c26:b0:ad2:43b6:dd6d with SMTP id a640c23a62f3a-ad85b051c94mr849207766b.12.1748265125351;
-        Mon, 26 May 2025 06:12:05 -0700 (PDT)
-Received: from [10.40.98.122] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d04b073sm1662864566b.27.2025.05.26.06.12.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 May 2025 06:12:04 -0700 (PDT)
-Message-ID: <7ff90036-a890-40d5-9305-72c0debb3594@redhat.com>
-Date: Mon, 26 May 2025 15:12:04 +0200
+	s=arc-20240116; t=1748265590; c=relaxed/simple;
+	bh=jWM2pStX76U92fCRWMg0QOcBNlfwi7Jum/F8CNw91EE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QovUEY7IwmqypkmmML3DfDUwdRBtZV9oaRu9iFER6/paSdUGPERqKt2zZ/oXb1KNv6myWeN+TS48P5yriAkdzH4G1L9sek0y6+uebPlpK/WgP/2HDRgitwaWcMS+jny6L7tAi/WlWelW/Y8NFAv9S/PCWOZKLCJ3Sqj+Y7B/brQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asbrtxuy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B48CC4CEED;
+	Mon, 26 May 2025 13:19:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748265589;
+	bh=jWM2pStX76U92fCRWMg0QOcBNlfwi7Jum/F8CNw91EE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=asbrtxuym9b2xtf60CyiRwrl945fBkx1jHTzWaJqk0VjL6sQHAkzDbee3fhbjubFn
+	 BlXpvOLsBcmuyi4uPGzUNsToeDhLFtdOH6et+yRThcUAloLKC8J17+rbI3JXtbFAXI
+	 MxH2+4F5uSdBmlhTrvUH2n5YcnXXtPC+VDUbIvHQ=
+Subject: FAILED: patch "[PATCH] kasan: avoid sleepable page allocation from atomic context" failed to apply to 6.12-stable tree
+To: agordeev@linux.ibm.com,akpm@linux-foundation.org,dja@axtens.net,harry.yoo@oracle.com,ryabinin.a.a@gmail.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 26 May 2025 15:19:47 +0200
+Message-ID: <2025052647-paprika-unsterile-4753@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/4] media: uvcvideo: Do not mark valid metadata as
- invalid
-To: Ricardo Ribalda <ribalda@chromium.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250404-uvc-meta-v5-0-f79974fc2d20@chromium.org>
- <20250404-uvc-meta-v5-1-f79974fc2d20@chromium.org>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20250404-uvc-meta-v5-1-f79974fc2d20@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-On 4-Apr-25 08:37, Ricardo Ribalda wrote:
-> Currently, the driver performs a length check of the metadata buffer
-> before the actual metadata size is known and before the metadata is
-> decided to be copied. This results in valid metadata buffers being
-> incorrectly marked as invalid.
-> 
-> Move the length check to occur after the metadata size is determined and
-> is decided to be copied.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks, patch looks good to me:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Reviewed-by: Hans de Goede <hansg@kernel.org>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x b6ea95a34cbd014ab6ade4248107b86b0aaf2d6c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025052647-paprika-unsterile-4753@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Regards,
-
-Hans
+Possible dependencies:
 
 
 
-> ---
->  drivers/media/usb/uvc/uvc_video.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-> index e3567aeb0007c1f0a766f331e4e744359e95a863..b113297dac61f1b2eecd72c36ea61ef2c1e7d28a 100644
-> --- a/drivers/media/usb/uvc/uvc_video.c
-> +++ b/drivers/media/usb/uvc/uvc_video.c
-> @@ -1433,12 +1433,6 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
->  	if (!meta_buf || length == 2)
->  		return;
->  
-> -	if (meta_buf->length - meta_buf->bytesused <
-> -	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
-> -		meta_buf->error = 1;
-> -		return;
-> -	}
-> -
->  	has_pts = mem[1] & UVC_STREAM_PTS;
->  	has_scr = mem[1] & UVC_STREAM_SCR;
->  
-> @@ -1459,6 +1453,12 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
->  				  !memcmp(scr, stream->clock.last_scr, 6)))
->  		return;
->  
-> +	if (meta_buf->length - meta_buf->bytesused <
-> +	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
-> +		meta_buf->error = 1;
-> +		return;
-> +	}
-> +
->  	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
->  	local_irq_save(flags);
->  	time = uvc_video_get_time();
-> 
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b6ea95a34cbd014ab6ade4248107b86b0aaf2d6c Mon Sep 17 00:00:00 2001
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+Date: Thu, 15 May 2025 15:55:38 +0200
+Subject: [PATCH] kasan: avoid sleepable page allocation from atomic context
+
+apply_to_pte_range() enters the lazy MMU mode and then invokes
+kasan_populate_vmalloc_pte() callback on each page table walk iteration.
+However, the callback can go into sleep when trying to allocate a single
+page, e.g.  if an architecutre disables preemption on lazy MMU mode enter.
+
+On s390 if make arch_enter_lazy_mmu_mode() -> preempt_enable() and
+arch_leave_lazy_mmu_mode() -> preempt_disable(), such crash occurs:
+
+[    0.663336] BUG: sleeping function called from invalid context at ./include/linux/sched/mm.h:321
+[    0.663348] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2, name: kthreadd
+[    0.663358] preempt_count: 1, expected: 0
+[    0.663366] RCU nest depth: 0, expected: 0
+[    0.663375] no locks held by kthreadd/2.
+[    0.663383] Preemption disabled at:
+[    0.663386] [<0002f3284cbb4eda>] apply_to_pte_range+0xfa/0x4a0
+[    0.663405] CPU: 0 UID: 0 PID: 2 Comm: kthreadd Not tainted 6.15.0-rc5-gcc-kasan-00043-gd76bb1ebb558-dirty #162 PREEMPT
+[    0.663408] Hardware name: IBM 3931 A01 701 (KVM/Linux)
+[    0.663409] Call Trace:
+[    0.663410]  [<0002f3284c385f58>] dump_stack_lvl+0xe8/0x140
+[    0.663413]  [<0002f3284c507b9e>] __might_resched+0x66e/0x700
+[    0.663415]  [<0002f3284cc4f6c0>] __alloc_frozen_pages_noprof+0x370/0x4b0
+[    0.663419]  [<0002f3284ccc73c0>] alloc_pages_mpol+0x1a0/0x4a0
+[    0.663421]  [<0002f3284ccc8518>] alloc_frozen_pages_noprof+0x88/0xc0
+[    0.663424]  [<0002f3284ccc8572>] alloc_pages_noprof+0x22/0x120
+[    0.663427]  [<0002f3284cc341ac>] get_free_pages_noprof+0x2c/0xc0
+[    0.663429]  [<0002f3284cceba70>] kasan_populate_vmalloc_pte+0x50/0x120
+[    0.663433]  [<0002f3284cbb4ef8>] apply_to_pte_range+0x118/0x4a0
+[    0.663435]  [<0002f3284cbc7c14>] apply_to_pmd_range+0x194/0x3e0
+[    0.663437]  [<0002f3284cbc99be>] __apply_to_page_range+0x2fe/0x7a0
+[    0.663440]  [<0002f3284cbc9e88>] apply_to_page_range+0x28/0x40
+[    0.663442]  [<0002f3284ccebf12>] kasan_populate_vmalloc+0x82/0xa0
+[    0.663445]  [<0002f3284cc1578c>] alloc_vmap_area+0x34c/0xc10
+[    0.663448]  [<0002f3284cc1c2a6>] __get_vm_area_node+0x186/0x2a0
+[    0.663451]  [<0002f3284cc1e696>] __vmalloc_node_range_noprof+0x116/0x310
+[    0.663454]  [<0002f3284cc1d950>] __vmalloc_node_noprof+0xd0/0x110
+[    0.663457]  [<0002f3284c454b88>] alloc_thread_stack_node+0xf8/0x330
+[    0.663460]  [<0002f3284c458d56>] dup_task_struct+0x66/0x4d0
+[    0.663463]  [<0002f3284c45be90>] copy_process+0x280/0x4b90
+[    0.663465]  [<0002f3284c460940>] kernel_clone+0xd0/0x4b0
+[    0.663467]  [<0002f3284c46115e>] kernel_thread+0xbe/0xe0
+[    0.663469]  [<0002f3284c4e440e>] kthreadd+0x50e/0x7f0
+[    0.663472]  [<0002f3284c38c04a>] __ret_from_fork+0x8a/0xf0
+[    0.663475]  [<0002f3284ed57ff2>] ret_from_fork+0xa/0x38
+
+Instead of allocating single pages per-PTE, bulk-allocate the shadow
+memory prior to applying kasan_populate_vmalloc_pte() callback on a page
+range.
+
+Link: https://lkml.kernel.org/r/c61d3560297c93ed044f0b1af085610353a06a58.1747316918.git.agordeev@linux.ibm.com
+Fixes: 3c5c3cfb9ef4 ("kasan: support backing vmalloc space with real shadow memory")
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: Daniel Axtens <dja@axtens.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index 88d1c9dcb507..d2c70cd2afb1 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -292,33 +292,99 @@ void __init __weak kasan_populate_early_vm_area_shadow(void *start,
+ {
+ }
+ 
++struct vmalloc_populate_data {
++	unsigned long start;
++	struct page **pages;
++};
++
+ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+-				      void *unused)
++				      void *_data)
+ {
+-	unsigned long page;
++	struct vmalloc_populate_data *data = _data;
++	struct page *page;
+ 	pte_t pte;
++	int index;
+ 
+ 	if (likely(!pte_none(ptep_get(ptep))))
+ 		return 0;
+ 
+-	page = __get_free_page(GFP_KERNEL);
+-	if (!page)
+-		return -ENOMEM;
+-
+-	__memset((void *)page, KASAN_VMALLOC_INVALID, PAGE_SIZE);
+-	pte = pfn_pte(PFN_DOWN(__pa(page)), PAGE_KERNEL);
++	index = PFN_DOWN(addr - data->start);
++	page = data->pages[index];
++	__memset(page_to_virt(page), KASAN_VMALLOC_INVALID, PAGE_SIZE);
++	pte = pfn_pte(page_to_pfn(page), PAGE_KERNEL);
+ 
+ 	spin_lock(&init_mm.page_table_lock);
+ 	if (likely(pte_none(ptep_get(ptep)))) {
+ 		set_pte_at(&init_mm, addr, ptep, pte);
+-		page = 0;
++		data->pages[index] = NULL;
+ 	}
+ 	spin_unlock(&init_mm.page_table_lock);
+-	if (page)
+-		free_page(page);
++
+ 	return 0;
+ }
+ 
++static void ___free_pages_bulk(struct page **pages, int nr_pages)
++{
++	int i;
++
++	for (i = 0; i < nr_pages; i++) {
++		if (pages[i]) {
++			__free_pages(pages[i], 0);
++			pages[i] = NULL;
++		}
++	}
++}
++
++static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
++{
++	unsigned long nr_populated, nr_total = nr_pages;
++	struct page **page_array = pages;
++
++	while (nr_pages) {
++		nr_populated = alloc_pages_bulk(GFP_KERNEL, nr_pages, pages);
++		if (!nr_populated) {
++			___free_pages_bulk(page_array, nr_total - nr_pages);
++			return -ENOMEM;
++		}
++		pages += nr_populated;
++		nr_pages -= nr_populated;
++	}
++
++	return 0;
++}
++
++static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
++{
++	unsigned long nr_pages, nr_total = PFN_UP(end - start);
++	struct vmalloc_populate_data data;
++	int ret = 0;
++
++	data.pages = (struct page **)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	if (!data.pages)
++		return -ENOMEM;
++
++	while (nr_total) {
++		nr_pages = min(nr_total, PAGE_SIZE / sizeof(data.pages[0]));
++		ret = ___alloc_pages_bulk(data.pages, nr_pages);
++		if (ret)
++			break;
++
++		data.start = start;
++		ret = apply_to_page_range(&init_mm, start, nr_pages * PAGE_SIZE,
++					  kasan_populate_vmalloc_pte, &data);
++		___free_pages_bulk(data.pages, nr_pages);
++		if (ret)
++			break;
++
++		start += nr_pages * PAGE_SIZE;
++		nr_total -= nr_pages;
++	}
++
++	free_page((unsigned long)data.pages);
++
++	return ret;
++}
++
+ int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
+ {
+ 	unsigned long shadow_start, shadow_end;
+@@ -348,9 +414,7 @@ int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
+ 	shadow_start = PAGE_ALIGN_DOWN(shadow_start);
+ 	shadow_end = PAGE_ALIGN(shadow_end);
+ 
+-	ret = apply_to_page_range(&init_mm, shadow_start,
+-				  shadow_end - shadow_start,
+-				  kasan_populate_vmalloc_pte, NULL);
++	ret = __kasan_populate_vmalloc(shadow_start, shadow_end);
+ 	if (ret)
+ 		return ret;
+ 
 
 
