@@ -1,390 +1,167 @@
-Return-Path: <stable+bounces-146324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C802AC3A58
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:03:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AB2AC3AC8
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D1A516F1C7
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 07:03:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09E3F188BA8D
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 07:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426961DDA31;
-	Mon, 26 May 2025 07:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FDB1DE2BA;
+	Mon, 26 May 2025 07:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/Ki+qMh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NqtRUhMw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABA219CD1B;
-	Mon, 26 May 2025 07:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B5CEAE7;
+	Mon, 26 May 2025 07:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748243025; cv=none; b=PeuVne3Ubg8LQbzk238q1VTvUExD++GTP8v9BfYAY4q+/IslFUPlu4Z+o8UMClyvkx7uFSXIFm0kIfF3H1R6QAIkf73oHnMks2MPXtZZDjJp6wJWh1C4qKQ23y3mSpF9yhHtT1wzfqlZAkkdrmClVNUGWR6/HGwcEq2ANd3r90o=
+	t=1748245193; cv=none; b=fdP8TbHhM1p94YTWJw0c7JY0JHUE8tor4Kb21x8UJw2Uh9NxW7Swtsubw0b43POd8PVstHd3uGX76iP6nsHQAVaqIKyFU9A/E7FjwGBraD8jIH59MZsbUQNRkTPQSfHPAVZMcs/+u7YQvlABH2xdbq/zxBhFVttNMfR4yVjI1SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748243025; c=relaxed/simple;
-	bh=MMk5/uMd+GF1UB5m73CeK6sdi688uKa5o4LyBYY2AI0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WiIFdhimBLj/B/lsha0T6JYs3GNMz0Y0+CiaImVQcH5OpugZQkIS2OC2HjzTID7IwRKvoniUJGVKLO60VaLnGw4rCCFK/1q45io+0r3bkjDhFk9sZ8fV9LUKtncvXFnv0FGIQwslWB2RgTiJyZYGMuCJo3aLd6heE0W9SyrCrJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/Ki+qMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E491C4CEE7;
-	Mon, 26 May 2025 07:03:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748243024;
-	bh=MMk5/uMd+GF1UB5m73CeK6sdi688uKa5o4LyBYY2AI0=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=B/Ki+qMhgvcOxmPYEi4S16rbY/tc1Ze9VgXfNm507bQ11vqFThTL3//gpZkRNB7pg
-	 nSK4W9JpyHu4KLvCNoHWi3Z7wuSZ3bzKJ8a71tyddhf/QWnK7446WM3XDs3ft166zB
-	 Az9EgQuScgCLe7g4UwAvsmCTvxJ0Ow0dqbTBTlbE7xNskE9eqGGySbeeGBXJn4ssie
-	 VKZzyVgIXLzJYV/5RMTszNKVioJeBW+rYRiL/24JCpHlX0AAswo45LHu5aRmI8FnIS
-	 0JBGOM7IP6riyJLN6bf7SG03qMU0HEKczmOiRwT/yu0O5V0gCahbH7Kbiplkb9GfAS
-	 NSQD3ixlByvWg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A0FFC54FB3;
-	Mon, 26 May 2025 07:03:44 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Mon, 26 May 2025 09:03:40 +0200
-Subject: [PATCH v3] iio: common: st_sensors: Fix use of uninitialize device
- structs
+	s=arc-20240116; t=1748245193; c=relaxed/simple;
+	bh=IBYAM02gDnPNQWz4PJvgXSa+zSTTw55qR4Wjew9vvcA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N20vTkm+tf86nwPM7TQ/Z1956XebWEPXOb0aLE2RlPLUPcR1eC5cFnwr3yLr9t7G4UY4gugfohQBQgPK3r1/j6ABf31QhCYzN6JezNjmHDxln/vInnC6dvIl8yIDvPgSvt8q3D8k2KWBwt/hs65KFrJb04Od79yue53acwejrlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NqtRUhMw; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748245191; x=1779781191;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=IBYAM02gDnPNQWz4PJvgXSa+zSTTw55qR4Wjew9vvcA=;
+  b=NqtRUhMwZPv068y92INuiwkrNvMh3wllX87sRSXuJ7vPIKdClv+OfAaP
+   /e+/SM6z6XgkwtO+Hp09UPoHfZ1eMLsV/zDL9qi1ikC/HEiGsrxf9c215
+   9zExfYIlSVBnurhdzBqBFg9TCEofskKsiADLw+2rwuuh0m6sMQ2DD/WkM
+   wfclbNfMSnt4an40yFT472zn7gXLzNxnEhel3iMBSxb2rBV+TydPL1D89
+   QNViMcAkPlQS6ny+i5Q6Jvr3gBAr85yfqj0N5Bd0SK5Be50lN5ZabRtN/
+   JGWj+Y3i7uYFS/qYQ1jjOnTMvcgrdTSY/NRwVbq9NQo3buhIVcNo+Z3i0
+   Q==;
+X-CSE-ConnectionGUID: bQ5DraHTSXG/FzuiSpFJ1A==
+X-CSE-MsgGUID: t4d0K/PxS+CSmg3kc/hRYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11444"; a="50266426"
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; 
+   d="scan'208";a="50266426"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2025 00:39:50 -0700
+X-CSE-ConnectionGUID: Y9e57ER8SDy5G6wGIUAEmw==
+X-CSE-MsgGUID: RVKkfV8RTK6gwePf1FzckQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,315,1739865600"; 
+   d="scan'208";a="147412219"
+Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmviesa004.fm.intel.com with ESMTP; 26 May 2025 00:39:48 -0700
+Message-ID: <b982ff0e-1ae8-429d-aa11-c3e81a9c14e5@linux.intel.com>
+Date: Mon, 26 May 2025 10:39:47 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] usb: xhci: Skip xhci_reset in xhci_resume if xhci
+ is being removed
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+ "mathias.nyman@intel.com" <mathias.nyman@intel.com>,
+ Roy Luo <royluo@google.com>
+Cc: "quic_ugoswami@quicinc.com" <quic_ugoswami@quicinc.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "michal.pecio@gmail.com" <michal.pecio@gmail.com>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250522190912.457583-1-royluo@google.com>
+ <20250522190912.457583-2-royluo@google.com>
+ <20250523230633.u46zpptaoob5jcdk@synopsys.com>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <20250523230633.u46zpptaoob5jcdk@synopsys.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250526-st_iio_fix-v3-1-039fec38707c@gocontroll.com>
-X-B4-Tracking: v=1; b=H4sIAEsSNGgC/3WMQQ6CMBAAv0L2bE270Aqe/IcxBNsCm2BrWtJoC
- H+3cFWPM8nMAtEGshHOxQLBJorkXYbyUIAeOzdYRiYzIEfJJSKLc0vk255eTGhZ98ZUpkIOOXg
- Gm/U+u94yjxRnH977O4nN/twkwQQzqm7upeyFEngZvPZuDn6ajto/YHsl/N9j7vmpK1FJ2TWN+
- urXdf0ASZiCR+kAAAA=
-X-Change-ID: 20250522-st_iio_fix-1c58fdd4d420
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Christian Heusel <christian@heusel.eu>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Maud Spierings <maudspierings@gocontroll.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748243023; l=11339;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=Qqt9XE7k6jzMfflRu7bsFCiZg9ry06DYpLkn0Zt2L2Q=;
- b=bqPTkRr9BBTpX41rBICDyxe77dGsOEIQir7BfcLJ+oYQYKlV1nplyL+70McBjpkcJcNl1ESAe
- Xli2YR/8adADEtM43uqEKTlyAVDNiq3qYipt0HUvTxULLb/L+JZRAqv
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+On 24.5.2025 2.06, Thinh Nguyen wrote:
+> Hi Mathias, Roy,
+> 
+> On Thu, May 22, 2025, Roy Luo wrote:
+>> xhci_reset() currently returns -ENODEV if XHCI_STATE_REMOVING is
+>> set, without completing the xhci handshake, unless the reset completes
+>> exceptionally quickly. This behavior causes a regression on Synopsys
+>> DWC3 USB controllers with dual-role capabilities.
+>>
+>> Specifically, when a DWC3 controller exits host mode and removes xhci
+>> while a reset is still in progress, and then attempts to configure its
+>> hardware for device mode, the ongoing, incomplete reset leads to
+>> critical register access issues. All register reads return zero, not
+>> just within the xHCI register space (which might be expected during a
+>> reset), but across the entire DWC3 IP block.
+>>
+>> This patch addresses the issue by preventing xhci_reset() from being
+>> called in xhci_resume() and bailing out early in the reinit flow when
+>> XHCI_STATE_REMOVING is set.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state() helper")
+>> Suggested-by: Mathias Nyman <mathias.nyman@intel.com>
+>> Signed-off-by: Roy Luo <royluo@google.com>
+>> ---
+>>   drivers/usb/host/xhci.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+>> index 90eb491267b5..244b12eafd95 100644
+>> --- a/drivers/usb/host/xhci.c
+>> +++ b/drivers/usb/host/xhci.c
+>> @@ -1084,7 +1084,10 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
+>>   		xhci_dbg(xhci, "Stop HCD\n");
+>>   		xhci_halt(xhci);
+>>   		xhci_zero_64b_regs(xhci);
+>> -		retval = xhci_reset(xhci, XHCI_RESET_LONG_USEC);
+>> +		if (xhci->xhc_state & XHCI_STATE_REMOVING)
+>> +			retval = -ENODEV;
+>> +		else
+>> +			retval = xhci_reset(xhci, XHCI_RESET_LONG_USEC);
+> 
+> How can this prevent the xhc_state from changing while in reset? There's
+> no locking in xhci-plat.
 
-Throughout the various probe functions &indio_dev->dev is used before it
-is initialized. This caused a kernel panic in st_sensors_power_enable()
-when the call to devm_regulator_bulk_get_enable() fails and then calls
-dev_err_probe() with the uninitialized device.
+Patch 2/2, which is the revert of 6ccb83d6c497 prevents xhci_reset() from
+aborting due to xhc_state flags change.
 
-This seems to only cause a panic with dev_err_probe(), dev_err(),
-dev_warn() and dev_info() don't seem to cause a panic, but are fixed
-as well.
+This patch makes sure xHC is not reset twice if xhci is resuming due to
+remove being called. (XHCI_STATE_REMOVING is set).
+The Qcom platform has watchdog issues with the 10 second XHCI_RESET_LONG_USEC
+timeout reset during resume at remove.
 
-The issue is reported and traced here: [1]
+> 
+> I would suggest to simply revert the commit 6ccb83d6c497 that causes
+> regression first. We can investigate and look into a solution to the
+> specific Qcom issue afterward.
 
-[1]: https://lore.kernel.org/all/AM7P189MB100986A83D2F28AF3FFAF976E39EA@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM/
+Why intentionally bring back the Qcom watchdog issue by only reverting
+6ccb83d6c497 ?. Can't we solve both in one go?
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
----
-When I search for general &indio_dev->dev usage, I see quite a lot more
-hits, but I am not sure if there are issues with those too.
+> 
+> Note that this commit may impact role-switching flow for all DRD dwc3
+> (and perhaps others), which may also impact other Qcom DRD platforms.
 
-This issue has existed for a long time it seems and therefore it is
-nearly impossible to find a proper fixes tag. I would love to see it at
-least backported to 6.12 as that is where I encountered it, and I
-believe the patch should apply without conflicts.
----
-Changes in v3:
-- Added the stable cc to the commit message
-- Move the link to the original issue to the commit message
-- Fix function notation in the commit message
-- Move some more of the dev_*() calls to one line
-- Link to v2: https://lore.kernel.org/r/20250522-st_iio_fix-v2-1-07a32655a996@gocontroll.com
+Could you expand on this, I'm not sure I follow.
 
-Changes in v2:
-- Added SoB in commit message
-- Link to v1: https://lore.kernel.org/r/20250522-st_iio_fix-v1-1-d689b35f1612@gocontroll.com
----
- drivers/iio/accel/st_accel_core.c                  | 10 +++---
- drivers/iio/common/st_sensors/st_sensors_core.c    | 36 ++++++++++------------
- drivers/iio/common/st_sensors/st_sensors_trigger.c | 20 ++++++------
- 3 files changed, 31 insertions(+), 35 deletions(-)
+xHC will be reset later in remove path:
 
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index 99cb661fabb2d9cc1943fa8d0a6f3becb71126e6..a7961c610ed203d039bbf298c8883031a578fb0b 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1353,6 +1353,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	union acpi_object *ont;
- 	union acpi_object *elements;
- 	acpi_status status;
-+	struct device *parent = indio_dev->dev.parent;
- 	int ret = -EINVAL;
- 	unsigned int val;
- 	int i, j;
-@@ -1371,7 +1372,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	};
- 
- 
--	adev = ACPI_COMPANION(indio_dev->dev.parent);
-+	adev = ACPI_COMPANION(parent);
- 	if (!adev)
- 		return -ENXIO;
- 
-@@ -1380,8 +1381,7 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	if (status == AE_NOT_FOUND) {
- 		return -ENXIO;
- 	} else if (ACPI_FAILURE(status)) {
--		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
--			 status);
-+		dev_warn(parent, "failed to execute _ONT: %d\n", status);
- 		return status;
- 	}
- 
-@@ -1457,12 +1457,12 @@ static int apply_acpi_orientation(struct iio_dev *indio_dev)
- 	}
- 
- 	ret = 0;
--	dev_info(&indio_dev->dev, "computed mount matrix from ACPI\n");
-+	dev_info(parent, "computed mount matrix from ACPI\n");
- 
- out:
- 	kfree(buffer.pointer);
- 	if (ret)
--		dev_dbg(&indio_dev->dev,
-+		dev_dbg(parent,
- 			"failed to apply ACPI orientation data: %d\n", ret);
- 
- 	return ret;
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index 8ce1dccfea4f5aaff45d3d40f6542323dd1f0b09..dac593be56958fd0be92e13f628350fcfd0f040d 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -154,7 +154,7 @@ static int st_sensors_set_fullscale(struct iio_dev *indio_dev, unsigned int fs)
- 	return err;
- 
- st_accel_set_fullscale_error:
--	dev_err(&indio_dev->dev, "failed to set new fullscale.\n");
-+	dev_err(indio_dev->dev.parent, "failed to set new fullscale.\n");
- 	return err;
- }
- 
-@@ -231,8 +231,7 @@ int st_sensors_power_enable(struct iio_dev *indio_dev)
- 					     ARRAY_SIZE(regulator_names),
- 					     regulator_names);
- 	if (err)
--		return dev_err_probe(&indio_dev->dev, err,
--				     "unable to enable supplies\n");
-+		return dev_err_probe(parent, err, "unable to enable supplies\n");
- 
- 	return 0;
- }
-@@ -241,13 +240,14 @@ EXPORT_SYMBOL_NS(st_sensors_power_enable, "IIO_ST_SENSORS");
- static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 
- 	/* Sensor does not support interrupts */
- 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
- 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
- 		if (pdata->drdy_int_pin)
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "DRDY on pin INT%d specified, but sensor does not support interrupts\n",
- 				 pdata->drdy_int_pin);
- 		return 0;
-@@ -256,29 +256,27 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
- 	switch (pdata->drdy_int_pin) {
- 	case 1:
- 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT1 not available.\n");
-+			dev_err(parent, "DRDY on INT1 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 1;
- 		break;
- 	case 2:
- 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
--			dev_err(&indio_dev->dev,
--					"DRDY on INT2 not available.\n");
-+			dev_err(parent, "DRDY on INT2 not available.\n");
- 			return -EINVAL;
- 		}
- 		sdata->drdy_int_pin = 2;
- 		break;
- 	default:
--		dev_err(&indio_dev->dev, "DRDY on pdata not valid.\n");
-+		dev_err(parent, "DRDY on pdata not valid.\n");
- 		return -EINVAL;
- 	}
- 
- 	if (pdata->open_drain) {
- 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
- 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"open drain requested but unsupported.\n");
- 		else
- 			sdata->int_pin_open_drain = true;
-@@ -336,6 +334,7 @@ EXPORT_SYMBOL_NS(st_sensors_dev_name_probe, "IIO_ST_SENSORS");
- int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 					struct st_sensors_platform_data *pdata)
- {
-+	struct device *parent = indio_dev->dev.parent;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 	struct st_sensors_platform_data *of_pdata;
- 	int err = 0;
-@@ -343,7 +342,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 	mutex_init(&sdata->odr_lock);
- 
- 	/* If OF/DT pdata exists, it will take precedence of anything else */
--	of_pdata = st_sensors_dev_probe(indio_dev->dev.parent, pdata);
-+	of_pdata = st_sensors_dev_probe(parent, pdata);
- 	if (IS_ERR(of_pdata))
- 		return PTR_ERR(of_pdata);
- 	if (of_pdata)
-@@ -370,7 +369,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 		if (err < 0)
- 			return err;
- 	} else
--		dev_info(&indio_dev->dev, "Full-scale not possible\n");
-+		dev_info(parent, "Full-scale not possible\n");
- 
- 	err = st_sensors_set_odr(indio_dev, sdata->odr);
- 	if (err < 0)
-@@ -405,7 +404,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
- 			mask = sdata->sensor_settings->drdy_irq.int2.mask_od;
- 		}
- 
--		dev_info(&indio_dev->dev,
-+		dev_info(parent,
- 			 "set interrupt line to open drain mode on pin %d\n",
- 			 sdata->drdy_int_pin);
- 		err = st_sensors_write_data_with_mask(indio_dev, addr,
-@@ -593,21 +592,20 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings_index, "IIO_ST_SENSORS");
- int st_sensors_verify_id(struct iio_dev *indio_dev)
- {
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
-+	struct device *parent = indio_dev->dev.parent;
- 	int wai, err;
- 
- 	if (sdata->sensor_settings->wai_addr) {
- 		err = regmap_read(sdata->regmap,
- 				  sdata->sensor_settings->wai_addr, &wai);
- 		if (err < 0) {
--			dev_err(&indio_dev->dev,
--				"failed to read Who-Am-I register.\n");
--			return err;
-+			return dev_err_probe(parent, err,
-+					     "failed to read Who-Am-I register.\n");
- 		}
- 
- 		if (sdata->sensor_settings->wai != wai) {
--			dev_warn(&indio_dev->dev,
--				"%s: WhoAmI mismatch (0x%x).\n",
--				indio_dev->name, wai);
-+			dev_warn(parent, "%s: WhoAmI mismatch (0x%x).\n",
-+				 indio_dev->name, wai);
- 		}
- 	}
- 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_trigger.c b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-index 9d4bf822a15dfcdd6c2835f6b9d7698cd3cb0b08..8a8ab688d7980f6dd43c660f90a0eba32c38388b 100644
---- a/drivers/iio/common/st_sensors/st_sensors_trigger.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_trigger.c
-@@ -127,7 +127,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	sdata->trig = devm_iio_trigger_alloc(parent, "%s-trigger",
- 					     indio_dev->name);
- 	if (sdata->trig == NULL) {
--		dev_err(&indio_dev->dev, "failed to allocate iio trigger.\n");
-+		dev_err(parent, "failed to allocate iio trigger.\n");
- 		return -ENOMEM;
- 	}
- 
-@@ -143,7 +143,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	case IRQF_TRIGGER_FALLING:
- 	case IRQF_TRIGGER_LOW:
- 		if (!sdata->sensor_settings->drdy_irq.addr_ihl) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"falling/low specified for IRQ but hardware supports only rising/high: will request rising/high\n");
- 			if (irq_trig == IRQF_TRIGGER_FALLING)
- 				irq_trig = IRQF_TRIGGER_RISING;
-@@ -156,21 +156,19 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 				sdata->sensor_settings->drdy_irq.mask_ihl, 1);
- 			if (err < 0)
- 				return err;
--			dev_info(&indio_dev->dev,
-+			dev_info(parent,
- 				 "interrupts on the falling edge or active low level\n");
- 		}
- 		break;
- 	case IRQF_TRIGGER_RISING:
--		dev_info(&indio_dev->dev,
--			 "interrupts on the rising edge\n");
-+		dev_info(parent, "interrupts on the rising edge\n");
- 		break;
- 	case IRQF_TRIGGER_HIGH:
--		dev_info(&indio_dev->dev,
--			 "interrupts active high level\n");
-+		dev_info(parent, "interrupts active high level\n");
- 		break;
- 	default:
- 		/* This is the most preferred mode, if possible */
--		dev_err(&indio_dev->dev,
-+		dev_err(parent,
- 			"unsupported IRQ trigger specified (%lx), enforce rising edge\n", irq_trig);
- 		irq_trig = IRQF_TRIGGER_RISING;
- 	}
-@@ -179,7 +177,7 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 	if (irq_trig == IRQF_TRIGGER_FALLING ||
- 	    irq_trig == IRQF_TRIGGER_RISING) {
- 		if (!sdata->sensor_settings->drdy_irq.stat_drdy.addr) {
--			dev_err(&indio_dev->dev,
-+			dev_err(parent,
- 				"edge IRQ not supported w/o stat register.\n");
- 			return -EOPNOTSUPP;
- 		}
-@@ -214,13 +212,13 @@ int st_sensors_allocate_trigger(struct iio_dev *indio_dev,
- 					sdata->trig->name,
- 					sdata->trig);
- 	if (err) {
--		dev_err(&indio_dev->dev, "failed to request trigger IRQ.\n");
-+		dev_err(parent, "failed to request trigger IRQ.\n");
- 		return err;
- 	}
- 
- 	err = devm_iio_trigger_register(parent, sdata->trig);
- 	if (err < 0) {
--		dev_err(&indio_dev->dev, "failed to register iio trigger.\n");
-+		dev_err(parent, "failed to register iio trigger.\n");
- 		return err;
- 	}
- 	indio_dev->trig = iio_trigger_get(sdata->trig);
+xhci_plat_remove()
+   usb_remove_hcd()
+     hcd->driver->stop(hcd) -> xhci_stop()
+       xhci_reset(xhci, XHCI_RESET_SHORT_USEC);
 
----
-base-commit: 7bac2c97af4078d7a627500c9bcdd5b033f97718
-change-id: 20250522-st_iio_fix-1c58fdd4d420
-
-Best regards,
--- 
-Maud Spierings <maudspierings@gocontroll.com>
-
+Thanks
+Mathias
 
 
