@@ -1,152 +1,115 @@
-Return-Path: <stable+bounces-146327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A3BAC3AF0
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:53:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9B6AC3B3B
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 10:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066033A4002
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 07:53:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F4951748D5
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 08:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BEB1E1DEC;
-	Mon, 26 May 2025 07:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDECE1E633C;
+	Mon, 26 May 2025 08:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gpFXMSgJ"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VALR+SSJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BFD1E1A20
-	for <stable@vger.kernel.org>; Mon, 26 May 2025 07:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275481DF97C;
+	Mon, 26 May 2025 08:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748246000; cv=none; b=hxkBk6Z1Wi9EAmXW7Cs7hpn48v0pVJ74qWvow9zH2lyfnv+k1FD8hXVDaYIi2CSxe0iajX0pjsf0/o/VAD+mtgxjev8Vo2xheWnnyQMa823hsupoDeJDjZ8es72gKRUxQQ6WvGZxfiGhOtFz7mJg55X7App5TP0P4a4koz/9JrQ=
+	t=1748247136; cv=none; b=NHBO4XGJR7PPMHfXf9PEy0zcS65mi7suG/leSm9isCleO0MVPoIUpRRwBWAq0GpyVjvrsOSQ+Lf3K1Va39EeNN4Q1LbFHa7XgTG+ZluInIGMAVUDM1JauH4Q+yBNPs0f7tFOtlJDX/UGBaU3H/OQPrS3O8tN6IMYTNXsOwWU8ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748246000; c=relaxed/simple;
-	bh=8zGG98q9qUYZNS1ImPKzK++WJb03mJOL5AJYgz2KFCk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JetWg5VAndjZY53iFtB9cpykTqBMp9GC5E//8ODk21x2ykWJjkOIk62QMQAJtluYHSJjw/0MWnNhV0BTsQLGavjxkY++lStAOlfq6JWSuyaE7du0baD3d9t14Q2QIutKLTXy4dl6l6EyBeVUQSE9tmaNfTgy7tZMmmk19GotSRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gpFXMSgJ; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ad883afdf0cso5311166b.0
-        for <stable@vger.kernel.org>; Mon, 26 May 2025 00:53:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748245997; x=1748850797; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AXjdGFDhJ6dNVjl5AY3P4sCfMdaDyI2qz17SglDOYM0=;
-        b=gpFXMSgJQhPdX5UeopVBNb7w6/CoU2PjayQ9+ojv1LsNI75uhEq8NuuzNEO2XwTDCE
-         lQjANMZ5MNcNonkrh2vkXKM1VeCb3Jr+d7HaUVX5fZ14Lg7BQ9OmJ9brhQZQXDmhS/hN
-         Sdstz4qPi/7XVm/Burk2ajpErLeh3WRXEM5cmrvZhZbzYLbKhBlO8QmDtN0CPz4/XimA
-         s1h4+AyMFw3LatLb2W8bPiT/vjcirip0TIt2YI+NASJ5Cwgwx4BsKoLsGF5d0tyrO+cF
-         cpoFoKYGl+WXzyF2abSt6xkuQKB1WwiG7csu9PgbopUrvrRXUUOiAvY7R8eZZU7e/E5b
-         N8bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748245997; x=1748850797;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AXjdGFDhJ6dNVjl5AY3P4sCfMdaDyI2qz17SglDOYM0=;
-        b=uUZZJMbb4gRkkCdUJdpQK6VI9R/jQhF7spHFchvGlJkVMHV7wNIe8YO6AEpuupLihi
-         sZu9bUzCexzLeC6VNmHVd+KycaBciXcl+ZbDGloi3r5BTxLRqqdhUo0HPQHXNSuB7p4f
-         JMabODoW/agyyL0m1XE6BRG15bK74aaDgwG+iUddJu4otKuU4shEJhJqWnQgXWIRnpPQ
-         OHd2ZoDk88N3mol4GPQA8pEIFeUDG48P5dhxu6ARxBoAw5OCypCgzCp6VmX+dcOt1tHU
-         nslHZae/KgUWvDM51jnZ3b8QKFqEIDZm9ggB+6fRFzdC1PN8BMndpRQOtTnXxTivS5d+
-         JFlA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIZrmpaOuhNomvHLNc19P+8mTEu/G6M2Flbju/cCxOnMy2oedhK9GcVHdHoIHge8ukLjYP7tI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIl9WUEQ0KGUN/sVA1J/Bo/Gr/C3aKVrmgrDlbJAWU9htdCZ0q
-	zRfk8TKKIcYAj2RJwyApKCbX8SZluR0QrZBEUO6bLRE4VJMPuR3+eQeBDB5Piur6xwiTA2vh6xD
-	Tqrw/U8dWvGzTtLloGwCY6ea+/XfZOsOF8TNhASpLKQ==
-X-Gm-Gg: ASbGncusVfxxJIfKf0AJj7okDgXWpAZ0DBz2wnOZ1nMX6AjmYziE/6haBPAKLSlCjaO
-	nT/GdCXqgKKQweyUWVuLOJlMImyq/XBPM8yvXo8eZ0Uwx0ULk6AMCUN2R5aekEPh+LK/R5Ym9q0
-	Y9b0AimLbGSPbG+nPbBv6o0AuKXujf3CuRqXIwl66FlXBNpIMtdMDwwlwOkY3SNvFrt0BWZAHi
-X-Google-Smtp-Source: AGHT+IEHR623wBlrfv2bAwYHebBHB/uVZnyri8NclAhYoOaAPShxgc2ECJIYwH4Jo6EBzAfQkeCfgUHu9q3L/BOSO8s=
-X-Received: by 2002:a17:907:9803:b0:ad4:8ec1:8fc9 with SMTP id
- a640c23a62f3a-ad85b20aca2mr724880666b.42.1748245996928; Mon, 26 May 2025
- 00:53:16 -0700 (PDT)
+	s=arc-20240116; t=1748247136; c=relaxed/simple;
+	bh=M7T0+D011hV6QFHPETqMmfJ9yU1LxuHKmv+N2IRha8Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OE0HMYLtOmiMexGuwtGhG7Ci//xgZcgN0wU31H2fxZUVelRp3mJQLVEyP0vqAGG2fNMn6oYnPz5slCG97CHA/UbSU0lsTEED8+rsvhObpYtQ1/NohcrLt5kvKoJXgIUjE57hgItpcsIhB0sT6QUVllpLRJeD2Z6x1OcObaL/zuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VALR+SSJ; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B610342DFF;
+	Mon, 26 May 2025 08:12:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1748247132;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h5ar1+ii+EEJg36aGo+is3ncJ1EKGEqq8suROqpajvc=;
+	b=VALR+SSJ/mrK8uubAwfd02c0E4HinwQa3Fr7aSxh2mvFGRSNLT7oirBd3JBdl0XvI/I3ve
+	2evkgdxzo/ok6EblNKPz8JAivojF0jfEoOaHHvsMM6gZ153NrNmis2Ih6WYiek0TF5Obk+
+	9Osx6wN9VUphURRJ1Y0YBs+5kC2/gCXZyT5BVBSyqp1uqRTk0iB4Ix+CzG46DN6W6+1InP
+	O/E8XOVgCJHzfMfIRQJvTkNMbod2JDgssODpznMUBg0438gMUwyOx5HZpNRqEXcs45lSht
+	A4OsIziIr6c12taUyHJIck7wOISnWiIipl9sk0JfPb9p5UghhjUj5t2KZkckcA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: richard@nod.at,  vigneshr@ti.com,  wens@csie.org,
+  jernej.skrabec@gmail.com,  samuel@sholland.org,  ruanjinjie@huawei.com,
+  u.kleine-koenig@baylibre.com,  linux-kernel@vger.kernel.org,
+  linux-mtd@lists.infradead.org,  linux-arm-kernel@lists.infradead.org,
+  linux-sunxi@lists.linux.dev,  stable@vger.kernel.org
+Subject: Re: [PATCH] mtd: nand: sunxi: Add randomizer configuration in
+ sunxi_nfc_hw_ecc_write_chunk
+In-Reply-To: <20250526034344.517-1-vulab@iscas.ac.cn> (Wentao Liang's message
+	of "Mon, 26 May 2025 11:43:44 +0800")
+References: <20250526034344.517-1-vulab@iscas.ac.cn>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Mon, 26 May 2025 10:12:09 +0200
+Message-ID: <8734cr3i5i.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <AA29CA6A-EC92-4B45-85F5-A9DE760F0A92@ateme.com>
- <4c0f13ab-c9cd-42c4-84bd-244365b450e2@amd.com> <996ca8cb-3ac8-4f1b-93f1-415f43922d7a@ateme.com>
- <3daac950-3656-4ec4-bbee-7a3bbad6d631@amd.com> <CAKfTPtBovA700=_0BajnzkdDP6MkdgLU=E3M0GTq4zoLW=RGhA@mail.gmail.com>
- <de22462b-cda6-400f-b28c-4d1b9b244eec@amd.com> <CAKfTPtC6siPqX=vBweKz+dt2zoGiSQEGo32yh+MGhxNLSSW1_w@mail.gmail.com>
- <c0e87c08-f863-47f3-8016-c44e3dce2811@amd.com> <db7b5ad7-3dad-4e7c-a323-d0128ae818eb@ateme.com>
- <CAKfTPtDkmsFD=1uG+dGOrYfdaap4SWupc8kVV8LanwaXSbxruA@mail.gmail.com> <fea6da1d-85d6-459d-9ac3-661d5909420b@ateme.com>
-In-Reply-To: <fea6da1d-85d6-459d-9ac3-661d5909420b@ateme.com>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Mon, 26 May 2025 09:53:05 +0200
-X-Gm-Features: AX0GCFuROGCSyLoX-AVhsYdFkI6e9UYLuZkd2WamYF2gufcPj-7lR5ZaPUa4N-s
-Message-ID: <CAKfTPtAPPG2Xa1P9r+NQZv_VkYRic+e-qxG1ODJodPUqdry7BQ@mail.gmail.com>
-Subject: Re: IPC drop down on AMD epyc 7702P
-To: Jean-Baptiste Roquefere <jb.roquefere@ateme.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>, Peter Zijlstra <peterz@infradead.org>, 
-	"mingo@kernel.org" <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>, Swapnil Sapkal <swapnil.sapkal@amd.com>, 
-	Valentin Schneider <vschneid@redhat.com>, 
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddujedttdculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvfevufgjfhgffffkgggtgfesthhqredttderjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgefhjedtfeeigeduudekudejkedtiefhleelueeiueevheekvdeludehiedvfeenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedufedprhgtphhtthhopehvuhhlrggssehishgtrghsrdgrtgdrtghnpdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopeifvghnshestghsihgvrdhorhhgpdhrtghpthhtohepjhgvrhhnvghjrdhskhhrrggsvggtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgrmhhuvghlsehshhholhhlrghnugdrohhrghdprhgtphhtthhop
+ ehruhgrnhhjihhnjhhivgeshhhurgifvghirdgtohhmpdhrtghpthhtohepuhdrkhhlvghinhgvqdhkohgvnhhighessggrhihlihgsrhgvrdgtohhm
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Fri, 23 May 2025 at 14:24, Jean-Baptiste Roquefere
-<jb.roquefere@ateme.com> wrote:
->
-> Hello Vincent,
->
-> > As said previously, I don't see an obvious connection between commit
-> > 16b0a7a1a0af  ("sched/fair: Ensure tasks spreading in LLC during LB")
-> > which mainly ensures a better usage of CPUs inside a LLC. Do you have
-> > cpufreq and freq scaling enabled ? The only link that I could think
-> > of, is that the spread of task inside a llc favors inter LLC newly
-> > idle load balance
-> # lsmod | grep cpufreq
-> cpufreq_userspace      16384  0
-> cpufreq_conservative    16384  0
-> cpufreq_powersave      16384  0
->
->
-> but I'm not sure cpufreq is well loaded :
->
-> # cpupower frequency-info
-> analyzing CPU 0:
->    no or unknown cpufreq driver is active on this CPU
->    CPUs which run at the same hardware frequency: Not Available
->    CPUs which need to have their frequency coordinated by software: Not
-> Available
->    maximum transition latency:  Cannot determine or is not supported.
-> Not Available
->    available cpufreq governors: Not Available
->    Unable to determine current policy
->    current CPU frequency: Unable to call hardware
->    current CPU frequency:  Unable to call to kernel
->    boost state support:
->      Supported: yes
->      Active: yes
->      Boost States: 0
->      Total States: 3
->      Pstate-P0:  2000MHz
->      Pstate-P1:  1800MHz
->      Pstate-P2:  1500MHz
->
-> And I cant find cpufreq/ under /sys/devices/system/cpu/cpu*/
+Hi Liang,
 
-Looks like you don't have cpufreq driver so we can forget a perf drop
-because of a lower avg freq
-Thanks
+On 26/05/2025 at 11:43:44 +08, Wentao Liang <vulab@iscas.ac.cn> wrote:
 
+> The function sunxi_nfc_hw_ecc_write_chunk() calls the
+> sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
+> function sunxi_nfc_randomizer_config(). Consequently, the randomization
+> might not conduct correctly, which will affect the lifespan of NAND flash.
+> A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
 >
+> Add the sunxi_nfc_randomizer_config() to config randomizer.
 >
-> Thanks for your help,
+> Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
+> Cc: stable@vger.kernel.org # v4.6
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>  drivers/mtd/nand/raw/sunxi_nand.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> jb
->
+> diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sun=
+xi_nand.c
+> index 9179719f639e..162cd5f4f234 100644
+> --- a/drivers/mtd/nand/raw/sunxi_nand.c
+> +++ b/drivers/mtd/nand/raw/sunxi_nand.c
+> @@ -1050,6 +1050,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(struct nand=
+_chip *nand,
+>  	if (ret)
+>  		return ret;
+>=20=20
+> +	sunxi_nfc_randomizer_config(nand, page, false);
+>  	sunxi_nfc_randomizer_enable(nand);
+>  	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
+
+Please next time send all these "identical" changes in a single patch.
+
+Cheers,
+Miqu=C3=A8l
+
 
