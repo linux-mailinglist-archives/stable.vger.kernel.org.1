@@ -1,152 +1,221 @@
-Return-Path: <stable+bounces-146317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA71AC3839
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 05:32:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F73AC384D
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 05:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D3A43B26C3
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 03:32:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A6827A9364
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 03:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292A417AE11;
-	Mon, 26 May 2025 03:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DED1991B6;
+	Mon, 26 May 2025 03:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j64JAbNl"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="Zv8br4FS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337F6101FF;
-	Mon, 26 May 2025 03:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B867E110;
+	Mon, 26 May 2025 03:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748230359; cv=none; b=jcLYQfVbJfnoOsw5TdFGKz+JoKuWjhQKgpcz2gv7g1pf3FPcUCVYFGoezlA5TGvo5W1xbkvIqz1zhVG+bfWJ+PblOuw3wXVXYlHn7c+7uexMCjZ224OnlgdwA51L+uzZEd0loEzho22mPOGSTIOkWVmyIEv0xgOkUxS7Nrxw1Y4=
+	t=1748231610; cv=none; b=P6R7cuViRdc9rwfuJkrLgxnpWzEcBgWo3uCe8hUbQlwuOeKWkx4y7TfPRGeS0Oqn8C3lkcS2rKLjYDVqRuPRKAhfLkxBbQu1MP6iDyh71cw5PzVbEvIw5A9lT0THYy/Fe0io58xEqov9Kgq/6lUhYWNQSgYhuN4XI9Ian3NU+/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748230359; c=relaxed/simple;
-	bh=PXVta0mCTYq6yt9jSQRdHzSV6a2PJ/jUqh30SUGtbZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Js2xmxHMifEpbV+STETOnZimPRPBluoCFovPSkhrIbTT4QNGUiph6VH1yUet2q+ctWoZaRDspf2lPS0RwskqSqs7ou3uT9EyTBFlq2VrqNn3myggco6c5C/AeoyG3myz/Sut560OdTUyodLcCLF6T6UMLSZ++DPweWmun+Hp/WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j64JAbNl; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54acc0cd458so2274779e87.0;
-        Sun, 25 May 2025 20:32:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748230356; x=1748835156; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CzYuom+zI5De3oMnCByXzViMDJT8mx4FU1edPifGipU=;
-        b=j64JAbNlME1DuyRr5Q9S6cjhRhEUswKfsU1ymSxr4mZSD5F7r3pEf53EXs5wP8oOrI
-         mXJxD0Ul74JVf41vQhnxRniDssRY24qhaayRhji9ExkapXxFPGwnUCvD40j74YkKrJtk
-         u7dfM1/e30GVZ9/56RsMCOv/uWggD4TsIybwK5jWjKKl/9PzU6u8w+94cuQ+u9NEwsWS
-         U1cWaxq0vfQsuR9nQtuNEtn40gWSl7/46HWVeKT3EqghRaLIMJLiLCFv8+UumTCeJPBL
-         M2mBQov+0BQbncBtaMHpj/s5MZ31WZZd+cVejNOSoFVOLPicydKhxfnUniYRDTM08Rda
-         4bzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748230356; x=1748835156;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CzYuom+zI5De3oMnCByXzViMDJT8mx4FU1edPifGipU=;
-        b=q67WEmCaiaJKSl5hJPuAUR/05jJmSl2q6uXAg2XpKU1GnLlnj5PTPWmIUo8ZE4b8xb
-         mpZIIWBXen/KwaPvyCHjxELtjBx78Grlb6x08dP2NlMuGYyR4HsQvV3mEsMEcf1tfq3J
-         ZmLJ+BrpgxxG1voKPRO5NqsEQBX9BDTZnQDQUYsnD3j5cRfc/YBDGC2p64hK4Bw8rklI
-         nGUqJh2aqxwEEJOYtK+7+hSdppG2Aw943oh3gJz0zbCvfpjApQm1Iw7Hl/LmZ1SNBjCh
-         ZEDTrN7zMEwsvezj2YlHcwbUe2gweWOwlnQk0qW5W9ksto0W8ZctYShvZ967MlRnnrq5
-         ORTg==
-X-Forwarded-Encrypted: i=1; AJvYcCV+ioAi3SsVUc9V+tdv6yg1Ia5j61UthqEfitfJ/pZaPM8IicusEZp4V5xsYTccR54e09hgOa2w@vger.kernel.org, AJvYcCXRQCzEbGrvaPUeZ536zJud7+Ey3YuZrJwf76TiS8n1vQqR3/txHJCoNr0tRsUml1MuP7L7mcNGcxk+S4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKCjI1fmoktE7Qho5062+CUGYzVjraSqZ+Xzqqwx3CUeipBklq
-	johuvgqcpfH2IDahwQbLTX2sF1atixgOXpGg2AnR9PLThQHCzRs7Dec2
-X-Gm-Gg: ASbGnctHpcnlnvZkM0apfXtWiw1KF3twLDWTQ/yZL42qeS1s4SAZJ2QAQ9OG342Ec3a
-	1Eh4aTDbQ/MTbkYURKhouYBs/d0P5SwZDqvRBSY6A+kO2+npQ/TAwVMmhZ6JEOM36u5RzqvwHpj
-	jTAvXVne8xQOlZLiruPNwEDV12I4v11cBjqPFTZHQnKdPFv0t7zfnExuUDfSVcJmWRstOvTs+3U
-	JaCI+LhvS7enuBlugAvMi9kXO6sGji7VSQ6rSvAKprg3zXUjfuDGoiPq/H5hHrXqKf34GLCOH1D
-	KkUWipUyU7IVgFpGDuvpeCTtCuFySi6/KCrZP4HDVTmp5hW5annFereIRsVhIqwz7IBMnoxN8m4
-	I
-X-Google-Smtp-Source: AGHT+IGyrGp6b48Ely0ZtD7Md68redpGAx/FNDjyorHfUyE8ZME9a7yrYCtt1hrRzl5IPkvtWUdahg==
-X-Received: by 2002:a05:6512:b12:b0:54e:a2f9:d0a with SMTP id 2adb3069b0e04-5521c7a9b33mr1922854e87.11.1748230355937;
-        Sun, 25 May 2025 20:32:35 -0700 (PDT)
-Received: from localhost.localdomain ([91.197.2.199])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e9cb4d69sm4798517e87.21.2025.05.25.20.32.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 May 2025 20:32:34 -0700 (PDT)
-From: Andrey Kriulin <kitotavrik.s@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Andrey Kriulin <kitotavrik.s@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	NeilBrown <neilb@suse.de>,
-	Jan Kara <jack@suse.cz>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v4] fs: minix: Fix handling of corrupted directories
-Date: Mon, 26 May 2025 06:32:29 +0300
-Message-ID: <20250526033230.1664-1-kitotavrik.s@gmail.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1748231610; c=relaxed/simple;
+	bh=ITsjG0dWsnMGW3i6jL6ZmrcLdIcJyFzXYsV7yW/0Asg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EorWGcxzugO4+Aym578VDy7OIOKBithrOECa+t7Ij1+H1HBktTvLIpPEl3YupHmBjSULQWv+3dlstAoPxckjHHGpFmO3RhBduT0eqGnnfRz2S6eoTaF7Bmb8W6t1LG4YpQFYas20XBl72+2bPoNA8nQ3B5uWO8xWSFhShLyfDuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=Zv8br4FS; arc=none smtp.client-ip=51.81.35.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id B3CE520276;
+	Mon, 26 May 2025 03:43:46 +0000 (UTC)
+Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.156])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 81A47261DE;
+	Mon, 26 May 2025 03:43:37 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay4.mymailcheap.com (Postfix) with ESMTPS id 0A81F20312;
+	Mon, 26 May 2025 03:43:29 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 4499440093;
+	Mon, 26 May 2025 03:43:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1748231007; bh=ITsjG0dWsnMGW3i6jL6ZmrcLdIcJyFzXYsV7yW/0Asg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Zv8br4FSCCtzCbnIYIFAKDYXUPoA4iWvA8kAK1tmMEU023p/NChCG1U4MV7OpqRUv
+	 Z0dOHgg2xTLBMutKUGuQq2Nl65DX1w7r/HnvMpCQGrTgz5jea5oC/4NV+EzFuzTZig
+	 /9noWHf/aWg7FPS2gAPvg1l5RWz+FsYZ3+vhQJj4=
+Received: from [19.191.1.9] (unknown [223.76.243.206])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 7C97140CC8;
+	Mon, 26 May 2025 03:43:24 +0000 (UTC)
+Message-ID: <5c7537a3-4a23-44e9-860a-9c12203577f0@aosc.io>
+Date: Mon, 26 May 2025 11:43:16 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] platform/x86: ideapad-laptop: use usleep_range() for EC
+ polling
+To: Rong Zhang <i@rong.moe>, Ike Panhc <ikepanhc@gmail.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Eric Long <i@hack3r.moe>,
+ Kexy Biscuit <kexybiscuit@aosc.io>
+References: <20250525201833.37939-1-i@rong.moe>
+Content-Language: en-US
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <20250525201833.37939-1-i@rong.moe>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Queue-Id: 4499440093
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-0.10 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_TO(0.00)[rong.moe,gmail.com,redhat.com,linux.intel.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail,stable.vger.kernel.org:server fail,i.hack3r.moe:server fail,i.rong.moe:server fail];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[]
 
-If the directory is corrupted and the number of nlinks is less than 2
-(valid nlinks have at least 2), then when the directory is deleted, the
-minix_rmdir will try to reduce the nlinks(unsigned int) to a negative
-value.
+Hi Rong,
 
-Make nlinks validity check for directories.
+在 2025/5/26 04:18, Rong Zhang 写道:
+> It was reported that ideapad-laptop sometimes causes some recent (since
+> 2024) Lenovo ThinkBook models shut down when:
+>   - suspending/resuming
+>   - closing/opening the lid
+>   - (dis)connecting a charger
+>   - reading/writing some sysfs properties, e.g., fan_mode, touchpad
+>   - pressing down some Fn keys, e.g., Brightness Up/Down (Fn+F5/F6)
+>   - (seldom) loading the kmod
+> 
+> The issue has existed since the launch day of such models, and there
+> have been some out-of-tree workarounds (see Link:) for the issue. One
+> disables some functionalities, while another one simply shortens
+> IDEAPAD_EC_TIMEOUT. The disabled functionalities have read_ec_data() in
+> their call chains, which calls schedule() between each poll.
+> 
+> It turns out that these models suffer from the indeterminacy of
+> schedule() because of their low tolerance for being polled too
+> frequently. Sometimes schedule() returns too soon due to the lack of
+> ready tasks, causing the margin between two polls to be too short.
+> In this case, the command is somehow aborted, and too many subsequent
+> polls (they poll for "nothing!") may eventually break the state machine
+> in the EC, resulting in a hard shutdown. This explains why shortening
+> IDEAPAD_EC_TIMEOUT works around the issue - it reduces the total number
+> of polls sent to the EC.
+> 
+> Even when it doesn't lead to a shutdown, frequent polls may also disturb
+> the ongoing operation and notably delay (+ 10-20ms) the availability of
+> EC response. This phenomenon is unlikely to be exclusive to the models
+> mentioned above, so dropping the schedule() manner should also slightly
+> improve the responsiveness of various models.
+> 
+> Fix these issues by migrating to usleep_range(150, 300). The interval is
+> chosen to add some margin to the minimal 50us and considering EC
+> responses are usually available after 150-2500us based on my test. It
+> should be enough to fix these issues on all models subject to the EC bug
+> without introducing latency on other models.
+> 
+> Tested on ThinkBook 14 G7+ ASP and solved both issues. No regression was
+> introduced in the test on a model without the EC bug (ThinkBook X IMH,
+> thanks Eric).
+> 
+> Link: https://github.com/ty2/ideapad-laptop-tb2024g6plus/commit/6c5db18c9e8109873c2c90a7d2d7f552148f7ad4
+> Link: https://github.com/ferstar/ideapad-laptop-tb/commit/42d1e68e5009529d31bd23f978f636f79c023e80
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218771
+> Fixes: 6a09f21dd1e2 ("ideapad: add ACPI helpers")
+> Cc: stable@vger.kernel.org
+> Tested-by: Eric Long <i@hack3r.moe>
+> Signed-off-by: Rong Zhang <i@rong.moe>
+> ---
+>   drivers/platform/x86/ideapad-laptop.c | 19 +++++++++++++++++--
+>   1 file changed, 17 insertions(+), 2 deletions(-)
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Tested good on my Lenovo ThinkBook 14 G6+ (AHP) with the following:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Kriulin <kitotavrik.s@gmail.com>
----
-v4: Add nlinks check for parent dirictory to minix_rmdir per Jan
-Kara <jack@suse.cz> request.
-v3: Move nlinks validaty check to minix_rmdir and minix_rename per Jan
-Kara <jack@suse.cz> request.
-v2: Move nlinks validaty check to V[12]_minix_iget() per Jan Kara
-<jack@suse.cz> request. Change return error code to EUCLEAN. Don't block
-directory in r/o mode per Al Viro <viro@zeniv.linux.org.uk> request.
+- Frequent Fn+F5/F6 inputs
+- Lid opening/closing to suspend: 20 times each whilst (1) plugged in 
+and (2) using battery power
+- Plugging in and unplugging USB-C power: 20 times while running
 
- fs/minix/namei.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Tested-by: Mingcong Bai <jeffbai@aosc.io>
 
-diff --git a/fs/minix/namei.c b/fs/minix/namei.c
-index 8938536d8d3c..ab86fd16e548 100644
---- a/fs/minix/namei.c
-+++ b/fs/minix/namei.c
-@@ -161,8 +161,12 @@ static int minix_unlink(struct inode * dir, struct dentry *dentry)
- static int minix_rmdir(struct inode * dir, struct dentry *dentry)
- {
- 	struct inode * inode = d_inode(dentry);
--	int err = -ENOTEMPTY;
-+	int err = -EUCLEAN;
- 
-+	if (inode->i_nlink < 2 || dir->i_nlink <= 2)
-+		return err;
-+
-+	err = -ENOTEMPTY;
- 	if (minix_empty_dir(inode)) {
- 		err = minix_unlink(dir, dentry);
- 		if (!err) {
-@@ -235,6 +239,10 @@ static int minix_rename(struct mnt_idmap *idmap,
- 	mark_inode_dirty(old_inode);
- 
- 	if (dir_de) {
-+		if (old_dir->i_nlink <= 2) {
-+			err = -EUCLEAN;
-+			goto out_dir;
-+		}
- 		err = minix_set_link(dir_de, dir_folio, new_dir);
- 		if (!err)
- 			inode_dec_link_count(old_dir);
--- 
-2.47.2
+> diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+> index ede483573fe0..b5e4da6a6779 100644
+> --- a/drivers/platform/x86/ideapad-laptop.c
+> +++ b/drivers/platform/x86/ideapad-laptop.c
+> @@ -15,6 +15,7 @@
+>   #include <linux/bug.h>
+>   #include <linux/cleanup.h>
+>   #include <linux/debugfs.h>
+> +#include <linux/delay.h>
+>   #include <linux/device.h>
+>   #include <linux/dmi.h>
+>   #include <linux/i8042.h>
+> @@ -267,6 +268,20 @@ static void ideapad_shared_exit(struct ideapad_private *priv)
+>    */
+>   #define IDEAPAD_EC_TIMEOUT 200 /* in ms */
+>   
+> +/*
+> + * Some models (e.g., ThinkBook since 2024) have a low tolerance for being
+> + * polled too frequently. Doing so may break the state machine in the EC,
+> + * resulting in a hard shutdown.
+> + *
+> + * It is also observed that frequent polls may disturb the ongoing operation
+> + * and notably delay the availability of EC response.
+> + *
+> + * These values are used as the delay before the first poll and the interval
+> + * between subsequent polls to solve the above issues.
+> + */
+> +#define IDEAPAD_EC_POLL_MIN_US 150
+> +#define IDEAPAD_EC_POLL_MAX_US 300
+> +
+>   static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
+>   {
+>   	unsigned long long result;
+> @@ -383,7 +398,7 @@ static int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *da
+>   	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
+>   
+>   	while (time_before(jiffies, end_jiffies)) {
+> -		schedule();
+> +		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
+>   
+>   		err = eval_vpcr(handle, 1, &val);
+>   		if (err)
+> @@ -414,7 +429,7 @@ static int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long dat
+>   	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
+>   
+>   	while (time_before(jiffies, end_jiffies)) {
+> -		schedule();
+> +		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
+>   
+>   		err = eval_vpcr(handle, 1, &val);
+>   		if (err)
+> 
+> base-commit: a5806cd506af5a7c19bcd596e4708b5c464bfd21
 
 
