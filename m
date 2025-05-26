@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-146386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1FAAC4313
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 18:33:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 828ACAC4314
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 18:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C815716F9EB
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 16:32:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C3F1890296
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 16:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B32A23D2B0;
-	Mon, 26 May 2025 16:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7253F20D51F;
+	Mon, 26 May 2025 16:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rt3qgdO0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aiF0jrnO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCCA202997;
-	Mon, 26 May 2025 16:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEEB171C9;
+	Mon, 26 May 2025 16:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748277174; cv=none; b=LOcaoXH3rXDpVnsQeURRIVtTDl+1813s5v6MERTF5wIJX8C7qsNp7az93oMbivm2DKgtfj6m+HsvXGRhzj0Bs+MbJK8vN08DyiDlvr1iFcw39FqxQk9w/DvLwFKfTzkIXla9Bnl9xQRlaE4UvOuW840cpZFXMmDfufq5rBwor2k=
+	t=1748277179; cv=none; b=joWBPO1CaP7CaW+flAXmF3LdGhtKnrsoszUXwx05BkzR8v7L+TZPA7WiObSxvtE3lrivPVIkj+GvSNNSwkavg5H4ix+FEc8+MMkL0fHvFEIW/aTcBLsofkxCqrXlIOlNkj157FsLHXqiS7XZukif9pZdhGwipJgmNVixDuXtG1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748277174; c=relaxed/simple;
-	bh=u4sjxsvv5Ac2EkBAFE0Tr1FNNPm3T67xccnugKIq/rA=;
+	s=arc-20240116; t=1748277179; c=relaxed/simple;
+	bh=c32tG7DvGoUbKdoz3SeKC+DeGUkkAO0kbYZEA+WJbpo=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=qMgyEiGDCDcCVxn3OpeQVN7nbotqlpr73sFPizQ4BVWX+Dd3wTZBD2MrsXM7u+Af84RNMIgmHRyOMTc8oBaHv9HtGx9q5ycTFuCjW6oQemyH1xc/JFb9yR6DxjaL0CZ+11ue0DhSaHfqOnpCbPeMj6TS1HXvzJyPBeBjaP1APCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rt3qgdO0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB402C4CEE9;
-	Mon, 26 May 2025 16:32:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P5iY/NZjA1c/maeBQxXuORfJ1Z2W3a6iEtVxcQX4iL8/vbIkz/r9UfcAOhOFDvmLk/aggo/jlijqi2aBJGV1+z5Qs46Vvoyq+bDj2z7P75aErAjoLDsNp8fEMHaGo2/JguxPYDjC4mFtnOi9zaS/ErtXGlYZsTI38C0FbCEtAnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aiF0jrnO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446BBC4CEE7;
+	Mon, 26 May 2025 16:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748277173;
-	bh=u4sjxsvv5Ac2EkBAFE0Tr1FNNPm3T67xccnugKIq/rA=;
+	s=k20201202; t=1748277178;
+	bh=c32tG7DvGoUbKdoz3SeKC+DeGUkkAO0kbYZEA+WJbpo=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=rt3qgdO0pGKmcY4FJMOF2gFGS2KGenfAox4vf07unir79TndQUYMSwku8zwDHELY6
-	 9xt8NfDdLqBjyl6rTM0tkKIXvjCoIrmA2/fZcIRSKxrwGYsJiGmY1NAJNFFsxt9UEW
-	 hWzAxY3a8SKquX8agtiVOTpAXF+aqfkbcdLXW+MMFVgVAPvNArwTK9YNXSoLYSp9fG
-	 6nvhJ+lMou3Yhjj67Ru86fovIVK8X2nSP664uinZKuDA+DFzm6K7sBIPmqfhhJa3Ot
-	 LtCD3oDl7BsEMlkE3jhVGAsEyWhL+OP3nQz3oO1KdRV6JPcfarrli9A7QlLq5s2ASz
-	 l+Rrv7rbZicig==
+	b=aiF0jrnOIkvPCZghN5Jcs09lWNqwfUIn7GMkK+JDZCH3i5CjrDLdSu/Xb6GcQ5F6J
+	 nWhetWvZCQmWeudNmyRio96VpuKn1pzXVQZzBlI6zPc6xDycZqPnTHu91ZRvExotJ2
+	 CdBYsEDM3BOPwys3/t7BPr1uHCcsJbJUZZJvJSLBbi0B+5qVoG7epZCSe0YSFGBxKW
+	 kdjgh2jxdcoxcM+U1skEOFZ9ZFmCPLcx9zWWIA8VfI8ODUVCMSalMq4gCQ67wm7kaU
+	 5w65APL3x2ZHHwAILPoqfiTQ9Sx1QLk5Fhzo2HfCk4Au5UHPKZOLFyv07tZ0YuEzMi
+	 d3kSttQfMP/lQ==
 From: Mark Brown <broonie@kernel.org>
-To: Linux Sound ML <linux-sound@vger.kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>
-Cc: Simon Trimmer <simont@opensource.cirrus.com>, 
- Charles Keepax <ckeepax@opensource.cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- patches@opensource.cirrus.com, stable@vger.kernel.org
-In-Reply-To: <20250523155814.1256762-1-perex@perex.cz>
-References: <20250523155814.1256762-1-perex@perex.cz>
-Subject: Re: [PATCH] firmware: cs_dsp: Fix OOB memory read access in KUnit
- test (wmfw info)
-Message-Id: <174827717150.619234.9558259639370763527.b4-ty@kernel.org>
-Date: Mon, 26 May 2025 17:32:51 +0100
+To: cw00.choi@samsung.com, krzk@kernel.org, lgirdwood@gmail.com, 
+ Wentao Liang <vulab@iscas.ac.cn>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20250526025627.407-1-vulab@iscas.ac.cn>
+References: <20250526025627.407-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] regulator: max14577: Add error check for
+ max14577_read_reg()
+Message-Id: <174827717705.619417.16011537123487299524.b4-ty@kernel.org>
+Date: Mon, 26 May 2025 17:32:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,20 +61,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-c25d1
 
-On Fri, 23 May 2025 17:58:14 +0200, Jaroslav Kysela wrote:
-> KASAN reported out of bounds access - cs_dsp_mock_wmfw_add_info(),
-> because the source string length was rounded up to the allocation size.
+On Mon, 26 May 2025 10:56:27 +0800, Wentao Liang wrote:
+> The function max14577_reg_get_current_limit() calls the function
+> max14577_read_reg(), but does not check its return value. A proper
+> implementation can be found in max14577_get_online().
 > 
+> Add a error check for the max14577_read_reg() and return error code
+> if the function fails.
 > 
+> [...]
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
 Thanks!
 
-[1/1] firmware: cs_dsp: Fix OOB memory read access in KUnit test (wmfw info)
-      commit: d979b783d61f7f1f95664031b71a33afc74627b2
+[1/1] regulator: max14577: Add error check for max14577_read_reg()
+      commit: 65271f868cb1dca709ff69e45939bbef8d6d0b70
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
