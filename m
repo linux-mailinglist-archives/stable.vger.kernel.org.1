@@ -1,91 +1,108 @@
-Return-Path: <stable+bounces-146332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2023AC3C56
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 11:05:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10740AC3C84
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 11:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A33E17A5ACD
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:04:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AECFA1896DA2
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919831E51EA;
-	Mon, 26 May 2025 09:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZPFdMco"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1E81E5213;
+	Mon, 26 May 2025 09:19:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E931919D88F;
-	Mon, 26 May 2025 09:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFEE19DF8B;
+	Mon, 26 May 2025 09:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748250335; cv=none; b=luW15YhtLzgRU//V3Dl7L1AxjDwbPllHH5g9s5nIazqo8UchfkO/+Hy59LPHqjFSdP8bP5+fRSazBOYUsiiwydodvFen7scCKESL+Ro2RTfRSqxSqcvT3mRftrCc8dxD0dicNmhuLLpozKkzxAKilRLMA+/jegE1RqNzf2XW83w=
+	t=1748251171; cv=none; b=m9+oKmI3mzyBl/22Ap5pDGt/3kceAKjGtyIPNYVz/lbuzt0AVASIxfqVwE2xf0lCGFQ8muv+BXgvBQWE3/F45Ch89wdODsdAF0ZkZ+7gZr35b4J7IV/8bHla7mcJHVOZx+Q6gQh9tA0oOIQHG5OUG+baviQPw+h4MopDOQM+ijA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748250335; c=relaxed/simple;
-	bh=vcMTXAzTiY0mStel4N+6Gk6K2+W/6O20TELFymJTcK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ejswtrtoubml/nE8wEHl6YBQHLiQuCecNq5T8pwfUvfm7HwzcCy4zzknt8yAY4X+4YYRrBrjZ4akCT+xbeCQ/xKxqXNiQc35VmV98PriSGx8FuSfK0TIQV/chMW8EtV8Q1zpXB2agBWJtfnGj4WeCsPmHksWMTcNcwv0Ij0XxQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZPFdMco; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F28AC4CEE7;
-	Mon, 26 May 2025 09:05:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748250334;
-	bh=vcMTXAzTiY0mStel4N+6Gk6K2+W/6O20TELFymJTcK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AZPFdMcoc0LslowRmZ8t+cKbpMAmIM28iJfJAuIGtj2VpTephFMItg/PQ/PJrEuu3
-	 9Ttg3JLaHaRSUfONoDrWXyXUUAyZxfyo8hmog0s3Z3uXhQfmAVXztaP7ERodkBAay0
-	 xeFAUgXQnYjPYbAlQv8H/DQNlmFv96ZE6aU62EcI=
-Date: Mon, 26 May 2025 11:03:41 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: ioana.ciornei@nxp.com, agraf@suse.de, German.Rivera@freescale.com,
-	stuart.yoder@freescale.com, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] bus: fsl-mc: Fix an API misuse in fsl_mc_device_add()
-Message-ID: <2025052622-nautical-suitably-486c@gregkh>
-References: <20250526083622.3671123-1-haoxiang_li2024@163.com>
+	s=arc-20240116; t=1748251171; c=relaxed/simple;
+	bh=dG4J7u6ZAFXFgS60iYbh4ZXwMw//VZ9CBuQVCx/Y0ng=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MnDboHuPsw5oImPt+7KgQcoBD6e7INyIzvXj9JZ3NizpXPtqkJpgPOX0ffIz7S/eRqQiZ2wnS8JWCGht4e0t/nGX3q4psTxC9iWqukTWdB/ClKOMoRxBnSC5/x79++aJeXV28zCacCsjF9oySOZTPtPmcuX94cwkaP6EILE9xXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-03 (Coremail) with SMTP id rQCowADHGFEZMjRocxodAA--.6994S2;
+	Mon, 26 May 2025 17:19:22 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: johannes@sipsolutions.net,
+	luciano.coelho@intel.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mac80211: Add null pointer check for ieee80211_link_get_chanctx()
+Date: Mon, 26 May 2025 17:19:03 +0800
+Message-ID: <20250526091903.587-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526083622.3671123-1-haoxiang_li2024@163.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowADHGFEZMjRocxodAA--.6994S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7XF45uw1Dtr4ktw48Kw43GFg_yoW8JrWUpF
+	43KryjgFyUXw15Xa48G3y8uFy5ua12kw1FkFyvy3Z3Aa1vgFsxWF4rCr45XF1rCF4DGa4S
+	vF4vqrn0v34DArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjO6pDUUUU
+	U==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8OA2g0LsYQ5wAAsI
 
-On Mon, May 26, 2025 at 04:36:22PM +0800, Haoxiang Li wrote:
-> In fsl_mc_device_add(), use put_device() to give up the
-> device reference instead of kfree().
-> 
-> Fixes: bbf9d17d9875 ("staging: fsl-mc: Freescale Management Complex (fsl-mc) bus driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
->  drivers/bus/fsl-mc/fsl-mc-bus.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> index a8be8cf246fb..dfd79ecf65b6 100644
-> --- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-> @@ -905,9 +905,7 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
->  	return 0;
->  
->  error_cleanup_dev:
-> -	kfree(mc_dev->regions);
-> -	kfree(mc_bus);
-> -	kfree(mc_dev);
-> +	put_device(&mc_dev->dev);
->  
->  	return error;
->  }
+The function ieee80211_chsw_switch_vifs() calls the function
+ieee80211_link_get_chanctx(), but does not check its return value.
+The return value is a null pointer if the ieee80211_link_get_chanctx()
+fails. This will lead to a null pointer dereference in the following
+code "&old_ctx->conf". A proper implementation can be found in
+ieee80211_link_use_reserved_assign().
 
-No, sorry, this is not corrrect at all.  Always test your patches before
-submitting them.
+Add a null pointer check and goto error handling path if the
+function fails.
 
-greg k-h
+Fixes: 5d52ee811019 ("mac80211: allow reservation of a running chanctx")
+Cc: stable@vger.kernel.org # v3.16
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+v2: Fix code error.
+
+ net/mac80211/chan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index a442cb667520..c9b703c283e7 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -1503,6 +1503,10 @@ static int ieee80211_chsw_switch_vifs(struct ieee80211_local *local,
+ 				continue;
+ 
+ 			old_ctx = ieee80211_link_get_chanctx(link);
++			if (WARN_ON(!old_ctx)) {
++				err = -EINVAL;
++				goto out;
++			}
+ 			vif_chsw[i].vif = &link->sdata->vif;
+ 			vif_chsw[i].old_ctx = &old_ctx->conf;
+ 			vif_chsw[i].new_ctx = &ctx->conf;
+-- 
+2.42.0.windows.2
+
 
