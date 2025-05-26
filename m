@@ -1,82 +1,81 @@
-Return-Path: <stable+bounces-146339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822F2AC3D3D
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 11:47:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7523EAC3D3E
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 11:47:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF10D3B3B5B
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:47:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEBC77AA037
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B621F4262;
-	Mon, 26 May 2025 09:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056421F4722;
+	Mon, 26 May 2025 09:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kluBaCCM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WsMSj1PU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861D11E47C7
-	for <stable@vger.kernel.org>; Mon, 26 May 2025 09:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EF91F3FF4
+	for <stable@vger.kernel.org>; Mon, 26 May 2025 09:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748252835; cv=none; b=Ustbaw1Jr3tBDdqskUymQQdoLVfOUj4KNrU4Cn/GPSfathEOk3GA3EjDXyhs45mxRwFICpMTMYYw8+LHtDA2SQUDnu1bPou/Kjj9ESuGrB45CshgQ0lfElVtV0F6t21rgv6oEj2qmm3qLzcV0jHBzoZ9gpqiQm75ZtQoCIrs8aI=
+	t=1748252836; cv=none; b=sV9il/QoJM+s+qvSjEQ1QOvmpdEwDM5X9nW6kgBpunFMYbax72nUsqe7g0JrSwTOMhe0qYxdwlEFYhTzkGj4Kx445R1vrfw18757RvvZrv7eou9hi9oFmtGDQfQv3u4Cnqd2zkIjATM3XRfF+iXZCxPmmzlVaPwcsawaNWnGdkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748252835; c=relaxed/simple;
-	bh=yW+lzGrBHFbCZuynhHylQaKFrss+eF7xeqrzeY4Gh7w=;
+	s=arc-20240116; t=1748252836; c=relaxed/simple;
+	bh=mT/EMNtSwpdKAfwY6okQuII7UuVyMAXDJYDo9/I1RAw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QBD3LV0JJ455HSiNBy/98k/oMcvpz1/pxUCMZPOE2aVSd0S8v3uYh2G7jq3Cfgnlq+EvvEEEQqtHGXJYR+e7GFYHQ7q9Li1k/EIdKeSrk+STs6PkCXRHFlqTtYC/vD1anskZjt7PAbDBzvBW6hpjYbgUcttQhFTf3UCIlp/qU+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kluBaCCM; arc=none smtp.client-ip=209.85.208.41
+	 In-Reply-To:To:Cc; b=YKIU9tw1tk5fLbNJ41dgFw5jcfbF9tBhJiN8qA/xBoZgEFj1rWJqHKFEYazQYbqOUhIUjDxpqjuFZzmWvzL/He68UvlwbURTu8WMpRfhUmbvznS/DRDFfcRDqdAifsJcYbb+aOmk2IOZnCErSCIiv7KFnKdtbbviiJ68MKaVmF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WsMSj1PU; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5fa828b4836so314595a12.2
-        for <stable@vger.kernel.org>; Mon, 26 May 2025 02:47:13 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5faaa717cfbso303977a12.0
+        for <stable@vger.kernel.org>; Mon, 26 May 2025 02:47:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748252831; x=1748857631; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1748252833; x=1748857633; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fAZVyD8nLejv+dB2iGsn12fr15PTc/vSHjJT53bWPAM=;
-        b=kluBaCCMak3UcFbm9dxrzkyZmOGiFuIQiN4A3nRYE5Wo4DUcaAgI7hzSQ3TBHfMwCA
-         sEpzfJyamUfoewwtnVtVYMn2mdq+b2OBmDrb4H7q4DLJVsBJFkIokgm71I7vSrdtUCei
-         Yf7epeu3Z7ckEVA9G/oTsbn6khCjcmpz9OTqXdhHq54dk/ATPF6/yzq/IPNrDrB7UBuf
-         NsQtMS4O9B4ughUc2kqhheUi+9dIPSQ8gD/FBBcy9mEnhKhVyxKsOHRm7anEtp/1BcpZ
-         0CqVbRrEjHd4iYojCJbBzTNWquuBlrry9ueGWr/+3UX4nI9TlUxcFdoFVFWd9XKfNJTo
-         xMww==
+        bh=mf98aVEPRnEWwXE+rikHvFZrdzzyYrcXz6WwCds+ve0=;
+        b=WsMSj1PUuH74yBrzXjSFpGhwG2yF0SY8AJ126a7w1me0zeLOL5xaQDK2yUFOg30H5j
+         mM17ryX/TlFiC7BiyKtMs7Xmt0XNGaysSN6ToXyi4p0s8XGwE1bNcpt+qxLqyhx9+zZE
+         R3I1WUznQTE6mlkHShw0HkUjCiqj0KG5rkQkYZOmmvVOhd6A7bsYAKjQtmA1XfsqR1ek
+         5ovKaj9U5nWV70EOr4+1Hb/2ajNNwcQ9S6GbbkaCqUtpRPxi8ku3kRNPbvn4H8Rxcog2
+         OCpC/hJ8hOlaptz66nbwEPANwLYnab8Ribaj5BO7Qrln2LmagrfQkgSxV/O8B/g/30aF
+         5lPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748252831; x=1748857631;
+        d=1e100.net; s=20230601; t=1748252833; x=1748857633;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fAZVyD8nLejv+dB2iGsn12fr15PTc/vSHjJT53bWPAM=;
-        b=bWWqQp7VaP3U7zZQxZ1xqS/nWEggkj4CqxkOpCtkq7SygCN5DfrxCb5Tt9MWYZDKZ6
-         jzlL4s5XqZeS4zlOh13pfnDK5oDeZfhsO098twYfjGR+1HEsxrQWmf5ZPqgTnsbGQgcD
-         luAAUgnW7m7zvn5yHnFO9DDBauLcyM+hmWWdFg+/OD2KQEpnT6lUKRowVv6+hI8IWCl2
-         kPhwBdcmZKO6B5xOhf32zdFDWusb8k22M8F4/2qTPjcF4TBkwEDmIUHGh7aatocV0YD7
-         Ls02fw4s/Ghod+YLJxrl391HMllo8cinsVXRB4O902o1WBv67pItGz1GrC37TUvufMEE
-         5+8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXyvmseMZJK04bUHSMn7NR8TzjRZiLDftxDP1m2RfdgN9Uxjqnt4cpJydhJj+lDugbVK0SKyZQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzfolmm1c2jBS1tN1pHYrALvJoSDZaLy+tsnq/Avznst4CV8VSD
-	OMMB1lG02V2Ny9G1FisNgGZYnlJuhHH7faL7dKAJCrFNyaSn60aj9P+1R5X1tTYD4sY/ZFxVC7M
-	rimSj
-X-Gm-Gg: ASbGncu/Aq0854zhkcwLz//i7i1nXZOD0OkZoR8UPXVv/CQHoYC4BhPSLhY2QjX0KGr
-	GzWAH3bFjMCQx0bGiX68MUMHgrNCOgRV1YSbqS2C8QFAm3V5mbHOixEAiPx748j8KxKl18BGxiJ
-	OPsTW6fCSkZ4xGgb+wdJrjllDWd+tHwIcOAo7M8qtij0ga8YRq5g+M7qKNzt2oKR2muu/QSjiGH
-	HqgWGUAP7k6PherS4PG9NakbWbh5IiqZZ/7FDTO0RTgWIkpFfI3UIs7pjV2PpbkGqiJDVLi+azw
-	c588Yfp8Hff1UDkFBMoGUnNJrJpSJeoIU1D1X8Jq5EgLgElF9zooCoJskPNmMzG5vMJ2oiM=
-X-Google-Smtp-Source: AGHT+IE08nBeINi9bzH0RFLrXFLcP2pZ6ple+DY12qw1tSMqI7k7yqjWGEAFPZqPtJ0gqM/FV3JHwA==
-X-Received: by 2002:a05:6402:354f:b0:5f6:c5e3:faa0 with SMTP id 4fb4d7f45d1cf-602db3b4ebdmr2818936a12.10.1748252831299;
-        Mon, 26 May 2025 02:47:11 -0700 (PDT)
+        bh=mf98aVEPRnEWwXE+rikHvFZrdzzyYrcXz6WwCds+ve0=;
+        b=fELsRRJmlJi3PC6xlFb0vdUqkimVEJ0uDpabQ7oL5KtdDDCb0bJpXqXsQ9ZK/LvK16
+         5JvPQ/9rfde4RT7z+Iy7KI2BNe54iNzYRPxiB2CiO5PjS3+cM/HFBN2mZbcpymBWsYI9
+         6gxSgAECpaH7UyBVsaDmfnbTLC1TJzsmkuJThCBZgmgfSNQ+NsbxT3/NJQ/WcIOpLeAt
+         aIg9gdcVt7NKUZS3GvL2ziW/K2gX5eEGHhzQjE9hgE2m1VcM1b/Zp2g0bq7MpjuYWH/B
+         gv4Gt18LDf/F0crPt8cglrYpQH+yN/syu3OwYJVehB+iexCZwVAwfYMjOJ+MVk3ReWK5
+         Gtpg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5kD0n8TusU6MT/Bohqd9XLBZyJvWROJsn26PZpt7bQqj4iXlfjWUFxJquxLPhbyoRipP9vKs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6thDZdvF5grXMHiMFswdsm2YWf6SCXXmaSOHyIxyIEsUrbLZY
+	Rf2b0UQJIjvPvvSyGc6o2J9WRk4LYbFxUa9xN4cYB8fuZPI+zi38mPFILRqmBwTPzi7QJJsYjDa
+	z7os5
+X-Gm-Gg: ASbGncvC0T/ffw/MA6kYUnueEYn/4jzsvfs7fJydlPcHlWhR18C3zzrTDffq+EBPpYr
+	+8XQEc2nZUYEVSq8owasK1+MnsXIgEZESJzyaJJVfCIe2C8d7ekb78xGmNV4S3RMNNJFCdAWLdf
+	WI0QPD5h3asfFkNH3sCXAuxIH8mJtNg4CND0+fLy8Aq+oxCl/bywMWqJD98jaswNxla5ZghE0jC
+	X4No+wg6d29eBuO2Elce41vrqm4YQ3x24IDNJyWo739kQrVg9DoOm6x8g/X1ONv5WF25YOGQkHa
+	C6CbRfY2iTg01Sbt++Oh0rvhEmCGMReJ/TRKYyk8ZYoij8BBPFVnFnQWXt+SAvMerQA1Zgw=
+X-Google-Smtp-Source: AGHT+IFQ/yOEW6qFlSR6tl4VswK3VUmEUrQUe/Qse8CIDzE90hh/Y0WqsQgHDIHFf+lTQEEGJWMcWw==
+X-Received: by 2002:a05:6402:26c3:b0:601:abc4:1b44 with SMTP id 4fb4d7f45d1cf-602d9df6cedmr2589786a12.4.1748252832752;
+        Mon, 26 May 2025 02:47:12 -0700 (PDT)
 Received: from [192.168.1.29] ([178.197.223.125])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6049d482cc7sm1486427a12.19.2025.05.26.02.47.09
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6049d482cc7sm1486427a12.19.2025.05.26.02.47.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 May 2025 02:47:10 -0700 (PDT)
+        Mon, 26 May 2025 02:47:12 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Mon, 26 May 2025 11:47:01 +0200
-Subject: [PATCH 1/3] ASoC: codecs: wcd9335: Fix missing free of regulator
- supplies
+Date: Mon, 26 May 2025 11:47:02 +0200
+Subject: [PATCH 2/3] ASoC: codecs: wcd937x: Drop unused buck_supply
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,7 +84,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-1-0b8a2993b7d3@linaro.org>
+Message-Id: <20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-2-0b8a2993b7d3@linaro.org>
 References: <20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-0-0b8a2993b7d3@linaro.org>
 In-Reply-To: <20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-0-0b8a2993b7d3@linaro.org>
 To: Srinivas Kandagatla <srini@kernel.org>, 
@@ -96,97 +95,47 @@ Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2678;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=996;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=yW+lzGrBHFbCZuynhHylQaKFrss+eF7xeqrzeY4Gh7w=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoNDiZVUjOu00z65ZdGdWgoOvgj6MWG6QuPFcRI
- uoGQ61XyjeJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaDQ4mQAKCRDBN2bmhouD
- 11PDD/4hHos24HAAdgoQUdwzReUuAHWBaP6+UBZHkLMxHIf0Iy3EhDSZAuyoz2/YyBwgD+7DZoY
- oI+Bv0N/XfBHGlpaBauERGcubz3iPud4RfdPI+IgUnbE5nVgZFdmbauTOphrVBHGs6IsZfpvxx2
- NnQ8LAOKWj32tFfFgA74egDTzcqW5AuzyyYmRwhV39nEhnh3XT3iOeO4/TNvShGYYAEhcHn0DeA
- A5ebV3FXEKrpahdxw/woyqJPH/j7cOW2GVzI8Z4ERfSUSEhOECEl/H06RNU3upPNAu0WR/EAR17
- 6tOV9d5TEAGwkP/YljJfjKTDmD6mZEe0BS0Z1VaWczIuJm9kl2LHKwk2yj912vCzbFcdkhio20c
- y2phNAjT3c4mmnsQqjGaZjljkMjFy6t1amcwkfFGs46CRz4ui6WUtU9J6FlVglGCgx9prHo8C18
- f40tTh6GeHSBfihEL5HyZbN2VVRc748DdKVQcdnRsphK9uF1IidyLseZpDCLwisQbPD7pNCoQy5
- j8c2P5+0XxzvlgALq/XrBD//sFyXtMc99pau9wO1RovJwnuWpxOYJLay3Rk6Pm5FOQ7DEhdXJ/t
- osuxTMVX14+yfGXx1HKplVUI4BjTdOfHgddZlpQFrYbtsfmLSE2CwHAzCJuu0faVr9ZaWMDu/XA
- HNjoOOxq1DcKatQ==
+ bh=mT/EMNtSwpdKAfwY6okQuII7UuVyMAXDJYDo9/I1RAw=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoNDiahh7YsUBAm8Iu89FMVlZwn3xet93APz5h0
+ 3uJi60zcxKJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaDQ4mgAKCRDBN2bmhouD
+ 1+fUD/981M4YfExEo4SwrDuA7PVrVCLEGQOILs/9VATrukI3ZP0GscQGTIPCQY9Zcx5WlwnfTDb
+ tnejUOcxqApFXlwuzbuepvNtVlRyRqF6jvdO3D5DtAZHuW59VB4atNkVhLAPn9JLh+O9DTQJZpl
+ BI6AnEYCTqwuQkVk+e6JqWC24GNeN9TSmSW4izZfzoQYU475omw9dQ5CuWU2BpMDsqAo7+73lc5
+ 2S759DiwR764pmXfakow15a6gLPjPtllS6DXQe17NKHD5NTuR//X0Xjj3JDBQM6/FKmr2fHFL26
+ YXvWHOMcm+nCJZrjniXILk7Wp2zjFJ0RVufnPlKM0nlMg2w7R+mSX7eNyHMvjGp1F4XPVEjjFo0
+ rGZFNef/g+6uUEcwgwPj6johBCnCLEf0DgcIEXmNMDSllQtr1KtWVhHX4TzgBZB/5qC1UnXcvv3
+ XfO1iq2mA9Gd95SaL3edLoPl/sZyjgZFr0h9aMJIfB084y/8H9zZGnupVP0iWD21wrxmY1XJIvT
+ lNinP/AEW/bwPtqAFuKc07u8lbqfpVkqseimONoPZBFpBHJXah5Z7C/DzjZzI2f39jD3I30/3WO
+ 62WMeue++WBVUvLJAwH8VUeVDJQmqtk+HMSiwECH6a56t0tVpNgzTZqe4/AL73BdzWyL5R0r//h
+ TUjsAnDn0MQgA0A==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Driver gets and enables all regulator supplies in probe path
-(wcd9335_parse_dt() and wcd9335_power_on_reset()), but does not cleanup
-in final error paths and in unbind (missing remove() callback).  This
-leads to leaked memory and unbalanced regulator enable count during
-probe errors or unbind.
+Last user of wcd937x_priv->buck_supply was removed in
+commit 216d04139a6d ("ASoC: codecs: wcd937x: Remove separate handling
+for vdd-buck supply").
 
-Fix this by converting entire code into devm_regulator_bulk_get_enable()
-which also greatly simplifies the code.
-
-Fixes: 20aedafdf492 ("ASoC: wcd9335: add support to wcd9335 codec")
+Fixes: 216d04139a6d ("ASoC: codecs: wcd937x: Remove separate handling for vdd-buck supply")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- sound/soc/codecs/wcd9335.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ sound/soc/codecs/wcd937x.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
-index 8ee4360aff9293178e338e3ef300c37f6f2ac809..5e19e813748dfa0d065287494240007d60478dea 100644
---- a/sound/soc/codecs/wcd9335.c
-+++ b/sound/soc/codecs/wcd9335.c
-@@ -332,7 +332,6 @@ struct wcd9335_codec {
- 
- 	int intr1;
- 	struct gpio_desc *reset_gpio;
--	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
- 
- 	unsigned int rx_port_value[WCD9335_RX_MAX];
- 	unsigned int tx_port_value[WCD9335_TX_MAX];
-@@ -355,6 +354,10 @@ struct wcd9335_irq {
- 	char *name;
- };
- 
-+static const char * const wcd9335_supplies[] = {
-+	"vdd-buck", "vdd-buck-sido", "vdd-tx", "vdd-rx", "vdd-io",
-+};
-+
- static const struct wcd9335_slim_ch wcd9335_tx_chs[WCD9335_TX_MAX] = {
- 	WCD9335_SLIM_TX_CH(0),
- 	WCD9335_SLIM_TX_CH(1),
-@@ -4989,30 +4992,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
- 	if (IS_ERR(wcd->native_clk))
- 		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
- 
--	wcd->supplies[0].supply = "vdd-buck";
--	wcd->supplies[1].supply = "vdd-buck-sido";
--	wcd->supplies[2].supply = "vdd-tx";
--	wcd->supplies[3].supply = "vdd-rx";
--	wcd->supplies[4].supply = "vdd-io";
--
--	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
-+	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(wcd9335_supplies),
-+					     wcd9335_supplies);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to get supplies\n");
-+		return dev_err_probe(dev, ret, "Failed to get and enable supplies\n");
- 
- 	return 0;
- }
- 
- static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
- {
--	struct device *dev = wcd->dev;
--	int ret;
--
--	ret = regulator_bulk_enable(WCD9335_MAX_SUPPLY, wcd->supplies);
--	if (ret) {
--		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
--		return ret;
--	}
--
- 	/*
- 	 * For WCD9335, it takes about 600us for the Vout_A and
- 	 * Vout_D to be ready after BUCK_SIDO is powered up.
+diff --git a/sound/soc/codecs/wcd937x.c b/sound/soc/codecs/wcd937x.c
+index 3b1a1518e7647366b4de0e90828b8d97b82c5bd5..a3a4b1f53e88e7ade13455387a65de736b1f0bec 100644
+--- a/sound/soc/codecs/wcd937x.c
++++ b/sound/soc/codecs/wcd937x.c
+@@ -91,7 +91,6 @@ struct wcd937x_priv {
+ 	struct regmap_irq_chip *wcd_regmap_irq_chip;
+ 	struct regmap_irq_chip_data *irq_chip;
+ 	struct regulator_bulk_data supplies[WCD937X_MAX_BULK_SUPPLY];
+-	struct regulator *buck_supply;
+ 	struct snd_soc_jack *jack;
+ 	unsigned long status_mask;
+ 	s32 micb_ref[WCD937X_MAX_MICBIAS];
 
 -- 
 2.45.2
