@@ -1,181 +1,152 @@
-Return-Path: <stable+bounces-146316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BD5AC3837
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 05:26:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA71AC3839
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 05:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3378B1891AAE
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 03:26:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D3A43B26C3
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 03:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B288B35979;
-	Mon, 26 May 2025 03:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292A417AE11;
+	Mon, 26 May 2025 03:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j64JAbNl"
 X-Original-To: stable@vger.kernel.org
-Received: from out28-65.mail.aliyun.com (out28-65.mail.aliyun.com [115.124.28.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BA229A2
-	for <stable@vger.kernel.org>; Mon, 26 May 2025 03:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337F6101FF;
+	Mon, 26 May 2025 03:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748229987; cv=none; b=n8ysanQXIAXLRBN6xiPN4JQmRu49PeezXG3G5R5J48klBS6acZg5tDQ4bWhDaFc1NaNn3vnQHV47o68N8HTfgVBtvpB28RQDfqF4i5Y750gDzvgI8fUxRhzDQFjYUddkUOMGdftuvTv1y5I2ZcObCywK9hBvDLoFA0WRE8AcY5E=
+	t=1748230359; cv=none; b=jcLYQfVbJfnoOsw5TdFGKz+JoKuWjhQKgpcz2gv7g1pf3FPcUCVYFGoezlA5TGvo5W1xbkvIqz1zhVG+bfWJ+PblOuw3wXVXYlHn7c+7uexMCjZ224OnlgdwA51L+uzZEd0loEzho22mPOGSTIOkWVmyIEv0xgOkUxS7Nrxw1Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748229987; c=relaxed/simple;
-	bh=39IQoVvg1sb58Qtd7oEe0/amF3icEjZ+3UUpFj3y06I=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:Message-Id:
-	 MIME-Version:Content-Type; b=inZZ2RyvRMBNdhkKzFlBF+aQKpIY2cPfs+MLzH32euceelj3MbOiAyoSgbWInOsPSHWp0cQbiDQo4lCO5RMDF/hgrn4DGJDC0oI2GooefZ+D475y3hgX/YQOG35aDFCe4naz0Xl/oFvMDvqFXt3InMxj2F4ML9OAgIHQL9EjKdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com; spf=pass smtp.mailfrom=e16-tech.com; arc=none smtp.client-ip=115.124.28.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=e16-tech.com
-Received: from 192.168.2.112(mailfrom:wangyugui@e16-tech.com fp:SMTPD_---.d.Ay-eE_1748229971 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 26 May 2025 11:26:12 +0800
-Date: Mon, 26 May 2025 11:26:13 +0800
-From: Wang Yugui <wangyugui@e16-tech.com>
-To: Sairaj Kodilkar <sarunkod@amd.com>
-Subject: Re: iommu crash when boot kernel 5.15.179 on DELL R7715/AMD 9015
-Cc: <stable@vger.kernel.org>,
- "Vasant Hegde" <vasant.hegde@amd.com>,
- Santosh Shukla <santosh.shukla@amd.com>
-In-Reply-To: <ca423257-633e-4ce1-b88d-328dc54d4a80@amd.com>
-References: <20250518145453.EF51.409509F4@e16-tech.com> <ca423257-633e-4ce1-b88d-328dc54d4a80@amd.com>
-Message-Id: <20250526112612.406E.409509F4@e16-tech.com>
+	s=arc-20240116; t=1748230359; c=relaxed/simple;
+	bh=PXVta0mCTYq6yt9jSQRdHzSV6a2PJ/jUqh30SUGtbZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Js2xmxHMifEpbV+STETOnZimPRPBluoCFovPSkhrIbTT4QNGUiph6VH1yUet2q+ctWoZaRDspf2lPS0RwskqSqs7ou3uT9EyTBFlq2VrqNn3myggco6c5C/AeoyG3myz/Sut560OdTUyodLcCLF6T6UMLSZ++DPweWmun+Hp/WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j64JAbNl; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54acc0cd458so2274779e87.0;
+        Sun, 25 May 2025 20:32:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748230356; x=1748835156; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CzYuom+zI5De3oMnCByXzViMDJT8mx4FU1edPifGipU=;
+        b=j64JAbNlME1DuyRr5Q9S6cjhRhEUswKfsU1ymSxr4mZSD5F7r3pEf53EXs5wP8oOrI
+         mXJxD0Ul74JVf41vQhnxRniDssRY24qhaayRhji9ExkapXxFPGwnUCvD40j74YkKrJtk
+         u7dfM1/e30GVZ9/56RsMCOv/uWggD4TsIybwK5jWjKKl/9PzU6u8w+94cuQ+u9NEwsWS
+         U1cWaxq0vfQsuR9nQtuNEtn40gWSl7/46HWVeKT3EqghRaLIMJLiLCFv8+UumTCeJPBL
+         M2mBQov+0BQbncBtaMHpj/s5MZ31WZZd+cVejNOSoFVOLPicydKhxfnUniYRDTM08Rda
+         4bzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748230356; x=1748835156;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CzYuom+zI5De3oMnCByXzViMDJT8mx4FU1edPifGipU=;
+        b=q67WEmCaiaJKSl5hJPuAUR/05jJmSl2q6uXAg2XpKU1GnLlnj5PTPWmIUo8ZE4b8xb
+         mpZIIWBXen/KwaPvyCHjxELtjBx78Grlb6x08dP2NlMuGYyR4HsQvV3mEsMEcf1tfq3J
+         ZmLJ+BrpgxxG1voKPRO5NqsEQBX9BDTZnQDQUYsnD3j5cRfc/YBDGC2p64hK4Bw8rklI
+         nGUqJh2aqxwEEJOYtK+7+hSdppG2Aw943oh3gJz0zbCvfpjApQm1Iw7Hl/LmZ1SNBjCh
+         ZEDTrN7zMEwsvezj2YlHcwbUe2gweWOwlnQk0qW5W9ksto0W8ZctYShvZ967MlRnnrq5
+         ORTg==
+X-Forwarded-Encrypted: i=1; AJvYcCV+ioAi3SsVUc9V+tdv6yg1Ia5j61UthqEfitfJ/pZaPM8IicusEZp4V5xsYTccR54e09hgOa2w@vger.kernel.org, AJvYcCXRQCzEbGrvaPUeZ536zJud7+Ey3YuZrJwf76TiS8n1vQqR3/txHJCoNr0tRsUml1MuP7L7mcNGcxk+S4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKCjI1fmoktE7Qho5062+CUGYzVjraSqZ+Xzqqwx3CUeipBklq
+	johuvgqcpfH2IDahwQbLTX2sF1atixgOXpGg2AnR9PLThQHCzRs7Dec2
+X-Gm-Gg: ASbGnctHpcnlnvZkM0apfXtWiw1KF3twLDWTQ/yZL42qeS1s4SAZJ2QAQ9OG342Ec3a
+	1Eh4aTDbQ/MTbkYURKhouYBs/d0P5SwZDqvRBSY6A+kO2+npQ/TAwVMmhZ6JEOM36u5RzqvwHpj
+	jTAvXVne8xQOlZLiruPNwEDV12I4v11cBjqPFTZHQnKdPFv0t7zfnExuUDfSVcJmWRstOvTs+3U
+	JaCI+LhvS7enuBlugAvMi9kXO6sGji7VSQ6rSvAKprg3zXUjfuDGoiPq/H5hHrXqKf34GLCOH1D
+	KkUWipUyU7IVgFpGDuvpeCTtCuFySi6/KCrZP4HDVTmp5hW5annFereIRsVhIqwz7IBMnoxN8m4
+	I
+X-Google-Smtp-Source: AGHT+IGyrGp6b48Ely0ZtD7Md68redpGAx/FNDjyorHfUyE8ZME9a7yrYCtt1hrRzl5IPkvtWUdahg==
+X-Received: by 2002:a05:6512:b12:b0:54e:a2f9:d0a with SMTP id 2adb3069b0e04-5521c7a9b33mr1922854e87.11.1748230355937;
+        Sun, 25 May 2025 20:32:35 -0700 (PDT)
+Received: from localhost.localdomain ([91.197.2.199])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e9cb4d69sm4798517e87.21.2025.05.25.20.32.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 May 2025 20:32:34 -0700 (PDT)
+From: Andrey Kriulin <kitotavrik.s@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Andrey Kriulin <kitotavrik.s@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	NeilBrown <neilb@suse.de>,
+	Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH v4] fs: minix: Fix handling of corrupted directories
+Date: Mon, 26 May 2025 06:32:29 +0300
+Message-ID: <20250526033230.1664-1-kitotavrik.s@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Becky! ver. 2.81.08 [en]
+Content-Transfer-Encoding: 8bit
 
-Hi,
+If the directory is corrupted and the number of nlinks is less than 2
+(valid nlinks have at least 2), then when the directory is deleted, the
+minix_rmdir will try to reduce the nlinks(unsigned int) to a negative
+value.
 
-> 
-> On 5/18/2025 12:24 PM, Wang Yugui wrote:
-> > Hi,
-> >
-> > iommu crash when kernel 5.15.179 boot on DELL R7715/AMD 9015.
-> > but kernel 6.1.133/6.6.86 boot well.
-> >
-> > It is the first time  to boot kernel 5.15.y on  DELL R7715/AMD 9015, so yet no
-> > more info about  other 5.15.y kernel version.
-> >
-> > It seems iommu related, but  seems no relationship to
-> > 5.15.181
-> > iommu-amd-return-an-error-if-vcpu-affinity-is-set-fo.patch
-> > 5.15.182
-> > iommu-amd-fix-potential-buffer-overflow-in-parse_ivrs_acpihid.patch
-> > 
-> Hi,
-> 
-> Could you please provide more details such as
-> 1. What distro you are using
-> 2. Steps to reproduce
-> 3. Kernel config
-> 4. Hardware details about the machine
-> 
-> Also have you tried bisecting the kernel (between 5.15.y to 6.1.y
-> ) ? It can help find the commit that fixes the kernel.
+Make nlinks validity check for directories.
 
-more test result.
-5.16.20 same boot panic
-5.17.0 same boot panic
-5.18.0 boot OK.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-so this AMD iommu problem is fixed in some patch of 5.18.0
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrey Kriulin <kitotavrik.s@gmail.com>
+---
+v4: Add nlinks check for parent dirictory to minix_rmdir per Jan
+Kara <jack@suse.cz> request.
+v3: Move nlinks validaty check to minix_rmdir and minix_rename per Jan
+Kara <jack@suse.cz> request.
+v2: Move nlinks validaty check to V[12]_minix_iget() per Jan Kara
+<jack@suse.cz> request. Change return error code to EUCLEAN. Don't block
+directory in r/o mode per Al Viro <viro@zeniv.linux.org.uk> request.
 
-Best Regards
-Wang Yugui (wangyugui@e16-tech.com)
-2025/05/26
+ fs/minix/namei.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-
-> Thanks
-> Sairaj
-> 
-> > dmesg output:
-> > [    4.658313] Trying to unpack rootfs image as initramfs...
-> > [    4.663349] BUG: kernel NULL pointer dereference, address: 0000000000000030
-> > [    4.664346] #PF: supervisor read access in kernel mode
-> > [    4.664346] #PF: error_code(0x0000) - not-present page
-> > [    4.664346] PGD 0
-> > [    4.664346] Oops: 0000 [#1] SMP NOPTI
-> > [    4.664346] CPU: 8 PID: 1 Comm: swapper/0 Not tainted 5.15.179-1.el9.x86_64 #1
-> > [    4.664346] Hardware name: Dell Inc. PowerEdge R7715/0KRFPX, BIOS 1.1.2 02/20/2025
-> > [    4.664346] RIP: 0010:sysfs_add_link_to_group+0x12/0x60
-> > [    4.664346] Code: cb ff ff 48 89 ef 5d 41 5c e9 ca b4 ff ff 5d 41 5c c3 cc cc cc cc 66 90 0f 1f 44 00 00 41 55 49 89 cd 41 54 49 89 d4 31 d2 55 <48> 8b 7f 30 e8 a5 b2 ff ff 48 85 c0 74 29 48 89 c5 4c 89 e6 48 89
-> > [    4.664346] RSP: 0018:ff3f20b800047c28 EFLAGS: 00010246
-> > [    4.664346] RAX: 0000000000000001 RBX: ff25a0fc800530a8 RCX: ff25a0fc82cdb410
-> > [    4.664346] RDX: 0000000000000000 RSI: ffffffff904726e7 RDI: 0000000000000000
-> > [    4.664346] RBP: ff25a0fc801320d0 R08: ff3f20b800047d00 R09: ff3f20b800047d00
-> > [    4.664346] R10: 0720072007200720 R11: 0720072007200720 R12: ff25a0fc801320d0
-> > [    4.664346] R13: ff25a0fc82cdb410 R14: ff3f20b800047d00 R15: 0000000000000000
-> > [    4.664346] FS:  0000000000000000(0000) GS:ff25a10c1d400000(0000) knlGS:0000000000000000
-> > [    4.664346] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [    4.664346] CR2: 0000000000000030 CR3: 0000001036a10001 CR4: 0000000000771ee0
-> > [    4.664346] PKRU: 55555554
-> > [    4.664346] Call Trace:
-> > [    4.664346]  <TASK>
-> > [    4.664346]  ? show_trace_log_lvl+0x1c1/0x2d9
-> > [    4.664346]  ? show_trace_log_lvl+0x1c1/0x2d9
-> > [    4.664346]  ? iommu_device_link+0x3f/0xb0
-> > [    4.664346]  ? __die_body.cold+0x8/0xd
-> > [    4.664346]  ? page_fault_oops+0xac/0x140
-> > [    4.664346]  ? exc_page_fault+0x62/0x130
-> > [    4.664346]  ? asm_exc_page_fault+0x22/0x30
-> > [    4.664346]  ? sysfs_add_link_to_group+0x12/0x60
-> > [    4.664346]  iommu_device_link+0x3f/0xb0
-> > [    4.664346]  __iommu_probe_device+0x188/0x260
-> > [    4.664346]  ? __iommu_probe_device+0x260/0x260
-> > [    4.664346]  probe_iommu_group+0x31/0x40
-> > [    4.664346]  bus_for_each_dev+0x75/0xc0
-> > [    4.664346]  bus_iommu_probe+0x48/0x2c0
-> > [    4.664346]  ? kmem_cache_alloc_trace+0x165/0x290
-> > [    4.664346]  ? __cond_resched+0x16/0x50
-> > [    4.664346]  bus_set_iommu+0x8c/0xe0
-> > [    4.664346]  amd_iommu_init_api+0x18/0x34
-> > [    4.664346]  amd_iommu_init_pci+0x56/0x21c
-> > [    4.664346]  ? e820__memblock_setup+0x7d/0x7d
-> > [    4.664346]  state_next+0x19a/0x2d4
-> > [    4.664346]  ? blake2s_update+0x48/0xc0
-> > [    4.664346]  ? e820__memblock_setup+0x7d/0x7d
-> > [    4.664346]  iommu_go_to_state+0x24/0x2c
-> > [    4.664346]  amd_iommu_init+0xf/0x29
-> > [    4.664346]  pci_iommu_init+0x16/0x43
-> > [    4.664346]  do_one_initcall+0x41/0x1d0
-> > [    4.664346]  do_initcalls+0xc6/0xdf
-> > [    4.664346]  kernel_init_freeable+0x14e/0x19d
-> > [    4.664346]  ? rest_init+0xc0/0xc0
-> > [    4.664346]  kernel_init+0x16/0x130
-> > [    4.664346]  ret_from_fork+0x1f/0x30
-> > [    4.664346]  </TASK>
-> > [    4.664346] Modules linked in:
-> > [    4.664346] CR2: 0000000000000030
-> > [    4.664346] ---[ end trace 9672514da279163d ]---
-> > [    4.664346] RIP: 0010:sysfs_add_link_to_group+0x12/0x60
-> > [    4.664346] Code: cb ff ff 48 89 ef 5d 41 5c e9 ca b4 ff ff 5d 41 5c c3 cc cc cc cc 66 90 0f 1f 44 00 00 41 55 49 89 cd 41 54 49 89 d4 31 d2 55 <48> 8b 7f 30 e8 a5 b2 ff ff 48 85 c0 74 29 48 89 c5 4c 89 e6 48 89
-> > [    4.664346] RSP: 0018:ff3f20b800047c28 EFLAGS: 00010246
-> > [    4.664346] RAX: 0000000000000001 RBX: ff25a0fc800530a8 RCX: ff25a0fc82cdb410
-> > [    4.664346] RDX: 0000000000000000 RSI: ffffffff904726e7 RDI: 0000000000000000
-> > [    4.664346] RBP: ff25a0fc801320d0 R08: ff3f20b800047d00 R09: ff3f20b800047d00
-> > [    4.664346] R10: 0720072007200720 R11: 0720072007200720 R12: ff25a0fc801320d0
-> > [    4.664346] R13: ff25a0fc82cdb410 R14: ff3f20b800047d00 R15: 0000000000000000
-> > [    4.664346] FS:  0000000000000000(0000) GS:ff25a10c1d400000(0000) knlGS:0000000000000000
-> > [    4.664346] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [    4.664346] CR2: 0000000000000030 CR3: 0000001036a10001 CR4: 0000000000771ee0
-> > [    4.664346] PKRU: 55555554
-> > [    4.664346] Kernel panic - not syncing: Fatal exception
-> > [    4.664346] Rebooting in 15 seconds..
-> >
-> >
-> > Best Regards
-> > Wang Yugui (wangyugui@e16-tech.com)
-> > 2025/05/18
-> >
-> > 
-
+diff --git a/fs/minix/namei.c b/fs/minix/namei.c
+index 8938536d8d3c..ab86fd16e548 100644
+--- a/fs/minix/namei.c
++++ b/fs/minix/namei.c
+@@ -161,8 +161,12 @@ static int minix_unlink(struct inode * dir, struct dentry *dentry)
+ static int minix_rmdir(struct inode * dir, struct dentry *dentry)
+ {
+ 	struct inode * inode = d_inode(dentry);
+-	int err = -ENOTEMPTY;
++	int err = -EUCLEAN;
+ 
++	if (inode->i_nlink < 2 || dir->i_nlink <= 2)
++		return err;
++
++	err = -ENOTEMPTY;
+ 	if (minix_empty_dir(inode)) {
+ 		err = minix_unlink(dir, dentry);
+ 		if (!err) {
+@@ -235,6 +239,10 @@ static int minix_rename(struct mnt_idmap *idmap,
+ 	mark_inode_dirty(old_inode);
+ 
+ 	if (dir_de) {
++		if (old_dir->i_nlink <= 2) {
++			err = -EUCLEAN;
++			goto out_dir;
++		}
+ 		err = minix_set_link(dir_de, dir_folio, new_dir);
+ 		if (!err)
+ 			inode_dec_link_count(old_dir);
+-- 
+2.47.2
 
 
