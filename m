@@ -1,81 +1,82 @@
-Return-Path: <stable+bounces-146340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7523EAC3D3E
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 11:47:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94DEAC3D42
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 11:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEBC77AA037
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:46:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F9361890C0F
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 09:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056421F4722;
-	Mon, 26 May 2025 09:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F641F4617;
+	Mon, 26 May 2025 09:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WsMSj1PU"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hN62oGW8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EF91F3FF4
-	for <stable@vger.kernel.org>; Mon, 26 May 2025 09:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926C41F4629
+	for <stable@vger.kernel.org>; Mon, 26 May 2025 09:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748252836; cv=none; b=sV9il/QoJM+s+qvSjEQ1QOvmpdEwDM5X9nW6kgBpunFMYbax72nUsqe7g0JrSwTOMhe0qYxdwlEFYhTzkGj4Kx445R1vrfw18757RvvZrv7eou9hi9oFmtGDQfQv3u4Cnqd2zkIjATM3XRfF+iXZCxPmmzlVaPwcsawaNWnGdkA=
+	t=1748252838; cv=none; b=Ue6dr4SgQKDH5tINGG4UA+dDZj2OeWS3PyHA+gxlHSGTPIvoXKTVGtpIKaUomBeV7eOEcgLotHtmy+DptScE4q3GROJxSAL8qLZ1EabkV4gjPhmHAJl3nBxVIIzaDEZLDe+gv96K1qbu5iMaITE4jaX7vcmCTk53O4tEe4T8NUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748252836; c=relaxed/simple;
-	bh=mT/EMNtSwpdKAfwY6okQuII7UuVyMAXDJYDo9/I1RAw=;
+	s=arc-20240116; t=1748252838; c=relaxed/simple;
+	bh=JFqzsTfm9DdoRKLGO7u+iVRbtQ2IB4LCND0J4CbvlC8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YKIU9tw1tk5fLbNJ41dgFw5jcfbF9tBhJiN8qA/xBoZgEFj1rWJqHKFEYazQYbqOUhIUjDxpqjuFZzmWvzL/He68UvlwbURTu8WMpRfhUmbvznS/DRDFfcRDqdAifsJcYbb+aOmk2IOZnCErSCIiv7KFnKdtbbviiJ68MKaVmF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WsMSj1PU; arc=none smtp.client-ip=209.85.208.46
+	 In-Reply-To:To:Cc; b=i1wjUKq6sxQ9C4Yvs3RmZfs+ZEfsoCTu2q0DNQlBeU/eC3DIsyi0SWTjsplbYTaKFVk8dlO7hj95260g7d1j87p6kHOm2SvPzPaqtGKFHeLNoDB51k1mNrPdR1qVZrzCzBvfX2qwyLBzzGMIWR4qScCSB09eQeCU6Nna+WYoolo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hN62oGW8; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5faaa717cfbso303977a12.0
-        for <stable@vger.kernel.org>; Mon, 26 May 2025 02:47:14 -0700 (PDT)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-604593544aaso310292a12.3
+        for <stable@vger.kernel.org>; Mon, 26 May 2025 02:47:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748252833; x=1748857633; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1748252834; x=1748857634; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mf98aVEPRnEWwXE+rikHvFZrdzzyYrcXz6WwCds+ve0=;
-        b=WsMSj1PUuH74yBrzXjSFpGhwG2yF0SY8AJ126a7w1me0zeLOL5xaQDK2yUFOg30H5j
-         mM17ryX/TlFiC7BiyKtMs7Xmt0XNGaysSN6ToXyi4p0s8XGwE1bNcpt+qxLqyhx9+zZE
-         R3I1WUznQTE6mlkHShw0HkUjCiqj0KG5rkQkYZOmmvVOhd6A7bsYAKjQtmA1XfsqR1ek
-         5ovKaj9U5nWV70EOr4+1Hb/2ajNNwcQ9S6GbbkaCqUtpRPxi8ku3kRNPbvn4H8Rxcog2
-         OCpC/hJ8hOlaptz66nbwEPANwLYnab8Ribaj5BO7Qrln2LmagrfQkgSxV/O8B/g/30aF
-         5lPg==
+        bh=kSZZR0qMZkVAUpEjFq17SeucbREofsX6jeLhn+A+x9c=;
+        b=hN62oGW8jcD5k9dcQnE57f7awlc/z/N01Xa9aE4iCkblAPmUKbxW8+6SSqD05N8o/Z
+         6g3pwrW5guDhwaLhVbqEvnd8GPyJYf+FdAuiVrNIh6BPuZXPZdtrYa6KBfXuENIDrTxL
+         LtLXqD72FDqQZpd0sqSasT40VyhaqrhhcjUPS2YTMbns6i2kTtk6v/mOQk3fVF2RThAs
+         vGEB95PgAQH2qWygttgacRM5fIQBg1FhfIfP2O6xPDRNCZzUbPoAmBvz0rQ939IxaJO9
+         L1DGlTTiKC0z+k4+uOx1bJmzCWF/Di5Xez5y1kKno2XFzw4eMYWy7paOODw5m3nN/c7w
+         sN/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748252833; x=1748857633;
+        d=1e100.net; s=20230601; t=1748252834; x=1748857634;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mf98aVEPRnEWwXE+rikHvFZrdzzyYrcXz6WwCds+ve0=;
-        b=fELsRRJmlJi3PC6xlFb0vdUqkimVEJ0uDpabQ7oL5KtdDDCb0bJpXqXsQ9ZK/LvK16
-         5JvPQ/9rfde4RT7z+Iy7KI2BNe54iNzYRPxiB2CiO5PjS3+cM/HFBN2mZbcpymBWsYI9
-         6gxSgAECpaH7UyBVsaDmfnbTLC1TJzsmkuJThCBZgmgfSNQ+NsbxT3/NJQ/WcIOpLeAt
-         aIg9gdcVt7NKUZS3GvL2ziW/K2gX5eEGHhzQjE9hgE2m1VcM1b/Zp2g0bq7MpjuYWH/B
-         gv4Gt18LDf/F0crPt8cglrYpQH+yN/syu3OwYJVehB+iexCZwVAwfYMjOJ+MVk3ReWK5
-         Gtpg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5kD0n8TusU6MT/Bohqd9XLBZyJvWROJsn26PZpt7bQqj4iXlfjWUFxJquxLPhbyoRipP9vKs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6thDZdvF5grXMHiMFswdsm2YWf6SCXXmaSOHyIxyIEsUrbLZY
-	Rf2b0UQJIjvPvvSyGc6o2J9WRk4LYbFxUa9xN4cYB8fuZPI+zi38mPFILRqmBwTPzi7QJJsYjDa
-	z7os5
-X-Gm-Gg: ASbGncvC0T/ffw/MA6kYUnueEYn/4jzsvfs7fJydlPcHlWhR18C3zzrTDffq+EBPpYr
-	+8XQEc2nZUYEVSq8owasK1+MnsXIgEZESJzyaJJVfCIe2C8d7ekb78xGmNV4S3RMNNJFCdAWLdf
-	WI0QPD5h3asfFkNH3sCXAuxIH8mJtNg4CND0+fLy8Aq+oxCl/bywMWqJD98jaswNxla5ZghE0jC
-	X4No+wg6d29eBuO2Elce41vrqm4YQ3x24IDNJyWo739kQrVg9DoOm6x8g/X1ONv5WF25YOGQkHa
-	C6CbRfY2iTg01Sbt++Oh0rvhEmCGMReJ/TRKYyk8ZYoij8BBPFVnFnQWXt+SAvMerQA1Zgw=
-X-Google-Smtp-Source: AGHT+IFQ/yOEW6qFlSR6tl4VswK3VUmEUrQUe/Qse8CIDzE90hh/Y0WqsQgHDIHFf+lTQEEGJWMcWw==
-X-Received: by 2002:a05:6402:26c3:b0:601:abc4:1b44 with SMTP id 4fb4d7f45d1cf-602d9df6cedmr2589786a12.4.1748252832752;
-        Mon, 26 May 2025 02:47:12 -0700 (PDT)
+        bh=kSZZR0qMZkVAUpEjFq17SeucbREofsX6jeLhn+A+x9c=;
+        b=TCDA1Ft/NQjZMYPLLP2MDencJ0lrd9IrRgO2+LAQcK/vi2i/u+PuTaHWPkU9SOWUnj
+         rLss7uqJg7+Ki/gVQXVCmWjSKvvYujr38pGxAqFFFAHntUFAgIoKnFL77SlYwqO0m4hu
+         8FZBiIz5O5Cpggvb2RCwTnYR4ON0043lG+qYlKh/wLczGBu031KJAHZXrNHSjLqTapeE
+         waaSARUK1ttT0OKgCji8oCr2HKW96GD9P0spVPs0l/fbpyU9Q7UEi2nskbHJb2n0LqQy
+         OWoYE3+jWsyRJnyBw5mkukzQUqWwd0RnMwvadOh4uIdf0ktt2TnpXXzbxmPxGkZ4KVYP
+         Rqkw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKoK2YD+iPr1JSZa9Mrg3SfuNJDf+c/UgOcLJ3Z61rgRePU8ApagyC+czWF5T8fIH0l047WHE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBGya/Bf/7HRUhTeoCpWD3S9KTTLle+evS0Oc3lYWs/dPXBt71
+	tqr2dtvMKPSy83I8U4mC9ZCqxsvDlcMXhpSzXluduU+5Csjt9df670WHmIvRaJ2dzQJJ71UKFoN
+	VXX5W
+X-Gm-Gg: ASbGnctrx6zsF7g7plLg4WFK1OBm7iPAhx1L0+p3Ly3AzE3x68lAqMu7liW/f45f3eU
+	asH6GXJswUdBW1X4n5byESf5jelJ1xVn+MG8Dya6fYcZHcVr9U9b9zrCfpcoBK602gaFiuShcGb
+	9pWTmlupymwRzREd4JRXBoTIRmOl+phtul0B1UIxNazXmbDhCvQUnGXWY/K7RyxATHKeb8pVY8B
+	z6Z3efXzT1PC2ANiVjwHzr9Ic2sEpnb3OKBxfXmaPSPK7XgfNnokxou2uEQaZ0b01Ehx9Fi9bq4
+	RVnCIzpCvPsiOwBW1tMMZdQWOhK2Hzxybc79BnjtC/JgGNVyTQGreMxQI+XJMRbMZ6smZCk=
+X-Google-Smtp-Source: AGHT+IE1rLSqoI6VnW/NLYoSivs2MuuZWDVumnm9UU8M7AtHBTKkJd/NjnzZ8iSRnfZzOFIqVY6fmg==
+X-Received: by 2002:a05:6402:2742:b0:602:a0:1f47 with SMTP id 4fb4d7f45d1cf-602daeb6a85mr2510849a12.8.1748252834261;
+        Mon, 26 May 2025 02:47:14 -0700 (PDT)
 Received: from [192.168.1.29] ([178.197.223.125])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6049d482cc7sm1486427a12.19.2025.05.26.02.47.11
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6049d482cc7sm1486427a12.19.2025.05.26.02.47.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 May 2025 02:47:12 -0700 (PDT)
+        Mon, 26 May 2025 02:47:13 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Mon, 26 May 2025 11:47:02 +0200
-Subject: [PATCH 2/3] ASoC: codecs: wcd937x: Drop unused buck_supply
+Date: Mon, 26 May 2025 11:47:03 +0200
+Subject: [PATCH 3/3] ASoC: codecs: wcd9375: Fix double free of regulator
+ supplies
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,7 +85,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-2-0b8a2993b7d3@linaro.org>
+Message-Id: <20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-3-0b8a2993b7d3@linaro.org>
 References: <20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-0-0b8a2993b7d3@linaro.org>
 In-Reply-To: <20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-0-0b8a2993b7d3@linaro.org>
 To: Srinivas Kandagatla <srini@kernel.org>, 
@@ -95,47 +96,67 @@ Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=996;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1715;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=mT/EMNtSwpdKAfwY6okQuII7UuVyMAXDJYDo9/I1RAw=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoNDiahh7YsUBAm8Iu89FMVlZwn3xet93APz5h0
- 3uJi60zcxKJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaDQ4mgAKCRDBN2bmhouD
- 1+fUD/981M4YfExEo4SwrDuA7PVrVCLEGQOILs/9VATrukI3ZP0GscQGTIPCQY9Zcx5WlwnfTDb
- tnejUOcxqApFXlwuzbuepvNtVlRyRqF6jvdO3D5DtAZHuW59VB4atNkVhLAPn9JLh+O9DTQJZpl
- BI6AnEYCTqwuQkVk+e6JqWC24GNeN9TSmSW4izZfzoQYU475omw9dQ5CuWU2BpMDsqAo7+73lc5
- 2S759DiwR764pmXfakow15a6gLPjPtllS6DXQe17NKHD5NTuR//X0Xjj3JDBQM6/FKmr2fHFL26
- YXvWHOMcm+nCJZrjniXILk7Wp2zjFJ0RVufnPlKM0nlMg2w7R+mSX7eNyHMvjGp1F4XPVEjjFo0
- rGZFNef/g+6uUEcwgwPj6johBCnCLEf0DgcIEXmNMDSllQtr1KtWVhHX4TzgBZB/5qC1UnXcvv3
- XfO1iq2mA9Gd95SaL3edLoPl/sZyjgZFr0h9aMJIfB084y/8H9zZGnupVP0iWD21wrxmY1XJIvT
- lNinP/AEW/bwPtqAFuKc07u8lbqfpVkqseimONoPZBFpBHJXah5Z7C/DzjZzI2f39jD3I30/3WO
- 62WMeue++WBVUvLJAwH8VUeVDJQmqtk+HMSiwECH6a56t0tVpNgzTZqe4/AL73BdzWyL5R0r//h
- TUjsAnDn0MQgA0A==
+ bh=JFqzsTfm9DdoRKLGO7u+iVRbtQ2IB4LCND0J4CbvlC8=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoNDibdl94YMZwfVYjatgUDK/f/MsGw7A+4YxeR
+ 4h2FKW1fSeJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaDQ4mwAKCRDBN2bmhouD
+ 1xdCD/9vbaZu8P3oo43OAFrxr0vkTiREG8aTp5vpTZPLskJ+htHbnhA044cu38T+qsQF9RQc34s
+ MH9ZhhXXdTkJPECc+RyRkdOO6CV41gQOlhzV8ucdoTYo7EBwzHXx9/QkGxcFEU6EJH278hhCBfG
+ 8SEZJdrdNHri6a2MavtaOl3ZSaTkmJZXfM+wT8hiVYi7Cc17b4ZFpH5IyyZg/UczuXuCu8ghOJu
+ GAaN+AqBcxVtOVGR2p9OLksELtTp5ico4csmbo/fdx/jNKa9VcxKfq8jseZSFi/4o0mf5rI/c3t
+ uUwWjes6UcL6Lumzlh1pMm5I7+kjY40avjkF2POvtPtN85MuwDPqZCI2RVA98Os1YlvR43YSs65
+ 02JVU7LboKXWH5cmviFsAHsdJJT7LYW+AYMBK7VVxjey4cPYvkJ/YwBZ1ywIOLr8Z8DbTzYotSS
+ +L+9FQtWWS6EU8D09M9A5rOh8bqUT1Dt0nDwZfArDBvTx2Sl4QUJlZPGX/QawbtigbAfdI0CAWu
+ eEfou2JRH9F5d7Hve/pnDQSGrAKxqwfdmC3wCDqBvq9ng438hcxrZY1aM8gVde6d9rkb9Z28Kpl
+ AZFaVOu0Nulq9n3Ad0lJqPqqTGaxR4queZIllBjl0EztEW5IDmYw87McvXlvQTdKcqS+ToPILj1
+ f+4LnRh+j9PDAHQ==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Last user of wcd937x_priv->buck_supply was removed in
-commit 216d04139a6d ("ASoC: codecs: wcd937x: Remove separate handling
-for vdd-buck supply").
+Driver gets regulator supplies in probe path with
+devm_regulator_bulk_get(), so should not call regulator_bulk_free() in
+error and remove paths to avoid double free.
 
 Fixes: 216d04139a6d ("ASoC: codecs: wcd937x: Remove separate handling for vdd-buck supply")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- sound/soc/codecs/wcd937x.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/codecs/wcd937x.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/sound/soc/codecs/wcd937x.c b/sound/soc/codecs/wcd937x.c
-index 3b1a1518e7647366b4de0e90828b8d97b82c5bd5..a3a4b1f53e88e7ade13455387a65de736b1f0bec 100644
+index a3a4b1f53e88e7ade13455387a65de736b1f0bec..b9df58b86ce953427e01ffb8c7eb7e52f9c2392a 100644
 --- a/sound/soc/codecs/wcd937x.c
 +++ b/sound/soc/codecs/wcd937x.c
-@@ -91,7 +91,6 @@ struct wcd937x_priv {
- 	struct regmap_irq_chip *wcd_regmap_irq_chip;
- 	struct regmap_irq_chip_data *irq_chip;
- 	struct regulator_bulk_data supplies[WCD937X_MAX_BULK_SUPPLY];
--	struct regulator *buck_supply;
- 	struct snd_soc_jack *jack;
- 	unsigned long status_mask;
- 	s32 micb_ref[WCD937X_MAX_MICBIAS];
+@@ -2944,10 +2944,8 @@ static int wcd937x_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, ret, "Failed to get supplies\n");
+ 
+ 	ret = regulator_bulk_enable(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+-	if (ret) {
+-		regulator_bulk_free(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
++	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to enable supplies\n");
+-	}
+ 
+ 	wcd937x_dt_parse_micbias_info(dev, wcd937x);
+ 
+@@ -2983,7 +2981,6 @@ static int wcd937x_probe(struct platform_device *pdev)
+ 
+ err_disable_regulators:
+ 	regulator_bulk_disable(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+-	regulator_bulk_free(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+ 
+ 	return ret;
+ }
+@@ -3000,7 +2997,6 @@ static void wcd937x_remove(struct platform_device *pdev)
+ 	pm_runtime_dont_use_autosuspend(dev);
+ 
+ 	regulator_bulk_disable(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+-	regulator_bulk_free(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+ }
+ 
+ #if defined(CONFIG_OF)
 
 -- 
 2.45.2
