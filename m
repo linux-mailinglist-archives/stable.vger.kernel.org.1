@@ -1,205 +1,125 @@
-Return-Path: <stable+bounces-146374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40AEAC4099
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 15:43:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CE8AC40A1
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 15:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 922387A1828
-	for <lists+stable@lfdr.de>; Mon, 26 May 2025 13:42:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91620175C75
+	for <lists+stable@lfdr.de>; Mon, 26 May 2025 13:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5601420C03E;
-	Mon, 26 May 2025 13:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634891F461A;
+	Mon, 26 May 2025 13:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="aHVq773Q";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SWzT/9EW";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="aHVq773Q";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SWzT/9EW"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="qUzxbqHQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDB5BA2D
-	for <stable@vger.kernel.org>; Mon, 26 May 2025 13:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCD410F9;
+	Mon, 26 May 2025 13:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748267019; cv=none; b=q/0vKYhKd+0ovdXdH01Cryo0F7UIV36HwXrsHixGBrsKAI5hPjK9D+zCHYknuXVJ1TxYVhgvvIAdscZlau12zolH7Gy9RBkcyiFnNZHm0cbrG9iET2Vms6/QHpEUwnmFKAvWDBL1e9w7bYKv8qySWMlGHrMImpL28QKG4tOak54=
+	t=1748267204; cv=none; b=Mn3lDV5KCTezyOHbFN7jT9++IHbwcI+QNbjieW4tjhPFrj9gcVI2pdV+rmcphB+oqcwTf+7hxxSlGaLT4Lh15EyL8QEOb+KcJJOVVD3tNlOhkHxpVw+OwrI8nqBChRIi4IDmmzbikN4JbuqV1vt6VaxLjI4M0VhkptOsH6OxBtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748267019; c=relaxed/simple;
-	bh=dbdT8CH9kLMBgpqw2k4Ycebiq5nWvPRHpskIWVDXcdI=;
+	s=arc-20240116; t=1748267204; c=relaxed/simple;
+	bh=BacTL2lSs3oB0dyf25h3YDqLkjvIEfjNzmqTyRyMX+I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gY/dmyieRiQZOzE/hSqcJolVt6+um7fTQ8D5zRZYZ3r5PER9P0Xl6VNhCUH+p+wrggygp4NczP20SaXUnwDKSodZIaOmK2O+qceAKG9wpEh5rkfCYq3UMsVQpoCyhy12n844twOu+YSO7K8i+Dqx8k/DYivJbsU5p3f6ouT+x6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=aHVq773Q; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SWzT/9EW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=aHVq773Q; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SWzT/9EW; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7643121B02;
-	Mon, 26 May 2025 13:43:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1748267015; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GJKMoSICTohzot7RddDaVJ7KmKKzKBE+vdA1bFKH+Pc=;
-	b=aHVq773QRUWSwQ9s8pxOdi67mNt6I5VQ942/TSaRSITHgILgc31qt6Eirz/BQp8Xaqjeaz
-	sLpchB+Diu2r+A/ubbuua+0rl3rb4fs/DQ8w81N/EFecvmirPWSmAWFipE4ZnezfrTpBNL
-	24bT2fYxIhLiOU2aji0bDNNo2RM2Glw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1748267015;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GJKMoSICTohzot7RddDaVJ7KmKKzKBE+vdA1bFKH+Pc=;
-	b=SWzT/9EWur9LCVlkKsb1+TOM1kIEi4QMD/HvfZc93wQG5YP7usIwmf1AIuunacNlO22SyS
-	rHvJF5IaJodK++Cg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1748267015; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GJKMoSICTohzot7RddDaVJ7KmKKzKBE+vdA1bFKH+Pc=;
-	b=aHVq773QRUWSwQ9s8pxOdi67mNt6I5VQ942/TSaRSITHgILgc31qt6Eirz/BQp8Xaqjeaz
-	sLpchB+Diu2r+A/ubbuua+0rl3rb4fs/DQ8w81N/EFecvmirPWSmAWFipE4ZnezfrTpBNL
-	24bT2fYxIhLiOU2aji0bDNNo2RM2Glw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1748267015;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GJKMoSICTohzot7RddDaVJ7KmKKzKBE+vdA1bFKH+Pc=;
-	b=SWzT/9EWur9LCVlkKsb1+TOM1kIEi4QMD/HvfZc93wQG5YP7usIwmf1AIuunacNlO22SyS
-	rHvJF5IaJodK++Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B62D1397F;
-	Mon, 26 May 2025 13:43:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Rww2GgdwNGiuPQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 26 May 2025 13:43:35 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 26105A09B7; Mon, 26 May 2025 15:43:31 +0200 (CEST)
-Date: Mon, 26 May 2025 15:43:31 +0200
-From: Jan Kara <jack@suse.cz>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.com>, 
-	Tao Ma <boyu.mt@taobao.com>, Andreas Dilger <adilger.kernel@dilger.ca>, 
-	Eric Biggers <ebiggers@google.com>, linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-dev@igalia.com, 
-	syzbot+0c89d865531d053abb2d@syzkaller.appspotmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH] ext4: inline: do not convert when writing to memory map
-Message-ID: <ixlyfqaobk4whctod5wwhusqeeduqxamni6zkxl2wdlbtcyms2@intsywwjfv25>
-References: <20250519-ext4_inline_page_mkwrite-v1-1-865d9a62b512@igalia.com>
- <20250520145708.GA432950@mit.edu>
- <aC5LA4bExl8rMRv0@quatroqueijos.cascardo.eti.br>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AgPqHNJznYFWJozW+HV4ZGv6WiXehb5qpyw4McSvlPuwBz+D23Dhd4MJKSgkFc7DJvLvjtSLKZ8PDVGGsoUnt0QCV/KgM8e1/hJEr1be7gNj0x+Dcf6ihlvQrHxAf8j2ceaSnXFkovrd5k0lwA6VtdKGds0oWfCKnQ0OTE+XsRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=qUzxbqHQ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (237.69-130-109.adsl-dyn.isp.belgacom.be [109.130.69.237])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id AC42D982;
+	Mon, 26 May 2025 15:46:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1748267175;
+	bh=BacTL2lSs3oB0dyf25h3YDqLkjvIEfjNzmqTyRyMX+I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qUzxbqHQ3o5/MF2vN1jGRMB7+BD2BhtE5w7w0nS9PJT90MC9c22LU/amOV5OE5oCk
+	 SsVP0e3Hp/vN35vfrG8Mrs5iS657dW/VGEqq4/jbnefCwfSNE3/kSxTh7tnc+lgWTm
+	 321n0aET8/HQzTPA35bkMEM/HYGyirMzZyUyI3X0=
+Date: Mon, 26 May 2025 15:46:34 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5 1/4] media: uvcvideo: Do not mark valid metadata as
+ invalid
+Message-ID: <20250526134634.GM17743@pendragon.ideasonboard.com>
+References: <20250404-uvc-meta-v5-0-f79974fc2d20@chromium.org>
+ <20250404-uvc-meta-v5-1-f79974fc2d20@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aC5LA4bExl8rMRv0@quatroqueijos.cascardo.eti.br>
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: 0.70
-X-Spamd-Result: default: False [0.70 / 50.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_RCPT(0.00)[0c89d865531d053abb2d];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
+In-Reply-To: <20250404-uvc-meta-v5-1-f79974fc2d20@chromium.org>
 
-On Wed 21-05-25 18:52:03, Thadeu Lima de Souza Cascardo wrote:
-> On Tue, May 20, 2025 at 10:57:08AM -0400, Theodore Ts'o wrote:
-> > On Mon, May 19, 2025 at 07:42:46AM -0300, Thadeu Lima de Souza Cascardo wrote:
-> > > inline data handling has a race between writing and writing to a memory
-> > > map.
-> > > 
-> > > When ext4_page_mkwrite is called, it calls ext4_convert_inline_data, which
-> > > destroys the inline data, but if block allocation fails, restores the
-> > > inline data. In that process, we could have:
-> > > 
-> > > CPU1					CPU2
-> > > destroy_inline_data
-> > > 					write_begin (does not see inline data)
-> > > restory_inline_data
-> > > 					write_end (sees inline data)
-> > > 
-> > > The conversion inside ext4_page_mkwrite was introduced at commit
-> > > 7b4cc9787fe3 ("ext4: evict inline data when writing to memory map"). This
-> > > fixes a documented bug in the commit message, which suggests some
-> > > alternatives fixes.
-> > 
-> > Your fix just reverts commit 7b4cc9787fe3, and removes the BUG_ON.
-> > While this is great for shutting up the syzbot report, but it causes
-> > file writes to an inline data file via a mmap to never get written
-> > back to the storage device.  So you are replacing BUG_ON that can get
-> > triggered on a race condition in case of a failed block allocation,
-> > with silent data corruption.   This is not an improvement.
-> > 
-> > Thanks for trying to address this, but I'm not going to accept your
-> > proposed fix.
-> > 
-> >      	    	 	       	       - Ted
-> 
-> Hi, Ted.
-> 
-> I am trying to understand better the circumstances where the data loss
-> might occur with the fix, but might not occur without the fix. Or, even if
-> they occur either way, such that I can work on a better/proper fix.
-> 
-> Right now, if ext4_convert_inline_data (called from ext4_page_mkwrite)
-> fails with ENOSPC, the memory access will lead to a SIGBUS. The same will
-> happen without the fix, if there are no blocks available.
-> 
-> Now, without ext4_convert_inline_data, blocks will be allocated by
-> ext4_page_mkwrite and written by ext4_do_writepages. Are you concerned
-> about a failure between the clearing of the inode data and the writing of
-> the block in ext4_do_writepages?
-> 
-> Or are you concerned about a potential race condition when allocating
-> blocks?
-> 
-> Which of these cannot happen today with the code as is? If I understand
-> correctly, the inline conversion code also calls ext4_destroy_inline_data
-> before allocating and writing to blocks.
-> 
-> Thanks a lot for the review and guidance.
+Hi Ricardo,
 
-So I'm not sure what Ted was exactly worried about because writeback code
-should normally allocate underlying blocks for writeout of the mmaped page
-AFAICT. But the problem I can see is that clearing
-EXT4_STATE_MAY_INLINE_DATA requires i_rwsem held as otherwise we may be
-racing with e.g. write(2) and switching EXT4_STATE_MAY_INLINE_DATA in the
-middle of the write will cause bad things (inconsistency between how
-write_begin() and write_end() callbacks behave).
+Thank you for the patch.
 
-								Honza
+On Fri, Apr 04, 2025 at 06:37:34AM +0000, Ricardo Ribalda wrote:
+> Currently, the driver performs a length check of the metadata buffer
+> before the actual metadata size is known and before the metadata is
+> decided to be copied. This results in valid metadata buffers being
+> incorrectly marked as invalid.
+> 
+> Move the length check to occur after the metadata size is determined and
+> is decided to be copied.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> ---
+>  drivers/media/usb/uvc/uvc_video.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> index e3567aeb0007c1f0a766f331e4e744359e95a863..b113297dac61f1b2eecd72c36ea61ef2c1e7d28a 100644
+> --- a/drivers/media/usb/uvc/uvc_video.c
+> +++ b/drivers/media/usb/uvc/uvc_video.c
+> @@ -1433,12 +1433,6 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
+>  	if (!meta_buf || length == 2)
+>  		return;
+>  
+> -	if (meta_buf->length - meta_buf->bytesused <
+> -	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
+> -		meta_buf->error = 1;
+> -		return;
+> -	}
+> -
+>  	has_pts = mem[1] & UVC_STREAM_PTS;
+>  	has_scr = mem[1] & UVC_STREAM_SCR;
+>  
+> @@ -1459,6 +1453,12 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
+>  				  !memcmp(scr, stream->clock.last_scr, 6)))
+>  		return;
+>  
+> +	if (meta_buf->length - meta_buf->bytesused <
+> +	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
+> +		meta_buf->error = 1;
+> +		return;
+> +	}
+> +
+>  	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
+>  	local_irq_save(flags);
+>  	time = uvc_video_get_time();
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Regards,
+
+Laurent Pinchart
 
