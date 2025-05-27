@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B585EAC54DB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094E8AC5459
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 666DD8A253A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D5CB4A2960
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5B227A900;
-	Tue, 27 May 2025 16:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B52727FD69;
+	Tue, 27 May 2025 16:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QK7MSFXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9EIOnXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB04194A67;
-	Tue, 27 May 2025 16:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD34127FD50;
+	Tue, 27 May 2025 16:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365161; cv=none; b=UVL4jaZSTV/uLO/r88847URaDmn7cOYXKB35iNBdexX56hkl7Mm9XaGbS/ANbbh875cz8CQ4H1RgDJZWMs6vNbZ8ykqnBslvm3WY01tPR7yI7ubcwtSAAKpx13XyNYlq3g5j9SCNOPzTnwRyf9KJKtDrmbwXoAeCEp+vKLG27Mg=
+	t=1748365164; cv=none; b=kR0O47eBmFW5tVguRwuTclNUp47ZEw/AXdBhdRA0q0TLXP3LzE111Pj2Rm0ohFt3g6tdj716n9ryslFFpmNmxD3pJ7s1BdJSgVusyELKF3xsXPimxepfvZx0Pnuty0pdj0AnAS7ohbR1ZKb2Uyt/917NJWFTHQBYc1djirXXVZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365161; c=relaxed/simple;
-	bh=IMg3WBxeq4GKyDYH8P9l0CtxXgDQ0SNWLcNWjyOvPto=;
+	s=arc-20240116; t=1748365164; c=relaxed/simple;
+	bh=vDmfi4htu+s9jlgy2dwYQxulYCGVER+JkmHPNK539W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RwVgZrgzrRcwBIuju0q4e2FOGerqu2txsWSKAaJlcqFJfwc6B+AAx+LujGBf1PbcXS75jCiN8URJB5NNxLBxQWBQEf+lCz2+PyqyaivIQwP4kPe20dNTvXo12g8VAIlPVMEKQN7N3xErsgJiWRZBliCSc2gH//9v8H8P+cteIWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QK7MSFXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B07CC4CEE9;
-	Tue, 27 May 2025 16:59:21 +0000 (UTC)
+	 MIME-Version; b=gFZishqWU+WmzA6H4Q9jsMHSt9Frc5ZsdywKFhEIGjPIv+9zokH5XDXQKdu5cChvEWC0VTtx565/Clcp7GJQbLq8L2FeF0Q1fqSI3u3TP21w+yrUntN+hIc8qOukLYVF6uL2vAOEGDZOPaM/BTW58MEZwDjcjEE3DYYb+h4XTas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9EIOnXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA83C4CEE9;
+	Tue, 27 May 2025 16:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365161;
-	bh=IMg3WBxeq4GKyDYH8P9l0CtxXgDQ0SNWLcNWjyOvPto=;
+	s=korg; t=1748365164;
+	bh=vDmfi4htu+s9jlgy2dwYQxulYCGVER+JkmHPNK539W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QK7MSFXunIt7T5qGVV8Unlg7Krmjz33AE899+ULr5T+YeymH8pTvWqMUiZFZv3u2L
-	 4cEXl3pyz9AZ5dZMNiX43EG0dpYk3xV5+9tdC+vp8lXdVl1SSMteMphz6yUtVf35O9
-	 Vbx1moT/eBgEWrLblHob55zbvUNQs7QLlebVK/IA=
+	b=P9EIOnXorqDaeE05gZiWlYizOopjCPkfQxciW6nmav8i2sczqWYoqwHKB40vBe2jm
+	 cxl+HOc/3nG4lvOVHTH1szqIQhBvlNj9coMrmq/IHg1g4H2s23D/tXDw3cf0A7cRky
+	 1fBLT5JDvZy2erPA4H0Y9ITohdGhdOemKEP58pIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samson Tam <samson.tam@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
 	Zaeem Mohamed <zaeem.mohamed@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 287/626] drm/amd/display: handle max_downscale_src_width fail check
-Date: Tue, 27 May 2025 18:23:00 +0200
-Message-ID: <20250527162456.692558298@linuxfoundation.org>
+Subject: [PATCH 6.12 288/626] drm/amd/display: fix dcn4x init failed
+Date: Tue, 27 May 2025 18:23:01 +0200
+Message-ID: <20250527162456.732475384@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -69,57 +69,94 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 02a940da2ccc0cc0299811379580852b405a0ea2 ]
+[ Upstream commit 23ef388a84c72b0614a6c10f866ffeac7e807719 ]
 
-[WHY]
-If max_downscale_src_width check fails, we exit early from TAP calculation and left a NULL
-value to the scaling data structure to cause the zero divide in the DML validation.
+[why]
+failed due to cmdtable not created.
+switch atombios cmdtable as default.
 
-[HOW]
-Call set default TAP calculation before early exit in get_optimal_number_of_taps due to
-max downscale limit exceed.
-
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
 Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/command_table2.c     | 9 ---------
+ .../gpu/drm/amd/display/dc/bios/command_table_helper2.c  | 3 +--
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-index 40acebd13e46d..abf439e743f23 100644
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-@@ -425,11 +425,6 @@ bool dpp3_get_optimal_number_of_taps(
- 	int min_taps_y, min_taps_c;
- 	enum lb_memory_config lb_config;
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/command_table2.c b/drivers/gpu/drm/amd/display/dc/bios/command_table2.c
+index 7d18f372ce7ab..6bc59b7ef007b 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/command_table2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/command_table2.c
+@@ -101,7 +101,6 @@ static void init_dig_encoder_control(struct bios_parser *bp)
+ 		bp->cmd_tbl.dig_encoder_control = encoder_control_digx_v1_5;
+ 		break;
+ 	default:
+-		dm_output_to_console("Don't have dig_encoder_control for v%d\n", version);
+ 		bp->cmd_tbl.dig_encoder_control = encoder_control_fallback;
+ 		break;
+ 	}
+@@ -238,7 +237,6 @@ static void init_transmitter_control(struct bios_parser *bp)
+ 		bp->cmd_tbl.transmitter_control = transmitter_control_v1_7;
+ 		break;
+ 	default:
+-		dm_output_to_console("Don't have transmitter_control for v%d\n", crev);
+ 		bp->cmd_tbl.transmitter_control = transmitter_control_fallback;
+ 		break;
+ 	}
+@@ -408,8 +406,6 @@ static void init_set_pixel_clock(struct bios_parser *bp)
+ 		bp->cmd_tbl.set_pixel_clock = set_pixel_clock_v7;
+ 		break;
+ 	default:
+-		dm_output_to_console("Don't have set_pixel_clock for v%d\n",
+-			 BIOS_CMD_TABLE_PARA_REVISION(setpixelclock));
+ 		bp->cmd_tbl.set_pixel_clock = set_pixel_clock_fallback;
+ 		break;
+ 	}
+@@ -554,7 +550,6 @@ static void init_set_crtc_timing(struct bios_parser *bp)
+ 			set_crtc_using_dtd_timing_v3;
+ 		break;
+ 	default:
+-		dm_output_to_console("Don't have set_crtc_timing for v%d\n", dtd_version);
+ 		bp->cmd_tbl.set_crtc_timing = NULL;
+ 		break;
+ 	}
+@@ -671,8 +666,6 @@ static void init_enable_crtc(struct bios_parser *bp)
+ 		bp->cmd_tbl.enable_crtc = enable_crtc_v1;
+ 		break;
+ 	default:
+-		dm_output_to_console("Don't have enable_crtc for v%d\n",
+-			 BIOS_CMD_TABLE_PARA_REVISION(enablecrtc));
+ 		bp->cmd_tbl.enable_crtc = NULL;
+ 		break;
+ 	}
+@@ -864,8 +857,6 @@ static void init_set_dce_clock(struct bios_parser *bp)
+ 		bp->cmd_tbl.set_dce_clock = set_dce_clock_v2_1;
+ 		break;
+ 	default:
+-		dm_output_to_console("Don't have set_dce_clock for v%d\n",
+-			 BIOS_CMD_TABLE_PARA_REVISION(setdceclock));
+ 		bp->cmd_tbl.set_dce_clock = NULL;
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/command_table_helper2.c b/drivers/gpu/drm/amd/display/dc/bios/command_table_helper2.c
+index 73458e2951034..df8139bda142b 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/command_table_helper2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/command_table_helper2.c
+@@ -87,8 +87,7 @@ bool dal_bios_parser_init_cmd_tbl_helper2(
+ 		return true;
  
--	if (scl_data->viewport.width > scl_data->h_active &&
--		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
--		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
--		return false;
--
- 	/*
- 	 * Set default taps if none are provided
- 	 * From programming guide: taps = min{ ceil(2*H_RATIO,1), 8} for downscaling
-@@ -467,6 +462,12 @@ bool dpp3_get_optimal_number_of_taps(
- 	else
- 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
- 
-+	// Avoid null data in the scl data with this early return, proceed non-adaptive calcualtion first
-+	if (scl_data->viewport.width > scl_data->h_active &&
-+		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
-+		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
-+		return false;
-+
- 	/*Ensure we can support the requested number of vtaps*/
- 	min_taps_y = dc_fixpt_ceil(scl_data->ratios.vert);
- 	min_taps_c = dc_fixpt_ceil(scl_data->ratios.vert_c);
+ 	default:
+-		/* Unsupported DCE */
+-		BREAK_TO_DEBUGGER();
++		*h = dal_cmd_tbl_helper_dce112_get_table2();
+ 		return false;
+ 	}
+ }
 -- 
 2.39.5
 
