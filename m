@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE130AC57AC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 850E6AC5448
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 553CE8A5F40
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4612C4A0EE6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DFB27CCF0;
-	Tue, 27 May 2025 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7311527FD49;
+	Tue, 27 May 2025 16:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiRcXttB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyt8/ytQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D45B2798F8;
-	Tue, 27 May 2025 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED21194A67;
+	Tue, 27 May 2025 16:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367358; cv=none; b=CcZ8NDQ3aEKCyGuUVx80N+OSSMaueNfXCVIxCSm6kbKOCdGxaMB83Zeo0J7uwbtbZweYQrMfc/MESMA85IiYbgOeQc5kcQzu6rDcMuqZy2+SdHJvIZIPaSbiHwOBZbeKzJju60hiTVeKeG5q/iE0nRSRJp4FEdGGL/xXg6IlhSw=
+	t=1748365100; cv=none; b=jCpGKYy87B4aaGIRX5HvJtbz8Z2LZkoY+zFWWY6gxtx3SK2gStdkeA1B4vCUBSKHU+IASbkmd6LbvCuLEGODr0rQ5i677ekhIWp2zVZA+wX/Jg/8I9b5fG0jjdIT5+uzSmJ4yOdE0rw2fLQCO8d/VycFSuMEwyJzS0o4/xgW0Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367358; c=relaxed/simple;
-	bh=FMvsn8apV9Zvju3KYXjC/G1ft68gtZduuqXq40bdfrM=;
+	s=arc-20240116; t=1748365100; c=relaxed/simple;
+	bh=SxFFTh3G07BIBEphJC4DIE5INgOkSfkvvmKBJTghdlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TWA22zS25T/KdC/4Oi/MEncysoyiWnqfZlOwWl/9zDFJDoqMvLv4iOmG6JchIuuvHMxsk19gTO/DxnKlaeByl5s4Sn4Gq+y9E3/Z6qLgF6nYBTPrzIS2ogtcY5eWv+xJXLE8OsRz2kGgxhnr9JcC0M8AM+m0Je8PglNVAlc7t/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiRcXttB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A69C4CEE9;
-	Tue, 27 May 2025 17:35:57 +0000 (UTC)
+	 MIME-Version; b=Tz3Xo5DN7/Xjmm/4r3qVWP0gHTAPNDZCyJEKCVw63p1srV/8mfVYRXh2GNC6WGZFXqy/zlzrBpLGNNGxgO13TYWhX1fIVP/m5ex+Skzwupy+b+/OgKlXEhF5AHuQSEC6sinEcG6rec62pUwLwIYMTzvSEYa0Z2dh2ncZEYrxXCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyt8/ytQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBD9C4CEEB;
+	Tue, 27 May 2025 16:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367357;
-	bh=FMvsn8apV9Zvju3KYXjC/G1ft68gtZduuqXq40bdfrM=;
+	s=korg; t=1748365100;
+	bh=SxFFTh3G07BIBEphJC4DIE5INgOkSfkvvmKBJTghdlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiRcXttBQcGfUWAEK3lkdq+j/lesqPSp+HRNySFT+kA8m8KHWzuZRmj1y4Pad+H5I
-	 6xC99Iz0qNi5WCfyw24f86rjlGJxuzPncTi9l6LGWUZGd/iIWFGNfKdE9F7UyuVEAe
-	 drON5XtoL8nWZNIzhz4iBnRRQSOrrNX74mdNFUFs=
+	b=uyt8/ytQfxtg+f4yp65A2267H5VKF1v970sbM1k46abMnD37lQsR2xeShIgyEQJJ2
+	 s4cAtywOTVg851QlEW6FP9aX63LP7DCwsWNIQl9It4gDR+B3Wct/kdEIJE/jlBaVjS
+	 29t5axcG1qhw780VrY9YBXRXXICv1aClWDUXrWYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Hector Martin <marcan@marcan.st>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Sven Peter <sven@svenpeter.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 362/783] media: adv7180: Disable test-pattern control on adv7180
+Subject: [PATCH 6.12 266/626] soc: apple: rtkit: Implement OSLog buffers properly
 Date: Tue, 27 May 2025 18:22:39 +0200
-Message-ID: <20250527162527.822647053@linuxfoundation.org>
+Message-ID: <20250527162455.819612065@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,133 +61,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit a980bc5f56b0292336e408f657f79e574e8067c0 ]
+[ Upstream commit a06398687065e0c334dc5fc4d2778b5b87292e43 ]
 
-The register that enables selecting a test-pattern to be outputted in
-free-run mode (FREE_RUN_PAT_SEL[2:0]) is only available on adv7280 based
-devices, not the adv7180 based ones.
+Apparently nobody can figure out where the old logic came from, but it
+seems like it has never been actually used on any supported firmware to
+this day. OSLog buffers were apparently never requested.
 
-Add a flag to mark devices that are capable of generating test-patterns,
-and those that are not. And only register the control on supported
-devices.
+But starting with 13.3, we actually need this implemented properly for
+MTP (and later AOP) to work, so let's actually do that.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://lore.kernel.org/r/20250226-apple-soc-misc-v2-2-c3ec37f9021b@svenpeter.dev
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/adv7180.c | 34 ++++++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+ drivers/soc/apple/rtkit-internal.h |  1 +
+ drivers/soc/apple/rtkit.c          | 56 ++++++++++++++++++------------
+ 2 files changed, 35 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
-index ff7dfa0278a7a..6e50b14f888f1 100644
---- a/drivers/media/i2c/adv7180.c
-+++ b/drivers/media/i2c/adv7180.c
-@@ -195,6 +195,7 @@ struct adv7180_state;
- #define ADV7180_FLAG_V2			BIT(1)
- #define ADV7180_FLAG_MIPI_CSI2		BIT(2)
- #define ADV7180_FLAG_I2P		BIT(3)
-+#define ADV7180_FLAG_TEST_PATTERN	BIT(4)
+diff --git a/drivers/soc/apple/rtkit-internal.h b/drivers/soc/apple/rtkit-internal.h
+index 27c9fa745fd52..b8d5244678f01 100644
+--- a/drivers/soc/apple/rtkit-internal.h
++++ b/drivers/soc/apple/rtkit-internal.h
+@@ -44,6 +44,7 @@ struct apple_rtkit {
  
- struct adv7180_chip_info {
- 	unsigned int flags;
-@@ -682,11 +683,15 @@ static int adv7180_init_controls(struct adv7180_state *state)
- 			  ADV7180_HUE_MAX, 1, ADV7180_HUE_DEF);
- 	v4l2_ctrl_new_custom(&state->ctrl_hdl, &adv7180_ctrl_fast_switch, NULL);
+ 	struct apple_rtkit_shmem ioreport_buffer;
+ 	struct apple_rtkit_shmem crashlog_buffer;
++	struct apple_rtkit_shmem oslog_buffer;
  
--	v4l2_ctrl_new_std_menu_items(&state->ctrl_hdl, &adv7180_ctrl_ops,
--				      V4L2_CID_TEST_PATTERN,
--				      ARRAY_SIZE(test_pattern_menu) - 1,
--				      0, ARRAY_SIZE(test_pattern_menu) - 1,
--				      test_pattern_menu);
-+	if (state->chip_info->flags & ADV7180_FLAG_TEST_PATTERN) {
-+		v4l2_ctrl_new_std_menu_items(&state->ctrl_hdl,
-+					     &adv7180_ctrl_ops,
-+					     V4L2_CID_TEST_PATTERN,
-+					     ARRAY_SIZE(test_pattern_menu) - 1,
-+					     0,
-+					     ARRAY_SIZE(test_pattern_menu) - 1,
-+					     test_pattern_menu);
+ 	struct apple_rtkit_shmem syslog_buffer;
+ 	char *syslog_msg_buffer;
+diff --git a/drivers/soc/apple/rtkit.c b/drivers/soc/apple/rtkit.c
+index 00d59a81db88b..45ccbe2cbcd63 100644
+--- a/drivers/soc/apple/rtkit.c
++++ b/drivers/soc/apple/rtkit.c
+@@ -66,8 +66,9 @@ enum {
+ #define APPLE_RTKIT_SYSLOG_MSG_SIZE  GENMASK_ULL(31, 24)
+ 
+ #define APPLE_RTKIT_OSLOG_TYPE GENMASK_ULL(63, 56)
+-#define APPLE_RTKIT_OSLOG_INIT	1
+-#define APPLE_RTKIT_OSLOG_ACK	3
++#define APPLE_RTKIT_OSLOG_BUFFER_REQUEST 1
++#define APPLE_RTKIT_OSLOG_SIZE GENMASK_ULL(55, 36)
++#define APPLE_RTKIT_OSLOG_IOVA GENMASK_ULL(35, 0)
+ 
+ #define APPLE_RTKIT_MIN_SUPPORTED_VERSION 11
+ #define APPLE_RTKIT_MAX_SUPPORTED_VERSION 12
+@@ -251,15 +252,21 @@ static int apple_rtkit_common_rx_get_buffer(struct apple_rtkit *rtk,
+ 					    struct apple_rtkit_shmem *buffer,
+ 					    u8 ep, u64 msg)
+ {
+-	size_t n_4kpages = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_SIZE, msg);
+ 	u64 reply;
+ 	int err;
+ 
++	/* The different size vs. IOVA shifts look odd but are indeed correct this way */
++	if (ep == APPLE_RTKIT_EP_OSLOG) {
++		buffer->size = FIELD_GET(APPLE_RTKIT_OSLOG_SIZE, msg);
++		buffer->iova = FIELD_GET(APPLE_RTKIT_OSLOG_IOVA, msg) << 12;
++	} else {
++		buffer->size = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_SIZE, msg) << 12;
++		buffer->iova = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_IOVA, msg);
 +	}
++
+ 	buffer->buffer = NULL;
+ 	buffer->iomem = NULL;
+ 	buffer->is_mapped = false;
+-	buffer->iova = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_IOVA, msg);
+-	buffer->size = n_4kpages << 12;
  
- 	state->sd.ctrl_handler = &state->ctrl_hdl;
- 	if (state->ctrl_hdl.error) {
-@@ -1221,7 +1226,7 @@ static const struct adv7180_chip_info adv7182_info = {
- };
+ 	dev_dbg(rtk->dev, "RTKit: buffer request for 0x%zx bytes at %pad\n",
+ 		buffer->size, &buffer->iova);
+@@ -284,11 +291,21 @@ static int apple_rtkit_common_rx_get_buffer(struct apple_rtkit *rtk,
+ 	}
  
- static const struct adv7180_chip_info adv7280_info = {
--	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_I2P,
-+	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_I2P | ADV7180_FLAG_TEST_PATTERN,
- 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
- 		BIT(ADV7182_INPUT_CVBS_AIN2) |
- 		BIT(ADV7182_INPUT_CVBS_AIN3) |
-@@ -1235,7 +1240,8 @@ static const struct adv7180_chip_info adv7280_info = {
- };
+ 	if (!buffer->is_mapped) {
+-		reply = FIELD_PREP(APPLE_RTKIT_SYSLOG_TYPE,
+-				   APPLE_RTKIT_BUFFER_REQUEST);
+-		reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_SIZE, n_4kpages);
+-		reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_IOVA,
+-				    buffer->iova);
++		/* oslog uses different fields and needs a shifted IOVA instead of size */
++		if (ep == APPLE_RTKIT_EP_OSLOG) {
++			reply = FIELD_PREP(APPLE_RTKIT_OSLOG_TYPE,
++					   APPLE_RTKIT_OSLOG_BUFFER_REQUEST);
++			reply |= FIELD_PREP(APPLE_RTKIT_OSLOG_SIZE, buffer->size);
++			reply |= FIELD_PREP(APPLE_RTKIT_OSLOG_IOVA,
++					    buffer->iova >> 12);
++		} else {
++			reply = FIELD_PREP(APPLE_RTKIT_SYSLOG_TYPE,
++					   APPLE_RTKIT_BUFFER_REQUEST);
++			reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_SIZE,
++					    buffer->size >> 12);
++			reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_IOVA,
++					    buffer->iova);
++		}
+ 		apple_rtkit_send_message(rtk, ep, reply, NULL, false);
+ 	}
  
- static const struct adv7180_chip_info adv7280_m_info = {
--	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 | ADV7180_FLAG_I2P,
-+	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 | ADV7180_FLAG_I2P |
-+		ADV7180_FLAG_TEST_PATTERN,
- 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
- 		BIT(ADV7182_INPUT_CVBS_AIN2) |
- 		BIT(ADV7182_INPUT_CVBS_AIN3) |
-@@ -1256,7 +1262,8 @@ static const struct adv7180_chip_info adv7280_m_info = {
- };
+@@ -482,25 +499,18 @@ static void apple_rtkit_syslog_rx(struct apple_rtkit *rtk, u64 msg)
+ 	}
+ }
  
- static const struct adv7180_chip_info adv7281_info = {
--	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2,
-+	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 |
-+		ADV7180_FLAG_TEST_PATTERN,
- 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
- 		BIT(ADV7182_INPUT_CVBS_AIN2) |
- 		BIT(ADV7182_INPUT_CVBS_AIN7) |
-@@ -1271,7 +1278,8 @@ static const struct adv7180_chip_info adv7281_info = {
- };
+-static void apple_rtkit_oslog_rx_init(struct apple_rtkit *rtk, u64 msg)
+-{
+-	u64 ack;
+-
+-	dev_dbg(rtk->dev, "RTKit: oslog init: msg: 0x%llx\n", msg);
+-	ack = FIELD_PREP(APPLE_RTKIT_OSLOG_TYPE, APPLE_RTKIT_OSLOG_ACK);
+-	apple_rtkit_send_message(rtk, APPLE_RTKIT_EP_OSLOG, ack, NULL, false);
+-}
+-
+ static void apple_rtkit_oslog_rx(struct apple_rtkit *rtk, u64 msg)
+ {
+ 	u8 type = FIELD_GET(APPLE_RTKIT_OSLOG_TYPE, msg);
  
- static const struct adv7180_chip_info adv7281_m_info = {
--	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2,
-+	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 |
-+		ADV7180_FLAG_TEST_PATTERN,
- 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
- 		BIT(ADV7182_INPUT_CVBS_AIN2) |
- 		BIT(ADV7182_INPUT_CVBS_AIN3) |
-@@ -1291,7 +1299,8 @@ static const struct adv7180_chip_info adv7281_m_info = {
- };
+ 	switch (type) {
+-	case APPLE_RTKIT_OSLOG_INIT:
+-		apple_rtkit_oslog_rx_init(rtk, msg);
++	case APPLE_RTKIT_OSLOG_BUFFER_REQUEST:
++		apple_rtkit_common_rx_get_buffer(rtk, &rtk->oslog_buffer,
++						 APPLE_RTKIT_EP_OSLOG, msg);
+ 		break;
+ 	default:
+-		dev_warn(rtk->dev, "RTKit: Unknown oslog message: %llx\n", msg);
++		dev_warn(rtk->dev, "RTKit: Unknown oslog message: %llx\n",
++			 msg);
+ 	}
+ }
  
- static const struct adv7180_chip_info adv7281_ma_info = {
--	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2,
-+	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 |
-+		ADV7180_FLAG_TEST_PATTERN,
- 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
- 		BIT(ADV7182_INPUT_CVBS_AIN2) |
- 		BIT(ADV7182_INPUT_CVBS_AIN3) |
-@@ -1316,7 +1325,7 @@ static const struct adv7180_chip_info adv7281_ma_info = {
- };
+@@ -710,6 +720,7 @@ int apple_rtkit_reinit(struct apple_rtkit *rtk)
  
- static const struct adv7180_chip_info adv7282_info = {
--	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_I2P,
-+	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_I2P | ADV7180_FLAG_TEST_PATTERN,
- 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
- 		BIT(ADV7182_INPUT_CVBS_AIN2) |
- 		BIT(ADV7182_INPUT_CVBS_AIN7) |
-@@ -1331,7 +1340,8 @@ static const struct adv7180_chip_info adv7282_info = {
- };
+ 	apple_rtkit_free_buffer(rtk, &rtk->ioreport_buffer);
+ 	apple_rtkit_free_buffer(rtk, &rtk->crashlog_buffer);
++	apple_rtkit_free_buffer(rtk, &rtk->oslog_buffer);
+ 	apple_rtkit_free_buffer(rtk, &rtk->syslog_buffer);
  
- static const struct adv7180_chip_info adv7282_m_info = {
--	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 | ADV7180_FLAG_I2P,
-+	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 | ADV7180_FLAG_I2P |
-+		ADV7180_FLAG_TEST_PATTERN,
- 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
- 		BIT(ADV7182_INPUT_CVBS_AIN2) |
- 		BIT(ADV7182_INPUT_CVBS_AIN3) |
+ 	kfree(rtk->syslog_msg_buffer);
+@@ -890,6 +901,7 @@ void apple_rtkit_free(struct apple_rtkit *rtk)
+ 
+ 	apple_rtkit_free_buffer(rtk, &rtk->ioreport_buffer);
+ 	apple_rtkit_free_buffer(rtk, &rtk->crashlog_buffer);
++	apple_rtkit_free_buffer(rtk, &rtk->oslog_buffer);
+ 	apple_rtkit_free_buffer(rtk, &rtk->syslog_buffer);
+ 
+ 	kfree(rtk->syslog_msg_buffer);
 -- 
 2.39.5
 
