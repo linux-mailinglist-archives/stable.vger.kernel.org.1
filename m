@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-147512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5195AC5800
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C541AC5498
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10B648A6CC5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2AE4188359B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9B4280012;
-	Tue, 27 May 2025 17:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A421A3159;
+	Tue, 27 May 2025 17:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVhmsFKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2l/mX0aM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071571CAA7B;
-	Tue, 27 May 2025 17:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020D7154C15;
+	Tue, 27 May 2025 17:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367570; cv=none; b=lqebFpoXJi3tOsps8slpbfrP2x/D0K/OmtzXHMdpwY8TJYM8a8x+jSIKwOc79I4KNSd4yTM0imh5M/cClcJxHUN7pep6Mj1F4NEjJYPR+1V7r4d/eTCYFavwzwOKHms3UQV26W2yG2TXvUC61CeC4xZGOc0+oNV52bxWSIiGWPo=
+	t=1748365310; cv=none; b=OWyTd/ds533imL9C8BPcT2etDNOw4dkqlOXUdjfF6I9q5DBPbFPygrvGFsPI8XYNm5qzVizd3yeHVnznzKZKrGLmiRb66u9M+KLlk/Hvnma+Gd1THZWRe1Uz1wmwm+LRMIAWB142mvIkaCh5J2+W3EghqSSHPx4ihuc6lLN+Ne4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367570; c=relaxed/simple;
-	bh=AWqcunUadk/OaYqg6wEtKsKqamiY7O7sXq/ada5xHro=;
+	s=arc-20240116; t=1748365310; c=relaxed/simple;
+	bh=a/b88L3h9MvH/d0F6viAf9peqLlCO651VB6l+SXxEKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auz/6YSkQQXHT8q1Gn8MPnGWOmlkgsUK7R6Budpj3wmciX+OPfa6me8QflGBACJmU8YoVs99BMsciFxQzaXzs82K9t2e3IZa1d+6+4Nj1VAI4gB6SzJCTkvXDppmfKdNT/g+gHQjsFhVw4U8SxbCNDtA5CUhsRPgKfUtoiavFZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVhmsFKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670FEC4CEEA;
-	Tue, 27 May 2025 17:39:29 +0000 (UTC)
+	 MIME-Version; b=shSbnhZmWzSq2tIPLnNorK07AddvjytGTWLuRGCdb0aGApnP0j2uXC7PTX8zdtDvjXBzmEGyqWOAeg78YNvmnl13BGb6uiG7G/iWeFBMB4bUXXdY7UOqSWgzWnq1ZsE8xexP/UWOEQELd0H0cOvQ8jgd3cWolYHLjES6x+O/4oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2l/mX0aM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7183EC4CEE9;
+	Tue, 27 May 2025 17:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367569;
-	bh=AWqcunUadk/OaYqg6wEtKsKqamiY7O7sXq/ada5xHro=;
+	s=korg; t=1748365309;
+	bh=a/b88L3h9MvH/d0F6viAf9peqLlCO651VB6l+SXxEKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVhmsFKy5AbDoeazyHbUnHPFaVM3jDtWEAnP7tuvg3AcAJQTSgLgU8T+mjnFiPCT5
-	 3yk8zAVTm2fypsOvVV7c5Q/FFdYpaveTmcmmuNjvtTHyc/4zB4nVs/YUR+mmhiDf5x
-	 tcBWziGyD1oscce0QrdjU3DLLP8yyUA9H6MWHDs4=
+	b=2l/mX0aMZsImUIOPskVZmHzCq6/JXFvY1EWothFGUZEpolJoVmSo37MfVfDDhsVIL
+	 nqnThg7d8wkpldU1A/wCzXsDswhezNZ5htfZ+HZkAmrhkW8Xp1yOLefsWuNfUl1UMV
+	 nr45009YNNtzw5WnSBSQ465+ypJC9uHWtQyXLeaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	"Artem S. Tashkinov" <aros@gmx.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Gabe Teeger <gabe.teeger@amd.com>,
+	Leo Chen <leo.chen@amd.com>,
+	Syed Hassan <syed.hassan@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 430/783] media: test-drivers: vivid: dont call schedule in loop
+Subject: [PATCH 6.12 334/626] drm/amd/display: Guard against setting dispclk low when active
 Date: Tue, 27 May 2025 18:23:47 +0200
-Message-ID: <20250527162530.635203876@linuxfoundation.org>
+Message-ID: <20250527162458.592451390@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +67,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit e4740118b752005cbed339aec9a1d1c43620e0b9 ]
+[ Upstream commit 72d7a7fa1f2404fd31c84a8f808b1b37021a3a9e ]
 
-Artem reported that the CPU load was 100% when capturing from
-vivid at low resolution with ffmpeg.
+[Why]
+We should never apply a minimum dispclk value while in prepare_bandwidth
+or while displays are active. This is always an optimization for when
+all displays are disabled.
 
-This was caused by:
+[How]
+Defer dispclk optimization until safe_to_lower = true and display_count
+reaches 0.
 
-while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
-       !kthread_should_stop())
-        schedule();
+Since 0 has a special value in this logic (ie. no dispclk required)
+we also need adjust the logic that clamps it for the actual request
+to PMFW.
 
-If there are no other processes running that can be scheduled,
-then this is basically a busy-loop.
-
-Change it to wait_event_interruptible_timeout() which doesn't
-have that problem.
-
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reported-by: Artem S. Tashkinov <aros@gmx.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219570
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Gabe Teeger <gabe.teeger@amd.com>
+Reviewed-by: Leo Chen <leo.chen@amd.com>
+Reviewed-by: Syed Hassan <syed.hassan@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-kthread-cap.c  | 11 ++++++++---
- drivers/media/test-drivers/vivid/vivid-kthread-out.c  | 11 ++++++++---
- .../media/test-drivers/vivid/vivid-kthread-touch.c    | 11 ++++++++---
- drivers/media/test-drivers/vivid/vivid-sdr-cap.c      | 11 ++++++++---
- 4 files changed, 32 insertions(+), 12 deletions(-)
+ .../amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c    | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-cap.c b/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-index 669bd96da4c79..273e8ed8c2a90 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-@@ -789,9 +789,14 @@ static int vivid_thread_vid_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
- 
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 7d0d8852ce8d2..a4ac601a30c35 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -452,14 +452,19 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
+ 		update_dppclk = true;
  	}
- 	dprintk(dev, 1, "Video Capture Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-out.c b/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-index fac6208b51da8..015a7b166a1e6 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-@@ -235,9 +235,14 @@ static int vivid_thread_vid_out(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
+-	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
++	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz) &&
++	    (new_clocks->dispclk_khz > 0 || (safe_to_lower && display_count == 0))) {
++		int requested_dispclk_khz = new_clocks->dispclk_khz;
 +
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Video Output Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-touch.c b/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-index fa711ee36a3fb..c862689786b69 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-@@ -135,9 +135,14 @@ static int vivid_thread_touch_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+ 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Touch Capture Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-sdr-cap.c b/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-index 74a91d28c8be9..c633fc2ed664f 100644
---- a/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-@@ -206,9 +206,14 @@ static int vivid_thread_sdr_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+-		if (dc->debug.min_disp_clk_khz > 0 && new_clocks->dispclk_khz < dc->debug.min_disp_clk_khz)
+-			new_clocks->dispclk_khz = dc->debug.min_disp_clk_khz;
++		/* Clamp the requested clock to PMFW based on their limit. */
++		if (dc->debug.min_disp_clk_khz > 0 && requested_dispclk_khz < dc->debug.min_disp_clk_khz)
++			requested_dispclk_khz = dc->debug.min_disp_clk_khz;
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
++		dcn35_smu_set_dispclk(clk_mgr, requested_dispclk_khz);
+ 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
+-		dcn35_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
 +
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "SDR Capture Thread End\n");
- 	return 0;
+ 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
+ 
+ 		update_dispclk = true;
 -- 
 2.39.5
 
