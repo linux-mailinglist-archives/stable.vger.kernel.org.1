@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-146509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1579AC5371
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:47:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EDBAC56E8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A7E47A5E60
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42C364A68F9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7452327C854;
-	Tue, 27 May 2025 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194CD280037;
+	Tue, 27 May 2025 17:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbunsV22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEX6GpVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301EC27BF7C;
-	Tue, 27 May 2025 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AF628001F;
+	Tue, 27 May 2025 17:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364441; cv=none; b=svKOv/GUTv7VR3ACyBpYYyQxOCU/cpyE2ZigXuKBByOjJJUMx8I/vxPq5lKPwIALd2nqKJhZ7RyRlGtV2vXsVAaCNBz3Cij1WOqlNs2ipa+K9fWylOTvhANkVha/ceUOILZVNPoaUVLHeQiWOGlAlXtKAHAzsoENum+tQdvFXO0=
+	t=1748366815; cv=none; b=dR9YGZCMD0GVzDUaQtXMVew6KhJ6xC7UmH19OvsH0xEaGVE939Zj2xeMRpUk56RYZ9urEkydxHIL8vnQbQBvf8mdd/1uw1kpXkFyiaTF5f9xewfEBUXYastx40g8iP3BHfN3gKHxmCxbHOXkLrsHPxXYxqjO9/GFa42vyB3QbJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364441; c=relaxed/simple;
-	bh=vlVRAff+cSED+kRJ8pBPIqD7WENdpEeaqmZOz/4kw/4=;
+	s=arc-20240116; t=1748366815; c=relaxed/simple;
+	bh=Xbyt7e0A4/uRulPQVVgLsftRTWTdep7epzkwgM2+MTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaLekun8pb1rRBzuWzH+lEklmIQ7ucnm6S8kbnFpiBSOL+h96FhR0fxJyeEsgcsfplR25OwMLzXQEljMmnd9B8zw7KvBpP3nyqkNPxTZA0qLKOMtILDz26kLZ7T4b1ZrsA31pcc9TB1+upxQ+D+dIe8J0dUCZvKCU+D6yJTgPxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbunsV22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBFEC4CEE9;
-	Tue, 27 May 2025 16:47:20 +0000 (UTC)
+	 MIME-Version; b=e2ButHtfrTcA/XYhUf6edhnOZbso9I4iCCRbIKJIZt1GBtmMYcJLm7XLZa2oykx1xRWEbuG6ctu6V80indExnHaW28wcoVG3DGaHkS+VHCI5NtNY8FRs9ykhlhyjjvlOQE18nYzNzdGKv4OAOLfUh6yjPFb3+pDMqkfpEy0K2wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEX6GpVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDF3C4CEED;
+	Tue, 27 May 2025 17:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364441;
-	bh=vlVRAff+cSED+kRJ8pBPIqD7WENdpEeaqmZOz/4kw/4=;
+	s=korg; t=1748366815;
+	bh=Xbyt7e0A4/uRulPQVVgLsftRTWTdep7epzkwgM2+MTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbunsV22wblU3T4O2/yefOVqtaS7kc3Wz9nDwS3GGvrsF8ZeFO9kStoH8Ae2MlPNX
-	 iB8ysKkreI1rMlM8Kg/2nfm05oseg/thW7ROqKk3QjKOMP8TeNnQvgPEwRjYD7PFkJ
-	 o15zGqqsdzKCJzn4VYI0wpjjAGHb9Aoi9iW3g+h4=
+	b=jEX6GpVa+JAIo8oJ0dlCDFDRKvtSOVidxFdYTIp8kYwetqi3yBxXyw7T8yPkAFw5d
+	 PnZNaHAHhkl3oWyPvgmxIQUxFa9hx45YM3aJ41UGbHJQemmxT2h4lsZhv5P/ZVTuZv
+	 XRl4z/7ZI2UL6i3IpF9CRUNKBHIN3i9Ab80TcbEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinqian Yang <yangjinqian1@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	shantiprasad shettar <shantiprasad.shettar@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/626] arm64: Add support for HIP09 Spectre-BHB mitigation
-Date: Tue, 27 May 2025 18:19:10 +0200
-Message-ID: <20250527162447.375676539@linuxfoundation.org>
+Subject: [PATCH 6.14 154/783] bnxt_en: Query FW parameters when the CAPS_CHANGE bit is set
+Date: Tue, 27 May 2025 18:19:11 +0200
+Message-ID: <20250527162519.433795008@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinqian Yang <yangjinqian1@huawei.com>
+From: shantiprasad shettar <shantiprasad.shettar@broadcom.com>
 
-[ Upstream commit e18c09b204e81702ea63b9f1a81ab003b72e3174 ]
+[ Upstream commit a6c81e32aeacbfd530d576fa401edd506ec966ef ]
 
-The HIP09 processor is vulnerable to the Spectre-BHB (Branch History
-Buffer) attack, which can be exploited to leak information through
-branch prediction side channels. This commit adds the MIDR of HIP09
-to the list for software mitigation.
+Newer FW can set the CAPS_CHANGE flag during ifup if some capabilities
+or configurations have changed.  For example, the CoS queue
+configurations may have changed.  Support this new flag by treating it
+almost like FW reset.  The driver will essentially rediscover all
+features and capabilities, reconfigure all backing store context memory,
+reset everything to default, and reserve all resources.
 
-Signed-off-by: Jinqian Yang <yangjinqian1@huawei.com>
-Link: https://lore.kernel.org/r/20250325141900.2057314-1-yangjinqian1@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: shantiprasad shettar <shantiprasad.shettar@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250310183129.3154117-5-michael.chan@broadcom.com
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- arch/arm64/kernel/proton-pack.c  | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 8a6b7feca3e42..d92a0203e5a93 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -132,6 +132,7 @@
- #define FUJITSU_CPU_PART_A64FX		0x001
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index bd8b9cb05ae98..1a19c922009d1 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -12104,6 +12104,7 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
+ 	struct hwrm_func_drv_if_change_input *req;
+ 	bool fw_reset = !bp->irq_tbl;
+ 	bool resc_reinit = false;
++	bool caps_change = false;
+ 	int rc, retry = 0;
+ 	u32 flags = 0;
  
- #define HISI_CPU_PART_TSV110		0xD01
-+#define HISI_CPU_PART_HIP09			0xD02
- 
- #define APPLE_CPU_PART_M1_ICESTORM	0x022
- #define APPLE_CPU_PART_M1_FIRESTORM	0x023
-@@ -208,6 +209,7 @@
- #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
- #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
- #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
-+#define MIDR_HISI_HIP09 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_HIP09)
- #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
- #define MIDR_APPLE_M1_FIRESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_FIRESTORM)
- #define MIDR_APPLE_M1_ICESTORM_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM_PRO)
-diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
-index 8ef3335ecff72..31eaf15d2079a 100644
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -904,6 +904,7 @@ static u8 spectre_bhb_loop_affected(void)
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
- 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
-+		MIDR_ALL_VERSIONS(MIDR_HISI_HIP09),
- 		{},
- 	};
- 	static const struct midr_range spectre_bhb_k11_list[] = {
+@@ -12159,8 +12160,11 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
+ 		set_bit(BNXT_STATE_ABORT_ERR, &bp->state);
+ 		return -ENODEV;
+ 	}
+-	if (resc_reinit || fw_reset) {
+-		if (fw_reset) {
++	if (flags & FUNC_DRV_IF_CHANGE_RESP_FLAGS_CAPS_CHANGE)
++		caps_change = true;
++
++	if (resc_reinit || fw_reset || caps_change) {
++		if (fw_reset || caps_change) {
+ 			set_bit(BNXT_STATE_FW_RESET_DET, &bp->state);
+ 			if (!test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
+ 				bnxt_ulp_irq_stop(bp);
 -- 
 2.39.5
 
