@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-146527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B29AC5387
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F1DAC56DA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830D83B7BC5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE38A7A370D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA2F263F5E;
-	Tue, 27 May 2025 16:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDD9280330;
+	Tue, 27 May 2025 17:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2SPyWcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BawX51jT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CA32CCC0;
-	Tue, 27 May 2025 16:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9833E27FB38;
+	Tue, 27 May 2025 17:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364495; cv=none; b=FNp5AfUAcUoxcAootWym5mfq8kjeDOcOI8yUVXMzIU5Bdt32I+IrAU+yqb3PVTojXpDJp2EjIDaMLCQrWmZP+nlihQUzvyXH5FUHKSGfCBk034aYw7t00MvwEQlms1XUh0LkkxoFnV4jl1aMO56jLUuLEMtWjvEU8xqfauDQc2E=
+	t=1748366750; cv=none; b=sEGglsa7qLrJCqxNcKZWghHEnHkQ0Mx//6XsjgYL3HEWeyv7w8jtJuLGqADLnmoTAYD2P1waPAfd0AWTx7nk6Ec0VGWYMQaZyOZ4MUZglVz12EBT5DRltfcr/EeGlHdq/Ue6UD+0ujAun2TBHo8twr/PzCGKtxTuKrC1mKvaB6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364495; c=relaxed/simple;
-	bh=cuejeLGWlWHO/UWpXI0pcMLs64DfRkVqbwvH/YrDNeA=;
+	s=arc-20240116; t=1748366750; c=relaxed/simple;
+	bh=UVZYUAaP8qSdUxdVUHsw970wfGAOnVJKfT6PwlYWv34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDmyGWwksDHXGWTzESeEwmbS0pGDJazl3mML/n9Hpzppk1YX0SXqw+ZIn/piafSPgm4sHNR7rrGuZn5pTZTcM+FOo5jJpGcEWnLHlJpLSnGvwEzj1ghpWxnS0r426KMnM/G4BhlhPLpdYEKCrOAm0ixUC4HbwM6Qyl6j/vp9WJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2SPyWcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AFCC4CEE9;
-	Tue, 27 May 2025 16:48:13 +0000 (UTC)
+	 MIME-Version; b=h+puhUTxSkd/AQHwdByEE7PL5GjuCiyyNjPKt4vC8StY2rSdmpQ2SivvAvyrkxlJtuz+qrEGUBENyHO3s4WKfBf4WEUJMiIV3/FnPMs0RQPaFydpNKJjZk6L1XwdAXMmsW7I3qclPlBm6ERKDPueTojpqNE16ch7sRPJ9JCfFEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BawX51jT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D02AC4CEE9;
+	Tue, 27 May 2025 17:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364494;
-	bh=cuejeLGWlWHO/UWpXI0pcMLs64DfRkVqbwvH/YrDNeA=;
+	s=korg; t=1748366750;
+	bh=UVZYUAaP8qSdUxdVUHsw970wfGAOnVJKfT6PwlYWv34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2SPyWcTbZStKykGyWnFKVqD9bOAsR3Ha+V8X1/hV14Qdl+Yh4JgouhbqYGapsXBp
-	 QbrOk5wcuc7VMKj3xLMSK1gPn9Bk1XO36VyR/02gfRV5vgtx9tOZCc4yhRf1fbum83
-	 c5RDHvC/AIChKr9ChNXb6Mo//s2eShwvEM68/giQ=
+	b=BawX51jT7otDIybeEPiCFqAZdYclsOdJBEeuf0MnKfn01jqbwkvkgHtV0ZOnC3Rz/
+	 ksuCTsJvd52huab/ufjcUKE3VEUNcbSSr+9WF6RTlZA3ED6dT+veOmXMbLr1/05rvk
+	 xV49u0wM8mbz3PmPd3t09o4tYtoTyFMRhEQVLcdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/626] SUNRPC: rpcbind should never reset the port to the value 0
+Subject: [PATCH 6.14 169/783] thunderbolt: Do not add non-active NVM if NVM upgrade is disabled for retimer
 Date: Tue, 27 May 2025 18:19:26 +0200
-Message-ID: <20250527162448.013483129@linuxfoundation.org>
+Message-ID: <20250527162520.051499596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 214c13e380ad7636631279f426387f9c4e3c14d9 ]
+[ Upstream commit ad79c278e478ca8c1a3bf8e7a0afba8f862a48a1 ]
 
-If we already had a valid port number for the RPC service, then we
-should not allow the rpcbind client to set it to the invalid value '0'.
+This is only used to write a new NVM in order to upgrade the retimer
+firmware. It does not make sense to expose it if upgrade is disabled.
+This also makes it consistent with the router NVM upgrade.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/rpcb_clnt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/retimer.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
-index 102c3818bc54d..53bcca365fb1c 100644
---- a/net/sunrpc/rpcb_clnt.c
-+++ b/net/sunrpc/rpcb_clnt.c
-@@ -820,9 +820,10 @@ static void rpcb_getport_done(struct rpc_task *child, void *data)
- 	}
+diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
+index 1f25529fe05da..361fece3d8188 100644
+--- a/drivers/thunderbolt/retimer.c
++++ b/drivers/thunderbolt/retimer.c
+@@ -93,9 +93,11 @@ static int tb_retimer_nvm_add(struct tb_retimer *rt)
+ 	if (ret)
+ 		goto err_nvm;
  
- 	trace_rpcb_setport(child, map->r_status, map->r_port);
--	xprt->ops->set_port(xprt, map->r_port);
--	if (map->r_port)
-+	if (map->r_port) {
-+		xprt->ops->set_port(xprt, map->r_port);
- 		xprt_set_bound(xprt);
+-	ret = tb_nvm_add_non_active(nvm, nvm_write);
+-	if (ret)
+-		goto err_nvm;
++	if (!rt->no_nvm_upgrade) {
++		ret = tb_nvm_add_non_active(nvm, nvm_write);
++		if (ret)
++			goto err_nvm;
 +	}
- }
  
- /*
+ 	rt->nvm = nvm;
+ 	dev_dbg(&rt->dev, "NVM version %x.%x\n", nvm->major, nvm->minor);
 -- 
 2.39.5
 
