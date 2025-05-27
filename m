@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53248AC54D4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B68AC5833
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F21A173DC0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 108D71BA81FA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC3827FB34;
-	Tue, 27 May 2025 17:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852C41DC998;
+	Tue, 27 May 2025 17:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRAz/BPd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+95Q/Kt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B0025A323;
-	Tue, 27 May 2025 17:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A142110E;
+	Tue, 27 May 2025 17:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365459; cv=none; b=Yes87ywy7p+iovIrwwh6gVEwsMcptzw8Mr8EPAhnf6XfBNC77tCr1yXQoWx+kdb67FQgoj1TAek9QcAl+0X3dD8aB+ZTaLhhy46VszSDLxCCR15gjAvM+HHDlqI8R6UvfHattHuDu/VRb5n1LukZN/IpAktd/BYPXhW+gDODJtg=
+	t=1748367723; cv=none; b=Nfz++melUkp9OkTjzIcUoKlXUtDVsOvI+Jhj9NWudBsDKD1OCKOX3Pwitx3QuyWpZOv4hvUtiIOxpL3gFQ9+I6dALhmRRx0zDRG+kLHjjjGNDXHA/kHsI0TGgWDlHJnukmKhuaVQHAZ2kVopN+qhmKy9daBumdx58u/rQFld9H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365459; c=relaxed/simple;
-	bh=D6wFk69aPsPllk1jNlIGTeohMon9JbGTqbAOn+Uz6NU=;
+	s=arc-20240116; t=1748367723; c=relaxed/simple;
+	bh=evJdFz5aTScTs2ZPFwjq3FVVgLqE9dUlxVlZQaz4cPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Em7JrrgLHq1+qgayEtEZyz30L7HgRDYJIE7Di6qYW5fk+Uu3/m5NzcebYzYrS8uINqYAuXHyXiG68Mh9CjuAi++uYLvdmWF3M1kbdrJ4Xj0O1FB0mPQH+IZyYGJU24ArQgVDcujoQXoKGS10X7x8O3akAsFktA0HwTD9k6FzzII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRAz/BPd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DE5C4CEE9;
-	Tue, 27 May 2025 17:04:14 +0000 (UTC)
+	 MIME-Version; b=cvUtD7NMAaDjaOObXXeFFjfxMSUQYsb8OL3af3uv/x5mD1J8P1N34ogbb/SdVDR1w3sHf2sDBuDjVWiZAJk8mIfYj44PIhyPqc1VCngEdokaZRzJL0kUVgvoP6jem6l1QER+yz3zMZga/c4IiKkqsmi4Lx4MkVtNeD2lJXBzunk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+95Q/Kt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A36C4CEE9;
+	Tue, 27 May 2025 17:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365455;
-	bh=D6wFk69aPsPllk1jNlIGTeohMon9JbGTqbAOn+Uz6NU=;
+	s=korg; t=1748367723;
+	bh=evJdFz5aTScTs2ZPFwjq3FVVgLqE9dUlxVlZQaz4cPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRAz/BPd36A4VjZCkEJHoCuYpuSjXc5ryrXy1/sdxUyBIO9gqpdo6VC45vVgGWOLq
-	 nzq8tncp79cYJQ3mTuEgnLFuc0CpH8/wfsKVbTTt50QJ4LG9Bs2guvi/AWINvuqaat
-	 4EprkJFR+n5paG8wmThwbBDPOvj8Ez6y16xE1Rag=
+	b=N+95Q/Ktj6BXeQIoMGQma41B5wPMEsW6vG/AveOFoox4//mJepe+QZTx9i/ZwUaOI
+	 S4OMsIjNbodfMRsQfrvF30l/9mNpBViR35MzB74uEJFP3QMms6BD9EQBF38QIGn2a3
+	 xOnN6FGuxcm3RW2b4ec8msIAltiN//zCPVO6ZVfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 351/626] irqchip/riscv-imsic: Set irq_set_affinity() for IMSIC base
-Date: Tue, 27 May 2025 18:24:04 +0200
-Message-ID: <20250527162459.280599711@linuxfoundation.org>
+Subject: [PATCH 6.14 448/783] kunit: tool: Use qboot on QEMU x86_64
+Date: Tue, 27 May 2025 18:24:05 +0200
+Message-ID: <20250527162531.376292103@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Brendan Jackman <jackmanb@google.com>
 
-[ Upstream commit 999f458c1771354371ba367dd84f55f9a62a4233 ]
+[ Upstream commit 08fafac4c9f289a9d9a22d838921e4b3eb22c664 ]
 
-The IMSIC driver assigns the IMSIC domain specific imsic_irq_set_affinity()
-callback to the per device leaf MSI domain. That's a layering violation as
-it is called with the leaf domain data and not with the IMSIC domain
-data. This prevents moving the IMSIC driver to the common MSI library which
-uses the generic msi_domain_set_affinity() callback for device MSI domains.
+As noted in [0], SeaBIOS (QEMU default) makes a mess of the terminal,
+qboot does not.
 
-Instead of using imsic_irq_set_affinity() for leaf MSI domains, use
-imsic_irq_set_affinity() for the non-leaf IMSIC base domain and use
-irq_chip_set_affinity_parent() for leaf MSI domains.
+It turns out this is actually useful with kunit.py, since the user is
+exposed to this issue if they set --raw_output=all.
 
-[ tglx: Massaged change log ]
+qboot is also faster than SeaBIOS, but it's is marginal for this
+usecase.
 
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250217085657.789309-2-apatel@ventanamicro.com
+[0] https://lore.kernel.org/all/CA+i-1C0wYb-gZ8Mwh3WSVpbk-LF-Uo+njVbASJPe1WXDURoV7A@mail.gmail.com/
+
+Both SeaBIOS and qboot are x86-specific.
+
+Link: https://lore.kernel.org/r/20250124-kunit-qboot-v1-1-815e4d4c6f7c@google.com
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-imsic-platform.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ tools/testing/kunit/qemu_configs/x86_64.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
-index c708780e8760f..5d7c30ad8855b 100644
---- a/drivers/irqchip/irq-riscv-imsic-platform.c
-+++ b/drivers/irqchip/irq-riscv-imsic-platform.c
-@@ -96,9 +96,8 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
- 				  bool force)
- {
- 	struct imsic_vector *old_vec, *new_vec;
--	struct irq_data *pd = d->parent_data;
- 
--	old_vec = irq_data_get_irq_chip_data(pd);
-+	old_vec = irq_data_get_irq_chip_data(d);
- 	if (WARN_ON(!old_vec))
- 		return -ENOENT;
- 
-@@ -116,13 +115,13 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
- 		return -ENOSPC;
- 
- 	/* Point device to the new vector */
--	imsic_msi_update_msg(d, new_vec);
-+	imsic_msi_update_msg(irq_get_irq_data(d->irq), new_vec);
- 
- 	/* Update irq descriptors with the new vector */
--	pd->chip_data = new_vec;
-+	d->chip_data = new_vec;
- 
--	/* Update effective affinity of parent irq data */
--	irq_data_update_effective_affinity(pd, cpumask_of(new_vec->cpu));
-+	/* Update effective affinity */
-+	irq_data_update_effective_affinity(d, cpumask_of(new_vec->cpu));
- 
- 	/* Move state of the old vector to the new vector */
- 	imsic_vector_move(old_vec, new_vec);
-@@ -135,6 +134,9 @@ static struct irq_chip imsic_irq_base_chip = {
- 	.name			= "IMSIC",
- 	.irq_mask		= imsic_irq_mask,
- 	.irq_unmask		= imsic_irq_unmask,
-+#ifdef CONFIG_SMP
-+	.irq_set_affinity	= imsic_irq_set_affinity,
-+#endif
- 	.irq_retrigger		= imsic_irq_retrigger,
- 	.irq_compose_msi_msg	= imsic_irq_compose_msg,
- 	.flags			= IRQCHIP_SKIP_SET_WAKE |
-@@ -245,7 +247,7 @@ static bool imsic_init_dev_msi_info(struct device *dev,
- 		if (WARN_ON_ONCE(domain != real_parent))
- 			return false;
- #ifdef CONFIG_SMP
--		info->chip->irq_set_affinity = imsic_irq_set_affinity;
-+		info->chip->irq_set_affinity = irq_chip_set_affinity_parent;
- #endif
- 		break;
- 	default:
+diff --git a/tools/testing/kunit/qemu_configs/x86_64.py b/tools/testing/kunit/qemu_configs/x86_64.py
+index dc79490768630..4a6bf4e048f5b 100644
+--- a/tools/testing/kunit/qemu_configs/x86_64.py
++++ b/tools/testing/kunit/qemu_configs/x86_64.py
+@@ -7,4 +7,6 @@ CONFIG_SERIAL_8250_CONSOLE=y''',
+ 			   qemu_arch='x86_64',
+ 			   kernel_path='arch/x86/boot/bzImage',
+ 			   kernel_command_line='console=ttyS0',
+-			   extra_qemu_params=[])
++			   # qboot is faster than SeaBIOS and doesn't mess up
++			   # the terminal.
++			   extra_qemu_params=['-bios', 'qboot.rom'])
 -- 
 2.39.5
 
