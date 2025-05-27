@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-147789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F34FAC592D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EED0AC5616
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D68881BC3300
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4092B188DF59
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D7227FD64;
-	Tue, 27 May 2025 17:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D7C27E1CA;
+	Tue, 27 May 2025 17:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5Zj7zhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzUwPPDk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22271DFF0;
-	Tue, 27 May 2025 17:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831031DB34C;
+	Tue, 27 May 2025 17:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368435; cv=none; b=auUCXEZcSGZH/Qaec2DgZ3SDTO5ZyXsSNh33eFXHcFCJq1wwbiPHiV2IoLAM4d33YrS3qCX8U2mXuVfh9w1vH3INlqs48G99gOWej005dvfH1KG7iVSouWp4SkbSYR37KmXkvfGqbSdBFjgolffutXDPDDlgw6DnWw5jJnjCWW0=
+	t=1748366247; cv=none; b=nP+1AWqahQfS8oLGE+g9DW4jS3alKMitGO21Vs3XqTK8Rb207dHAHFv0gPtWynTLnB7ev/d53nizG046qMPR847JFzrr0l0ya3Wn0TnWugRpK9XY1hMUaDj+kt6o16qOQGvIlvqA96qU9pWZivbZ1pVIvDbpFDWmqmlo0g9cjAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368435; c=relaxed/simple;
-	bh=l+tNKzLHDjQoAq4UhMiuZ6jdguafic5piYRuiQkbo74=;
+	s=arc-20240116; t=1748366247; c=relaxed/simple;
+	bh=TAJQAeuKI23WEJlzs+2DLYiPrHk9JN+YhvLBl0Cvoa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHxQ+DN9E8DvjhSBGT6NpyrnPQzlBThsEc/mumE5qVPQK0UD+1pSSFhqegctMnu2N3duPW0arVdEZMlWta8sniRbDvvCvevfpsfix8Abm4xOhzmOtkwwzc5mAlwSY44lGUa64neN5c+zvkcWak57m4R50kU/qIIMQF8hX05LDU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5Zj7zhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A55CC4CEE9;
-	Tue, 27 May 2025 17:53:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SdCJyJ56NHctvAxFWp0hUzl41PEMcL80dqhcGskU7I3YSqvOVpvMqwptGNaHqdZHm9gFf3sKweaZUJmQ3+LfCess/LDJZ8UOqh6Kq3KQL0ZBbme9nOdxrRuTbnBPH3HavWDy3eQwHwLzu3dNYVrPyUta3FzgsfvfNf48tzEk6Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzUwPPDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEBEC4CEE9;
+	Tue, 27 May 2025 17:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368434;
-	bh=l+tNKzLHDjQoAq4UhMiuZ6jdguafic5piYRuiQkbo74=;
+	s=korg; t=1748366247;
+	bh=TAJQAeuKI23WEJlzs+2DLYiPrHk9JN+YhvLBl0Cvoa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5Zj7zhdGKnveI417xKgVVzPh8cKKZSATYnwZxv6hEzv40l8g9iSLlVIQZh2bg48B
-	 NeA5mnHQ/Haai9BJHz3ANGYuJk0sLt/n8oMyM9wlZByPCQck1q/Dm8Dj/9U79wozq4
-	 PhdDM5xSTcGvFDzmwbOzmqMkdgJKcswVR76lVQ8Y=
+	b=yzUwPPDkPXDCEl+MQ+q57e+y810zXNB7kbhvIT9RxQOp+zJJYapj+n6Wi0LvKxC5l
+	 nqauYnCk/7y1p/gwvRZ7OwfHoUnFHQuy4b4cakTUkmB/Ac0hl4qpKKRd05PQ3epNwT
+	 3gHC9xtOq2AxprQXoA5tRIRak8rkTiH8LKkBUKPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 704/783] ice: Fix LACP bonds without SRIOV environment
+Subject: [PATCH 6.12 608/626] platform/x86: think-lmi: Fix attribute name usage for non-compliant items
 Date: Tue, 27 May 2025 18:28:21 +0200
-Message-ID: <20250527162541.789024560@linuxfoundation.org>
+Message-ID: <20250527162509.701623120@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Ertman <david.m.ertman@intel.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 6c778f1b839b63525b30046c9d1899424a62be0a ]
+[ Upstream commit 8508427a6e21c1ef01ae4c9f4e2675fc99deb949 ]
 
-If an aggregate has the following conditions:
-- The SRIOV LAG DDP package has been enabled
-- The bond is in 802.3ad LACP mode
-- The bond is disqualified from supporting SRIOV VF LAG
-- Both interfaces were added simultaneously to the bond (same command)
+A few, quite rare, WMI attributes have names that are not compatible with
+filenames, e.g. "Intel VT for Directed I/O (VT-d)".
+For these cases the '/' gets replaced with '\' for display, but doesn't
+get switched again when doing the WMI access.
 
-Then there is a chance that the two interfaces will be assigned different
-LACP Aggregator ID's.  This will cause a failure of the LACP control over
-the bond.
+Fix this by keeping the original attribute name and using that for sending
+commands to the BIOS
 
-To fix this, we can detect if the primary interface for the bond (as
-defined by the driver) is not in switchdev mode, and exit the setup flow
-if so.
-
-Reproduction steps:
-
-%> ip link add bond0 type bond mode 802.3ad miimon 100
-%> ip link set bond0 up
-%> ifenslave bond0 eth0 eth1
-%> cat /proc/net/bonding/bond0 | grep Agg
-
-Check for Aggregator IDs that differ.
-
-Fixes: ec5a6c5f79ed ("ice: process events created by lag netdev event handler")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250520005027.3840705-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lag.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/platform/x86/think-lmi.c | 26 ++++++++++++++------------
+ drivers/platform/x86/think-lmi.h |  1 +
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index 22371011c2492..2410aee59fb2d 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -1321,12 +1321,18 @@ static void ice_lag_changeupper_event(struct ice_lag *lag, void *ptr)
- 		 */
- 		if (!primary_lag) {
- 			lag->primary = true;
-+			if (!ice_is_switchdev_running(lag->pf))
-+				return;
-+
- 			/* Configure primary's SWID to be shared */
- 			ice_lag_primary_swid(lag, true);
- 			primary_lag = lag;
- 		} else {
- 			u16 swid;
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index 4cfb53206cb84..1abd8378f158d 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -995,8 +995,8 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+-		set_str = kasprintf(GFP_KERNEL, "%s,%s,%s", setting->display_name,
+-					new_setting, tlmi_priv.pwd_admin->signature);
++		set_str = kasprintf(GFP_KERNEL, "%s,%s,%s", setting->name,
++				    new_setting, tlmi_priv.pwd_admin->signature);
+ 		if (!set_str) {
+ 			ret = -ENOMEM;
+ 			goto out;
+@@ -1026,7 +1026,7 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 				goto out;
+ 		}
  
-+			if (!ice_is_switchdev_running(primary_lag->pf))
-+				return;
+-		set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->display_name,
++		set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->name,
+ 				    new_setting);
+ 		if (!set_str) {
+ 			ret = -ENOMEM;
+@@ -1054,11 +1054,11 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 		}
+ 
+ 		if (auth_str)
+-			set_str = kasprintf(GFP_KERNEL, "%s,%s,%s", setting->display_name,
+-					new_setting, auth_str);
++			set_str = kasprintf(GFP_KERNEL, "%s,%s,%s", setting->name,
++					    new_setting, auth_str);
+ 		else
+-			set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->display_name,
+-					new_setting);
++			set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->name,
++					    new_setting);
+ 		if (!set_str) {
+ 			ret = -ENOMEM;
+ 			goto out;
+@@ -1568,9 +1568,6 @@ static int tlmi_analyze(void)
+ 			continue;
+ 		}
+ 
+-		/* It is not allowed to have '/' for file name. Convert it into '\'. */
+-		strreplace(item, '/', '\\');
+-
+ 		/* Remove the value part */
+ 		strreplace(item, ',', '\0');
+ 
+@@ -1582,11 +1579,16 @@ static int tlmi_analyze(void)
+ 			goto fail_clear_attr;
+ 		}
+ 		setting->index = i;
 +
- 			swid = primary_lag->pf->hw.port_info->sw_id;
- 			ice_lag_set_swid(swid, lag, true);
- 			ice_lag_add_prune_list(primary_lag, lag->pf);
++		strscpy(setting->name, item);
++		/* It is not allowed to have '/' for file name. Convert it into '\'. */
++		strreplace(item, '/', '\\');
+ 		strscpy(setting->display_name, item);
++
+ 		/* If BIOS selections supported, load those */
+ 		if (tlmi_priv.can_get_bios_selections) {
+-			ret = tlmi_get_bios_selections(setting->display_name,
+-					&setting->possible_values);
++			ret = tlmi_get_bios_selections(setting->name,
++						       &setting->possible_values);
+ 			if (ret || !setting->possible_values)
+ 				pr_info("Error retrieving possible values for %d : %s\n",
+ 						i, setting->display_name);
+diff --git a/drivers/platform/x86/think-lmi.h b/drivers/platform/x86/think-lmi.h
+index e1975ffebeb42..7f9632a53736f 100644
+--- a/drivers/platform/x86/think-lmi.h
++++ b/drivers/platform/x86/think-lmi.h
+@@ -84,6 +84,7 @@ struct tlmi_pwd_setting {
+ struct tlmi_attr_setting {
+ 	struct kobject kobj;
+ 	int index;
++	char name[TLMI_SETTINGS_MAXLEN];
+ 	char display_name[TLMI_SETTINGS_MAXLEN];
+ 	char *possible_values;
+ };
 -- 
 2.39.5
 
