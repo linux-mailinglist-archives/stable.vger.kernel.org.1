@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-147644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898BAAC588A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA20AC5599
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5811BC2704
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6EAE3AA3DB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA49A25A627;
-	Tue, 27 May 2025 17:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7557727CCF0;
+	Tue, 27 May 2025 17:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caW2sKxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCwGWwoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D631FB3;
-	Tue, 27 May 2025 17:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB5E278750;
+	Tue, 27 May 2025 17:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367984; cv=none; b=fM05A4qqOU1fEzAF73369o2T44BZmQEmlNJ+9eWUmUvCsvgRnWrc+caupF6fSzUXhGWv6Z+rcpE6S6GWdI3CMDnRPsbPpEWoIvicQIVyMD42DQMV75h3+S5iDte/sak1Jx6jCd8ZH9RL/c0egc5BymV3hzkl2d9M5cP8wO2oyL8=
+	t=1748365718; cv=none; b=f9OhtJtrtqjPJXk9LinJV1yZx65tr5rqFN/Mpn9R4oXvWvw3g89AgaEEtlbDMSBfR2pO5OAMrlG3d8xvXIs/aXYwHewx7/0bOZ61pfUyEj3D2nP8xguHD2jOcNAlMRfzGqwVoli3B8ZnL3nEJjVXAmkXwpvXxQOQFttGuuEgM8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367984; c=relaxed/simple;
-	bh=MDc42TrWAovL9NxNoMPLypxZB2GBUMMjtp91hhJlRoE=;
+	s=arc-20240116; t=1748365718; c=relaxed/simple;
+	bh=/YZmI+NiXid5iLG0ZU48eD7WC5olZzQlLqVMoc/Mx7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sh3TNkfj2vQQCHmwamALFOiDv/OA9G+nzRgH6nBCOm9B5sFeUJPq5crhj09Vqj8c2d6yxAh8MrEElJWkr53f1BmwHODmLvSnR8SR/yOeiwxkpI9rxwFIv4xu0lNbN6rwwgaDfbouE3tc3+EESc7+OP3zJx0+A85VEE19Hb46OYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caW2sKxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1817C4CEE9;
-	Tue, 27 May 2025 17:46:23 +0000 (UTC)
+	 MIME-Version; b=l2tAEnie7eSJ/moaVj8oO1MjBAfV1u7NBRxTM0jPxQ1Wxg0ywP0XQBECTWvjrs+voR1HfIARnEZ634/rAYLgOlwLLb9DMwggLc6gOc8icSF976d7HzHxAs70ay/70I0LWLtaTxTtAW8N1far3NESpHHf/9ke9OFCWikOghDIzmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCwGWwoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA683C4CEE9;
+	Tue, 27 May 2025 17:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367984;
-	bh=MDc42TrWAovL9NxNoMPLypxZB2GBUMMjtp91hhJlRoE=;
+	s=korg; t=1748365718;
+	bh=/YZmI+NiXid5iLG0ZU48eD7WC5olZzQlLqVMoc/Mx7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caW2sKxQyTSff/Jfp+51PFbrIs+yd2aHJVN1ELUjqB4snR+KaJzmeOz3PI+8jW1tC
-	 Q+yBVVIwM6Yuhl9Y3D85ADW1XHLFjP9VQggv+vrQhNoVJUyl4EqrvIaqDu1plAsxCG
-	 LkOv4mCNO/zBPxrEy2OvzkQc4b5/u07Y6gSvtNak=
+	b=HCwGWwoVPFPixnut0+5SRwtpGzpZjxz1uUbVCb1/i7S0LpJuggtFijC3rtr7G+ouw
+	 eJroLXGpmxMT2w/KtSIzMAEQvAUCiJytd/ZHv4zIW8m8uLPDvlSJAwkE6Fi/cUVL1e
+	 +Npfs9j5XH4LbJ+G+f5uOvXa5MczJlehbtXUsj1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Avula Sri Charan <quic_asrichar@quicinc.com>,
+	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 561/783] net/mlx5e: Avoid WARN_ON when configuring MQPRIO with HTB offload enabled
-Date: Tue, 27 May 2025 18:25:58 +0200
-Message-ID: <20250527162535.992828865@linuxfoundation.org>
+Subject: [PATCH 6.12 466/626] wifi: ath12k: Avoid napi_sync() before napi_enable()
+Date: Tue, 27 May 2025 18:25:59 +0200
+Message-ID: <20250527162503.936400152@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,50 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Avula Sri Charan <quic_asrichar@quicinc.com>
 
-[ Upstream commit 689805dcc474c2accb5cffbbcea1c06ee4a54570 ]
+[ Upstream commit 268c73d470a5790a492a2fc2ded084b909d144f3 ]
 
-When attempting to enable MQPRIO while HTB offload is already
-configured, the driver currently returns `-EINVAL` and triggers a
-`WARN_ON`, leading to an unnecessary call trace.
+In case of MHI error a reset work will be queued which will try
+napi_disable() after napi_synchronize().
 
-Update the code to handle this case more gracefully by returning
-`-EOPNOTSUPP` instead, while also providing a helpful user message.
+As the napi will be only enabled after qmi_firmware_ready event,
+trying napi_synchronize() before napi_enable() will result in
+indefinite sleep in case of a firmware crash in QMI init sequence.
 
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To avoid this, introduce napi_enabled flag to check if napi is enabled
+or not before calling napi_synchronize().
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Avula Sri Charan <quic_asrichar@quicinc.com>
+Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250124090058.3194299-1-quic_tamizhr@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h |  1 +
+ drivers/net/wireless/ath/ath12k/pci.c  | 13 ++++++++++---
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index b0748e46b1ac4..ca56740f6d2f9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -3787,8 +3787,11 @@ static int mlx5e_setup_tc_mqprio(struct mlx5e_priv *priv,
- 	/* MQPRIO is another toplevel qdisc that can't be attached
- 	 * simultaneously with the offloaded HTB.
- 	 */
--	if (WARN_ON(mlx5e_selq_is_htb_enabled(&priv->selq)))
--		return -EINVAL;
-+	if (mlx5e_selq_is_htb_enabled(&priv->selq)) {
-+		NL_SET_ERR_MSG_MOD(mqprio->extack,
-+				   "MQPRIO cannot be configured when HTB offload is enabled.");
-+		return -EOPNOTSUPP;
-+	}
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 7f2e9a9b40977..3faf3430effb9 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -148,6 +148,7 @@ struct ath12k_ext_irq_grp {
+ 	u32 num_irq;
+ 	u32 grp_id;
+ 	u64 timestamp;
++	bool napi_enabled;
+ 	struct napi_struct napi;
+ 	struct net_device *napi_ndev;
+ };
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 2ff866e1d7d5b..45d537066345a 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -481,8 +481,11 @@ static void __ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
  
- 	switch (mqprio->mode) {
- 	case TC_MQPRIO_MODE_DCB:
+ 		ath12k_pci_ext_grp_disable(irq_grp);
+ 
+-		napi_synchronize(&irq_grp->napi);
+-		napi_disable(&irq_grp->napi);
++		if (irq_grp->napi_enabled) {
++			napi_synchronize(&irq_grp->napi);
++			napi_disable(&irq_grp->napi);
++			irq_grp->napi_enabled = false;
++		}
+ 	}
+ }
+ 
+@@ -1112,7 +1115,11 @@ void ath12k_pci_ext_irq_enable(struct ath12k_base *ab)
+ 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
+ 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
+-		napi_enable(&irq_grp->napi);
++		if (!irq_grp->napi_enabled) {
++			napi_enable(&irq_grp->napi);
++			irq_grp->napi_enabled = true;
++		}
++
+ 		ath12k_pci_ext_grp_enable(irq_grp);
+ 	}
+ 
 -- 
 2.39.5
 
