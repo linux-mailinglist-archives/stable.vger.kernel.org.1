@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E218AC5956
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:55:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4F3AC561A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6145E1BC3769
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E0734A4F7B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3527280036;
-	Tue, 27 May 2025 17:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC8F27E7C1;
+	Tue, 27 May 2025 17:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5rBegTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPNuj6iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDED27FB3D;
-	Tue, 27 May 2025 17:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A791182D7;
+	Tue, 27 May 2025 17:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368543; cv=none; b=pxhk6BUWteKquXN9n+tVzMFG7xR02eSrxaQqw4n/fwvAOmjNDg72YHliFuKzwoXlKxymCHZ4lbPWq9h4yoKKmjvv9EWVLETlyM8QhT8rJjmkVwcaQg+wJfeXB5jtDfpD77VbByMaZT36eXbWNCRnBUWgw/5gFKIW3n/nwb8bnoM=
+	t=1748366232; cv=none; b=naacFHjMt9lqaNCxqKPJbYaOYPdJlZiPtFRoz3jcFd92XrK46WPTkKy6OpzdtDmHKRdN22qaEIGGOoktKYrHuk1Fg3lFtsIxw5lVgH41yX3vgEfszrytte9m0vFLnRDbj+pY/WhQ4QSftFl+MNitjdrbhOgJVf1jua0D7hKZHyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368543; c=relaxed/simple;
-	bh=jW5XU4lWFjz7VKmNAuydR7IZu1AGIOdBaJCtPg/TcBQ=;
+	s=arc-20240116; t=1748366232; c=relaxed/simple;
+	bh=eO8pmykyRouOG8LT8/8HVyJ+RUpVmgTpNdDM9r9JMhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IROZSyoZVe3dbZvGxypH5Y70rY5OC8ANB4HhsPcdkEJiYpcZFeGhO5oFStQCsLFt3Liyw6Ol6diNZoQR+sLnfLmSbJHUTEyc85Y4DxvcmEC3UE7iJpLyC57D+5rTFfg+m/L1AW0Fjz+hUZmKEBWof4KHU9Nx3N45rLgtWP7brJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5rBegTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776DAC4CEE9;
-	Tue, 27 May 2025 17:55:42 +0000 (UTC)
+	 MIME-Version; b=pwifA9qnNb28L5Jfjww6UAGCmGdfSdrlKZqilDdVjBzq4EXZ5o3mb2MwLnCEyhLx0A6USWzfBiiJV6kqHBbycYQW343AlgaqcdffRgetn8jDqWj6yBUujh4T0rH3andIpnkpj8ddB1p8JMKI87pEQvyBWYjYyTbG2PnTQ95HkM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPNuj6iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA7FC4CEEB;
+	Tue, 27 May 2025 17:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368543;
-	bh=jW5XU4lWFjz7VKmNAuydR7IZu1AGIOdBaJCtPg/TcBQ=;
+	s=korg; t=1748366231;
+	bh=eO8pmykyRouOG8LT8/8HVyJ+RUpVmgTpNdDM9r9JMhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5rBegTw3TN77c1m/QMX6bz74L8y7ZDgV5Hdi08evqWEd0dzVWT6hsIy2mPb/lfZU
-	 Y/SOfDwWgWWmc2BIHooew59RgfhKXTAEI0/WOBiaquonUMHCoVbYpIGGYpefveMVYQ
-	 vbg00Lcc21dMZEjkmT3cWy7WAjao6bIskuADfYh8=
+	b=ZPNuj6iz1gb5UvIMwk/Zf1y7uWlgclWy8CdhXOMn23yTASYG+phIrXWazJt0k8SCW
+	 Zn80RhdiwogiJkSg6KoWiw23gr/VUIHhDWe0smgVSZAj8a25uo9x0dhAQg0J6iO2aE
+	 CDZh7bstAQZMzOay++OH2kJUTNPo0DsrpY7uHrKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 709/783] net: lan743x: Restore SGMII CTRL register on resume
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.12 613/626] err.h: move IOMEM_ERR_PTR() to err.h
 Date: Tue, 27 May 2025 18:28:26 +0200
-Message-ID: <20250527162541.987802961@linuxfoundation.org>
+Message-ID: <20250527162509.907793180@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Raag Jadav <raag.jadav@intel.com>
 
-[ Upstream commit 293e38ff4e4c2ba53f3fd47d8a4a9f0f0414a7a6 ]
+commit 18311a766c587fc69b1806f1d5943305903b7e6e upstream.
 
-SGMII_CTRL register, which specifies the active interface, was not
-properly restored when resuming from suspend. This led to incorrect
-interface selection after resume particularly in scenarios involving
-the FPGA.
+Since IOMEM_ERR_PTR() macro deals with an error pointer, a better place
+for it is err.h. This helps avoid dependency on io.h for the users that
+don't need it.
 
-To fix this:
-- Move the SGMII_CTRL setup out of the probe function.
-- Initialize the register in the hardware initialization helper function,
-which is called during both device initialization and resume.
-
-This ensures the interface configuration is consistently restored after
-suspend/resume cycles.
-
-Fixes: a46d9d37c4f4f ("net: lan743x: Add support for SGMII interface")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Link: https://patch.msgid.link/20250516035719.117960-1-thangaraj.s@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ include/linux/err.h |    3 +++
+ include/linux/io.h  |    2 --
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index e2d6bfb5d6933..a70b88037a208 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -3495,6 +3495,7 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- 				 struct pci_dev *pdev)
- {
- 	struct lan743x_tx *tx;
-+	u32 sgmii_ctl;
- 	int index;
- 	int ret;
+--- a/include/linux/err.h
++++ b/include/linux/err.h
+@@ -44,6 +44,9 @@ static inline void * __must_check ERR_PT
+ /* Return the pointer in the percpu address space. */
+ #define ERR_PTR_PCPU(error) ((void __percpu *)(unsigned long)ERR_PTR(error))
  
-@@ -3507,6 +3508,15 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- 		spin_lock_init(&adapter->eth_syslock_spinlock);
- 		mutex_init(&adapter->sgmii_rw_lock);
- 		pci11x1x_set_rfe_rd_fifo_threshold(adapter);
-+		sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
-+		if (adapter->is_sgmii_en) {
-+			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
-+			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
-+		} else {
-+			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
-+			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
-+		}
-+		lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
- 	} else {
- 		adapter->max_tx_channels = LAN743X_MAX_TX_CHANNELS;
- 		adapter->used_tx_channels = LAN743X_USED_TX_CHANNELS;
-@@ -3558,7 +3568,6 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
++/* Cast an error pointer to __iomem. */
++#define IOMEM_ERR_PTR(error) (__force void __iomem *)ERR_PTR(error)
++
+ /**
+  * PTR_ERR - Extract the error code from an error pointer.
+  * @ptr: An error pointer.
+--- a/include/linux/io.h
++++ b/include/linux/io.h
+@@ -65,8 +65,6 @@ static inline void devm_ioport_unmap(str
+ }
+ #endif
  
- static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
- {
--	u32 sgmii_ctl;
- 	int ret;
- 
- 	adapter->mdiobus = devm_mdiobus_alloc(&adapter->pdev->dev);
-@@ -3570,10 +3579,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
- 	adapter->mdiobus->priv = (void *)adapter;
- 	if (adapter->is_pci11x1x) {
- 		if (adapter->is_sgmii_en) {
--			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
--			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
--			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
--			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
- 			netif_dbg(adapter, drv, adapter->netdev,
- 				  "SGMII operation\n");
- 			adapter->mdiobus->read = lan743x_mdiobus_read_c22;
-@@ -3584,10 +3589,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
- 			netif_dbg(adapter, drv, adapter->netdev,
- 				  "lan743x-mdiobus-c45\n");
- 		} else {
--			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
--			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
--			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
--			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
- 			netif_dbg(adapter, drv, adapter->netdev,
- 				  "RGMII operation\n");
- 			// Only C22 support when RGMII I/F
--- 
-2.39.5
-
+-#define IOMEM_ERR_PTR(err) (__force void __iomem *)ERR_PTR(err)
+-
+ void __iomem *devm_ioremap(struct device *dev, resource_size_t offset,
+ 			   resource_size_t size);
+ void __iomem *devm_ioremap_uc(struct device *dev, resource_size_t offset,
 
 
 
