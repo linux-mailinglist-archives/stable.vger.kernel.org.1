@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-146704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21028AC5441
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:58:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70480AC54BF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ACF41892780
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F533BBAAC
 	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D9B27FB37;
-	Tue, 27 May 2025 16:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A2927FD49;
+	Tue, 27 May 2025 16:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1YCSCO3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWNtkcsx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68C51EA91;
-	Tue, 27 May 2025 16:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731A327CB04;
+	Tue, 27 May 2025 16:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365049; cv=none; b=JEOnwwwH8zNqISzmPV8PlBn/WJ4id/NxgTkY7oEVq3uFde7CnKCrFznnB4JGn3gZNAsmDo2I9IXkgANUA5Vzn6xVhPQWaGLRfoIABnSJNEcfX+CsvhAIofimak+35d7j2EtR+iuyhMKeFNf0p+FCRdN3fXgscSdZcuMDiMkwuTw=
+	t=1748365086; cv=none; b=fXImkfR3d1b6tBNA7vRNB8t2ZAnVePG09HLVulej1fLIcXxfNse4jUy9bddgJBe9simgQBNmtfJ2MGdva9EJbq5KRzClB3lXUcy1hi4FgXvdy3iruVmgtMfKxD9x6mtb9jqC8PROkPFnsuerUfAikTmdEZjhY4fQ7z/BhoXSU90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365049; c=relaxed/simple;
-	bh=LTtUkadTrC4v3QHNS24DQ18V4kZ2kAo7eQmjTPhLHgw=;
+	s=arc-20240116; t=1748365086; c=relaxed/simple;
+	bh=wts1AKI+bxCrHX7N1pCMgAl+vvdBFoYlLAWkoA8KQ/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZmZhzasgtv6sV+5oB59IzR/ParXDE39o+7S9PlkJO3XY6yEgmQl2Vry6ciYaIR0qVFj3zXQ88vUVrHE6IJmy8iVDoFmU6TR5lvnb4uHs7WhOzBqv731ZMTYvBWxco39KEJK+V3BiRAZNTAKoobHdWf0110yoZZSNmqLYnIJPYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1YCSCO3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35014C4CEE9;
-	Tue, 27 May 2025 16:57:28 +0000 (UTC)
+	 MIME-Version; b=rIt7+Au5EXZbQAHXrRYwjU6dci23FnxCPhUNR8IUtCQLsdY8kPp4FX5xIVdFAa360ufN2/YUQrNRcDOu3YZ75qr4NTIdi1DVVWJ4AQV+qfbjzQKDjsUE7x4N2Ya7zNcjLZlUz/Ekl6Q48QyrMzVHXNdIYMZGuQiYZPpy6HNAoHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWNtkcsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74EEC4CEE9;
+	Tue, 27 May 2025 16:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365049;
-	bh=LTtUkadTrC4v3QHNS24DQ18V4kZ2kAo7eQmjTPhLHgw=;
+	s=korg; t=1748365086;
+	bh=wts1AKI+bxCrHX7N1pCMgAl+vvdBFoYlLAWkoA8KQ/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1YCSCO3gHwJ30GNE3J+9jiECfBrz+XoMQuoou5Fw34J6QItiTi6EoNaTbmSz7dyd
-	 r3Upawchn/nj7F4Xf+2KOZWN6im0RxRdjQZaFKoi93TwXAArWp8E+aIbzl7tNCqY64
-	 bcbvkBjcK7YHfl4KsKsbDKW4NaYD/pnKNiKSxdOg=
+	b=mWNtkcsxeCZBMltIH7ZuEVRRWxFb7YMP1P7SCMVXiqKAC47i8jTyemv1tZbkBtZDl
+	 8+7ZIYAe2sTb2mUG2Zf7YrpA8N2uuCcAt2CsGL3E1BZylIbtB7HwnGSemQGalaf6jF
+	 ktSM7wlVHNfdn06pRjFBu5Ag73M5daBzws70Emiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 244/626] dpll: Add an assertion to check freq_supported_num
-Date: Tue, 27 May 2025 18:22:17 +0200
-Message-ID: <20250527162454.924535773@linuxfoundation.org>
+Subject: [PATCH 6.12 245/626] ublk: enforce ublks_max only for unprivileged devices
+Date: Tue, 27 May 2025 18:22:18 +0200
+Message-ID: <20250527162454.970625728@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -69,41 +67,134 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Uday Shankar <ushankar@purestorage.com>
 
-[ Upstream commit 39e912a959c19338855b768eaaee2917d7841f71 ]
+[ Upstream commit 80bdfbb3545b6f16680a72c825063d08a6b44c7a ]
 
-Since the driver is broken in the case that src->freq_supported is not
-NULL but src->freq_supported_num is 0, add an assertion for it.
+Commit 403ebc877832 ("ublk_drv: add module parameter of ublks_max for
+limiting max allowed ublk dev"), claimed ublks_max was added to prevent
+a DoS situation with an untrusted user creating too many ublk devices.
+If that's the case, ublks_max should only restrict the number of
+unprivileged ublk devices in the system. Enforce the limit only for
+unprivileged ublk devices, and rename variables accordingly. Leave the
+external-facing parameter name unchanged, since changing it may break
+systems which use it (but still update its documentation to reflect its
+new meaning).
 
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Link: https://patch.msgid.link/20250228150210.34404-1-jiashengjiangcool@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As a result of this change, in a system where there are only normal
+(non-unprivileged) devices, the maximum number of such devices is
+increased to 1 << MINORBITS, or 1048576. That ought to be enough for
+anyone, right?
+
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250228-ublks_max-v1-1-04b7379190c0@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dpll/dpll_core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 42 ++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index 1877201d1aa9f..20bdc52f63a50 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -443,8 +443,11 @@ static void dpll_pin_prop_free(struct dpll_pin_properties *prop)
- static int dpll_pin_prop_dup(const struct dpll_pin_properties *src,
- 			     struct dpll_pin_properties *dst)
- {
-+	if (WARN_ON(src->freq_supported && !src->freq_supported_num))
-+		return -EINVAL;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 38b9e485e520d..5ec5d580ef506 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -484,15 +484,17 @@ static wait_queue_head_t ublk_idr_wq;	/* wait until one idr is freed */
+ 
+ static DEFINE_MUTEX(ublk_ctl_mutex);
+ 
 +
- 	memcpy(dst, src, sizeof(*dst));
--	if (src->freq_supported && src->freq_supported_num) {
-+	if (src->freq_supported) {
- 		size_t freq_size = src->freq_supported_num *
- 				   sizeof(*src->freq_supported);
- 		dst->freq_supported = kmemdup(src->freq_supported,
++#define UBLK_MAX_UBLKS UBLK_MINORS
++
+ /*
+- * Max ublk devices allowed to add
++ * Max unprivileged ublk devices allowed to add
+  *
+  * It can be extended to one per-user limit in future or even controlled
+  * by cgroup.
+  */
+-#define UBLK_MAX_UBLKS UBLK_MINORS
+-static unsigned int ublks_max = 64;
+-static unsigned int ublks_added;	/* protected by ublk_ctl_mutex */
++static unsigned int unprivileged_ublks_max = 64;
++static unsigned int unprivileged_ublks_added; /* protected by ublk_ctl_mutex */
+ 
+ static struct miscdevice ublk_misc;
+ 
+@@ -2203,7 +2205,8 @@ static int ublk_add_chdev(struct ublk_device *ub)
+ 	if (ret)
+ 		goto fail;
+ 
+-	ublks_added++;
++	if (ub->dev_info.flags & UBLK_F_UNPRIVILEGED_DEV)
++		unprivileged_ublks_added++;
+ 	return 0;
+  fail:
+ 	put_device(dev);
+@@ -2241,12 +2244,17 @@ static int ublk_add_tag_set(struct ublk_device *ub)
+ 
+ static void ublk_remove(struct ublk_device *ub)
+ {
++	bool unprivileged;
++
+ 	ublk_stop_dev(ub);
+ 	cancel_work_sync(&ub->stop_work);
+ 	cancel_work_sync(&ub->quiesce_work);
+ 	cdev_device_del(&ub->cdev, &ub->cdev_dev);
++	unprivileged = ub->dev_info.flags & UBLK_F_UNPRIVILEGED_DEV;
+ 	ublk_put_device(ub);
+-	ublks_added--;
++
++	if (unprivileged)
++		unprivileged_ublks_added--;
+ }
+ 
+ static struct ublk_device *ublk_get_device_from_id(int idx)
+@@ -2495,7 +2503,8 @@ static int ublk_ctrl_add_dev(struct io_uring_cmd *cmd)
+ 		return ret;
+ 
+ 	ret = -EACCES;
+-	if (ublks_added >= ublks_max)
++	if ((info.flags & UBLK_F_UNPRIVILEGED_DEV) &&
++	    unprivileged_ublks_added >= unprivileged_ublks_max)
+ 		goto out_unlock;
+ 
+ 	ret = -ENOMEM;
+@@ -3123,23 +3132,26 @@ static void __exit ublk_exit(void)
+ module_init(ublk_init);
+ module_exit(ublk_exit);
+ 
+-static int ublk_set_max_ublks(const char *buf, const struct kernel_param *kp)
++static int ublk_set_max_unprivileged_ublks(const char *buf,
++					   const struct kernel_param *kp)
+ {
+ 	return param_set_uint_minmax(buf, kp, 0, UBLK_MAX_UBLKS);
+ }
+ 
+-static int ublk_get_max_ublks(char *buf, const struct kernel_param *kp)
++static int ublk_get_max_unprivileged_ublks(char *buf,
++					   const struct kernel_param *kp)
+ {
+-	return sysfs_emit(buf, "%u\n", ublks_max);
++	return sysfs_emit(buf, "%u\n", unprivileged_ublks_max);
+ }
+ 
+-static const struct kernel_param_ops ublk_max_ublks_ops = {
+-	.set = ublk_set_max_ublks,
+-	.get = ublk_get_max_ublks,
++static const struct kernel_param_ops ublk_max_unprivileged_ublks_ops = {
++	.set = ublk_set_max_unprivileged_ublks,
++	.get = ublk_get_max_unprivileged_ublks,
+ };
+ 
+-module_param_cb(ublks_max, &ublk_max_ublks_ops, &ublks_max, 0644);
+-MODULE_PARM_DESC(ublks_max, "max number of ublk devices allowed to add(default: 64)");
++module_param_cb(ublks_max, &ublk_max_unprivileged_ublks_ops,
++		&unprivileged_ublks_max, 0644);
++MODULE_PARM_DESC(ublks_max, "max number of unprivileged ublk devices allowed to add(default: 64)");
+ 
+ MODULE_AUTHOR("Ming Lei <ming.lei@redhat.com>");
+ MODULE_DESCRIPTION("Userspace block device");
 -- 
 2.39.5
 
