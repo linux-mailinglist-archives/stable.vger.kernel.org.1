@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D390BAC5366
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9EEAC5699
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30084A11C5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE3DD175BCE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDE4241679;
-	Tue, 27 May 2025 16:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90F827F728;
+	Tue, 27 May 2025 17:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTXMfONx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FlTN01X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDBDAD5A;
-	Tue, 27 May 2025 16:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D76182D7;
+	Tue, 27 May 2025 17:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364413; cv=none; b=RbcSZAe6jnRYZbvJ+PUG85i1L7Z0ufH0idSsCgKAox6mma8ph6AXNH8DexFkfAqdJglzcfitTmpfSHyD1R0edG3MvpG/qXDd+I4Fcya3aRmOmFQJRHpUujOm59ec2SHhbjVzANGyIXDnids3MleNZ01p0Xb7q+cSj0x4JtJEFh4=
+	t=1748366580; cv=none; b=txKTsd2ADFR4Gf+tCpGgVUmIJq52/9XWYO8C+4uY2tuH0wE5pRXlZ3WeX3uUloTjfQIq6XCYqiZy3mf9uZ913KbPoJNFw3UWynoXMU74wS/f6Gnur9vuppWJW5Z64gnQYQTypkcivAjfFuaL+U6lP0WbFMUZB6oQHIAWko5+AoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364413; c=relaxed/simple;
-	bh=Od0ln3RzOGisXS+CvtlK58Ck8oKoRuUPykY4zh2pelw=;
+	s=arc-20240116; t=1748366580; c=relaxed/simple;
+	bh=m5Zv7KjFLbBWUpt3v+U3nYVax6mOAXfUlkf4dp8RnKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NztDYqDD+VoVCx5DBNRUaldHrnjTC3ZHHjjVLcMO0+wSYLP1GVIXoO2HGWk+CyYpLxhnHwaYHslH1PQX+babAEZCKGaS9VNBgFMqggR5KyPcn+ZWmjMz7uAJmXxOyrrmBaQEjVcWZ75zuZ4prv17OE3j1D4NrbhnCc+dGhOIK7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTXMfONx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9345C4CEEB;
-	Tue, 27 May 2025 16:46:52 +0000 (UTC)
+	 MIME-Version; b=i92KjJUDjVaESCgK/ke/9JGzjSllzdet7CQuiYaAftVpIQ47o1n+YetP/wAvMdeT/2Q64FAvdOKCEQdu38AvzhNUyw5M4FykYmBGdjAxZDXducVRWZzi2E9yYNyQAJLXe1VyXpY4znQs+3D8Eqhuyio1SlOGCXmUxvjCNG6SbPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FlTN01X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C774C4CEE9;
+	Tue, 27 May 2025 17:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364413;
-	bh=Od0ln3RzOGisXS+CvtlK58Ck8oKoRuUPykY4zh2pelw=;
+	s=korg; t=1748366580;
+	bh=m5Zv7KjFLbBWUpt3v+U3nYVax6mOAXfUlkf4dp8RnKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTXMfONx+GHq4MoQV+z19hu0sZnyGDWrNy56I9awOlN6OruNGj1Zu8kFeZ7ayJjVr
-	 NhbkJfL/qXhREPvuCR10++X1sshmjjYsNKah0KPqiCZNRId4gur4wq1+/rWTm7iYjB
-	 CQmj2uo0x5O4UBZL9nU+KGTZgKI8fFz69eXmppBs=
+	b=1FlTN01XBgnc4tmKv9Lz47/MKopdBlcXqpjPBsV++5EoXxgU/+/2waVUGhmHDNwZb
+	 watrzvicOuJLJHehdwVl718xYTuk7kACv0MpRWMtYpVEa5AL9r8J4ZndgK1oD4vWZx
+	 pi4T/tn8N1dfjzImh1A9oCTtaSKDHI011/O72DP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/626] scsi: target: iscsi: Fix timeout on deleted connection
+Subject: [PATCH 6.14 113/783] wifi: mt76: Check link_conf pointer in mt76_connac_mcu_sta_basic_tlv()
 Date: Tue, 27 May 2025 18:18:30 +0200
-Message-ID: <20250527162445.760906891@linuxfoundation.org>
+Message-ID: <20250527162517.751914687@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit 7f533cc5ee4c4436cee51dc58e81dfd9c3384418 ]
+[ Upstream commit 9890624c1b3948c1c7f1d0e19ef0bb7680b8c80d ]
 
-NOPIN response timer may expire on a deleted connection and crash with
-such logs:
+This is a preliminary patch to introduce MLO support for MT7996 driver.
 
-Did not receive response to NOPIN on CID: 0, failing connection for I_T Nexus (null),i,0x00023d000125,iqn.2017-01.com.iscsi.target,t,0x3d
-
-BUG: Kernel NULL pointer dereference on read at 0x00000000
-NIP  strlcpy+0x8/0xb0
-LR iscsit_fill_cxn_timeout_err_stats+0x5c/0xc0 [iscsi_target_mod]
-Call Trace:
- iscsit_handle_nopin_response_timeout+0xfc/0x120 [iscsi_target_mod]
- call_timer_fn+0x58/0x1f0
- run_timer_softirq+0x740/0x860
- __do_softirq+0x16c/0x420
- irq_exit+0x188/0x1c0
- timer_interrupt+0x184/0x410
-
-That is because nopin response timer may be re-started on nopin timer
-expiration.
-
-Stop nopin timer before stopping the nopin response timer to be sure
-that no one of them will be re-started.
-
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Link: https://lore.kernel.org/r/20241224101757.32300-1-d.bogdanov@yadro.com
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250311-mt7996-mlo-v2-10-31df6972519b@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index 6002283cbebab..68bbdf3ee101d 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4317,8 +4317,8 @@ int iscsit_close_connection(
- 	spin_unlock(&iscsit_global->ts_bitmap_lock);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index d0e49d68c5dbf..bafcf5a279e23 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -391,7 +391,7 @@ void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 		basic->conn_type = cpu_to_le32(CONNECTION_INFRA_BC);
  
- 	iscsit_stop_timers_for_cmds(conn);
--	iscsit_stop_nopin_response_timer(conn);
- 	iscsit_stop_nopin_timer(conn);
-+	iscsit_stop_nopin_response_timer(conn);
- 
- 	if (conn->conn_transport->iscsit_wait_conn)
- 		conn->conn_transport->iscsit_wait_conn(conn);
+ 		if (vif->type == NL80211_IFTYPE_STATION &&
+-		    !is_zero_ether_addr(link_conf->bssid)) {
++		    link_conf && !is_zero_ether_addr(link_conf->bssid)) {
+ 			memcpy(basic->peer_addr, link_conf->bssid, ETH_ALEN);
+ 			basic->aid = cpu_to_le16(vif->cfg.aid);
+ 		} else {
 -- 
 2.39.5
 
