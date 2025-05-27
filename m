@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-147514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A949CAC57FD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BDBAC549B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D67C54C013E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1E001886573
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC80627FD49;
-	Tue, 27 May 2025 17:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE581D88D7;
+	Tue, 27 May 2025 17:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCErAcxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHoTeDo/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D5F86347;
-	Tue, 27 May 2025 17:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078E778F32;
+	Tue, 27 May 2025 17:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367576; cv=none; b=copyIYZ5BKmIfgK7BG4JZVZZd3IpR9El35LfpYThIMnpuG4rvo+XPhkI2Q3Cr8bExcRns4DMXel9HVzng0jYHXpXtfam2U5lx0q76qCp9kKOWoYvfyNURkOGg0J8FTLFHFPKOdw2LayerdYrqd+SBk+2FrptGnDDtzDysCZ3EFM=
+	t=1748365313; cv=none; b=jia/Thx92wCUWF7hj4iAGT47BL3NQ2X7iwYph1rGFUwlZ3G4mjO8M5Rj+LH1WrzzlP8Q3KQoM0vRKhET1uMkep0k12LjIhZ8BxgNXLUy3Ut8B0l8lpnSldg2j7CC/dvXKA0BNNKIH8DW0wgfK89+ScbBMW/5U4j/ZfUrPlj79bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367576; c=relaxed/simple;
-	bh=qqDxljNpEDnVKlfrrB1VLICmNurUj5BqCK1cev0vxGU=;
+	s=arc-20240116; t=1748365313; c=relaxed/simple;
+	bh=DYkrq8T7XkJJ20Y374BUk5RDGb9QVtJCq9IPKgTYZ8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RT5eyvivmM2Ecoa0vepVlYvlYlgX50f6tFOlYKzE8SoIt5VGDLO/blboLNHXWF2stxWofLnobfNii3joH1qa0l1SDzZekztKh3OnEBxrbyyCmfWRAa2jSjqYRCWv6o6ALM128vI7UiaLGcfB7mXqWkYtzV5X82vBCMYREnm3A28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCErAcxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DA1C4CEE9;
-	Tue, 27 May 2025 17:39:35 +0000 (UTC)
+	 MIME-Version; b=UG8B07SDK/zf1Szxb7hcgQpHjzoRNJLuvYjAC8NlaIipZIiOgCb3jVgIViFffz+2c13gOVoxCzRX83t2cuJF13ezkCXNQSBsLh0AlrAYVFc17CGbocBVqIEGShW4SDcoIxCTkzbdlgBkfQOl8DREEchbOpmzPUMUoutrcAcwKF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHoTeDo/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EF6C4CEE9;
+	Tue, 27 May 2025 17:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367576;
-	bh=qqDxljNpEDnVKlfrrB1VLICmNurUj5BqCK1cev0vxGU=;
+	s=korg; t=1748365312;
+	bh=DYkrq8T7XkJJ20Y374BUk5RDGb9QVtJCq9IPKgTYZ8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCErAcxm3hW6GqI54w4igycFtFghIQJNv03jx4DfpC3dpF/fDume33n/nUUF6bbj2
-	 t8XqY9DkGRrDZ3Ie8epXEY+W4TKeDrDQsfM1zA3s4yOkMVj4ELxcnQ85H8aiZOykxa
-	 Qvm5V8Y1+c92RUdouol+JWpw09/WZ4pxkw7fQhKM=
+	b=HHoTeDo/4yjOa312D7ztsBnydkzldKmaU12pdcfveYDP+yro8jAKiNsc3BYRQn/qs
+	 PqcshKXTQtSLT9W/tZfmHp15sDQnwKw11KCLAwbz/AgnhJFtbjg8/aN/3wuFoiHifE
+	 5NN9GGY5BbJHICbAujv5TUkwyeakIBQWUVmFWoCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amery Hung <ameryhung@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Krunoslav Kovac <krunoslav.kovac@amd.com>,
+	Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Robert Mader <robert.mader@collabora.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 431/783] bpf: Make every prog keep a copy of ctx_arg_info
+Subject: [PATCH 6.12 335/626] drm/amd/display: Fix BT2020 YCbCr limited/full range input
 Date: Tue, 27 May 2025 18:23:48 +0200
-Message-ID: <20250527162530.674916339@linuxfoundation.org>
+Message-ID: <20250527162458.635937358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,174 +66,284 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
 
-[ Upstream commit 432051806f614ca512da401b80257b95b2a2241e ]
+[ Upstream commit 07bc2dcbcf403d47d6f305ef7f0d3d489491c5fb ]
 
-Currently, ctx_arg_info is read-only in the view of the verifier since
-it is shared among programs of the same attach type. Make each program
-have their own copy of ctx_arg_info so that we can use it to store
-program specific information.
+[Why]
+BT2020 YCbCr input is not handled properly when full range
+quantization is used and limited range is not supported at all.
 
-In the next patch where we support acquiring a referenced kptr through a
-struct_ops argument tagged with "__ref", ctx_arg_info->ref_obj_id will
-be used to store the unique reference object id of the argument. This
-avoids creating a requirement in the verifier that "__ref" tagged
-arguments must be the first set of references acquired [0].
+[How]
+- Add enums for BT2020 YCbCr limited/full range
+- Add limited range CSC matrix
 
-[0] https://lore.kernel.org/bpf/20241220195619.2022866-2-amery.hung@gmail.com/
-
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20250217190640.1748177-2-ameryhung@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Krunoslav Kovac <krunoslav.kovac@amd.com>
+Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Robert Mader <robert.mader@collabora.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h   |  7 +++++--
- kernel/bpf/bpf_iter.c | 13 ++++++-------
- kernel/bpf/syscall.c  |  1 +
- kernel/bpf/verifier.c | 22 ++++++++++++----------
- 4 files changed, 24 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           | 6 +++---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c   | 2 +-
+ drivers/gpu/drm/amd/display/dc/basics/dc_common.c           | 3 ++-
+ drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c       | 5 +++--
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c           | 4 ++--
+ drivers/gpu/drm/amd/display/dc/dc_hw_types.h                | 4 +++-
+ drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c     | 3 ++-
+ .../gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c | 3 ++-
+ .../amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c   | 3 ++-
+ .../amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c  | 3 ++-
+ drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h                 | 6 +++++-
+ .../gpu/drm/amd/display/modules/info_packet/info_packet.c   | 4 ++--
+ 12 files changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index f3f50e29d6392..f4df39e8c7357 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1507,7 +1507,7 @@ struct bpf_prog_aux {
- 	u32 max_rdonly_access;
- 	u32 max_rdwr_access;
- 	struct btf *attach_btf;
--	const struct bpf_ctx_arg_aux *ctx_arg_info;
-+	struct bpf_ctx_arg_aux *ctx_arg_info;
- 	void __percpu *priv_stack_ptr;
- 	struct mutex dst_mutex; /* protects dst_* pointers below, *after* prog becomes visible */
- 	struct bpf_prog *dst_prog;
-@@ -1945,6 +1945,9 @@ static inline void bpf_struct_ops_desc_release(struct bpf_struct_ops_desc *st_op
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 17c03b89abb31..c0ff501687f5b 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -5552,9 +5552,9 @@ fill_plane_color_attributes(const struct drm_plane_state *plane_state,
  
- #endif
- 
-+int bpf_prog_ctx_arg_info_init(struct bpf_prog *prog,
-+			       const struct bpf_ctx_arg_aux *info, u32 cnt);
-+
- #if defined(CONFIG_CGROUP_BPF) && defined(CONFIG_BPF_LSM)
- int bpf_trampoline_link_cgroup_shim(struct bpf_prog *prog,
- 				    int cgroup_atype);
-@@ -2546,7 +2549,7 @@ struct bpf_iter__bpf_map_elem {
- 
- int bpf_iter_reg_target(const struct bpf_iter_reg *reg_info);
- void bpf_iter_unreg_target(const struct bpf_iter_reg *reg_info);
--bool bpf_iter_prog_supported(struct bpf_prog *prog);
-+int bpf_iter_prog_supported(struct bpf_prog *prog);
- const struct bpf_func_proto *
- bpf_iter_get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog);
- int bpf_iter_link_attach(const union bpf_attr *attr, bpfptr_t uattr, struct bpf_prog *prog);
-diff --git a/kernel/bpf/bpf_iter.c b/kernel/bpf/bpf_iter.c
-index 106735145948b..380e9a7cac75d 100644
---- a/kernel/bpf/bpf_iter.c
-+++ b/kernel/bpf/bpf_iter.c
-@@ -335,7 +335,7 @@ static void cache_btf_id(struct bpf_iter_target_info *tinfo,
- 	tinfo->btf_id = prog->aux->attach_btf_id;
- }
- 
--bool bpf_iter_prog_supported(struct bpf_prog *prog)
-+int bpf_iter_prog_supported(struct bpf_prog *prog)
- {
- 	const char *attach_fname = prog->aux->attach_func_name;
- 	struct bpf_iter_target_info *tinfo = NULL, *iter;
-@@ -344,7 +344,7 @@ bool bpf_iter_prog_supported(struct bpf_prog *prog)
- 	int prefix_len = strlen(prefix);
- 
- 	if (strncmp(attach_fname, prefix, prefix_len))
--		return false;
-+		return -EINVAL;
- 
- 	mutex_lock(&targets_mutex);
- 	list_for_each_entry(iter, &targets, list) {
-@@ -360,12 +360,11 @@ bool bpf_iter_prog_supported(struct bpf_prog *prog)
- 	}
- 	mutex_unlock(&targets_mutex);
- 
--	if (tinfo) {
--		prog->aux->ctx_arg_info_size = tinfo->reg_info->ctx_arg_info_size;
--		prog->aux->ctx_arg_info = tinfo->reg_info->ctx_arg_info;
--	}
-+	if (!tinfo)
-+		return -EINVAL;
- 
--	return tinfo != NULL;
-+	return bpf_prog_ctx_arg_info_init(prog, tinfo->reg_info->ctx_arg_info,
-+					  tinfo->reg_info->ctx_arg_info_size);
- }
- 
- const struct bpf_func_proto *
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 8c42c094f0d1e..32a8d5fd98612 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -2314,6 +2314,7 @@ static void __bpf_prog_put_noref(struct bpf_prog *prog, bool deferred)
- 	kvfree(prog->aux->jited_linfo);
- 	kvfree(prog->aux->linfo);
- 	kfree(prog->aux->kfunc_tab);
-+	kfree(prog->aux->ctx_arg_info);
- 	if (prog->aux->attach_btf)
- 		btf_put(prog->aux->attach_btf);
- 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 0752e8e556389..4392436ba7511 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -22429,6 +22429,15 @@ static void print_verification_stats(struct bpf_verifier_env *env)
- 		env->peak_states, env->longest_mark_read_walk);
- }
- 
-+int bpf_prog_ctx_arg_info_init(struct bpf_prog *prog,
-+			       const struct bpf_ctx_arg_aux *info, u32 cnt)
-+{
-+	prog->aux->ctx_arg_info = kmemdup_array(info, cnt, sizeof(*info), GFP_KERNEL);
-+	prog->aux->ctx_arg_info_size = cnt;
-+
-+	return prog->aux->ctx_arg_info ? 0 : -ENOMEM;
-+}
-+
- static int check_struct_ops_btf_id(struct bpf_verifier_env *env)
- {
- 	const struct btf_type *t, *func_proto;
-@@ -22509,17 +22518,12 @@ static int check_struct_ops_btf_id(struct bpf_verifier_env *env)
- 		return -EACCES;
- 	}
- 
--	/* btf_ctx_access() used this to provide argument type info */
--	prog->aux->ctx_arg_info =
--		st_ops_desc->arg_info[member_idx].info;
--	prog->aux->ctx_arg_info_size =
--		st_ops_desc->arg_info[member_idx].cnt;
--
- 	prog->aux->attach_func_proto = func_proto;
- 	prog->aux->attach_func_name = mname;
- 	env->ops = st_ops->verifier_ops;
- 
--	return 0;
-+	return bpf_prog_ctx_arg_info_init(prog, st_ops_desc->arg_info[member_idx].info,
-+					  st_ops_desc->arg_info[member_idx].cnt);
- }
- #define SECURITY_PREFIX "security_"
- 
-@@ -22996,9 +23000,7 @@ static int check_attach_btf_id(struct bpf_verifier_env *env)
- 		prog->aux->attach_btf_trace = true;
- 		return 0;
- 	} else if (prog->expected_attach_type == BPF_TRACE_ITER) {
--		if (!bpf_iter_prog_supported(prog))
+ 	case DRM_COLOR_YCBCR_BT2020:
+ 		if (full_range)
+-			*color_space = COLOR_SPACE_2020_YCBCR;
++			*color_space = COLOR_SPACE_2020_YCBCR_FULL;
+ 		else
 -			return -EINVAL;
--		return 0;
-+		return bpf_iter_prog_supported(prog);
++			*color_space = COLOR_SPACE_2020_YCBCR_LIMITED;
+ 		break;
+ 
+ 	default:
+@@ -6050,7 +6050,7 @@ get_output_color_space(const struct dc_crtc_timing *dc_crtc_timing,
+ 		if (dc_crtc_timing->pixel_encoding == PIXEL_ENCODING_RGB)
+ 			color_space = COLOR_SPACE_2020_RGB_FULLRANGE;
+ 		else
+-			color_space = COLOR_SPACE_2020_YCBCR;
++			color_space = COLOR_SPACE_2020_YCBCR_LIMITED;
+ 		break;
+ 	case DRM_MODE_COLORIMETRY_DEFAULT: // ITU601
+ 	default:
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+index 98e88903d07d5..15d94d2a0e2fb 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -1145,7 +1145,7 @@ static int amdgpu_current_colorspace_show(struct seq_file *m, void *data)
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+ 		seq_puts(m, "BT2020_RGB");
+ 		break;
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 		seq_puts(m, "BT2020_YCC");
+ 		break;
+ 	default:
+diff --git a/drivers/gpu/drm/amd/display/dc/basics/dc_common.c b/drivers/gpu/drm/amd/display/dc/basics/dc_common.c
+index b2fc4f8e64825..a51c2701da247 100644
+--- a/drivers/gpu/drm/amd/display/dc/basics/dc_common.c
++++ b/drivers/gpu/drm/amd/display/dc/basics/dc_common.c
+@@ -40,7 +40,8 @@ bool is_rgb_cspace(enum dc_color_space output_color_space)
+ 	case COLOR_SPACE_YCBCR709:
+ 	case COLOR_SPACE_YCBCR601_LIMITED:
+ 	case COLOR_SPACE_YCBCR709_LIMITED:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
++	case COLOR_SPACE_2020_YCBCR_FULL:
+ 		return false;
+ 	default:
+ 		/* Add a case to switch */
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+index d2342a91e7e71..d62b00314682f 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+@@ -176,7 +176,7 @@ static bool is_ycbcr2020_type(
+ {
+ 	bool ret = false;
+ 
+-	if (color_space == COLOR_SPACE_2020_YCBCR)
++	if (color_space == COLOR_SPACE_2020_YCBCR_LIMITED || color_space == COLOR_SPACE_2020_YCBCR_FULL)
+ 		ret = true;
+ 	return ret;
+ }
+@@ -247,7 +247,8 @@ void color_space_to_black_color(
+ 	case COLOR_SPACE_YCBCR709_BLACK:
+ 	case COLOR_SPACE_YCBCR601_LIMITED:
+ 	case COLOR_SPACE_YCBCR709_LIMITED:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
++	case COLOR_SPACE_2020_YCBCR_FULL:
+ 		*black_color = black_color_format[BLACK_COLOR_FORMAT_YUV_CV];
+ 		break;
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index bfcbbea377298..6dbf139c51f72 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -4215,7 +4215,7 @@ static void set_avi_info_frame(
+ 		break;
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+ 	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 		hdmi_info.bits.EC0_EC2 = COLORIMETRYEX_BT2020RGBYCBCR;
+ 		hdmi_info.bits.C0_C1   = COLORIMETRY_EXTENDED;
+ 		break;
+@@ -4229,7 +4229,7 @@ static void set_avi_info_frame(
+ 		break;
  	}
  
- 	if (prog->type == BPF_PROG_TYPE_LSM) {
+-	if (pixel_encoding && color_space == COLOR_SPACE_2020_YCBCR &&
++	if (pixel_encoding && color_space == COLOR_SPACE_2020_YCBCR_LIMITED &&
+ 			stream->out_transfer_func.tf == TRANSFER_FUNCTION_GAMMA22) {
+ 		hdmi_info.bits.EC0_EC2 = 0;
+ 		hdmi_info.bits.C0_C1 = COLORIMETRY_ITU709;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
+index 0ded4bc7825b0..6fd94c5f6da52 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
+@@ -641,7 +641,8 @@ enum dc_color_space {
+ 	COLOR_SPACE_YCBCR709_LIMITED,
+ 	COLOR_SPACE_2020_RGB_FULLRANGE,
+ 	COLOR_SPACE_2020_RGB_LIMITEDRANGE,
+-	COLOR_SPACE_2020_YCBCR,
++	COLOR_SPACE_2020_YCBCR_LIMITED,
++	COLOR_SPACE_2020_YCBCR_FULL,
+ 	COLOR_SPACE_ADOBERGB,
+ 	COLOR_SPACE_DCIP3,
+ 	COLOR_SPACE_DISPLAYNATIVE,
+@@ -649,6 +650,7 @@ enum dc_color_space {
+ 	COLOR_SPACE_APPCTRL,
+ 	COLOR_SPACE_CUSTOMPOINTS,
+ 	COLOR_SPACE_YCBCR709_BLACK,
++	COLOR_SPACE_2020_YCBCR = COLOR_SPACE_2020_YCBCR_LIMITED,
+ };
+ 
+ enum dc_dither_option {
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
+index 5c2825bc9a876..654b919465f08 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
+@@ -420,7 +420,7 @@ static void dce110_stream_encoder_dp_set_stream_attribute(
+ 			dynamic_range_rgb = 1; /*limited range*/
+ 			break;
+ 		case COLOR_SPACE_2020_RGB_FULLRANGE:
+-		case COLOR_SPACE_2020_YCBCR:
++		case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 		case COLOR_SPACE_XR_RGB:
+ 		case COLOR_SPACE_MSREF_SCRGB:
+ 		case COLOR_SPACE_ADOBERGB:
+@@ -432,6 +432,7 @@ static void dce110_stream_encoder_dp_set_stream_attribute(
+ 		case COLOR_SPACE_APPCTRL:
+ 		case COLOR_SPACE_CUSTOMPOINTS:
+ 		case COLOR_SPACE_UNKNOWN:
++		default:
+ 			/* do nothing */
+ 			break;
+ 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c
+index f496e952ceecb..f8f1e98f646e6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c
+@@ -393,7 +393,7 @@ void enc1_stream_encoder_dp_set_stream_attribute(
+ 		break;
+ 	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 	case COLOR_SPACE_XR_RGB:
+ 	case COLOR_SPACE_MSREF_SCRGB:
+ 	case COLOR_SPACE_ADOBERGB:
+@@ -406,6 +406,7 @@ void enc1_stream_encoder_dp_set_stream_attribute(
+ 	case COLOR_SPACE_CUSTOMPOINTS:
+ 	case COLOR_SPACE_UNKNOWN:
+ 	case COLOR_SPACE_YCBCR709_BLACK:
++	default:
+ 		/* do nothing */
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c
+index 0a27e0942a123..0008816cf1553 100644
+--- a/drivers/gpu/drm/amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c
+@@ -634,7 +634,7 @@ void enc401_stream_encoder_dp_set_stream_attribute(
+ 		break;
+ 	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 	case COLOR_SPACE_XR_RGB:
+ 	case COLOR_SPACE_MSREF_SCRGB:
+ 	case COLOR_SPACE_ADOBERGB:
+@@ -647,6 +647,7 @@ void enc401_stream_encoder_dp_set_stream_attribute(
+ 	case COLOR_SPACE_CUSTOMPOINTS:
+ 	case COLOR_SPACE_UNKNOWN:
+ 	case COLOR_SPACE_YCBCR709_BLACK:
++	default:
+ 		/* do nothing */
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c
+index 678db949cfe3c..759b453385c46 100644
+--- a/drivers/gpu/drm/amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c
+@@ -323,7 +323,7 @@ static void dcn31_hpo_dp_stream_enc_set_stream_attribute(
+ 		break;
+ 	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 	case COLOR_SPACE_XR_RGB:
+ 	case COLOR_SPACE_MSREF_SCRGB:
+ 	case COLOR_SPACE_ADOBERGB:
+@@ -336,6 +336,7 @@ static void dcn31_hpo_dp_stream_enc_set_stream_attribute(
+ 	case COLOR_SPACE_CUSTOMPOINTS:
+ 	case COLOR_SPACE_UNKNOWN:
+ 	case COLOR_SPACE_YCBCR709_BLACK:
++	default:
+ 		/* do nothing */
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h b/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
+index 0150f2581ee4c..0c5675d1c5936 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
+@@ -119,10 +119,14 @@ static const struct dpp_input_csc_matrix __maybe_unused dpp_input_csc_matrix[] =
+ 		{ 0x39a6, 0x2568, 0,      0xe0d6,
+ 		  0xeedd, 0x2568, 0xf925, 0x9a8,
+ 		  0,      0x2568, 0x43ee, 0xdbb2 } },
+-	{ COLOR_SPACE_2020_YCBCR,
++	{ COLOR_SPACE_2020_YCBCR_FULL,
+ 		{ 0x2F30, 0x2000, 0,      0xE869,
+ 		  0xEDB7, 0x2000, 0xFABC, 0xBC6,
+ 		  0,      0x2000, 0x3C34, 0xE1E6 } },
++	{ COLOR_SPACE_2020_YCBCR_LIMITED,
++		{ 0x35B9, 0x2543, 0,      0xE2B2,
++		  0xEB2F, 0x2543, 0xFA01, 0x0B1F,
++		  0,      0x2543, 0x4489, 0xDB42 } },
+ 	{ COLOR_SPACE_2020_RGB_LIMITEDRANGE,
+ 		{ 0x35E0, 0x255F, 0,      0xE2B3,
+ 		  0xEB20, 0x255F, 0xF9FD, 0xB1E,
+diff --git a/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c b/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
+index a344e2e49b0ea..b3d55cac35694 100644
+--- a/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
++++ b/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
+@@ -383,10 +383,10 @@ void mod_build_vsc_infopacket(const struct dc_stream_state *stream,
+ 				colorimetryFormat = ColorimetryYCC_DP_ITU709;
+ 			else if (cs == COLOR_SPACE_ADOBERGB)
+ 				colorimetryFormat = ColorimetryYCC_DP_AdobeYCC;
+-			else if (cs == COLOR_SPACE_2020_YCBCR)
++			else if (cs == COLOR_SPACE_2020_YCBCR_LIMITED)
+ 				colorimetryFormat = ColorimetryYCC_DP_ITU2020YCbCr;
+ 
+-			if (cs == COLOR_SPACE_2020_YCBCR && tf == TRANSFER_FUNC_GAMMA_22)
++			if (cs == COLOR_SPACE_2020_YCBCR_LIMITED && tf == TRANSFER_FUNC_GAMMA_22)
+ 				colorimetryFormat = ColorimetryYCC_DP_ITU709;
+ 			break;
+ 
 -- 
 2.39.5
 
