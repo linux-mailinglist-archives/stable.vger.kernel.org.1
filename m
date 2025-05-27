@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-147513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD1CAC57FC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32014AC54A3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F265170D5B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 020514A2F7C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AE5280322;
-	Tue, 27 May 2025 17:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A1425FA1D;
+	Tue, 27 May 2025 17:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWSP4DAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAadMeTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308EA280328;
-	Tue, 27 May 2025 17:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653C1154C15;
+	Tue, 27 May 2025 17:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367573; cv=none; b=uR5W60bPisEp9UJVG8c0nz7jOziE976zc+CxQiOYumeU6NTCRvmzAEEspWY9BfEJJ2b8vjva7T73bHMLKxpOcopHsMoOSlcOL8dBLj8knTWvLSsXfjU1O5M+rSwhGPPn9REpu8iblxUXm259scHILs9zB1eVPhlB0ALBhG5/ly0=
+	t=1748365352; cv=none; b=e7t+ZevxdllFAyD7xA46moD624pZ6K0I40i8m5zD7qxGAJt5bqyAxHfr9N5V+CiovngBenLjAu1lJhUaCithUCuy6F7sLzNne2wy9m6dZ8U9yCRuD5uR01VcWuikctAls4QQ5KbW1T9kccmGyEo5g3UOgySSYHJzasUlsCBwW70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367573; c=relaxed/simple;
-	bh=AeBYvtK24mvnLOtWolV9stNFBZLNFnOugQbY9zERPpk=;
+	s=arc-20240116; t=1748365352; c=relaxed/simple;
+	bh=eBbVOd93w9ZmUs1EriYKHMHKz5qdoRQ5wZ6kgBXAkd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVy20YsvMd1xx4348sj3Wv2fwrMXL8GqxjoqfGHRPbxOhkPAp1Tt3rdIIS2bjNonbmtD7BdN1QJhZRfrJidUxeGMZiXpmVUsD3wK5vg1ghG5/J8yyJRS+h8Z/hVb6/4aQsmIe1/QJcIhELIzTi52KorzyaYtgC5XiGPsxRKM80k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWSP4DAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921A1C4CEE9;
-	Tue, 27 May 2025 17:39:32 +0000 (UTC)
+	 MIME-Version; b=lioOiiK51/DgKrRtUQgUbRZGaCeIBCTPiOlJD8Kt6V0ODhrzCSgktELWOdhMjoIzlzhF/K6jmJHzyeUJ6rWhaVKM3s1hqYqs2RS7LutgpmZTDsfHYoeY8XL2JiZXQ4RRdXOOSxPpLJEo8xXCCIZP13UmnUhPVFIlWU6A7ZRmAp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAadMeTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A63C4CEE9;
+	Tue, 27 May 2025 17:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367573;
-	bh=AeBYvtK24mvnLOtWolV9stNFBZLNFnOugQbY9zERPpk=;
+	s=korg; t=1748365352;
+	bh=eBbVOd93w9ZmUs1EriYKHMHKz5qdoRQ5wZ6kgBXAkd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWSP4DAcPZsjlP9JRsqcsDCFYFXcyeOhiRnIQ3gAlkn/ltaiqERzQS2GfToR8R+/6
-	 AkXFR5+J8qciiCnN4iNenW1Tybl/+zot+dOffG778oDTcvNZTsyr2wTdUMMj9Fg9vr
-	 RTt++7VE0liU17jc7H+zaGWxlIrdnV497rWvSXJU=
+	b=MAadMeTAa5tVKWAa/9kuWAc4IvVLX4KU7YJ6GqVujXFwj6oXzXRRKMrpwS8E1BMVz
+	 XyZ2UHpE7axmH89HKVwxjTXMMnwcFrHH3xNJRFdhKRNsN+jefo8IQ0zLpOP529UWHH
+	 DBXU0RfS9Zz+GqV4d28VvLIgoUUjC2oyBTsvM8GI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 413/783] drm/amd/display: Read LTTPR ALPM caps during link cap retrieval
-Date: Tue, 27 May 2025 18:23:30 +0200
-Message-ID: <20250527162529.919032327@linuxfoundation.org>
+Subject: [PATCH 6.12 318/626] wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
+Date: Tue, 27 May 2025 18:23:31 +0200
+Message-ID: <20250527162457.951829005@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit de84d580126eb2214937df755cfec5ef0901479e ]
+[ Upstream commit 6be7544d19fcfcb729495e793bc6181f85bb8949 ]
 
-[Why]
-The latest DP spec requires the DP TX to read DPCD F0000h through F0009h
-when detecting LTTPR capabilities for the first time.
+Set the MCS maps and the highest rates according to the number of
+spatial streams the chip has. For RTL8814AU that is 3.
 
-[How]
-Update LTTPR cap retrieval to read up to F0009h (two more bytes than the
-previous F0007h), and store the LTTPR ALPM capabilities.
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/e86aa009-b5bf-4b3a-8112-ea5e3cd49465@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_dp_types.h         | 12 ++++++++++++
- .../display/dc/link/protocols/link_dp_capability.c   |  6 +++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-index cc005da75ce4c..8bb628ab78554 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-@@ -959,6 +959,14 @@ union dp_128b_132b_supported_lttpr_link_rates {
- 	uint8_t raw;
- };
- 
-+union dp_alpm_lttpr_cap {
-+	struct {
-+		uint8_t AUX_LESS_ALPM_SUPPORTED	:1;
-+		uint8_t RESERVED				:7;
-+	} bits;
-+	uint8_t raw;
-+};
-+
- union dp_sink_video_fallback_formats {
- 	struct {
- 		uint8_t dp_1024x768_60Hz_24bpp_support	:1;
-@@ -1118,6 +1126,7 @@ struct dc_lttpr_caps {
- 	uint8_t max_ext_timeout;
- 	union dp_main_link_channel_coding_lttpr_cap main_link_channel_coding;
- 	union dp_128b_132b_supported_lttpr_link_rates supported_128b_132b_rates;
-+	union dp_alpm_lttpr_cap alpm;
- 	uint8_t aux_rd_interval[MAX_REPEATER_CNT - 1];
- 	uint8_t lttpr_ieee_oui[3];
- 	uint8_t lttpr_device_id[6];
-@@ -1372,6 +1381,9 @@ struct dp_trace {
- #ifndef DPCD_MAX_UNCOMPRESSED_PIXEL_RATE_CAP
- #define DPCD_MAX_UNCOMPRESSED_PIXEL_RATE_CAP    0x221c
- #endif
-+#ifndef DP_LTTPR_ALPM_CAPABILITIES
-+#define DP_LTTPR_ALPM_CAPABILITIES              0xF0009
-+#endif
- #ifndef DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE
- #define DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE	0x50
- #endif
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-index 28843e9882d39..64e4ae379e346 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -1502,7 +1502,7 @@ static bool dpcd_read_sink_ext_caps(struct dc_link *link)
- 
- enum dc_status dp_retrieve_lttpr_cap(struct dc_link *link)
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index bbdef38c7e341..2c81e4cae039e 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1579,8 +1579,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
+ 			     struct ieee80211_sta_vht_cap *vht_cap)
  {
--	uint8_t lttpr_dpcd_data[8] = {0};
-+	uint8_t lttpr_dpcd_data[10] = {0};
- 	enum dc_status status;
- 	bool is_lttpr_present;
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
+-	u16 mcs_map;
++	u16 mcs_map = 0;
+ 	__le16 highest;
++	int i;
  
-@@ -1552,6 +1552,10 @@ enum dc_status dp_retrieve_lttpr_cap(struct dc_link *link)
- 			lttpr_dpcd_data[DP_PHY_REPEATER_128B132B_RATES -
- 							DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV];
+ 	if (efuse->hw_cap.ptcl != EFUSE_HW_CAP_IGNORE &&
+ 	    efuse->hw_cap.ptcl != EFUSE_HW_CAP_PTCL_VHT)
+@@ -1603,21 +1604,15 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
+ 	if (rtw_chip_has_rx_ldpc(rtwdev))
+ 		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
  
-+	link->dpcd_caps.lttpr_caps.alpm.raw =
-+			lttpr_dpcd_data[DP_LTTPR_ALPM_CAPABILITIES -
-+							DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV];
+-	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 8 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 10 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 12 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 14;
+-	if (efuse->hw_cap.nss > 1) {
+-		highest = cpu_to_le16(780);
+-		mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
+-	} else {
+-		highest = cpu_to_le16(390);
+-		mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << 2;
++	for (i = 0; i < 8; i++) {
++		if (i < efuse->hw_cap.nss)
++			mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << (i * 2);
++		else
++			mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2);
+ 	}
+ 
++	highest = cpu_to_le16(390 * efuse->hw_cap.nss);
 +
- 	/* If this chip cap is set, at least one retimer must exist in the chain
- 	 * Override count to 1 if we receive a known bad count (0 or an invalid value) */
- 	if (((link->chip_caps & AMD_EXT_DISPLAY_PATH_CAPS__EXT_CHIP_MASK) == AMD_EXT_DISPLAY_PATH_CAPS__DP_FIXED_VS_EN) &&
+ 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
+ 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
+ 	vht_cap->vht_mcs.rx_highest = highest;
 -- 
 2.39.5
 
