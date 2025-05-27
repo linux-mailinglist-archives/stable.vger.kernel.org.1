@@ -1,96 +1,102 @@
-Return-Path: <stable+bounces-146423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E8BAC49FE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 10:18:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD26AC4A47
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 10:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E3863B56A2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 08:17:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC54917C635
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 08:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AB2248F4C;
-	Tue, 27 May 2025 08:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EED124A047;
+	Tue, 27 May 2025 08:26:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBC61F461A;
-	Tue, 27 May 2025 08:18:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBAA24A061;
+	Tue, 27 May 2025 08:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748333887; cv=none; b=h9CRm8etf2fwvSgO8OFjxoDFsnMH8ErO+mycZgGNIVWN9v+tS7ZeuQJ9tOeUEo4LsBDaJRr0c5WjiozsK5utQ18kdHp22QEW9/OA531/L89NYvRHsytGUCBO4PMn9ku3KedAMMfwgPzLDstcg/J7T4iN/1TnVP5Hs6mnmhbnbZo=
+	t=1748334404; cv=none; b=OJjbgsI1CtBL9SUR5TMIqpodI/mFfEE6HMGMW7Tm+fLw3i2pQUPkuGENs8niJSTMreA0Da9/mcPUhaQQnQBHK/8JfGuCn263Rdrw83Xgt1ZnkuEtfolC1M/0mEoYgVihv7mz+3J5QM01+wMFsIHc7QJpOZjbnkYRdzFy+F3f1SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748333887; c=relaxed/simple;
-	bh=bR1NuJphAxo4BEJpVZ4xCM+6Jt7sJuBR86KzC2aYtBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uK4tvbaHsSSEclgrCvDcwPQfA2XKKXbKMO4UT17d0EXt/5W80TwqEm3n25ktiqBC7hbQoeoxuU4Xtxod/mi+9u0wivwGdNIvwbJav3pGUl4FdLkLhl+rHUXk/9zZTblcxnvA7JWGCtzaTwWv3Law5cW90EFLtJoBDCludxYJsL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: VJo24VmvR6e64SbxaNe4mw==
-X-CSE-MsgGUID: zhYtAfAtT323/g+JfeW+Iw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11445"; a="52933868"
-X-IronPort-AV: E=Sophos;i="6.15,317,1739865600"; 
-   d="scan'208";a="52933868"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2025 01:18:05 -0700
-X-CSE-ConnectionGUID: geUUSBLSSiK3T9WXN98Feg==
-X-CSE-MsgGUID: D//pKkMBTkWNOvMc7764yw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,317,1739865600"; 
-   d="scan'208";a="146591285"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2025 01:18:03 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1uJpVY-000000017B4-2NXj;
-	Tue, 27 May 2025 11:18:00 +0300
-Date: Tue, 27 May 2025 11:18:00 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: maudspierings@gocontroll.com
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Christian Heusel <christian@heusel.eu>,
-	Linus Walleij <linus.walleij@linaro.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] iio: common: st_sensors: Fix use of uninitialize
- device structs
-Message-ID: <aDV1OF6EKqLMl2D8@smile.fi.intel.com>
-References: <20250527-st_iio_fix-v4-1-12d89801c761@gocontroll.com>
+	s=arc-20240116; t=1748334404; c=relaxed/simple;
+	bh=0CwsYvYwjgFsF9z8hdBk+pow10ksQ9pwAjMtH5KEl3U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R8DOj5dojP53yRtc43KEsepzLoAwoy8L+PD6YVLVqEEwCS2CpHMPzyNUbN5WPb4TMCoMMOpGU3TpY5LRW6Mn0BVzslcX6DlTSzUAsJ19W7A+nnTOM/cZg74GD6SQ7g0vUcxXsWBPBhN8rltGhtALqwF0DSji8mYIQdCSSrvtl34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C34E14BF;
+	Tue, 27 May 2025 01:26:25 -0700 (PDT)
+Received: from localhost.localdomain (unknown [10.163.85.29])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0C2C23F5A1;
+	Tue, 27 May 2025 01:26:37 -0700 (PDT)
+From: Dev Jain <dev.jain@arm.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org
+Cc: david@redhat.com,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	mark.rutland@arm.com,
+	yang@os.amperecomputing.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Dev Jain <dev.jain@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] arm64: Restrict pagetable teardown to avoid false warning
+Date: Tue, 27 May 2025 13:56:33 +0530
+Message-Id: <20250527082633.61073-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250527-st_iio_fix-v4-1-12d89801c761@gocontroll.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 27, 2025 at 08:36:08AM +0200, Maud Spierings via B4 Relay wrote:
-> From: Maud Spierings <maudspierings@gocontroll.com>
-> 
-> Throughout the various probe functions &indio_dev->dev is used before it
-> is initialized. This caused a kernel panic in st_sensors_power_enable()
-> when the call to devm_regulator_bulk_get_enable() fails and then calls
-> dev_err_probe() with the uninitialized device.
-> 
-> This seems to only cause a panic with dev_err_probe(), dev_err(),
-> dev_warn() and dev_info() don't seem to cause a panic, but are fixed
-> as well.
-> 
-> The issue is reported and traced here: [1]
+Commit 9c006972c3fe removes the pxd_present() checks because the caller
+checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller only
+checks pud_present(); pud_free_pmd_page() recurses on each pmd through
+pmd_free_pte_page(), wherein the pmd may be none. Thus it is possible to
+hit a warning in the latter, since pmd_none => !pmd_table(). Thus, add
+a pmd_present() check in pud_free_pmd_page().
 
-FWIW,
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+This problem was found by code inspection.
 
+Fixes: 9c006972c3fe (arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table())
+Cc: <stable@vger.kernel.org>
+Reported-by: Ryan Roberts <ryan.roberts@arm.com> 
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+This patch is based on 6.15-rc6.
+
+v2->v3:
+ - Use pmdp_get()
+
+v1->v2:
+ - Enforce check in caller
+
+ arch/arm64/mm/mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index ea6695d53fb9..5a9bf291c649 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1286,7 +1286,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
+ 	next = addr;
+ 	end = addr + PUD_SIZE;
+ 	do {
+-		pmd_free_pte_page(pmdp, next);
++		if (pmd_present(pmdp_get(pmdp)))
++			pmd_free_pte_page(pmdp, next);
+ 	} while (pmdp++, next += PMD_SIZE, next != end);
+ 
+ 	pud_clear(pudp);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 
 
