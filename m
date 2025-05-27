@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981D7AC58AF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4164EAC5549
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57AA216D483
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0434D1BA5E81
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC5227A131;
-	Tue, 27 May 2025 17:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B1127CB04;
+	Tue, 27 May 2025 17:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecIgE8Xw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Y95tTJv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0E625C6EC;
-	Tue, 27 May 2025 17:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A15139579;
+	Tue, 27 May 2025 17:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368071; cv=none; b=BRZYmO+CPrIn4r+ZARMVUKh+STi6DItAEA4dZFcJaA3l+xSJLOXE+JCTAuNrXW0aH02z2sDWgA0x+TmRbRLSOMH71UOZJdsqshqtKC+in5LngGU9DxlAiX3fRxtRmL4ism7sY3qLGH0YQs0ZqfmljceuB9pdpiASA94F+2ovw2o=
+	t=1748365802; cv=none; b=C7BA90sIt+aCJZFN4nWOEPfrNFxl2tcHJzszYva8ZpJTh4k2AUNywfJO13rjjqfhIvYYqVdpLwa/ViDL4lzX6Hph322sk7QU7mEHrgE5U+fMaO3lgMgQRiLUmk+9/NEvOo4KhFkBRAUZn1fhfvTBv2povBExXeegGOWiSJwjI6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368071; c=relaxed/simple;
-	bh=T+kZ3veiwufNHV3wFgSCTJiibvwlvdwJs22kVDQHqRk=;
+	s=arc-20240116; t=1748365802; c=relaxed/simple;
+	bh=2S5jRVjc/CKu+0euWlr9bugvaGj6GWfl+BMqwXcHIQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u4ev1u0Zac2vYaugGGfFJVYr2oJ6dDh0JSCRiHKDRm+pQ5odZt0U+w/kx3t42WZ7JJPKhRDHJ55CODoTz66XM210z37kvfD13Ax+lyCeNFz1jLE8zv3lFtWAsFVsqXuAYbL37oxe2hXcqWIelM0YqBY0RZbSO9A4LVLGDnKKnTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecIgE8Xw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F80C4CEE9;
-	Tue, 27 May 2025 17:47:51 +0000 (UTC)
+	 MIME-Version; b=F1jV4VnBQwFpJK+Whjl1Q0uKWw6yE+TB66HK/mWEtJSJ02PXF3GtUcbWNZmRh+MHpYMAa7MdHe8U7BnHPsV+ZMoZAUdbhSlfShEQJDe5cuXxbB5SqY+naa+MQlB1QYPBQoc9yUtQldWgRrpOLKgfBWea+Jf7tD9GdeAIDUYFUV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Y95tTJv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFF4C4CEE9;
+	Tue, 27 May 2025 17:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368071;
-	bh=T+kZ3veiwufNHV3wFgSCTJiibvwlvdwJs22kVDQHqRk=;
+	s=korg; t=1748365802;
+	bh=2S5jRVjc/CKu+0euWlr9bugvaGj6GWfl+BMqwXcHIQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecIgE8XwDlzk90dBnbFSHS5A207Q3YvkGUzArsZoFKoj7JtBu+FjrqUpjjcdgtYy3
-	 x3hm3DxbpV91wsBssnbec3SbeuAHmCruytlE5s1ls7a2ZVPzJUtkdflxO082rzIFs3
-	 Ew3STKJGg9KIpPLmtG9eU30yQeGG7GKZldha/tSk=
+	b=2Y95tTJvhmDRufzvKtqv+bSTilWj8OBgEc3gNKIB+7akx80O+++LR0z152YEFjQ3H
+	 aGUvuHenTLoVw3RXtBFYIMGZ8eK9Sp4XpKDuafRdUsGXI+Y+WYgCSbej2Buq8p77lp
+	 WoE49IROJKE6a/FrM2UI7btc12fYV/rNB1mcig+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Matthew Sakai <msakai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 590/783] dm vdo: use a short static string for thread name prefix
+Subject: [PATCH 6.12 494/626] drm/nouveau: fix the broken marco GSP_MSG_MAX_SIZE
 Date: Tue, 27 May 2025 18:26:27 +0200
-Message-ID: <20250527162537.158863087@linuxfoundation.org>
+Message-ID: <20250527162505.051504793@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Sakai <msakai@redhat.com>
+From: Zhi Wang <zhiw@nvidia.com>
 
-[ Upstream commit 3280c9313c9adce01550cc9f00edfb1dc7c744da ]
+[ Upstream commit bbae6680cfe38b033250b483722e60ccd865976f ]
 
-Also remove MODULE_NAME and a BUG_ON check, both unneeded.
+The macro GSP_MSG_MAX_SIZE refers to another macro that doesn't exist.
+It represents the max GSP message element size.
 
-This fixes a warning about string truncation in snprintf that
-will never happen in practice:
+Fix the broken marco so it can be used to replace some magic numbers in
+the code.
 
-drivers/md/dm-vdo/vdo.c: In function ‘vdo_make’:
-drivers/md/dm-vdo/vdo.c:564:5: error: ‘%s’ directive output may be truncated writing up to 55 bytes into a region of size 16 [-Werror=format-truncation=]
-    "%s%u", MODULE_NAME, instance);
-     ^~
-drivers/md/dm-vdo/vdo.c:563:2: note: ‘snprintf’ output between 2 and 66 bytes into a destination of size 16
-  snprintf(vdo->thread_name_prefix, sizeof(vdo->thread_name_prefix),
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    "%s%u", MODULE_NAME, instance);
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Reported-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Matthew Sakai <msakai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250124182958.2040494-8-zhiw@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-vdo/vdo.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-vdo/vdo.c b/drivers/md/dm-vdo/vdo.c
-index a7e32baab4afd..80b6086740225 100644
---- a/drivers/md/dm-vdo/vdo.c
-+++ b/drivers/md/dm-vdo/vdo.c
-@@ -31,9 +31,7 @@
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+index 9c83bab0a5309..fc84ca214f247 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -58,7 +58,7 @@
+ #include <linux/parser.h>
  
- #include <linux/completion.h>
- #include <linux/device-mapper.h>
--#include <linux/kernel.h>
- #include <linux/lz4.h>
--#include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/spinlock.h>
- #include <linux/types.h>
-@@ -142,12 +140,6 @@ static void finish_vdo_request_queue(void *ptr)
- 	vdo_unregister_allocating_thread();
- }
+ #define GSP_MSG_MIN_SIZE GSP_PAGE_SIZE
+-#define GSP_MSG_MAX_SIZE GSP_PAGE_MIN_SIZE * 16
++#define GSP_MSG_MAX_SIZE (GSP_MSG_MIN_SIZE * 16)
  
--#ifdef MODULE
--#define MODULE_NAME THIS_MODULE->name
--#else
--#define MODULE_NAME "dm-vdo"
--#endif  /* MODULE */
--
- static const struct vdo_work_queue_type default_queue_type = {
- 	.start = start_vdo_request_queue,
- 	.finish = finish_vdo_request_queue,
-@@ -559,8 +551,7 @@ int vdo_make(unsigned int instance, struct device_config *config, char **reason,
- 	*vdo_ptr = vdo;
- 
- 	snprintf(vdo->thread_name_prefix, sizeof(vdo->thread_name_prefix),
--		 "%s%u", MODULE_NAME, instance);
--	BUG_ON(vdo->thread_name_prefix[0] == '\0');
-+		 "vdo%u", instance);
- 	result = vdo_allocate(vdo->thread_config.thread_count,
- 			      struct vdo_thread, __func__, &vdo->threads);
- 	if (result != VDO_SUCCESS) {
+ struct r535_gsp_msg {
+ 	u8 auth_tag_buffer[16];
 -- 
 2.39.5
 
