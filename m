@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-146678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5B5AC5425
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:56:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0009AC5781
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA3364A259B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10A218909BF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B97280310;
-	Tue, 27 May 2025 16:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0787427F178;
+	Tue, 27 May 2025 17:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSqL7Os6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mS8M2CNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DF427D766;
-	Tue, 27 May 2025 16:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95912110E;
+	Tue, 27 May 2025 17:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364971; cv=none; b=gCDj5R+zEAHjT0dXJq/FdkYghWAtqv9RJJjXkpH5kqH0N+As7M8MtNsqa5se5iJHYImszLrksh+K7CBh/Md/dPD1sbmGwnr1fCX/f4cO37fVYRfuCu3EPg5g3yPwy0oA/f7xAaymwzL/4pDikFDWmgL0SJHcX9Pk7ZyeKC07Wl8=
+	t=1748367234; cv=none; b=o9+sqoi80hhrRPKnbt3ja5lvTA1md763cxVza+HNIcTW6ByE5SLbSmY6V0ofM+BnHrLuhK5jI+K2Gg9ae4pVHbCss7r5grPHGf/ZwurL8WbOATeJR0LlMGTDlKVrDeV49lbaUHErjq8D4ON1g88o2G3Z70Ft2653i5VAHDE8BRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364971; c=relaxed/simple;
-	bh=nzmgAGxEgzwRytXSRwiGVT2NeYowN6j3a0oQpweQ9kk=;
+	s=arc-20240116; t=1748367234; c=relaxed/simple;
+	bh=xZUICC0BehkR2YVLgiEQoeH76jFh6jHtTt1ueKVwtjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hWwBaPXyNKD7/yhOluyYzng32pyE1QWjd/sUkCHcXxGtWgBLTTCpDnh9Fa/J7a3qqN7A3bpKg6HaI7+1YBqUZCFR+dltKqqOp+Y4K/x1qTCRrOwBe/XQznMHHH0IvrvbsQrMeqeFytIlXFe2F3TAHqjYVxMhzAramPNOAMrCzKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSqL7Os6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94759C4CEE9;
-	Tue, 27 May 2025 16:56:10 +0000 (UTC)
+	 MIME-Version; b=s6vUzYpiy+FrhtE5M72Cg3zHo5ODph23StOjCVzHS0FlBxReH1ZeeDOaL9OpCymqNARJ9jt1Lugeux12LE/WyNuMuoe7pzcdbHyTeRBT4Q2GSHyS6tXnmnM2sE536cTtZx/jWMHgDajdD2aU/uNoTziIohUMTOmnSZvDvN8uiSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mS8M2CNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268A0C4CEEB;
+	Tue, 27 May 2025 17:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364971;
-	bh=nzmgAGxEgzwRytXSRwiGVT2NeYowN6j3a0oQpweQ9kk=;
+	s=korg; t=1748367234;
+	bh=xZUICC0BehkR2YVLgiEQoeH76jFh6jHtTt1ueKVwtjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSqL7Os6Wec6jtsIoBXrTR7dUjv6iE5EDJl87MavmyrDhbYd3EPg3Kwcrx5V3SytX
-	 w1AdbbJyQnfAJgd202bkVClT/LiaarXM7ZVoRyEjQAbNhPIg+gLGfre5PbdVNL5DH5
-	 JPjMH9BTMNA2pVmnJGDhPfhsD4UeRR4Jn1zDqzcY=
+	b=mS8M2CNdPHvQPeq055cc/R6wBIjYJYMww9k3MVAe9fFo4kigd8P30KHxUVqCZ26FA
+	 tu+fX0+ki7pTfyuxohRN3x5jB2lcb5J5c8IOL3F3bJw5fHoQ4i0e6REZuk2tg8f22W
+	 0zR4wOu/iKMx3UhvYnpqkXUn4bYti82XTVS6zhrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Janne Grunau <j@jannau.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Sven Peter <sven@svenpeter.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/626] soc: mediatek: mtk-mutex: Add DPI1 SOF/EOF to MT8188 mutex tables
+Subject: [PATCH 6.14 322/783] soc: apple: rtkit: Use high prio work queue
 Date: Tue, 27 May 2025 18:21:59 +0200
-Message-ID: <20250527162454.207042722@linuxfoundation.org>
+Message-ID: <20250527162526.172812032@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 694e0b7c1747603243da874de9cbbf8cb806ca44 ]
+[ Upstream commit 22af2fac88fa5dbc310bfe7d0b66d4de3ac47305 ]
 
-MT8188 uses DPI1 to output to the HDMI controller: add the
-Start of Frame and End of Frame configuration for the DPI1
-IP to the tables to unblock generation and sending of these
-signals to the GCE.
+rtkit messages as communication with the DCP firmware for framebuffer
+swaps or input events are time critical so use WQ_HIGHPRI to prevent
+user space CPU load to increase latency.
+With kwin_wayland 6's explicit sync mode user space load was able to
+delay the IOMFB rtkit communication enough to miss vsync for surface
+swaps. Minimal test scenario is constantly resizing a glxgears
+Xwayland window.
 
-Link: https://lore.kernel.org/r/20250212100012.33001-2-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://lore.kernel.org/r/20250226-apple-soc-misc-v2-3-c3ec37f9021b@svenpeter.dev
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-mutex.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/soc/apple/rtkit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/mediatek/mtk-mutex.c b/drivers/soc/mediatek/mtk-mutex.c
-index 5250c1d702eb9..aaa965d4b050a 100644
---- a/drivers/soc/mediatek/mtk-mutex.c
-+++ b/drivers/soc/mediatek/mtk-mutex.c
-@@ -155,6 +155,7 @@
- #define MT8188_MUTEX_MOD_DISP1_VPP_MERGE3	23
- #define MT8188_MUTEX_MOD_DISP1_VPP_MERGE4	24
- #define MT8188_MUTEX_MOD_DISP1_DISP_MIXER	30
-+#define MT8188_MUTEX_MOD_DISP1_DPI1		38
- #define MT8188_MUTEX_MOD_DISP1_DP_INTF1		39
+diff --git a/drivers/soc/apple/rtkit.c b/drivers/soc/apple/rtkit.c
+index e6d940292c9fb..00d59a81db88b 100644
+--- a/drivers/soc/apple/rtkit.c
++++ b/drivers/soc/apple/rtkit.c
+@@ -667,7 +667,7 @@ struct apple_rtkit *apple_rtkit_init(struct device *dev, void *cookie,
+ 	rtk->mbox->rx = apple_rtkit_rx;
+ 	rtk->mbox->cookie = rtk;
  
- #define MT8195_MUTEX_MOD_DISP_OVL0		0
-@@ -289,6 +290,7 @@
- #define MT8188_MUTEX_SOF_DSI0			1
- #define MT8188_MUTEX_SOF_DP_INTF0		3
- #define MT8188_MUTEX_SOF_DP_INTF1		4
-+#define MT8188_MUTEX_SOF_DPI1			5
- #define MT8195_MUTEX_SOF_DSI0			1
- #define MT8195_MUTEX_SOF_DSI1			2
- #define MT8195_MUTEX_SOF_DP_INTF0		3
-@@ -301,6 +303,7 @@
- #define MT8188_MUTEX_EOF_DSI0			(MT8188_MUTEX_SOF_DSI0 << 7)
- #define MT8188_MUTEX_EOF_DP_INTF0		(MT8188_MUTEX_SOF_DP_INTF0 << 7)
- #define MT8188_MUTEX_EOF_DP_INTF1		(MT8188_MUTEX_SOF_DP_INTF1 << 7)
-+#define MT8188_MUTEX_EOF_DPI1			(MT8188_MUTEX_SOF_DPI1 << 7)
- #define MT8195_MUTEX_EOF_DSI0			(MT8195_MUTEX_SOF_DSI0 << 7)
- #define MT8195_MUTEX_EOF_DSI1			(MT8195_MUTEX_SOF_DSI1 << 7)
- #define MT8195_MUTEX_EOF_DP_INTF0		(MT8195_MUTEX_SOF_DP_INTF0 << 7)
-@@ -472,6 +475,7 @@ static const u8 mt8188_mutex_mod[DDP_COMPONENT_ID_MAX] = {
- 	[DDP_COMPONENT_PWM0] = MT8188_MUTEX_MOD2_DISP_PWM0,
- 	[DDP_COMPONENT_DP_INTF0] = MT8188_MUTEX_MOD_DISP_DP_INTF0,
- 	[DDP_COMPONENT_DP_INTF1] = MT8188_MUTEX_MOD_DISP1_DP_INTF1,
-+	[DDP_COMPONENT_DPI1] = MT8188_MUTEX_MOD_DISP1_DPI1,
- 	[DDP_COMPONENT_ETHDR_MIXER] = MT8188_MUTEX_MOD_DISP1_DISP_MIXER,
- 	[DDP_COMPONENT_MDP_RDMA0] = MT8188_MUTEX_MOD_DISP1_MDP_RDMA0,
- 	[DDP_COMPONENT_MDP_RDMA1] = MT8188_MUTEX_MOD_DISP1_MDP_RDMA1,
-@@ -686,6 +690,8 @@ static const u16 mt8188_mutex_sof[DDP_MUTEX_SOF_MAX] = {
- 	[MUTEX_SOF_SINGLE_MODE] = MUTEX_SOF_SINGLE_MODE,
- 	[MUTEX_SOF_DSI0] =
- 		MT8188_MUTEX_SOF_DSI0 | MT8188_MUTEX_EOF_DSI0,
-+	[MUTEX_SOF_DPI1] =
-+		MT8188_MUTEX_SOF_DPI1 | MT8188_MUTEX_EOF_DPI1,
- 	[MUTEX_SOF_DP_INTF0] =
- 		MT8188_MUTEX_SOF_DP_INTF0 | MT8188_MUTEX_EOF_DP_INTF0,
- 	[MUTEX_SOF_DP_INTF1] =
+-	rtk->wq = alloc_ordered_workqueue("rtkit-%s", WQ_MEM_RECLAIM,
++	rtk->wq = alloc_ordered_workqueue("rtkit-%s", WQ_HIGHPRI | WQ_MEM_RECLAIM,
+ 					  dev_name(rtk->dev));
+ 	if (!rtk->wq) {
+ 		ret = -ENOMEM;
 -- 
 2.39.5
 
