@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F77AC581B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7E0AC54C2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A69B1BC1AA6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5C41BA5760
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2A627FD49;
-	Tue, 27 May 2025 17:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5224527E7C8;
+	Tue, 27 May 2025 17:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kv0Zt9zt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5SMHsTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DBB1AF0BB;
-	Tue, 27 May 2025 17:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2A21D432D;
+	Tue, 27 May 2025 17:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367655; cv=none; b=WZb5+9T6tWdllSYN30Tvn/EuMoFu/E7Cttnceok94YwXwh4PO1VJdb1igd2SQtp2Fc4mbcvKri7t76oMFfsc2srBAMSxI7jkFxTYmJm7SahqygqhE+tJy2NlmgF7t8yMi1cIm2F7qctpRAEWhXgBz6knrehiQVW8rIF54w7sWek=
+	t=1748365390; cv=none; b=WcTrwRylmNmkuvsw5h06jVZ+IPdU09WHZWom7QB4GuChGRPvwQv4+I6/vQqNuBtkpy1b5gQzrb+SDw58ckWcy7wz6BAhkDuoOhqw8pICNTLJ2y5A2lvVDVGo0E/IkvbLAWbb8x5kGHKbCz/7NovbNj7fUYuPO2WghJu/g5C7uSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367655; c=relaxed/simple;
-	bh=nTcS+f5RCFsGbHHgFb6r/L6ACGahSfmM14azeQ677Q0=;
+	s=arc-20240116; t=1748365390; c=relaxed/simple;
+	bh=n3X/m0oYnCjR7GflE8wKr//OS9/WZBARIZsYNvTFLJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=To+11BKKLUt5KmRbUXDmiHHVJjSzrlvhADMIU6oyVTX0ZHZLWeqJRTM7BQirbOztk2ii9KfLmkbiTrQVd6SJdfCbcfhfDMQoEqNYwOtcRRSqvbOWeNfXXNWcG6rKSP0y3hnCVHujUgWPhL0N+P2exqiSrmud8TJIRXx2qRk6K+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kv0Zt9zt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDCDC4CEE9;
-	Tue, 27 May 2025 17:40:54 +0000 (UTC)
+	 MIME-Version; b=VlYjB7CxAoSUu9FeCYNxT1MEbGndeYTxoqcm6Qjsp/CO4NfW3cJUW0BQdTFmMUAlb6zTxqQTFR7C5h8+tgSKvgJaFIx/7JxIj2tDkIi2JJFq5WQhybmGZ6XiOF8UdkBt/vcgJQJdldrk/sqKticgwPBOK3q3EAlgsZ8MZTcgHAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5SMHsTT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DB3C4CEE9;
+	Tue, 27 May 2025 17:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367655;
-	bh=nTcS+f5RCFsGbHHgFb6r/L6ACGahSfmM14azeQ677Q0=;
+	s=korg; t=1748365389;
+	bh=n3X/m0oYnCjR7GflE8wKr//OS9/WZBARIZsYNvTFLJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kv0Zt9ztDVAEn0RjAaZ7Usp01q8XUs7yvVgmqH2LKI99b8FEICI1+0qX/qMVq9ncS
-	 gCYhF1A0bgdukvN91YdlPC8JYnLcN8bCjMCMKnUY+RHZ5pR3ZxlroUE92mqRj/Lcsd
-	 dbBlAWfxdwYp9lOY6ThIsgu27HmvttBCY95jI3VI=
+	b=r5SMHsTTmR5bl9kF5B7he1YSmsrWKsyaTjQGLC7MVbl4uSa9pq9kaJn63xPBoqsup
+	 q16PbjFhjSBjEHPATVFUXMQhdSfnL8Y0HnjuGLrCrTuxeAFE60a08KTS2+AoIPesF5
+	 6JquDSJWM3p4H8iC/NIXutT+gw8scors1kaZS6d8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francois Dugast <francois.dugast@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 457/783] drm/xe: Fix xe_tile_init_noalloc() error propagation
+Subject: [PATCH 6.12 361/626] ASoC: tas2764: Power up/down amp on mute ops
 Date: Tue, 27 May 2025 18:24:14 +0200
-Message-ID: <20250527162531.733294897@linuxfoundation.org>
+Message-ID: <20250527162459.680903514@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 0bcf41171c64234e79eb3552d00f0aad8a47e8d3 ]
+[ Upstream commit 1c3b5f37409682184669457a5bdf761268eafbe5 ]
 
-Propagate the error to the caller so initialization properly stops if
-sysfs creation fails.
+The ASoC convention is that clocks are removed after codec mute, and
+power up/down is more about top level power management. For these chips,
+the "mute" state still expects a TDM clock, and yanking the clock in
+this state will trigger clock errors. So, do the full
+shutdown<->mute<->active transition on the mute operation, so the amp is
+in software shutdown by the time the clocks are removed.
 
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213192909.996148-4-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+This fixes TDM clock errors when streams are stopped.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-1-dbab892a69b5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_tile.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/soc/codecs/tas2764.c | 51 ++++++++++++++++----------------------
+ 1 file changed, 21 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_tile.c b/drivers/gpu/drm/xe/xe_tile.c
-index 07cf7cfe4abd5..37f170effcd67 100644
---- a/drivers/gpu/drm/xe/xe_tile.c
-+++ b/drivers/gpu/drm/xe/xe_tile.c
-@@ -176,9 +176,7 @@ int xe_tile_init_noalloc(struct xe_tile *tile)
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 31f94c8cf2844..39a7d39536fe6 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -180,33 +180,6 @@ static SOC_ENUM_SINGLE_DECL(
+ static const struct snd_kcontrol_new tas2764_asi1_mux =
+ 	SOC_DAPM_ENUM("ASI1 Source", tas2764_ASI1_src_enum);
  
- 	xe_wa_apply_tile_workarounds(tile);
- 
--	err = xe_tile_sysfs_init(tile);
+-static int tas2764_dac_event(struct snd_soc_dapm_widget *w,
+-			     struct snd_kcontrol *kcontrol, int event)
+-{
+-	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+-	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
+-	int ret;
+-
+-	switch (event) {
+-	case SND_SOC_DAPM_POST_PMU:
+-		tas2764->dac_powered = true;
+-		ret = tas2764_update_pwr_ctrl(tas2764);
+-		break;
+-	case SND_SOC_DAPM_PRE_PMD:
+-		tas2764->dac_powered = false;
+-		ret = tas2764_update_pwr_ctrl(tas2764);
+-		break;
+-	default:
+-		dev_err(tas2764->dev, "Unsupported event\n");
+-		return -EINVAL;
+-	}
+-
+-	if (ret < 0)
+-		return ret;
 -
 -	return 0;
-+	return xe_tile_sysfs_init(tile);
+-}
+-
+ static const struct snd_kcontrol_new isense_switch =
+ 	SOC_DAPM_SINGLE("Switch", TAS2764_PWR_CTRL, TAS2764_ISENSE_POWER_EN, 1, 1);
+ static const struct snd_kcontrol_new vsense_switch =
+@@ -219,8 +192,7 @@ static const struct snd_soc_dapm_widget tas2764_dapm_widgets[] = {
+ 			    1, &isense_switch),
+ 	SND_SOC_DAPM_SWITCH("VSENSE", TAS2764_PWR_CTRL, TAS2764_VSENSE_POWER_EN,
+ 			    1, &vsense_switch),
+-	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2764_dac_event,
+-			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
++	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_OUTPUT("OUT"),
+ 	SND_SOC_DAPM_SIGGEN("VMON"),
+ 	SND_SOC_DAPM_SIGGEN("IMON")
+@@ -241,9 +213,28 @@ static int tas2764_mute(struct snd_soc_dai *dai, int mute, int direction)
+ {
+ 	struct tas2764_priv *tas2764 =
+ 			snd_soc_component_get_drvdata(dai->component);
++	int ret;
++
++	if (!mute) {
++		tas2764->dac_powered = true;
++		ret = tas2764_update_pwr_ctrl(tas2764);
++		if (ret)
++			return ret;
++	}
+ 
+ 	tas2764->unmuted = !mute;
+-	return tas2764_update_pwr_ctrl(tas2764);
++	ret = tas2764_update_pwr_ctrl(tas2764);
++	if (ret)
++		return ret;
++
++	if (mute) {
++		tas2764->dac_powered = false;
++		ret = tas2764_update_pwr_ctrl(tas2764);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
  }
  
- void xe_tile_migrate_wait(struct xe_tile *tile)
+ static int tas2764_set_bitwidth(struct tas2764_priv *tas2764, int bitwidth)
 -- 
 2.39.5
 
