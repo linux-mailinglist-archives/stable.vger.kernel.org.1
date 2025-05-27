@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2D1AC5935
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3035AAC55D2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 098559E0434
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 995217A3AD7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DACA28003D;
-	Tue, 27 May 2025 17:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749FA27B51A;
+	Tue, 27 May 2025 17:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3mWOl/j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOTGkVfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586AF28001F;
-	Tue, 27 May 2025 17:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331E71E89C;
+	Tue, 27 May 2025 17:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368453; cv=none; b=nvQ9H3zFI4PSHRfRZo69EY8qL3rC5NmrgYeRx7XuaWTnQJke2rrihAIstZn6RUhv8NJk9ncfa1SiJmP0kiVHRJv0Hd6AEELNoke8otjP6yp6wzisqcoLUa0WhANVNBLvPzXwp/iWBARqZT9ahDsvsb6pQc0qVe5wjdOBE3JrJRs=
+	t=1748366081; cv=none; b=STqFzqxC6VFqZg0uwA58geZJ/ueCu04rqmjLDoi4TsF4wHuh5Bt3l8UbBcSjbSJMlBY9gulIwxWoDo6nq+lf6NCuwxxgvDrgizi16OmR5KK0YfiMorUt0OlfA7ODVUVdba69+1OI7+Qt45w63tLH8kg07FD3DtDGuS+ssGkNQr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368453; c=relaxed/simple;
-	bh=Gr9GNepdHE1NTmcygRiluljI2mNgv3GXKV0A1I7CL9o=;
+	s=arc-20240116; t=1748366081; c=relaxed/simple;
+	bh=F2WdEw663rO0VlnLoVV+1UJq1beun9cCcUrNvDN/hv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQ7i3mPyzR43ZXFumtBRhK+nUV1QXXulvJEKSUU7YZek4avJlqgZojWFiSr6eLYeEu+HwqqyEGKseMXXFOzaIpDsx+jk2H7GJ113D6Ki2jAhQ8UTIJKNXoZ5bJva/BbD6TB6CKZ4/22gAjkzFvXPcp1aHbNwxSm4wp5Ii9VV0Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3mWOl/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC62FC4CEE9;
-	Tue, 27 May 2025 17:54:12 +0000 (UTC)
+	 MIME-Version; b=uFmWdjwGQ8rx7x82COd1mWF30pX2nOq6w0U3MEPhmhkhfHVFeU0JHio6BD3ykHPmctdZkSGvi5REMou14yWOYOVTtcQWUhLvxR375xPsEIL6C5ZTExjGsHpYkHTEZre0hGH3yD/0LoZN9xphSsrekPf/P8rhjnIWW9OKPrds578=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOTGkVfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CEAC4CEE9;
+	Tue, 27 May 2025 17:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368453;
-	bh=Gr9GNepdHE1NTmcygRiluljI2mNgv3GXKV0A1I7CL9o=;
+	s=korg; t=1748366081;
+	bh=F2WdEw663rO0VlnLoVV+1UJq1beun9cCcUrNvDN/hv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3mWOl/jh7V5ncArb7DBgcw7V/o2HY9/nPcRAfwEOrVE8DEAjGelHkm2GHyjSnUy4
-	 lGV+QZYsZbjZivAcx7cgYsm2Fl1LKF3Ngv52rOvnH52FLzuQFxSJkfo+oSlz745ghd
-	 SiVS89KZmQ58wTpxEUM6WsWtP/LD6zdg5DqLQC9E=
+	b=YOTGkVfydGwgwdj+G/EF7Lvm9/WQodg2GDGFEvm0PltpMOFvnE8PR9Y/ZVd5Mk/ba
+	 vu2RuqysslhH4zXANf03u0i/fppNuSqwAxzx+KF0F+3OttK70/MJWrZf+jnZ0hudpS
+	 2c7qWDX5Z+kN9G+rt2HZxYwcJsnL+DADgM591VJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 681/783] soundwire: bus: Fix race on the creation of the IRQ domain
+	Ronak Doshi <ronak.doshi@broadcom.com>,
+	Guolin Yang <guolin.yang@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 585/626] vmxnet3: update MTU after device quiesce
 Date: Tue, 27 May 2025 18:27:58 +0200
-Message-ID: <20250527162540.861621855@linuxfoundation.org>
+Message-ID: <20250527162508.748751439@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Ronak Doshi <ronak.doshi@broadcom.com>
 
-[ Upstream commit fd15594ba7d559d9da741504c322b9f57c4981e5 ]
+commit 43f0999af011fba646e015f0bb08b6c3002a0170 upstream.
 
-The SoundWire IRQ domain needs to be created before any slaves are added
-to the bus, such that the domain is always available when needed. Move
-the call to sdw_irq_create() before the calls to sdw_acpi_find_slaves()
-and sdw_of_find_slaves().
+Currently, when device mtu is updated, vmxnet3 updates netdev mtu, quiesces
+the device and then reactivates it for the ESXi to know about the new mtu.
+So, technically the OS stack can start using the new mtu before ESXi knows
+about the new mtu.
 
-Fixes: 12a95123bfe1 ("soundwire: bus: Allow SoundWire peripherals to register IRQ handlers")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250409122239.1396489-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This can lead to issues for TSO packets which use mss as per the new mtu
+configured. This patch fixes this issue by moving the mtu write after
+device quiesce.
+
+Cc: stable@vger.kernel.org
+Fixes: d1a890fa37f2 ("net: VMware virtual Ethernet NIC driver: vmxnet3")
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Acked-by: Guolin Yang <guolin.yang@broadcom.com>
+Changes v1-> v2:
+  Moved MTU write after destroy of rx rings
+Link: https://patch.msgid.link/20250515190457.8597-1-ronak.doshi@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/bus.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/vmxnet3/vmxnet3_drv.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index 9b295fc9acd53..df73e2c040904 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -121,6 +121,10 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
- 	set_bit(SDW_GROUP13_DEV_NUM, bus->assigned);
- 	set_bit(SDW_MASTER_DEV_NUM, bus->assigned);
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -3599,8 +3599,6 @@ vmxnet3_change_mtu(struct net_device *ne
+ 	struct vmxnet3_adapter *adapter = netdev_priv(netdev);
+ 	int err = 0;
  
-+	ret = sdw_irq_create(bus, fwnode);
-+	if (ret)
-+		return ret;
-+
+-	WRITE_ONCE(netdev->mtu, new_mtu);
+-
  	/*
- 	 * SDW is an enumerable bus, but devices can be powered off. So,
- 	 * they won't be able to report as present.
-@@ -137,6 +141,7 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
+ 	 * Reset_work may be in the middle of resetting the device, wait for its
+ 	 * completion.
+@@ -3614,6 +3612,7 @@ vmxnet3_change_mtu(struct net_device *ne
  
- 	if (ret < 0) {
- 		dev_err(bus->dev, "Finding slaves failed:%d\n", ret);
-+		sdw_irq_delete(bus);
- 		return ret;
+ 		/* we need to re-create the rx queue based on the new mtu */
+ 		vmxnet3_rq_destroy_all(adapter);
++		WRITE_ONCE(netdev->mtu, new_mtu);
+ 		vmxnet3_adjust_rx_ring_size(adapter);
+ 		err = vmxnet3_rq_create_all(adapter);
+ 		if (err) {
+@@ -3630,6 +3629,8 @@ vmxnet3_change_mtu(struct net_device *ne
+ 				   "Closing it\n", err);
+ 			goto out;
+ 		}
++	} else {
++		WRITE_ONCE(netdev->mtu, new_mtu);
  	}
  
-@@ -155,10 +160,6 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
- 	bus->params.curr_bank = SDW_BANK0;
- 	bus->params.next_bank = SDW_BANK1;
- 
--	ret = sdw_irq_create(bus, fwnode);
--	if (ret)
--		return ret;
--
- 	return 0;
- }
- EXPORT_SYMBOL(sdw_bus_master_add);
--- 
-2.39.5
-
+ out:
 
 
 
