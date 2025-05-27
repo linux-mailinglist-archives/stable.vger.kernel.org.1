@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-147216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B284AC56AD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6A0AC5360
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C76B3BE066
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C10623BFCAF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11A027D784;
-	Tue, 27 May 2025 17:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E72E2609F7;
+	Tue, 27 May 2025 16:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ98cyEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPYTLSMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E39127D776;
-	Tue, 27 May 2025 17:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCE813A244;
+	Tue, 27 May 2025 16:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366646; cv=none; b=fqghGkFF6MSmqQvkxtGveg3AkKOWwUVNIXU4DEoujy1G2HQ276wz9BHY4pUd3/xBz1lbCAan0JITq6LPaUI7vndyNQ/HVSht0OwoqxAq7l4zHEFpTwOUdL5mKEtvLgptN7eu12dADyf9yT0jYge3vZc3Mc+FXYtuApgk8V8U/UE=
+	t=1748364387; cv=none; b=ViYAbpEB8L6JY2Ye29Y9qgKoeoNiw3gbhVHZyFe6TWYXMXF2XisPxpu/LwMK7zkoN8nB7flPj3f4idSQVLipzOcBFo1XFjYDwP5pHJaaZNynp5yBiC9tDcGvNmFB6nzIjvBsxS95NMCPdh3/F/GAhnCfClVShgsS9Vrck3oql+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366646; c=relaxed/simple;
-	bh=oAi01EPGXXAg+vawP41tNTX7V/aabGNs7F+r0GP3bWE=;
+	s=arc-20240116; t=1748364387; c=relaxed/simple;
+	bh=JbY/UeRUfwG/UaT/N98qCHaf2MzRF/y/d0pA60V6i7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGjvNPS10b1paAHdignmncSyGnVb6w2wlRROE9TA7/QrBAxujYmRIadSDaTAx5g6aWFKp0MCVUBZnyu2TYP3ASfHe1VAz4Dml51t71hZjKYJaNRoNs+drRXrYdr2NKVKh6dipnj3DqVmFfn8H24vEFt6fQStX9qyhmhebeyoRJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ98cyEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002E1C4CEE9;
-	Tue, 27 May 2025 17:24:05 +0000 (UTC)
+	 MIME-Version; b=Ql1VQxdQvPyDpMBpGPtPV5IIZV7FB/pxL9KhdEay0cMoPoS3e3VdKgOgdf6MiVJH+hzzkyb8kCebDqtp9NDht4obpzYj2fIaPjPacvgM7V/K1JGL1pbB6eHoxP99PTlVPPtHFTFbdStN00qfzUMi5BBX6W6pgYjb7Bj6S3VT72k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPYTLSMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1557DC4CEE9;
+	Tue, 27 May 2025 16:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366646;
-	bh=oAi01EPGXXAg+vawP41tNTX7V/aabGNs7F+r0GP3bWE=;
+	s=korg; t=1748364386;
+	bh=JbY/UeRUfwG/UaT/N98qCHaf2MzRF/y/d0pA60V6i7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQ98cyEnch4BKdYdc0vME9Oi75gQWSkWwwanjIR2oOT5JFPzGtFbYFCZeWNIA4Oww
-	 kdy+xm6AV4ScPsgZiQVSfkigEmwpQeL5m0Taq3bXIAZcS1EGxpCLupaIwgpEPz9fb6
-	 82HMbJ9ThzPV+99A3MFsAQzEJpy2kDpzX9I3Vpy4=
+	b=gPYTLSMPS0wq+jqjASUaMs+i0qY+dBlJwww+V1pH6sT6SumOu2IOHDyjbsnBhwXOp
+	 B/dMbcY19kPSaWbqCNMusgooqLSIc7MeBlitBxgywUMVAzUZHIYSl4TkD4ELR1b75j
+	 wxkkymPG8ePVE7rmez81ERa6c44b4sKNUznfqiTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>,
-	David Sterba <dsterba@suse.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 135/783] btrfs: avoid linker error in btrfs_find_create_tree_block()
+Subject: [PATCH 6.12 039/626] selftests/bpf: Mitigate sockmap_ktls disconnect_after_delete failure
 Date: Tue, 27 May 2025 18:18:52 +0200
-Message-ID: <20250527162518.652236987@linuxfoundation.org>
+Message-ID: <20250527162446.652302364@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <maharmstone@fb.com>
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
 
-[ Upstream commit 7ef3cbf17d2734ca66c4ed8573be45f4e461e7ee ]
+[ Upstream commit f2858f308131a09e33afb766cd70119b5b900569 ]
 
-The inline function btrfs_is_testing() is hardcoded to return 0 if
-CONFIG_BTRFS_FS_RUN_SANITY_TESTS is not set. Currently we're relying on
-the compiler optimizing out the call to alloc_test_extent_buffer() in
-btrfs_find_create_tree_block(), as it's not been defined (it's behind an
- #ifdef).
+"sockmap_ktls disconnect_after_delete" test has been failing on BPF CI
+after recent merges from netdev:
+* https://github.com/kernel-patches/bpf/actions/runs/14458537639
+* https://github.com/kernel-patches/bpf/actions/runs/14457178732
 
-Add a stub version of alloc_test_extent_buffer() to avoid linker errors
-on non-standard optimization levels. This problem was seen on GCC 14
-with -O0 and is helps to see symbols that would be otherwise optimized
-out.
+It happens because disconnect has been disabled for TLS [1], and it
+renders the test case invalid.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <maharmstone@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Removing all the test code creates a conflict between bpf and
+bpf-next, so for now only remove the offending assert [2].
+
+The test will be removed later on bpf-next.
+
+[1] https://lore.kernel.org/netdev/20250404180334.3224206-1-kuba@kernel.org/
+[2] https://lore.kernel.org/bpf/cfc371285323e1a3f3b006bfcf74e6cf7ad65258@linux.dev/
+
+Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/bpf/20250416170246.2438524-1-ihor.solodrai@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index c021aae8875eb..06922529f19dc 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2842,10 +2842,10 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
- 	return eb;
- }
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c b/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
+index 2d0796314862a..0a99fd404f6dc 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
+@@ -68,7 +68,6 @@ static void test_sockmap_ktls_disconnect_after_delete(int family, int map)
+ 		goto close_cli;
  
--#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
- 					u64 start)
- {
-+#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- 	struct extent_buffer *eb, *exists = NULL;
- 	int ret;
+ 	err = disconnect(cli);
+-	ASSERT_OK(err, "disconnect");
  
-@@ -2881,8 +2881,11 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
- free_eb:
- 	btrfs_release_extent_buffer(eb);
- 	return exists;
--}
-+#else
-+	/* Stub to avoid linker error when compiled with optimizations turned off. */
-+	return NULL;
- #endif
-+}
- 
- static struct extent_buffer *grab_extent_buffer(struct btrfs_fs_info *fs_info,
- 						struct folio *folio)
+ close_cli:
+ 	close(cli);
 -- 
 2.39.5
 
