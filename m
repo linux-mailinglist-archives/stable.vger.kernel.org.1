@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B76AC558E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:12:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903E0AC58A3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B5548A0889
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD2D1BC24B1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5FD27D766;
-	Tue, 27 May 2025 17:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E820427F73D;
+	Tue, 27 May 2025 17:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROgAG2TW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImmRlfEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B83526B0B6;
-	Tue, 27 May 2025 17:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A604D26FDB7;
+	Tue, 27 May 2025 17:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365674; cv=none; b=ooWajbfhEtmVHtPZYjEqRGS2Xw4PgO+88YFOUKooR90yRCzhG5OZLSDTI67ROya2JSc7Iro1g3d37VKV7vBuJ61vbl28I1IusS2TeWbqNFOUcnAZlvJha6GQVa8S51fFFqdXrdt8z5BI+QS5NUeJs47/meF8nBNz9jdq3ugwe+E=
+	t=1748368043; cv=none; b=nCDzfPmzovYF1xVSYBi0iYbQJ/HZ+sYRv9x6ZHn63GqCxKk+nde5XOgyaZHhRRcz4u7pOdBpIBwxGPY+0woOR+AdEadoLQolt24Xd5oik0XgVZsUQnoy3TL7qbgSvBYyxqEcEiQeicw/G5mvJOqq6NgTmu/QwAqjKJ205UncdIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365674; c=relaxed/simple;
-	bh=16+dalavoMjWarF6e0vHWx3rWo37K1RXMCocE/6h6fs=;
+	s=arc-20240116; t=1748368043; c=relaxed/simple;
+	bh=FzQT9ockW0Kg0hDYq4WpmvY0cMHyWhMNBz0FS1XFUQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUT7P/CrfNBbsPcCh5Vzv/k8cENr/pPkCgFk+2WoYklV5y61F8SIXWO7ZYFu/Ni4lhi1BWz+q5qUEqy4PTh7gJSiu84sqAItVXedshxXPJPec9mIR/8mccEz1V8ybW5UPer07csW4xO44iEQeeYha3XgYzwng0pRMCTKggIweFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROgAG2TW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B49C4CEE9;
-	Tue, 27 May 2025 17:07:53 +0000 (UTC)
+	 MIME-Version; b=GjalED9zP38JliyUsGASed3pGjtR+YIhj+eopzwWe2AvOjz+qf7sUPc7vi8dPoDhjL6lbPBE/hB/9qG5WxYfV+SHcgsgqaJtvNYWGw9zJ2FfJAnSGQDtG241RTIXFkFyr0vif5lpO9cIGIrVJsVc+y3DyjuTPp6jLPiXM/Z9lac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImmRlfEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284F8C4CEE9;
+	Tue, 27 May 2025 17:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365674;
-	bh=16+dalavoMjWarF6e0vHWx3rWo37K1RXMCocE/6h6fs=;
+	s=korg; t=1748368043;
+	bh=FzQT9ockW0Kg0hDYq4WpmvY0cMHyWhMNBz0FS1XFUQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROgAG2TW5QSXYTyhabieT0OSMRZXm+VppnvfyoBB/tMguOkBr1Gas/9EArPVj0B0r
-	 yLxZu8PijkRRIgoMgYbDmI+Hi9JnkrPsf/8cVVOCE34pGEOThG+ciBGDRROD7xA2lB
-	 MZrP/NPKt8vZRJX9EmVXLiN7uRUFNSHeTAVx3NqQ=
+	b=ImmRlfEnYZTQNcJmj+5FMyX5+qT5ayuP5qaDNc9qJfjvARjr2RTGWfNHbjkUsYj1k
+	 64LGy6YABW2zJdVMM8gDqVuaCuFs7AUQSDI9fSukyx7MPhIBjYSZb9Gd9HaqFwNX/B
+	 PPbOmm/Rj/VIwilkAsYhYSy/EWX02uAwvbE0dPC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 453/626] ice: init flow director before RDMA
-Date: Tue, 27 May 2025 18:25:46 +0200
-Message-ID: <20250527162503.404897986@linuxfoundation.org>
+Subject: [PATCH 6.14 550/783] netdevsim: allow normal queue reset while down
+Date: Tue, 27 May 2025 18:25:47 +0200
+Message-ID: <20250527162535.549400525@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit d67627e7b53203ca150e54723abbed81a0716286 ]
+[ Upstream commit 285b3f78eabd951e59e98f01f86abaaa6c76cd44 ]
 
-Flow director needs only one MSI-X. Load it before RDMA to save MSI-X
-for it.
+Resetting queues while the device is down should be legal.
+Allow it, test it. Ideally we'd test this with a real device
+supporting devmem but I don't have access to such devices.
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250206225638.1387810-5-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/netdevsim/netdev.c           | 10 ++++------
+ tools/testing/selftests/net/nl_netdev.py | 18 +++++++++++++++++-
+ 2 files changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index ca707dfcb286e..63d2105fce933 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5175,11 +5175,12 @@ int ice_load(struct ice_pf *pf)
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index e4c0d77849b82..a41dc79e9c2e0 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -664,8 +664,11 @@ nsim_queue_mem_alloc(struct net_device *dev, void *per_queue_mem, int idx)
+ 	if (ns->rq_reset_mode > 3)
+ 		return -EINVAL;
  
- 	ice_napi_add(vsi);
+-	if (ns->rq_reset_mode == 1)
++	if (ns->rq_reset_mode == 1) {
++		if (!netif_running(ns->netdev))
++			return -ENETDOWN;
+ 		return nsim_create_page_pool(&qmem->pp, &ns->rq[idx]->napi);
++	}
  
-+	ice_init_features(pf);
+ 	qmem->rq = nsim_queue_alloc();
+ 	if (!qmem->rq)
+@@ -773,11 +776,6 @@ nsim_qreset_write(struct file *file, const char __user *data,
+ 		return -EINVAL;
+ 
+ 	rtnl_lock();
+-	if (!netif_running(ns->netdev)) {
+-		ret = -ENETDOWN;
+-		goto exit_unlock;
+-	}
+-
+ 	if (queue >= ns->netdev->real_num_rx_queues) {
+ 		ret = -EINVAL;
+ 		goto exit_unlock;
+diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
+index 93e8cb671c3d9..beaee5e4e2aab 100755
+--- a/tools/testing/selftests/net/nl_netdev.py
++++ b/tools/testing/selftests/net/nl_netdev.py
+@@ -35,6 +35,21 @@ def napi_list_check(nf) -> None:
+                         comment=f"queue count after reset queue {q} mode {i}")
+ 
+ 
++def nsim_rxq_reset_down(nf) -> None:
++    """
++    Test that the queue API supports resetting a queue
++    while the interface is down. We should convert this
++    test to testing real HW once more devices support
++    queue API.
++    """
++    with NetdevSimDev(queue_count=4) as nsimdev:
++        nsim = nsimdev.nsims[0]
 +
- 	err = ice_init_rdma(pf);
- 	if (err)
- 		goto err_init_rdma;
++        ip(f"link set dev {nsim.ifname} down")
++        for i in [0, 2, 3]:
++            nsim.dfs_write("queue_reset", f"1 {i}")
++
++
+ def page_pool_check(nf) -> None:
+     with NetdevSimDev() as nsimdev:
+         nsim = nsimdev.nsims[0]
+@@ -106,7 +121,8 @@ def page_pool_check(nf) -> None:
  
--	ice_init_features(pf);
- 	ice_service_task_restart(pf);
+ def main() -> None:
+     nf = NetdevFamily()
+-    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check],
++    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check,
++              nsim_rxq_reset_down],
+              args=(nf, ))
+     ksft_exit()
  
- 	clear_bit(ICE_DOWN, pf->state);
-@@ -5187,6 +5188,7 @@ int ice_load(struct ice_pf *pf)
- 	return 0;
- 
- err_init_rdma:
-+	ice_deinit_features(pf);
- 	ice_tc_indir_block_unregister(vsi);
- err_tc_indir_block_register:
- 	ice_unregister_netdev(vsi);
-@@ -5210,8 +5212,8 @@ void ice_unload(struct ice_pf *pf)
- 
- 	devl_assert_locked(priv_to_devlink(pf));
- 
--	ice_deinit_features(pf);
- 	ice_deinit_rdma(pf);
-+	ice_deinit_features(pf);
- 	ice_tc_indir_block_unregister(vsi);
- 	ice_unregister_netdev(vsi);
- 	ice_devlink_destroy_pf_port(pf);
 -- 
 2.39.5
 
