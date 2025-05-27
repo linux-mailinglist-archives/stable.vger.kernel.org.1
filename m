@@ -1,107 +1,119 @@
-Return-Path: <stable+bounces-147886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE047AC5C58
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 23:42:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FDDAC5C6E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 23:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 670491BA464A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 21:43:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EBDA1BA829B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 21:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0B22144DD;
-	Tue, 27 May 2025 21:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CC82046A9;
+	Tue, 27 May 2025 21:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GwH/VnrM"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="1+mSH25C"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B6020551C;
-	Tue, 27 May 2025 21:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C21FB3;
+	Tue, 27 May 2025 21:49:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748382167; cv=none; b=Hro7bu5LCjJajq6FYNUEr3/N8nir3cggZD5oguaYXP8WXt3ox0GjUubQCHYBuck6b9pTAGp6MloiQ58P0KuwZ6hQhrmdb0vdYeWVK46xO1e+tP37UWdAAVpYrkPuoYYD1VpjXx9HMGnOt3YfvjG+MO1HV+nKLD3f0MGsIf9ybg0=
+	t=1748382567; cv=none; b=GzZ5nSMgrTsHfeKUR2Fnve/xBEY0agsqBnW8yJ7GsXYHMB4AGD/Xbv1mB7f77p+H81PRU/BmAaX/TuXZpsoF/ihqJyW2A22TkmbPEPyp/gtVL8kf/DYqCgc/wCU7xPCBUnNIe2MvsQv8SIVEa7W1kw/oAyRIoVg/P6DF7leYDJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748382167; c=relaxed/simple;
-	bh=WrSGRooY/S5bv9/nZlTjnpVWBJU+gSbJd1d8TsGd+0Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dY011H4p4qWLS6fO17eai+8AX5i+ldiIAkM8wgaj2WwGem3NBeJN8XHuztu6ccTjDHwOqIPcL0qq1SmJstsmUr98dXVRItwZXjSZOErLTnu0ajmbd+APTNC5adWCtB10V9zY6e2WSqAphr4QeLx/cohaMgYiqce2hmiZjTJdeFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GwH/VnrM; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=i+gW2LdhsX8mVrWu3C6sM6tUvLVRRXub0MosDWgoTfc=; b=GwH/VnrMSLT1WoOmGD2gqW5PKI
-	pgPx7dreOe02g96LUx9QD2tM3nNkyJfD4n0vJbwdCvXAp5h/V01RTeOZpuMHGlGPpWoo14pa+n2m3
-	gk4hh3fcOMAGURgHjs/uQecCMNZTf64588vX+MkpN9jBF5xaYyOlrsLKm9N8ETXPsVXk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uK241-00E6ye-OG; Tue, 27 May 2025 23:42:25 +0200
-Date: Tue, 27 May 2025 23:42:25 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Mikael Wessel <post@mikaelkw.online>
-Cc: netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	torvalds@linuxfoundation.org, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, kuba@kernel.org, pabeni@redhat.com,
-	security@kernel.org, stable@vger.kernel.org, davem@davemloft.net,
-	edumazet@google.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] e1000e: fix heap overflow in e1000_set_eeprom()
-Message-ID: <10cf162e-ca02-44b0-b238-74a93fe05f54@lunn.ch>
-References: <20250527211332.50455-1-post@mikaelkw.online>
+	s=arc-20240116; t=1748382567; c=relaxed/simple;
+	bh=EwxLqY0fmQF8S71l6h2LmkmacJKXMfgvRPHVrm43FNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aBRaXKHidlMzq9YO3eLNj9qzZIuUusTVGhkSIGM1FDkvC0TqaIOKSDlH8dkB3mNldYpNitbpS9BCMSi8EhXrNSrIX2pZAH4rB+NguBu+lY2v8bv4GCdZFy89cKvzwXKsEQAl/OTX64m+EI8EbXCZ97d48rgcUp+Zgl2bifH7MYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=1+mSH25C; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4b6R9W3Pf1zltP0Y;
+	Tue, 27 May 2025 21:49:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1748382557; x=1750974558; bh=UpKlm3hQbRz5j81cotOA5nkr
+	nv7yQdeoB3GE/vZ8Ly0=; b=1+mSH25Cb2DETpV9eBhkvrxfW79KY5bQQPJ0gGwO
+	dnEh3etPYHBu/ZoBJQEI/YTYpBpgMIlHsDKficD6C8FLxYRu4HnD0AxDmKofd7nV
+	aLCnQN4NVhEkg32GojsFxbjuT2UPgp9Zrzrh6AZ8mm6mSIy23xPtfw0EK+pg3uH2
+	mzOwXcpur0rIcFAefy5+bEieZSrxNHod0GpM7BifUjVmFV+AUCmIqCPWErD2a+yz
+	l406BY3xk7AKbt6LVh5P83PWV1r0Tck8WnXffEMRPq8C+f0QGEcQvKHi9CJ1AO82
+	pffryKcFjEK62xxvGffS70KQVuSCXQJVIbFfTZuuGqY9hw==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id PsAgq2f88O37; Tue, 27 May 2025 21:49:17 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4b6R9P42k2zlvBYd;
+	Tue, 27 May 2025 21:49:12 +0000 (UTC)
+Message-ID: <df240ef1-d794-45af-a3cf-cdec06731103@acm.org>
+Date: Tue, 27 May 2025 14:49:11 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250527211332.50455-1-post@mikaelkw.online>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block: Fix a deadlock related freezing zoned storage
+ devices
+To: Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Yu Kuai <yukuai1@huaweicloud.com>, Ming Lei <ming.lei@redhat.com>,
+ stable@vger.kernel.org
+References: <20250522171405.3239141-1-bvanassche@acm.org>
+ <b1ea4120-e16a-47c8-b10c-ff6c9d5feb69@kernel.dk>
+ <3cd139d0-5fe0-4ce1-b7a7-36da4fad6eff@kernel.org>
+ <20250523082048.GA15587@lst.de>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20250523082048.GA15587@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 27, 2025 at 11:13:32PM +0200, Mikael Wessel wrote:
-> The ETHTOOL_SETEEPROM ioctl copies user data into a kmalloc'ed buffer
-> without validating eeprom->len and eeprom->offset. A CAP_NET_ADMIN
-> user can overflow the heap and crash the kernel or gain code execution.
+On 5/23/25 1:20 AM, Christoph Hellwig wrote:
+> Something like this completely untested patch:
 > 
-> Validate length and offset before kmalloc() to avoid leaking eeprom_buff.
-> 
-> Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-> Reported-by: Mikael Wessel <post@mikaelkw.online>
-> Signed-off-by: Mikael Wessel <post@mikaelkw.online>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/net/ethernet/intel/e1000e/ethtool.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/e1000e/ethtool.c b/drivers/net/ethernet/intel/e1000e/ethtool.c
-> index 98e541e39730..d04e59528619 100644
-> --- a/drivers/net/ethernet/intel/e1000e/ethtool.c
-> +++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
-> @@ -561,7 +561,7 @@ static int e1000_set_eeprom(struct net_device *netdev,
->  		return -EOPNOTSUPP;
->  
->  	if (eeprom->magic !=
-> -	    (adapter->pdev->vendor | (adapter->pdev->device << 16)))
-> +		(adapter->pdev->vendor | (adapter->pdev->device << 16)))
->  		return -EFAULT;
+> diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+> index 8f15d1aa6eb8..6841af8a989c 100644
+> --- a/block/blk-zoned.c
+> +++ b/block/blk-zoned.c
+> @@ -1306,16 +1306,18 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
+>   	spin_unlock_irqrestore(&zwplug->lock, flags);
+>   
+>   	bdev = bio->bi_bdev;
+> -	submit_bio_noacct_nocheck(bio);
+> -
+>   	/*
+>   	 * blk-mq devices will reuse the extra reference on the request queue
+>   	 * usage counter we took when the BIO was plugged, but the submission
+>   	 * path for BIO-based devices will not do that. So drop this extra
+>   	 * reference here.
+>   	 */
+> -	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO))
+> +	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO)) {
+> +		bdev->bd_disk->fops->submit_bio(bio);
+>   		blk_queue_exit(bdev->bd_disk->queue);
+> +	} else {
+> +		blk_mq_submit_bio(bio);
+> +	}
+>   
+>   put_zwplug:
+>   	/* Drop the reference we took in disk_zone_wplug_schedule_bio_work(). */
 
-That look like a white space change, which should not be part of a
-fix.
+This patch works fine on my test setup.
 
-Please also take a read of
+Thanks,
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-You need to set the tree in the Subject line.
-
-    Andrew
-
----
-pw-bot: cr
-	
+Bart.
 
