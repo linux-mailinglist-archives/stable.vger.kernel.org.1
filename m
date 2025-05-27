@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F033AC56D9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:26:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3792EAC5386
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 331DF4A6476
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 131FA3AEE6A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AF527FD56;
-	Tue, 27 May 2025 17:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA89B255E26;
+	Tue, 27 May 2025 16:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xg37HbDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhDKhYYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E41826F449;
-	Tue, 27 May 2025 17:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788C22CCC0;
+	Tue, 27 May 2025 16:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366738; cv=none; b=r2yLDtrphb3sc4ngJPbS+kO34Wlq0NAjIM0MqtlrqkYejM3EUVOHJ6xZCz+JM7Glpl2xlFbILXDTc5NP4iXNV4m2gseJxWlaptM1/PA2Hh+tM2Ev5PK23BTS3wkpAKhLHIXijNkFOwMtGSERK7vDI8uLIXoWwQ5Qi1461Uo6Hsg=
+	t=1748364485; cv=none; b=OyZR+I1ly7f8pnMwC8TzsM7MZms4IIB7X6IJ+Sk9NQMocmyaAnXj3BEM6slgpreLQQ8ywznDiuhVTKx7tu4asb82oRha7zuj5uvRJv20Vbo3eUnjQ3wwKeTnOJVktvTV7DgTPs7mm3hmOTe2c8UwnXR6CUrDWuLOFB749O37BNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366738; c=relaxed/simple;
-	bh=uIDiWrtq7liu1lCsu0RgeB2hYQMBG2wpoTXvvNLM3MI=;
+	s=arc-20240116; t=1748364485; c=relaxed/simple;
+	bh=/SWdvGClLseASs7DiIZ0a6j8uWDKPCscMw7gVVho/rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CceuFUELQ5vOe4kqzqCO4ZM+Lt/4wUiHKbNBk/ttZM3AmnpTQdQu+Tbemc2MD7aKxTxxPOkyG2WsaXNOHXBfggPTTvLnsf4meNnwSfeLmJ7LEZamMxdqtpcgqefsdzDO3qCKfoMYU/tRerVx6dbvm/r9XUyTmLAWV6tqQfwRMio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xg37HbDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E347AC4CEEA;
-	Tue, 27 May 2025 17:25:37 +0000 (UTC)
+	 MIME-Version; b=bTE6640vrWNaPwvB8V4jILj9jXpihQzqGVrDKcB8Iao/pHNvu+x9yoi9jsyanclBEpMCe9FmCaX6hLTXqUEc77NUDUrNVDnN+URKcNLukQ0bmiuuupq3qAw26UfZZDq6T4FS3dAMuwPZJbFFVMSXT8BaO52T2EzXgS9Wy4tBM30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhDKhYYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84237C4CEE9;
+	Tue, 27 May 2025 16:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366738;
-	bh=uIDiWrtq7liu1lCsu0RgeB2hYQMBG2wpoTXvvNLM3MI=;
+	s=korg; t=1748364484;
+	bh=/SWdvGClLseASs7DiIZ0a6j8uWDKPCscMw7gVVho/rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xg37HbDeyvA6g4CLtj4irF/7ryIH0I3juK+u0LjLGHt5HFRCvZ964syM1wiB2Zyuz
-	 hA/NUjGAKauBUa1FTHnFmvItlJUuMuoZPI1f0EO89N+oXf8wxL1vcuA++f8UbqvALI
-	 mPjgfOM05etIuEaiWGuTxAHgE+QQuaU6IkCjY4vo=
+	b=GhDKhYYQe5hNz2retDEZ2n0vrcUxHKvcTDQBTBwyYCyTYSqKTLqVb3etkvI6hfasQ
+	 244z0DqSrktgcKnkPWf+CFPCHJzs9CTN8BSTrpUSZi5pgcmhFtqljp3AhRVaKbdF/m
+	 FIphebl1ELQS2w2SqnIkKTvSm9IuGak4lme8pBZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ij@kernel.org>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 166/783] tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()
-Date: Tue, 27 May 2025 18:19:23 +0200
-Message-ID: <20250527162519.926417032@linuxfoundation.org>
+Subject: [PATCH 6.12 071/626] NFSv4: Treat ENETUNREACH errors as fatal for state recovery
+Date: Tue, 27 May 2025 18:19:24 +0200
+Message-ID: <20250527162447.936275781@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,157 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ij@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 149dfb31615e22271d2525f078c95ea49bc4db24 ]
+[ Upstream commit 0af5fb5ed3d2fd9e110c6112271f022b744a849a ]
 
-- Move tcp_count_delivered() earlier and split tcp_count_delivered_ce()
-  out of it
-- Move tcp_in_ack_event() later
-- While at it, remove the inline from tcp_in_ack_event() and let
-  the compiler to decide
+If a containerised process is killed and causes an ENETUNREACH or
+ENETDOWN error to be propagated to the state manager, then mark the
+nfs_client as being dead so that we don't loop in functions that are
+expecting recovery to succeed.
 
-Accurate ECN's heuristics does not know if there is going
-to be ACE field based CE counter increase or not until after
-rtx queue has been processed. Only then the number of ACKed
-bytes/pkts is available. As CE or not affects presence of
-FLAG_ECE, that information for tcp_in_ack_event is not yet
-available in the old location of the call to tcp_in_ack_event().
-
-Signed-off-by: Ilpo Järvinen <ij@kernel.org>
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 56 +++++++++++++++++++++++++-------------------
- 1 file changed, 32 insertions(+), 24 deletions(-)
+ fs/nfs/nfs4state.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0cbf81bf3d451..23cf8f4a37214 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -419,6 +419,20 @@ static bool tcp_ecn_rcv_ecn_echo(const struct tcp_sock *tp, const struct tcphdr
- 	return false;
- }
- 
-+static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
-+{
-+	tp->delivered_ce += ecn_count;
-+}
-+
-+/* Updates the delivered and delivered_ce counts */
-+static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
-+				bool ece_ack)
-+{
-+	tp->delivered += delivered;
-+	if (ece_ack)
-+		tcp_count_delivered_ce(tp, delivered);
-+}
-+
- /* Buffer size and advertised window tuning.
-  *
-  * 1. Tuning sk->sk_sndbuf, when connection enters established state.
-@@ -1154,15 +1168,6 @@ void tcp_mark_skb_lost(struct sock *sk, struct sk_buff *skb)
- 	}
- }
- 
--/* Updates the delivered and delivered_ce counts */
--static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
--				bool ece_ack)
--{
--	tp->delivered += delivered;
--	if (ece_ack)
--		tp->delivered_ce += delivered;
--}
--
- /* This procedure tags the retransmission queue when SACKs arrive.
-  *
-  * We have three tag bits: SACKED(S), RETRANS(R) and LOST(L).
-@@ -3862,12 +3867,23 @@ static void tcp_process_tlp_ack(struct sock *sk, u32 ack, int flag)
- 	}
- }
- 
--static inline void tcp_in_ack_event(struct sock *sk, u32 flags)
-+static void tcp_in_ack_event(struct sock *sk, int flag)
- {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
- 
--	if (icsk->icsk_ca_ops->in_ack_event)
--		icsk->icsk_ca_ops->in_ack_event(sk, flags);
-+	if (icsk->icsk_ca_ops->in_ack_event) {
-+		u32 ack_ev_flags = 0;
-+
-+		if (flag & FLAG_WIN_UPDATE)
-+			ack_ev_flags |= CA_ACK_WIN_UPDATE;
-+		if (flag & FLAG_SLOWPATH) {
-+			ack_ev_flags |= CA_ACK_SLOWPATH;
-+			if (flag & FLAG_ECE)
-+				ack_ev_flags |= CA_ACK_ECE;
-+		}
-+
-+		icsk->icsk_ca_ops->in_ack_event(sk, ack_ev_flags);
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index dafd61186557f..397a86011878f 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2740,7 +2740,15 @@ static void nfs4_state_manager(struct nfs_client *clp)
+ 	pr_warn_ratelimited("NFS: state manager%s%s failed on NFSv4 server %s"
+ 			" with error %d\n", section_sep, section,
+ 			clp->cl_hostname, -status);
+-	ssleep(1);
++	switch (status) {
++	case -ENETDOWN:
++	case -ENETUNREACH:
++		nfs_mark_client_ready(clp, -EIO);
++		break;
++	default:
++		ssleep(1);
++		break;
 +	}
- }
- 
- /* Congestion control has updated the cwnd already. So if we're in
-@@ -3984,12 +4000,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 		tcp_snd_una_update(tp, ack);
- 		flag |= FLAG_WIN_UPDATE;
- 
--		tcp_in_ack_event(sk, CA_ACK_WIN_UPDATE);
--
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPHPACKS);
- 	} else {
--		u32 ack_ev_flags = CA_ACK_SLOWPATH;
--
- 		if (ack_seq != TCP_SKB_CB(skb)->end_seq)
- 			flag |= FLAG_DATA;
- 		else
-@@ -4001,19 +4013,12 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 			flag |= tcp_sacktag_write_queue(sk, skb, prior_snd_una,
- 							&sack_state);
- 
--		if (tcp_ecn_rcv_ecn_echo(tp, tcp_hdr(skb))) {
-+		if (tcp_ecn_rcv_ecn_echo(tp, tcp_hdr(skb)))
- 			flag |= FLAG_ECE;
--			ack_ev_flags |= CA_ACK_ECE;
--		}
- 
- 		if (sack_state.sack_delivered)
- 			tcp_count_delivered(tp, sack_state.sack_delivered,
- 					    flag & FLAG_ECE);
--
--		if (flag & FLAG_WIN_UPDATE)
--			ack_ev_flags |= CA_ACK_WIN_UPDATE;
--
--		tcp_in_ack_event(sk, ack_ev_flags);
- 	}
- 
- 	/* This is a deviation from RFC3168 since it states that:
-@@ -4040,6 +4045,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 
- 	tcp_rack_update_reo_wnd(sk, &rs);
- 
-+	tcp_in_ack_event(sk, flag);
-+
- 	if (tp->tlp_high_seq)
- 		tcp_process_tlp_ack(sk, ack, flag);
- 
-@@ -4071,6 +4078,7 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 	return 1;
- 
- no_queue:
-+	tcp_in_ack_event(sk, flag);
- 	/* If data was DSACKed, see if we can undo a cwnd reduction. */
- 	if (flag & FLAG_DSACKING_ACK) {
- 		tcp_fastretrans_alert(sk, prior_snd_una, num_dupack, &flag,
+ out_drain:
+ 	memalloc_nofs_restore(memflags);
+ 	nfs4_end_drain_session(clp);
 -- 
 2.39.5
 
