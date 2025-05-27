@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8377AAC53BE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5A2AC5737
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C23C67AC6BF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:49:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8BE84A5247
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1883D27D766;
-	Tue, 27 May 2025 16:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762D927BF79;
+	Tue, 27 May 2025 17:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQRiObJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtuGsJIA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92F1194A45;
-	Tue, 27 May 2025 16:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345452566;
+	Tue, 27 May 2025 17:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364654; cv=none; b=RTrHR92jyZt/i5uk3hWVYe0Ffy1AWQmFktvDVKE6UrA+d6PPg10jIZn8Sf5HZ6xx0ZWw4L4p7x+B0AgetN7uL/koLwPsIrhxkzgP3AXwza6dTOs9GcTbn4jjb5UD/pmVyGolkEFeeuDQLU9Ttv7CfAWF7KOCkXIwbnT35jqgfz4=
+	t=1748367018; cv=none; b=NLrGDm0XFNUglkB11sFO06KOyviVj1PPwz+6dsLBTZ2pP6d6IuGhgupDxYCmoK96nLYuPQpyaPoJIj8qWm+FeDg47Ppe7BjLi9QGg/V/Fx68EcuUU5Hcp0oOcQaIQ6e83UuSsYdUBqHTKrXwq2B8lLS8QKGIlUBmVN0Srn8bVHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364654; c=relaxed/simple;
-	bh=YUtYVDkS6Oc70dkXUoV9H7gBCHjD5OZ0NQymkRgLDCU=;
+	s=arc-20240116; t=1748367018; c=relaxed/simple;
+	bh=TLuMgTeN5b6zE5s0Fqcc8umT2Sqb1dz+xdMcb6948jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJb9StR3yKUMwIl8GVJp+wijkrNcaNyZkaF+9o1ot2GEnBrs0ijTib2PDk0epIaQbM59DDDNf/iHK+Z6hFhDh4YqD9eY85Bre/1vDcTbaykrA0Pwyw4wlFL+JmeVVd7mKNsLJ1tilCRohWIoT1V1sHUmxFbZFYrNhrejYqIyBB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQRiObJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF81C4CEE9;
-	Tue, 27 May 2025 16:50:54 +0000 (UTC)
+	 MIME-Version; b=LZHJmwlqYsYWSce/w4EgJGGYEAnwEgfz41EgYvrugd22Uiq/ueeN+PBy7KrPkmnjW9HDt+Ez6HEoOPJZbUw2nF2Tu+aarP/KohxeAPDkx1BqkirV0XtNjiBn07eLdcUTFtpIBLh3KQwlTArSO32rpEwuJNGfEbwQFTIQqOzyKuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtuGsJIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D018C4CEE9;
+	Tue, 27 May 2025 17:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364654;
-	bh=YUtYVDkS6Oc70dkXUoV9H7gBCHjD5OZ0NQymkRgLDCU=;
+	s=korg; t=1748367018;
+	bh=TLuMgTeN5b6zE5s0Fqcc8umT2Sqb1dz+xdMcb6948jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQRiObJ+/oTNVBrHif+xo0roSeVTzjhxDIFk6ngqxg+cSzqKUzndX98mvFnQrJ2N1
-	 iXUdE4sYlho6AbO8w5Q1FPtqZVKpWL9vaC0ewyWdhVg+xR+fW1CFOMCGN9RnihR4+Z
-	 BwVYmK77A8jiqxKDI1DVJ7G6kDelFToy31N+QSaI=
+	b=YtuGsJIAG/ig9ZoAZN61CN8tDQU/KxdpJxo6KZOR6koXn+x0LS2/2SUZQz3CkFEqn
+	 z0V0oEqglnW6wgf/2uOY2UpdiRCtKXn9DALOJYDW9SYgTsQNDKEftewvC0aX9fLo6t
+	 y3XtxYr21sdDuJ40qOJkt0kzaUWEtbS+LFZZI5IU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/626] s390/tlb: Use mm_has_pgste() instead of mm_alloc_pgste()
+Subject: [PATCH 6.14 221/783] wifi: mac80211: dont include MLE in ML reconf per-STA profile
 Date: Tue, 27 May 2025 18:20:18 +0200
-Message-ID: <20250527162450.108375264@linuxfoundation.org>
+Message-ID: <20250527162522.121133691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 9291ea091b29bb3e37c4b3416c7c1e49e472c7d5 ]
+[ Upstream commit c3171bed65ec323803b6b73f74017f7d0fd7aa6c ]
 
-An mm has pgstes only after s390_enable_sie() has been called, while
-mm_alloc_pgste() may be always true (e.g. via sysctl setting).
+In the multi-link reconfiguration frame, the per-STA profile for
+added links shouldn't include the multi-link element. Set the
+association ID to an invalid value, so it doesn't erroneously
+match the link ID if that happens to be zero.
 
-Limit the calls to gmap_unlink() in pte_free_tlb() to those cases
-where there might be something to unlink.
-
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308225541.8e5be244c70f.I3472cd5c347814ee3600869a88488997bcd43224@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/tlb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/ieee80211_i.h | 2 +-
+ net/mac80211/mlme.c        | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
-index e95b2c8081eb8..793afe236df07 100644
---- a/arch/s390/include/asm/tlb.h
-+++ b/arch/s390/include/asm/tlb.h
-@@ -85,7 +85,7 @@ static inline void pte_free_tlb(struct mmu_gather *tlb, pgtable_t pte,
- 	tlb->mm->context.flush_mm = 1;
- 	tlb->freed_tables = 1;
- 	tlb->cleared_pmds = 1;
--	if (mm_alloc_pgste(tlb->mm))
-+	if (mm_has_pgste(tlb->mm))
- 		gmap_unlink(tlb->mm, (unsigned long *)pte, address);
- 	tlb_remove_ptdesc(tlb, pte);
- }
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index e7dc3f0cfc9a9..8f5f7797f0b6b 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -462,7 +462,7 @@ struct ieee80211_mgd_assoc_data {
+ 	bool s1g;
+ 	bool spp_amsdu;
+ 
+-	unsigned int assoc_link_id;
++	s8 assoc_link_id;
+ 
+ 	u8 fils_nonces[2 * FILS_NONCE_LEN];
+ 	u8 fils_kek[FILS_MAX_KEK_LEN];
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index e3deb89674b23..676274519cdfb 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -10156,6 +10156,8 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
+ 		if (!data)
+ 			return -ENOMEM;
+ 
++		data->assoc_link_id = -1;
++
+ 		uapsd_supported = true;
+ 		ieee80211_ml_reconf_selectors(userspace_selectors);
+ 		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS;
 -- 
 2.39.5
 
