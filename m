@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-146683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51319AC5494
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAE0AC5788
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 534373AB8B4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFA051BC0C80
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4156B280A5C;
-	Tue, 27 May 2025 16:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6A727FB2A;
+	Tue, 27 May 2025 17:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7yXkK6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0bMz93M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FA9280335;
-	Tue, 27 May 2025 16:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAC22798F8;
+	Tue, 27 May 2025 17:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364986; cv=none; b=pYbTkuORV/svrm+6QmCZ4lOUhjJ/aQjOAqnAfnfWLCaeGM8VWFojiZFH9vwaJQhK/ZGhV7KJFNlrXsDyUqHDp3f+T1FbydwvNP+Je6xEDdI7Vrvf2K7gWJ9qQwgYK/qo0BVS8toIlAHQJEiMOXLEljHfi0++VXFF04E9QyDN3HQ=
+	t=1748367247; cv=none; b=cCy97iZI5IKCo0JzL7HnrzMxuqmCHDi9ODlA0LIJXpqktMcZL6ZPkAGct72gWeWBUcH+RpMxfmNWccC4ozGvekbV0v3eNYEaryDvGC3Ui5piAwViLp+2GrUa5Rt+kSJpWc/c4gISm/4B4WJyR+R8K04bqt3L/pyokswX+84l3Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364986; c=relaxed/simple;
-	bh=HdRNG2/vpTUqdKXJqF6Qf7nrY7hNaT7e5cwPb1c9rmU=;
+	s=arc-20240116; t=1748367247; c=relaxed/simple;
+	bh=r2Q9Z1Sd/RpYZNF1wni6iEVxqR4vOTIjqHlDJkU6IgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FsYjpWnerGpdnYo0VoUK9LKccayUBFOY3omSj1aFr5Sxc3RGXM05oOlu9kSD0T/Jo55FN5pAGWtQ44x+vTE8BmAdRXxtHcsB2dXPim+uDyYb6h7EZMolwh4LV/cG2DXdP4C51G5b5mzoPhR6xpWYj6el77w0Dcoxal8OSWLL3eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7yXkK6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E350C4CEE9;
-	Tue, 27 May 2025 16:56:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GzT6XZMDZ+grwZeACHbc4Yj7UdcBzimoUnDPJAGzKn8wxvQhSIsf+GhN3wTw4I0RVQns3dh0ilBrUjfIqIzqtlDkpI2dlIQxe40qi/86dsHaP/fwydQT6IJEI7AJfst0bZFVlX1aBr5wt6Z9LfA3JGkpl6h+HudrZUx9Zh8QJVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0bMz93M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD40C4CEE9;
+	Tue, 27 May 2025 17:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364985;
-	bh=HdRNG2/vpTUqdKXJqF6Qf7nrY7hNaT7e5cwPb1c9rmU=;
+	s=korg; t=1748367246;
+	bh=r2Q9Z1Sd/RpYZNF1wni6iEVxqR4vOTIjqHlDJkU6IgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7yXkK6Q7CTwyjPHXWMdqlZ86n1Hghq8CMwhj3gNb/ckvbdHmmK1I6b0DjjTkQ5t7
-	 YmtEJPxoswNwyD7a+FHueJzSEaCHObOZv8MSpeFqGBkbumcUuLTyb0IZObV3PcaLtg
-	 qxLcfDuxib+16DUEOTq2befrC+sXR7lmO5BAzMNg=
+	b=K0bMz93M1QeqkzzrRLKeouQEqgfS803mxAI/8DZqvA1/6VJ8VQxHaLOlGFr7zc0QN
+	 wuPuzPqNj5SdmkT7xB7QWos0BUK4Dkrii6fPDejE9ntoRJX0cDRLqJ7MAfOO6hkrB/
+	 SiiMqrvkwS333DbpntVp80gSorHzZDMV2wBydSU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"Ivan T. Ivanov" <iivanov@suse.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/626] blk-throttle: dont take carryover for prioritized processing of metadata
+Subject: [PATCH 6.14 326/783] PCI: brcmstb: Add a softdep to MIP MSI-X driver
 Date: Tue, 27 May 2025 18:22:03 +0200
-Message-ID: <20250527162454.364334790@linuxfoundation.org>
+Message-ID: <20250527162526.338553452@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[ Upstream commit a9fc8868b350cbf4ff730a4ea9651319cc669516 ]
+[ Upstream commit 2294059118c550464dd8906286324d90c33b152b ]
 
-Commit 29390bb5661d ("blk-throttle: support prioritized processing of metadata")
-takes bytes/ios carryover for prioritized processing of metadata. Turns out
-we can support it by charging it directly without trimming slice, and the
-result is same with carryover.
+Then the brcmstb PCIe driver and MIP MSI-X interrupt controller
+drivers are built as modules there could be a race in probing.
 
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20250305043123.3938491-3-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+To avoid this, add a softdep to MIP driver to guarantee that
+MIP driver will be load first.
+
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20250224083559.47645-5-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-throttle.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/pci/controller/pcie-brcmstb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/blk-throttle.c b/block/blk-throttle.c
-index 2c4192e12efab..6b82fcbd7e774 100644
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -1593,13 +1593,6 @@ static bool tg_within_limit(struct throtl_grp *tg, struct bio *bio, bool rw)
- 	return tg_may_dispatch(tg, bio, NULL);
- }
- 
--static void tg_dispatch_in_debt(struct throtl_grp *tg, struct bio *bio, bool rw)
--{
--	if (!bio_flagged(bio, BIO_BPS_THROTTLED))
--		tg->carryover_bytes[rw] -= throtl_bio_data_size(bio);
--	tg->carryover_ios[rw]--;
--}
--
- bool __blk_throtl_bio(struct bio *bio)
- {
- 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
-@@ -1636,10 +1629,12 @@ bool __blk_throtl_bio(struct bio *bio)
- 			/*
- 			 * IOs which may cause priority inversions are
- 			 * dispatched directly, even if they're over limit.
--			 * Debts are handled by carryover_bytes/ios while
--			 * calculating wait time.
-+			 *
-+			 * Charge and dispatch directly, and our throttle
-+			 * control algorithm is adaptive, and extra IO bytes
-+			 * will be throttled for paying the debt
- 			 */
--			tg_dispatch_in_debt(tg, bio, rw);
-+			throtl_charge_bio(tg, bio);
- 		} else {
- 			/* if above limits, break to queue */
- 			break;
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index ff217a0b80ad3..bae226c779a50 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1947,3 +1947,4 @@ module_platform_driver(brcm_pcie_driver);
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Broadcom STB PCIe RC driver");
+ MODULE_AUTHOR("Broadcom");
++MODULE_SOFTDEP("pre: irq_bcm2712_mip");
 -- 
 2.39.5
 
