@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-147792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FBCAC5930
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C911AC5609
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 842E23BCFBA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F5404A46D6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D2F27FD64;
-	Tue, 27 May 2025 17:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539E2271464;
+	Tue, 27 May 2025 17:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x75bDduU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoB9Xa3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BC6263F5E;
-	Tue, 27 May 2025 17:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC52182D7;
+	Tue, 27 May 2025 17:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368444; cv=none; b=idECqKFxktE7NgClOT9dxmXso2NRsi4cvNvHtqNdxlMPmrk/tbn+8ApvDHp/ilMG4PtgccN83gtwQXjhllCktJyBiwFV7VV3EWWbceXraUwgLnxU3AHOrXvT/MQJmCHLDArAX6OXG8ewQNJRT1gl6uluRUuvPHv0GB+5D6fIwBs=
+	t=1748366181; cv=none; b=rHOQ7QeprkAvkrKEK669bj0qh9mLq0AYcwe37WzWLSqqeozZVB1w28cZtadU0bqSL5SYk1KWsRzMEabsOcQRjDn+CXf9CTXRJTN2arOcrM52Rq1Wh71Ls+QWaQph6j477Smkc3iuthAr8Pq4lLLreccpev/ZvCMKP9ELjCUeNcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368444; c=relaxed/simple;
-	bh=la1wxIaqLgr6ZbfBABYoja19LSWlggIcZtVoATLywhI=;
+	s=arc-20240116; t=1748366181; c=relaxed/simple;
+	bh=K4YpWkxEzVNzwpvozeGjBAVb63r+uKWcsv+arfXPjT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=teTme4J4XLQWSrsTt1v0f4P1rN67ImP8UQrMXnsagQAj9+1x+ub5zGk+qpPGeVNRFXuqZQ+Tab2ZYaMOPnaH+LEvtP0OWftC8LczFAF9+f29EHXbhizeTEGnWngCXGvA7UzShs+sg9/Cdj+08V0YbTJzQTuqNUuPTuLhW2LdbhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x75bDduU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B1CC4CEE9;
-	Tue, 27 May 2025 17:54:03 +0000 (UTC)
+	 MIME-Version; b=erWz8O17zXhBV40BQXN+aUL9QSjoigANp3urAJQ+9Hyg91IJZCvBQYzOxh19GUvksSEmYV+jY1Y6fQJ/6i9TjxqrGABTi6jzyOQjzRu79WfufL+Vt9CFJktfF91gUa5NXJd5LcdPYaQoaIJ1Gm67BHSt+APlV0Bl2RQm4mT5Uc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoB9Xa3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9278AC4CEE9;
+	Tue, 27 May 2025 17:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368443;
-	bh=la1wxIaqLgr6ZbfBABYoja19LSWlggIcZtVoATLywhI=;
+	s=korg; t=1748366180;
+	bh=K4YpWkxEzVNzwpvozeGjBAVb63r+uKWcsv+arfXPjT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x75bDduU9EzghQ+ZOJaFfZl6UAiFbODpLlx0QmiEkbVvxNBw4TDe9Hx8TzLU0Q1qd
-	 WVIM8Tp+oDNwaqudBH2tCR+4IUNGM7lnW+/DKsz9rFp/dd8u/kBsYUzEAS6XP4r75K
-	 Tlal0EEu691P7JtddjuG7gL0ezgF+gnNxPywrVi4=
+	b=XoB9Xa3ESITfZ1eZagCl9opSogy3wqETLn/GSXTCww5MmbHihYbeZTcO6RHUJrC/q
+	 Fk1pcpzhDEl8h17KqBet1ywxToZVhUD2qLTheWTD5+RvaYBOcYmmJuNh1hEqfHfE1g
+	 Hd1iBepccWB4dxRs0vyazkttQJSFFpu94kOxKtTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Austin Zheng <Austin.Zheng@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 679/783] drm/amd/display: Call FP Protect Before Mode Programming/Mode Support
+	Axel Forsman <axfo@kvaser.com>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 583/626] can: kvaser_pciefd: Fix echo_skb race
 Date: Tue, 27 May 2025 18:27:56 +0200
-Message-ID: <20250527162540.778925786@linuxfoundation.org>
+Message-ID: <20250527162508.664321522@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +62,242 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Austin Zheng <Austin.Zheng@amd.com>
+From: Axel Forsman <axfo@kvaser.com>
 
-[ Upstream commit eba692ca3abca258b3214a6e4126afefad1822f0 ]
+commit 8256e0ca601051933e9395746817f3801fa9a6bf upstream.
 
-[Why]
-Memory allocation occurs within dml21_validate() for adding phantom planes.
-May cause kernel to be tainted due to usage of FP Start.
+The functions kvaser_pciefd_start_xmit() and
+kvaser_pciefd_handle_ack_packet() raced to stop/wake TX queues and
+get/put echo skbs, as kvaser_pciefd_can->echo_lock was only ever taken
+when transmitting and KCAN_TX_NR_PACKETS_CURRENT gets decremented
+prior to handling of ACKs. E.g., this caused the following error:
 
-[How]
-Move FP start from dml21_validate to before mode programming/mode support.
-Calculations requiring floating point are all done within mode programming
-or mode support.
+    can_put_echo_skb: BUG! echo_skb 5 is occupied!
 
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fe3250f10819b411808ab9ae1d824c5fc9b59170)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead, use the synchronization helpers in netdev_queues.h. As those
+piggyback on BQL barriers, start updating in-flight packets and bytes
+counts as well.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Axel Forsman <axfo@kvaser.com>
+Tested-by: Jimmy Assarsson <extja@kvaser.com>
+Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20250520114332.8961-3-axfo@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/can/kvaser_pciefd.c |   93 +++++++++++++++++++++++++---------------
+ 1 file changed, 59 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-index 5d16f36ec95c8..ed6584535e898 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-@@ -234,7 +234,9 @@ static bool dml21_mode_check_and_programming(const struct dc *in_dc, struct dc_s
- 	if (!result)
- 		return false;
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -16,6 +16,7 @@
+ #include <linux/netdevice.h>
+ #include <linux/pci.h>
+ #include <linux/timer.h>
++#include <net/netdev_queues.h>
  
-+	DC_FP_START();
- 	result = dml2_build_mode_programming(mode_programming);
-+	DC_FP_END();
- 	if (!result)
- 		return false;
+ MODULE_LICENSE("Dual BSD/GPL");
+ MODULE_AUTHOR("Kvaser AB <support@kvaser.com>");
+@@ -410,10 +411,13 @@ struct kvaser_pciefd_can {
+ 	void __iomem *reg_base;
+ 	struct can_berr_counter bec;
+ 	u8 cmd_seq;
++	u8 tx_max_count;
++	u8 tx_idx;
++	u8 ack_idx;
+ 	int err_rep_cnt;
+-	int echo_idx;
++	unsigned int completed_tx_pkts;
++	unsigned int completed_tx_bytes;
+ 	spinlock_t lock; /* Locks sensitive registers (e.g. MODE) */
+-	spinlock_t echo_lock; /* Locks the message echo buffer */
+ 	struct timer_list bec_poll_timer;
+ 	struct completion start_comp, flush_comp;
+ };
+@@ -714,6 +718,9 @@ static int kvaser_pciefd_open(struct net
+ 	int ret;
+ 	struct kvaser_pciefd_can *can = netdev_priv(netdev);
  
-@@ -277,7 +279,9 @@ static bool dml21_check_mode_support(const struct dc *in_dc, struct dc_state *co
- 	mode_support->dml2_instance = dml_init->dml2_instance;
- 	dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
- 	dml_ctx->v21.mode_programming.dml2_instance->scratch.build_mode_programming_locals.mode_programming_params.programming = dml_ctx->v21.mode_programming.programming;
-+	DC_FP_START();
- 	is_supported = dml2_check_mode_supported(mode_support);
-+	DC_FP_END();
- 	if (!is_supported)
- 		return false;
++	can->tx_idx = 0;
++	can->ack_idx = 0;
++
+ 	ret = open_candev(netdev);
+ 	if (ret)
+ 		return ret;
+@@ -745,21 +752,26 @@ static int kvaser_pciefd_stop(struct net
+ 		del_timer(&can->bec_poll_timer);
+ 	}
+ 	can->can.state = CAN_STATE_STOPPED;
++	netdev_reset_queue(netdev);
+ 	close_candev(netdev);
  
-@@ -288,16 +292,12 @@ bool dml21_validate(const struct dc *in_dc, struct dc_state *context, struct dml
- {
- 	bool out = false;
- 
--	DC_FP_START();
--
- 	/* Use dml_validate_only for fast_validate path */
- 	if (fast_validate)
- 		out = dml21_check_mode_support(in_dc, context, dml_ctx);
- 	else
- 		out = dml21_mode_check_and_programming(in_dc, context, dml_ctx);
- 
--	DC_FP_END();
--
- 	return out;
+ 	return ret;
  }
  
--- 
-2.39.5
-
++static unsigned int kvaser_pciefd_tx_avail(const struct kvaser_pciefd_can *can)
++{
++	return can->tx_max_count - (READ_ONCE(can->tx_idx) - READ_ONCE(can->ack_idx));
++}
++
+ static int kvaser_pciefd_prepare_tx_packet(struct kvaser_pciefd_tx_packet *p,
+-					   struct kvaser_pciefd_can *can,
++					   struct can_priv *can, u8 seq,
+ 					   struct sk_buff *skb)
+ {
+ 	struct canfd_frame *cf = (struct canfd_frame *)skb->data;
+ 	int packet_size;
+-	int seq = can->echo_idx;
+ 
+ 	memset(p, 0, sizeof(*p));
+-	if (can->can.ctrlmode & CAN_CTRLMODE_ONE_SHOT)
++	if (can->ctrlmode & CAN_CTRLMODE_ONE_SHOT)
+ 		p->header[1] |= KVASER_PCIEFD_TPACKET_SMS;
+ 
+ 	if (cf->can_id & CAN_RTR_FLAG)
+@@ -782,7 +794,7 @@ static int kvaser_pciefd_prepare_tx_pack
+ 	} else {
+ 		p->header[1] |=
+ 			FIELD_PREP(KVASER_PCIEFD_RPACKET_DLC_MASK,
+-				   can_get_cc_dlc((struct can_frame *)cf, can->can.ctrlmode));
++				   can_get_cc_dlc((struct can_frame *)cf, can->ctrlmode));
+ 	}
+ 
+ 	p->header[1] |= FIELD_PREP(KVASER_PCIEFD_PACKET_SEQ_MASK, seq);
+@@ -797,22 +809,24 @@ static netdev_tx_t kvaser_pciefd_start_x
+ 					    struct net_device *netdev)
+ {
+ 	struct kvaser_pciefd_can *can = netdev_priv(netdev);
+-	unsigned long irq_flags;
+ 	struct kvaser_pciefd_tx_packet packet;
++	unsigned int seq = can->tx_idx & (can->can.echo_skb_max - 1);
++	unsigned int frame_len;
+ 	int nr_words;
+-	u8 count;
+ 
+ 	if (can_dev_dropped_skb(netdev, skb))
+ 		return NETDEV_TX_OK;
++	if (!netif_subqueue_maybe_stop(netdev, 0, kvaser_pciefd_tx_avail(can), 1, 1))
++		return NETDEV_TX_BUSY;
+ 
+-	nr_words = kvaser_pciefd_prepare_tx_packet(&packet, can, skb);
++	nr_words = kvaser_pciefd_prepare_tx_packet(&packet, &can->can, seq, skb);
+ 
+-	spin_lock_irqsave(&can->echo_lock, irq_flags);
+ 	/* Prepare and save echo skb in internal slot */
+-	can_put_echo_skb(skb, netdev, can->echo_idx, 0);
+-
+-	/* Move echo index to the next slot */
+-	can->echo_idx = (can->echo_idx + 1) % can->can.echo_skb_max;
++	WRITE_ONCE(can->can.echo_skb[seq], NULL);
++	frame_len = can_skb_get_frame_len(skb);
++	can_put_echo_skb(skb, netdev, seq, frame_len);
++	netdev_sent_queue(netdev, frame_len);
++	WRITE_ONCE(can->tx_idx, can->tx_idx + 1);
+ 
+ 	/* Write header to fifo */
+ 	iowrite32(packet.header[0],
+@@ -836,14 +850,7 @@ static netdev_tx_t kvaser_pciefd_start_x
+ 			     KVASER_PCIEFD_KCAN_FIFO_LAST_REG);
+ 	}
+ 
+-	count = FIELD_GET(KVASER_PCIEFD_KCAN_TX_NR_PACKETS_CURRENT_MASK,
+-			  ioread32(can->reg_base + KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG));
+-	/* No room for a new message, stop the queue until at least one
+-	 * successful transmit
+-	 */
+-	if (count >= can->can.echo_skb_max || can->can.echo_skb[can->echo_idx])
+-		netif_stop_queue(netdev);
+-	spin_unlock_irqrestore(&can->echo_lock, irq_flags);
++	netif_subqueue_maybe_stop(netdev, 0, kvaser_pciefd_tx_avail(can), 1, 1);
+ 
+ 	return NETDEV_TX_OK;
+ }
+@@ -970,6 +977,8 @@ static int kvaser_pciefd_setup_can_ctrls
+ 		can->kv_pcie = pcie;
+ 		can->cmd_seq = 0;
+ 		can->err_rep_cnt = 0;
++		can->completed_tx_pkts = 0;
++		can->completed_tx_bytes = 0;
+ 		can->bec.txerr = 0;
+ 		can->bec.rxerr = 0;
+ 
+@@ -983,11 +992,10 @@ static int kvaser_pciefd_setup_can_ctrls
+ 		tx_nr_packets_max =
+ 			FIELD_GET(KVASER_PCIEFD_KCAN_TX_NR_PACKETS_MAX_MASK,
+ 				  ioread32(can->reg_base + KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG));
++		can->tx_max_count = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
+ 
+ 		can->can.clock.freq = pcie->freq;
+-		can->can.echo_skb_max = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
+-		can->echo_idx = 0;
+-		spin_lock_init(&can->echo_lock);
++		can->can.echo_skb_max = roundup_pow_of_two(can->tx_max_count);
+ 		spin_lock_init(&can->lock);
+ 
+ 		can->can.bittiming_const = &kvaser_pciefd_bittiming_const;
+@@ -1509,19 +1517,21 @@ static int kvaser_pciefd_handle_ack_pack
+ 		netdev_dbg(can->can.dev, "Packet was flushed\n");
+ 	} else {
+ 		int echo_idx = FIELD_GET(KVASER_PCIEFD_PACKET_SEQ_MASK, p->header[0]);
+-		int len;
+-		u8 count;
++		unsigned int len, frame_len = 0;
+ 		struct sk_buff *skb;
+ 
++		if (echo_idx != (can->ack_idx & (can->can.echo_skb_max - 1)))
++			return 0;
+ 		skb = can->can.echo_skb[echo_idx];
+-		if (skb)
+-			kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
+-		len = can_get_echo_skb(can->can.dev, echo_idx, NULL);
+-		count = FIELD_GET(KVASER_PCIEFD_KCAN_TX_NR_PACKETS_CURRENT_MASK,
+-				  ioread32(can->reg_base + KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG));
++		if (!skb)
++			return 0;
++		kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
++		len = can_get_echo_skb(can->can.dev, echo_idx, &frame_len);
+ 
+-		if (count < can->can.echo_skb_max && netif_queue_stopped(can->can.dev))
+-			netif_wake_queue(can->can.dev);
++		/* Pairs with barrier in kvaser_pciefd_start_xmit() */
++		smp_store_release(&can->ack_idx, can->ack_idx + 1);
++		can->completed_tx_pkts++;
++		can->completed_tx_bytes += frame_len;
+ 
+ 		if (!one_shot_fail) {
+ 			can->can.dev->stats.tx_bytes += len;
+@@ -1637,11 +1647,26 @@ static int kvaser_pciefd_read_buffer(str
+ {
+ 	int pos = 0;
+ 	int res = 0;
++	unsigned int i;
+ 
+ 	do {
+ 		res = kvaser_pciefd_read_packet(pcie, &pos, dma_buf);
+ 	} while (!res && pos > 0 && pos < KVASER_PCIEFD_DMA_SIZE);
+ 
++	/* Report ACKs in this buffer to BQL en masse for correct periods */
++	for (i = 0; i < pcie->nr_channels; ++i) {
++		struct kvaser_pciefd_can *can = pcie->can[i];
++
++		if (!can->completed_tx_pkts)
++			continue;
++		netif_subqueue_completed_wake(can->can.dev, 0,
++					      can->completed_tx_pkts,
++					      can->completed_tx_bytes,
++					      kvaser_pciefd_tx_avail(can), 1);
++		can->completed_tx_pkts = 0;
++		can->completed_tx_bytes = 0;
++	}
++
+ 	return res;
+ }
+ 
 
 
 
