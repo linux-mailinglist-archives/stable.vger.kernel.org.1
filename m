@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7901AC537C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99905AC56CC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B57A1888E5D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BFD74A5EC2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C2827FB3D;
-	Tue, 27 May 2025 16:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996DC27EC73;
+	Tue, 27 May 2025 17:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zday2jZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBEc3Ji8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B122CCC0;
-	Tue, 27 May 2025 16:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559251E89C;
+	Tue, 27 May 2025 17:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364462; cv=none; b=afvOH+KlTtcqR2Khmo43OU4EGzcg2HwoU76STXklL2XLw4t6ugkEc8HKcXT8V/TegREToA35Fc7m7xEfvM25A0Bz6GeMvSCislA5UDg+6KG9C+CG7FIqgmBnJIzB6wPZTRq1GMPxm04jdU1MLmJSyBWf/aL2XwcrGVR7bs+XWXE=
+	t=1748366717; cv=none; b=KI78qws/9F/1UXjZj+jwomd61luztYH/vgIBKeqxxTQwlRGlz6BVfrwqLKGj24m22UjFyyQ4irlkxY6mw26zORLcRSh7hrzjPLNVHlI9/xvDCgbzD3nFsDJFV9o/0HIzDs6T3L9nqyy3s0XiDeWhFtbraPdhaHDwF2QlI5qpIt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364462; c=relaxed/simple;
-	bh=2+g6GGR2vPnkIYbhkzyPPTlc62083RMlYqG8WeGapdw=;
+	s=arc-20240116; t=1748366717; c=relaxed/simple;
+	bh=udkipFbp4wMi3iTsF/+TvNTvt6FKCPuZX+ATCVD9WFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzxVE8LjOcnVqvkQk4XcBn5ujsbfURUX2RVXs3nKKZ9KGWUAqvDg+oZkXoXrbYSLkIDhopqBxHDDEVhRR99sxhZ/XYUzIdjVG0KTMM1Srt0q9WnUG9p1NIBdnX/0+HCidOCqnxrCrv03i9asJXkF6hbedyncvR7gCGcxiUerfpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zday2jZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96431C4CEE9;
-	Tue, 27 May 2025 16:47:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W2+IRCY8OewJ3iAvCYWoG4ZiedVOudheSZPe+d/TDsLkysztLfHcKwajno1uxMfM5CQGuIHje+2TmESljnUN4G2TT8b3YCN11zbfroLONlESIf6IRk7jBj5X/RSa3uiTALyK7vSad7MmllLQyj4tDeURhpBakUPX+eOaZVsK5UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBEc3Ji8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F81C4CEE9;
+	Tue, 27 May 2025 17:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364460;
-	bh=2+g6GGR2vPnkIYbhkzyPPTlc62083RMlYqG8WeGapdw=;
+	s=korg; t=1748366717;
+	bh=udkipFbp4wMi3iTsF/+TvNTvt6FKCPuZX+ATCVD9WFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zday2jZ/UjtYIJ5j/CoQr+mIgEAcNtTGUNtppuw4WYD53Cu4DMUEKHCfcyaZyPmjm
-	 ya3cwlCSIRmkiUMvD++KTjES20MFT5Onaj4MaZyDelnOKwK8bC39FO7l0bslhtFpZe
-	 VsvnZ2DZ8Dk0h2DpvjdlLtcMrRLZLamiwv3oS/V0=
+	b=kBEc3Ji8scc4fpb9ctGRBIIRjQuOHa/JYfSKk7qKhRl4F0JScEuShqodZMF/1koO5
+	 h7l1hgpbDRFx2ff9ECyglGfrnEKSShJn8mCfyBG1jnI9ygn0NvCVhyrzPrehLVvV8J
+	 GUXJx0y9w7k997Jb59jDxJbGVg3cnj+z7lafvD5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/626] mailbox: use error ret code of of_parse_phandle_with_args()
+Subject: [PATCH 6.14 159/783] scsi: st: Tighten the page format heuristics with MODE SELECT
 Date: Tue, 27 May 2025 18:19:16 +0200
-Message-ID: <20250527162447.617855509@linuxfoundation.org>
+Message-ID: <20250527162519.645671364@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
+[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
 
-In case of error, of_parse_phandle_with_args() returns -EINVAL when the
-passed index is negative, or -ENOENT when the index is for an empty
-phandle. The mailbox core overwrote the error return code with a less
-precise -ENODEV. Use the error returned code from
-of_parse_phandle_with_args().
+In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
+not correctly implement it. The st driver first tries MODE SELECT with the
+page format bit set to set the block descriptor.  If not successful, the
+non-page format is tried.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+The test only tests the sense code and this triggers also from illegal
+parameter in the parameter list. The test is limited to "old" devices and
+made more strict to remove false alarms.
+
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/scsi/st.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index d3d26a2c98956..cb174e788a96c 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -415,11 +415,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
- 
- 	mutex_lock(&con_mutex);
- 
--	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", index, &spec)) {
-+	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
-+					 index, &spec);
-+	if (ret) {
- 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
- 		mutex_unlock(&con_mutex);
--		return ERR_PTR(-ENODEV);
-+		return ERR_PTR(ret);
- 	}
- 
- 	chan = ERR_PTR(-EPROBE_DEFER);
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 344e4da336bb5..2a18ba51427ac 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3084,7 +3084,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			   cmd_in == MTSETDRVBUFFER ||
+ 			   cmd_in == SET_DENS_AND_BLK) {
+ 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
+-			    !(STp->use_pf & PF_TESTED)) {
++				cmdstatp->sense_hdr.asc == 0x24 &&
++				(STp->device)->scsi_level <= SCSI_2 &&
++				!(STp->use_pf & PF_TESTED)) {
+ 				/* Try the other possible state of Page Format if not
+ 				   already tried */
+ 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
 -- 
 2.39.5
 
