@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CE2AC553A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93527AC588B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1813B1BA5D72
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3482D7AE5C2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C732798F8;
-	Tue, 27 May 2025 17:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F021B4F0A;
+	Tue, 27 May 2025 17:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1UUUl5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEg8uJAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF7D139579;
-	Tue, 27 May 2025 17:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFD81FB3;
+	Tue, 27 May 2025 17:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365753; cv=none; b=mK65xmOZcbaYVd7BoU1TVV3iIIjQSghBojLLAI9RgPi06vdmgOsm5hBNLHVZ9nUltH8iplFhYiBUnadU/ehwSIJbXI53UtRPFr917vs/JtIDBzaeyzMO4gv0FOH0K2JkrKmpNufAzpXikQrpUPn5xymAHZas/IzazvEEHvut63w=
+	t=1748367981; cv=none; b=ZmLPTiIuMzd5VZaMRuR+H4NhCC/5UuDqO9Gja+s1FCIivJVRIPVDiAd4QgU9gn1mjhsatxDK6jhaHZOG4Wl3HUDVGeT0GKY/mb4O6nwY6+nh2kTYnnf63hncKR99DdWzV/gAmiQc/w/zeqI3Ag803dyryNa7aMGIUDLYWqaBBB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365753; c=relaxed/simple;
-	bh=FkVUyNg8qS424oy6FDmOkZfPfEeye/R9vVacSH6Z7Uo=;
+	s=arc-20240116; t=1748367981; c=relaxed/simple;
+	bh=6JCLMDAFhWr8eK1weSeAUBYNY7Q3yMI3LlPx1UenH7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vj+Ep6WFq+ffL9h+F6IjEMqCXo72+3Q3IwB+/2b4CvBiDpIilnjB83UEMkgPGGLUADFDoWN7mXpBW782N89Gt2IhlAjcXjB/ylGvg19QYwjMm5wGmuW7TEOMdLinkb3rKuUMXJNHEoKoIEv0iSujQV1FFhE26T1qCIQrZpLI75A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1UUUl5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914C7C4CEE9;
-	Tue, 27 May 2025 17:09:12 +0000 (UTC)
+	 MIME-Version; b=uQoe0v6P885rGckWCEa+f35v0QDhtpHPJeycy3FjYkNS8MA+NZPVQ7NTGb7ilN2wOXbvY4DtJmPGMVl3jECrKaDXt8hjXhG7Oi8AbeXdxLx1++y3znglJwNENeSdTVWQYfhGmAt7UZppeWVzZeJapxqbdnbcXqMaaICNeYTs6xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEg8uJAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A652DC4CEE9;
+	Tue, 27 May 2025 17:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365753;
-	bh=FkVUyNg8qS424oy6FDmOkZfPfEeye/R9vVacSH6Z7Uo=;
+	s=korg; t=1748367981;
+	bh=6JCLMDAFhWr8eK1weSeAUBYNY7Q3yMI3LlPx1UenH7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1UUUl5wh9p31K+5M4/En+yjumt01aEGPTI7YjxwKophlxeZWDPCxXXXFoJNCymcK
-	 K8WiGz6HtS0YJF3zYTRVqIMLksV0WFBdfVrbyp5AVFsUJ0qtv6JW9uP1eTILtnMa3W
-	 OU0ot4VGIEF3HhcVb8zjARrtD6jhSf0T6p+a+E7o=
+	b=sEg8uJARcjh5BEU6LjK1+REpbzdb2GfAubEKkhO1gXovr3loAHn7XuQ6630If3wKq
+	 Z3Y1IOQVWRJ8EwkUvNi3DYt1WiTsms37ANHV3+T+y4ONfuR4z+RHYljBAPukhsvD31
+	 3pRoslJZcyI8DGNizKo4RPMRbhkIXdy0CLYJsnV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Ching-Te Ku <ku920601@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 447/626] cpufreq: amd-pstate: Remove unnecessary driver_lock in set_boost
+Subject: [PATCH 6.14 543/783] wifi: rtw89: coex: Assign value over than 0 to avoid firmware timer hang
 Date: Tue, 27 May 2025 18:25:40 +0200
-Message-ID: <20250527162503.166260150@linuxfoundation.org>
+Message-ID: <20250527162535.272707817@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
+From: Ching-Te Ku <ku920601@realtek.com>
 
-[ Upstream commit db1cafc77aaaf871509da06f4a864e9af6d6791f ]
+[ Upstream commit 2e4c4717b3f6f019c71af984564b6e4d0ae8d0bd ]
 
-set_boost is a per-policy function call, hence a driver wide lock is
-unnecessary. Also this mutex_acquire can collide with the mutex_acquire
-from the mode-switch path in status_store(), which can lead to a
-deadlock. So, remove it.
+If the slot duration is 0, the firmware timer will trigger timer hang at
+the timer initializing state in a low rate due to hardware algorithm.
 
-Signed-off-by: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
-Acked-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250205013233.10945-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/coex.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 9db5354fdb027..7a16d19322286 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -696,7 +696,6 @@ static int amd_pstate_set_boost(struct cpufreq_policy *policy, int state)
- 		pr_err("Boost mode is not supported by this processor or SBIOS\n");
- 		return -EOPNOTSUPP;
- 	}
--	guard(mutex)(&amd_pstate_driver_lock);
- 
- 	ret = amd_pstate_cpu_boost_update(policy, state);
- 	WRITE_ONCE(cpudata->boost_state, !ret ? state : false);
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index 9e06cc36a75e2..d94a028555e20 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -89,10 +89,10 @@ static const struct rtw89_btc_fbtc_slot s_def[] = {
+ 	[CXST_B4]	= __DEF_FBTC_SLOT(50,  0xe5555555, SLOT_MIX),
+ 	[CXST_LK]	= __DEF_FBTC_SLOT(20,  0xea5a5a5a, SLOT_ISO),
+ 	[CXST_BLK]	= __DEF_FBTC_SLOT(500, 0x55555555, SLOT_MIX),
+-	[CXST_E2G]	= __DEF_FBTC_SLOT(0,   0xea5a5a5a, SLOT_MIX),
+-	[CXST_E5G]	= __DEF_FBTC_SLOT(0,   0xffffffff, SLOT_ISO),
++	[CXST_E2G]	= __DEF_FBTC_SLOT(5,   0xea5a5a5a, SLOT_MIX),
++	[CXST_E5G]	= __DEF_FBTC_SLOT(5,   0xffffffff, SLOT_ISO),
+ 	[CXST_EBT]	= __DEF_FBTC_SLOT(5,   0xe5555555, SLOT_MIX),
+-	[CXST_ENULL]	= __DEF_FBTC_SLOT(0,   0xaaaaaaaa, SLOT_ISO),
++	[CXST_ENULL]	= __DEF_FBTC_SLOT(5,   0xaaaaaaaa, SLOT_ISO),
+ 	[CXST_WLK]	= __DEF_FBTC_SLOT(250, 0xea5a5a5a, SLOT_MIX),
+ 	[CXST_W1FDD]	= __DEF_FBTC_SLOT(50,  0xffffffff, SLOT_ISO),
+ 	[CXST_B1FDD]	= __DEF_FBTC_SLOT(50,  0xffffdfff, SLOT_ISO),
 -- 
 2.39.5
 
