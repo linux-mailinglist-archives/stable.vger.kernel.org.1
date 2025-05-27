@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-147601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51443AC585F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D129CAC5503
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211FA4A150E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A13204A358C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DC128001E;
-	Tue, 27 May 2025 17:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55398276057;
+	Tue, 27 May 2025 17:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aY7TqnLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrGqlaQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5389986347;
-	Tue, 27 May 2025 17:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138122110E;
+	Tue, 27 May 2025 17:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367849; cv=none; b=TlX2gpgFHca7nfQsB1dEQCa/FJnm8AOyYyIUiKdDarbL1l9awlRvXOh9Edmvs+lksDMdOBsibbqU4h+F0Dj/Y15Mon7b29M+IPk3WOGloANBxFQwH3RP5PnsyQWXX6T5OfI3vlygd3qoGZTaKXcprxXyvrfm9Ss1sKHpiL6/dbs=
+	t=1748365581; cv=none; b=XF3nKnF9uc/3kVR4bEikSXhK1FRreO7yvyunCgHO2/tXhYInVA1jSkFBs8OqOsHFpew8ZX38pNy+xrWQurz5kozPCuI9nokzveQ/Se1hYJlRwGcG8W2CgCqO0aQ3n2XqpILeQvdWl/DxoS7CiwqkdLgai+aE+Z0H95wLDyyJ0Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367849; c=relaxed/simple;
-	bh=n4pAU8lZ+Jnk21HcxsEqNDD/gahz3SnAWnHkwnD/0rU=;
+	s=arc-20240116; t=1748365581; c=relaxed/simple;
+	bh=WC+ST+c5xFIwO8zf+6jgsANwDU5PRATIjrmMnFQuKSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwKxLDOpPj8PxNFv0NuxBz+tNOAojaPcNChwkAqhuyYv0krWkapk05iv7aEanI5+4xCSTsd04A4T4JOdlgLbJ+Ym8e9m2pHTH5Is3fKTGk5PjyfEFPf7oYVuJBVF5fGu2uHXf8FSQjuttkd1BOHKk2ksD0f+LpEQ84y18xboV3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aY7TqnLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CE4C4CEE9;
-	Tue, 27 May 2025 17:44:08 +0000 (UTC)
+	 MIME-Version; b=Vx8iiaE1BwL5ELvb0Cmo0q1EnZJBfeHs+g7Xo0gMtimyGEn/6iTKf61SoCgCMn5devfKwpFH+Opqm7NHVC+RB1dA4EU6Lfv+zOJVGqCoAmwU7M/Keto0XHaM1u+LPrRDlAkfr67CG23xXfFoaEVFzDRnnMoY/9w6WVWXnotP1LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrGqlaQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74436C4CEE9;
+	Tue, 27 May 2025 17:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367849;
-	bh=n4pAU8lZ+Jnk21HcxsEqNDD/gahz3SnAWnHkwnD/0rU=;
+	s=korg; t=1748365580;
+	bh=WC+ST+c5xFIwO8zf+6jgsANwDU5PRATIjrmMnFQuKSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aY7TqnLUbkCLorn7RG5kIboOzE0qT+KhsepB7Y00zANHytQfBJXSP59lF9GynHdtT
-	 AuiXdP2PyJVkDi82B2Uo35p5eqsx5IMM7E5TfvO/Gb5JthtoiyFy2OdJPHC5VAyxaL
-	 BbaOdGwDHq5dNGCsaieaG9aQxUUce9SlwOCr3SMc=
+	b=zrGqlaQUb29vFmLTyMq9bMq6ugC9ka1Nj+jgkPMdqdRspZmnIiyqtLRIiCA2dVT5S
+	 mCyyg2LgLAExI64qDzzD0kU/mAqRzHjEXH/FhlBXC9DheOK0A6/WgQJKAH3JA7efcy
+	 YJSFsquJBzvsB5pxx0v/ZVvy9WAK90Ycuo7qs8BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 519/783] wifi: iwlwifi: dont warn during reprobe
+Subject: [PATCH 6.12 423/626] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
 Date: Tue, 27 May 2025 18:25:16 +0200
-Message-ID: <20250527162534.280684402@linuxfoundation.org>
+Message-ID: <20250527162502.196494967@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 696cca64308dc641d0bbe4aa2c09dd9752aa288d ]
+[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
 
-During reprobe, the sw state is being destroyd, and so is the
-connection. When the peer STA is being removed, the opmode sends a
-command to flush the TXQs of the STA and uses iwl_trans_wait_txq_empty.
+The following patch will not set skb->sk from VRF path.
 
-This one warns if the FW is not alive, but it really shouldn't if
-there is a FW error - and return silently instead, just like we do when
-sending a hcmd.
+Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
+in fib[46]_rule_configure().
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250205145347.76425b10e5a0.I3bf0de2eb090a8b94c4e36d93dd91df61fadb808@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/fib_rules.c  | 4 ++--
+ net/ipv6/fib6_rules.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index eb631080c4563..75571f8693ee3 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -690,6 +690,9 @@ IWL_EXPORT_SYMBOL(iwl_trans_txq_enable_cfg);
- 
- int iwl_trans_wait_txq_empty(struct iwl_trans *trans, int queue)
+diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
+index b07292d50ee76..4563e5303c1a8 100644
+--- a/net/ipv4/fib_rules.c
++++ b/net/ipv4/fib_rules.c
+@@ -245,9 +245,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
  {
-+	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status)))
-+		return -EIO;
-+
- 	if (WARN_ONCE(trans->state != IWL_TRANS_FW_ALIVE,
- 		      "bad state = %d\n", trans->state))
- 		return -EIO;
+-	struct net *net = sock_net(skb->sk);
++	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
+ 
+ 	if (!inet_validate_dscp(frh->tos)) {
+ 		NL_SET_ERR_MSG(extack,
+diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
+index 04a9ed5e8310f..29185c9ebd020 100644
+--- a/net/ipv6/fib6_rules.c
++++ b/net/ipv6/fib6_rules.c
+@@ -365,9 +365,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
++	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct net *net = sock_net(skb->sk);
+-	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
+ 
+ 	if (!inet_validate_dscp(frh->tos)) {
+ 		NL_SET_ERR_MSG(extack,
 -- 
 2.39.5
 
