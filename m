@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-147732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D74AAC58F1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A49AC55FB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C51D11BC3014
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3953AF199
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EE727FD76;
-	Tue, 27 May 2025 17:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F6F281361;
+	Tue, 27 May 2025 17:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWbQHLry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpb5bP+7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F0A27BF8D;
-	Tue, 27 May 2025 17:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C428927CCF0;
+	Tue, 27 May 2025 17:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368259; cv=none; b=btZ0kFnW/3k7XZvWzG+BX7Pi0uKJBWF26jIbpQzmZBa+oa7U868BogIqrl+lLm6ON+18mYd9fjTSqFdxptryBzBoDbaZ00Rx/2dSfvYPPNRpmeiXTGLbF53S4twzhO96g/NnKHweB2/ItQ/uvEy8HiohKHGZX5Fdg4oakYM4dHU=
+	t=1748365984; cv=none; b=HBsmYS67XwTDlimHR6rUDi589sv9wIHmOatV5SW3r1VU3QQhhirIAmtGDmuPHlv08KbUSItUidE8UD0EqrXFDrcD3irTlMuMei8E2kyxQ4H0nsUU1tAi3H889qRAHlB04mFnSvLLBoVLy/fwWlYLSQTkgBfIKAuZq+Fap63SSFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368259; c=relaxed/simple;
-	bh=UArihea9v5KG60RIUW8wBvSXpu+ZcL9Ssh/2S544fMM=;
+	s=arc-20240116; t=1748365984; c=relaxed/simple;
+	bh=+qzUdh+tTgGBgqV7u81Qcp3BUm1RQa8niVM6qaI98z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjuTUOXWlIOzqUqX6qzhGG4PL3HXP1ZRmggVoDVFa9Min3y6wPfBoOLuFubF2zto0/Gh5l8t6Uz4Xmqm/KkX1FlGqDwTOQxZzmvoOkYIuQoHRDfVhDx+7S6H1rnIdzLm853Yhq/t+oKDEa8OOPUN9v43qQIdQBqF3+9b52A0C9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWbQHLry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7575AC4CEE9;
-	Tue, 27 May 2025 17:50:58 +0000 (UTC)
+	 MIME-Version; b=fOZ2NV7zl2mippJ+g9ez2e7uMVa1KVg6TEm3lcRQmdcx+KDIPbf7+pRY3XKgEpQ7qnIqFirBFTD2HlDEdO4Lf59mxjd0kh4N8kgVymmD46rTpXzpvsoudX5HyuFzBUcYMo9Veg7eyxsIW0i9r4YG357nq9MhtUWbdR9G7n2TFEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpb5bP+7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA54C4CEE9;
+	Tue, 27 May 2025 17:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368258;
-	bh=UArihea9v5KG60RIUW8wBvSXpu+ZcL9Ssh/2S544fMM=;
+	s=korg; t=1748365984;
+	bh=+qzUdh+tTgGBgqV7u81Qcp3BUm1RQa8niVM6qaI98z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWbQHLrywEK8YsZnQQ2iIav/RCjMASW9CW2nMJ+pIOoC/xxnUm2YDwEQ8oVDeJSW2
-	 qTVaBtpHeeDV7lbgRCDMe/2EpVBUr9I5oZ7eNgT2B72WBVheA6+B1Y9EXbIaHlzXd+
-	 OwHWer16VA+arR4kxa31Uby9rDg+t37Zcrsa1Upc=
+	b=cpb5bP+7B47sSCoIcmbY4CYBo/m0AKwubvqgD+ZiopiADPIiLvVVSdriGrEGLqtxW
+	 /ToLZLx9mLKs+k2xsoBLeTDXvmPQdN8rnZTbkghc71Znm7gJKR5/zpZpoB30Xle4NE
+	 buAlZJq/ihsICopB2GfP0165z0DWRTKN1GEg3ZSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 650/783] smb: server: smb2pdu: check return value of xa_store()
+Subject: [PATCH 6.12 554/626] bridge: netfilter: Fix forwarding of fragmented packets
 Date: Tue, 27 May 2025 18:27:27 +0200
-Message-ID: <20250527162539.602224481@linuxfoundation.org>
+Message-ID: <20250527162507.480852614@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit af5226abb40cae959f424f7ca614787a1c87ce48 ]
+[ Upstream commit 91b6dbced0ef1d680afdd69b14fc83d50ebafaf3 ]
 
-xa_store() may fail so check its return value and return error code if
-error occurred.
+When netfilter defrag hooks are loaded (due to the presence of conntrack
+rules, for example), fragmented packets entering the bridge will be
+defragged by the bridge's pre-routing hook (br_nf_pre_routing() ->
+ipv4_conntrack_defrag()).
 
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Later on, in the bridge's post-routing hook, the defragged packet will
+be fragmented again. If the size of the largest fragment is larger than
+what the kernel has determined as the destination MTU (using
+ip_skb_dst_mtu()), the defragged packet will be dropped.
+
+Before commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
+ip_dst_mtu_maybe_forward"), ip_skb_dst_mtu() would return dst_mtu() as
+the destination MTU. Assuming the dst entry attached to the packet is
+the bridge's fake rtable one, this would simply be the bridge's MTU (see
+fake_mtu()).
+
+However, after above mentioned commit, ip_skb_dst_mtu() ends up
+returning the route's MTU stored in the dst entry's metrics. Ideally, in
+case the dst entry is the bridge's fake rtable one, this should be the
+bridge's MTU as the bridge takes care of updating this metric when its
+MTU changes (see br_change_mtu()).
+
+Unfortunately, the last operation is a no-op given the metrics attached
+to the fake rtable entry are marked as read-only. Therefore,
+ip_skb_dst_mtu() ends up returning 1500 (the initial MTU value) and
+defragged packets are dropped during fragmentation when dealing with
+large fragments and high MTU (e.g., 9k).
+
+Fix by moving the fake rtable entry's metrics to be per-bridge (in a
+similar fashion to the fake rtable entry itself) and marking them as
+writable, thereby allowing MTU changes to be reflected.
+
+Fixes: 62fa8a846d7d ("net: Implement read-only protection and COW'ing of metrics.")
+Fixes: 33eb9873a283 ("bridge: initialize fake_rtable metrics")
+Reported-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
+Closes: https://lore.kernel.org/netdev/PH0PR10MB4504888284FF4CBA648197D0ACB82@PH0PR10MB4504.namprd10.prod.outlook.com/
+Tested-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250515084848.727706-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/bridge/br_nf_core.c | 7 ++-----
+ net/bridge/br_private.h | 1 +
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index c2603c398a467..f2a2be8467c66 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1450,7 +1450,7 @@ static int ntlm_authenticate(struct ksmbd_work *work,
+diff --git a/net/bridge/br_nf_core.c b/net/bridge/br_nf_core.c
+index 98aea5485aaef..a8c67035e23c0 100644
+--- a/net/bridge/br_nf_core.c
++++ b/net/bridge/br_nf_core.c
+@@ -65,17 +65,14 @@ static struct dst_ops fake_dst_ops = {
+  * ipt_REJECT needs it.  Future netfilter modules might
+  * require us to fill additional fields.
+  */
+-static const u32 br_dst_default_metrics[RTAX_MAX] = {
+-	[RTAX_MTU - 1] = 1500,
+-};
+-
+ void br_netfilter_rtable_init(struct net_bridge *br)
  {
- 	struct ksmbd_conn *conn = work->conn;
- 	struct ksmbd_session *sess = work->sess;
--	struct channel *chann = NULL;
-+	struct channel *chann = NULL, *old;
- 	struct ksmbd_user *user;
- 	u64 prev_id;
- 	int sz, rc;
-@@ -1562,7 +1562,12 @@ static int ntlm_authenticate(struct ksmbd_work *work,
- 				return -ENOMEM;
+ 	struct rtable *rt = &br->fake_rtable;
  
- 			chann->conn = conn;
--			xa_store(&sess->ksmbd_chann_list, (long)conn, chann, KSMBD_DEFAULT_GFP);
-+			old = xa_store(&sess->ksmbd_chann_list, (long)conn, chann,
-+					KSMBD_DEFAULT_GFP);
-+			if (xa_is_err(old)) {
-+				kfree(chann);
-+				return xa_err(old);
-+			}
- 		}
- 	}
- 
+ 	rcuref_init(&rt->dst.__rcuref, 1);
+ 	rt->dst.dev = br->dev;
+-	dst_init_metrics(&rt->dst, br_dst_default_metrics, true);
++	dst_init_metrics(&rt->dst, br->metrics, false);
++	dst_metric_set(&rt->dst, RTAX_MTU, br->dev->mtu);
+ 	rt->dst.flags	= DST_NOXFRM | DST_FAKE_RTABLE;
+ 	rt->dst.ops = &fake_dst_ops;
+ }
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 041f6e571a209..df502cc1191c3 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -505,6 +505,7 @@ struct net_bridge {
+ 		struct rtable		fake_rtable;
+ 		struct rt6_info		fake_rt6_info;
+ 	};
++	u32				metrics[RTAX_MAX];
+ #endif
+ 	u16				group_fwd_mask;
+ 	u16				group_fwd_mask_required;
 -- 
 2.39.5
 
