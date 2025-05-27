@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-147343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A135CAC5741
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120F2AC53FE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:54:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C6F43B8F03
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F4D3A8888
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113BF27FB02;
-	Tue, 27 May 2025 17:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129C62CCC0;
+	Tue, 27 May 2025 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXZOgvyj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXHgZvW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F2B26F469;
-	Tue, 27 May 2025 17:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30DA194A67;
+	Tue, 27 May 2025 16:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367049; cv=none; b=WlaaosaxSjMoUuMNpXT2l48bXx8dLJJGuNAqOgfoSUUtkAijosEU0PbJnmKTyh3uc7K/FJvqePnXl40VynvwbpR19iFVJSKM0sgtdVNCkrsDRmmj0GmzAxr2wXA1jKslbEXGoE8JSNpE4u7zNbta8so7q2B1G/rK0x/JzDEgAqQ=
+	t=1748364788; cv=none; b=QhJu3RRuXGhEjUBDkc+E2bFcnH5M97JDvIxPC8mTOLnkLts8TrWpjTW6CTnBcqpJMW6lc7mf/vNXc64FJDDSr/i/FTe2uaY+2nvjnbYnGjYVbzTdxxlVs5NAlt69XOoLxAjiDaXSaUzcNheN4rH8QJ+TQE1kMo34QrkxZCgbI0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367049; c=relaxed/simple;
-	bh=LtUyeHzb+k8xwfzE57RpdsoBsu2P75czLi4Ja5oX0Y0=;
+	s=arc-20240116; t=1748364788; c=relaxed/simple;
+	bh=PNAt+WIHmbne9SNTTV/sT0F1kCX03IbOnU1bVBdMkNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOp734g3QkCJQTX88Rftp/iQnBD9uaB/N75B1cF3+7twCz+a/oWbh/u4jxfvuN9sGok4ICTzr95LAulaN+GkvobgQAHjCcGGHxgx5vIQU18f+U0vmvdjiguQGVhNk9It26dBTLpMwL+MbJ8MYm9dj0ckYntU9oNuJRI/QB2SMbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXZOgvyj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C4BC4CEEB;
-	Tue, 27 May 2025 17:30:47 +0000 (UTC)
+	 MIME-Version; b=MnS1PrAz4XVZpacXucpuiP1rb1beVV3gO6mjkyctQoTDCxcn9yCgiiEJg1wfFNWyraPefxOgH3gYJYRWeXZdLlA8lItuxTzfSX/kvjnwTLjiPwtuD+3TEKp/pIZ9H3H20s8Ui17PcgIOSGvOlfygxPQ4Q03+Ma6ZlbtS9U5D4N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXHgZvW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCC5C4CEE9;
+	Tue, 27 May 2025 16:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367048;
-	bh=LtUyeHzb+k8xwfzE57RpdsoBsu2P75czLi4Ja5oX0Y0=;
+	s=korg; t=1748364788;
+	bh=PNAt+WIHmbne9SNTTV/sT0F1kCX03IbOnU1bVBdMkNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXZOgvyjsySXjALAlXURi3DV1+VEM8oOznm9Hd2NvPJlXOKvekB3ObW5SJAG/xW/L
-	 +sv8kS/POYvUHTV5fLU2dBdbzoepGZjpGRzRN6nW+mZRXSBAn8TU/Oz6sdwElpKW0i
-	 DgQwrxcBbgCWu3I8zQMSDsyZlSGn1GQTfqBLefAI=
+	b=uXHgZvW3Xy5qzN986rZz3WUyLCBSGqap2YhCdUyHQfsJnBim4g420VI8z6B9xb3Qb
+	 YGTiwU7AOoeX1Gu4TaxhvcXQxf8+XpofyEqBa81jiL1eeWcPn4Du9XCW3PdT2QPVYR
+	 vZeaEyrtZyYHz9/KB9WacLfk8NG9ju4jwHt2TZLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 262/783] rtc: ds1307: stop disabling alarms on probe
+Subject: [PATCH 6.12 166/626] posix-timers: Add cond_resched() to posix_timer_add() search loop
 Date: Tue, 27 May 2025 18:20:59 +0200
-Message-ID: <20250527162523.763407219@linuxfoundation.org>
+Message-ID: <20250527162451.770328513@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
+[ Upstream commit 5f2909c6cd13564a07ae692a95457f52295c4f22 ]
 
-It is a bad practice to disable alarms on probe or remove as this will
-prevent alarms across reboots.
+With a large number of POSIX timers the search for a valid ID might cause a
+soft lockup on PREEMPT_NONE/VOLUNTARY kernels.
 
-Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Add cond_resched() to the loop to prevent that.
+
+[ tglx: Split out from Eric's series ]
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/all/20250214135911.2037402-2-edumazet@google.com
+Link: https://lore.kernel.org/all/20250308155623.635612865@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/time/posix-timers.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 872e0b679be48..5efbe69bf5ca8 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1807,10 +1807,8 @@ static int ds1307_probe(struct i2c_client *client)
- 		 * For some variants, be sure alarms can trigger when we're
- 		 * running on Vbackup (BBSQI/BBSQW)
- 		 */
--		if (want_irq || ds1307_can_wakeup_device) {
-+		if (want_irq || ds1307_can_wakeup_device)
- 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
--			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
--		}
- 
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 4576aaed13b23..896ff735034ce 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -118,6 +118,7 @@ static int posix_timer_add(struct k_itimer *timer)
+ 			return id;
+ 		}
+ 		spin_unlock(&hash_lock);
++		cond_resched();
+ 	}
+ 	/* POSIX return code when no timer ID could be allocated */
+ 	return -EAGAIN;
 -- 
 2.39.5
 
