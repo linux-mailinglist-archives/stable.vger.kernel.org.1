@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACE2AC57E8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B71AC545C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 491CF16493F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7A11BA4AA8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A2F27F16D;
-	Tue, 27 May 2025 17:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA2027FB37;
+	Tue, 27 May 2025 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToqVJVH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVSdSS5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96E81A3159;
-	Tue, 27 May 2025 17:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FD827A900;
+	Tue, 27 May 2025 16:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367526; cv=none; b=rW20OwMeiCeXAE9A8I0mqhCyMeksHzFtiV0mzt6LJ06FnuHCJfDrsVyl2jnZTJzwH8jSqxY8PvWI/RpB7nM6kdsD/3OozDWxiEzBIlw0p8vKH+nY5x2rwuwAKRr413QkcFJPqwhIxAFr73KstXi+gYYK5GZ5HW4tvXVOUzFJdbM=
+	t=1748365172; cv=none; b=eKb2990QRiMutHMmn7Q56Acfq41eWqm3M5R1i/Q1SQn/MXb6faL5Ny5SeHQLVmE+6e3DRcj498KKPqpnTrnTeziuKMNh84msz1WuFYldi5GNYsSem7XELlP+L7b+1mfjXdtOkwG2rPt+FGmSjto7hZWtoGpLyAtha2wPsM6V2j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367526; c=relaxed/simple;
-	bh=MSI+MMqwsVTXlSNFUtwaLU5z5C+AoYKAbTETzfbND7w=;
+	s=arc-20240116; t=1748365172; c=relaxed/simple;
+	bh=/viEIa8QjSnjOYUrfYe8gdEv6j9bcYoiG++6On4HssE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XiD3nI2EhXXGY2U1TTt3Vj3tqUEurUPjUWaOFGlk0omIX94aLkxVJ/KyVVnu0DNvtRp8F51XyWILwd5rPn0tZPP7zS243Q2s+clIKKcmR+g89BM1rESsHnsdKbFsLGOPSQDIch6UleuENOP527Nmeq92QFfsgCfOn2ki2UHm2uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToqVJVH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B83BC4CEEA;
-	Tue, 27 May 2025 17:38:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YPCVy6LicLmeyrpjnl/gtR8LMygvhhN9BqRsnotX+HJ4AYTd3FzqgtUtaa1Xx2rLM5blgbH4CjBxCXw3mgJICxjlif5ytjWdQbuBOv+yEhTUL3L/cN1aKViG6ygmEdACoYFqJHbtV3TKhQ2t5SbF/EGeUU0NXOjqc8wZHFSVQu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVSdSS5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3545C4CEE9;
+	Tue, 27 May 2025 16:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367526;
-	bh=MSI+MMqwsVTXlSNFUtwaLU5z5C+AoYKAbTETzfbND7w=;
+	s=korg; t=1748365171;
+	bh=/viEIa8QjSnjOYUrfYe8gdEv6j9bcYoiG++6On4HssE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToqVJVH/0o1A5W1+55xX4sRTEQ6emEQpLvcApWebPc4rdA1xWi4TsC5Ih3fGOTfkY
-	 sBRC94ysabrvMpXz0sEVyhxNdqx5QX1CDC6E91R+x+gE3XZyfVxHd9Kc7YVpbPPoGg
-	 olGL+QmUN1qvi/olkvOS29kH+FxhKe0dsu/PppQ4=
+	b=eVSdSS5uJFPD3PSL7QdGWBrQN6UEqJrxrBAJRuk/tnBRAIWVmUylRSJ5okfg8UfRL
+	 ukjs0oEb70a62pTuMDyeit6ReVjxwxk7j21o9iC+ztmlnO69yMoRfgcyM89qWWOLz6
+	 HUCLH/n1snhjme2Pezknh/njfbmNc8kGXLl6uV/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 386/783] genirq/msi: Store the IOMMU IOVA directly in msi_desc instead of iommu_cookie
+Subject: [PATCH 6.12 290/626] ASoC: mediatek: mt8188: Treat DMIC_GAINx_CUR as non-volatile
 Date: Tue, 27 May 2025 18:23:03 +0200
-Message-ID: <20250527162528.813028532@linuxfoundation.org>
+Message-ID: <20250527162456.815587569@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,178 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 1f7df3a691740a7736bbc99dc4ed536120eb4746 ]
+[ Upstream commit 7d87bde21c73731ddaf15e572020f80999c38ee3 ]
 
-The IOMMU translation for MSI message addresses has been a 2-step process,
-separated in time:
+The DMIC_GAINx_CUR registers contain the current (as in present) gain of
+each DMIC. During capture, this gain will ramp up until a target value
+is reached, and therefore the register is volatile since it is updated
+automatically by hardware.
 
- 1) iommu_dma_prepare_msi(): A cookie pointer containing the IOVA address
-    is stored in the MSI descriptor when an MSI interrupt is allocated.
+However, after capture the register's value returns to the value that
+was written to it. So reading these registers returns the current gain,
+and writing configures the initial gain for every capture.
 
- 2) iommu_dma_compose_msi_msg(): this cookie pointer is used to compute a
-    translated message address.
+>From an audio configuration perspective, reading the instantaneous gain
+is not really useful. Instead, reading back the initial gain that was
+configured is the desired behavior. For that reason, consider the
+DMIC_GAINx_CUR registers as non-volatile, so the regmap's cache can be
+used to retrieve the values, rather than requiring pm runtime resuming
+the device.
 
-This has an inherent lifetime problem for the pointer stored in the cookie
-that must remain valid between the two steps. However, there is no locking
-at the irq layer that helps protect the lifetime. Today, this works under
-the assumption that the iommu domain is not changed while MSI interrupts
-being programmed. This is true for normal DMA API users within the kernel,
-as the iommu domain is attached before the driver is probed and cannot be
-changed while a driver is attached.
-
-Classic VFIO type1 also prevented changing the iommu domain while VFIO was
-running as it does not support changing the "container" after starting up.
-
-However, iommufd has improved this so that the iommu domain can be changed
-during VFIO operation. This potentially allows userspace to directly race
-VFIO_DEVICE_ATTACH_IOMMUFD_PT (which calls iommu_attach_group()) and
-VFIO_DEVICE_SET_IRQS (which calls into iommu_dma_compose_msi_msg()).
-
-This potentially causes both the cookie pointer and the unlocked call to
-iommu_get_domain_for_dev() on the MSI translation path to become UAFs.
-
-Fix the MSI cookie UAF by removing the cookie pointer. The translated IOVA
-address is already known during iommu_dma_prepare_msi() and cannot change.
-Thus, it can simply be stored as an integer in the MSI descriptor.
-
-The other UAF related to iommu_get_domain_for_dev() will be addressed in
-patch "iommu: Make iommu_dma_prepare_msi() into a generic operation" by
-using the IOMMU group mutex.
-
-Link: https://patch.msgid.link/r/a4f2cd76b9dc1833ee6c1cf325cba57def22231c.1740014950.git.nicolinc@nvidia.com
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20250225-genio700-dmic-v2-3-3076f5b50ef7@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/dma-iommu.c | 28 +++++++++++++---------------
- include/linux/msi.h       | 33 ++++++++++++---------------------
- 2 files changed, 25 insertions(+), 36 deletions(-)
+ sound/soc/mediatek/mt8188/mt8188-afe-pcm.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 2a9fa0c8cc00f..0f0caf59023c7 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1815,7 +1815,7 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
- 	static DEFINE_MUTEX(msi_prepare_lock); /* see below */
- 
- 	if (!domain || !domain->iova_cookie) {
--		desc->iommu_cookie = NULL;
-+		msi_desc_set_iommu_msi_iova(desc, 0, 0);
- 		return 0;
- 	}
- 
-@@ -1827,11 +1827,12 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
- 	mutex_lock(&msi_prepare_lock);
- 	msi_page = iommu_dma_get_msi_page(dev, msi_addr, domain);
- 	mutex_unlock(&msi_prepare_lock);
--
--	msi_desc_set_iommu_cookie(desc, msi_page);
--
- 	if (!msi_page)
- 		return -ENOMEM;
-+
-+	msi_desc_set_iommu_msi_iova(
-+		desc, msi_page->iova,
-+		ilog2(cookie_msi_granule(domain->iova_cookie)));
- 	return 0;
- }
- 
-@@ -1842,18 +1843,15 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
-  */
- void iommu_dma_compose_msi_msg(struct msi_desc *desc, struct msi_msg *msg)
- {
--	struct device *dev = msi_desc_to_dev(desc);
--	const struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
--	const struct iommu_dma_msi_page *msi_page;
-+#ifdef CONFIG_IRQ_MSI_IOMMU
-+	if (desc->iommu_msi_shift) {
-+		u64 msi_iova = desc->iommu_msi_iova << desc->iommu_msi_shift;
- 
--	msi_page = msi_desc_get_iommu_cookie(desc);
--
--	if (!domain || !domain->iova_cookie || WARN_ON(!msi_page))
--		return;
--
--	msg->address_hi = upper_32_bits(msi_page->iova);
--	msg->address_lo &= cookie_msi_granule(domain->iova_cookie) - 1;
--	msg->address_lo += lower_32_bits(msi_page->iova);
-+		msg->address_hi = upper_32_bits(msi_iova);
-+		msg->address_lo = lower_32_bits(msi_iova) |
-+				  (msg->address_lo & ((1 << desc->iommu_msi_shift) - 1));
-+	}
-+#endif
- }
- 
- static int iommu_dma_init(void)
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 59a421fc42bf0..63d0e51f7a801 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -165,6 +165,10 @@ struct msi_desc_data {
-  * @dev:	Pointer to the device which uses this descriptor
-  * @msg:	The last set MSI message cached for reuse
-  * @affinity:	Optional pointer to a cpu affinity mask for this descriptor
-+ * @iommu_msi_iova: Optional shifted IOVA from the IOMMU to override the msi_addr.
-+ *                  Only used if iommu_msi_shift != 0
-+ * @iommu_msi_shift: Indicates how many bits of the original address should be
-+ *                   preserved when using iommu_msi_iova.
-  * @sysfs_attr:	Pointer to sysfs device attribute
-  *
-  * @write_msi_msg:	Callback that may be called when the MSI message
-@@ -183,7 +187,8 @@ struct msi_desc {
- 	struct msi_msg			msg;
- 	struct irq_affinity_desc	*affinity;
- #ifdef CONFIG_IRQ_MSI_IOMMU
--	const void			*iommu_cookie;
-+	u64				iommu_msi_iova : 58;
-+	u64				iommu_msi_shift : 6;
- #endif
- #ifdef CONFIG_SYSFS
- 	struct device_attribute		*sysfs_attrs;
-@@ -284,28 +289,14 @@ struct msi_desc *msi_next_desc(struct device *dev, unsigned int domid,
- 
- #define msi_desc_to_dev(desc)		((desc)->dev)
- 
--#ifdef CONFIG_IRQ_MSI_IOMMU
--static inline const void *msi_desc_get_iommu_cookie(struct msi_desc *desc)
--{
--	return desc->iommu_cookie;
--}
--
--static inline void msi_desc_set_iommu_cookie(struct msi_desc *desc,
--					     const void *iommu_cookie)
--{
--	desc->iommu_cookie = iommu_cookie;
--}
--#else
--static inline const void *msi_desc_get_iommu_cookie(struct msi_desc *desc)
-+static inline void msi_desc_set_iommu_msi_iova(struct msi_desc *desc, u64 msi_iova,
-+					       unsigned int msi_shift)
- {
--	return NULL;
--}
--
--static inline void msi_desc_set_iommu_cookie(struct msi_desc *desc,
--					     const void *iommu_cookie)
--{
--}
-+#ifdef CONFIG_IRQ_MSI_IOMMU
-+	desc->iommu_msi_iova = msi_iova >> msi_shift;
-+	desc->iommu_msi_shift = msi_shift;
- #endif
-+}
- 
- int msi_domain_insert_msi_desc(struct device *dev, unsigned int domid,
- 			       struct msi_desc *init_desc);
+diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
+index 73e5c63aeec87..d36520c6272dd 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
++++ b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
+@@ -2855,10 +2855,6 @@ static bool mt8188_is_volatile_reg(struct device *dev, unsigned int reg)
+ 	case AFE_DMIC3_SRC_DEBUG_MON0:
+ 	case AFE_DMIC3_UL_SRC_MON0:
+ 	case AFE_DMIC3_UL_SRC_MON1:
+-	case DMIC_GAIN1_CUR:
+-	case DMIC_GAIN2_CUR:
+-	case DMIC_GAIN3_CUR:
+-	case DMIC_GAIN4_CUR:
+ 	case ETDM_IN1_MONITOR:
+ 	case ETDM_IN2_MONITOR:
+ 	case ETDM_OUT1_MONITOR:
 -- 
 2.39.5
 
