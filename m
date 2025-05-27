@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-146857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969CDAC5564
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74C5AC5843
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 956F28A2F9C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:05:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40B247A657E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6377E2798E6;
-	Tue, 27 May 2025 17:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9949A27D786;
+	Tue, 27 May 2025 17:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9rJ9uRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1j+vcdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2BE2110E;
-	Tue, 27 May 2025 17:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C1A1D63EF;
+	Tue, 27 May 2025 17:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365523; cv=none; b=aHX+GD6y6qsidY7NWDtq/fafO4jSdiIUXlLgpmmiHoxzScQenzME4icO3DRjeUJXh+TRun2nWaUZk7/pqBnO9Olu/saNKoB6p2u4ZnLFAG2ua9ClDFaFcuvM0f5S/DgFwH+rECPVttF7ns91DIICTQvy6+zin0mW1QHIvbYQFVw=
+	t=1748367788; cv=none; b=GXcqBN3mfxrPWgUoTgOF+sPzd55QiqbSzCOpOTQ3xHeUEH5IqbWgfmi20Z9VorZBQAx1JZJtOaJPy+TYTCvPHr54Sy44ZsJaWen7D9CnfEjt3bseZ4j/skS+i2WWyPdKGjeFNxM8cLFjsqsBpukGwkHn2AZkwmvTU85SwrN1mY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365523; c=relaxed/simple;
-	bh=goBn1PJOMLuUQGE7nffSjHQ9Onrd5OIiuo2efF95M8I=;
+	s=arc-20240116; t=1748367788; c=relaxed/simple;
+	bh=VOmh2smeaZCVlAH8M/nKicoFifVVewWPWiOACmoNFeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRWLf4o5y8H8Ui0HNiOU3JKJtkTei+UYpj9rbvdBSNcQrJUM0cymLKr9zdnCoNlXEij35W4l7Mgcbi2dFDlFfhvKyVug6FMKXvnpx8x6RGOlVYZD9CchbFq6l+SkCWRUjfwXrVmbs70PqG5jk3at2e1n+/okk6DOcQvCPAZDkz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9rJ9uRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA0CC4CEE9;
-	Tue, 27 May 2025 17:05:22 +0000 (UTC)
+	 MIME-Version; b=q4ysTmI+C/7B2MhLpfpm+vyO7UtNWZblVPzpay6BdqpwRb09EEXkk31LURFYIt5vGv1uNWa1mzWqkQwAHI7xOeNoAf7eIx2VQCh1H5TQItm/4nqwnSQgIUhm/Tyz+5+pec4v0yLjLS68QJHUpe/3fsVXP1WrloGRteIUwGXh1Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1j+vcdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A30C4CEE9;
+	Tue, 27 May 2025 17:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365523;
-	bh=goBn1PJOMLuUQGE7nffSjHQ9Onrd5OIiuo2efF95M8I=;
+	s=korg; t=1748367788;
+	bh=VOmh2smeaZCVlAH8M/nKicoFifVVewWPWiOACmoNFeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9rJ9uRWWbcY6ZrST47fGUZ3zh7rCVbWE+WhrMVBlWy1SU8jwmok6yb+mUMGFgCQl
-	 2HDGSG3zUa3zqU29e+X4vSBurPDAvqsXbkKQf+BtOfFnQNCsZ2FBw4UMNxdt7ftKov
-	 7TVkGbeytdgumqL/U6y8tMcvEOkN0pB85urZWM6o=
+	b=Z1j+vcdTJJYi+gLCP7kGNZjSc30OJAAW549Q8tuvS+EOlUxOxCki6gT+vqqXbsnc/
+	 JHJPS9fcMMr8ynoJEEQQwXViVma+Q8tJ0kN+zNumVb/grsbiuwq2Qi7YQ9sdi3m+Fn
+	 KuiZYxFZMNpha6mrl0YC/zmIlS2ISzBKEG9pg9gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 403/626] drm/amd/display/dm: drop hw_support check in amdgpu_dm_i2c_xfer()
+Subject: [PATCH 6.14 499/783] drm/amd/display: Populate register address for dentist for dcn401
 Date: Tue, 27 May 2025 18:24:56 +0200
-Message-ID: <20250527162501.393499590@linuxfoundation.org>
+Message-ID: <20250527162533.461650606@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dillon Varone <dillon.varone@amd.com>
 
-[ Upstream commit 33da70bd1e115d7d73f45fb1c09f5ecc448f3f13 ]
+[ Upstream commit 5f0d1ef6f16e150ee46cc00b8d233d9d271fe39e ]
 
-DC supports SW i2c as well.  Drop the check.
+[WHY&HOW]
+Address was not previously populated which can result in incorrect
+clock frequencies being read on boot.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c | 2 ++
+ drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h       | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 1e5984e71bfd7..09ef87c69230e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8288,7 +8288,7 @@ static int amdgpu_dm_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	int i;
- 	int result = -EIO;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
+index 8082bb8776114..a3b8e3d4a429e 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
+@@ -24,6 +24,8 @@
  
--	if (!ddc_service->ddc_pin || !ddc_service->ddc_pin->hw_info.hw_supported)
-+	if (!ddc_service->ddc_pin)
- 		return result;
+ #include "dml/dcn401/dcn401_fpu.h"
  
- 	cmd.payloads = kcalloc(num, sizeof(struct i2c_payload), GFP_KERNEL);
++#define DCN_BASE__INST0_SEG1                       0x000000C0
++
+ #define mmCLK01_CLK0_CLK_PLL_REQ                        0x16E37
+ #define mmCLK01_CLK0_CLK0_DFS_CNTL                      0x16E69
+ #define mmCLK01_CLK0_CLK1_DFS_CNTL                      0x16E6C
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
+index 7a1ca1e98059b..221645c023b50 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
+@@ -221,6 +221,7 @@ enum dentist_divider_range {
+ 	CLK_SF(CLK0_CLK_PLL_REQ, FbMult_frac, mask_sh)
+ 
+ #define CLK_REG_LIST_DCN401()	  \
++	SR(DENTIST_DISPCLK_CNTL), \
+ 	CLK_SR_DCN401(CLK0_CLK_PLL_REQ,   CLK01, 0), \
+ 	CLK_SR_DCN401(CLK0_CLK0_DFS_CNTL, CLK01, 0), \
+ 	CLK_SR_DCN401(CLK0_CLK1_DFS_CNTL,  CLK01, 0), \
 -- 
 2.39.5
 
