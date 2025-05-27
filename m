@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-147466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182C8AC57C7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF64CAC57A5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5A8C4A7E50
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:37:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F8FA8A3338
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E86280328;
-	Tue, 27 May 2025 17:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5D727FB10;
+	Tue, 27 May 2025 17:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iI3tMKVY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxYGd2b1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831CF28031C;
-	Tue, 27 May 2025 17:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA6C3C01;
+	Tue, 27 May 2025 17:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367427; cv=none; b=HncDr3BPURzT4kIbX1aZ+50n9NlfyW1Wpe1ehbUbfsFqZmImNR+z3TxnSJkN27wOSiYZykSVogCNXvCmrtTgrlqM52L6bt9DLTpN8PU9S6K1ffz+aTmaif03fGqjkf7GwLYL//uUHAzl6chIEE1UvzXZA5Cpjq5rQ5IxpnZtXTo=
+	t=1748367336; cv=none; b=nRUHYmws4Tgwt+RpO51K/yKQHvcHq55VxXWpqV65OVDMXTXSiuJ1Kg52M/fiB9dJU4PUu5yt+p4cE7BdekY3Eg5uPzX8Z8I8VXal0mWA1gs4P79il+qc8f79HJhEVqnzgG76Bb851xuGcFtn9HfDnhX027qybwi475W0XadwsRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367427; c=relaxed/simple;
-	bh=JRHGkeNF1//2w6QaglG4aT/31sR7eX2bUo2exR2tSqA=;
+	s=arc-20240116; t=1748367336; c=relaxed/simple;
+	bh=xvbZMLwc1jDX1Cu5rPVdg7yxxqY6lJp6W0BGaudPAcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfZtDi/VdKQqqm4OuxcXMNi1j2clVXhNPXyl+qKi7gXuAVo8NQClaZg2aYIREtHh0ESSs9b347gpNfR6+HBwQwL6c5RLGEzRdKolDC81BC5VUzMfUVw3elWxI91X7qziHPUtJCJV5g+sa1GCYXrLr1DXJBDTAjQg4ybsXY3eD7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iI3tMKVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5552C4CEE9;
-	Tue, 27 May 2025 17:37:06 +0000 (UTC)
+	 MIME-Version; b=tnEaU90xyjPO16Kmd5nEPoHY5+ssemfk2ZuZyNws3tZNbj3qmhOuDeCJp5+4NdksjoaVVLG/MIOQboGsQdmLg/4IqQkGwJQUmC+ptRDei5efhef+c0QIIA15BE4+ydPU0Vi7FpHgGIZ9fRbeh1fW8CFWT+6g5o0qHod9eEcAH5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxYGd2b1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D54CC4CEE9;
+	Tue, 27 May 2025 17:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367427;
-	bh=JRHGkeNF1//2w6QaglG4aT/31sR7eX2bUo2exR2tSqA=;
+	s=korg; t=1748367335;
+	bh=xvbZMLwc1jDX1Cu5rPVdg7yxxqY6lJp6W0BGaudPAcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iI3tMKVYI0n+1tYhcnqGT2Z74WFHlMBXAZQoF+jqPNU0l2YhavlIrTPzRftht15bz
-	 PjLB2/R3lFClMyFUgpTVJX2HMCM+IFNXo9Md5aB3cON1F0IuaX4uLPyZZtId8P//7D
-	 MJVodKAwawu/fQT2NLiXURrH09Rw9Kxlgr4o2L24=
+	b=KxYGd2b1GBGq4r1oqQKTlBfqVDnI4YzfrKiNWj39FwFITih0sZwEl+c6pDdgRZxRn
+	 Ah3MBLt0IIdP1IIjTnJAxQN6cGeak7e8BKwIFUdZpqIJFdrW3umUrSP2x7ZkFr9Q/f
+	 puCERGWGBpLrO0U+RMopUIYffYFqTVmjYHSlDgs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Navid Assadian <Navid.Assadian@amd.com>,
 	Samson Tam <Samson.Tam@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 354/783] drm/amd/display: Add opp recout adjustment
-Date: Tue, 27 May 2025 18:22:31 +0200
-Message-ID: <20250527162527.485384623@linuxfoundation.org>
+Subject: [PATCH 6.14 355/783] drm/amd/display: Fix mismatch type comparison in custom_float
+Date: Tue, 27 May 2025 18:22:32 +0200
+Message-ID: <20250527162527.526947188@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -68,128 +68,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Navid Assadian <Navid.Assadian@amd.com>
+From: Samson Tam <Samson.Tam@amd.com>
 
-[ Upstream commit fba4d19f3731483ee8565f9e9bb7ed9fc89479e8 ]
+[ Upstream commit 86f06bcbb54e93f3c7b5e22ae37e72882b74c4b0 ]
 
-[Why]
-For subsampled YUV output formats, more pixels can get fetched and be
-used for scaling.
+[Why & How]
+Passing uint into uchar function param.  Pass uint instead
 
-[How]
-Add the adjustment to the calculated recout, so the viewport covers the
-corresponding pixels on the source plane.
-
-Signed-off-by: Navid Assadian <Navid.Assadian@amd.com>
-Reviewed-by: Samson Tam <Samson.Tam@amd.com>
+Signed-off-by: Samson Tam <Samson.Tam@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/spl/dc_spl.c   | 31 +++++++++++++++----
- .../gpu/drm/amd/display/dc/spl/dc_spl_types.h | 10 ++++++
- 2 files changed, 35 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c b/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
-index 22602f088553d..153b7a8904e1e 100644
---- a/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
-+++ b/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
-@@ -76,6 +76,21 @@ static struct spl_rect shift_rec(const struct spl_rect *rec_in, int x, int y)
- 	return rec_out;
- }
- 
-+static void spl_opp_adjust_rect(struct spl_rect *rec, const struct spl_opp_adjust *adjust)
-+{
-+	if ((rec->x + adjust->x) >= 0)
-+		rec->x += adjust->x;
-+
-+	if ((rec->y + adjust->y) >= 0)
-+		rec->y += adjust->y;
-+
-+	if ((rec->width + adjust->width) >= 1)
-+		rec->width += adjust->width;
-+
-+	if ((rec->height + adjust->height) >= 1)
-+		rec->height += adjust->height;
-+}
-+
- static struct spl_rect calculate_plane_rec_in_timing_active(
- 		struct spl_in *spl_in,
- 		const struct spl_rect *rec_in)
-@@ -723,13 +738,15 @@ static void spl_handle_3d_recout(struct spl_in *spl_in, struct spl_rect *recout)
- 	}
- }
- 
--static void spl_clamp_viewport(struct spl_rect *viewport)
-+static void spl_clamp_viewport(struct spl_rect *viewport, int min_viewport_size)
+diff --git a/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c b/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c
+index 131f1e3949d33..52d97918a3bd2 100644
+--- a/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c
++++ b/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c
+@@ -346,7 +346,7 @@ struct spl_fixed31_32 spl_fixpt_exp(struct spl_fixed31_32 arg)
+ 		if (m > 0)
+ 			return spl_fixpt_shl(
+ 				spl_fixed31_32_exp_from_taylor_series(r),
+-				(unsigned char)m);
++				(unsigned int)m);
+ 		else
+ 			return spl_fixpt_div_int(
+ 				spl_fixed31_32_exp_from_taylor_series(r),
+diff --git a/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h b/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h
+index ed2647f9a0999..9f349ffe91485 100644
+--- a/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h
++++ b/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h
+@@ -189,7 +189,7 @@ static inline struct spl_fixed31_32 spl_fixpt_clamp(
+  * @brief
+  * result = arg << shift
+  */
+-static inline struct spl_fixed31_32 spl_fixpt_shl(struct spl_fixed31_32 arg, unsigned char shift)
++static inline struct spl_fixed31_32 spl_fixpt_shl(struct spl_fixed31_32 arg, unsigned int shift)
  {
-+	if (min_viewport_size == 0)
-+		min_viewport_size = MIN_VIEWPORT_SIZE;
- 	/* Clamp minimum viewport size */
--	if (viewport->height < MIN_VIEWPORT_SIZE)
--		viewport->height = MIN_VIEWPORT_SIZE;
--	if (viewport->width < MIN_VIEWPORT_SIZE)
--		viewport->width = MIN_VIEWPORT_SIZE;
-+	if (viewport->height < min_viewport_size)
-+		viewport->height = min_viewport_size;
-+	if (viewport->width < min_viewport_size)
-+		viewport->width = min_viewport_size;
- }
+ 	SPL_ASSERT(((arg.value >= 0) && (arg.value <= LLONG_MAX >> shift)) ||
+ 		((arg.value < 0) && (arg.value >= ~(LLONG_MAX >> shift))));
+@@ -203,7 +203,7 @@ static inline struct spl_fixed31_32 spl_fixpt_shl(struct spl_fixed31_32 arg, uns
+  * @brief
+  * result = arg >> shift
+  */
+-static inline struct spl_fixed31_32 spl_fixpt_shr(struct spl_fixed31_32 arg, unsigned char shift)
++static inline struct spl_fixed31_32 spl_fixpt_shr(struct spl_fixed31_32 arg, unsigned int shift)
+ {
+ 	bool negative = arg.value < 0;
  
- static enum scl_mode spl_get_dscl_mode(const struct spl_in *spl_in,
-@@ -1800,6 +1817,8 @@ static bool spl_calculate_number_of_taps(struct spl_in *spl_in, struct spl_scrat
- 	spl_calculate_recout(spl_in, spl_scratch, spl_out);
- 	/* depends on pixel format */
- 	spl_calculate_scaling_ratios(spl_in, spl_scratch, spl_out);
-+	/* Adjust recout for opp if needed */
-+	spl_opp_adjust_rect(&spl_scratch->scl_data.recout, &spl_in->basic_in.opp_recout_adjust);
- 	/* depends on scaling ratios and recout, does not calculate offset yet */
- 	spl_calculate_viewport_size(spl_in, spl_scratch);
- 
-@@ -1836,7 +1855,7 @@ bool spl_calculate_scaler_params(struct spl_in *spl_in, struct spl_out *spl_out)
- 	// Handle 3d recout
- 	spl_handle_3d_recout(spl_in, &spl_scratch.scl_data.recout);
- 	// Clamp
--	spl_clamp_viewport(&spl_scratch.scl_data.viewport);
-+	spl_clamp_viewport(&spl_scratch.scl_data.viewport, spl_in->min_viewport_size);
- 
- 	// Save all calculated parameters in dscl_prog_data structure to program hw registers
- 	spl_set_dscl_prog_data(spl_in, &spl_scratch, spl_out, enable_easf_v, enable_easf_h, enable_isharp);
-diff --git a/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h b/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
-index 5d139cf51e89b..1c3949b24611f 100644
---- a/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
-@@ -427,6 +427,14 @@ struct spl_out	{
- 
- // SPL inputs
- 
-+// opp extra adjustment for rect
-+struct spl_opp_adjust {
-+	int x;
-+	int y;
-+	int width;
-+	int height;
-+};
-+
- // Basic input information
- struct basic_in	{
- 	enum spl_pixel_format format; // Pixel Format
-@@ -444,6 +452,7 @@ struct basic_in	{
- 		} num_slices_recout_width;
- 	} num_h_slices_recout_width_align;
- 	int mpc_h_slice_index; // previous mpc_combine_v - split_idx
-+	struct spl_opp_adjust opp_recout_adjust;
- 	// Inputs for adaptive scaler - TODO
- 	enum spl_transfer_func_type tf_type; /* Transfer function type */
- 	enum spl_transfer_func_predefined tf_predefined_type; /* Transfer function predefined type */
-@@ -535,6 +544,7 @@ struct spl_in	{
- 	bool is_hdr_on;
- 	int h_active;
- 	int v_active;
-+	int min_viewport_size;
- 	int sdr_white_level_nits;
- 	enum sharpen_policy sharpen_policy;
- };
 -- 
 2.39.5
 
