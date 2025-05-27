@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03DBAC56FF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:28:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9DAAC53AB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A75A21672A9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 897F44A1AD0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BE027FD49;
-	Tue, 27 May 2025 17:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A8627FD67;
+	Tue, 27 May 2025 16:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qC8rgBtn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2nb4ImX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FB21DB34C;
-	Tue, 27 May 2025 17:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5134427FD61;
+	Tue, 27 May 2025 16:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366867; cv=none; b=WelR9fXm/+OKFIGsVyAuHaCFHah8KXFLE07GZX8JVCnWkmarqhPrNIErDwQTKubNEP1kpyybrPWUy6ZnCMzcQr5DmIbjaRGchH1A8l7YQ39aN7zGaMR7BcyPeCfyR6qupI435CO55lwgHMwDQuIt454Wc0qgunsStESZgablMNo=
+	t=1748364601; cv=none; b=LqobUDC7uJ5e0q0URoQW3cSvfIRdLQhWrw3N99tbn1hvJGY2rpQ/BDgrYGc7qrwc3aq23x6ODjcTt7msT1J/WBSha7T1fdJSl2vDmLES0RAxD1KR6nHCqYoVqB+vWaLAezUZ6+n0KXo+IIQd4H6pwPO8e09qf1hNqBY5SL0E5g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366867; c=relaxed/simple;
-	bh=e8lnrbpW7QxsIJJt5vE1N7ydSyvNBJq/yGDIb/9kaSQ=;
+	s=arc-20240116; t=1748364601; c=relaxed/simple;
+	bh=eFA+52L/vzNKsLosllhZKcCOfubx7m61c8WC9p0n7G4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Le/9t2u8TWqUmDzjKW9MqSKZjMnnDvTx5wQ2tvMC8GfXmHm/NOzWZXBqMv/icGChziWN2S7K9SFTJxHT11P94rtR8TrXrU2tH2mIzNkaEqKMSDU7DltTHFCNyGPxrVM3x60eZWk9lpAJSmugdUOtKi6KrVas0BqMkndVGAT/gI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qC8rgBtn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6ECC4CEE9;
-	Tue, 27 May 2025 17:27:46 +0000 (UTC)
+	 MIME-Version; b=OmPpEPZLqIlS5Pw72oBlf2Ycg2mdNjAm24SIaSz52jtD0w0job8qCx8VHI+uhMKudJ5DAJhvYAWlrhlL9IS2dcwivhegZuycTRZCWBq/Yu4N7DdqYZOzYC4Gbt9XzOG0xyKEb28AhqE4QNBMEiQddPYbc4UAfaBcX/3k6edxEvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2nb4ImX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559BDC4CEE9;
+	Tue, 27 May 2025 16:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366866;
-	bh=e8lnrbpW7QxsIJJt5vE1N7ydSyvNBJq/yGDIb/9kaSQ=;
+	s=korg; t=1748364598;
+	bh=eFA+52L/vzNKsLosllhZKcCOfubx7m61c8WC9p0n7G4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qC8rgBtnYigRl5WgH7HRthOdut4crnAvNDXG5UJ6tTgQ7vOvppn/tNuPmF6uAmuky
-	 TgKdsrxPtd5qzKsXgat4j1lvYKD0Fh2ODGfDlOlqBvqffwfhXKgqAMGLjZb0hWtAyv
-	 zS8DlBHWasnH6PpF8Y2EF1Edlt8GNHZodIcF95J8=
+	b=T2nb4ImXNO58b2tsHTzXaVnW27t25vqhuJCqXVkpA0WYHRHvc5MKcEvvxp9z8PHls
+	 D28i7tCBJyjHZAPXfIf15IYE8Qr7Eo5S4hHBvqAqPVjYQpyTqNSW3rGE6ToLRXD87x
+	 M+TX/Gq8PtNDpPqjqoXV42P9Q4QGsevbG/JZcajo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ching-Te Ku <ku920601@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Quan Zhou <quan.zhou@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 202/783] wifi: rtw89: coex: Fix coexistence report not show as expected
+Subject: [PATCH 6.12 106/626] wifi: mt76: mt7925: fix fails to enter low power mode in suspend state
 Date: Tue, 27 May 2025 18:19:59 +0200
-Message-ID: <20250527162521.372412465@linuxfoundation.org>
+Message-ID: <20250527162449.350348931@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ching-Te Ku <ku920601@realtek.com>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-[ Upstream commit a36230aa5f5efceaf5f81682673732a921b91518 ]
+[ Upstream commit 2d5630b0c9466ac6549495828aa7dce7424a272a ]
 
-This report will feedback some basic information from firmware(PTA counter,
-report counter, mailbox counter etc). And the report version need to match
-driver & firmware both side. The original logic break the switch case logic
-before driver update the report version. It made the report can not be
-parsed correctly. Delete the break at the version 7 and 8.
-Add logic to count C2H event report.
+The mt7925 sometimes fails to enter low power mode during suspend.
+This is caused by the chip firmware sending an additional ACK event
+to the host after processing the suspend command. Due to timing issues,
+this event may not reach the host, causing the chip to get stuck.
+To resolve this, the ACK flag in the suspend command is removed,
+as it is not needed in the MT7925 architecture. This prevents the
+firmware from sending the additional ACK event, ensuring the device
+can reliably enter low power mode during suspend.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250308025832.10400-3-pkshih@realtek.com
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Link: https://patch.msgid.link/d056938144a3a0336c3a4e3cec6f271899f32bf7.1736775666.git.quan.zhou@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 68316d44b2043..9e06cc36a75e2 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -1372,11 +1372,9 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
- 		} else if (ver->fcxbtcrpt == 8) {
- 			pfinfo = &pfwinfo->rpt_ctrl.finfo.v8;
- 			pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo.v8);
--			break;
- 		} else if (ver->fcxbtcrpt == 7) {
- 			pfinfo = &pfwinfo->rpt_ctrl.finfo.v7;
- 			pcinfo->req_len = sizeof(pfwinfo->rpt_ctrl.finfo.v7);
--			break;
- 		} else {
- 			goto err;
- 		}
-@@ -8115,6 +8113,7 @@ void rtw89_btc_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 		return;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 5b14bf434df36..2396e1795fe17 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3287,6 +3287,9 @@ int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 		else
+ 			uni_txd->option = MCU_CMD_UNI_EXT_ACK;
  
- 	func = rtw89_btc_c2h_get_index_by_ver(rtwdev, func);
-+	pfwinfo->cnt_c2h++;
++		if (cmd == MCU_UNI_CMD(HIF_CTRL))
++			uni_txd->option &= ~MCU_CMD_ACK;
++
+ 		goto exit;
+ 	}
  
- 	switch (func) {
- 	case BTF_EVNT_BUF_OVERFLOW:
 -- 
 2.39.5
 
