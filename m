@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-147576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5890DAC5844
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4C6AC54EB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F878188CE4A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C5667A1883
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E0427FB2A;
-	Tue, 27 May 2025 17:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340B72798E6;
+	Tue, 27 May 2025 17:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QobPtiCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAAtBAMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0208E1DC998;
-	Tue, 27 May 2025 17:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D7726868E;
+	Tue, 27 May 2025 17:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367770; cv=none; b=em5nTQX+aDkfLuqw/JeQS3QZzuYiok2EQobZYMM4NvT3WzI6ffAERG6/sayk/10eA2N2aO3fRay0uo+iO//iTy3E1OK8rTifogAYimPlrj9br5Jmx4dpRnma3LpV+jaAyqd9vkvYLOs1CkK7PsyfpAPa2wkQ3GK/wCUS8ad2C2A=
+	t=1748365512; cv=none; b=TehKOEQsZNQhyY/J1u2fNNvBAldx3od7th3Lcu4Sz8CAqRB0OZ8MB98rFD4RjzyRbun0S1K4kBHo0KjWUdPUDQbLIhq7RrByIGGHNfuzUV2nOzGuDows9m3Dw+eY3uf3wkD2Y8nR66v3nieWwhPxU6Uc+fkPNU4S5WnWPyVJWTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367770; c=relaxed/simple;
-	bh=KYsIAqcXBOhKklbRZWfPDZYhw8wRZ9gJwYkd4wvfhso=;
+	s=arc-20240116; t=1748365512; c=relaxed/simple;
+	bh=1LIDophlfmVZ0LIewFNxaVxUHLpexUnDNAoB6yUOmeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdrSApEExnlz1coSVm3LM/OjhcyMOACCL1i8fjqICmGS5Fjza7jFYN03Jf+k1jUSnycU3Tn/opWLXpvlswevEek/soF2Ap2mPo6qc33Qd5xQxpAP7Ci/K3alZFLx+RyHyt9mJQlWCO2tzbI4EfOsmK/FkY//7YpuaXlDPpQsi+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QobPtiCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008A1C4CEE9;
-	Tue, 27 May 2025 17:42:48 +0000 (UTC)
+	 MIME-Version; b=lP1DrNwhtHatdQV3dPyJbRA9NnrKRxSz22JAPV1sawKNWkiWKwV9Do3Xx3LFfmgskmZa9oFnTqMlwNuEkA/psbGbHIcYMil8RpeIGHrQSVlFKW5CtCRXlYvP5lzm5WL6eYx3W6kBB+j75ZrhGR3l79QYzglvNBDsJvX+KH8af3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAAtBAMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BC9C4CEF3;
+	Tue, 27 May 2025 17:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367769;
-	bh=KYsIAqcXBOhKklbRZWfPDZYhw8wRZ9gJwYkd4wvfhso=;
+	s=korg; t=1748365510;
+	bh=1LIDophlfmVZ0LIewFNxaVxUHLpexUnDNAoB6yUOmeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QobPtiCVtf4KDmAwk7VXwpVq0+QKJu55ghkFGCDwdd9aphHW0ALdLTBSanTahS10t
-	 ATt+wme9/Vn+foA0YcJdhho4qMUkV7nA9s6RfvU2nSdBhVhwxrRfzfjxO9pOCEPSUQ
-	 06LU1wehOdgG533dKDYrYLxmNpY7w9qr+nBwS7ko=
+	b=wAAtBAMT3DrHfpbhZ8vXu0CCy69K8sFN5BbbwuTJARNUPlJYbzIU2vBS5AivwODKf
+	 k7N+NKMSPTPxsBf2EjnDke3iIsIK236W9nAsjjBovbq9d39EHP/028TsO2bTz46Bjk
+	 fwHMl2NhVmUVriT2Z0AhoQDrSLukeg6YxtxL6wO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Skvortsov <victor.skvortsov@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Austin Zheng <Austin.Zheng@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 494/783] drm/amdgpu: Skip err_count sysfs creation on VF unsupported RAS blocks
-Date: Tue, 27 May 2025 18:24:51 +0200
-Message-ID: <20250527162533.242910734@linuxfoundation.org>
+Subject: [PATCH 6.12 399/626] drm/amd/display: Use Nominal vBlank If Provided Instead Of Capping It
+Date: Tue, 27 May 2025 18:24:52 +0200
+Message-ID: <20250527162501.232004596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Skvortsov <victor.skvortsov@amd.com>
+From: Austin Zheng <Austin.Zheng@amd.com>
 
-[ Upstream commit 04893397766a2b2f1bc7fe5c6414e4c0846ed171 ]
+[ Upstream commit 41df56b1fc24cc36fffb10e437385b3a49fbb5e2 ]
 
-VFs are not able to query error counts for all RAS blocks. Rather than
-returning error for queries on these blocks, skip sysfs the creation
-all together.
+[Why/How]
+vBlank used to determine the max vStartup is based on the smallest between
+the vblank provided by the timing and vblank in ip_caps.
+Extra vblank time is not considered if the vblank provided by the timing ends
+up being higher than what's defined by the ip_caps
 
-Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Use 1 less than the vblank size in case the timing is interlaced
+so vstartup will always be less than vblank_nom.
+
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c  |  3 +++
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 17 ++++++++++++++++-
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h |  2 ++
- 3 files changed, 21 insertions(+), 1 deletion(-)
+ .../dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c       | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index f0924aa3f4e48..0c338dcdde48a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -1864,6 +1864,9 @@ int amdgpu_ras_sysfs_create(struct amdgpu_device *adev,
- 	if (!obj || obj->attr_inuse)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+index e2a3764d9d181..0090b7bc232bf 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+@@ -3630,13 +3630,12 @@ static unsigned int CalculateMaxVStartup(
+ 	double line_time_us = (double)timing->h_total / ((double)timing->pixel_clock_khz / 1000);
+ 	unsigned int vblank_actual = timing->v_total - timing->v_active;
+ 	unsigned int vblank_nom_default_in_line = (unsigned int)math_floor2((double)vblank_nom_default_us / line_time_us, 1.0);
+-	unsigned int vblank_nom_input = (unsigned int)math_min2(timing->vblank_nom, vblank_nom_default_in_line);
+-	unsigned int vblank_avail = (vblank_nom_input == 0) ? vblank_nom_default_in_line : vblank_nom_input;
++	unsigned int vblank_avail = (timing->vblank_nom == 0) ? vblank_nom_default_in_line : (unsigned int)timing->vblank_nom;
  
-+	if (amdgpu_sriov_vf(adev) && !amdgpu_virt_ras_telemetry_block_en(adev, head->block))
-+		return 0;
-+
- 	get_obj(obj);
+ 	vblank_size = (unsigned int)math_min2(vblank_actual, vblank_avail);
  
- 	snprintf(obj->fs_data.sysfs_name, sizeof(obj->fs_data.sysfs_name),
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 13e5709ea1caa..e6f0152e5b087 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -1247,7 +1247,8 @@ amdgpu_ras_block_to_sriov(struct amdgpu_device *adev, enum amdgpu_ras_block bloc
- 	case AMDGPU_RAS_BLOCK__MPIO:
- 		return RAS_TELEMETRY_GPU_BLOCK_MPIO;
- 	default:
--		dev_err(adev->dev, "Unsupported SRIOV RAS telemetry block 0x%x\n", block);
-+		DRM_WARN_ONCE("Unsupported SRIOV RAS telemetry block 0x%x\n",
-+			      block);
- 		return RAS_TELEMETRY_GPU_BLOCK_COUNT;
- 	}
- }
-@@ -1332,3 +1333,17 @@ int amdgpu_virt_ras_telemetry_post_reset(struct amdgpu_device *adev)
- 
- 	return 0;
- }
-+
-+bool amdgpu_virt_ras_telemetry_block_en(struct amdgpu_device *adev,
-+					enum amdgpu_ras_block block)
-+{
-+	enum amd_sriov_ras_telemetry_gpu_block sriov_block;
-+
-+	sriov_block = amdgpu_ras_block_to_sriov(adev, block);
-+
-+	if (sriov_block >= RAS_TELEMETRY_GPU_BLOCK_COUNT ||
-+	    !amdgpu_sriov_ras_telemetry_block_en(adev, sriov_block))
-+		return false;
-+
-+	return true;
-+}
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-index 0ca73343a7689..0f3ccae5c1ab3 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
-@@ -407,4 +407,6 @@ bool amdgpu_virt_get_ras_capability(struct amdgpu_device *adev);
- int amdgpu_virt_req_ras_err_count(struct amdgpu_device *adev, enum amdgpu_ras_block block,
- 				  struct ras_err_data *err_data);
- int amdgpu_virt_ras_telemetry_post_reset(struct amdgpu_device *adev);
-+bool amdgpu_virt_ras_telemetry_block_en(struct amdgpu_device *adev,
-+					enum amdgpu_ras_block block);
- #endif
+ 	if (timing->interlaced && !ptoi_supported)
+-		max_vstartup_lines = (unsigned int)(math_floor2(vblank_size / 2.0, 1.0));
++		max_vstartup_lines = (unsigned int)(math_floor2((vblank_size - 1) / 2.0, 1.0));
+ 	else
+ 		max_vstartup_lines = vblank_size - (unsigned int)math_max2(1.0, math_ceil2(write_back_delay_us / line_time_us, 1.0));
+ #ifdef __DML_VBA_DEBUG__
 -- 
 2.39.5
 
