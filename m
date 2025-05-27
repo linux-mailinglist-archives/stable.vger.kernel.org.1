@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-147782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D78AC5924
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3AAAC55E6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C521E7B114D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C6A1BA6CFD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EAE28001E;
-	Tue, 27 May 2025 17:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030FE27FB0C;
+	Tue, 27 May 2025 17:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOw9yPAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FI3RUww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D3F27FD4C;
-	Tue, 27 May 2025 17:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25F31DB34C;
+	Tue, 27 May 2025 17:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368413; cv=none; b=RFdYnKoEvrNaASqbvWIDqMQRBvP2DI39zMa1SPpPRPCJFcQTLjj/Ip4xcKl4PAEScqmK21BfZU1MLtHQ+KYFIYq2G0+8qLYYzqyrNlWkmeLbal64qdA1IVChoGFlvYn1p+pNQNslWRjrAL6qHcWV9qkn50EKiXxncvTd9iVKYU4=
+	t=1748366136; cv=none; b=ABLUdQFFWlUDFdzj+waiqz84sm6k7sGy4XDflc9oOF77t19L5Udv/6CHVXCXU7X7n+StC8cdTdl8U+E3ogaxEtqaobH17mqz5WKmcdcV2+fn5MihrVUTAIWAthrJBi2vM6QYjhD5NfXRoJYNRDxc74Pd9IzVShQ0DKLlMlVHLqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368413; c=relaxed/simple;
-	bh=xecrItgpbKNYmFkjpe9703fPY7bPU7LNPLcga9/QSQM=;
+	s=arc-20240116; t=1748366136; c=relaxed/simple;
+	bh=JnRXje7R08+FhEoRZ0hmjCnFzKA6Nhfs/a+A0c1956M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrfZG//VgTgaSLA1pbZbBvZl5jA3VrNYRizljq3bX7V/OwtFPoc7HOgt+ghrKd4WOkYUrkuQWuHu7Y9DBh7nOQAjpLRidrF17KEiOcV++CWo1rWGFRxci1Ymhy/TND+x4QbV7rdNDyW+MWCNqASqwq9utc/HX63/JCeCWXMAUBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOw9yPAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144E5C4CEE9;
-	Tue, 27 May 2025 17:53:31 +0000 (UTC)
+	 MIME-Version; b=JjNLr205fQYop9nTVWwhIvPW//n4iCl45hY3F+SHO/75yt/ooRgPrAhKOJucSH4Yih6rn/jYz/TCcOWJVE2eVfAC6nS44/wKFytE2xuXgCx8PmhEBbVFHhMWHktw385m/amvX1oTtDu0P8nS0qr+nKIbECjV69ogRi23E/AUbk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FI3RUww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB9FC4CEE9;
+	Tue, 27 May 2025 17:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368412;
-	bh=xecrItgpbKNYmFkjpe9703fPY7bPU7LNPLcga9/QSQM=;
+	s=korg; t=1748366135;
+	bh=JnRXje7R08+FhEoRZ0hmjCnFzKA6Nhfs/a+A0c1956M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOw9yPAj04pDCVAol+uqk2/OiqmQ352olDRum/JogVlaOKUFT1Y3SDSjZj0cneFzQ
-	 keNfWic0SC/da2rRgCtLKzgq0CDQGE6eAwwL2EOlO9T8PDn1al18rkeaIlUSyizNcs
-	 qBtkvcuGzZ2yL00aiwIAB0Q4pzZDBybz3ArRtn28=
+	b=2FI3RUwwdkJLbdT2ALjJBgKMEZiqUzkWAzxN4bFDAQqz8z9rUEHkb7Bkt1z4O8KHS
+	 wIVPANNFCBdBSzCG2BgPI4SoQU/2EvNH8PrS3u9mEL6Rve8whkUc2IJ3ZROHZOoPlf
+	 3+fcGqpyvB2M14F0JGdirTt//O1LL2Fhao25NBiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 698/783] Bluetooth: L2CAP: Fix not checking l2cap_chan security level
+	Kees Cook <kees@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	"Erhard F." <erhard_f@mailbox.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 602/626] mm: vmalloc: only zero-init on vrealloc shrink
 Date: Tue, 27 May 2025 18:28:15 +0200
-Message-ID: <20250527162541.549109423@linuxfoundation.org>
+Message-ID: <20250527162509.456156582@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +67,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 7af8479d9eb4319b4ba7b47a8c4d2c55af1c31e1 ]
+commit 70d1eb031a68cbde4eed8099674be21778441c94 upstream.
 
-l2cap_check_enc_key_size shall check the security level of the
-l2cap_chan rather than the hci_conn since for incoming connection
-request that may be different as hci_conn may already been
-encrypted using a different security level.
+The common case is to grow reallocations, and since init_on_alloc will
+have already zeroed the whole allocation, we only need to zero when
+shrinking the allocation.
 
-Fixes: 522e9ed157e3 ("Bluetooth: l2cap: Check encryption key size on incoming connection")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250515214217.619685-2-kees@kernel.org
+Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc() sizing")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Tested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Cc: "Erhard F." <erhard_f@mailbox.org>
+Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ mm/vmalloc.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index c219a8c596d3e..66fa5d6fea6ca 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -1411,7 +1411,8 @@ static void l2cap_request_info(struct l2cap_conn *conn)
- 		       sizeof(req), &req);
- }
- 
--static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
-+static bool l2cap_check_enc_key_size(struct hci_conn *hcon,
-+				     struct l2cap_chan *chan)
- {
- 	/* The minimum encryption key size needs to be enforced by the
- 	 * host stack before establishing any L2CAP connections. The
-@@ -1425,7 +1426,7 @@ static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
- 	int min_key_size = hcon->hdev->min_enc_key_size;
- 
- 	/* On FIPS security level, key size must be 16 bytes */
--	if (hcon->sec_level == BT_SECURITY_FIPS)
-+	if (chan->sec_level == BT_SECURITY_FIPS)
- 		min_key_size = 16;
- 
- 	return (!test_bit(HCI_CONN_ENCRYPT, &hcon->flags) ||
-@@ -1453,7 +1454,7 @@ static void l2cap_do_start(struct l2cap_chan *chan)
- 	    !__l2cap_no_conn_pending(chan))
- 		return;
- 
--	if (l2cap_check_enc_key_size(conn->hcon))
-+	if (l2cap_check_enc_key_size(conn->hcon, chan))
- 		l2cap_start_connection(chan);
- 	else
- 		__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
-@@ -1528,7 +1529,7 @@ static void l2cap_conn_start(struct l2cap_conn *conn)
- 				continue;
- 			}
- 
--			if (l2cap_check_enc_key_size(conn->hcon))
-+			if (l2cap_check_enc_key_size(conn->hcon, chan))
- 				l2cap_start_connection(chan);
- 			else
- 				l2cap_chan_close(chan, ECONNREFUSED);
-@@ -3957,7 +3958,7 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
- 	/* Check if the ACL is secure enough (if not SDP) */
- 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
- 	    (!hci_conn_check_link_mode(conn->hcon) ||
--	    !l2cap_check_enc_key_size(conn->hcon))) {
-+	    !l2cap_check_enc_key_size(conn->hcon, pchan))) {
- 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
- 		result = L2CAP_CR_SEC_BLOCK;
- 		goto response;
-@@ -7317,7 +7318,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
- 		}
- 
- 		if (chan->state == BT_CONNECT) {
--			if (!status && l2cap_check_enc_key_size(hcon))
-+			if (!status && l2cap_check_enc_key_size(hcon, chan))
- 				l2cap_start_connection(chan);
- 			else
- 				__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
-@@ -7327,7 +7328,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
- 			struct l2cap_conn_rsp rsp;
- 			__u16 res, stat;
- 
--			if (!status && l2cap_check_enc_key_size(hcon)) {
-+			if (!status && l2cap_check_enc_key_size(hcon, chan)) {
- 				if (test_bit(FLAG_DEFER_SETUP, &chan->flags)) {
- 					res = L2CAP_CR_PEND;
- 					stat = L2CAP_CS_AUTHOR_PEND;
--- 
-2.39.5
-
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4097,8 +4097,8 @@ void *vrealloc_noprof(const void *p, siz
+ 	 * would be a good heuristic for when to shrink the vm_area?
+ 	 */
+ 	if (size <= old_size) {
+-		/* Zero out "freed" memory. */
+-		if (want_init_on_free())
++		/* Zero out "freed" memory, potentially for future realloc. */
++		if (want_init_on_free() || want_init_on_alloc(flags))
+ 			memset((void *)p + size, 0, old_size - size);
+ 		vm->requested_size = size;
+ 		kasan_poison_vmalloc(p + size, old_size - size);
+@@ -4111,9 +4111,11 @@ void *vrealloc_noprof(const void *p, siz
+ 	if (size <= alloced_size) {
+ 		kasan_unpoison_vmalloc(p + old_size, size - old_size,
+ 				       KASAN_VMALLOC_PROT_NORMAL);
+-		/* Zero out "alloced" memory. */
+-		if (want_init_on_alloc(flags))
+-			memset((void *)p + old_size, 0, size - old_size);
++		/*
++		 * No need to zero memory here, as unused memory will have
++		 * already been zeroed at initial allocation time or during
++		 * realloc shrink time.
++		 */
+ 		vm->requested_size = size;
+ 		return (void *)p;
+ 	}
 
 
 
