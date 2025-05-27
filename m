@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-146902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE78AC5522
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E9FAC5877
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1C0F1BA18AD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:08:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD25B1BC24A6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D40227A929;
-	Tue, 27 May 2025 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FCF1E25E3;
+	Tue, 27 May 2025 17:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4BTdsmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8xxiIEZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B58D13A244;
-	Tue, 27 May 2025 17:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071C61FB3;
+	Tue, 27 May 2025 17:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365663; cv=none; b=jpAt+HjY+FeW79l5PT7c2/W6I0CF/uhN9oc6TQF4sIdGoxJT6WMgxaxmFlTfb+FYB2mEAK60Guow2XWW3hmPJRjvR4C55E+nAExYCKJsHNE2TWilB/kPNe9BKCsaDohVOTSVUCTVHwYxgEqdoLEQBLs0y01lFOHge9HOxZP13T0=
+	t=1748367928; cv=none; b=AgvshryKA3x0FA4q/bAdJLI8XMzyt/LfIFvidyatLJljJ6r7eKo4GfBlSqHplo68yG80hNig4oQQQjQilQAL2G99ETQOIC75JUMJQA1eQLmVfN9QSWJ3cXr7hiuMENeqIS2EyGN2YfW6W6thayGzPW/HbePcgtk27BHyTrVW5tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365663; c=relaxed/simple;
-	bh=2Mh29vkrR1uorFccW+kPq+AY73l+fqgNqqM5gV+bVkM=;
+	s=arc-20240116; t=1748367928; c=relaxed/simple;
+	bh=9hD8ao917AwSfQbfxskg4JjCTyClP67iyZbXfryu3Ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sa6aluKkaGRU51zIxEzWFmecjuBzo1nOZ4zHHua1i8JvFFDK2myQnFPmBntYung0nB7Hf0y7Oi9oyGnE1se/TqAAdpIxaqm2hNbkVUPj2xiJw4+Rm0gp9CWr/qA0ICezt30MoDAcjm453U6+e5amFSzde+AVcPZ4z0aEMdR0M5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4BTdsmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCD0C4CEE9;
-	Tue, 27 May 2025 17:07:41 +0000 (UTC)
+	 MIME-Version; b=mIOebTQfcC1UIN8R2s1wuYvFTXBmZd+p9it6KBoGz2x+ZiGny9AkJrWMG94DwHR4J2IOx4+hHtstjHBmI7tnU1gqJyZJKcAI3eeC/42kFvJSnxUAnxTMI1HBoQVs20XVICEHHvr56qmYlkdhH4MRPVMpE4Fk/VXlpMIZTd57VM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8xxiIEZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E15C4CEEA;
+	Tue, 27 May 2025 17:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365661;
-	bh=2Mh29vkrR1uorFccW+kPq+AY73l+fqgNqqM5gV+bVkM=;
+	s=korg; t=1748367927;
+	bh=9hD8ao917AwSfQbfxskg4JjCTyClP67iyZbXfryu3Ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4BTdsmWlhRCTPeN4ZQMCceZnl9wbcji1AgJ+Ciou7fYY8iZTYLwCoNe2HaDoWTOm
-	 HRQEfWZ8Pb1PlIsoQFH4hv6CZVO4fbPMm1bRBEF64it8ghT/oYCEYJrpYPzYDUex6e
-	 t4AXBRZ97VagrXCPZAhsjoXkGZrCf//DuXRFSbRU=
+	b=u8xxiIEZ1fD/nPSsr4wUMFN9At5oZApLa/KsZ5KmWPWEfVuugIXJr+xgOL8CxTBB9
+	 8lIG69XFAIm9xX5lm6fekTkkGfpM7+1OyW/9L/Mmoce3HLCgMyhWWlq5z3fAYQsAlK
+	 xR4giu7/2kTlFH3uvTQaxu66DlKFcWrHVKIYnREk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 418/626] wifi: mac80211: set ieee80211_prep_tx_info::link_id upon Auth Rx
+Subject: [PATCH 6.14 514/783] wifi: ath12k: use arvif instead of link_conf in ath12k_mac_set_key()
 Date: Tue, 27 May 2025 18:25:11 +0200
-Message-ID: <20250527162501.995672926@linuxfoundation.org>
+Message-ID: <20250527162534.073682460@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 
-[ Upstream commit 8c60179b64434894eac1ffab7396bac131bc8b6e ]
+[ Upstream commit 00e4dc11695d48322780812b503314682659e98b ]
 
-This will be used by the low level driver.
-Note that link_id  will be 0 in case of a non-MLO authentication.
-Also fix a call-site of mgd_prepare_tx() where the link_id was not
-populated.
+Currently, in ath12k_mac_set_key(), if sta is not present, the address is
+retrieved from link_conf's bssid or addr member, depending on the interface
+type.
 
-Update the documentation to reflect the current state
-ieee80211_prep_tx_info::link_id is also available in mgd_complete_tx().
+When operating as an ML station and during shutdown, link_conf will not be
+available. This can result in the following error:
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.6a590f189ce5.I1fc5c0da26b143f5b07191eb592f01f7083d55ae@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+ath12k_pci 0004:01:00.0: unable to access bss link conf in set key for vif AA:BB:CC:DD:EE:FF link 1
+
+The primary purpose of accessing link_conf is to obtain the address for
+finding the peer. However, since arvif is always valid in this call, it can
+be used instead.
+
+Add change to use arvif instead of link_conf.
+
+A subsequent change will expose this issue but since tear down will give
+error, this is included first.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1.97421.5 # Nicolas Escande
+
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://patch.msgid.link/20250204-unlink_link_arvif_from_chanctx-v2-5-764fb5973c1a@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h    | 4 ++--
- net/mac80211/driver-ops.h | 3 ++-
- net/mac80211/mlme.c       | 4 +++-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 3b964f8834e71..fee854892bec5 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -7,7 +7,7 @@
-  * Copyright 2007-2010	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2025 Intel Corporation
-  */
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 9123ffab55b52..95ad9fefbdfcd 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4534,9 +4534,6 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
+ 			      struct ath12k_link_sta *arsta,
+ 			      struct ieee80211_key_conf *key)
+ {
+-	struct ath12k_vif *ahvif = arvif->ahvif;
+-	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
+-	struct ieee80211_bss_conf *link_conf;
+ 	struct ieee80211_sta *sta = NULL;
+ 	struct ath12k_base *ab = ar->ab;
+ 	struct ath12k_peer *peer;
+@@ -4553,19 +4550,10 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
+ 	if (test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags))
+ 		return 1;
  
- #ifndef MAC80211_H
-@@ -3803,7 +3803,7 @@ enum ieee80211_reconfig_type {
-  * @was_assoc: set if this call is due to deauth/disassoc
-  *	while just having been associated
-  * @link_id: the link id on which the frame will be TX'ed.
-- *	Only used with the mgd_prepare_tx() method.
-+ *	0 for a non-MLO connection.
-  */
- struct ieee80211_prep_tx_info {
- 	u16 duration;
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index a06644084d15d..d1c10f5f95160 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -2,7 +2,7 @@
- /*
- * Portions of this file
- * Copyright(c) 2016 Intel Deutschland GmbH
--* Copyright (C) 2018-2019, 2021-2024 Intel Corporation
-+* Copyright (C) 2018-2019, 2021-2025 Intel Corporation
- */
+-	link_conf = ath12k_mac_get_link_bss_conf(arvif);
+-	if (!link_conf) {
+-		ath12k_warn(ab, "unable to access bss link conf in set key for vif %pM link %u\n",
+-			    vif->addr, arvif->link_id);
+-		return -ENOLINK;
+-	}
+-
+ 	if (sta)
+ 		peer_addr = arsta->addr;
+-	else if (ahvif->vdev_type == WMI_VDEV_TYPE_STA)
+-		peer_addr = link_conf->bssid;
+ 	else
+-		peer_addr = link_conf->addr;
++		peer_addr = arvif->bssid;
  
- #ifndef __MAC80211_DRIVER_OPS
-@@ -955,6 +955,7 @@ static inline void drv_mgd_complete_tx(struct ieee80211_local *local,
- 		return;
- 	WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION);
+ 	key->hw_key_idx = key->keyidx;
  
-+	info->link_id = info->link_id < 0 ? 0 : info->link_id;
- 	trace_drv_mgd_complete_tx(local, sdata, info->duration,
- 				  info->subtype, info->success);
- 	if (local->ops->mgd_complete_tx)
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 6a23a24f7d794..8fa9b9dd46118 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -8,7 +8,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2025 Intel Corporation
-  */
- 
- #include <linux/delay.h>
-@@ -4307,6 +4307,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 	auth_transaction = le16_to_cpu(mgmt->u.auth.auth_transaction);
- 	status_code = le16_to_cpu(mgmt->u.auth.status_code);
- 
-+	info.link_id = ifmgd->auth_data->link_id;
-+
- 	if (auth_alg != ifmgd->auth_data->algorithm ||
- 	    (auth_alg != WLAN_AUTH_SAE &&
- 	     auth_transaction != ifmgd->auth_data->expected_transaction) ||
 -- 
 2.39.5
 
