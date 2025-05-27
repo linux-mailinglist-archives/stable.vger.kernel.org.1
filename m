@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C59AC5450
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:58:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3B9AC5765
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 185537B0004
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:54:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C9F1BA7673
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9489D283FD8;
-	Tue, 27 May 2025 16:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DC727F178;
+	Tue, 27 May 2025 17:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8gZeev2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tx2MoEXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5232F28032D;
-	Tue, 27 May 2025 16:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB1D1F8670;
+	Tue, 27 May 2025 17:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364892; cv=none; b=jo9TSvaLrQ14cpP6FDrxvLwJrVU6wXXHTU2oYMqPevK0EtREAGlZxTIMbQxrtn7l4mvx7+KTkwShvINK5iQOSZv1YjJtukSxE54hKR1qoGEIIHgjxAjWbAxyodfiMKU/o20j0LmyEfpZlRRl3tAlKlR4vGL5vVL1i07KSqaAP8c=
+	t=1748367151; cv=none; b=WVVBkYEuymswKblUV1YpJPflyYTSnlUx2XZBkyOQGFAlQwSNZMarSmKSLcProj8MAdgvO9UwRJydu0NWUQoJmeCdWzeRQP+C+a4fFkFGI/DAKh+RtBUNcg9l/zZ1UXfrykuElNWdAXKJLH/eRCa5n+u73ArsWsb4wwiz6tIMGZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364892; c=relaxed/simple;
-	bh=05fwvd+4kxO+KskQF62sYzuR6VZYYU9QGPRl/2ZGOYY=;
+	s=arc-20240116; t=1748367151; c=relaxed/simple;
+	bh=ILa4rh/jgooH7SjbwBuQmctbIl8YpIYaGUaN9pCczv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEGjSdPb4zcKjC3W4dgb2v4zvKtzCYTZJSSSNAEJ5Ds0mTQJRywKqHtDum06pFQI4WCi7b88DyZ/yhcdmJs1ntMZgEThJAJyB79ySTQ5LQhlz3psF4woj/PAF6ybAzYBukrk5Q3st0cPxtq6tpYTIqtrxJhFKytKOdlijVsEu3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8gZeev2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD6CC4CEEF;
-	Tue, 27 May 2025 16:54:51 +0000 (UTC)
+	 MIME-Version; b=KJVPOmy8L1tLLV3IUh+KL5XFoFxcjrcKG/bQSAJ+ywLdj2H7l69SNwesHfIphXOWsgtN/fgKFtcXdF8Jlh7PVxcJGz+K9yZnvlYi/ay+wrAPNA2aQe3GnAJMDjb0NCWPqCDipumFcWr0LhrEmcU9+GwuXidcdgXXLnBE4k0uhDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tx2MoEXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B63C4CEE9;
+	Tue, 27 May 2025 17:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364892;
-	bh=05fwvd+4kxO+KskQF62sYzuR6VZYYU9QGPRl/2ZGOYY=;
+	s=korg; t=1748367151;
+	bh=ILa4rh/jgooH7SjbwBuQmctbIl8YpIYaGUaN9pCczv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R8gZeev23E+pRULZLgauq/L+5hzz7b5H0jN2xV7RAcT5d7KXphgQeqHXMy2n0TLer
-	 IMSzBXg/14EIj7zyfYZ5Zx20/EK4eRbSUz6pLOMP99mQSEeAujzgop1DB2jXQJ5tVM
-	 YgW6Dw5Bg758zwdozrbsgbiN1pXm8yZcWoSmjbGo=
+	b=tx2MoEXMG1SQD3aRIz0MeXO4l1737v4b/5JUWxOa0TvVe7WK5KR0BCJz5qglBDkY8
+	 JcOcErJHzkOWrgz0MeXCBU3V/6s7eRbJm3dGHczSVzR8T5/H0YUyYSoPrEkDs4c7Xj
+	 EAbF3Fm587xkgKbCeNMgzXwRFJJXJAa2vFKCmOxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Andrei Botila <andrei.botila@oss.nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 199/626] ASoC: qcom: sm8250: explicitly set format in sm8250_be_hw_params_fixup()
+Subject: [PATCH 6.14 295/783] net: phy: nxp-c45-tja11xx: add match_phy_device to TJA1103/TJA1104
 Date: Tue, 27 May 2025 18:21:32 +0200
-Message-ID: <20250527162453.106732263@linuxfoundation.org>
+Message-ID: <20250527162525.094612851@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Andrei Botila <andrei.botila@oss.nxp.com>
 
-[ Upstream commit 89be3c15a58b2ccf31e969223c8ac93ca8932d81 ]
+[ Upstream commit a06a868a0cd96bc51401cdea897313a3f6ad01a0 ]
 
-Setting format to s16le is required for compressed playback on compatible
-soundcards.
+Add .match_phy_device for the existing TJAs to differentiate between
+TJA1103 and TJA1104.
+TJA1103 and TJA1104 share the same PHY_ID but TJA1104 has MACsec
+capabilities while TJA1103 doesn't.
 
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20250228161430.373961-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Andrei Botila <andrei.botila@oss.nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250228154320.2979000-2-andrei.botila@oss.nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/sm8250.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/nxp-c45-tja11xx.c | 54 +++++++++++++++++++++++++++++--
+ 1 file changed, 52 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
-index 19adadedc88a2..1001fd3213803 100644
---- a/sound/soc/qcom/sm8250.c
-+++ b/sound/soc/qcom/sm8250.c
-@@ -7,6 +7,7 @@
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
- #include <sound/pcm.h>
-+#include <sound/pcm_params.h>
- #include <linux/soundwire/sdw.h>
- #include <sound/jack.h>
- #include <linux/input-event-codes.h>
-@@ -39,9 +40,11 @@ static int sm8250_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
- 					SNDRV_PCM_HW_PARAM_RATE);
- 	struct snd_interval *channels = hw_param_interval(params,
- 					SNDRV_PCM_HW_PARAM_CHANNELS);
-+	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
+diff --git a/drivers/net/phy/nxp-c45-tja11xx.c b/drivers/net/phy/nxp-c45-tja11xx.c
+index e9fc54517449c..16e1c13ae2f8d 100644
+--- a/drivers/net/phy/nxp-c45-tja11xx.c
++++ b/drivers/net/phy/nxp-c45-tja11xx.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* NXP C45 PHY driver
+- * Copyright 2021-2023 NXP
++ * Copyright 2021-2025 NXP
+  * Author: Radu Pirea <radu-nicolae.pirea@oss.nxp.com>
+  */
  
- 	rate->min = rate->max = 48000;
- 	channels->min = channels->max = 2;
-+	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
+@@ -19,6 +19,8 @@
  
- 	return 0;
+ #include "nxp-c45-tja11xx.h"
+ 
++#define PHY_ID_MASK			GENMASK(31, 4)
++/* Same id: TJA1103, TJA1104 */
+ #define PHY_ID_TJA_1103			0x001BB010
+ #define PHY_ID_TJA_1120			0x001BB031
+ 
+@@ -1956,6 +1958,30 @@ static void tja1120_nmi_handler(struct phy_device *phydev,
+ 	}
  }
+ 
++static int nxp_c45_macsec_ability(struct phy_device *phydev)
++{
++	bool macsec_ability;
++	int phy_abilities;
++
++	phy_abilities = phy_read_mmd(phydev, MDIO_MMD_VEND1,
++				     VEND1_PORT_ABILITIES);
++	macsec_ability = !!(phy_abilities & MACSEC_ABILITY);
++
++	return macsec_ability;
++}
++
++static int tja1103_match_phy_device(struct phy_device *phydev)
++{
++	return phy_id_compare(phydev->phy_id, PHY_ID_TJA_1103, PHY_ID_MASK) &&
++	       !nxp_c45_macsec_ability(phydev);
++}
++
++static int tja1104_match_phy_device(struct phy_device *phydev)
++{
++	return phy_id_compare(phydev->phy_id, PHY_ID_TJA_1103, PHY_ID_MASK) &&
++	       nxp_c45_macsec_ability(phydev);
++}
++
+ static const struct nxp_c45_regmap tja1120_regmap = {
+ 	.vend1_ptp_clk_period	= 0x1020,
+ 	.vend1_event_msg_filt	= 0x9010,
+@@ -2026,7 +2052,6 @@ static const struct nxp_c45_phy_data tja1120_phy_data = {
+ 
+ static struct phy_driver nxp_c45_driver[] = {
+ 	{
+-		PHY_ID_MATCH_MODEL(PHY_ID_TJA_1103),
+ 		.name			= "NXP C45 TJA1103",
+ 		.get_features		= nxp_c45_get_features,
+ 		.driver_data		= &tja1103_phy_data,
+@@ -2048,6 +2073,31 @@ static struct phy_driver nxp_c45_driver[] = {
+ 		.get_sqi		= nxp_c45_get_sqi,
+ 		.get_sqi_max		= nxp_c45_get_sqi_max,
+ 		.remove			= nxp_c45_remove,
++		.match_phy_device	= tja1103_match_phy_device,
++	},
++	{
++		.name			= "NXP C45 TJA1104",
++		.get_features		= nxp_c45_get_features,
++		.driver_data		= &tja1103_phy_data,
++		.probe			= nxp_c45_probe,
++		.soft_reset		= nxp_c45_soft_reset,
++		.config_aneg		= genphy_c45_config_aneg,
++		.config_init		= nxp_c45_config_init,
++		.config_intr		= tja1103_config_intr,
++		.handle_interrupt	= nxp_c45_handle_interrupt,
++		.read_status		= genphy_c45_read_status,
++		.suspend		= genphy_c45_pma_suspend,
++		.resume			= genphy_c45_pma_resume,
++		.get_sset_count		= nxp_c45_get_sset_count,
++		.get_strings		= nxp_c45_get_strings,
++		.get_stats		= nxp_c45_get_stats,
++		.cable_test_start	= nxp_c45_cable_test_start,
++		.cable_test_get_status	= nxp_c45_cable_test_get_status,
++		.set_loopback		= genphy_c45_loopback,
++		.get_sqi		= nxp_c45_get_sqi,
++		.get_sqi_max		= nxp_c45_get_sqi_max,
++		.remove			= nxp_c45_remove,
++		.match_phy_device	= tja1104_match_phy_device,
+ 	},
+ 	{
+ 		PHY_ID_MATCH_MODEL(PHY_ID_TJA_1120),
 -- 
 2.39.5
 
