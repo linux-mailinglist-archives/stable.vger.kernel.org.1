@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-147410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2074AC578C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD91AC5497
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05744A6306
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C3AF3ACD8D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6985D27BF79;
-	Tue, 27 May 2025 17:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4CC28033D;
+	Tue, 27 May 2025 16:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opPLW5Rm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdg8Q/Au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276D33C01;
-	Tue, 27 May 2025 17:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DE628031F;
+	Tue, 27 May 2025 16:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367256; cv=none; b=pnfgj9FK1uQmkPdKQQDgRZm/fDq8oLTJNeXafqv8T55IqfEV9AlEvH85KDaExsyri1j3Ish9rAUTV7YGXtrHzB7OYtzHwtX3oSCYYUt9Vv+yZk+TTh97QOw/QCjuvP10V4+IaltPnbHUP3eRt7wkO63B5C+KZTFutthUZKDkx3o=
+	t=1748364995; cv=none; b=N7epcyLUWVGokkkbVUMngsswZFSX0bzOEcwnwINpbnXa49c+I6pYmBRbeV7f8WBJ3P+RCXxr539Da8tqp2Og9gGX+0eFoyOZDc9R/BfFFJqo7NRmx4ljRPqnHv8lPAoLA97Q8mESHpBG2qlA8hlf8PYDANj4NUcznsigPPLeyYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367256; c=relaxed/simple;
-	bh=B9tnl6BcFThKLU+V2uxpZMZQSX5pFwCgyxW4otPtp/I=;
+	s=arc-20240116; t=1748364995; c=relaxed/simple;
+	bh=AP68XK0QmYKaH8SyWJprk8sP+55n+Dy7H6kR9xraAW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lptCEbZSdsAUPNCOy59i7hYnbrLN84MFrZr9bEBUUSWgLqH+l/KCpN88P4t1oOFdg0lp05FEv49CkaJuzZMDoAk+dJ7KK2DrFeu/c/a7Ut6gmss4dKrp7zT/Ol0XH7rOrd97ac8eQX/axbT52ePcwTsBZIar7l2HJyTk/Hhg78g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opPLW5Rm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92576C4CEE9;
-	Tue, 27 May 2025 17:34:15 +0000 (UTC)
+	 MIME-Version; b=TfdjK/JqE/TrCvjIiRX4Ilz20dA0IEvINP6LBoTer0A5PCLlqs4IGltaCQmViCZyTLKVjGHj68yTtscL3AowVrlsi9xAgKy7IS6SNICu+OM/KOTngTp1QRaSjenV+3uV7T2O6KyFhzoHFfdQaVoIZEK7nAhfo7p+LHj3MHUYqck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdg8Q/Au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AFEC4CEE9;
+	Tue, 27 May 2025 16:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367256;
-	bh=B9tnl6BcFThKLU+V2uxpZMZQSX5pFwCgyxW4otPtp/I=;
+	s=korg; t=1748364994;
+	bh=AP68XK0QmYKaH8SyWJprk8sP+55n+Dy7H6kR9xraAW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opPLW5RmMoml3DnfhrZ+jVbvZUX7Tnx6rZ1sVu/SejqjI9FAkX9JhWrZNu+o98V62
-	 K/zf9gZu8Cg1CCFEC/S2CHq39836JhnIihLQ9zznwbjZiC3VIGi6Ax/QGqdtfbeEPd
-	 zrH+pGdusoISJJMqOu5i7xvcAJ4ZXRfFcnUsKV8M=
+	b=tdg8Q/AupsxeHZQLAUqp4l5FUQ4d2IHr4KkDyewsbGjI1DuHvGnQG5/F0GfuURqw9
+	 xFBhVBHC940E+UnAs2fttoEfq7aQ4lwiQd18mIX2g/lKYQhPkSkShYFMFWQJgDrE7M
+	 pGldQo0gcFmTGnA6O3lyB+hyB7KxlaqY4k9Qdrmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 329/783] drm/xe/pf: Create a link between PF and VF devices
+Subject: [PATCH 6.12 233/626] drm/amd/display: Ensure DMCUB idle before reset on DCN31/DCN35
 Date: Tue, 27 May 2025 18:22:06 +0200
-Message-ID: <20250527162526.457173777@linuxfoundation.org>
+Message-ID: <20250527162454.481928271@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +63,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 8c0aff7d92e2be25717669eb65a81a89740a24f2 ]
+[ Upstream commit c707ea82c79dbd1d295ec94cc6529a5248c77757 ]
 
-When both PF and VF devices are enabled on the host, they
-resume simultaneously during system resume.
+[Why]
+If we soft reset before halt finishes and there are outstanding
+memory transactions then the memory interface may produce unexpected
+results, such as out of order transactions when the firmware next runs.
 
-However, the PF must finish provisioning the VF before any
-VFs can successfully resume.
+These can manifest as random or unexpected load/store violations.
 
-Establish a parent-child device link between the PF and VF
-devices to ensure the correct order of resumption.
+[How]
+Increase the timeout before soft reset to ensure the DMCUB has quiesced.
+This is effectively 1s maximum based on experimentation.
 
-V4 -> V5:
-- Added missing break in the error condition.
-V3 -> V4:
-- Made xe_pci_pf_get_vf_dev() as a static function and updated
-  input parameter types.
-- Updated xe_sriov_warn() to xe_sriov_abort() when VF device
-  cannot be found.
-V2 -> V3:
-- Added function documentation for xe_pci_pf_get_vf_dev().
-- Added assertion if not called from PF.
-V1 -> V2:
-- Added a helper function to get VF pci_dev.
-- Updated xe_sriov_notice() to xe_sriov_warn() if vf pci_dev
-  is not found.
+Use the enable bit check on DCN31 like we're doing on DCN35 and reorder
+the reset writes to follow the HW programming guide.
 
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Reviewed-by: Piotr Piorkowski <piotr.piorkowski@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250224102807.11065-2-satyanarayana.k.v.p@intel.com
+Ensure we're reading SCRATCH7 instead of SCRATCH8 for the HALT code.
+No current versions of DMCUB firmware use the SCRATCH8 boot bit to
+dynamically switch where the HALT code goes to maintain backwards
+compatibility with PSP.
+
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pci_sriov.c | 51 +++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn31.c   | 17 +++++++++++------
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn35.c   |  4 ++--
+ 2 files changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pci_sriov.c b/drivers/gpu/drm/xe/xe_pci_sriov.c
-index aaceee748287e..09ee8a06fe2ed 100644
---- a/drivers/gpu/drm/xe/xe_pci_sriov.c
-+++ b/drivers/gpu/drm/xe/xe_pci_sriov.c
-@@ -62,6 +62,55 @@ static void pf_reset_vfs(struct xe_device *xe, unsigned int num_vfs)
- 			xe_gt_sriov_pf_control_trigger_flr(gt, n);
- }
- 
-+static struct pci_dev *xe_pci_pf_get_vf_dev(struct xe_device *xe, unsigned int vf_id)
-+{
-+	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
-+
-+	xe_assert(xe, IS_SRIOV_PF(xe));
-+
-+	/* caller must use pci_dev_put() */
-+	return pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-+			pdev->bus->number,
-+			pci_iov_virtfn_devfn(pdev, vf_id));
-+}
-+
-+static void pf_link_vfs(struct xe_device *xe, int num_vfs)
-+{
-+	struct pci_dev *pdev_pf = to_pci_dev(xe->drm.dev);
-+	struct device_link *link;
-+	struct pci_dev *pdev_vf;
-+	unsigned int n;
-+
-+	/*
-+	 * When both PF and VF devices are enabled on the host, during system
-+	 * resume they are resuming in parallel.
-+	 *
-+	 * But PF has to complete the provision of VF first to allow any VFs to
-+	 * successfully resume.
-+	 *
-+	 * Create a parent-child device link between PF and VF devices that will
-+	 * enforce correct resume order.
-+	 */
-+	for (n = 1; n <= num_vfs; n++) {
-+		pdev_vf = xe_pci_pf_get_vf_dev(xe, n - 1);
-+
-+		/* unlikely, something weird is happening, abort */
-+		if (!pdev_vf) {
-+			xe_sriov_err(xe, "Cannot find VF%u device, aborting link%s creation!\n",
-+				     n, str_plural(num_vfs));
-+			break;
-+		}
-+
-+		link = device_link_add(&pdev_vf->dev, &pdev_pf->dev,
-+				       DL_FLAG_AUTOREMOVE_CONSUMER);
-+		/* unlikely and harmless, continue with other VFs */
-+		if (!link)
-+			xe_sriov_notice(xe, "Failed linking VF%u\n", n);
-+
-+		pci_dev_put(pdev_vf);
-+	}
-+}
-+
- static int pf_enable_vfs(struct xe_device *xe, int num_vfs)
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
+index d9f31b191c693..1a68b5782cac6 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
+@@ -83,8 +83,8 @@ static inline void dmub_dcn31_translate_addr(const union dmub_addr *addr_in,
+ void dmub_dcn31_reset(struct dmub_srv *dmub)
  {
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
-@@ -92,6 +141,8 @@ static int pf_enable_vfs(struct xe_device *xe, int num_vfs)
- 	if (err < 0)
- 		goto failed;
+ 	union dmub_gpint_data_register cmd;
+-	const uint32_t timeout = 100;
+-	uint32_t in_reset, scratch, i, pwait_mode;
++	const uint32_t timeout = 100000;
++	uint32_t in_reset, is_enabled, scratch, i, pwait_mode;
  
-+	pf_link_vfs(xe, num_vfs);
+ 	REG_GET(DMCUB_CNTL2, DMCUB_SOFT_RESET, &in_reset);
+ 
+@@ -108,7 +108,7 @@ void dmub_dcn31_reset(struct dmub_srv *dmub)
+ 		}
+ 
+ 		for (i = 0; i < timeout; ++i) {
+-			scratch = dmub->hw_funcs.get_gpint_response(dmub);
++			scratch = REG_READ(DMCUB_SCRATCH7);
+ 			if (scratch == DMUB_GPINT__STOP_FW_RESPONSE)
+ 				break;
+ 
+@@ -125,9 +125,14 @@ void dmub_dcn31_reset(struct dmub_srv *dmub)
+ 		/* Force reset in case we timed out, DMCUB is likely hung. */
+ 	}
+ 
+-	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
+-	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
+-	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
++	REG_GET(DMCUB_CNTL, DMCUB_ENABLE, &is_enabled);
 +
- 	xe_sriov_info(xe, "Enabled %u of %u VF%s\n",
- 		      num_vfs, total_vfs, str_plural(total_vfs));
- 	return num_vfs;
++	if (is_enabled) {
++		REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
++		REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
++		REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
++	}
++
+ 	REG_WRITE(DMCUB_INBOX1_RPTR, 0);
+ 	REG_WRITE(DMCUB_INBOX1_WPTR, 0);
+ 	REG_WRITE(DMCUB_OUTBOX1_RPTR, 0);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
+index 2ccad79053c58..4581eb4794518 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
+@@ -88,7 +88,7 @@ static inline void dmub_dcn35_translate_addr(const union dmub_addr *addr_in,
+ void dmub_dcn35_reset(struct dmub_srv *dmub)
+ {
+ 	union dmub_gpint_data_register cmd;
+-	const uint32_t timeout = 100;
++	const uint32_t timeout = 100000;
+ 	uint32_t in_reset, is_enabled, scratch, i, pwait_mode;
+ 
+ 	REG_GET(DMCUB_CNTL2, DMCUB_SOFT_RESET, &in_reset);
+@@ -113,7 +113,7 @@ void dmub_dcn35_reset(struct dmub_srv *dmub)
+ 		}
+ 
+ 		for (i = 0; i < timeout; ++i) {
+-			scratch = dmub->hw_funcs.get_gpint_response(dmub);
++			scratch = REG_READ(DMCUB_SCRATCH7);
+ 			if (scratch == DMUB_GPINT__STOP_FW_RESPONSE)
+ 				break;
+ 
 -- 
 2.39.5
 
