@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-147573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EEEAC5840
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A346AAC555C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7061BC1CA8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 306403A591C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A180D25A627;
-	Tue, 27 May 2025 17:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0037C25A323;
+	Tue, 27 May 2025 17:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcV/EO6a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2agMos74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1E11D63EF;
-	Tue, 27 May 2025 17:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6B02110E;
+	Tue, 27 May 2025 17:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367760; cv=none; b=drDOoRepv/VXEUoV+Xx5+IIrCTy1sXf91MDCW4yiNYU4Itm1557g1qUGSnj2ppp89tohiEKfXXQGNz0jjbOTTC75bsJHNFZjIcHJHUx7/urDrCieDI24w2lGJQ3liOOPdhXr1q//46lf5veYqIGlSceDM/10vHImxhCz/P3Fgf0=
+	t=1748365501; cv=none; b=Km9U6/SLqguRbB9Wr26BE7VOrmDCCuJwvJRiFWTwQKyS64PWr1pul84f7HszKnkd7zpZOs/dwgfaFWHFa36dZuu+TS3Pxe3VZurunlQZ3fUWJFCGz0PVDsc06ntdwYyIWpE+TD+N2f1+R0wq36YxezVSJKjoZ47qd5JIPGtmolg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367760; c=relaxed/simple;
-	bh=FMvdGFhbs0xA9Y7tBViElKXxDrADWxUijAVUTWKdcoU=;
+	s=arc-20240116; t=1748365501; c=relaxed/simple;
+	bh=nfrhBdWam/mtyVt/GI7QtPwaAFGcmWdty1Z6oGsOqRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYaWXuMYidWbWYamZrkxLxXZUaAHniY2+epyr6espifAhKNcxuFGdE81UEnvXO++gZModL7bkBHfbh/i7NLFRN+bQ4vyl7mwhEEov5FIsPqZyrtO74MGBiPNz4qabPfAqAKvnigLEnu6aoAyScR8DnttOIQ1WoGWBdGP7P0wzOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcV/EO6a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C013EC4CEE9;
-	Tue, 27 May 2025 17:42:39 +0000 (UTC)
+	 MIME-Version; b=mW8arQTJp6VKKXA0yjJMAWSRBMKT5A0fIC7nBlqWtKqipry0wuqngWRgo9zDVN3fAcM1jYbxqETVuQ7O/bayYFxW4f/yob+8v7dEvg5jYGSVyfpNiaYk1JnMANTPEBGinUlP2/oskiZZEA+onJyAfTmUAVRaNy++vCA7WJ7fvuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2agMos74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35377C4CEE9;
+	Tue, 27 May 2025 17:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367760;
-	bh=FMvdGFhbs0xA9Y7tBViElKXxDrADWxUijAVUTWKdcoU=;
+	s=korg; t=1748365501;
+	bh=nfrhBdWam/mtyVt/GI7QtPwaAFGcmWdty1Z6oGsOqRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcV/EO6apyCpWxi33cCPJHK2Um/bj7gaqUqBqLjfN48MIXA4WshZrCNhUpNC12NJj
-	 uVi7tk+E/3xifEo1yLyWSwXc8IjFCmsEabPYB2smuKUN2ez5nafi2sB9687tvIMx4y
-	 6BKp6IglCbBEyGV0epxxfMiexJz+SxdMKkFzCWaQ=
+	b=2agMos74gLzCYICItoLEwWHYZwvIpwa0/vnEVFMGwXf+GCdUG6ZWXrCu19p/adfXN
+	 DSuIOqdryKojWJ0WZKfKnwz3V6fnA22tBPA7flSaRFoT0EjOJ78TEF/MAGU1pFp3aA
+	 z40GaRCCklm2lASsaD+AmNGi0MBZz1Ep1X/IlqKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 491/783] drm/amd/display: Update CR AUX RD interval interpretation
-Date: Tue, 27 May 2025 18:24:48 +0200
-Message-ID: <20250527162533.124522530@linuxfoundation.org>
+Subject: [PATCH 6.12 396/626] drm/amd/display: Update CR AUX RD interval interpretation
+Date: Tue, 27 May 2025 18:24:49 +0200
+Message-ID: <20250527162501.115656302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
