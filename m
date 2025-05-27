@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-147389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8B2AC5775
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0D9AC5427
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 138EB4A6A04
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 435414A26A0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45202110E;
-	Tue, 27 May 2025 17:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7C2280A51;
+	Tue, 27 May 2025 16:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4Zhpnn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4U9qtzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7031527D786;
-	Tue, 27 May 2025 17:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA30227FB2A;
+	Tue, 27 May 2025 16:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367191; cv=none; b=q1efYo3vTgW0QC+OLPoqUDHi+zoKj+ryg8fYFwNzG8XTLD3qbRLy6yM6IUzkjyx3AgNfjr7K+JRie3CfgrVN8GcVoeBPBVuV/vN0FZ4qjRS2ga+RQ/jrniZdHujcIz7TdOL2n5ipuW7EQHv7G/V3bfL7iXKqIi8Xi4Zex4J33eU=
+	t=1748364982; cv=none; b=Xx0wDvZ1U3hVpp+4V3loq2vkDvKd03kFYe6s8tMrvdv86z4dgasgXA4lvLkAV2wE+RI2okLcM9i0z+lAzlt4nSL4Ybhr0/fR1hi/w6xazgqqk4uOYiIcU6KLaI4FrB5g0eD6xCaJ6N8Bbleh21vRjO+Wkrcw4c1tE0oqZDCXKk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367191; c=relaxed/simple;
-	bh=CxmHixaqJLFOkRMA1zSPaB8I+8btbnhamV0VyNf+wwU=;
+	s=arc-20240116; t=1748364982; c=relaxed/simple;
+	bh=H6UE5znIQa3Zf8M9ftDkTdF5g3vxdRUOj2KeeErqx3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvB8/8eG6Mem3craGmP0b1LwHYGSZw+4Mn3MDFcxsC9/uDlzifeqTv7VTCSpRygWpdHWUJg4eO2Ifq8kQ96reA9x/zrK2dZxeq0uo3vRDv5d6sZ3i3RgcEWs7wSibCzihfERLRBiHTgBY5VPHJX4/LmrR7Y6awFGGxdtbgpDi+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4Zhpnn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D16C4CEE9;
-	Tue, 27 May 2025 17:33:10 +0000 (UTC)
+	 MIME-Version; b=H6Y/V9dv5MKQLBnx5k9K/rf7CCob1wjpovja9FLPFaGlRelc/1JodR+cPYlnkqnsc1FBBHIoA+RRCJUNGghoKFDxtggvbB54QtADJlF/P9WRAVMQ4EKfgeB8yAf0fxI7ir6bK8zDtdUv6pNc/QcHx3SzJOvg0NA+BY1XdrHF0+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4U9qtzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C701C4CEE9;
+	Tue, 27 May 2025 16:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367191;
-	bh=CxmHixaqJLFOkRMA1zSPaB8I+8btbnhamV0VyNf+wwU=;
+	s=korg; t=1748364982;
+	bh=H6UE5znIQa3Zf8M9ftDkTdF5g3vxdRUOj2KeeErqx3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4Zhpnn2iyYqEaeVHaGyrdfrYtU1PEIAoP5z5z+ERTRVclTxjxvaz6IDyflOBTKXE
-	 RZuFxBxeALnFLJ6J++350AsSAmRTSVPVZQVKjNVXxekLJOgwkGqTzcbPzyU1uc7nTA
-	 FjcWQIH0S3dSI6d7BPFXIFu4GRVKWOiCs95QmAuA=
+	b=c4U9qtzIaQ6MW8vO7au0sKSgFKIxhGbiEH4zqW+NYppuYHvlas7Q3FjEwj18Vcbyu
+	 9fM0SHPTRJu6NfeYGm4qLjSfZxcnmbfzj+yRWTgqBYt1BXYc7wwWP6hdKMVUlA8TGS
+	 pQKznQBJyGPTKqGXpKtdy0qntSDKvjSG6LsYdNiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Michael Riesch <michael.riesch@wolfvision.net>
-Subject: [PATCH 6.14 307/783] drm/rockchip: vop2: Add uv swap for cluster window
-Date: Tue, 27 May 2025 18:21:44 +0200
-Message-ID: <20250527162525.572146806@linuxfoundation.org>
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 212/626] arm64: tegra: p2597: Fix gpio for vdd-1v8-dis regulator
+Date: Tue, 27 May 2025 18:21:45 +0200
+Message-ID: <20250527162453.629463518@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-[ Upstream commit e7aae9f6d762139f8d2b86db03793ae0ab3dd802 ]
+[ Upstream commit f34621f31e3be81456c903287f7e4c0609829e29 ]
 
-The Cluster windows of upcoming VOP on rk3576 also support
-linear YUV support, we need to set uv swap bit for it.
+According to the board schematics the enable pin of this regulator is
+connected to gpio line #9 of the first instance of the TCA9539
+GPIO expander, so adjust it.
 
-As the VOP2_WIN_UV_SWA register defined on rk3568/rk3588 is
-0xffffffff, so this register will not be touched on these
-two platforms.
-
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Tested-by: Michael Riesch <michael.riesch@wolfvision.net> # on RK3568
-Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250303034436.192400-4-andyshrk@163.com
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://lore.kernel.org/r/20250224-diogo-gpio_exp-v1-1-80fb84ac48c6@tecnico.ulisboa.pt
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 17a98845fd31b..64029237358d8 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1547,10 +1547,8 @@ static void vop2_plane_atomic_update(struct drm_plane *plane,
- 
- 	rb_swap = vop2_win_rb_swap(fb->format->format);
- 	vop2_win_write(win, VOP2_WIN_RB_SWAP, rb_swap);
--	if (!vop2_cluster_window(win)) {
--		uv_swap = vop2_win_uv_swap(fb->format->format);
--		vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
--	}
-+	uv_swap = vop2_win_uv_swap(fb->format->format);
-+	vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
- 
- 	if (fb->format->is_yuv) {
- 		vop2_win_write(win, VOP2_WIN_UV_VIR, DIV_ROUND_UP(fb->pitches[1], 4));
+diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+index 63b94a04308e8..38d49d612c0c1 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+@@ -1686,7 +1686,7 @@ vdd_1v8_dis: regulator-vdd-1v8-dis {
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <1800000>;
+ 		regulator-always-on;
+-		gpio = <&exp1 14 GPIO_ACTIVE_HIGH>;
++		gpio = <&exp1 9 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 		vin-supply = <&vdd_1v8>;
+ 	};
 -- 
 2.39.5
 
