@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC3BAC58A4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 682C9AC5532
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 413F9160A05
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F36351BA5B0E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E60027A131;
-	Tue, 27 May 2025 17:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C73C27A463;
+	Tue, 27 May 2025 17:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8+NhKX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnCZ3b0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B111FB3;
-	Tue, 27 May 2025 17:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA1B139579;
+	Tue, 27 May 2025 17:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368046; cv=none; b=mjcEMqLbrHazvaNmHTCVMHQZS8YWU4ssJ1sKerwQOvxYGqVYgcTQ3Ej1xjZrutOUOccX5AhT7bW8DQo6ZkWzxVLmYMMLc7endkBQ/J1UokGIUXqTphikCP8AHx+ru+34+/4dvQuyULn/7ZfqBKJ4pqo+mB0pGijDKg+u9Dyft5w=
+	t=1748365737; cv=none; b=J8Q3Tz9CdvrsQuFSgbjFPhwp90V/4apD/Zhx0tYAQ2o3BU265jC2pCk9WsyrHVe0VP24itifE7ygxRjeRra1wrl4QCwU2bIlDky9NxxE8d5HBX7WWNKcgzCl/KUuKpeVUpNQmEoEJVDVsUG2qWCveaDo1YZQb/W/107aabLb8+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368046; c=relaxed/simple;
-	bh=D07Mb0/VuBeSBVFeS44qto7e5WdtHkutwiT5Yk5eiYQ=;
+	s=arc-20240116; t=1748365737; c=relaxed/simple;
+	bh=GffCcDeN5XBFRCFFkCDhX5xgQ5fj+/HVT2n/YAKI2oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9IyyfjBeL2clJGa8Naee6CX22jPy26nLFz2qYfdLJCDuOxkZYchLLZtxJU0RltCQbUcFhOLKcKjMdagpjwmB3ZxKCJM8hLJEerN+pW+ktq6gu8hy+AFfj6bRmtyKKZ4rILg9Js9wRkWPZrA73w9qyD28ybQheowietlwQ8s5ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8+NhKX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADF7C4CEE9;
-	Tue, 27 May 2025 17:47:26 +0000 (UTC)
+	 MIME-Version; b=YrwqnOxKnv3RAjccSFKEMShAjTa4GEC51tD7HpBsPsl1rB75Tzs6mRcl+HtbaHlv2Xk2/7D7vmTYqTrOtQ2veIBKEPyxUWw1evm/VMsf5KS39FVYLkv8HIV69Bfc0ftbFIt/UreIBrPOlc4jdnTQoVdaCPp1E9t18carbEO5SP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnCZ3b0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6E7C4CEE9;
+	Tue, 27 May 2025 17:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368046;
-	bh=D07Mb0/VuBeSBVFeS44qto7e5WdtHkutwiT5Yk5eiYQ=;
+	s=korg; t=1748365737;
+	bh=GffCcDeN5XBFRCFFkCDhX5xgQ5fj+/HVT2n/YAKI2oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8+NhKX31mLv+r0HYk4b9m86p2X7kqjAky+/C046Xj3+MULed32YiB1PGlxGmwFGW
-	 ApaEbWEK1Z/DvmtdjdcCxHijPqtBgPAmHI/ZpsIyiDpLs2PXVKN2yqkkR0GRQ6NOUH
-	 qSEks4JGPuoO499N/s6TQqXicFXRKH06t9oRZy0s=
+	b=RnCZ3b0UxgsQKHQsY5DoHLjkxPp/nknm+ouATqDageL0gpkcF5rJGkEAdg3j5UKFI
+	 gtZ0YD5LpQ0Woh8fap1RbE5j1kaBau6j2+56dfQ1HIYLDQxOLv3DtCjBoigj9WoOiE
+	 uwf+FHXAGEk8Xdt7usiw3Y1R+W/n3xsIGnYYfOpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 541/783] wifi: rtw88: Fix download_firmware_validate() for RTL8814AU
+Subject: [PATCH 6.12 445/626] tools: ynl-gen: dont output external constants
 Date: Tue, 27 May 2025 18:25:38 +0200
-Message-ID: <20250527162535.190244166@linuxfoundation.org>
+Message-ID: <20250527162503.080983297@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 9e8243025cc06abc975c876dffda052073207ab3 ]
+[ Upstream commit 7e8b24e24ac46038e48c9a042e7d9b31855cbca5 ]
 
-After the firmware is uploaded, download_firmware_validate() checks some
-bits in REG_MCUFW_CTRL to see if everything went okay. The
-RTL8814AU power on sequence sets bits 13 and 12 to 2, which this
-function does not expect, so it thinks the firmware upload failed.
+A definition with a "header" property is an "external" definition
+for C code, as in it is defined already in another C header file.
+Other languages will need the exact value but C codegen should
+not recreate it. So don't output those definitions in the uAPI
+header.
 
-Make download_firmware_validate() ignore bits 13 and 12.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/049d2887-22fc-47b7-9e59-62627cb525f8@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250203215510.1288728-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/reg.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/ynl-gen-c.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index e438405fba566..209b6fc08a73e 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -130,6 +130,7 @@
- #define BIT_SHIFT_ROM_PGE	16
- #define BIT_FW_INIT_RDY		BIT(15)
- #define BIT_FW_DW_RDY		BIT(14)
-+#define BIT_CPU_CLK_SEL		(BIT(12) | BIT(13))
- #define BIT_RPWM_TOGGLE		BIT(7)
- #define BIT_RAM_DL_SEL		BIT(7)	/* legacy only */
- #define BIT_DMEM_CHKSUM_OK	BIT(6)
-@@ -147,7 +148,7 @@
- 				 BIT_CHECK_SUM_OK)
- #define FW_READY_LEGACY		(BIT_MCUFWDL_RDY | BIT_FWDL_CHK_RPT |	       \
- 				 BIT_WINTINI_RDY | BIT_RAM_DL_SEL)
--#define FW_READY_MASK		0xffff
-+#define FW_READY_MASK		(0xffff & ~BIT_CPU_CLK_SEL)
+diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
+index 463f1394ab971..c78f1c1bca75c 100755
+--- a/tools/net/ynl/ynl-gen-c.py
++++ b/tools/net/ynl/ynl-gen-c.py
+@@ -2417,6 +2417,9 @@ def render_uapi(family, cw):
  
- #define REG_MCU_TST_CFG		0x84
- #define VAL_FW_TRIGGER		0x1
+     defines = []
+     for const in family['definitions']:
++        if const.get('header'):
++            continue
++
+         if const['type'] != 'const':
+             cw.writes_defines(defines)
+             defines = []
 -- 
 2.39.5
 
