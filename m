@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43384AC538E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260C7AC56F6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AC003B9AF1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5109188FF75
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF024194A45;
-	Tue, 27 May 2025 16:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F30277808;
+	Tue, 27 May 2025 17:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqOpCXrf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ag66k+ko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6B71D63EF;
-	Tue, 27 May 2025 16:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AAA1CD0C;
+	Tue, 27 May 2025 17:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364516; cv=none; b=MlGTJ8/f64beWwCL7A+aUpaLQ+Ud5eLmlpFTepvCZ7xuMSCbio21pUuuBv720rsa/30cMKOHtGyv8SiyiCb34F5Td+Wp5QHMPxG7/5PCZ3OUaV2JNsjo39gpbcWEdITMfSNU5tUeYM4X6RYTiCNe8mH38IVyWU3RvfdSOuys8wA=
+	t=1748366825; cv=none; b=mMRrS85SRio89HE0aTZF7XHZaXcygGjPxSxwim840OjTzgGLd8zbKP5B8nO368ULR/x4FiYwglV8NmIlIk7yL+CmOlVkPcYbfKx1zPb5Grdn0a5qcBQGO50oK/RwIiQZ4D9okgbLgEWgfSSiJsrFeuZWJjmHRvzJn3S9VDaHuF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364516; c=relaxed/simple;
-	bh=/3zCnMzRO25fMRYYUB7fENHAkapELNXaRMwIapLCiK0=;
+	s=arc-20240116; t=1748366825; c=relaxed/simple;
+	bh=W7DwfPYKXpL/UN6tzNPBTPItfqCabtZlH7fEOM8dF3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjVOh9EwWDVrTZWMOunqRRQi98DxUd5OfqzGyMHLa4FA/iRvlCLRJJ96RIZ4nL9OWuQijv2DvxWSpEP8V7nXUCTRdqA2a9cMR0LywdcPTxfS6thD3mZGJeLuLrJ6AaZ/zMc5gZn/feYBO9gh4aq1GPWivvCkaQVSjCWY6NTgeiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqOpCXrf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D9DC4CEE9;
-	Tue, 27 May 2025 16:48:35 +0000 (UTC)
+	 MIME-Version; b=dfd7YjHMNZB9hnmz/kzYeE8RBgONqmfI56zALUqiATYnHn8FQ9hyGYB3sfj2TEJjdWE01eWbMcyF8QrtYPL79iDjdwN59uZbUulmZQdQiLugQk9izkcZ+Rdf76tFddnph0ap3el55vSni1Q7uQSGWp793uRosJeuq423GRhnvF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ag66k+ko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C33BC4CEE9;
+	Tue, 27 May 2025 17:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364516;
-	bh=/3zCnMzRO25fMRYYUB7fENHAkapELNXaRMwIapLCiK0=;
+	s=korg; t=1748366824;
+	bh=W7DwfPYKXpL/UN6tzNPBTPItfqCabtZlH7fEOM8dF3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqOpCXrf5hhZ/iU0pdJm7Mx7d31yDqcEis58JLcidHjoae5oIDoy32JnRiWqt8mhc
-	 l1g2xRevw3xggigFpOlHxbta20s3UiGvK5yYjLpCzMGXZSRMxVdbAYpG899oaIv6cX
-	 JTU5bz8odi1Xtm7LwnHVcpXByXlU74JvI4Hwf9GU=
+	b=Ag66k+kotF0HsIjgsINU/i0OxD0zbvurPeOzqf/InC8cOJe/tYhE2xCi5IFwzkREH
+	 /wBJnVpKW4HZD2HeggewphPog89hnoadd8To6r2azuGOyzSUUl/n4yQgQZcz75Hgc0
+	 kKF2IGh7VMXZaEyOdk9xRchz3yWl1/Hzsuk5hz3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/626] fuse: Return EPERM rather than ENOSYS from link()
+Subject: [PATCH 6.14 147/783] dlm: make tcp still work in multi-link env
 Date: Tue, 27 May 2025 18:19:04 +0200
-Message-ID: <20250527162447.137029223@linuxfoundation.org>
+Message-ID: <20250527162519.145620288@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Heming Zhao <heming.zhao@suse.com>
 
-[ Upstream commit 8344213571b2ac8caf013cfd3b37bc3467c3a893 ]
+[ Upstream commit 03d2b62208a336a3bb984b9465ef6d89a046ea22 ]
 
-link() is documented to return EPERM when a filesystem doesn't support
-the operation, return that instead.
+This patch bypasses multi-link errors in TCP mode, allowing dlm
+to operate on the first tcp link.
 
-Link: https://github.com/libfuse/libfuse/issues/925
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/dlm/lowcomms.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index a1e86ec07c38b..ff543dc09130e 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -1133,6 +1133,8 @@ static int fuse_link(struct dentry *entry, struct inode *newdir,
- 	else if (err == -EINTR)
- 		fuse_invalidate_attr(inode);
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index d28141829c051..70abd4da17a63 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -1826,8 +1826,8 @@ static int dlm_tcp_listen_validate(void)
+ {
+ 	/* We don't support multi-homed hosts */
+ 	if (dlm_local_count > 1) {
+-		log_print("TCP protocol can't handle multi-homed hosts, try SCTP");
+-		return -EINVAL;
++		log_print("Detect multi-homed hosts but use only the first IP address.");
++		log_print("Try SCTP, if you want to enable multi-link.");
+ 	}
  
-+	if (err == -ENOSYS)
-+		err = -EPERM;
- 	return err;
- }
- 
+ 	return 0;
 -- 
 2.39.5
 
