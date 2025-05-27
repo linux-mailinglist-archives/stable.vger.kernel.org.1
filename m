@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81C0AC5735
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A21AC53B8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5635B7A92C1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 265C71BA4049
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1492280300;
-	Tue, 27 May 2025 17:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744CD263F5E;
+	Tue, 27 May 2025 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mmYXskM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIwsIx2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFDD280036;
-	Tue, 27 May 2025 17:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B25194A45;
+	Tue, 27 May 2025 16:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367012; cv=none; b=t50KjCmVYfGuDUlngtwL9TY3iA7/ORW7e1D8pYmeimbq3QfsmXS4lfEhZA35sOyTtf+i4czvBEi6DY038YQHolWTgnlFZdCm9u7Bxr/llVfHn1Ku+YcEP3eqzjl1s7YP1B5MuO7oDb/HJB8ZsQ7WTK30LH84Q0ql8W616U0ttBo=
+	t=1748364649; cv=none; b=BTUixVfLyPvwI9Lpp8AqN1f3uF/C1O7lrVq6O6MfMBdDLvviDQHb+JQz5ByA6Ri8dMmm1+MXuKj3V+rCvI84IcjTSld9wuHkc8v9NVRkWDGtoyk1zaswKEnZ2cSr7OFcH/QYdDaTYxZLqDmZuPemKKEAnBbYD9hPVzcvrGou/VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367012; c=relaxed/simple;
-	bh=8F2rdVG5KrzV9X2Iw73gDpyWRmNW8HDtxz+UUYraaME=;
+	s=arc-20240116; t=1748364649; c=relaxed/simple;
+	bh=v/GAPrP6XzEKZBb1KRYDXoxY7V1xVF7SZgCVXAV2BVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ncPLvbhGIVHK6yxuMJu4queRkgC4hPiKiNKq0jgXQh6zE6sSGm3HM8njyrr52FqUI7kzRVWQwIJ24myL+v2/wl3oiBEVurBnZsQxqylTNeL0KTZnvnBZ9Lku+sY/PzD0SO6k7sPsevRM85vE8XEN9UUFbw8BoA/AjSrp1RIvUZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mmYXskM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7726CC4CEE9;
-	Tue, 27 May 2025 17:30:11 +0000 (UTC)
+	 MIME-Version; b=XfuQvqOL8AgTRkgf3++hbEPmo/ilzNT76m2xnoyRfJKt0P62hC5X4+S+VBQVXIw7kjMFiBFvfzUBFCM7wpbNwYGM054qcDPbzwtc9cYfKAlvRm5km3kvj0gEuWkYYFLQD3LAyYzZ5+R5sD/OshCOWNHoiThwaScl49oGs1c2HUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIwsIx2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389F1C4CEE9;
+	Tue, 27 May 2025 16:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367011;
-	bh=8F2rdVG5KrzV9X2Iw73gDpyWRmNW8HDtxz+UUYraaME=;
+	s=korg; t=1748364648;
+	bh=v/GAPrP6XzEKZBb1KRYDXoxY7V1xVF7SZgCVXAV2BVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mmYXskMHX0VpkRB4PON/5mqCwYcNrXhkyWyazkTTcuEzR5d6T//rKfEJpBKAcqH6
-	 GuEp3l4y20RzKWStiz3T/XpfASVeBYOToPmauwiS+xUK3wgf924wDBKVn2Afc3a/ef
-	 XUPal/mJi/zR0FmwrA3ckDwUeC2yFDKi07QDa8Ts=
+	b=zIwsIx2zHIGRjD6GFb7AJV+4Dlk12+Ugrems0tydhpiPuJq5RqOkxLHx7Mj01CQuG
+	 duhWamJrxFFjXz8ZL1WdKqPuvNzu1C39nGFwCSgTlR5qZxdbYJyo25+o/wYFBvhvmB
+	 bZJ7R0bMvpElLLZQjeSR2ZeFDvZ8KJEvvZc8b2Cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 219/783] wifi: iwlwifi: mark Br device not integrated
+Subject: [PATCH 6.12 123/626] drm/amdgpu: adjust drm_firmware_drivers_only() handling
 Date: Tue, 27 May 2025 18:20:16 +0200
-Message-ID: <20250527162522.044511098@linuxfoundation.org>
+Message-ID: <20250527162450.028643200@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 5f0ab2f35a43773a0dfe1297129a8dbff906b932 ]
+[ Upstream commit e00e5c223878a60e391e5422d173c3382d378f87 ]
 
-This is a discrete device, don't mark it as integrated.
-This also means we cannot set the LTR delay.
+Move to probe so we can check the PCI device type and
+only apply the drm_firmware_drivers_only() check for
+PCI DISPLAY classes.  Also add a module parameter to
+override the nomodeset kernel parameter as a workaround
+for platforms that have this hardcoded on their kernel
+command lines.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308231427.9bb69393fcc9.I197129383e5441c8139cbb0e810ae0b71198a37c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-index ab7c0f8d54f42..d3542af0f625e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-@@ -148,11 +148,9 @@ const struct iwl_cfg_trans_params iwl_br_trans_cfg = {
- 	.mq_rx_supported = true,
- 	.rf_id = true,
- 	.gen2 = true,
--	.integrated = true,
- 	.umac_prph_offset = 0x300000,
- 	.xtal_latency = 12000,
- 	.low_latency_xtal = true,
--	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 1b479bd851354..93c3de2d27d3a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -172,6 +172,7 @@ uint amdgpu_sdma_phase_quantum = 32;
+ char *amdgpu_disable_cu;
+ char *amdgpu_virtual_display;
+ bool enforce_isolation;
++int amdgpu_modeset = -1;
  
- const char iwl_br_name[] = "Intel(R) TBD Br device";
+ /* Specifies the default granularity for SVM, used in buffer
+  * migration and restoration of backing memory when handling
+@@ -1037,6 +1038,13 @@ module_param_named(user_partt_mode, amdgpu_user_partt_mode, uint, 0444);
+ module_param(enforce_isolation, bool, 0444);
+ MODULE_PARM_DESC(enforce_isolation, "enforce process isolation between graphics and compute . enforce_isolation = on");
+ 
++/**
++ * DOC: modeset (int)
++ * Override nomodeset (1 = override, -1 = auto). The default is -1 (auto).
++ */
++MODULE_PARM_DESC(modeset, "Override nomodeset (1 = enable, -1 = auto)");
++module_param_named(modeset, amdgpu_modeset, int, 0444);
++
+ /**
+  * DOC: seamless (int)
+  * Seamless boot will keep the image on the screen during the boot process.
+@@ -2248,6 +2256,12 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
+ 	int ret, retry = 0, i;
+ 	bool supports_atomic = false;
+ 
++	if ((pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA ||
++	    (pdev->class >> 8) == PCI_CLASS_DISPLAY_OTHER) {
++		if (drm_firmware_drivers_only() && amdgpu_modeset == -1)
++			return -EINVAL;
++	}
++
+ 	/* skip devices which are owned by radeon */
+ 	for (i = 0; i < ARRAY_SIZE(amdgpu_unsupported_pciidlist); i++) {
+ 		if (amdgpu_unsupported_pciidlist[i] == pdev->device)
 -- 
 2.39.5
 
