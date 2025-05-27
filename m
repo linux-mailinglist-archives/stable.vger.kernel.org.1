@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAB7AC5506
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E66AC57E3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5D58A4B77
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D99511697C6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B571A3159;
-	Tue, 27 May 2025 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427E427E7CF;
+	Tue, 27 May 2025 17:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dbgni0+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7PCVpeA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4968154C15;
-	Tue, 27 May 2025 17:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20CB1A3159;
+	Tue, 27 May 2025 17:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365259; cv=none; b=IOhhIrLOvDvuVkIrCTI3zXc6eW3R6ft6g4JUSjvdqL84G7MgSNUVsdb0BOwMBeMOd6fs8+gP3gcEcRLlXyWCHhy6ib/cKDRrZDaY2rMjiPqrfVMeGhiDwp0d82NH8x/0gbSJxlQsjlKNiTECmIsZgcJUg3BqlPwqLV1dHFrxYaI=
+	t=1748367499; cv=none; b=j8abzDaf2Ge1pxZ9sPoxi1m+pkxGAaUXH5xUaR6BqEvveSXVU4hauNMQxy5oqLT+3SJZS4SkGiudxsXcN94kfHl0C4eYoGdR2huo1td+KXb56zYsdF1kT7E0uKJLRgZvD+N6Gp0SB/sUqsJhhJQsMYxVCWGIVaHJ7tsLBvRaQsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365259; c=relaxed/simple;
-	bh=kSWd1rIZZZcplucKQ1nvnGPTN61UUjV/N9lgFoZeHDY=;
+	s=arc-20240116; t=1748367499; c=relaxed/simple;
+	bh=5dXwNFOiLBbfN/Up00m1lntC6kUAWyofr4AQqp6ivFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fiVKWNPno4ZzPMx0HHJhNY51dyEun3k0besx3210QDpVEh9ysCFOofM+bIJ/2tDnYpk+n+JIiSxoai77iRBnU7/stLkE2sayz6Z7aRCyFj+CPun1nVwC4GLA3jcuw7ROi5LoV5Y1pEqoGVDoUbHMUwVrzbPfvZHGBkZ2RujbyB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dbgni0+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBCFC4CEE9;
-	Tue, 27 May 2025 17:00:59 +0000 (UTC)
+	 MIME-Version; b=BzWbH0/Ay8tFQIZHmD4JzZ23oeu8wNwdkyTtc1pG5GXl5HCn9ECVcbk4Y1WeWNPa0m5ueBuCW4nl0s5IgpZ+PS1QA5UTg7VO5LBf1GMY3BfeZiR0JBfUVQTCxfDTTFf378A+N3XsL46/Suoclc6uajqedQAw0SnpDShVyTSUgB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7PCVpeA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBE9C4CEE9;
+	Tue, 27 May 2025 17:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365259;
-	bh=kSWd1rIZZZcplucKQ1nvnGPTN61UUjV/N9lgFoZeHDY=;
+	s=korg; t=1748367498;
+	bh=5dXwNFOiLBbfN/Up00m1lntC6kUAWyofr4AQqp6ivFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dbgni0+YjMY2a4fHk8JezDNr7STPpoWJTOxai3nuqSJgHGrJVc5H508Bh+hdMv/VI
-	 9HSnFe/qF4mlgb/IajiQPw4PWPyQ57oMlSPA8GAKvkM4xpfyyRTaYlh3MnlAM6eTM1
-	 wTRKE/dNC1whzyMsUIvZQF+a/9OVeOrcUgF++Bco=
+	b=D7PCVpeAI0UUyb8WseBPJsbDp44AEGQ9pJgt5032JHgdP5qvtXhgL5JTOC8vFMOj8
+	 WYVr9DOJdyB8IS7lL5VdzEv7A9X8Qgyfi1f16Pk11K4MpJrW2Hx9DN7zteooTXwGkg
+	 SM0AgjVDR8CmyrFWgYJzfyXW1Wr3+6fX0PxfZ9jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	James Zhu <James.Zhu@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 311/626] drm/amdgpu: remove all KFD fences from the BO on release
+Subject: [PATCH 6.14 407/783] irqchip/riscv-imsic: Separate next and previous pointers in IMSIC vector
 Date: Tue, 27 May 2025 18:23:24 +0200
-Message-ID: <20250527162457.672329183@linuxfoundation.org>
+Message-ID: <20250527162529.678867155@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,181 +60,277 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit cb0de06d1b0afb2d0c600ad748069f5ce27730ec ]
+[ Upstream commit 0f67911e821c67ecfccc365a2103ce276a9a56fe ]
 
-Remove all KFD BOs from the private dma_resv object.
+Currently, there is only one "move" pointer in struct imsic_vector so
+during vector movement the old vector points to the new vector and new
+vector points to itself.
 
-This prevents the KFD from being evict unecessarily when an exported BO
-is released.
+To support forced cleanup of the old vector, add separate "move_next" and
+"move_prev" pointers to struct imsic_vector, where during vector movement
+the "move_next" pointer of the old vector points to the new vector and the
+"move_prev" pointer of the new vector points to the old vector.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: James Zhu <James.Zhu@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-and-tested-by: James Zhu <James.Zhu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Both "move_next" and "move_prev" pointers are cleared separately by
+__imsic_local_sync() with a restriction that "move_prev" on the new
+CPU is cleared only after the old CPU has cleared "move_next".
+
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250217085657.789309-8-apatel@ventanamicro.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  5 +-
- .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 52 ++++++++-----------
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c    | 38 ++++++++------
- 3 files changed, 47 insertions(+), 48 deletions(-)
+ drivers/irqchip/irq-riscv-imsic-early.c |  8 ++-
+ drivers/irqchip/irq-riscv-imsic-state.c | 96 +++++++++++++++++--------
+ drivers/irqchip/irq-riscv-imsic-state.h |  7 +-
+ 3 files changed, 78 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-index f9d1194484423..581fe1a48f376 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-@@ -192,7 +192,7 @@ int kfd_debugfs_kfd_mem_limits(struct seq_file *m, void *data);
- #if IS_ENABLED(CONFIG_HSA_AMD)
- bool amdkfd_fence_check_mm(struct dma_fence *f, struct mm_struct *mm);
- struct amdgpu_amdkfd_fence *to_amdgpu_amdkfd_fence(struct dma_fence *f);
--int amdgpu_amdkfd_remove_fence_on_pt_pd_bos(struct amdgpu_bo *bo);
-+void amdgpu_amdkfd_remove_all_eviction_fences(struct amdgpu_bo *bo);
- int amdgpu_amdkfd_evict_userptr(struct mmu_interval_notifier *mni,
- 				unsigned long cur_seq, struct kgd_mem *mem);
- int amdgpu_amdkfd_bo_validate_and_fence(struct amdgpu_bo *bo,
-@@ -212,9 +212,8 @@ struct amdgpu_amdkfd_fence *to_amdgpu_amdkfd_fence(struct dma_fence *f)
- }
+diff --git a/drivers/irqchip/irq-riscv-imsic-early.c b/drivers/irqchip/irq-riscv-imsic-early.c
+index 275df50057057..553650932c75f 100644
+--- a/drivers/irqchip/irq-riscv-imsic-early.c
++++ b/drivers/irqchip/irq-riscv-imsic-early.c
+@@ -77,6 +77,12 @@ static void imsic_handle_irq(struct irq_desc *desc)
+ 	struct imsic_vector *vec;
+ 	unsigned long local_id;
  
- static inline
--int amdgpu_amdkfd_remove_fence_on_pt_pd_bos(struct amdgpu_bo *bo)
-+void amdgpu_amdkfd_remove_all_eviction_fences(struct amdgpu_bo *bo)
- {
--	return 0;
- }
- 
- static inline
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index fa572ba7f9fc1..1465b3adacb0a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -370,40 +370,32 @@ static int amdgpu_amdkfd_remove_eviction_fence(struct amdgpu_bo *bo,
- 	return 0;
- }
- 
--int amdgpu_amdkfd_remove_fence_on_pt_pd_bos(struct amdgpu_bo *bo)
-+/**
-+ * amdgpu_amdkfd_remove_all_eviction_fences - Remove all eviction fences
-+ * @bo: the BO where to remove the evictions fences from.
-+ *
-+ * This functions should only be used on release when all references to the BO
-+ * are already dropped. We remove the eviction fence from the private copy of
-+ * the dma_resv object here since that is what is used during release to
-+ * determine of the BO is idle or not.
-+ */
-+void amdgpu_amdkfd_remove_all_eviction_fences(struct amdgpu_bo *bo)
- {
--	struct amdgpu_bo *root = bo;
--	struct amdgpu_vm_bo_base *vm_bo;
--	struct amdgpu_vm *vm;
--	struct amdkfd_process_info *info;
--	struct amdgpu_amdkfd_fence *ef;
--	int ret;
--
--	/* we can always get vm_bo from root PD bo.*/
--	while (root->parent)
--		root = root->parent;
-+	struct dma_resv *resv = &bo->tbo.base._resv;
-+	struct dma_fence *fence, *stub;
-+	struct dma_resv_iter cursor;
- 
--	vm_bo = root->vm_bo;
--	if (!vm_bo)
--		return 0;
-+	dma_resv_assert_held(resv);
- 
--	vm = vm_bo->vm;
--	if (!vm)
--		return 0;
--
--	info = vm->process_info;
--	if (!info || !info->eviction_fence)
--		return 0;
--
--	ef = container_of(dma_fence_get(&info->eviction_fence->base),
--			struct amdgpu_amdkfd_fence, base);
--
--	BUG_ON(!dma_resv_trylock(bo->tbo.base.resv));
--	ret = amdgpu_amdkfd_remove_eviction_fence(bo, ef);
--	dma_resv_unlock(bo->tbo.base.resv);
-+	stub = dma_fence_get_stub();
-+	dma_resv_for_each_fence(&cursor, resv, DMA_RESV_USAGE_BOOKKEEP, fence) {
-+		if (!to_amdgpu_amdkfd_fence(fence))
-+			continue;
- 
--	dma_fence_put(&ef->base);
--	return ret;
-+		dma_resv_replace_fences(resv, fence->context, stub,
-+					DMA_RESV_USAGE_BOOKKEEP);
-+	}
-+	dma_fence_put(stub);
- }
- 
- static int amdgpu_amdkfd_bo_validate(struct amdgpu_bo *bo, uint32_t domain,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-index 4c4bdc4f51b29..fc588ef598c09 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -1246,28 +1246,36 @@ void amdgpu_bo_release_notify(struct ttm_buffer_object *bo)
- 	if (abo->kfd_bo)
- 		amdgpu_amdkfd_release_notify(abo);
- 
--	/* We only remove the fence if the resv has individualized. */
--	WARN_ON_ONCE(bo->type == ttm_bo_type_kernel
--			&& bo->base.resv != &bo->base._resv);
--	if (bo->base.resv == &bo->base._resv)
--		amdgpu_amdkfd_remove_fence_on_pt_pd_bos(abo);
 +	/*
-+	 * We lock the private dma_resv object here and since the BO is about to
-+	 * be released nobody else should have a pointer to it.
-+	 * So when this locking here fails something is wrong with the reference
-+	 * counting.
++	 * Process pending local synchronization instead of waiting
++	 * for per-CPU local timer to expire.
 +	 */
-+	if (WARN_ON_ONCE(!dma_resv_trylock(&bo->base._resv)))
-+		return;
++	imsic_local_sync_all(false);
 +
-+	amdgpu_amdkfd_remove_all_eviction_fences(abo);
+ 	chained_irq_enter(chip, desc);
  
- 	if (!bo->resource || bo->resource->mem_type != TTM_PL_VRAM ||
- 	    !(abo->flags & AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE) ||
- 	    adev->in_suspend || drm_dev_is_unplugged(adev_to_drm(adev)))
--		return;
-+		goto out;
+ 	while ((local_id = csr_swap(CSR_TOPEI, 0))) {
+@@ -120,7 +126,7 @@ static int imsic_starting_cpu(unsigned int cpu)
+ 	 * Interrupts identities might have been enabled/disabled while
+ 	 * this CPU was not running so sync-up local enable/disable state.
+ 	 */
+-	imsic_local_sync_all();
++	imsic_local_sync_all(true);
  
--	if (WARN_ON_ONCE(!dma_resv_trylock(bo->base.resv)))
--		return;
-+	r = dma_resv_reserve_fences(&bo->base._resv, 1);
-+	if (r)
-+		goto out;
- 
--	r = amdgpu_fill_buffer(abo, 0, bo->base.resv, &fence, true);
--	if (!WARN_ON(r)) {
--		amdgpu_vram_mgr_set_cleared(bo->resource);
--		amdgpu_bo_fence(abo, fence, false);
--		dma_fence_put(fence);
--	}
-+	r = amdgpu_fill_buffer(abo, 0, &bo->base._resv, &fence, true);
-+	if (WARN_ON(r))
-+		goto out;
-+
-+	amdgpu_vram_mgr_set_cleared(bo->resource);
-+	dma_resv_add_fence(&bo->base._resv, fence, DMA_RESV_USAGE_KERNEL);
-+	dma_fence_put(fence);
- 
--	dma_resv_unlock(bo->base.resv);
-+out:
-+	dma_resv_unlock(&bo->base._resv);
+ 	/* Enable local interrupt delivery */
+ 	imsic_local_delivery(true);
+diff --git a/drivers/irqchip/irq-riscv-imsic-state.c b/drivers/irqchip/irq-riscv-imsic-state.c
+index b97e6cd89ed74..1aeba76d72795 100644
+--- a/drivers/irqchip/irq-riscv-imsic-state.c
++++ b/drivers/irqchip/irq-riscv-imsic-state.c
+@@ -124,10 +124,11 @@ void __imsic_eix_update(unsigned long base_id, unsigned long num_id, bool pend,
+ 	}
  }
  
- /**
+-static void __imsic_local_sync(struct imsic_local_priv *lpriv)
++static bool __imsic_local_sync(struct imsic_local_priv *lpriv)
+ {
+ 	struct imsic_local_config *mlocal;
+ 	struct imsic_vector *vec, *mvec;
++	bool ret = true;
+ 	int i;
+ 
+ 	lockdep_assert_held(&lpriv->lock);
+@@ -143,35 +144,75 @@ static void __imsic_local_sync(struct imsic_local_priv *lpriv)
+ 			__imsic_id_clear_enable(i);
+ 
+ 		/*
+-		 * If the ID was being moved to a new ID on some other CPU
+-		 * then we can get a MSI during the movement so check the
+-		 * ID pending bit and re-trigger the new ID on other CPU
+-		 * using MMIO write.
++		 * Clear the previous vector pointer of the new vector only
++		 * after the movement is complete on the old CPU.
+ 		 */
+-		mvec = READ_ONCE(vec->move);
+-		WRITE_ONCE(vec->move, NULL);
+-		if (mvec && mvec != vec) {
++		mvec = READ_ONCE(vec->move_prev);
++		if (mvec) {
++			/*
++			 * If the old vector has not been updated then
++			 * try again in the next sync-up call.
++			 */
++			if (READ_ONCE(mvec->move_next)) {
++				ret = false;
++				continue;
++			}
++
++			WRITE_ONCE(vec->move_prev, NULL);
++		}
++
++		/*
++		 * If a vector was being moved to a new vector on some other
++		 * CPU then we can get a MSI during the movement so check the
++		 * ID pending bit and re-trigger the new ID on other CPU using
++		 * MMIO write.
++		 */
++		mvec = READ_ONCE(vec->move_next);
++		if (mvec) {
+ 			if (__imsic_id_read_clear_pending(i)) {
+ 				mlocal = per_cpu_ptr(imsic->global.local, mvec->cpu);
+ 				writel_relaxed(mvec->local_id, mlocal->msi_va);
+ 			}
+ 
++			WRITE_ONCE(vec->move_next, NULL);
+ 			imsic_vector_free(&lpriv->vectors[i]);
+ 		}
+ 
+ skip:
+ 		bitmap_clear(lpriv->dirty_bitmap, i, 1);
+ 	}
++
++	return ret;
+ }
+ 
+-void imsic_local_sync_all(void)
++#ifdef CONFIG_SMP
++static void __imsic_local_timer_start(struct imsic_local_priv *lpriv)
++{
++	lockdep_assert_held(&lpriv->lock);
++
++	if (!timer_pending(&lpriv->timer)) {
++		lpriv->timer.expires = jiffies + 1;
++		add_timer_on(&lpriv->timer, smp_processor_id());
++	}
++}
++#else
++static inline void __imsic_local_timer_start(struct imsic_local_priv *lpriv)
++{
++}
++#endif
++
++void imsic_local_sync_all(bool force_all)
+ {
+ 	struct imsic_local_priv *lpriv = this_cpu_ptr(imsic->lpriv);
+ 	unsigned long flags;
+ 
+ 	raw_spin_lock_irqsave(&lpriv->lock, flags);
+-	bitmap_fill(lpriv->dirty_bitmap, imsic->global.nr_ids + 1);
+-	__imsic_local_sync(lpriv);
++
++	if (force_all)
++		bitmap_fill(lpriv->dirty_bitmap, imsic->global.nr_ids + 1);
++	if (!__imsic_local_sync(lpriv))
++		__imsic_local_timer_start(lpriv);
++
+ 	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
+ }
+ 
+@@ -190,12 +231,7 @@ void imsic_local_delivery(bool enable)
+ #ifdef CONFIG_SMP
+ static void imsic_local_timer_callback(struct timer_list *timer)
+ {
+-	struct imsic_local_priv *lpriv = this_cpu_ptr(imsic->lpriv);
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&lpriv->lock, flags);
+-	__imsic_local_sync(lpriv);
+-	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
++	imsic_local_sync_all(false);
+ }
+ 
+ static void __imsic_remote_sync(struct imsic_local_priv *lpriv, unsigned int cpu)
+@@ -216,14 +252,11 @@ static void __imsic_remote_sync(struct imsic_local_priv *lpriv, unsigned int cpu
+ 	 */
+ 	if (cpu_online(cpu)) {
+ 		if (cpu == smp_processor_id()) {
+-			__imsic_local_sync(lpriv);
+-			return;
++			if (__imsic_local_sync(lpriv))
++				return;
+ 		}
+ 
+-		if (!timer_pending(&lpriv->timer)) {
+-			lpriv->timer.expires = jiffies + 1;
+-			add_timer_on(&lpriv->timer, cpu);
+-		}
++		__imsic_local_timer_start(lpriv);
+ 	}
+ }
+ #else
+@@ -278,8 +311,9 @@ void imsic_vector_unmask(struct imsic_vector *vec)
+ 	raw_spin_unlock(&lpriv->lock);
+ }
+ 
+-static bool imsic_vector_move_update(struct imsic_local_priv *lpriv, struct imsic_vector *vec,
+-				     bool new_enable, struct imsic_vector *new_move)
++static bool imsic_vector_move_update(struct imsic_local_priv *lpriv,
++				     struct imsic_vector *vec, bool is_old_vec,
++				     bool new_enable, struct imsic_vector *move_vec)
+ {
+ 	unsigned long flags;
+ 	bool enabled;
+@@ -289,7 +323,10 @@ static bool imsic_vector_move_update(struct imsic_local_priv *lpriv, struct imsi
+ 	/* Update enable and move details */
+ 	enabled = READ_ONCE(vec->enable);
+ 	WRITE_ONCE(vec->enable, new_enable);
+-	WRITE_ONCE(vec->move, new_move);
++	if (is_old_vec)
++		WRITE_ONCE(vec->move_next, move_vec);
++	else
++		WRITE_ONCE(vec->move_prev, move_vec);
+ 
+ 	/* Mark the vector as dirty and synchronize */
+ 	bitmap_set(lpriv->dirty_bitmap, vec->local_id, 1);
+@@ -322,8 +359,8 @@ void imsic_vector_move(struct imsic_vector *old_vec, struct imsic_vector *new_ve
+ 	 * interrupt on the old vector while device was being moved
+ 	 * to the new vector.
+ 	 */
+-	enabled = imsic_vector_move_update(old_lpriv, old_vec, false, new_vec);
+-	imsic_vector_move_update(new_lpriv, new_vec, enabled, new_vec);
++	enabled = imsic_vector_move_update(old_lpriv, old_vec, true, false, new_vec);
++	imsic_vector_move_update(new_lpriv, new_vec, false, enabled, old_vec);
+ }
+ 
+ #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
+@@ -386,7 +423,8 @@ struct imsic_vector *imsic_vector_alloc(unsigned int hwirq, const struct cpumask
+ 	vec = &lpriv->vectors[local_id];
+ 	vec->hwirq = hwirq;
+ 	vec->enable = false;
+-	vec->move = NULL;
++	vec->move_next = NULL;
++	vec->move_prev = NULL;
+ 
+ 	return vec;
+ }
+diff --git a/drivers/irqchip/irq-riscv-imsic-state.h b/drivers/irqchip/irq-riscv-imsic-state.h
+index 391e442808275..f02842b84ed58 100644
+--- a/drivers/irqchip/irq-riscv-imsic-state.h
++++ b/drivers/irqchip/irq-riscv-imsic-state.h
+@@ -23,7 +23,8 @@ struct imsic_vector {
+ 	unsigned int				hwirq;
+ 	/* Details accessed using local lock held */
+ 	bool					enable;
+-	struct imsic_vector			*move;
++	struct imsic_vector			*move_next;
++	struct imsic_vector			*move_prev;
+ };
+ 
+ struct imsic_local_priv {
+@@ -74,7 +75,7 @@ static inline void __imsic_id_clear_enable(unsigned long id)
+ 	__imsic_eix_update(id, 1, false, false);
+ }
+ 
+-void imsic_local_sync_all(void);
++void imsic_local_sync_all(bool force_all);
+ void imsic_local_delivery(bool enable);
+ 
+ void imsic_vector_mask(struct imsic_vector *vec);
+@@ -87,7 +88,7 @@ static inline bool imsic_vector_isenabled(struct imsic_vector *vec)
+ 
+ static inline struct imsic_vector *imsic_vector_get_move(struct imsic_vector *vec)
+ {
+-	return READ_ONCE(vec->move);
++	return READ_ONCE(vec->move_prev);
+ }
+ 
+ void imsic_vector_move(struct imsic_vector *old_vec, struct imsic_vector *new_vec);
 -- 
 2.39.5
 
