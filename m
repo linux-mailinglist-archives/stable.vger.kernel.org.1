@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C04AAC557B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDEDAC58CF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E08F4A3FE8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:11:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8ADD4C0BDA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E994D280314;
-	Tue, 27 May 2025 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C4227D786;
+	Tue, 27 May 2025 17:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foeb+INa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDD6HQo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E75E280300;
-	Tue, 27 May 2025 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD4942A9B;
+	Tue, 27 May 2025 17:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365896; cv=none; b=Cqv+csiYViLlwg0E/SkM7kCM7a/uR3ZXM3Z7qg/JZzmo14iMw25mHJ/OmxT1FzAdmVIYEpmSgj5bzfkt1AttVoWs1o1lAWqtoc7qeRWOg3Jlopi6bnP+yMxJTcJ6/jsuAr+qSAYLagW9ZDoaGsSaYSLwf5wILxDuoj1hldqhiO8=
+	t=1748368169; cv=none; b=JTnepgck6zGaFQdlc+KbJT40s9qM2XK7QRTv6Bqwy/0p1L1rCDmkD0B8+42/28fIHFW3ePcZiZYCKzexJrW4G1i1x+GFG44ARiceO+1dtS2tSpnyrreJD1pTqDGPRBLi/pLGTyz/1CwZiAtD508KMahIz3a1fPwG0rNXmqmk1hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365896; c=relaxed/simple;
-	bh=+sHC57xGqMZ8wPQBp+lB3U+viaTEjRAVzh519JcOe1Q=;
+	s=arc-20240116; t=1748368169; c=relaxed/simple;
+	bh=NUYE7fL0DuwP/cm8Z45U2691IwePRZsGY+1nT7A4v0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bo+UiN7jwgVy9iwQ2Q6MHvkcqkGOH1XJEBQIN5OJPbr/MwtPNIbCTnQd5fu4L61dlkbMC0bTziMdJiRl2rMq/n+K7lt2/EhRqiuFWswLvhRtni0pZ7QSot47L8iy23sQ0d8CPDJgxBx22VYagk1Vvi13cEtthebse3YoQc/oGiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foeb+INa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A24C4CEE9;
-	Tue, 27 May 2025 17:11:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sfDGy1pNDiU3PN30Tgp7a3DfYehGybtC7X95CPt09J7QRQoXFMBwXeVkTj01Htrb5IF7hDKlAeVXfM7vOTKi9kL1Z6CyevaVq1LE8pjvo1B3qcrNj+gUCUpfnhgE8MOs0p6z5cZh5cwrnQfGwueuBdEVZb/L8zgTM6ETXF1tSVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDD6HQo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD509C4CEE9;
+	Tue, 27 May 2025 17:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365896;
-	bh=+sHC57xGqMZ8wPQBp+lB3U+viaTEjRAVzh519JcOe1Q=;
+	s=korg; t=1748368169;
+	bh=NUYE7fL0DuwP/cm8Z45U2691IwePRZsGY+1nT7A4v0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=foeb+INaCQGvULfQsDdcJeDZJKW+0rqt0EV4HXu2hRk0XCAbUn/MviClgAe5Ahi+a
-	 e9jEl0g9mTVpnuWW64PwqpI9QOhJPLPoJRPkPlT8DeV2imP7ONCDhOIkxGWT3ZoRAa
-	 WeQjPMpn0lNDFhT6T3r+lenS/dO55APzuhog/GIw=
+	b=yDD6HQo0ma5dqTcnEOlIFM+KiYgzh0RgoaCpFbu5N+fZJF96FR0tFlbHNwKFzmQR6
+	 g4xdv5tKgJtOxsU71ZW68hV9iYDDI55v8H76W5wxrclMgz0ThePkhKBrSt7eq3ATxb
+	 T00tPJN4KWvNzSEuN89BEJHHmGhnygdErzgBtJoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 525/626] btrfs: handle empty eb->folios in num_extent_folios()
+Subject: [PATCH 6.14 621/783] drm/xe/vf: Perform early GT MMIO initialization to read GMDID
 Date: Tue, 27 May 2025 18:26:58 +0200
-Message-ID: <20250527162506.330238002@linuxfoundation.org>
+Message-ID: <20250527162538.442301524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit d6fe0c69b3aa5c985380b794bdf8e6e9b1811e60 ]
+[ Upstream commit 13265fe7426ec9ba5aa86baab913417ca361e8a4 ]
 
-num_extent_folios() unconditionally calls folio_order() on
-eb->folios[0]. If that is NULL this will be a segfault. It is reasonable
-for it to return 0 as the number of folios in the eb when the first
-entry is NULL, so do that instead.
+VFs need to communicate with the GuC to obtain the GMDID value
+and existing GuC functions used for that assume that the GT has
+it's MMIO members already setup. However, due to recent refactoring
+the gt->mmio is initialized later, and any attempt by the VF to use
+xe_mmio_read|write() from GuC functions will lead to NPD crash due
+to unset MMIO register address:
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+[] xe 0000:00:02.1: [drm] Running in SR-IOV VF mode
+[] xe 0000:00:02.1: [drm] GT0: sending H2G MMIO 0x5507
+[] BUG: unable to handle page fault for address: 0000000000190240
+
+Since we are already tweaking the id and type of the primary GT to
+mimic it's a Media GT before initializing the GuC communication,
+we can also call xe_gt_mmio_init() to perform early setup of the
+gt->mmio which will make those GuC functions work again.
+
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250114211347.1083-1-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/xe/xe_pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index 8a36117ed4532..fcb60837d7dc6 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -293,6 +293,8 @@ static inline int num_extent_pages(const struct extent_buffer *eb)
-  */
- static inline int num_extent_folios(const struct extent_buffer *eb)
- {
-+	if (!eb->folios[0])
-+		return 0;
- 	if (folio_order(eb->folios[0]))
- 		return 1;
- 	return num_extent_pages(eb);
+diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
+index 9b8813a518d72..d92b2e5885b98 100644
+--- a/drivers/gpu/drm/xe/xe_pci.c
++++ b/drivers/gpu/drm/xe/xe_pci.c
+@@ -490,6 +490,7 @@ static void read_gmdid(struct xe_device *xe, enum xe_gmdid_type type, u32 *ver,
+ 			gt->info.type = XE_GT_TYPE_MAIN;
+ 		}
+ 
++		xe_gt_mmio_init(gt);
+ 		xe_guc_comm_init_early(&gt->uc.guc);
+ 
+ 		/* Don't bother with GMDID if failed to negotiate the GuC ABI */
 -- 
 2.39.5
 
