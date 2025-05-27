@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2226AAC56B4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B9DAC5364
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56FDD17F352
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:24:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C2657AED5A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0864D27FB0C;
-	Tue, 27 May 2025 17:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB0E27FB0C;
+	Tue, 27 May 2025 16:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1W9Mj94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFDmegaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A441D88D7;
-	Tue, 27 May 2025 17:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB78E27F16C;
+	Tue, 27 May 2025 16:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366655; cv=none; b=bx99wqERIxgte1rqO6ga+ZcnagODCQyoV76+aHaY20/moHStHBUuTwRkrW/1eo5Su5Q0LRSKRCfJDZp8aP/DebdUDKr2C4Vp2QFoxyxw3KTfasNBqoBSs3lRBEsULqx/g5Rr0BDqYvHvK32jjxlfPW80K//P7utN3R5XBPdZyqw=
+	t=1748364400; cv=none; b=uQ3on1q3TULhPwmu9q36HQTc9lJFPVAkCJNkNTK/K6ajWDzT5QOUr7uaeHMwNn0F/JpEOEjw/RyDreDEfwVYsMS55FY3temxu7AYNcguSS9BKSP9O7UZrWEUI+TbcPnXUkaFVTt26R+1dXFKeJarBmSv6bkujKyXEtk0yIpJuqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366655; c=relaxed/simple;
-	bh=1zhxKMqc0ximUK9qIoa0BZSOD5Xc6pKnMAYg9AaALq4=;
+	s=arc-20240116; t=1748364400; c=relaxed/simple;
+	bh=VNmGqVhOBm8LmbL+anAFbrfi6PTw0HlfZ8kq7DI5xRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iw776M1C4Fj/O4jFOiH5jwLVwTdOYGNboenFwPSi9nPKqLMaoRm3Wrq8swlOUkaqmvaBohyxr1EPQl/ERJFeimVwKmXVE02jsE2AVlDp2AIPctXTW76Ru1kIW5gsIbA3v1BkWwDcGGbD9OC38l5QpKHmthJHN3HwP1DgqiiPxt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1W9Mj94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BECAC4CEE9;
-	Tue, 27 May 2025 17:24:14 +0000 (UTC)
+	 MIME-Version; b=KtXIU9ovqQv6grBsDaU29p3Yy29aLSOux8tuYpE8TqnNo3QDT4nn0BH3/JxMXXkUQC0vwYBDiPxt2Gv6KIpkrgAsm/q2J4dg2mh9cxd8oZfL5DxgoA7B6li2SdU9e7TcyVHwBq8NAFeTnTIOd/hVjhkg2yceHrqF+O86HgfVZzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFDmegaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17944C4CEEB;
+	Tue, 27 May 2025 16:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366655;
-	bh=1zhxKMqc0ximUK9qIoa0BZSOD5Xc6pKnMAYg9AaALq4=;
+	s=korg; t=1748364400;
+	bh=VNmGqVhOBm8LmbL+anAFbrfi6PTw0HlfZ8kq7DI5xRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1W9Mj94OJ2FOujL8odHds47kgScumZjgURTibKvs77xEtNoxTsjyFVF4KqybG8cf
-	 SMwhcKKMo4pZspsf0NinrarR2VW1gW6yOvyesSQwsJU8ElDP5nBSK9hwepWarGBj+v
-	 W6osbO6FQw77MB3Yqfs8JLBi+mOC0bHD0ysu6Q/Y=
+	b=sFDmegaXMa2AB26GXrBbgc/L4VXMutMiwyxzuelMDTKoCce2Cswl6MbPlS1ii8Dbc
+	 TGeCtQcsYCRfT+3tzVLtA8y/W1T6mI9olohDuK88lWYNW7gcxeLepbKBdbTwQKjEpr
+	 pnQ0T2AKFqb168iQ9SeYjmA8og5mc6SA0HtwVFnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Brandon Kammerdiener <brandon.kammerdiener@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 138/783] btrfs: get zone unusable bytes while holding lock at btrfs_reclaim_bgs_work()
+Subject: [PATCH 6.12 042/626] bpf: fix possible endless loop in BPF map iteration
 Date: Tue, 27 May 2025 18:18:55 +0200
-Message-ID: <20250527162518.778993793@linuxfoundation.org>
+Message-ID: <20250527162446.770721853@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Brandon Kammerdiener <brandon.kammerdiener@intel.com>
 
-[ Upstream commit 1283b8c125a83bf7a7dbe90c33d3472b6d7bf612 ]
+[ Upstream commit 75673fda0c557ae26078177dd14d4857afbf128d ]
 
-At btrfs_reclaim_bgs_work(), we are grabbing a block group's zone unusable
-bytes while not under the protection of the block group's spinlock, so
-this can trigger race reports from KCSAN (or similar tools) since that
-field is typically updated while holding the lock, such as at
-__btrfs_add_free_space_zoned() for example.
+The _safe variant used here gets the next element before running the callback,
+avoiding the endless loop condition.
 
-Fix this by grabbing the zone unusable bytes while we are still in the
-critical section holding the block group's spinlock, which is right above
-where we are currently grabbing it.
-
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Brandon Kammerdiener <brandon.kammerdiener@intel.com>
+Link: https://lore.kernel.org/r/20250424153246.141677-2-brandon.kammerdiener@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Hou Tao <houtao1@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ kernel/bpf/hashtab.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index b96b235943344..b14faa1d57b8c 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1888,6 +1888,17 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 			up_write(&space_info->groups_sem);
- 			goto next;
- 		}
-+
-+		/*
-+		 * Cache the zone_unusable value before turning the block group
-+		 * to read only. As soon as the block group is read only it's
-+		 * zone_unusable value gets moved to the block group's read-only
-+		 * bytes and isn't available for calculations anymore. We also
-+		 * cache it before unlocking the block group, to prevent races
-+		 * (reports from KCSAN and such tools) with tasks updating it.
-+		 */
-+		zone_unusable = bg->zone_unusable;
-+
- 		spin_unlock(&bg->lock);
- 		spin_unlock(&space_info->lock);
- 
-@@ -1904,13 +1915,6 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 			goto next;
- 		}
- 
--		/*
--		 * Cache the zone_unusable value before turning the block group
--		 * to read only. As soon as the blog group is read only it's
--		 * zone_unusable value gets moved to the block group's read-only
--		 * bytes and isn't available for calculations anymore.
--		 */
--		zone_unusable = bg->zone_unusable;
- 		ret = inc_block_group_ro(bg, 0);
- 		up_write(&space_info->groups_sem);
- 		if (ret < 0)
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index bb3ba8ebaf3d2..570e2f7231443 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -2223,7 +2223,7 @@ static long bpf_for_each_hash_elem(struct bpf_map *map, bpf_callback_t callback_
+ 		b = &htab->buckets[i];
+ 		rcu_read_lock();
+ 		head = &b->head;
+-		hlist_nulls_for_each_entry_rcu(elem, n, head, hash_node) {
++		hlist_nulls_for_each_entry_safe(elem, n, head, hash_node) {
+ 			key = elem->key;
+ 			if (is_percpu) {
+ 				/* current cpu value for percpu map */
 -- 
 2.39.5
 
