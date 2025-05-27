@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA60AC579D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC41AC5461
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FD4B4A769D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 429177B050D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982D927FB10;
-	Tue, 27 May 2025 17:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCCF280012;
+	Tue, 27 May 2025 16:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TQryxja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KejJHsQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570953C01;
-	Tue, 27 May 2025 17:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673971EA91;
+	Tue, 27 May 2025 16:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367311; cv=none; b=Zf0njgSZ41etPBcAPcYbWV81FN9ego7wgLbychTczheHUdwJzWNHbGQsA8JbTyJUKHZyA+ah5XldfmbwFRUcLXUmN+K/YC0pCDSULqkCUPw5yqNLwy0HTKtFsOXKakkcWfRX+LuK0+0QeJobUT16PGSV6LJd4thljvGv9FgvHyw=
+	t=1748364956; cv=none; b=S/isbkC3/ROorI4oA8DlQwFrOAuiQmiIjtkkx6bvC/L4hMaS7KkgQTkw6MVEb45lu7XDcU1XS2Y206NdETv2C6RGFl9OnapKQSie56W4Lyr8xkwZzOBQPh2cSkb4q2po83AliBFlBw3NzNY3UtB8UdauOeUsDr/FhKdfqqAicxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367311; c=relaxed/simple;
-	bh=AgisHirvke8uzbpLma0EDVsedveNuIaAHqAGu/EMrIA=;
+	s=arc-20240116; t=1748364956; c=relaxed/simple;
+	bh=oPuFYCLND9ZixtKK42c1Dgr6sYfVtuguaecbmkOOTA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeEdPWFHmOcQixcI7PWoITQ/etZ5+fUrTp2FsdlDP23+919SUNtwrS+0pPk3p7dpCE2VqzFIyG5IpKmyhgenY+p5JRpAbbWfJ/9cc8I3qjPmBJ2d7upowWwPioaLQCbTxbjxroi/3eRezkxPNLawrMrnxAmOwoUa0CU3gKuWzVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TQryxja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AB6C4CEE9;
-	Tue, 27 May 2025 17:35:10 +0000 (UTC)
+	 MIME-Version; b=LlnowQe9t2fqIWN2gL48IiXdcEweM870SpZ7XzYa0KqpUsdmQ9oCRmFv/WHcuq/wRLAJCdtoUNdU3tVeUKmYaOQ/gC8nBMzbzwT/Ufj76DxcDcbtJUrirPVKqwHG7Guw8sqjaP/33iNd60h0qCdgUeTXtQStHDUKe6+YTCw2cFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KejJHsQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA638C4CEE9;
+	Tue, 27 May 2025 16:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367311;
-	bh=AgisHirvke8uzbpLma0EDVsedveNuIaAHqAGu/EMrIA=;
+	s=korg; t=1748364956;
+	bh=oPuFYCLND9ZixtKK42c1Dgr6sYfVtuguaecbmkOOTA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TQryxjaRccy2XnWTOCXmuglcqdha9zAa8Id4/cHF2SKk6/bRueW41LzDTjnAG3Na
-	 CtJCa9K9fF84IralStZ1OSVT6UvoOeeT4JsTCtLbocBu4WsdMKS1uE+CtqwlNHkh4E
-	 p+ahpAuyoFDnGARMxHp+ZqT8TCRqQkTep5Lj1irg=
+	b=KejJHsQK/GK1/lCfcrF+vL07nqzLeNqxrLsyZ0nJ3cnUmCYhsf2GTRRMCH8seApzH
+	 lVgm/OUajchVsYom8/hzKJ/58Rwo1gjtsmw0tmNE2tmcayipzSGdnfhy99IB3VpPqJ
+	 p9CJlzX9HJTI8nOvLTDn0pLtERkVgSo9ajbiSKxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huisong Li <lihuisong@huawei.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 316/783] hwmon: (acpi_power_meter) Fix the fake power alarm reporting
-Date: Tue, 27 May 2025 18:21:53 +0200
-Message-ID: <20250527162525.933525103@linuxfoundation.org>
+Subject: [PATCH 6.12 221/626] soc: samsung: include linux/array_size.h where needed
+Date: Tue, 27 May 2025 18:21:54 +0200
+Message-ID: <20250527162453.998502407@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huisong Li <lihuisong@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 0ea627381eb527a0ebd262c690c3992085b87ff4 ]
+[ Upstream commit 4c57930f68d90e0d52c396d058cfa9ed8447a6c4 ]
 
-We encountered a problem that a fake power alarm is reported to
-user on the platform unsupported notifications at the second step
-below:
-1> Query 'power1_alarm' attribute when the power capping occurs.
-2> Query 'power1_alarm' attribute when the power capping is over
-   and the current average power is less then power cap value.
+This does not necessarily get included through asm/io.h:
 
-The root cause is that the resource->power_alarm is set to true
-at the first step. And power meter use this old value to show
-the power alarm state instead of the current the comparison value.
+drivers/soc/samsung/exynos3250-pmu.c:120:18: error: use of undeclared identifier 'ARRAY_SIZE'
+  120 |         for (i = 0; i < ARRAY_SIZE(exynos3250_list_feed); i++) {
+      |                         ^
+drivers/soc/samsung/exynos5250-pmu.c:162:18: error: use of undeclared identifier 'ARRAY_SIZE'
+  162 |         for (i = 0; i < ARRAY_SIZE(exynos5_list_both_cnt_feed); i++) {
+      |                         ^
 
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
-Link: https://lore.kernel.org/r/20250220030832.2976-1-lihuisong@huawei.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250305211446.43772-1-arnd@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/acpi_power_meter.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/soc/samsung/exynos-asv.c     | 1 +
+ drivers/soc/samsung/exynos-chipid.c  | 1 +
+ drivers/soc/samsung/exynos-pmu.c     | 1 +
+ drivers/soc/samsung/exynos-usi.c     | 1 +
+ drivers/soc/samsung/exynos3250-pmu.c | 1 +
+ drivers/soc/samsung/exynos5250-pmu.c | 1 +
+ drivers/soc/samsung/exynos5420-pmu.c | 1 +
+ 7 files changed, 7 insertions(+)
 
-diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index 44afb07409a46..f05986e4f3792 100644
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -437,9 +437,13 @@ static ssize_t show_val(struct device *dev,
- 			ret = update_cap(resource);
- 			if (ret)
- 				return ret;
-+			resource->power_alarm = resource->power > resource->cap;
-+			val = resource->power_alarm;
-+		} else {
-+			val = resource->power_alarm ||
-+				 resource->power > resource->cap;
-+			resource->power_alarm = resource->power > resource->cap;
- 		}
--		val = resource->power_alarm || resource->power > resource->cap;
--		resource->power_alarm = resource->power > resource->cap;
- 		break;
- 	case 7:
- 	case 8:
+diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
+index 97006cc3b9461..8e681f5195264 100644
+--- a/drivers/soc/samsung/exynos-asv.c
++++ b/drivers/soc/samsung/exynos-asv.c
+@@ -9,6 +9,7 @@
+  * Samsung Exynos SoC Adaptive Supply Voltage support
+  */
+ 
++#include <linux/array_size.h>
+ #include <linux/cpu.h>
+ #include <linux/device.h>
+ #include <linux/energy_model.h>
+diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
+index bba8d86ae1bb0..dedfe6d0fb3f3 100644
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -12,6 +12,7 @@
+  * Samsung Exynos SoC Adaptive Supply Voltage and Chip ID support
+  */
+ 
++#include <linux/array_size.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+ #include <linux/mfd/syscon.h>
+diff --git a/drivers/soc/samsung/exynos-pmu.c b/drivers/soc/samsung/exynos-pmu.c
+index dd5256e5aae1a..c40313886a012 100644
+--- a/drivers/soc/samsung/exynos-pmu.c
++++ b/drivers/soc/samsung/exynos-pmu.c
+@@ -5,6 +5,7 @@
+ //
+ // Exynos - CPU PMU(Power Management Unit) support
+ 
++#include <linux/array_size.h>
+ #include <linux/arm-smccc.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+diff --git a/drivers/soc/samsung/exynos-usi.c b/drivers/soc/samsung/exynos-usi.c
+index 114352695ac2b..5a93a68dba87f 100644
+--- a/drivers/soc/samsung/exynos-usi.c
++++ b/drivers/soc/samsung/exynos-usi.c
+@@ -6,6 +6,7 @@
+  * Samsung Exynos USI driver (Universal Serial Interface).
+  */
+ 
++#include <linux/array_size.h>
+ #include <linux/clk.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+diff --git a/drivers/soc/samsung/exynos3250-pmu.c b/drivers/soc/samsung/exynos3250-pmu.c
+index 30f230ed1769c..4bad12a995422 100644
+--- a/drivers/soc/samsung/exynos3250-pmu.c
++++ b/drivers/soc/samsung/exynos3250-pmu.c
+@@ -5,6 +5,7 @@
+ //
+ // Exynos3250 - CPU PMU (Power Management Unit) support
+ 
++#include <linux/array_size.h>
+ #include <linux/soc/samsung/exynos-regs-pmu.h>
+ #include <linux/soc/samsung/exynos-pmu.h>
+ 
+diff --git a/drivers/soc/samsung/exynos5250-pmu.c b/drivers/soc/samsung/exynos5250-pmu.c
+index 7a2d50be6b4ac..2ae5c3e1b07a3 100644
+--- a/drivers/soc/samsung/exynos5250-pmu.c
++++ b/drivers/soc/samsung/exynos5250-pmu.c
+@@ -5,6 +5,7 @@
+ //
+ // Exynos5250 - CPU PMU (Power Management Unit) support
+ 
++#include <linux/array_size.h>
+ #include <linux/soc/samsung/exynos-regs-pmu.h>
+ #include <linux/soc/samsung/exynos-pmu.h>
+ 
+diff --git a/drivers/soc/samsung/exynos5420-pmu.c b/drivers/soc/samsung/exynos5420-pmu.c
+index 6fedcd78cb451..58a2209795f78 100644
+--- a/drivers/soc/samsung/exynos5420-pmu.c
++++ b/drivers/soc/samsung/exynos5420-pmu.c
+@@ -5,6 +5,7 @@
+ //
+ // Exynos5420 - CPU PMU (Power Management Unit) support
+ 
++#include <linux/array_size.h>
+ #include <linux/pm.h>
+ #include <linux/soc/samsung/exynos-regs-pmu.h>
+ #include <linux/soc/samsung/exynos-pmu.h>
 -- 
 2.39.5
 
