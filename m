@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFC4AC58C2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908B5AC5569
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14B51BC2B86
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 098207A66BD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681C028001E;
-	Tue, 27 May 2025 17:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B73274FF4;
+	Tue, 27 May 2025 17:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM71Z6wv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lrvu1Mwk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248EE42A9B;
-	Tue, 27 May 2025 17:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500EC86347;
+	Tue, 27 May 2025 17:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368132; cv=none; b=AvekAD2S2fmB8pgtZXKox24j7alsIZYMS8gPhIiQluhNt1XL3cKxAFQKGhHJm34q+T9bEbT7qQ9NY6OCe2OtxnjI1FFhAbS2HVQu+e4+eEMatdSgVQFIn/BZLRthxyO8MkOUDwH7Oea/VUBrI9Ry3RzXWzAr1PZxeZEQumN+3UM=
+	t=1748365864; cv=none; b=Q0VSucLXUsop8tqTLlLJWqT07SohNMtkJ9fPvHsU+rLVuSFEmnJK/y1BXry2N4eMasToLqSGgn6dZuS9M0t4ko3zK8O4MU9S9YMn7gTDDjanhsxuxM2It/9EyXV+QQvaVfkYCJRbBkE8A+iRHyJIoySbhRrWHITmrGwekOovBCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368132; c=relaxed/simple;
-	bh=MfnjnACiNJtUBL7LSwL5j5Pbe3eKvRJ1teYBL4EGkhc=;
+	s=arc-20240116; t=1748365864; c=relaxed/simple;
+	bh=/ebF3QhLWSES5HCBK/dc18arMIxSbiVpCNJOspbcjEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6waWuHPEc035Ku9EHWbB2q6amq80MXst5hE1tn9doA4UCPFwtGNP3alryshhJEkj/gDPR7bIpvXBjRXUuyK2Y6ylHTxpJ4LogjQ7VOs7T+qAacyBMO+C+QZpRGVMk0x9c2kB4kROnqFRLuB1t0lwxeXl6H9Xkva5aXYQYNFWV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM71Z6wv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465C3C4CEE9;
-	Tue, 27 May 2025 17:48:51 +0000 (UTC)
+	 MIME-Version; b=lo92Alot/k0pPXv4jbz5dNm1fBAPO9DtifQxd6Ln/9Sku2JzyKxEv6W2IwDUX8IihtBXC08CKzXUh8u/CaF8PonSDKw2fcW+kXyzLMvYxsX8XmfG+B4EaSz38k+eah3k/g4OTesT4Sg5gQ7FBKxd70NDTFtHCAldkehkMNc8pC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lrvu1Mwk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7CDC4CEE9;
+	Tue, 27 May 2025 17:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368131;
-	bh=MfnjnACiNJtUBL7LSwL5j5Pbe3eKvRJ1teYBL4EGkhc=;
+	s=korg; t=1748365864;
+	bh=/ebF3QhLWSES5HCBK/dc18arMIxSbiVpCNJOspbcjEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CM71Z6wvfkmPG+Hyt9b0sAK/mmC2kyxzr1deVLmWTO8n1rPsszuZcnUavIHSWvTD0
-	 hRWHi84EWU1tdqK8T/7JaR5yu6zNNdERlqWUlzQz8klBg+8dB+Dl5EnViEnbwZR0qC
-	 077FPO4NZwW6HWJ/jAHF3FwOs1HfDqaPTOUcBCeM=
+	b=Lrvu1MwkvqFQFyXECYTPnI+67UIIeO5gXtu+TurP16MkDWwjH4PSjpNUlSJ1MBv1v
+	 ZwpwB1i0tPkUycLsHep7FyebO8HLp4JMbr9g3l9B0g7NVXtjuxWMjRUGvivyDGEX7h
+	 YgVE8m7WUyab335XCs+HefSO5ulpqsmVOfnQP3EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Soeren Moch <smoch@web.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 578/783] scsi: lpfc: Ignore ndlp rport mismatch in dev_loss_tmo callbk
+Subject: [PATCH 6.12 482/626] wifi: rtl8xxxu: retry firmware download on error
 Date: Tue, 27 May 2025 18:26:15 +0200
-Message-ID: <20250527162536.680744549@linuxfoundation.org>
+Message-ID: <20250527162504.572099372@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Soeren Moch <smoch@web.de>
 
-[ Upstream commit 23ed62897746f49f195d819ce6edeb1db27d1b72 ]
+[ Upstream commit 3d3e28feca7ac8c6cf2a390dbbe1f97e3feb7f36 ]
 
-With repeated port swaps between separate fabrics, there can be multiple
-registrations for fabric well known address 0xfffffe.  This can cause ndlp
-reference confusion due to the usage of a single ndlp ptr that stores the
-rport object in fc_rport struct private storage during transport
-registration.  Subsequent registrations update the ndlp->rport field with
-the newer rport, so when transport layer triggers dev_loss_tmo for the
-earlier registered rport the ndlp->rport private storage is referencing the
-newer rport instead of the older rport in dev_loss_tmo callbk.
+Occasionally there is an EPROTO error during firmware download.
+This error is converted to EAGAIN in the download function.
+But nobody tries again and so device probe fails.
 
-Because the older ndlp->rport object is already cleaned up elsewhere in
-driver code during the time of fabric swap, check that the rport provided
-in dev_loss_tmo callbk actually matches the rport stored in the LLDD's
-ndlp->rport field.  Otherwise, skip dev_loss_tmo work on a stale rport.
+Implement download retry to fix this.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This error was observed (and fix tested) on a tbs2910 board [1]
+with an embedded RTL8188EU (0bda:8179) device behind a USB hub.
+
+[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
+
+Signed-off-by: Soeren Moch <smoch@web.de>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250127194828.599379-1-smoch@web.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 45d268d49060e..07cd611f34bd5 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -228,10 +228,16 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
- 	if (ndlp->nlp_state == NLP_STE_MAPPED_NODE)
- 		return;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index 4ce0c05c51291..569856ca677f6 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -860,9 +860,10 @@ rtl8xxxu_writeN(struct rtl8xxxu_priv *priv, u16 addr, u8 *buf, u16 len)
+ 	return len;
  
--	/* check for recovered fabric node */
--	if (ndlp->nlp_state == NLP_STE_UNMAPPED_NODE &&
--	    ndlp->nlp_DID == Fabric_DID)
-+	/* Ignore callback for a mismatched (stale) rport */
-+	if (ndlp->rport != rport) {
-+		lpfc_vlog_msg(vport, KERN_WARNING, LOG_NODE,
-+			      "6788 fc rport mismatch: d_id x%06x ndlp x%px "
-+			      "fc rport x%px node rport x%px state x%x "
-+			      "refcnt %u\n",
-+			      ndlp->nlp_DID, ndlp, rport, ndlp->rport,
-+			      ndlp->nlp_state, kref_read(&ndlp->kref));
- 		return;
+ write_error:
+-	dev_info(&udev->dev,
+-		 "%s: Failed to write block at addr: %04x size: %04x\n",
+-		 __func__, addr, blocksize);
++	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
++		dev_info(&udev->dev,
++			 "%s: Failed to write block at addr: %04x size: %04x\n",
++			 __func__, addr, blocksize);
+ 	return -EAGAIN;
+ }
+ 
+@@ -4064,8 +4065,14 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 	 */
+ 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
+ 
+-	ret = rtl8xxxu_download_firmware(priv);
+-	dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
++	for (int retry = 5; retry >= 0 ; retry--) {
++		ret = rtl8xxxu_download_firmware(priv);
++		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
++		if (ret != -EAGAIN)
++			break;
++		if (retry)
++			dev_dbg(dev, "%s: retry firmware download\n", __func__);
 +	}
- 
- 	if (rport->port_name != wwn_to_u64(ndlp->nlp_portname.u.wwn))
- 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
+ 	if (ret)
+ 		goto exit;
+ 	ret = rtl8xxxu_start_firmware(priv);
 -- 
 2.39.5
 
