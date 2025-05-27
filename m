@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-146699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C03AC543F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1882DAC57A3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FC1E1BA4A54
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F1D47AF2B2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C514427FB2A;
-	Tue, 27 May 2025 16:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C6C27F178;
+	Tue, 27 May 2025 17:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRaM5bRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ut00SN/p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80969276057;
-	Tue, 27 May 2025 16:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6BE3C01;
+	Tue, 27 May 2025 17:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365034; cv=none; b=rZn/jh1u7/hbQkJ7eLEgkQ8CmLiIl9MMD2uPhyq+UTz/5VQvgC6e3XyjLlByHEUNxpvLv4x7jEaC2hydcLS/MxAAGhuEVT07unr4yeHykFHQJn0wgTQskcS2s3WSLg+xQZU37XC8FnFNflcsejWvbtmluJRgRGG8MtUfP+u3DOc=
+	t=1748367329; cv=none; b=ga1W1fXFmzfEfdLcWo8MmByCIbt4LZp+eSeYJGLxcAxEYncmLlVbuy7nFTPz04d54aMFrCjkMCUTtD6vAo7RBBnVtG/1UdxztvMLmG4ZSkKmUoUMVA5yi/i/ZEUJ9hIKKSuYJpJGjWV7vwqeMgBAq6hhE1yo2i/lnh0F0z8ex+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365034; c=relaxed/simple;
-	bh=Qizo2hgU1IrESmQ3rCf5nxItJwFx95QFVngLizUhiUg=;
+	s=arc-20240116; t=1748367329; c=relaxed/simple;
+	bh=SILpHhN2RinkzNwFusizdZsIfk2K4yxrNGMf8t4okJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jekrirqybzb3YKVJrZ81n2UvoA8ndUD50k+7ChMagLcpALQHURt2cvb1zSmclRwM/LAjjOYmaeBS86rcxKPuBYRnpfRBUFKD4s/mQdOeS08IShgGen002JHQNAmdr9uOAB+dapeVLaXUN/YwsQrRsQQBmsQR1FllvSZNUPEFfiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRaM5bRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC40C4CEE9;
-	Tue, 27 May 2025 16:57:13 +0000 (UTC)
+	 MIME-Version; b=gAuBXX465DuFntCsfrh9vXp5pspCxp2oajTzMVaZjr2hhDMlH6gTas6Rnfd7e6HMvzVEi4/P1xCfQA6KyFaKGxLMug53TbVHJvpLQWutdMINMOh8ZMJB0l/shF/hwOrBRkiEL00MdUtqh9fc1fpds8LZMnwRlifBe05JBcV77Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ut00SN/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7EBC4CEEB;
+	Tue, 27 May 2025 17:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365034;
-	bh=Qizo2hgU1IrESmQ3rCf5nxItJwFx95QFVngLizUhiUg=;
+	s=korg; t=1748367329;
+	bh=SILpHhN2RinkzNwFusizdZsIfk2K4yxrNGMf8t4okJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRaM5bRwrF4yF8711IBmUZxNsns5Y/jl4MBzEBzCSm/jstJ3CUGHbS4D0tZ8Bi+DO
-	 NW0zzRimYfqM70Sa4PiJ5TQFvEfFlqT6numFBMVUDWh5B648FoYN5TZ+JoSPIJYBct
-	 oeedAkLII9s+vRtwOG1vRepfC8jWrjmRCEH1SXVc=
+	b=Ut00SN/pMZVCgCIn09w8rvk0LS4Q++CEbbhNKYSLauQnNDtr9jws7iNZirR81DvJx
+	 qu/7elY90BhdtpTOvLQ5l8a7Y3nPNB8SmHTMcd+5P+VXo9lpoxyMrqW5AGdBUejo8W
+	 Kpnsy/OMUgEIAZe70o73UXHCLkQwKg4oygqZ9Lfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Yunke Cao <yunkec@google.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 216/626] tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()
+Subject: [PATCH 6.14 312/783] media: uvcvideo: Handle uvc menu translation inside uvc_get_le_value
 Date: Tue, 27 May 2025 18:21:49 +0200
-Message-ID: <20250527162453.797326952@linuxfoundation.org>
+Message-ID: <20250527162525.776574476@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +64,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit f8ece40786c9342249aa0a1b55e148ee23b2a746 ]
+[ Upstream commit 9109a0b4cb10fd681e9c6e9a4497a6fec5b91c39 ]
 
-We have platforms with 6 NUMA nodes and 480 cpus.
+map->get() gets a value from an uvc_control in "UVC format" and converts
+it to a value that can be consumed by v4l2.
 
-inet_ehash_locks_alloc() currently allocates a single 64KB page
-to hold all ehash spinlocks. This adds more pressure on a single node.
+Instead of using a special get function for V4L2_CTRL_TYPE_MENU, we
+were converting from uvc_get_le_value in two different places.
 
-Change inet_ehash_locks_alloc() to use vmalloc() to spread
-the spinlocks on all online nodes, driven by NUMA policies.
+Move the conversion to uvc_get_le_value().
 
-At boot time, NUMA policy is interleave=all, meaning that
-tcp_hashinfo.ehash_locks gets hash dispersion on all nodes.
-
-Tested:
-
-lack5:~# grep inet_ehash_locks_alloc /proc/vmallocinfo
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-lack5:~# echo 8192 >/proc/sys/net/ipv4/tcp_child_ehash_entries
-lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x000000004e99d30c-0x00000000763f3279   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=1 N1=2 N2=2 N3=1 N4=1 N5=1
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-lack5:~# numactl --interleave=0,5 unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x00000000fd73a33e-0x0000000004b9a177   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=4 N5=4
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-lack5:~# echo 1024 >/proc/sys/net/ipv4/tcp_child_ehash_entries
-lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x00000000db07d7a2-0x00000000ad697d29    8192 inet_ehash_locks_alloc+0x90/0x100 pages=1 vmalloc N2=1
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250305130550.1865988-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Yunke Cao <yunkec@google.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250203-uvc-roi-v17-4-5900a9fed613@chromium.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_hashtables.c | 37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/media/usb/uvc/uvc_ctrl.c | 77 +++++++++++++-------------------
+ 1 file changed, 32 insertions(+), 45 deletions(-)
 
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 9bfcfd016e182..2b4a588247639 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -1230,22 +1230,37 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
- {
- 	unsigned int locksz = sizeof(spinlock_t);
- 	unsigned int i, nblocks = 1;
-+	spinlock_t *ptr = NULL;
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 4e58476d305ef..4a55cf78ec526 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -862,6 +862,25 @@ static inline void uvc_clear_bit(u8 *data, int bit)
+ 	data[bit >> 3] &= ~(1 << (bit & 7));
+ }
  
--	if (locksz != 0) {
--		/* allocate 2 cache lines or at least one spinlock per cpu */
--		nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U);
--		nblocks = roundup_pow_of_two(nblocks * num_possible_cpus());
-+	if (locksz == 0)
-+		goto set_mask;
- 
--		/* no more locks than number of hash buckets */
--		nblocks = min(nblocks, hashinfo->ehash_mask + 1);
-+	/* Allocate 2 cache lines or at least one spinlock per cpu. */
-+	nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U) * num_possible_cpus();
- 
--		hashinfo->ehash_locks = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
--		if (!hashinfo->ehash_locks)
--			return -ENOMEM;
-+	/* At least one page per NUMA node. */
-+	nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / locksz);
++static s32 uvc_menu_to_v4l2_menu(struct uvc_control_mapping *mapping, s32 val)
++{
++	unsigned int i;
 +
-+	nblocks = roundup_pow_of_two(nblocks);
++	for (i = 0; BIT(i) <= mapping->menu_mask; ++i) {
++		u32 menu_value;
 +
-+	/* No more locks than number of hash buckets. */
-+	nblocks = min(nblocks, hashinfo->ehash_mask + 1);
- 
--		for (i = 0; i < nblocks; i++)
--			spin_lock_init(&hashinfo->ehash_locks[i]);
-+	if (num_online_nodes() > 1) {
-+		/* Use vmalloc() to allow NUMA policy to spread pages
-+		 * on all available nodes if desired.
-+		 */
-+		ptr = vmalloc_array(nblocks, locksz);
++		if (!test_bit(i, &mapping->menu_mask))
++			continue;
++
++		menu_value = uvc_mapping_get_menu_value(mapping, i);
++
++		if (menu_value == val)
++			return i;
 +	}
-+	if (!ptr) {
-+		ptr = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
-+		if (!ptr)
-+			return -ENOMEM;
- 	}
-+	for (i = 0; i < nblocks; i++)
-+		spin_lock_init(&ptr[i]);
-+	hashinfo->ehash_locks = ptr;
-+set_mask:
- 	hashinfo->ehash_locks_mask = nblocks - 1;
++
++	return val;
++}
++
+ /*
+  * Extract the bit string specified by mapping->offset and mapping->size
+  * from the little-endian data stored at 'data' and return the result as
+@@ -896,6 +915,16 @@ static s32 uvc_get_le_value(struct uvc_control_mapping *mapping,
+ 	if (mapping->data_type == UVC_CTRL_DATA_TYPE_SIGNED)
+ 		value |= -(value & (1 << (mapping->size - 1)));
+ 
++	/* If it is a menu, convert from uvc to v4l2. */
++	if (mapping->v4l2_type != V4L2_CTRL_TYPE_MENU)
++		return value;
++
++	switch (query) {
++	case UVC_GET_CUR:
++	case UVC_GET_DEF:
++		return uvc_menu_to_v4l2_menu(mapping, value);
++	}
++
+ 	return value;
+ }
+ 
+@@ -1060,32 +1089,6 @@ static int uvc_ctrl_populate_cache(struct uvc_video_chain *chain,
  	return 0;
  }
+ 
+-static s32 __uvc_ctrl_get_value(struct uvc_control_mapping *mapping,
+-				const u8 *data)
+-{
+-	s32 value = mapping->get(mapping, UVC_GET_CUR, data);
+-
+-	if (mapping->v4l2_type == V4L2_CTRL_TYPE_MENU) {
+-		unsigned int i;
+-
+-		for (i = 0; BIT(i) <= mapping->menu_mask; ++i) {
+-			u32 menu_value;
+-
+-			if (!test_bit(i, &mapping->menu_mask))
+-				continue;
+-
+-			menu_value = uvc_mapping_get_menu_value(mapping, i);
+-
+-			if (menu_value == value) {
+-				value = i;
+-				break;
+-			}
+-		}
+-	}
+-
+-	return value;
+-}
+-
+ static int __uvc_ctrl_load_cur(struct uvc_video_chain *chain,
+ 			       struct uvc_control *ctrl)
+ {
+@@ -1136,8 +1139,8 @@ static int __uvc_ctrl_get(struct uvc_video_chain *chain,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	*value = __uvc_ctrl_get_value(mapping,
+-				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
++	*value = mapping->get(mapping, UVC_GET_CUR,
++			      uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
+ 
+ 	return 0;
+ }
+@@ -1287,7 +1290,6 @@ static int __uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
+ {
+ 	struct uvc_control_mapping *master_map = NULL;
+ 	struct uvc_control *master_ctrl = NULL;
+-	unsigned int i;
+ 
+ 	memset(v4l2_ctrl, 0, sizeof(*v4l2_ctrl));
+ 	v4l2_ctrl->id = mapping->id;
+@@ -1330,21 +1332,6 @@ static int __uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
+ 		v4l2_ctrl->minimum = ffs(mapping->menu_mask) - 1;
+ 		v4l2_ctrl->maximum = fls(mapping->menu_mask) - 1;
+ 		v4l2_ctrl->step = 1;
+-
+-		for (i = 0; BIT(i) <= mapping->menu_mask; ++i) {
+-			u32 menu_value;
+-
+-			if (!test_bit(i, &mapping->menu_mask))
+-				continue;
+-
+-			menu_value = uvc_mapping_get_menu_value(mapping, i);
+-
+-			if (menu_value == v4l2_ctrl->default_value) {
+-				v4l2_ctrl->default_value = i;
+-				break;
+-			}
+-		}
+-
+ 		return 0;
+ 
+ 	case V4L2_CTRL_TYPE_BOOLEAN:
+@@ -1630,7 +1617,7 @@ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
+ 		uvc_ctrl_set_handle(handle, ctrl, NULL);
+ 
+ 	list_for_each_entry(mapping, &ctrl->info.mappings, list) {
+-		s32 value = __uvc_ctrl_get_value(mapping, data);
++		s32 value = mapping->get(mapping, UVC_GET_CUR, data);
+ 
+ 		/*
+ 		 * handle may be NULL here if the device sends auto-update
 -- 
 2.39.5
 
