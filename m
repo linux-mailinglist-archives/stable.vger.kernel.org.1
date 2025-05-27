@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-146807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 225C6AC54AD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB52EAC5838
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 370C2166669
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ABDF3B4C09
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EF9154C15;
-	Tue, 27 May 2025 17:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5398F27CCF0;
+	Tue, 27 May 2025 17:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jliC/qmk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+APiAsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ACB1EA91;
-	Tue, 27 May 2025 17:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF8A42A9B;
+	Tue, 27 May 2025 17:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365367; cv=none; b=aN/Hg8LHLa6k80o9tLPVatMlxEjC8umbTgumN06+uuLx85nL4pMy9mgc94QszGlZtBAQOhG95yiktB00/1rrEuSknJ8sDd+kXTx8+PZ8nzEYa8Bq8fan1Cll/hIXSGX6g996EC7eNUL2L0YeZOsJ9hKeg6RBzCmUzmMfKvr2PVc=
+	t=1748367729; cv=none; b=jyNnhFz//oVmNXi/eU4SQx5IkYukeTJTdkDzX8C797p+7C2dTE6ABHku6IepO+sbbtZae3EjS28Q6L+HOF9CzFpvGeEN75LteIZ17+OzwbGLnzSVvzsm4Rb6rzCylgwYK0A5FF0QQ8Aq5BFp2OEbkska57eSffwsAhrtP/tUmQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365367; c=relaxed/simple;
-	bh=hsPq5QdvZaEBgV3JNmEAQ7LDr+V5MLZGtTDuGX/aYmo=;
+	s=arc-20240116; t=1748367729; c=relaxed/simple;
+	bh=8Vcc/uc9I1RWE9PvSKsZmxMXvRHHqfsLRJatc5W8uWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZQ4YsedlPer9A4E1ZdSfLwhY/r9+V2QM+iAuSm7eoaAZ9fcvyM2apnPZ8kipf6+x6UuaiZI8L7CoR60EIwZujQoZr7MIHNGUw3eChthj7d7vgn9uNhtFSKu0FxS93Z+FOv/vWdtjlor9d4kYt97jb9MUuXahBCrAn2xGc4lCFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jliC/qmk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C031C4CEE9;
-	Tue, 27 May 2025 17:02:46 +0000 (UTC)
+	 MIME-Version; b=qZ9tY/nE6LH9XR48mzKiniS4DWCQBvNBccuJ6+gXVDkWCIy+qb4UP+EqqbhWdAj2PEw3Fk+RMzz9nS3/eegcH08x/bOqbirI9x+Sc6nBIfQS8e9q7zZFvVkMukqXCA3VRgrOU2i+uSOftzBrM+GC0zlgE0htXAQDhDL3oQ8DP+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+APiAsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD2BC4CEE9;
+	Tue, 27 May 2025 17:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365367;
-	bh=hsPq5QdvZaEBgV3JNmEAQ7LDr+V5MLZGtTDuGX/aYmo=;
+	s=korg; t=1748367728;
+	bh=8Vcc/uc9I1RWE9PvSKsZmxMXvRHHqfsLRJatc5W8uWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jliC/qmkWI3R8vz7S/H/rEv/yYAe8xPnqINAjWFk19v/pgwC1a2tqVEUkKOiQdyAR
-	 W2CzMwgtL8wSpmfA0BqRJ+9TYy2ToxwocNqCvrQn213mDpwFEoCXR5Bn5pphr4+37y
-	 qR5+cIWC73gGpsB+OlzRNsGpHFZOB5IBj9lIDdGU=
+	b=y+APiAscC5/6mOFOYzJSWXQp6PMJuh2EVj7t06eKg5QYPX1prEP/njPstz9V+Moc+
+	 8SGn8fHyYUiN0bH1blZbC/rTbTnLUnH+ChsSQ5BOADLz1dMxzdVy4LQy+ptVrNIo6q
+	 YTx2mYHY1SBQ7HIIMlmk1Fe0G6du4xKLFESVfLs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 354/626] net/mlx5: Apply rate-limiting to high temperature warning
+Subject: [PATCH 6.14 450/783] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
 Date: Tue, 27 May 2025 18:24:07 +0200
-Message-ID: <20250527162459.401433333@linuxfoundation.org>
+Message-ID: <20250527162531.452535547@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
+[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
 
-Wrap the high temperature warning in a temperature event with
-a call to net_ratelimit() to prevent flooding the kernel log
-with repeated warning messages when temperature exceeds the
-threshold multiple times within a short duration.
+Memset the config argument to get_mbus_config V4L2 sub-device pad
+operation to zero before calling the operation. This ensures the callers
+don't need to bother with it nor the implementations need to set all
+fields that may not be relevant to them.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
+ include/media/v4l2-subdev.h           | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index cd8d107f7d9e3..fc6e56305cbbc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -169,9 +169,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
- 
--	mlx5_core_warn(events->dev,
--		       "High temperature on sensors with bit set %llx %llx",
--		       value_msb, value_lsb);
-+	if (net_ratelimit())
-+		mlx5_core_warn(events->dev,
-+			       "High temperature on sensors with bit set %llx %llx",
-+			       value_msb, value_lsb);
- 
- 	return NOTIFY_OK;
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index cde1774c9098d..a3074f469b150 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -444,6 +444,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
+ static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
+ 				struct v4l2_mbus_config *config)
+ {
++	memset(config, 0, sizeof(*config));
++
+ 	return check_pad(sd, pad) ? :
+ 	       sd->ops->pad->get_mbus_config(sd, pad, config);
  }
+diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
+index 2f2200875b038..57f2bcb4eb16c 100644
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -822,7 +822,9 @@ struct v4l2_subdev_state {
+  *		     possible configuration from the remote end, likely calling
+  *		     this operation as close as possible to stream on time. The
+  *		     operation shall fail if the pad index it has been called on
+- *		     is not valid or in case of unrecoverable failures.
++ *		     is not valid or in case of unrecoverable failures. The
++ *		     config argument has been memset to 0 just before calling
++ *		     the op.
+  *
+  * @set_routing: Enable or disable data connection routes described in the
+  *		 subdevice routing table. Subdevs that implement this operation
 -- 
 2.39.5
 
