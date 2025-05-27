@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236C9AC5618
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2A7AC5912
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E0F13B1BFD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EB527AE3D0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D4E27F728;
-	Tue, 27 May 2025 17:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F5327FD64;
+	Tue, 27 May 2025 17:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+4Ls4Kb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtW9xCqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310213790B;
-	Tue, 27 May 2025 17:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D459327D784;
+	Tue, 27 May 2025 17:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366145; cv=none; b=E9rprKkNkTXKUdo1tViBXchos4tVzBYsA8seMXDenG85FW89JlpRGXPKvLquqLlEvKCuSy5Vhz3ww1m+GxAeG4qcs0yt7NRWUTEUgH+fWSLCtjubRBGhJYX9ZbUJeiSzVVDJ0EFGoRnl45fFFavlvaQcTMWchNCob7IKjuqdwwo=
+	t=1748368356; cv=none; b=TdL+5HdIKrMaMjAUGBMbFA990j5Yp9pteqmktsMg+eeAq5thGNSn72kFFNkZZbdDIOBitifmsppFfXr5zhgBIFCxFDNQJiMclyOG7rWTezr6g5fsEDJGCD76/Va726NlHtFP1/pBAabm73GQ8A0mmvrgQDlAricD8orVYAq+nMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366145; c=relaxed/simple;
-	bh=qNUOBYF2qfK2iu/+eSXTKZiecD95bwKfiUD1F7qfyUk=;
+	s=arc-20240116; t=1748368356; c=relaxed/simple;
+	bh=bbjWelZWF8Lo/HrdQ+Idv7YfPWC3iJ77o9ewv8hU5ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTIxyuzeGdW4d9MKnXfCGSOjHVu3jsM03QG9JtgVjYwfFEZMhBxoTUZ6EJ4s7gW2pAJwUxZYBKNmMCGITM2lVVKlQGWa6K64M/m0JC9ZrtkhZYbYlVsssPDhjr5CpHlip+Ok/q1K1H4cj0v2gw07homhfU0YFvmecYIruPOt5aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+4Ls4Kb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF89DC4CEEB;
-	Tue, 27 May 2025 17:15:44 +0000 (UTC)
+	 MIME-Version; b=Wy7AFuhEhd4cekNVS/zxyop62DkwrZFTrJnpB2aUYPLe4erTMX8gfrS029xDKBvvnNnZ+/cQLc/ArAO/KJvKaPno5K3ZwyuibBlnylj0vh1RCVHMnZ+ova+pN4/evuRwyUO/gvMMJaTjMC8FGrqgc/6xdXsW2fFf9jsDv1TmQnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtW9xCqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A1BC4CEE9;
+	Tue, 27 May 2025 17:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366145;
-	bh=qNUOBYF2qfK2iu/+eSXTKZiecD95bwKfiUD1F7qfyUk=;
+	s=korg; t=1748368356;
+	bh=bbjWelZWF8Lo/HrdQ+Idv7YfPWC3iJ77o9ewv8hU5ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+4Ls4KbYM6E/YFLIEmljSW7lBlI2KUxd1qKViZw06SQkCnMcOVIN8UViKg2e/TJa
-	 Kvt17nlgGlM/fAgsbGsA3vVAQUlQYng1zIKTkQRvGWtKmDSr4GS8bqBUuEunptkI0E
-	 Of22F1xfPnkUFFf0OT2tFdbKCW7syFPL6oyEzd0k=
+	b=HtW9xCqF2MTp020Amx6vy2YL3my+r2CTBT8HWchK6kgQaIdwhwg40WXNCo1jxrM/h
+	 ad2luWVRNP41chH1O/Nv4hcvXnyGniOqxy5pGcENG7y/+ORiX2RlFCSdxV1wY4W9f5
+	 gFeeBleAokrJ7RUFhdVd9oxn+F53eh8bBOvi2qKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 578/626] ASoC: SOF: ipc4-pcm: Delay reporting is only supported for playback direction
+	David Wei <dw@davidwei.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 674/783] tools: ynl-gen: validate 0 len strings from kernel
 Date: Tue, 27 May 2025 18:27:51 +0200
-Message-ID: <20250527162508.456000983@linuxfoundation.org>
+Message-ID: <20250527162540.575564249@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: David Wei <dw@davidwei.uk>
 
-commit 98db16f314b3a0d6e5acd94708ea69751436467f upstream.
+[ Upstream commit 4720f9707c783f642332dee3d56dccaefa850e42 ]
 
-The firmware does not provide any information for capture streams via the
-shared pipeline registers.
+Strings from the kernel are guaranteed to be null terminated and
+ynl_attr_validate() checks for this. But it doesn't check if the string
+has a len of 0, which would cause problems when trying to access
+data[len - 1]. Fix this by checking that len is positive.
 
-To avoid reporting invalid delay value for capture streams to user space
-we need to disable it.
-
-Fixes: af74dbd0dbcf ("ASoC: SOF: ipc4-pcm: allocate time info for pcm delay feature")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://patch.msgid.link/20250509085951.15696-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20250503043050.861238-1-dw@davidwei.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4-pcm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/lib/ynl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/sof/ipc4-pcm.c
-+++ b/sound/soc/sof/ipc4-pcm.c
-@@ -794,7 +794,8 @@ static int sof_ipc4_pcm_setup(struct snd
- 
- 		spcm->stream[stream].private = stream_priv;
- 
--		if (!support_info)
-+		/* Delay reporting is only supported on playback */
-+		if (!support_info || stream == SNDRV_PCM_STREAM_CAPTURE)
- 			continue;
- 
- 		time_info = kzalloc(sizeof(*time_info), GFP_KERNEL);
+diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+index ce32cb35007d6..c4da34048ef85 100644
+--- a/tools/net/ynl/lib/ynl.c
++++ b/tools/net/ynl/lib/ynl.c
+@@ -364,7 +364,7 @@ int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
+ 		     "Invalid attribute (binary %s)", policy->name);
+ 		return -1;
+ 	case YNL_PT_NUL_STR:
+-		if ((!policy->len || len <= policy->len) && !data[len - 1])
++		if (len && (!policy->len || len <= policy->len) && !data[len - 1])
+ 			break;
+ 		yerr(yarg->ys, YNL_ERROR_ATTR_INVALID,
+ 		     "Invalid attribute (string %s)", policy->name);
+-- 
+2.39.5
+
 
 
 
