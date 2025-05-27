@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-146693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A93BAC543B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49701AC577B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349731BA4885
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 876D34A72BB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012A8280008;
-	Tue, 27 May 2025 16:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BAF1F8670;
+	Tue, 27 May 2025 17:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETxtXe6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5MvIrXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CB02CCC0;
-	Tue, 27 May 2025 16:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECA127CCF0;
+	Tue, 27 May 2025 17:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365015; cv=none; b=W+JBvwREtWi9LGK34K2WiMf9oYlktOAcXSYoyfds4CLZvJSW0S41aFeIzGMC2iiIgNJUTTDN/9aEmA5TBqRWyNTEixNSostHK/Kq2HsMkf65gTYjcl/ftylk1dxGCjw8eRN1KyDkk5poZ6LS5CGVameyvwxL12Z9FNCk4p/qvYY=
+	t=1748367200; cv=none; b=BEpCDOsnlxJSO1q07TPLGRTEaUl+/3OWiGQX3aurLhZoqF7qcDBbYbr/hqOWEzfnOB/flKxHcbzPaP/Kb36QhnBwtC4qXqfXyUKdV9lTmEXE5Jv+vv6yyd8Q7twxipqG+LQIvtL1AMI30duDUar59A7fx1ThQxsnFYFoEP8s9Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365015; c=relaxed/simple;
-	bh=eVG3osM5cJc5CJCHEI1FF4qId3mSqIbtpngO4c6vKuE=;
+	s=arc-20240116; t=1748367200; c=relaxed/simple;
+	bh=cCt8VtbgO7DqKC5wA0pZ/q+U50CluHlaz+NU6BsjurU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSudNMNeI9y/8+KUYFlZtLn2XrhsYOQYNZq6jjaudtnt3LhpT5FMIvMwoKewNgYhT95fWZ8Fs84GwaIwBuTqrvUbqdUJgt/Q6VOlF4NZYpHb8Mb3a/OTa3qZi+UayuyDHUC+hNCkVZ0npV+tvcVArprX2dWxTPFNCTYuy+g1ePE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETxtXe6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1DDC4CEE9;
-	Tue, 27 May 2025 16:56:55 +0000 (UTC)
+	 MIME-Version; b=iNU5UNc9hHxWe9MzltH0n2SM+Vujapw7P5+rCVnifuSbyv5W6fZYn1KzXtns7t+0jqM5b04HsBbp5dG034acymY46ShwtF8eWOeDxCUluQQqH0PgwHZOuRB9WRZlOrx4o7EfpxuThQXu3KQ3U8AQvZRrzzSKemjpJIY+xBcRgFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5MvIrXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA814C4CEE9;
+	Tue, 27 May 2025 17:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365015;
-	bh=eVG3osM5cJc5CJCHEI1FF4qId3mSqIbtpngO4c6vKuE=;
+	s=korg; t=1748367200;
+	bh=cCt8VtbgO7DqKC5wA0pZ/q+U50CluHlaz+NU6BsjurU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETxtXe6NNBX22oqfiNZwxt4f6c+TzoRafnrBNRc4LzmrYkv7jufAbzlwYDwiaZ4Tt
-	 6Ur1jF+Y0+fXVodf64xvz5caONQbwoQ20LZ7UDwBZwdcMBburEfy6hdL/ecU4bSJLk
-	 qLVai7lioTcNTJJ2dJ4n2AbUdSyB/EtGmH8sqkD4=
+	b=L5MvIrXXE3BOdCNUliKvZdT6ZKQlkyHikHf8IKFlHyX79Kh5t/W1JgiDZG0VWmYkL
+	 2UuK2Z97FaevKUCesBlIY6AOYmP/lppZ3jzKgWw+s2ZTy3wKGm3KDpXyXw8tDulAW4
+	 YLuog30NBOUwY91C29iaPtOWMqrLhoqLJDnwXa3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 213/626] arm64: tegra: Resize aperture for the IGX PCIe C5 slot
+Subject: [PATCH 6.14 309/783] null_blk: generate null_blk configfs features string
 Date: Tue, 27 May 2025 18:21:46 +0200
-Message-ID: <20250527162453.673043586@linuxfoundation.org>
+Message-ID: <20250527162525.650676089@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +66,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 6d4bfe6d86af1ef52bdb4592c9afb2037f24f2c4 ]
+[ Upstream commit 2cadb8ef25a6157b5bd3e8fe0d3e23f32defec25 ]
 
-Some discrete graphics cards such as the NVIDIA RTX A6000 support
-resizable BARs. When connecting an A6000 card to the NVIDIA IGX Orin
-platform, resizing the BAR1 aperture to 8GB fails because the current
-device-tree configuration for the PCIe C5 slot cannot support this.
-Fix this by updating the device-tree 'reg' and 'ranges' properties for
-the PCIe C5 slot to support this.
+The null_blk configfs file 'features' provides a string that lists
+available null_blk features for userspace programs to reference.
+The string is defined as a long constant in the code, which tends to be
+forgotten for updates. It also causes checkpatch.pl to report
+"WARNING: quoted string split across lines".
 
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20250116151903.476047-1-jonathanh@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+To avoid these drawbacks, generate the feature string on the fly. Refer
+to the ca_name field of each element in the nullb_device_attrs table and
+concatenate them in the given buffer. Also, sorted nullb_device_attrs
+table elements in alphabetical order.
+
+Of note is that the feature "index" was missing before this commit.
+This commit adds it to the generated string.
+
+Suggested-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20250226100613.1622564-2-shinichiro.kawasaki@wdc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/block/null_blk/main.c | 86 ++++++++++++++++++++---------------
+ 1 file changed, 49 insertions(+), 37 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
-index 36e8880537460..9ce55b4d2de89 100644
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
-@@ -302,6 +302,16 @@ pcie@14160000 {
- 		};
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 175566a71bb3f..41c2cd5818b4a 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -592,41 +592,41 @@ static ssize_t nullb_device_zone_offline_store(struct config_item *item,
+ CONFIGFS_ATTR_WO(nullb_device_, zone_offline);
  
- 		pcie@141a0000 {
-+			reg = <0x00 0x141a0000 0x0 0x00020000   /* appl registers (128K)      */
-+			       0x00 0x3a000000 0x0 0x00040000   /* configuration space (256K) */
-+			       0x00 0x3a040000 0x0 0x00040000   /* iATU_DMA reg space (256K)  */
-+			       0x00 0x3a080000 0x0 0x00040000   /* DBI reg space (256K)       */
-+			       0x2e 0x20000000 0x0 0x10000000>; /* ECAM (256MB)               */
+ static struct configfs_attribute *nullb_device_attrs[] = {
+-	&nullb_device_attr_size,
++	&nullb_device_attr_badblocks,
++	&nullb_device_attr_blocking,
++	&nullb_device_attr_blocksize,
++	&nullb_device_attr_cache_size,
+ 	&nullb_device_attr_completion_nsec,
+-	&nullb_device_attr_submit_queues,
+-	&nullb_device_attr_poll_queues,
++	&nullb_device_attr_discard,
++	&nullb_device_attr_fua,
+ 	&nullb_device_attr_home_node,
+-	&nullb_device_attr_queue_mode,
+-	&nullb_device_attr_blocksize,
+-	&nullb_device_attr_max_sectors,
+-	&nullb_device_attr_irqmode,
+ 	&nullb_device_attr_hw_queue_depth,
+ 	&nullb_device_attr_index,
+-	&nullb_device_attr_blocking,
+-	&nullb_device_attr_use_per_node_hctx,
+-	&nullb_device_attr_power,
+-	&nullb_device_attr_memory_backed,
+-	&nullb_device_attr_discard,
++	&nullb_device_attr_irqmode,
++	&nullb_device_attr_max_sectors,
+ 	&nullb_device_attr_mbps,
+-	&nullb_device_attr_cache_size,
+-	&nullb_device_attr_badblocks,
+-	&nullb_device_attr_zoned,
+-	&nullb_device_attr_zone_size,
++	&nullb_device_attr_memory_backed,
++	&nullb_device_attr_no_sched,
++	&nullb_device_attr_poll_queues,
++	&nullb_device_attr_power,
++	&nullb_device_attr_queue_mode,
++	&nullb_device_attr_rotational,
++	&nullb_device_attr_shared_tag_bitmap,
++	&nullb_device_attr_shared_tags,
++	&nullb_device_attr_size,
++	&nullb_device_attr_submit_queues,
++	&nullb_device_attr_use_per_node_hctx,
++	&nullb_device_attr_virt_boundary,
++	&nullb_device_attr_zone_append_max_sectors,
+ 	&nullb_device_attr_zone_capacity,
+-	&nullb_device_attr_zone_nr_conv,
+-	&nullb_device_attr_zone_max_open,
++	&nullb_device_attr_zone_full,
+ 	&nullb_device_attr_zone_max_active,
+-	&nullb_device_attr_zone_append_max_sectors,
+-	&nullb_device_attr_zone_readonly,
++	&nullb_device_attr_zone_max_open,
++	&nullb_device_attr_zone_nr_conv,
+ 	&nullb_device_attr_zone_offline,
+-	&nullb_device_attr_zone_full,
+-	&nullb_device_attr_virt_boundary,
+-	&nullb_device_attr_no_sched,
+-	&nullb_device_attr_shared_tags,
+-	&nullb_device_attr_shared_tag_bitmap,
+-	&nullb_device_attr_fua,
+-	&nullb_device_attr_rotational,
++	&nullb_device_attr_zone_readonly,
++	&nullb_device_attr_zone_size,
++	&nullb_device_attr_zoned,
+ 	NULL,
+ };
+ 
+@@ -704,16 +704,28 @@ nullb_group_drop_item(struct config_group *group, struct config_item *item)
+ 
+ static ssize_t memb_group_features_show(struct config_item *item, char *page)
+ {
+-	return snprintf(page, PAGE_SIZE,
+-			"badblocks,blocking,blocksize,cache_size,fua,"
+-			"completion_nsec,discard,home_node,hw_queue_depth,"
+-			"irqmode,max_sectors,mbps,memory_backed,no_sched,"
+-			"poll_queues,power,queue_mode,shared_tag_bitmap,"
+-			"shared_tags,size,submit_queues,use_per_node_hctx,"
+-			"virt_boundary,zoned,zone_capacity,zone_max_active,"
+-			"zone_max_open,zone_nr_conv,zone_offline,zone_readonly,"
+-			"zone_size,zone_append_max_sectors,zone_full,"
+-			"rotational\n");
 +
-+			ranges = <0x81000000 0x00 0x3a100000 0x00 0x3a100000 0x0 0x00100000      /* downstream I/O (1MB) */
-+				  0x82000000 0x00 0x40000000 0x2e 0x30000000 0x0 0x08000000      /* non-prefetchable memory (128MB) */
-+				  0xc3000000 0x28 0x00000000 0x28 0x00000000 0x6 0x20000000>;    /* prefetchable memory (25088MB) */
++	struct configfs_attribute **entry;
++	char delimiter = ',';
++	size_t left = PAGE_SIZE;
++	size_t written = 0;
++	int ret;
 +
- 			status = "okay";
- 			vddio-pex-ctl-supply = <&vdd_1v8_ls>;
- 			phys = <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>,
++	for (entry = &nullb_device_attrs[0]; *entry && left > 0; entry++) {
++		if (!*(entry + 1))
++			delimiter = '\n';
++		ret = snprintf(page + written, left, "%s%c", (*entry)->ca_name,
++			       delimiter);
++		if (ret >= left) {
++			WARN_ONCE(1, "Too many null_blk features to print\n");
++			memzero_explicit(page, PAGE_SIZE);
++			return -ENOBUFS;
++		}
++		left -= ret;
++		written += ret;
++	}
++
++	return written;
+ }
+ 
+ CONFIGFS_ATTR_RO(memb_group_, features);
 -- 
 2.39.5
 
