@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9922AC5499
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DDBAC5804
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9BC44A2EEA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072C71BC16E2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6E318A6A5;
-	Tue, 27 May 2025 17:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CB927FD62;
+	Tue, 27 May 2025 17:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfbUCSkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoyMoLDq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AC978F32;
-	Tue, 27 May 2025 17:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BAE1AF0BB;
+	Tue, 27 May 2025 17:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365337; cv=none; b=jPD1F8wTW2VuBmup9FEz0KCWW5h6Shlp/Qgn++wB8FarcKeo7WH+2wKHVhfsY6HGsCAqesLA+vkKgLIfOHktnl5yiWQfGzNLi8L/5exj9zg4VOWwyRygbpfHTCkspTy0S/y5Zl76s3uSeDiRMLh1IbvJSlenIYtZZY7lXy59jR4=
+	t=1748367598; cv=none; b=jxfIaPLSlapRyGgaX76qNXy7jI4jxf6zsPMp+wgiZb4PWMxca+zTPpsTTxqigUOmBbWtTm4htlnXCUoewPSYz/in7nE1wuGzC8HpvfRkynYyb55cM/6Ms1EsowyqLZJ999LyL0IJhw4hPk3BbSnvm9e5st3q0fDojw5sW/Vijms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365337; c=relaxed/simple;
-	bh=eS4xTVFmjYWN+OGJVBaoFaXFmMBF1ExvLzmghaq1mTs=;
+	s=arc-20240116; t=1748367598; c=relaxed/simple;
+	bh=9omEmZeqii+PVecTCDDaz60do+CYliHE3aBF9xZpz0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TDvDhxnACBZDUV/FmxkZyuiIh8FEbXY/OxFj/+FiEs00U/GWbPRALRMByU8iVB/o0UcVudoW9/euJqGkH9H4yw24D19I9vT4oSjOZzAjZoGdTzZuUsXjICRuIp0VoXXjrEh6Zkerg6Gt+uq/agB5iXRmMDUH7iNXC95yule/zs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfbUCSkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A300EC4CEED;
-	Tue, 27 May 2025 17:02:16 +0000 (UTC)
+	 MIME-Version; b=VT/WCahoeaOrq9u6M5appijRHwG0FhzPLAHVEZSo9mzT50w6ii/z1/oAkkngNzCHMjuMd6aWKsvXrGgX2W5F1ih8m2bHNaXF1U0FlVvRf4vTpxfwuXCb/kJuDD84oE5XHoLaAxBW31ytUN8kUMaosM331yezmGYoUYd7hCfI0gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoyMoLDq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8865C4CEE9;
+	Tue, 27 May 2025 17:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365337;
-	bh=eS4xTVFmjYWN+OGJVBaoFaXFmMBF1ExvLzmghaq1mTs=;
+	s=korg; t=1748367598;
+	bh=9omEmZeqii+PVecTCDDaz60do+CYliHE3aBF9xZpz0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OfbUCSkDJfnw+7ebRVe/dFFcetVsn2p7QZN2nZed4W4sSe81N5coM37Z8lNMxq1rR
-	 tuoZptINBDz8nwmNCTXq80bBRgUvS96dNHOLjuVqnjoZ8LP57TAnWFPphwBVUZVyrr
-	 XCddzVqZnISGH2dj3oI6GIFPrBP1TK/gz/714mzg=
+	b=DoyMoLDqALBS3mLGOOa8rh2Z5aQGNKwo46Th2W3gaAG1QzhX3Ei8T0/jSZVv4+sDL
+	 S6yKOK6sxyT5twuNachTbaB2jBvUD9ymJRUJJSL6zVLTTy5py8i609nDi/n7eUwdoB
+	 E0yQmXvAt6w2LAZ4dMqkYMZiIu2/NV5N0R9VN8CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 342/626] can: c_can: Use of_property_present() to test existence of DT property
+Subject: [PATCH 6.14 438/783] io_uring: sanitise ring params earlier
 Date: Tue, 27 May 2025 18:23:55 +0200
-Message-ID: <20250527162458.910670013@linuxfoundation.org>
+Message-ID: <20250527162530.966053536@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit ab1bc2290fd8311d49b87c29f1eb123fcb581bee ]
+[ Upstream commit 92a3bac9a57c39728226ab191859c85f5e2829c0 ]
 
-of_property_read_bool() should be used only on boolean properties.
+Do all struct io_uring_params validation early on before allocating the
+context. That makes initialisation easier, especially by having fewer
+places where we need to care about partial de-initialisation.
 
-Cc: Rob Herring <robh@kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250212-syscon-phandle-args-can-v2-3-ac9a1253396b@linaro.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/363ba90b83ff78eefdc88b60e1b2c4a39d182247.1738344646.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/c_can/c_can_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io_uring.c | 77 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 44 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/can/c_can/c_can_platform.c b/drivers/net/can/c_can/c_can_platform.c
-index 399844809bbea..bb6071a758f36 100644
---- a/drivers/net/can/c_can/c_can_platform.c
-+++ b/drivers/net/can/c_can/c_can_platform.c
-@@ -324,7 +324,7 @@ static int c_can_plat_probe(struct platform_device *pdev)
- 		/* Check if we need custom RAMINIT via syscon. Mostly for TI
- 		 * platforms. Only supported with DT boot.
- 		 */
--		if (np && of_property_read_bool(np, "syscon-raminit")) {
-+		if (np && of_property_present(np, "syscon-raminit")) {
- 			u32 id;
- 			struct c_can_raminit *raminit = &priv->raminit_sys;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 56f10cce8f009..52c9fa6c06450 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3532,6 +3532,44 @@ static struct file *io_uring_get_file(struct io_ring_ctx *ctx)
+ 					 O_RDWR | O_CLOEXEC, NULL);
+ }
  
++static int io_uring_sanitise_params(struct io_uring_params *p)
++{
++	unsigned flags = p->flags;
++
++	/* There is no way to mmap rings without a real fd */
++	if ((flags & IORING_SETUP_REGISTERED_FD_ONLY) &&
++	    !(flags & IORING_SETUP_NO_MMAP))
++		return -EINVAL;
++
++	if (flags & IORING_SETUP_SQPOLL) {
++		/* IPI related flags don't make sense with SQPOLL */
++		if (flags & (IORING_SETUP_COOP_TASKRUN |
++			     IORING_SETUP_TASKRUN_FLAG |
++			     IORING_SETUP_DEFER_TASKRUN))
++			return -EINVAL;
++	}
++
++	if (flags & IORING_SETUP_TASKRUN_FLAG) {
++		if (!(flags & (IORING_SETUP_COOP_TASKRUN |
++			       IORING_SETUP_DEFER_TASKRUN)))
++			return -EINVAL;
++	}
++
++	/* HYBRID_IOPOLL only valid with IOPOLL */
++	if ((flags & IORING_SETUP_HYBRID_IOPOLL) && !(flags & IORING_SETUP_IOPOLL))
++		return -EINVAL;
++
++	/*
++	 * For DEFER_TASKRUN we require the completion task to be the same as
++	 * the submission task. This implies that there is only one submitter.
++	 */
++	if ((flags & IORING_SETUP_DEFER_TASKRUN) &&
++	    !(flags & IORING_SETUP_SINGLE_ISSUER))
++		return -EINVAL;
++
++	return 0;
++}
++
+ int io_uring_fill_params(unsigned entries, struct io_uring_params *p)
+ {
+ 	if (!entries)
+@@ -3542,10 +3580,6 @@ int io_uring_fill_params(unsigned entries, struct io_uring_params *p)
+ 		entries = IORING_MAX_ENTRIES;
+ 	}
+ 
+-	if ((p->flags & IORING_SETUP_REGISTERED_FD_ONLY)
+-	    && !(p->flags & IORING_SETUP_NO_MMAP))
+-		return -EINVAL;
+-
+ 	/*
+ 	 * Use twice as many entries for the CQ ring. It's possible for the
+ 	 * application to drive a higher depth than the size of the SQ ring,
+@@ -3607,6 +3641,10 @@ static __cold int io_uring_create(unsigned entries, struct io_uring_params *p,
+ 	struct file *file;
+ 	int ret;
+ 
++	ret = io_uring_sanitise_params(p);
++	if (ret)
++		return ret;
++
+ 	ret = io_uring_fill_params(entries, p);
+ 	if (unlikely(ret))
+ 		return ret;
+@@ -3654,37 +3692,10 @@ static __cold int io_uring_create(unsigned entries, struct io_uring_params *p,
+ 	 * For SQPOLL, we just need a wakeup, always. For !SQPOLL, if
+ 	 * COOP_TASKRUN is set, then IPIs are never needed by the app.
+ 	 */
+-	ret = -EINVAL;
+-	if (ctx->flags & IORING_SETUP_SQPOLL) {
+-		/* IPI related flags don't make sense with SQPOLL */
+-		if (ctx->flags & (IORING_SETUP_COOP_TASKRUN |
+-				  IORING_SETUP_TASKRUN_FLAG |
+-				  IORING_SETUP_DEFER_TASKRUN))
+-			goto err;
++	if (ctx->flags & (IORING_SETUP_SQPOLL|IORING_SETUP_COOP_TASKRUN))
+ 		ctx->notify_method = TWA_SIGNAL_NO_IPI;
+-	} else if (ctx->flags & IORING_SETUP_COOP_TASKRUN) {
+-		ctx->notify_method = TWA_SIGNAL_NO_IPI;
+-	} else {
+-		if (ctx->flags & IORING_SETUP_TASKRUN_FLAG &&
+-		    !(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
+-			goto err;
++	else
+ 		ctx->notify_method = TWA_SIGNAL;
+-	}
+-
+-	/* HYBRID_IOPOLL only valid with IOPOLL */
+-	if ((ctx->flags & (IORING_SETUP_IOPOLL|IORING_SETUP_HYBRID_IOPOLL)) ==
+-			IORING_SETUP_HYBRID_IOPOLL)
+-		goto err;
+-
+-	/*
+-	 * For DEFER_TASKRUN we require the completion task to be the same as the
+-	 * submission task. This implies that there is only one submitter, so enforce
+-	 * that.
+-	 */
+-	if (ctx->flags & IORING_SETUP_DEFER_TASKRUN &&
+-	    !(ctx->flags & IORING_SETUP_SINGLE_ISSUER)) {
+-		goto err;
+-	}
+ 
+ 	/*
+ 	 * This is just grabbed for accounting purposes. When a process exits,
 -- 
 2.39.5
 
