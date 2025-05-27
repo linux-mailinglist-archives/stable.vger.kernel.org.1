@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-146585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB92FAC53C8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49200AC571D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEF578A1D90
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676BF1886FF1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B14227D766;
-	Tue, 27 May 2025 16:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC0F1DB34C;
+	Tue, 27 May 2025 17:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFXT+EY+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1paY7Xt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0AA194A45;
-	Tue, 27 May 2025 16:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2D02522B4;
+	Tue, 27 May 2025 17:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364679; cv=none; b=r+mks6xXtbfeJLnr2ggHgL4rGO7lH5lo/t6KgSD9V0EorZGMPk1qg0P44IeO+wxR+FmakrMcNeB2KCVI94J8IfmU+Zt/i8bEEriMp2WqX+Td9/UmkXAi1CC75B6ec7XcWsHKJek/NDvsTxBUG5p6pdiqZQhLPFnsvOV3J7Ol/ag=
+	t=1748366948; cv=none; b=BVoO+tI8MRVJXWEVMy2pb1KPWXLbDVKsyf3HbaV9uBeOtLPk3uso0qoLOHMvAwxhxa0uHzJPJFZ6ZgwM0A7gybkgpItJIxqmAoL8lOTWX7x7Mtr584zrxEO4iyMhVE35EY7hKortlK91WQPpv3d8gPAh/RSunLfOXhAh8qYfJbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364679; c=relaxed/simple;
-	bh=pvNU5fMAJzLmevPOTlNreTIJmJYt7IIjZEsmNtDFtzw=;
+	s=arc-20240116; t=1748366948; c=relaxed/simple;
+	bh=imTj+ulpNt/26w6HRquUE9boDaEaxScxthHjd0+Rg3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h2TlBX56vmVJeWYo7WOIgyqNnipD+leFBCDdDtMZ8G6WhSjcF2ZiZnR9o4z5mkcZmh6WqgZ5w/FFnWJeFNk0dfoc22ubKSBvalUIsZf3UaRTs5X8ADGcD+CBmJ/pMLxJxHk1c/FmjhW8l0E6itRKMM3M8RjYrrmvMdrrloHMfDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFXT+EY+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B241C4CEE9;
-	Tue, 27 May 2025 16:51:19 +0000 (UTC)
+	 MIME-Version; b=FyzlE3diRWwrUXzWcyQJT9FxOb3tHhSsBQxp2zOUiravcy1LsZoT08wBurinHRE64Qui+F/JpkmXY1MEDShzf35X59xbODyq6HY5+Doe6PKjIjBhbZKQHPo6HRjSl1vJvfLmffhhQLZXbNvw/SkV9Ont31qoFcnjD1B3+3weumQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1paY7Xt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBADC4CEE9;
+	Tue, 27 May 2025 17:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364679;
-	bh=pvNU5fMAJzLmevPOTlNreTIJmJYt7IIjZEsmNtDFtzw=;
+	s=korg; t=1748366948;
+	bh=imTj+ulpNt/26w6HRquUE9boDaEaxScxthHjd0+Rg3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFXT+EY+D0uHJImzDqb+QpsNOjVuzgEnwpYXI/dxiZ+4tnM9kxb4JV2E7hepL+maq
-	 rMrXif4s5GIJW+HBALNXmPcegfZOeisFBAWGIAwpZ6rxf7eqcUUI9/egAI78I/paHz
-	 j3ZrsF3N1NpSzUsEqfnHqDhqPAkOLwIwxJ5YsHKs=
+	b=l1paY7XteFU0eS9es1fp36ZiRXCe+ZLrAuPLMLgq94UoQd5raYnmXJRE1yTuWwd3X
+	 V5DVqyg1VGc8xqccrS94mc6HRuM5AEE4qW6XR/qsb92pjx1b4ot/GbfLzApcL7PvLT
+	 ApcJh/ckRAJymWBbs3Mrw05HBhElUapcUxE+J5yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 132/626] riscv: Call secondary mmu notifier when flushing the tlb
-Date: Tue, 27 May 2025 18:20:25 +0200
-Message-ID: <20250527162450.394181109@linuxfoundation.org>
+Subject: [PATCH 6.14 229/783] drm/amd/display: remove minimum Dispclk and apply oem panel timing.
+Date: Tue, 27 May 2025 18:20:26 +0200
+Message-ID: <20250527162522.449483041@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit d9be2b9b60497a82aeceec3a98d8b37fdd2960f2 ]
+[ Upstream commit 756e58e83e89d372b94269c0cde61fe55da76947 ]
 
-This is required to allow the IOMMU driver to correctly flush its own
-TLB.
+[why & how]
+1. apply oem panel timing (not only on OLED)
+2. remove MIN_DPP_DISP_CLK request in driver.
 
-Reviewed-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20250113142424.30487-1-alexghiti@rivosinc.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+This fix will apply for dcn31x but not
+sync with DML's output.
+
+Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/tlbflush.c | 37 ++++++++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c | 2 --
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c | 2 --
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c      | 3 ++-
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
-index 9b6e86ce38674..bb77607c87aa2 100644
---- a/arch/riscv/mm/tlbflush.c
-+++ b/arch/riscv/mm/tlbflush.c
-@@ -4,6 +4,7 @@
- #include <linux/smp.h>
- #include <linux/sched.h>
- #include <linux/hugetlb.h>
-+#include <linux/mmu_notifier.h>
- #include <asm/sbi.h>
- #include <asm/mmu_context.h>
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
+index 827b24b3442ad..e4d22f74f9869 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
+@@ -194,8 +194,6 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
+ 	// workaround: Limit dppclk to 100Mhz to avoid lower eDP panel switch to plus 4K monitor underflow.
+ 	if (new_clocks->dppclk_khz < MIN_DPP_DISP_CLK)
+ 		new_clocks->dppclk_khz = MIN_DPP_DISP_CLK;
+-	if (new_clocks->dispclk_khz < MIN_DPP_DISP_CLK)
+-		new_clocks->dispclk_khz = MIN_DPP_DISP_CLK;
  
-@@ -78,10 +79,17 @@ static void __ipi_flush_tlb_range_asid(void *info)
- 	local_flush_tlb_range_asid(d->start, d->size, d->stride, d->asid);
- }
+ 	if (should_set_clock(safe_to_lower, new_clocks->dppclk_khz, clk_mgr->base.clks.dppclk_khz)) {
+ 		if (clk_mgr->base.clks.dppclk_khz > new_clocks->dppclk_khz)
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
+index 37c39756fece4..49efea0c8fcff 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
+@@ -201,8 +201,6 @@ static void dcn316_update_clocks(struct clk_mgr *clk_mgr_base,
+ 	// workaround: Limit dppclk to 100Mhz to avoid lower eDP panel switch to plus 4K monitor underflow.
+ 	if (new_clocks->dppclk_khz < 100000)
+ 		new_clocks->dppclk_khz = 100000;
+-	if (new_clocks->dispclk_khz < 100000)
+-		new_clocks->dispclk_khz = 100000;
  
--static void __flush_tlb_range(const struct cpumask *cmask, unsigned long asid,
-+static inline unsigned long get_mm_asid(struct mm_struct *mm)
-+{
-+	return mm ? cntx2asid(atomic_long_read(&mm->context.id)) : FLUSH_TLB_NO_ASID;
-+}
-+
-+static void __flush_tlb_range(struct mm_struct *mm,
-+			      const struct cpumask *cmask,
- 			      unsigned long start, unsigned long size,
- 			      unsigned long stride)
- {
-+	unsigned long asid = get_mm_asid(mm);
- 	unsigned int cpu;
- 
- 	if (cpumask_empty(cmask))
-@@ -105,30 +113,26 @@ static void __flush_tlb_range(const struct cpumask *cmask, unsigned long asid,
+ 	if (should_set_clock(safe_to_lower, new_clocks->dppclk_khz, clk_mgr->base.clks.dppclk_khz)) {
+ 		if (clk_mgr->base.clks.dppclk_khz > new_clocks->dppclk_khz)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index fc4fb4055ab00..94ceccfc04982 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1065,7 +1065,8 @@ void dce110_edp_backlight_control(
+ 			DC_LOG_DC("edp_receiver_ready_T9 skipped\n");
  	}
  
- 	put_cpu();
--}
- 
--static inline unsigned long get_mm_asid(struct mm_struct *mm)
--{
--	return cntx2asid(atomic_long_read(&mm->context.id));
-+	if (mm)
-+		mmu_notifier_arch_invalidate_secondary_tlbs(mm, start, start + size);
- }
- 
- void flush_tlb_mm(struct mm_struct *mm)
- {
--	__flush_tlb_range(mm_cpumask(mm), get_mm_asid(mm),
--			  0, FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
-+	__flush_tlb_range(mm, mm_cpumask(mm), 0, FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
- }
- 
- void flush_tlb_mm_range(struct mm_struct *mm,
- 			unsigned long start, unsigned long end,
- 			unsigned int page_size)
- {
--	__flush_tlb_range(mm_cpumask(mm), get_mm_asid(mm),
--			  start, end - start, page_size);
-+	__flush_tlb_range(mm, mm_cpumask(mm), start, end - start, page_size);
- }
- 
- void flush_tlb_page(struct vm_area_struct *vma, unsigned long addr)
- {
--	__flush_tlb_range(mm_cpumask(vma->vm_mm), get_mm_asid(vma->vm_mm),
-+	__flush_tlb_range(vma->vm_mm, mm_cpumask(vma->vm_mm),
- 			  addr, PAGE_SIZE, PAGE_SIZE);
- }
- 
-@@ -161,13 +165,13 @@ void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 		}
+-	if (!enable && link->dpcd_sink_ext_caps.bits.oled) {
++	if (!enable) {
++		/*follow oem panel config's requirement*/
+ 		pre_T11_delay += link->panel_config.pps.extra_pre_t11_ms;
+ 		msleep(pre_T11_delay);
  	}
- 
--	__flush_tlb_range(mm_cpumask(vma->vm_mm), get_mm_asid(vma->vm_mm),
-+	__flush_tlb_range(vma->vm_mm, mm_cpumask(vma->vm_mm),
- 			  start, end - start, stride_size);
- }
- 
- void flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
--	__flush_tlb_range(cpu_online_mask, FLUSH_TLB_NO_ASID,
-+	__flush_tlb_range(NULL, cpu_online_mask,
- 			  start, end - start, PAGE_SIZE);
- }
- 
-@@ -175,7 +179,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
- void flush_pmd_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 			unsigned long end)
- {
--	__flush_tlb_range(mm_cpumask(vma->vm_mm), get_mm_asid(vma->vm_mm),
-+	__flush_tlb_range(vma->vm_mm, mm_cpumask(vma->vm_mm),
- 			  start, end - start, PMD_SIZE);
- }
- #endif
-@@ -189,7 +193,10 @@ void arch_tlbbatch_add_pending(struct arch_tlbflush_unmap_batch *batch,
- 			       struct mm_struct *mm,
- 			       unsigned long uaddr)
- {
-+	unsigned long start = uaddr & PAGE_MASK;
-+
- 	cpumask_or(&batch->cpumask, &batch->cpumask, mm_cpumask(mm));
-+	mmu_notifier_arch_invalidate_secondary_tlbs(mm, start, start + PAGE_SIZE);
- }
- 
- void arch_flush_tlb_batched_pending(struct mm_struct *mm)
-@@ -199,7 +206,7 @@ void arch_flush_tlb_batched_pending(struct mm_struct *mm)
- 
- void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
- {
--	__flush_tlb_range(&batch->cpumask, FLUSH_TLB_NO_ASID, 0,
--			  FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
-+	__flush_tlb_range(NULL, &batch->cpumask,
-+			  0, FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
- 	cpumask_clear(&batch->cpumask);
- }
 -- 
 2.39.5
 
