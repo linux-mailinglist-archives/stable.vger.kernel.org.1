@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-146485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D1DAC5357
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA08AC56A2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B80F1BA3908
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0B1C1BA6AE1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9046C27F754;
-	Tue, 27 May 2025 16:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0781E89C;
+	Tue, 27 May 2025 17:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWG8Pf0V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SLxam8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2F127D766;
-	Tue, 27 May 2025 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D001D88D7;
+	Tue, 27 May 2025 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364364; cv=none; b=SnBTBJo273XIhet7qVEZI/UhpO+1Lx7U+ZOSKe3t44HdjaPEXYvbWboMs16CHQG6jwsHhBg0gTSaJB/YKkXNoraCe5J3vRk5xIsQZLunyWANLfzGamHtAA8pDqhLxB9VnqJcEsICCojZDVPnGG2w3qZUB4Wiz7bp6DXKZYCdUnA=
+	t=1748366622; cv=none; b=Lz09XhmUHQm1xs27FclxNMBKNBKsb6aUc6CM2WD7KJ7OEP4Xas2l4+XA16eXIi+kzv6a/HNyaHoEk0mkALEMjzrwIVAtyFp/SSH+cXNK9JDwvVUyOaHI4O3+g17G2d7EAR0FA2PJljTQQ3DinM4jN7LxXBEpAgc5r1TV41ApQT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364364; c=relaxed/simple;
-	bh=3VS/GnpZO4jr4dm0ZANYE060XslsqJKIK70heTGwKpg=;
+	s=arc-20240116; t=1748366622; c=relaxed/simple;
+	bh=iubr5W+FB0Qs8Me9BsTJASfnHA6lOJRsb/QbGR6+xLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXsJ5HbQ7xTT06qs/fvNXfXP+uuLRs3lABRG+pql6T30X5PKd3KATraQE0oY+/AEvRcxYy7xrd43hP+Ve+muVVjBIh6JqTL8evcEBodmfyoS6wUuvh68/yHhmV4GLXoc87h/qG4BgA5avyFUber+jDE4HCKMPqeaZoOZaD/fqQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWG8Pf0V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428B3C4CEE9;
-	Tue, 27 May 2025 16:46:03 +0000 (UTC)
+	 MIME-Version; b=HfqO9SXlgAe//KgtWwiN/B1eHp82LC1Rli8u0+0lnMg0jPvGtYNS2wPaRfQ9JP31g22EwL13ijtG1AMmj/3tGq2Mx359KjwKSCA8pZXZ2FBGscz2iVAma+ZpGzyheUNdoK1UxatYT79oQGrn8aYbUwOTqGYNKfd3j9FTNOby/fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SLxam8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF31C4CEE9;
+	Tue, 27 May 2025 17:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364363;
-	bh=3VS/GnpZO4jr4dm0ZANYE060XslsqJKIK70heTGwKpg=;
+	s=korg; t=1748366621;
+	bh=iubr5W+FB0Qs8Me9BsTJASfnHA6lOJRsb/QbGR6+xLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWG8Pf0VGEASN+uap6bFniO+LwN1ij+nmh7zqpOyMYfWFNXcHiJpUAbQVdItd18yk
-	 s7TH4dAW0LwGDrGuH+w1iyxTic8B5rH9M5gMw34I9x1T0XCr0aAH+zdn9+vZTNM2HF
-	 Q0N2rq9kwKBd87vshWfoenOsQ1yLRT+OtvOI6l/4=
+	b=2SLxam8juTtu99JxadC29hL8esMVB6/HUBnmL/jW6VGn3vl4Ud+UaFv3/G96vNOP3
+	 9nedPX29CxOMZ+3nCLJYVvHgQf/rY8W1H0wlT/cmme1v9TYfenjHwBTJsuux47Iru3
+	 NST3NtD4xLbHgTJRZisGd3TVB2EWHwTOXbTsSkx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	kdevops@lists.linux.dev,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/626] fs/buffer: introduce sleeping flavors for pagecache lookups
+Subject: [PATCH 6.14 128/783] x86/microcode: Update the Intel processor flag scan check
 Date: Tue, 27 May 2025 18:18:45 +0200
-Message-ID: <20250527162446.374903953@linuxfoundation.org>
+Message-ID: <20250527162518.364975691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Sohil Mehta <sohil.mehta@intel.com>
 
-[ Upstream commit 2814a7d3d2ff5d2cdd22936f641f758fdb971fa0 ]
+[ Upstream commit 7e6b0a2e4152f4046af95eeb46f8b4f9b2a7398d ]
 
-Add __find_get_block_nonatomic() and sb_find_get_block_nonatomic()
-calls for which users will be converted where safe. These versions
-will take the folio lock instead of the mapping's private_lock.
+The Family model check to read the processor flag MSR is misleading and
+potentially incorrect. It doesn't consider Family while comparing the
+model number. The original check did have a Family number but it got
+lost/moved during refactoring.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Link: https://kdevops.org/ext4/v6.15-rc2.html # [0]
-Link: https://lore.kernel.org/all/aAAEvcrmREWa1SKF@bombadil.infradead.org/ # [1]
-Link: https://lore.kernel.org/20250418015921.132400-3-dave@stgolabs.net
-Tested-by: kdevops@lists.linux.dev
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+intel_collect_cpu_info() is called through multiple paths such as early
+initialization, CPU hotplug as well as IFS image load. Some of these
+flows would be error prone due to the ambiguous check.
+
+Correct the processor flag scan check to use a Family number and update
+it to a VFM based one to make it more readable.
+
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250219184133.816753-4-sohil.mehta@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/buffer.c                 | 9 +++++++++
- include/linux/buffer_head.h | 8 ++++++++
- 2 files changed, 17 insertions(+)
+ arch/x86/include/asm/intel-family.h   | 1 +
+ arch/x86/kernel/cpu/microcode/intel.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index ba464c2002061..b04705eb6cc57 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -1420,6 +1420,15 @@ __find_get_block(struct block_device *bdev, sector_t block, unsigned size)
- }
- EXPORT_SYMBOL(__find_get_block);
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index ef5a06ddf0287..44fe88d6cf5c0 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -46,6 +46,7 @@
+ #define INTEL_ANY			IFM(X86_FAMILY_ANY, X86_MODEL_ANY)
  
-+/* same as __find_get_block() but allows sleeping contexts */
-+struct buffer_head *
-+__find_get_block_nonatomic(struct block_device *bdev, sector_t block,
-+			   unsigned size)
-+{
-+	return find_get_block_common(bdev, block, size, false);
-+}
-+EXPORT_SYMBOL(__find_get_block_nonatomic);
-+
- /**
-  * bdev_getblk - Get a buffer_head in a block device's buffer cache.
-  * @bdev: The block device.
-diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
-index 932139c5d46f5..ffcd76d977703 100644
---- a/include/linux/buffer_head.h
-+++ b/include/linux/buffer_head.h
-@@ -223,6 +223,8 @@ void __wait_on_buffer(struct buffer_head *);
- wait_queue_head_t *bh_waitq_head(struct buffer_head *bh);
- struct buffer_head *__find_get_block(struct block_device *bdev, sector_t block,
- 			unsigned size);
-+struct buffer_head *__find_get_block_nonatomic(struct block_device *bdev,
-+			sector_t block, unsigned size);
- struct buffer_head *bdev_getblk(struct block_device *bdev, sector_t block,
- 		unsigned size, gfp_t gfp);
- void __brelse(struct buffer_head *);
-@@ -398,6 +400,12 @@ sb_find_get_block(struct super_block *sb, sector_t block)
- 	return __find_get_block(sb->s_bdev, block, sb->s_blocksize);
- }
+ #define INTEL_PENTIUM_PRO		IFM(6, 0x01)
++#define INTEL_PENTIUM_III_DESCHUTES	IFM(6, 0x05)
  
-+static inline struct buffer_head *
-+sb_find_get_block_nonatomic(struct super_block *sb, sector_t block)
-+{
-+	return __find_get_block_nonatomic(sb->s_bdev, block, sb->s_blocksize);
-+}
-+
- static inline void
- map_bh(struct buffer_head *bh, struct super_block *sb, sector_t block)
- {
+ #define INTEL_CORE_YONAH		IFM(6, 0x0E)
+ 
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index 9309468c8d2c1..2a397da43923b 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -74,7 +74,7 @@ void intel_collect_cpu_info(struct cpu_signature *sig)
+ 	sig->pf = 0;
+ 	sig->rev = intel_get_microcode_revision();
+ 
+-	if (x86_model(sig->sig) >= 5 || x86_family(sig->sig) > 6) {
++	if (IFM(x86_family(sig->sig), x86_model(sig->sig)) >= INTEL_PENTIUM_III_DESCHUTES) {
+ 		unsigned int val[2];
+ 
+ 		/* get processor flags from MSR 0x17 */
 -- 
 2.39.5
 
