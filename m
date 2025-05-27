@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-147162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9D5AC566E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A2BAC569A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA25D1BA7525
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:21:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AC911BA77C2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3F424C07D;
-	Tue, 27 May 2025 17:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A4B27D784;
+	Tue, 27 May 2025 17:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaI0KYqe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKtHcAhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8341E89C;
-	Tue, 27 May 2025 17:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F451D88D7;
+	Tue, 27 May 2025 17:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366480; cv=none; b=mm0gLv1tLpwM0s7c7aKspq4yJn6UzYYa6raxJmlmvJ4s71Mfm3T6kfGys2VElyw9olyCv9tC+375hxFZzIuL8BHjEwdZIqtp88xhn8rzt4c3vjhuFysfiqiwKN0DFp/Y6UaA6P/qxofZyg0wISOzh0+1W1llyAqd+wctRnWb0JI=
+	t=1748366602; cv=none; b=Jjcoc/+psACranPJjiZcE5GQR5b696cBtYIfy5nUZiKQG60BqmC5+y5LpNJoLgOMedUc6fbfQJN9WcQZeLaOV5y1OtpeE6A2n4evnDNmZq/mS1EMIh3eHfoa1QifkI5PnWALF2m0ZNivW1vM1dAPRHzJutmgl50sHRKFi3fVYMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366480; c=relaxed/simple;
-	bh=D2VcMOgA7zAEtmX9nJRtLASzIXssptvZyQBQYqYclns=;
+	s=arc-20240116; t=1748366602; c=relaxed/simple;
+	bh=bc07nCwUzFd3xHMnZSVIk2qUJT4PF+8+U1xpkiSPWXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRBYegEDxeBgFT4Sd5kRB1kXdHv7x0Q8x0ou0igCCZIuFKnFmPyuUKCV8m4vA/IbuH43GJ39Dkg3zp2/nhTDsOWm/gcf9odCZhgU6/wB0y/I184NkJxe14C+vAuciyDRS+P+TaWcEpymfBBgDCVCHO+rCcU1xLRdUUj8wCFV8FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaI0KYqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431C2C4CEE9;
-	Tue, 27 May 2025 17:21:20 +0000 (UTC)
+	 MIME-Version; b=odkdGasl4tDg4eeDKEPEr1x4zr72xmTvgkBEpJecZ+wgLMXRmS+1LF0SC9dMCXTMP68hHs6z/EV728NqS93Z/fvagIjLUGNcg5r5vzZ/RmyjIgcypSoTG/EGLJPJ151GYAap4SoFjVwmo3IwV2SNO/i0XHPqZGl06SMe0Ivta+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKtHcAhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08879C4CEE9;
+	Tue, 27 May 2025 17:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366480;
-	bh=D2VcMOgA7zAEtmX9nJRtLASzIXssptvZyQBQYqYclns=;
+	s=korg; t=1748366602;
+	bh=bc07nCwUzFd3xHMnZSVIk2qUJT4PF+8+U1xpkiSPWXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZaI0KYqewGzm+1RMb6Qm1Ubnd8RS2asUY2AXEHulUFPm+DRuwzzeCgG4kwGSxPzrQ
-	 1hATx+wi6vIAkU9CdPMo9mG/EDiopT3LaH3y7WRgFgKp4w70quty4yRtW5xS+DupQ+
-	 qnJOxjKyJMNvQcX/bTnQqt+pBInK73WVbsCqTAPQ=
+	b=jKtHcAhpEuV28l2miLonwHpx+PIEeCCd6vKa9HYECFfKTWBgzFMlK11lyKjAxtUMd
+	 QpV4u5BKUm0lIZjwVtVUTffk1TiSQOGGDKwlzcYpn/u4r4pQlN+hyQEZ77+f8uDliX
+	 uyOfdLyL7ekaS8MLxTePTRGzV8SAybMCIis44qIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Hsu <Daniel-Hsu@quantatw.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 080/783] ASoC: codecs: wsa883x: Correct VI sense channel mask
-Date: Tue, 27 May 2025 18:17:57 +0200
-Message-ID: <20250527162516.392032586@linuxfoundation.org>
+Subject: [PATCH 6.14 081/783] mctp: Fix incorrect tx flow invalidation condition in mctp-i2c
+Date: Tue, 27 May 2025 18:17:58 +0200
+Message-ID: <20250527162516.436706826@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -67,36 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Daniel Hsu <d486250@gmail.com>
 
-[ Upstream commit ed3b274abc4008efffebf1997968a3f2720a86d3 ]
+[ Upstream commit 70facbf978ac90c6da17a3de2a8dd111b06f1bac ]
 
-VI sense port on WSA883x speaker takes only one channel, so use 0x1 as
-channel mask.  This fixes garbage being recorded by the speaker when
-testing the VI sense feedback path.
+Previously, the condition for invalidating the tx flow in
+mctp_i2c_invalidate_tx_flow() checked if `rc` was nonzero.
+However, this could incorrectly trigger the invalidation
+even when `rc > 0` was returned as a success status.
 
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250312-asoc-wsa88xx-visense-v1-1-9ca705881122@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This patch updates the condition to explicitly check for `rc < 0`,
+ensuring that only error cases trigger the invalidation.
+
+Signed-off-by: Daniel Hsu <Daniel-Hsu@quantatw.com>
+Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa883x.c | 2 +-
+ drivers/net/mctp/mctp-i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
-index 47da5674d7c92..e31b7fb104e6c 100644
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -529,7 +529,7 @@ static const struct sdw_port_config wsa883x_pconfig[WSA883X_MAX_SWR_PORTS] = {
- 	},
- 	[WSA883X_PORT_VISENSE] = {
- 		.num = WSA883X_PORT_VISENSE + 1,
--		.ch_mask = 0x3,
-+		.ch_mask = 0x1,
- 	},
- };
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index d74d47dd6e04d..f782d93f826ef 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -537,7 +537,7 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
+ 		rc = __i2c_transfer(midev->adapter, &msg, 1);
  
+ 		/* on tx errors, the flow can no longer be considered valid */
+-		if (rc)
++		if (rc < 0)
+ 			mctp_i2c_invalidate_tx_flow(midev, skb);
+ 
+ 		break;
 -- 
 2.39.5
 
