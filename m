@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-146669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BA7AC5428
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B47AC5778
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B8111883D28
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5245D4A718C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100CF280304;
-	Tue, 27 May 2025 16:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12AF27F728;
+	Tue, 27 May 2025 17:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RX8+QX85"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXxoOyoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4A2280012;
-	Tue, 27 May 2025 16:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4111F8670;
+	Tue, 27 May 2025 17:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364945; cv=none; b=NlmfcDw3e7u0Yv6bthwc3O+BnMnxQNOFddnamICBed8lJ8wjmXZ/HgaAZUNwzTMreLmg9Uqhuopc8rKIWbS9cLki505k2tDSYcmCqDSdwZRFJ++TU4zEFgE0FerJ1UNbLLz3JoYOyKvo5hHdWbooukZysOWyD62oaFpFPd1Ql/8=
+	t=1748367197; cv=none; b=uEVjyCNTPIaFsaHzNN+MK5NFW1TZkMk+TAPUgSnhhGFpI+RqTU833KnIZ5hRDq+SOm6BajXkleRKWtvHJm2ixJZ4oR6bC8xD8kPIkEh58lTd6zoOYjEbyDY9HP2IW6P91CorTz7yAKEXEuRgCRDJOUQvNCN9vnYVgdyWaOdsXko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364945; c=relaxed/simple;
-	bh=nAVB5Rpl2GpvPQ9QCZuycxWP5JYu7tUMNT1tDQqPx7g=;
+	s=arc-20240116; t=1748367197; c=relaxed/simple;
+	bh=+FI6GVtcYwElWfeRYoLpdkXFxDcL7/CnZRl1Ckwbc1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwXkkEE0lBCIQI1sGiDUz6gCYc1YDYcnXY7dJ125iL/an109MAdFAvxFbURHlLjOOrlo3B8Kul78shlVC98nYni0HhfxLtY1vQiSjcOiEYcHuARUPF5jFW42grAl0RgOalvfLk6KYjwEAMT5Txmgd4Mx72tJkVcFAL/Glz2yIzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RX8+QX85; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF5FC4CEEB;
-	Tue, 27 May 2025 16:55:43 +0000 (UTC)
+	 MIME-Version; b=q95i1f7nYMr1A4R+zStLgWLCUKpEZONd3t1j1cJQzU7I6C5mpUMENAa+w0UAxt1o66HrkVr/1ZSRrLpBZpEf1l84V/1n8ZyeYz0zgnS6iLxNoRavdgtwx/gCovxTIggdljXi2/0nvP/Qm/AScKEG6zvlCXcghgj7H1xuDeaZOxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXxoOyoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD46AC4CEE9;
+	Tue, 27 May 2025 17:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364944;
-	bh=nAVB5Rpl2GpvPQ9QCZuycxWP5JYu7tUMNT1tDQqPx7g=;
+	s=korg; t=1748367197;
+	bh=+FI6GVtcYwElWfeRYoLpdkXFxDcL7/CnZRl1Ckwbc1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RX8+QX85rE1GQ6sL51+il9Sz9O/SXQWRcx5wOCRPLH6QVI/LfI+4N7RXmCpqvgLR5
-	 Dods0xaljFSg10FqDAGZrhZlswdJrfvOzpPDq97KEBTynmMO09vu3y8lEG6f73oHj0
-	 SalrukG+m+WzY9FahtmgqNEey1/Mi+Dx7Okg5HRk=
+	b=vXxoOyoKBxyh8T3E1TXQJfC6VmL/UBVa4N1W8+oUg9i5R+9He85MiOYOrzFQ2Fcxp
+	 iSr+30CUjU0v8E6SnjbKQV+/0h0FkPJ/4jDYIvUvjcKgWTAxHixRHCiz83nxJ2bhDw
+	 i0Q4S1+tkMqRq8qut/fQC2KMmfeMsRrUSaT873n0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/626] wifi: iwlwifi: fix debug actions order
+Subject: [PATCH 6.14 282/783] drm/amd/display: Skip checking FRL_MODE bit for PCON BW determination
 Date: Tue, 27 May 2025 18:21:19 +0200
-Message-ID: <20250527162452.569265522@linuxfoundation.org>
+Message-ID: <20250527162524.568149819@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: George Shen <george.shen@amd.com>
 
-[ Upstream commit eb29b4ffafb20281624dcd2cbb768d6f30edf600 ]
+[ Upstream commit 0584bbcf0c53c133081100e4f4c9fe41e598d045 ]
 
-The order of actions taken for debug was implemented incorrectly.
-Now we implemented the dump split and do the FW reset only in the
-middle of the dump (rather than the FW killing itself on error.)
-As a result, some of the actions taken when applying the config
-will now crash the device, so we need to fix the order.
+[Why/How]
+Certain PCON will clear the FRL_MODE bit despite supporting the link BW
+indicated in the other bits.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308231427.6de7fa8e63ed.I40632c48e2a67a8aca05def572a934b88ce7934b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Thus, skip checking the FRL_MODE bit when interpreting the
+hdmi_encoded_link_bw struct.
+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../dc/link/protocols/link_dp_capability.c    | 30 +++++++++----------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index 08d990ba8a794..ce787326aa69d 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2018-2024 Intel Corporation
-+ * Copyright (C) 2018-2025 Intel Corporation
-  */
- #include <linux/firmware.h>
- #include "iwl-drv.h"
-@@ -1372,15 +1372,15 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
- 	switch (tp_id) {
- 	case IWL_FW_INI_TIME_POINT_EARLY:
- 		iwl_dbg_tlv_init_cfg(fwrt);
--		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		iwl_dbg_tlv_update_drams(fwrt);
- 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
-+		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		break;
- 	case IWL_FW_INI_TIME_POINT_AFTER_ALIVE:
- 		iwl_dbg_tlv_apply_buffers(fwrt);
- 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
--		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
-+		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		break;
- 	case IWL_FW_INI_TIME_POINT_PERIODIC:
- 		iwl_dbg_tlv_set_periodic_trigs(fwrt);
-@@ -1390,14 +1390,14 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
- 	case IWL_FW_INI_TIME_POINT_MISSED_BEACONS:
- 	case IWL_FW_INI_TIME_POINT_FW_DHC_NOTIFICATION:
- 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
--		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data,
- 				       iwl_dbg_tlv_check_fw_pkt);
-+		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		break;
- 	default:
- 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
--		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
-+		iwl_dbg_tlv_apply_config(fwrt, conf_list);
- 		break;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index 44f33e3bc1c59..6d7131369f00b 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -250,21 +250,21 @@ static uint32_t intersect_frl_link_bw_support(
+ {
+ 	uint32_t supported_bw_in_kbps = max_supported_frl_bw_in_kbps;
+ 
+-	// HDMI_ENCODED_LINK_BW bits are only valid if HDMI Link Configuration bit is 1 (FRL mode)
+-	if (hdmi_encoded_link_bw.bits.FRL_MODE) {
+-		if (hdmi_encoded_link_bw.bits.BW_48Gbps)
+-			supported_bw_in_kbps = 48000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_40Gbps)
+-			supported_bw_in_kbps = 40000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_32Gbps)
+-			supported_bw_in_kbps = 32000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_24Gbps)
+-			supported_bw_in_kbps = 24000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_18Gbps)
+-			supported_bw_in_kbps = 18000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_9Gbps)
+-			supported_bw_in_kbps = 9000000;
+-	}
++	/* Skip checking FRL_MODE bit, as certain PCON will clear
++	 * it despite supporting the link BW indicated in the other bits.
++	 */
++	if (hdmi_encoded_link_bw.bits.BW_48Gbps)
++		supported_bw_in_kbps = 48000000;
++	else if (hdmi_encoded_link_bw.bits.BW_40Gbps)
++		supported_bw_in_kbps = 40000000;
++	else if (hdmi_encoded_link_bw.bits.BW_32Gbps)
++		supported_bw_in_kbps = 32000000;
++	else if (hdmi_encoded_link_bw.bits.BW_24Gbps)
++		supported_bw_in_kbps = 24000000;
++	else if (hdmi_encoded_link_bw.bits.BW_18Gbps)
++		supported_bw_in_kbps = 18000000;
++	else if (hdmi_encoded_link_bw.bits.BW_9Gbps)
++		supported_bw_in_kbps = 9000000;
+ 
+ 	return supported_bw_in_kbps;
  }
 -- 
 2.39.5
