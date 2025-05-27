@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-147449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37921AC57B3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A49AC57B5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05E9C1BC13A2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235B68A6563
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211893C01;
-	Tue, 27 May 2025 17:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C33027FD6F;
+	Tue, 27 May 2025 17:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8jwj0o+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2lKWHKP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A0927CCF0;
-	Tue, 27 May 2025 17:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082D527BF79;
+	Tue, 27 May 2025 17:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367379; cv=none; b=rkt1u3EmCliw0yuMMed3fPg2E299dnJvRcI/cTJcCVYJqRtArXZYJlkF0+HhohZdBbgWkkXbgNYPtYRXnvUsXDhgfCETECgpf6GUCYT6veRcXjGupy8BM5EkjiUKRmXtFes1EbkYgT2+WKp/qThVXXZYSvEP16S8ksybdF4/W8I=
+	t=1748367383; cv=none; b=EvvpBbotyCkhE9EbjhWC81Fp/6dSZxGbBfofbm/eQeAVPRxRisx8fT37gZFBmqIXSYZMiiRKU0GVlXeJ53CQwLec2ZaVD5lzqgEarMFlXpyp5vQ6j5fPOxkDmOgnGJpObHLGpAdhJr1YTbU3dYiEmKrKgX4BWtRm7lXbGkDNbiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367379; c=relaxed/simple;
-	bh=nqluXvKEGPkvPOCCodGnwdXU75nbWLqbkXDfZYlohsc=;
+	s=arc-20240116; t=1748367383; c=relaxed/simple;
+	bh=QxWtYy3qkkEfo/CiSKs1HvVCNKrmDsVsOe44wwA1tzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTxitSp/Yu1XXpntO886kYyue7o4vnhoV9JjotsqF8x5brGiY64b5UJMS0pDv28zEjwt8xfijL5wdyaRcUZ7hgGrdyNW/MU9zeWnHIqYE1h6byZ/UnpBa6mvJuGLW6eBMqYTK2eVH76kQ4jPEs9EyCX9i2SLwjlV+qqQ3Dx/nDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8jwj0o+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F679C4CEEA;
-	Tue, 27 May 2025 17:36:19 +0000 (UTC)
+	 MIME-Version; b=O91qHiXqKCBatu+9MUNW1E4oMsoMp+5tyizfdnvvnYg73+2dYVCTZPG7HSsT/b1ejyDjlGXUnx7j+4H+Gbf6s/WqGetK3keJ9Ewh60w9ZHukCd9b5nSxbEnDoZ3n0oJl4t4hN8FDtzkE9TSr0oxOvycy3pOJMiidWhTkE6ioswQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2lKWHKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179CBC4CEE9;
+	Tue, 27 May 2025 17:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367379;
-	bh=nqluXvKEGPkvPOCCodGnwdXU75nbWLqbkXDfZYlohsc=;
+	s=korg; t=1748367382;
+	bh=QxWtYy3qkkEfo/CiSKs1HvVCNKrmDsVsOe44wwA1tzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8jwj0o+t7LBFCkAfzTcryBP+7286oaKplUs29M8TdsV21TK0JTW8LL8YPnQQSMNC
-	 sNWOdSJlsvopdMc1aerp0fwf2seoqaDHBcyR8sZOGdHR3kLdWmtpfHlHiF8u3gY0A1
-	 O/WXDiJOmWhic8549PJyHhBdJXiSaG6S8Wz/b2Ms=
+	b=t2lKWHKPIuzBv08UzUYfkEvDlfAO3jdA0Ic60RFrfUa7qAAU54Sj2jR+QShTAqnLB
+	 +N9U/oXR4ofzehT/zr3NT4cMJYuLhocloGfdbsj+NjBbvhC8yiSS/+u0pA1qg5ZIJO
+	 8g7O3Ez5k1g8fvzUL/jBFkRfkKIuHl7PmObq6Oto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nandakumar Edamana <nandakumar@nandakumar.co.in>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Eric Auger <eauger@redhat.com>,
+	Hongyu Ning <hongyu.ning@linux.intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 368/783] libbpf: Fix out-of-bound read
-Date: Tue, 27 May 2025 18:22:45 +0200
-Message-ID: <20250527162528.067584602@linuxfoundation.org>
+Subject: [PATCH 6.14 369/783] virtio: break and reset virtio devices on device_shutdown()
+Date: Tue, 27 May 2025 18:22:46 +0200
+Message-ID: <20250527162528.107668043@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -66,41 +69,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
+[ Upstream commit 8bd2fa086a04886798b505f28db4002525895203 ]
 
-In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
-that it will be at least two characters long due to the presence of checks for
-opening and closing quotes. But the check for the closing quote
-(value[len - 1] != '"') misses the fact that it could be checking the opening
-quote itself in case of an invalid input that consists of just the opening
-quote.
+Hongyu reported a hang on kexec in a VM. QEMU reported invalid memory
+accesses during the hang.
 
-This commit adds an explicit check to make sure the string is at least two
-characters long.
+	Invalid read at addr 0x102877002, size 2, region '(null)', reason: rejected
+	Invalid write at addr 0x102877A44, size 2, region '(null)', reason: rejected
+	...
 
-Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
+It was traced down to virtio-console. Kexec works fine if virtio-console
+is not in use.
+
+The issue is that virtio-console continues to write to the MMIO even after
+underlying virtio-pci device is reset.
+
+Additionally, Eric noticed that IOMMUs are reset before devices, if
+devices are not reset on shutdown they continue to poke at guest memory
+and get errors from the IOMMU. Some devices get wedged then.
+
+The problem can be solved by breaking all virtio devices on virtio
+bus shutdown, then resetting them.
+
+Reported-by: Eric Auger <eauger@redhat.com>
+Reported-by: Hongyu Ning <hongyu.ning@linux.intel.com>
+Message-ID: <c1dbc7dbad9b445245d3348f19e6742b0be07347.1740094946.git.mst@redhat.com>
+Tested-by: Eric Auger <eric.auger@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/virtio/virtio.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 6b436ec872b0f..1791a12b1aac5 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -2106,7 +2106,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
- 	}
+diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+index ba37665188b51..150753c3b5782 100644
+--- a/drivers/virtio/virtio.c
++++ b/drivers/virtio/virtio.c
+@@ -395,6 +395,34 @@ static const struct cpumask *virtio_irq_get_affinity(struct device *_d,
+ 	return dev->config->get_vq_affinity(dev, irq_vec);
+ }
  
- 	len = strlen(value);
--	if (value[len - 1] != '"') {
-+	if (len < 2 || value[len - 1] != '"') {
- 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
- 			ext->name, value);
- 		return -EINVAL;
++static void virtio_dev_shutdown(struct device *_d)
++{
++	struct virtio_device *dev = dev_to_virtio(_d);
++	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
++
++	/*
++	 * Stop accesses to or from the device.
++	 * We only need to do it if there's a driver - no accesses otherwise.
++	 */
++	if (!drv)
++		return;
++
++	/*
++	 * Some devices get wedged if you kick them after they are
++	 * reset. Mark all vqs as broken to make sure we don't.
++	 */
++	virtio_break_device(dev);
++	/*
++	 * Guarantee that any callback will see vq->broken as true.
++	 */
++	virtio_synchronize_cbs(dev);
++	/*
++	 * As IOMMUs are reset on shutdown, this will block device access to memory.
++	 * Some devices get wedged if this happens, so reset to make sure it does not.
++	 */
++	dev->config->reset(dev);
++}
++
+ static const struct bus_type virtio_bus = {
+ 	.name  = "virtio",
+ 	.match = virtio_dev_match,
+@@ -403,6 +431,7 @@ static const struct bus_type virtio_bus = {
+ 	.probe = virtio_dev_probe,
+ 	.remove = virtio_dev_remove,
+ 	.irq_get_affinity = virtio_irq_get_affinity,
++	.shutdown = virtio_dev_shutdown,
+ };
+ 
+ int __register_virtio_driver(struct virtio_driver *driver, struct module *owner)
 -- 
 2.39.5
 
