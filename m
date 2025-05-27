@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9C6AC561D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 109ABAC592F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74B053A3301
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A21097A23D9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3679627D766;
-	Tue, 27 May 2025 17:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BD927FB3D;
+	Tue, 27 May 2025 17:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrmUzdCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O88Kdzkn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F7C1E89C;
-	Tue, 27 May 2025 17:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC7F2566;
+	Tue, 27 May 2025 17:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366178; cv=none; b=S5TG5lC+/TK5nLXL91/dOy/2tNi0a20wsHOq+fHHx+mIclT5OmNynJdIcSRPebDYTjW2iB/gFplbR+18TGq0dSClDFqN9+4kLAyqzVRNLekt2VkjNhvlhhWxWqSqgCHWEMfyyna5CLiSH2vzpvNEKX9ocg31UxUaNwXS4Le12t8=
+	t=1748368441; cv=none; b=b3TMNsncgZHF/Z/iv1OqyiA8KN4O8cX+nPN3UORyOBwF6zhgN2+WdvRLHb+DwMvwOHhI8Nw4IPehm1hsyKvByNv/htPFEVHs+/ug97UQPpWjStyKLCXjHdTKYnof2RcHwh5hEeJNJk37VikKhJ043QHx28Hjn9hbdoTcWVanTXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366178; c=relaxed/simple;
-	bh=My1oLgqx8Q3D96Uu2OkhLpceyk5Keg0kWYq8w5CBM+k=;
+	s=arc-20240116; t=1748368441; c=relaxed/simple;
+	bh=IdlbFNmhGueFGAaolvPASFx/8IUWwYxLhFEsIRC/qNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XMBprqSqw+S2RPrRpTTv5Qdy0XeHsuDh84m2DuF5LPFX9Cjz3BWXAJqnGHWl2y2M0Tq8+FSJzGnZ6MpgrUcff1B0+lyigb87Ce4mN7mb6HjzpiRGBI2t7YltlmJoojOKEq7ADBJfmn5DbVWtNCrK17m1c6IjzgYm7+3Gy80TbxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrmUzdCz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1DDC4CEE9;
-	Tue, 27 May 2025 17:16:16 +0000 (UTC)
+	 MIME-Version; b=Wlsq43nj67+YN1RYdhFgbo8mRd5/Yiujmgrjs87tuwDxJ17OitKFfZtL1ha6lgseyHdnPGhIxmORRe+MKwvVg8lq7xugDuVWovwAZTV1Eohc63o67pzY6CcU4vepTO06vB8Cx1maOI+c/BA6AKfwBEOUN2MVeSYndkK7my9D/v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O88Kdzkn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701A2C4CEE9;
+	Tue, 27 May 2025 17:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366177;
-	bh=My1oLgqx8Q3D96Uu2OkhLpceyk5Keg0kWYq8w5CBM+k=;
+	s=korg; t=1748368440;
+	bh=IdlbFNmhGueFGAaolvPASFx/8IUWwYxLhFEsIRC/qNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrmUzdCzwxJt98pkqjf60PZOdVbG+PcGjYoPAmCxue/FLIlykOkaC1Z/Tw7ruaVmR
-	 huKTxHle0NmGkLlLxVuHMa27fHu9HXyD13GfO7d1K5bamXxbtgh7tJG35MrUzjaLid
-	 n5tHkPyKPQFzOf7DoyvR6ugFedv6Kz61HH8t0GMk=
+	b=O88Kdzkn4QND+eJJtgHIIUTnyt18boiHh2rt//lu0Gn+sZCqCwC3u2Lxk311gLMDM
+	 6oJie5ByuYNdrgHK1A/UQ1baOD86FrdT8+x8khDQaCwpNUIlJfhCSJkg9iID3EAfGB
+	 7OftifAywpkPIIELRZNclP1Dm4MdT6KgDvD9+L/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Axel Forsman <axfo@kvaser.com>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 582/626] can: kvaser_pciefd: Continue parsing DMA buf after dropped RX
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 678/783] xenbus: Allow PVH dom0 a non-local xenstore
 Date: Tue, 27 May 2025 18:27:55 +0200
-Message-ID: <20250527162508.624803936@linuxfoundation.org>
+Message-ID: <20250527162540.737958131@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Axel Forsman <axfo@kvaser.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-commit 6d820b81c4dc4a4023e45c3cd6707a07dd838649 upstream.
+[ Upstream commit 90989869baae47ee2aa3bcb6f6eb9fbbe4287958 ]
 
-Going bus-off on a channel doing RX could result in dropped packets.
+Make xenbus_init() allow a non-local xenstore for a PVH dom0 - it is
+currently forced to XS_LOCAL.  With Hyperlaunch booting dom0 and a
+xenstore stubdom, dom0 can be handled as a regular XS_HVM following the
+late init path.
 
-As netif_running() gets cleared before the channel abort procedure,
-the handling of any last RDATA packets would see netif_rx() return
-non-zero to signal a dropped packet. kvaser_pciefd_read_buffer() dealt
-with this "error" by breaking out of processing the remaining DMA RX
-buffer.
+Ideally we'd drop the use of xen_initial_domain() and just check for the
+event channel instead.  However, ARM has a xen,enhanced no-xenstore
+mode, where the event channel and PFN would both be 0.  Retain the
+xen_initial_domain() check, and use that for an additional check when
+the event channel is 0.
 
-Only return an error from kvaser_pciefd_read_buffer() due to packet
-corruption, otherwise handle it internally.
+Check the full 64bit HVM_PARAM_STORE_EVTCHN value to catch the off
+chance that high bits are set for the 32bit event channel.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Axel Forsman <axfo@kvaser.com>
-Tested-by: Jimmy Assarsson <extja@kvaser.com>
-Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250520114332.8961-4-axfo@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Change-Id: I5506da42e4c6b8e85079fefb2f193c8de17c7437
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250506204456.5220-1-jason.andryuk@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/kvaser_pciefd.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/xen/xenbus/xenbus_probe.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -1200,7 +1200,7 @@ static int kvaser_pciefd_handle_data_pac
- 		skb = alloc_canfd_skb(priv->dev, &cf);
- 		if (!skb) {
- 			priv->dev->stats.rx_dropped++;
--			return -ENOMEM;
-+			return 0;
- 		}
- 
- 		cf->len = can_fd_dlc2len(dlc);
-@@ -1212,7 +1212,7 @@ static int kvaser_pciefd_handle_data_pac
- 		skb = alloc_can_skb(priv->dev, (struct can_frame **)&cf);
- 		if (!skb) {
- 			priv->dev->stats.rx_dropped++;
--			return -ENOMEM;
-+			return 0;
- 		}
- 		can_frame_set_cc_len((struct can_frame *)cf, dlc, priv->ctrlmode);
- 	}
-@@ -1230,7 +1230,9 @@ static int kvaser_pciefd_handle_data_pac
- 	priv->dev->stats.rx_packets++;
- 	kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
- 
--	return netif_rx(skb);
-+	netif_rx(skb);
-+
-+	return 0;
- }
- 
- static void kvaser_pciefd_change_state(struct kvaser_pciefd_can *can,
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 6d32ffb011365..86fe6e7790566 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -966,9 +966,15 @@ static int __init xenbus_init(void)
+ 	if (xen_pv_domain())
+ 		xen_store_domain_type = XS_PV;
+ 	if (xen_hvm_domain())
++	{
+ 		xen_store_domain_type = XS_HVM;
+-	if (xen_hvm_domain() && xen_initial_domain())
+-		xen_store_domain_type = XS_LOCAL;
++		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
++		if (err)
++			goto out_error;
++		xen_store_evtchn = (int)v;
++		if (!v && xen_initial_domain())
++			xen_store_domain_type = XS_LOCAL;
++	}
+ 	if (xen_pv_domain() && !xen_start_info->store_evtchn)
+ 		xen_store_domain_type = XS_LOCAL;
+ 	if (xen_pv_domain() && xen_start_info->store_evtchn)
+@@ -987,10 +993,6 @@ static int __init xenbus_init(void)
+ 		xen_store_interface = gfn_to_virt(xen_store_gfn);
+ 		break;
+ 	case XS_HVM:
+-		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
+-		if (err)
+-			goto out_error;
+-		xen_store_evtchn = (int)v;
+ 		err = hvm_get_parameter(HVM_PARAM_STORE_PFN, &v);
+ 		if (err)
+ 			goto out_error;
+-- 
+2.39.5
+
 
 
 
