@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-147412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29F7AC578D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5F6AC542B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9C314A5FA9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8164A2648
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C23C27BF79;
-	Tue, 27 May 2025 17:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5771627FD4C;
+	Tue, 27 May 2025 16:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AitipF/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdtd/YQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381903C01;
-	Tue, 27 May 2025 17:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126152CCC0;
+	Tue, 27 May 2025 16:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367262; cv=none; b=JeX01tKGuZAWUvARNKa4Cjfv0/LY2/GOQrlu+qNe/7SAYym3Dkv9p8MFhFLbJiTIhk1cJXr52QsQ8ONV7wO1/pE6HlfOZtBcLnuPPf2Vd66NrQMvVeSRE+6tRg9WvSTsFMh/jgRUfz/FJBEnyh0+8ncHiTnJal+rlIY1BOZI/nw=
+	t=1748365001; cv=none; b=sxFmXZp54oNH0CFfjccINcjInHcKtz9eqYjBIzy0BQxRXWn/EE6cE3lDnH+9PiUJUfoM7lGSG+H6s8F94xouVJkcZagAnMJ6k/L+FD0E2GJSdh5p0nb0u100GvoQ+jd9Ljj7RUu/60OvsaPLCrBwyG4t5JMLMzax16eZZqCKMaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367262; c=relaxed/simple;
-	bh=PRxy5GIOcArI28fxoXlgYJ1ChwgxkZU7M+wN09+GJgc=;
+	s=arc-20240116; t=1748365001; c=relaxed/simple;
+	bh=gHunQ8m11VevY5B2htarqP7mrQKwH3JqbyOgYUPiMEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqzQFApSM6hdPJtlmN7zx8tqMNnhmReB5iQE/M0SV6LqF00HteMFRMht1n3uh0R6Jo9tdfVuOvpVbvqX1VRo9AIpmTfrG9SYiXksVJceXKc3JgBoo+hYFV83vd+ULlZZiF9D7v6VYXvThkDstAQnrfsEllNGlfvlw7UfcAP9PNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AitipF/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC296C4CEE9;
-	Tue, 27 May 2025 17:34:21 +0000 (UTC)
+	 MIME-Version; b=RyiaKu3mtr30dcvYOhFNW2W7nWpwzLsBUIEPBD3TTuMXT/fg26L0F5IPg2OI5b/Ih/grHwNttBc76pW0HohEkx3M4qlzZ09wZ9f93lS3qucAO8lwtJcrbz2Y6AfqLqkMb6y3BDqEPjQUKPWGwdr8jao9wOY/R7XkuKFBifuTKd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdtd/YQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD3FC4CEE9;
+	Tue, 27 May 2025 16:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367262;
-	bh=PRxy5GIOcArI28fxoXlgYJ1ChwgxkZU7M+wN09+GJgc=;
+	s=korg; t=1748365000;
+	bh=gHunQ8m11VevY5B2htarqP7mrQKwH3JqbyOgYUPiMEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2AitipF/xR361l1e+K16BNTaqgKC0FpiuhJ1kOyo0rcut/x7bwvRfeZqo4k6GyQgE
-	 y9EjeN+oGlHME+YJGyjveNVlfwdFBwS2gHYx6rlQwr7Wx7J+3YiMtwRPNCV89IpkUJ
-	 nG57ubm31YyZBRhli0FhbBHnI10NOSZE2BUpEFJ0=
+	b=qdtd/YQanvoO1veoh42Z+fZXFO2vcElmUcj6Q2e5rHXToZxcLXkEr8NizXQvKgTYS
+	 5n9OBWr2iIc951iNEbw3sYWSx0kAVo9j2oBTooMyA8AwG/ezHdgCdGqD0V0j7ehABG
+	 VLBqQVKZU4KdjtoIU0DICgPHWERiSDV0vZrOzOTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Krakauer <krakauer@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Dillon Varone <Dillon.Varone@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 331/783] selftests/net: have `gro.sh -t` return a correct exit code
+Subject: [PATCH 6.12 235/626] drm/amd/display: Fix DMUB reset sequence for DCN401
 Date: Tue, 27 May 2025 18:22:08 +0200
-Message-ID: <20250527162526.536979302@linuxfoundation.org>
+Message-ID: <20250527162454.564066202@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +65,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Krakauer <krakauer@google.com>
+From: Dillon Varone <Dillon.Varone@amd.com>
 
-[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
+[ Upstream commit 0dfcc2bf269010a6e093793034c048049a40ee93 ]
 
-Modify gro.sh to return a useful exit code when the -t flag is used. It
-formerly returned 0 no matter what.
+[WHY]
+It should no longer use DMCUB_SOFT_RESET as it can result
+in the memory request path becoming desynchronized.
 
-Tested: Ran `gro.sh -t large` and verified that test failures return 1.
-Signed-off-by: Kevin Krakauer <krakauer@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[HOW]
+To ensure robustness in the reset sequence:
+1) Extend timeout on the "halt" command sent via gpint, and check for
+controller to enter "wait" as a stronger guarantee that there are no
+requests to memory still in flight.
+2) Remove usage of DMCUB_SOFT_RESET
+3) Rely on PSP to reset the controller safely
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Dillon Varone <Dillon.Varone@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../drm/amd/display/dmub/src/dmub_dcn401.c    | 47 ++++++++++++-------
+ .../drm/amd/display/dmub/src/dmub_dcn401.h    |  3 +-
+ 2 files changed, 32 insertions(+), 18 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
-index 02c21ff4ca81f..aabd6e5480b8e 100755
---- a/tools/testing/selftests/net/gro.sh
-+++ b/tools/testing/selftests/net/gro.sh
-@@ -100,5 +100,6 @@ trap cleanup EXIT
- if [[ "${test}" == "all" ]]; then
-   run_all_tests
- else
--  run_test "${proto}" "${test}"
-+  exit_code=$(run_test "${proto}" "${test}")
-+  exit $exit_code
- fi;
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
+index 39a8cb6d7523c..e1c4fe1c6e3ee 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
+@@ -63,8 +63,10 @@ static inline void dmub_dcn401_translate_addr(const union dmub_addr *addr_in,
+ void dmub_dcn401_reset(struct dmub_srv *dmub)
+ {
+ 	union dmub_gpint_data_register cmd;
+-	const uint32_t timeout = 30;
+-	uint32_t in_reset, scratch, i;
++	const uint32_t timeout_us = 1 * 1000 * 1000; //1s
++	const uint32_t poll_delay_us = 1; //1us
++	uint32_t i = 0;
++	uint32_t in_reset, scratch, pwait_mode;
+ 
+ 	REG_GET(DMCUB_CNTL2, DMCUB_SOFT_RESET, &in_reset);
+ 
+@@ -75,32 +77,35 @@ void dmub_dcn401_reset(struct dmub_srv *dmub)
+ 
+ 		dmub->hw_funcs.set_gpint(dmub, cmd);
+ 
+-		/**
+-		 * Timeout covers both the ACK and the wait
+-		 * for remaining work to finish.
+-		 *
+-		 * This is mostly bound by the PHY disable sequence.
+-		 * Each register check will be greater than 1us, so
+-		 * don't bother using udelay.
+-		 */
+-
+-		for (i = 0; i < timeout; ++i) {
++		for (i = 0; i < timeout_us; i++) {
+ 			if (dmub->hw_funcs.is_gpint_acked(dmub, cmd))
+ 				break;
++
++			udelay(poll_delay_us);
+ 		}
+ 
+-		for (i = 0; i < timeout; ++i) {
++		for (; i < timeout_us; i++) {
+ 			scratch = dmub->hw_funcs.get_gpint_response(dmub);
+ 			if (scratch == DMUB_GPINT__STOP_FW_RESPONSE)
+ 				break;
++
++			udelay(poll_delay_us);
+ 		}
+ 
+-		/* Force reset in case we timed out, DMCUB is likely hung. */
++		for (; i < timeout_us; i++) {
++			REG_GET(DMCUB_CNTL, DMCUB_PWAIT_MODE_STATUS, &pwait_mode);
++			if (pwait_mode & (1 << 0))
++				break;
++
++			udelay(poll_delay_us);
++		}
++	}
++
++	if (i >= timeout_us) {
++		/* timeout should never occur */
++		BREAK_TO_DEBUGGER();
+ 	}
+ 
+-	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
+-	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
+-	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
+ 	REG_WRITE(DMCUB_INBOX1_RPTR, 0);
+ 	REG_WRITE(DMCUB_INBOX1_WPTR, 0);
+ 	REG_WRITE(DMCUB_OUTBOX1_RPTR, 0);
+@@ -131,7 +136,10 @@ void dmub_dcn401_backdoor_load(struct dmub_srv *dmub,
+ 
+ 	dmub_dcn401_get_fb_base_offset(dmub, &fb_base, &fb_offset);
+ 
++	/* reset and disable DMCUB and MMHUBBUB DMUIF */
+ 	REG_UPDATE(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 1);
++	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
++	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
+ 
+ 	dmub_dcn401_translate_addr(&cw0->offset, fb_base, fb_offset, &offset);
+ 
+@@ -151,6 +159,7 @@ void dmub_dcn401_backdoor_load(struct dmub_srv *dmub,
+ 			DMCUB_REGION3_CW1_TOP_ADDRESS, cw1->region.top,
+ 			DMCUB_REGION3_CW1_ENABLE, 1);
+ 
++	/* release DMCUB reset only to prevent premature execution */
+ 	REG_UPDATE_2(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 0, DMCUB_MEM_UNIT_ID,
+ 			0x20);
+ }
+@@ -161,7 +170,10 @@ void dmub_dcn401_backdoor_load_zfb_mode(struct dmub_srv *dmub,
+ {
+ 	union dmub_addr offset;
+ 
++	/* reset and disable DMCUB and MMHUBBUB DMUIF */
+ 	REG_UPDATE(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 1);
++	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
++	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
+ 
+ 	offset = cw0->offset;
+ 
+@@ -181,6 +193,7 @@ void dmub_dcn401_backdoor_load_zfb_mode(struct dmub_srv *dmub,
+ 			DMCUB_REGION3_CW1_TOP_ADDRESS, cw1->region.top,
+ 			DMCUB_REGION3_CW1_ENABLE, 1);
+ 
++	/* release DMCUB reset only to prevent premature execution */
+ 	REG_UPDATE_2(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 0, DMCUB_MEM_UNIT_ID,
+ 			0x20);
+ }
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
+index 4c8843b796950..31f95b27e227d 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
+@@ -169,7 +169,8 @@ struct dmub_srv;
+ 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_INBOX0_RSP_INT_EN) \
+ 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_ACK) \
+ 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_STAT) \
+-	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_EN)
++	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_EN) \
++	DMUB_SF(DMCUB_CNTL, DMCUB_PWAIT_MODE_STATUS)
+ 
+ struct dmub_srv_dcn401_reg_offset {
+ #define DMUB_SR(reg) uint32_t reg;
 -- 
 2.39.5
 
