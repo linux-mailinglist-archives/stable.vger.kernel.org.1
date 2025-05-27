@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-147451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A49AC57B5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288FCAC544F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235B68A6563
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EAE01BA408F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C33027FD6F;
-	Tue, 27 May 2025 17:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D4A27FD53;
+	Tue, 27 May 2025 16:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2lKWHKP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWskL5YL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082D527BF79;
-	Tue, 27 May 2025 17:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BFB27E1CA;
+	Tue, 27 May 2025 16:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367383; cv=none; b=EvvpBbotyCkhE9EbjhWC81Fp/6dSZxGbBfofbm/eQeAVPRxRisx8fT37gZFBmqIXSYZMiiRKU0GVlXeJ53CQwLec2ZaVD5lzqgEarMFlXpyp5vQ6j5fPOxkDmOgnGJpObHLGpAdhJr1YTbU3dYiEmKrKgX4BWtRm7lXbGkDNbiA=
+	t=1748365124; cv=none; b=azhWrPmJ7+VDn48EKyO0JmFIog4BaCF3G1jUlWbFU0zCYalN+Mlad89xON84V0rEP2sYVFK+RvtEgRxE6B3ll4p8ROiFShE4/ZMkhLdMN6KQFiG67fuAq1c4T//2d1SiZXnbJvxeLDoXlMCErLNpIUwXesucIoOkNaU6RgZ2Ybw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367383; c=relaxed/simple;
-	bh=QxWtYy3qkkEfo/CiSKs1HvVCNKrmDsVsOe44wwA1tzg=;
+	s=arc-20240116; t=1748365124; c=relaxed/simple;
+	bh=PqIuCqOBk8tTpI7AIIbPKWHofydf4iB4+0U8eE3bPdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O91qHiXqKCBatu+9MUNW1E4oMsoMp+5tyizfdnvvnYg73+2dYVCTZPG7HSsT/b1ejyDjlGXUnx7j+4H+Gbf6s/WqGetK3keJ9Ewh60w9ZHukCd9b5nSxbEnDoZ3n0oJl4t4hN8FDtzkE9TSr0oxOvycy3pOJMiidWhTkE6ioswQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2lKWHKP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179CBC4CEE9;
-	Tue, 27 May 2025 17:36:21 +0000 (UTC)
+	 MIME-Version; b=rS4d65tSTeUzijHcCWoj2jzLu3pzP00M0l6TISRtoQmRO1CNlTPxgeO+uCww94OuPfbwPczR2hZ3cf0JF5ptBnJgBvla2+4i7Hn5qu3ys6s9WT6LRwWQ9yXJYhtenyTxlHNG+FfauqhoazcNzbwA1sBtSn0hU1VTYuegeg9x3RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWskL5YL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1AEC4CEE9;
+	Tue, 27 May 2025 16:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367382;
-	bh=QxWtYy3qkkEfo/CiSKs1HvVCNKrmDsVsOe44wwA1tzg=;
+	s=korg; t=1748365124;
+	bh=PqIuCqOBk8tTpI7AIIbPKWHofydf4iB4+0U8eE3bPdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2lKWHKPIuzBv08UzUYfkEvDlfAO3jdA0Ic60RFrfUa7qAAU54Sj2jR+QShTAqnLB
-	 +N9U/oXR4ofzehT/zr3NT4cMJYuLhocloGfdbsj+NjBbvhC8yiSS/+u0pA1qg5ZIJO
-	 8g7O3Ez5k1g8fvzUL/jBFkRfkKIuHl7PmObq6Oto=
+	b=GWskL5YLK+2ZLyhM6W7m/WkQUcuAFhhuy2eZn8sWUT4wZS0x0tOiBZDPLuPmvZDMn
+	 MLocEynCCCsJiDc08ngesotdUw0gI/wxP5V+Imk/EdYDgvcX2KYYIR/jQm0pg2Tuz4
+	 oIaX8hvToOps8SvEbDu9mvLhpPmCmBkFjn5TKTW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Auger <eauger@redhat.com>,
-	Hongyu Ning <hongyu.ning@linux.intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 369/783] virtio: break and reset virtio devices on device_shutdown()
+Subject: [PATCH 6.12 273/626] net/mlx5: Avoid report two health errors on same syndrome
 Date: Tue, 27 May 2025 18:22:46 +0200
-Message-ID: <20250527162528.107668043@linuxfoundation.org>
+Message-ID: <20250527162456.119323165@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 8bd2fa086a04886798b505f28db4002525895203 ]
+[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
 
-Hongyu reported a hang on kexec in a VM. QEMU reported invalid memory
-accesses during the hang.
+In case health counter has not increased for few polling intervals, miss
+counter will reach max misses threshold and health report will be
+triggered for FW health reporter. In case syndrome found on same health
+poll another health report will be triggered.
 
-	Invalid read at addr 0x102877002, size 2, region '(null)', reason: rejected
-	Invalid write at addr 0x102877A44, size 2, region '(null)', reason: rejected
-	...
+Avoid two health reports on same syndrome by marking this syndrome as
+already known.
 
-It was traced down to virtio-console. Kexec works fine if virtio-console
-is not in use.
-
-The issue is that virtio-console continues to write to the MMIO even after
-underlying virtio-pci device is reset.
-
-Additionally, Eric noticed that IOMMUs are reset before devices, if
-devices are not reset on shutdown they continue to poke at guest memory
-and get errors from the IOMMU. Some devices get wedged then.
-
-The problem can be solved by breaking all virtio devices on virtio
-bus shutdown, then resetting them.
-
-Reported-by: Eric Auger <eauger@redhat.com>
-Reported-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-Message-ID: <c1dbc7dbad9b445245d3348f19e6742b0be07347.1740094946.git.mst@redhat.com>
-Tested-by: Eric Auger <eric.auger@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-index ba37665188b51..150753c3b5782 100644
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -395,6 +395,34 @@ static const struct cpumask *virtio_irq_get_affinity(struct device *_d,
- 	return dev->config->get_vq_affinity(dev, irq_vec);
- }
- 
-+static void virtio_dev_shutdown(struct device *_d)
-+{
-+	struct virtio_device *dev = dev_to_virtio(_d);
-+	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
-+
-+	/*
-+	 * Stop accesses to or from the device.
-+	 * We only need to do it if there's a driver - no accesses otherwise.
-+	 */
-+	if (!drv)
-+		return;
-+
-+	/*
-+	 * Some devices get wedged if you kick them after they are
-+	 * reset. Mark all vqs as broken to make sure we don't.
-+	 */
-+	virtio_break_device(dev);
-+	/*
-+	 * Guarantee that any callback will see vq->broken as true.
-+	 */
-+	virtio_synchronize_cbs(dev);
-+	/*
-+	 * As IOMMUs are reset on shutdown, this will block device access to memory.
-+	 * Some devices get wedged if this happens, so reset to make sure it does not.
-+	 */
-+	dev->config->reset(dev);
-+}
-+
- static const struct bus_type virtio_bus = {
- 	.name  = "virtio",
- 	.match = virtio_dev_match,
-@@ -403,6 +431,7 @@ static const struct bus_type virtio_bus = {
- 	.probe = virtio_dev_probe,
- 	.remove = virtio_dev_remove,
- 	.irq_get_affinity = virtio_irq_get_affinity,
-+	.shutdown = virtio_dev_shutdown,
- };
- 
- int __register_virtio_driver(struct virtio_driver *driver, struct module *owner)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+index a6329ca2d9bff..52c8035547be5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+@@ -799,6 +799,7 @@ static void poll_health(struct timer_list *t)
+ 	health->prev = count;
+ 	if (health->miss_counter == MAX_MISSES) {
+ 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
++		health->synd = ioread8(&h->synd);
+ 		print_health_info(dev);
+ 		queue_work(health->wq, &health->report_work);
+ 	}
 -- 
 2.39.5
 
