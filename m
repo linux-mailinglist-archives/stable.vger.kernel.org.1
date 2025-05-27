@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B27BAC53EA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:53:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4E4AC573D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFE087AFA55
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A939C4A59FC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7770C27F4D5;
-	Tue, 27 May 2025 16:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF8227D784;
+	Tue, 27 May 2025 17:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmcnDCs8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXRSv+p1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34ABA1DB34C;
-	Tue, 27 May 2025 16:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09E32566;
+	Tue, 27 May 2025 17:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364772; cv=none; b=UVLLNpqKcERhPQPw8DEtRsRYjPTb/FTYf9QRrMS512jSZ9DwUsYhRux3B1Ob7jTNBBKma0UpOCAej923C7FfUpuWwVBp4vvMVFUHG+cPweNT5xoA3puGoBW1cJLhFi7yaiER/BIvcEJ1ZueSR4SSmZfxnrrsmeAzjZEHyrjUYyU=
+	t=1748367036; cv=none; b=WcCOgxDb5bMbz2IwOay3ScnnIdldGmjUN7lRTchzffoxao1Gz5QdQIuA/m7cRSgPyUgp2kKn506MgPtJlWtj9z5TBrQm53ezNZOyJtRbGW/Hj1qKf1OOM+TLETokM2nxyyfQ2NsT9+SpItzvLIhpyh4SjAjv3/U9YDLivPjn6Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364772; c=relaxed/simple;
-	bh=Gw1jFb2emWyg0ElTOuo6UvJINXQmovy8SfYTA00CgEM=;
+	s=arc-20240116; t=1748367036; c=relaxed/simple;
+	bh=wGpcgfhJb4sm9NvByPELO2Zto9iNm2ptI5G+HfHg/9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XX1uTmx+srQyiFkTdQbVxdN+cVbldMthfKbt7gao8E1hfsmO7yzPq+1VONv9dILUEbdr+xARx0utACU0vDtPUo5i4Jmj/2zb0CGMJbkkwFHyCroKIH8tz5k3RLv4Slug7bi/f5Y4jNwRi5Tm8BKKPT6/7PdiwRnEEIYRj+/9wXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmcnDCs8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974E7C4CEE9;
-	Tue, 27 May 2025 16:52:51 +0000 (UTC)
+	 MIME-Version; b=r/U+vVCJTDr8AmRu7OSVrj2a9Z+o8VmbWsbwLFTgvfUfbnYXRaiIiEoKCxXZMWbj5W3lbbUxU+oFBqR624gJ+fSw/bla/uqOelsIJvT74sJAtQlnfGMdmS7aCxXB4ljgD3NFZyqe/49v+6P3jwO5uRFlFKJrF4GcVvXtZGkErf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXRSv+p1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15FAC4CEE9;
+	Tue, 27 May 2025 17:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364772;
-	bh=Gw1jFb2emWyg0ElTOuo6UvJINXQmovy8SfYTA00CgEM=;
+	s=korg; t=1748367036;
+	bh=wGpcgfhJb4sm9NvByPELO2Zto9iNm2ptI5G+HfHg/9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmcnDCs8EhWnHEmPa34U2lxPGgsQosSOffBgze3bvbFRd6HI+eTV4AfGkn7T2LwXb
-	 fZDpg1CYnCP1AnwJJToJXN4m6OqQkxOO4byG9sN1DYpWGSTI6dwU6g9fiK313hT0uG
-	 /i38EVBpsYHjFFk1bYyk4l5zqw7+VZoPAfhylUVo=
+	b=SXRSv+p1JberGGb2MDyAOcvY6TGncStprB5B7LAaeVCfdzUUxXEzwDSq/btWaIvHy
+	 ELh82swMWHVN3P0UFBAJS9bFRLr/xbOnJQdH4kMqwql7fIZB4Q2K2F8WKI0mKmteMk
+	 NgugIBNnGtmyev2uX+6hD1CbzYdGvTPhLw9f5iSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Andreas Schwab <schwab@linux-m68k.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 162/626] clk: qcom: lpassaudiocc-sc7280: Add support for LPASS resets for QCM6490
+Subject: [PATCH 6.14 258/783] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
 Date: Tue, 27 May 2025 18:20:55 +0200
-Message-ID: <20250527162451.607227643@linuxfoundation.org>
+Message-ID: <20250527162523.603960544@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Andreas Schwab <schwab@linux-m68k.org>
 
-[ Upstream commit cdbbc480f4146cb659af97f4020601fde5fb65a7 ]
+[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
 
-On the QCM6490 boards, the LPASS firmware controls the complete clock
-controller functionalities and associated power domains. However, only
-the LPASS resets required to be controlled by the high level OS. Thus,
-add support for the resets in the clock driver to enable the Audio SW
-driver to assert/deassert the audio resets as needed.
+Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
+property on the i2s node.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20250221-lpass_qcm6490_resets-v5-2-6be0c0949a83@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+[maddy: added "commit" work in depends-on to avoid checkpatch error]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/lpassaudiocc-sc7280.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/prom_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/lpassaudiocc-sc7280.c b/drivers/clk/qcom/lpassaudiocc-sc7280.c
-index 45e7264770866..22169da08a51a 100644
---- a/drivers/clk/qcom/lpassaudiocc-sc7280.c
-+++ b/drivers/clk/qcom/lpassaudiocc-sc7280.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-  * Copyright (c) 2021, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2025, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index 57082fac46687..fe4659ba8c22a 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2889,11 +2889,11 @@ static void __init fixup_device_tree_pmac(void)
+ 	char type[8];
+ 	phandle node;
  
- #include <linux/clk-provider.h>
-@@ -713,14 +714,24 @@ static const struct qcom_reset_map lpass_audio_cc_sc7280_resets[] = {
- 	[LPASS_AUDIO_SWR_WSA_CGCR] = { 0xb0, 1 },
- };
+-	// Some pmacs are missing #size-cells on escc nodes
++	// Some pmacs are missing #size-cells on escc or i2s nodes
+ 	for (node = 0; prom_next_node(&node); ) {
+ 		type[0] = '\0';
+ 		prom_getprop(node, "device_type", type, sizeof(type));
+-		if (prom_strcmp(type, "escc"))
++		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
+ 			continue;
  
-+static const struct regmap_config lpass_audio_cc_sc7280_reset_regmap_config = {
-+	.name = "lpassaudio_cc_reset",
-+	.reg_bits = 32,
-+	.reg_stride = 4,
-+	.val_bits = 32,
-+	.fast_io = true,
-+	.max_register = 0xc8,
-+};
-+
- static const struct qcom_cc_desc lpass_audio_cc_reset_sc7280_desc = {
--	.config = &lpass_audio_cc_sc7280_regmap_config,
-+	.config = &lpass_audio_cc_sc7280_reset_regmap_config,
- 	.resets = lpass_audio_cc_sc7280_resets,
- 	.num_resets = ARRAY_SIZE(lpass_audio_cc_sc7280_resets),
- };
- 
- static const struct of_device_id lpass_audio_cc_sc7280_match_table[] = {
--	{ .compatible = "qcom,sc7280-lpassaudiocc" },
-+	{ .compatible = "qcom,qcm6490-lpassaudiocc", .data = &lpass_audio_cc_reset_sc7280_desc },
-+	{ .compatible = "qcom,sc7280-lpassaudiocc", .data = &lpass_audio_cc_sc7280_desc },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, lpass_audio_cc_sc7280_match_table);
-@@ -752,13 +763,17 @@ static int lpass_audio_cc_sc7280_probe(struct platform_device *pdev)
- 	struct regmap *regmap;
- 	int ret;
- 
-+	desc = device_get_match_data(&pdev->dev);
-+
-+	if (of_device_is_compatible(pdev->dev.of_node, "qcom,qcm6490-lpassaudiocc"))
-+		return qcom_cc_probe_by_index(pdev, 1, desc);
-+
- 	ret = lpass_audio_setup_runtime_pm(pdev);
- 	if (ret)
- 		return ret;
- 
- 	lpass_audio_cc_sc7280_regmap_config.name = "lpassaudio_cc";
- 	lpass_audio_cc_sc7280_regmap_config.max_register = 0x2f000;
--	desc = &lpass_audio_cc_sc7280_desc;
- 
- 	regmap = qcom_cc_map(pdev, desc);
- 	if (IS_ERR(regmap)) {
-@@ -772,7 +787,7 @@ static int lpass_audio_cc_sc7280_probe(struct platform_device *pdev)
- 	regmap_write(regmap, 0x4, 0x3b);
- 	regmap_write(regmap, 0x8, 0xff05);
- 
--	ret = qcom_cc_really_probe(&pdev->dev, &lpass_audio_cc_sc7280_desc, regmap);
-+	ret = qcom_cc_really_probe(&pdev->dev, desc, regmap);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register LPASS AUDIO CC clocks\n");
- 		goto exit;
+ 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
 -- 
 2.39.5
 
