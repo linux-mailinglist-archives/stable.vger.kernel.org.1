@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-147026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC8DAC55C6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8350AC58FB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEFCD1BA688B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D619E0247
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B2F27FD56;
-	Tue, 27 May 2025 17:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFCF28001E;
+	Tue, 27 May 2025 17:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHKNYuu5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXcOA20k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2262798E6;
-	Tue, 27 May 2025 17:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF00E2566;
+	Tue, 27 May 2025 17:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366044; cv=none; b=GO3yyrS3CiK0eC9HTFdFMWgJhVJAqS/LYjWnefPJ2Ec0lafzRl867wo157e6xTdYHrV3xvtfRyQLSW6KY13qVpGGI2Kp+xnnWSsYiB0ayR2oyvgZMp9ecn+456uxpbCgx05/CdNuBgK+YQpcgZ0Wl+2lZTCYcvkYV9h3xEL0+po=
+	t=1748368288; cv=none; b=nb86V14i6huhQVVGN6U5aGuw8zjS3xOI0dl4/Ad0uPFRdPavPsfeFbuSpEa7CNmrmIwuNspk83GOrocirJ+j32gmOOYecFbVqwp9jyh/CpZFtb6czxboT8/0H4OcKsJx3+F5Glc4Tc2XHAGrfvT0mduSPCLQfWKmJPV3WNfaqZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366044; c=relaxed/simple;
-	bh=9M1J1iRwqfz/jWEN6O4bC5Tz/jzERxTqgaVLoG00ACM=;
+	s=arc-20240116; t=1748368288; c=relaxed/simple;
+	bh=fpFf4U1GyBHs+Sr8DEcqp7aHQThkiG86+BLcte0QuWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDEqvI0Z51yXkC8O3sEZYjbGPCGjrkIyJOJPWFoM/V3pKJ2jlTcMUEbcGfU/CfC9ZFCoK7tdGBPSWVCU9hCofip6CrRp2EBCngQWUJtnUEJfNiUVLtLt7BPD7EFVdPEoVe5Lt5yI7nSTYHaxwDr9s98cO50gI8oggjd9ZBWAOaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHKNYuu5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A235C4CEE9;
-	Tue, 27 May 2025 17:14:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Im2HqdXf3KBhBOcGFjvtWT/2tYg/LIAcHMzThutWvx35j54E81w6iV+p+9iNLuepJrvn2uHf+YVQiVT2cNerOvrZKNcTa9Stw67hVeDxjH4lewZFnENTYc2Aj4XWz5ENwy4IvB/eeZpMzrdcDe2OGd31U8lP8boZBAqJ3ru2GWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXcOA20k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECC9C4CEE9;
+	Tue, 27 May 2025 17:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366043;
-	bh=9M1J1iRwqfz/jWEN6O4bC5Tz/jzERxTqgaVLoG00ACM=;
+	s=korg; t=1748368288;
+	bh=fpFf4U1GyBHs+Sr8DEcqp7aHQThkiG86+BLcte0QuWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHKNYuu5ikCl1Z8A9WwwuoYMsH0VHKTYYr+X3J+oR8k+nlwxCE1wOY9VLouSV97bb
-	 BRZKVBzu5a3KZorihuXwFMyHXDsLr7RmOyYAwmcNyAYCJolIse+eWcGMOQv13qN1ZO
-	 QZFsqz2gqRuhCoAmKkb9ZG6ipe8Yo3JDOnDROzvc=
+	b=oXcOA20kmX4EdfztbdrhmgYHBZI9L5G19C6L7Cu4JeyOjwP2m57rzmHxbS4SHzk2f
+	 BFY0s8wr6jzm/EIw2yCOb+rlASNUw8RBcvQNiMqLPZ/TZC51O/U1mT7RrBKnyOiS45
+	 y+Zy0HXqhzB+sW5qFUmCXLjozmLb1XAO5CWaeM2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Joy Zou <joy.zou@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Xiaogang Chen <xiaogang.chen@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 545/626] dmaengine: fsl-edma: Fix return code for unhandled interrupts
-Date: Tue, 27 May 2025 18:27:18 +0200
-Message-ID: <20250527162507.130334213@linuxfoundation.org>
+Subject: [PATCH 6.14 642/783] drm/amdkfd: Fix error handling for missing PASID in kfd_process_device_init_vm
+Date: Tue, 27 May 2025 18:27:19 +0200
+Message-ID: <20250527162539.287123985@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 5e27af0514e2249a9ccc9a762abd3b74e03a1f90 ]
+[ Upstream commit 2b04d04de956b44cc140d45cf8ebccfb378ce3bf ]
 
-For fsl,imx93-edma4 two DMA channels share the same interrupt.
-So in case fsl_edma3_tx_handler is called for the "wrong"
-channel, the return code must be IRQ_NONE. This signalize that
-the interrupt wasn't handled.
+In the kfd_process_device_init_vm function, a valid error code is now
+returned when the associated Process Address Space ID (PASID) is not
+present.
 
-Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Joy Zou <joy.zou@nxp.com>
-Link: https://lore.kernel.org/r/20250424114829.9055-1-wahrenst@gmx.net
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+If the address space virtual memory (avm) does not have an associated
+PASID, the function sets the ret variable to -EINVAL before proceeding
+to the error handling section. This ensures that the calling function,
+such as kfd_ioctl_acquire_vm, can appropriately handle the error,
+thereby preventing any issues during virtual memory initialization.
+
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_process.c:1694 kfd_process_device_init_vm()
+warn: missing error code 'ret'
+
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_process.c
+    1647 int kfd_process_device_init_vm(struct kfd_process_device *pdd,
+    1648                                struct file *drm_file)
+    1649 {
+    ...
+    1690
+    1691         if (unlikely(!avm->pasid)) {
+    1692                 dev_warn(pdd->dev->adev->dev, "WARN: vm %p has no pasid associated",
+    1693                                  avm);
+--> 1694                 goto err_get_pasid;
+
+ret = -EINVAL?
+
+    1695         }
+
+Fixes: 8544374c0f82 ("drm/amdkfd: Have kfd driver use same PASID values from graphic driver")
+Reported by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Xiaogang Chen <xiaogang.chen@amd.com>
+Cc: Felix Kuehling <felix.kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-edma-main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 27645606f900b..4794d58dab556 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -56,7 +56,7 @@ static irqreturn_t fsl_edma3_tx_handler(int irq, void *dev_id)
- 
- 	intr = edma_readl_chreg(fsl_chan, ch_int);
- 	if (!intr)
--		return IRQ_HANDLED;
-+		return IRQ_NONE;
- 
- 	edma_writel_chreg(fsl_chan, 1, ch_int);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index a7e0a16dac47b..3f411922534b3 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -1711,6 +1711,7 @@ int kfd_process_device_init_vm(struct kfd_process_device *pdd,
+ 	if (unlikely(!avm->pasid)) {
+ 		dev_warn(pdd->dev->adev->dev, "WARN: vm %p has no pasid associated",
+ 				 avm);
++		ret = -EINVAL;
+ 		goto err_get_pasid;
+ 	}
  
 -- 
 2.39.5
