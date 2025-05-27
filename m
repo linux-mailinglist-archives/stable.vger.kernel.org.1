@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-147401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF10AC577E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7973AC5760
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6435F1BA7A7F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2ED73AFA02
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76C72798F8;
-	Tue, 27 May 2025 17:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B91280037;
+	Tue, 27 May 2025 17:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arq6A/9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02rdC6ig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954F63C01;
-	Tue, 27 May 2025 17:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC47280030;
+	Tue, 27 May 2025 17:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367228; cv=none; b=FpJ0eBtjnOj6EZ+grIMqYFIAP03/GRGawkbWKSGkx96QsXe14sq3kbZ+FX/Z4sMLU89zq5DFNLjOr9/+x3qjLEca7imsSmhMnXK/8GWoOaTKgS/ngHPRZ0dmAYmMxVcb1KSV9Je6fusXAOM1MAoCM3UztiJEwxlrrqNGyw7Dn8E=
+	t=1748367129; cv=none; b=T36eDo4mlkMuHDDOcZpJPI/pIOGcvkQkBf6lRoq2ZEFEHkP3cNFNpuLUASN1Gk/tRl3+uEhNOtjhBKGtWrRGuJnuWov6Cm09VrpYVDyUYKn6gOSg6ttyjmc2jO2QlfGxQLLh55JomdsNJ9o+jwp+UauB9aSVXfB18aDr3752l7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367228; c=relaxed/simple;
-	bh=+/koIalzIxw8+6i1J1WyNRtNLLYaSP1y2+dODQSDd1E=;
+	s=arc-20240116; t=1748367129; c=relaxed/simple;
+	bh=OdG1MfHpfPdkO8L6XF9CD4R6SiKwfaiQIm9b7jNgWFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouk7IMOaSueBw0o7EPltn0LsvO33zmz6abMjNNRHRIwzAuE+fhwEMwyv1zd8/5iVecsGSDstc7rlb0vANsycMJnX/YmnoMaUopSK8zkLWRbLnKFAiDoJbdHMhkgJFZ6z3yPw9pvBax1CbD8UqEtQz0U3Ee8MnHc1VWwZchG0OfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arq6A/9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182C5C4CEE9;
-	Tue, 27 May 2025 17:33:47 +0000 (UTC)
+	 MIME-Version; b=o5xA69bcetOwBZe9NOcamaGGSrnUtwTrQOFeigwh/Npyof2AXftzgCRRFFPeLUSKbb/U0R0CO5RE3t76jc3B1HaJM8l2EXY2frDPQp579Ez2asarlzXl1tTElLgTJqIZ4wAP23H77ZIYaLyuG3NwygDcMxZhmX4RTITj7DZTu6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02rdC6ig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C64DC4CEEB;
+	Tue, 27 May 2025 17:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367228;
-	bh=+/koIalzIxw8+6i1J1WyNRtNLLYaSP1y2+dODQSDd1E=;
+	s=korg; t=1748367128;
+	bh=OdG1MfHpfPdkO8L6XF9CD4R6SiKwfaiQIm9b7jNgWFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arq6A/9NmHDe2dPBZk1A1Zmo+3VOBEL6RwT4pyIcGZVeiLdnz7b70sVA9YCVGL2ZB
-	 kQnXlhpqm5IP0X7uDFWLDwN8am3CKGyfS0KnVNuuB4kpVFC4oCB72Kvk7auZabU3bC
-	 qcPG0fBWFWzLdVgF1QEXNdj0wCAd+srQTJ6FUT78=
+	b=02rdC6iglruWEmtv0Jw8mczmGRmOsquHLnOYczB8vnpsX0iHxHG5iwQZn5couT6Mo
+	 4ozemF8JYJH5Elh8PRmABaZTOURflthuz+Ic53JeQpZysdcq9Mx06ouDymwDEbwLl/
+	 o5ciOsA90QW2DhrX2Dte+LnjNmj/ctWYqet31gfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Lu <victorchengchi.lu@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 279/783] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
-Date: Tue, 27 May 2025 18:21:16 +0200
-Message-ID: <20250527162524.442518560@linuxfoundation.org>
+Subject: [PATCH 6.14 280/783] drm/amdgpu: Reinit FW shared flags on VCN v5.0.1
+Date: Tue, 27 May 2025 18:21:17 +0200
+Message-ID: <20250527162524.487088349@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -66,43 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
+[ Upstream commit 6ef5ccaad76d907d4257f20de992f89c0f7a7f8e ]
 
-SRIOV VF does not have write access to AGP BAR regs.
-Skip the writes to avoid a dmesg warning.
+After a full device reset, shared memory region will clear out and it's
+not possible to reliably save the region in case of RAS errors.
+Reinitialize the flags if required.
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 28 ++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-index 0e3ddea7b8e0f..a7bfc9f41d0e3 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-@@ -92,12 +92,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- {
- 	uint64_t value;
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
+index 8b0b3739a5377..cdbc10d7c9fb7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
+@@ -65,6 +65,22 @@ static int vcn_v5_0_1_early_init(struct amdgpu_ip_block *ip_block)
+ 	return amdgpu_vcn_early_init(adev);
+ }
  
--	/* Program the AGP BAR */
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
--
- 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
-+		/* Program the AGP BAR */
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
++static void vcn_v5_0_1_fw_shared_init(struct amdgpu_device *adev, int inst_idx)
++{
++	struct amdgpu_vcn5_fw_shared *fw_shared;
 +
- 		/* Program the system aperture low logical page number. */
- 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
++	fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
++
++	if (fw_shared->sq.is_enabled)
++		return;
++	fw_shared->present_flag_0 =
++		cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
++	fw_shared->sq.is_enabled = 1;
++
++	if (amdgpu_vcnfw_log)
++		amdgpu_vcn_fwlog_init(&adev->vcn.inst[inst_idx]);
++}
++
+ /**
+  * vcn_v5_0_1_sw_init - sw init for VCN block
+  *
+@@ -95,8 +111,6 @@ static int vcn_v5_0_1_sw_init(struct amdgpu_ip_block *ip_block)
+ 		return r;
+ 
+ 	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
+-		volatile struct amdgpu_vcn5_fw_shared *fw_shared;
+-
+ 		vcn_inst = GET_INST(VCN, i);
+ 
+ 		ring = &adev->vcn.inst[i].ring_enc[0];
+@@ -111,12 +125,7 @@ static int vcn_v5_0_1_sw_init(struct amdgpu_ip_block *ip_block)
+ 		if (r)
+ 			return r;
+ 
+-		fw_shared = adev->vcn.inst[i].fw_shared.cpu_addr;
+-		fw_shared->present_flag_0 = cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
+-		fw_shared->sq.is_enabled = true;
+-
+-		if (amdgpu_vcnfw_log)
+-			amdgpu_vcn_fwlog_init(&adev->vcn.inst[i]);
++		vcn_v5_0_1_fw_shared_init(adev, i);
+ 	}
+ 
+ 	/* TODO: Add queue reset mask when FW fully supports it */
+@@ -188,6 +197,9 @@ static int vcn_v5_0_1_hw_init(struct amdgpu_ip_block *ip_block)
+ 				 9 * vcn_inst),
+ 				adev->vcn.inst[i].aid_id);
+ 
++		/* Re-init fw_shared, if required */
++		vcn_v5_0_1_fw_shared_init(adev, i);
++
+ 		r = amdgpu_ring_test_helper(ring);
+ 		if (r)
+ 			return r;
 -- 
 2.39.5
 
