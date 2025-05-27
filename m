@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE982AC54D0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915F0AC5813
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1172F170799
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53E791BC18E7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E1827FD64;
-	Tue, 27 May 2025 17:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6E727D786;
+	Tue, 27 May 2025 17:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2+0if9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8um6CxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5CF27F737;
-	Tue, 27 May 2025 17:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867931AF0BB;
+	Tue, 27 May 2025 17:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365443; cv=none; b=UxePAIueEFORVrmbNfCQIQ8neX8SDOYGWuOj9FxnWkHwnIqb9lyqOFSzfUPK5nCXkzoPUru9dPC1tt9uZiUiRvu7EVSm/upYzATrSA1PNVOZlQegGoyjv1/J3dRtpcgLPwArsAYEJ2JZXXErIRlHbRySEuNAT/DVxjbB0yziGWU=
+	t=1748367639; cv=none; b=puRMfJN1iOsMK66ZYUtWpOpDTGVMTK4/TwDXs+KUrioX8fFoAFMhuns/1Bt/M2r+GwJemMefv5rJ4KKH5wzo4uzvjli3enKN6PaWYtbYsu9Kpko0GDU/Mv2X2PtwYJUIHRS2tcBN0lrH2CvmZnW9UCMgp3+m34fxS8AhcXD4x5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365443; c=relaxed/simple;
-	bh=aiHKf8WUxiNJKLFtg26AWC6qXnb1SyPwZDtIXBgpBT4=;
+	s=arc-20240116; t=1748367639; c=relaxed/simple;
+	bh=4B5JPfP+yYTgVOY1kyGtffJK+LmFEdsf5aTfaWsldN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d29sk3JAQYABgx0GeCJvZPqgzzakqWwqvf3VULEfzG08D0101xftngvwpqxwr6L19smR8viHXeSDrjmqFc7+J8S80bT+hRQB+yQSwviWeHgri5f8BMw+gZWIWMaNZvcSn5HTvPmyXYGJ+1JIJR+On0GgVnjotuHZ777VuwTFMQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2+0if9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D008DC4CEE9;
-	Tue, 27 May 2025 17:04:02 +0000 (UTC)
+	 MIME-Version; b=SZv6f1QVxWA0tBlEsRmrY322Qm9Hr3lZUUsIwiPF398V+xiz+7Ygh6baojdlFtZh+FwkWRAo9n19Rr8/Q1QP4Ae/rizGbVA1HSpBv8/UxQDS3HZ5V9mtzA1KsOwS8Qoo0fk+fZjSgHOp43z1vG8kfRRlSy95phl46WYsteYVTjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8um6CxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8BB3C4CEE9;
+	Tue, 27 May 2025 17:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365443;
-	bh=aiHKf8WUxiNJKLFtg26AWC6qXnb1SyPwZDtIXBgpBT4=;
+	s=korg; t=1748367639;
+	bh=4B5JPfP+yYTgVOY1kyGtffJK+LmFEdsf5aTfaWsldN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2+0if9Pc2fpxfeZYgO5QKNj+Al4RhJqIOMQ42myXdepnkgD3xpfG65iCr1cs/lW+
-	 FjiSUXOY/Vp5Fu5ctXWDyo0JlGZve28xnReVMVdswabAFunA4jCYOP9Cbg3eR3PoHG
-	 UOCdlKh9+yE6Vp0k3WMXypIhVKHgx+sZczcNxfzk=
+	b=W8um6CxSRkkMirMXzfJ1NtsjcUhBkuiZ4fXyg1djeysB05CM8D/xOw4wQlOeZF3R8
+	 ZMjzNu2Bf0tOgu6j5Dv0jRSUWdmY9c9KuW+I6xb9hlCxxVO0h3l9FxmwOgWXsB35pa
+	 EQUobwWssdEUppccD6zvJVeIbU7/y2R/L5GxWmsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaofei Tan <tanxiaofei@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Valentin Caron <valentin.caron@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 347/626] ACPI: HED: Always initialize before evged
-Date: Tue, 27 May 2025 18:24:00 +0200
-Message-ID: <20250527162459.121218437@linuxfoundation.org>
+Subject: [PATCH 6.14 444/783] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
+Date: Tue, 27 May 2025 18:24:01 +0200
+Message-ID: <20250527162531.218015886@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaofei Tan <tanxiaofei@huawei.com>
+From: Valentin Caron <valentin.caron@foss.st.com>
 
-[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
+[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
 
-When the HED driver is built-in, it initializes after evged because they
-both are at the same initcall level, so the initialization ordering
-depends on the Makefile order.  However, this prevents RAS records
-coming in between the evged driver initialization and the HED driver
-initialization from being handled.
+Cross case in pinctrl framework make impossible to an hogged pin and
+another, not hogged, used within the same device-tree node. For example
+with this simplified device-tree :
 
-If the number of such RAS records is above the APEI HEST error source
-number, the HEST resources may be exhausted, and that may affect
-subsequent RAS error reporting.
+  &pinctrl {
+    pinctrl_pin_1: pinctrl-pin-1 {
+      pins = "dummy-pinctrl-pin";
+    };
+  };
 
-To fix this issue, change the initcall level of HED to subsys_initcall
-and prevent the driver from being built as a module by changing ACPI_HED
-in Kconfig from "tristate" to "bool".
+  &rtc {
+    pinctrl-names = "default"
+    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
 
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+    rtc_pin_1: rtc-pin-1 {
+      pins = "dummy-rtc-pin";
+    };
+  };
+
+"pinctrl_pin_1" configuration is never set. This produces this path in
+the code:
+
+  really_probe()
+    pinctrl_bind_pins()
+    | devm_pinctrl_get()
+    |   pinctrl_get()
+    |     create_pinctrl()
+    |       pinctrl_dt_to_map()
+    |         // Hog pin create an abort for all pins of the node
+    |         ret = dt_to_map_one_config()
+    |         | /* Do not defer probing of hogs (circular loop) */
+    |         | if (np_pctldev == p->dev->of_node)
+    |         |   return -ENODEV;
+    |         if (ret)
+    |           goto err
+    |
+    call_driver_probe()
+      stm32_rtc_probe()
+        pinctrl_enable()
+          pinctrl_claim_hogs()
+            create_pinctrl()
+              for_each_maps(maps_node, i, map)
+                // Not hog pin is skipped
+                if (pctldev && strcmp(dev_name(pctldev->dev),
+                                      map->ctrl_dev_name))
+                  continue;
+
+At the first call of create_pinctrl() the hogged pin produces an abort to
+avoid a defer of hogged pins. All other pin configurations are trashed.
+
+At the second call, create_pinctrl is now called with pctldev parameter to
+get hogs, but in this context only hogs are set. And other pins are
+skipped.
+
+To handle this, do not produce an abort in the first call of
+create_pinctrl(). Classic pin configuration will be set in
+pinctrl_bind_pins() context. And the hogged pin configuration will be set
+in pinctrl_claim_hogs() context.
+
+Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/Kconfig | 2 +-
- drivers/acpi/hed.c   | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/pinctrl/devicetree.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index d67f63d93b2ab..89fa569d63702 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -443,7 +443,7 @@ config ACPI_SBS
- 	  the modules will be called sbs and sbshc.
- 
- config ACPI_HED
--	tristate "Hardware Error Device"
-+	bool "Hardware Error Device"
- 	help
- 	  This driver supports the Hardware Error Device (PNP0C33),
- 	  which is used to report some hardware errors notified via
-diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
-index 7652515a6be1e..3499f86c411e3 100644
---- a/drivers/acpi/hed.c
-+++ b/drivers/acpi/hed.c
-@@ -80,7 +80,12 @@ static struct acpi_driver acpi_hed_driver = {
- 		.remove = acpi_hed_remove,
- 	},
- };
--module_acpi_driver(acpi_hed_driver);
-+
-+static int __init acpi_hed_driver_init(void)
-+{
-+	return acpi_bus_register_driver(&acpi_hed_driver);
-+}
-+subsys_initcall(acpi_hed_driver_init);
- 
- MODULE_AUTHOR("Huang Ying");
- MODULE_DESCRIPTION("ACPI Hardware Error Device Driver");
+diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
+index 6a94ecd6a8dea..0b7f74beb6a6a 100644
+--- a/drivers/pinctrl/devicetree.c
++++ b/drivers/pinctrl/devicetree.c
+@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
+ 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
+ 		if (pctldev)
+ 			break;
+-		/* Do not defer probing of hogs (circular loop) */
++		/*
++		 * Do not defer probing of hogs (circular loop)
++		 *
++		 * Return 1 to let the caller catch the case.
++		 */
+ 		if (np_pctldev == p->dev->of_node) {
+ 			of_node_put(np_pctldev);
+-			return -ENODEV;
++			return 1;
+ 		}
+ 	}
+ 	of_node_put(np_pctldev);
+@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
+ 			ret = dt_to_map_one_config(p, pctldev, statename,
+ 						   np_config);
+ 			of_node_put(np_config);
++			if (ret == 1)
++				continue;
+ 			if (ret < 0)
+ 				goto err;
+ 		}
 -- 
 2.39.5
 
