@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7B8AC591B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E6BAC55DB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 094A59E0386
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DE2E7A7B73
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B852F27FB09;
-	Tue, 27 May 2025 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EF027E7C6;
+	Tue, 27 May 2025 17:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAJJdfFZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bf1Z5A1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750AB194A45;
-	Tue, 27 May 2025 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AF627CCF0;
+	Tue, 27 May 2025 17:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368378; cv=none; b=H7wDGjV1Z/Sx58z0hyQM4qOeRgqQ50J5+Cg6B98LPtnrxcFxUxd99WM7/JPwkAZUbL9OrCAU0WiRqg8toMPCoUAoB8R1OlHfwIJ0tpImbH4zCVVd0jmC9VM1owBSiLctaPuABQmgJn35AMcXXkhyrJ7lG1wtVZy5RpU2Xx//EXU=
+	t=1748366102; cv=none; b=r9hPW45O/M1aXToVlJPh85xam/oU07z3ggNwQu6CqoCTZVrAlxZ9oVkobvczfdA5vT/yjfPW8YjZwePHoHL74+gaEwFkrP06d8mhSqhqKgw8grB2GcABs3yvP/PodXrbcBXwYo+DaBupFpYrlNN/VFbTV2SzMPNn9r9ddUCzAdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368378; c=relaxed/simple;
-	bh=WL4ujAyolLEKTYwVhsgZqtk0UFWFYK7a1uEfYWrlC7o=;
+	s=arc-20240116; t=1748366102; c=relaxed/simple;
+	bh=uuMYmEnT1rkog+QumJ8woIP7Oo0BLqScKDHel3ipm0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YAZU8L3g8M1VMzQqDEwtPRtYGm3M5nLVeGNHDlzOCyZddLlN31rxx09083SZ0i00ubuM533W0YEcbt879h4UEEZZqQKpSJ7A6mTAuxb3nIi4rExNTgZwA09Fc7sSBXrObfZVVhOIRk6sBi3BEfb17ZMGGHbcyuMjZAIhFd7MpaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAJJdfFZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09B5C4CEE9;
-	Tue, 27 May 2025 17:52:57 +0000 (UTC)
+	 MIME-Version; b=ZzLiedZhap9l/CaEnwGIwAmLPpZ9wVaLoF69Ql6QxE774AGi+VXuKQWbP9TpvMkJNjgJVdOb9ELyN2j5Qek1ONIgVjgINi80pP+ncX9RW0tXb8s0yoqItCJcnqxHucn+z8OwBUBXp7vwOxY4PCt5b9aIVaXlZiWhM0QBHyp9Xtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bf1Z5A1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EF4C4CEE9;
+	Tue, 27 May 2025 17:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368378;
-	bh=WL4ujAyolLEKTYwVhsgZqtk0UFWFYK7a1uEfYWrlC7o=;
+	s=korg; t=1748366102;
+	bh=uuMYmEnT1rkog+QumJ8woIP7Oo0BLqScKDHel3ipm0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAJJdfFZidc+d75Z0fqaPlEmSPlGrcDfRXriU0EUlOzcXYjYiiKV9Wx9o5ldyeGjH
-	 y7T8g6uh2mn/rtgrwpXHndGjV/F+9oQQrxB+xqx25FZWcZzONQTwZKsudd+Nl+mtSb
-	 8ln5opDk2239DdjJAE7u1zGbUHI0BcUVZT8WUdhA=
+	b=bf1Z5A1hDAlq4iwcFsZGjKIykPRF1qWMDJynjdrvlA5UiA9p4k/B0lCRdRJvysDNs
+	 8qKKlTJllLKGZ3HiuCCrkcO9aBiPymqm41tQKYuvdeQqN54Iv3DUwm95VPMlKHIx9s
+	 1RAvk4UhYfkacOSIWE2fQLnjHeL8cNzKloky1Kno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 6.14 688/783] remoteproc: qcom_wcnss: Fix on platforms without fallback regulators
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.12 592/626] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
 Date: Tue, 27 May 2025 18:28:05 +0200
-Message-ID: <20250527162541.152168447@linuxfoundation.org>
+Message-ID: <20250527162509.046925227@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 4ca45af0a56d00b86285d6fdd720dca3215059a7 ]
+commit b04f0d89e880bc2cca6a5c73cf287082c91878da upstream.
 
-Recent change to handle platforms with only single power domain broke
-pronto-v3 which requires power domains and doesn't have fallback voltage
-regulators in case power domains are missing. Add a check to verify
-the number of fallback voltage regulators before using the code which
-handles single power domain situation.
+The two alarm LEDs of on the uDPU board are stopped working since
+commit 78efa53e715e ("leds: Init leds class earlier").
 
-Fixes: 65991ea8a6d1 ("remoteproc: qcom_wcnss: Handle platforms with only single power domain")
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Tested-by: Luca Weiss <luca.weiss@fairphone.com> # sdm632-fairphone-fp3
-Link: https://lore.kernel.org/r/20250511234026.94735-1-matti.lehtimaki@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The LEDs are driven by the GPIO{15,16} pins of the North Bridge
+GPIO controller. These pins are part of the 'spi_quad' pin group
+for which the 'spi' function is selected via the default pinctrl
+state of the 'spi' node. This is wrong however, since in order to
+allow controlling the LEDs, the pins should use the 'gpio' function.
+
+Before the commit mentined above, the 'spi' function is selected
+first by the pinctrl core before probing the spi driver, but then
+it gets overridden to 'gpio' implicitly via the
+devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
+
+After the commit, the LED subsystem gets initialized before the
+SPI subsystem, so the function of the pin group remains 'spi'
+which in turn prevents controlling of the LEDs.
+
+Despite the change of the initialization order, the root cause is
+that the pinctrl state definition is wrong since its initial commit
+0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
+
+To fix the problem, override the function in the 'spi_quad_pins'
+node to 'gpio' and move the pinctrl state definition from the
+'spi' node into the 'leds' node.
+
+Cc: stable@vger.kernel.org # needs adjustment for < 6.1
+Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/qcom_wcnss.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
-index 775b056d795a8..2c7e519a2254b 100644
---- a/drivers/remoteproc/qcom_wcnss.c
-+++ b/drivers/remoteproc/qcom_wcnss.c
-@@ -456,7 +456,8 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
- 	if (wcnss->num_pds) {
- 		info += wcnss->num_pds;
- 		/* Handle single power domain case */
--		num_vregs += num_pd_vregs - wcnss->num_pds;
-+		if (wcnss->num_pds < num_pd_vregs)
-+			num_vregs += num_pd_vregs - wcnss->num_pds;
- 	} else {
- 		num_vregs += num_pd_vregs;
- 	}
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
+@@ -26,6 +26,8 @@
+ 
+ 	leds {
+ 		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi_quad_pins>;
+ 
+ 		led-power1 {
+ 			label = "udpu:green:power";
+@@ -82,8 +84,6 @@
+ 
+ &spi0 {
+ 	status = "okay";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi_quad_pins>;
+ 
+ 	flash@0 {
+ 		compatible = "jedec,spi-nor";
+@@ -108,6 +108,10 @@
+ 	};
+ };
+ 
++&spi_quad_pins {
++	function = "gpio";
++};
++
+ &pinctrl_nb {
+ 	i2c2_recovery_pins: i2c2-recovery-pins {
+ 		groups = "i2c2";
 
 
 
