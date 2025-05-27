@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD716AC542F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B45AC5796
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D4E74A275E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDBF21BC0F13
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266D027E1CA;
-	Tue, 27 May 2025 16:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675B727F178;
+	Tue, 27 May 2025 17:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gP/+euZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAJ6CTaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C984E2CCC0;
-	Tue, 27 May 2025 16:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9B3C01;
+	Tue, 27 May 2025 17:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365024; cv=none; b=sG2hLDeK1hkrzEmKhXPJYlmRVA64DSSksNbZ3EBAK2dmSoOGpbXpwUetDVNLZYf6mkeUbjODIfPj1smhZBkoqyjGc1NGLR5sRnlpmM7A11HlTnJfVe/wjp8lgrV1Gy2D4A68FoCW7SVDliNHf7q/JDBkpMM99tDZ0q2H0ReXKsE=
+	t=1748367290; cv=none; b=WMxxMA/U/bECSmgEZLE2Z47P85KmC527dMTVFXW26hqvKS/wwqPyLZ2GFhKqVqdO41OdK/VXBNAV3gLHutdJs8d94s++xeyNLTNJWuM7xDjzNrGeUMV8XFuzP41fCh3FSi/uuMrZxenRW3RY76mcNaTAhxLyNwVxsaKOy9eZ1UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365024; c=relaxed/simple;
-	bh=fCSZgxRJWN+lGmi2n+7yi+7N5izPfmAia9QDvQdKaX0=;
+	s=arc-20240116; t=1748367290; c=relaxed/simple;
+	bh=CvlA0+lX31ctVZsDff3YVyVATcCktTKwu1b7JOHxBP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMG5GiH7ID9e1Lb2YTXfcISG8kzzQ6+C5Wiylj8LasGUXyNbkrKwJlfp1G87Dqo53ec1tYXDuaVwhj+weag1wH734WC8Wrb6N9EJ8PvkCNihPjPB3y59i6xxoLgiTyCOGmXlX64qgoZJecwIzzyKwkyR3269OD7708mIDrK+iq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gP/+euZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FFDC4CEE9;
-	Tue, 27 May 2025 16:57:04 +0000 (UTC)
+	 MIME-Version; b=rCVsfyveXPMoyf2Fsbd9FT9Feu1uiLpB+tuGnMVT89EghcrKPEddXEjt63xvHOxK82ymlTll3nMqLJTEr2zNDhEtpJhkGNTtd8GtyeDhJrfRsaSE8jbviT+BPIaogZtwSbnw5k3Oo1yYyXvtdkkhu24AlElX9kjownt5k1ozOyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAJ6CTaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24697C4CEE9;
+	Tue, 27 May 2025 17:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365024;
-	bh=fCSZgxRJWN+lGmi2n+7yi+7N5izPfmAia9QDvQdKaX0=;
+	s=korg; t=1748367289;
+	bh=CvlA0+lX31ctVZsDff3YVyVATcCktTKwu1b7JOHxBP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gP/+euZDO1Scw2upbYbngrDp3wqtPNFotFY3CUShhtPi9YD/aQSSyjyt7+7HmL0H
-	 V+/Zun0HP+MsTvjuwssHhHhNRCzOLaYnEEr5qmfxgGw1LyVryXUN+bJhoP6yxWoDHU
-	 6QyDhHN4t0jTXN5cEy4Cpy825PmV6JsSZ/r0ZDsc=
+	b=BAJ6CTaHMeyUHozWCopmavzylT4x7Fzq93UJgFdcySanqHzuudOQf+86WDNAdMT/3
+	 omtGqIKw4ghjlKMg9itONnRkbRpIcMpahpmIiV34estCYqmbRp4B3L752f6NJfpUxP
+	 r3+X5ShtPv+Nfm6AUYbZjbP1Aw2NpocOHPEM3i8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 242/626] net: ethernet: ti: cpsw_new: populate netdev of_node
-Date: Tue, 27 May 2025 18:22:15 +0200
-Message-ID: <20250527162454.846107283@linuxfoundation.org>
+Subject: [PATCH 6.14 339/783] net: xgene-v2: remove incorrect ACPI_PTR annotation
+Date: Tue, 27 May 2025 18:22:16 +0200
+Message-ID: <20250527162526.871740307@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
+[ Upstream commit 01358e8fe922f716c05d7864ac2213b2440026e7 ]
 
-So that of_find_net_device_by_node() can find CPSW ports and other DSA
-switches can be stacked downstream. Tested in conjunction with KSZ8873.
+Building with W=1 shows a warning about xge_acpi_match being unused when
+CONFIG_ACPI is disabled:
 
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+drivers/net/ethernet/apm/xgene-v2/main.c:723:36: error: unused variable 'xge_acpi_match' [-Werror,-Wunused-const-variable]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250225163341.4168238-2-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/apm/xgene-v2/main.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 557cc71b9dd22..0eee1a0527b5c 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1417,6 +1417,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 		ndev->netdev_ops = &cpsw_netdev_ops;
- 		ndev->ethtool_ops = &cpsw_ethtool_ops;
- 		SET_NETDEV_DEV(ndev, dev);
-+		ndev->dev.of_node = slave_data->slave_node;
+diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
+index 2a91c84aebdb0..d7ca847d44c7c 100644
+--- a/drivers/net/ethernet/apm/xgene-v2/main.c
++++ b/drivers/net/ethernet/apm/xgene-v2/main.c
+@@ -9,8 +9,6 @@
  
- 		if (!napi_ndev) {
- 			/* CPSW Host port CPDMA interface is shared between
+ #include "main.h"
+ 
+-static const struct acpi_device_id xge_acpi_match[];
+-
+ static int xge_get_resources(struct xge_pdata *pdata)
+ {
+ 	struct platform_device *pdev;
+@@ -731,7 +729,7 @@ MODULE_DEVICE_TABLE(acpi, xge_acpi_match);
+ static struct platform_driver xge_driver = {
+ 	.driver = {
+ 		   .name = "xgene-enet-v2",
+-		   .acpi_match_table = ACPI_PTR(xge_acpi_match),
++		   .acpi_match_table = xge_acpi_match,
+ 	},
+ 	.probe = xge_probe,
+ 	.remove = xge_remove,
 -- 
 2.39.5
 
