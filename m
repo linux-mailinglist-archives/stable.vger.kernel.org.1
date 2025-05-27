@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-147329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3371FAC5731
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062B0AC5413
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1E7217FBC2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D95FE7A3C40
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4FC1AF0BB;
-	Tue, 27 May 2025 17:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A327FD61;
+	Tue, 27 May 2025 16:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J/rVzB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2y3BTa7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD9727F178;
-	Tue, 27 May 2025 17:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6651427FD53;
+	Tue, 27 May 2025 16:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367006; cv=none; b=CncJY3LLSv1d9gzKdnCRdDw/cuyy1QqMS008Nb0Gy3+jrJEUoDe/236rCmjXwEQRTMRTsey064jha80EwVjQippWOAVnMIfP/qb42aulAs12ovMPm0RP4ZnmKXRCyKIyJmCtCgkJzMZpqzdoZ+ngdIbDPG52ikoqGRxEThNXTCQ=
+	t=1748364834; cv=none; b=IZoXwdSyhVHldiPwqxP0eZ+SI/VKTNncVX0Qurq17kmRwEt+PigcY6tDPp8/2q6dQy7gE2Yaxw9DjMxppv5b8MLs2rNg9wYOXFoCd4OThy5yMXpjF7WppnWKNTHmZqAt9sYf7yp/wPnGaA+zubJeL0BWqiQF1WmMISTY64kjyiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367006; c=relaxed/simple;
-	bh=0DHvNu42wXnGGK/cXlC6LwlTp60kNDrwgeiHEeTIZ8I=;
+	s=arc-20240116; t=1748364834; c=relaxed/simple;
+	bh=Z7G+cjR0bj4mqvK6LaIwH9kcaXwzqvIkKeClEq+GvK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bzuwdcjMDJYCDqBXVMiDT0pXYpgM8ZE2rFcxXruAwvEEmEiTokFOGQT51ayg8YZBwHiTUB/+O7Df24nPTkiLc8WffzsQeVvpoOVnHZHr5kDbEXmUhxuhwR4C4qXdBR/9CvX9PekzujFnErvBBKUC64YjQjURooXugK90sOrZB3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J/rVzB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43482C4CEE9;
-	Tue, 27 May 2025 17:30:05 +0000 (UTC)
+	 MIME-Version; b=Sj4kf096H7WTFQIyiDftn5z0Og+5E7MqhIPr8Jb9WhgVijjUyuwM8p97LtTxmtdpYdgYQl/e5K51hT6LkJ3ZPKvL9yYu+E+684RySqCYxWQ5p4GkAZvp3jKMIevnrWq82AxO6pkEzDnonoGKaOO0cleQ9HJ0IhUQkoncYvdgC7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2y3BTa7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A98EC4CEE9;
+	Tue, 27 May 2025 16:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367005;
-	bh=0DHvNu42wXnGGK/cXlC6LwlTp60kNDrwgeiHEeTIZ8I=;
+	s=korg; t=1748364832;
+	bh=Z7G+cjR0bj4mqvK6LaIwH9kcaXwzqvIkKeClEq+GvK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1J/rVzB7q7TEi7a+uBPQxE8vTlieUDbZHB4oiApnatOzZJa6UsbgWIRC2iGPytmhs
-	 dXBHAnUIRYRHwIzuaKV2xfrov5ScJ5Bi6xma2dUz0pjMbkPt0R3sWVMquPxgKJZC8n
-	 9fYz2icI+QAkXXdpx2vSHMdOCy29kz0dWEYMQzac=
+	b=W2y3BTa722EdMPWrOnDj7FfrynFwVmeUmLicn15+VctYW8U02nQgnVh3h2nMnyAWL
+	 N35ZhrWWaB3g7C6cKEHyARLdhM9epdkOF0Yq1+ZUI2MP69Z15fz7azdBxl5iiEt1Mx
+	 mFMEoG9ts6p9dJihWfrMjsNFQRSUSEJtD+HfDjXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Christian Bruel <christian.bruel@foss.st.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Seyediman Seyedarab <imandevel@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 246/783] PCI: endpoint: pci-epf-test: Fix double free that causes kernel to oops
+Subject: [PATCH 6.12 150/626] kbuild: fix argument parsing in scripts/config
 Date: Tue, 27 May 2025 18:20:43 +0200
-Message-ID: <20250527162523.127534431@linuxfoundation.org>
+Message-ID: <20250527162451.123395827@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Bruel <christian.bruel@foss.st.com>
+From: Seyediman Seyedarab <imandevel@gmail.com>
 
-[ Upstream commit 934e9d137d937706004c325fa1474f9e3f1ba10a ]
+[ Upstream commit f757f6011c92b5a01db742c39149bed9e526478f ]
 
-Fix a kernel oops found while testing the stm32_pcie Endpoint driver
-with handling of PERST# deassertion:
+The script previously assumed --file was always the first argument,
+which caused issues when it appeared later. This patch updates the
+parsing logic to scan all arguments to find --file, sets the config
+file correctly, and resets the argument list with the remaining
+commands.
 
-During EP initialization, pci_epf_test_alloc_space() allocates all BARs,
-which are further freed if epc_set_bar() fails (for instance, due to no
-free inbound window).
+It also fixes --refresh to respect --file by passing KCONFIG_CONFIG=$FN
+to make oldconfig.
 
-However, when pci_epc_set_bar() fails, the error path:
-
-  pci_epc_set_bar() ->
-    pci_epf_free_space()
-
-does not clear the previous assignment to epf_test->reg[bar].
-
-Then, if the host reboots, the PERST# deassertion restarts the BAR
-allocation sequence with the same allocation failure (no free inbound
-window), creating a double free situation since epf_test->reg[bar] was
-deallocated and is still non-NULL.
-
-Thus, make sure that pci_epf_alloc_space() and pci_epf_free_space()
-invocations are symmetric, and as such, set epf_test->reg[bar] to NULL
-when memory is freed.
-
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
-Link: https://lore.kernel.org/r/20250124123043.96112-1-christian.bruel@foss.st.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Seyediman Seyedarab <imandevel@gmail.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/config | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 2409787cf56d9..bce3ae2c0f652 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -738,6 +738,7 @@ static int pci_epf_test_set_bar(struct pci_epf *epf)
- 		if (ret) {
- 			pci_epf_free_space(epf, epf_test->reg[bar], bar,
- 					   PRIMARY_INTERFACE);
-+			epf_test->reg[bar] = NULL;
- 			dev_err(dev, "Failed to set BAR%d\n", bar);
- 			if (bar == test_reg_bar)
- 				return ret;
-@@ -929,6 +930,7 @@ static void pci_epf_test_free_space(struct pci_epf *epf)
+diff --git a/scripts/config b/scripts/config
+index ff88e2faefd35..ea475c07de283 100755
+--- a/scripts/config
++++ b/scripts/config
+@@ -32,6 +32,7 @@ commands:
+                              Disable option directly after other option
+ 	--module-after|-M beforeopt option
+                              Turn option into module directly after other option
++	--refresh            Refresh the config using old settings
  
- 		pci_epf_free_space(epf, epf_test->reg[bar], bar,
- 				   PRIMARY_INTERFACE);
-+		epf_test->reg[bar] = NULL;
- 	}
+ 	commands can be repeated multiple times
+ 
+@@ -124,16 +125,22 @@ undef_var() {
+ 	txt_delete "^# $name is not set" "$FN"
  }
  
+-if [ "$1" = "--file" ]; then
+-	FN="$2"
+-	if [ "$FN" = "" ] ; then
+-		usage
++FN=.config
++CMDS=()
++while [[ $# -gt 0 ]]; do
++	if [ "$1" = "--file" ]; then
++		if [ "$2" = "" ]; then
++			usage
++		fi
++		FN="$2"
++		shift 2
++	else
++		CMDS+=("$1")
++		shift
+ 	fi
+-	shift 2
+-else
+-	FN=.config
+-fi
++done
+ 
++set -- "${CMDS[@]}"
+ if [ "$1" = "" ] ; then
+ 	usage
+ fi
+@@ -217,9 +224,8 @@ while [ "$1" != "" ] ; do
+ 		set_var "${CONFIG_}$B" "${CONFIG_}$B=m" "${CONFIG_}$A"
+ 		;;
+ 
+-	# undocumented because it ignores --file (fixme)
+ 	--refresh)
+-		yes "" | make oldconfig
++		yes "" | make oldconfig KCONFIG_CONFIG=$FN
+ 		;;
+ 
+ 	*)
 -- 
 2.39.5
 
