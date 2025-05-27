@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-146706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55710AC54B5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2920AC57BC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9664E3B4C28
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 422427A91D8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664BC27E1CA;
-	Tue, 27 May 2025 16:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C7C27F178;
+	Tue, 27 May 2025 17:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKLa263I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLFDqvX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2593A276057;
-	Tue, 27 May 2025 16:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F433C01;
+	Tue, 27 May 2025 17:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365056; cv=none; b=Lh8naYMeKY3wFhtSsxeDjjjpoH1Fxcz35ox5Gg+a2+AcKJZ5yT3HExFn4mkPgIhdgFihI2541U2dapxUtrx7Bfmn6QRXm5nPd3TCRsIrPwe+Cu3YvGArHio2zbzz2b212QDW9XE8ZmEGUw7HETZZOHnTx+ZBHEcVOrb4rguBnGw=
+	t=1748367415; cv=none; b=HteCtcgJ3PhMFmeYEdffnTxzlFhO8N7/PziX4nsqjRilipZiC3DFznqrK0PHTyNxkcckusY3JbKXVSKFE+Antt+5ZUoN+4XOYpv52r56aTwo06xjK8yhCPUPROQgRgOu4qpVxcVfWSE5GJu/oDW6OOzrnqRG72NWhB/dPp/Bkko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365056; c=relaxed/simple;
-	bh=K09Xbxogggcu6iwUA6f7HMLPJhNXT7filKBCFmYTnWU=;
+	s=arc-20240116; t=1748367415; c=relaxed/simple;
+	bh=XngBFkuFcbEuR6VzCCGXapcH0Su/yqEJ4ThVYIWOFTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQhsbLSA1mvfj1q7+ScPhKhDoQJHIDOWOK7PIL9EyN6TQjbdy9dT6KSAHuNBlXWFhc3sEMa2FwOCJq6XGCVDlgSdCnuZ2ztLWPY+YwDj71QV+z2I8jt27HF1fW+YIcvielxnT0Hh/iAkhJe68BLRGY6UoDECrOj4R1VDvRSetCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKLa263I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AABCC4CEE9;
-	Tue, 27 May 2025 16:57:35 +0000 (UTC)
+	 MIME-Version; b=EUdEBlCFwY8wKLkHBfQmlhipGTf8Sl6Q9LqhXGnnu0euQtNZ9bx9abDCUDC6ClrD2rzyYihilN/oZuA7PTF3a01dYe6do2aGkvPE3J8+DUD6fj+7nnljcRNtceSF4F6KC8MuO/fcwgOnvAT5TGKtw2JZML6yVKeeZ8lgeULfQLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLFDqvX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4986FC4CEE9;
+	Tue, 27 May 2025 17:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365056;
-	bh=K09Xbxogggcu6iwUA6f7HMLPJhNXT7filKBCFmYTnWU=;
+	s=korg; t=1748367415;
+	bh=XngBFkuFcbEuR6VzCCGXapcH0Su/yqEJ4ThVYIWOFTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKLa263IEBJOc2k2vICrjr81VPkyZFKojU3x/8Sou/kCMoUSz5zhAccKMxbamy9Ba
-	 o9NDpYkrmEOdIZHwc4XXWhubNENwU8iu+PrjLHP7P6yTHm37+djHNNfb5FslnVAuZj
-	 h0eb5DPAGjSRcENz1elxjdWTmJaPrKJvVnE6Lpdg=
+	b=jLFDqvX36HoDIxPMrsRUKGRujzWW50j0V6tD/3LDYsLGU/uLxtK6ul+ZcEgYNq0EW
+	 aFNHbiVT+nbCO8dkeO6PM3L90cKa7BVTWlWPgsQa9vXlWfni3JNNnf0zNLGSAb+jdH
+	 SUK9h3/v126utMwrYfvf+F1NPIp3xx9ki3VTLlW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Samson Tam <samson.tam@amd.com>,
+	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 254/626] block: mark bounce buffering as incompatible with integrity
+Subject: [PATCH 6.14 350/783] drm/amd/display: handle max_downscale_src_width fail check
 Date: Tue, 27 May 2025 18:22:27 +0200
-Message-ID: <20250527162455.333757035@linuxfoundation.org>
+Message-ID: <20250527162527.320742207@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Yihan Zhu <Yihan.Zhu@amd.com>
 
-[ Upstream commit 5fd0268a8806d35dcaf89139bfcda92be51b2b2f ]
+[ Upstream commit 02a940da2ccc0cc0299811379580852b405a0ea2 ]
 
-None of the few drivers still using the legacy block layer bounce
-buffering support integrity metadata.  Explicitly mark the features as
-incompatible and stop creating the slab and mempool for integrity
-buffers for the bounce bio_set.
+[WHY]
+If max_downscale_src_width check fails, we exit early from TAP calculation and left a NULL
+value to the scaling data structure to cause the zero divide in the DML validation.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20250225154449.422989-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[HOW]
+Call set default TAP calculation before early exit in get_optimal_number_of_taps due to
+max downscale limit exceed.
+
+Reviewed-by: Samson Tam <samson.tam@amd.com>
+Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 5 +++++
- block/bounce.c       | 2 --
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 1e63e3dd54402..7858c92b44834 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -124,6 +124,11 @@ static int blk_validate_integrity_limits(struct queue_limits *lim)
- 		return 0;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
+index 40acebd13e46d..abf439e743f23 100644
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
+@@ -425,11 +425,6 @@ bool dpp3_get_optimal_number_of_taps(
+ 	int min_taps_y, min_taps_c;
+ 	enum lb_memory_config lb_config;
  
-+	if (lim->features & BLK_FEAT_BOUNCE_HIGH) {
-+		pr_warn("no bounce buffer support for integrity metadata\n");
-+		return -EINVAL;
-+	}
+-	if (scl_data->viewport.width > scl_data->h_active &&
+-		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
+-		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
+-		return false;
+-
+ 	/*
+ 	 * Set default taps if none are provided
+ 	 * From programming guide: taps = min{ ceil(2*H_RATIO,1), 8} for downscaling
+@@ -467,6 +462,12 @@ bool dpp3_get_optimal_number_of_taps(
+ 	else
+ 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
+ 
++	// Avoid null data in the scl data with this early return, proceed non-adaptive calcualtion first
++	if (scl_data->viewport.width > scl_data->h_active &&
++		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
++		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
++		return false;
 +
- 	if (!IS_ENABLED(CONFIG_BLK_DEV_INTEGRITY)) {
- 		pr_warn("integrity support disabled.\n");
- 		return -EINVAL;
-diff --git a/block/bounce.c b/block/bounce.c
-index 0d898cd5ec497..09a9616cf2094 100644
---- a/block/bounce.c
-+++ b/block/bounce.c
-@@ -41,8 +41,6 @@ static void init_bounce_bioset(void)
- 
- 	ret = bioset_init(&bounce_bio_set, BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
- 	BUG_ON(ret);
--	if (bioset_integrity_create(&bounce_bio_set, BIO_POOL_SIZE))
--		BUG_ON(1);
- 
- 	ret = bioset_init(&bounce_bio_split, BIO_POOL_SIZE, 0, 0);
- 	BUG_ON(ret);
+ 	/*Ensure we can support the requested number of vtaps*/
+ 	min_taps_y = dc_fixpt_ceil(scl_data->ratios.vert);
+ 	min_taps_c = dc_fixpt_ceil(scl_data->ratios.vert_c);
 -- 
 2.39.5
 
