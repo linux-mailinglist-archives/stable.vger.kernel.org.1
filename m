@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11187AC5394
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:49:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D30C1AC5717
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23AB24A19BE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74B8A3BFFE4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBB51D63EF;
-	Tue, 27 May 2025 16:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A95E27FB34;
+	Tue, 27 May 2025 17:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YkWYMzui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayMBVfc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB18427CB04;
-	Tue, 27 May 2025 16:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CD0194A45;
+	Tue, 27 May 2025 17:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364532; cv=none; b=bqRCdCPKiqe9y8OwzNa+zrazguwXh81N4a6ZbX+nrAD8DpVCgYr9mAoI+4GCwqlbV6orEFWhRbEAhZG688C4XGIQZVm2mT6io2QZmKPJM6PUVdcQKHCfhZJ5W4S9L0nocBrUsbM44t0FWuZxtlpCESvmgMUHg6+cGW1fSywAsV4=
+	t=1748366896; cv=none; b=EOdMw0sxaJt/O2n6suQDEW44k3BhdwNNbYXjLK4n8x7v6M1kInNrcGweDEb3+qLGFdWo24Yjucf1QOJbckdKc7dA0c+s/nUBZ4RXrzopvABvFTnftaQAsGvnK1rzNYv8J+/5tkrEt2I/Fwc4tU5rrmSdaIMzB8o1Ioq0jPVMMMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364532; c=relaxed/simple;
-	bh=cZq5XeWKLrrBbNyGURlSUbFRK5niGHf/KS20bYSGWKI=;
+	s=arc-20240116; t=1748366896; c=relaxed/simple;
+	bh=rBOVoGu66xi9B4oi4slbocc7O133LAsLMbxX7sxJivk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3jNVNMgb41qmqKz/7IjzUu3MeqTLrT98tKB4Kk59oeBRi0KFKozGsh+NMYPD43SjpniqjdP/7M5k1hO9ff3AoiWCTuu+R1wytpdl71yvyHzq5KeWowFtEQgzRqh8IFMkhM940u4y1/ohVxuyT73DUKQP24Xzj17MaO7pKCv+3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YkWYMzui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19561C4CEE9;
-	Tue, 27 May 2025 16:48:51 +0000 (UTC)
+	 MIME-Version; b=BRKFpK8AEetTzEHCfxOT3G+FumoFvyS9wdWAo53rUwNvW8ERYD/mjH9MNLsBWF6FU1YitTrx38kLQpSn4f/tAT6UZ0ZnlbyTTNa7a0VqnuMVGOXpQQ5NBmqvu3CSRg/wH3PhwL/nyoTF5OAXKm39AhjUj3cIgGFyqboLMrm/Oxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayMBVfc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011F6C4CEE9;
+	Tue, 27 May 2025 17:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364532;
-	bh=cZq5XeWKLrrBbNyGURlSUbFRK5niGHf/KS20bYSGWKI=;
+	s=korg; t=1748366895;
+	bh=rBOVoGu66xi9B4oi4slbocc7O133LAsLMbxX7sxJivk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YkWYMzuiOAldA2GS5WwF6wSrxHqajLvTsHWkCyx+4J2IjdEG7ywuvpT1oacMyq4pk
-	 Kz1JhbWB+N9u8AO8V5rqoW861vgVl5fwC6uEV0iOaRyYlt4+ab3oxdbM9t7nfwRQI9
-	 DC3A/L0fxQdat4bxzURAaOrm4nVdMr1lB/+DCin8=
+	b=ayMBVfc5vVGkNYXIjJ3tbcgh31fAhUaJ45tgVAlRibIAiQAtk2qsgxAKCDQrPCISx
+	 KkyOC6zegtaJxitdc2mBFOFYjaPxTDaRwGbjEpL5tnQxz/rsZyvRJ+RUGr1+m0dbZC
+	 9Aya9xoV2dkVf9AxAh8VIvH76kOfk8zUlMmUgyuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Langsdorf <mlangsdo@redhat.com>,
+	Eder Zulian <ezulian@redhat.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/626] PCI: dwc: ep: Ensure proper iteration over outbound map windows
-Date: Tue, 27 May 2025 18:19:40 +0200
-Message-ID: <20250527162448.577681730@linuxfoundation.org>
+Subject: [PATCH 6.14 184/783] mfd: syscon: Add check for invalid resource size
+Date: Tue, 27 May 2025 18:19:41 +0200
+Message-ID: <20250527162520.645213216@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Eder Zulian <ezulian@redhat.com>
 
-[ Upstream commit f3e1dccba0a0833fc9a05fb838ebeb6ea4ca0e1a ]
+[ Upstream commit ba09916efb29f80e438a54e634970209ce12750f ]
 
-Most systems' PCIe outbound map windows have non-zero physical addresses,
-but the possibility of encountering zero increased after following commit
-("PCI: dwc: Use parent_bus_offset").
+Add a consistency check to avoid assigning an invalid value to
+max_register due to a possible DT misconfiguration.
 
-'ep->outbound_addr[n]', representing 'parent_bus_address', might be 0 on
-some hardware, which trims high address bits through bus fabric before
-sending to the PCIe controller.
-
-Replace the iteration logic with 'for_each_set_bit()' to ensure only
-allocated map windows are iterated when determining the ATU index from a
-given address.
-
-Link: https://lore.kernel.org/r/20250315201548.858189-12-helgaas@kernel.org
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Suggested-by: Mark Langsdorf <mlangsdo@redhat.com>
+Signed-off-by: Eder Zulian <ezulian@redhat.com>
+Link: https://lore.kernel.org/r/20250212184524.585882-1-ezulian@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/syscon.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index dea19250598a6..9e7e94f32b436 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -280,7 +280,7 @@ static int dw_pcie_find_index(struct dw_pcie_ep *ep, phys_addr_t addr,
- 	u32 index;
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index aa4a9940b569a..ae71a2710bed8 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -47,6 +47,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 	struct regmap_config syscon_config = syscon_regmap_config;
+ 	struct resource res;
+ 	struct reset_control *reset;
++	resource_size_t res_size;
  
--	for (index = 0; index < pci->num_ob_windows; index++) {
-+	for_each_set_bit(index, ep->ob_window_map, pci->num_ob_windows) {
- 		if (ep->outbound_addr[index] != addr)
- 			continue;
- 		*atu_index = index;
+ 	WARN_ON(!mutex_is_locked(&syscon_list_lock));
+ 
+@@ -96,6 +97,12 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 		}
+ 	}
+ 
++	res_size = resource_size(&res);
++	if (res_size < reg_io_width) {
++		ret = -EFAULT;
++		goto err_regmap;
++	}
++
+ 	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%pa", np, &res.start);
+ 	if (!syscon_config.name) {
+ 		ret = -ENOMEM;
+@@ -103,7 +110,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 	}
+ 	syscon_config.reg_stride = reg_io_width;
+ 	syscon_config.val_bits = reg_io_width * 8;
+-	syscon_config.max_register = resource_size(&res) - reg_io_width;
++	syscon_config.max_register = res_size - reg_io_width;
+ 	if (!syscon_config.max_register)
+ 		syscon_config.max_register_is_0 = true;
+ 
 -- 
 2.39.5
 
