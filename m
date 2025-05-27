@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-147018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BFEAC55BF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E093EAC58FC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12DCB7A632C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28181BC3145
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB12A27FD68;
-	Tue, 27 May 2025 17:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D30C27FD64;
+	Tue, 27 May 2025 17:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tP5Ik+DI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmZE9pck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69BB2798E6;
-	Tue, 27 May 2025 17:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1A82566;
+	Tue, 27 May 2025 17:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366019; cv=none; b=UbehCxtH03PD0sC0FqxG5/qVMx4MMxBHXXbcFbkbxsjerk8lrxn7nwIvNA92C1bwoT/dxRvUy+fAtBVo8S+hnEWtS0n59Acx8mYuVbr9ohoDbPvLg0MeA7G9oAubncr5bb1EtmPtDeaJ9J6FQGeu71ghjl7aiKrJ7OfnL1BKzPA=
+	t=1748368291; cv=none; b=lzHmROCdem6QHoZr58WkUosK7dVlVe3dHPJb3VKB4cEJlpTDpDO3XqafQA8mwJ2QYgYfK7NtUhEmRXjdVGWTV2p3gXYUxhK0YKTP2s/bzAc5LpItC1s1ayY3BdAAqibWmq+6sTHSkerkUH53lPjbH4TUyjYlkBnnzFJcEY4Xs74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366019; c=relaxed/simple;
-	bh=KfuFMwfQCIirO3vEjkQOAxNb65hK6jCSXaIAOJusYPE=;
+	s=arc-20240116; t=1748368291; c=relaxed/simple;
+	bh=5fHM6fzvDMJTLXGRu70B/0Ittb5TPLStMNyBCma9kNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6L0ulyLWRa5+GTOfTlF5FEeYhpASCa5Tm8Vj0RATEZbTnasOAgkDd7/DJ5Bmdf2FOtjbitMrDP7iTVuqlrJnFJBw4EFuEgOTIMw+oDXIcZvcdpIn0dkSKQTwa1vRkKWPGlt6IQK9k6QUgezL3ZuKhN7i4LzN3kT53BX4CtktFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tP5Ik+DI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF357C4CEE9;
-	Tue, 27 May 2025 17:13:38 +0000 (UTC)
+	 MIME-Version; b=OMuDBRfb3smkXe6aRZGTqZGaGEUlYrmYuTkYukIyOmJBm3e0t8H97/dP+sOqMz6CL6NSKYYuGau4xV9rChNPX/4u+77oue77gRdScwPGsJbiVsn4rghd9f8ZECS+4gpnELO0VDGE1RKgSxJDIPPJlffv5avBM9+SPA3TpHin1zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmZE9pck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A72EC4CEE9;
+	Tue, 27 May 2025 17:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366019;
-	bh=KfuFMwfQCIirO3vEjkQOAxNb65hK6jCSXaIAOJusYPE=;
+	s=korg; t=1748368291;
+	bh=5fHM6fzvDMJTLXGRu70B/0Ittb5TPLStMNyBCma9kNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tP5Ik+DIOUpZVuLimx11hN10Yfk1lNrV29SZUO4AjRXRjcB3ThNwTjsZQTLKsBNIX
-	 olxvNkydEj3Dqx59TYNQZ8HSdDr2x34Y8wv4LzLFYeZm+ST9Y3UoujZb88uESZnowg
-	 vzHgD5AmrnUj9wEMkRZp45SSd5p9LtKTHUfHAXq0=
+	b=CmZE9pck6qQbvMtYKmp22nU0H6zfFRGUL6vBKECBP8rdr5CddaedhxjBkIJqXqze2
+	 EJxB4hWczxzaHz3ySeoREexwFPsQFrz4F4R66Mcm3cOL7N7Q6kTw5QOFx8cuo6lpeG
+	 4rAqH0XgSJ0BJAtnJEspnTSWa4U6fqwnAhxrBjK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingi Cho <mincho@theori.io>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Paul Davis <paul@linuxaudiosystems.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 564/626] sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()
+Subject: [PATCH 6.14 660/783] ALSA: usb-audio: Fix duplicated name in MIDI substream names
 Date: Tue, 27 May 2025 18:27:37 +0200
-Message-ID: <20250527162507.884728999@linuxfoundation.org>
+Message-ID: <20250527162540.004631520@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3f981138109f63232a5fb7165938d4c945cc1b9d ]
+[ Upstream commit 0759e77a6d9bd34a874da73721ce4a7dc6665023 ]
 
-When enqueuing the first packet to an HFSC class, hfsc_enqueue() calls the
-child qdisc's peek() operation before incrementing sch->q.qlen and
-sch->qstats.backlog. If the child qdisc uses qdisc_peek_dequeued(), this may
-trigger an immediate dequeue and potential packet drop. In such cases,
-qdisc_tree_reduce_backlog() is called, but the HFSC qdisc's qlen and backlog
-have not yet been updated, leading to inconsistent queue accounting. This
-can leave an empty HFSC class in the active list, causing further
-consequences like use-after-free.
+The MIDI substream name string is constructed from the combination of
+the card shortname (which is taken from USB iProduct) and the USB
+iJack.  The problem is that some devices put the product name to the
+iJack field, too.  For example, aplaymidi -l output on the Lanchkey MK
+49 are like:
 
-This patch fixes the bug by moving the increment of sch->q.qlen and
-sch->qstats.backlog before the call to the child qdisc's peek() operation.
-This ensures that queue length and backlog are always accurate when packet
-drops or dequeues are triggered during the peek.
+  % aplaymidi -l
+  Port    Client name            Port name
+  44:0    Launchkey MK4 49       Launchkey MK4 49 Launchkey MK4
+  44:1    Launchkey MK4 49       Launchkey MK4 49 Launchkey MK4
 
-Fixes: 12d0ad3be9c3 ("net/sched/sch_hfsc.c: handle corner cases where head may change invalidating calculated deadline")
-Reported-by: Mingi Cho <mincho@theori.io>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250518222038.58538-2-xiyou.wangcong@gmail.com
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+where the actual iJack name can't be seen because it's truncated due
+to the doubly words.
+
+For resolving those situations, this patch compares the iJack string
+with the card shortname, and drops if both start with the same words.
+Then the result becomes like:
+
+  % aplaymidi -l
+  Port    Client name            Port name
+  40:0    Launchkey MK4 49       Launchkey MK4 49 MIDI In
+  40:1    Launchkey MK4 49       Launchkey MK4 49 DAW In
+
+A caveat is that there are some pre-defined names for certain
+devices in the driver code, and this workaround shouldn't be applied
+to them.  Similarly, when the iJack isn't specified, we should skip
+this check, too.  The patch added those checks in addition to the
+string comparison.
+
+Suggested-by: Paul Davis <paul@linuxaudiosystems.com>
+Tested-by: Paul Davis <paul@linuxaudiosystems.com>
+Link: https://lore.kernel.org/CAFa_cKmEDQWcJatbYWi6A58Zg4Ma9_6Nr3k5LhqwyxC-P_kXtw@mail.gmail.com
+Link: https://patch.msgid.link/20250429183626.20773-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/usb/midi.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index cb8c525ea20ea..7986145a527cb 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1569,6 +1569,9 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 		return err;
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index 826ac870f2469..a792ada18863a 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -1885,10 +1885,18 @@ static void snd_usbmidi_init_substream(struct snd_usb_midi *umidi,
  	}
  
-+	sch->qstats.backlog += len;
-+	sch->q.qlen++;
-+
- 	if (first && !cl->cl_nactive) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
-@@ -1584,9 +1587,6 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
+ 	port_info = find_port_info(umidi, number);
+-	name_format = port_info ? port_info->name :
+-		(jack_name != default_jack_name  ? "%s %s" : "%s %s %d");
+-	snprintf(substream->name, sizeof(substream->name),
+-		 name_format, umidi->card->shortname, jack_name, number + 1);
++	if (port_info || jack_name == default_jack_name ||
++	    strncmp(umidi->card->shortname, jack_name, strlen(umidi->card->shortname)) != 0) {
++		name_format = port_info ? port_info->name :
++			(jack_name != default_jack_name  ? "%s %s" : "%s %s %d");
++		snprintf(substream->name, sizeof(substream->name),
++			 name_format, umidi->card->shortname, jack_name, number + 1);
++	} else {
++		/* The manufacturer included the iProduct name in the jack
++		 * name, do not use both
++		 */
++		strscpy(substream->name, jack_name);
++	}
  
- 	}
- 
--	sch->qstats.backlog += len;
--	sch->q.qlen++;
--
- 	return NET_XMIT_SUCCESS;
+ 	*rsubstream = substream;
  }
- 
 -- 
 2.39.5
 
