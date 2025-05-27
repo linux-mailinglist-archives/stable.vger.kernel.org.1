@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07862AC5567
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F29AAC58BC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA21D1BA60B7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:11:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5313B1BC2AC8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF4D139579;
-	Tue, 27 May 2025 17:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0F727FD64;
+	Tue, 27 May 2025 17:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTYhX8oN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhGtS6Zs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFDA86347;
-	Tue, 27 May 2025 17:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCDD42A9B;
+	Tue, 27 May 2025 17:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365860; cv=none; b=HPXl/y+N5ZM6UvgEhYVjEgrjYG4cjO2mzCQSMlm60lpyVeSKikVthFK90SRbzQQLnC61BKz8J/0gQSr4muD/uEHmmsK9gDxKJev643+i0NidSJvJ6Wgl4wB71tWBZeGcOnI1g3A38QnY/K6nB9f26IV+a0AZzN5T241DulyWOVA=
+	t=1748368119; cv=none; b=jAko4ypZAxUAY8jdRf6SEKTvBZQSAYc001h+vO6DahWBMhICbMHZ2mWJ+elwE83kGqZJ6eyeeVwXgQGMeN4KxegRnMDU9dYVBaEcHszehvvi1Xyf1DZkkghOKfM/zrORUeHE5xq4jzvucImVEmKJ7jHwFLVn7zkBHL71JcPc56o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365860; c=relaxed/simple;
-	bh=Mj96WOTpkkD5CQcog0scg8SBbkaNCMZIgUbzRXShUFc=;
+	s=arc-20240116; t=1748368119; c=relaxed/simple;
+	bh=m9BH3A7Y03+DWJuMBvd0L1bXkOIBwwiQdl8nVh3yORk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuSbgWtmMgBSplueKSmih1vzeSjowL1tj6gBZJO2fae4DR3chFngbBOLgSpdvNqqdXCBdwY9BYUZqxBwx3Gta27I6fF78v+ys1euKpFB340e62OdA9hsFEUt9vEElawRTkVtTjPbBFISzvprDKzdBZbPprjUdE4DnCp39iDDaFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTYhX8oN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EDDC4CEE9;
-	Tue, 27 May 2025 17:10:59 +0000 (UTC)
+	 MIME-Version; b=FYAePcrVBPEdk9nXD/7Wiih2oIUmzgejB27ufsnpg4uiZXmznpqO2Os3glH604Pm8CSAj6JR9kEl/pd+J6rn7LjewBFPAy7SWO0zZXCyoDidHl2hpDNpOCsGeEFsr7azgO0Zhni1sscyQRr5dIfT8x+6xPN2TTrVK/3j8zCugcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhGtS6Zs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C505AC4CEE9;
+	Tue, 27 May 2025 17:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365860;
-	bh=Mj96WOTpkkD5CQcog0scg8SBbkaNCMZIgUbzRXShUFc=;
+	s=korg; t=1748368119;
+	bh=m9BH3A7Y03+DWJuMBvd0L1bXkOIBwwiQdl8nVh3yORk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTYhX8oNjEJ1dVW7K6T2YPheBtDcuHCKc6P5A7nel2yAd/ZlmBmycco3OvVccW6d8
-	 X/PxLPv0easxBhCY/E4Kr9Yo08ZkWkHPadNel/OJ8t+wq5+BVYyc25pzJd3hRnV9Fn
-	 nJ1FFswvsKh3J8Czzn4IBhbB1ydCXmYEasj6TZBo=
+	b=rhGtS6ZsoXe6NgvHiRChvAZvIa0pqHvWjC0ZHBr0Qh4h9CKMB72gvXmpjW8tE40wX
+	 iI4rmO8+U+U7w35B1aNfGsczTBZKXrbERx9RrLx3lf5frk9KdcvLA8ivGAEQdRGwZ/
+	 pQ0w/vZdNt9KV12+E47HImL859MClIHBLmPa7ckg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 481/626] clk: renesas: rzg2l-cpg: Refactor Runtime PM clock validation
+Subject: [PATCH 6.14 577/783] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
 Date: Tue, 27 May 2025 18:26:14 +0200
-Message-ID: <20250527162504.532154546@linuxfoundation.org>
+Message-ID: <20250527162536.641359805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,167 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit f6f73b891bf6beff069fcacc7b4a796e1009bf26 ]
+[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
 
-Refactor rzg2l_cpg_attach_dev to delegate clock validation for Runtime PM
-to the updated rzg2l_cpg_is_pm_clk function. Ensure validation of clocks
-associated with the power domain while excluding external and core clocks.
-Prevent incorrect Runtime PM management for clocks outside the domain's
-scope.
+After a port swap between separate fabrics, there may be multiple nodes in
+the vport's fc_nodes list with the same fabric well known address.
+Duplication is temporary and eventually resolves itself after dev_loss_tmo
+expires, but nameserver queries may still occur before dev_loss_tmo.  This
+possibly results in returning stale fabric ndlp objects.  Fix by adding an
+nlp_state check to ensure the ndlp search routine returns the correct newer
+allocated ndlp fabric object.
 
-Update rzg2l_cpg_is_pm_clk to operate on a per-power-domain basis. Verify
-clkspec.np against the domain's device node, check argument validity, and
-validate clock type (CPG_MOD). Use the no_pm_mod_clks array to exclude
-specific clocks from PM management.
-
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20241216210201.239855-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 102 +++++++++++++++++---------------
- 1 file changed, 54 insertions(+), 48 deletions(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 229f4540b219e..97d42328fa81a 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -1549,28 +1549,6 @@ static int rzg2l_cpg_reset_controller_register(struct rzg2l_cpg_priv *priv)
- 	return devm_reset_controller_register(priv->dev, &priv->rcdev);
- }
- 
--static bool rzg2l_cpg_is_pm_clk(struct rzg2l_cpg_priv *priv,
--				const struct of_phandle_args *clkspec)
--{
--	const struct rzg2l_cpg_info *info = priv->info;
--	unsigned int id;
--	unsigned int i;
--
--	if (clkspec->args_count != 2)
--		return false;
--
--	if (clkspec->args[0] != CPG_MOD)
--		return false;
--
--	id = clkspec->args[1] + info->num_total_core_clks;
--	for (i = 0; i < info->num_no_pm_mod_clks; i++) {
--		if (info->no_pm_mod_clks[i] == id)
--			return false;
--	}
--
--	return true;
--}
--
- /**
-  * struct rzg2l_cpg_pm_domains - RZ/G2L PM domains data structure
-  * @onecell_data: cell data
-@@ -1595,45 +1573,73 @@ struct rzg2l_cpg_pd {
- 	u16 id;
- };
- 
-+static bool rzg2l_cpg_is_pm_clk(struct rzg2l_cpg_pd *pd,
-+				const struct of_phandle_args *clkspec)
-+{
-+	if (clkspec->np != pd->genpd.dev.of_node || clkspec->args_count != 2)
-+		return false;
-+
-+	switch (clkspec->args[0]) {
-+	case CPG_MOD: {
-+		struct rzg2l_cpg_priv *priv = pd->priv;
-+		const struct rzg2l_cpg_info *info = priv->info;
-+		unsigned int id = clkspec->args[1];
-+
-+		if (id >= priv->num_mod_clks)
-+			return false;
-+
-+		id += info->num_total_core_clks;
-+
-+		for (unsigned int i = 0; i < info->num_no_pm_mod_clks; i++) {
-+			if (info->no_pm_mod_clks[i] == id)
-+				return false;
-+		}
-+
-+		return true;
-+	}
-+
-+	case CPG_CORE:
-+	default:
-+		return false;
-+	}
-+}
-+
- static int rzg2l_cpg_attach_dev(struct generic_pm_domain *domain, struct device *dev)
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 36e66df36a18c..45d268d49060e 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5564,6 +5564,7 @@ static struct lpfc_nodelist *
+ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
  {
- 	struct rzg2l_cpg_pd *pd = container_of(domain, struct rzg2l_cpg_pd, genpd);
--	struct rzg2l_cpg_priv *priv = pd->priv;
- 	struct device_node *np = dev->of_node;
- 	struct of_phandle_args clkspec;
- 	bool once = true;
- 	struct clk *clk;
-+	unsigned int i;
- 	int error;
--	int i = 0;
--
--	while (!of_parse_phandle_with_args(np, "clocks", "#clock-cells", i,
--					   &clkspec)) {
--		if (rzg2l_cpg_is_pm_clk(priv, &clkspec)) {
--			if (once) {
--				once = false;
--				error = pm_clk_create(dev);
--				if (error) {
--					of_node_put(clkspec.np);
--					goto err;
--				}
--			}
--			clk = of_clk_get_from_provider(&clkspec);
-+
-+	for (i = 0; !of_parse_phandle_with_args(np, "clocks", "#clock-cells", i, &clkspec); i++) {
-+		if (!rzg2l_cpg_is_pm_clk(pd, &clkspec)) {
- 			of_node_put(clkspec.np);
--			if (IS_ERR(clk)) {
--				error = PTR_ERR(clk);
--				goto fail_destroy;
--			}
-+			continue;
-+		}
+ 	struct lpfc_nodelist *ndlp;
++	struct lpfc_nodelist *np = NULL;
+ 	uint32_t data1;
  
--			error = pm_clk_add_clk(dev, clk);
-+		if (once) {
-+			once = false;
-+			error = pm_clk_create(dev);
- 			if (error) {
--				dev_err(dev, "pm_clk_add_clk failed %d\n",
--					error);
--				goto fail_put;
-+				of_node_put(clkspec.np);
-+				goto err;
- 			}
--		} else {
--			of_node_put(clkspec.np);
- 		}
--		i++;
-+		clk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
-+		if (IS_ERR(clk)) {
-+			error = PTR_ERR(clk);
-+			goto fail_destroy;
-+		}
+ 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
+@@ -5578,14 +5579,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ 					 ndlp, ndlp->nlp_DID,
+ 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
+ 					 ndlp->active_rrqs_xri_bitmap);
+-			return ndlp;
 +
-+		error = pm_clk_add_clk(dev, clk);
-+		if (error) {
-+			dev_err(dev, "pm_clk_add_clk failed %d\n", error);
-+			goto fail_put;
-+		}
++			/* Check for new or potentially stale node */
++			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
++				return ndlp;
++			np = ndlp;
+ 		}
  	}
  
- 	return 0;
+-	/* FIND node did <did> NOT FOUND */
+-	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
+-			 "0932 FIND node did x%x NOT FOUND.\n", did);
+-	return NULL;
++	if (!np)
++		/* FIND node did <did> NOT FOUND */
++		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
++				 "0932 FIND node did x%x NOT FOUND.\n", did);
++
++	return np;
+ }
+ 
+ struct lpfc_nodelist *
 -- 
 2.39.5
 
