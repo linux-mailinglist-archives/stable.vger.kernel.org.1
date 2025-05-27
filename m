@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-147063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A70AAC55EA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5008AC5931
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D61987AFBE8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6011F3BD1CB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A46A182D7;
-	Tue, 27 May 2025 17:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5652727D766;
+	Tue, 27 May 2025 17:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlQpijJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMJ2ZoXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165E61E89C;
-	Tue, 27 May 2025 17:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145CA1FB3;
+	Tue, 27 May 2025 17:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366158; cv=none; b=FqCTUZjlR0FI3Wbu8oznFhcmpT0DZXjdJp5L0Lr+y5MU9HyCWcuFvJSR13NX/VzSHZsLSIU+Gj0km8jMQaRxr9gEu2x4qBDfKdeRLGFfOdQcN+aJ17D81t1hLriJMMihcuMeocD4hrf8rjYZM2BmH7k4Z/DKhxQuHjIqMUt8jJo=
+	t=1748368391; cv=none; b=t+Zb0VJCwQEi/EeNIYEyUDTcYGkiC7Z/WhJXneyEGCdYNDLmXSEZT3QSpQRxHsIB5xAV0WJeBn2mWw6FHdrv+qFnD+lwowScC0HCvd6i5X2smQP+Nr6IDwC7XCvRKtXZcAzo9hvJegl+w2Pp37ysX0qBLl9L5LlWgH2TnWemAY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366158; c=relaxed/simple;
-	bh=y6lJMMaPr0AvPFPRsUC0yPYwMKLQUk7KF2K+AFF45SA=;
+	s=arc-20240116; t=1748368391; c=relaxed/simple;
+	bh=NPu79AoxdIeyydRaFO8htt2LCJD4a6MGXhylb9mkYGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/X1szmRvXcKd761pdIWvFB4r/28Dt8FHMuz0lpHf2Wa/jFlrZPopkQ6wkHJYZz8V532YyQehs5SoHlfAPjMZMS72CA9gQ8IA7wtqvTQKVs72zxLLQb1kbCcDOaR2rje/dTXMZLDP/ugHlOX++BhYRrtzslhoDgeJAfuGWW4YCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlQpijJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8A7C4CEE9;
-	Tue, 27 May 2025 17:15:56 +0000 (UTC)
+	 MIME-Version; b=Tung+S0+cYfN+bFbDTJ5XOIUvmEVxqyrKAHa8p4yyo3kUCDmELS9GwuYptSqAjvIgCSlFvKG921DNRqoODgLJW7T6UoT2UYbTTiGzoYf5bC3lLIs2LtW90wde3YxOY18SWQL8KzcGEiQcMByRxeB2EPqzr9dLWkrRWWnxokUKXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMJ2ZoXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74704C4CEE9;
+	Tue, 27 May 2025 17:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366157;
-	bh=y6lJMMaPr0AvPFPRsUC0yPYwMKLQUk7KF2K+AFF45SA=;
+	s=korg; t=1748368390;
+	bh=NPu79AoxdIeyydRaFO8htt2LCJD4a6MGXhylb9mkYGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlQpijJV8lIRvkrjDEutru+kc3sTgZ4CH0WFBav0AMqPbOBHCWl09Ayf+AsJFgk3t
-	 aANXnE/aR1lNyUN1Degs55Yl63DyG7RHsc85dZ6e3GhwLDHWsLoFWVFjMRhd5JZocj
-	 VqjeOoEFPAGTZihYjUz9eZRHEF7JF+zUEBsd4hgg=
+	b=PMJ2ZoXujaR8HkgBZnBF+jEamJEr29QLN5v4aSxNMBuq8PEzvlebfz0tAAWJE8+pL
+	 KitOiuS9O+2gsBGnQzMgo8HBTfDOqoC1CFVeEjHxTFXOtv9iiL0EYjWgYMfdokvNbi
+	 qyeLn/LE4i6U6OIRrVWDEv6Zo634b8RYOE1JiXEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+32d4647f551007595173@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 579/626] ALSA: pcm: Fix race of buffer access at PCM OSS layer
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 675/783] block: only update request sector if needed
 Date: Tue, 27 May 2025 18:27:52 +0200
-Message-ID: <20250527162508.504577123@linuxfoundation.org>
+Message-ID: <20250527162540.616053507@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-commit 93a81ca0657758b607c3f4ba889ae806be9beb73 upstream.
+[ Upstream commit db492e24f9b05547ba12b4783f09c9d943cf42fe ]
 
-The PCM OSS layer tries to clear the buffer with the silence data at
-initialization (or reconfiguration) of a stream with the explicit call
-of snd_pcm_format_set_silence() with runtime->dma_area.  But this may
-lead to a UAF because the accessed runtime->dma_area might be freed
-concurrently, as it's performed outside the PCM ops.
+In case of a ZONE APPEND write, regardless of native ZONE APPEND or the
+emulation layer in the zone write plugging code, the sector the data got
+written to by the device needs to be updated in the bio.
 
-For avoiding it, move the code into the PCM core and perform it inside
-the buffer access lock, so that it won't be changed during the
-operation.
+At the moment, this is done for every native ZONE APPEND write and every
+request that is flagged with 'BIO_ZONE_WRITE_PLUGGING'. But thus
+superfluously updates the sector for regular writes to a zoned block
+device.
 
-Reported-by: syzbot+32d4647f551007595173@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/68164d8e.050a0220.11da1b.0019.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250516080817.20068-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Check if a bio is a native ZONE APPEND write or if the bio is flagged as
+'BIO_EMULATES_ZONE_APPEND', meaning the block layer's zone write plugging
+code handles the ZONE APPEND and translates it into a regular write and
+back. Only if one of these two criterion is met, update the sector in the
+bio upon completion.
+
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/dea089581cb6b777c1cd1500b38ac0b61df4b2d1.1746530748.git.jth@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/pcm.h      |    2 ++
- sound/core/oss/pcm_oss.c |    3 +--
- sound/core/pcm_native.c  |   11 +++++++++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ block/blk.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/sound/pcm.h
-+++ b/include/sound/pcm.h
-@@ -1428,6 +1428,8 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
- #define snd_pcm_lib_mmap_iomem	NULL
- #endif
- 
-+void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
-+
- /**
-  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
-  * @dma: DMA number
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -1074,8 +1074,7 @@ static int snd_pcm_oss_change_params_loc
- 	runtime->oss.params = 0;
- 	runtime->oss.prepare = 1;
- 	runtime->oss.buffer_used = 0;
--	if (runtime->dma_area)
--		snd_pcm_format_set_silence(runtime->format, runtime->dma_area, bytes_to_samples(runtime, runtime->dma_bytes));
-+	snd_pcm_runtime_buffer_set_silence(runtime);
- 
- 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
- 
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -723,6 +723,17 @@ static void snd_pcm_buffer_access_unlock
- 	atomic_inc(&runtime->buffer_accessing);
+diff --git a/block/blk.h b/block/blk.h
+index 9dcc92c7f2b50..c14f415de5228 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -480,7 +480,8 @@ static inline void blk_zone_update_request_bio(struct request *rq,
+ 	 * the original BIO sector so that blk_zone_write_plug_bio_endio() can
+ 	 * lookup the zone write plug.
+ 	 */
+-	if (req_op(rq) == REQ_OP_ZONE_APPEND || bio_zone_write_plugging(bio))
++	if (req_op(rq) == REQ_OP_ZONE_APPEND ||
++	    bio_flagged(bio, BIO_EMULATES_ZONE_APPEND))
+ 		bio->bi_iter.bi_sector = rq->__sector;
  }
- 
-+/* fill the PCM buffer with the current silence format; called from pcm_oss.c */
-+void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
-+{
-+	snd_pcm_buffer_access_lock(runtime);
-+	if (runtime->dma_area)
-+		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
-+					   bytes_to_samples(runtime, runtime->dma_bytes));
-+	snd_pcm_buffer_access_unlock(runtime);
-+}
-+EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
-+
- #if IS_ENABLED(CONFIG_SND_PCM_OSS)
- #define is_oss_stream(substream)	((substream)->oss.oss)
- #else
+ void blk_zone_write_plug_bio_endio(struct bio *bio);
+-- 
+2.39.5
+
 
 
 
