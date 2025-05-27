@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-147741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4FAAAC58FA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F50AC55CD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55EFB9E0206
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9119D4A1143
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A9727FD64;
-	Tue, 27 May 2025 17:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92D228002F;
+	Tue, 27 May 2025 17:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7sv9aAl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OStIBxIB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51162566;
-	Tue, 27 May 2025 17:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6034E19E967;
+	Tue, 27 May 2025 17:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368285; cv=none; b=qaiJZA/RSUeiM3YlMct++DVSQzAXExnMFYppcrthWiqjWhK1SZCpM8wIl91U62WnDsRE5SZcZJk3BiYuRHJg3yTIJkONMdndlWb/w68kklc8NSvJXHXeu5yLioXpIcqlJ0YDeQFso3mbP5yqI4ul+Qx+TBvHYbM7skmV1txE2rU=
+	t=1748366016; cv=none; b=OpLsNfAT8vu4RsN6/P+rUO4NzTZDOLBcAz0OVuradv0hofLmWhi5ECnABZgniz2VoIf8Ow4r8IB6qeyEBCJre6HxhhThspxRSULE9+KQPC/iPbDBm/DZZlcMRdyBCHXM1y9Xh8mD9WAqv2gUMz5o2InG7WytyGxK5ER0e4jk+YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368285; c=relaxed/simple;
-	bh=AB6MlsJ4rDpudfiKWKCyeoQX9lhKWCmtmV/Y7dYAGBc=;
+	s=arc-20240116; t=1748366016; c=relaxed/simple;
+	bh=cVpk9yTMB8XnhsiqtgKHuI2qqy+eSvzbR+gIiVyHKwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNmys5+xhV/YB8xnMVnySl+mKS6yZC/9WJ8TcLzPAoPVIHBhw/hxLEVIZ2aO9DM1ckrabf0eIzztEyBB7cBWAlxtNvonBlTkTjhg0fjrm3xurp/J2dd9ajU7w+9Sxcd7r8vYjoD8KROQOJOg7xHCGrHH4nw2B3A2Mj8fL2t1cuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7sv9aAl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52625C4CEE9;
-	Tue, 27 May 2025 17:51:25 +0000 (UTC)
+	 MIME-Version; b=GMus+7187TxUjpcLxJ9xFJ+Pi8e4Xhvc+ruKP75vDr+egTVcRGkqMrX1jNZoyCewyC6GcfHZ7XaPnQ5M4SV+E/Y51QAhQuWVYULJKpn/R0z7MC1OIy7GOhzNkTcf1vpFZ5kViGs1I6d29/Vl1qIr5SGcX1beexNluj51BBSPWjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OStIBxIB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8C2C4CEE9;
+	Tue, 27 May 2025 17:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368285;
-	bh=AB6MlsJ4rDpudfiKWKCyeoQX9lhKWCmtmV/Y7dYAGBc=;
+	s=korg; t=1748366016;
+	bh=cVpk9yTMB8XnhsiqtgKHuI2qqy+eSvzbR+gIiVyHKwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P7sv9aAlu1zXNMHp/FiK9sU/kr6s9EqqgeEpNfCBViLGKUw4it9tt6HtmioJHwUuC
-	 HraFb+hRkBbxsWHnUjUVa9nPS36qHONi55KigU+SPEgiYYzdFNUkyRJcKB73nllIvw
-	 PuwsqqO/9cg21aNzIfLFf0XoNOQHV/MaxEQmXklo=
+	b=OStIBxIB5Udo86cavVKMEGyacAePccxrbJ9/ustyJaPGnolM+8NPUGMcI//MetvuY
+	 F1QSowyylcy6JbUsEe+hXVeYBzuwqPDGWu0UuyMCX21WkJA1x1AenYQG1IIIDjX9JZ
+	 IcWuqB5YJTtxVBYfsD9qRuOnZfWLEDIwgFntqyjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	liaozw <hedgehog-002@163.com>,
-	rugk <rugk+github@posteo.de>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Peter Newman <peternewman@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Alan Brady <alan.brady@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Phani Burra <phani.r.burra@intel.com>,
+	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 659/783] nvme-pci: add quirks for WDC Blue SN550 15b7:5009
+Subject: [PATCH 6.12 563/626] idpf: fix idpf_vport_splitq_napi_poll()
 Date: Tue, 27 May 2025 18:27:36 +0200
-Message-ID: <20250527162539.963499935@linuxfoundation.org>
+Message-ID: <20250527162507.845583180@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +68,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ab35ad950d439ec3409509835d229b3d93d3c7f9 ]
+[ Upstream commit 407e0efdf8baf1672876d5948b75049860a93e59 ]
 
-Add two quirks for the WDC Blue SN550 (PCI ID 15b7:5009) based on user
-reports and hardware analysis:
+idpf_vport_splitq_napi_poll() can incorrectly return @budget
+after napi_complete_done() has been called.
 
- - NVME_QUIRK_NO_DEEPEST_PS:
-	liaozw talked to me the problem and solved with
-	nvme_core.default_ps_max_latency_us=0, so add the quirk.
-	I also found some reports in the following link.
+This violates NAPI rules, because after napi_complete_done(),
+current thread lost napi ownership.
 
- - NVME_QUIRK_BROKEN_MSI:
-	after get the lspci from Jack Rio.
-	I think that the disk also have NVME_QUIRK_BROKEN_MSI.
-	described in commit d5887dc6b6c0 ("nvme-pci: Add quirk for broken MSIs")
-	as sean said in link which match the MSI 1/32 and MSI-X 17.
+Move the test against POLL_MODE before the napi_complete_done().
 
-Log:
-lspci -nn | grep -i memory
-03:00.0 Non-Volatile memory controller [0108]: Sandisk Corp SanDisk Ultra 3D / WD PC SN530, IX SN530, Blue SN550 NVMe SSD (DRAM-less) [15b7:5009] (rev 01)
-lspci -v -d 15b7:5009
-03:00.0 Non-Volatile memory controller: Sandisk Corp SanDisk Ultra 3D / WD PC SN530, IX SN530, Blue SN550 NVMe SSD (DRAM-less) (rev 01) (prog-if 02 [NVM Express])
-        Subsystem: Sandisk Corp WD Blue SN550 NVMe SSD
-        Flags: bus master, fast devsel, latency 0, IRQ 35, IOMMU group 10
-        Memory at fe800000 (64-bit, non-prefetchable) [size=16K]
-        Memory at fe804000 (64-bit, non-prefetchable) [size=256]
-        Capabilities: [80] Power Management version 3
-        Capabilities: [90] MSI: Enable- Count=1/32 Maskable- 64bit+
-        Capabilities: [b0] MSI-X: Enable+ Count=17 Masked-
-        Capabilities: [c0] Express Endpoint, MSI 00
-        Capabilities: [100] Advanced Error Reporting
-        Capabilities: [150] Device Serial Number 00-00-00-00-00-00-00-00
-        Capabilities: [1b8] Latency Tolerance Reporting
-        Capabilities: [300] Secondary PCI Express
-        Capabilities: [900] L1 PM Substates
-        Kernel driver in use: nvme
-dmesg | grep nvme
-[    0.000000] Command line: BOOT_IMAGE=/vmlinuz-6.12.20-amd64-desktop-rolling root=UUID= ro splash quiet nvme_core.default_ps_max_latency_us=0 DEEPIN_GFXMODE=
-[    0.059301] Kernel command line: BOOT_IMAGE=/vmlinuz-6.12.20-amd64-desktop-rolling root=UUID= ro splash quiet nvme_core.default_ps_max_latency_us=0 DEEPIN_GFXMODE=
-[    0.542430] nvme nvme0: pci function 0000:03:00.0
-[    0.560426] nvme nvme0: allocated 32 MiB host memory buffer.
-[    0.562491] nvme nvme0: 16/0/0 default/read/poll queues
-[    0.567764]  nvme0n1: p1 p2 p3 p4 p5 p6 p7 p8 p9
-[    6.388726] EXT4-fs (nvme0n1p7): mounted filesystem ro with ordered data mode. Quota mode: none.
-[    6.893421] EXT4-fs (nvme0n1p7): re-mounted r/w. Quota mode: none.
-[    7.125419] Adding 16777212k swap on /dev/nvme0n1p8.  Priority:-2 extents:1 across:16777212k SS
-[    7.157588] EXT4-fs (nvme0n1p6): mounted filesystem r/w with ordered data mode. Quota mode: none.
-[    7.165021] EXT4-fs (nvme0n1p9): mounted filesystem r/w with ordered data mode. Quota mode: none.
-[    8.036932] nvme nvme0: using unchecked data buffer
-[    8.096023] block nvme0n1: No UUID available providing old NGUID
-
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5887dc6b6c054d0da3cd053afc15b7be1f45ff6
-Link: https://lore.kernel.org/all/20240422162822.3539156-1-sean.anderson@linux.dev/
-Reported-by: liaozw <hedgehog-002@163.com>
-Closes: https://bbs.deepin.org.cn/post/286300
-Reported-by: rugk <rugk+github@posteo.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=208123
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: c2d548cad150 ("idpf: add TX splitq napi poll support")
+Reported-by: Peter Newman <peternewman@google.com>
+Closes: https://lore.kernel.org/netdev/20250520121908.1805732-1-edumazet@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Joshua Hay <joshua.a.hay@intel.com>
+Cc: Alan Brady <alan.brady@intel.com>
+Cc: Madhu Chittim <madhu.chittim@intel.com>
+Cc: Phani Burra <phani.r.burra@intel.com>
+Cc: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+Link: https://patch.msgid.link/20250520124030.1983936-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 63b03a5a5b765..abd097eba6623 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3654,6 +3654,9 @@ static const struct pci_device_id nvme_id_table[] = {
- 				NVME_QUIRK_IGNORE_DEV_SUBNQN, },
- 	{ PCI_DEVICE(0x15b7, 0x5008),   /* Sandisk SN530 */
- 		.driver_data = NVME_QUIRK_BROKEN_MSI },
-+	{ PCI_DEVICE(0x15b7, 0x5009),   /* Sandisk SN550 */
-+		.driver_data = NVME_QUIRK_BROKEN_MSI |
-+				NVME_QUIRK_NO_DEEPEST_PS },
- 	{ PCI_DEVICE(0x1987, 0x5012),	/* Phison E12 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1987, 0x5016),	/* Phison E16 */
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index afc902ae4763e..623bf17f87f9c 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -4022,6 +4022,14 @@ static int idpf_vport_splitq_napi_poll(struct napi_struct *napi, int budget)
+ 		return budget;
+ 	}
+ 
++	/* Switch to poll mode in the tear-down path after sending disable
++	 * queues virtchnl message, as the interrupts will be disabled after
++	 * that.
++	 */
++	if (unlikely(q_vector->num_txq && idpf_queue_has(POLL_MODE,
++							 q_vector->tx[0])))
++		return budget;
++
+ 	work_done = min_t(int, work_done, budget - 1);
+ 
+ 	/* Exit the polling mode, but don't re-enable interrupts if stack might
+@@ -4032,15 +4040,7 @@ static int idpf_vport_splitq_napi_poll(struct napi_struct *napi, int budget)
+ 	else
+ 		idpf_vport_intr_set_wb_on_itr(q_vector);
+ 
+-	/* Switch to poll mode in the tear-down path after sending disable
+-	 * queues virtchnl message, as the interrupts will be disabled after
+-	 * that
+-	 */
+-	if (unlikely(q_vector->num_txq && idpf_queue_has(POLL_MODE,
+-							 q_vector->tx[0])))
+-		return budget;
+-	else
+-		return work_done;
++	return work_done;
+ }
+ 
+ /**
 -- 
 2.39.5
 
