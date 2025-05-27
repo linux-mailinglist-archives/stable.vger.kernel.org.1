@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-147048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0FAAC55EF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236C9AC5618
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22C7F167E0A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E0F13B1BFD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36BB27D766;
-	Tue, 27 May 2025 17:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D4E27F728;
+	Tue, 27 May 2025 17:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dY5rl7H1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+4Ls4Kb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED1313790B;
-	Tue, 27 May 2025 17:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310213790B;
+	Tue, 27 May 2025 17:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366111; cv=none; b=UDVpj/sDGF1Uva0Tw2QTWJXItnNBS5EsF8Z98d8PeeSJjhiLtA4+5nZFqttxrnEh5V3diVBkAssB/D9tNVdUN7t+cIlN6rOiwNBBe1mv1zZYb2bbA3KQ3q7uTK0mSWewNKYmWb6epqE17d6HtMcYWpFvuwXL/Y7zjb3iZUXAEfk=
+	t=1748366145; cv=none; b=E9rprKkNkTXKUdo1tViBXchos4tVzBYsA8seMXDenG85FW89JlpRGXPKvLquqLlEvKCuSy5Vhz3ww1m+GxAeG4qcs0yt7NRWUTEUgH+fWSLCtjubRBGhJYX9ZbUJeiSzVVDJ0EFGoRnl45fFFavlvaQcTMWchNCob7IKjuqdwwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366111; c=relaxed/simple;
-	bh=LgRqqsglq1xUx2O467xKrDOUyhtj8FgPoJ2Bs66GkNQ=;
+	s=arc-20240116; t=1748366145; c=relaxed/simple;
+	bh=qNUOBYF2qfK2iu/+eSXTKZiecD95bwKfiUD1F7qfyUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P34tsxZUogbGRsAwCFpJzDfG4XBr7jQ9JKloSjQvJzFwZNzngdgvU0Km9Xum/yje6ELAP/4O0htIUNbPUCEzc2nO60SCCZZTw8JW7CkB7itknC+bsvzN39VEkkwikhHcVG9kUV1mcxDREUtjqnRYxfHjv1EOYD3lcl2+P16Wlh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dY5rl7H1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F6DC4CEE9;
-	Tue, 27 May 2025 17:15:10 +0000 (UTC)
+	 MIME-Version; b=qTIxyuzeGdW4d9MKnXfCGSOjHVu3jsM03QG9JtgVjYwfFEZMhBxoTUZ6EJ4s7gW2pAJwUxZYBKNmMCGITM2lVVKlQGWa6K64M/m0JC9ZrtkhZYbYlVsssPDhjr5CpHlip+Ok/q1K1H4cj0v2gw07homhfU0YFvmecYIruPOt5aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+4Ls4Kb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF89DC4CEEB;
+	Tue, 27 May 2025 17:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366111;
-	bh=LgRqqsglq1xUx2O467xKrDOUyhtj8FgPoJ2Bs66GkNQ=;
+	s=korg; t=1748366145;
+	bh=qNUOBYF2qfK2iu/+eSXTKZiecD95bwKfiUD1F7qfyUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dY5rl7H14NvjisORRKkHy/C3Mqt/fIzat0IPW8qXK0Ya2r4w/31RyzP67hp3Bu8F1
-	 xeOqYMrm9NyeT/KMHhPAv4J5Rf5UybgCIkz9b0CNkWFg7bDvVh5A8WoaApJ5lGiwiQ
-	 MCDwLRTKPq40iW+pwyhxFH05xIbJRK88jLGlJzpo=
+	b=d+4Ls4KbYM6E/YFLIEmljSW7lBlI2KUxd1qKViZw06SQkCnMcOVIN8UViKg2e/TJa
+	 Kvt17nlgGlM/fAgsbGsA3vVAQUlQYng1zIKTkQRvGWtKmDSr4GS8bqBUuEunptkI0E
+	 Of22F1xfPnkUFFf0OT2tFdbKCW7syFPL6oyEzd0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 577/626] ASoc: SOF: topology: connect DAI to a single DAI link
-Date: Tue, 27 May 2025 18:27:50 +0200
-Message-ID: <20250527162508.416758944@linuxfoundation.org>
+Subject: [PATCH 6.12 578/626] ASoC: SOF: ipc4-pcm: Delay reporting is only supported for playback direction
+Date: Tue, 27 May 2025 18:27:51 +0200
+Message-ID: <20250527162508.456000983@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -61,75 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 6052f05254b4fe7b16bbd8224779af52fba98b71 upstream.
+commit 98db16f314b3a0d6e5acd94708ea69751436467f upstream.
 
-The partial matching of DAI widget to link names, can cause problems if
-one of the widget names is a substring of another. E.g. with names
-"Foo1" and Foo10", it's not possible to correctly link up "Foo1".
+The firmware does not provide any information for capture streams via the
+shared pipeline registers.
 
-Modify the logic so that if multiple DAI links match the widget stream
-name, prioritize a full match if one is found.
+To avoid reporting invalid delay value for capture streams to user space
+we need to disable it.
 
-Fixes: fe88788779fc ("ASoC: SOF: topology: Use partial match for connecting DAI link and DAI widget")
-Link: https://github.com/thesofproject/linux/issues/5308
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Fixes: af74dbd0dbcf ("ASoC: SOF: ipc4-pcm: allocate time info for pcm delay feature")
 Cc: stable@vger.kernel.org
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250509085318.13936-1-peter.ujfalusi@linux.intel.com
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Link: https://patch.msgid.link/20250509085951.15696-1-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/topology.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ sound/soc/sof/ipc4-pcm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -1059,7 +1059,7 @@ static int sof_connect_dai_widget(struct
- 				  struct snd_sof_dai *dai)
- {
- 	struct snd_soc_card *card = scomp->card;
--	struct snd_soc_pcm_runtime *rtd;
-+	struct snd_soc_pcm_runtime *rtd, *full, *partial;
- 	struct snd_soc_dai *cpu_dai;
- 	int stream;
- 	int i;
-@@ -1076,12 +1076,22 @@ static int sof_connect_dai_widget(struct
- 	else
- 		goto end;
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -794,7 +794,8 @@ static int sof_ipc4_pcm_setup(struct snd
  
-+	full = NULL;
-+	partial = NULL;
- 	list_for_each_entry(rtd, &card->rtd_list, list) {
- 		/* does stream match DAI link ? */
--		if (!rtd->dai_link->stream_name ||
--		    !strstr(rtd->dai_link->stream_name, w->sname))
--			continue;
-+		if (rtd->dai_link->stream_name) {
-+			if (!strcmp(rtd->dai_link->stream_name, w->sname)) {
-+				full = rtd;
-+				break;
-+			} else if (strstr(rtd->dai_link->stream_name, w->sname)) {
-+				partial = rtd;
-+			}
-+		}
-+	}
+ 		spcm->stream[stream].private = stream_priv;
  
-+	rtd = full ? full : partial;
-+	if (rtd) {
- 		for_each_rtd_cpu_dais(rtd, i, cpu_dai) {
- 			/*
- 			 * Please create DAI widget in the right order
+-		if (!support_info)
++		/* Delay reporting is only supported on playback */
++		if (!support_info || stream == SNDRV_PCM_STREAM_CAPTURE)
+ 			continue;
+ 
+ 		time_info = kzalloc(sizeof(*time_info), GFP_KERNEL);
 
 
 
