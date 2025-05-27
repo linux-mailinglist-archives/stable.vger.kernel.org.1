@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-147624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5EEAC587A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B82BEAC5592
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54FC44C0855
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81DD03A2464
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8C71B4F0A;
-	Tue, 27 May 2025 17:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B3C27CCF0;
+	Tue, 27 May 2025 17:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hikYOgcV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9OINGIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2F7193077;
-	Tue, 27 May 2025 17:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA02D70831;
+	Tue, 27 May 2025 17:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367921; cv=none; b=Utcdy8BuAqGYMjHjg659CuVnGK5IGRjhgqlUuYEMZqMKoAVX7C/ej5wtsrdmjQbA5L4GMLkQtEn64Jdw7w5wlLfF/BaX2H/jOK6cC8cGOIrn3XStnz0Uu7Y3wqQ3t0RPuseimWZ916X/3UaCqM6FVBo07XHnwJZHDUWeMy4vGCM=
+	t=1748365702; cv=none; b=Yssbdd0tR3MDM9Cd0kSQdOxP1htGLjVlUhWY064xWJzcwgEEm2OVV6yENg49jziYOocv+fY5tDGMTmI3dInvFEKoGThVjaPj/pxE1lYCSIjW+F3fQIyBrzNmtintQjzBsZ7t3VatvEEk9O/Dme3O/P8o5ckVRyYi7vV4q9yW2HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367921; c=relaxed/simple;
-	bh=x4hWLmF6hkhAdteanyg8cygWaYA3yRm7+PCBcnbMKDY=;
+	s=arc-20240116; t=1748365702; c=relaxed/simple;
+	bh=tCOMhEVpFbOFGikGsgB+4pewJ0MhJOJ1F7j7O/lr2kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tN8Zr2iJ0es5I6fia0F/IfBippmgzbNPzsmxuHiToVA/Sw4uaYJZv9oGZiW8VVnxp4dURUI7LVDl3SGJA7S+S8vB1rP7dSyClGsjOpbUX1n44r6q/J4zTNtSGQX7BudBIgFc+E7IVPtBwWdo2E0X5kGzQHdBTG10NVq6MvEvrHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hikYOgcV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0C8C4CEE9;
-	Tue, 27 May 2025 17:45:20 +0000 (UTC)
+	 MIME-Version; b=McqaEYA+K9X43rl+5bOQsTi5TPWEPXgoBa1rUx7AdIP+HzQ7g/LZvU86ke+blBjALig5xSK2+ZglZsyAxnaq5VBpqrk+5FFZBVa4PsslSKSDRIk1RH6uHwULqC4bj55hr4x2y3Fm+fqRF8M94JroDaNRnaWgb1xBt/9JZYMjCIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9OINGIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39625C4CEE9;
+	Tue, 27 May 2025 17:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367921;
-	bh=x4hWLmF6hkhAdteanyg8cygWaYA3yRm7+PCBcnbMKDY=;
+	s=korg; t=1748365702;
+	bh=tCOMhEVpFbOFGikGsgB+4pewJ0MhJOJ1F7j7O/lr2kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hikYOgcVTIL0P2R06phS9t9SVbgztP+BW5V82/CF345tfpK9sbJGmbbCjiZwmW4zC
-	 ykkeF7HsPGrdHfGshcm4bEEceC/Hh8yS/pRSiR/X/KyK2UCSRK+ycghS1/E4RYU8YR
-	 cSY+9RV8lBCjIs4so/EJ/wWTzG9P5UWdbLwQcwqo=
+	b=v9OINGIsGEdOzik2dD3ydsTEL8IatDaLGGsvjyNo1JWBISk0H8F8RQAfZ/ZDKpUCu
+	 rwOl5mFXEvzMsNGnevhlWeQhH/hhcFhgMmN40aApdYIRA17xKhyeM6a9vFYx1Hk7fU
+	 Uwr2AjewmmjI344lGsbMGckBQKVOLQ0sFQJYK4ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Alexander Duyck <alexanderduyck@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 540/783] wifi: rtw88: Extend rtw_fw_send_ra_info() for RTL8814AU
+Subject: [PATCH 6.12 444/626] eth: fbnic: set IFF_UNICAST_FLT to avoid enabling promiscuous mode when adding unicast addrs
 Date: Tue, 27 May 2025 18:25:37 +0200
-Message-ID: <20250527162535.151608558@linuxfoundation.org>
+Message-ID: <20250527162503.039888287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Alexander Duyck <alexanderduyck@meta.com>
 
-[ Upstream commit 8f0076726b66a70727a1bef5c087c60291e90ad8 ]
+[ Upstream commit 09717c28b76c30b1dc8c261c855ffb2406abab2e ]
 
-The existing code is suitable for chips with up to 2 spatial streams.
-Inform the firmware about the rates it's allowed to use when
-transmitting 3 spatial streams.
+I realized when we were adding unicast addresses we were enabling
+promiscuous mode. I did a bit of digging and realized we had overlooked
+setting the driver private flag to indicate we supported unicast filtering.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/08e2f328-1aab-4e50-93ac-c1e5dd9541ac@gmail.com
+Example below shows the table with 00deadbeef01 as the main NIC address,
+and 5 additional addresses in the 00deadbeefX0 format.
+
+  # cat $dbgfs/mac_addr
+  Idx S TCAM Bitmap       Addr/Mask
+  ----------------------------------
+  00  0 00000000,00000000 000000000000
+                          000000000000
+  01  0 00000000,00000000 000000000000
+                          000000000000
+  02  0 00000000,00000000 000000000000
+                          000000000000
+  ...
+  24  0 00000000,00000000 000000000000
+                          000000000000
+  25  1 00100000,00000000 00deadbeef50
+                          000000000000
+  26  1 00100000,00000000 00deadbeef40
+                          000000000000
+  27  1 00100000,00000000 00deadbeef30
+                          000000000000
+  28  1 00100000,00000000 00deadbeef20
+                          000000000000
+  29  1 00100000,00000000 00deadbeef10
+                          000000000000
+  30  1 00100000,00000000 00deadbeef01
+                          000000000000
+  31  0 00000000,00000000 000000000000
+                          000000000000
+
+Before rule 31 would be active. With this change it correctly sticks
+to just the unicast filters.
+
+Signed-off-by: Alexander Duyck <alexanderduyck@meta.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250204010038.1404268-2-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c   | 15 +++++++++++++++
- drivers/net/wireless/realtek/rtw88/fw.h   |  1 +
- drivers/net/wireless/realtek/rtw88/main.h |  1 +
- 3 files changed, 17 insertions(+)
+ drivers/net/ethernet/meta/fbnic/fbnic_netdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 02389b7c68768..6b563ac489a74 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -735,6 +735,7 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
- {
- 	u8 h2c_pkt[H2C_PKT_SIZE] = {0};
- 	bool disable_pt = true;
-+	u32 mask_hi;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+index a400616a24d41..79e94632533c8 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+@@ -544,6 +544,8 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd)
+ 	fbnic_rss_key_fill(fbn->rss_key);
+ 	fbnic_rss_init_en_mask(fbn);
  
- 	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO);
- 
-@@ -755,6 +756,20 @@ void rtw_fw_send_ra_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si,
- 	si->init_ra_lv = 0;
- 
- 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
++	netdev->priv_flags |= IFF_UNICAST_FLT;
 +
-+	if (rtwdev->chip->id != RTW_CHIP_TYPE_8814A)
-+		return;
-+
-+	SET_H2C_CMD_ID_CLASS(h2c_pkt, H2C_CMD_RA_INFO_HI);
-+
-+	mask_hi = si->ra_mask >> 32;
-+
-+	SET_RA_INFO_RA_MASK0(h2c_pkt, (mask_hi & 0xff));
-+	SET_RA_INFO_RA_MASK1(h2c_pkt, (mask_hi & 0xff00) >> 8);
-+	SET_RA_INFO_RA_MASK2(h2c_pkt, (mask_hi & 0xff0000) >> 16);
-+	SET_RA_INFO_RA_MASK3(h2c_pkt, (mask_hi & 0xff000000) >> 24);
-+
-+	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
- }
- 
- void rtw_fw_media_status_report(struct rtw_dev *rtwdev, u8 mac_id, bool connect)
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index 404de1b0c407b..48ad9ceab6ea1 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -557,6 +557,7 @@ static inline void rtw_h2c_pkt_set_header(u8 *h2c_pkt, u8 sub_id)
- #define H2C_CMD_DEFAULT_PORT		0x2c
- #define H2C_CMD_RA_INFO			0x40
- #define H2C_CMD_RSSI_MONITOR		0x42
-+#define H2C_CMD_RA_INFO_HI		0x46
- #define H2C_CMD_BCN_FILTER_OFFLOAD_P0	0x56
- #define H2C_CMD_BCN_FILTER_OFFLOAD_P1	0x57
- #define H2C_CMD_WL_PHY_INFO		0x58
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 62cd4c5263019..a61ea853f98d9 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -191,6 +191,7 @@ enum rtw_chip_type {
- 	RTW_CHIP_TYPE_8703B,
- 	RTW_CHIP_TYPE_8821A,
- 	RTW_CHIP_TYPE_8812A,
-+	RTW_CHIP_TYPE_8814A,
- };
- 
- enum rtw_tx_queue_type {
+ 	netdev->features |=
+ 		NETIF_F_RXHASH |
+ 		NETIF_F_SG |
 -- 
 2.39.5
 
