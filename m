@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-146872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1114BAC54FD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC129AC5879
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05174A3549
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57A251BC24E0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB722798E6;
-	Tue, 27 May 2025 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDA927E7C8;
+	Tue, 27 May 2025 17:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzkViJ7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiQ30Y9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB882110E;
-	Tue, 27 May 2025 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4E427A131;
+	Tue, 27 May 2025 17:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365568; cv=none; b=lKPs2JOs/lIvIjp1YIa1UGwJt/ui/WSDmG0/QxfQaLmtCxGJjPxiBP3PH/ge1ly7P8eoGmQuyBjGD1uAu5EqWzd7uLbJpPeb20FV13eVLmLAtjLB4mB/oDMYK6/OIFoOr8x/5cXteBJoAvyI2bVIezI0trvF06a4QOoJDQtdipg=
+	t=1748367930; cv=none; b=MC5/iwmz5ofxxpXCqC8AEQaReQe9Aj1XIV5dYdQtn71QyrekHf9PNbVWIUoLP93nNCPDoNYY3kqARzI94HKBj7NUwFf9dbZeZhkdM3VTtQjMP/tkXfv6SOdwVTsV4eoirzunt9SxMvMCZUi2f/GWk2gSduX7fTRmB9HDGKkqFTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365568; c=relaxed/simple;
-	bh=32r6A21mYC055uW/YRED6FYr354AZdHiPIOTKQfEbog=;
+	s=arc-20240116; t=1748367930; c=relaxed/simple;
+	bh=BTIrimQ/Fq5W/oGvIRth0nOSz2tGoZsvoGRyI2ijyYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oVHeVm58VOxUtl5mswAnd93aAsc6vp6qLKA4hGcc3zSBi5dnfywdJMjU7PP4XJ92/9kkg69bPuyG/VioA8F2+qqMCvelcTo7obR2sw9kK0ThX5cJhkNZuX+KyeNNClvPNpAi1nyTQmHBcawCZjF7+EtQpxv21hJfYzMT0II7Kkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzkViJ7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD8CC4CEE9;
-	Tue, 27 May 2025 17:06:07 +0000 (UTC)
+	 MIME-Version; b=qR8zRv5Oajq3dSrng0wLtpiMB16jjcauAZ6iYPexzJ+nU8CS7nfUbdLIo2aE90GpY3Eqo+1nyxaKVQnpfKw2fLZefMYuFVhYuSOQ5cve0od+Hvz9wZhv/yht1cXDJcEh0YI4/hnMjg2C0KrMoSsLwFziV4tlg382G+5gFNKVkgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiQ30Y9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E81C4CEE9;
+	Tue, 27 May 2025 17:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365568;
-	bh=32r6A21mYC055uW/YRED6FYr354AZdHiPIOTKQfEbog=;
+	s=korg; t=1748367930;
+	bh=BTIrimQ/Fq5W/oGvIRth0nOSz2tGoZsvoGRyI2ijyYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qzkViJ7Hqwf8KUE9BTxDHPIBdn8/sLx74o48JHwCN3Z06Rbmls8WhCanzWjfSwqoG
-	 ll3MWawPFxOZshICfb+T73Nsnj1Tc8N63uics2oRXsP8t3rFMH4U9AWFmAqxOYqhTc
-	 72MM301AukuVYQGRuHH0iW9WSy9wCWmIMg0sBCnc=
+	b=kiQ30Y9WgjT4yVIhvRQdbj0QZJk4oFHkvmxzWEZbU8vMhwXAkanBl7cSh3RFR4jQg
+	 MvsJeb93sT3ReHQ/mRJQfyhBoFudya4aobOlSCAxkcG3dV4jUhQ5BeJ5PvZVS5o/4H
+	 P7uXA2bhv4wJ1Y/2VcEg3tZLEMEr8WRo4L3dVTzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 419/626] net: fec: Refactor MAC reset to function
+Subject: [PATCH 6.14 515/783] wifi: ath12k: fix the ampdu id fetch in the HAL_RX_MPDU_START TLV
 Date: Tue, 27 May 2025 18:25:12 +0200
-Message-ID: <20250527162502.035480392@linuxfoundation.org>
+Message-ID: <20250527162534.114007031@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 67800d296191d0a9bde0a7776f99ca1ddfa0fc26 ]
+[ Upstream commit dff4f278ee1ef12d822b7ed2a1048d27037209bb ]
 
-The core is reset both in `fec_restart()` (called on link-up) and
-`fec_stop()` (going to sleep, driver remove etc.). These two functions
-had their separate implementations, which was at first only a register
-write and a `udelay()` (and the accompanying block comment). However,
-since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
-meant that these implementations diverged, often causing bugs.
+Currently, ampdu id is update with peer id mask which is incorrect.
+Therefore, update the ampdu id with PPDU id mask value. Also move
+the ampdu_id field inside the user stats since it is a user id based
+statistics.
 
-For instance, as of now, `fec_stop()` does not check for
-`FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
-a PM power-down event; and `fec_restart()` missed the refactor renaming
-the "magic" constant `1` to `FEC_ECR_RESET`.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-To harmonize current implementations, and eliminate this source of
-potential future bugs, refactor implementation to a common function.
-
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20250207121255.161146-2-csokas.bence@prolan.hu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Link: https://patch.msgid.link/20250206013854.174765-7-quic_periyasa@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 16 ++++++++++------
+ drivers/net/wireless/ath/ath12k/hal_rx.h |  3 ++-
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 04906897615d8..479ced24096b8 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1098,6 +1098,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
- 	}
- }
- 
-+/* Whack a reset.  We should wait for this.
-+ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-+ * instead of reset MAC itself.
-+ */
-+static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
-+{
-+	u32 val;
-+
-+	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
-+		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
-+		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
-+			writel(0, fep->hwp + FEC_ECNTRL);
-+		} else {
-+			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
-+			udelay(10);
-+		}
-+	} else {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
-+}
-+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index b952e79179d01..f23fee7055abc 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
  /*
-  * This function is called to start or restart the FEC during a link
-  * change, transmit timeout, or to reconfigure the FEC.  The network
-@@ -1114,17 +1137,7 @@ fec_restart(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
+  * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
--	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
--		writel(0, fep->hwp + FEC_ECNTRL);
--	} else {
--		writel(1, fep->hwp + FEC_ECNTRL);
--		udelay(10);
--	}
-+	fec_ctrl_reset(fep, false);
+ #include "dp_mon.h"
+@@ -655,6 +655,11 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k_base *ab,
+ 		if (userid < HAL_MAX_UL_MU_USERS) {
+ 			struct hal_rx_user_status *rxuser_stats =
+ 				&ppdu_info->userstats[userid];
++
++			if (ppdu_info->num_mpdu_fcs_ok > 1 ||
++			    ppdu_info->num_mpdu_fcs_err > 1)
++				ppdu_info->userstats[userid].ampdu_present = true;
++
+ 			ppdu_info->num_users += 1;
  
- 	/*
- 	 * enet-mac reset will reset mac address registers too,
-@@ -1378,22 +1391,7 @@ fec_stop(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
+ 			ath12k_dp_mon_rx_handle_ofdma_info(eu_stats, rxuser_stats);
+@@ -755,8 +760,8 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k_base *ab,
+ 		if (userid < HAL_MAX_UL_MU_USERS) {
+ 			info[0] = __le32_to_cpu(mpdu_start->info0);
+ 			ppdu_info->userid = userid;
+-			ppdu_info->ampdu_id[userid] =
+-				u32_get_bits(info[0], HAL_RX_MPDU_START_INFO1_PEERID);
++			ppdu_info->userstats[userid].ampdu_id =
++				u32_get_bits(info[0], HAL_RX_MPDU_START_INFO0_PPDU_ID);
+ 		}
  
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
--		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
--			writel(0, fep->hwp + FEC_ECNTRL);
--		} else {
--			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
--			udelay(10);
--		}
--	} else {
--		val = readl(fep->hwp + FEC_ECNTRL);
--		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
--		writel(val, fep->hwp + FEC_ECNTRL);
--	}
-+	fec_ctrl_reset(fep, true);
- 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
- 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+ 		break;
+@@ -956,15 +961,14 @@ static void ath12k_dp_mon_update_radiotap(struct ath12k *ar,
+ {
+ 	struct ieee80211_supported_band *sband;
+ 	u8 *ptr = NULL;
+-	u16 ampdu_id = ppduinfo->ampdu_id[ppduinfo->userid];
  
+ 	rxs->flag |= RX_FLAG_MACTIME_START;
+ 	rxs->signal = ppduinfo->rssi_comb + ATH12K_DEFAULT_NOISE_FLOOR;
+ 	rxs->nss = ppduinfo->nss + 1;
+ 
+-	if (ampdu_id) {
++	if (ppduinfo->userstats[ppduinfo->userid].ampdu_present) {
+ 		rxs->flag |= RX_FLAG_AMPDU_DETAILS;
+-		rxs->ampdu_reference = ampdu_id;
++		rxs->ampdu_reference = ppduinfo->userstats[ppduinfo->userid].ampdu_id;
+ 	}
+ 
+ 	if (ppduinfo->he_mu_flags) {
+diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
+index 54f3eaeca8bb9..55b2dd5b76f6b 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_rx.h
++++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
+@@ -146,6 +146,8 @@ struct hal_rx_user_status {
+ 	u32 mpdu_fcs_ok_bitmap[HAL_RX_NUM_WORDS_PER_PPDU_BITMAP];
+ 	u32 mpdu_ok_byte_count;
+ 	u32 mpdu_err_byte_count;
++	bool ampdu_present;
++	u16 ampdu_id;
+ };
+ 
+ #define HAL_MAX_UL_MU_USERS	37
+@@ -230,7 +232,6 @@ struct hal_rx_mon_ppdu_info {
+ 	u8 addr4[ETH_ALEN];
+ 	struct hal_rx_user_status userstats[HAL_MAX_UL_MU_USERS];
+ 	u8 userid;
+-	u16 ampdu_id[HAL_MAX_UL_MU_USERS];
+ 	bool first_msdu_in_mpdu;
+ 	bool is_ampdu;
+ 	u8 medium_prot_type;
 -- 
 2.39.5
 
