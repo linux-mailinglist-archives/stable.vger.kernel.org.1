@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-147049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56007AC55DE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B26D1AC591E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBF7C7A8995
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5360F9E06A8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C1D278750;
-	Tue, 27 May 2025 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2927F27FD4C;
+	Tue, 27 May 2025 17:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQwJLjEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mwi0Ij6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E3913790B;
-	Tue, 27 May 2025 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEC1263F5E;
+	Tue, 27 May 2025 17:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366114; cv=none; b=peApj0c7X30th4Hn6beXUYJesimk/DDuDH4oKNPu6zzvhqDecxjG5oHWtf8F27CafP4lC1QcM3v8IKwDag2zDiCQLFxNJ+zs1+ujz+hjsOoBuBLLM90pCgz907XPAjj+OP+UZExNJDI+AQCWrzeni6vK33zEtz9hRLgS0lPXzug=
+	t=1748368388; cv=none; b=LV7q8IfBEGRBOS7D2TKXKrlWRovZu/7rekTw96C13GftiPMt4cOvywx4jiIb3Doy81fHiNFL6GKU1+N+JKiLaVRJW51HMvrXxqSts2O0AfIPOmFjoS2ocurUPO6HIpRCJdnX6iGL1dM3H+vghpB7a8HdsFzwEDCOBi3YFoPqYTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366114; c=relaxed/simple;
-	bh=BauiZ9ool/deSQ4cBhmWD4wlOw5x4MYsKuROTyF2+XE=;
+	s=arc-20240116; t=1748368388; c=relaxed/simple;
+	bh=i3yrREdgNENkIYk+9qUtvEJKNzr6r8L2azmd7yLMs8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFlflzA6PawtLNuwuSUHtosl85kz5KGvskyHHUqKGadMus8SSfVj9R14c9zLubXRTHuVSeoRkqhtCXXy0Y/yKsaBj3IJynO1ikKIeco1rVJC7SwHlTGN3bzzA1n1gcvCYMDfas5SPN42Dk9UK7wtGhSe4SDw3U4CCm00FyrtVFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQwJLjEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C71C4CEE9;
-	Tue, 27 May 2025 17:15:13 +0000 (UTC)
+	 MIME-Version; b=F77VYGWEEwngxk43GkNKrZF4o0DLXE2U9HKJ0mSiNtOp5UHPDd6UG7hQyQWxCAj0onypJ2J+LiO9D3RADBTvVrvgvezMMArE1DNOyF0cw6lUVNF/DeQAU9tdZOyJE2jPB+0jiD0dSgv2cd2V6P1Z9wTXNp+81L0cMypp4HznbDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mwi0Ij6x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4AFC4CEE9;
+	Tue, 27 May 2025 17:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366114;
-	bh=BauiZ9ool/deSQ4cBhmWD4wlOw5x4MYsKuROTyF2+XE=;
+	s=korg; t=1748368387;
+	bh=i3yrREdgNENkIYk+9qUtvEJKNzr6r8L2azmd7yLMs8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQwJLjEhQYa2k+ZnNT3N0jhZW9bNHKK74Fdu2JjdaTq1EnkHvSUqzw1x4RrZ6BAiw
-	 7LqZMUSUtHq3Z0ca4pz7KWxJqMjKxLWPXTryiQGkViqo7TzwCyumLTb2xFkT7qZYIV
-	 0juhNbwsctlAt/PaMGaz9GHH4dDi+hNkmXTYDK3k=
+	b=Mwi0Ij6x5/4vWsXzXw+cx6uQC+cNDlvygYiCjkC4r3sJgMET3AnsPm494qo8ec3vh
+	 rYNkdJUCukTnI/DYWTffqef4Spl2sFTIf0BHeV1Ow8s8nS5J0hUiehYEbBWX8xAA9w
+	 42umH1v7y2T0Um+k3wSklLOJOKDEbtkX7FWQ7BRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 595/626] Input: xpad - add more controllers
+	kernel test robot <lkp@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 691/783] dmaengine: idxd: Fix ->poll() return value
 Date: Tue, 27 May 2025 18:28:08 +0200
-Message-ID: <20250527162509.169277077@linuxfoundation.org>
+Message-ID: <20250527162541.272874877@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit f0d17942ea3edec191f1c0fc0d2cd7feca8de2f0 upstream.
+[ Upstream commit ae74cd15ade833adc289279b5c6f12e78f64d4d7 ]
 
-Adds support for a revision of the Turtle Beach Recon Wired Controller,
-the Turtle Beach Stealth Ultra, and the PowerA Wired Controller.
+The fix to block access from different address space did not return a
+correct value for ->poll() change.  kernel test bot reported that a
+return value of type __poll_t is expected rather than int. Fix to return
+POLLNVAL to indicate invalid request.
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20250513225950.2719387-1-vi@endrift.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8dfa57aabff6 ("dmaengine: idxd: Fix allowing write() from different address spaces")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505081851.rwD7jVxg-lkp@intel.com/
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250508170548.2747425-1-dave.jiang@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/dma/idxd/cdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -289,6 +289,8 @@ static const struct xpad_device {
- 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
- 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
- 	{ 0x10f5, 0x7005, "Turtle Beach Recon Controller", 0, XTYPE_XBOXONE },
-+	{ 0x10f5, 0x7008, "Turtle Beach Recon Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
-+	{ 0x10f5, 0x7073, "Turtle Beach Stealth Ultra Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
- 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
- 	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
- 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
-@@ -353,6 +355,7 @@ static const struct xpad_device {
- 	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
- 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
-+	{ 0x20d6, 0x2064, "PowerA Wired Controller for Xbox", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
- 	{ 0x2345, 0xe00b, "Machenike G5 Pro Controller", 0, XTYPE_XBOX360 },
- 	{ 0x24c6, 0x5000, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index b847b74949f19..cd57067e82180 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -500,7 +500,7 @@ static __poll_t idxd_cdev_poll(struct file *filp,
+ 	__poll_t out = 0;
+ 
+ 	if (current->mm != ctx->mm)
+-		return -EPERM;
++		return POLLNVAL;
+ 
+ 	poll_wait(filp, &wq->err_queue, wait);
+ 	spin_lock(&idxd->dev_lock);
+-- 
+2.39.5
+
 
 
 
