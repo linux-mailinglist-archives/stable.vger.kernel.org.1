@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B96DAC5457
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:59:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E047CAC57B9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C279D1898326
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFBFE4A7BE6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5F827FB37;
-	Tue, 27 May 2025 16:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8102B27CCF0;
+	Tue, 27 May 2025 17:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uO7SENcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJw8tTvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D33E2CCC0;
-	Tue, 27 May 2025 16:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6173C01;
+	Tue, 27 May 2025 17:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365159; cv=none; b=D/+s59yMOX56/iDdFtBxtkWeNQxR7N4crlCtHwItTK4Q8ZRcvbbLjkFZYS44VOrn9Kzjw2y5bEZVyoAViefZrUKXG15+srdqmK1uzrMK2JTafQjqEPgdJCLQAz31f1MooomulI/OcsSyefu29s7T8IlkmZuuRVeh9Hz3NipwjfA=
+	t=1748367395; cv=none; b=iNXGZEQeRZHQ4Mmstnbl0g7iEV8qqLN4ndU0aoLZ6LewFDZGnWU6giD2gCcaQJP2ZLv4KaZVG3kvBec6D3b2CcdR3V61LRiAesuQQvQUjlpCM7svRnsef/st4yPg2g0vBWgzZBA2rfceIUIhBHNr54+hqsi53AV7n+Fofgd7fJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365159; c=relaxed/simple;
-	bh=XzlyRz9UFZFUAYVGs48l65ceAILZwvup1odr6A0aVEg=;
+	s=arc-20240116; t=1748367395; c=relaxed/simple;
+	bh=MijYgIoH+fMAYaomhrkMMS/c07aP37iUp+2dQdJWhQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0l6aoBa9S4Ea+/UbYkEHx8jVMXtDX3LAmmVjPW+L3C1z6LBv3Yjrtw8PFRv9a9F5cfR7vTk1kxEVObA9E7nhaLxpgOsArOT0kirvoJp5uRMjohIaDSn5rf9A1k38tcXzKJXToUo+EeWdd9KHUCNJfqRzOU8oSdVmDA9h3u6pAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uO7SENcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FB7C4CEE9;
-	Tue, 27 May 2025 16:59:14 +0000 (UTC)
+	 MIME-Version; b=Uj1A8csrRJWKNhq+xRqDXSjC6kJTl2RrwwKW1Lx/+x9PZFfa5iY21FYTE08wBDsxtootPF2kvgJZ1sRKHlMesiEwGas/v/zgGZsbqg8tFRQWvyIAqKa5k+A/vOt8MIycxiGL347cZIPSz+3p5Bat8p7VxQmKg7WNJE9KNl+ueCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJw8tTvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A8EC4CEE9;
+	Tue, 27 May 2025 17:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365155;
-	bh=XzlyRz9UFZFUAYVGs48l65ceAILZwvup1odr6A0aVEg=;
+	s=korg; t=1748367394;
+	bh=MijYgIoH+fMAYaomhrkMMS/c07aP37iUp+2dQdJWhQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uO7SENcfb/NM6WY1iAEek5iejnmMA7JYlkC60bJf2axeQr4fyi0PQDGYuja616AyD
-	 XZ0wCQ68QKmGRFHntIcHBuiUIqGr6lhh4LaQEyfCVe7nBvsb9Dv8CshKsWXqVHti2w
-	 pjm2nGXs4I/zpPN9jeeF+2Xnnb4C5IWrHx0lpni8=
+	b=TJw8tTvSonvHMJWErvJbjE8G5ayOpL9Q2eQk91h88XFaMSF02LE3jlM0oXesqN3Gz
+	 Z/+yuilskya7mWfIttbspELZOd/J/VVdRDXJqO2+s8RKDI7XafBlrVtcFkcX6/EOc1
+	 TTOQT5kd/lmhtuiszkvpSq7RvM3RjDmqPWhj6IUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Song Liu <song@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 277/626] drm/xe: xe_gen_wa_oob: replace program_invocation_short_name
+Subject: [PATCH 6.14 373/783] bpf: arm64: Silence "UBSAN: negation-overflow" warning
 Date: Tue, 27 May 2025 18:22:50 +0200
-Message-ID: <20250527162456.280551642@linuxfoundation.org>
+Message-ID: <20250527162528.276407428@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit 89eb42b5539f6ae6a0cabcb39e5b6fcc83c106a1 ]
+[ Upstream commit 239860828f8660e2be487e2fbdae2640cce3fd67 ]
 
-program_invocation_short_name may not be available in other systems.
-Instead, replace it with the argv[0] to pass the executable name.
+With UBSAN, test_bpf.ko triggers warnings like:
 
-Fixes build error when program_invocation_short_name is not available:
+UBSAN: negation-overflow in arch/arm64/net/bpf_jit_comp.c:1333:28
+negation of -2147483648 cannot be represented in type 's32' (aka 'int'):
 
-drivers/gpu/drm/xe/xe_gen_wa_oob.c:34:3: error: use of
-undeclared identifier 'program_invocation_short_name'    34 |
-program_invocation_short_name);       |                 ^ 1 error
-generated.
+Silence these warnings by casting imm to u32 first.
 
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250224-macos-build-support-xe-v3-1-d2c9ed3a27cc@samsung.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Tested-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20250218080240.2431257-1-song@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gen_wa_oob.c | 6 +++---
+ arch/arm64/net/bpf_jit_comp.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gen_wa_oob.c b/drivers/gpu/drm/xe/xe_gen_wa_oob.c
-index 904cf47925aa1..ed9183599e31c 100644
---- a/drivers/gpu/drm/xe/xe_gen_wa_oob.c
-+++ b/drivers/gpu/drm/xe/xe_gen_wa_oob.c
-@@ -28,10 +28,10 @@
- 	"\n" \
- 	"#endif\n"
- 
--static void print_usage(FILE *f)
-+static void print_usage(FILE *f, const char *progname)
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 3126881fe6768..970c49bb7ed47 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -274,7 +274,7 @@ static inline void emit_a64_add_i(const bool is64, const int dst, const int src,
  {
- 	fprintf(f, "usage: %s <input-rule-file> <generated-c-source-file> <generated-c-header-file>\n",
--		program_invocation_short_name);
-+		progname);
- }
- 
- static void print_parse_error(const char *err_msg, const char *line,
-@@ -144,7 +144,7 @@ int main(int argc, const char *argv[])
- 
- 	if (argc < 3) {
- 		fprintf(stderr, "ERROR: wrong arguments\n");
--		print_usage(stderr);
-+		print_usage(stderr, argv[0]);
- 		return 1;
- 	}
- 
+ 	if (is_addsub_imm(imm)) {
+ 		emit(A64_ADD_I(is64, dst, src, imm), ctx);
+-	} else if (is_addsub_imm(-imm)) {
++	} else if (is_addsub_imm(-(u32)imm)) {
+ 		emit(A64_SUB_I(is64, dst, src, -imm), ctx);
+ 	} else {
+ 		emit_a64_mov_i(is64, tmp, imm, ctx);
+@@ -1208,7 +1208,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 	case BPF_ALU64 | BPF_SUB | BPF_K:
+ 		if (is_addsub_imm(imm)) {
+ 			emit(A64_SUB_I(is64, dst, dst, imm), ctx);
+-		} else if (is_addsub_imm(-imm)) {
++		} else if (is_addsub_imm(-(u32)imm)) {
+ 			emit(A64_ADD_I(is64, dst, dst, -imm), ctx);
+ 		} else {
+ 			emit_a64_mov_i(is64, tmp, imm, ctx);
+@@ -1379,7 +1379,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 	case BPF_JMP32 | BPF_JSLE | BPF_K:
+ 		if (is_addsub_imm(imm)) {
+ 			emit(A64_CMP_I(is64, dst, imm), ctx);
+-		} else if (is_addsub_imm(-imm)) {
++		} else if (is_addsub_imm(-(u32)imm)) {
+ 			emit(A64_CMN_I(is64, dst, -imm), ctx);
+ 		} else {
+ 			emit_a64_mov_i(is64, tmp, imm, ctx);
 -- 
 2.39.5
 
