@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-147056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3AAAC55E6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887E5AC5923
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C6A1BA6CFD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A081BC32A6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030FE27FB0C;
-	Tue, 27 May 2025 17:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE51280036;
+	Tue, 27 May 2025 17:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FI3RUww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJ8ggs5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25F31DB34C;
-	Tue, 27 May 2025 17:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EE627FB3D;
+	Tue, 27 May 2025 17:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366136; cv=none; b=ABLUdQFFWlUDFdzj+waiqz84sm6k7sGy4XDflc9oOF77t19L5Udv/6CHVXCXU7X7n+StC8cdTdl8U+E3ogaxEtqaobH17mqz5WKmcdcV2+fn5MihrVUTAIWAthrJBi2vM6QYjhD5NfXRoJYNRDxc74Pd9IzVShQ0DKLlMlVHLqY=
+	t=1748368416; cv=none; b=YIFHL8kllPVTgtpcdjOnn87Lkqck2XnSS/ni3uAmPJlD/Eki0MjSgOavIdr1XaJy9RZ/6I1fxs9tpiTEH5EaNSRm1jXrWphNfTplfOZptMT0P6K3oVjIdMc6vp625K5A/GTUUCYiKOdLTJgwSNtrhVjraWzHAt52dwmLg9et/wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366136; c=relaxed/simple;
-	bh=JnRXje7R08+FhEoRZ0hmjCnFzKA6Nhfs/a+A0c1956M=;
+	s=arc-20240116; t=1748368416; c=relaxed/simple;
+	bh=Oxdv2AC71tWJpXvRoorWRpoR82325zxLzoy2xM/wYko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjNLr205fQYop9nTVWwhIvPW//n4iCl45hY3F+SHO/75yt/ooRgPrAhKOJucSH4Yih6rn/jYz/TCcOWJVE2eVfAC6nS44/wKFytE2xuXgCx8PmhEBbVFHhMWHktw385m/amvX1oTtDu0P8nS0qr+nKIbECjV69ogRi23E/AUbk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FI3RUww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB9FC4CEE9;
-	Tue, 27 May 2025 17:15:34 +0000 (UTC)
+	 MIME-Version; b=t+l6Gl6sJXG0q4XWVblp2PuR92heNiiG4LphNle+UlubMihNNs5D2zvkrXFmX0JMY7DKheGCLoUyF2Yo8ke9p4H7tB7ImN3TZJ1/atggRJiEV0BkWl0upMboBVEQc7rXAia4QPyoHgvxdCWNUaAOirh8JDy07LbGlTZeQG9myv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJ8ggs5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A28EC4CEE9;
+	Tue, 27 May 2025 17:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366135;
-	bh=JnRXje7R08+FhEoRZ0hmjCnFzKA6Nhfs/a+A0c1956M=;
+	s=korg; t=1748368416;
+	bh=Oxdv2AC71tWJpXvRoorWRpoR82325zxLzoy2xM/wYko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FI3RUwwdkJLbdT2ALjJBgKMEZiqUzkWAzxN4bFDAQqz8z9rUEHkb7Bkt1z4O8KHS
-	 wIVPANNFCBdBSzCG2BgPI4SoQU/2EvNH8PrS3u9mEL6Rve8whkUc2IJ3ZROHZOoPlf
-	 3+fcGqpyvB2M14F0JGdirTt//O1LL2Fhao25NBiI=
+	b=pJ8ggs5iNQoos8ZxwG+cl+4I4VIcUAX+sonjGi4KuIGUxcvPkrAiWaBu3izAd4HQ8
+	 BLRRlHCWIyxAM7WNXYJMPw8UcCaCbq6di4ahq4JaUDyDgpoJ1SGwNagnWEXeyDw9xm
+	 y5aRCT0wMtL9Z0cbECDNvD0cV7mYL+nXsrgUFk+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	"Erhard F." <erhard_f@mailbox.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 602/626] mm: vmalloc: only zero-init on vrealloc shrink
-Date: Tue, 27 May 2025 18:28:15 +0200
-Message-ID: <20250527162509.456156582@linuxfoundation.org>
+	En-Wei Wu <en-wei.wu@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 699/783] Bluetooth: btusb: use skb_pull to avoid unsafe access in QCA dump handling
+Date: Tue, 27 May 2025 18:28:16 +0200
+Message-ID: <20250527162541.588476287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,62 +62,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: En-Wei Wu <en-wei.wu@canonical.com>
 
-commit 70d1eb031a68cbde4eed8099674be21778441c94 upstream.
+[ Upstream commit 4bcb0c7dc25446b99fc7a8fa2a143d69f3314162 ]
 
-The common case is to grow reallocations, and since init_on_alloc will
-have already zeroed the whole allocation, we only need to zero when
-shrinking the allocation.
+Use skb_pull() and skb_pull_data() to safely parse QCA dump packets.
 
-Link: https://lkml.kernel.org/r/20250515214217.619685-2-kees@kernel.org
-Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc() sizing")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Tested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: "Erhard F." <erhard_f@mailbox.org>
-Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This avoids direct pointer math on skb->data, which could lead to
+invalid access if the packet is shorter than expected.
+
+Fixes: 20981ce2d5a5 ("Bluetooth: btusb: Add WCN6855 devcoredump support")
+Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmalloc.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/bluetooth/btusb.c | 98 ++++++++++++++++-----------------------
+ 1 file changed, 40 insertions(+), 58 deletions(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4097,8 +4097,8 @@ void *vrealloc_noprof(const void *p, siz
- 	 * would be a good heuristic for when to shrink the vm_area?
- 	 */
- 	if (size <= old_size) {
--		/* Zero out "freed" memory. */
--		if (want_init_on_free())
-+		/* Zero out "freed" memory, potentially for future realloc. */
-+		if (want_init_on_free() || want_init_on_alloc(flags))
- 			memset((void *)p + size, 0, old_size - size);
- 		vm->requested_size = size;
- 		kasan_poison_vmalloc(p + size, old_size - size);
-@@ -4111,9 +4111,11 @@ void *vrealloc_noprof(const void *p, siz
- 	if (size <= alloced_size) {
- 		kasan_unpoison_vmalloc(p + old_size, size - old_size,
- 				       KASAN_VMALLOC_PROT_NORMAL);
--		/* Zero out "alloced" memory. */
--		if (want_init_on_alloc(flags))
--			memset((void *)p + old_size, 0, size - old_size);
-+		/*
-+		 * No need to zero memory here, as unused memory will have
-+		 * already been zeroed at initial allocation time or during
-+		 * realloc shrink time.
-+		 */
- 		vm->requested_size = size;
- 		return (void *)p;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index ccd0a21da3955..b15f3ed767c53 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3014,9 +3014,8 @@ static void btusb_coredump_qca(struct hci_dev *hdev)
+ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+ 	int ret = 0;
++	unsigned int skip = 0;
+ 	u8 pkt_type;
+-	u8 *sk_ptr;
+-	unsigned int sk_len;
+ 	u16 seqno;
+ 	u32 dump_size;
+ 
+@@ -3025,18 +3024,13 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 	struct usb_device *udev = btdata->udev;
+ 
+ 	pkt_type = hci_skb_pkt_type(skb);
+-	sk_ptr = skb->data;
+-	sk_len = skb->len;
++	skip = sizeof(struct hci_event_hdr);
++	if (pkt_type == HCI_ACLDATA_PKT)
++		skip += sizeof(struct hci_acl_hdr);
+ 
+-	if (pkt_type == HCI_ACLDATA_PKT) {
+-		sk_ptr += HCI_ACL_HDR_SIZE;
+-		sk_len -= HCI_ACL_HDR_SIZE;
+-	}
+-
+-	sk_ptr += HCI_EVENT_HDR_SIZE;
+-	sk_len -= HCI_EVENT_HDR_SIZE;
++	skb_pull(skb, skip);
++	dump_hdr = (struct qca_dump_hdr *)skb->data;
+ 
+-	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
+ 	seqno = le16_to_cpu(dump_hdr->seqno);
+ 	if (seqno == 0) {
+ 		set_bit(BTUSB_HW_SSR_ACTIVE, &btdata->flags);
+@@ -3056,16 +3050,15 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ 		btdata->qca_dump.ram_dump_size = dump_size;
+ 		btdata->qca_dump.ram_dump_seqno = 0;
+-		sk_ptr += offsetof(struct qca_dump_hdr, data0);
+-		sk_len -= offsetof(struct qca_dump_hdr, data0);
++
++		skb_pull(skb, offsetof(struct qca_dump_hdr, data0));
+ 
+ 		usb_disable_autosuspend(udev);
+ 		bt_dev_info(hdev, "%s memdump size(%u)\n",
+ 			    (pkt_type == HCI_ACLDATA_PKT) ? "ACL" : "event",
+ 			    dump_size);
+ 	} else {
+-		sk_ptr += offsetof(struct qca_dump_hdr, data);
+-		sk_len -= offsetof(struct qca_dump_hdr, data);
++		skb_pull(skb, offsetof(struct qca_dump_hdr, data));
  	}
+ 
+ 	if (!btdata->qca_dump.ram_dump_size) {
+@@ -3085,7 +3078,6 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 		return ret;
+ 	}
+ 
+-	skb_pull(skb, skb->len - sk_len);
+ 	hci_devcd_append(hdev, skb);
+ 	btdata->qca_dump.ram_dump_seqno++;
+ 	if (seqno == QCA_LAST_SEQUENCE_NUM) {
+@@ -3113,68 +3105,58 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ /* Return: true if the ACL packet is a dump packet, false otherwise. */
+ static bool acl_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	u8 *sk_ptr;
+-	unsigned int sk_len;
+-
+ 	struct hci_event_hdr *event_hdr;
+ 	struct hci_acl_hdr *acl_hdr;
+ 	struct qca_dump_hdr *dump_hdr;
++	struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
++	bool is_dump = false;
+ 
+-	sk_ptr = skb->data;
+-	sk_len = skb->len;
+-
+-	acl_hdr = hci_acl_hdr(skb);
+-	if (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE)
++	if (!clone)
+ 		return false;
+ 
+-	sk_ptr += HCI_ACL_HDR_SIZE;
+-	sk_len -= HCI_ACL_HDR_SIZE;
+-	event_hdr = (struct hci_event_hdr *)sk_ptr;
+-
+-	if ((event_hdr->evt != HCI_VENDOR_PKT) ||
+-	    (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
+-		return false;
++	acl_hdr = skb_pull_data(clone, sizeof(*acl_hdr));
++	if (!acl_hdr || (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE))
++		goto out;
+ 
+-	sk_ptr += HCI_EVENT_HDR_SIZE;
+-	sk_len -= HCI_EVENT_HDR_SIZE;
++	event_hdr = skb_pull_data(clone, sizeof(*event_hdr));
++	if (!event_hdr || (event_hdr->evt != HCI_VENDOR_PKT))
++		goto out;
+ 
+-	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
+-	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
+-	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
+-	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
+-		return false;
++	dump_hdr = skb_pull_data(clone, sizeof(*dump_hdr));
++	if (!dump_hdr || (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
++	   (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
++		goto out;
+ 
+-	return true;
++	is_dump = true;
++out:
++	consume_skb(clone);
++	return is_dump;
+ }
+ 
+ /* Return: true if the event packet is a dump packet, false otherwise. */
+ static bool evt_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	u8 *sk_ptr;
+-	unsigned int sk_len;
+-
+ 	struct hci_event_hdr *event_hdr;
+ 	struct qca_dump_hdr *dump_hdr;
++	struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
++	bool is_dump = false;
+ 
+-	sk_ptr = skb->data;
+-	sk_len = skb->len;
+-
+-	event_hdr = hci_event_hdr(skb);
+-
+-	if ((event_hdr->evt != HCI_VENDOR_PKT)
+-	    || (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
++	if (!clone)
+ 		return false;
+ 
+-	sk_ptr += HCI_EVENT_HDR_SIZE;
+-	sk_len -= HCI_EVENT_HDR_SIZE;
++	event_hdr = skb_pull_data(clone, sizeof(*event_hdr));
++	if (!event_hdr || (event_hdr->evt != HCI_VENDOR_PKT))
++		goto out;
+ 
+-	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
+-	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
+-	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
+-	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
+-		return false;
++	dump_hdr = skb_pull_data(clone, sizeof(*dump_hdr));
++	if (!dump_hdr || (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
++	   (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
++		goto out;
+ 
+-	return true;
++	is_dump = true;
++out:
++	consume_skb(clone);
++	return is_dump;
+ }
+ 
+ static int btusb_recv_acl_qca(struct hci_dev *hdev, struct sk_buff *skb)
+-- 
+2.39.5
+
 
 
 
