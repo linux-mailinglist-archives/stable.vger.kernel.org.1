@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-147064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F252CAC55F2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D831AC592E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 927347AFB9A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A52CA167067
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49AD271464;
-	Tue, 27 May 2025 17:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573A528001E;
+	Tue, 27 May 2025 17:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGQ48TVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pgqxvavx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F48A182D7;
-	Tue, 27 May 2025 17:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143092566;
+	Tue, 27 May 2025 17:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366170; cv=none; b=EEuPcbpGunB8l7YoakDp6qHs5C9NzeUS7Vfs6UZYlzuEPw0ftPL28xAfMWgajD8a5PtXGR9Q2+ijdLWhqPGozGl09bgWGrwE7FOt1pbqRO9BMyft5IqFRLJSaCOQyw+i1cwuyH0rbjhzNm9I/zPhjCQ0Z/bMo/x2a0cBjJdJqFk=
+	t=1748368438; cv=none; b=f+uDz9HeXfPInO2D2PlEqbLHuJJ0gqFM6+6vBInG3BPVRk+W6fIqiwSxY7LxH5vhtW7tD61q2S5kc8pwxAYx6gz8g5+oZvGy5skE77WleryJhGOdBqLy0kCUqg9Z7RTNGXvWtCj2+MOEwJZ4DLVoAlo0dWl2f9tpcMZPJ/3zD1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366170; c=relaxed/simple;
-	bh=STOaDNMcUs5G+Sz6u0OCuBRrtQRq3FhNbDm+GUcSFUU=;
+	s=arc-20240116; t=1748368438; c=relaxed/simple;
+	bh=tttwV6Y+2HVhdUhhRhhsiKKEgR4OVfQd73x+vlgbs8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osOy3eZlcSgaJG+cmzykhGEUjPcdtTQumdZLEYNvLu+3f4hWYAi6KzNJE5uqoEm4OuNsYxwTYwM8qJadnStss/jzcgV8iaiUi1luUnC23ltpVwgRmRUJS83kR8H1HPzJ8V3c5qFaMcaj/rIMBUGNDTMORqthc0G0MxMp/gPWLnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGQ48TVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2527CC4CEE9;
-	Tue, 27 May 2025 17:16:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kqBVJDPUHYU+/Lr0rIAvjtCmRZUTlH3NLGbY1DyfEiGG2tMdznvy5EX65xAazvcFZs9JWw5jJ14I3ucJObXjsY4ZQvPIbuZthm0DwDPqnBfGUrMHgRSnekYwb8QU8vnsVa+FJBxBDdH52Oxwuecz6aDwHEXFZKqAxTMUes121Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pgqxvavx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E373C4CEE9;
+	Tue, 27 May 2025 17:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366170;
-	bh=STOaDNMcUs5G+Sz6u0OCuBRrtQRq3FhNbDm+GUcSFUU=;
+	s=korg; t=1748368437;
+	bh=tttwV6Y+2HVhdUhhRhhsiKKEgR4OVfQd73x+vlgbs8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rGQ48TVU77nANxGgKXgQ22m0XElwnmxb8f2Mii7wItVIXI0EDg4gt/Vr+nue+BJGi
-	 QjoCxZNz3nUkJzuF3ggVTloYhTkT8zB5Gk/8J4z3lir2pKdYE0BWaKKPVJRPVMXJAU
-	 stUPLj5ReV4pECTrSl3NQechw/zZHeAizfrGfKdk=
+	b=PgqxvavxANMJKgnbE6N3gHvhm+XSjwg2DSXM6TKuMPSLYpZxii6T55lHmWvFx5bu8
+	 bdZzHD09pGwX8dZGc8mCvA2dKIWjBQkIAfm/TUSBTu9I+RxUvMYhe6rYGrr+B1ahIN
+	 e+0xXWhfVKocFs+57KSXhxPzD3dcfqV8cPLlXeVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ed Burcher <git@edburcher.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 580/626] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14ASP10
-Date: Tue, 27 May 2025 18:27:53 +0200
-Message-ID: <20250527162508.544276780@linuxfoundation.org>
+	=?UTF-8?q?Pawe=C5=82=20Anikiel?= <panikiel@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 677/783] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST or Rust >= 1.88
+Date: Tue, 27 May 2025 18:27:54 +0200
+Message-ID: <20250527162540.696678507@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +62,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ed Burcher <git@edburcher.com>
+From: Paweł Anikiel <panikiel@google.com>
 
-commit 8d70503068510e6080c2c649cccb154f16de26c9 upstream.
+[ Upstream commit 5595c31c370957aabe739ac3996aedba8267603f ]
 
-Lenovo Yoga Pro 7 (gen 10) with Realtek ALC3306 and combined CS35L56
-amplifiers need quirk ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN to
-enable bass
+Calling core::fmt::write() from rust code while FineIBT is enabled
+results in a kernel panic:
 
-Signed-off-by: Ed Burcher <git@edburcher.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250519224907.31265-2-git@edburcher.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ 4614.199779] kernel BUG at arch/x86/kernel/cet.c:132!
+[ 4614.205343] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[ 4614.211781] CPU: 2 UID: 0 PID: 6057 Comm: dmabuf_dump Tainted: G     U     O       6.12.17-android16-0-g6ab38c534a43 #1 9da040f27673ec3945e23b998a0f8bd64c846599
+[ 4614.227832] Tainted: [U]=USER, [O]=OOT_MODULE
+[ 4614.241247] RIP: 0010:do_kernel_cp_fault+0xea/0xf0
+...
+[ 4614.398144] RIP: 0010:_RNvXs5_NtNtNtCs3o2tGsuHyou_4core3fmt3num3impyNtB9_7Display3fmt+0x0/0x20
+[ 4614.407792] Code: 48 f7 df 48 0f 48 f9 48 89 f2 89 c6 5d e9 18 fd ff ff 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 41 81 ea 14 61 af 2c 74 03 0f 0b 90 <66> 0f 1f 00 55 48 89 e5 48 89 f2 48 8b 3f be 01 00 00 00 5d e9 e7
+[ 4614.428775] RSP: 0018:ffffb95acfa4ba68 EFLAGS: 00010246
+[ 4614.434609] RAX: 0000000000000000 RBX: 0000000000000010 RCX: 0000000000000000
+[ 4614.442587] RDX: 0000000000000007 RSI: ffffb95acfa4ba70 RDI: ffffb95acfa4bc88
+[ 4614.450557] RBP: ffffb95acfa4bae0 R08: ffff0a00ffffff05 R09: 0000000000000070
+[ 4614.458527] R10: 0000000000000000 R11: ffffffffab67eaf0 R12: ffffb95acfa4bcc8
+[ 4614.466493] R13: ffffffffac5d50f0 R14: 0000000000000000 R15: 0000000000000000
+[ 4614.474473]  ? __cfi__RNvXs5_NtNtNtCs3o2tGsuHyou_4core3fmt3num3impyNtB9_7Display3fmt+0x10/0x10
+[ 4614.484118]  ? _RNvNtCs3o2tGsuHyou_4core3fmt5write+0x1d2/0x250
+
+This happens because core::fmt::write() calls
+core::fmt::rt::Argument::fmt(), which currently has CFI disabled:
+
+library/core/src/fmt/rt.rs:
+171     // FIXME: Transmuting formatter in new and indirectly branching to/calling
+172     // it here is an explicit CFI violation.
+173     #[allow(inline_no_sanitize)]
+174     #[no_sanitize(cfi, kcfi)]
+175     #[inline]
+176     pub(super) unsafe fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+
+This causes a Control Protection exception, because FineIBT has sealed
+off the original function's endbr64.
+
+This makes rust currently incompatible with FineIBT. Add a Kconfig
+dependency that prevents FineIBT from getting turned on by default
+if rust is enabled.
+
+[ Rust 1.88.0 (scheduled for 2025-06-26) should have this fixed [1],
+  and thus we relaxed the condition with Rust >= 1.88.
+
+  When `objtool` lands checking for this with e.g. [2], the plan is
+  to ideally run that in upstream Rust's CI to prevent regressions
+  early [3], since we do not control `core`'s source code.
+
+  Alice tested the Rust PR backported to an older compiler.
+
+  Peter would like that Rust provides a stable `core` which can be
+  pulled into the kernel: "Relying on that much out of tree code is
+  'unfortunate'".
+
+    - Miguel ]
+
+Signed-off-by: Paweł Anikiel <panikiel@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Peter Zijlstra <peterz@infradead.org>
+Link: https://github.com/rust-lang/rust/pull/139632 [1]
+Link: https://lore.kernel.org/rust-for-linux/20250410154556.GB9003@noisy.programming.kicks-ass.net/ [2]
+Link: https://github.com/rust-lang/rust/pull/139632#issuecomment-2801950873 [3]
+Link: https://lore.kernel.org/r/20250410115420.366349-1-panikiel@google.com
+Link: https://lore.kernel.org/r/att0-CANiq72kjDM0cKALVy4POEzhfdT4nO7tqz0Pm7xM+3=_0+L1t=A@mail.gmail.com
+[ Reduced splat. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ arch/x86/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11182,6 +11182,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x17aa, 0x38fa, "Thinkbook 16P Gen5", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
- 	SND_PCI_QUIRK(0x17aa, 0x38fd, "ThinkBook plus Gen5 Hybrid", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
-+	SND_PCI_QUIRK(0x17aa, 0x390d, "Lenovo Yoga Pro 7 14ASP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
- 	SND_PCI_QUIRK(0x17aa, 0x391f, "Yoga S990-16 pro Quad YC Quad", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3920, "Yoga S990-16 pro Quad VECO Quad", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 473364353bd96..5439bff8850a9 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2430,6 +2430,7 @@ config STRICT_SIGALTSTACK_SIZE
+ config CFI_AUTO_DEFAULT
+ 	bool "Attempt to use FineIBT by default at boot time"
+ 	depends on FINEIBT
++	depends on !RUST || RUSTC_VERSION >= 108800
+ 	default y
+ 	help
+ 	  Attempt to use FineIBT by default at boot time. If enabled,
+-- 
+2.39.5
+
 
 
 
