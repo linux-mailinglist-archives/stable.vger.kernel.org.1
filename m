@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-147784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B780AC5926
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB3DAC55FD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27DAB1BC32D4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D5254A51E0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9450927FD4C;
-	Tue, 27 May 2025 17:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2802C27E7C1;
+	Tue, 27 May 2025 17:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqlhtog/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qk3ktYct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AF01FB3;
-	Tue, 27 May 2025 17:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D879C13790B;
+	Tue, 27 May 2025 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368419; cv=none; b=noxUhWk/5IE+c7X1kr5usi6DmydlBZNCR0kSgTdLyjF68NXYJaxlcQcVYMPcmfDRumqBuwzZrotyaFAEcUfH2JvGlU8qq8nwFQ0o05VrVov8tuM3K1/RG/5Jr5tCWecQZ1+hojVHFqMyO+VGLrFBvqAL2mplxBs9iCliG0+L7uc=
+	t=1748366144; cv=none; b=iqz6nQJxl8Kbf1TTJiVXoRdfEnBPHcBa8BoiOSz4t9pIn/Lt8HS/1z4K8jpseButruOcb78PWEqCnp1DdVobi2rbiubMVlxg/MfmlAR61NJ0frQksUFCTuXIZeM1vyWGT7X8PTngW0yK3fP9WtrenVKwvNCLm0grCzQSY8VwZVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368419; c=relaxed/simple;
-	bh=0cLtJKFQyBWgMik9XSgGBQiDMx2kBO7miZgT4iNNvzA=;
+	s=arc-20240116; t=1748366144; c=relaxed/simple;
+	bh=albKVfX3+p+1rfLbFZJADBN/SEzkaA30d88xiH5eys0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBvDfi+M5b1SN5UCpbpXdYwTRSGJiIb8MB0HKk1ZgwDoXLIJ4hwJwSGb4K92lNcubj1jZSqKzeVGF3DXYlvyX+pHeyK1iDq59TY3tR4SQh8heujIIANYq0gHGHYfpJSdICIwa5lyDfKh6r3p/+Z6VUb09rEK1RcvrLyq+AoJOLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqlhtog/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD157C4CEE9;
-	Tue, 27 May 2025 17:53:38 +0000 (UTC)
+	 MIME-Version; b=Lpbyp/TlfFWev/A2/lu05iNBxxuEJF9s2NqijUuJjjDyA90+IIC+tHDIhxVhiZJzKq5JFWP9HqSKvbLRnqDPOZN1bVxdWmqiXqKibaV8wW7ZpIlifoQQWwqapOQn3P9IFPXszdVKbwWNpWUKrvHj7U/y9rnm/DTeG3lL3yQ767Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qk3ktYct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0F0C4CEE9;
+	Tue, 27 May 2025 17:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368419;
-	bh=0cLtJKFQyBWgMik9XSgGBQiDMx2kBO7miZgT4iNNvzA=;
+	s=korg; t=1748366142;
+	bh=albKVfX3+p+1rfLbFZJADBN/SEzkaA30d88xiH5eys0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqlhtog/728I2Llj6BTEYvR80InKjj68e72I1RAZaDYjUbFMiFF/MIByGItDN1vMJ
-	 O6RLxswv9EP5Ex9Y03j9G1fZdfJa8DvUIGA8Ivb1X/I1g5p8/XyXvCAy2l/aFmknkm
-	 sMTc34rB7sVeg9r9r9MOV5VFWqNBD3Vm6fxNYkp8=
+	b=Qk3ktYctVcRRSpVxBqprqB00F34i9D60rSVmVKM0FMlgnj/U8BLLMKS37MwZE5gui
+	 XchAKkU8f1WcykAE4DqC2TznVch0tuT9xXCQPrmOT4ZwNWVJRkHhpETItC9QlcshcQ
+	 q4XDslkGQ4+lT2Q5a2gbyenz4dl/r3DU+kCsm40Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Maimon <maimon.sagi@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 700/783] ptp: ocp: Limit signal/freq counts in summary output functions
+	Chris Lu <chris.lu@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 604/626] Bluetooth: btmtksdio: Check function enabled before doing close
 Date: Tue, 27 May 2025 18:28:17 +0200
-Message-ID: <20250527162541.628774497@linuxfoundation.org>
+Message-ID: <20250527162509.539138205@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Maimon <maimon.sagi@gmail.com>
+From: Chris Lu <chris.lu@mediatek.com>
 
-[ Upstream commit c9e455581e2ba87ee38c126e8dc49a424b9df0cf ]
+commit 07e90048e356a29079fbc011cfc2e1fa1d1c5ac9 upstream.
 
-The debugfs summary output could access uninitialized elements in
-the freq_in[] and signal_out[] arrays, causing NULL pointer
-dereferences and triggering a kernel Oops (page_fault_oops).
-This patch adds u8 fields (nr_freq_in, nr_signal_out) to track the
-number of initialized elements, with a maximum of 4 per array.
-The summary output functions are updated to respect these limits,
-preventing out-of-bounds access and ensuring safe array handling.
+Check BTMTKSDIO_FUNC_ENABLED flag before doing close to prevent
+btmtksdio_close been called twice.
 
-Widen the label variables because the change confuses GCC about
-max length of the strings.
-
-Fixes: ef61f5528fca ("ptp: ocp: add Adva timecard support")
-Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250514073541.35817-1-maimon.sagi@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6ac4233afb9a ("Bluetooth: btmtksdio: Prevent enabling interrupts after IRQ handler removal")
+Signed-off-by: Chris Lu <chris.lu@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_ocp.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ drivers/bluetooth/btmtksdio.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 605cce32a3d37..e4be8b9291966 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -315,6 +315,8 @@ struct ptp_ocp_serial_port {
- #define OCP_BOARD_ID_LEN		13
- #define OCP_SERIAL_LEN			6
- #define OCP_SMA_NUM			4
-+#define OCP_SIGNAL_NUM			4
-+#define OCP_FREQ_NUM			4
- 
- enum {
- 	PORT_GNSS,
-@@ -342,8 +344,8 @@ struct ptp_ocp {
- 	struct dcf_master_reg	__iomem *dcf_out;
- 	struct dcf_slave_reg	__iomem *dcf_in;
- 	struct tod_reg		__iomem *nmea_out;
--	struct frequency_reg	__iomem *freq_in[4];
--	struct ptp_ocp_ext_src	*signal_out[4];
-+	struct frequency_reg	__iomem *freq_in[OCP_FREQ_NUM];
-+	struct ptp_ocp_ext_src	*signal_out[OCP_SIGNAL_NUM];
- 	struct ptp_ocp_ext_src	*pps;
- 	struct ptp_ocp_ext_src	*ts0;
- 	struct ptp_ocp_ext_src	*ts1;
-@@ -378,10 +380,12 @@ struct ptp_ocp {
- 	u32			utc_tai_offset;
- 	u32			ts_window_adjust;
- 	u64			fw_cap;
--	struct ptp_ocp_signal	signal[4];
-+	struct ptp_ocp_signal	signal[OCP_SIGNAL_NUM];
- 	struct ptp_ocp_sma_connector sma[OCP_SMA_NUM];
- 	const struct ocp_sma_op *sma_op;
- 	struct dpll_device *dpll;
-+	int signals_nr;
-+	int freq_in_nr;
- };
- 
- #define OCP_REQ_TIMESTAMP	BIT(0)
-@@ -2697,6 +2701,8 @@ ptp_ocp_fb_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
- 	bp->eeprom_map = fb_eeprom_map;
- 	bp->fw_version = ioread32(&bp->image->version);
- 	bp->sma_op = &ocp_fb_sma_op;
-+	bp->signals_nr = 4;
-+	bp->freq_in_nr = 4;
- 
- 	ptp_ocp_fb_set_version(bp);
- 
-@@ -2862,6 +2868,8 @@ ptp_ocp_art_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
- 	bp->fw_version = ioread32(&bp->reg->version);
- 	bp->fw_tag = 2;
- 	bp->sma_op = &ocp_art_sma_op;
-+	bp->signals_nr = 4;
-+	bp->freq_in_nr = 4;
- 
- 	/* Enable MAC serial port during initialisation */
- 	iowrite32(1, &bp->board_config->mro50_serial_activate);
-@@ -2888,6 +2896,8 @@ ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
- 	bp->flash_start = 0xA00000;
- 	bp->eeprom_map = fb_eeprom_map;
- 	bp->sma_op = &ocp_adva_sma_op;
-+	bp->signals_nr = 2;
-+	bp->freq_in_nr = 2;
- 
- 	version = ioread32(&bp->image->version);
- 	/* if lower 16 bits are empty, this is the fw loader. */
-@@ -4008,7 +4018,7 @@ _signal_summary_show(struct seq_file *s, struct ptp_ocp *bp, int nr)
+--- a/drivers/bluetooth/btmtksdio.c
++++ b/drivers/bluetooth/btmtksdio.c
+@@ -723,6 +723,10 @@ static int btmtksdio_close(struct hci_de
  {
- 	struct signal_reg __iomem *reg = bp->signal_out[nr]->mem;
- 	struct ptp_ocp_signal *signal = &bp->signal[nr];
--	char label[8];
-+	char label[16];
- 	bool on;
- 	u32 val;
+ 	struct btmtksdio_dev *bdev = hci_get_drvdata(hdev);
  
-@@ -4034,7 +4044,7 @@ static void
- _frequency_summary_show(struct seq_file *s, int nr,
- 			struct frequency_reg __iomem *reg)
- {
--	char label[8];
-+	char label[16];
- 	bool on;
- 	u32 val;
++	/* Skip btmtksdio_close if BTMTKSDIO_FUNC_ENABLED isn't set */
++	if (!test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state))
++		return 0;
++
+ 	sdio_claim_host(bdev->func);
  
-@@ -4178,11 +4188,11 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
- 	}
- 
- 	if (bp->fw_cap & OCP_CAP_SIGNAL)
--		for (i = 0; i < 4; i++)
-+		for (i = 0; i < bp->signals_nr; i++)
- 			_signal_summary_show(s, bp, i);
- 
- 	if (bp->fw_cap & OCP_CAP_FREQ)
--		for (i = 0; i < 4; i++)
-+		for (i = 0; i < bp->freq_in_nr; i++)
- 			_frequency_summary_show(s, i, bp->freq_in[i]);
- 
- 	if (bp->irig_out) {
--- 
-2.39.5
-
+ 	/* Disable interrupt */
 
 
 
