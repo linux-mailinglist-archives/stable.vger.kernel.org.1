@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-146584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2779AC53C7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8DCAC571C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF4FE7AEE24
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B34AA17E5E9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE65527FD50;
-	Tue, 27 May 2025 16:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A68727A935;
+	Tue, 27 May 2025 17:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OPAiceo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHTzTp1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8FF194A45;
-	Tue, 27 May 2025 16:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3267C1CEAC2;
+	Tue, 27 May 2025 17:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364676; cv=none; b=fzf6aGoQ/VeiU6f4vncOsiwlR4tXblkkwpxCxdBLbFxif9zFHGL5Ecv5WP2VHijYRDVvURt1QOQOQQt9bMuMoqQaeHHGiFrzv+nJ00xTiAwC4B22lPbjH4l7vvewiVhDtsqpTnjbDpsCTC80UNnJwkIrmOhElwmdVbpVoVu2FPE=
+	t=1748366942; cv=none; b=hD3j/cFKo94NwAdIMSXPCWMZRJ3l0mHSTxXSHZ7aclg752k4KgYxQdS5UM2SVi+ZX5YdTVUCpSUQBeG0V/ZvzF+DjRUkilhaMsL40M+JF9il1BPUMOJj8bliRiEEd1XNN/NVJ1Aa4IE3rWuarRM33KD+cxAAY6JY5/NACUIzaxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364676; c=relaxed/simple;
-	bh=OQAyoW4vUO3QHPJrv2/F8sFt/fzy9rYWaS9MjCGT0nI=;
+	s=arc-20240116; t=1748366942; c=relaxed/simple;
+	bh=QW/fLO4h4R/lqKmGS/XDEM5qSFrQTYigY6i1CpgK9yY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cx2OneCa8mAtxebkPyyNVoTu6zNwvTGJAl6/Xodn4b741k0Vj6s3F99O40ObIt6OydrsKWw7Dx+5MkkhB5mHzAsM2MeQzXXDeu62udx2PcohU7/Jr468i52Nd4JboHfPClv/0sE9kAdz2H+Z9zud6h9/O4LEH+SEmNuBSSUZsmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OPAiceo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0E3C4CEE9;
-	Tue, 27 May 2025 16:51:15 +0000 (UTC)
+	 MIME-Version; b=WHpxHk1z9/e4bWKbUSCz7JHUbR+FoXVsjf/SmabLT6M235Q9w/w5ilPOhXbTgsRfrzdn9s+Eayf7JWnNczR91u2asLuxewS5r8CHBvOYRsx0W+iE1dp3XvOLBzIWDx5MhfJsffSO68I0YIVd0V5b/n9IuF4JBzKSLleMiPqJdVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHTzTp1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92955C4CEE9;
+	Tue, 27 May 2025 17:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364676;
-	bh=OQAyoW4vUO3QHPJrv2/F8sFt/fzy9rYWaS9MjCGT0nI=;
+	s=korg; t=1748366942;
+	bh=QW/fLO4h4R/lqKmGS/XDEM5qSFrQTYigY6i1CpgK9yY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0OPAiceoL4fqprh3tvydwaq49zgvUU4yu0cOQXp68/dTLsH5MnxhLZaK/mZJU8jKU
-	 N7Nh177SBgNgI5XgpGGu0VIKRG1dZY/BfjctaNAbOmGUMbGxwno9HdyTiEVTqCs5Yj
-	 Enu5ZFt7Ck8ZCf6TCKvSJhhAY6EKugk69LXqL98c=
+	b=AHTzTp1iTrTEeb7q39kOLg0WuFA+SR4EKFexoZa6C0GOL8Pzq9yQ/wJdttZIvkyFM
+	 KoK/00Gbh4D2L6wVguELx7WcmA3/+ODh933jUbA3Vonpl7eEZqYta00XTdtX9uQL41
+	 VCLu4E2ox4NWnWtMWaxmGiwZyQ/OMREGdex1ThMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	shantiprasad shettar <shantiprasad.shettar@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Rui Salvaterra <rsalvaterra@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 131/626] bnxt_en: Query FW parameters when the CAPS_CHANGE bit is set
+Subject: [PATCH 6.14 227/783] r8169: increase max jumbo packet size on RTL8125/RTL8126
 Date: Tue, 27 May 2025 18:20:24 +0200
-Message-ID: <20250527162450.352983938@linuxfoundation.org>
+Message-ID: <20250527162522.369061918@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: shantiprasad shettar <shantiprasad.shettar@broadcom.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit a6c81e32aeacbfd530d576fa401edd506ec966ef ]
+[ Upstream commit 473367a5ffe1607a61be481e2feda684eb5faea9 ]
 
-Newer FW can set the CAPS_CHANGE flag during ifup if some capabilities
-or configurations have changed.  For example, the CoS queue
-configurations may have changed.  Support this new flag by treating it
-almost like FW reset.  The driver will essentially rediscover all
-features and capabilities, reconfigure all backing store context memory,
-reset everything to default, and reserve all resources.
+Realtek confirmed that all RTL8125/RTL8126 chip versions support up to
+16K jumbo packets. Reflect this in the driver.
 
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: shantiprasad shettar <shantiprasad.shettar@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250310183129.3154117-5-michael.chan@broadcom.com
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested by Rui on RTL8125B with 12K jumbo packets.
+
+Suggested-by: Rui Salvaterra <rsalvaterra@gmail.com>
+Tested-by: Rui Salvaterra <rsalvaterra@gmail.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/396762ad-cc65-4e60-b01e-8847db89e98b@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 12b61a6fcda42..2bb1fce350dbb 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11783,6 +11783,7 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
- 	struct hwrm_func_drv_if_change_input *req;
- 	bool fw_reset = !bp->irq_tbl;
- 	bool resc_reinit = false;
-+	bool caps_change = false;
- 	int rc, retry = 0;
- 	u32 flags = 0;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 4ead966727734..485ecd62e585d 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -89,6 +89,7 @@
+ #define JUMBO_6K	(6 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
+ #define JUMBO_7K	(7 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
+ #define JUMBO_9K	(9 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
++#define JUMBO_16K	(SZ_16K - VLAN_ETH_HLEN - ETH_FCS_LEN)
  
-@@ -11838,8 +11839,11 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
- 		set_bit(BNXT_STATE_ABORT_ERR, &bp->state);
- 		return -ENODEV;
+ static const struct {
+ 	const char *name;
+@@ -5353,6 +5354,9 @@ static int rtl_jumbo_max(struct rtl8169_private *tp)
+ 	/* RTL8168c */
+ 	case RTL_GIGA_MAC_VER_18 ... RTL_GIGA_MAC_VER_24:
+ 		return JUMBO_6K;
++	/* RTL8125/8126 */
++	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_71:
++		return JUMBO_16K;
+ 	default:
+ 		return JUMBO_9K;
  	}
--	if (resc_reinit || fw_reset) {
--		if (fw_reset) {
-+	if (flags & FUNC_DRV_IF_CHANGE_RESP_FLAGS_CAPS_CHANGE)
-+		caps_change = true;
-+
-+	if (resc_reinit || fw_reset || caps_change) {
-+		if (fw_reset || caps_change) {
- 			set_bit(BNXT_STATE_FW_RESET_DET, &bp->state);
- 			if (!test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
- 				bnxt_ulp_irq_stop(bp);
 -- 
 2.39.5
 
