@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9807AC542C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8599EAC575D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FF747A68D5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:53:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F202F7ACA69
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8054E280A35;
-	Tue, 27 May 2025 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3122027FD53;
+	Tue, 27 May 2025 17:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVWHDjQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wz2K7IMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371C928033E;
-	Tue, 27 May 2025 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E382D2110E;
+	Tue, 27 May 2025 17:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364867; cv=none; b=YosKHduQUrFFGp2+Y/sdav+KHlTmIjQQ25y8NTP4Zb87tQ/IusCtYINZXuWJsH3GAPbJz4L8f9y0axXUe74YarZmTkH+gCYG3ODa1Rb55VTVbjDN/XCzZ/Bj3Ff5bjETnterDmvSd/EUyknkUoXvsG6WVFqIqEiLvv/w74DWgrc=
+	t=1748367132; cv=none; b=S6UzGe6NMDeMDnTql/qpgLse0t+I0WfcjeYmSYeNmuvaBY49ea9JQVS7D56RNuJglRXrQuLP+a3OIGl6lDnR01mYp8PcfA0ZSF6CKNcXCmu67aKi+DbC2fGs0ihK9at6Bl4nFpa31pFqxLltC4p6N3YeTQ2DV5kwzlHKrMGej98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364867; c=relaxed/simple;
-	bh=aUg7LdjyHPFLz8be4CB3mOAPUI7gJPKomujQrRbNtTM=;
+	s=arc-20240116; t=1748367132; c=relaxed/simple;
+	bh=hCvYQ/EgsT9/NaU6QBDNg/JbS9rGwmGXPuEVn6a8vcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b2M2idD+AD9DeL/1UJ4roJlcm5ym9Uq8G4eg70Caj7rywvzpALrcbCXtqS7qbjuTgCXH1aqHIbuiocYnPOOghoExyq6UJDu300LincwHm+6ywU4sdsfbsg3TxnrH3H6icOSOD0/CmISItzBu58GGQGPuouomtO3GVCE8u0K+Pvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVWHDjQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB7DC4CEF1;
-	Tue, 27 May 2025 16:54:26 +0000 (UTC)
+	 MIME-Version; b=lrxobzIYhnHlipZM6q/gUihWZHtnKq/qrASP38rafZXO31tQuvnEqG9qSn+qHZ9cK76w2GlYn7gqNiRxulPNyWi5cQhwJ41olpGq+Lek6QtfJSnEreSNF3gUfJWbsdozBF94qcpIyKw1B7RgJyxuasjWNg0tDc+7l+Kcoxfv1wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wz2K7IMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E056C4CEE9;
+	Tue, 27 May 2025 17:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364867;
-	bh=aUg7LdjyHPFLz8be4CB3mOAPUI7gJPKomujQrRbNtTM=;
+	s=korg; t=1748367131;
+	bh=hCvYQ/EgsT9/NaU6QBDNg/JbS9rGwmGXPuEVn6a8vcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVWHDjQjCOXcv0B3Jvc8ELbS59uCbcKrU8igo7w+dD32bngFnTZKUVnBkkQRFGd78
-	 vQTXoCMY6jGuEbuz+pJwvOD3HOqI9niQ1cbEdOZ6raxE8WapbYsiT0FVu/06TAb1zy
-	 0Yf0IQPwmb/e926iijC4zeXuCtT2qJ3HOB3idn+U=
+	b=Wz2K7IMyFUQpQVR+M2yEL87mnIGVUKuzNtdbQP7ny2IN3uX3cI5Vr0s23e2OKfSVK
+	 rrFd2mS81yPQutZtDF2b5he82cwpmpMrdDbVRjF5u8L7b63+ZDYzsebdFGt1NnibCc
+	 UE1ggfJ2HZXwCwMSOOE2QWIkASON0GYIuyoFLv2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/626] ipv6: save dontfrag in cork
-Date: Tue, 27 May 2025 18:21:25 +0200
-Message-ID: <20250527162452.820521812@linuxfoundation.org>
+Subject: [PATCH 6.14 289/783] media: cx231xx: set device_caps for 417
+Date: Tue, 27 May 2025 18:21:26 +0200
+Message-ID: <20250527162524.858195346@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a ]
+[ Upstream commit a79efc44b51432490538a55b9753a721f7d3ea42 ]
 
-When spanning datagram construction over multiple send calls using
-MSG_MORE, per datagram settings are configured on the first send.
+The video_device for the MPEG encoder did not set device_caps.
 
-That is when ip(6)_setup_cork stores these settings for subsequent use
-in __ip(6)_append_data and others.
+Add this, otherwise the video device can't be registered (you get a
+WARN_ON instead).
 
-The only flag that escaped this was dontfrag. As a result, a datagram
-could be constructed with df=0 on the first sendmsg, but df=1 on a
-next. Which is what cmsg_ip.sh does in an upcoming MSG_MORE test in
-the "diff" scenario.
+Not seen before since currently 417 support is disabled, but I found
+this while experimenting with it.
 
-Changing datagram conditions in the middle of constructing an skb
-makes this already complex code path even more convoluted. It is here
-unintentional. Bring this flag in line with expected sockopt/cmsg
-behavior.
-
-And stop passing ipc6 to __ip6_append_data, to avoid such issues
-in the future. This is already the case for __ip_append_data.
-
-inet6_cork had a 6 byte hole, so the 1B flag has no impact.
-
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250307033620.411611-3-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ipv6.h  | 1 +
- net/ipv6/ip6_output.c | 9 +++++----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/media/usb/cx231xx/cx231xx-417.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index a6e2aadbb91bd..5aeeed22f35bf 100644
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -207,6 +207,7 @@ struct inet6_cork {
- 	struct ipv6_txoptions *opt;
- 	u8 hop_limit;
- 	u8 tclass;
-+	u8 dontfrag:1;
- };
- 
- /* struct ipv6_pinfo - ipv6 private area */
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 434ddf263b88a..89a61e040e6a1 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1386,6 +1386,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
- 	}
- 	v6_cork->hop_limit = ipc6->hlimit;
- 	v6_cork->tclass = ipc6->tclass;
-+	v6_cork->dontfrag = ipc6->dontfrag;
- 	if (rt->dst.flags & DST_XFRM_TUNNEL)
- 		mtu = READ_ONCE(np->pmtudisc) >= IPV6_PMTUDISC_PROBE ?
- 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
-@@ -1417,7 +1418,7 @@ static int __ip6_append_data(struct sock *sk,
- 			     int getfrag(void *from, char *to, int offset,
- 					 int len, int odd, struct sk_buff *skb),
- 			     void *from, size_t length, int transhdrlen,
--			     unsigned int flags, struct ipcm6_cookie *ipc6)
-+			     unsigned int flags)
- {
- 	struct sk_buff *skb, *skb_prev = NULL;
- 	struct inet_cork *cork = &cork_full->base;
-@@ -1471,7 +1472,7 @@ static int __ip6_append_data(struct sock *sk,
- 	if (headersize + transhdrlen > mtu)
- 		goto emsgsize;
- 
--	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
-+	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
- 	    (sk->sk_protocol == IPPROTO_UDP ||
- 	     sk->sk_protocol == IPPROTO_ICMPV6 ||
- 	     sk->sk_protocol == IPPROTO_RAW)) {
-@@ -1843,7 +1844,7 @@ int ip6_append_data(struct sock *sk,
- 
- 	return __ip6_append_data(sk, &sk->sk_write_queue, &inet->cork,
- 				 &np->cork, sk_page_frag(sk), getfrag,
--				 from, length, transhdrlen, flags, ipc6);
-+				 from, length, transhdrlen, flags);
- }
- EXPORT_SYMBOL_GPL(ip6_append_data);
- 
-@@ -2048,7 +2049,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
- 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
- 				&current->task_frag, getfrag, from,
- 				length + exthdrlen, transhdrlen + exthdrlen,
--				flags, ipc6);
-+				flags);
- 	if (err) {
- 		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
- 		return ERR_PTR(err);
+diff --git a/drivers/media/usb/cx231xx/cx231xx-417.c b/drivers/media/usb/cx231xx/cx231xx-417.c
+index a4a9781328c50..06d61e52f018c 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-417.c
++++ b/drivers/media/usb/cx231xx/cx231xx-417.c
+@@ -1720,6 +1720,8 @@ static void cx231xx_video_dev_init(
+ 	vfd->lock = &dev->lock;
+ 	vfd->release = video_device_release_empty;
+ 	vfd->ctrl_handler = &dev->mpeg_ctrl_handler.hdl;
++	vfd->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
++			   V4L2_CAP_VIDEO_CAPTURE;
+ 	video_set_drvdata(vfd, dev);
+ 	if (dev->tuner_type == TUNER_ABSENT) {
+ 		v4l2_disable_ioctl(vfd, VIDIOC_G_FREQUENCY);
 -- 
 2.39.5
 
