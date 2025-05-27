@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E5FAC53DA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3493AC5718
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AAF07AF50B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C82F3ABD46
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B9627F4CB;
-	Tue, 27 May 2025 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBAA27FD4A;
+	Tue, 27 May 2025 17:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmJYqG7g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGQDEKC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DD327A900;
-	Tue, 27 May 2025 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3C5194A45;
+	Tue, 27 May 2025 17:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364728; cv=none; b=r14DjXfm0L60oaolAT+DAuCwcF299EVck31/VlYEljASkN2WYay2PbJ3SQlzNWtqG9ktko/BNE4U6ygD7ZFnzLagb9VSjWK9QzSwm1Dq2Qjc7jdDmOghxpvag/axOpdzYujxxWdwLbVKW6YzEiTu8gnrGKhUOvJlMLrMB0U5qCM=
+	t=1748366905; cv=none; b=JSr+BUvX7Q3vOJTjGGlmT+M0PHtVuXa3IlgmdDeplMn1MLGJCPsC/reNtJhONStYaXJXpPZLutbkhmGtsYUft8SDUc2zsUIRdrGt/9KXUm+64PhWrVPRO6rkNjvJtHkUTmhbFNwpsKvwQ31uBUv7mSQmjpOWmhX2x66jRReRvGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364728; c=relaxed/simple;
-	bh=NCijPsK97U6+fwk8BGu1yzrndsL9QvdLDmlWJvEwjj0=;
+	s=arc-20240116; t=1748366905; c=relaxed/simple;
+	bh=PDvX7ZCJpS80Krai38yB9E1PCZW2z3DqApsZj07otGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HcwpqyprJCHOWRft6FR0+//CcmrEp9j/C5oGCTnX+lWsKfwznmFurec+YMOgXBNLu/C4Wh7OhDIe5fIQacNB/t/+PCPV21hJFWh5kmuOYbb4VDAPWQaD1O90KgVFW3cLLM0GOr2Cw9bovUcpH0DKXSRnKTL+HQO+D+09J+a5jVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmJYqG7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B22C4CEEB;
-	Tue, 27 May 2025 16:52:07 +0000 (UTC)
+	 MIME-Version; b=iX3S72frudzHAAnH1JsvAi5GJuPsvBpenealOnon82JRYKjF6XNhfDMlEso7SbNkytP6MADdIGoaDcIiJhzpxZ5trfMsoWfim7q7iGl87uepr4HQ7hnpDkuYDBhw320/ZqF0Orh3CKFLFXesBcGOJ4Y514Cc7wrgzc87o820FGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGQDEKC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690BDC4CEE9;
+	Tue, 27 May 2025 17:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364728;
-	bh=NCijPsK97U6+fwk8BGu1yzrndsL9QvdLDmlWJvEwjj0=;
+	s=korg; t=1748366904;
+	bh=PDvX7ZCJpS80Krai38yB9E1PCZW2z3DqApsZj07otGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmJYqG7gEQPNFxSypwZleyFO+Pf4cUcQ5frTqXjyXiG7+oR/m/eBCiJ9mRTf8L40e
-	 fcv1/x1Jz6Ea/24EW89RoRCVLZqQxdfX9XFKTHHXSSryet8p0EVl4qFiWwCzTyzIs+
-	 4Z9d1Nfgpsf0E0NvMev/Pa54E/caVvq+I9ZOYr6A=
+	b=RGQDEKC0RPX5i+ytvfQSOiLMsKhDIdeFiq9aMCFgGnoGfy9SYVUigEq233/TurTEi
+	 seuXw3CIgq67/iksu0vcTFkg0YWLBrSjaskHi63PCjTmmq41XIwEWdDV0UmDg79aNq
+	 R+c4DTjh036AKS6YCzycMx+ToCxUGaX3cVNSTE2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Kurt Borja <kuurtb@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 116/626] btrfs: run btrfs_error_commit_super() early
-Date: Tue, 27 May 2025 18:20:09 +0200
-Message-ID: <20250527162449.749275131@linuxfoundation.org>
+Subject: [PATCH 6.14 213/783] hwmon: (dell-smm) Increment the number of fans
+Date: Tue, 27 May 2025 18:20:10 +0200
+Message-ID: <20250527162521.806166021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit df94a342efb451deb0e32b495d1d6cd4bb3a1648 ]
+[ Upstream commit dbcfcb239b3b452ef8782842c36fb17dd1b9092f ]
 
-[BUG]
-Even after all the error fixes related the
-"ASSERT(list_empty(&fs_info->delayed_iputs));" in close_ctree(), I can
-still hit it reliably with my experimental 2K block size.
+Some Alienware laptops that support the SMM interface, may have up to 4
+fans.
 
-[CAUSE]
-In my case, all the error is triggered after the fs is already in error
-status.
+Tested on an Alienware x15 r1.
 
-I find the following call trace to be the cause of race:
-
-           Main thread                       |     endio_write_workers
----------------------------------------------+---------------------------
-close_ctree()                                |
-|- btrfs_error_commit_super()                |
-|  |- btrfs_cleanup_transaction()            |
-|  |  |- btrfs_destroy_all_ordered_extents() |
-|  |     |- btrfs_wait_ordered_roots()       |
-|  |- btrfs_run_delayed_iputs()              |
-|                                            | btrfs_finish_ordered_io()
-|                                            | |- btrfs_put_ordered_extent()
-|                                            |    |- btrfs_add_delayed_iput()
-|- ASSERT(list_empty(delayed_iputs))         |
-   !!! Triggered !!!
-
-The root cause is that, btrfs_wait_ordered_roots() only wait for
-ordered extents to finish their IOs, not to wait for them to finish and
-removed.
-
-[FIX]
-Since btrfs_error_commit_super() will flush and wait for all ordered
-extents, it should be executed early, before we start flushing the
-workqueues.
-
-And since btrfs_error_commit_super() now runs early, there is no need to
-run btrfs_run_delayed_iputs() inside it, so just remove the
-btrfs_run_delayed_iputs() call from btrfs_error_commit_super().
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250304055249.51940-2-kuurtb@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ Documentation/hwmon/dell-smm-hwmon.rst | 14 +++++++-------
+ drivers/hwmon/dell-smm-hwmon.c         |  5 ++++-
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 19e5f8eaae772..e0e740e4d7c75 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4254,6 +4254,14 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
- 	/* clear out the rbtree of defraggable inodes */
- 	btrfs_cleanup_defrag_inodes(fs_info);
+diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmon/dell-smm-hwmon.rst
+index 74905675d71f9..5a4edb6565cf9 100644
+--- a/Documentation/hwmon/dell-smm-hwmon.rst
++++ b/Documentation/hwmon/dell-smm-hwmon.rst
+@@ -32,12 +32,12 @@ Temperature sensors and fans can be queried and set via the standard
+ =============================== ======= =======================================
+ Name				Perm	Description
+ =============================== ======= =======================================
+-fan[1-3]_input                  RO      Fan speed in RPM.
+-fan[1-3]_label                  RO      Fan label.
+-fan[1-3]_min                    RO      Minimal Fan speed in RPM
+-fan[1-3]_max                    RO      Maximal Fan speed in RPM
+-fan[1-3]_target                 RO      Expected Fan speed in RPM
+-pwm[1-3]                        RW      Control the fan PWM duty-cycle.
++fan[1-4]_input                  RO      Fan speed in RPM.
++fan[1-4]_label                  RO      Fan label.
++fan[1-4]_min                    RO      Minimal Fan speed in RPM
++fan[1-4]_max                    RO      Maximal Fan speed in RPM
++fan[1-4]_target                 RO      Expected Fan speed in RPM
++pwm[1-4]                        RW      Control the fan PWM duty-cycle.
+ pwm1_enable                     WO      Enable or disable automatic BIOS fan
+                                         control (not supported on all laptops,
+                                         see below for details).
+@@ -93,7 +93,7 @@ Again, when you find new codes, we'd be happy to have your patches!
+ ---------------------------
  
-+	/*
-+	 * Handle the error fs first, as it will flush and wait for all ordered
-+	 * extents.  This will generate delayed iputs, thus we want to handle
-+	 * it first.
-+	 */
-+	if (unlikely(BTRFS_FS_ERROR(fs_info)))
-+		btrfs_error_commit_super(fs_info);
-+
- 	/*
- 	 * Wait for any fixup workers to complete.
- 	 * If we don't wait for them here and they are still running by the time
-@@ -4343,9 +4351,6 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
- 			btrfs_err(fs_info, "commit super ret %d", ret);
- 	}
+ The driver also exports the fans as thermal cooling devices with
+-``type`` set to ``dell-smm-fan[1-3]``. This allows for easy fan control
++``type`` set to ``dell-smm-fan[1-4]``. This allows for easy fan control
+ using one of the thermal governors.
  
--	if (BTRFS_FS_ERROR(fs_info))
--		btrfs_error_commit_super(fs_info);
--
- 	kthread_stop(fs_info->transaction_kthread);
- 	kthread_stop(fs_info->cleaner_kthread);
+ Module parameters
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index cd00adaad1b41..79e5606e6d2f8 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -73,7 +73,7 @@
+ #define DELL_SMM_LEGACY_EXECUTE	0x1
  
-@@ -4468,10 +4473,6 @@ static void btrfs_error_commit_super(struct btrfs_fs_info *fs_info)
- 	/* cleanup FS via transaction */
- 	btrfs_cleanup_transaction(fs_info);
+ #define DELL_SMM_NO_TEMP	10
+-#define DELL_SMM_NO_FANS	3
++#define DELL_SMM_NO_FANS	4
  
--	mutex_lock(&fs_info->cleaner_mutex);
--	btrfs_run_delayed_iputs(fs_info);
--	mutex_unlock(&fs_info->cleaner_mutex);
--
- 	down_write(&fs_info->cleanup_work_sem);
- 	up_write(&fs_info->cleanup_work_sem);
- }
+ struct smm_regs {
+ 	unsigned int eax;
+@@ -1074,11 +1074,14 @@ static const struct hwmon_channel_info * const dell_smm_info[] = {
+ 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
+ 			   HWMON_F_TARGET,
+ 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
++			   HWMON_F_TARGET,
++			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
+ 			   HWMON_F_TARGET
+ 			   ),
+ 	HWMON_CHANNEL_INFO(pwm,
+ 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
+ 			   HWMON_PWM_INPUT,
++			   HWMON_PWM_INPUT,
+ 			   HWMON_PWM_INPUT
+ 			   ),
+ 	NULL
 -- 
 2.39.5
 
