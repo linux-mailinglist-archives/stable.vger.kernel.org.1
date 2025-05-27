@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C39AAC5874
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DB9AC551E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EE347A6957
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 659DA1882504
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4671B4F0A;
-	Tue, 27 May 2025 17:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD52827CB04;
+	Tue, 27 May 2025 17:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Epci5Knn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eluqOTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C481FB3;
-	Tue, 27 May 2025 17:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999AF1DB34C;
+	Tue, 27 May 2025 17:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367915; cv=none; b=dTNGndjWGlIgsC0sdYeSiGSl6oqk2Ri6u+PFlCKT5QOWG6qhOBeCuczo4XOm1GQWsu7KZHj153MDCLQpIwrHbMKE+nP76OkBA59VDKQfQu9fJLcBWCSRu1gjkwUa3jebbG3VjA2yFECT5GxkOoYi8ayRjpYIruJ14m9iNaeIvfo=
+	t=1748365655; cv=none; b=VKqxXdtx2E8ACu+6PTgXudNbbyN4KYdCTGdd/0+F2CI4dmYDpYJeZht4nD1GLlSljsQDTQstzpYsB0xYncRxD35Kj2L6bTQHVvSMvc8yNHuOyMkth/6Aa+C6o5/zwkWsxOdpiUCAc8a8itEY/qK9gwJHw8pZxdqTudrmd+/2ZnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367915; c=relaxed/simple;
-	bh=mnufLOfQ4VRmrCWUJSTzBHMJYlX0gjWmUsBjDEDeA40=;
+	s=arc-20240116; t=1748365655; c=relaxed/simple;
+	bh=v2SU9HIzVxQToH3j0thbpdcREyB9XBSbmv9x7n5BjHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMDfHsCyl8sAhOy28hpJbslXl7juKy3HgIzQrL8lQkhjXiCB/yO3iDNyFoZUqsNJR8R3InDaNz/txcO2Taycdueswxmkd6VnVMQxGzoBw+Hq4bRFDjO5gEAato1ce1Ymi1zknSCEAG4QxFixto4ZecGE5RtGIYbR4LddTbQwLPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Epci5Knn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B42C4CEE9;
-	Tue, 27 May 2025 17:45:14 +0000 (UTC)
+	 MIME-Version; b=HkaTNiu50lRId4i1z+m34fp5eIgpzKkjJCoTiAtVUKucY+nEUYgLMLTy1zRk8dri4D1FvtMjB2TS+LPJZglptpQtbYlTQejvvfVP6ywvf4bG2PV/0soWlLBP3LsLw+c3JzXqjL3mWto9RTZ4EmGzHVHN9pHTdxhKhZs5uJTRQ0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eluqOTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F5BC4CEE9;
+	Tue, 27 May 2025 17:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367914;
-	bh=mnufLOfQ4VRmrCWUJSTzBHMJYlX0gjWmUsBjDEDeA40=;
+	s=korg; t=1748365655;
+	bh=v2SU9HIzVxQToH3j0thbpdcREyB9XBSbmv9x7n5BjHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Epci5KnnETgGh4GN/FS4Zbvoifayc7+xN50KJfl/m67I9GpKmByM8VRITxLR9yxfY
-	 RH+7dEc5NIyAV+gkrPB5vG+DpdZGgaWqIOydQVnOZm7hkP6ySdn6al3ayq4Fh3CuSa
-	 PSkh7fw+ih6sMJqeDUCMR/YHTLYwT0Ewk71sADnw=
+	b=1eluqOTbwLc+lVOhD4TOkdJtaRk0NXwDwRFmHTDMykmGOIt5EnEaeB6XAvIqPKUwP
+	 LBSZTVipA6FViCvEINfKiFtdV7E+Oz/Pwhj0qnrttjToNJGxZC3+H+djuJk+AmmLzg
+	 /ExB8fAJmv9a1TxtaJBoQnYVXv0yt97csniXwUjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 512/783] iio: adc: ad7606: protect register access
+Subject: [PATCH 6.12 416/626] wifi: mac80211: dont unconditionally call drv_mgd_complete_tx()
 Date: Tue, 27 May 2025 18:25:09 +0200
-Message-ID: <20250527162533.991056701@linuxfoundation.org>
+Message-ID: <20250527162501.907573167@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0f65f59e632d942cccffd12c36036c24eb7037eb ]
+[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
 
-Protect register (and bus) access from concurrent
-read / write. Needed in the backend operating mode.
+We might not have called drv_mgd_prepare_tx(), so only call
+drv_mgd_complete_tx() under the same conditions.
 
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250210-wip-bl-ad7606_add_backend_sw_mode-v4-7-160df18b1da7@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 0339e27f92c32..1c547e8d52ac0 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -862,7 +862,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 		}
- 		val = (val * MICRO) + val2;
- 		i = find_closest(val, scale_avail_uv, cs->num_scales);
-+
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret < 0)
-+			return ret;
- 		ret = st->write_scale(indio_dev, ch, i + cs->reg_offset);
-+		iio_device_release_direct_mode(indio_dev);
- 		if (ret < 0)
- 			return ret;
- 		cs->range = i;
-@@ -873,7 +878,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 		i = find_closest(val, st->oversampling_avail,
- 				 st->num_os_ratios);
-+
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret < 0)
-+			return ret;
- 		ret = st->write_os(indio_dev, i);
-+		iio_device_release_direct_mode(indio_dev);
- 		if (ret < 0)
- 			return ret;
- 		st->oversampling = st->oversampling_avail[i];
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 3a279ded46c2f..6a29877fd7b37 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3589,7 +3589,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	if (tx)
+ 		ieee80211_flush_queues(local, sdata, false);
+ 
+-	drv_mgd_complete_tx(sdata->local, sdata, &info);
++	if (tx || frame_buf)
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
+ 
+ 	/* clear AP addr only after building the needed mgmt frames */
+ 	eth_zero_addr(sdata->deflink.u.mgd.bssid);
 -- 
 2.39.5
 
