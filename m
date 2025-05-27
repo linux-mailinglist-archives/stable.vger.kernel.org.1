@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D8FAC5619
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E218AC5956
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:55:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 423604A42ED
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6145E1BC3769
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9546927D766;
-	Tue, 27 May 2025 17:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3527280036;
+	Tue, 27 May 2025 17:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGAiECzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5rBegTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5149A182D7;
-	Tue, 27 May 2025 17:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDED27FB3D;
+	Tue, 27 May 2025 17:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366229; cv=none; b=Uik6I/gNma7d0OiA9wSa2HoIrqpIxj1yIyvBpejz4kAz0Nd+Z0Us2ikJbcFFlf8b3jG4Qb1NPgKtS6SGVGEfDm2c9C0Hpz1neXLtjscceKhBsV0e+1wGwaILKr28w2uwQYpylhzycmwxl0f+oshiYfX/wK/EfocYiQD3b2PkWPU=
+	t=1748368543; cv=none; b=pxhk6BUWteKquXN9n+tVzMFG7xR02eSrxaQqw4n/fwvAOmjNDg72YHliFuKzwoXlKxymCHZ4lbPWq9h4yoKKmjvv9EWVLETlyM8QhT8rJjmkVwcaQg+wJfeXB5jtDfpD77VbByMaZT36eXbWNCRnBUWgw/5gFKIW3n/nwb8bnoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366229; c=relaxed/simple;
-	bh=jHC/f4uaG9M3WxwW8EOHmDUrM3ovuVLHyhUqEWHM9ME=;
+	s=arc-20240116; t=1748368543; c=relaxed/simple;
+	bh=jW5XU4lWFjz7VKmNAuydR7IZu1AGIOdBaJCtPg/TcBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fp4ymCLI2bMTYc9CrbnXTTLWzGLk7MumlwPyWoAj4zadGYEpgUV36wO29CG/CkqPiVg/m7KJXi2ZlKEypVAsjlymeNegHlTRMZq0/VTywZolq/UunsdQVBp9PMNGWIYEncg2vOvBKFfvpmefL4tXMv/tBaV0TSX7DfTsxUdEo7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGAiECzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755A5C4CEE9;
-	Tue, 27 May 2025 17:17:08 +0000 (UTC)
+	 MIME-Version; b=IROZSyoZVe3dbZvGxypH5Y70rY5OC8ANB4HhsPcdkEJiYpcZFeGhO5oFStQCsLFt3Liyw6Ol6diNZoQR+sLnfLmSbJHUTEyc85Y4DxvcmEC3UE7iJpLyC57D+5rTFfg+m/L1AW0Fjz+hUZmKEBWof4KHU9Nx3N45rLgtWP7brJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5rBegTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776DAC4CEE9;
+	Tue, 27 May 2025 17:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366228;
-	bh=jHC/f4uaG9M3WxwW8EOHmDUrM3ovuVLHyhUqEWHM9ME=;
+	s=korg; t=1748368543;
+	bh=jW5XU4lWFjz7VKmNAuydR7IZu1AGIOdBaJCtPg/TcBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGAiECzWWXU1y+ODYDNrWLpLkyFJJDi6YGhQw4vC7JVzXQCetL+qJpc7WLfh4MM/1
-	 cfSUOfZblPFmYooHpyNbfLZEiKeMjnmNSjoKrPO6qcz5XT44F8FI6xtWbtHjFASXC2
-	 LgMWS35AXHkmE5G1hkGh87D3q4+Bi6rvBKuINPp0=
+	b=w5rBegTw3TN77c1m/QMX6bz74L8y7ZDgV5Hdi08evqWEd0dzVWT6hsIy2mPb/lfZU
+	 Y/SOfDwWgWWmc2BIHooew59RgfhKXTAEI0/WOBiaquonUMHCoVbYpIGGYpefveMVYQ
+	 vbg00Lcc21dMZEjkmT3cWy7WAjao6bIskuADfYh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 612/626] spi: spi-fsl-dspi: Reset SR flags before sending a new message
-Date: Tue, 27 May 2025 18:28:25 +0200
-Message-ID: <20250527162509.868014044@linuxfoundation.org>
+Subject: [PATCH 6.14 709/783] net: lan743x: Restore SGMII CTRL register on resume
+Date: Tue, 27 May 2025 18:28:26 +0200
+Message-ID: <20250527162541.987802961@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit 7aba292eb15389073c7f3bd7847e3862dfdf604d ]
+[ Upstream commit 293e38ff4e4c2ba53f3fd47d8a4a9f0f0414a7a6 ]
 
-If, in a previous transfer, the controller sends more data than expected
-by the DSPI target, SR.RFDF (RX FIFO is not empty) will remain asserted.
-When flushing the FIFOs at the beginning of a new transfer (writing 1
-into MCR.CLR_TXF and MCR.CLR_RXF), SR.RFDF should also be cleared.
-Otherwise, when running in target mode with DMA, if SR.RFDF remains
-asserted, the DMA callback will be fired before the controller sends any
-data.
+SGMII_CTRL register, which specifies the active interface, was not
+properly restored when resuming from suspend. This led to incorrect
+interface selection after resume particularly in scenarios involving
+the FPGA.
 
-Take this opportunity to reset all Status Register fields.
+To fix this:
+- Move the SGMII_CTRL setup out of the probe function.
+- Initialize the register in the hardware initialization helper function,
+which is called during both device initialization and resume.
 
-Fixes: 5ce3cc567471 ("spi: spi-fsl-dspi: Provide support for DSPI slave mode operation (Vybryd vf610)")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-3-bea884630cfb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This ensures the interface configuration is consistently restored after
+suspend/resume cycles.
+
+Fixes: a46d9d37c4f4f ("net: lan743x: Add support for SGMII interface")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Link: https://patch.msgid.link/20250516035719.117960-1-thangaraj.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/microchip/lan743x_main.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 0466a94ea6b5c..7c43df252328d 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -975,6 +975,8 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
- 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index e2d6bfb5d6933..a70b88037a208 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -3495,6 +3495,7 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 				 struct pci_dev *pdev)
+ {
+ 	struct lan743x_tx *tx;
++	u32 sgmii_ctl;
+ 	int index;
+ 	int ret;
  
-+		regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
-+
- 		spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
- 				       dspi->progress, !dspi->irq);
+@@ -3507,6 +3508,15 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 		spin_lock_init(&adapter->eth_syslock_spinlock);
+ 		mutex_init(&adapter->sgmii_rw_lock);
+ 		pci11x1x_set_rfe_rd_fifo_threshold(adapter);
++		sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
++		if (adapter->is_sgmii_en) {
++			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
++			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
++		} else {
++			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
++			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
++		}
++		lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 	} else {
+ 		adapter->max_tx_channels = LAN743X_MAX_TX_CHANNELS;
+ 		adapter->used_tx_channels = LAN743X_USED_TX_CHANNELS;
+@@ -3558,7 +3568,6 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
  
+ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ {
+-	u32 sgmii_ctl;
+ 	int ret;
+ 
+ 	adapter->mdiobus = devm_mdiobus_alloc(&adapter->pdev->dev);
+@@ -3570,10 +3579,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ 	adapter->mdiobus->priv = (void *)adapter;
+ 	if (adapter->is_pci11x1x) {
+ 		if (adapter->is_sgmii_en) {
+-			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
+-			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
+-			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
+-			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "SGMII operation\n");
+ 			adapter->mdiobus->read = lan743x_mdiobus_read_c22;
+@@ -3584,10 +3589,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "lan743x-mdiobus-c45\n");
+ 		} else {
+-			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
+-			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
+-			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
+-			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "RGMII operation\n");
+ 			// Only C22 support when RGMII I/F
 -- 
 2.39.5
 
