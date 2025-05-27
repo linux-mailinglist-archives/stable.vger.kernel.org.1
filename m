@@ -1,133 +1,116 @@
-Return-Path: <stable+bounces-146433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB38AC4DC2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 13:40:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B85AC4E71
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 14:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2E2B17ECDD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 11:39:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDCE91BA08BE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 12:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EEA25EF97;
-	Tue, 27 May 2025 11:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E788F2741DC;
+	Tue, 27 May 2025 12:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mi1K2ey8"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="PXI++bkF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DC22561A2
-	for <stable@vger.kernel.org>; Tue, 27 May 2025 11:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B862C271441
+	for <stable@vger.kernel.org>; Tue, 27 May 2025 12:11:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748345953; cv=none; b=I/2yQvtp9lX/KZxLZxx8KJI0kqRMxn0gOU0UdmxMpR/3Ve7XKQTlV/A3E0wFuGIhPa71ocr9nNQLtjRxoeUsOoVTtqhau74rPfEwBvwky09yNrxVlM4vdzKTZKdXbWq2wAxxyyYA2erOhClVJLV847mCfW+Jd9M0XHKd6aKtmiI=
+	t=1748347892; cv=none; b=blwAmtP3tDF4bbosWjNiiGpNkK38dQotjiL8hh/THGYy5EKlsaLf4sG2N3S4nWD+X7VyvjgK0JP9TM+yuIA68p7pwFJroYQodgXSoTnzdYAYqikHjmeMFS9catpEVdaVwzB0AxFR0sDBKrw9tAxBVXlL10GKkbKY9jhLJP1sTg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748345953; c=relaxed/simple;
-	bh=9+2YBfiiiMqleewiO3f4IwLqSyA9jGkwlr2UI25u4MQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dXtmyiy/pMspWaNsYExA0Z6ep/5Qg/am0utueiutRaTYkHR/2I6EjNeHids8oeQhr47vyD3zrG0nu3d4sfi2vx/aDBlCQpxqeUyEQ0OGJVR3HKZnOzGx0GL4yupZEgHsbKMH8c80++Uj5S854aTl6kGNIe95UoFH2DkwlbiP92A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mi1K2ey8; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a37a0d1005so1844781f8f.3
-        for <stable@vger.kernel.org>; Tue, 27 May 2025 04:39:11 -0700 (PDT)
+	s=arc-20240116; t=1748347892; c=relaxed/simple;
+	bh=N0jjmf/kmkyvAxAXac21ttYuTZnd34V4RTWarAbSnHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i+Gnvd2wGOa8OYkEb8RVvH/SMASiAKADJlnEaXcsKbdNAvaTy7UfMc/fA+H+nusntkSAkH/QvuMlRHIeqjYJmTOTRfkJqkV919JwyKqMdW2otH7JQZV2Vyk3Eg7JvkI6QhS1FUN+cb1o+D6RuCC2mAEgx4sxi9mW/YwUBWXs1gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=PXI++bkF; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6faa5c69550so32708686d6.3
+        for <stable@vger.kernel.org>; Tue, 27 May 2025 05:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748345950; x=1748950750; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g0MAQYS4M77jxWNkT71QFnLtkooGsJDXRALLpCMZkcw=;
-        b=mi1K2ey8/Xnra8h8U0RaLEzof5oGitBtplyUrs6GTMLEhhht7ZphPaRofKLPJa5eU+
-         yT8pwUI0vVnTKJciQO7yNH3h57ZLBdN9VhG7dELt3/Ra3Ov+Gp1mvoP3u2VPENUuLsAz
-         eKbOrlh7Du2CtWsAarVCkaYFG9ZySVkJ5mZCHAvuWbWKNzH4SRwtIbMDVeRYW8oSFP6/
-         w84FztUN0KKFM6v1g3dAFrH7FrwAXMtsx4CfRRLuIeG7muI9s6K2l0tY8T61GgPFbORF
-         l9qtgaUvszIKGCSZx4URKBvn3QT4CgHMiDtnkt/+/EIAj+2UCN9TA9qjh2kFDLm79u/Z
-         EmQQ==
+        d=ziepe.ca; s=google; t=1748347889; x=1748952689; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7XDEIh7cWs+9i/urKEMylLez5Ew3kmQCefiIWKozcak=;
+        b=PXI++bkFpkZ4yCBjPm14L/h4cT3lkPuSoENrTrdOa6/Np+Q0OlTVs3uH752cilqY6v
+         /D9p0wwJmPNLvjM8ido3qLSFCLDRq35B9O9VhsAIxhfrHzpK1phJ8eTul2PFE/MDeP+x
+         PVZ42b5c1h7lPq4bfITr15vlwcK5vK+t2B3nmMVHW6zeD9uFeDwT91wqGYxhYFkox//K
+         9NDR9I2AMJXyC6qcMTZcA9eZ1ehlg8TmDXmVwAV4RT8GMwsw3PrVSCFmEfNUAvMhY+pQ
+         HQ+4qfHA2T7tJbvHOIWM+ZDB6n6rWQ5v3kRRn0VdCXsW1Wv1FghIm0wZTLvRF4xXNPva
+         A64Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748345950; x=1748950750;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g0MAQYS4M77jxWNkT71QFnLtkooGsJDXRALLpCMZkcw=;
-        b=aaKpu90YCnmSRWf8tw0aWIVP/f9Cxy6VPjWHOJRGB1EhJc2sCvaGXPuNzkEiWr8gdi
-         4ihFGmOmJCCCZ/Uel57kHuTXPF+l17OHQDEB+e8fIUVdi6zz1sX8Fs82WiT8jehFpna9
-         SsP1+Dabo3LMeaLj/ov6U+DKOkN9BihO+vO1t/TEyPdm+IjZ0DzqsQ9KwKjkKhhDaPWl
-         ttwqZp6Jn5+kvNSzdK1UcGgJm0/vJeCHqRxpQ8CY2RNSDCTcmZ6DKFqKl5Rc+EpHmbzT
-         ADgF57K/LE6BQlQK40RkLdbwgAaLLUwteM40sj31maIUgqdgTdPH6l3JYXkrkswKsXTR
-         0JyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzXxAjWmzXRc/EfL4P+OZOJeDCgRbO0svtByLSMWqEEG/i5dD4qFlkF1qfRyqLYEklic0x5sU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCUIPjljS5NzioBikvKiabDVaj2Xbc83uhfOSl8tJ4c1HGs14T
-	v6g6QmwVK4ioFsRNmttnKv1hg617QTPejBqZL3TSvOCKnF0yU2/9tz5H3UUf8CRrKtNJnX1KYhA
-	NULtDFRY9v2OU8PLwWw==
-X-Google-Smtp-Source: AGHT+IEtY72Ut24TUfi8A+NQcG9IFZgNNOho7lkI8zuGQsCJOo2RFpVOgykkWl+BYEC0e0TUSJlKQC8vtb7BA9k=
-X-Received: from wro14.prod.google.com ([2002:a05:6000:41ce:b0:3a4:dc80:cece])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2008:b0:3a4:dcfb:6713 with SMTP id ffacd0b85a97d-3a4dcfb6836mr3950943f8f.18.1748345950187;
- Tue, 27 May 2025 04:39:10 -0700 (PDT)
-Date: Tue, 27 May 2025 11:39:08 +0000
-In-Reply-To: <20250524220758.915028-1-cmllamas@google.com>
+        d=1e100.net; s=20230601; t=1748347889; x=1748952689;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7XDEIh7cWs+9i/urKEMylLez5Ew3kmQCefiIWKozcak=;
+        b=vgmCVRI/ebgCpz1OiQZO+9YWMPKf6TEnMpQpxDsWKRA+mB7OsfuBjJTTRJZBzagiKG
+         gT1ZezvY5mxCFUMRENQyeAJ4EeMvJoU4SQ7diuoqsamnaYxNqywxd7D2iaz7wj/pF509
+         RJVGOhXoDdk4zvbIEaDoMslZPgBIvqTrLpVzFjN8sLChj8VJaRwiNl6/bZfYYiO7udd6
+         CNRzhSZ63nx9AtHOTQNYFCkJ3rSEyhOuAlqKEYWmq6NVcPLCOLYjkiOaZ7+FZixsgQj1
+         PW8OPw7iWEIEpIA708tnHaG59Bh12tB1w4rln7pvxpcZnBFO9Jz5NLpQscL9E1MOvTKX
+         pM0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVBEJQC+Ic4ZkWTEJPZ0CKEYBTaQyeTwu2MLsNH5+4vdEPDCDe2gwI0s4L7gOh3SyoRcX8/5u4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFraNOUaV1RqzvBzWv7M2okux2IC+SE5Encj3bhRzV2M9S0gTX
+	SKtf/wUnwOZUSHipM58sLn2FgNavwv4+qLkZe9SdmW8osllVyvgWYchvoGTCWnekUmk=
+X-Gm-Gg: ASbGnctbK9LpLenQjPL7WC2wGCgoL+XOV+bwy40kaslxjVIr2Mz1u9shlm5VcDtwVO9
+	P2fm4imMYecbe/PBc3A2iHzrBxG2qyVQTjibV/N2Fmrd0TZvOZ7N7InyIhLljoEmfmNWcIhVmXn
+	gkbNqt1qMgJ64V/tYx9Oj0SiBlUKqlCP5IFiAcJP8N++4snoPUlvgw+GfaT8O8nOV6A7OR4fc35
+	f6BR3bZd4rGYGtVJ42wl3nColHopB6x8QiCqvjdNIj8oxDOVZx4csXVm2Qw3KCk7/82V6NXnKj1
+	YfpUSK58I1tHu1ypYcj1h/hTSTpPuJWqX15wndMGy2s47P9WRjpVukgBH2gpxBqGiEdeytnYHnF
+	sQUE7volWHTi6G6cSJqM+9UZrnlVE3q9OJxN0Vw==
+X-Google-Smtp-Source: AGHT+IGOFTXFB5+rAUr8E/GqCzuxsYlYPeiD9+d/FGPHL3B5HdbhA3MJLfSRW3SyI7yXaYSDYR+MhQ==
+X-Received: by 2002:a05:6214:20e5:b0:6e8:f2d2:f123 with SMTP id 6a1803df08f44-6fa9d27eea4mr230852526d6.13.1748347889555;
+        Tue, 27 May 2025 05:11:29 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6faa3704157sm42245476d6.36.2025.05.27.05.11.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 May 2025 05:11:28 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uJt9U-00000000ZUZ-2C0j;
+	Tue, 27 May 2025 09:11:28 -0300
+Date: Tue, 27 May 2025 09:11:28 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-fpga@vger.kernel.org, Moritz Fischer <mdf@kernel.org>,
+	Wu Hao <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>, Michal Simek <michal.simek@amd.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fpga: zynq-fpga: use sgtable-based scatterlist wrappers
+Message-ID: <20250527121128.GB123169@ziepe.ca>
+References: <CGME20250527093152eucas1p24a904b0d973252ebc0d05034a276e9cf@eucas1p2.samsung.com>
+ <20250527093137.505621-1-m.szyprowski@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250524220758.915028-1-cmllamas@google.com>
-Message-ID: <aDWkXI83EyznGG2M@google.com>
-Subject: Re: [PATCH] binder: fix yet another UAF in binder_devices
-From: Alice Ryhl <aliceryhl@google.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Li Li <dualli@google.com>, kernel-team@android.com, 
-	stable@vger.kernel.org, syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com, 
-	"open list:ANDROID DRIVERS" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250527093137.505621-1-m.szyprowski@samsung.com>
 
-On Sat, May 24, 2025 at 10:07:58PM +0000, Carlos Llamas wrote:
-> Commit e77aff5528a18 ("binderfs: fix use-after-free in binder_devices")
-> addressed a use-after-free where devices could be released without first
-> being removed from the binder_devices list. However, there is a similar
-> path in binder_free_proc() that was missed:
+On Tue, May 27, 2025 at 11:31:37AM +0200, Marek Szyprowski wrote:
+> Use common wrappers operating directly on the struct sg_table objects to
+> fix incorrect use of statterlists related calls. dma_unmap_sg() function
+> has to be called with the number of elements originally passed to the
+> dma_map_sg() function, not the one returned in sgtable's nents.
 > 
->   ==================================================================
->   BUG: KASAN: slab-use-after-free in binder_remove_device+0xd4/0x100
->   Write of size 8 at addr ffff0000c773b900 by task umount/467
->   CPU: 12 UID: 0 PID: 467 Comm: umount Not tainted 6.15.0-rc7-00138-g57483a362741 #9 PREEMPT
->   Hardware name: linux,dummy-virt (DT)
->   Call trace:
->    binder_remove_device+0xd4/0x100
->    binderfs_evict_inode+0x230/0x2f0
->    evict+0x25c/0x5dc
->    iput+0x304/0x480
->    dentry_unlink_inode+0x208/0x46c
->    __dentry_kill+0x154/0x530
->    [...]
-> 
->   Allocated by task 463:
->    __kmalloc_cache_noprof+0x13c/0x324
->    binderfs_binder_device_create.isra.0+0x138/0xa60
->    binder_ctl_ioctl+0x1ac/0x230
->   [...]
-> 
->   Freed by task 215:
->    kfree+0x184/0x31c
->    binder_proc_dec_tmpref+0x33c/0x4ac
->    binder_deferred_func+0xc10/0x1108
->    process_one_work+0x520/0xba4
->   [...]
->   ==================================================================
-> 
-> Call binder_remove_device() within binder_free_proc() to ensure the
-> device is removed from the binder_devices list before being kfreed.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 12d909cac1e1 ("binderfs: add new binder devices to binder_devices")
-> Reported-by: syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=4af454407ec393de51d6
-> Tested-by: syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> CC: stable@vger.kernel.org
+> Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
+>  drivers/fpga/zynq-fpga.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+
+Jason
 
