@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA09AC5832
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53248AC54D4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F009189A984
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F21A173DC0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A758727D786;
-	Tue, 27 May 2025 17:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC3827FB34;
+	Tue, 27 May 2025 17:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQT9ATYw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRAz/BPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D0F42A9B;
-	Tue, 27 May 2025 17:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B0025A323;
+	Tue, 27 May 2025 17:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367718; cv=none; b=hac1/qp0KsekBMr5WZYvJZm57lStgs/dwS3HX4vsWlPAI4g3nUSsu45t9O/pG9bcVFToDPRBXPaIM8gTPOknBJsFqxXh+rbomDKmWEOI18b3MiIjCMmBEwZNoZr7IlIG5Oli91ZSlPD866ZIsQ5IOMThcmgvNyUQzR3U8cHvHAM=
+	t=1748365459; cv=none; b=Yes87ywy7p+iovIrwwh6gVEwsMcptzw8Mr8EPAhnf6XfBNC77tCr1yXQoWx+kdb67FQgoj1TAek9QcAl+0X3dD8aB+ZTaLhhy46VszSDLxCCR15gjAvM+HHDlqI8R6UvfHattHuDu/VRb5n1LukZN/IpAktd/BYPXhW+gDODJtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367718; c=relaxed/simple;
-	bh=1pDxtUY02ttLFfUMz+uFPbwwln0BJ7zza8Y1SBflahM=;
+	s=arc-20240116; t=1748365459; c=relaxed/simple;
+	bh=D6wFk69aPsPllk1jNlIGTeohMon9JbGTqbAOn+Uz6NU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWJDiVoLE2o+1Aa3efOY357PFWvt8KzL/jMvjmPkqDFegbCVvTSViEoRqLvs3T3unh7btjWckYkN9mr7+MSpd7GLYH4r++ZcC+TVK+tXj5cTLd7kmz8JmL51Bszc6OMGObKEipJY/yDlsEMJAHzNJ+fX8+3gWz9MviPzeZdOinM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQT9ATYw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13B9C4CEE9;
-	Tue, 27 May 2025 17:41:57 +0000 (UTC)
+	 MIME-Version; b=Em7JrrgLHq1+qgayEtEZyz30L7HgRDYJIE7Di6qYW5fk+Uu3/m5NzcebYzYrS8uINqYAuXHyXiG68Mh9CjuAi++uYLvdmWF3M1kbdrJ4Xj0O1FB0mPQH+IZyYGJU24ArQgVDcujoQXoKGS10X7x8O3akAsFktA0HwTD9k6FzzII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRAz/BPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DE5C4CEE9;
+	Tue, 27 May 2025 17:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367718;
-	bh=1pDxtUY02ttLFfUMz+uFPbwwln0BJ7zza8Y1SBflahM=;
+	s=korg; t=1748365455;
+	bh=D6wFk69aPsPllk1jNlIGTeohMon9JbGTqbAOn+Uz6NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQT9ATYwpN5b26JlLl0ZJxCt6h0N0eVj8KFGlbn5AsdOszAYqd4VRXm6v7a+TcQu0
-	 vHdBNaTqMELbp5XvWWmFNKCCSQ0DjJuXqQgA2CzqWN8YqxwF+q1V1TyVVWEeFvBt0+
-	 ifU/PblqVjCj6OY9s3LvsneO1T+XBbLVf43rdmto=
+	b=oRAz/BPd36A4VjZCkEJHoCuYpuSjXc5ryrXy1/sdxUyBIO9gqpdo6VC45vVgGWOLq
+	 nzq8tncp79cYJQ3mTuEgnLFuc0CpH8/wfsKVbTTt50QJ4LG9Bs2guvi/AWINvuqaat
+	 4EprkJFR+n5paG8wmThwbBDPOvj8Ez6y16xE1Rag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 447/783] smack: Revert "smackfs: Added check catlen"
+Subject: [PATCH 6.12 351/626] irqchip/riscv-imsic: Set irq_set_affinity() for IMSIC base
 Date: Tue, 27 May 2025 18:24:04 +0200
-Message-ID: <20250527162531.336072782@linuxfoundation.org>
+Message-ID: <20250527162459.280599711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit c7fb50cecff9cad19fdac5b37337eae4e42b94c7 ]
+[ Upstream commit 999f458c1771354371ba367dd84f55f9a62a4233 ]
 
-This reverts commit ccfd889acb06eab10b98deb4b5eef0ec74157ea0
+The IMSIC driver assigns the IMSIC domain specific imsic_irq_set_affinity()
+callback to the per device leaf MSI domain. That's a layering violation as
+it is called with the leaf domain data and not with the IMSIC domain
+data. This prevents moving the IMSIC driver to the common MSI library which
+uses the generic msi_domain_set_affinity() callback for device MSI domains.
 
-The indicated commit
-* does not describe the problem that change tries to solve
-* has programming issues
-* introduces a bug: forever clears NETLBL_SECATTR_MLS_CAT
-         in (struct smack_known *)skp->smk_netlabel.flags
+Instead of using imsic_irq_set_affinity() for leaf MSI domains, use
+imsic_irq_set_affinity() for the non-leaf IMSIC base domain and use
+irq_chip_set_affinity_parent() for leaf MSI domains.
 
-Reverting the commit to reapproach original problem
+[ tglx: Massaged change log ]
 
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250217085657.789309-2-apatel@ventanamicro.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ drivers/irqchip/irq-riscv-imsic-platform.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index d8f9922804974..a7886cfc9dc3a 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -812,7 +812,7 @@ static int smk_open_cipso(struct inode *inode, struct file *file)
- static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 				size_t count, loff_t *ppos, int format)
+diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
+index c708780e8760f..5d7c30ad8855b 100644
+--- a/drivers/irqchip/irq-riscv-imsic-platform.c
++++ b/drivers/irqchip/irq-riscv-imsic-platform.c
+@@ -96,9 +96,8 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ 				  bool force)
  {
--	struct netlbl_lsm_catmap *old_cat, *new_cat = NULL;
-+	struct netlbl_lsm_catmap *old_cat;
- 	struct smack_known *skp;
- 	struct netlbl_lsm_secattr ncats;
- 	char mapcatset[SMK_CIPSOLEN];
-@@ -899,19 +899,8 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
+ 	struct imsic_vector *old_vec, *new_vec;
+-	struct irq_data *pd = d->parent_data;
  
- 		smack_catset_bit(cat, mapcatset);
- 	}
--	ncats.flags = 0;
--	if (catlen == 0) {
--		ncats.attr.mls.cat = NULL;
--		ncats.attr.mls.lvl = maplevel;
--		new_cat = netlbl_catmap_alloc(GFP_ATOMIC);
--		if (new_cat)
--			new_cat->next = ncats.attr.mls.cat;
--		ncats.attr.mls.cat = new_cat;
--		skp->smk_netlabel.flags &= ~(1U << 3);
--		rc = 0;
--	} else {
--		rc = smk_netlbl_mls(maplevel, mapcatset, &ncats, SMK_CIPSOLEN);
--	}
-+
-+	rc = smk_netlbl_mls(maplevel, mapcatset, &ncats, SMK_CIPSOLEN);
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
+-	old_vec = irq_data_get_irq_chip_data(pd);
++	old_vec = irq_data_get_irq_chip_data(d);
+ 	if (WARN_ON(!old_vec))
+ 		return -ENOENT;
+ 
+@@ -116,13 +115,13 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ 		return -ENOSPC;
+ 
+ 	/* Point device to the new vector */
+-	imsic_msi_update_msg(d, new_vec);
++	imsic_msi_update_msg(irq_get_irq_data(d->irq), new_vec);
+ 
+ 	/* Update irq descriptors with the new vector */
+-	pd->chip_data = new_vec;
++	d->chip_data = new_vec;
+ 
+-	/* Update effective affinity of parent irq data */
+-	irq_data_update_effective_affinity(pd, cpumask_of(new_vec->cpu));
++	/* Update effective affinity */
++	irq_data_update_effective_affinity(d, cpumask_of(new_vec->cpu));
+ 
+ 	/* Move state of the old vector to the new vector */
+ 	imsic_vector_move(old_vec, new_vec);
+@@ -135,6 +134,9 @@ static struct irq_chip imsic_irq_base_chip = {
+ 	.name			= "IMSIC",
+ 	.irq_mask		= imsic_irq_mask,
+ 	.irq_unmask		= imsic_irq_unmask,
++#ifdef CONFIG_SMP
++	.irq_set_affinity	= imsic_irq_set_affinity,
++#endif
+ 	.irq_retrigger		= imsic_irq_retrigger,
+ 	.irq_compose_msi_msg	= imsic_irq_compose_msg,
+ 	.flags			= IRQCHIP_SKIP_SET_WAKE |
+@@ -245,7 +247,7 @@ static bool imsic_init_dev_msi_info(struct device *dev,
+ 		if (WARN_ON_ONCE(domain != real_parent))
+ 			return false;
+ #ifdef CONFIG_SMP
+-		info->chip->irq_set_affinity = imsic_irq_set_affinity;
++		info->chip->irq_set_affinity = irq_chip_set_affinity_parent;
+ #endif
+ 		break;
+ 	default:
 -- 
 2.39.5
 
