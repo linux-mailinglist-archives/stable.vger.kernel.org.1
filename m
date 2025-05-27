@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-147559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC056AC5831
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8977DAC585C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ABCF189101A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C35D1BC202C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A1925A627;
-	Tue, 27 May 2025 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA6027CCF0;
+	Tue, 27 May 2025 17:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTrQ3NLK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9lAghuR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82ABB42A9B;
-	Tue, 27 May 2025 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C0686347;
+	Tue, 27 May 2025 17:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367715; cv=none; b=onsSeonSBWLW1flRVhqAh7WnpmmYy61NHwohnl7ijImojyuaAWmoA7+o0t/RvofQPwkobZgB443dXygOv1Kv9B3al1x9MiYE/v/22vPhANHEEeTcnLIz84+8zyK3Y52k4Cm1zi46TwkuuXrmVxhpZ/XANIxtLY+1GlGVcXwr+ME=
+	t=1748367843; cv=none; b=V95JGzJWERSB2vsSgPOtVzuAdbniDekwcVwoWqnobN2hF/2R1PbVTvRs06WAE2cHyx6nx+577nWv4DQmFYk7wb3vPehauc227zLu2fOVX0V79u0Te3uNyQ4w0MkoFsBwkq2cmOR94JzV7aEqUbjnOjE3831lq2/JYlWrP6i8xXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367715; c=relaxed/simple;
-	bh=cqzdCU4Z+QdKs2YLzl2QxpbH7Im7bZjanYXuWz8zfo4=;
+	s=arc-20240116; t=1748367843; c=relaxed/simple;
+	bh=sBTN21Ca1Rdv6rP3PrKY9P/+NmWaXg8ZpsKQQRz0uX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c27GnGbR4gOSTGfRMtYQuz8EekcXAlCN9lDJbDHvXZLKZpZp4IaWeOphplN8LbSCmREVu1Bt8fFbtxghJ3V2DF+rzI6CmWzufw+SAFNHlSlVre3W3CAzwjBlY2zqd8jIcWuzOxvgLMZHCmOeGqYXNzUMvbnsVLHSJvv52lZCG3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTrQ3NLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40D2C4CEE9;
-	Tue, 27 May 2025 17:41:54 +0000 (UTC)
+	 MIME-Version; b=C03MSgf8dqqZT/rDcGk5VWwcJ+ItkMRUeRXkacc/lsK0js3WeAnyiH3c2mHor1Ru3c8why+lRxdETI3sG7MLd25zFSdVhNxVTmEAxpwkFGFCo1mtvysgjB70e1cBA1YN0e0Xr2EtbXaPXtKXAc7z5iVFnpDQIJ4za8Ez0pVNppk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9lAghuR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F83C4CEE9;
+	Tue, 27 May 2025 17:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367715;
-	bh=cqzdCU4Z+QdKs2YLzl2QxpbH7Im7bZjanYXuWz8zfo4=;
+	s=korg; t=1748367843;
+	bh=sBTN21Ca1Rdv6rP3PrKY9P/+NmWaXg8ZpsKQQRz0uX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTrQ3NLK1qw4YLZ9OrpHgsrPDPkzAcPfU4X8MHPxuxDl7KXQBa+cbszN5k3pq3ynM
-	 OLx3Pb7lxrw6GaA1UOciJJqI/yFWBKX6eM9Epbp2yQdAuau8MBBs2yadthqjWSN2bI
-	 Xs7chbedHK8gJNCQfpfV9TgTf/D39PGZbjAobAvg=
+	b=m9lAghuRZD4kv9bg5VHUqAdGx19RU1YbOg3DDZjhMo50vWd+0AgXbk5nf5uR7lddC
+	 LhpAFLfIbo34NmYeDAkYn5SAjC8xqUyvnrCTRgBY7i5HnDTFtHJtqlWplIH4F/9ojy
+	 8hK+q32m1IW6wFpa3JqCIGEdY0TxH3ogqPTIyjkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Chong Qiao <qiaochong@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 475/783] jbd2: Avoid long replay times due to high number or revoke blocks
-Date: Tue, 27 May 2025 18:24:32 +0200
-Message-ID: <20250527162532.471468638@linuxfoundation.org>
+Subject: [PATCH 6.14 476/783] net: stmmac: dwmac-loongson: Set correct {tx,rx}_fifo_size
+Date: Tue, 27 May 2025 18:24:33 +0200
+Message-ID: <20250527162532.512214776@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -68,209 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit a399af4e3b1ab2c5d83292d4487c4d18de551659 ]
+[ Upstream commit 8dbf0c7556454b52af91bae305ca71500c31495c ]
 
-Some users are reporting journal replay takes a long time when there is
-excessive number of revoke blocks in the journal. Reported times are
-like:
+Now for dwmac-loongson {tx,rx}_fifo_size are uninitialised, which means
+zero. This means dwmac-loongson doesn't support changing MTU because in
+stmmac_change_mtu() it requires the fifo size be no less than MTU. Thus,
+set the correct tx_fifo_size and rx_fifo_size for it (16KB multiplied by
+queue counts).
 
-1048576 records - 95 seconds
-2097152 records - 580 seconds
+Here {tx,rx}_fifo_size is initialised with the initial value (also the
+maximum value) of {tx,rx}_queues_to_use. So it will keep as 16KB if we
+don't change the queue count, and will be larger than 16KB if we change
+(decrease) the queue count. However stmmac_change_mtu() still work well
+with current logic (MTU cannot be larger than 16KB for stmmac).
 
-The problem is that hash chains in the revoke table gets excessively
-long in these cases. Fix the problem by sizing the revoke table
-appropriately before the revoke pass.
+Note: the Fixes tag picked here is the oldest commit and key commit of
+the dwmac-loongson series "stmmac: Add Loongson platform support".
 
-Thanks to Alexey Zhuravlev <azhuravlev@ddn.com> for benchmarking the
-patch with large numbers of revoke blocks [1].
-
-[1] https://lore.kernel.org/all/20250113183107.7bfef7b6@x390.bzzz77.ru
-
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250121140925.17231-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Acked-by: Yanteng Si <si.yanteng@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/20250210134328.2755328-1-chenhuacai@loongson.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/recovery.c   | 58 ++++++++++++++++++++++++++++++++++++--------
- fs/jbd2/revoke.c     |  8 +++---
- include/linux/jbd2.h |  2 ++
- 3 files changed, 54 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
-index 23502f1a67c1e..a3c39a71c4ad3 100644
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -39,7 +39,7 @@ struct recovery_info
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index ab7c2750c1042..702ea5a00b56d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -590,6 +590,9 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
+ 	if (ret)
+ 		goto err_disable_device;
  
- static int do_one_pass(journal_t *journal,
- 				struct recovery_info *info, enum passtype pass);
--static int scan_revoke_records(journal_t *, struct buffer_head *,
-+static int scan_revoke_records(journal_t *, enum passtype, struct buffer_head *,
- 				tid_t, struct recovery_info *);
- 
- #ifdef __KERNEL__
-@@ -328,6 +328,12 @@ int jbd2_journal_recover(journal_t *journal)
- 		  journal->j_transaction_sequence, journal->j_head);
- 
- 	jbd2_journal_clear_revoke(journal);
-+	/* Free revoke table allocated for replay */
-+	if (journal->j_revoke != journal->j_revoke_table[0] &&
-+	    journal->j_revoke != journal->j_revoke_table[1]) {
-+		jbd2_journal_destroy_revoke_table(journal->j_revoke);
-+		journal->j_revoke = journal->j_revoke_table[1];
-+	}
- 	err2 = sync_blockdev(journal->j_fs_dev);
- 	if (!err)
- 		err = err2;
-@@ -613,6 +619,31 @@ static int do_one_pass(journal_t *journal,
- 	first_commit_ID = next_commit_ID;
- 	if (pass == PASS_SCAN)
- 		info->start_transaction = first_commit_ID;
-+	else if (pass == PASS_REVOKE) {
-+		/*
-+		 * Would the default revoke table have too long hash chains
-+		 * during replay?
-+		 */
-+		if (info->nr_revokes > JOURNAL_REVOKE_DEFAULT_HASH * 16) {
-+			unsigned int hash_size;
++	plat->tx_fifo_size = SZ_16K * plat->tx_queues_to_use;
++	plat->rx_fifo_size = SZ_16K * plat->rx_queues_to_use;
 +
-+			/*
-+			 * Aim for average chain length of 8, limit at 1M
-+			 * entries to avoid problems with malicious
-+			 * filesystems.
-+			 */
-+			hash_size = min(roundup_pow_of_two(info->nr_revokes / 8),
-+					1U << 20);
-+			journal->j_revoke =
-+				jbd2_journal_init_revoke_table(hash_size);
-+			if (!journal->j_revoke) {
-+				printk(KERN_ERR
-+				       "JBD2: failed to allocate revoke table for replay with %u entries. "
-+				       "Journal replay may be slow.\n", hash_size);
-+				journal->j_revoke = journal->j_revoke_table[1];
-+			}
-+		}
-+	}
- 
- 	jbd2_debug(1, "Starting recovery pass %d\n", pass);
- 
-@@ -852,6 +883,13 @@ static int do_one_pass(journal_t *journal,
- 			continue;
- 
- 		case JBD2_REVOKE_BLOCK:
-+			/*
-+			 * If we aren't in the SCAN or REVOKE pass, then we can
-+			 * just skip over this block.
-+			 */
-+			if (pass != PASS_REVOKE && pass != PASS_SCAN)
-+				continue;
-+
- 			/*
- 			 * Check revoke block crc in pass_scan, if csum verify
- 			 * failed, check commit block time later.
-@@ -864,12 +902,7 @@ static int do_one_pass(journal_t *journal,
- 				need_check_commit_time = true;
- 			}
- 
--			/* If we aren't in the REVOKE pass, then we can
--			 * just skip over this block. */
--			if (pass != PASS_REVOKE)
--				continue;
--
--			err = scan_revoke_records(journal, bh,
-+			err = scan_revoke_records(journal, pass, bh,
- 						  next_commit_ID, info);
- 			if (err)
- 				goto failed;
-@@ -923,8 +956,9 @@ static int do_one_pass(journal_t *journal,
- 
- /* Scan a revoke record, marking all blocks mentioned as revoked. */
- 
--static int scan_revoke_records(journal_t *journal, struct buffer_head *bh,
--			       tid_t sequence, struct recovery_info *info)
-+static int scan_revoke_records(journal_t *journal, enum passtype pass,
-+			       struct buffer_head *bh, tid_t sequence,
-+			       struct recovery_info *info)
- {
- 	jbd2_journal_revoke_header_t *header;
- 	int offset, max;
-@@ -945,6 +979,11 @@ static int scan_revoke_records(journal_t *journal, struct buffer_head *bh,
- 	if (jbd2_has_feature_64bit(journal))
- 		record_len = 8;
- 
-+	if (pass == PASS_SCAN) {
-+		info->nr_revokes += (max - offset) / record_len;
-+		return 0;
-+	}
-+
- 	while (offset + record_len <= max) {
- 		unsigned long long blocknr;
- 		int err;
-@@ -957,7 +996,6 @@ static int scan_revoke_records(journal_t *journal, struct buffer_head *bh,
- 		err = jbd2_journal_set_revoke(journal, blocknr, sequence);
- 		if (err)
- 			return err;
--		++info->nr_revokes;
- 	}
- 	return 0;
- }
-diff --git a/fs/jbd2/revoke.c b/fs/jbd2/revoke.c
-index f68fc8c255f00..bc328c39028a2 100644
---- a/fs/jbd2/revoke.c
-+++ b/fs/jbd2/revoke.c
-@@ -215,7 +215,7 @@ int __init jbd2_journal_init_revoke_table_cache(void)
- 	return 0;
- }
- 
--static struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size)
-+struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size)
- {
- 	int shift = 0;
- 	int tmp = hash_size;
-@@ -231,7 +231,7 @@ static struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size)
- 	table->hash_size = hash_size;
- 	table->hash_shift = shift;
- 	table->hash_table =
--		kmalloc_array(hash_size, sizeof(struct list_head), GFP_KERNEL);
-+		kvmalloc_array(hash_size, sizeof(struct list_head), GFP_KERNEL);
- 	if (!table->hash_table) {
- 		kmem_cache_free(jbd2_revoke_table_cache, table);
- 		table = NULL;
-@@ -245,7 +245,7 @@ static struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size)
- 	return table;
- }
- 
--static void jbd2_journal_destroy_revoke_table(struct jbd2_revoke_table_s *table)
-+void jbd2_journal_destroy_revoke_table(struct jbd2_revoke_table_s *table)
- {
- 	int i;
- 	struct list_head *hash_list;
-@@ -255,7 +255,7 @@ static void jbd2_journal_destroy_revoke_table(struct jbd2_revoke_table_s *table)
- 		J_ASSERT(list_empty(hash_list));
- 	}
- 
--	kfree(table->hash_table);
-+	kvfree(table->hash_table);
- 	kmem_cache_free(jbd2_revoke_table_cache, table);
- }
- 
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index 561025b4f3d91..469c4a191ced4 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1627,6 +1627,8 @@ extern void	   jbd2_journal_destroy_revoke_record_cache(void);
- extern void	   jbd2_journal_destroy_revoke_table_cache(void);
- extern int __init jbd2_journal_init_revoke_record_cache(void);
- extern int __init jbd2_journal_init_revoke_table_cache(void);
-+struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size);
-+void jbd2_journal_destroy_revoke_table(struct jbd2_revoke_table_s *table);
- 
- extern void	   jbd2_journal_destroy_revoke(journal_t *);
- extern int	   jbd2_journal_revoke (handle_t *, unsigned long long, struct buffer_head *);
+ 	if (dev_of_node(&pdev->dev))
+ 		ret = loongson_dwmac_dt_config(pdev, plat, &res);
+ 	else
 -- 
 2.39.5
 
