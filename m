@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-147562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE629AC5837
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA14AC54B6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A15363B2C3C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CE7F1BA5299
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D1128032B;
-	Tue, 27 May 2025 17:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B1A1D88D7;
+	Tue, 27 May 2025 17:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glh/63qm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YGxy09a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BED28030F;
-	Tue, 27 May 2025 17:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B293217B425;
+	Tue, 27 May 2025 17:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367726; cv=none; b=gRhxxMSsLP1O2uo7TYRHWMK5ZEWL4vfO4eqWzzHISIGH29d6cGWJorNi8xK0Ic4tnBjgmv5ReBQpXJYmonXyoqVZDyO50Nv2ktcz8xEXO0tNdtPt+71vUNiAaTpeRV8NXwuf71M4gnBRPPS8oZDFtyocjmCSh5wTxLV2MecAN3E=
+	t=1748365364; cv=none; b=YSgUxUimjeb27bt7RLmEHiKG6FuBN8s5esatlrTSU2zceJg0mzvEoPD01wjySzc1BI0M40LBp0jN+QLHFc8b86ix2s4Wn8TXBJUF96WPd0tnEzRFttLemD1SwBykB9Y46tuW2/rKaNXF9+rBcQnIhmUJk+BxUyUHBnjzSIMB6HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367726; c=relaxed/simple;
-	bh=ClXjulQ2Q6s2vY1OeF9721zZm7za9eZBSAW6UX1MX6Q=;
+	s=arc-20240116; t=1748365364; c=relaxed/simple;
+	bh=LsbLEdwkK/HYOeadJLf35wLvR09E45fSMFwc9QL6ECI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvBLluon7w+GzGttGKIzBHAsH27pAsS5b/sdXTahIIldZSnTZL4TvMqXFBLvIBhPQ1Tv5o53GREV9SR4LtQ2QQDqr7WRSfkvL82ozsmB6+zndzDPOqf3+sSeErSB8ythaypZXA28YCNqjH6kP9wTvrMS7wsrY1hhfziabk7AvJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glh/63qm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F4BC4CEE9;
-	Tue, 27 May 2025 17:42:05 +0000 (UTC)
+	 MIME-Version; b=aM66Vb0x3RHj4Yn9c2T9z3adjO/0uiiLF0edwzciONa7z17jSgUEcCRglFAPJvqM1cu+MQqm20OsDnLLc7uQsl0NBayUU7eG3f021YEiyI9hY9445cFmN+CKYweHiSyHeKxBy1s71EO1jaA+srT8ZM8dtg+MjvHFpclvnZIMZ/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YGxy09a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1965FC4CEE9;
+	Tue, 27 May 2025 17:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367725;
-	bh=ClXjulQ2Q6s2vY1OeF9721zZm7za9eZBSAW6UX1MX6Q=;
+	s=korg; t=1748365364;
+	bh=LsbLEdwkK/HYOeadJLf35wLvR09E45fSMFwc9QL6ECI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glh/63qm+uvwWsqezhSmWQtSizKsk0ZaiisnzttTV9ir19YNs586KMqPndMOyeJLC
-	 /y6N+DKGHhhZ/h+adaJUjb87t7T8z1GYbTJtHhe7dRsI0dDodmqm4oIgP3AcXQfiJw
-	 cjlb36COesoOVIhLKB5H3+wUmiNBRRnmxIVPomm8=
+	b=0YGxy09a+21V+ZI/xjbxrY1vBEScQxpkl9ryLqnL5jOjqNtFVw5LDzM0eLYuSCS9l
+	 doc36TjU+/g+jiSSvctzy24m3pRSsOeAIv3aG07vNuO0xLNuW7X/9buQfQEYDHen2t
+	 n8yOsQ8kQW6KN9LMVgTyxJuWk5D1RUmTz1t8uU8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Plowman <david.plowman@raspberrypi.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 449/783] media: i2c: imx219: Correct the minimum vblanking value
+Subject: [PATCH 6.12 353/626] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
 Date: Tue, 27 May 2025 18:24:06 +0200
-Message-ID: <20250527162531.414452985@linuxfoundation.org>
+Message-ID: <20250527162459.362029815@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Plowman <david.plowman@raspberrypi.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit e3b82d49bf676f3c873e642038765eac32ab6d39 ]
+[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
 
-The datasheet for this sensor documents the minimum vblanking as being
-32 lines. It does fix some problems with occasional black lines at the
-bottom of images (tested on Raspberry Pi).
+In the sensor_count field of the MTEWE register, bits 1-62 are
+supported only for unmanaged switches, not for NICs, and bit 63
+is reserved for internal use.
 
-Signed-off-by: David Plowman <david.plowman@raspberrypi.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+To prevent confusing output that may include set bits that are
+not relevant to NIC sensors, we update the bitmask to retain only
+the first bit, which corresponds to the sensor ASIC.
+
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx219.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
-index 64227eb423d43..dd5a8577d7479 100644
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -73,7 +73,7 @@
- #define IMX219_REG_VTS			CCI_REG16(0x0160)
- #define IMX219_VTS_MAX			0xffff
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index d91ea53eb394d..cd8d107f7d9e3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -163,6 +163,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	u64 value_msb;
  
--#define IMX219_VBLANK_MIN		4
-+#define IMX219_VBLANK_MIN		32
+ 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
++	/* bit 1-63 are not supported for NICs,
++	 * hence read only bit 0 (asic) from lsb.
++	 */
++	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
  
- /* HBLANK control - read only */
- #define IMX219_PPL_DEFAULT		3448
+ 	mlx5_core_warn(events->dev,
 -- 
 2.39.5
 
