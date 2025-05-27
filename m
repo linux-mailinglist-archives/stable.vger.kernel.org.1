@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-147555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8732EAC582B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79CF8AC5830
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 042BF7ACE2A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 733EB188A625
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDA925A627;
-	Tue, 27 May 2025 17:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C5B25A627;
+	Tue, 27 May 2025 17:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pr4YEs3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwLaXe21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2D042A9B;
-	Tue, 27 May 2025 17:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B5642A9B;
+	Tue, 27 May 2025 17:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367703; cv=none; b=H1zogNCjm1wwTGjfkMXSQYQJkNEnwrjTGbg1+dN9YIVjwOMyzy30Y2rPicTd/qXfR80stE7iV9tWHU4Sk+evXALF6r2fFIn7oHgfhkTvs3eHi7xh/daqCPgjxmipLhh5GeSqU3JMZmXpnU1q31okqgaofjOK0cirpLQocBVN0lE=
+	t=1748367709; cv=none; b=Jt7gmw4wTmga3sDz+OHcz8MoelUjksDGu7Ri4tA6DjjN9/OnIRLbbtxuXXHIg9L/93pe2IaqTRaMkE7OM9LZF8L3WX1G07/isZvx6r4C1vYQM/OlLk2dTYJDOvv78hCM0Y7F2n1yWJGiiODfEOOGc+nmTGK5LihdPj5HqUedKXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367703; c=relaxed/simple;
-	bh=nxlDCBG55nCVxl89UQ6LBtZG3mxMdalNsWVaq3iR9Yc=;
+	s=arc-20240116; t=1748367709; c=relaxed/simple;
+	bh=F8X8eyFy0eonZ86zPC1nrC0fthwmQJ9Mw5LJZ17FOo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JEa9NL8Uuezit+0zsYcI7djya8yOpnmSE6KK0tgHV/wR9DUzrezGfV+WlqtVeXrHm2IQzWayh/1z7Pe2+p4NwKz+d7EpA3I5xtF3EV2CuWu9Nv4A+WU2FMqTMwKbRKzmCHvSU3Mn6r/bOLTKKdsDEpy1jJHeU7UXFZLBdUbCfdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pr4YEs3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2D5C4CEE9;
-	Tue, 27 May 2025 17:41:42 +0000 (UTC)
+	 MIME-Version; b=J7Qdki+VF0REOaMMaEf8VyvCeS/Tnl4ran8Tjgth4oX12dCVjGMO0WOCMkbT3TpmGaXVxAojJOTQMHSiuqicLahzevTXbnrQjona9vrm8aO/q8MrZDqVLjuFSevxBCzczKhN8adoSUpPX5NxWV98hkkExy4gaXnDS9Aq08vYDJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwLaXe21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E41C4CEE9;
+	Tue, 27 May 2025 17:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367703;
-	bh=nxlDCBG55nCVxl89UQ6LBtZG3mxMdalNsWVaq3iR9Yc=;
+	s=korg; t=1748367709;
+	bh=F8X8eyFy0eonZ86zPC1nrC0fthwmQJ9Mw5LJZ17FOo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pr4YEs3uyXmTLarY6BFvY5lzV4icNuxnbiztF4Hm6wf8fZCGvDRUZEHxRlwQzNMV5
-	 YxceID+XtDcnqGCFt0wN6nty2XjfiMmZbS3N7rQcDp0BRAJ2eVg76vEegjUZcqnV7x
-	 QlHDgeqG9/TKqW7R4VVVqE9u9ZTN5fcAihwpf0NA=
+	b=EwLaXe21VIgm1nDYFQ1xd1HZCoCuGFy2UG20Hv8QBhPcJfIBWkEephYiaJL7FHmYp
+	 AXpodKg6UrwkMJYoaDyrY76Mlp9+3ciuvkfoQKEBbLIPJTsXzjI+SlIZwKrBqznpdw
+	 Wiew06wmqnP0JLf+yETfrx315oty1kmhTnrDPkgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Will McVicker <willmcvicker@google.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 472/783] phy: exynos5-usbdrd: fix EDS distribution tuning (gs101)
-Date: Tue, 27 May 2025 18:24:29 +0200
-Message-ID: <20250527162532.352014930@linuxfoundation.org>
+Subject: [PATCH 6.14 473/783] soundwire: amd: change the soundwire wake enable/disable sequence
+Date: Tue, 27 May 2025 18:24:30 +0200
+Message-ID: <20250527162532.390776188@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -62,59 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 21860f340ba76ee042e5431ff92537f89bc11476 ]
+[ Upstream commit dcc48a73eae7f791b1a6856ea1bcc4079282c88d ]
 
-This code's intention is to configure lane0 and lane2 tunings, but for
-lane2 there is a typo and it ends up tuning something else.
+During runtime suspend scenario, SoundWire wake should be enabled and
+during system level suspend scenario SoundWire wake should be disabled.
 
-Fix the typo, as it doesn't appear to make sense to apply different
-tunings for lane0 vs lane2.
+Implement the SoundWire wake enable/disable sequence as per design flow
+for SoundWire poweroff mode.
 
-The same typo appears to exist in the bootloader, hence we restore the
-original value in the typo'd registers as well. This can be removed
-once / if the bootloader is updated.
-
-Note that this is incorrect in the downstream driver as well - the
-values had been copied from there.
-
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Tested-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Link: https://lore.kernel.org/r/20241206-gs101-phy-lanes-orientation-phy-v4-4-f5961268b149@linaro.org
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250207065841.4718-2-Vijendar.Mukunda@amd.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/samsung/phy-exynos5-usbdrd.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/soundwire/amd_manager.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/phy/samsung/phy-exynos5-usbdrd.c b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-index 46b8f6987c62c..28d02ae60cc14 100644
---- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
-+++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-@@ -1513,8 +1513,11 @@ static const struct exynos5_usbdrd_phy_tuning gs101_tunes_pipe3_preinit[] = {
- 	PHY_TUNING_ENTRY_PMA(0x09e0, -1, 0x00),
- 	PHY_TUNING_ENTRY_PMA(0x09e4, -1, 0x36),
- 	PHY_TUNING_ENTRY_PMA(0x1e7c, -1, 0x06),
--	PHY_TUNING_ENTRY_PMA(0x1e90, -1, 0x00),
--	PHY_TUNING_ENTRY_PMA(0x1e94, -1, 0x36),
-+	PHY_TUNING_ENTRY_PMA(0x19e0, -1, 0x00),
-+	PHY_TUNING_ENTRY_PMA(0x19e4, -1, 0x36),
-+	/* fix bootloader bug */
-+	PHY_TUNING_ENTRY_PMA(0x1e90, -1, 0x02),
-+	PHY_TUNING_ENTRY_PMA(0x1e94, -1, 0x0b),
- 	/* improve LVCC */
- 	PHY_TUNING_ENTRY_PMA(0x08f0, -1, 0x30),
- 	PHY_TUNING_ENTRY_PMA(0x18f0, -1, 0x30),
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index 5a54b10daf77a..9d80623787247 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -1139,6 +1139,7 @@ static int __maybe_unused amd_suspend(struct device *dev)
+ 		amd_sdw_wake_enable(amd_manager, false);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
++		amd_sdw_wake_enable(amd_manager, false);
+ 		/*
+ 		 * As per hardware programming sequence on AMD platforms,
+ 		 * clock stop should be invoked first before powering-off
+@@ -1166,6 +1167,7 @@ static int __maybe_unused amd_suspend_runtime(struct device *dev)
+ 		amd_sdw_wake_enable(amd_manager, true);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
++		amd_sdw_wake_enable(amd_manager, true);
+ 		ret = amd_sdw_clock_stop(amd_manager);
+ 		if (ret)
+ 			return ret;
 -- 
 2.39.5
 
