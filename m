@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-147581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C91AC584A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1253AAC5561
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD021BC21CE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D2258A2F0C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F45D27FD63;
-	Tue, 27 May 2025 17:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F23F276057;
+	Tue, 27 May 2025 17:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgAozbFg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3pYvF7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FD927FD43;
-	Tue, 27 May 2025 17:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB812110E;
+	Tue, 27 May 2025 17:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367785; cv=none; b=jE9e8gfJFVWTuISGy79OC4+jGEu0EjFLppWxAguGbDyx3zvWL5TsnZ3kwSY7cQqYG4KbEGgcJGSsZpOelMtKMrXgR2OvodQhLpUBBxXKr/Vk6notDicubtoZDNOLzBCgvQ42HpUmzc4qf4I5vumvoC3rFImWIM+0DCIuJHHE7bA=
+	t=1748365519; cv=none; b=NoIGwVwmV0JNFJx1z3FtG3gPkggO9IAGMZIx6PpQ3AU+pf9iGIXDvVbzEP7GrZjeAviqoB0C3GHYORVx/UFzGetht842zMa4p3xTnkk6dK1b8S1rlXbwcBDsHvkUYCzuSkpkskXEDHtYhruevDbI2gfxZdPSZackvYSjgxIhnsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367785; c=relaxed/simple;
-	bh=65Temymziy10mCYIZkl2C7r7WcJdurOPATluHZotTn4=;
+	s=arc-20240116; t=1748365519; c=relaxed/simple;
+	bh=FLzWMGg4e3Lr/EaEBLJ4oFSL6g6Vwyw2JOUUT2Sra+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCpvlOgTxRDki3fBWirjjNkQQib3hynJg+utAafLBCsufQfSGFX7a9aeHJCLJLKK3MzB3EOdFJKhbx98WiD8ZIwFtwdFdLzMlEuvtnjCuJrO3jF1tM14g9HBflFjhYpGCSUd26EQqmVlDeXRfdN2sxNgbL9lnQw28vrIexsVcz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgAozbFg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A87C4CEE9;
-	Tue, 27 May 2025 17:43:04 +0000 (UTC)
+	 MIME-Version; b=FjsnZ/YvFUWZ8LZpYWYr6fVDqiKw3qc6S2i+UNhMrPR5JQjO2isSy70D0ib5NgPxXO6ywU5hhPeLyPUGsqz95omI/0pBnBkTGZ3oFUcHAwWgEPCL75wBGI9c6LHUiRdlj+dugc3IAGx8ouLZqY6elKEfSbUM2ORrmuyCjaSg4fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3pYvF7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF24C4CEE9;
+	Tue, 27 May 2025 17:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367785;
-	bh=65Temymziy10mCYIZkl2C7r7WcJdurOPATluHZotTn4=;
+	s=korg; t=1748365519;
+	bh=FLzWMGg4e3Lr/EaEBLJ4oFSL6g6Vwyw2JOUUT2Sra+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UgAozbFgdsUmOd79ll4gXPixFGGkzF2KdKUQ8AaOBuVxdP861cVpl0scRabJshvhM
-	 x0hpF5nL0Fw3TuxRacd31celaPZn9QIjTkdefDiL8X8KkO7MVTO9f7T3GkxwtIywEP
-	 Slpr1ePJbVJNL3WGlogas3wbSxV2A/ZHMIn9/1kM=
+	b=Y3pYvF7G6qXG7th+qxQlrljHpoVIoSwC7TD7Q7aSzw6gB7HwEry0QWhklA5Rks9ll
+	 928zB4ij9NpoCU3uYNs/M8El5iKgGJ15n5unLRTRD+OQs/CYMPPOdr0+GMS9uRZ17u
+	 yoszwvy6dsI7c1aQCc/DhryQFGC70WmiBvGTEUb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Austin Zheng <Austin.Zheng@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Shiwu Zhang <shiwu.zhang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 498/783] drm/amd/display: Use Nominal vBlank If Provided Instead Of Capping It
+Subject: [PATCH 6.12 402/626] drm/amdgpu: enlarge the VBIOS binary size limit
 Date: Tue, 27 May 2025 18:24:55 +0200
-Message-ID: <20250527162533.423816763@linuxfoundation.org>
+Message-ID: <20250527162501.353038817@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Austin Zheng <Austin.Zheng@amd.com>
+From: Shiwu Zhang <shiwu.zhang@amd.com>
 
-[ Upstream commit 41df56b1fc24cc36fffb10e437385b3a49fbb5e2 ]
+[ Upstream commit 667b96134c9e206aebe40985650bf478935cbe04 ]
 
-[Why/How]
-vBlank used to determine the max vStartup is based on the smallest between
-the vblank provided by the timing and vblank in ip_caps.
-Extra vblank time is not considered if the vblank provided by the timing ends
-up being higher than what's defined by the ip_caps
+Some chips have a larger VBIOS file so raise the size limit to support
+the flashing tool.
 
-Use 1 less than the vblank size in case the timing is interlaced
-so vstartup will always be less than vblank_nom.
-
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Shiwu Zhang <shiwu.zhang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c       | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-index 913f33c31cf38..a72b4c05e1fbf 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-@@ -3713,13 +3713,12 @@ static unsigned int CalculateMaxVStartup(
- 	double line_time_us = (double)timing->h_total / ((double)timing->pixel_clock_khz / 1000);
- 	unsigned int vblank_actual = timing->v_total - timing->v_active;
- 	unsigned int vblank_nom_default_in_line = (unsigned int)math_floor2((double)vblank_nom_default_us / line_time_us, 1.0);
--	unsigned int vblank_nom_input = (unsigned int)math_min2(timing->vblank_nom, vblank_nom_default_in_line);
--	unsigned int vblank_avail = (vblank_nom_input == 0) ? vblank_nom_default_in_line : vblank_nom_input;
-+	unsigned int vblank_avail = (timing->vblank_nom == 0) ? vblank_nom_default_in_line : (unsigned int)timing->vblank_nom;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index 31a376f2742a2..48e30e5f83389 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -44,7 +44,7 @@
+ #include "amdgpu_securedisplay.h"
+ #include "amdgpu_atomfirmware.h"
  
- 	vblank_size = (unsigned int)math_min2(vblank_actual, vblank_avail);
+-#define AMD_VBIOS_FILE_MAX_SIZE_B      (1024*1024*3)
++#define AMD_VBIOS_FILE_MAX_SIZE_B      (1024*1024*16)
  
- 	if (timing->interlaced && !ptoi_supported)
--		max_vstartup_lines = (unsigned int)(math_floor2(vblank_size / 2.0, 1.0));
-+		max_vstartup_lines = (unsigned int)(math_floor2((vblank_size - 1) / 2.0, 1.0));
- 	else
- 		max_vstartup_lines = vblank_size - (unsigned int)math_max2(1.0, math_ceil2(write_back_delay_us / line_time_us, 1.0));
- #ifdef __DML_VBA_DEBUG__
+ static int psp_load_smu_fw(struct psp_context *psp);
+ static int psp_rap_terminate(struct psp_context *psp);
 -- 
 2.39.5
 
