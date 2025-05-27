@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-147322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DD1AC572A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CFEAC5417
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:56:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D610189DE7B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B4467A290B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B0527D784;
-	Tue, 27 May 2025 17:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6BD27FD6E;
+	Tue, 27 May 2025 16:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpkYNdfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXKYdMAB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607E619CD07;
-	Tue, 27 May 2025 17:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE0227FD73;
+	Tue, 27 May 2025 16:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366984; cv=none; b=kdQM6oEE3lV2ltU0zEp43EMzRiKRxt10KnTNFLxKTYjhJJcOdjRrdjGX3VJl8e4YUj76w/I/dvtmzmlIcYFBefo5TXPWbO3xWE9iTZ+n6iDarqn1mj6B4Vet2ZAsaReVyP5fpqDdUD1ngv/iWGdNS2HgOTS1N4oO7du7MAOij+w=
+	t=1748364845; cv=none; b=DYObhDOD8C7kEMMU/QF2L3W4BuaGMIFxsrDyXluWOeygavooCbyBK8OwrPjtN6Q7IqSKRjQQy2HJgaiPzjNJ0sQpYfLXGKvYRlDLfVMNCxicG/g3XABYuXq6LHdYywDk6spvYTVrAmOFLw5V+z/tIFVVSmZvMv1njf1zYlAq3jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366984; c=relaxed/simple;
-	bh=daGKeNi8mBWo6EYlRu2M+soDyy2T81AD7PagZIZ4oTc=;
+	s=arc-20240116; t=1748364845; c=relaxed/simple;
+	bh=X10aKGSuOQfL8Goqge+OUG0Muxp4MqWhJdsVzbGycsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHl1CsrUEWlSPy23s2OSegSHCBzdYDt64LEQkrVeQqe9JsmE6x9MI5nF6gEm4lEykv+XRiPYRF4eyE/Cb22cU9UbRIQvaDxWsxFRfxI0nLb1WuL9mWSh9QuWMjnU8Uw8yE4Oa5aMoNuih0Gp/ds8EPsVyce9mXYIFx/Y+igyeJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpkYNdfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9712C4CEE9;
-	Tue, 27 May 2025 17:29:43 +0000 (UTC)
+	 MIME-Version; b=Gc3jHLuX3QI2Q60c+OtosPopHYN2SkMDO9r9GWlKz5wJtzg8L6cfZzrjPNMhRH4FazzoN5ZtXSGHQKgMmDGo18F/cAj5SSB2JCQ+HmJqjO7BF8aHl1bFcXDkl43Ua26Kw88syl/Y4F8RY/wyrWAPv3h+vI92CnHJRNd0+j9Qtfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXKYdMAB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974EAC4CEE9;
+	Tue, 27 May 2025 16:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366984;
-	bh=daGKeNi8mBWo6EYlRu2M+soDyy2T81AD7PagZIZ4oTc=;
+	s=korg; t=1748364845;
+	bh=X10aKGSuOQfL8Goqge+OUG0Muxp4MqWhJdsVzbGycsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HpkYNdfLE+Ea3PLhkk9DS1DYny993XNOnXqQGAuLiPLOZJoMTjV0WpGWTElaPCJG0
-	 qbuFq/f6j/Y0V4uF7PH4AGaBqTteA7jw7x+jQTSeQ72v2VkfU+7iPJeC68euwmtG+J
-	 wHyTSqmzMxqKMWbpmq4vanZp6RRWCv3HQI5OWQWY=
+	b=EXKYdMABxuAjOLpg087ifBaU7fzXa9PEaDtx7tddNoBtmybCtqJmSbHOpC7E321a2
+	 2EUzfepm0fSPc5x6Jm57ULj6M15d7TKX5+VgJ1Xh3LqzUUrQd8fNaDJ2+6NrVo5qRE
+	 l6KwfjWMY995wSjuMm0SnjqZLj0uk2aSSgCeOGHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>,
-	Joerg Roedel <jroedel@suse.de>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 240/783] iommu/vt-d: Check if SVA is supported when attaching the SVA domain
+Subject: [PATCH 6.12 144/626] thunderbolt: Do not add non-active NVM if NVM upgrade is disabled for retimer
 Date: Tue, 27 May 2025 18:20:37 +0200
-Message-ID: <20250527162522.887504454@linuxfoundation.org>
+Message-ID: <20250527162450.880218735@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,151 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 607ba1bb096110751f6aa4b46666e0ba024ab3c2 ]
+[ Upstream commit ad79c278e478ca8c1a3bf8e7a0afba8f862a48a1 ]
 
-Attach of a SVA domain should fail if SVA is not supported, move the check
-for SVA support out of IOMMU_DEV_FEAT_SVA and into attach.
+This is only used to write a new NVM in order to upgrade the retimer
+firmware. It does not make sense to expose it if upgrade is disabled.
+This also makes it consistent with the router NVM upgrade.
 
-Also check when allocating a SVA domain to match other drivers.
-
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://lore.kernel.org/r/20250228092631.3425464-3-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |   37 +------------------------------------
- drivers/iommu/intel/svm.c   |   43 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+), 36 deletions(-)
+ drivers/thunderbolt/retimer.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3863,41 +3863,6 @@ static struct iommu_group *intel_iommu_d
- 	return generic_device_group(dev);
- }
+diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
+index eeb64433ebbca..3488be7620674 100644
+--- a/drivers/thunderbolt/retimer.c
++++ b/drivers/thunderbolt/retimer.c
+@@ -93,9 +93,11 @@ static int tb_retimer_nvm_add(struct tb_retimer *rt)
+ 	if (ret)
+ 		goto err_nvm;
  
--static int intel_iommu_enable_sva(struct device *dev)
--{
--	struct device_domain_info *info = dev_iommu_priv_get(dev);
--	struct intel_iommu *iommu;
--
--	if (!info || dmar_disabled)
--		return -EINVAL;
--
--	iommu = info->iommu;
--	if (!iommu)
--		return -EINVAL;
--
--	if (!(iommu->flags & VTD_FLAG_SVM_CAPABLE))
--		return -ENODEV;
--
--	if (!info->pasid_enabled || !info->ats_enabled)
--		return -EINVAL;
--
--	/*
--	 * Devices having device-specific I/O fault handling should not
--	 * support PCI/PRI. The IOMMU side has no means to check the
--	 * capability of device-specific IOPF.  Therefore, IOMMU can only
--	 * default that if the device driver enables SVA on a non-PRI
--	 * device, it will handle IOPF in its own way.
--	 */
--	if (!info->pri_supported)
--		return 0;
--
--	/* Devices supporting PRI should have it enabled. */
--	if (!info->pri_enabled)
--		return -EINVAL;
--
--	return 0;
--}
--
- static int context_flip_pri(struct device_domain_info *info, bool enable)
- {
- 	struct intel_iommu *iommu = info->iommu;
-@@ -4018,7 +3983,7 @@ intel_iommu_dev_enable_feat(struct devic
- 		return intel_iommu_enable_iopf(dev);
+-	ret = tb_nvm_add_non_active(nvm, nvm_write);
+-	if (ret)
+-		goto err_nvm;
++	if (!rt->no_nvm_upgrade) {
++		ret = tb_nvm_add_non_active(nvm, nvm_write);
++		if (ret)
++			goto err_nvm;
++	}
  
- 	case IOMMU_DEV_FEAT_SVA:
--		return intel_iommu_enable_sva(dev);
-+		return 0;
- 
- 	default:
- 		return -ENODEV;
---- a/drivers/iommu/intel/svm.c
-+++ b/drivers/iommu/intel/svm.c
-@@ -110,6 +110,41 @@ static const struct mmu_notifier_ops int
- 	.free_notifier = intel_mm_free_notifier,
- };
- 
-+static int intel_iommu_sva_supported(struct device *dev)
-+{
-+	struct device_domain_info *info = dev_iommu_priv_get(dev);
-+	struct intel_iommu *iommu;
-+
-+	if (!info || dmar_disabled)
-+		return -EINVAL;
-+
-+	iommu = info->iommu;
-+	if (!iommu)
-+		return -EINVAL;
-+
-+	if (!(iommu->flags & VTD_FLAG_SVM_CAPABLE))
-+		return -ENODEV;
-+
-+	if (!info->pasid_enabled || !info->ats_enabled)
-+		return -EINVAL;
-+
-+	/*
-+	 * Devices having device-specific I/O fault handling should not
-+	 * support PCI/PRI. The IOMMU side has no means to check the
-+	 * capability of device-specific IOPF.  Therefore, IOMMU can only
-+	 * default that if the device driver enables SVA on a non-PRI
-+	 * device, it will handle IOPF in its own way.
-+	 */
-+	if (!info->pri_supported)
-+		return 0;
-+
-+	/* Devices supporting PRI should have it enabled. */
-+	if (!info->pri_enabled)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- static int intel_svm_set_dev_pasid(struct iommu_domain *domain,
- 				   struct device *dev, ioasid_t pasid,
- 				   struct iommu_domain *old)
-@@ -121,6 +156,10 @@ static int intel_svm_set_dev_pasid(struc
- 	unsigned long sflags;
- 	int ret = 0;
- 
-+	ret = intel_iommu_sva_supported(dev);
-+	if (ret)
-+		return ret;
-+
- 	dev_pasid = domain_add_dev_pasid(domain, dev, pasid);
- 	if (IS_ERR(dev_pasid))
- 		return PTR_ERR(dev_pasid);
-@@ -161,6 +200,10 @@ struct iommu_domain *intel_svm_domain_al
- 	struct dmar_domain *domain;
- 	int ret;
- 
-+	ret = intel_iommu_sva_supported(dev);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
- 	domain = kzalloc(sizeof(*domain), GFP_KERNEL);
- 	if (!domain)
- 		return ERR_PTR(-ENOMEM);
+ 	rt->nvm = nvm;
+ 	dev_dbg(&rt->dev, "NVM version %x.%x\n", nvm->major, nvm->minor);
+-- 
+2.39.5
+
 
 
 
