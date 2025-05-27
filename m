@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-147272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9DFAC56FE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FCAAC5701
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CEE13B4E16
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBF5E3B6820
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8624527D784;
-	Tue, 27 May 2025 17:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EAF277808;
+	Tue, 27 May 2025 17:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKtUv04+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of1AiQzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B481CD0C;
-	Tue, 27 May 2025 17:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD0714AD2B;
+	Tue, 27 May 2025 17:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366834; cv=none; b=AeH9h9EQV4cDJEUw5fEu0anBRrs2A6HqvG5HbFlSLen9Hqalw/h4BRHl0ZvOhvxV/PFZIdZSpH4NUBwbO09SbR/btT2p+KXLpSy7ygdmwheFuZMBvmppt4tKounrPnHMI4YDZUeVXg2rkCnG1bWxIlwq5dJA/SHL+3WJbhbHy+k=
+	t=1748366839; cv=none; b=ot6T9gRkQY8MW0I8OFwOMgwNNfKx1atuewlazx8tFb0n0aK9fpewPjMNE2I5JL3SL2aT9tHuvZhbz/FKr4x2WbFE36uPWj8haweWk1nv5FT4np/6JfYqegMoFjy3RyPgdvTJt3rR9ui5/EgVsWBFZhIqnigt8HjFju2uhioJFPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366834; c=relaxed/simple;
-	bh=l1YHFp/hf5beRTsZT8QD1SDBttiqQvW02x0wsfn7G/A=;
+	s=arc-20240116; t=1748366839; c=relaxed/simple;
+	bh=j804xBCP1NeUmj5wkJEZteR5cBNEdyq8s1qkCuXnzl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHjMQpwHxMBOm01du4NRL22BoNStSjhR9DJP7SN8wsY3f3G81gXdaHTzZ3t/HGE9hcvwBR7ZPGZ1s2DNbNSkYwpNoMa+rXuUW+jZPFtL5LFwKQzbedXFLgZFn1fBwuFHwe62YbePYWvsBbe1zcahBucK4HWguyG4bvaPHkjBYvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKtUv04+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DF5C4CEE9;
-	Tue, 27 May 2025 17:27:13 +0000 (UTC)
+	 MIME-Version; b=MNtz+5UWV1AUV7DqjNMmmV2y2GUgU8Jr1Qu1ISXFxTa2X34k++ykHItXDwkUhnoGSUEPPsSoTuIg5f3itbmwxE5Up7cXTfeldfQa7TrL3Pw/Zzu+Um9aDwKkfj1a1+NszhO8y3rKT1y3t9bf1B9fn+tWWY0fNQIt/tpCW5rdwCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=of1AiQzC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64465C4CEE9;
+	Tue, 27 May 2025 17:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366833;
-	bh=l1YHFp/hf5beRTsZT8QD1SDBttiqQvW02x0wsfn7G/A=;
+	s=korg; t=1748366836;
+	bh=j804xBCP1NeUmj5wkJEZteR5cBNEdyq8s1qkCuXnzl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKtUv04+xZmmdrnl83+APp44ZiOS7yW0pZFunEgwcguiIA+tXqUf/JDbGgPxRbUQv
-	 l4dmFAlytHpHI+U60rZDgyXxHWCSFBcyV9LjvplpfT4uQGWRjWtPTskxz9mBHnO2GM
-	 bnWdfFVPHpYHHRXlVevbseudCdvOKjtv5pCe0Nvg=
+	b=of1AiQzCfGaUSx3ttTWtMW/7E+lSYtuv1oEUgki7FQr5ArF2HppBKFhIyqojrubHr
+	 p3uhV+/8yzPRPhVeQb9OiAa9D02J2nSUOUSRo6zmiTgHkDfTzukeK6VFUYWFv5ygRR
+	 ljOhR1PDLG30mTy5NbeWMjpO5iAW3rRKpOFK4aBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Manuel Fombuena <fombuena@outlook.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 192/783] leds: Kconfig: leds-st1202: Add select for required LEDS_TRIGGER_PATTERN
-Date: Tue, 27 May 2025 18:19:49 +0200
-Message-ID: <20250527162520.973473008@linuxfoundation.org>
+Subject: [PATCH 6.14 193/783] leds: leds-st1202: Initialize hardware before DT node child operations
+Date: Tue, 27 May 2025 18:19:50 +0200
+Message-ID: <20250527162521.013411822@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -68,47 +68,52 @@ Content-Transfer-Encoding: 8bit
 
 From: Manuel Fombuena <fombuena@outlook.com>
 
-[ Upstream commit be2f92844d0f8cb059cb6958c6d9582d381ca68e ]
+[ Upstream commit a17d9e736ddd78323e77d3066c1e86371a99023c ]
 
-leds-st1202 requires the LED Pattern Trigger (LEDS_TRIGGER_PATTERN), which
-is not selected when LED Trigger support is (LEDS_TRIGGERS).
+Arguably, there are more chances of errors occurring during the
+initialization of the hardware, so this should complete successfully
+before the devicetree node's children are initialized.
 
-To reproduce this:
+st1202_dt_init() fills the led_classdev struct.
 
-- make menuconfig KCONFIG_CONFIG=
-- select LEDS_ST1202 dependencies OF, I2C and LEDS_CLASS.
-- select LEDS_ST1202
-- LEDS_TRIGGERS is selected but LEDS_TRIGGER_PATTERN isn't.
+st1202_setup() initializes the hardware. Specifically, resets the chip,
+enables its phase-shift delay feature, enables the device and disables all
+the LEDs channels. All that writing to registers, with no input from
+st1202_dt_init().
 
-The absence of LEDS_TRIGGER_PATTERN explicitly required can lead to builds
-in which LEDS_ST1202 is selected while LEDS_TRIGGER_PATTERN isn't. The direct
-result of that would be that /sys/class/leds/<led>/hw_pattern wouldn't be
-available and there would be no way of interacting with the driver and
-hardware from user space.
+Real-world testing corroborates that calling st1202_setup() before
+st1202_dt_init() doesn't cause any issue during initialization.
 
-Add select LEDS_TRIGGER_PATTERN to Kconfig to meet the requirement and
-indirectly document it as well.
+Switch the order of st1202_dt_init() and st1202_setup() to ensure the
+hardware is correctly initialized before the led_classdev struct is
+filled.
 
 Signed-off-by: Manuel Fombuena <fombuena@outlook.com>
-Link: https://lore.kernel.org/r/CWLP123MB5473F4DF3A668F7DD057A280C5C22@CWLP123MB5473.GBRP123.PROD.OUTLOOK.COM
+Link: https://lore.kernel.org/r/CWLP123MB54731877A8DC54EDD33F0229C5C22@CWLP123MB5473.GBRP123.PROD.OUTLOOK.COM
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/leds/leds-st1202.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-index 2b27d043921ce..8859e8fe292a9 100644
---- a/drivers/leds/Kconfig
-+++ b/drivers/leds/Kconfig
-@@ -971,6 +971,7 @@ config LEDS_ST1202
- 	depends on I2C
- 	depends on OF
- 	select LEDS_TRIGGERS
-+	select LEDS_TRIGGER_PATTERN
- 	help
- 	  Say Y to enable support for LEDs connected to LED1202
- 	  LED driver chips accessed via the I2C bus.
+diff --git a/drivers/leds/leds-st1202.c b/drivers/leds/leds-st1202.c
+index 4cebc0203c227..ccea216c11f9b 100644
+--- a/drivers/leds/leds-st1202.c
++++ b/drivers/leds/leds-st1202.c
+@@ -350,11 +350,11 @@ static int st1202_probe(struct i2c_client *client)
+ 		return ret;
+ 	chip->client = client;
+ 
+-	ret = st1202_dt_init(chip);
++	ret = st1202_setup(chip);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = st1202_setup(chip);
++	ret = st1202_dt_init(chip);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.39.5
 
