@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-147484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FBCAC57DC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1582AAC546E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B84A17FD3B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17D134A2BB3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9AC27FB2A;
-	Tue, 27 May 2025 17:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C268E1D88D7;
+	Tue, 27 May 2025 17:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MT88/lxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhKYYtEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876B61DC998;
-	Tue, 27 May 2025 17:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F39D185E7F;
+	Tue, 27 May 2025 17:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367479; cv=none; b=DwFN+VamwAOqbBgoXxmMxDQ4AHBRpS/3pjLqVEHR7Mvw/DmJovRDTMo4k4ZJIzzrjoREVmk/l/JYYb4Lws1Ezd9jo3Y3kW3DbwQlFAVbx9cHLa0hQpTYIWj8NPL0QDkLyjkNGHd/NZrYx54PSi5A6V9RE7w8B2SPDzlqlc7YNDs=
+	t=1748365221; cv=none; b=ijcuiUGHEZ/86VygXzjvJQzSQEHEON6UM8Kp1TaYS2RgnpPdFypQOF1AyYY/F5GDBwew/xmTsFC8Y3kPUE8P8VpVkduaIXIN7AmTwnZZ6DBBwp7cWhojcrkzUzF7JA9OZBnHcuasERCYK5aze4p5ASxmvGOscdu923WIKG0J8P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367479; c=relaxed/simple;
-	bh=wvppdJ1uOzfS2Tg2HJS4PiqHaQHBaplRfeS0AbiQcxY=;
+	s=arc-20240116; t=1748365221; c=relaxed/simple;
+	bh=V8VxRhQpLdXzVXG398pXORsi2ysqSzg/X9zCUxL0eq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfxbO4Wnr8mAn0YLFW4I/T9CW5uCeJ3Un99Oxu8vXAyMl0bCOwXJlDAOWI2b33zlz3TOkZ1P8p5EJJy7BVZf3rHQVjUBVWM29argOmrLN8sUpwU8c9ub8mrZrgk+PCG8Ots4uye52fAjhIATNDtC/maEuxKt2vtPbRzYy7YYU4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MT88/lxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1925BC4CEE9;
-	Tue, 27 May 2025 17:37:58 +0000 (UTC)
+	 MIME-Version; b=pOzUqlTzYns7VEBIZAnSbXDmKM0PThcKpGw/MVbuCJ8tDZEeXrl729mt9knCrj1n/5qss+IO6s+6nYaTns8KwhZnvu/kXz+gJscj9g5N/F9aH0o21Mo7muHYKCEcg9Z+1buvKaLeS5w335OPgh1XmZ/hVgEu/iaaCKW1+LTc9Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhKYYtEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B02C4CEE9;
+	Tue, 27 May 2025 17:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367479;
-	bh=wvppdJ1uOzfS2Tg2HJS4PiqHaQHBaplRfeS0AbiQcxY=;
+	s=korg; t=1748365221;
+	bh=V8VxRhQpLdXzVXG398pXORsi2ysqSzg/X9zCUxL0eq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MT88/lxZHA27davFaUc+kTL4n2SYQPjTZxDnKubF1/8e5w96jdb7sVgdqLeq5H+Sg
-	 f6Vkpppi4qqNkEBsfIDObB7ZynDIylO04itJ4OLLYItFXuaQ0TWmKSIhRyQG9U9j8P
-	 /NMdT4NotOTKKNoFibnSihRFIllTwvvFK7nb2ZEw=
+	b=WhKYYtErvMFt4lAyqMwn/5OMue87Hbto5Nip5ltw3XnAIZ0JQd4xbux1sN/zxt5RV
+	 3PApLF2koQ9POX+PWxrJG1BKVSz2XlQdIC2a0uAOcYHlOKcBJVHsOoYHtsWz0T0EIO
+	 HbjcZhQc5b8oQ3dK/IWLvYD+wEsWviwa4QI+PFWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Philippe Simons <simons.philippe@gmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 401/783] power: supply: axp20x_battery: Update temp sensor for AXP717 from device tree
+	Balbir Singh <balbirs@nvidia.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.12 305/626] x86/kaslr: Reduce KASLR entropy on most x86 systems
 Date: Tue, 27 May 2025 18:23:18 +0200
-Message-ID: <20250527162529.424710705@linuxfoundation.org>
+Message-ID: <20250527162457.425427604@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +67,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Balbir Singh <balbirs@nvidia.com>
 
-[ Upstream commit bbcfe510ecd47f2db4c8653c7dfa9dc7a55b1583 ]
+[ Upstream commit 7ffb791423c7c518269a9aad35039ef824a40adb ]
 
-Allow a boolean property of "x-powers,no-thermistor" to specify devices
-where the ts pin is not connected to anything. This works around an
-issue found with some devices where the efuse is not programmed
-correctly from the factory or when the register gets set erroneously.
+When CONFIG_PCI_P2PDMA=y (which is basically enabled on all
+large x86 distros), it maps the PFN's via a ZONE_DEVICE
+mapping using devm_memremap_pages(). The mapped virtual
+address range corresponds to the pci_resource_start()
+of the BAR address and size corresponding to the BAR length.
 
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Tested-by: Philippe Simons <simons.philippe@gmail.com>
-Link: https://lore.kernel.org/r/20250204155835.161973-4-macroalpha82@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+When KASLR is enabled, the direct map range of the kernel is
+reduced to the size of physical memory plus additional padding.
+If the BAR address is beyond this limit, PCI peer to peer DMA
+mappings fail.
+
+Fix this by not shrinking the size of the direct map when
+CONFIG_PCI_P2PDMA=y.
+
+This reduces the total available entropy, but it's better than
+the current work around of having to disable KASLR completely.
+
+[ mingo: Clarified the changelog to point out the broad impact ... ]
+
+Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com> # drivers/pci/Kconfig
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/lkml/20250206023201.1481957-1-balbirs@nvidia.com/
+Link: https://lore.kernel.org/r/20250206234234.1912585-1-balbirs@nvidia.com
+--
+ arch/x86/mm/kaslr.c | 10 ++++++++--
+ drivers/pci/Kconfig |  6 ++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/axp20x_battery.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/x86/mm/kaslr.c | 10 ++++++++--
+ drivers/pci/Kconfig |  6 ++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-index 3c3158f31a484..f4cf129a0b683 100644
---- a/drivers/power/supply/axp20x_battery.c
-+++ b/drivers/power/supply/axp20x_battery.c
-@@ -89,6 +89,8 @@
- #define AXP717_BAT_CC_MIN_UA		0
- #define AXP717_BAT_CC_MAX_UA		3008000
+diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
+index 230f1dee4f095..e0b0ec0f82457 100644
+--- a/arch/x86/mm/kaslr.c
++++ b/arch/x86/mm/kaslr.c
+@@ -109,8 +109,14 @@ void __init kernel_randomize_memory(void)
+ 	memory_tb = DIV_ROUND_UP(max_pfn << PAGE_SHIFT, 1UL << TB_SHIFT) +
+ 		CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING;
  
-+#define AXP717_TS_PIN_DISABLE		BIT(4)
-+
- struct axp20x_batt_ps;
- 
- struct axp_data {
-@@ -117,6 +119,7 @@ struct axp20x_batt_ps {
- 	/* Maximum constant charge current */
- 	unsigned int max_ccc;
- 	const struct axp_data	*data;
-+	bool ts_disable;
- };
- 
- static int axp20x_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
-@@ -984,6 +987,24 @@ static void axp717_set_battery_info(struct platform_device *pdev,
- 	int ccc = info->constant_charge_current_max_ua;
- 	int val;
- 
-+	axp_batt->ts_disable = (device_property_read_bool(axp_batt->dev,
-+							  "x-powers,no-thermistor"));
-+
+-	/* Adapt physical memory region size based on available memory */
+-	if (memory_tb < kaslr_regions[0].size_tb)
 +	/*
-+	 * Under rare conditions an incorrectly programmed efuse for
-+	 * the temp sensor on the PMIC may trigger a fault condition.
-+	 * Allow users to hard-code if the ts pin is not used to work
-+	 * around this problem. Note that this requires the battery
-+	 * be correctly defined in the device tree with a monitored
-+	 * battery node.
++	 * Adapt physical memory region size based on available memory,
++	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
++	 * device BAR space assuming the direct map space is large enough
++	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
++	 * to the physical BAR address.
 +	 */
-+	if (axp_batt->ts_disable) {
-+		regmap_update_bits(axp_batt->regmap,
-+				   AXP717_TS_PIN_CFG,
-+				   AXP717_TS_PIN_DISABLE,
-+				   AXP717_TS_PIN_DISABLE);
-+	}
++	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
+ 		kaslr_regions[0].size_tb = memory_tb;
+ 
+ 	/*
+diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+index 0d94e4a967d81..7cef00d9d7ab6 100644
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -194,6 +194,12 @@ config PCI_P2PDMA
+ 	  P2P DMA transactions must be between devices behind the same root
+ 	  port.
+ 
++	  Enabling this option will reduce the entropy of x86 KASLR memory
++	  regions. For example - on a 46 bit system, the entropy goes down
++	  from 16 bits to 15 bits. The actual reduction in entropy depends
++	  on the physical address bits, on processor features, kernel config
++	  (5 level page table) and physical memory present on the system.
 +
- 	if (vmin > 0 && axp717_set_voltage_min_design(axp_batt, vmin))
- 		dev_err(&pdev->dev,
- 			"couldn't set voltage_min_design\n");
+ 	  If unsure, say N.
+ 
+ config PCI_LABEL
 -- 
 2.39.5
 
