@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-147135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15CAEAC564D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:20:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D64FAC562A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 990BF7A6DBC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 973E01BA6C3E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CB71E89C;
-	Tue, 27 May 2025 17:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716F927FD49;
+	Tue, 27 May 2025 17:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htWCSZs/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dyk4qGVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D329E27933A;
-	Tue, 27 May 2025 17:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC6827FB0C;
+	Tue, 27 May 2025 17:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366397; cv=none; b=MeRFkVLeV7KLSllqtPJUsYNFmvlgk6mv4etUWy7UDlf7KIa5piRxwsDBC01CCvZX3rVgt9KjotoD0k1s5GBxuK/gbQRlxWNvyESOe9L7cvhXe0GlyQpIckcUg0LAJHjJ2rtu2fUy2y7b9yPjSLsCkFXJ/19SwIwXHAFcIu7qhx4=
+	t=1748366302; cv=none; b=gc4Jin2mcE7Ux1wbL7Fi4mcmuKmW3bWXm+KCyDTPZQQulIVjuUdAMMUxw+3wXAzRVI8Enb2SV6fFaJQZsCqf9dCxLjkCQ9J1bhVxSioAN+AZFhJw6+dPOkqYde6OcmLI03GDWgesOmQq0Oei1UycoHRneY2kK6uFQeXYkKYkgtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366397; c=relaxed/simple;
-	bh=m2jaykpo31im0AZyYSdYU9lIRsG9ZX5Nlh/Z+RAKqmE=;
+	s=arc-20240116; t=1748366302; c=relaxed/simple;
+	bh=q+n8sVKmFvaG8rD14UBjrkSDj9Zxn0gwYrqycENMSLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SitR0UK3RHVl4rp/f/sRj472zGc3tiZGZfQDPArVWHLvp0BjwR1YNYTxMQs8uXm4WZErxzNXhZuSMDWhxAW10wrZnhTJHDaIYLp6ILVXmEBE//rbACc3vHgiht4RTHYIuEWborSDJhLOTD+Df0rJW5vHu6i+CSDvRF1KuMFX7uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htWCSZs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E26C4CEE9;
-	Tue, 27 May 2025 17:19:57 +0000 (UTC)
+	 MIME-Version; b=ES94vPnvYVKkCAqgo3reW5Yku9kTz9aBTik5RYAd5TBnmgx7DLQCsJnmbyyXlKVm5lzDhhnSfmjls6st323qWXnhukYh53u7S1tiRVQSRdQuwuB4sJwMo9ZyKcjifXIlfN2GrdQY1l8ulHJpiAWuiN4bLqpL2SFIiFM9A0uZ0Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dyk4qGVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B078BC4CEE9;
+	Tue, 27 May 2025 17:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366397;
-	bh=m2jaykpo31im0AZyYSdYU9lIRsG9ZX5Nlh/Z+RAKqmE=;
+	s=korg; t=1748366302;
+	bh=q+n8sVKmFvaG8rD14UBjrkSDj9Zxn0gwYrqycENMSLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htWCSZs/WRHUB5PSy6+Vw3ZY8cKHSlR/ch47LexSnKI1kiuWQcEZbkJQOgHpvc02s
-	 Jkgnm6GcvvboxWHhKuBTABDpMkmFW/t1npR8w7l76vwjyIxHCWGnwKi3/dPVj1sIBs
-	 qvUU/wiVbjzyYBWi+DUpOlCdh46uB35VrSOyhLvo=
+	b=Dyk4qGVIXAsDcKHQURO2ckJRVa+DRhla9IXpcvE8H3kQ6hdfNoIN1RxXqbXlQ0oGr
+	 bRLvgzkW8rH0bZUcXp65uLOp02mAjDa9qx4x2V2FrLQseW5LEZ3oHRuv039pnjOjwS
+	 BP3ryYzpKcIFHQ5OsCZDPVY+ftOT3WiFBUvqyUMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gao xu <gaoxu2@honor.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 024/783] cgroup: Fix compilation issue due to cgroup_mutex not being exported
-Date: Tue, 27 May 2025 18:17:01 +0200
-Message-ID: <20250527162514.083195973@linuxfoundation.org>
+Subject: [PATCH 6.14 025/783] vhost_task: fix vhost_task_create() documentation
+Date: Tue, 27 May 2025 18:17:02 +0200
+Message-ID: <20250527162514.125760244@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -61,50 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gaoxu <gaoxu2@honor.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 87c259a7a359e73e6c52c68fcbec79988999b4e6 ]
+[ Upstream commit fec0abf52609c20279243699d08b660c142ce0aa ]
 
-When adding folio_memcg function call in the zram module for
-Android16-6.12, the following error occurs during compilation:
-ERROR: modpost: "cgroup_mutex" [../soc-repo/zram.ko] undefined!
+Commit cb380909ae3b ("vhost: return task creation error instead of NULL")
+changed the return value of vhost_task_create(), but did not update the
+documentation.
 
-This error is caused by the indirect call to lockdep_is_held(&cgroup_mutex)
-within folio_memcg. The export setting for cgroup_mutex is controlled by
-the CONFIG_PROVE_RCU macro. If CONFIG_LOCKDEP is enabled while
-CONFIG_PROVE_RCU is not, this compilation error will occur.
+Reflect the change in the documentation: on an error, vhost_task_create()
+returns an ERR_PTR() and no longer NULL.
 
-To resolve this issue, add a parallel macro CONFIG_LOCKDEP control to
-ensure cgroup_mutex is properly exported when needed.
-
-Signed-off-by: gao xu <gaoxu2@honor.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20250327124435.142831-1-sgarzare@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 2 +-
+ kernel/vhost_task.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 68d58753c75c3..660d27a0cb3d4 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -90,7 +90,7 @@
- DEFINE_MUTEX(cgroup_mutex);
- DEFINE_SPINLOCK(css_set_lock);
- 
--#ifdef CONFIG_PROVE_RCU
-+#if (defined CONFIG_PROVE_RCU || defined CONFIG_LOCKDEP)
- EXPORT_SYMBOL_GPL(cgroup_mutex);
- EXPORT_SYMBOL_GPL(css_set_lock);
- #endif
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index 2ef2e1b800916..2f844c279a3e0 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -111,7 +111,7 @@ EXPORT_SYMBOL_GPL(vhost_task_stop);
+  * @arg: data to be passed to fn and handled_kill
+  * @name: the thread's name
+  *
+- * This returns a specialized task for use by the vhost layer or NULL on
++ * This returns a specialized task for use by the vhost layer or ERR_PTR() on
+  * failure. The returned task is inactive, and the caller must fire it up
+  * through vhost_task_start().
+  */
 -- 
 2.39.5
 
