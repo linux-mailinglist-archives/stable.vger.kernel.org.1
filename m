@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B32AC5598
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D31AC58DC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 900477AF709
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C72CD4C1068
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1251E89C;
-	Tue, 27 May 2025 17:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263A427D784;
+	Tue, 27 May 2025 17:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mggFhgY3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDFRcxQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9F2280038;
-	Tue, 27 May 2025 17:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D2928033F;
+	Tue, 27 May 2025 17:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365926; cv=none; b=IcLo3wi+wQesuaptjtUCt1XhPMuzjdKGVdXA3kAxbHiJrOgwky+ggx1y8tKVfSsFlIh7zRK7KeCRN9D6juCusJUDVka3DhIuf0RSLIhLtyN6+GqQ1dpkZ3dhSsBal1UEl5wLDuXDG29SQWVOlzHgQaI7MIA4BWvySjjdcmpgXLE=
+	t=1748368199; cv=none; b=O/zCd+4gGbRhRAYdxE4TZgYQcSKaym9HPQcjrF8XFEDVeMjIcM9yCugMNhUk5Q/pQA+amwEGpjrX2ZSCP05yk6LMasX+KrsKMSMDvruvkBgDdvZji9qbZ+fXALcmgi78v+GU8gEwER4JQ5lMqeAZH+5exiKXTXcN9ld4aObrUI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365926; c=relaxed/simple;
-	bh=jUwNyQCD8l6yRBy6oaPNQIuva4X+9q5QaBWO8WZ8gvo=;
+	s=arc-20240116; t=1748368199; c=relaxed/simple;
+	bh=K6eQWgcvxyYKecMj74UmrFvfQoPksh6pW7NSBvbSOrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gr6uFFlCWAKjjzAtIwmejy/mu04sg7Q6XlggovO3Tuc7hvBRd6g9LcOakd31hwVm55lnQ6hIQ784hXGpXq2GQqqoNtG8rGlYi3BhGoWSX5Su21X6Ppg2THxPwTU678V3ImwqrSSYcryel/TQKmWvAyZyn9Hf7nzcga/pcvmF13c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mggFhgY3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468B3C4CEE9;
-	Tue, 27 May 2025 17:12:06 +0000 (UTC)
+	 MIME-Version; b=l6AyxvmfVWlfOGl0DAB6Ti/DwyqZHqtlmAhejvcv98Px+cr/pJtahwbqsezJjtWpkemsMaHOl9r5/LooT5Plh9/VQuLeRxoAu1yPwYpjGYq/N7hE3sI5HXJg08rD65s4gsePINWrexkkdBYXxq76wgelxHEFbsHLBvK+zga6UJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDFRcxQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C99C4CEEA;
+	Tue, 27 May 2025 17:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365926;
-	bh=jUwNyQCD8l6yRBy6oaPNQIuva4X+9q5QaBWO8WZ8gvo=;
+	s=korg; t=1748368199;
+	bh=K6eQWgcvxyYKecMj74UmrFvfQoPksh6pW7NSBvbSOrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mggFhgY3tJ46F8Dul/G05JH/BTVlf3WCAfqXbQ7umzWF7k4PuvS0XHEn0yMw++FYL
-	 uPmHu+gDqlVL9MNpo7EDGOyR1YTtE5SrdJGzjUEYlWT71jXbgwj4ZA8s34BjdiZFgt
-	 26F/VZkTQaCPfL/wQ7pfqggYQ0BkMs5zsPbvITbo=
+	b=BDFRcxQpASruQkANqlV3dyoves7+ihROWe47hv2H967/Q3gR5bJ8hsK/OpHErj4UX
+	 P6o5oy4c0XhMxKNU2c4xFBqPuw+jQW3bHmJNZkL16eP36AtvvmEluKENvgGp5lUKJ0
+	 anFVD/5Ys+5NBVSXtgi3of/JVTepgsUEU6EE9iZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 534/626] soundwire: bus: Fix race on the creation of the IRQ domain
+Subject: [PATCH 6.14 630/783] i3c: master: svc: Fix implicit fallthrough in svc_i3c_master_ibi_work()
 Date: Tue, 27 May 2025 18:27:07 +0200
-Message-ID: <20250527162506.693179178@linuxfoundation.org>
+Message-ID: <20250527162538.802201586@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit fd15594ba7d559d9da741504c322b9f57c4981e5 ]
+[ Upstream commit e8d2d287e26d9bd9114cf258a123a6b70812442e ]
 
-The SoundWire IRQ domain needs to be created before any slaves are added
-to the bus, such that the domain is always available when needed. Move
-the call to sdw_irq_create() before the calls to sdw_acpi_find_slaves()
-and sdw_of_find_slaves().
+Clang warns (or errors with CONFIG_WERROR=y):
 
-Fixes: 12a95123bfe1 ("soundwire: bus: Allow SoundWire peripherals to register IRQ handlers")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250409122239.1396489-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+  drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+    596 |         default:
+        |         ^
+  drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
+    596 |         default:
+        |         ^
+        |         break;
+  1 error generated.
+
+Clang is a little more pedantic than GCC, which does not warn when
+falling through to a case that is just break or return. Clang's version
+is more in line with the kernel's own stance in deprecated.rst, which
+states that all switch/case blocks must end in either break,
+fallthrough, continue, goto, or return. Add the missing break to silence
+the warning.
+
+Fixes: 0430bf9bc1ac ("i3c: master: svc: Fix missing STOP for master request")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/bus.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index 263ca32f0c5c3..6ca06cce41d3c 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -121,6 +121,10 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
- 	set_bit(SDW_GROUP13_DEV_NUM, bus->assigned);
- 	set_bit(SDW_MASTER_DEV_NUM, bus->assigned);
- 
-+	ret = sdw_irq_create(bus, fwnode);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * SDW is an enumerable bus, but devices can be powered off. So,
- 	 * they won't be able to report as present.
-@@ -137,6 +141,7 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
- 
- 	if (ret < 0) {
- 		dev_err(bus->dev, "Finding slaves failed:%d\n", ret);
-+		sdw_irq_delete(bus);
- 		return ret;
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 2cf2c567f8931..75127b6c161f0 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -552,6 +552,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
+ 		svc_i3c_master_emit_stop(master);
++		break;
+ 	default:
+ 		break;
  	}
- 
-@@ -155,10 +160,6 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
- 	bus->params.curr_bank = SDW_BANK0;
- 	bus->params.next_bank = SDW_BANK1;
- 
--	ret = sdw_irq_create(bus, fwnode);
--	if (ret)
--		return ret;
--
- 	return 0;
- }
- EXPORT_SYMBOL(sdw_bus_master_add);
 -- 
 2.39.5
 
