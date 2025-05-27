@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-147087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE085AC5614
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9DCAC595C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCFE71BA5E29
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88D0E9E0D31
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D06279782;
-	Tue, 27 May 2025 17:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8632A280037;
+	Tue, 27 May 2025 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSm0LuO3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtDFNiKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C901DB34C;
-	Tue, 27 May 2025 17:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4228528001E;
+	Tue, 27 May 2025 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366244; cv=none; b=asu2G1ovuH+pqHBfKMzi0J+R3AX+jd56jsW60va+S8odbO0oXgXwiEewH8W+84i0+PuJtHHrNmhwkzgYnwAmccTe679kdQ1pFygeN15NPo/jFPD1DJMDqmw41LdYS6SgkpRJ13e3GEzuLrq67O+hzDjt0Kzp89Xa1dWLCHbiFBc=
+	t=1748368555; cv=none; b=XonF0r+W5J/8i6NUIVqI6+T8QosGDTugc7pyL/OTOLz4rtFNO0MZnvLPzc81bsqGzh4tsW8pHexS/vcKAogCfuYhga8ochNzbjc+YeWG8hWys39ksNr1lGeTMvCp7XgQwwIaQTIiQRwK6LvADWgXpEqk5asrKqAVKRfN2sNhnjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366244; c=relaxed/simple;
-	bh=1KX06KKxsvQDPkgkTJcu3RxtStj0jBZdQ0MNXnbdk90=;
+	s=arc-20240116; t=1748368555; c=relaxed/simple;
+	bh=v/tL9e5zyq8O3vBK5iSoSxck+4BRdNI662khMF0ox7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qc68OVb3Mt05ZqUrAUP+YE1bXnz7Aw0e4KwgBVadc5VClrtn19dswS6b0i1h8Xhpi/b6JscIcRNvn871+rG+8Lm/lA76b96zNEmXHBWnG2HJNVIXIohfL0J5Wb5N9PRCP7Uo9mf9gxhXAFeN+F7+aK+kliUwktfCIF9ug34Lpkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSm0LuO3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5878C4CEE9;
-	Tue, 27 May 2025 17:17:23 +0000 (UTC)
+	 MIME-Version; b=TIFIaBouah2Zr6OYrOUf5rZ5/5LPC4+oCg8fka6SQV7+5AJ911PcFH/FICC8Iocy/SApxTyPXp4jFNOXJtlxLZ/qJJw7uGlxkkuDWKFifvLrwuAdC1k7ayV6SdnMVMqHSSczGOjNRSjUVTcBgRKaIBZ0sCtFYsExPIOu90MyKJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtDFNiKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6664C4CEE9;
+	Tue, 27 May 2025 17:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366244;
-	bh=1KX06KKxsvQDPkgkTJcu3RxtStj0jBZdQ0MNXnbdk90=;
+	s=korg; t=1748368555;
+	bh=v/tL9e5zyq8O3vBK5iSoSxck+4BRdNI662khMF0ox7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSm0LuO32KtfMl5Qlknw1n3z3WxY6+jrxW78WgiYS9mpS4sG0+iuRq6HvxnrkklQ6
-	 odv7CPzGieS0i1Qn3Iv3QX/LjeatjQKESijzoEwueimsA4cKxhG/Kn5Ojn+mSUs0+N
-	 r0Rq1QRmF5eVs24Gd+THqBM7R2LD9+2WQRqkB3So=
+	b=HtDFNiKfYkC+tr6EBrZ8+bp8lZlFA088TlN3VlWLfvdJKQ0JJYIWVE15cDoDaVpry
+	 NGA66M2/NoUaYBfhyz7LtjY5yghwbbG4wdh/eHug4+mKVZmBHtayXaQlEEliBx7Pkq
+	 kP5XgcZyhtwadOnOQgGRma4QpCbHMJrJOEBiJ8gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 617/626] kbuild: Properly disable -Wunterminated-string-initialization for clang
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 713/783] sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()
 Date: Tue, 27 May 2025 18:28:30 +0200
-Message-ID: <20250527162510.067689488@linuxfoundation.org>
+Message-ID: <20250527162542.153830523@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,109 +63,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit 4f79eaa2ceac86a0e0f304b0bab556cca5bf4f30 upstream.
+[ Upstream commit 3f981138109f63232a5fb7165938d4c945cc1b9d ]
 
-Clang and GCC have different behaviors around disabling warnings
-included in -Wall and -Wextra and the order in which flags are
-specified, which is exposed by clang's new support for
--Wunterminated-string-initialization.
+When enqueuing the first packet to an HFSC class, hfsc_enqueue() calls the
+child qdisc's peek() operation before incrementing sch->q.qlen and
+sch->qstats.backlog. If the child qdisc uses qdisc_peek_dequeued(), this may
+trigger an immediate dequeue and potential packet drop. In such cases,
+qdisc_tree_reduce_backlog() is called, but the HFSC qdisc's qlen and backlog
+have not yet been updated, leading to inconsistent queue accounting. This
+can leave an empty HFSC class in the active list, causing further
+consequences like use-after-free.
 
-  $ cat test.c
-  const char foo[3] = "FOO";
-  const char bar[3] __attribute__((__nonstring__)) = "BAR";
+This patch fixes the bug by moving the increment of sch->q.qlen and
+sch->qstats.backlog before the call to the child qdisc's peek() operation.
+This ensures that queue length and backlog are always accurate when packet
+drops or dequeues are triggered during the peek.
 
-  $ clang -fsyntax-only -Wextra test.c
-  test.c:1:21: warning: initializer-string for character array is too long, array size is 3 but initializer has size 4 (including the null terminating character); did you mean to use the 'nonstring' attribute? [-Wunterminated-string-initialization]
-      1 | const char foo[3] = "FOO";
-        |                     ^~~~~
-  $ clang -fsyntax-only -Wextra -Wno-unterminated-string-initialization test.c
-  $ clang -fsyntax-only -Wno-unterminated-string-initialization -Wextra test.c
-  test.c:1:21: warning: initializer-string for character array is too long, array size is 3 but initializer has size 4 (including the null terminating character); did you mean to use the 'nonstring' attribute? [-Wunterminated-string-initialization]
-      1 | const char foo[3] = "FOO";
-        |                     ^~~~~
-
-  $ gcc -fsyntax-only -Wextra test.c
-  test.c:1:21: warning: initializer-string for array of ‘char’ truncates NUL terminator but destination lacks ‘nonstring’ attribute (4 chars into 3 available) [-Wunterminated-string-initialization]
-      1 | const char foo[3] = "FOO";
-        |                     ^~~~~
-  $ gcc -fsyntax-only -Wextra -Wno-unterminated-string-initialization test.c
-  $ gcc -fsyntax-only -Wno-unterminated-string-initialization -Wextra test.c
-
-Move -Wextra up right below -Wall in Makefile.extrawarn to ensure these
-flags are at the beginning of the warning options list. Move the couple
-of warning options that have been added to the main Makefile since
-commit e88ca24319e4 ("kbuild: consolidate warning flags in
-scripts/Makefile.extrawarn") to scripts/Makefile.extrawarn after -Wall /
--Wextra to ensure they get properly disabled for all compilers.
-
-Fixes: 9d7a0577c9db ("gcc-15: disable '-Wunterminated-string-initialization' entirely for now")
-Link: https://github.com/llvm/llvm-project/issues/10359
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 12d0ad3be9c3 ("net/sched/sch_hfsc.c: handle corner cases where head may change invalidating calculated deadline")
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250518222038.58538-2-xiyou.wangcong@gmail.com
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile                   |    7 -------
- scripts/Makefile.extrawarn |    9 ++++++++-
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ net/sched/sch_hfsc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -997,13 +997,6 @@ NOSTDINC_FLAGS += -nostdinc
- # perform bounds checking.
- KBUILD_CFLAGS += $(call cc-option, -fstrict-flex-arrays=3)
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index cb8c525ea20ea..7986145a527cb 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1569,6 +1569,9 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
+ 		return err;
+ 	}
  
--#Currently, disable -Wstringop-overflow for GCC 11, globally.
--KBUILD_CFLAGS-$(CONFIG_CC_NO_STRINGOP_OVERFLOW) += $(call cc-disable-warning, stringop-overflow)
--KBUILD_CFLAGS-$(CONFIG_CC_STRINGOP_OVERFLOW) += $(call cc-option, -Wstringop-overflow)
--
--#Currently, disable -Wunterminated-string-initialization as broken
--KBUILD_CFLAGS += $(call cc-disable-warning, unterminated-string-initialization)
--
- # disable invalid "can't wrap" optimizations for signed / pointers
- KBUILD_CFLAGS	+= -fno-strict-overflow
- 
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -8,6 +8,7 @@
- 
- # Default set of warnings, always enabled
- KBUILD_CFLAGS += -Wall
-+KBUILD_CFLAGS += -Wextra
- KBUILD_CFLAGS += -Wundef
- KBUILD_CFLAGS += -Werror=implicit-function-declaration
- KBUILD_CFLAGS += -Werror=implicit-int
-@@ -68,6 +69,13 @@ KBUILD_CFLAGS += -Wno-pointer-sign
- # globally built with -Wcast-function-type.
- KBUILD_CFLAGS += $(call cc-option, -Wcast-function-type)
- 
-+# Currently, disable -Wstringop-overflow for GCC 11, globally.
-+KBUILD_CFLAGS-$(CONFIG_CC_NO_STRINGOP_OVERFLOW) += $(call cc-disable-warning, stringop-overflow)
-+KBUILD_CFLAGS-$(CONFIG_CC_STRINGOP_OVERFLOW) += $(call cc-option, -Wstringop-overflow)
++	sch->qstats.backlog += len;
++	sch->q.qlen++;
 +
-+# Currently, disable -Wunterminated-string-initialization as broken
-+KBUILD_CFLAGS += $(call cc-disable-warning, unterminated-string-initialization)
-+
- # The allocators already balk at large sizes, so silence the compiler
- # warnings for bounds checks involving those possible values. While
- # -Wno-alloc-size-larger-than would normally be used here, earlier versions
-@@ -97,7 +105,6 @@ KBUILD_CFLAGS += $(call cc-option,-Wenum
- # Explicitly clear padding bits during variable initialization
- KBUILD_CFLAGS += $(call cc-option,-fzero-init-padding-bits=all)
+ 	if (first && !cl->cl_nactive) {
+ 		if (cl->cl_flags & HFSC_RSC)
+ 			init_ed(cl, len);
+@@ -1584,9 +1587,6 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
  
--KBUILD_CFLAGS += -Wextra
- KBUILD_CFLAGS += -Wunused
+ 	}
  
- #
+-	sch->qstats.backlog += len;
+-	sch->q.qlen++;
+-
+ 	return NET_XMIT_SUCCESS;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
