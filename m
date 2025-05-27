@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C088AC53DC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D358BAC5758
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B8F4162368
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:52:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA28E3A3AC4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E978027D784;
-	Tue, 27 May 2025 16:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C23627BF79;
+	Tue, 27 May 2025 17:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SoOb+/5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTxjF3Yy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E7C27A900;
-	Tue, 27 May 2025 16:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DA82110E;
+	Tue, 27 May 2025 17:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364756; cv=none; b=gbodAPcOxd9ZEzLj3anFhrfPuhyjj3119Fr5ioAXhg5qp+lcKwvMyfLheEdQvNgNa9rKLFVv1BRlTDhcEKsFQEZdpKwxBiy+UEujjUO4AHEfKNRZTovffGu5oe/lFqcpUtkLz+beZzp00x/Fiu5/mFsPkIHjiN/zYEHwLAPq4kc=
+	t=1748367116; cv=none; b=IjaJnc76SdfnwqnJpVSop7csw2uiw7WL4TlTy0qUIN/a6Z4nZW6lzUwUq/LeH2EiqQPcyDP9FKRzYnAT/1pPQWbR/h9ChbWxeoLnt4YOGSBmBcMyZGBQ4xh/Pz2zGi6g3T0J67b02y0YiZyyCLVpYky73+8lLiipt7jDcAdEixs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364756; c=relaxed/simple;
-	bh=2eK4mg4vbUTecGLNvk3njGVHO+oshAiMpxwtH2H6B9A=;
+	s=arc-20240116; t=1748367116; c=relaxed/simple;
+	bh=cpRFd1KXXODB/1Gv+fRDLzt9E0DQjUgNoFj+qAg/NJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFMExTCGN0FuWQEZJMOxJCM8sEifZvPlC+V8oVeqYJsqFToe8EnNCc97FBSrx8X672HAjvnybRn3v6lw8SdirZMpoJj8FgGY9jz75VfksVvitw437mQA5EnlBIsIhAh46V/0YO0igyiQ/ktehGcxBuJDh6k4kItmt7T0+3zDUNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoOb+/5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2305C4CEE9;
-	Tue, 27 May 2025 16:52:35 +0000 (UTC)
+	 MIME-Version; b=DIyIfKwd0I4D0hD/FHOv3bCIzXDPTIjjiRfYTi3S6dXbt7bHTRvOIJCUExGkOMv0KsB5rTr/FfR00WPBZDC6AQ6yTnyyX5NsYRElURGEKPh0R81uyoqXCcMYs5CmwZwcJJ74KAAng0Lb+p54gjmopSLjmoNXsj1X+z9OLZVAIk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTxjF3Yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE14BC4CEE9;
+	Tue, 27 May 2025 17:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364756;
-	bh=2eK4mg4vbUTecGLNvk3njGVHO+oshAiMpxwtH2H6B9A=;
+	s=korg; t=1748367116;
+	bh=cpRFd1KXXODB/1Gv+fRDLzt9E0DQjUgNoFj+qAg/NJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SoOb+/5t9ls0ImN96WfHzGnTgT4Id3IyB2GKRqaPA8rDALm/8mwWZYlJl9nbuxWpC
-	 szZpEwXZEolSU9ocC/Fl4TpL4RWc0uAHplb/mSHiNHm2KOus/xVGIH1dCyxZAMG3K5
-	 XbBf8brRSCM12VvJ+8Z25kd1u7LFmiF+zIzzDvqw=
+	b=ZTxjF3Yy3dsvDJVlu7QhIWtgj8RqF0aM6IjwAXsT8qj503M4praaWyUZjzQn3lMpD
+	 HHeUzLOlot8VfBB3rbYXq0dY3RVINbO5S3tO4Efdtobl+ZkRKj+fvd4OybjHF0pEhE
+	 EsU28MwTnh77zNnr/fnC590lec02KbhiRpo8demw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	Lee Jones <lee@kernel.org>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/626] mfd: tps65219: Remove TPS65219_REG_TI_DEV_ID check
-Date: Tue, 27 May 2025 18:20:50 +0200
-Message-ID: <20250527162451.403258872@linuxfoundation.org>
+Subject: [PATCH 6.14 254/783] drm/amdgpu: increase RAS bad page threshold
+Date: Tue, 27 May 2025 18:20:51 +0200
+Message-ID: <20250527162523.444362091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+From: Tao Zhou <tao.zhou1@amd.com>
 
-[ Upstream commit 76b58d5111fdcffce615beb71520bc7a6f1742c9 ]
+[ Upstream commit 334dc5fcc3f177823115ec4e075259997c16d4a7 ]
 
-The chipid macro/variable and regmap_read function call is not needed
-because the TPS65219_REG_TI_DEV_ID register value is not a consistent value
-across TPS65219 PMIC config versions. Reading from the DEV_ID register
-without a consistent value to compare it to isn't useful. There isn't a
-way to verify the match data ID is the same ID read from the DEV_ID device
-register. 0xF0 isn't a DEV_ID value consistent across TPS65219 NVM
-configurations.
+For default policy, driver will issue an RMA event when the number of
+bad pages is greater than 8 physical rows, rather than reaches 8
+physical rows, don't rely on threshold configurable parameters in
+default mode.
 
-For TPS65215, there is a consistent value in bits 5-0 of the DEV_ID
-register. However, there are other error checks in place within probe()
-that apply to both PMICs rather than keeping this isolated check for one
-PMIC.
-
-Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Link: https://lore.kernel.org/r/20250206173725.386720-4-s-ramamoorthy@ti.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/tps65219.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-index 57ff5cb294a66..d3b77abec786e 100644
---- a/drivers/mfd/tps65219.c
-+++ b/drivers/mfd/tps65219.c
-@@ -228,7 +228,6 @@ static const struct regmap_irq_chip tps65219_irq_chip = {
- static int tps65219_probe(struct i2c_client *client)
- {
- 	struct tps65219 *tps;
--	unsigned int chipid;
- 	bool pwr_button;
- 	int ret;
- 
-@@ -253,12 +252,6 @@ static int tps65219_probe(struct i2c_client *client)
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_read(tps->regmap, TPS65219_REG_TI_DEV_ID, &chipid);
--	if (ret) {
--		dev_err(tps->dev, "Failed to read device ID: %d\n", ret);
--		return ret;
--	}
--
- 	ret = devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
- 				   tps65219_cells, ARRAY_SIZE(tps65219_cells),
- 				   NULL, 0, regmap_irq_get_domain(tps->irq_data));
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+index 52c16bfeccaad..12ffe4a963d31 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+@@ -748,7 +748,7 @@ amdgpu_ras_eeprom_update_header(struct amdgpu_ras_eeprom_control *control)
+ 	/* Modify the header if it exceeds.
+ 	 */
+ 	if (amdgpu_bad_page_threshold != 0 &&
+-	    control->ras_num_bad_pages >= ras->bad_page_cnt_threshold) {
++	    control->ras_num_bad_pages > ras->bad_page_cnt_threshold) {
+ 		dev_warn(adev->dev,
+ 			"Saved bad pages %d reaches threshold value %d\n",
+ 			control->ras_num_bad_pages, ras->bad_page_cnt_threshold);
+@@ -806,7 +806,7 @@ amdgpu_ras_eeprom_update_header(struct amdgpu_ras_eeprom_control *control)
+ 	 */
+ 	if (amdgpu_bad_page_threshold != 0 &&
+ 	    control->tbl_hdr.version == RAS_TABLE_VER_V2_1 &&
+-	    control->ras_num_bad_pages < ras->bad_page_cnt_threshold)
++	    control->ras_num_bad_pages <= ras->bad_page_cnt_threshold)
+ 		control->tbl_rai.health_percent = ((ras->bad_page_cnt_threshold -
+ 						   control->ras_num_bad_pages) * 100) /
+ 						   ras->bad_page_cnt_threshold;
+@@ -1451,7 +1451,7 @@ int amdgpu_ras_eeprom_check(struct amdgpu_ras_eeprom_control *control)
+ 				  res);
+ 			return -EINVAL;
+ 		}
+-		if (ras->bad_page_cnt_threshold > control->ras_num_bad_pages) {
++		if (ras->bad_page_cnt_threshold >= control->ras_num_bad_pages) {
+ 			/* This means that, the threshold was increased since
+ 			 * the last time the system was booted, and now,
+ 			 * ras->bad_page_cnt_threshold - control->num_recs > 0,
 -- 
 2.39.5
 
