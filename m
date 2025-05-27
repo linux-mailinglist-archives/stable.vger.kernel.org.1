@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-147390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521B7AC5776
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A93BAC543B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9144A7097
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349731BA4885
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8F527BF79;
-	Tue, 27 May 2025 17:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012A8280008;
+	Tue, 27 May 2025 16:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0j1OR9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETxtXe6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8BB27FB02;
-	Tue, 27 May 2025 17:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CB02CCC0;
+	Tue, 27 May 2025 16:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367194; cv=none; b=EwJ/KnWZEeZpqPdorMVhbbIVoqyHdyGwaSe/qM+PHW/3WZB9PdGH4dCIcXvVC5LOjAR6jouSP6Y6R0SulRtLoKfpkXeAp63W1mh6mBn3hp7PvYDQJlmQKrLPJpXxqc8YbdxPK5Dfd59sUTuD1k42FumqpajrdHLfEY3hTOGN8aw=
+	t=1748365015; cv=none; b=W+JBvwREtWi9LGK34K2WiMf9oYlktOAcXSYoyfds4CLZvJSW0S41aFeIzGMC2iiIgNJUTTDN/9aEmA5TBqRWyNTEixNSostHK/Kq2HsMkf65gTYjcl/ftylk1dxGCjw8eRN1KyDkk5poZ6LS5CGVameyvwxL12Z9FNCk4p/qvYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367194; c=relaxed/simple;
-	bh=u8LOYIyJnUm4/xLULUx0+uLb4UBswtJhsS843zeYSlo=;
+	s=arc-20240116; t=1748365015; c=relaxed/simple;
+	bh=eVG3osM5cJc5CJCHEI1FF4qId3mSqIbtpngO4c6vKuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PnqyvYp4byNeCJT+ZeE5utsXndiA4m/z58ca23vUOahTs4Uyak1EDCBVFFsBvFXlL1c4ZTx8p5xo9niNAhjvEhbE5SAfX5NovEnRXUz7RNqc50AXEzDXk65VGddbjRL3mRWRweicp1llDDFhYY/zjfIIF2ilrSeZ3rbHbhG61+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0j1OR9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBD0C4CEE9;
-	Tue, 27 May 2025 17:33:13 +0000 (UTC)
+	 MIME-Version; b=rSudNMNeI9y/8+KUYFlZtLn2XrhsYOQYNZq6jjaudtnt3LhpT5FMIvMwoKewNgYhT95fWZ8Fs84GwaIwBuTqrvUbqdUJgt/Q6VOlF4NZYpHb8Mb3a/OTa3qZi+UayuyDHUC+hNCkVZ0npV+tvcVArprX2dWxTPFNCTYuy+g1ePE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETxtXe6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1DDC4CEE9;
+	Tue, 27 May 2025 16:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367194;
-	bh=u8LOYIyJnUm4/xLULUx0+uLb4UBswtJhsS843zeYSlo=;
+	s=korg; t=1748365015;
+	bh=eVG3osM5cJc5CJCHEI1FF4qId3mSqIbtpngO4c6vKuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0j1OR9bE06wiyCdQt4zvXxARiem47+e58KbOt2nMx9wmb+57Ay+pB/vXq9oYQ1a4
-	 p8WNfOB48FpeG8MbqFu3VeyohLc/GCde9UwiRMjkSYUqbAKFbsj2puFCw98iHhC3Lg
-	 LRGIAT2BgiEKOHxMflSrE/+WwBMVHnzXpFYeLHL4=
+	b=ETxtXe6NNBX22oqfiNZwxt4f6c+TzoRafnrBNRc4LzmrYkv7jufAbzlwYDwiaZ4Tt
+	 6Ur1jF+Y0+fXVodf64xvz5caONQbwoQ20LZ7UDwBZwdcMBburEfy6hdL/ecU4bSJLk
+	 qLVai7lioTcNTJJ2dJ4n2AbUdSyB/EtGmH8sqkD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 308/783] block: mark bounce buffering as incompatible with integrity
-Date: Tue, 27 May 2025 18:21:45 +0200
-Message-ID: <20250527162525.611757131@linuxfoundation.org>
+Subject: [PATCH 6.12 213/626] arm64: tegra: Resize aperture for the IGX PCIe C5 slot
+Date: Tue, 27 May 2025 18:21:46 +0200
+Message-ID: <20250527162453.673043586@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 5fd0268a8806d35dcaf89139bfcda92be51b2b2f ]
+[ Upstream commit 6d4bfe6d86af1ef52bdb4592c9afb2037f24f2c4 ]
 
-None of the few drivers still using the legacy block layer bounce
-buffering support integrity metadata.  Explicitly mark the features as
-incompatible and stop creating the slab and mempool for integrity
-buffers for the bounce bio_set.
+Some discrete graphics cards such as the NVIDIA RTX A6000 support
+resizable BARs. When connecting an A6000 card to the NVIDIA IGX Orin
+platform, resizing the BAR1 aperture to 8GB fails because the current
+device-tree configuration for the PCIe C5 slot cannot support this.
+Fix this by updating the device-tree 'reg' and 'ranges' properties for
+the PCIe C5 slot to support this.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20250225154449.422989-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20250116151903.476047-1-jonathanh@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 5 +++++
- block/bounce.c       | 2 --
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ .../boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 67b119ffa1689..c430c10c864b6 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -124,6 +124,11 @@ static int blk_validate_integrity_limits(struct queue_limits *lim)
- 		return 0;
- 	}
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
+index 36e8880537460..9ce55b4d2de89 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
+@@ -302,6 +302,16 @@ pcie@14160000 {
+ 		};
  
-+	if (lim->features & BLK_FEAT_BOUNCE_HIGH) {
-+		pr_warn("no bounce buffer support for integrity metadata\n");
-+		return -EINVAL;
-+	}
+ 		pcie@141a0000 {
++			reg = <0x00 0x141a0000 0x0 0x00020000   /* appl registers (128K)      */
++			       0x00 0x3a000000 0x0 0x00040000   /* configuration space (256K) */
++			       0x00 0x3a040000 0x0 0x00040000   /* iATU_DMA reg space (256K)  */
++			       0x00 0x3a080000 0x0 0x00040000   /* DBI reg space (256K)       */
++			       0x2e 0x20000000 0x0 0x10000000>; /* ECAM (256MB)               */
 +
- 	if (!IS_ENABLED(CONFIG_BLK_DEV_INTEGRITY)) {
- 		pr_warn("integrity support disabled.\n");
- 		return -EINVAL;
-diff --git a/block/bounce.c b/block/bounce.c
-index 0d898cd5ec497..09a9616cf2094 100644
---- a/block/bounce.c
-+++ b/block/bounce.c
-@@ -41,8 +41,6 @@ static void init_bounce_bioset(void)
- 
- 	ret = bioset_init(&bounce_bio_set, BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
- 	BUG_ON(ret);
--	if (bioset_integrity_create(&bounce_bio_set, BIO_POOL_SIZE))
--		BUG_ON(1);
- 
- 	ret = bioset_init(&bounce_bio_split, BIO_POOL_SIZE, 0, 0);
- 	BUG_ON(ret);
++			ranges = <0x81000000 0x00 0x3a100000 0x00 0x3a100000 0x0 0x00100000      /* downstream I/O (1MB) */
++				  0x82000000 0x00 0x40000000 0x2e 0x30000000 0x0 0x08000000      /* non-prefetchable memory (128MB) */
++				  0xc3000000 0x28 0x00000000 0x28 0x00000000 0x6 0x20000000>;    /* prefetchable memory (25088MB) */
++
+ 			status = "okay";
+ 			vddio-pex-ctl-supply = <&vdd_1v8_ls>;
+ 			phys = <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>,
 -- 
 2.39.5
 
