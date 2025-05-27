@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-146574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22495AC53B6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F88AC5734
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDB604A1C26
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B3BB3A0303
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B0C27CB04;
-	Tue, 27 May 2025 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBD727FD56;
+	Tue, 27 May 2025 17:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOz4ug3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="clBjIAEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523371B6D08;
-	Tue, 27 May 2025 16:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC22280008;
+	Tue, 27 May 2025 17:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364645; cv=none; b=cN6l3qP4Tem3vOEHOs7t+51k4fESIuOzM/sXsp8Nwd6/YA+nafTFAXGoh1CpyIPS1B21uAG1tgp75T7p73zH5XJaFc2EXEgPAEnVEuDfmTxo3StCHRoAvssrMCeOJi8nAFtBjPiEKpc4gNXksOOsVhE+YxGK8OnHx8QMmA88q5M=
+	t=1748367009; cv=none; b=kvL2iZMFkHi5y7ho7tGPAaBOWQdEGcL87zOEZJ4ypn2PS1dM8CRZP3zUdfdvEZ3a3p4oExi6D0+OneKWGgAZOIxlFb8DHPtXxoQpig5JeJewhsr/HRoIpkZxq9TvBAp4Rjk6yBzGarIKhZvc9QBf22P3EHiZqTkW58bsKVWi+X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364645; c=relaxed/simple;
-	bh=s7DsLbRFT0FVMr6/UwR7/QvJSwUg2YG9TAlCRPyNEU0=;
+	s=arc-20240116; t=1748367009; c=relaxed/simple;
+	bh=ghGHRdeFA05d0iQfsTsdacYPWJO+8/F7WrUgd2+Hbb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0cr7vGektldoHfK7wW5Uh8VwP4rm0QbRIjFK/FjHv+kev/6wScKH21x5oKU2er6JBx9O9p6hXBroRQd6Bg2f41Q69w1tFwshEOh6uJU7qQiSANJXS5+qwL13Z+b+Wyln7eFWvTkUAR3b4eGdDc6trrw8CnmU06jeP81k4tcTXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOz4ug3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5D6C4CEE9;
-	Tue, 27 May 2025 16:50:44 +0000 (UTC)
+	 MIME-Version; b=LxEp+m1bOg5pUCZbINeTXnmrxbND61tXw4APh/kM4TOJrOcN61DqEbb22WjpH2y6lpVbxStFb3+H7hZtR3lz76POP4F70Ophi7zRAznq+BpIUtXDiNouqnoDb6S19XjquL2ERwPVW1VITuKq3qq+tzYPjsEPHaRMlF0tSxNgcEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=clBjIAEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73255C4CEE9;
+	Tue, 27 May 2025 17:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364645;
-	bh=s7DsLbRFT0FVMr6/UwR7/QvJSwUg2YG9TAlCRPyNEU0=;
+	s=korg; t=1748367008;
+	bh=ghGHRdeFA05d0iQfsTsdacYPWJO+8/F7WrUgd2+Hbb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOz4ug3BGPRNwKKVv9YLiY3YBhhmL6m1gLpisB/dLbNIvTci3NCmlnIkwd7KPwsSe
-	 IDo2WVn0p5/r35VxEF2ah7wqAn+v5QbPcvf12fXPszwymWDThTzpKhLtwtUmzjCsbX
-	 qYFIOYzGpsZwVQi/eQ+8ahiIh/oo7MtojKajHsOs=
+	b=clBjIAEzOk8jz84L74eAQscIb19X6d08d0RIDp9zFRldWZYawr9PLjHclvw2cAujg
+	 lf9bo47zUHlzUg6mwZMoh2bA0Wb753rpXLMnAFEdwXu6Eb0bLLsG79aBoqWiblNRfp
+	 ei86jNUOycAwelBJxNjZCwmtgsYkLYD36MhPbC0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Chris Park <chris.park@amd.com>,
-	Eric Yang <eric.yang@amd.com>,
-	Jing Zhou <Jing.Zhou@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/626] drm/amd/display: Guard against setting dispclk low for dcn31x
+Subject: [PATCH 6.14 218/783] wifi: iwlwifi: fix debug actions order
 Date: Tue, 27 May 2025 18:20:15 +0200
-Message-ID: <20250527162449.988070496@linuxfoundation.org>
+Message-ID: <20250527162522.004468875@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,115 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jing Zhou <Jing.Zhou@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 9c2f4ae64bb6f6d83a54d88b9ee0f369cdbb9fa8 ]
+[ Upstream commit eb29b4ffafb20281624dcd2cbb768d6f30edf600 ]
 
-[WHY]
-We should never apply a minimum dispclk value while in
-prepare_bandwidth or while displays are active. This is
-always an optimizaiton for when all displays are disabled.
+The order of actions taken for debug was implemented incorrectly.
+Now we implemented the dump split and do the FW reset only in the
+middle of the dump (rather than the FW killing itself on error.)
+As a result, some of the actions taken when applying the config
+will now crash the device, so we need to fix the order.
 
-[HOW]
-Defer dispclk optimization until safe_to_lower = true
-and display_count reaches 0.
-
-Since 0 has a special value in this logic (ie. no dispclk
-required) we also need adjust the logic that clamps it for
-the actual request to PMFW.
-
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Reviewed-by: Chris Park <chris.park@amd.com>
-Reviewed-by: Eric Yang <eric.yang@amd.com>
-Signed-off-by: Jing Zhou <Jing.Zhou@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308231427.6de7fa8e63ed.I40632c48e2a67a8aca05def572a934b88ce7934b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/clk_mgr/dcn315/dcn315_clk_mgr.c        | 20 +++++++++++--------
- .../dc/clk_mgr/dcn316/dcn316_clk_mgr.c        | 13 +++++++++---
- 2 files changed, 22 insertions(+), 11 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-index a0fb4481d2f1b..827b24b3442ad 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-@@ -130,7 +130,7 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
- 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	struct dc_clocks *new_clocks = &context->bw_ctx.bw.dcn.clk;
- 	struct dc *dc = clk_mgr_base->ctx->dc;
--	int display_count;
-+	int display_count = 0;
- 	bool update_dppclk = false;
- 	bool update_dispclk = false;
- 	bool dpp_clock_lowered = false;
-@@ -204,15 +204,19 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
- 		update_dppclk = true;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+index 08d990ba8a794..ce787326aa69d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2018-2024 Intel Corporation
++ * Copyright (C) 2018-2025 Intel Corporation
+  */
+ #include <linux/firmware.h>
+ #include "iwl-drv.h"
+@@ -1372,15 +1372,15 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
+ 	switch (tp_id) {
+ 	case IWL_FW_INI_TIME_POINT_EARLY:
+ 		iwl_dbg_tlv_init_cfg(fwrt);
+-		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		iwl_dbg_tlv_update_drams(fwrt);
+ 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
++		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		break;
+ 	case IWL_FW_INI_TIME_POINT_AFTER_ALIVE:
+ 		iwl_dbg_tlv_apply_buffers(fwrt);
+ 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
+-		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
++		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		break;
+ 	case IWL_FW_INI_TIME_POINT_PERIODIC:
+ 		iwl_dbg_tlv_set_periodic_trigs(fwrt);
+@@ -1390,14 +1390,14 @@ void _iwl_dbg_tlv_time_point(struct iwl_fw_runtime *fwrt,
+ 	case IWL_FW_INI_TIME_POINT_MISSED_BEACONS:
+ 	case IWL_FW_INI_TIME_POINT_FW_DHC_NOTIFICATION:
+ 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
+-		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data,
+ 				       iwl_dbg_tlv_check_fw_pkt);
++		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		break;
+ 	default:
+ 		iwl_dbg_tlv_send_hcmds(fwrt, hcmd_list);
+-		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		iwl_dbg_tlv_tp_trigger(fwrt, sync, trig_list, tp_data, NULL);
++		iwl_dbg_tlv_apply_config(fwrt, conf_list);
+ 		break;
  	}
- 
--	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
--		/* No need to apply the w/a if we haven't taken over from bios yet */
--		if (clk_mgr_base->clks.dispclk_khz)
--			dcn315_disable_otg_wa(clk_mgr_base, context, true);
-+	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz) &&
-+	    (new_clocks->dispclk_khz > 0 || (safe_to_lower && display_count == 0))) {
-+		int requested_dispclk_khz = new_clocks->dispclk_khz;
- 
-+		dcn315_disable_otg_wa(clk_mgr_base, context, true);
-+
-+		/* Clamp the requested clock to PMFW based on their limit. */
-+		if (dc->debug.min_disp_clk_khz > 0 && requested_dispclk_khz < dc->debug.min_disp_clk_khz)
-+			requested_dispclk_khz = dc->debug.min_disp_clk_khz;
-+
-+		dcn315_smu_set_dispclk(clk_mgr, requested_dispclk_khz);
- 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
--		dcn315_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
--		if (clk_mgr_base->clks.dispclk_khz)
--			dcn315_disable_otg_wa(clk_mgr_base, context, false);
-+		dcn315_disable_otg_wa(clk_mgr_base, context, false);
- 
- 		update_dispclk = true;
- 	}
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-index c3e50c3aaa609..37c39756fece4 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-@@ -140,7 +140,7 @@ static void dcn316_update_clocks(struct clk_mgr *clk_mgr_base,
- 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	struct dc_clocks *new_clocks = &context->bw_ctx.bw.dcn.clk;
- 	struct dc *dc = clk_mgr_base->ctx->dc;
--	int display_count;
-+	int display_count = 0;
- 	bool update_dppclk = false;
- 	bool update_dispclk = false;
- 	bool dpp_clock_lowered = false;
-@@ -211,11 +211,18 @@ static void dcn316_update_clocks(struct clk_mgr *clk_mgr_base,
- 		update_dppclk = true;
- 	}
- 
--	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
-+	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz) &&
-+	    (new_clocks->dispclk_khz > 0 || (safe_to_lower && display_count == 0))) {
-+		int requested_dispclk_khz = new_clocks->dispclk_khz;
-+
- 		dcn316_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
- 
-+		/* Clamp the requested clock to PMFW based on their limit. */
-+		if (dc->debug.min_disp_clk_khz > 0 && requested_dispclk_khz < dc->debug.min_disp_clk_khz)
-+			requested_dispclk_khz = dc->debug.min_disp_clk_khz;
-+
-+		dcn316_smu_set_dispclk(clk_mgr, requested_dispclk_khz);
- 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
--		dcn316_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
- 		dcn316_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
- 
- 		update_dispclk = true;
+ }
 -- 
 2.39.5
 
