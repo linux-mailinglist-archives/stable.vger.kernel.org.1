@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-146653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2258AC541B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:56:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8037EAC5766
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCA724A23F1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34FF61BA78A5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7B528541F;
-	Tue, 27 May 2025 16:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A7A26B0B6;
+	Tue, 27 May 2025 17:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STbmnChL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSLZgNM3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DD6284B4F;
-	Tue, 27 May 2025 16:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4123427A133;
+	Tue, 27 May 2025 17:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364895; cv=none; b=Qdnd2Syji89IsI5dLELU84918o2nPxB7OicyV5FNKu0vEFlYMNkQmUqRTCSgZ4ElJbfFGmqReKmk/cj0FzzdrQFTNz+4RRDoi8shypSX2j/EVPBX+np7J45Q+Jy4YKWQv9fWxEbkujkM+NK1uan4ZvuGAfsGGSEM7PDYnJ0YKbk=
+	t=1748367154; cv=none; b=pwLDnslZjUMAm6pJDNvHYBJlgo2SQCjmhfvAjYpG1+BO4L5giTdu6MaPIASNvvRfoYPwhP2lE8eKJWKqLfpXTxPYMVtOCY073h93izi9WNkkchZP4gv39DF21CT6eXANuGj51Xn9lbyTOh7VFn9KvS3cMqpienmzq66mU9KC37U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364895; c=relaxed/simple;
-	bh=TmBjkiVzRYvBT1R4KUXU/LDGDz/420Hl6OSy/gmjWrI=;
+	s=arc-20240116; t=1748367154; c=relaxed/simple;
+	bh=2l1WhAC0EJYJmwWAhB4smhRYRuCyQd1c9QAmoJJ6UHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXGKPzLt2aQguCRBjUCPV8zUjWnhAioP3IrGvKxjdI9UY1XEvEe6ta5yZTIcjAdG4KHFCXiHsDVrMAugUAoBeNegocvBwnVDO6OG3SFetTKqnOJQtKLBOUmDvRoLUD7YMVxaXi/ys5TCR6mKDQAXHMMtvzRhvY79mX24vJHIvX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STbmnChL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A8AC4CEEF;
-	Tue, 27 May 2025 16:54:54 +0000 (UTC)
+	 MIME-Version; b=FJeHVQZndzrOMH2stwbanrOFtAY1QEt0pfPDN/7d/nO4B0CJRdEg/cmimeR33AoWjSPTml3K4LJM59LsWoxHkbMgzI0c94Q2B2xZMfbA9QcaqcAVwLVsR98V/FRz4zhyT5pkGjBf/Le2nb2+DNOqaZxejvq8rr7u+irJm4UZxRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSLZgNM3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A454BC4CEE9;
+	Tue, 27 May 2025 17:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364895;
-	bh=TmBjkiVzRYvBT1R4KUXU/LDGDz/420Hl6OSy/gmjWrI=;
+	s=korg; t=1748367154;
+	bh=2l1WhAC0EJYJmwWAhB4smhRYRuCyQd1c9QAmoJJ6UHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STbmnChL+KEF972KFy2et6QcFbqY8ZU/HAIG16ejr7O/iYKQInCzSkX5eAxS1hCKd
-	 r+ifbu3D7qw0DO4rho9cAggxnep3Yt9MV6yunIkkT/O8jZ5IrDGwOMX7xmdNoZGMac
-	 +wG6BCuL4aCMA9ulV5948hkaBA7AQDDIK37hyHjo=
+	b=sSLZgNM3KMcpPJJblTv1hE7zcfBatDVxvPeemTZqfySqvMNX3Znj+I96/fAsLGxCO
+	 007n+vsVcPE7NkDTPJpWwMTeuQEYKOZlXg2vzFBiYmBpAsZK1dzXtHGJrc+xutag7x
+	 87JBVETn7E4pf/J5ehmkbJU1GLJVTHOe1NYLGlYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Coly Li <colyli@kernel.org>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/626] badblocks: Fix a nonsense WARN_ON() which checks whether a u64 variable < 0
+Subject: [PATCH 6.14 296/783] dpll: Add an assertion to check freq_supported_num
 Date: Tue, 27 May 2025 18:21:33 +0200
-Message-ID: <20250527162453.147625775@linuxfoundation.org>
+Message-ID: <20250527162525.133549069@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@kernel.org>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 7e76336e14de9a2b67af96012ddd46c5676cf340 ]
+[ Upstream commit 39e912a959c19338855b768eaaee2917d7841f71 ]
 
-In _badblocks_check(), there are lines of code like this,
-1246         sectors -= len;
-[snipped]
-1251         WARN_ON(sectors < 0);
+Since the driver is broken in the case that src->freq_supported is not
+NULL but src->freq_supported_num is 0, add an assertion for it.
 
-The WARN_ON() at line 1257 doesn't make sense because sectors is
-unsigned long long type and never to be <0.
-
-Fix it by checking directly checking whether sectors is less than len.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Coly Li <colyli@kernel.org>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250309160556.42854-1-colyli@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Link: https://patch.msgid.link/20250228150210.34404-1-jiashengjiangcool@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/badblocks.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/dpll/dpll_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/block/badblocks.c b/block/badblocks.c
-index db4ec8b9b2a8c..a9709771a1015 100644
---- a/block/badblocks.c
-+++ b/block/badblocks.c
-@@ -1349,14 +1349,15 @@ static int _badblocks_check(struct badblocks *bb, sector_t s, int sectors,
- 	len = sectors;
- 
- update_sectors:
-+	/* This situation should never happen */
-+	WARN_ON(sectors < len);
+diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+index 1877201d1aa9f..20bdc52f63a50 100644
+--- a/drivers/dpll/dpll_core.c
++++ b/drivers/dpll/dpll_core.c
+@@ -443,8 +443,11 @@ static void dpll_pin_prop_free(struct dpll_pin_properties *prop)
+ static int dpll_pin_prop_dup(const struct dpll_pin_properties *src,
+ 			     struct dpll_pin_properties *dst)
+ {
++	if (WARN_ON(src->freq_supported && !src->freq_supported_num))
++		return -EINVAL;
 +
- 	s += len;
- 	sectors -= len;
- 
- 	if (sectors > 0)
- 		goto re_check;
- 
--	WARN_ON(sectors < 0);
--
- 	if (unacked_badblocks > 0)
- 		rv = -1;
- 	else if (acked_badblocks > 0)
+ 	memcpy(dst, src, sizeof(*dst));
+-	if (src->freq_supported && src->freq_supported_num) {
++	if (src->freq_supported) {
+ 		size_t freq_size = src->freq_supported_num *
+ 				   sizeof(*src->freq_supported);
+ 		dst->freq_supported = kmemdup(src->freq_supported,
 -- 
 2.39.5
 
