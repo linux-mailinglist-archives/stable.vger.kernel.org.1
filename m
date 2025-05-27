@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-146685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFA0AC5437
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236FFAC5789
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAA541BA3F9E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B95F93AD28E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E347A280330;
-	Tue, 27 May 2025 16:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5918527FB10;
+	Tue, 27 May 2025 17:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBLTpSpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhrP7MHQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFC127FD49;
-	Tue, 27 May 2025 16:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171E527BF79;
+	Tue, 27 May 2025 17:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364991; cv=none; b=h6Njccq+EXZT0dPlLkwTbuy7Xkai3vMzcUlx+ylnZpdM7bqtcJ7xYS4noNq1YK2mjAbbLJ06w1AK46Qo1wQwEs7qtunDeGZVDU/vuDoxHDCZnCAtwCYjTDmumfq9oyhE0sbVyy4+laWK30zsBjRGpzllRueXC2N8Rs3CFneGXFc=
+	t=1748367253; cv=none; b=XM8ypM7Rc6ociHCcSjiu8mxqTzvT0oKRolo3J6Z/A/VKf10A8cnb2YPDUAe9blkDbq5Hmb4RYa/647SWAUaP7AdvFw0ai56lRrJ1gYdYo9g+sdHbb/bKs7QYXps953E/A+LRhn9ogr7Htc0mhKXrmx/nG0eS+DKPmVoBF0pqSBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364991; c=relaxed/simple;
-	bh=2WMSvtlCAVE7LVOLSDbWC+r5eIccvAIAeibnrOMSxwU=;
+	s=arc-20240116; t=1748367253; c=relaxed/simple;
+	bh=KBsDlHyHQrpkeEt/0eQEs+oSNqAyOyLt3sRvxIxaHqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+hwvso6wqMulOSMLWj/3StSOLb/jRi62Xpqf5SAfVa/rrQR5CtOyIrsB5TXVSsPtwF2hKefeKbPxRn9uslVZcuV8JV04ciGrLXM69ZMfem04Id5dee23+WlZgh/Oy0plGKJdu6Lz2BEDlsX41MxB5zbM3N0l1itmtldrziX67Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBLTpSpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2684EC4CEE9;
-	Tue, 27 May 2025 16:56:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ElhkuxP2pdXb7/fq/BewRrsUPYLQEh1QPCk+VnB2y7WuxphSpmz6houBaQDFEZf7Wqw8OoeLlRc4lRybA738VP53RlxMcx5kRMKj+pg3gcT8rbptfkDm42ETA8VirTtemR/9+kOBFRSi5rApz5bJQ1RaP4SO7pIWglkTSwyNBNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhrP7MHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7714DC4CEE9;
+	Tue, 27 May 2025 17:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364991;
-	bh=2WMSvtlCAVE7LVOLSDbWC+r5eIccvAIAeibnrOMSxwU=;
+	s=korg; t=1748367253;
+	bh=KBsDlHyHQrpkeEt/0eQEs+oSNqAyOyLt3sRvxIxaHqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBLTpSpSq798dtwM+vTd/JXcI7NgYvnLcRy0HpIXqcjPvo1cEWW0YONyGxhakHPkd
-	 +wFMvgcVjUGdRnwiqYuo3xNNqKC/BOp1oLJkcol9UQYcL+S2j5UA5m5RvQkCls6BKg
-	 4l9L0qXIjLHbnK/BTybBBz5exSHqf8wO2d4+yMUs=
+	b=BhrP7MHQrj1wYqxIn0/J4Yd4AQro5nSzUILP/3Nlx3WhWL3ucQpAzxcGQspr2o0b+
+	 yPaceGQgs3C6ZzBkPvP1GZizvv46SrEnaoxNh/pW9vphGpbZEiKQk0yIg6UjtX387w
+	 a5ti5OhOcSGM3ha4vGO3csVfUWOEDXlx1xUVw5IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Lu <victorchengchi.lu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 232/626] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
+Subject: [PATCH 6.14 328/783] drm/xe/vf: Retry sending MMIO request to GUC on timeout error
 Date: Tue, 27 May 2025 18:22:05 +0200
-Message-ID: <20250527162454.442841040@linuxfoundation.org>
+Message-ID: <20250527162526.416187210@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 
-[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
+[ Upstream commit ba757a65d2a28d46a8ccf50538f4f05036983f1b ]
 
-SRIOV VF does not have write access to AGP BAR regs.
-Skip the writes to avoid a dmesg warning.
+Add support to allow retrying the sending of MMIO requests
+from the VF to the GUC in the event of an error. During the
+suspend/resume process, VFs begin resuming only after the PF has
+resumed. Although the PF resumes, the GUC reset and provisioning
+occur later in a separate worker process.
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+When there are a large number of VFs, some may attempt to resume
+before the PF has completed its provisioning. Therefore, if a
+MMIO request from a VF fails during this period, we will retry
+sending the request up to GUC_RESET_VF_STATE_RETRY_MAX times,
+which is set to a maximum of 10 attempts.
+
+Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
+Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Reviewed-by: Piotr Piorkowski <piotr.piorkowski@intel.com>
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250224102807.11065-3-satyanarayana.k.v.p@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_sriov_vf.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-index 0e3ddea7b8e0f..a7bfc9f41d0e3 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-@@ -92,12 +92,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- {
- 	uint64_t value;
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
+index 9c30cbd9af6e1..1c764f200b2a5 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
+@@ -47,12 +47,19 @@ static int guc_action_vf_reset(struct xe_guc *guc)
+ 	return ret > 0 ? -EPROTO : ret;
+ }
  
--	/* Program the AGP BAR */
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
--
- 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
-+		/* Program the AGP BAR */
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
++#define GUC_RESET_VF_STATE_RETRY_MAX	10
+ static int vf_reset_guc_state(struct xe_gt *gt)
+ {
++	unsigned int retry = GUC_RESET_VF_STATE_RETRY_MAX;
+ 	struct xe_guc *guc = &gt->uc.guc;
+ 	int err;
+ 
+-	err = guc_action_vf_reset(guc);
++	do {
++		err = guc_action_vf_reset(guc);
++		if (!err || err != -ETIMEDOUT)
++			break;
++	} while (--retry);
 +
- 		/* Program the system aperture low logical page number. */
- 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+ 	if (unlikely(err))
+ 		xe_gt_sriov_err(gt, "Failed to reset GuC state (%pe)\n", ERR_PTR(err));
+ 	return err;
 -- 
 2.39.5
 
