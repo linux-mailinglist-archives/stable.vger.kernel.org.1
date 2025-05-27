@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB35AC56C4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5CB5AC5353
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EA381BA7E7B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 754351BA3801
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DC627FB02;
-	Tue, 27 May 2025 17:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156C127D786;
+	Tue, 27 May 2025 16:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZ5FqHmn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WptWGblE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D9927D776;
-	Tue, 27 May 2025 17:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5571AD5A;
+	Tue, 27 May 2025 16:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366701; cv=none; b=ljl3BiUkiLNUuxgWZZCavxcV1AmzNMnhVX2s77B/IH3TMPyKN82uL6tU87tq/fphYuEy4oNzsFOKZU4hKYodw44QUUviY3QeDegtxXk11U7S84rv/uQp/gM8uv36lm1m25wl9Ykp4SpP+t6eY2TAhgmW6FLFIT8JYfC19YZSLKc=
+	t=1748364348; cv=none; b=qOKN3hXogd+/6TKoOVmr71yQC2xgp9BBA9LxLz/HjpzJOm2rFeGMyj7hxjueUh6/sY7eqX0j+8sOwUrMdReQgo51sADLOKWgOYWwljx+lWETEPDu293Xge6DxnUmsmsdAFFMZ6YcYvEnuaVSfPy8nzKfFv4lSKSFPGLWSr7MQeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366701; c=relaxed/simple;
-	bh=WmaDJUpP37iFdU/g5c7wrs8u8kXHt9akwwsTX5lOPHE=;
+	s=arc-20240116; t=1748364348; c=relaxed/simple;
+	bh=bfEfJyRxMrjzGvqfo96CogNvRaV+c0wAPRb/fx1CPIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVBF3Y8ldIQdRs5z/TcwdomqTc7gVu9pHV+pqzlr37MjLV1zkWQcIi3fAQtMxJ7vdKcV2cJ3sS1xClkIPUNN9sIJqpqYWVwOVfel3NMf7oyTZSPrgMj0a8C0Qqd/vfCTDautO/52RGPAT9C8ihDtmdk6VIkKnpWX48N0oWxxjSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZ5FqHmn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A5CC4CEE9;
-	Tue, 27 May 2025 17:25:00 +0000 (UTC)
+	 MIME-Version; b=LYHHZbjOyZyd4H5v8Dn2ToFiUrzR8O/JHmIZGF4NFzxE1DyrdpIf8lJ2rC/ehaFpOH4VhELocu8tkP3o11bRMWgCVfJpCAxy3+XVZ5VszN0uNjchHJHGelcSN3ASU3LrikZLJCqcRJti4kirve0YhqGy2FAMSj5jAnAJiXMmzrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WptWGblE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EBFC4CEE9;
+	Tue, 27 May 2025 16:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366701;
-	bh=WmaDJUpP37iFdU/g5c7wrs8u8kXHt9akwwsTX5lOPHE=;
+	s=korg; t=1748364348;
+	bh=bfEfJyRxMrjzGvqfo96CogNvRaV+c0wAPRb/fx1CPIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZ5FqHmnJHQ5LufnaZ6kG0qjQ6eZU8dzPljg7HZexbqrHT64ZyfxZ0M+1yphuGrfz
-	 gEuuK5uMWTrlEFEnYGc7rXkddaLGlKEsg7NrUShK6zJ2GqwA1rF5GHN69qnG38li7W
-	 8K2ogVnScKqPV5kIR6GKqmHIXxDuGqr8ZUXx8y5A=
+	b=WptWGblEcY8aFYQLYBFIU18+UO/rZ2IP8jxZtMfvdu4MHPHcvaTgn6nszoFnKZK1R
+	 dJuKE+flhAjg5pDMgOF2n5nQmP3dw8laedDgIE3WdXUEPiaf/pCdwrNUHwfZhAoFnV
+	 09Lp9OihhSFimbQEayuFbMMRjL54nGchM+yb7cS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Zhou <quan.zhou@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 123/783] wifi: mt76: mt7925: fix fails to enter low power mode in suspend state
-Date: Tue, 27 May 2025 18:18:40 +0200
-Message-ID: <20250527162518.155649812@linuxfoundation.org>
+Subject: [PATCH 6.12 028/626] net: enetc: refactor bulk flipping of RX buffers to separate function
+Date: Tue, 27 May 2025 18:18:41 +0200
+Message-ID: <20250527162446.209738842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 2d5630b0c9466ac6549495828aa7dce7424a272a ]
+[ Upstream commit 1d587faa5be7e9785b682cc5f58ba8f4100c13ea ]
 
-The mt7925 sometimes fails to enter low power mode during suspend.
-This is caused by the chip firmware sending an additional ACK event
-to the host after processing the suspend command. Due to timing issues,
-this event may not reach the host, causing the chip to get stuck.
-To resolve this, the ACK flag in the suspend command is removed,
-as it is not needed in the MT7925 architecture. This prevents the
-firmware from sending the additional ACK event, ensuring the device
-can reliably enter low power mode during suspend.
+This small snippet of code ensures that we do something with the array
+of RX software buffer descriptor elements after passing the skb to the
+stack. In this case, we see if the other half of the page is reusable,
+and if so, we "turn around" the buffers, making them directly usable by
+enetc_refill_rx_ring() without going to enetc_new_page().
 
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Link: https://patch.msgid.link/d056938144a3a0336c3a4e3cec6f271899f32bf7.1736775666.git.quan.zhou@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+We will need to perform this kind of buffer flipping from a new code
+path, i.e. from XDP_PASS. Currently, enetc_build_skb() does it there
+buffer by buffer, but in a subsequent change we will stop using
+enetc_build_skb() for XDP_PASS.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250417120005.3288549-3-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 87b3a88038e3c..59fa812b30d35 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -3294,6 +3294,9 @@ int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 		else
- 			uni_txd->option = MCU_CMD_UNI_EXT_ACK;
- 
-+		if (cmd == MCU_UNI_CMD(HIF_CTRL))
-+			uni_txd->option &= ~MCU_CMD_ACK;
-+
- 		goto exit;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index f662a5d54986c..d8272b7a55fcb 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1572,6 +1572,16 @@ static void enetc_xdp_drop(struct enetc_bdr *rx_ring, int rx_ring_first,
  	}
+ }
  
++static void enetc_bulk_flip_buff(struct enetc_bdr *rx_ring, int rx_ring_first,
++				 int rx_ring_last)
++{
++	while (rx_ring_first != rx_ring_last) {
++		enetc_flip_rx_buff(rx_ring,
++				   &rx_ring->rx_swbd[rx_ring_first]);
++		enetc_bdr_idx_inc(rx_ring, &rx_ring_first);
++	}
++}
++
+ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 				   struct napi_struct *napi, int work_limit,
+ 				   struct bpf_prog *prog)
+@@ -1687,11 +1697,7 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 				enetc_xdp_drop(rx_ring, orig_i, i);
+ 				rx_ring->stats.xdp_redirect_failures++;
+ 			} else {
+-				while (orig_i != i) {
+-					enetc_flip_rx_buff(rx_ring,
+-							   &rx_ring->rx_swbd[orig_i]);
+-					enetc_bdr_idx_inc(rx_ring, &orig_i);
+-				}
++				enetc_bulk_flip_buff(rx_ring, orig_i, i);
+ 				xdp_redirect_frm_cnt++;
+ 				rx_ring->stats.xdp_redirect++;
+ 			}
 -- 
 2.39.5
 
