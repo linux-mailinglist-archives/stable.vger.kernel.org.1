@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-147606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253EFAC5864
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DECAC557A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB0204A41EE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F20C13A3F93
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A6327A900;
-	Tue, 27 May 2025 17:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE7127B51A;
+	Tue, 27 May 2025 17:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPXaDwiG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYpp7was"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C9125A627;
-	Tue, 27 May 2025 17:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17282110E;
+	Tue, 27 May 2025 17:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367865; cv=none; b=pSAxsPxY7pDMNi/3CaFEei6Tlg6ad1kkABHoDYafFebpBfhHDTGoyNCRhoDTfmBa1/q1LAtwH+eRUN4CThwFybAsHK/8FUr4GAzORtXpiOcy1xxL1/aKU9oSnAfo9K2lnZQFpTr5AzrQLNYln+UGc/Argq6m7Nmsy8eoouI2PqY=
+	t=1748365596; cv=none; b=Q04wRPD28GJB4V4qvpnSS6UMocuUhq7OcOhzwSobrZVmbiANIu8o8L6KhL7KJbPI+D4QVK1zSqBk4OuaPcCWkLLTVM6HF9RIOvdygcKh2ryI7J0genKv0ouRR9JobMxYc31ha1vsZ8TDAFUGOnN3l/KhmZLC63LpZ8npQBS2QUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367865; c=relaxed/simple;
-	bh=66iJR4OkmcM9Vpkn6vuzGIpka/1zGaC4/lD+7Xgyq3c=;
+	s=arc-20240116; t=1748365596; c=relaxed/simple;
+	bh=CYSidLXWYWbH3EYrPdS5O3Li+fDK5327Nc0/G3vsTjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5f6xVtWvda/QlcSzC84dNB0fN0NRQsbfthLDlTcyTSytwj3ndQMUN+6x2YxdTrvDuIWsB7dwPdF04K3d2AKrQJXvl8r8djj5gbR7Mh5dhO1WUS5wUfwXMWXJA4CVZbtEeMcNbTfJPtXt9PZH76imO8nabs737/WyvxRhPNU0cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPXaDwiG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB98C4CEE9;
-	Tue, 27 May 2025 17:44:24 +0000 (UTC)
+	 MIME-Version; b=LhEJlyVoV4CbS6AymtOT22C1V9ruBYR+euC7MQKVrfYXOefgJedNniqtou6JyPCAqeT6QdGZV6zVr4B7K4O8th303+N1bvKaNeAZLQXCZKKzYiqPQKLmzVgVP8jeDKCRn06zSOSWJ+DV+QL+CbSw0YlfiEXvrxKMimGA8z/t0DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYpp7was; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81949C4CEE9;
+	Tue, 27 May 2025 17:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367865;
-	bh=66iJR4OkmcM9Vpkn6vuzGIpka/1zGaC4/lD+7Xgyq3c=;
+	s=korg; t=1748365595;
+	bh=CYSidLXWYWbH3EYrPdS5O3Li+fDK5327Nc0/G3vsTjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPXaDwiG7aet1fzGTC9LopNh845/o8/QjqU0wFcAZ2MwzdhXFox8mMzoqZ/paPL+x
-	 0onYeMMHwwq10q4UD0O2cEICDUkOE+/t2gWBHCoAPNtrTo9WoGe9c0Coyo4kNKFDSf
-	 0fRWCreFCT1/nTpfJP82nLUje9Cr2UuyOGEb7KUg=
+	b=uYpp7wasW6UcEOFWh3VA64G5eGcpO+CcUlykL8MKSv6nS5fUX0w004pEVZc9cdnj+
+	 stDlP6w74AhlVMAeii8nkBugvD+wBZDO4s4d4M+cFmp6ddHHXgsNK6c5qqR91110Dn
+	 tAs32PkKvRtxwJN6pgI7yxy0HmlVWkRGQleiViUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 524/783] wifi: mac80211: add HT and VHT basic set verification
+Subject: [PATCH 6.12 428/626] ext4: dont write back data before punch hole in nojournal mode
 Date: Tue, 27 May 2025 18:25:21 +0200
-Message-ID: <20250527162534.494805328@linuxfoundation.org>
+Message-ID: <20250527162502.402018534@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 574faa0e936d12718e2cadad11ce1e184d9e5a32 ]
+[ Upstream commit 43d0105e2c7523cc6b14cad65e2044e829c0a07a ]
 
-So far we did not verify the HT and VHT basic MCS set. However, in
-P802.11REVme/D7.0 (6.5.4.2.4) says that the MLME-JOIN.request shall
-return an error if the VHT and HT basic set requirements are not met.
+There is no need to write back all data before punching a hole in
+non-journaled mode since it will be dropped soon after removing space.
+Therefore, the call to filemap_write_and_wait_range() can be eliminated.
+Besides, similar to ext4_zero_range(), we must address the case of
+partially punched folios when block size < page size. It is essential to
+remove writable userspace mappings to ensure that the folio can be
+faulted again during subsequent mmap write access.
 
-Given broken APs, apply VHT basic MCS/NSS set checks only in
-strict mode.
+In journaled mode, we need to write dirty pages out before discarding
+page cache in case of crash before committing the freeing data
+transaction, which could expose old, stale data, even if synchronization
+has been performed.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.e2d8d4095f6b.I66bcf6c2de3b9d3325e4ffd9f573f4cd26ce5685@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20241220011637.1157197-4-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 129 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 129 insertions(+)
+ fs/ext4/inode.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 8235400b7e5d8..ef65ae5137dcd 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -345,6 +345,115 @@ ieee80211_determine_ap_chan(struct ieee80211_sub_if_data *sdata,
- 	return IEEE80211_CONN_MODE_EHT;
- }
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 487d9aec56c9d..819be57bb4ecf 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3933,17 +3933,6 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
  
-+static bool
-+ieee80211_verify_sta_ht_mcs_support(struct ieee80211_sub_if_data *sdata,
-+				    struct ieee80211_supported_band *sband,
-+				    const struct ieee80211_ht_operation *ht_op)
-+{
-+	struct ieee80211_sta_ht_cap sta_ht_cap;
-+	int i;
-+
-+	if (sband->band == NL80211_BAND_6GHZ)
-+		return true;
-+
-+	if (!ht_op)
-+		return false;
-+
-+	memcpy(&sta_ht_cap, &sband->ht_cap, sizeof(sta_ht_cap));
-+	ieee80211_apply_htcap_overrides(sdata, &sta_ht_cap);
-+
-+	/*
-+	 * P802.11REVme/D7.0 - 6.5.4.2.4
-+	 * ...
-+	 * If the MLME of an HT STA receives an MLME-JOIN.request primitive
-+	 * with the SelectedBSS parameter containing a Basic HT-MCS Set field
-+	 * in the HT Operation parameter that contains any unsupported MCSs,
-+	 * the MLME response in the resulting MLME-JOIN.confirm primitive shall
-+	 * contain a ResultCode parameter that is not set to the value SUCCESS.
-+	 * ...
-+	 */
-+
-+	/* Simply check that all basic rates are in the STA RX mask */
-+	for (i = 0; i < IEEE80211_HT_MCS_MASK_LEN; i++) {
-+		if ((ht_op->basic_set[i] & sta_ht_cap.mcs.rx_mask[i]) !=
-+		    ht_op->basic_set[i])
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static bool
-+ieee80211_verify_sta_vht_mcs_support(struct ieee80211_sub_if_data *sdata,
-+				     int link_id,
-+				     struct ieee80211_supported_band *sband,
-+				     const struct ieee80211_vht_operation *vht_op)
-+{
-+	struct ieee80211_sta_vht_cap sta_vht_cap;
-+	u16 ap_min_req_set, sta_rx_mcs_map, sta_tx_mcs_map;
-+	int nss;
-+
-+	if (sband->band != NL80211_BAND_5GHZ)
-+		return true;
-+
-+	if (!vht_op)
-+		return false;
-+
-+	memcpy(&sta_vht_cap, &sband->vht_cap, sizeof(sta_vht_cap));
-+	ieee80211_apply_vhtcap_overrides(sdata, &sta_vht_cap);
-+
-+	ap_min_req_set = le16_to_cpu(vht_op->basic_mcs_set);
-+	sta_rx_mcs_map = le16_to_cpu(sta_vht_cap.vht_mcs.rx_mcs_map);
-+	sta_tx_mcs_map = le16_to_cpu(sta_vht_cap.vht_mcs.tx_mcs_map);
-+
-+	/*
-+	 * Many APs are incorrectly advertising an all-zero value here,
-+	 * which really means MCS 0-7 are required for 1-8 streams, but
-+	 * they don't really mean it that way.
-+	 * Some other APs are incorrectly advertising 3 spatial streams
-+	 * with MCS 0-7 are required, but don't really mean it that way
-+	 * and we'll connect only with HT, rather than even HE.
-+	 * As a result, unfortunately the VHT basic MCS/NSS set cannot
-+	 * be used at all, so check it only in strict mode.
-+	 */
-+	if (!ieee80211_hw_check(&sdata->local->hw, STRICT))
-+		return true;
-+
-+	/*
-+	 * P802.11REVme/D7.0 - 6.5.4.2.4
-+	 * ...
-+	 * If the MLME of a VHT STA receives an MLME-JOIN.request primitive
-+	 * with a SelectedBSS parameter containing a Basic VHT-MCS And NSS Set
-+	 * field in the VHT Operation parameter that contains any unsupported
-+	 * <VHT-MCS, NSS> tuple, the MLME response in the resulting
-+	 * MLME-JOIN.confirm primitive shall contain a ResultCode parameter
-+	 * that is not set to the value SUCCESS.
-+	 * ...
-+	 */
-+	for (nss = 8; nss > 0; nss--) {
-+		u8 ap_op_val = (ap_min_req_set >> (2 * (nss - 1))) & 3;
-+		u8 sta_rx_val;
-+		u8 sta_tx_val;
-+
-+		if (ap_op_val == IEEE80211_HE_MCS_NOT_SUPPORTED)
-+			continue;
-+
-+		sta_rx_val = (sta_rx_mcs_map >> (2 * (nss - 1))) & 3;
-+		sta_tx_val = (sta_tx_mcs_map >> (2 * (nss - 1))) & 3;
-+
-+		if (sta_rx_val == IEEE80211_HE_MCS_NOT_SUPPORTED ||
-+		    sta_tx_val == IEEE80211_HE_MCS_NOT_SUPPORTED ||
-+		    sta_rx_val < ap_op_val || sta_tx_val < ap_op_val) {
-+			link_id_info(sdata, link_id,
-+				     "Missing mandatory rates for %d Nss, rx %d, tx %d oper %d, disable VHT\n",
-+				     nss, sta_rx_val, sta_tx_val, ap_op_val);
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
- static bool
- ieee80211_verify_peer_he_mcs_support(struct ieee80211_sub_if_data *sdata,
- 				     int link_id,
-@@ -1042,6 +1151,26 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
- 		link_id_info(sdata, link_id,
- 			     "regulatory prevented using AP config, downgraded\n");
+ 	trace_ext4_punch_hole(inode, offset, length, 0);
  
-+	if (conn->mode >= IEEE80211_CONN_MODE_HT &&
-+	    !ieee80211_verify_sta_ht_mcs_support(sdata, sband,
-+						 elems->ht_operation)) {
-+		conn->mode = IEEE80211_CONN_MODE_LEGACY;
-+		conn->bw_limit = IEEE80211_CONN_BW_LIMIT_20;
-+		link_id_info(sdata, link_id,
-+			     "required MCSes not supported, disabling HT\n");
-+	}
+-	/*
+-	 * Write out all dirty pages to avoid race conditions
+-	 * Then release them.
+-	 */
+-	if (mapping_tagged(mapping, PAGECACHE_TAG_DIRTY)) {
+-		ret = filemap_write_and_wait_range(mapping, offset,
+-						   offset + length - 1);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	inode_lock(inode);
+ 
+ 	/* No need to punch hole beyond i_size */
+@@ -4005,8 +3994,11 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+ 		ret = ext4_update_disksize_before_punch(inode, offset, length);
+ 		if (ret)
+ 			goto out_dio;
+-		truncate_pagecache_range(inode, first_block_offset,
+-					 last_block_offset);
 +
-+	if (conn->mode >= IEEE80211_CONN_MODE_VHT &&
-+	    !ieee80211_verify_sta_vht_mcs_support(sdata, link_id, sband,
-+						  elems->vht_operation)) {
-+		conn->mode = IEEE80211_CONN_MODE_HT;
-+		conn->bw_limit = min_t(enum ieee80211_conn_bw_limit,
-+				       conn->bw_limit,
-+				       IEEE80211_CONN_BW_LIMIT_40);
-+		link_id_info(sdata, link_id,
-+			     "required MCSes not supported, disabling VHT\n");
-+	}
-+
- 	if (conn->mode >= IEEE80211_CONN_MODE_HE &&
- 	    (!ieee80211_verify_peer_he_mcs_support(sdata, link_id,
- 						   (void *)elems->he_cap,
++		ret = ext4_truncate_page_cache_block_range(inode,
++				first_block_offset, last_block_offset + 1);
++		if (ret)
++			goto out_dio;
+ 	}
+ 
+ 	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
 -- 
 2.39.5
 
