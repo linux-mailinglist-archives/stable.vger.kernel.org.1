@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-147802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A40AC593D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD5CAC5608
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2AD21BC34A3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC590188E2CF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ACE027FD64;
-	Tue, 27 May 2025 17:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D52182D7;
+	Tue, 27 May 2025 17:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWo7h+t7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPgnkWhh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6AC27D766;
-	Tue, 27 May 2025 17:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7111E89C;
+	Tue, 27 May 2025 17:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368478; cv=none; b=RQ2khxGyPvHek91vCcMQH8ujapgY+atTC47RQjhTl5xhG59/jTXbuX/pHld8o/9iF/mMuJW3AMJKk7V5w/6tiaeaeq+X0DRWNkOWSHXcsf67qPf8eP8apZbindwKTfkd3lAaSmN88EqWgIfWRTcmMD3O75YJ9nrJSGGDX8FfJsE=
+	t=1748366214; cv=none; b=N67IbwcmpKchZ/pZLVACuqk7Z16LmZkJodNKEyeBe2wP/z0ZamLimPP/WriO8rw8eYazZoM0x4t9iRIczfdzXTfDGWpNBuL13j6iRJ4xRVK3SQzfEwmvzKCledSRJYlYuewnHXRbSYOyuI6Jg4u4H9exnlw2O5LYuH7JcwrxHAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368478; c=relaxed/simple;
-	bh=I2UDe2Dmx3wUmE5eoOa+4ViAarmu+1XtdI4vgBRlYJU=;
+	s=arc-20240116; t=1748366214; c=relaxed/simple;
+	bh=R0FQGwcS+EQ4dliEssZCAij0s1q4bhYvrABbS02wUUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i44QfFeYsGk9RRaD/z8vToYiYJrII1LqoW2PSI2wB4xhsWEZAqgSNIFhMpifBU3L7guZI4vDZIHEL30d+G1OCxJkabxpatSOlr4NBQJvJ3oqoAk7pynhOQ8UQhy0CcGOYO/GFnV3EPMyMxSOqx2IwEMHhGUz7sE5XMl7PsInCIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWo7h+t7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39897C4CEE9;
-	Tue, 27 May 2025 17:54:38 +0000 (UTC)
+	 MIME-Version; b=pz6JW5fgHyGeLNed6pdjwUeFcwbAmzFk3rZZC+Zi0C5xP5t4nvYq2cS6K/Gr3OD2USJMubFepyQ8fxYSKWibPWHMz9ra6kuPpoACU/2ovvXOJegmtDoNX2ge7XCpvAwqlgt6mpFibuasHulQBpVC5UXPn9175hGjn9Ckl+7pOHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPgnkWhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D06C4CEE9;
+	Tue, 27 May 2025 17:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368478;
-	bh=I2UDe2Dmx3wUmE5eoOa+4ViAarmu+1XtdI4vgBRlYJU=;
+	s=korg; t=1748366214;
+	bh=R0FQGwcS+EQ4dliEssZCAij0s1q4bhYvrABbS02wUUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWo7h+t7uttearc3gW+2jKKyxMnElpYsdpWw9NDUdlm+Kvf+te5GQtfcOaifAxRji
-	 W/s4o9HKR7/LJqRRE2bnBfom2LkoXK+L0lyOTeclCsdyo80fsV7Rfk7LMO1IR2Dz3Q
-	 qJhTUNPtIsGvBpSqt5FYy+IVx4sE1VKFCcwX0KJs=
+	b=aPgnkWhhut+bCEP2Ol1EJNkCpe1xnSuq1cUG0BrYNC8jrwxggnBA1LmDNcpJ6KalH
+	 0d7Yen8viy07xSa361z1cr2Ksl6PbEan4AdYdGepkzKmMXWr/F2i3OI6sFFeKKDsbX
+	 ho+7sVEsZ7Ajo/JknCs5JgBSiOChIbrc3VG6uuPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 720/783] octeontx2-af: Fix APR entry mapping based on APR_LMT_CFG
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.12 624/626] i3c: master: svc: Fix implicit fallthrough in svc_i3c_master_ibi_work()
 Date: Tue, 27 May 2025 18:28:37 +0200
-Message-ID: <20250527162542.432539566@linuxfoundation.org>
+Message-ID: <20250527162510.353156039@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit a6ae7129819ad20788e610261246e71736543b8b ]
+commit e8d2d287e26d9bd9114cf258a123a6b70812442e upstream.
 
-The current implementation maps the APR table using a fixed size,
-which can lead to incorrect mapping when the number of PFs and VFs
-varies.
-This patch corrects the mapping by calculating the APR table
-size dynamically based on the values configured in the
-APR_LMT_CFG register, ensuring accurate representation
-of APR entries in debugfs.
+Clang warns (or errors with CONFIG_WERROR=y):
 
-Fixes: 0daa55d033b0 ("octeontx2-af: cn10k: debugfs for dumping LMTST map table").
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Link: https://patch.msgid.link/20250521060834.19780-3-gakula@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+    596 |         default:
+        |         ^
+  drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
+    596 |         default:
+        |         ^
+        |         break;
+  1 error generated.
+
+Clang is a little more pedantic than GCC, which does not warn when
+falling through to a case that is just break or return. Clang's version
+is more in line with the kernel's own stance in deprecated.rst, which
+states that all switch/case blocks must end in either break,
+fallthrough, continue, goto, or return. Add the missing break to silence
+the warning.
+
+Fixes: 0430bf9bc1ac ("i3c: master: svc: Fix missing STOP for master request")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c |  9 ++++++---
- .../net/ethernet/marvell/octeontx2/af/rvu_debugfs.c   | 11 ++++++++---
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-index 3838c04b78c22..4a3370a40dd88 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-@@ -13,7 +13,6 @@
- /* RVU LMTST */
- #define LMT_TBL_OP_READ		0
- #define LMT_TBL_OP_WRITE	1
--#define LMT_MAP_TABLE_SIZE	(128 * 1024)
- #define LMT_MAPTBL_ENTRY_SIZE	16
- #define LMT_MAX_VFS		256
- 
-@@ -26,10 +25,14 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
- {
- 	void __iomem *lmt_map_base;
- 	u64 tbl_base, cfg;
-+	int pfs, vfs;
- 
- 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
-+	cfg  = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_CFG);
-+	vfs = 1 << (cfg & 0xF);
-+	pfs = 1 << ((cfg >> 4) & 0x7);
- 
--	lmt_map_base = ioremap_wc(tbl_base, LMT_MAP_TABLE_SIZE);
-+	lmt_map_base = ioremap_wc(tbl_base, pfs * vfs * LMT_MAPTBL_ENTRY_SIZE);
- 	if (!lmt_map_base) {
- 		dev_err(rvu->dev, "Failed to setup lmt map table mapping!!\n");
- 		return -ENOMEM;
-@@ -80,7 +83,7 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
- 
- 	mutex_lock(&rvu->rsrc_lock);
- 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_REQ, iova);
--	pf = rvu_get_pf(pcifunc) & 0x1F;
-+	pf = rvu_get_pf(pcifunc) & RVU_PFVF_PF_MASK;
- 	val = BIT_ULL(63) | BIT_ULL(14) | BIT_ULL(13) | pf << 8 |
- 	      ((pcifunc & RVU_PFVF_FUNC_MASK) & 0xFF);
- 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_TXN_REQ, val);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index a1f9ec03c2ce6..c827da6264712 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -553,6 +553,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
- 	u64 lmt_addr, val, tbl_base;
- 	int pf, vf, num_vfs, hw_vfs;
- 	void __iomem *lmt_map_base;
-+	int apr_pfs, apr_vfs;
- 	int buf_size = 10240;
- 	size_t off = 0;
- 	int index = 0;
-@@ -568,8 +569,12 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
- 		return -ENOMEM;
- 
- 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
-+	val  = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_CFG);
-+	apr_vfs = 1 << (val & 0xF);
-+	apr_pfs = 1 << ((val >> 4) & 0x7);
- 
--	lmt_map_base = ioremap_wc(tbl_base, 128 * 1024);
-+	lmt_map_base = ioremap_wc(tbl_base, apr_pfs * apr_vfs *
-+				  LMT_MAPTBL_ENTRY_SIZE);
- 	if (!lmt_map_base) {
- 		dev_err(rvu->dev, "Failed to setup lmt map table mapping!!\n");
- 		kfree(buf);
-@@ -591,7 +596,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
- 		off += scnprintf(&buf[off], buf_size - 1 - off, "PF%d  \t\t\t",
- 				    pf);
- 
--		index = pf * rvu->hw->total_vfs * LMT_MAPTBL_ENTRY_SIZE;
-+		index = pf * apr_vfs * LMT_MAPTBL_ENTRY_SIZE;
- 		off += scnprintf(&buf[off], buf_size - 1 - off, " 0x%llx\t\t",
- 				 (tbl_base + index));
- 		lmt_addr = readq(lmt_map_base + index);
-@@ -604,7 +609,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
- 		/* Reading num of VFs per PF */
- 		rvu_get_pf_numvfs(rvu, pf, &num_vfs, &hw_vfs);
- 		for (vf = 0; vf < num_vfs; vf++) {
--			index = (pf * rvu->hw->total_vfs * 16) +
-+			index = (pf * apr_vfs * LMT_MAPTBL_ENTRY_SIZE) +
- 				((vf + 1)  * LMT_MAPTBL_ENTRY_SIZE);
- 			off += scnprintf(&buf[off], buf_size - 1 - off,
- 					    "PF%d:VF%d  \t\t", pf, vf);
--- 
-2.39.5
-
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -512,6 +512,7 @@ static void svc_i3c_master_ibi_work(stru
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
+ 		svc_i3c_master_emit_stop(master);
++		break;
+ 	default:
+ 		break;
+ 	}
 
 
 
