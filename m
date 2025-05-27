@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-147184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BA9AC5688
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E72A9AC533D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 030641BA6803
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:22:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82AD61BA36D0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A56127E7C1;
-	Tue, 27 May 2025 17:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77E527F756;
+	Tue, 27 May 2025 16:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUaeJRAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0R+rM4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F31185E7F;
-	Tue, 27 May 2025 17:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B2A13A244;
+	Tue, 27 May 2025 16:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366547; cv=none; b=jBEWxG8KKjPUwCREXTjlwD6qliO/NIv4Jew6DYl7oz/vRyM5ZrdORO+YuBeUs1gGbMQ0dgz9Z9B3KWtJN4IpKYCph7r3ydOPFREZXhk01bjRgDA1TOQ68VgMMohH8dluX0j0Nveh4z1g40M+LNkLKTBr0pTL0yKKtGmzapvZycY=
+	t=1748364289; cv=none; b=qgQWMirQaeLoz/R7lS2oKSPA1z4NbcCcsAgp3RraoJi9eyUWmfCPRcUUMLVwr4gj2VI8bWAQSrE9EAxPZI7K7X5gEMYiiM+4gRFSwAMKTKB3QMRoaGm9TSIJO6eIMW4RgKxgexdNgBvSU2ysKsa9pCFyTymzdhW8mTdL7Tn0e0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366547; c=relaxed/simple;
-	bh=EE5MaK1642J/101mTrsCIhx0eShHbE5OS06xUS5tDFk=;
+	s=arc-20240116; t=1748364289; c=relaxed/simple;
+	bh=1Hsf/zV7LQhFqm+rIFx/qwRNnR0iP56BHoPaezBvw50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCHYZyZVkCXo7x+C/N0xgz2/vuZQyUrZ1fvSX8GgWjK7KXj+R1lDOq1EJBjwXzpgGkysNgkCRJNOkazwxk/LOY6bEeDcBhpmKnYUJAyDhoA9wWWjqnKqM+NU6/pZ8h9ow78sSIXVq5mfR1Hh4iP0S+EG1hYtODwTFugqgNZL9xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUaeJRAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692ECC4CEE9;
-	Tue, 27 May 2025 17:22:26 +0000 (UTC)
+	 MIME-Version; b=Uo9KVzAGo91/wlneRKqfmB5hiE1W7zguDmItaxRT0p10VDo/YclbL9ZZrjls029K1mWFYEdleUlKwCbr1Bu/niyqewLNeRfvq5ksl6DDMT76a8kx7gPE+nYhUVG7T6xaTr7J/H3REsqHjODxPmWVtjLJMdW4lLGVxn//Izln6HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0R+rM4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C207BC4CEE9;
+	Tue, 27 May 2025 16:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366546;
-	bh=EE5MaK1642J/101mTrsCIhx0eShHbE5OS06xUS5tDFk=;
+	s=korg; t=1748364289;
+	bh=1Hsf/zV7LQhFqm+rIFx/qwRNnR0iP56BHoPaezBvw50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUaeJRAPmKiUVOmsUiTkojg7kFDtW65iw3bD+9t3Uong4TLEGLj/18HiaLPXTwtor
-	 AmWRkjv0Hc3AInoog/JN0fPc2BuA9YLDV4Y9z0NuwnIfVah9WNuR0RTo5NvCV1Xbig
-	 IaIzz4RmaLrSQ91UDSXFXxIcB7O3/WDQeudsHDmQ=
+	b=m0R+rM4mU6Zg3KP0Q+fkLsGcNL4q1RVzj+WK5hzgSCXCF/v/IA8UqjK17MAZCfS4i
+	 prc028RL640xtKP1YnrRCk40ea53dpDyg1+W+kfSVHqahDipS0avMDzawAP+PcucBg
+	 DLIdXdOPTEYpY/cirDWKlB05ioNBonZQSw0A/ceg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Lancelot Six <lancelot.six@amd.com>,
-	Harish Kasiviswanathan <harish.kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 103/783] drm/amdkfd: set precise mem ops caps to disabled for gfx 11 and 12
+Subject: [PATCH 6.12 007/626] phy: renesas: rcar-gen3-usb2: Move IRQ request in probe
 Date: Tue, 27 May 2025 18:18:20 +0200
-Message-ID: <20250527162517.339199638@linuxfoundation.org>
+Message-ID: <20250527162445.357959247@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Kim <jonathan.kim@amd.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit f82d27dcff939d3cbecbc60e1b71e2518c37e81d ]
+[ Upstream commit de76809f60cc938d3580bbbd5b04b7d12af6ce3a ]
 
-Clause instructions with precise memory enabled currently hang the
-shader so set capabilities flag to disabled since it's unsafe to use
-for debugging.
+Commit 08b0ad375ca6 ("phy: renesas: rcar-gen3-usb2: move IRQ registration
+to init") moved the IRQ request operation from probe to
+struct phy_ops::phy_init API to avoid triggering interrupts (which lead to
+register accesses) while the PHY clocks (enabled through runtime PM APIs)
+are not active. If this happens, it results in a synchronous abort.
 
-Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
-Tested-by: Lancelot Six <lancelot.six@amd.com>
-Reviewed-by: Harish Kasiviswanathan <harish.kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+One way to reproduce this issue is by enabling CONFIG_DEBUG_SHIRQ, which
+calls free_irq() on driver removal.
+
+Move the IRQ request and free operations back to probe, and take the
+runtime PM state into account in IRQ handler. This commit is preparatory
+for the subsequent fixes in this series.
+
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 9ce71e85b29e ("phy: renesas: rcar-gen3-usb2: Assert PLL reset on PHY power off")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 46 +++++++++++++-----------
+ 1 file changed, 26 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index 62a9a9ccf9bb6..334c576a75b14 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -2006,10 +2006,6 @@ static void kfd_topology_set_capabilities(struct kfd_topology_device *dev)
- 		dev->node_props.debug_prop |= HSA_DBG_WATCH_ADDR_MASK_LO_BIT_GFX10 |
- 					HSA_DBG_WATCH_ADDR_MASK_HI_BIT;
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 513fd35dcaa95..4cd1b6e677482 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -120,7 +120,6 @@ struct rcar_gen3_chan {
+ 	struct work_struct work;
+ 	struct mutex lock;	/* protects rphys[...].powered */
+ 	enum usb_dr_mode dr_mode;
+-	int irq;
+ 	u32 obint_enable_bits;
+ 	bool extcon_host;
+ 	bool is_otg_channel;
+@@ -428,16 +427,25 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
+ {
+ 	struct rcar_gen3_chan *ch = _ch;
+ 	void __iomem *usb2_base = ch->base;
+-	u32 status = readl(usb2_base + USB2_OBINTSTA);
++	struct device *dev = ch->dev;
+ 	irqreturn_t ret = IRQ_NONE;
++	u32 status;
  
--		if (KFD_GC_VERSION(dev->gpu) >= IP_VERSION(11, 0, 0))
--			dev->node_props.capability |=
--				HSA_CAP_TRAP_DEBUG_PRECISE_MEMORY_OPERATIONS_SUPPORTED;
++	pm_runtime_get_noresume(dev);
++
++	if (pm_runtime_suspended(dev))
++		goto rpm_put;
++
++	status = readl(usb2_base + USB2_OBINTSTA);
+ 	if (status & ch->obint_enable_bits) {
+-		dev_vdbg(ch->dev, "%s: %08x\n", __func__, status);
++		dev_vdbg(dev, "%s: %08x\n", __func__, status);
+ 		writel(ch->obint_enable_bits, usb2_base + USB2_OBINTSTA);
+ 		rcar_gen3_device_recognition(ch);
+ 		ret = IRQ_HANDLED;
+ 	}
+ 
++rpm_put:
++	pm_runtime_put_noidle(dev);
+ 	return ret;
+ }
+ 
+@@ -447,17 +455,6 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
+ 	struct rcar_gen3_chan *channel = rphy->ch;
+ 	void __iomem *usb2_base = channel->base;
+ 	u32 val;
+-	int ret;
 -
- 		if (KFD_GC_VERSION(dev->gpu) >= IP_VERSION(12, 0, 0))
- 			dev->node_props.capability |=
- 				HSA_CAP_TRAP_DEBUG_PRECISE_ALU_OPERATIONS_SUPPORTED;
+-	if (!rcar_gen3_is_any_rphy_initialized(channel) && channel->irq >= 0) {
+-		INIT_WORK(&channel->work, rcar_gen3_phy_usb2_work);
+-		ret = request_irq(channel->irq, rcar_gen3_phy_usb2_irq,
+-				  IRQF_SHARED, dev_name(channel->dev), channel);
+-		if (ret < 0) {
+-			dev_err(channel->dev, "No irq handler (%d)\n", channel->irq);
+-			return ret;
+-		}
+-	}
+ 
+ 	/* Initialize USB2 part */
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+@@ -493,9 +490,6 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
+ 		val &= ~USB2_INT_ENABLE_UCOM_INTEN;
+ 	writel(val, usb2_base + USB2_INT_ENABLE);
+ 
+-	if (channel->irq >= 0 && !rcar_gen3_is_any_rphy_initialized(channel))
+-		free_irq(channel->irq, channel);
+-
+ 	return 0;
+ }
+ 
+@@ -701,7 +695,7 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct rcar_gen3_chan *channel;
+ 	struct phy_provider *provider;
+-	int ret = 0, i;
++	int ret = 0, i, irq;
+ 
+ 	if (!dev->of_node) {
+ 		dev_err(dev, "This driver needs device tree\n");
+@@ -717,8 +711,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 		return PTR_ERR(channel->base);
+ 
+ 	channel->obint_enable_bits = USB2_OBINT_BITS;
+-	/* get irq number here and request_irq for OTG in phy_init */
+-	channel->irq = platform_get_irq_optional(pdev, 0);
+ 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
+ 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
+ 		channel->is_otg_channel = true;
+@@ -787,6 +779,20 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 		channel->vbus = NULL;
+ 	}
+ 
++	irq = platform_get_irq_optional(pdev, 0);
++	if (irq < 0 && irq != -ENXIO) {
++		ret = irq;
++		goto error;
++	} else if (irq > 0) {
++		INIT_WORK(&channel->work, rcar_gen3_phy_usb2_work);
++		ret = devm_request_irq(dev, irq, rcar_gen3_phy_usb2_irq,
++				       IRQF_SHARED, dev_name(dev), channel);
++		if (ret < 0) {
++			dev_err(dev, "Failed to request irq (%d)\n", irq);
++			goto error;
++		}
++	}
++
+ 	provider = devm_of_phy_provider_register(dev, rcar_gen3_phy_usb2_xlate);
+ 	if (IS_ERR(provider)) {
+ 		dev_err(dev, "Failed to register PHY provider\n");
 -- 
 2.39.5
 
