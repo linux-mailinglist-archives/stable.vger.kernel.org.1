@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12739AC547B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE08AC5755
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:31:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81E863A4F1A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 238627A5F7B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1223280021;
-	Tue, 27 May 2025 16:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC5927CCF0;
+	Tue, 27 May 2025 17:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1P3beMhh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHJTWcZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD99A27FD63;
-	Tue, 27 May 2025 16:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0F72110E;
+	Tue, 27 May 2025 17:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364929; cv=none; b=NSCDNkg6cdIX2r1EV7kPBD6htlNcvKbHpzYWZMeRYevf4/YL53SCtsEWMlwsQW6cCftrI9bnrt91nmRDLIhR4hgkClaVz2hIuXAEIyayfRsxOINZw0fnSZysgBuFa403gnAFT8XCWyY3JfUQhZiQtcL/pWeZIGqVwYWbA9QEyWk=
+	t=1748367105; cv=none; b=Wxw47JDVjHdKJinFbjlG87BF5P0k29RDZKP7NfVnbVdNiGSVHSk1T8ox9eM2uKG/kaDm2P760PkseiajOqZ4BSov0PihkKnZh9hz/ochYmDUbRqVQ+wEMAWU4DuRs/2ktat/bYfOorvGoJC+5u8V71ehfjz4FE9BMH0JA3oDfOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364929; c=relaxed/simple;
-	bh=D1OvNAsfXGPrrjYISxW2mn/0B2EyUVsMV4ldf1E2M94=;
+	s=arc-20240116; t=1748367105; c=relaxed/simple;
+	bh=qFcFZORoL76IAb1eorXlfOAp+XriqhAdNYF4YCZqPNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2PbquttfGy7Mfuj6SOOZ7z1DbzlEbd5m5xJPLfop+lByPUIp+J0PVksiJ3c5xYM994heah/QC8L/V3CeLDdh6NniI4D8Vo6V4WiFyEbrox2b/i/GA1DqHedxhUNJP7RSQft+21Cm9aKeOzOwYDmaKIDSnW1EmPNHk8kbHcnugc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1P3beMhh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22BAC4CEEF;
-	Tue, 27 May 2025 16:55:28 +0000 (UTC)
+	 MIME-Version; b=Azaq+ljmEP1N+XVAIV+tV0I/PbscEmgck90KehD+Xb974FLxaAaOYz3J5q77CVYiFhPCLII4y39KGRR8c+/a/SpJI+DmxP10EoplE1Soy3QqQukFhbTGyor816Lbnxf+ioutpzNcbZ/LTxqBhlPNpOBKL/q9o/1/BbwjSeW2d4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHJTWcZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AC9C4CEE9;
+	Tue, 27 May 2025 17:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364929;
-	bh=D1OvNAsfXGPrrjYISxW2mn/0B2EyUVsMV4ldf1E2M94=;
+	s=korg; t=1748367103;
+	bh=qFcFZORoL76IAb1eorXlfOAp+XriqhAdNYF4YCZqPNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1P3beMhhh5Bhn0Z33oIl38W0pzzV51E1Nj1IYJ1jEvFwo3pJRfVIkdVtA7kXmNGRT
-	 bysjozU0zb/jeEOCTKyQqOwz6kft4MAbWbkXEfTYzgJ7QQZJBoFsgEJnJm3EJh10MX
-	 FNsDdIzkEDZs4WNcm84iniDzlFGAM6bhGLsB1SMg=
+	b=zHJTWcZanSCu+CoqqZc4U8DHMASJ6TKWFPNBQZVtGZ+ZOoe+156/BZzjI2e0IAeti
+	 KgIPJPShkuHzKr/BUHeXltQkNbmZpxt95okRL7KIu1GTKHcRLvBk15BVpbrZkK5qIb
+	 LlsuncS6XEPLFd6Gir1KjnykM1YlcvsQK509RFqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/626] hwmon: (dell-smm) Increment the number of fans
-Date: Tue, 27 May 2025 18:21:14 +0200
-Message-ID: <20250527162452.365501160@linuxfoundation.org>
+Subject: [PATCH 6.14 278/783] drm/xe: Disambiguate GMDID-based IP names
+Date: Tue, 27 May 2025 18:21:15 +0200
+Message-ID: <20250527162524.404030750@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Gustavo Sousa <gustavo.sousa@intel.com>
 
-[ Upstream commit dbcfcb239b3b452ef8782842c36fb17dd1b9092f ]
+[ Upstream commit 0695c746f55c875f4cf20bab92533a800a0fe4d6 ]
 
-Some Alienware laptops that support the SMM interface, may have up to 4
-fans.
+The name of an IP is a function of its version. As such, given an IP
+version, it should be clear to identify the name of that IP release.
 
-Tested on an Alienware x15 r1.
+With the current code, we keep that mapping clear for pre-GMDID IPs, but
+ambiguous for GMDID-based ones. That causes two types of inconveniences:
 
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250304055249.51940-2-kuurtb@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+ 1. The end user, who might not have all the necessary mapping at hand,
+    might be confused when seeing different possible IP names in the
+    dmesg log.
+
+ 2. It makes a developer who is not familiar with the "IP version" to
+    "Release name" need to resort to looking at the specs to understand
+    see what version maps to what. While the specs should be the
+    authority on the mapping, we should make our lives easier by
+    reflecting that mapping in the source code.
+
+Thus, since the IP name is tied to the version, let's  remove the
+ambiguity by using a "name" field in struct gmdid_map instead of
+accumulating names in the descriptor instances.
+
+This does result in the code having IP name being defined in
+different structs (gmdid_map, xe_graphics_desc, xe_media_desc), but that
+will be resolved in upcoming changes.
+
+A side-effect of this change is that media_xe2 exactly matches
+media_xelpmp now, so we just re-use the latter.
+
+v2:
+  - Drop media_xe2 and re-use media_xelpmp. (Matt)
+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250221-xe-unify-ip-descriptors-v2-2-5bc0c6d0c13f@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/hwmon/dell-smm-hwmon.rst | 14 +++++++-------
- drivers/hwmon/dell-smm-hwmon.c         |  5 ++++-
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/xe_pci.c       | 36 +++++++++++--------------------
+ drivers/gpu/drm/xe/xe_pci_types.h |  1 +
+ 2 files changed, 14 insertions(+), 23 deletions(-)
 
-diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmon/dell-smm-hwmon.rst
-index 74905675d71f9..5a4edb6565cf9 100644
---- a/Documentation/hwmon/dell-smm-hwmon.rst
-+++ b/Documentation/hwmon/dell-smm-hwmon.rst
-@@ -32,12 +32,12 @@ Temperature sensors and fans can be queried and set via the standard
- =============================== ======= =======================================
- Name				Perm	Description
- =============================== ======= =======================================
--fan[1-3]_input                  RO      Fan speed in RPM.
--fan[1-3]_label                  RO      Fan label.
--fan[1-3]_min                    RO      Minimal Fan speed in RPM
--fan[1-3]_max                    RO      Maximal Fan speed in RPM
--fan[1-3]_target                 RO      Expected Fan speed in RPM
--pwm[1-3]                        RW      Control the fan PWM duty-cycle.
-+fan[1-4]_input                  RO      Fan speed in RPM.
-+fan[1-4]_label                  RO      Fan label.
-+fan[1-4]_min                    RO      Minimal Fan speed in RPM
-+fan[1-4]_max                    RO      Maximal Fan speed in RPM
-+fan[1-4]_target                 RO      Expected Fan speed in RPM
-+pwm[1-4]                        RW      Control the fan PWM duty-cycle.
- pwm1_enable                     WO      Enable or disable automatic BIOS fan
-                                         control (not supported on all laptops,
-                                         see below for details).
-@@ -93,7 +93,7 @@ Again, when you find new codes, we'd be happy to have your patches!
- ---------------------------
+diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
+index 39be74848e447..9b8813a518d72 100644
+--- a/drivers/gpu/drm/xe/xe_pci.c
++++ b/drivers/gpu/drm/xe/xe_pci.c
+@@ -150,7 +150,6 @@ static const struct xe_graphics_desc graphics_xehpc = {
+ };
  
- The driver also exports the fans as thermal cooling devices with
--``type`` set to ``dell-smm-fan[1-3]``. This allows for easy fan control
-+``type`` set to ``dell-smm-fan[1-4]``. This allows for easy fan control
- using one of the thermal governors.
+ static const struct xe_graphics_desc graphics_xelpg = {
+-	.name = "Xe_LPG",
+ 	.hw_engine_mask =
+ 		BIT(XE_HW_ENGINE_RCS0) | BIT(XE_HW_ENGINE_BCS0) |
+ 		BIT(XE_HW_ENGINE_CCS0),
+@@ -174,8 +173,6 @@ static const struct xe_graphics_desc graphics_xelpg = {
+ 		GENMASK(XE_HW_ENGINE_CCS3, XE_HW_ENGINE_CCS0)
  
- Module parameters
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index f5bdf842040e6..b043fbd15c9da 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -73,7 +73,7 @@
- #define DELL_SMM_LEGACY_EXECUTE	0x1
+ static const struct xe_graphics_desc graphics_xe2 = {
+-	.name = "Xe2_LPG / Xe2_HPG / Xe3_LPG",
+-
+ 	XE2_GFX_FEATURES,
+ };
  
- #define DELL_SMM_NO_TEMP	10
--#define DELL_SMM_NO_FANS	3
-+#define DELL_SMM_NO_FANS	4
+@@ -200,15 +197,6 @@ static const struct xe_media_desc media_xehpm = {
+ };
  
- struct smm_regs {
- 	unsigned int eax;
-@@ -1074,11 +1074,14 @@ static const struct hwmon_channel_info * const dell_smm_info[] = {
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
- 			   HWMON_F_TARGET,
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
-+			   HWMON_F_TARGET,
-+			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
- 			   HWMON_F_TARGET
- 			   ),
- 	HWMON_CHANNEL_INFO(pwm,
- 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
- 			   HWMON_PWM_INPUT,
-+			   HWMON_PWM_INPUT,
- 			   HWMON_PWM_INPUT
- 			   ),
- 	NULL
+ static const struct xe_media_desc media_xelpmp = {
+-	.name = "Xe_LPM+",
+-	.hw_engine_mask =
+-		GENMASK(XE_HW_ENGINE_VCS7, XE_HW_ENGINE_VCS0) |
+-		GENMASK(XE_HW_ENGINE_VECS3, XE_HW_ENGINE_VECS0) |
+-		BIT(XE_HW_ENGINE_GSCCS0)
+-};
+-
+-static const struct xe_media_desc media_xe2 = {
+-	.name = "Xe2_LPM / Xe2_HPM / Xe3_LPM",
+ 	.hw_engine_mask =
+ 		GENMASK(XE_HW_ENGINE_VCS7, XE_HW_ENGINE_VCS0) |
+ 		GENMASK(XE_HW_ENGINE_VECS3, XE_HW_ENGINE_VECS0) |
+@@ -357,21 +345,21 @@ __diag_pop();
+ 
+ /* Map of GMD_ID values to graphics IP */
+ static const struct gmdid_map graphics_ip_map[] = {
+-	{ 1270, &graphics_xelpg },
+-	{ 1271, &graphics_xelpg },
+-	{ 1274, &graphics_xelpg },	/* Xe_LPG+ */
+-	{ 2001, &graphics_xe2 },
+-	{ 2004, &graphics_xe2 },
+-	{ 3000, &graphics_xe2 },
+-	{ 3001, &graphics_xe2 },
++	{ 1270, "Xe_LPG", &graphics_xelpg },
++	{ 1271, "Xe_LPG", &graphics_xelpg },
++	{ 1274, "Xe_LPG+", &graphics_xelpg },
++	{ 2001, "Xe2_HPG", &graphics_xe2 },
++	{ 2004, "Xe2_LPG", &graphics_xe2 },
++	{ 3000, "Xe3_LPG", &graphics_xe2 },
++	{ 3001, "Xe3_LPG", &graphics_xe2 },
+ };
+ 
+ /* Map of GMD_ID values to media IP */
+ static const struct gmdid_map media_ip_map[] = {
+-	{ 1300, &media_xelpmp },
+-	{ 1301, &media_xe2 },
+-	{ 2000, &media_xe2 },
+-	{ 3000, &media_xe2 },
++	{ 1300, "Xe_LPM+", &media_xelpmp },
++	{ 1301, "Xe2_HPM", &media_xelpmp },
++	{ 2000, "Xe2_LPM", &media_xelpmp },
++	{ 3000, "Xe3_LPM", &media_xelpmp },
+ };
+ 
+ /*
+@@ -566,6 +554,7 @@ static void handle_gmdid(struct xe_device *xe,
+ 	for (int i = 0; i < ARRAY_SIZE(graphics_ip_map); i++) {
+ 		if (ver == graphics_ip_map[i].ver) {
+ 			xe->info.graphics_verx100 = ver;
++			xe->info.graphics_name = graphics_ip_map[i].name;
+ 			*graphics = graphics_ip_map[i].ip;
+ 
+ 			break;
+@@ -586,6 +575,7 @@ static void handle_gmdid(struct xe_device *xe,
+ 	for (int i = 0; i < ARRAY_SIZE(media_ip_map); i++) {
+ 		if (ver == media_ip_map[i].ver) {
+ 			xe->info.media_verx100 = ver;
++			xe->info.media_name = media_ip_map[i].name;
+ 			*media = media_ip_map[i].ip;
+ 
+ 			break;
+diff --git a/drivers/gpu/drm/xe/xe_pci_types.h b/drivers/gpu/drm/xe/xe_pci_types.h
+index 79b0f80376a4d..665b4447b2ebc 100644
+--- a/drivers/gpu/drm/xe/xe_pci_types.h
++++ b/drivers/gpu/drm/xe/xe_pci_types.h
+@@ -44,6 +44,7 @@ struct xe_media_desc {
+ 
+ struct gmdid_map {
+ 	unsigned int ver;
++	const char *name;
+ 	const void *ip;
+ };
+ 
 -- 
 2.39.5
 
