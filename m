@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F832AC56F2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2602FAC53B1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F2AD3A50C9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD34D4A1D1B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8B127FD73;
-	Tue, 27 May 2025 17:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E6727F737;
+	Tue, 27 May 2025 16:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9RfYdWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkuato6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B09A1CD0C;
-	Tue, 27 May 2025 17:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE801D63EF;
+	Tue, 27 May 2025 16:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366789; cv=none; b=r8zcWgs36F3lP7QECMB2dNUxMsg1geH88DBAAS4lqMCkl7ziZfiB4xm77vWo3QF+n/VdT1sh0Y5zhgTi5tw2znvkKJLbPaugsLYOT2yaRaSWQHpt60vDd8Sk2Mr6/E6wO1rt6uqiinzJI0JTQN4wP5zeNG4PqHTiRKnumxH8VQw=
+	t=1748364616; cv=none; b=gSS9p1A+HghxR2FYmJyxDpXzJtfrjtFzansvtflE+2kFldU87SLGS8nebA3DQulEichafuybVshWC4PacYeqSLOEU5sc/SSMDsHCLQ8y6CrAybUVqjQ52BwE1OEaTF8CVs17gVdoqX89mmlqAK+hap/71m88Jha8FRr1oA0i1XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366789; c=relaxed/simple;
-	bh=G04qnh1yxbb7s2VFNj+KIfkL+1vBGWk5g5EmSBaMjDo=;
+	s=arc-20240116; t=1748364616; c=relaxed/simple;
+	bh=9P5Uv767KU/eK4roLUAB44eyaGo7D92Nky2GGdbDMzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yhl2MMOEARlOK9+h1b0EqL1OX9wzRxFvX2Vb7PfuP9YPyI4nEYcmG0UAisG5qbCMEWonWtXsepw/kkdoklSiZlsP96RZuwOpcrgVlIefPDpAQKZeeljW0aXqwm2RXwhc9KUi4WR/5JAcSdHcKwBNGNCBgeKdU7H6yRoIPlQMzM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9RfYdWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04849C4CEE9;
-	Tue, 27 May 2025 17:26:28 +0000 (UTC)
+	 MIME-Version; b=DKfbiJz/4Q48g8iAQcoiHW7qer4muCXDdsaSxdSqrIZyvqI3h6o4G9RXm9JHFYyY+zcqRjgQVaYDbK5IDtxZq5J9GyFat+hPm7e8pVz4n6pilk4Cs6JDECEhQimYnT1P/ws5QNBqvaBHRVkOUp63DUK+VzNBVil0pWPzQ9giLuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkuato6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 833E0C4CEE9;
+	Tue, 27 May 2025 16:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366789;
-	bh=G04qnh1yxbb7s2VFNj+KIfkL+1vBGWk5g5EmSBaMjDo=;
+	s=korg; t=1748364616;
+	bh=9P5Uv767KU/eK4roLUAB44eyaGo7D92Nky2GGdbDMzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9RfYdWzuN5fZzVbP8q3v6WzsE9D363EfYhtSklInUsN5962I7/kxTBOM0RdptGld
-	 hiZXOXpiCZnbDTDQSNARErhcdtuA68O4/0f0QwGu26a2vXodFyWFIHC0KqW825Fo6b
-	 jAsxLGuKp5s7kxWxEezr5JIWotjBsS2rWZ3CIaaQ=
+	b=qkuato6sfz/vSdmv48q3i3njGxM2gatzyEqqTvOU2BheD3UxcFMMTttJ5jOnQogPB
+	 wa1GU1GR7Md+3IyqYpyqJX/ufFfxdJ7ecyYsgGnCe6Z04uOzMdpZZE9vkMjrw9ExaO
+	 ZJdEEzT32et6bsjADG5A01NTU1uNg8s9cuTpturk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seyediman Seyedarab <imandevel@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Alice Guo <alice.guo@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 177/783] kbuild: fix argument parsing in scripts/config
+Subject: [PATCH 6.12 081/626] thermal/drivers/qoriq: Power down TMU on system suspend
 Date: Tue, 27 May 2025 18:19:34 +0200
-Message-ID: <20250527162520.369575032@linuxfoundation.org>
+Message-ID: <20250527162448.339634171@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seyediman Seyedarab <imandevel@gmail.com>
+From: Alice Guo <alice.guo@nxp.com>
 
-[ Upstream commit f757f6011c92b5a01db742c39149bed9e526478f ]
+[ Upstream commit 229f3feb4b0442835b27d519679168bea2de96c2 ]
 
-The script previously assumed --file was always the first argument,
-which caused issues when it appeared later. This patch updates the
-parsing logic to scan all arguments to find --file, sets the config
-file correctly, and resets the argument list with the remaining
-commands.
+Enable power-down of TMU (Thermal Management Unit) for TMU version 2 during
+system suspend to save power. Save approximately 4.3mW on VDD_ANA_1P8 on
+i.MX93 platforms.
 
-It also fixes --refresh to respect --file by passing KCONFIG_CONFIG=$FN
-to make oldconfig.
-
-Signed-off-by: Seyediman Seyedarab <imandevel@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Alice Guo <alice.guo@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241209164859.3758906-2-Frank.Li@nxp.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/config | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ drivers/thermal/qoriq_thermal.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/scripts/config b/scripts/config
-index ff88e2faefd35..ea475c07de283 100755
---- a/scripts/config
-+++ b/scripts/config
-@@ -32,6 +32,7 @@ commands:
-                              Disable option directly after other option
- 	--module-after|-M beforeopt option
-                              Turn option into module directly after other option
-+	--refresh            Refresh the config using old settings
+diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
+index 52e26be8c53df..aed2729f63d06 100644
+--- a/drivers/thermal/qoriq_thermal.c
++++ b/drivers/thermal/qoriq_thermal.c
+@@ -18,6 +18,7 @@
+ #define SITES_MAX		16
+ #define TMR_DISABLE		0x0
+ #define TMR_ME			0x80000000
++#define TMR_CMD			BIT(29)
+ #define TMR_ALPF		0x0c000000
+ #define TMR_ALPF_V2		0x03000000
+ #define TMTMIR_DEFAULT	0x0000000f
+@@ -356,6 +357,12 @@ static int qoriq_tmu_suspend(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
- 	commands can be repeated multiple times
++	if (data->ver > TMU_VER1) {
++		ret = regmap_set_bits(data->regmap, REGS_TMR, TMR_CMD);
++		if (ret)
++			return ret;
++	}
++
+ 	clk_disable_unprepare(data->clk);
  
-@@ -124,16 +125,22 @@ undef_var() {
- 	txt_delete "^# $name is not set" "$FN"
+ 	return 0;
+@@ -370,6 +377,12 @@ static int qoriq_tmu_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (data->ver > TMU_VER1) {
++		ret = regmap_clear_bits(data->regmap, REGS_TMR, TMR_CMD);
++		if (ret)
++			return ret;
++	}
++
+ 	/* Enable monitoring */
+ 	return regmap_update_bits(data->regmap, REGS_TMR, TMR_ME, TMR_ME);
  }
- 
--if [ "$1" = "--file" ]; then
--	FN="$2"
--	if [ "$FN" = "" ] ; then
--		usage
-+FN=.config
-+CMDS=()
-+while [[ $# -gt 0 ]]; do
-+	if [ "$1" = "--file" ]; then
-+		if [ "$2" = "" ]; then
-+			usage
-+		fi
-+		FN="$2"
-+		shift 2
-+	else
-+		CMDS+=("$1")
-+		shift
- 	fi
--	shift 2
--else
--	FN=.config
--fi
-+done
- 
-+set -- "${CMDS[@]}"
- if [ "$1" = "" ] ; then
- 	usage
- fi
-@@ -217,9 +224,8 @@ while [ "$1" != "" ] ; do
- 		set_var "${CONFIG_}$B" "${CONFIG_}$B=m" "${CONFIG_}$A"
- 		;;
- 
--	# undocumented because it ignores --file (fixme)
- 	--refresh)
--		yes "" | make oldconfig
-+		yes "" | make oldconfig KCONFIG_CONFIG=$FN
- 		;;
- 
- 	*)
 -- 
 2.39.5
 
