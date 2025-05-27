@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-146524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3792EAC5386
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11396AC56DB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 131FA3AEE6A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4003C8A5A46
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA89B255E26;
-	Tue, 27 May 2025 16:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7B927FD4A;
+	Tue, 27 May 2025 17:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhDKhYYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Twzc+jyQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788C22CCC0;
-	Tue, 27 May 2025 16:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B91527D784;
+	Tue, 27 May 2025 17:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364485; cv=none; b=OyZR+I1ly7f8pnMwC8TzsM7MZms4IIB7X6IJ+Sk9NQMocmyaAnXj3BEM6slgpreLQQ8ywznDiuhVTKx7tu4asb82oRha7zuj5uvRJv20Vbo3eUnjQ3wwKeTnOJVktvTV7DgTPs7mm3hmOTe2c8UwnXR6CUrDWuLOFB749O37BNQ=
+	t=1748366744; cv=none; b=EM43j8OWEBkJFdICPmORtzi85WOzNY4VCgzB/d7/Xa9Slao/n9aco/LErWu8+UqlqHRVJtk2gLrqOKEqw3godLjtynHSmvKH+gtdF0bAh66Up7WhMpGADPBIG0BpHkOhcSxlCuHnTJNj4kosDWtcoQyaJKgTB4/NDXB4tCHigD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364485; c=relaxed/simple;
-	bh=/SWdvGClLseASs7DiIZ0a6j8uWDKPCscMw7gVVho/rs=;
+	s=arc-20240116; t=1748366744; c=relaxed/simple;
+	bh=O+AWwT4JXkwEYQ7Vu7y7EH0iC1ZbzpLmDpu7uhUYG8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTE6640vrWNaPwvB8V4jILj9jXpihQzqGVrDKcB8Iao/pHNvu+x9yoi9jsyanclBEpMCe9FmCaX6hLTXqUEc77NUDUrNVDnN+URKcNLukQ0bmiuuupq3qAw26UfZZDq6T4FS3dAMuwPZJbFFVMSXT8BaO52T2EzXgS9Wy4tBM30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhDKhYYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84237C4CEE9;
-	Tue, 27 May 2025 16:48:04 +0000 (UTC)
+	 MIME-Version; b=akg/WFTkfn7yN/YXFGlU999sZaTSLYSv1lNO063iXESkk21I2ETjTSQt9LS0EpWyy/ScXKP0Nd6F5YD1GVBHTeorpaZ85freaMghMHgW6DklTSJ1UNNo4kM0e56jBll6H8WumwoCez+EUoa2q+UcrcGrmjo+s/Mx2IhncYfTKTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Twzc+jyQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF82FC4CEE9;
+	Tue, 27 May 2025 17:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364484;
-	bh=/SWdvGClLseASs7DiIZ0a6j8uWDKPCscMw7gVVho/rs=;
+	s=korg; t=1748366744;
+	bh=O+AWwT4JXkwEYQ7Vu7y7EH0iC1ZbzpLmDpu7uhUYG8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GhDKhYYQe5hNz2retDEZ2n0vrcUxHKvcTDQBTBwyYCyTYSqKTLqVb3etkvI6hfasQ
-	 244z0DqSrktgcKnkPWf+CFPCHJzs9CTN8BSTrpUSZi5pgcmhFtqljp3AhRVaKbdF/m
-	 FIphebl1ELQS2w2SqnIkKTvSm9IuGak4lme8pBZA=
+	b=Twzc+jyQnLrfI9WYzWUVjp8xvmlRojIFuzkW7yU57ORBIqBIVwAm9H630xGMZWxml
+	 5CzYsu+V2f9tS2DrurmAHKfqsuqhCmEizZKsWEi8NuJnU4bDAJIYZLo19XT/KWfSp1
+	 63xMJexPYspEqKZRRW7/kH3MMUMgUQxzckJBLuFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/626] NFSv4: Treat ENETUNREACH errors as fatal for state recovery
+Subject: [PATCH 6.14 167/783] rtc: rv3032: fix EERD location
 Date: Tue, 27 May 2025 18:19:24 +0200
-Message-ID: <20250527162447.936275781@linuxfoundation.org>
+Message-ID: <20250527162519.970470115@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit 0af5fb5ed3d2fd9e110c6112271f022b744a849a ]
+[ Upstream commit b0f9cb4a0706b0356e84d67e48500b77b343debe ]
 
-If a containerised process is killed and causes an ENETUNREACH or
-ENETDOWN error to be propagated to the state manager, then mark the
-nfs_client as being dead so that we don't loop in functions that are
-expecting recovery to succeed.
+EERD is bit 2 in CTRL1
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Link: https://lore.kernel.org/r/20250306214243.1167692-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4state.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-rv3032.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index dafd61186557f..397a86011878f 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -2740,7 +2740,15 @@ static void nfs4_state_manager(struct nfs_client *clp)
- 	pr_warn_ratelimited("NFS: state manager%s%s failed on NFSv4 server %s"
- 			" with error %d\n", section_sep, section,
- 			clp->cl_hostname, -status);
--	ssleep(1);
-+	switch (status) {
-+	case -ENETDOWN:
-+	case -ENETUNREACH:
-+		nfs_mark_client_ready(clp, -EIO);
-+		break;
-+	default:
-+		ssleep(1);
-+		break;
-+	}
- out_drain:
- 	memalloc_nofs_restore(memflags);
- 	nfs4_end_drain_session(clp);
+diff --git a/drivers/rtc/rtc-rv3032.c b/drivers/rtc/rtc-rv3032.c
+index 35b2e36b426a0..cb01038a2e27f 100644
+--- a/drivers/rtc/rtc-rv3032.c
++++ b/drivers/rtc/rtc-rv3032.c
+@@ -69,7 +69,7 @@
+ #define RV3032_CLKOUT2_FD_MSK		GENMASK(6, 5)
+ #define RV3032_CLKOUT2_OS		BIT(7)
+ 
+-#define RV3032_CTRL1_EERD		BIT(3)
++#define RV3032_CTRL1_EERD		BIT(2)
+ #define RV3032_CTRL1_WADA		BIT(5)
+ 
+ #define RV3032_CTRL2_STOP		BIT(0)
 -- 
 2.39.5
 
