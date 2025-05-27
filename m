@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-147855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02778AC59A0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 20:00:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA751AC59A9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 20:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F9393AD06B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:58:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F431BC4AFD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1A327FB10;
-	Tue, 27 May 2025 17:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D7D28751B;
+	Tue, 27 May 2025 17:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="El8rScMD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDPFFYpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4032820A0;
-	Tue, 27 May 2025 17:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE24E280333;
+	Tue, 27 May 2025 17:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368644; cv=none; b=WCQ2NgK1qFL/mYwyuLztBynYyHi+fSGNZ6oh/rp+E7SIknabZBTiaB0RwEvH7vN5CWVwR2H1Op5pCEPWUO7Mlm8TK1Q6G0Xd3eJbT+Y5TE+JtbtLmAOzK4iyA/cvLk4RkJ3KBGw+2OXZg3MY2iaZQ3Dtv2TLVeCzrlFbf60nIVM=
+	t=1748368704; cv=none; b=bTZTzZCJzOTj9rPNCssHl6bA6gZIMSwx4yZYwkxhOTA3gwr3ok+A8apPSthbI3HhsD6IyeUJoHJfzvEMufNId1kjUD4jlZ3k/rmofxcHtwo6mIbX7ODgufE6mIc3Qd1CtJoLIgJNYYFuj3gwmbhIwRvEdKidYVIEDfsk3Qv+ETI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368644; c=relaxed/simple;
-	bh=lQycr01DU0JYsl0e63Se3qU37E3EMTDCP+vxsj8MUvM=;
+	s=arc-20240116; t=1748368704; c=relaxed/simple;
+	bh=yJvES4Ky6tsUx/bcUoIJHWiCHZypTuKP1TMPYa1kTio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tpMtRy+RFPur9ib1B7WPaYJXAhv6PfrJ8kPEAnSdD1pJd5MAyrUcE4oFeekWFXgSZ3K/yE1ezYptw9x1MPo/puW7FidN5V7IBDqWQsbL3qXDQjPdGbEJJRfr2rF7laLgyyvZpsDd/rNdV13vObo7qbLjkZgUzc+/IR5VNpItO04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=El8rScMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47206C4CEE9;
-	Tue, 27 May 2025 17:57:23 +0000 (UTC)
+	 MIME-Version; b=khaMECn73mtjNyVJkFlo5SUwXbqdvjd1jI52bT2395jRyxzUIXMYMFUnMSXfEniKCv80D0L9h7+C8PTPNzniQZjtQblloWPDSHwGb1wZW0tlgxRSF9LxnKMHQtToQU57TdEB4jtzvRh9ebEEoa05byajWddqa7aOOCl/4oeubhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDPFFYpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F53C4CEE9;
+	Tue, 27 May 2025 17:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368643;
-	bh=lQycr01DU0JYsl0e63Se3qU37E3EMTDCP+vxsj8MUvM=;
+	s=korg; t=1748368703;
+	bh=yJvES4Ky6tsUx/bcUoIJHWiCHZypTuKP1TMPYa1kTio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=El8rScMDyIwsjavX038p/jXXighyR9PNQi8QxHacPYcxTo5RLa9v1IaJ+k0ya9vK4
-	 CuBXukQYCaXFK9F2bUFNYWZXOnb3xGqNTBm7CNxgImpsqSUpTH0jsnNdp+heQvZclu
-	 Xe7p8zSEMgdN9UccTKC4HE7ZwzMlkVw67Kk+ecvU=
+	b=yDPFFYpOB2/qFqhPqO5JuzN2klZb8aD1n0Y8vF9TlvqA84XPU9wQpi12YKjdqh90b
+	 HucE1PxG3H45zdnNp9KEe/ZUlJWey/FbtuX6ajj6EBx6/OjBspsh0r49Z6QcGweDOY
+	 orGOVYx3rRXo1LOKq/Ppeg/PxS8QTR/V4N6VQ5Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Xulin Sun <xulin.sun@windriver.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 771/783] spi: use container_of_cont() for to_spi_device()
-Date: Tue, 27 May 2025 18:29:28 +0200
-Message-ID: <20250527162544.532322105@linuxfoundation.org>
+Subject: [PATCH 6.14 772/783] spi: spi-fsl-dspi: restrict register range for regmap access
+Date: Tue, 27 May 2025 18:29:29 +0200
+Message-ID: <20250527162544.570581555@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -65,45 +68,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-[ Upstream commit 1007ae0d464ceb55a3740634790521d3543aaab9 ]
+[ Upstream commit 283ae0c65e9c592f4a1ba4f31917f5e766da7f31 ]
 
-Some places in the spi core pass in a const pointer to a device and the
-default container_of() casts that away, which is not a good idea.
-Preserve the proper const attribute by using container_of_const() for
-to_spi_device() instead, which is what it was designed for.
+DSPI registers are NOT continuous, some registers are reserved and
+accessing them from userspace will trigger external abort, add regmap
+register access table to avoid below abort.
 
-Note, this removes the NULL check for a device pointer in the call, but
-no one was ever checking for that return value, and a device pointer
-should never be NULL overall anyway, so this should be a safe change.
+  For example on S32G:
 
-Cc: Mark Brown <broonie@kernel.org>
-Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2025052230-fidgeting-stooge-66f5@gregkh
+  # cat /sys/kernel/debug/regmap/401d8000.spi/registers
+
+  Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
+  ...
+  Call trace:
+  regmap_mmio_read32le+0x24/0x48
+  regmap_mmio_read+0x48/0x70
+  _regmap_bus_reg_read+0x38/0x48
+  _regmap_read+0x68/0x1b0
+  regmap_read+0x50/0x78
+  regmap_read_debugfs+0x120/0x338
+
+Fixes: 1acbdeb92c87 ("spi/fsl-dspi: Convert to use regmap and add big-endian support")
+Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
+Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-1-bea884630cfb@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/spi/spi.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 8497f4747e24d..660725dfd6fb6 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -247,10 +247,7 @@ struct spi_device {
- static_assert((SPI_MODE_KERNEL_MASK & SPI_MODE_USER_MASK) == 0,
- 	      "SPI_MODE_USER_MASK & SPI_MODE_KERNEL_MASK must not overlap");
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 067c954cb6ea0..effb460d436da 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ //
+ // Copyright 2013 Freescale Semiconductor, Inc.
+-// Copyright 2020 NXP
++// Copyright 2020-2025 NXP
+ //
+ // Freescale DSPI driver
+ // This file contains a driver for the Freescale DSPI
+@@ -1167,6 +1167,20 @@ static int dspi_resume(struct device *dev)
  
--static inline struct spi_device *to_spi_device(const struct device *dev)
--{
--	return dev ? container_of(dev, struct spi_device, dev) : NULL;
--}
-+#define to_spi_device(__dev)	container_of_const(__dev, struct spi_device, dev)
+ static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
  
- /* Most drivers won't need to care about device refcounting */
- static inline struct spi_device *spi_dev_get(struct spi_device *spi)
++static const struct regmap_range dspi_yes_ranges[] = {
++	regmap_reg_range(SPI_MCR, SPI_MCR),
++	regmap_reg_range(SPI_TCR, SPI_CTAR(3)),
++	regmap_reg_range(SPI_SR, SPI_TXFR3),
++	regmap_reg_range(SPI_RXFR0, SPI_RXFR3),
++	regmap_reg_range(SPI_CTARE(0), SPI_CTARE(3)),
++	regmap_reg_range(SPI_SREX, SPI_SREX),
++};
++
++static const struct regmap_access_table dspi_access_table = {
++	.yes_ranges	= dspi_yes_ranges,
++	.n_yes_ranges	= ARRAY_SIZE(dspi_yes_ranges),
++};
++
+ static const struct regmap_range dspi_volatile_ranges[] = {
+ 	regmap_reg_range(SPI_MCR, SPI_TCR),
+ 	regmap_reg_range(SPI_SR, SPI_SR),
+@@ -1184,6 +1198,8 @@ static const struct regmap_config dspi_regmap_config = {
+ 	.reg_stride	= 4,
+ 	.max_register	= 0x88,
+ 	.volatile_table	= &dspi_volatile_table,
++	.rd_table	= &dspi_access_table,
++	.wr_table	= &dspi_access_table,
+ };
+ 
+ static const struct regmap_range dspi_xspi_volatile_ranges[] = {
+@@ -1205,6 +1221,8 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 		.reg_stride	= 4,
+ 		.max_register	= 0x13c,
+ 		.volatile_table	= &dspi_xspi_volatile_table,
++		.rd_table	= &dspi_access_table,
++		.wr_table	= &dspi_access_table,
+ 	},
+ 	{
+ 		.name		= "pushr",
 -- 
 2.39.5
 
