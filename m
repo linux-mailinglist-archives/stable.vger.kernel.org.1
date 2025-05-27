@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-146482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B29AC5358
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC06AC5361
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7608A0154
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:45:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B47F1BA3A7D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098A9194A67;
-	Tue, 27 May 2025 16:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F08E1D6DC5;
+	Tue, 27 May 2025 16:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLNHnyJI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2nQSd0q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF70527F16C;
-	Tue, 27 May 2025 16:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B240CA5E;
+	Tue, 27 May 2025 16:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364354; cv=none; b=FuM2IOpamRQUbILi1BwnqjooQ7jsF4A+s2Ie/LmgmGfbvdcC7HhJeAmsw7vb7xBxtbKs8G+jnkRI31ez38uBrTYBUUnf0zpMOgWW7/WwMHMj/NjNIGxY77QKfX+XYPIJeNYpO5NjVW+96CYeG0dFJFgD7oinUndEBMBv4nHur6g=
+	t=1748364390; cv=none; b=ZyLmJHVdoBiz6Xsp00OnKfgliXbT7sxp9WT64B8jZ9o3UKbMFh2qH+kkAmkbBXScbZsJ3dbaeV01cKco7o3suKz0jWS+8nkfnmuQAOvWt2J4iGlHcgp2du1qVhsjWNgrExdxVd46NcVQdIJFZuJlhvle38Hoh+HLaHO1KMUQDFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364354; c=relaxed/simple;
-	bh=ZiZbvNpxZfYYTSQGKJMd9RwkAz8e14FrQte3an3I2jk=;
+	s=arc-20240116; t=1748364390; c=relaxed/simple;
+	bh=108bzHQaOod60cxUTY5+jGhHjYZTuXgN3U2JS9PWEyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GH4l3u5sfJYY/mohhOnpFaKKdzMBcoBopFRu6ytc3i+3qTjvFNMvC2/ZLEMoIyK4bWMhrE+Xp6MpQARZNaECHSXAkRbr77mqXEorITAOUQssotqxFcDjE89nw+WYIo8jgvL0BccxnkY7bGS3Ho/XL8BrbPdluIe6T7DHUomyyCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLNHnyJI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E49C4CEEB;
-	Tue, 27 May 2025 16:45:54 +0000 (UTC)
+	 MIME-Version; b=qoDw/pzE0iNN0hDOCrHQdOWseBj8L3pFu7BA/jPYY1AF3Cyo+u9EapLwf8Zia8n9MEN6MKkL7GezftO4MdGEu0KsOcvUsfZIhLBrc6TbPz1nZa8HFzhtWy3IQeThNE8kExNYxlhSLT0gy43JjzmEg1RypQ26LRnpglJNgF51MKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2nQSd0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1CCC4CEE9;
+	Tue, 27 May 2025 16:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364354;
-	bh=ZiZbvNpxZfYYTSQGKJMd9RwkAz8e14FrQte3an3I2jk=;
+	s=korg; t=1748364389;
+	bh=108bzHQaOod60cxUTY5+jGhHjYZTuXgN3U2JS9PWEyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLNHnyJI/WpHvfJkL+YYsYPYsDRimceEIUh0bcHh/UtaZyZDKsCtpLijG2yg3rPsc
-	 0ouiaSqTe9UMogJn3krFvaLRwGn8EQ13f6UGJZD7dk/ckpo6S7Jpr6Ki9lH5EOxVQn
-	 xz3dSTcxznYPguRrUgxQL6W1D9m5qjF32BDBiCoU=
+	b=v2nQSd0qD/UwlLZ4/FjU+JC5Po6wSLNwXTAVsKHk2X+JRmM9oubuo1GGIHr6snDhI
+	 ETIjjOSQLk/4aNr5dHuO+0iIHfPUz3NHYBi2r1ZJfEQ2BU849PJ8NBSzJe9WR3f9gS
+	 DDYANUOLjJKSnWCR2UWZ91QaenLmEmx39pDgTeBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/626] nvmem: rockchip-otp: add rk3576 variant data
-Date: Tue, 27 May 2025 18:18:25 +0200
-Message-ID: <20250527162445.556932076@linuxfoundation.org>
+Subject: [PATCH 6.12 013/626] nvmem: core: fix bit offsets of more than one byte
+Date: Tue, 27 May 2025 18:18:26 +0200
+Message-ID: <20250527162445.596955563@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -67,53 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 50d75a13a9ce880a5ef07a4ccc63ba561cc2e69a ]
+[ Upstream commit 7a06ef75107799675ea6e4d73b9df37e18e352a8 ]
 
-The variant works very similar to the rk3588, just with a different
-read-offset and size.
+If the NVMEM specifies a stride to access data, reading particular cell
+might require bit offset that is bigger than one byte. Rework NVMEM core
+code to support bit offsets of more than 8 bits.
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250411112251.68002-5-srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20250411112251.68002-9-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/rockchip-otp.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/nvmem/core.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/nvmem/rockchip-otp.c b/drivers/nvmem/rockchip-otp.c
-index 3edfbfc2d7220..d88f12c532426 100644
---- a/drivers/nvmem/rockchip-otp.c
-+++ b/drivers/nvmem/rockchip-otp.c
-@@ -274,6 +274,14 @@ static const struct rockchip_data px30_data = {
- 	.reg_read = px30_otp_read,
- };
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index d00a3b015635c..8af2a569c23aa 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -824,7 +824,9 @@ static int nvmem_add_cells_from_dt(struct nvmem_device *nvmem, struct device_nod
+ 		if (addr && len == (2 * sizeof(u32))) {
+ 			info.bit_offset = be32_to_cpup(addr++);
+ 			info.nbits = be32_to_cpup(addr);
+-			if (info.bit_offset >= BITS_PER_BYTE || info.nbits < 1) {
++			if (info.bit_offset >= BITS_PER_BYTE * info.bytes ||
++			    info.nbits < 1 ||
++			    info.bit_offset + info.nbits > BITS_PER_BYTE * info.bytes) {
+ 				dev_err(dev, "nvmem: invalid bits on %pOF\n", child);
+ 				of_node_put(child);
+ 				return -EINVAL;
+@@ -1617,21 +1619,29 @@ EXPORT_SYMBOL_GPL(nvmem_cell_put);
+ static void nvmem_shift_read_buffer_in_place(struct nvmem_cell_entry *cell, void *buf)
+ {
+ 	u8 *p, *b;
+-	int i, extra, bit_offset = cell->bit_offset;
++	int i, extra, bytes_offset;
++	int bit_offset = cell->bit_offset;
  
-+static const struct rockchip_data rk3576_data = {
-+	.size = 0x100,
-+	.read_offset = 0x700,
-+	.clks = px30_otp_clocks,
-+	.num_clks = ARRAY_SIZE(px30_otp_clocks),
-+	.reg_read = rk3588_otp_read,
-+};
+ 	p = b = buf;
+-	if (bit_offset) {
 +
- static const char * const rk3588_otp_clocks[] = {
- 	"otp", "apb_pclk", "phy", "arb",
- };
-@@ -295,6 +303,10 @@ static const struct of_device_id rockchip_otp_match[] = {
- 		.compatible = "rockchip,rk3308-otp",
- 		.data = &px30_data,
- 	},
-+	{
-+		.compatible = "rockchip,rk3576-otp",
-+		.data = &rk3576_data,
-+	},
- 	{
- 		.compatible = "rockchip,rk3588-otp",
- 		.data = &rk3588_data,
++	bytes_offset = bit_offset / BITS_PER_BYTE;
++	b += bytes_offset;
++	bit_offset %= BITS_PER_BYTE;
++
++	if (bit_offset % BITS_PER_BYTE) {
+ 		/* First shift */
+-		*b++ >>= bit_offset;
++		*p = *b++ >> bit_offset;
+ 
+ 		/* setup rest of the bytes if any */
+ 		for (i = 1; i < cell->bytes; i++) {
+ 			/* Get bits from next byte and shift them towards msb */
+-			*p |= *b << (BITS_PER_BYTE - bit_offset);
++			*p++ |= *b << (BITS_PER_BYTE - bit_offset);
+ 
+-			p = b;
+-			*b++ >>= bit_offset;
++			*p = *b++ >> bit_offset;
+ 		}
++	} else if (p != b) {
++		memmove(p, b, cell->bytes - bytes_offset);
++		p += cell->bytes - 1;
+ 	} else {
+ 		/* point to the msb */
+ 		p += cell->bytes - 1;
 -- 
 2.39.5
 
