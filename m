@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-147803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D329AC5940
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3E2AC560A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CA107A3BB4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD560188E1BB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD4B28030A;
-	Tue, 27 May 2025 17:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFA227E1CA;
+	Tue, 27 May 2025 17:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdh0MmYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVdl/ZII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3692128003C;
-	Tue, 27 May 2025 17:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1851A1E89C;
+	Tue, 27 May 2025 17:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368483; cv=none; b=Brzu1Ht7aFsEttn/LVOhqObUOKHL99WQYikMna3uchSzt7XFihIOyifbMCsMzAnu5/C5T5PJVXeSieUieJTUpmV6+/NcYofWVsbVlJ6LagSwN2rd9b5heMMWmN8pJ+GKu5Z+PQVBJkAJg4k3PX2Lc8RM5taiBoyf2tbfABQwwoE=
+	t=1748366217; cv=none; b=hbEoBjcLo9aDXbDLcSZlTEan+itMhIepNABkVwVT7iRwegSZtEH7sb3j9OTtYfm3A1qjjA0wU6lEn0+eVhExtL9Ex6Gq3n+NkdZKv9wXZfKSIrNKiFxbyVy47xMGoNR8gAC+a1feGgxnTwHtcmfjZSqqIKu6hu5GkozVa+/+fW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368483; c=relaxed/simple;
-	bh=CtYSDzqQ753F2Cmutkm1GqIFlflPlS35LF+pND9GlWQ=;
+	s=arc-20240116; t=1748366217; c=relaxed/simple;
+	bh=Yqy9Uyvkm9+zumNQdiPHR16Cdosd92f+Lgj504gOn5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e85ba7tM6l2n+XhFu0bdmZymFVAW3iuPJB5lJrbPguf5QfDnqno2TibEhn/0KhBTuydaBxBXWaghTPxUHFsWUlD38Q6jfLInKruPPlVC7hZjOh2V3wSc9rWMKenyTfw1jSeJ2PXkXRsLH1lbucoojlIxTYJRNua8eFTKsfM9Bik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdh0MmYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0B5C4CEEA;
-	Tue, 27 May 2025 17:54:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P8wlgzVNpZvsLzif8pEwaxawhm69E/L++3h9b9J9OBtsFeuSsK7lrjsTUSQgvgNkOdcLLJKRXMmJmwG9ZqZuqBWCniTJGArRr0oob3KwsekN8vll1XOxPLkv2epdDKWJvbmo72UgZs71kc+xovSxLb++2Mg3ZBiAy/L5JKEVUMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVdl/ZII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B155C4CEE9;
+	Tue, 27 May 2025 17:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368481;
-	bh=CtYSDzqQ753F2Cmutkm1GqIFlflPlS35LF+pND9GlWQ=;
+	s=korg; t=1748366217;
+	bh=Yqy9Uyvkm9+zumNQdiPHR16Cdosd92f+Lgj504gOn5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hdh0MmYGIgu/gyCKjvj0q9i2sx4+iC5OQgSbL+IfHii30RItiRPFEvf25AuvTqkSH
-	 ELJyxeyZO48Lb+vqu7BvTfltrRY71NwC45c67Qrs3vm8uh1OzMs8BmOvPo98EeNP9t
-	 YwHySYHcgkg32WH6M3hZWIVa4SMzPmUCyigAEhcc=
+	b=jVdl/ZIIzGRt/6Emm9XBI+PWeCEtVvdVvqf3IqMc58DhKoHaaHTSkZ/nmuRfGPTUl
+	 Kl2oJbfPdFwKb1EZCAG30+jQhangCeG0TM8V9ftl4JZH89UaEfUSKbwe/ZLLot1Oqs
+	 4/kcTAlVDKVrRoY6yA5tFq9+72HQQ4UBC8hkTChc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.14 721/783] clk: s2mps11: initialise clk_hw_onecell_data::num before accessing ::hws[] in probe()
+	Bert Karwatzki <spasswolf@web.de>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Subject: [PATCH 6.12 625/626] x86/mm/init: Handle the special case of device private pages in add_pages(), to not increase max_pfn and trigger dma_addressing_limited() bounce buffers bounce buffers
 Date: Tue, 27 May 2025 18:28:38 +0200
-Message-ID: <20250527162542.472070079@linuxfoundation.org>
+Message-ID: <20250527162510.396791895@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +74,107 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Balbir Singh <balbirs@nvidia.com>
 
-commit 3e14c7207a975eefcda1929b2134a9f4119dde45 upstream.
+commit 7170130e4c72ce0caa0cb42a1627c635cc262821 upstream.
 
-With UBSAN enabled, we're getting the following trace:
+As Bert Karwatzki reported, the following recent commit causes a
+performance regression on AMD iGPU and dGPU systems:
 
-    UBSAN: array-index-out-of-bounds in .../drivers/clk/clk-s2mps11.c:186:3
-    index 0 is out of range for type 'struct clk_hw *[] __counted_by(num)' (aka 'struct clk_hw *[]')
+  7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
 
-This is because commit f316cdff8d67 ("clk: Annotate struct
-clk_hw_onecell_data with __counted_by") annotated the hws member of
-that struct with __counted_by, which informs the bounds sanitizer about
-the number of elements in hws, so that it can warn when hws is accessed
-out of bounds.
+It exposed a bug with nokaslr and zone device interaction.
 
-As noted in that change, the __counted_by member must be initialised
-with the number of elements before the first array access happens,
-otherwise there will be a warning from each access prior to the
-initialisation because the number of elements is zero. This occurs in
-s2mps11_clk_probe() due to ::num being assigned after ::hws access.
+The root cause of the bug is that, the GPU driver registers a zone
+device private memory region. When KASLR is disabled or the above commit
+is applied, the direct_map_physmem_end is set to much higher than 10 TiB
+typically to the 64TiB address. When zone device private memory is added
+to the system via add_pages(), it bumps up the max_pfn to the same
+value. This causes dma_addressing_limited() to return true, since the
+device cannot address memory all the way up to max_pfn.
 
-Move the assignment to satisfy the requirement of assign-before-access.
+This caused a regression for games played on the iGPU, as it resulted in
+the DMA32 zone being used for GPU allocations.
 
-Cc: stable@vger.kernel.org
-Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250326-s2mps11-ubsan-v1-1-fcc6fce5c8a9@linaro.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fix this by not bumping up max_pfn on x86 systems, when pgmap is passed
+into add_pages(). The presence of pgmap is used to determine if device
+private memory is being added via add_pages().
+
+More details:
+
+devm_request_mem_region() and request_free_mem_region() request for
+device private memory. iomem_resource is passed as the base resource
+with start and end parameters. iomem_resource's end depends on several
+factors, including the platform and virtualization. On x86 for example
+on bare metal, this value is set to boot_cpu_data.x86_phys_bits.
+boot_cpu_data.x86_phys_bits can change depending on support for MKTME.
+By default it is set to the same as log2(direct_map_physmem_end) which
+is 46 to 52 bits depending on the number of levels in the page table.
+The allocation routines used iomem_resource's end and
+direct_map_physmem_end to figure out where to allocate the region.
+
+[ arch/powerpc is also impacted by this problem, but this patch does not fix
+  the issue for PowerPC. ]
+
+Testing:
+
+ 1. Tested on a virtual machine with test_hmm for zone device inseration
+
+ 2. A previous version of this patch was tested by Bert, please see:
+    https://lore.kernel.org/lkml/d87680bab997fdc9fb4e638983132af235d9a03a.camel@web.de/
+
+[ mingo: Clarified the comments and the changelog. ]
+
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Tested-by: Bert Karwatzki <spasswolf@web.de>
+Fixes: 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
+Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Link: https://lore.kernel.org/r/20250401000752.249348-1-balbirs@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-s2mps11.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/mm/init_64.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/clk-s2mps11.c
-+++ b/drivers/clk/clk-s2mps11.c
-@@ -137,6 +137,8 @@ static int s2mps11_clk_probe(struct plat
- 	if (!clk_data)
- 		return -ENOMEM;
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -967,9 +967,18 @@ int add_pages(int nid, unsigned long sta
+ 	ret = __add_pages(nid, start_pfn, nr_pages, params);
+ 	WARN_ON_ONCE(ret);
  
-+	clk_data->num = S2MPS11_CLKS_NUM;
-+
- 	switch (hwid) {
- 	case S2MPS11X:
- 		s2mps11_reg = S2MPS11_REG_RTC_CTRL;
-@@ -186,7 +188,6 @@ static int s2mps11_clk_probe(struct plat
- 		clk_data->hws[i] = &s2mps11_clks[i].hw;
- 	}
+-	/* update max_pfn, max_low_pfn and high_memory */
+-	update_end_of_memory_vars(start_pfn << PAGE_SHIFT,
+-				  nr_pages << PAGE_SHIFT);
++	/*
++	 * Special case: add_pages() is called by memremap_pages() for adding device
++	 * private pages. Do not bump up max_pfn in the device private path,
++	 * because max_pfn changes affect dma_addressing_limited().
++	 *
++	 * dma_addressing_limited() returning true when max_pfn is the device's
++	 * addressable memory can force device drivers to use bounce buffers
++	 * and impact their performance negatively:
++	 */
++	if (!params->pgmap)
++		/* update max_pfn, max_low_pfn and high_memory */
++		update_end_of_memory_vars(start_pfn << PAGE_SHIFT, nr_pages << PAGE_SHIFT);
  
--	clk_data->num = S2MPS11_CLKS_NUM;
- 	of_clk_add_hw_provider(s2mps11_clks->clk_np, of_clk_hw_onecell_get,
- 			       clk_data);
- 
+ 	return ret;
+ }
 
 
 
