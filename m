@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-147058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB3DAC55FD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C2BAC55E8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D5254A51E0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FD351BA6F50
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2802C27E7C1;
-	Tue, 27 May 2025 17:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740D6279782;
+	Tue, 27 May 2025 17:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qk3ktYct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7U8D892"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D879C13790B;
-	Tue, 27 May 2025 17:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308501DB34C;
+	Tue, 27 May 2025 17:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366144; cv=none; b=iqz6nQJxl8Kbf1TTJiVXoRdfEnBPHcBa8BoiOSz4t9pIn/Lt8HS/1z4K8jpseButruOcb78PWEqCnp1DdVobi2rbiubMVlxg/MfmlAR61NJ0frQksUFCTuXIZeM1vyWGT7X8PTngW0yK3fP9WtrenVKwvNCLm0grCzQSY8VwZVk=
+	t=1748366148; cv=none; b=kb5yL+1frgvFsD7m7mdexfSadvLJMa/omD4iOm9vULbsMzTfrc70XADcnfi6/ok5GFXCjqOiPXEMVpjZekfmuBGJBPSQ3yCHjPyVfT/qOzGylns8+AAaTVgrmRrS9ksUSe1NKff3epSxlaMgMNELgvQ8hDbmb+0HpzmadNBuaCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366144; c=relaxed/simple;
-	bh=albKVfX3+p+1rfLbFZJADBN/SEzkaA30d88xiH5eys0=;
+	s=arc-20240116; t=1748366148; c=relaxed/simple;
+	bh=aHtJGJqw/PutqnxWvbakEIabGoAmmK9YTCY2EVTsD+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lpbyp/TlfFWev/A2/lu05iNBxxuEJF9s2NqijUuJjjDyA90+IIC+tHDIhxVhiZJzKq5JFWP9HqSKvbLRnqDPOZN1bVxdWmqiXqKibaV8wW7ZpIlifoQQWwqapOQn3P9IFPXszdVKbwWNpWUKrvHj7U/y9rnm/DTeG3lL3yQ767Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qk3ktYct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0F0C4CEE9;
-	Tue, 27 May 2025 17:15:41 +0000 (UTC)
+	 MIME-Version; b=I5I3+4AL+nrmbfdPR4XfC0kHoX6M/t0nQUU9qnvW8pftljJfYRpDtoHbXU+qFUt8u9zdOtkjgGyNKrS2fKKyd+IEwHzxgtZGiKnajIX8lY2cI7gdk/R4Fet0e9FQrSN2dniFqHTDhJko3R3C1tGe7FBTWwhriLA8AlDIzBIT1Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7U8D892; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D5AC4CEE9;
+	Tue, 27 May 2025 17:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366142;
-	bh=albKVfX3+p+1rfLbFZJADBN/SEzkaA30d88xiH5eys0=;
+	s=korg; t=1748366148;
+	bh=aHtJGJqw/PutqnxWvbakEIabGoAmmK9YTCY2EVTsD+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qk3ktYctVcRRSpVxBqprqB00F34i9D60rSVmVKM0FMlgnj/U8BLLMKS37MwZE5gui
-	 XchAKkU8f1WcykAE4DqC2TznVch0tuT9xXCQPrmOT4ZwNWVJRkHhpETItC9QlcshcQ
-	 q4XDslkGQ4+lT2Q5a2gbyenz4dl/r3DU+kCsm40Q=
+	b=e7U8D892xdaWrXMtrAAzJBShly1Rz1xf0dF4FbrhIlDlurPDPUBTEW+GDnHGugSNJ
+	 mcO2E/9YQnI9cLoLrIzc6DZxW/kZBTno3JU2/vHch9VFV1Qk+DnED0HL/L56hcjzRL
+	 rr6NRgZFqVZyDFH89VMIvjrnXR+ABPXYOfsQcR6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chris Lu <chris.lu@mediatek.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 604/626] Bluetooth: btmtksdio: Check function enabled before doing close
-Date: Tue, 27 May 2025 18:28:17 +0200
-Message-ID: <20250527162509.539138205@linuxfoundation.org>
+Subject: [PATCH 6.12 605/626] Bluetooth: btmtksdio: Do close if SDIO card removed without close
+Date: Tue, 27 May 2025 18:28:18 +0200
+Message-ID: <20250527162509.577753257@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -67,32 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Chris Lu <chris.lu@mediatek.com>
 
-commit 07e90048e356a29079fbc011cfc2e1fa1d1c5ac9 upstream.
+commit 0b6d58bc6ea85e57de25c828444928e4a0aa79cb upstream.
 
-Check BTMTKSDIO_FUNC_ENABLED flag before doing close to prevent
-btmtksdio_close been called twice.
+To prevent Bluetooth SDIO card from be physically removed suddenly,
+driver needs to ensure btmtksdio_close is called before
+btmtksdio_remove to disable interrupts and txrx workqueue.
 
 Fixes: 6ac4233afb9a ("Bluetooth: btmtksdio: Prevent enabling interrupts after IRQ handler removal")
 Signed-off-by: Chris Lu <chris.lu@mediatek.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btmtksdio.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/bluetooth/btmtksdio.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 --- a/drivers/bluetooth/btmtksdio.c
 +++ b/drivers/bluetooth/btmtksdio.c
-@@ -723,6 +723,10 @@ static int btmtksdio_close(struct hci_de
- {
- 	struct btmtksdio_dev *bdev = hci_get_drvdata(hdev);
+@@ -1434,11 +1434,15 @@ static void btmtksdio_remove(struct sdio
+ 	if (!bdev)
+ 		return;
  
-+	/* Skip btmtksdio_close if BTMTKSDIO_FUNC_ENABLED isn't set */
-+	if (!test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state))
-+		return 0;
++	hdev = bdev->hdev;
 +
- 	sdio_claim_host(bdev->func);
++	/* Make sure to call btmtksdio_close before removing sdio card */
++	if (test_bit(BTMTKSDIO_FUNC_ENABLED, &bdev->tx_state))
++		btmtksdio_close(hdev);
++
+ 	/* Be consistent the state in btmtksdio_probe */
+ 	pm_runtime_get_noresume(bdev->dev);
  
- 	/* Disable interrupt */
+-	hdev = bdev->hdev;
+-
+ 	sdio_set_drvdata(func, NULL);
+ 	hci_unregister_dev(hdev);
+ 	hci_free_dev(hdev);
 
 
 
