@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-146483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F7FAC5355
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19287AC569E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA4584A0FC8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCCF21BA7862
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AF327C856;
-	Tue, 27 May 2025 16:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3639C27FB0C;
+	Tue, 27 May 2025 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erd6SIhX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvCf8+kP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35B613A244;
-	Tue, 27 May 2025 16:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AEF27F728;
+	Tue, 27 May 2025 17:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364359; cv=none; b=OzStkyzdP8DG0Md2j64z6SsyOeSVYdpltUf4zB025nmMLzdOjOWH54YJAEhuFZ7pOlFmxz8z/RBvSzzgr/ipOGlQdiiEyYaTQthNvRsMHJbtOM/bDZAGYe46OjpxQxRcnz2qcy6FPLtvIcCadZO4u4/CT+POlKvkT3x1hXsMSi4=
+	t=1748366616; cv=none; b=JnIKwEYm26Iz9yqmAlVo0ESJ++jBpu9Zl9VOFfPGe8ovbyg3sT55XWJySq0TnLfjn+puF7/uYruL+Z/XI8cEJXxuyeX7hUCALLqADy1/5bUghACPLwggREVoUIt4NlweAX8DlGmEaEzsAHkfxrAcZff3xRU7E+p5TqqN2zWFLQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364359; c=relaxed/simple;
-	bh=NDq6XuWOEPIsxQ+fDTKB42V5hKSIZO+fCDFZrntFVaY=;
+	s=arc-20240116; t=1748366616; c=relaxed/simple;
+	bh=JskjHpO9JdUS/3pPq5IOPL6WgNbVEzMgXLHBeNBIFqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QjSTjasl2ArvL/0WFqB4KOq0JSVJ+oZ8gHeT4djZS0Ym2XLz8KH6cYKXufyIUi2tAMvBriiZZjJ6d5/Gz6POpVN9wNb4NxFn4lFyHrruS/3SZtHQkwwX0la68u5QqPbgqz30/6VgGE+nNk7HyISIuZzQ34HIWJ1ACIA9oTZXtqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erd6SIhX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1047FC4CEE9;
-	Tue, 27 May 2025 16:45:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HcDwAWDM1wQ0epZLtrxLa6NLnOyfRiBmKr7LvPggCsddMK28aMOT61Ly5SdzPqac7jytpRuFPhHUgSDVgTG9y4kTfVLk+ANKXyj72NWKrw1L3GRwlxaRiX4xsYmaEzoiVbVoPJ+wSqOHNLa+Nnu13RVE+A1GuYwo1RIkGm41tqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvCf8+kP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FF1C4CEE9;
+	Tue, 27 May 2025 17:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364358;
-	bh=NDq6XuWOEPIsxQ+fDTKB42V5hKSIZO+fCDFZrntFVaY=;
+	s=korg; t=1748366615;
+	bh=JskjHpO9JdUS/3pPq5IOPL6WgNbVEzMgXLHBeNBIFqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erd6SIhXx6tOfd0Ps+vfrre3ZwmMnYKF9PsZ48fC3oZxeR/ykF6cZY6OfcF5zDmIp
-	 JVRbgHfXihPaniBiYcWqoIPsggTIy18HpPjIfAQRXaPneT9qmkIfvaP5+EGLIsdXGM
-	 wOxsGw8aPwfmiPp4ZfAd1yupBncUM8EP8FqH2azQ=
+	b=xvCf8+kPuq79kAeX5cMKXS6fcArhlb2CAjXVfo/4Qb3oJqc79HNkddwQUUtgd+ano
+	 gRxs1La2ney1OdURh2VX0LTx4AgF0DxMxHCe3IrxwvPjIjN9dC6eNroHrX2yBEDCXi
+	 w/k6BCIbyimEYxK1woHyFhXwllXimDZUHRShpn68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederick Lawler <fred@cloudflare.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Uros Bizjak <ubizjak@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/626] ima: process_measurement() needlessly takes inode_lock() on MAY_READ
+Subject: [PATCH 6.14 126/783] x86/stackprotector/64: Only export __ref_stack_chk_guard on CONFIG_SMP
 Date: Tue, 27 May 2025 18:18:43 +0200
-Message-ID: <20250527162446.289243888@linuxfoundation.org>
+Message-ID: <20250527162518.279797621@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederick Lawler <fred@cloudflare.com>
+From: Ingo Molnar <mingo@kernel.org>
 
-[ Upstream commit 30d68cb0c37ebe2dc63aa1d46a28b9163e61caa2 ]
+[ Upstream commit 91d5451d97ce35cbd510277fa3b7abf9caa4e34d ]
 
-On IMA policy update, if a measure rule exists in the policy,
-IMA_MEASURE is set for ima_policy_flags which makes the violation_check
-variable always true. Coupled with a no-action on MAY_READ for a
-FILE_CHECK call, we're always taking the inode_lock().
+The __ref_stack_chk_guard symbol doesn't exist on UP:
 
-This becomes a performance problem for extremely heavy read-only workloads.
-Therefore, prevent this only in the case there's no action to be taken.
+  <stdin>:4:15: error: ‘__ref_stack_chk_guard’ undeclared here (not in a function)
 
-Signed-off-by: Frederick Lawler <fred@cloudflare.com>
-Acked-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fix the #ifdef around the entry.S export.
+
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lore.kernel.org/r/20250123190747.745588-8-brgerst@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/entry/entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index a9aab10bebcaa..2f3f267e72167 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -245,7 +245,9 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 				&allowed_algos);
- 	violation_check = ((func == FILE_CHECK || func == MMAP_CHECK ||
- 			    func == MMAP_CHECK_REQPROT) &&
--			   (ima_policy_flag & IMA_MEASURE));
-+			   (ima_policy_flag & IMA_MEASURE) &&
-+			   ((action & IMA_MEASURE) ||
-+			    (file->f_mode & FMODE_WRITE)));
- 	if (!action && !violation_check)
- 		return 0;
- 
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index 58e3124ee2b42..5b96249734ada 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -63,7 +63,7 @@ THUNK warn_thunk_thunk, __warn_thunk
+  * entirely in the C code, and use an alias emitted by the linker script
+  * instead.
+  */
+-#ifdef CONFIG_STACKPROTECTOR
++#if defined(CONFIG_STACKPROTECTOR) && defined(CONFIG_SMP)
+ EXPORT_SYMBOL(__ref_stack_chk_guard);
+ #endif
+ #endif
 -- 
 2.39.5
 
