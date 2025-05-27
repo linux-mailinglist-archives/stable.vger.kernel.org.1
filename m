@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBE8AC5568
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7BBAC5854
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 905398A33CF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:05:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22CA63A7F18
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540AB27A446;
-	Tue, 27 May 2025 17:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113AD1C07C4;
+	Tue, 27 May 2025 17:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STbCo0dF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSX+IxzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B7F2798E6;
-	Tue, 27 May 2025 17:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C130E2750E8;
+	Tue, 27 May 2025 17:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365535; cv=none; b=jjRwj0uhGp4tuAov9wvkNnTADZXQgIgiATGPxPYwmR4NwgbYh1LgEgLJFixUS+xsT47FR3swnW5Nwakp+00Hc4OiNZJAto5YiT71aUPGb0rAr90PqRYRjwC7EF/tte6K5ZJDVxxP0i5DXvLkCMThP/Cza1ZIjjzkWcG7/1OXk4I=
+	t=1748367801; cv=none; b=p9MjmmJhky1K82WwvtaNGnhCGlLa11f9SNmLZ3lmm1/9jhuFmcY/VrbGVaywLwX57gowA1+FZlhKcaQBP847MC4miltjbryBHgaCDqmyzlFqImliW6Ptcl0ArtuWmldpqwjQHFT5oaDcqTRjpPqrv+VTvE1WUwficIlNz5lJwl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365535; c=relaxed/simple;
-	bh=GbNWntq2Wta7G1Xak5rIz+HMP5a6QPb3V5SLz27t1GQ=;
+	s=arc-20240116; t=1748367801; c=relaxed/simple;
+	bh=upFiYiG345xuLFkV5k9M8cxEQknNj91Tk01ppjYjVQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3MO9ybvSK/OnPGEqqnV1+rkn9UwsEkVw1ainI5T/61br4vr1zvtgDG6dG6RIXNkuXy3eizg4QUaaTobel4eB69GcUvlKnNcihOc7Sew/yBER9qmqw72MMSywH9T9gl1dbclegwuYxLJdYJqtlFw3pJHkVax73pLD0K4PVXWXMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STbCo0dF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CB6C4CEE9;
-	Tue, 27 May 2025 17:05:34 +0000 (UTC)
+	 MIME-Version; b=Q6FKycNUDDNpzMbeVn5I0kxRa+K7vMmAMwyBEnVO1pmMX5MgNAnJ2gmhEDmquSXU7gNu/UE04ReVd6EWpl6pwMhyvnlFN9IaNz0b7eO4SjnjA2/fXhvxy+ikKGCF9Uj1jrGUwdozuG7eruxB6MTNUcj/IHZ00S/7G20X9BYDJ2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSX+IxzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B644BC4CEE9;
+	Tue, 27 May 2025 17:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365534;
-	bh=GbNWntq2Wta7G1Xak5rIz+HMP5a6QPb3V5SLz27t1GQ=;
+	s=korg; t=1748367801;
+	bh=upFiYiG345xuLFkV5k9M8cxEQknNj91Tk01ppjYjVQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STbCo0dFkFINsHTKiXfcbRJPdoqaPvpvx/WhsAiRxG0yhVYZQUPBkv94Du551ojCU
-	 vG0+tPp2ApTqiU/B5u1hGigP4+BvzuLep0rHMcM+r2pOQHYY54KoZm4C/4K4B3H5Ov
-	 mPbuckOLxPGkyfFdbxyuMovcG+4rYq+fVNk22y44=
+	b=BSX+IxzKe/QrPheshzoXmxkqG3qDo9veANRLah2WXqW6sfyJkKlVWfhgkYNh6grod
+	 pxZnNy4p0skNHCvR3SWKYYexcJ/Wcss5+eaApZF5RUUw7G5izTz7AkJu5OgI7nKbH8
+	 5gzSqKwCmFPxtwx2QqN1RnRZLK5HXfuap8K7s9/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 406/626] net/mlx5: Extend Ethtool loopback selftest to support non-linear SKB
-Date: Tue, 27 May 2025 18:24:59 +0200
-Message-ID: <20250527162501.511587915@linuxfoundation.org>
+Subject: [PATCH 6.14 503/783] drm/amd/display/dm: drop hw_support check in amdgpu_dm_i2c_xfer()
+Date: Tue, 27 May 2025 18:25:00 +0200
+Message-ID: <20250527162533.619235576@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 95b9606b15bb3ce1198d28d2393dd0e1f0a5f3e9 ]
+[ Upstream commit 33da70bd1e115d7d73f45fb1c09f5ecc448f3f13 ]
 
-Current loopback test validation ignores non-linear SKB case in
-the SKB access, which can lead to failures in scenarios such as
-when HW GRO is enabled.
-Linearize the SKB so both cases will be handled.
+DC supports SW i2c as well.  Drop the check.
 
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250209101716.112774-15-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-index 1d60465cc2ca4..2f7a543feca62 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-@@ -166,6 +166,9 @@ mlx5e_test_loopback_validate(struct sk_buff *skb,
- 	struct udphdr *udph;
- 	struct iphdr *iph;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 2cfc18401f3f2..7b1fd3b28e9b5 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8382,7 +8382,7 @@ static int amdgpu_dm_i2c_xfer(struct i2c_adapter *i2c_adap,
+ 	int i;
+ 	int result = -EIO;
  
-+	if (skb_linearize(skb))
-+		goto out;
-+
- 	/* We are only going to peek, no need to clone the SKB */
- 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
- 		goto out;
+-	if (!ddc_service->ddc_pin || !ddc_service->ddc_pin->hw_info.hw_supported)
++	if (!ddc_service->ddc_pin)
+ 		return result;
+ 
+ 	cmd.payloads = kcalloc(num, sizeof(struct i2c_payload), GFP_KERNEL);
 -- 
 2.39.5
 
