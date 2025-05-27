@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-147577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDAAAC5846
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03934AC54F3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBB6C4A0F84
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB501BA511E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2292D27FD62;
-	Tue, 27 May 2025 17:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D763C271476;
+	Tue, 27 May 2025 17:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kV97H5Ph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zRcnw3c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A2842A9B;
-	Tue, 27 May 2025 17:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9350625A323;
+	Tue, 27 May 2025 17:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367772; cv=none; b=jtCnjYMuOBXkv7yrXc8tl/CVnBS8daJ7A4/7mmyJdWmiDQNsLQySQtIaCk+gS0m2sGhqneFnwXBVxBW5EcFeX/Km0V2zNS/Wk0LczVYnuBaNlFmCUxziJeJqSPPMPxwCj9LBXvHazJao26hHSUnF4Qqa6Bo5u10pIT7aoQDKVoA=
+	t=1748365513; cv=none; b=SBQkqIJcy2S/XDX8ZGoschESyJ6nefDm8jNwtO7D+Xksy3LYtNWTl/sWyWZ6kd/khXgZrhzUqiJZS6i0FCUTDIJyoBruLtpuzH39eKiq2ZMOo9k8Svt1ENaaPlXoHoDvJ9BKJqbYi5H0Iw+jB2xHLH9SXnrG5X1hOsqTT4Dk86w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367772; c=relaxed/simple;
-	bh=2CyyaP5e0RcUQd0CVqae1m6RVAFAh+GYSGcNAcqqtic=;
+	s=arc-20240116; t=1748365513; c=relaxed/simple;
+	bh=4cQ7qcBY+5kdfLdRvcYWhEMbd0HCN/74Gj4oNYKdYjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acv39/ITywVxHb8R/FlmeaJzmKPfhX/foxqL+nxJI/Fp4Z4JZpw62XzXH+AkHCi1Yn5R6zh++68N5bJWEpqdat6vrEl60w1iGdDzp2ugK3hnIYX7XIJvs94DfSaToNEdB7gKDPR4hUn9YSVMHgI2JxmDnPv7E168A15D5OGYl+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kV97H5Ph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458CBC4CEE9;
-	Tue, 27 May 2025 17:42:52 +0000 (UTC)
+	 MIME-Version; b=UTRGqcNNcqt1LyjxZZIGouinUJg9RMFg/XFwEA0a50nF9xxiyAA+hNw0EGTVxJ20/EFRS6kxqztJTQ3vaPCBr9IYD6RRPjC94I9J48anW4mdE0FCoBCbi0TS3vMc/lMrrRQnv6EqbJFy30lmA74YB6vmFvsI1eHmJ/OfWqMdBS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zRcnw3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077E6C4CEEB;
+	Tue, 27 May 2025 17:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367772;
-	bh=2CyyaP5e0RcUQd0CVqae1m6RVAFAh+GYSGcNAcqqtic=;
+	s=korg; t=1748365513;
+	bh=4cQ7qcBY+5kdfLdRvcYWhEMbd0HCN/74Gj4oNYKdYjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kV97H5PhWYU+89HKUMVK7+TtnxYpwaNzD3Zl9FmuEpUBBQm2eD9pwSZpwJgS5uOXt
-	 8Mpw3xlUIyfOO/8NyUa7ZxtG04ot6g/kZxjPcbgAKNA45hNc1Mmg33XjLbG9qb2DaQ
-	 8lVlgFGXyNuXRbsYTk82BBfKNhhPnp4HiEe3BLmQ=
+	b=0zRcnw3cAehd71UHej6pnfLPm2vQuwpP0UEF3R++8uN2dWofWDLrGWlhEvvlXoV09
+	 kMY5zmS3SCkBeyQ85XQV9emBSmknFQj4OIoyOx9lNtkSM+XOZRB3XCMMJQUmNedg6Q
+	 us++OwFiWvKggmdzpd5XNVpb7itoAJLVb4OyIx+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiang Liu <gerry@linux.alibaba.com>,
-	Shuo Liu <shuox.liu@linux.alibaba.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 495/783] amdgpu/soc15: enable asic reset for dGPU in case of suspend abort
-Date: Tue, 27 May 2025 18:24:52 +0200
-Message-ID: <20250527162533.293113463@linuxfoundation.org>
+Subject: [PATCH 6.12 400/626] drm/amd/display: Populate register address for dentist for dcn401
+Date: Tue, 27 May 2025 18:24:53 +0200
+Message-ID: <20250527162501.271107256@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiang Liu <gerry@linux.alibaba.com>
+From: Dillon Varone <dillon.varone@amd.com>
 
-[ Upstream commit 38e8ca3e4b6de1c6e49d0140264cfc8d314a5f70 ]
+[ Upstream commit 5f0d1ef6f16e150ee46cc00b8d233d9d271fe39e ]
 
-When GPU suspend is aborted, do the same for dGPU as APU to reset
-soc15 asic. Otherwise it may cause following errors:
-[  547.229463] amdgpu 0001:81:00.0: [drm:amdgpu_ring_test_helper [amdgpu]] *ERROR* ring kiq_0.2.1.0 test failed (-110)
+[WHY&HOW]
+Address was not previously populated which can result in incorrect
+clock frequencies being read on boot.
 
-[  555.126827] amdgpu 0000:0a:00.0: [drm:amdgpu_ring_test_helper [amdgpu]] *ERROR* ring kiq_0.2.1.0 test failed (-110)
-[  555.126901] [drm:amdgpu_gfx_enable_kcq [amdgpu]] *ERROR* KCQ enable failed
-[  555.126957] [drm:amdgpu_device_ip_resume_phase2 [amdgpu]] *ERROR* resume of IP block <gfx_v9_4_3> failed -110
-[  555.126959] amdgpu 0000:0a:00.0: amdgpu: amdgpu_device_ip_resume failed (-110).
-[  555.126965] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -110
-[  555.126966] PM: Device 0000:0a:00.0 failed to resume async: error -110
-
-This fix has been tested on Mi308X.
-
-Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
-Tested-by: Shuo Liu <shuox.liu@linux.alibaba.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/2462b4b12eb9d025e82525178d568cbaa4c223ff.1736739303.git.gerry@linux.alibaba.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc15.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c | 2 ++
+ drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h       | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
-index e98fb3fa36a88..6e09613de8cd2 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -604,12 +604,10 @@ soc15_asic_reset_method(struct amdgpu_device *adev)
- static bool soc15_need_reset_on_resume(struct amdgpu_device *adev)
- {
- 	/* Will reset for the following suspend abort cases.
--	 * 1) Only reset on APU side, dGPU hasn't checked yet.
--	 * 2) S3 suspend aborted in the normal S3 suspend or
--	 *    performing pm core test.
-+	 * 1) S3 suspend aborted in the normal S3 suspend
-+	 * 2) S3 suspend aborted in performing pm core test.
- 	 */
--	if (adev->flags & AMD_IS_APU && adev->in_s3 &&
--			!pm_resume_via_firmware())
-+	if (adev->in_s3 && !pm_resume_via_firmware())
- 		return true;
- 	else
- 		return false;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
+index 8cfc5f4359374..313e52997596a 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
+@@ -24,6 +24,8 @@
+ 
+ #include "dml/dcn401/dcn401_fpu.h"
+ 
++#define DCN_BASE__INST0_SEG1                       0x000000C0
++
+ #define mmCLK01_CLK0_CLK_PLL_REQ                        0x16E37
+ #define mmCLK01_CLK0_CLK0_DFS_CNTL                      0x16E69
+ #define mmCLK01_CLK0_CLK1_DFS_CNTL                      0x16E6C
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
+index 7a1ca1e98059b..221645c023b50 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
+@@ -221,6 +221,7 @@ enum dentist_divider_range {
+ 	CLK_SF(CLK0_CLK_PLL_REQ, FbMult_frac, mask_sh)
+ 
+ #define CLK_REG_LIST_DCN401()	  \
++	SR(DENTIST_DISPCLK_CNTL), \
+ 	CLK_SR_DCN401(CLK0_CLK_PLL_REQ,   CLK01, 0), \
+ 	CLK_SR_DCN401(CLK0_CLK0_DFS_CNTL, CLK01, 0), \
+ 	CLK_SR_DCN401(CLK0_CLK1_DFS_CNTL,  CLK01, 0), \
 -- 
 2.39.5
 
