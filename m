@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-146753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF3FAC5460
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C10EDAC57D2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B08DB1BA4BD4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBFD816651E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8002627FD6E;
-	Tue, 27 May 2025 17:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AFD27F16D;
+	Tue, 27 May 2025 17:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKYZ8w+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZffztVR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DF3266592;
-	Tue, 27 May 2025 17:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7499627CCF0;
+	Tue, 27 May 2025 17:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365202; cv=none; b=V34G5mNwddB5jpfMrfoW+QBrjYCsfFZJBaJCpTCIO8ERgaErXrPkI672q+z4nvF2MFWIK/o225YGauRb6ajqY+ZCM052YV9qdGXUqUGc2H0TTtPj2JVBCz5AW9eU5bmx5DUPI9xiDnyl6L9GLzaAurQuhubjQdX31BIWePy6O08=
+	t=1748367461; cv=none; b=TjETJiof6+/lYFxuy5hZ3WQAggQlFe26GfsdaT/GNNX/ug5GuwfK/KoniMZP3pCW06We+8W4mfldKhRP9hUwEuhXDIaFe/c+EuAJk9iYtUNSbl/AF2hml5c3hkaPfBXoiUilPoKbUZSmhxgcqKQ6Ci3+58Qp7C+2o8pIIHyTM4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365202; c=relaxed/simple;
-	bh=SzQfNzvcZ4dQDf/L0eP5JAYPtlO3a/Yb3wqkug7E9I8=;
+	s=arc-20240116; t=1748367461; c=relaxed/simple;
+	bh=GHqaqdbCPPbR7T1tTeCG/r9Ec4yRqRa3Sik2Mk894eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auUsL6OjvsiHJpLpHZ82L/TiddLX/0Fv1PnG7X7T8gtKT+uewDqQhlBTr0XZc9WcGrdwMRun35FMRtjS6j9D6h7kl/ix/krQ0UYXh0YVrgMxoM0X8pdyGagWad6j8dmkVei39SXIIJmzMTcDuFW1sFf4v6VnFrD5G+2JrIf6sts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKYZ8w+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7E5C4CEE9;
-	Tue, 27 May 2025 17:00:01 +0000 (UTC)
+	 MIME-Version; b=Yyk9anpgEMRvPitpxszJhlGJRgR4eMjApIWwrIH3+hFYGaUrT6cdmX497Nsc396mYw8IxW/Z1aX08Gcp8YAV626ScmA5NX2nWBf8Vs3xSpaxLEwfN5Ex3fgJsnNTxc0w1CNu7iPWHAkwZcWrrwdtzbM4cKnkteTbzepifTUXD7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZffztVR1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD48CC4CEE9;
+	Tue, 27 May 2025 17:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365202;
-	bh=SzQfNzvcZ4dQDf/L0eP5JAYPtlO3a/Yb3wqkug7E9I8=;
+	s=korg; t=1748367461;
+	bh=GHqaqdbCPPbR7T1tTeCG/r9Ec4yRqRa3Sik2Mk894eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKYZ8w+KPRkcGtKHM+Jg/zcFhPoao6jvw75QcMAusJasgchKmYWPbPhaUgjt3x8lk
-	 SWN4W5jokHsf2SIrZ3hpVgp0+cwn7+CmO5ltZdQ5EXfZ7GxPll+w6RY+7nvNzjfD8Y
-	 X2ytXZ65H8ES83cElxONUqzujyjnm6Ga+zaB8FuE=
+	b=ZffztVR10EUseTbDCnVYbwSC/NhJD1gmLOfl/qvYrLJNWLp6Ruu3A4FNpHWhI6259
+	 7kd7qq/H1oKTFKZZW5lvRdcjVfVkb+Y7Ef+k/8pKauJTP4LeXnNzqzgUftpwa7HP0Y
+	 rvpIn37J143mF0xP3ie9TITb2BTU41a5vOFnZkQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 299/626] scsi: mpi3mr: Update timestamp only for supervisor IOCs
-Date: Tue, 27 May 2025 18:23:12 +0200
-Message-ID: <20250527162457.178149218@linuxfoundation.org>
+Subject: [PATCH 6.14 396/783] wifi: rtw89: fw: propagate error code from rtw89_h2c_tx()
+Date: Tue, 27 May 2025 18:23:13 +0200
+Message-ID: <20250527162529.219226472@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 83a9d30d29f275571f6e8f879f04b2379be7eb6c ]
+[ Upstream commit 56e1acaa0f80620b8e2c3410db35b4b975782b0a ]
 
-The driver issues the time stamp update command periodically. Even if the
-command fails with supervisor only IOC Status.
+The error code should be propagated to callers during downloading firmware
+header and body. Remove unnecessary assignment of -1.
 
-Instead check the Non-Supervisor capability bit reported by IOC as part of
-IOC Facts.
-
-Co-developed-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250220142528.20837-3-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250217064308.43559-4-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index f6d3db3fd0d8e..604f37e5c0c35 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -2747,7 +2747,10 @@ static void mpi3mr_watchdog_work(struct work_struct *work)
- 		return;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 2f3869c700696..4727eeb55b486 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -1322,7 +1322,6 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
+ 	ret = rtw89_h2c_tx(rtwdev, skb, false);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to send h2c\n");
+-		ret = -1;
+ 		goto fail;
  	}
  
--	if (mrioc->ts_update_counter++ >= mrioc->ts_update_interval) {
-+	if (!(mrioc->facts.ioc_capabilities &
-+		MPI3_IOCFACTS_CAPABILITY_NON_SUPERVISOR_IOC) &&
-+		(mrioc->ts_update_counter++ >= mrioc->ts_update_interval)) {
-+
- 		mrioc->ts_update_counter = 0;
- 		mpi3mr_sync_timestamp(mrioc);
- 	}
+@@ -1409,7 +1408,6 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
+ 		ret = rtw89_h2c_tx(rtwdev, skb, true);
+ 		if (ret) {
+ 			rtw89_err(rtwdev, "failed to send h2c\n");
+-			ret = -1;
+ 			goto fail;
+ 		}
+ 
 -- 
 2.39.5
 
