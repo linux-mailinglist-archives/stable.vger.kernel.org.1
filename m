@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-147852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF4BAC599D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:59:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D3BAC5995
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BC3C4C23D8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:58:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 972B71BC2B56
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DFC281513;
-	Tue, 27 May 2025 17:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11212820AD;
+	Tue, 27 May 2025 17:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+teM8rf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcTCdath"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2533280023;
-	Tue, 27 May 2025 17:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A97827FD63;
+	Tue, 27 May 2025 17:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368633; cv=none; b=mPB2kju23K+yPfA0xdJp3Q2jpeP1UPii5b5aEW+PFHGmSvMZt7yrQCO3QQLyoIj0aPRayxlVvhIViRP2NuDi5AqQxJjK2uim9v2dC6p5PBzKfIz9kXuyWZfF8qXA9BbzqjloKg4afMdTHvHUBLZTTp256Lu5hIeU9F7ELfFULBY=
+	t=1748368646; cv=none; b=er9lqo9bRCwafayyh8h6JJQbap+5QwdoOXv40zOmK34OTpRka+yh2f4VjCI9/vhO7FF2Q/dn3wqpm0+tUk0L57fFqvcdy6AAhIL+Il1l7Qs9KgEFFImxFpnNmP4j/W3Zgc3QnI390DZxuYPsOa4rGI4U75pwFo97Lfugw/24BkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368633; c=relaxed/simple;
-	bh=0zuChdbSw2dlLcUvS45iXkaS3DsjI1/9X8XKpAxZKcY=;
+	s=arc-20240116; t=1748368646; c=relaxed/simple;
+	bh=p7Rl5pRXIH799Xo1LoYJNT5+Lk6ZJ4qH+3JV7vioMAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QBE9eFLG00O1jMSd5RXU5b5Br55Ny3Ha8YCNeqOz1dyNliOG7BD+Bth8IrdT3UKuM3zOb9YZavxYKISQG4eROO89BBi6Xyuh9kaLoFfQlu96TVDtc6U2XWUu0tH/nLZiGYGkGbEV03ISXWZRqePZWyem23/rWj1YIbeC5qTqlAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+teM8rf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412CEC4CEE9;
-	Tue, 27 May 2025 17:57:13 +0000 (UTC)
+	 MIME-Version; b=TmA9UeaVSHhniln6UlxUcbwe5t0P5RCGPQkQUYrjyfHXscxYjkLVZ/6eliT7vc3rgxoVULLUR8I71kYx2KAsT8XLBozuLqmzcZd6MTEUE+28nLrOlZ9oiqBKth3Z8x5kEkT2l1wRDEg5INL7+JJ6DkJ/Y8Zf5svSVuNZmSaITnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcTCdath; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113C6C4CEE9;
+	Tue, 27 May 2025 17:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368633;
-	bh=0zuChdbSw2dlLcUvS45iXkaS3DsjI1/9X8XKpAxZKcY=;
+	s=korg; t=1748368646;
+	bh=p7Rl5pRXIH799Xo1LoYJNT5+Lk6ZJ4qH+3JV7vioMAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J+teM8rfGlUOgTYDh0nhXSNRcAbPy5eL4aztu4uTTxmnbEvJRTYzrn264re2neodR
-	 FGVsKLMydtE++4Y3ykfZ30S4q7ZWPv9qywppMb1KaKjVkfjjaVOupAE7Eg1WeFWW5t
-	 IMUoWvtVe/7nAmzU0D4exF5yyY8Z+YYPYPNQcWTg=
+	b=CcTCdath7oBCHD6Ao1wp8iTMqVFQiH29zc1PWJ7/6z2uSKwiVFHhJlNNdUlO1w8/0
+	 bErJgJsOWXUID0QqkrwYEqA0AOrjqh0CXArRfndwXXkF5ssLEFUyvdsyYXLP5c4Ruv
+	 FFWLacu0tMQcD1BQ9d73RqNIW7Keyg5fTckzNSGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.14 742/783] platform/x86: dell-wmi-sysman: Avoid buffer overflow in current_password_store()
-Date: Tue, 27 May 2025 18:28:59 +0200
-Message-ID: <20250527162543.342644008@linuxfoundation.org>
+	Zhang Rui <rui.zhang@intel.com>,
+	zhang ning <zhangn1985@outlook.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.14 743/783] thermal: intel: x86_pkg_temp_thermal: Fix bogus trip temperature
+Date: Tue, 27 May 2025 18:29:00 +0200
+Message-ID: <20250527162543.383249706@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -59,47 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit 4e89a4077490f52cde652d17e32519b666abf3a6 upstream.
+commit cf948c8e274e8b406e846cdf6cc48fe47f98cf57 upstream.
 
-If the 'buf' array received from the user contains an empty string, the
-'length' variable will be zero. Accessing the 'buf' array element with
-index 'length - 1' will result in a buffer overflow.
+The tj_max value obtained from the Intel TCC library are in Celsius,
+whereas the thermal subsystem operates in milli-Celsius.
 
-Add a check for an empty string.
+This discrepancy leads to incorrect trip temperature calculations.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix bogus trip temperature by converting tj_max to milli-Celsius Unit.
 
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
-Link: https://lore.kernel.org/r/39973642a4f24295b4a8fad9109c5b08@kaspersky.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 8ef0ca4a177d ("Merge back other thermal control material for 6.3.")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reported-by: zhang ning <zhangn1985@outlook.com>
+Closes: https://lore.kernel.org/all/TY2PR01MB3786EF0FE24353026293F5ACCD97A@TY2PR01MB3786.jpnprd01.prod.outlook.com/
+Tested-by: zhang ning <zhangn1985@outlook.com>
+Cc: 6.3+ <stable@vger.kernel.org> # 6.3+
+Link: https://patch.msgid.link/20250519070901.1031233-1-rui.zhang@intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/intel/x86_pkg_temp_thermal.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
-@@ -45,7 +45,7 @@ static ssize_t current_password_store(st
- 	int length;
+--- a/drivers/thermal/intel/x86_pkg_temp_thermal.c
++++ b/drivers/thermal/intel/x86_pkg_temp_thermal.c
+@@ -329,6 +329,7 @@ static int pkg_temp_thermal_device_add(u
+ 	tj_max = intel_tcc_get_tjmax(cpu);
+ 	if (tj_max < 0)
+ 		return tj_max;
++	tj_max *= 1000;
  
- 	length = strlen(buf);
--	if (buf[length-1] == '\n')
-+	if (length && buf[length - 1] == '\n')
- 		length--;
- 
- 	/* firmware does verifiation of min/max password length,
+ 	zonedev = kzalloc(sizeof(*zonedev), GFP_KERNEL);
+ 	if (!zonedev)
 
 
 
