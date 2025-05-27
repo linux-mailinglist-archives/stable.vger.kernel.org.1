@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-147047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B25FAC55EC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56007AC55DE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A43E4A3518
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBF7C7A8995
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D7427FD68;
-	Tue, 27 May 2025 17:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C1D278750;
+	Tue, 27 May 2025 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nC6ftEn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQwJLjEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EDD27FD56;
-	Tue, 27 May 2025 17:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E3913790B;
+	Tue, 27 May 2025 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366108; cv=none; b=vGFs3Oyg58c2JIzFjjw1zdYzXmqzGAOjUWT4ca8Y7a5YSQEI92fD5cgSaqFNkljoIGUcqc6KE/TMGXqnqRvpxq+EKgZGZdGvIbMXTv2baeBsxXw5vX+AuDT9izq+0RugcfxLPfpmVrcK1f3rvEyudtxHm9eEDHCB3tbWMkmIbEY=
+	t=1748366114; cv=none; b=peApj0c7X30th4Hn6beXUYJesimk/DDuDH4oKNPu6zzvhqDecxjG5oHWtf8F27CafP4lC1QcM3v8IKwDag2zDiCQLFxNJ+zs1+ujz+hjsOoBuBLLM90pCgz907XPAjj+OP+UZExNJDI+AQCWrzeni6vK33zEtz9hRLgS0lPXzug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366108; c=relaxed/simple;
-	bh=L5rBkIUED+QetMllYozeegCxtFDBxF/PLgDfkRm9WAU=;
+	s=arc-20240116; t=1748366114; c=relaxed/simple;
+	bh=BauiZ9ool/deSQ4cBhmWD4wlOw5x4MYsKuROTyF2+XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/6/v9iJlheW8cckdMSZKCK3lqLY8ize2Pa5vdGxCdPy1ixYKqG4XiaItsI9YdhLqrajsxDXt3UyBr9Z2AO8MVy8ZZoyStALjL+TSUljw36e9ecp0wEQEI8ZRWs0BhkjX53/seRVsZ5HXv72RnCfYwmrhxa9Xz7XYhMtrAhaAWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nC6ftEn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DE6C4CEE9;
-	Tue, 27 May 2025 17:15:07 +0000 (UTC)
+	 MIME-Version; b=oFlflzA6PawtLNuwuSUHtosl85kz5KGvskyHHUqKGadMus8SSfVj9R14c9zLubXRTHuVSeoRkqhtCXXy0Y/yKsaBj3IJynO1ikKIeco1rVJC7SwHlTGN3bzzA1n1gcvCYMDfas5SPN42Dk9UK7wtGhSe4SDw3U4CCm00FyrtVFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQwJLjEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C71C4CEE9;
+	Tue, 27 May 2025 17:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366108;
-	bh=L5rBkIUED+QetMllYozeegCxtFDBxF/PLgDfkRm9WAU=;
+	s=korg; t=1748366114;
+	bh=BauiZ9ool/deSQ4cBhmWD4wlOw5x4MYsKuROTyF2+XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nC6ftEn4fCRpUd1+Z2qUDzZxHqy52suTMd4kL/x6l8Y2v+9C6WQN2Jdh8hWgFeHyz
-	 xAk6ojqwy5LsoWezxUKr0yu5pLremKsNiy9PEqDhPjSFJ7dFqCHdd/v+IAQCW2pcma
-	 4xnGrQ/kb8vudZTC2xtigbXUtMaG73QZe5fxTKLo=
+	b=dQwJLjEhQYa2k+ZnNT3N0jhZW9bNHKK74Fdu2JjdaTq1EnkHvSUqzw1x4RrZ6BAiw
+	 7LqZMUSUtHq3Z0ca4pz7KWxJqMjKxLWPXTryiQGkViqo7TzwCyumLTb2xFkT7qZYIV
+	 0juhNbwsctlAt/PaMGaz9GHH4dDi+hNkmXTYDK3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.12 594/626] Revert "drm/amd: Keep display off while going into S4"
-Date: Tue, 27 May 2025 18:28:07 +0200
-Message-ID: <20250527162509.129400092@linuxfoundation.org>
+	Vicki Pfau <vi@endrift.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 595/626] Input: xpad - add more controllers
+Date: Tue, 27 May 2025 18:28:08 +0200
+Message-ID: <20250527162509.169277077@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -65,42 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Vicki Pfau <vi@endrift.com>
 
-commit 7e7cb7a13c81073d38a10fa7b450d23712281ec4 upstream.
+commit f0d17942ea3edec191f1c0fc0d2cd7feca8de2f0 upstream.
 
-commit 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
-attempted to keep displays off during the S4 sequence by not resuming
-display IP.  This however leads to hangs because DRM clients such as the
-console can try to access registers and cause a hang.
+Adds support for a revision of the Turtle Beach Recon Wired Controller,
+the Turtle Beach Stealth Ultra, and the PowerA Wired Controller.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4155
-Fixes: 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250522141328.115095-1-mario.limonciello@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e485502c37b097b0bd773baa7e2741bf7bd2909a)
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Link: https://lore.kernel.org/r/20250513225950.2719387-1-vi@endrift.com
 Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/input/joystick/xpad.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3315,11 +3315,6 @@ static int dm_resume(void *handle)
- 
- 		return 0;
- 	}
--
--	/* leave display off for S4 sequence */
--	if (adev->in_s4)
--		return 0;
--
- 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
- 	dc_state_release(dm_state->context);
- 	dm_state->context = dc_state_create(dm->dc, NULL);
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -289,6 +289,8 @@ static const struct xpad_device {
+ 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x10f5, 0x7005, "Turtle Beach Recon Controller", 0, XTYPE_XBOXONE },
++	{ 0x10f5, 0x7008, "Turtle Beach Recon Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
++	{ 0x10f5, 0x7073, "Turtle Beach Stealth Ultra Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
+ 	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
+ 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
+@@ -353,6 +355,7 @@ static const struct xpad_device {
+ 	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
+ 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
++	{ 0x20d6, 0x2064, "PowerA Wired Controller for Xbox", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
+ 	{ 0x2345, 0xe00b, "Machenike G5 Pro Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5000, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
 
 
 
