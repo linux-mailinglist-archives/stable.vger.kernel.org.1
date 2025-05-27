@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6AEAC56FB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:28:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CFD2AC53A8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BA6E1BC0375
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C314A1A2A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079EF26F449;
-	Tue, 27 May 2025 17:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E8C27F754;
+	Tue, 27 May 2025 16:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgLFkrlx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBKlYHVv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CEB1CD0C;
-	Tue, 27 May 2025 17:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0081527A926;
+	Tue, 27 May 2025 16:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366851; cv=none; b=oLwEylnlGG3KRVW+hyvWxxOP1gYWTSPgd3rQ30VknU1AhrPVCXpes8NLgaXh9n2/YGxkanAsIHvTx1WaP7FsYOizN8c1P3Uvc8As5baVrjhTTLErU9isu+sIH0ggOfhF3v0s5fqNyWgk7EUJ7LeQ99gL1URA1/j09o0Kl/xIyGc=
+	t=1748364586; cv=none; b=KEGFHobAEMxhs5hHEKEFCpAjygwnFUokwEetnjzKHR3zFxT/oWFVaSmxn5nB5gxOhVeE7kLXmLefZ1560LiufMZJeXOXnF/psTwUfZoKtBIAKmuteIv59WPJw9pvsDsbodE6tLah4pwu7wuoEna/807B3jWIAY40hWEKf19QSHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366851; c=relaxed/simple;
-	bh=OkVeUWgh7f5qXpPMHUAz6rubvWDRlNOb6PdRy6pKBoc=;
+	s=arc-20240116; t=1748364586; c=relaxed/simple;
+	bh=qtVAZvTZqIxRhPRI4L0Y3Rgp1C4jtwEe+8vkA2HmQlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTQFTWgfYjljYLdwwthYUgjIyUWIhUWcQj0J2ArY++yw3epYP6iIcfkt+cSaRr1p0Jc9uLL8NzWjMOsMq+DySViB9zh9ZyTe0+6paAs4sI8af2OHjrPKimbFdvcxuQje2Bxy6hsL0vBFabTbrVE5+RHJ1zY3fnogUmusLeiyKWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgLFkrlx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48683C4CEE9;
-	Tue, 27 May 2025 17:27:31 +0000 (UTC)
+	 MIME-Version; b=WDO8Fp2nRnn7PN5iV2ZzJG6yvkbWcVYy+igBboWCiMvB62dECbmH/9uCwsyGmx3fEYPsuZS9CiX6PmLsHAtfbprINdzW7h0N+ICKncMVXX1/i7ToFojRSeOqJ/jMrtF76kZQ2rCc1gqVIPl0UrDog4BNpKP89lzwQKYoZzCACKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBKlYHVv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531D6C4CEE9;
+	Tue, 27 May 2025 16:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366851;
-	bh=OkVeUWgh7f5qXpPMHUAz6rubvWDRlNOb6PdRy6pKBoc=;
+	s=korg; t=1748364585;
+	bh=qtVAZvTZqIxRhPRI4L0Y3Rgp1C4jtwEe+8vkA2HmQlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UgLFkrlxkiwqEoWi5ndvm5WZps5uOT+i3MmKiffKMwt58IAgPSmhuKLRT/TeyiTrm
-	 0FZoguKsPZeZO2PX8zWyDN9Y3sl+O2LA7WxOcs5baj8MS5MihTqiwUs58pkavDVBRb
-	 8jTttgcBKRgVF9tjZPhhPmzjYvPe8uCP6xZ7lqGk=
+	b=cBKlYHVvk/6VuX/9P0LsCXK0UbTcpwWs8WF042aVHDfrw7AHxatlkcWkFGk+T9op6
+	 YEjN6WoItAfVQtEesKIdg2dFanrD2QLocFHFHYQ1kqUghJbKsrscqVb/jL+6+F1t00
+	 V6yHNCghtknS8pcV9ifeksxnEHRLKN5vdrapWIi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Rex Lu <rex.lu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 198/783] posix-timers: Ensure that timer initialization is fully visible
-Date: Tue, 27 May 2025 18:19:55 +0200
-Message-ID: <20250527162521.213887685@linuxfoundation.org>
+Subject: [PATCH 6.12 103/626] wifi: mt76: mt7996: fix SER reset trigger on WED reset
+Date: Tue, 27 May 2025 18:19:56 +0200
+Message-ID: <20250527162449.226291101@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Rex Lu <rex.lu@mediatek.com>
 
-[ Upstream commit 2389c6efd3ad8edb3bcce0019b4edcc7d9c7de19 ]
+[ Upstream commit 8d38abdf6c182225c5c0a81451fa51b7b36a635d ]
 
-Frederic pointed out that the memory operations to initialize the timer are
-not guaranteed to be visible, when __lock_timer() observes timer::it_signal
-valid under timer::it_lock:
+The firmware needs a specific trigger when WED is being reset due to an
+ethernet reset condition. This helps prevent further L1 SER failure.
 
-  T0                                      T1
-  ---------                               -----------
-  do_timer_create()
-      // A
-      new_timer->.... = ....
-      spin_lock(current->sighand)
-      // B
-      WRITE_ONCE(new_timer->it_signal, current->signal)
-      spin_unlock(current->sighand)
-					sys_timer_*()
-					   t =  __lock_timer()
-						  spin_lock(&timr->it_lock)
-						  // observes B
-						  if (timr->it_signal == current->signal)
-						    return timr;
-			                   if (!t)
-					       return;
-					// Is not guaranteed to observe A
-
-Protect the write of timer::it_signal, which makes the timer valid, with
-timer::it_lock as well. This guarantees that T1 must observe the
-initialization A completely, when it observes the valid signal pointer
-under timer::it_lock. sighand::siglock must still be taken to protect the
-signal::posix_timers list.
-
-Reported-by: Frederic Weisbecker <frederic@kernel.org>
-Suggested-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/all/20250308155623.507944489@linutronix.de
+Signed-off-by: Rex Lu <rex.lu@mediatek.com>
+Link: https://patch.msgid.link/20250311103646.43346-2-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-timers.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.h  | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7996/mmio.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 7f8644e047558..15ed343693101 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -463,14 +463,21 @@ static int do_timer_create(clockid_t which_clock, struct sigevent *event,
- 	if (error)
- 		goto out;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index 43468bcaffc6d..a75e1c9435bb0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -908,7 +908,8 @@ enum {
+ 	UNI_CMD_SER_SET_RECOVER_L3_TX_DISABLE,
+ 	UNI_CMD_SER_SET_RECOVER_L3_BF,
+ 	UNI_CMD_SER_SET_RECOVER_L4_MDP,
+-	UNI_CMD_SER_SET_RECOVER_FULL,
++	UNI_CMD_SER_SET_RECOVER_FROM_ETH,
++	UNI_CMD_SER_SET_RECOVER_FULL = 8,
+ 	UNI_CMD_SER_SET_SYSTEM_ASSERT,
+ 	/* action */
+ 	UNI_CMD_SER_ENABLE = 1,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+index 442f72450352b..b6209ed1cfe01 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
+@@ -281,7 +281,7 @@ static int mt7996_mmio_wed_reset(struct mtk_wed_device *wed)
+ 	if (test_and_set_bit(MT76_STATE_WED_RESET, &mphy->state))
+ 		return -EBUSY;
  
--	spin_lock_irq(&current->sighand->siglock);
--	/* This makes the timer valid in the hash table */
--	WRITE_ONCE(new_timer->it_signal, current->signal);
--	hlist_add_head(&new_timer->list, &current->signal->posix_timers);
--	spin_unlock_irq(&current->sighand->siglock);
- 	/*
--	 * After unlocking sighand::siglock @new_timer is subject to
--	 * concurrent removal and cannot be touched anymore
-+	 * timer::it_lock ensures that __lock_timer() observes a fully
-+	 * initialized timer when it observes a valid timer::it_signal.
-+	 *
-+	 * sighand::siglock is required to protect signal::posix_timers.
-+	 */
-+	scoped_guard (spinlock_irq, &new_timer->it_lock) {
-+		guard(spinlock)(&current->sighand->siglock);
-+		/* This makes the timer valid in the hash table */
-+		WRITE_ONCE(new_timer->it_signal, current->signal);
-+		hlist_add_head(&new_timer->list, &current->signal->posix_timers);
-+	}
-+	/*
-+	 * After unlocking @new_timer is subject to concurrent removal and
-+	 * cannot be touched anymore
- 	 */
- 	return 0;
- out:
+-	ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_TRIGGER, UNI_CMD_SER_SET_RECOVER_L1,
++	ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_TRIGGER, UNI_CMD_SER_SET_RECOVER_FROM_ETH,
+ 				 mphy->band_idx);
+ 	if (ret)
+ 		goto out;
 -- 
 2.39.5
 
