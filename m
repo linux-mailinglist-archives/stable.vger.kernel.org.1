@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-147533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90378AC5812
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322ACAC5526
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AB1F4C029D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E44D3AA95F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C0B25A627;
-	Tue, 27 May 2025 17:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5731A1DC998;
+	Tue, 27 May 2025 17:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbnbT4bo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvUhsxNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57AC1CAA7B;
-	Tue, 27 May 2025 17:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151A21EA91;
+	Tue, 27 May 2025 17:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367636; cv=none; b=faLrDALao2ea25dqSKLLaZrQtEuAIBc8rIkLLs057Z0CBOSZ4mC18RF8nDLliciPHryVzw+OIWsfQQcWFhvG9NOUFtw3n+JQh6uwbGZB+eXLJMeUerpg7kIVTLWeOeHte0SaqtI2x+Ft2/wjHKSeBnus4EG/F1/HRVezILYubVI=
+	t=1748365343; cv=none; b=m6PIOJozV0R34yz938xeHOQDJKvmxovAR+WbMdE2yI2KnmHSItJqmGrAzAzWs8qJ9CCq3YiG+qLQjLBYPm2QWC8jhlYLn+/7NAhUVDNnf1pgAQFkskTyUCoIJ+pkd0BpsA8D7sSV8veE9zLtUMVPO8rKk1luCf1kuvABH8N5nOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367636; c=relaxed/simple;
-	bh=XKogJU9Gn6vOsywK6fPxRuNSdUnOysxcBX8YnhEh3ww=;
+	s=arc-20240116; t=1748365343; c=relaxed/simple;
+	bh=1Z9Q+a/uWSfi4t7DZzFQFyDznOnJ4vi+H8dC9VG4wN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAIvS5GDQzK/MBIqxjS1IsqFp/F89wyhpVa2b4xXT7iGsNArpChdF/WpHwAqApa+GIQ7ubONqe4DKPbetQB9JPDB2Q7Nfz+PqpdRotE7pC+BZfml1NTBIVRlFLcJ9PdSgBMuRfrUwLJrc7wSoYidsbYdqvd9z4th9rcrHa/RUTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbnbT4bo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0B7C4CEE9;
-	Tue, 27 May 2025 17:40:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Laia3g64Zsz3Czm0ssmKbpJBK4lN5JcYddbq1B+BXyHKvfNefYZXF54diUMHJhAEpm/7PsCDg+TEmoUUL7vdrIajWbpz7nKP4YvPM8n46wbjDl9icCK6kxwoCoCuC5Fl53L5Z2PaBd1e0sJDfDMt1sm+yxWMAvNUmMvfgM8t7Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvUhsxNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706F6C4CEE9;
+	Tue, 27 May 2025 17:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367636;
-	bh=XKogJU9Gn6vOsywK6fPxRuNSdUnOysxcBX8YnhEh3ww=;
+	s=korg; t=1748365342;
+	bh=1Z9Q+a/uWSfi4t7DZzFQFyDznOnJ4vi+H8dC9VG4wN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbnbT4bogMXMzjDdGoiAvqfICRXVjYUNLOKh9WKTxzBwpedEcOuBH4Cd8kCmRJEl/
-	 7X07d9PYQXixBSpnVTtdJBObUxIAIjZsTqcnZLNoM0XWtMvbhJLmdw9Z8NvG35KHLh
-	 EUlldkwAWGSYkX6bzBAZlNkB08z89LaXmQmKr1pI=
+	b=WvUhsxNyhdDL3hk5luwy3PDEM7o5Nm451Nk0blwvz3dwdZiXxqcKhGdBxhfoldf5o
+	 QsH4xe6Ja9uzVR56ubCiK9A8W7zJa7ijymIwbB6IyQDkkTTyvqksPFvPHmShtTvUNj
+	 juxKiKoDYIN5moAxN1NaJghPuAVOj3+H9BaQPtig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabe Teeger <gabe.teeger@amd.com>,
-	Leo Chen <leo.chen@amd.com>,
-	Syed Hassan <syed.hassan@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Paul Burton <paulburton@kernel.org>,
+	Chao-ying Fu <cfu@wavecomp.com>,
+	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 411/783] drm/amd/display: Guard against setting dispclk low when active
+Subject: [PATCH 6.12 315/626] clocksource: mips-gic-timer: Enable counter when CPUs start
 Date: Tue, 27 May 2025 18:23:28 +0200
-Message-ID: <20250527162529.836443777@linuxfoundation.org>
+Message-ID: <20250527162457.830895702@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +67,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Paul Burton <paulburton@kernel.org>
 
-[ Upstream commit 72d7a7fa1f2404fd31c84a8f808b1b37021a3a9e ]
+[ Upstream commit 3128b0a2e0cf6e07aa78e5f8cf7dd9cd59dc8174 ]
 
-[Why]
-We should never apply a minimum dispclk value while in prepare_bandwidth
-or while displays are active. This is always an optimization for when
-all displays are disabled.
+In multi-cluster MIPS I6500 systems there is a GIC in each cluster,
+each with its own counter. When a cluster powers up the counter will
+be stopped, with the COUNTSTOP bit set in the GIC_CONFIG register.
 
-[How]
-Defer dispclk optimization until safe_to_lower = true and display_count
-reaches 0.
+In single cluster systems, it has been fine to clear COUNTSTOP once
+in gic_clocksource_of_init() to start the counter. In multi-cluster
+systems, this will only have started the counter in the boot cluster,
+and any CPUs in other clusters will find their counter stopped which
+will break the GIC clock_event_device.
 
-Since 0 has a special value in this logic (ie. no dispclk required)
-we also need adjust the logic that clamps it for the actual request
-to PMFW.
+Resolve this by having CPUs clear the COUNTSTOP bit when they come
+online, using the existing gic_starting_cpu() CPU hotplug callback. This
+will allow CPUs in secondary clusters to ensure that the cluster's GIC
+counter is running as expected.
 
-Reviewed-by: Gabe Teeger <gabe.teeger@amd.com>
-Reviewed-by: Leo Chen <leo.chen@amd.com>
-Reviewed-by: Syed Hassan <syed.hassan@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Paul Burton <paulburton@kernel.org>
+Signed-off-by: Chao-ying Fu <cfu@wavecomp.com>
+Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
+Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c    | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/clocksource/mips-gic-timer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 1648226586e22..1f47931c2dafc 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -467,14 +467,19 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
- 		update_dppclk = true;
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index 110347707ff98..8592910710d17 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -115,6 +115,9 @@ static void gic_update_frequency(void *data)
+ 
+ static int gic_starting_cpu(unsigned int cpu)
+ {
++	/* Ensure the GIC counter is running */
++	clear_gic_config(GIC_CONFIG_COUNTSTOP);
++
+ 	gic_clockevent_cpu_init(cpu, this_cpu_ptr(&gic_clockevent_device));
+ 	return 0;
+ }
+@@ -252,9 +255,6 @@ static int __init gic_clocksource_of_init(struct device_node *node)
+ 			pr_warn("Unable to register clock notifier\n");
  	}
  
--	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
-+	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz) &&
-+	    (new_clocks->dispclk_khz > 0 || (safe_to_lower && display_count == 0))) {
-+		int requested_dispclk_khz = new_clocks->dispclk_khz;
-+
- 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
- 
--		if (dc->debug.min_disp_clk_khz > 0 && new_clocks->dispclk_khz < dc->debug.min_disp_clk_khz)
--			new_clocks->dispclk_khz = dc->debug.min_disp_clk_khz;
-+		/* Clamp the requested clock to PMFW based on their limit. */
-+		if (dc->debug.min_disp_clk_khz > 0 && requested_dispclk_khz < dc->debug.min_disp_clk_khz)
-+			requested_dispclk_khz = dc->debug.min_disp_clk_khz;
- 
-+		dcn35_smu_set_dispclk(clk_mgr, requested_dispclk_khz);
- 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
--		dcn35_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
-+
- 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
- 
- 		update_dispclk = true;
+-	/* And finally start the counter */
+-	clear_gic_config(GIC_CONFIG_COUNTSTOP);
+-
+ 	/*
+ 	 * It's safe to use the MIPS GIC timer as a sched clock source only if
+ 	 * its ticks are stable, which is true on either the platforms with
 -- 
 2.39.5
 
