@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-146572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84453AC53BC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1041AC5720
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761F78A1DF0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB06817DADF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED1027A926;
-	Tue, 27 May 2025 16:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2658277808;
+	Tue, 27 May 2025 17:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPJ765o6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3/4Pk5+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AA1194A45;
-	Tue, 27 May 2025 16:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6B51CEAC2;
+	Tue, 27 May 2025 17:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364639; cv=none; b=GA82X9yuiVGAHxook/dIucKcScs//V0cXd2HTLwE5BdfZ36bjKzuZqaNVIYk5BCu14IgoTAHhorJF53TiTCcj8C2qXWzdEaRx9paWRz4vabHIO6X3e1+EFRcKIJB0dFErA1BJWzPk5sBenhQCIOd4qUzrFNV1gdJtwPNPp6jVOM=
+	t=1748366963; cv=none; b=YFCivxOWkSpLiQHFq9lD0r+ZL3uf7PKWQMU/SCQ2Wzhi/IYw6UGq7FyMDU0zSYjBo6RQI8RIQsHM20Y1EgE1vN5CyfJGCJulhHwQ/w9aZCyaCH1DCNoF2y44Dw5CSboUm+80HhBGU1bAkf4JWigEk/75rf11viwBYXcHCRjnj8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364639; c=relaxed/simple;
-	bh=nGO36/wmuX3NuHUX9J6kH0Vj47N4sGr+poPp5nF4udA=;
+	s=arc-20240116; t=1748366963; c=relaxed/simple;
+	bh=GxT5KQkggRmqs3g79N/7PSimCtIRARyq8PiicUX/+G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QJvTNyFq0IqGor+lQ7Had3L2lx/oePJ9r6tBUk/xVVj6jGVTvRWggu6u6JkQgnLCFQt5zU8W+dxUsb9iyqcu+EQFOKS86pcw7s7/L++uZAURbN5wHT6la+R3MkICwsEqdmq1zYClCDvumbUoxdR0nxjiKlpWtq/l/kXDOM2Ho+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPJ765o6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52533C4CEE9;
-	Tue, 27 May 2025 16:50:38 +0000 (UTC)
+	 MIME-Version; b=egZXBsDWhOMz5EHBBG/97AZg/x47L3MmkwFHZ1x7C2VF4L85pAGXrR9DhdVwLN7TiCFHgIOUwSZFJJktWff0jFYu1KmPcQjpyfqvqE0qFB5MYgzFe4+I6XWHUkthSD/qknpNF9BQGa4c2kYIFAcmL6vxEnUlTWDDoW/L3bwXwX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3/4Pk5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4597C4CEE9;
+	Tue, 27 May 2025 17:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364638;
-	bh=nGO36/wmuX3NuHUX9J6kH0Vj47N4sGr+poPp5nF4udA=;
+	s=korg; t=1748366963;
+	bh=GxT5KQkggRmqs3g79N/7PSimCtIRARyq8PiicUX/+G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPJ765o65G1HUg9726xO37Og+3fl0/PxIXya7aqNWX+eP9xztkds4V3uXOvelhZU5
-	 UBlNUO9g4M9atiJuTX2/LgD0IT12XemcP1bhTxaAi1c46bP2RDgLM7SWQ+xfRrxdnM
-	 zm5I5Cz+4eMFJwMSz2wAV5BQeuw4PsEGH5K01bYU=
+	b=H3/4Pk5+QISTSvOxp4AP+xou8dcifJV/cqyIOAK/pBoUk1Z7/vbiNcUZaFitg4f2o
+	 TmAZn3EnlUmiOPzTnORY5D39UYaEE3TmkLDnGMVlSgr7O6porldVEWyzGj4dhiioqD
+	 XZUiwkks1I0EOAft5MFlIOoDy87Ei87r9lW+ec6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Tao <wentao@uniontech.com>,
-	Chen Linxuan <chenlinxuan@uniontech.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/626] blk-cgroup: improve policy registration error handling
+Subject: [PATCH 6.14 216/783] wifi: iwlwifi: dont warn when if there is a FW error
 Date: Tue, 27 May 2025 18:20:13 +0200
-Message-ID: <20250527162449.906831419@linuxfoundation.org>
+Message-ID: <20250527162521.925169265@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Linxuan <chenlinxuan@uniontech.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit e1a0202c6bfda24002a3ae2115154fa90104c649 ]
+[ Upstream commit c7f50d0433a016d43681592836a3d484817bfb34 ]
 
-This patch improve the returned error code of blkcg_policy_register().
+iwl_trans_reclaim is warning if it is called when the FW is not alive.
+But if it is called when there is a pending restart, i.e. after a FW
+error, there is no need to warn, instead - return silently.
 
-1. Move the validation check for cpd/pd_alloc_fn and cpd/pd_free_fn
-   function pairs to the start of blkcg_policy_register(). This ensures
-   we immediately return -EINVAL if the function pairs are not correctly
-   provided, rather than returning -ENOSPC after locking and unlocking
-   mutexes unnecessarily.
-
-   Those locks should not contention any problems, as error of policy
-   registration is a super cold path.
-
-2. Return -ENOMEM when cpd_alloc_fn() failed.
-
-Co-authored-by: Wen Tao <wentao@uniontech.com>
-Signed-off-by: Wen Tao <wentao@uniontech.com>
-Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/3E333A73B6B6DFC0+20250317022924.150907-1-chenlinxuan@uniontech.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308231427.ba3d90b22c25.I9332506af1997faefcf0bdb51d98d5e874051722@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index f1cf7f2909f3a..643d6bf66522e 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1725,27 +1725,27 @@ int blkcg_policy_register(struct blkcg_policy *pol)
- 	struct blkcg *blkcg;
- 	int i, ret;
- 
-+	/*
-+	 * Make sure cpd/pd_alloc_fn and cpd/pd_free_fn in pairs, and policy
-+	 * without pd_alloc_fn/pd_free_fn can't be activated.
-+	 */
-+	if ((!pol->cpd_alloc_fn ^ !pol->cpd_free_fn) ||
-+	    (!pol->pd_alloc_fn ^ !pol->pd_free_fn))
-+		return -EINVAL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index ced8261c725f8..eb631080c4563 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -2,7 +2,7 @@
+ /*
+  * Copyright (C) 2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+- * Copyright (C) 2019-2021, 2023-2024 Intel Corporation
++ * Copyright (C) 2019-2021, 2023-2025 Intel Corporation
+  */
+ #include <linux/kernel.h>
+ #include <linux/bsearch.h>
+@@ -655,6 +655,9 @@ IWL_EXPORT_SYMBOL(iwl_trans_tx);
+ void iwl_trans_reclaim(struct iwl_trans *trans, int queue, int ssn,
+ 		       struct sk_buff_head *skbs, bool is_flush)
+ {
++	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status)))
++		return;
 +
- 	mutex_lock(&blkcg_pol_register_mutex);
- 	mutex_lock(&blkcg_pol_mutex);
- 
- 	/* find an empty slot */
--	ret = -ENOSPC;
- 	for (i = 0; i < BLKCG_MAX_POLS; i++)
- 		if (!blkcg_policy[i])
- 			break;
- 	if (i >= BLKCG_MAX_POLS) {
- 		pr_warn("blkcg_policy_register: BLKCG_MAX_POLS too small\n");
-+		ret = -ENOSPC;
- 		goto err_unlock;
- 	}
- 
--	/*
--	 * Make sure cpd/pd_alloc_fn and cpd/pd_free_fn in pairs, and policy
--	 * without pd_alloc_fn/pd_free_fn can't be activated.
--	 */
--	if ((!pol->cpd_alloc_fn ^ !pol->cpd_free_fn) ||
--	    (!pol->pd_alloc_fn ^ !pol->pd_free_fn))
--		goto err_unlock;
--
- 	/* register @pol */
- 	pol->plid = i;
- 	blkcg_policy[pol->plid] = pol;
-@@ -1756,8 +1756,10 @@ int blkcg_policy_register(struct blkcg_policy *pol)
- 			struct blkcg_policy_data *cpd;
- 
- 			cpd = pol->cpd_alloc_fn(GFP_KERNEL);
--			if (!cpd)
-+			if (!cpd) {
-+				ret = -ENOMEM;
- 				goto err_free_cpds;
-+			}
- 
- 			blkcg->cpd[pol->plid] = cpd;
- 			cpd->blkcg = blkcg;
+ 	if (WARN_ONCE(trans->state != IWL_TRANS_FW_ALIVE,
+ 		      "bad state = %d\n", trans->state))
+ 		return;
 -- 
 2.39.5
 
