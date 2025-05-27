@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7FEAC553D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F77AC581B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D66173B112D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A69B1BC1AA6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D6E2798E6;
-	Tue, 27 May 2025 17:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2A627FD49;
+	Tue, 27 May 2025 17:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrI4mTwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kv0Zt9zt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051161D432D;
-	Tue, 27 May 2025 17:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DBB1AF0BB;
+	Tue, 27 May 2025 17:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365387; cv=none; b=JtXF50ymW0+pZQ83DeYXjodjnECttT4Dz5vi67aLYMUU+Ztny7TiSk9vdKbgZt+bz6SE8HJDyd31BhhDcColbU5P8vd/feRiwev0Idw7p76+zM/ufaHeRaqKZs2aKi+gXppVixBwnZ6UULNWrTQ0DKjwBVoGkgU7/+nnYEivYoY=
+	t=1748367655; cv=none; b=WZb5+9T6tWdllSYN30Tvn/EuMoFu/E7Cttnceok94YwXwh4PO1VJdb1igd2SQtp2Fc4mbcvKri7t76oMFfsc2srBAMSxI7jkFxTYmJm7SahqygqhE+tJy2NlmgF7t8yMi1cIm2F7qctpRAEWhXgBz6knrehiQVW8rIF54w7sWek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365387; c=relaxed/simple;
-	bh=+blBK4+wE40+hQKiyAp1nTtLPE2h5bAD1P7hNPYFRUA=;
+	s=arc-20240116; t=1748367655; c=relaxed/simple;
+	bh=nTcS+f5RCFsGbHHgFb6r/L6ACGahSfmM14azeQ677Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fflBty8pC5d8NYdXmLIoglSMSADLrhSzGvmlwmgWw0qTZC92BK/uTQkuva1XIdPq5OBQg/SyZfwWOcCwPnzrkhKtbGM5oEEJ4AG04r94TCSL5zvzOCZICrNR8MGuXDvSoCGgdzZ/MSMr7tKBZyUPIQOccQj4WjsCzkUeXsZLCIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrI4mTwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5655DC4CEE9;
-	Tue, 27 May 2025 17:03:06 +0000 (UTC)
+	 MIME-Version; b=To+11BKKLUt5KmRbUXDmiHHVJjSzrlvhADMIU6oyVTX0ZHZLWeqJRTM7BQirbOztk2ii9KfLmkbiTrQVd6SJdfCbcfhfDMQoEqNYwOtcRRSqvbOWeNfXXNWcG6rKSP0y3hnCVHujUgWPhL0N+P2exqiSrmud8TJIRXx2qRk6K+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kv0Zt9zt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDCDC4CEE9;
+	Tue, 27 May 2025 17:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365386;
-	bh=+blBK4+wE40+hQKiyAp1nTtLPE2h5bAD1P7hNPYFRUA=;
+	s=korg; t=1748367655;
+	bh=nTcS+f5RCFsGbHHgFb6r/L6ACGahSfmM14azeQ677Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrI4mTwOfyT/IXsBhbx3f109ZxBTJCii2O+co50uQqeYVzBn6koLXbFEMvYEI/9Cu
-	 SLj2wKbSBVe5sZO+AkEo08RTN2s9WTUHulIQB+TMRG7rdIKr0oqyQ1CLghYeu+QU27
-	 UQFFVQW99H0R7UgzQwYF7DoaiFVRj+KnoCrwQAmk=
+	b=Kv0Zt9ztDVAEn0RjAaZ7Usp01q8XUs7yvVgmqH2LKI99b8FEICI1+0qX/qMVq9ncS
+	 gCYhF1A0bgdukvN91YdlPC8JYnLcN8bCjMCMKnUY+RHZ5pR3ZxlroUE92mqRj/Lcsd
+	 dbBlAWfxdwYp9lOY6ThIsgu27HmvttBCY95jI3VI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 360/626] ASoC: tas2764: Mark SW_RESET as volatile
-Date: Tue, 27 May 2025 18:24:13 +0200
-Message-ID: <20250527162459.641926203@linuxfoundation.org>
+Subject: [PATCH 6.14 457/783] drm/xe: Fix xe_tile_init_noalloc() error propagation
+Date: Tue, 27 May 2025 18:24:14 +0200
+Message-ID: <20250527162531.733294897@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit f37f1748564ac51d32f7588bd7bfc99913ccab8e ]
+[ Upstream commit 0bcf41171c64234e79eb3552d00f0aad8a47e8d3 ]
 
-Since the bit is self-clearing.
+Propagate the error to the caller so initialization properly stops if
+sysfs creation fails.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-3-dbab892a69b5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213192909.996148-4-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_tile.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index bc0a73fc7ab41..31f94c8cf2844 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -652,6 +652,7 @@ static const struct regmap_range_cfg tas2764_regmap_ranges[] = {
- static bool tas2764_volatile_register(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
-+	case TAS2764_SW_RST:
- 	case TAS2764_INT_LTCH0 ... TAS2764_INT_LTCH4:
- 	case TAS2764_INT_CLK_CFG:
- 		return true;
+diff --git a/drivers/gpu/drm/xe/xe_tile.c b/drivers/gpu/drm/xe/xe_tile.c
+index 07cf7cfe4abd5..37f170effcd67 100644
+--- a/drivers/gpu/drm/xe/xe_tile.c
++++ b/drivers/gpu/drm/xe/xe_tile.c
+@@ -176,9 +176,7 @@ int xe_tile_init_noalloc(struct xe_tile *tile)
+ 
+ 	xe_wa_apply_tile_workarounds(tile);
+ 
+-	err = xe_tile_sysfs_init(tile);
+-
+-	return 0;
++	return xe_tile_sysfs_init(tile);
+ }
+ 
+ void xe_tile_migrate_wait(struct xe_tile *tile)
 -- 
 2.39.5
 
