@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-146802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32014AC54A3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F02CAC5815
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 020514A2F7C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C84E53B8E4D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A1425FA1D;
-	Tue, 27 May 2025 17:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D9827FD6F;
+	Tue, 27 May 2025 17:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAadMeTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pB6bP57f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653C1154C15;
-	Tue, 27 May 2025 17:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778D21CAA7B;
+	Tue, 27 May 2025 17:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365352; cv=none; b=e7t+ZevxdllFAyD7xA46moD624pZ6K0I40i8m5zD7qxGAJt5bqyAxHfr9N5V+CiovngBenLjAu1lJhUaCithUCuy6F7sLzNne2wy9m6dZ8U9yCRuD5uR01VcWuikctAls4QQ5KbW1T9kccmGyEo5g3UOgySSYHJzasUlsCBwW70=
+	t=1748367607; cv=none; b=rgRNnjAErptrmzB7qFu0DVWbI24mdBqrXw5htyiDSVdJfuCOReV4aFgyVO/PS+63MWfvUM3MNpyds/oBRYQUgRqs866sm1PhDGxVVqNjiYYNsfrwB/y2j67G+/L+LRXsPrysEfi12IAWUtFhofMHFl31IuoFt700U584CWJgUTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365352; c=relaxed/simple;
-	bh=eBbVOd93w9ZmUs1EriYKHMHKz5qdoRQ5wZ6kgBXAkd4=;
+	s=arc-20240116; t=1748367607; c=relaxed/simple;
+	bh=u0zPlmkkkzmrpwNYIBrSoQVKaOtZdEXYfMmTbilevG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lioOiiK51/DgKrRtUQgUbRZGaCeIBCTPiOlJD8Kt6V0ODhrzCSgktELWOdhMjoIzlzhF/K6jmJHzyeUJ6rWhaVKM3s1hqYqs2RS7LutgpmZTDsfHYoeY8XL2JiZXQ4RRdXOOSxPpLJEo8xXCCIZP13UmnUhPVFIlWU6A7ZRmAp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAadMeTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A63C4CEE9;
-	Tue, 27 May 2025 17:02:31 +0000 (UTC)
+	 MIME-Version; b=kRtkAICem/1fdk6IYBLyXxi+lgpOiU0kROt2kPEefTJ9l9ucALoJyQy0khmjROQC/784vD+y7ahR/b60MKyKzjR+b9a3WzcJeYENKk9uPMrDAjJSdR06X6H8FEASf5Eub50zQ+LwGIrXA7q1H0QNQN0HNn3ehmsf/Dkc1rmZTOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pB6bP57f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D6CC4CEE9;
+	Tue, 27 May 2025 17:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365352;
-	bh=eBbVOd93w9ZmUs1EriYKHMHKz5qdoRQ5wZ6kgBXAkd4=;
+	s=korg; t=1748367607;
+	bh=u0zPlmkkkzmrpwNYIBrSoQVKaOtZdEXYfMmTbilevG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MAadMeTAa5tVKWAa/9kuWAc4IvVLX4KU7YJ6GqVujXFwj6oXzXRRKMrpwS8E1BMVz
-	 XyZ2UHpE7axmH89HKVwxjTXMMnwcFrHH3xNJRFdhKRNsN+jefo8IQ0zLpOP529UWHH
-	 DBXU0RfS9Zz+GqV4d28VvLIgoUUjC2oyBTsvM8GI=
+	b=pB6bP57f135PZo1w7pP8elEB4SKDS6SLUoG/4tRVUN1dZO4HsM7Q1mn/g50qD3HzR
+	 ncArYkoHar2meLr9jMfB3d++dFtre1AKloXDpCqa+B6PTupXUbRY5BzrL4XhhXRxXX
+	 mZtsdD9A2lJMDuklxGPG8doD07mHkp3rzM38ghGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Leo Zeng <Leo.Zeng@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 318/626] wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
+Subject: [PATCH 6.14 414/783] Revert "drm/amd/display: Request HW cursor on DCN3.2 with SubVP"
 Date: Tue, 27 May 2025 18:23:31 +0200
-Message-ID: <20250527162457.951829005@linuxfoundation.org>
+Message-ID: <20250527162529.958980170@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +65,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Leo Zeng <Leo.Zeng@amd.com>
 
-[ Upstream commit 6be7544d19fcfcb729495e793bc6181f85bb8949 ]
+[ Upstream commit 8ae6dfc0b61b170cf13832d4cfe2a0c744e621a7 ]
 
-Set the MCS maps and the highest rates according to the number of
-spatial streams the chip has. For RTL8814AU that is 3.
+This reverts commit 13437c91606c9232c747475e202fe3827cd53264.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/e86aa009-b5bf-4b3a-8112-ea5e3cd49465@gmail.com
+Reason to revert: idle power regression found in testing.
+
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Leo Zeng <Leo.Zeng@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index bbdef38c7e341..2c81e4cae039e 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1579,8 +1579,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 			     struct ieee80211_sta_vht_cap *vht_cap)
- {
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
--	u16 mcs_map;
-+	u16 mcs_map = 0;
- 	__le16 highest;
-+	int i;
- 
- 	if (efuse->hw_cap.ptcl != EFUSE_HW_CAP_IGNORE &&
- 	    efuse->hw_cap.ptcl != EFUSE_HW_CAP_PTCL_VHT)
-@@ -1603,21 +1604,15 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 	if (rtw_chip_has_rx_ldpc(rtwdev))
- 		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
- 
--	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 8 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 10 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 12 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 14;
--	if (efuse->hw_cap.nss > 1) {
--		highest = cpu_to_le16(780);
--		mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
--	} else {
--		highest = cpu_to_le16(390);
--		mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << 2;
-+	for (i = 0; i < 8; i++) {
-+		if (i < efuse->hw_cap.nss)
-+			mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << (i * 2);
-+		else
-+			mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2);
- 	}
- 
-+	highest = cpu_to_le16(390 * efuse->hw_cap.nss);
-+
- 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.rx_highest = highest;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index 56dda686e2992..6f490d8d7038c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -626,7 +626,6 @@ static bool dcn32_assign_subvp_pipe(struct dc *dc,
+ 		 * - Not TMZ surface
+ 		 */
+ 		if (pipe->plane_state && !pipe->top_pipe && !pipe->prev_odm_pipe && !dcn32_is_center_timing(pipe) &&
+-				!pipe->stream->hw_cursor_req &&
+ 				!(pipe->stream->timing.pix_clk_100hz / 10000 > DCN3_2_MAX_SUBVP_PIXEL_RATE_MHZ) &&
+ 				(!dcn32_is_psr_capable(pipe) || (context->stream_count == 1 && dc->caps.dmub_caps.subvp_psr)) &&
+ 				dc_state_get_pipe_subvp_type(context, pipe) == SUBVP_NONE &&
 -- 
 2.39.5
 
