@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-147192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63483AC568F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6D9AC5691
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E9C1BA75EC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B0B61BA767C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A2E2798F8;
-	Tue, 27 May 2025 17:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAEF27F4CB;
+	Tue, 27 May 2025 17:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3lqViUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXIR73sP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E931D88D7;
-	Tue, 27 May 2025 17:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C070C182D7;
+	Tue, 27 May 2025 17:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366571; cv=none; b=RquUQGxhlRBrBG0PgA6HzGh5+whllKTP8PLODbIPI0krFPn/LagSdENA57YfSZTmG8xjz8JRaCT2mYFojWUaGopaqWTqoYZiHX3eOrI4FmD3BhvpIDHS4yI8ooLXBVM/Hf2SwBVQt3O0X4rhAdvZWjCq4U/g//lJch3Hye+UQsE=
+	t=1748366583; cv=none; b=LQVVGeRFvl/zXcwKYztrDZxE4N16QECIKp7rtMhHlQIoCEgDMdDk3L1lS0/yjW9Ce8I2QmkHzKxnITVAFBmTM/1p1yKLjqpJBdF0avQq7PbY+iyoHyRUcNOsGveeXBNiI3AUXys4xv+/7oXKPLeQRsTPx3/ecctxHSpJZUqPAzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366571; c=relaxed/simple;
-	bh=7i9+3sPFk2q5UMTin1FZdyuVCBA5a0nfxaGLzykxm/M=;
+	s=arc-20240116; t=1748366583; c=relaxed/simple;
+	bh=aLa4RaqDzxXZ4NyPcTXdEdP81JyOxP4Y3kuYmXwHYNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W8DW/xG9h3+VUBV3w15syuNLGMmrMZ0UAQnNlI4g3ryO2boBV1bZV+ASDyFW2jzK4G/kHPh2YUmAVt2d6P6x+9axi1dV82jrvZpCIQaXTfzNqqpP8zkz5taCMhcNdFUEx3RGOmK+fqWohZ35PbawW/bjUyuQvfnq/gnTlf5RVr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3lqViUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E109CC4CEE9;
-	Tue, 27 May 2025 17:22:50 +0000 (UTC)
+	 MIME-Version; b=R+mDkDbKNJki9GUhxtBHOqWTuj1+q3MW29QQozwvfOzzf+JyI2HYtfonIePzoobIakCMcJnczSxQhkiwZqh5DCS/uTR5dXva8b6TP+nrjPHbjWHA2bHn9Wf6d8F9IGe3XtFpLJMw8zBv29NVbsFy8iAttmLyutrxD15MmrXeyBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXIR73sP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED24C4CEE9;
+	Tue, 27 May 2025 17:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366571;
-	bh=7i9+3sPFk2q5UMTin1FZdyuVCBA5a0nfxaGLzykxm/M=;
+	s=korg; t=1748366583;
+	bh=aLa4RaqDzxXZ4NyPcTXdEdP81JyOxP4Y3kuYmXwHYNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V3lqViUP8z/HyjRProFwD2oVVOu5sjAnjC1yk5z6EkAiyXAuP6lssdnIMiP1+/5rB
-	 kB9w4fiauFn5/26x3tVXksIH/OpFWFbtNDw99e5c4oX8b2ceToAnW5X6iv7g9sLXwP
-	 fGZ7DqwPLNymTXTWyrJK17hdjt6P5xa3uDlqEDwg=
+	b=wXIR73sPdddomAyLuW8Dkfa3Pa14UoGXLQ7NZBIkYJCfQ5uKQhi/9kpmM0FuFbwQq
+	 Uazmxw3axkAiqNdyz1f3BX0Q8B/dTAe60rLBay/yP/hkoJC84AksoDvo1Pu5dzRCxK
+	 43x2i6yJ2aU7jL5Ny0xzPHm006NBpJfvSQtLsgqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Alice Guo <alice.guo@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 084/783] thermal/drivers/mediatek/lvts: Start sensor interrupts disabled
-Date: Tue, 27 May 2025 18:18:01 +0200
-Message-ID: <20250527162516.560378248@linuxfoundation.org>
+Subject: [PATCH 6.14 085/783] thermal/drivers/qoriq: Power down TMU on system suspend
+Date: Tue, 27 May 2025 18:18:02 +0200
+Message-ID: <20250527162516.599751545@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -61,51 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Alice Guo <alice.guo@nxp.com>
 
-[ Upstream commit 2738fb3ec6838a10d2c4ce65cefdb3b90b11bd61 ]
+[ Upstream commit 229f3feb4b0442835b27d519679168bea2de96c2 ]
 
-Interrupts are enabled per sensor in lvts_update_irq_mask() as needed,
-there's no point in enabling all of them during initialization. Change
-the MONINT register initial value so all sensor interrupts start
-disabled.
+Enable power-down of TMU (Thermal Management Unit) for TMU version 2 during
+system suspend to save power. Save approximately 4.3mW on VDD_ANA_1P8 on
+i.MX93 platforms.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20250113-mt8192-lvts-filtered-suspend-fix-v2-4-07a25200c7c6@collabora.com
+Signed-off-by: Alice Guo <alice.guo@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241209164859.3758906-2-Frank.Li@nxp.com
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/thermal/qoriq_thermal.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index 0aaa44b734ca4..d0901d8ac85da 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -65,7 +65,6 @@
- #define LVTS_HW_FILTER				0x0
- #define LVTS_TSSEL_CONF				0x13121110
- #define LVTS_CALSCALE_CONF			0x300
--#define LVTS_MONINT_CONF			0x0300318C
+diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
+index 52e26be8c53df..aed2729f63d06 100644
+--- a/drivers/thermal/qoriq_thermal.c
++++ b/drivers/thermal/qoriq_thermal.c
+@@ -18,6 +18,7 @@
+ #define SITES_MAX		16
+ #define TMR_DISABLE		0x0
+ #define TMR_ME			0x80000000
++#define TMR_CMD			BIT(29)
+ #define TMR_ALPF		0x0c000000
+ #define TMR_ALPF_V2		0x03000000
+ #define TMTMIR_DEFAULT	0x0000000f
+@@ -356,6 +357,12 @@ static int qoriq_tmu_suspend(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
- #define LVTS_MONINT_OFFSET_SENSOR0		0xC
- #define LVTS_MONINT_OFFSET_SENSOR1		0x180
-@@ -929,7 +928,7 @@ static int lvts_irq_init(struct lvts_ctrl *lvts_ctrl)
- 	 * The LVTS_MONINT register layout is the same as the LVTS_MONINTSTS
- 	 * register, except we set the bits to enable the interrupt.
- 	 */
--	writel(LVTS_MONINT_CONF, LVTS_MONINT(lvts_ctrl->base));
-+	writel(0, LVTS_MONINT(lvts_ctrl->base));
++	if (data->ver > TMU_VER1) {
++		ret = regmap_set_bits(data->regmap, REGS_TMR, TMR_CMD);
++		if (ret)
++			return ret;
++	}
++
+ 	clk_disable_unprepare(data->clk);
  
  	return 0;
+@@ -370,6 +377,12 @@ static int qoriq_tmu_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (data->ver > TMU_VER1) {
++		ret = regmap_clear_bits(data->regmap, REGS_TMR, TMR_CMD);
++		if (ret)
++			return ret;
++	}
++
+ 	/* Enable monitoring */
+ 	return regmap_update_bits(data->regmap, REGS_TMR, TMR_ME, TMR_ME);
  }
 -- 
 2.39.5
