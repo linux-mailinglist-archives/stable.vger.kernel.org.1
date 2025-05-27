@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-147611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FA8AC5869
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C39AAC5874
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87CC71BC2294
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EE347A6957
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA0327FB2A;
-	Tue, 27 May 2025 17:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4671B4F0A;
+	Tue, 27 May 2025 17:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3u71qOs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Epci5Knn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8611D63EF;
-	Tue, 27 May 2025 17:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C481FB3;
+	Tue, 27 May 2025 17:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367880; cv=none; b=GwfSgyMZAayMdt8euPInwt1MciIPZrL7NQCEFtiJKpYdvs/NAxfcWLRNygnI39yZ/IWEuvRcq6PgF+QOPvdH6tqNBWCRkIGMFsA+Axh9R9m9tm3l7WzOvMymwyRSzgfTezpd0e0D5krg2ELpBhCc6/KDkutS9ZxCkrUIs+yFLLI=
+	t=1748367915; cv=none; b=dTNGndjWGlIgsC0sdYeSiGSl6oqk2Ri6u+PFlCKT5QOWG6qhOBeCuczo4XOm1GQWsu7KZHj153MDCLQpIwrHbMKE+nP76OkBA59VDKQfQu9fJLcBWCSRu1gjkwUa3jebbG3VjA2yFECT5GxkOoYi8ayRjpYIruJ14m9iNaeIvfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367880; c=relaxed/simple;
-	bh=+F6VX9T6mJZ8JeucictaDgezntIh0PEFxFocIVZ1pc4=;
+	s=arc-20240116; t=1748367915; c=relaxed/simple;
+	bh=mnufLOfQ4VRmrCWUJSTzBHMJYlX0gjWmUsBjDEDeA40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EiLMHU/t3/M5pUsdRUw1Fbv2nuc8SMkqtu+FXvPqRk8zn7mh7bMXDNUaMCRN4/CO7Ldq6Tx+qtJn5qG4PG6/k8FNIX+nQLfCZ2gp3LamwfHlF3rWkd1fVgGK9C/f0MskSUj2fi7u9xGHFb6z3ufk2/jN3mjCpyl3lu5psOKoQGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3u71qOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C252C4CEE9;
-	Tue, 27 May 2025 17:44:39 +0000 (UTC)
+	 MIME-Version; b=KMDfHsCyl8sAhOy28hpJbslXl7juKy3HgIzQrL8lQkhjXiCB/yO3iDNyFoZUqsNJR8R3InDaNz/txcO2Taycdueswxmkd6VnVMQxGzoBw+Hq4bRFDjO5gEAato1ce1Ymi1zknSCEAG4QxFixto4ZecGE5RtGIYbR4LddTbQwLPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Epci5Knn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B42C4CEE9;
+	Tue, 27 May 2025 17:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367880;
-	bh=+F6VX9T6mJZ8JeucictaDgezntIh0PEFxFocIVZ1pc4=;
+	s=korg; t=1748367914;
+	bh=mnufLOfQ4VRmrCWUJSTzBHMJYlX0gjWmUsBjDEDeA40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3u71qOsz/IS8QaGCR4gDIHVTjuGL0lBdasqNDL1Q6zT8bYYLL6eoPygAp/kEQN5/
-	 hhe7Tlr0X7kq1mYlmUH3QVNiQN5wg1p8FnKAmplSZxfxlre8D3cg6hQ1NIsfhNiKBZ
-	 uNTrnrnPYrk/c0RDdlMgGtNfW7R+mC+/L+biPopM=
+	b=Epci5KnnETgGh4GN/FS4Zbvoifayc7+xN50KJfl/m67I9GpKmByM8VRITxLR9yxfY
+	 RH+7dEc5NIyAV+gkrPB5vG+DpdZGgaWqIOydQVnOZm7hkP6ySdn6al3ayq4Fh3CuSa
+	 PSkh7fw+ih6sMJqeDUCMR/YHTLYwT0Ewk71sADnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 511/783] xfrm: prevent high SEQ input in non-ESN mode
-Date: Tue, 27 May 2025 18:25:08 +0200
-Message-ID: <20250527162533.952102974@linuxfoundation.org>
+Subject: [PATCH 6.14 512/783] iio: adc: ad7606: protect register access
+Date: Tue, 27 May 2025 18:25:09 +0200
+Message-ID: <20250527162533.991056701@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -66,51 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-[ Upstream commit e3aa43a50a6455831e3c32dabc7ece38d9cd9d05 ]
+[ Upstream commit 0f65f59e632d942cccffd12c36036c24eb7037eb ]
 
-In non-ESN mode, the SEQ numbers are limited to 32 bits and seq_hi/oseq_hi
-are not used. So make sure that user gets proper error message, in case
-such assignment occurred.
+Protect register (and bus) access from concurrent
+read / write. Needed in the backend operating mode.
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Link: https://patch.msgid.link/20250210-wip-bl-ad7606_add_backend_sw_mode-v4-7-160df18b1da7@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/iio/adc/ad7606.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 82a768500999b..b5266e0848e82 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -178,6 +178,12 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
- 				       "Replay seq and seq_hi should be 0 for output SA");
- 			return -EINVAL;
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 0339e27f92c32..1c547e8d52ac0 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -862,7 +862,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
  		}
-+		if (rs->oseq_hi && !(p->flags & XFRM_STATE_ESN)) {
-+			NL_SET_ERR_MSG(
-+				extack,
-+				"Replay oseq_hi should be 0 in non-ESN mode for output SA");
-+			return -EINVAL;
-+		}
- 		if (rs->bmp_len) {
- 			NL_SET_ERR_MSG(extack, "Replay bmp_len should 0 for output SA");
+ 		val = (val * MICRO) + val2;
+ 		i = find_closest(val, scale_avail_uv, cs->num_scales);
++
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret < 0)
++			return ret;
+ 		ret = st->write_scale(indio_dev, ch, i + cs->reg_offset);
++		iio_device_release_direct_mode(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
+ 		cs->range = i;
+@@ -873,7 +878,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
  			return -EINVAL;
-@@ -190,6 +196,12 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
- 				       "Replay oseq and oseq_hi should be 0 for input SA");
- 			return -EINVAL;
- 		}
-+		if (rs->seq_hi && !(p->flags & XFRM_STATE_ESN)) {
-+			NL_SET_ERR_MSG(
-+				extack,
-+				"Replay seq_hi should be 0 in non-ESN mode for input SA");
-+			return -EINVAL;
-+		}
- 	}
- 
- 	return 0;
+ 		i = find_closest(val, st->oversampling_avail,
+ 				 st->num_os_ratios);
++
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret < 0)
++			return ret;
+ 		ret = st->write_os(indio_dev, i);
++		iio_device_release_direct_mode(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
+ 		st->oversampling = st->oversampling_avail[i];
 -- 
 2.39.5
 
