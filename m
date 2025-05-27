@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-146650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8F9AC540B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8284AC575F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61C404A2158
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:55:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEE094A700D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2C9280CC1;
-	Tue, 27 May 2025 16:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4042110E;
+	Tue, 27 May 2025 17:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrZgg1Wz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhPQIIxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B917C280A56;
-	Tue, 27 May 2025 16:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3D41F8670;
+	Tue, 27 May 2025 17:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364885; cv=none; b=Xi9V1zOxYR3dwxd+xw6mb9SqVt50ilGlxvUpyEgGrRcP79Itupjys7MyDIZ4SIDd5p8sG7rQbt+0zFTlBPZaHurV7oW0GYzhXeAhtgKgNRAvCbYbWEW7fYLHPiixrUyJev/YBYeW2kFtrGIV4CRM1JN9zzJBsvwdOcieulJqMkU=
+	t=1748367144; cv=none; b=YH/UdbIDKra7PjYygPvZldZgVAg22bvvU5vw4rqSvFYMp0Iv/oExaI7+FlU2f7a8Mm/Es1cWiZYg6ZHc0W0IxMydwLHm26s4xKvHtF/ZxRAEgAGHB7b0auMkix82R9xwSH5U9wK4ZStfiKQoxQ2PmXSnCoa6f+nUYh5UEwlgTfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364885; c=relaxed/simple;
-	bh=PmjZcMbiKq//k0FJHikJZRAcHfA9lyX0LlQHTU9BV88=;
+	s=arc-20240116; t=1748367144; c=relaxed/simple;
+	bh=WIWNxOqUaanJhc3j9ZFXRUZClUjZ14vLg8ATpjrTCLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bft4DPiQqoPYcN5JThZF/6UOtu5sPnUwGImE9eCERtZOLvroGx/eqjRhSnYzOv7s+cftBS5vzlUFsgcPGX1NUcoQUYAkvEYzvkzWjT6oJGCtF6cIHHIIyS5fq3sFnBNaDEXL5WnxURsmFFjkTeX/xkh9GGX+6MfKbtjMS4074Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrZgg1Wz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C055C4CEEF;
-	Tue, 27 May 2025 16:54:45 +0000 (UTC)
+	 MIME-Version; b=dFg+24GITDe24DeR5aTAFrHcwXklSnSmCqb8j4zb+JhDShqkVLCtPjdFC6FXOXOnTOpFlfUaDqX5ZhxZ9oMjiiS2Oc4JNz3JDAPOlElPWY+ZTE3PKUuLwVvTMhnXaID8D3KgAvPnjo1yTPegqNYnT8zVTbWq1hlFGzQ/nDafRKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhPQIIxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D27C4CEE9;
+	Tue, 27 May 2025 17:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364885;
-	bh=PmjZcMbiKq//k0FJHikJZRAcHfA9lyX0LlQHTU9BV88=;
+	s=korg; t=1748367144;
+	bh=WIWNxOqUaanJhc3j9ZFXRUZClUjZ14vLg8ATpjrTCLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrZgg1WznFgU+hHFn3nTUA1DM94UmC9MNyFOjXdgGfz4s9dWJBDeBSssg8dBdt8W+
-	 MAj0z+UUWSbbjKmH53KYkyKnZni/ERr/13D4NTgg5IrWUXnZ1Li/A/ktiBcjclJ79j
-	 5i85ltHaVqb/oemAQB2YcopIcJWa4Xna5za/8k/c=
+	b=NhPQIIxoMZ99KmgZuXppU1RaWaPak69ppC+NIqNqJvAMEBvtbg+ZzRi1nyPWMrQgS
+	 P4UA+22edjO0MFdMhb8r/kSnvH65sxH6uW+XC1ovTUGu7x8zKxLGQEe7TDRCKTqHpZ
+	 7Xn+G0xHQzuA9hyqPfJp7Lt5LlDQx76LTpPAYSzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 197/626] gfs2: Check for empty queue in run_queue
+Subject: [PATCH 6.14 293/783] net: ethernet: ti: cpsw_new: populate netdev of_node
 Date: Tue, 27 May 2025 18:21:30 +0200
-Message-ID: <20250527162453.027971714@linuxfoundation.org>
+Message-ID: <20250527162525.016585246@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit d838605fea6eabae3746a276fd448f6719eb3926 ]
+[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
 
-In run_queue(), check if the queue of pending requests is empty instead
-of blindly assuming that it won't be.
+So that of_find_net_device_by_node() can find CPSW ports and other DSA
+switches can be stacked downstream. Tested in conjunction with KSZ8873.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index a51fe42732c4c..4f1eca99786b6 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -843,12 +843,13 @@ static void run_queue(struct gfs2_glock *gl, const int nonblock)
- __releases(&gl->gl_lockref.lock)
- __acquires(&gl->gl_lockref.lock)
- {
--	struct gfs2_holder *gh = NULL;
-+	struct gfs2_holder *gh;
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index cec0a90659d94..66713bc931741 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1418,6 +1418,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
+ 		ndev->netdev_ops = &cpsw_netdev_ops;
+ 		ndev->ethtool_ops = &cpsw_ethtool_ops;
+ 		SET_NETDEV_DEV(ndev, dev);
++		ndev->dev.of_node = slave_data->slave_node;
  
- 	if (test_bit(GLF_LOCK, &gl->gl_flags))
- 		return;
- 	set_bit(GLF_LOCK, &gl->gl_flags);
- 
-+	/* While a demote is in progress, the GLF_LOCK flag must be set. */
- 	GLOCK_BUG_ON(gl, test_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags));
- 
- 	if (test_bit(GLF_DEMOTE, &gl->gl_flags) &&
-@@ -860,18 +861,22 @@ __acquires(&gl->gl_lockref.lock)
- 		set_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
- 		GLOCK_BUG_ON(gl, gl->gl_demote_state == LM_ST_EXCLUSIVE);
- 		gl->gl_target = gl->gl_demote_state;
-+		do_xmote(gl, NULL, gl->gl_target);
-+		return;
- 	} else {
- 		if (test_bit(GLF_DEMOTE, &gl->gl_flags))
- 			gfs2_demote_wake(gl);
- 		if (do_promote(gl))
- 			goto out_unlock;
- 		gh = find_first_waiter(gl);
-+		if (!gh)
-+			goto out_unlock;
- 		gl->gl_target = gh->gh_state;
- 		if (!(gh->gh_flags & (LM_FLAG_TRY | LM_FLAG_TRY_1CB)))
- 			do_error(gl, 0); /* Fail queued try locks */
-+		do_xmote(gl, gh, gl->gl_target);
-+		return;
- 	}
--	do_xmote(gl, gh, gl->gl_target);
--	return;
- 
- out_sched:
- 	clear_bit(GLF_LOCK, &gl->gl_flags);
+ 		if (!napi_ndev) {
+ 			/* CPSW Host port CPDMA interface is shared between
 -- 
 2.39.5
 
