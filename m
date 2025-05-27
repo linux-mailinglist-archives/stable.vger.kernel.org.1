@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2487CAC58CD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D446BAC5583
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA1318A7E4C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 991B74A3FF3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8712E27BF8D;
-	Tue, 27 May 2025 17:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011AE281341;
+	Tue, 27 May 2025 17:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQ+QJSvP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sx33p4yb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4455A42A9B;
-	Tue, 27 May 2025 17:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0B7280A5F;
+	Tue, 27 May 2025 17:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368172; cv=none; b=pA5yT+l+dscHudEUd63P3C5QUJhI7Z0lGmzPJwK4Rmmjng25rrrZgpLrzLNrqu/AF/FRth5L5Wsj7NVHW/XuU3oETH3rL7eBoj8vZJTxD9hASwdnM7WH1CE4vyRuWzpaVE7lLaB7X5bGArHjawJFEglJR0EpE3LqUcGAKTXxVtQ=
+	t=1748365899; cv=none; b=Oaru0ZnvSSPSarQ2mkmHk4eUF9ykTKyisugdZNIwzi0jOTL8muhklrKRM/7bFfu9bmclq7hSy3HOcbxjx3+FKGPVdGwugs/nvnR1jd8x/IIX/qaJMlo9aGfKQirlRbIk9Rxo9fdYmrztQSozyRMUXiPshw/BtG9R05XOxYcAAl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368172; c=relaxed/simple;
-	bh=galqWBiushc2nQMGgy/IAUA8/QLWNJHM3AZTQrVrrEg=;
+	s=arc-20240116; t=1748365899; c=relaxed/simple;
+	bh=JDbmfF+M//nQjpTB/Y3fIg4d4vb8tBdCFCQ8BQMRcno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cqzwp8poqkQoTqMd2yXM+oAW3q0O30jPlfKhtLcSd3TMh5tGhw3qa8burlpzy3b3J3gai+Pv4WYUiItdggu5ZrYeEq7M0S+JdiyYURnz9ckv6lf2WRWM9p5YQGtSuaSKL8+fTsE/KfffvprfgeAoUicATaciG8TV7zm0IcXzO3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQ+QJSvP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C654CC4CEE9;
-	Tue, 27 May 2025 17:49:31 +0000 (UTC)
+	 MIME-Version; b=mHKQAoKLWq98qdIOqWpS8QN6P6rBNwvmDj49FFUzFT1a6iZVMtVJoredRt1ORsCsjRpwcKS1HUpn5dOWyRsO7CRzWv56yM1VCl6ss+NqB5AfSuXWj//kbfO8Z+d87wkc0uM6yZ2Fx+4KwoYJQ9qlMhj81c+2C4N/xGhomZvxMzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sx33p4yb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA17C4CEE9;
+	Tue, 27 May 2025 17:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368172;
-	bh=galqWBiushc2nQMGgy/IAUA8/QLWNJHM3AZTQrVrrEg=;
+	s=korg; t=1748365899;
+	bh=JDbmfF+M//nQjpTB/Y3fIg4d4vb8tBdCFCQ8BQMRcno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQ+QJSvPye5Aq3p4fIG6DH51xSZe1c1vi3gayJuqLGCyPrqy/4ucp0jKjesKtxcJh
-	 o/fG+9CfgAuahLT1uqJg6RecCVAN5XiK0mKe1ZlgZUR7tn+Y9DKZvAcgtMyWKWpSgY
-	 qFxBQsblJJmyRJ0oV7J3kDTK8kz50ZfyshLA7CjE=
+	b=Sx33p4ybTx5XJtsB9jNPNJ77j1iJt2VkX7k1Pup+Ceg6J8wEatfZupNBecjuTTc+F
+	 NrG2pKTuNmZFuwUB5CeroeSuTVn+lDCgvDt+dr6IKMZFNBxXJmwLf/7WlXmLtaCkPT
+	 eYc/yU223CndmiDdBZfGx1XXiGQl+3aP2nLNuCcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 622/783] drm/xe: Always setup GT MMIO adjustment data
+Subject: [PATCH 6.12 526/626] btrfs: avoid NULL pointer dereference if no valid csum tree
 Date: Tue, 27 May 2025 18:26:59 +0200
-Message-ID: <20250527162538.483793867@linuxfoundation.org>
+Message-ID: <20250527162506.368725994@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit bbd8429264baf8bc3c40cefda048560ae0eb7890 ]
+[ Upstream commit f95d186255b319c48a365d47b69bd997fecb674e ]
 
-While we believed that xe_gt_mmio_init() will be called just once
-per GT, this might not be a case due to some tweaks that need to
-performed by the VF driver during early probe.  To avoid leaving
-any stale data in case of the re-run, reset the GT MMIO adjustment
-data for the non-media GT case.
+[BUG]
+When trying read-only scrub on a btrfs with rescue=idatacsums mount
+option, it will crash with the following call trace:
 
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241114175955.2299-2-michal.wajdeczko@intel.com
+  BUG: kernel NULL pointer dereference, address: 0000000000000208
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  CPU: 1 UID: 0 PID: 835 Comm: btrfs Tainted: G           O        6.15.0-rc3-custom+ #236 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
+  RIP: 0010:btrfs_lookup_csums_bitmap+0x49/0x480 [btrfs]
+  Call Trace:
+   <TASK>
+   scrub_find_fill_first_stripe+0x35b/0x3d0 [btrfs]
+   scrub_simple_mirror+0x175/0x290 [btrfs]
+   scrub_stripe+0x5f7/0x6f0 [btrfs]
+   scrub_chunk+0x9a/0x150 [btrfs]
+   scrub_enumerate_chunks+0x333/0x660 [btrfs]
+   btrfs_scrub_dev+0x23e/0x600 [btrfs]
+   btrfs_ioctl+0x1dcf/0x2f80 [btrfs]
+   __x64_sys_ioctl+0x97/0xc0
+   do_syscall_64+0x4f/0x120
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[CAUSE]
+Mount option "rescue=idatacsums" will completely skip loading the csum
+tree, so that any data read will not find any data csum thus we will
+ignore data checksum verification.
+
+Normally call sites utilizing csum tree will check the fs state flag
+NO_DATA_CSUMS bit, but unfortunately scrub does not check that bit at all.
+
+This results in scrub to call btrfs_search_slot() on a NULL pointer
+and triggered above crash.
+
+[FIX]
+Check both extent and csum tree root before doing any tree search.
+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/scrub.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index 150dca2f91033..6b4b9eca2c384 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -650,6 +650,9 @@ void xe_gt_mmio_init(struct xe_gt *gt)
- 	if (gt->info.type == XE_GT_TYPE_MEDIA) {
- 		gt->mmio.adj_offset = MEDIA_GT_GSI_OFFSET;
- 		gt->mmio.adj_limit = MEDIA_GT_GSI_LENGTH;
-+	} else {
-+		gt->mmio.adj_offset = 0;
-+		gt->mmio.adj_limit = 0;
- 	}
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index c73a41b1ad560..d8fcc3eb85c88 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -1541,8 +1541,8 @@ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
+ 	u64 extent_gen;
+ 	int ret;
  
- 	if (IS_SRIOV_VF(gt_to_xe(gt)))
+-	if (unlikely(!extent_root)) {
+-		btrfs_err(fs_info, "no valid extent root for scrub");
++	if (unlikely(!extent_root || !csum_root)) {
++		btrfs_err(fs_info, "no valid extent or csum root for scrub");
+ 		return -EUCLEAN;
+ 	}
+ 	memset(stripe->sectors, 0, sizeof(struct scrub_sector_verification) *
 -- 
 2.39.5
 
