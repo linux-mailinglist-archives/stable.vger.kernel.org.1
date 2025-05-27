@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-146826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72951AC54C5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3605AC5543
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4403B16BF83
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C43083B69A4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E8726868E;
-	Tue, 27 May 2025 17:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B3927CB04;
+	Tue, 27 May 2025 17:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uV9rI6M9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1m2/ooi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D3D1F4CB1;
-	Tue, 27 May 2025 17:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F90E1F4CB1;
+	Tue, 27 May 2025 17:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365427; cv=none; b=Rl9EUkRKu0F7D9bQVQzopW669BPQ6j7sQB2oVtqrq7E7uCvilpNivYHBQ32BqSnhV206J8f1e3DlIhL6VKeXuK+NDBOo0Kdz7n8j8S7+bY/mLSfQeMhtHSE6amDuQLjvuTVIOiI64GOvvWpnZDTdpIRwEXhNqX2CUYOuDrWcHpU=
+	t=1748365434; cv=none; b=HeNDdSYbC0hv5zzuTZCDpETsrpGhB7cVLfkTlez9xiwJJ/b/cG9bj5fsfBU+WhwhI+W5BZokCfQhRbZ4Iifsu7IYdbe320sRTkOvN687g//ZwChlpJprikqhdZSh2RjRfi7hDdoVLusjMj0vBZW/OPjq6j2uMDA9UzzE5qHYa24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365427; c=relaxed/simple;
-	bh=1lHEilUeCZMF3bay4IvdGS9sJOtCu+INUymbm2lAtKw=;
+	s=arc-20240116; t=1748365434; c=relaxed/simple;
+	bh=i4jm1kPpLrgXwx4fbqVQ8KW8uDtMTcPXlxcp23i8log=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6WMUVe2iX9/SIdxSm6FfAtD9f4CtLlm7Ckb6PfqmNWa52MLYj4q46/4Siq0FeXeAdde1tv8RX3UJBpJkLynUGhnnZuyHhDg8BQqAZHtHTlLnXIAQyz12Vn/yDoRRYKMHpWhIPNEAU7pGGfkaqoDT2CVyexg+HXSuKcBXewnz7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uV9rI6M9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4F9C4CEE9;
-	Tue, 27 May 2025 17:03:46 +0000 (UTC)
+	 MIME-Version; b=hZIxe5gvaPC9HwC4Iy0L0PWJfaBk8ecQJrydYI2jEuf1OjNzeDtCs4Jb+IB2V0pqMzaENNNxvg/x4XhhqMtWnqxZ2TXaflXAUjBlFwh/t+mDkdz0p/S2sDbTtgB2j5st01Gexb1jMk56Se9LiJTDoYmRz8rs+FZcrLMprwUzGYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1m2/ooi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3833AC4CEE9;
+	Tue, 27 May 2025 17:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365427;
-	bh=1lHEilUeCZMF3bay4IvdGS9sJOtCu+INUymbm2lAtKw=;
+	s=korg; t=1748365433;
+	bh=i4jm1kPpLrgXwx4fbqVQ8KW8uDtMTcPXlxcp23i8log=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uV9rI6M9ipgf7yzVyFv1gEXrLVMGVKjYjAc30etrzPr13JmtaqYsjxGvI+WlSB6xD
-	 0pt1A8EqYkt1F3zVEu86esvM6S5eYgVShSRgMPlNDKreCWQpJUgP0hv9WkXQPPYI/N
-	 tFNHbLxMdJfX+fRnUDE35D3BxKYNxg2nxSKK31Ko=
+	b=z1m2/ooij3WtbLrudCYEl2Xcxsz1MY1LAkocvoT4vPsZHHF0ul/qPrhSsWE++Gn9U
+	 EUf4jgR5gs28hd/ACOtLSbOCXcXfyKtuNQsSeKlX2J3bIwmVFQdQP//maFmh5ci3M9
+	 51anZgPg/UHmdPuW0lMBMZXD6M1d4Pwxqvx/magI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karl Chan <exxxxkc@getgoogleoff.me>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 372/626] clk: qcom: ipq5018: allow it to be bulid on arm32
-Date: Tue, 27 May 2025 18:24:25 +0200
-Message-ID: <20250527162500.138422904@linuxfoundation.org>
+Subject: [PATCH 6.12 373/626] clk: qcom: clk-alpha-pll: Do not use random stack value for recalc rate
+Date: Tue, 27 May 2025 18:24:26 +0200
+Message-ID: <20250527162500.178169400@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -67,38 +66,140 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Karl Chan <exxxxkc@getgoogleoff.me>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 5d02941c83997b58e8fc15390290c7c6975acaff ]
+[ Upstream commit 7a243e1b814a02ab40793026ef64223155d86395 ]
 
-There are some ipq5018 based device's firmware only can able to boot
-arm32 but the clock driver dont allow it to be compiled on arm32.
-Therefore allow GCC for IPQ5018 to be selected when building ARM32
-kernel
+If regmap_read() fails, random stack value was used in calculating new
+frequency in recalc_rate() callbacks.  Such failure is really not
+expected as these are all MMIO reads, however code should be here
+correct and bail out.  This also avoids possible warning on
+uninitialized value.
 
-Signed-off-by: Karl Chan <exxxxkc@getgoogleoff.me>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241007163414.32458-4-exxxxkc@getgoogleoff.me
-[bjorn: Updated commit message, per Dmitry's suggestion]
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250212-b4-clk-qcom-clean-v3-1-499f37444f5d@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index 16145f74bbc85..fd605bccf48dc 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -199,7 +199,7 @@ config IPQ_GCC_4019
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 10e276dabff93..e76ecc4663511 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -670,14 +670,19 @@ clk_alpha_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 alpha_width = pll_alpha_width(pll);
  
- config IPQ_GCC_5018
- 	tristate "IPQ5018 Global Clock Controller"
--	depends on ARM64 || COMPILE_TEST
-+	depends on ARM || ARM64 || COMPILE_TEST
- 	help
- 	  Support for global clock controller on ipq5018 devices.
- 	  Say Y if you want to use peripheral devices such as UART, SPI,
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
+ 	if (ctl & PLL_ALPHA_EN) {
+-		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low);
++		if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low))
++			return 0;
+ 		if (alpha_width > 32) {
+-			regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+-				    &high);
++			if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
++					&high))
++				return 0;
+ 			a = (u64)high << 32 | low;
+ 		} else {
+ 			a = low & GENMASK(alpha_width - 1, 0);
+@@ -903,8 +908,11 @@ alpha_pll_huayra_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, alpha = 0, ctl, alpha_m, alpha_n;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+ 	if (ctl & PLL_ALPHA_EN) {
+ 		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &alpha);
+@@ -1098,8 +1106,11 @@ clk_trion_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, frac, alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
+ }
+@@ -1157,7 +1168,8 @@ clk_alpha_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll_postdiv *pll = to_clk_alpha_pll_postdiv(hw);
+ 	u32 ctl;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+ 	ctl >>= PLL_POST_DIV_SHIFT;
+ 	ctl &= PLL_POST_DIV_MASK(pll);
+@@ -1373,8 +1385,11 @@ static unsigned long alpha_pll_fabia_recalc_rate(struct clk_hw *hw,
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, frac, alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
+ }
+@@ -1524,7 +1539,8 @@ clk_trion_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct regmap *regmap = pll->clkr.regmap;
+ 	u32 i, div = 1, val;
+ 
+-	regmap_read(regmap, PLL_USER_CTL(pll), &val);
++	if (regmap_read(regmap, PLL_USER_CTL(pll), &val))
++		return 0;
+ 
+ 	val >>= pll->post_div_shift;
+ 	val &= PLL_POST_DIV_MASK(pll);
+@@ -2451,9 +2467,12 @@ static unsigned long alpha_pll_lucid_evo_recalc_rate(struct clk_hw *hw,
+ 	struct regmap *regmap = pll->clkr.regmap;
+ 	u32 l, frac;
+ 
+-	regmap_read(regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(regmap, PLL_L_VAL(pll), &l))
++		return 0;
+ 	l &= LUCID_EVO_PLL_L_VAL_MASK;
+-	regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac);
++
++	if (regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, pll_alpha_width(pll));
+ }
+@@ -2528,7 +2547,8 @@ static unsigned long clk_rivian_evo_pll_recalc_rate(struct clk_hw *hw,
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
+ 
+ 	return parent_rate * l;
+ }
 -- 
 2.39.5
 
