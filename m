@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8686AC58C0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67461AC55B4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 356C01748F9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB3DF1BA6750
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C538427FB10;
-	Tue, 27 May 2025 17:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092A627A929;
+	Tue, 27 May 2025 17:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UK13yBGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x880T+tU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DF827BF8D;
-	Tue, 27 May 2025 17:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FCC27FB38;
+	Tue, 27 May 2025 17:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368125; cv=none; b=G5ocFIJaeZmT0V2hYYkgtCMgu/ZShfqBwGQEm/cosRYAURzDvQC5khnDxgertSvZ0UxSU5wOBBQ09dJmjmLRuyB0rL78yfG7DaLcvl+caO034meYQ2MN79a2px87al9MGjXCbU3iU0VJpWHf/sOyj3rAEtCHf+HDIS08Rtk9/qI=
+	t=1748365973; cv=none; b=Hxpo7U3UCeSlHewYjCGpmDy+aeMoHDb+c374Cyv9mpd1SYxYLTxbALNqervJaLcJtCIzq5nAzeVX4/KMfcOoKu1Dg+Gtiz6G8GuJsnG1pmk2CBlBw1SVxsealA4zTkJqWEa6vmaYl9N1ZJP4OHP2DquZ4ONRk+72NlpK/UqLcEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368125; c=relaxed/simple;
-	bh=luJDcoXGYAT/QXTaazPeAes9gltzg6eYT7/DkTroDXo=;
+	s=arc-20240116; t=1748365973; c=relaxed/simple;
+	bh=YpmtJD7FzeJqyOWyxXH+bgLoV5mDP6StoedPUuTVUPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cBgpIM3JaM0XgsjRMsqZTwtW3h/5LZPbONpFNBwFcACWOICTp5IdvoPmTPRC+GVQj34ziZiusiQtJYWyX/CsPnJjodojl25ya8WYHLXHxlpBATYfLiWcqL3RdOAlqcj8CMjZXoli6bRVE0yIV2AkcrVD1AB7JLF1GFnl/6cjeqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UK13yBGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04328C4CEEA;
-	Tue, 27 May 2025 17:48:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f8mXV5MxSZdqStwtV2eBJQPIk0FaJZKMIcKHXwoa3jyWpsukQohwt4Ks2XV0WarJTOlJ4UFI7Ns4/Q0xjnrFWxEvTRUDpl88ILVSuEiN4JXbutDkn8c4DgVX8yTa/vYAnw/8l4QOW7KZoxBQN3phHvR0TkzxBK4o3sZTLU97Z8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x880T+tU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB80C4CEE9;
+	Tue, 27 May 2025 17:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368125;
-	bh=luJDcoXGYAT/QXTaazPeAes9gltzg6eYT7/DkTroDXo=;
+	s=korg; t=1748365972;
+	bh=YpmtJD7FzeJqyOWyxXH+bgLoV5mDP6StoedPUuTVUPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UK13yBGe2SpWcbsrZSznv9ToZqWzx40Xy2BZ6ZiFkIklsz3dh+6Nt3U4YzlTYjHxj
-	 5VtBj7EdO1G60DyZn00G03yJkgsth6wpNr828OQr+f3h/3d3o6JV/wPWc3YyAXce0m
-	 f552O1HDjRE0zRNUJOzG2mFJ71IByuBohefbI8h4=
+	b=x880T+tU3zusDSeXFh9H0ZgkCMkctwywRsJ3uNMLG9xXarnoEP1/t99XmAPQntAYO
+	 65iyD1jT9CT4iCiFd+Ras7JMO/We0t3BdFoOqY9IneN8Z4x5INx0VXlBaLQ2UsX0lf
+	 1w+6W2cTMTij9c46fVlR956prX7WjxOumaOFHTpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Saranya Gopal <saranya.gopal@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 605/783] drm/xe/pf: Reset GuC VF config when unprovisioning critical resource
+Subject: [PATCH 6.12 509/626] platform/x86/intel: hid: Add Pantherlake support
 Date: Tue, 27 May 2025 18:26:42 +0200
-Message-ID: <20250527162537.794140045@linuxfoundation.org>
+Message-ID: <20250527162505.645779844@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +64,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Saranya Gopal <saranya.gopal@intel.com>
 
-[ Upstream commit 33f17e2cbd930a2a00eb007d9b241b6db010a880 ]
+[ Upstream commit 12df9ec3e1955aed6a0c839f2375cd8e5d5150cf ]
 
-GuC firmware counts received VF configuration KLVs and may start
-validation of the complete VF config even if some resources where
-unprovisioned in the meantime, leading to unexpected errors like:
+Add Pantherlake ACPI device ID to the Intel HID driver.
 
- $ echo 1 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/contexts_quota
- $ echo 0 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/contexts_quota
- $ echo 1 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/doorbells_quota
- $ echo 0 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/doorbells_quota
- $ echo 1 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/ggtt_quota
- tee: '/sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/ggtt_quota': Input/output error
+While there, clean up the device ID table to remove the ", 0" parts.
 
-To mitigate this problem trigger explicit VF config reset after
-unprovisioning any of the critical resources (GGTT, context or
-doorbell IDs) that GuC is monitoring.
-
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Michał Winiarski <michal.winiarski@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250129195947.764-3-michal.wajdeczko@intel.com
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Saranya Gopal <saranya.gopal@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250421041332.830136-1-saranya.gopal@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c | 37 +++++++++++++++++++---
- 1 file changed, 33 insertions(+), 4 deletions(-)
+ drivers/platform/x86/intel/hid.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
-index aaca54b40091f..27f309e3a76e6 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
-@@ -336,6 +336,26 @@ static int pf_push_full_vf_config(struct xe_gt *gt, unsigned int vfid)
- 	return err;
- }
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 9a609358956f3..59392f1a0d8ad 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -44,16 +44,17 @@ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Alex Hung");
  
-+static int pf_push_vf_cfg(struct xe_gt *gt, unsigned int vfid, bool reset)
-+{
-+	int err = 0;
-+
-+	xe_gt_assert(gt, vfid);
-+	lockdep_assert_held(xe_gt_sriov_pf_master_mutex(gt));
-+
-+	if (reset)
-+		err = pf_send_vf_cfg_reset(gt, vfid);
-+	if (!err)
-+		err = pf_push_full_vf_config(gt, vfid);
-+
-+	return err;
-+}
-+
-+static int pf_refresh_vf_cfg(struct xe_gt *gt, unsigned int vfid)
-+{
-+	return pf_push_vf_cfg(gt, vfid, true);
-+}
-+
- static u64 pf_get_ggtt_alignment(struct xe_gt *gt)
- {
- 	struct xe_device *xe = gt_to_xe(gt);
-@@ -432,6 +452,10 @@ static int pf_provision_vf_ggtt(struct xe_gt *gt, unsigned int vfid, u64 size)
- 			return err;
+ static const struct acpi_device_id intel_hid_ids[] = {
+-	{"INT33D5", 0},
+-	{"INTC1051", 0},
+-	{"INTC1054", 0},
+-	{"INTC1070", 0},
+-	{"INTC1076", 0},
+-	{"INTC1077", 0},
+-	{"INTC1078", 0},
+-	{"INTC107B", 0},
+-	{"INTC10CB", 0},
+-	{"", 0},
++	{ "INT33D5" },
++	{ "INTC1051" },
++	{ "INTC1054" },
++	{ "INTC1070" },
++	{ "INTC1076" },
++	{ "INTC1077" },
++	{ "INTC1078" },
++	{ "INTC107B" },
++	{ "INTC10CB" },
++	{ "INTC10CC" },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, intel_hid_ids);
  
- 		pf_release_vf_config_ggtt(gt, config);
-+
-+		err = pf_refresh_vf_cfg(gt, vfid);
-+		if (unlikely(err))
-+			return err;
- 	}
- 	xe_gt_assert(gt, !xe_ggtt_node_allocated(config->ggtt_region));
- 
-@@ -757,6 +781,10 @@ static int pf_provision_vf_ctxs(struct xe_gt *gt, unsigned int vfid, u32 num_ctx
- 			return ret;
- 
- 		pf_release_config_ctxs(gt, config);
-+
-+		ret = pf_refresh_vf_cfg(gt, vfid);
-+		if (unlikely(ret))
-+			return ret;
- 	}
- 
- 	if (!num_ctxs)
-@@ -1054,6 +1082,10 @@ static int pf_provision_vf_dbs(struct xe_gt *gt, unsigned int vfid, u32 num_dbs)
- 			return ret;
- 
- 		pf_release_config_dbs(gt, config);
-+
-+		ret = pf_refresh_vf_cfg(gt, vfid);
-+		if (unlikely(ret))
-+			return ret;
- 	}
- 
- 	if (!num_dbs)
-@@ -2085,10 +2117,7 @@ int xe_gt_sriov_pf_config_push(struct xe_gt *gt, unsigned int vfid, bool refresh
- 	xe_gt_assert(gt, vfid);
- 
- 	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
--	if (refresh)
--		err = pf_send_vf_cfg_reset(gt, vfid);
--	if (!err)
--		err = pf_push_full_vf_config(gt, vfid);
-+	err = pf_push_vf_cfg(gt, vfid, refresh);
- 	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
- 
- 	if (unlikely(err)) {
 -- 
 2.39.5
 
