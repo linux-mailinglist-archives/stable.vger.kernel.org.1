@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-147626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E9FAC5877
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1114BAC54FD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD25B1BC24A6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05174A3549
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FCF1E25E3;
-	Tue, 27 May 2025 17:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB722798E6;
+	Tue, 27 May 2025 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8xxiIEZ"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzkViJ7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071C61FB3;
-	Tue, 27 May 2025 17:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB882110E;
+	Tue, 27 May 2025 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367928; cv=none; b=AgvshryKA3x0FA4q/bAdJLI8XMzyt/LfIFvidyatLJljJ6r7eKo4GfBlSqHplo68yG80hNig4oQQQjQilQAL2G99ETQOIC75JUMJQA1eQLmVfN9QSWJ3cXr7hiuMENeqIS2EyGN2YfW6W6thayGzPW/HbePcgtk27BHyTrVW5tU=
+	t=1748365568; cv=none; b=lKPs2JOs/lIvIjp1YIa1UGwJt/ui/WSDmG0/QxfQaLmtCxGJjPxiBP3PH/ge1ly7P8eoGmQuyBjGD1uAu5EqWzd7uLbJpPeb20FV13eVLmLAtjLB4mB/oDMYK6/OIFoOr8x/5cXteBJoAvyI2bVIezI0trvF06a4QOoJDQtdipg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367928; c=relaxed/simple;
-	bh=9hD8ao917AwSfQbfxskg4JjCTyClP67iyZbXfryu3Ts=;
+	s=arc-20240116; t=1748365568; c=relaxed/simple;
+	bh=32r6A21mYC055uW/YRED6FYr354AZdHiPIOTKQfEbog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIOebTQfcC1UIN8R2s1wuYvFTXBmZd+p9it6KBoGz2x+ZiGny9AkJrWMG94DwHR4J2IOx4+hHtstjHBmI7tnU1gqJyZJKcAI3eeC/42kFvJSnxUAnxTMI1HBoQVs20XVICEHHvr56qmYlkdhH4MRPVMpE4Fk/VXlpMIZTd57VM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8xxiIEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E15C4CEEA;
-	Tue, 27 May 2025 17:45:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oVHeVm58VOxUtl5mswAnd93aAsc6vp6qLKA4hGcc3zSBi5dnfywdJMjU7PP4XJ92/9kkg69bPuyG/VioA8F2+qqMCvelcTo7obR2sw9kK0ThX5cJhkNZuX+KyeNNClvPNpAi1nyTQmHBcawCZjF7+EtQpxv21hJfYzMT0II7Kkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzkViJ7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD8CC4CEE9;
+	Tue, 27 May 2025 17:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367927;
-	bh=9hD8ao917AwSfQbfxskg4JjCTyClP67iyZbXfryu3Ts=;
+	s=korg; t=1748365568;
+	bh=32r6A21mYC055uW/YRED6FYr354AZdHiPIOTKQfEbog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8xxiIEZ1fD/nPSsr4wUMFN9At5oZApLa/KsZ5KmWPWEfVuugIXJr+xgOL8CxTBB9
-	 8lIG69XFAIm9xX5lm6fekTkkGfpM7+1OyW/9L/Mmoce3HLCgMyhWWlq5z3fAYQsAlK
-	 xR4giu7/2kTlFH3uvTQaxu66DlKFcWrHVKIYnREk=
+	b=qzkViJ7Hqwf8KUE9BTxDHPIBdn8/sLx74o48JHwCN3Z06Rbmls8WhCanzWjfSwqoG
+	 ll3MWawPFxOZshICfb+T73Nsnj1Tc8N63uics2oRXsP8t3rFMH4U9AWFmAqxOYqhTc
+	 72MM301AukuVYQGRuHH0iW9WSy9wCWmIMg0sBCnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 514/783] wifi: ath12k: use arvif instead of link_conf in ath12k_mac_set_key()
-Date: Tue, 27 May 2025 18:25:11 +0200
-Message-ID: <20250527162534.073682460@linuxfoundation.org>
+Subject: [PATCH 6.12 419/626] net: fec: Refactor MAC reset to function
+Date: Tue, 27 May 2025 18:25:12 +0200
+Message-ID: <20250527162502.035480392@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit 00e4dc11695d48322780812b503314682659e98b ]
+[ Upstream commit 67800d296191d0a9bde0a7776f99ca1ddfa0fc26 ]
 
-Currently, in ath12k_mac_set_key(), if sta is not present, the address is
-retrieved from link_conf's bssid or addr member, depending on the interface
-type.
+The core is reset both in `fec_restart()` (called on link-up) and
+`fec_stop()` (going to sleep, driver remove etc.). These two functions
+had their separate implementations, which was at first only a register
+write and a `udelay()` (and the accompanying block comment). However,
+since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
+meant that these implementations diverged, often causing bugs.
 
-When operating as an ML station and during shutdown, link_conf will not be
-available. This can result in the following error:
+For instance, as of now, `fec_stop()` does not check for
+`FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
+a PM power-down event; and `fec_restart()` missed the refactor renaming
+the "magic" constant `1` to `FEC_ECR_RESET`.
 
-ath12k_pci 0004:01:00.0: unable to access bss link conf in set key for vif AA:BB:CC:DD:EE:FF link 1
+To harmonize current implementations, and eliminate this source of
+potential future bugs, refactor implementation to a common function.
 
-The primary purpose of accessing link_conf is to obtain the address for
-finding the peer. However, since arvif is always valid in this call, it can
-be used instead.
-
-Add change to use arvif instead of link_conf.
-
-A subsequent change will expose this issue but since tear down will give
-error, this is included first.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1.97421.5 # Nicolas Escande
-
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Tested-by: Nicolas Escande <nico.escande@gmail.com>
-Link: https://patch.msgid.link/20250204-unlink_link_arvif_from_chanctx-v2-5-764fb5973c1a@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Link: https://patch.msgid.link/20250207121255.161146-2-csokas.bence@prolan.hu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 9123ffab55b52..95ad9fefbdfcd 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4534,9 +4534,6 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 			      struct ath12k_link_sta *arsta,
- 			      struct ieee80211_key_conf *key)
- {
--	struct ath12k_vif *ahvif = arvif->ahvif;
--	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
--	struct ieee80211_bss_conf *link_conf;
- 	struct ieee80211_sta *sta = NULL;
- 	struct ath12k_base *ab = ar->ab;
- 	struct ath12k_peer *peer;
-@@ -4553,19 +4550,10 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 	if (test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags))
- 		return 1;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 04906897615d8..479ced24096b8 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1098,6 +1098,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+ 	}
+ }
  
--	link_conf = ath12k_mac_get_link_bss_conf(arvif);
--	if (!link_conf) {
--		ath12k_warn(ab, "unable to access bss link conf in set key for vif %pM link %u\n",
--			    vif->addr, arvif->link_id);
--		return -ENOLINK;
++/* Whack a reset.  We should wait for this.
++ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
++ * instead of reset MAC itself.
++ */
++static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
++{
++	u32 val;
++
++	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
++		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
++		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
++			writel(0, fep->hwp + FEC_ECNTRL);
++		} else {
++			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
++			udelay(10);
++		}
++	} else {
++		val = readl(fep->hwp + FEC_ECNTRL);
++		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
++		writel(val, fep->hwp + FEC_ECNTRL);
++	}
++}
++
+ /*
+  * This function is called to start or restart the FEC during a link
+  * change, transmit timeout, or to reconfigure the FEC.  The network
+@@ -1114,17 +1137,7 @@ fec_restart(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+-	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+-		writel(0, fep->hwp + FEC_ECNTRL);
+-	} else {
+-		writel(1, fep->hwp + FEC_ECNTRL);
+-		udelay(10);
 -	}
--
- 	if (sta)
- 		peer_addr = arsta->addr;
--	else if (ahvif->vdev_type == WMI_VDEV_TYPE_STA)
--		peer_addr = link_conf->bssid;
- 	else
--		peer_addr = link_conf->addr;
-+		peer_addr = arvif->bssid;
++	fec_ctrl_reset(fep, false);
  
- 	key->hw_key_idx = key->keyidx;
+ 	/*
+ 	 * enet-mac reset will reset mac address registers too,
+@@ -1378,22 +1391,7 @@ fec_stop(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+-		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
+-			writel(0, fep->hwp + FEC_ECNTRL);
+-		} else {
+-			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+-			udelay(10);
+-		}
+-	} else {
+-		val = readl(fep->hwp + FEC_ECNTRL);
+-		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+-		writel(val, fep->hwp + FEC_ECNTRL);
+-	}
++	fec_ctrl_reset(fep, true);
+ 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
+ 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
  
 -- 
 2.39.5
