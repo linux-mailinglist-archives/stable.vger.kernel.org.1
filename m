@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-147687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F29AAC58BC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFC4AC58C2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5313B1BC2AC8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14B51BC2B86
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0F727FD64;
-	Tue, 27 May 2025 17:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681C028001E;
+	Tue, 27 May 2025 17:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhGtS6Zs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM71Z6wv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCDD42A9B;
-	Tue, 27 May 2025 17:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248EE42A9B;
+	Tue, 27 May 2025 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368119; cv=none; b=jAko4ypZAxUAY8jdRf6SEKTvBZQSAYc001h+vO6DahWBMhICbMHZ2mWJ+elwE83kGqZJ6eyeeVwXgQGMeN4KxegRnMDU9dYVBaEcHszehvvi1Xyf1DZkkghOKfM/zrORUeHE5xq4jzvucImVEmKJ7jHwFLVn7zkBHL71JcPc56o=
+	t=1748368132; cv=none; b=AvekAD2S2fmB8pgtZXKox24j7alsIZYMS8gPhIiQluhNt1XL3cKxAFQKGhHJm34q+T9bEbT7qQ9NY6OCe2OtxnjI1FFhAbS2HVQu+e4+eEMatdSgVQFIn/BZLRthxyO8MkOUDwH7Oea/VUBrI9Ry3RzXWzAr1PZxeZEQumN+3UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368119; c=relaxed/simple;
-	bh=m9BH3A7Y03+DWJuMBvd0L1bXkOIBwwiQdl8nVh3yORk=;
+	s=arc-20240116; t=1748368132; c=relaxed/simple;
+	bh=MfnjnACiNJtUBL7LSwL5j5Pbe3eKvRJ1teYBL4EGkhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYAePcrVBPEdk9nXD/7Wiih2oIUmzgejB27ufsnpg4uiZXmznpqO2Os3glH604Pm8CSAj6JR9kEl/pd+J6rn7LjewBFPAy7SWO0zZXCyoDidHl2hpDNpOCsGeEFsr7azgO0Zhni1sscyQRr5dIfT8x+6xPN2TTrVK/3j8zCugcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhGtS6Zs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C505AC4CEE9;
-	Tue, 27 May 2025 17:48:38 +0000 (UTC)
+	 MIME-Version; b=X6waWuHPEc035Ku9EHWbB2q6amq80MXst5hE1tn9doA4UCPFwtGNP3alryshhJEkj/gDPR7bIpvXBjRXUuyK2Y6ylHTxpJ4LogjQ7VOs7T+qAacyBMO+C+QZpRGVMk0x9c2kB4kROnqFRLuB1t0lwxeXl6H9Xkva5aXYQYNFWV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM71Z6wv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465C3C4CEE9;
+	Tue, 27 May 2025 17:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368119;
-	bh=m9BH3A7Y03+DWJuMBvd0L1bXkOIBwwiQdl8nVh3yORk=;
+	s=korg; t=1748368131;
+	bh=MfnjnACiNJtUBL7LSwL5j5Pbe3eKvRJ1teYBL4EGkhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rhGtS6ZsoXe6NgvHiRChvAZvIa0pqHvWjC0ZHBr0Qh4h9CKMB72gvXmpjW8tE40wX
-	 iI4rmO8+U+U7w35B1aNfGsczTBZKXrbERx9RrLx3lf5frk9KdcvLA8ivGAEQdRGwZ/
-	 pQ0w/vZdNt9KV12+E47HImL859MClIHBLmPa7ckg=
+	b=CM71Z6wvfkmPG+Hyt9b0sAK/mmC2kyxzr1deVLmWTO8n1rPsszuZcnUavIHSWvTD0
+	 hRWHi84EWU1tdqK8T/7JaR5yu6zNNdERlqWUlzQz8klBg+8dB+Dl5EnViEnbwZR0qC
+	 077FPO4NZwW6HWJ/jAHF3FwOs1HfDqaPTOUcBCeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Justin Tee <justin.tee@broadcom.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 577/783] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
-Date: Tue, 27 May 2025 18:26:14 +0200
-Message-ID: <20250527162536.641359805@linuxfoundation.org>
+Subject: [PATCH 6.14 578/783] scsi: lpfc: Ignore ndlp rport mismatch in dev_loss_tmo callbk
+Date: Tue, 27 May 2025 18:26:15 +0200
+Message-ID: <20250527162536.680744549@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -68,62 +68,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
+[ Upstream commit 23ed62897746f49f195d819ce6edeb1db27d1b72 ]
 
-After a port swap between separate fabrics, there may be multiple nodes in
-the vport's fc_nodes list with the same fabric well known address.
-Duplication is temporary and eventually resolves itself after dev_loss_tmo
-expires, but nameserver queries may still occur before dev_loss_tmo.  This
-possibly results in returning stale fabric ndlp objects.  Fix by adding an
-nlp_state check to ensure the ndlp search routine returns the correct newer
-allocated ndlp fabric object.
+With repeated port swaps between separate fabrics, there can be multiple
+registrations for fabric well known address 0xfffffe.  This can cause ndlp
+reference confusion due to the usage of a single ndlp ptr that stores the
+rport object in fc_rport struct private storage during transport
+registration.  Subsequent registrations update the ndlp->rport field with
+the newer rport, so when transport layer triggers dev_loss_tmo for the
+earlier registered rport the ndlp->rport private storage is referencing the
+newer rport instead of the older rport in dev_loss_tmo callbk.
+
+Because the older ndlp->rport object is already cleaned up elsewhere in
+driver code during the time of fabric swap, check that the rport provided
+in dev_loss_tmo callbk actually matches the rport stored in the LLDD's
+ndlp->rport field.  Otherwise, skip dev_loss_tmo work on a stale rport.
 
 Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
+Link: https://lore.kernel.org/r/20250131000524.163662-4-justintee8345@gmail.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 36e66df36a18c..45d268d49060e 100644
+index 45d268d49060e..07cd611f34bd5 100644
 --- a/drivers/scsi/lpfc/lpfc_hbadisc.c
 +++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5564,6 +5564,7 @@ static struct lpfc_nodelist *
- __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- {
- 	struct lpfc_nodelist *ndlp;
-+	struct lpfc_nodelist *np = NULL;
- 	uint32_t data1;
+@@ -228,10 +228,16 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
+ 	if (ndlp->nlp_state == NLP_STE_MAPPED_NODE)
+ 		return;
  
- 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
-@@ -5578,14 +5579,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- 					 ndlp, ndlp->nlp_DID,
- 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
- 					 ndlp->active_rrqs_xri_bitmap);
--			return ndlp;
-+
-+			/* Check for new or potentially stale node */
-+			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
-+				return ndlp;
-+			np = ndlp;
- 		}
- 	}
+-	/* check for recovered fabric node */
+-	if (ndlp->nlp_state == NLP_STE_UNMAPPED_NODE &&
+-	    ndlp->nlp_DID == Fabric_DID)
++	/* Ignore callback for a mismatched (stale) rport */
++	if (ndlp->rport != rport) {
++		lpfc_vlog_msg(vport, KERN_WARNING, LOG_NODE,
++			      "6788 fc rport mismatch: d_id x%06x ndlp x%px "
++			      "fc rport x%px node rport x%px state x%x "
++			      "refcnt %u\n",
++			      ndlp->nlp_DID, ndlp, rport, ndlp->rport,
++			      ndlp->nlp_state, kref_read(&ndlp->kref));
+ 		return;
++	}
  
--	/* FIND node did <did> NOT FOUND */
--	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
--			 "0932 FIND node did x%x NOT FOUND.\n", did);
--	return NULL;
-+	if (!np)
-+		/* FIND node did <did> NOT FOUND */
-+		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
-+				 "0932 FIND node did x%x NOT FOUND.\n", did);
-+
-+	return np;
- }
- 
- struct lpfc_nodelist *
+ 	if (rport->port_name != wwn_to_u64(ndlp->nlp_portname.u.wwn))
+ 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
 -- 
 2.39.5
 
