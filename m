@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6005DAC56E2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AA0AC538A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E35A4A67BE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41EF97AA028
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9D727FD64;
-	Tue, 27 May 2025 17:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD8227CB04;
+	Tue, 27 May 2025 16:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yW1Eibxj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjLS+vgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE1F26F449;
-	Tue, 27 May 2025 17:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4C5194A45;
+	Tue, 27 May 2025 16:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366762; cv=none; b=KNNiXxI9G8d1UIH5lwtYONFbawO9QF45Oqw+UlxRBD7NRIdUo1S2AYmXtf97RwytYeOWX1csAeVU8EMi2mY6DbAYGmSfGKGXt2Dnp6dSdfO4eRrRwiTdtoR56cq3njXOFbcyduXCq1NcOjB1pOXK+znX7Jd/+r1jsnHcOOHch+8=
+	t=1748364500; cv=none; b=Xsfc0w41o+QjI6dSUnBLkoesHv12PVeOQNzTuSjqid1l0+mQq8sHZ724i3K23YOX4MtLs5ADsCJ7s+lAUnJPllQ+sadmdBlvZ/E0agNa96Gzba6ImkP6LcU8vacKA85cntU7jVuCoqKCARKJOO75MnANW4+EV9wtLqDy1wiMG7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366762; c=relaxed/simple;
-	bh=SiSs4sHYfPM9D5P/wpsBl0N6LcI8Y/Xj80mBEnXSsqE=;
+	s=arc-20240116; t=1748364500; c=relaxed/simple;
+	bh=+RbCDNxP75dSRYAyVImOZFpRoCd4P3jMoVYA0Bdl8Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUIgMM89/RjBywTozWDnILrJEyRNWHjMJr0i3lNdHzRKgmtnxD1NyGtFJIBd9U6HsDoiDXYtWwfiqLP+KC3UfW2dP+ByyYWf5iGz4ZcKOwTOEf6EPMm16fhg1mJ0tjzatv6JhJjD4TNA0mkj2ClDe+emgUT748/wKS69NTL85u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yW1Eibxj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0145FC4CEE9;
-	Tue, 27 May 2025 17:26:01 +0000 (UTC)
+	 MIME-Version; b=bIMcR3ySg1UT+bVW91uzcaS+j3iCvtLtdPodkOJdsxJ4EvFbqL0NuL0Fw6Rz3hJ87ZKQGzWrcceNkKE3TG952Guy2WVN8jakQFfxuq33LkXzktRY/zP1OnnLO7zJ1F9IS2sFIMFaXXS7h4G1G2v+HswgTz11v8/dMRTjoicJb+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjLS+vgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D12C4CEE9;
+	Tue, 27 May 2025 16:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366762;
-	bh=SiSs4sHYfPM9D5P/wpsBl0N6LcI8Y/Xj80mBEnXSsqE=;
+	s=korg; t=1748364500;
+	bh=+RbCDNxP75dSRYAyVImOZFpRoCd4P3jMoVYA0Bdl8Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yW1Eibxj8Ob3WRvRGRPXy3emDWXZYrTZeso42Lsi/JtnYiCVwatpsWrayXvfBulD+
-	 Fzv/QHp42Zw7U8E0/Vy1XI/5LEvsKMXHHbvtrkEar7RARB0GllzwD1MVpRAhSPpTFu
-	 TfraztFYI1789mK1s/f7oER50PzNMbalbQcRkJ8U=
+	b=GjLS+vglgBAb7+wnFco5nHDB5Mc5T8lIoBMroxIttXO0co1+lyZgyX40Wiy8CQAJa
+	 aN3Ix0Z/e5vDna1KET59YG8QMqAq4TLppJnCtbrhiKiAchSxG5Qaktepwi4XtgEoaY
+	 R9piKbF3ky5YBmA71JLGVqparB8OhU2HxVkoO/yU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergio Perez Gonzalez <sperezglz@gmail.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 171/783] spi: spi-mux: Fix coverity issue, unchecked return value
+Subject: [PATCH 6.12 075/626] ASoC: codecs: wsa884x: Correct VI sense channel mask
 Date: Tue, 27 May 2025 18:19:28 +0200
-Message-ID: <20250527162520.130565928@linuxfoundation.org>
+Message-ID: <20250527162448.093281233@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Perez Gonzalez <sperezglz@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 5a5fc308418aca275a898d638bc38c093d101855 ]
+[ Upstream commit 060fac202eb8e5c83961f0e0bf6dad8ab6e46643 ]
 
-The return value of spi_setup() is not captured within
-spi_mux_select() and it is assumed to be always success.
+VI sense port on WSA883x speaker takes only one channel, so use 0x1 as
+channel mask.  This fixes garbage being recorded by the speaker when
+testing the VI sense feedback path.
 
-CID: 1638374
-
-Signed-off-by: Sergio Perez Gonzalez <sperezglz@gmail.com>
-Link: https://patch.msgid.link/20250316054651.13242-1-sperezglz@gmail.com
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20250312-asoc-wsa88xx-visense-v1-2-9ca705881122@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mux.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/soc/codecs/wsa884x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
-index c02c4204442f5..0eb35c4e3987e 100644
---- a/drivers/spi/spi-mux.c
-+++ b/drivers/spi/spi-mux.c
-@@ -68,9 +68,7 @@ static int spi_mux_select(struct spi_device *spi)
- 
- 	priv->current_cs = spi_get_chipselect(spi, 0);
- 
--	spi_setup(priv->spi);
--
--	return 0;
-+	return spi_setup(priv->spi);
- }
- 
- static int spi_mux_setup(struct spi_device *spi)
+diff --git a/sound/soc/codecs/wsa884x.c b/sound/soc/codecs/wsa884x.c
+index 560a2c04b6955..18b0ee8f15a55 100644
+--- a/sound/soc/codecs/wsa884x.c
++++ b/sound/soc/codecs/wsa884x.c
+@@ -891,7 +891,7 @@ static const struct sdw_port_config wsa884x_pconfig[WSA884X_MAX_SWR_PORTS] = {
+ 	},
+ 	[WSA884X_PORT_VISENSE] = {
+ 		.num = WSA884X_PORT_VISENSE + 1,
+-		.ch_mask = 0x3,
++		.ch_mask = 0x1,
+ 	},
+ 	[WSA884X_PORT_CPS] = {
+ 		.num = WSA884X_PORT_CPS + 1,
 -- 
 2.39.5
 
