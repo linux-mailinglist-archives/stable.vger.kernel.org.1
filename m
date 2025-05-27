@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-147470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32889AC57CC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992C6AC54E1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A69D11BC165B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D89C78A2DBA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49093280012;
-	Tue, 27 May 2025 17:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9CE27CB04;
+	Tue, 27 May 2025 16:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jft6BKM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V59o0D7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C0D27FB10;
-	Tue, 27 May 2025 17:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689832CCC0;
+	Tue, 27 May 2025 16:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367440; cv=none; b=Ie9+hHOfSubJlszQUb19Gd9xjl2M1M6dDShHcdGJxzUV+BpFHI5Rs3tQDrKsrfb9BoM7Z+JjZw+vYo2fDqzKCxod0bhPt4bWDKkWYruGIL1+EICAUpS8eZ1e7xeWbTXWEWNCZCy4BFfk63MDcFekgsFg4xs7BAudJDvlSH78yuM=
+	t=1748365180; cv=none; b=t1XVG+SVLUjgKIsHkh5Y41WYRxTUDkhEfdXVVhfOYekAABQ5Y/X/m4ZwSfcDabPZw7jPexgTBNIECMhA6jOD11EY+qLThWjQPM7GqaBfqGHbR1o494XNnKm8uy/E/ZVjAOXQnpyg90HLUc4C/WeyOzjLzH/UhuwI//89sYl1BNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367440; c=relaxed/simple;
-	bh=K6x+LFmzkRzMkCPs6TPB18QvrUGG/3LElCqBPz9MSJY=;
+	s=arc-20240116; t=1748365180; c=relaxed/simple;
+	bh=E/fqW1rmVfQ0qvHRzsrixA/6iHl+BTpxMX7eB+Cidy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vDZN2b7WLsfKeYSEaEXlIqMHDzWbB1fhc8HuQQrrJ0h+IxylNb5/qcur3yoZbL18mRcNsIBoAxOquUZmTS0pF9uKF7ytVkE3ESbA/kUHWNGVFNDCwWLrc/P3+JG66YYLawq3wH+ZvHiwSgB6QOScmoNQ84yK3om8v5bjL4QF2To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jft6BKM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FB9C4CEE9;
-	Tue, 27 May 2025 17:37:19 +0000 (UTC)
+	 MIME-Version; b=UGBy6YX7En1bgvIsCkgD7BjgfctI0jaww0bx38Fy9Iw7p8u0NQHXWb2eIhAH0Qp92Jn7aQYwzjqLpgqWN55MtyaHRFld9KaoedV5sKyNLE1wcFfQnITDCGDlKp4IO8LPLJTttPVFEmy90BlTBKxwZhtC8ncdSPEBxd6Xiy3rj5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V59o0D7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AEAC4CEEB;
+	Tue, 27 May 2025 16:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367439;
-	bh=K6x+LFmzkRzMkCPs6TPB18QvrUGG/3LElCqBPz9MSJY=;
+	s=korg; t=1748365180;
+	bh=E/fqW1rmVfQ0qvHRzsrixA/6iHl+BTpxMX7eB+Cidy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jft6BKM7cCcMCWRUvFumljFycLKEuEi6A065eqHX0PJFeFl5aGboxQLJemlthMI2q
-	 4NqggsiDPaYQptNyvUvInlfPidkAtBeNeToKn3XqN4oEqyqt3t1nbrMB2GbncJtzld
-	 6G0otZJOUgYIyC9qINolx2LSsH2lGg9IuX0tPrHA=
+	b=V59o0D7H2DQjJqQU4vdJOrCpt70yDE22RvnLUrfVaNuB1qxwu2imu92QoJQwy0t96
+	 og6UkaBL3HwRtjRY2KAn6WQer6Tn7jkPjjF9eE3ncC4vhmLdSYnjgKH/5KkqV/nmo5
+	 TsC1lyiuoZBlrUQCJPQNCLuH4l0X+El6a3abq/0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Burton <paulburton@kernel.org>,
-	Chao-ying Fu <cfu@wavecomp.com>,
-	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
-	Aleksandar Rikalo <arikalo@gmail.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 389/783] clocksource: mips-gic-timer: Enable counter when CPUs start
+Subject: [PATCH 6.12 293/626] vhost-scsi: Return queue full for page alloc failures during copy
 Date: Tue, 27 May 2025 18:23:06 +0200
-Message-ID: <20250527162528.937239087@linuxfoundation.org>
+Message-ID: <20250527162456.940947629@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +61,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paulburton@kernel.org>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 3128b0a2e0cf6e07aa78e5f8cf7dd9cd59dc8174 ]
+[ Upstream commit 891b99eab0f89dbe08d216f4ab71acbeaf7a3102 ]
 
-In multi-cluster MIPS I6500 systems there is a GIC in each cluster,
-each with its own counter. When a cluster powers up the counter will
-be stopped, with the COUNTSTOP bit set in the GIC_CONFIG register.
+This has us return queue full if we can't allocate a page during the
+copy operation so the initiator can retry.
 
-In single cluster systems, it has been fine to clear COUNTSTOP once
-in gic_clocksource_of_init() to start the counter. In multi-cluster
-systems, this will only have started the counter in the boot cluster,
-and any CPUs in other clusters will find their counter stopped which
-will break the GIC clock_event_device.
-
-Resolve this by having CPUs clear the COUNTSTOP bit when they come
-online, using the existing gic_starting_cpu() CPU hotplug callback. This
-will allow CPUs in secondary clusters to ensure that the cluster's GIC
-counter is running as expected.
-
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Signed-off-by: Chao-ying Fu <cfu@wavecomp.com>
-Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
-Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20241203191705.19431-5-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/mips-gic-timer.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/vhost/scsi.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-index 7907b740497a5..abb685a080a5b 100644
---- a/drivers/clocksource/mips-gic-timer.c
-+++ b/drivers/clocksource/mips-gic-timer.c
-@@ -115,6 +115,9 @@ static void gic_update_frequency(void *data)
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index ecad2f53b7635..38d243d914d00 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -762,7 +762,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 	size_t len = iov_iter_count(iter);
+ 	unsigned int nbytes = 0;
+ 	struct page *page;
+-	int i;
++	int i, ret;
  
- static int gic_starting_cpu(unsigned int cpu)
- {
-+	/* Ensure the GIC counter is running */
-+	clear_gic_config(GIC_CONFIG_COUNTSTOP);
-+
- 	gic_clockevent_cpu_init(cpu, this_cpu_ptr(&gic_clockevent_device));
- 	return 0;
- }
-@@ -288,9 +291,6 @@ static int __init gic_clocksource_of_init(struct device_node *node)
- 			pr_warn("Unable to register clock notifier\n");
+ 	if (cmd->tvc_data_direction == DMA_FROM_DEVICE) {
+ 		cmd->saved_iter_addr = dup_iter(&cmd->saved_iter, iter,
+@@ -775,6 +775,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 		page = alloc_page(GFP_KERNEL);
+ 		if (!page) {
+ 			i--;
++			ret = -ENOMEM;
+ 			goto err;
+ 		}
+ 
+@@ -782,8 +783,10 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 		sg_set_page(&sg[i], page, nbytes, 0);
+ 
+ 		if (cmd->tvc_data_direction == DMA_TO_DEVICE &&
+-		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes)
++		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes) {
++			ret = -EFAULT;
+ 			goto err;
++		}
+ 
+ 		len -= nbytes;
  	}
+@@ -798,7 +801,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 	for (; i >= 0; i--)
+ 		__free_page(sg_page(&sg[i]));
+ 	kfree(cmd->saved_iter_addr);
+-	return -ENOMEM;
++	return ret;
+ }
  
--	/* And finally start the counter */
--	clear_gic_config(GIC_CONFIG_COUNTSTOP);
--
- 	/*
- 	 * It's safe to use the MIPS GIC timer as a sched clock source only if
- 	 * its ticks are stable, which is true on either the platforms with
+ static int
+@@ -1282,9 +1285,9 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 			 " %d\n", cmd, exp_data_len, prot_bytes, data_direction);
+ 
+ 		if (data_direction != DMA_NONE) {
+-			if (unlikely(vhost_scsi_mapal(cmd, prot_bytes,
+-						      &prot_iter, exp_data_len,
+-						      &data_iter))) {
++			ret = vhost_scsi_mapal(cmd, prot_bytes, &prot_iter,
++					       exp_data_len, &data_iter);
++			if (unlikely(ret)) {
+ 				vq_err(vq, "Failed to map iov to sgl\n");
+ 				vhost_scsi_release_cmd_res(&cmd->tvc_se_cmd);
+ 				goto err;
 -- 
 2.39.5
 
