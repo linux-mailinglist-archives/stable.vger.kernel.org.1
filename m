@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-146804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BBAAC54B4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 460E4AC57E1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BB6E1896BCE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA8CC1BC14EA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724D723ED75;
-	Tue, 27 May 2025 17:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2412F27CB35;
+	Tue, 27 May 2025 17:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmal4uFE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9UkS66V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E08F1EA91;
-	Tue, 27 May 2025 17:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A6227E7CF;
+	Tue, 27 May 2025 17:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365359; cv=none; b=RLiHhboEj6kzMTqcbg3dc6vl0JhL0FOCY5KxQW+XekKwaGQDuwCw+mJrvOBSqojPcW5BakxrJQSiGy/TdGo5itfjhETg47cWb/tP57dfP+/P7uEgZHDzSn2BcScInybue5tfOMm0HhJggo1fjCoC4jtJ1WuZxHD+mEAvastFHFQ=
+	t=1748367495; cv=none; b=mBiIZUOFxZxfRiwDR8rpGxJSYOu8R1M82DI89rdo9u/Lf58wujkEHpkRc5PcL/E3ibbPiiZmC554gtw7eQwP0tkOi7t2/Qe+0zyGHOb478mCC79a12ZZLdsGmzQUlSgkxmEDPqHH8oI6j1qaEBxlwIGLqRfsfFTXsEpkEN+UvTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365359; c=relaxed/simple;
-	bh=tNeAmQ2qUV+9reGGfNdYHcbgpezdp22J+FhdSU1V5OY=;
+	s=arc-20240116; t=1748367495; c=relaxed/simple;
+	bh=T9JYsD9vo0W9rZKQZQ3BYkCztc9eth+3VCmltINL+x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XMooGomQ2exyn0AxvMDgSpl8s1Nz9+6pXVCSbbN3Jgo703iQIMYC+SWCBjalmfO8aSMO4VKyCsNccpuuW+FPgntXv7iC4FLOC0SKHJ9oW0fQJvejI5KQUh/tWn5jx2YguosceXnMbsZFTIgbYk8sndM2rvKZEjS0CNFJgMslySI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmal4uFE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ACBC4CEE9;
-	Tue, 27 May 2025 17:02:38 +0000 (UTC)
+	 MIME-Version; b=q0e0kULY/ixr4VGbTVGLMRiZG1eooJ/2ZO2HKa+U3pFot6DkILjVHBF330CSLDJ9+6qOtuj4pYAOTzxOvC8sB8PnMFHmWesWMGA6W/S3iyEFv0xUTowDGok+/1rB+/KQmOOm2llkm6lkc4FvOr2CH9d/W8i+UoBB8sdApkXkaog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9UkS66V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E18BC4CEE9;
+	Tue, 27 May 2025 17:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365358;
-	bh=tNeAmQ2qUV+9reGGfNdYHcbgpezdp22J+FhdSU1V5OY=;
+	s=korg; t=1748367495;
+	bh=T9JYsD9vo0W9rZKQZQ3BYkCztc9eth+3VCmltINL+x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmal4uFE597W6X92Pmi/xe/ex0N73u7URpd/rWhMIbfop1Ko6ENfel1E5l7ukD9S3
-	 il/HFuMd9MzSU4WME53rUYpx8KQY7eKNywqczMXOJeyUQscgvFzO6FeLAZnAPKR9wR
-	 +v/qGyhSAjJtg4e6+NtQz0+/lXUMTaHRfqtXsTls=
+	b=e9UkS66V53A3I4nxIukixslgD49EtPke7Tz7Y/ZX5te7pPgR6YlkZQGEi0jnWzbgc
+	 z+ynALV0sujnnuo5yZ0dUvMrSf5YU45XAOrHnXAOp9T/QqwLV5BrFQT0dTlcvgCuQP
+	 oPzRmnw4lDOOOQ5n4N1laZXxJaSQ4uEL9kt6CVxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Eddie James <eajames@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 310/626] MIPS: Use arch specific syscall name match function
+Subject: [PATCH 6.14 406/783] eeprom: ee1004: Check chip before probing
 Date: Tue, 27 May 2025 18:23:23 +0200
-Message-ID: <20250527162457.632877254@linuxfoundation.org>
+Message-ID: <20250527162529.637985277@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
+[ Upstream commit d9406677428e9234ea62bb2d2f5e996d1b777760 ]
 
-On MIPS system, most of the syscall function name begin with prefix
-sys_. Some syscalls are special such as clone/fork, function name of
-these begin with __sys_. Since scratch registers need be saved in
-stack when these system calls happens.
+Like other eeprom drivers, check if the device is really there and
+functional before probing.
 
-With ftrace system call method, system call functions are declared with
-SYSCALL_DEFINEx, metadata of the system call symbol name begins with
-sys_. Here mips specific function arch_syscall_match_sym_name is used to
-compare function name between sys_call_table[] and metadata of syscall
-symbol.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250218220959.721698-1-eajames@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/misc/eeprom/ee1004.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
-index dc025888f6d28..b41fc10446688 100644
---- a/arch/mips/include/asm/ftrace.h
-+++ b/arch/mips/include/asm/ftrace.h
-@@ -91,4 +91,20 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+diff --git a/drivers/misc/eeprom/ee1004.c b/drivers/misc/eeprom/ee1004.c
+index 89224d4af4a20..e13f9fdd9d7b1 100644
+--- a/drivers/misc/eeprom/ee1004.c
++++ b/drivers/misc/eeprom/ee1004.c
+@@ -304,6 +304,10 @@ static int ee1004_probe(struct i2c_client *client)
+ 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_READ_BYTE_DATA))
+ 		return -EPFNOSUPPORT;
  
- #endif /* __ASSEMBLY__ */
- #endif /* CONFIG_FUNCTION_TRACER */
++	err = i2c_smbus_read_byte(client);
++	if (err < 0)
++		return -ENODEV;
 +
-+#ifdef CONFIG_FTRACE_SYSCALLS
-+#ifndef __ASSEMBLY__
-+/*
-+ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
-+ * for instance). We should also match the sys_ variant with those.
-+ */
-+#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
-+static inline bool arch_syscall_match_sym_name(const char *sym,
-+					       const char *name)
-+{
-+	return !strcmp(sym, name) ||
-+		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
-+}
-+#endif /* __ASSEMBLY__ */
-+#endif /* CONFIG_FTRACE_SYSCALLS */
- #endif /* _ASM_MIPS_FTRACE_H */
+ 	mutex_lock(&ee1004_bus_lock);
+ 
+ 	err = ee1004_init_bus_data(client);
 -- 
 2.39.5
 
