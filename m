@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-146641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB680AC53FF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8EAAC5784
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD7114A1607
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:54:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 686FE4A762F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2960627FB37;
-	Tue, 27 May 2025 16:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636DB27F178;
+	Tue, 27 May 2025 17:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2fy/bhk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6QrISLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD74276057;
-	Tue, 27 May 2025 16:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF663C01;
+	Tue, 27 May 2025 17:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364857; cv=none; b=RoJ2+zgZ93HsGTVcCDqTW3vAvCwpF0DicxIoe3r7xCAaeCYcYMcmqnn3ivmNA/08XkUGCh+nIO8ulT9lzxf2UBuuQy0jC9UVFvBJBSmpgF4tnHseWkET1yQON4mMqQT9xwqgmipQ7LHgbMC4cq7CTeuWsucpm/Kdbpd2qgUQghs=
+	t=1748367216; cv=none; b=S7lkrbYkOleRo7RkLWgAvN57YuJaQu0Kc5t3Up+Ts/4a6vlr08r3IzXtYyMCD/7iu5lWPs3xXD3NH7m1bYrc2rUSPPRNed7hL/rnwVHX44pPn7LWOGShLL19WvYF1sJSlg+ebwDeURVwruBy8xa7Upeti11bhtQER4X9EkUGuJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364857; c=relaxed/simple;
-	bh=7P5+AqYcV5ovo9c44vtQpH6IZQTkxE5aHRrnmMXLpbU=;
+	s=arc-20240116; t=1748367216; c=relaxed/simple;
+	bh=KjqyNNyi7aO+QJzYCBI9P4x1mmVe4JL6p8+yKH0pIz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJcYHma3065b1UaYLyteyr1awTxMOGcI/1L7nOs2Soo8aP7j5h1h9EqYHPGuVbMYwms0/QDDh4EpEUnlM5S0Bdh1HxwUSWBesEDNr7h+GQelzNmz3s8DE/uoOOJv4M+j52TAhC5mLQEAaidkQOZirmnQc3GaAreTi+siaatjqfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2fy/bhk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA72C4CEE9;
-	Tue, 27 May 2025 16:54:17 +0000 (UTC)
+	 MIME-Version; b=hfi1oqYL2aBbGg675tZN0urbCtTKAboELB/0wWD+l9+UFBf2/7gu5gJQfJBu9oUqneyKi56ezTqs+16xBMNMVz1k8UvXYpfIjjp8PW9XCiPp+c5SRejvilB32HTvAANr7yQRlfvHo/knM+iQjzOq6T+VFHHpWCXKewwn8NZhgv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6QrISLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986BCC4CEE9;
+	Tue, 27 May 2025 17:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364857;
-	bh=7P5+AqYcV5ovo9c44vtQpH6IZQTkxE5aHRrnmMXLpbU=;
+	s=korg; t=1748367216;
+	bh=KjqyNNyi7aO+QJzYCBI9P4x1mmVe4JL6p8+yKH0pIz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2fy/bhkOxy4qvxvoUpEtNlwgGP9LCjZKrqrrqMLNX1cqDXMWBqmsNGcbwnVk3BcY
-	 gpOAosfhGsyCkoH/wFs9dEhIx4bVekpERKu1eb8jFvDTPJkd56AeNpIb2DNq2OKx7M
-	 /8gcpOjM/XUuqjie7tujCKu2+SXSjwNWscAms8MA=
+	b=t6QrISLMFS9b25tBqNDqpiOElc/jQ5t+4tLuos9AbKOYiFrTjiZ/xmuD1BhWGgBGQ
+	 golBpNF5vdFczVJGrZYeQQX6PqOSDCaAnifvWOUG5T6C0Yut2LWCKJwD18UAHyyab6
+	 sC3i3TLo6OI0LlLK+/saE64gLWCN2jDzZjzraRhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Aric Cyr <Aric.Cyr@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 189/626] wifi: mac80211: fix warning on disconnect during failed ML reconf
+Subject: [PATCH 6.14 285/783] drm/amd/display: Request HW cursor on DCN3.2 with SubVP
 Date: Tue, 27 May 2025 18:21:22 +0200
-Message-ID: <20250527162452.695482539@linuxfoundation.org>
+Message-ID: <20250527162524.694752024@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Aric Cyr <Aric.Cyr@amd.com>
 
-[ Upstream commit 0e104aa3676d020f6c442cd7fbaeb72adaaab6fc ]
+[ Upstream commit b74f46f3ce1e5f6336645f1e9ff47c56d5dfdef1 ]
 
-If multi-link reconfiguration fails, we can disconnect with a local link
-already allocated but the BSS entry not assigned yet, which leads to a
-warning in cfg80211. Add a check to avoid the warning.
+[why]
+When SubVP is active the HW cursor size is limited to 64x64, and
+anything larger will force composition which is bad for gaming on
+DCN3.2 if the game uses a larger cursor.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308225541.699bd9cbabe5.I599d5ff69092a65e916e2acd25137ae9df8debe8@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[how]
+If HW cursor is requested, typically by a fullscreen game, do not
+enable SubVP so that up to 256x256 cursor sizes are available for
+DCN3.2.
+
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
+Signed-off-by: Aric Cyr <Aric.Cyr@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c             | 3 ++-
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index cc8c5d18b130d..3a279ded46c2f 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4033,7 +4033,7 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
- 			struct ieee80211_link_data *link;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 722175e347fdc..167f9d99a5408 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -4912,7 +4912,8 @@ static bool full_update_required(struct dc *dc,
+ 			stream_update->lut3d_func ||
+ 			stream_update->pending_test_pattern ||
+ 			stream_update->crtc_timing_adjust ||
+-			stream_update->scaler_sharpener_update))
++			stream_update->scaler_sharpener_update ||
++			stream_update->hw_cursor_req))
+ 		return true;
  
- 			link = sdata_dereference(sdata->link[link_id], sdata);
--			if (!link)
-+			if (!link || !link->conf->bss)
- 				continue;
- 			cfg80211_unlink_bss(local->hw.wiphy, link->conf->bss);
- 			link->conf->bss = NULL;
+ 	if (stream) {
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index 6f490d8d7038c..56dda686e2992 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -626,6 +626,7 @@ static bool dcn32_assign_subvp_pipe(struct dc *dc,
+ 		 * - Not TMZ surface
+ 		 */
+ 		if (pipe->plane_state && !pipe->top_pipe && !pipe->prev_odm_pipe && !dcn32_is_center_timing(pipe) &&
++				!pipe->stream->hw_cursor_req &&
+ 				!(pipe->stream->timing.pix_clk_100hz / 10000 > DCN3_2_MAX_SUBVP_PIXEL_RATE_MHZ) &&
+ 				(!dcn32_is_psr_capable(pipe) || (context->stream_count == 1 && dc->caps.dmub_caps.subvp_psr)) &&
+ 				dc_state_get_pipe_subvp_type(context, pipe) == SUBVP_NONE &&
 -- 
 2.39.5
 
