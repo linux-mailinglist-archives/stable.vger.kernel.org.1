@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-146702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60965AC5481
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822CEAC5799
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD11B7ABFA4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5228C4A75CC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9452227D766;
-	Tue, 27 May 2025 16:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDD627FB02;
+	Tue, 27 May 2025 17:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RED2Gj0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW0CgCup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504AD1EA91;
-	Tue, 27 May 2025 16:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC002798F8;
+	Tue, 27 May 2025 17:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365043; cv=none; b=WVNPjpsWG/QVdL0ldYZyvcuD6bHyj+I+l4UILcijng6EFXGKpvDv1BYZItwlBgu4NhgZ7H/U937R532VX4NC3hr0NJ7a3QlU/Ev+NSJjp2CNoOkgWiFskcMaWvM2/hIYfQ7r+qezFdcqj0cb57BC9B97uMk4sGPGRu+STQQ+DH8=
+	t=1748367298; cv=none; b=VwfmUMPOhUdIm+is36DxIl/xo2bVjUFJ6GyE/sVq2Cd60pEGLxqDD6TKSSET+pg+L0omMd+Zy0CAdgOkgibI2IECOqiix+YgmGqnku7ZHjbxd5EoGYkw+LXYdaqZpfp9mDbq2QjnmFA+6Qxm4OBisAdyDAQGWE5E0IZbwVRQ/zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365043; c=relaxed/simple;
-	bh=cQQ8AfeF4hWSL/U0ouuqBiTBBZGrB9CE+qqxUvnzel8=;
+	s=arc-20240116; t=1748367298; c=relaxed/simple;
+	bh=zHrp8qOpZ7THRrGKuQqnhqwbAjlWz2LjLtcBB5HFNKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I8H0cmC7aAuFq4KT7B99pErhBjAxjbtTRqQ84qxfBmc56yXhCzF9Jtj8E+tG10MhIxxrOpgh8C5P3MiX1w/DAXM6CWEDv+4iIgt4HLUWeKbYmN+Pc/mWcRkEipT5Soa4usispRRRpuRLG2RTs/4Ial8curnH1dt1EzhMhDy1JxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RED2Gj0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5588C4CEE9;
-	Tue, 27 May 2025 16:57:22 +0000 (UTC)
+	 MIME-Version; b=lAKBQNZTS9KqMdONSdQMD0H5XeBsRL9VpdYcj+YxFtiSPgunNDcASXZ0tJIWDUT5IFcGKOS+REGadjeWmdTiFYMil1wD8DQ1fnoHhmPhqO7IVw7MDwoKyfk88ojDdIkq81z5V9U3IRKCNnX7wWIxiNZiaZQPOS0in1RjMd+TTws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW0CgCup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE18C4CEE9;
+	Tue, 27 May 2025 17:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365043;
-	bh=cQQ8AfeF4hWSL/U0ouuqBiTBBZGrB9CE+qqxUvnzel8=;
+	s=korg; t=1748367298;
+	bh=zHrp8qOpZ7THRrGKuQqnhqwbAjlWz2LjLtcBB5HFNKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RED2Gj0Id69pjp80euXxuWHTsXRcDH27DEbVimNJcnzQTnsknsd8Du98CbWECWSiw
-	 XBNfBhmx/m4ntG9JJzNoGMubpt1uLpqw015EjqmX/cIgN/afNtAZDG6dhYf9L7FFEX
-	 AYHPl07r7XHVs4P3Bw9O9PTmA+l2VVIudCqqICQ4=
+	b=gW0CgCup1oNO84gvMptG78+M0p23SzG3uRa75OGNBKMvUfHfeMriFCEclJpEFai6M
+	 UKA5I6q8tVqhLtSMz2gWSOj9piqTrKctd3lQ/Hpr2o0IKBhqwAFjiGgQYjjos03ZLL
+	 +EpwhWeIZHaHqdT+uz2vV8nq/g4dfOO7/NNgswlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Kaplan <David.Kaplan@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/626] drm/xe: Nuke VMs mapping upon close
+Subject: [PATCH 6.14 315/783] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
 Date: Tue, 27 May 2025 18:21:52 +0200
-Message-ID: <20250527162453.917023512@linuxfoundation.org>
+Message-ID: <20250527162525.894904213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,197 +64,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 074e40d9c2a84939fe28d7121d3469db50f34a3d ]
+[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
 
-Clear root PT entry and invalidate entire VM's address space when
-closing the VM. Will prevent the GPU from accessing any of the VM's
-memory after closing.
+Change the default value of spectre v2 in user mode to respect the
+CONFIG_MITIGATION_SPECTRE_V2 config option.
 
-v2:
- - s/vma/vm in kernel doc (CI)
- - Don't nuke migration VM as this occur at driver unload (CI)
-v3:
- - Rebase and pull into SVM series (Thomas)
- - Wait for pending binds (Thomas)
-v5:
- - Remove xe_gt_tlb_invalidation_fence_fini in error case (Matt Auld)
- - Drop local migration bool (Thomas)
-v7:
- - Add drm_dev_enter/exit protecting invalidation (CI, Matt Auld)
+Currently, user mode spectre v2 is set to auto
+(SPECTRE_V2_USER_CMD_AUTO) by default, even if
+CONFIG_MITIGATION_SPECTRE_V2 is disabled.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306012657.3505757-12-matthew.brost@intel.com
+Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
+Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
+set the value to none (SPECTRE_V2_USER_CMD_NONE).
+
+Important to say the command line argument "spectre_v2_user" overwrites
+the default value in both cases.
+
+When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
+to opt-in for specific mitigations independently. In this scenario,
+setting spectre_v2= will not enable spectre_v2_user=, and command line
+options spectre_v2_user and spectre_v2 are independent when
+CONFIG_MITIGATION_SPECTRE_V2=n.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: David Kaplan <David.Kaplan@amd.com>
+Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c | 22 ++++++++++++++
- drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h |  2 ++
- drivers/gpu/drm/xe/xe_pt.c                  | 14 +++++++++
- drivers/gpu/drm/xe/xe_pt.h                  |  3 ++
- drivers/gpu/drm/xe/xe_vm.c                  | 32 +++++++++++++++++++++
- 5 files changed, 73 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt |  2 ++
+ arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
-index 98a450271f5ce..3155825fa46ad 100644
---- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
-+++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
-@@ -406,6 +406,28 @@ int xe_gt_tlb_invalidation_range(struct xe_gt *gt,
- 	return send_tlb_invalidation(&gt->uc.guc, fence, action, len);
- }
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index f9e11cebc598c..a8e98f75b610a 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6602,6 +6602,8 @@
  
-+/**
-+ * xe_gt_tlb_invalidation_vm - Issue a TLB invalidation on this GT for a VM
-+ * @gt: graphics tile
-+ * @vm: VM to invalidate
-+ *
-+ * Invalidate entire VM's address space
-+ */
-+void xe_gt_tlb_invalidation_vm(struct xe_gt *gt, struct xe_vm *vm)
-+{
-+	struct xe_gt_tlb_invalidation_fence fence;
-+	u64 range = 1ull << vm->xe->info.va_bits;
-+	int ret;
-+
-+	xe_gt_tlb_invalidation_fence_init(gt, &fence, true);
-+
-+	ret = xe_gt_tlb_invalidation_range(gt, &fence, 0, range, vm->usm.asid);
-+	if (ret < 0)
-+		return;
-+
-+	xe_gt_tlb_invalidation_fence_wait(&fence);
-+}
-+
- /**
-  * xe_gt_tlb_invalidation_vma - Issue a TLB invalidation on this GT for a VMA
-  * @gt: graphics tile
-diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
-index 672acfcdf0d70..abe9b03d543e6 100644
---- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
-+++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
-@@ -12,6 +12,7 @@
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
++			Selecting specific mitigation does not force enable
++			user mitigations.
  
- struct xe_gt;
- struct xe_guc;
-+struct xe_vm;
- struct xe_vma;
- 
- int xe_gt_tlb_invalidation_init_early(struct xe_gt *gt);
-@@ -21,6 +22,7 @@ int xe_gt_tlb_invalidation_ggtt(struct xe_gt *gt);
- int xe_gt_tlb_invalidation_vma(struct xe_gt *gt,
- 			       struct xe_gt_tlb_invalidation_fence *fence,
- 			       struct xe_vma *vma);
-+void xe_gt_tlb_invalidation_vm(struct xe_gt *gt, struct xe_vm *vm);
- int xe_gt_tlb_invalidation_range(struct xe_gt *gt,
- 				 struct xe_gt_tlb_invalidation_fence *fence,
- 				 u64 start, u64 end, u32 asid);
-diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-index 230cf47fb9c5e..fb94ff55c7361 100644
---- a/drivers/gpu/drm/xe/xe_pt.c
-+++ b/drivers/gpu/drm/xe/xe_pt.c
-@@ -217,6 +217,20 @@ void xe_pt_destroy(struct xe_pt *pt, u32 flags, struct llist_head *deferred)
- 	xe_pt_free(pt);
- }
- 
-+/**
-+ * xe_pt_clear() - Clear a page-table.
-+ * @xe: xe device.
-+ * @pt: The page-table.
-+ *
-+ * Clears page-table by setting to zero.
-+ */
-+void xe_pt_clear(struct xe_device *xe, struct xe_pt *pt)
-+{
-+	struct iosys_map *map = &pt->bo->vmap;
-+
-+	xe_map_memset(xe, map, 0, 0, SZ_4K);
-+}
-+
- /**
-  * DOC: Pagetable building
-  *
-diff --git a/drivers/gpu/drm/xe/xe_pt.h b/drivers/gpu/drm/xe/xe_pt.h
-index 9ab386431cadd..8e43912ae8e94 100644
---- a/drivers/gpu/drm/xe/xe_pt.h
-+++ b/drivers/gpu/drm/xe/xe_pt.h
-@@ -13,6 +13,7 @@ struct dma_fence;
- struct xe_bo;
- struct xe_device;
- struct xe_exec_queue;
-+struct xe_svm_range;
- struct xe_sync_entry;
- struct xe_tile;
- struct xe_vm;
-@@ -35,6 +36,8 @@ void xe_pt_populate_empty(struct xe_tile *tile, struct xe_vm *vm,
- 
- void xe_pt_destroy(struct xe_pt *pt, u32 flags, struct llist_head *deferred);
- 
-+void xe_pt_clear(struct xe_device *xe, struct xe_pt *pt);
-+
- int xe_pt_update_ops_prepare(struct xe_tile *tile, struct xe_vma_ops *vops);
- struct dma_fence *xe_pt_update_ops_run(struct xe_tile *tile,
- 				       struct xe_vma_ops *vops);
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 872de052d670f..de257a032225f 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -8,6 +8,7 @@
- #include <linux/dma-fence-array.h>
- #include <linux/nospec.h>
- 
-+#include <drm/drm_drv.h>
- #include <drm/drm_exec.h>
- #include <drm/drm_print.h>
- #include <drm/ttm/ttm_execbuf_util.h>
-@@ -1581,9 +1582,40 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
- 
- static void xe_vm_close(struct xe_vm *vm)
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index b6994993c39f7..e0e0ecc401947 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1442,9 +1442,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
  {
-+	struct xe_device *xe = vm->xe;
-+	bool bound;
-+	int idx;
++	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
++	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
++		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
 +
-+	bound = drm_dev_enter(&xe->drm, &idx);
-+
- 	down_write(&vm->lock);
-+
- 	vm->size = 0;
-+
-+	if (!((vm->flags & XE_VM_FLAG_MIGRATION))) {
-+		struct xe_tile *tile;
-+		struct xe_gt *gt;
-+		u8 id;
-+
-+		/* Wait for pending binds */
-+		dma_resv_wait_timeout(xe_vm_resv(vm),
-+				      DMA_RESV_USAGE_BOOKKEEP,
-+				      false, MAX_SCHEDULE_TIMEOUT);
-+
-+		if (bound) {
-+			for_each_tile(tile, xe, id)
-+				if (vm->pt_root[id])
-+					xe_pt_clear(xe, vm->pt_root[id]);
-+
-+			for_each_gt(gt, xe, id)
-+				xe_gt_tlb_invalidation_vm(gt, vm);
-+		}
-+	}
-+
- 	up_write(&vm->lock);
-+
-+	if (bound)
-+		drm_dev_exit(idx);
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1457,7 +1461,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return SPECTRE_V2_USER_CMD_AUTO;
++		return mode;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1467,8 +1471,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
+ 	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
+-	return SPECTRE_V2_USER_CMD_AUTO;
++	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
++	return mode;
  }
  
- void xe_vm_close_and_put(struct xe_vm *vm)
+ static inline bool spectre_v2_in_ibrs_mode(enum spectre_v2_mitigation mode)
 -- 
 2.39.5
 
