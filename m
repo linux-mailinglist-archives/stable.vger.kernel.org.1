@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6A8AC58C5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498C0AC5542
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17DB38A0B05
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18DCD4A3AAB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112B027D786;
-	Tue, 27 May 2025 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF3127A463;
+	Tue, 27 May 2025 17:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViwZE0PA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XK33tKlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C274527BF8D;
-	Tue, 27 May 2025 17:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1FD139579;
+	Tue, 27 May 2025 17:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368144; cv=none; b=UwS6KWrL2V3KXizSVYsYcTLUp6UF3GSrg40AGdUNpMWRsqgjJ5lUe3iSdFdLfH1wWWo7gzTNM6+L+1IRfxGxbMZ/+56M2uO7OrJanIkmeYZe1/yUAVjFxqDAuHwInp6K6Cn+BtfxDmTYtNQ/e84LKTjeG98/AwoQb3fViJaSZcY=
+	t=1748365777; cv=none; b=U+h+8it0xj/GAjS8bVG3CFoX3KN5KWfOa3c/OU2+A2U9KIsHgAyAZW7kmc4Zgby634x6s3O8Lie6CNnjzzDZJKfYDU6qFRnEr8F+nAcppb6gFFE3NhYlksMuIA9HVeIEACcVZwxjK8cEg+KxnqWQRV/aURmgqgSj4fA/PWF/ZJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368144; c=relaxed/simple;
-	bh=ryMBmOwFvfloJZoz+Yrl1bwcTXvg1S68tlH2VWjx7jU=;
+	s=arc-20240116; t=1748365777; c=relaxed/simple;
+	bh=eFhMXktaBPvY1LejXcy3SzL3iNJvRQeQR+lDPH15Bdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IRpK2lmFokC4ASq4c0UDoum1UmgQVGSWjjL++Wt3SD3WLiR1cpFMtlAeFTvyB7QzeggiRuitOva9L/pgE6HeKt0Bl3RJChjr1lOMkUFZXM+HUNgt5uuWDCVtdDsrrkynue203txQzlIdz4OtMbyR22h32Q492hhCwpbU0JCNuno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViwZE0PA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30947C4CEE9;
-	Tue, 27 May 2025 17:49:03 +0000 (UTC)
+	 MIME-Version; b=QB5OcSCYTKslmmCJ+Du4PyMESNxv16jZy8M6tavTGfBiVIJGROjPWlVAV8VojqbwVH7gKh8XviEhioAiO0mIj8KCeg7CpuPO6J4tIdWx9YPWeRLhQeFYh1oVvr/1bLMgILqJBjCqo0Wrmku/1ZIwbV4fpZ9haq3Nz2TS+Q7nmxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XK33tKlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A878FC4CEE9;
+	Tue, 27 May 2025 17:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368144;
-	bh=ryMBmOwFvfloJZoz+Yrl1bwcTXvg1S68tlH2VWjx7jU=;
+	s=korg; t=1748365777;
+	bh=eFhMXktaBPvY1LejXcy3SzL3iNJvRQeQR+lDPH15Bdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ViwZE0PAfC4uJFDmP+Dlu7UxgkbMiFCMyeOzsfDJq97Tq62ye2BKEaEL4h6tqW4DS
-	 3SyfzgCmt/PScP0wtocqGrAfeVDe5Z1HnsJyJi6MsqCMFJklF9dH2WKwIWDzsO5x3v
-	 gaGI1iv81m2ZButjWbvZ3CTJwMUW66Gd4wqbJmXE=
+	b=XK33tKlwn1cjUxbzpOdvFaEpakpE5xoq3X7DIOXstNy2dwvbhO/7pmcdo3GLBbsvJ
+	 xJavBqAZmrW/BlwsPci1B8xeISOQ5cU0fm4QxDIqStkuSks44pQCelTJyUscMWQatg
+	 NZZ8qLwdDYzby6qKdPy7gOZO1evuwT8f0B/ZA2bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avula Sri Charan <quic_asrichar@quicinc.com>,
-	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Isaac Scott <isaac.scott@ideasonboard.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 582/783] wifi: ath12k: Avoid napi_sync() before napi_enable()
+Subject: [PATCH 6.12 486/626] regulator: ad5398: Add device tree support
 Date: Tue, 27 May 2025 18:26:19 +0200
-Message-ID: <20250527162536.848643865@linuxfoundation.org>
+Message-ID: <20250527162504.729783993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avula Sri Charan <quic_asrichar@quicinc.com>
+From: Isaac Scott <isaac.scott@ideasonboard.com>
 
-[ Upstream commit 268c73d470a5790a492a2fc2ded084b909d144f3 ]
+[ Upstream commit 5a6a461079decea452fdcae955bccecf92e07e97 ]
 
-In case of MHI error a reset work will be queued which will try
-napi_disable() after napi_synchronize().
+Previously, the ad5398 driver used only platform_data, which is
+deprecated in favour of device tree. This caused the AD5398 to fail to
+probe as it could not load its init_data. If the AD5398 has a device
+tree node, pull the init_data from there using
+of_get_regulator_init_data.
 
-As the napi will be only enabled after qmi_firmware_ready event,
-trying napi_synchronize() before napi_enable() will result in
-indefinite sleep in case of a firmware crash in QMI init sequence.
-
-To avoid this, introduce napi_enabled flag to check if napi is enabled
-or not before calling napi_synchronize().
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Avula Sri Charan <quic_asrichar@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250124090058.3194299-1-quic_tamizhr@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+Acked-by: Michael Hennerich <michael.hennerich@analog.com>
+Link: https://patch.msgid.link/20250128173143.959600-4-isaac.scott@ideasonboard.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.h |  1 +
- drivers/net/wireless/ath/ath12k/pci.c  | 13 ++++++++++---
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/regulator/ad5398.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 6325ac493f82c..2699c383fc4c9 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -166,6 +166,7 @@ struct ath12k_ext_irq_grp {
- 	u32 num_irq;
- 	u32 grp_id;
- 	u64 timestamp;
-+	bool napi_enabled;
- 	struct napi_struct napi;
- 	struct net_device *napi_ndev;
- };
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index ee14b84845487..895b2314d1d58 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -483,8 +483,11 @@ static void __ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
+diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
+index 40f7dba42b5ad..404cbe32711e7 100644
+--- a/drivers/regulator/ad5398.c
++++ b/drivers/regulator/ad5398.c
+@@ -14,6 +14,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/regulator/driver.h>
+ #include <linux/regulator/machine.h>
++#include <linux/regulator/of_regulator.h>
  
- 		ath12k_pci_ext_grp_disable(irq_grp);
+ #define AD5398_CURRENT_EN_MASK	0x8000
  
--		napi_synchronize(&irq_grp->napi);
--		napi_disable(&irq_grp->napi);
-+		if (irq_grp->napi_enabled) {
-+			napi_synchronize(&irq_grp->napi);
-+			napi_disable(&irq_grp->napi);
-+			irq_grp->napi_enabled = false;
-+		}
- 	}
- }
+@@ -221,15 +222,20 @@ static int ad5398_probe(struct i2c_client *client)
+ 	const struct ad5398_current_data_format *df =
+ 			(struct ad5398_current_data_format *)id->driver_data;
  
-@@ -1114,7 +1117,11 @@ void ath12k_pci_ext_irq_enable(struct ath12k_base *ab)
- 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
- 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+-	if (!init_data)
+-		return -EINVAL;
+-
+ 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
+ 	if (!chip)
+ 		return -ENOMEM;
  
--		napi_enable(&irq_grp->napi);
-+		if (!irq_grp->napi_enabled) {
-+			napi_enable(&irq_grp->napi);
-+			irq_grp->napi_enabled = true;
-+		}
+ 	config.dev = &client->dev;
++	if (client->dev.of_node)
++		init_data = of_get_regulator_init_data(&client->dev,
++						       client->dev.of_node,
++						       &ad5398_reg);
++	if (!init_data)
++		return -EINVAL;
 +
- 		ath12k_pci_ext_grp_enable(irq_grp);
- 	}
+ 	config.init_data = init_data;
++	config.of_node = client->dev.of_node;
+ 	config.driver_data = chip;
  
+ 	chip->client = client;
 -- 
 2.39.5
 
