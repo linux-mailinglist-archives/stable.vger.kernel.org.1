@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-147062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113A5AC55EB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9062EAC592C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94BA51BA69CD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 635E61716CA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E070A279782;
-	Tue, 27 May 2025 17:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA77C27FD63;
+	Tue, 27 May 2025 17:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zaj4AVqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NgIOE9c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2BD1E89C;
-	Tue, 27 May 2025 17:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FB91DFF0;
+	Tue, 27 May 2025 17:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366155; cv=none; b=daHzpIM4QaqGXarfMfdQUBco9mgFGhn8P6w3HId9mIDNr7ENgZxnultMNjI17F3LrDEil2nZRDCKjUTeeXgCX0Sm9EAF7FKZYJu113PtuclHBGB4E16mSWPzwi3ESoi7/kHggGrRRErFNBF0xDc8I1Tw9iLy9sxK+spUHbab+p0=
+	t=1748368431; cv=none; b=kwPfRjUYJaYbhGDzC5bVCs+wBjzBP+eMSx5U8jcK0fXAUG7fVk7Im0qBBKVVmyxCAf0L0vPKRD3c9UZVqrkAPMtOBOHAjxBPN59Nx3lssx93IDucMitTWguYE22GNSUhu0moa2wtHgxUwGC178LBcVBL+bKisqyMD3k6voFdzRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366155; c=relaxed/simple;
-	bh=/OBIMv/AK3EbwZs6H/WRYUiVNz1WcymJnYVGh0r4Zdo=;
+	s=arc-20240116; t=1748368431; c=relaxed/simple;
+	bh=XN0O65os7weCs88Ilx1DqaM/Yp9uvzKwXoLfi/kZBbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzQ/ip7ETHfpECqGtoAfrTq06Q6nokhAZOLswasPZrY9cNLDjfPH+63gX16vQG7Y7IGTyJseiQWfIhdyG3SwF4RvhkoAzRLQfu6fqsBDo/zcHSCChYBJ+zQ64BC6aiiRPh9F6SHlvkU740ap/Zc+UbzZ/ouW1UdP/mtzxGEYQ8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zaj4AVqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05F5C4CEE9;
-	Tue, 27 May 2025 17:15:53 +0000 (UTC)
+	 MIME-Version; b=jsVejBceOCBYuLuNwzhJp+vl+n53xqQkCfdoBQiZkF0gf7HlcW3V8vJZ50dZ3MhfA0lxZeawG8Y3K7Lg1YW4rvqO3WtZJaa6HzrkSlHLBMLa0P3fMfcpikvr9d1VNn9XFq17zT1bFkJnEMnQsZQf0FYCD130MZ+WdnBe16yQf+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NgIOE9c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063D0C4CEE9;
+	Tue, 27 May 2025 17:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366154;
-	bh=/OBIMv/AK3EbwZs6H/WRYUiVNz1WcymJnYVGh0r4Zdo=;
+	s=korg; t=1748368431;
+	bh=XN0O65os7weCs88Ilx1DqaM/Yp9uvzKwXoLfi/kZBbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zaj4AVqSwOowsiBnOBOV2/IkgGyrn5zJ5JVXi740rTiPueL489rIk71CnZ8FNpfnw
-	 qtEJY3g+bCf2hFWMSxUpI7CRiIonjZQBjtjJemicOaRyS6vuv/2H1WGDnx4cKBzMEO
-	 PxSsdWxSp8UEAY/0ahZtoO8KhsWKFN94Ry9hakaA=
+	b=1NgIOE9cnok5vMpjGsybpnePIXyDr6X4Xc5ZKyNEL2usVRGPtS6fJOjF7CAmoZvvx
+	 YlaIhzvxBsFd7xAVBuujJjkHHEtzThDkZNF687wOWIEk0RAgxjsJXcLQkrCdsJgvgC
+	 oYJ15GqpZisZZ3xw5Pfh7T6kr+Kfy3n7UT4kWAbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 607/626] ksmbd: fix stream write failure
+Subject: [PATCH 6.14 703/783] ice: fix vf->num_mac count with port representors
 Date: Tue, 27 May 2025 18:28:20 +0200
-Message-ID: <20250527162509.657152839@linuxfoundation.org>
+Message-ID: <20250527162541.749151588@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 1f4bbedd4e5a69b01cde2cc21d01151ab2d0884f ]
+[ Upstream commit bbd95160a03dbfcd01a541f25c27ddb730dfbbd5 ]
 
-If there is no stream data in file, v_len is zero.
-So, If position(*pos) is zero, stream write will fail
-due to stream write position validation check.
-This patch reorganize stream write position validation.
+The ice_vc_repr_add_mac() function indicates that it does not store the MAC
+address filters in the firmware. However, it still increments vf->num_mac.
+This is incorrect, as vf->num_mac should represent the number of MAC
+filters currently programmed to firmware.
 
-Fixes: 0ca6df4f40cf ("ksmbd: prevent out-of-bounds stream writes by validating *pos")
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Indeed, we only perform this increment if the requested filter is a unicast
+address that doesn't match the existing vf->hw_lan_addr. In addition,
+ice_vc_repr_del_mac() does not decrement the vf->num_mac counter. This
+results in the counter becoming out of sync with the actual count.
+
+As it turns out, vf->num_mac is currently only used in legacy made without
+port representors. The single place where the value is checked is for
+enforcing a filter limit on untrusted VFs.
+
+Upcoming patches to support VF Live Migration will use this value when
+determining the size of the TLV for MAC address filters. Fix the
+representor mode function to stop incrementing the counter incorrectly.
+
+Fixes: ac19e03ef780 ("ice: allow process VF opcodes in different ways")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index e059316be36fd..59ae63ab86857 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -426,10 +426,15 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
- 	ksmbd_debug(VFS, "write stream data pos : %llu, count : %zd\n",
- 		    *pos, count);
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index 1af51469f070b..9be9ce300fa4a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -4211,7 +4211,6 @@ static int ice_vc_repr_add_mac(struct ice_vf *vf, u8 *msg)
+ 		}
  
-+	if (*pos >= XATTR_SIZE_MAX) {
-+		pr_err("stream write position %lld is out of bounds\n",	*pos);
-+		return -EINVAL;
-+	}
-+
- 	size = *pos + count;
- 	if (size > XATTR_SIZE_MAX) {
- 		size = XATTR_SIZE_MAX;
--		count = (*pos + count) - XATTR_SIZE_MAX;
-+		count = XATTR_SIZE_MAX - *pos;
+ 		ice_vfhw_mac_add(vf, &al->list[i]);
+-		vf->num_mac++;
+ 		break;
  	}
  
- 	v_len = ksmbd_vfs_getcasexattr(idmap,
-@@ -443,13 +448,6 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
- 		goto out;
- 	}
- 
--	if (v_len <= *pos) {
--		pr_err("stream write position %lld is out of bounds (stream length: %zd)\n",
--				*pos, v_len);
--		err = -EINVAL;
--		goto out;
--	}
--
- 	if (v_len < size) {
- 		wbuf = kvzalloc(size, KSMBD_DEFAULT_GFP);
- 		if (!wbuf) {
 -- 
 2.39.5
 
