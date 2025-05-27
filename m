@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBD8AC53AD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333B1AC5703
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 641334A1CCD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9472816F930
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F58280021;
-	Tue, 27 May 2025 16:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A4027FD49;
+	Tue, 27 May 2025 17:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yk1zwe9u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/q5bvym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66A827FD7F;
-	Tue, 27 May 2025 16:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D6C27D784;
+	Tue, 27 May 2025 17:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364609; cv=none; b=bP2jLxFPvE2a98bFOLk5DI/2z4y4uILisDwfnExUKulv6+o9xE05v8N2hqCbW+jPesp7s/gEZPyyfPQLeCpMalfx0BKcb7IMhUIwy1TAl3wSwS5ebg3sgfFMZYtrtZMX3ThIXdewxyCHhRZOWXiILZs2+CWohIwpj0Lg1UAAh5c=
+	t=1748366876; cv=none; b=BCMmGhG5VgUshVwlsyaZJj1UQy+uq1eGQJhOOWeLz6B2lAc7WNvfyn5ND4gPsnA8q2w/RHtp4LE5o0aiGTJNO0VMIHNX4/aJD2qqZAsQ3NUafZC0BihIQBqBOvc05/u0WFzkZcFndbs2GVW0YICB7MS5qBohnxRiKQmg8sIENi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364609; c=relaxed/simple;
-	bh=NKBlTaUII2uc1mku3mdeVBrPohV8ngbtcFsVRytGzgI=;
+	s=arc-20240116; t=1748366876; c=relaxed/simple;
+	bh=O1vw5s1oQWBt9VZ+ybKLlUdD8BgwVvED0KI/GD4gyVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCPiSp3JAbJHtsl7A822xWpKvre5zZsXdMatSvHoHsH+pHMG4j3vEGozIzqFXN0P+1RXyoOux06vSA5nJEY9tTl9uTbMV1bBuJ8EiYTTTd7xYwYo49vquWLXwkdJ2LJ/VKO9s5WMXxmL0vfpa2aASLeJAh23vF7z3QY5hc/TCwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yk1zwe9u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17683C4CEE9;
-	Tue, 27 May 2025 16:50:07 +0000 (UTC)
+	 MIME-Version; b=BSZBMhVKWGIZHBJvsYtLGMbygzPb9jkkyNUkOa6r/r4k9J6u5H8iZ3ADgQh32hXgogrGjMxttzX5sCypZ6nGZwE2d/T+t1C+rna5Uy7W8lPzPvO3P2M3iVGyxKSq1OTlTqGqAwr7Q1xAy5RZlBklMhPsNVhh7Qh24ZCt6v+nw10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/q5bvym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23E6C4CEE9;
+	Tue, 27 May 2025 17:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364608;
-	bh=NKBlTaUII2uc1mku3mdeVBrPohV8ngbtcFsVRytGzgI=;
+	s=korg; t=1748366876;
+	bh=O1vw5s1oQWBt9VZ+ybKLlUdD8BgwVvED0KI/GD4gyVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yk1zwe9u47xci6e5y4G51E3bgWyn5txSk9guZ0srJlEVdVawr/RhGxXgS00BJqR9l
-	 /LAbPETPnBHFG7BPAkLZYHLqabTAmB24KqyQRgse+7GLMQn14zVKicEpb7hSnF1cjv
-	 St0S1RVBNUrOPZwxB3zD3BM19mqcq/CRwXIXY0As=
+	b=p/q5bvymvgTC8sA6AcGI8mzn+4cfYzbp3ZviGcYe56ABo/fnufxzVseQSkoMFSVyd
+	 6wP+tX+V22vNA4+KlUAmJcxGuY28WkJDyvCfTcgFgmVkD4zdfIBR1Sfi/abBnIRbWt
+	 g3G1tT3Qisf0s+HjTX+odAEwbEwZ9U4tKmq5wtwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/626] x86/smpboot: Fix INIT delay assignment for extended Intel Families
+Subject: [PATCH 6.14 205/783] PNP: Expand length of fixup id string
 Date: Tue, 27 May 2025 18:20:02 +0200
-Message-ID: <20250527162449.470902987@linuxfoundation.org>
+Message-ID: <20250527162521.488520174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sohil Mehta <sohil.mehta@intel.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 7a2ad752746bfb13e89a83984ecc52a48bae4969 ]
+[ Upstream commit 425b1c97b07f2290700f708edabef32861e2b2db ]
 
-Some old crusty CPUs need an extra delay that slows down booting. See
-the comment above 'init_udelay' for details. Newer CPUs don't need the
-delay.
+GCC 15's -Wunterminated-string-initialization saw that "id" was not
+including the required trailing NUL character. Instead of marking "id"
+with __nonstring[1], expand the length of the string as it is used in
+(debugging) format strings that expect a properly formed C string.
 
-Right now, for Intel, Family 6 and only Family 6 skips the delay. That
-leaves out both the Family 15 (Pentium 4s) and brand new Family 18/19
-models.
-
-The omission of Family 15 (Pentium 4s) seems like an oversight and 18/19
-do not need the delay.
-
-Skip the delay on all Intel processors Family 6 and beyond.
-
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250219184133.816753-11-sohil.mehta@intel.com
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://patch.msgid.link/20250310222432.work.826-kees@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/smpboot.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/pnp.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index f1fac08fdef28..2c451de702c87 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -681,9 +681,9 @@ static void __init smp_quirk_init_udelay(void)
- 		return;
+diff --git a/include/linux/pnp.h b/include/linux/pnp.h
+index b7a7158aaf65e..23fe3eaf242d6 100644
+--- a/include/linux/pnp.h
++++ b/include/linux/pnp.h
+@@ -290,7 +290,7 @@ static inline void pnp_set_drvdata(struct pnp_dev *pdev, void *data)
+ }
  
- 	/* if modern processor, use no delay */
--	if (((boot_cpu_data.x86_vendor == X86_VENDOR_INTEL) && (boot_cpu_data.x86 == 6)) ||
--	    ((boot_cpu_data.x86_vendor == X86_VENDOR_HYGON) && (boot_cpu_data.x86 >= 0x18)) ||
--	    ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD) && (boot_cpu_data.x86 >= 0xF))) {
-+	if ((boot_cpu_data.x86_vendor == X86_VENDOR_INTEL && boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO) ||
-+	    (boot_cpu_data.x86_vendor == X86_VENDOR_HYGON && boot_cpu_data.x86 >= 0x18) ||
-+	    (boot_cpu_data.x86_vendor == X86_VENDOR_AMD   && boot_cpu_data.x86 >= 0xF)) {
- 		init_udelay = 0;
- 		return;
- 	}
+ struct pnp_fixup {
+-	char id[7];
++	char id[8];
+ 	void (*quirk_function) (struct pnp_dev *dev);	/* fixup function */
+ };
+ 
 -- 
 2.39.5
 
