@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-147376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3B9AC5765
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2258AC541B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C9F1BA7673
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCA724A23F1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DC727F178;
-	Tue, 27 May 2025 17:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7B528541F;
+	Tue, 27 May 2025 16:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tx2MoEXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STbmnChL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB1D1F8670;
-	Tue, 27 May 2025 17:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DD6284B4F;
+	Tue, 27 May 2025 16:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367151; cv=none; b=WVVBkYEuymswKblUV1YpJPflyYTSnlUx2XZBkyOQGFAlQwSNZMarSmKSLcProj8MAdgvO9UwRJydu0NWUQoJmeCdWzeRQP+C+a4fFkFGI/DAKh+RtBUNcg9l/zZ1UXfrykuElNWdAXKJLH/eRCa5n+u73ArsWsb4wwiz6tIMGZE=
+	t=1748364895; cv=none; b=Qdnd2Syji89IsI5dLELU84918o2nPxB7OicyV5FNKu0vEFlYMNkQmUqRTCSgZ4ElJbfFGmqReKmk/cj0FzzdrQFTNz+4RRDoi8shypSX2j/EVPBX+np7J45Q+Jy4YKWQv9fWxEbkujkM+NK1uan4ZvuGAfsGGSEM7PDYnJ0YKbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367151; c=relaxed/simple;
-	bh=ILa4rh/jgooH7SjbwBuQmctbIl8YpIYaGUaN9pCczv8=;
+	s=arc-20240116; t=1748364895; c=relaxed/simple;
+	bh=TmBjkiVzRYvBT1R4KUXU/LDGDz/420Hl6OSy/gmjWrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJVPOmy8L1tLLV3IUh+KL5XFoFxcjrcKG/bQSAJ+ywLdj2H7l69SNwesHfIphXOWsgtN/fgKFtcXdF8Jlh7PVxcJGz+K9yZnvlYi/ay+wrAPNA2aQe3GnAJMDjb0NCWPqCDipumFcWr0LhrEmcU9+GwuXidcdgXXLnBE4k0uhDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tx2MoEXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B63C4CEE9;
-	Tue, 27 May 2025 17:32:30 +0000 (UTC)
+	 MIME-Version; b=KXGKPzLt2aQguCRBjUCPV8zUjWnhAioP3IrGvKxjdI9UY1XEvEe6ta5yZTIcjAdG4KHFCXiHsDVrMAugUAoBeNegocvBwnVDO6OG3SFetTKqnOJQtKLBOUmDvRoLUD7YMVxaXi/ys5TCR6mKDQAXHMMtvzRhvY79mX24vJHIvX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STbmnChL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A8AC4CEEF;
+	Tue, 27 May 2025 16:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367151;
-	bh=ILa4rh/jgooH7SjbwBuQmctbIl8YpIYaGUaN9pCczv8=;
+	s=korg; t=1748364895;
+	bh=TmBjkiVzRYvBT1R4KUXU/LDGDz/420Hl6OSy/gmjWrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tx2MoEXMG1SQD3aRIz0MeXO4l1737v4b/5JUWxOa0TvVe7WK5KR0BCJz5qglBDkY8
-	 JcOcErJHzkOWrgz0MeXCBU3V/6s7eRbJm3dGHczSVzR8T5/H0YUyYSoPrEkDs4c7Xj
-	 EAbF3Fm587xkgKbCeNMgzXwRFJJXJAa2vFKCmOxo=
+	b=STbmnChL+KEF972KFy2et6QcFbqY8ZU/HAIG16ejr7O/iYKQInCzSkX5eAxS1hCKd
+	 r+ifbu3D7qw0DO4rho9cAggxnep3Yt9MV6yunIkkT/O8jZ5IrDGwOMX7xmdNoZGMac
+	 +wG6BCuL4aCMA9ulV5948hkaBA7AQDDIK37hyHjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Botila <andrei.botila@oss.nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Coly Li <colyli@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 295/783] net: phy: nxp-c45-tja11xx: add match_phy_device to TJA1103/TJA1104
-Date: Tue, 27 May 2025 18:21:32 +0200
-Message-ID: <20250527162525.094612851@linuxfoundation.org>
+Subject: [PATCH 6.12 200/626] badblocks: Fix a nonsense WARN_ON() which checks whether a u64 variable < 0
+Date: Tue, 27 May 2025 18:21:33 +0200
+Message-ID: <20250527162453.147625775@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Botila <andrei.botila@oss.nxp.com>
+From: Coly Li <colyli@kernel.org>
 
-[ Upstream commit a06a868a0cd96bc51401cdea897313a3f6ad01a0 ]
+[ Upstream commit 7e76336e14de9a2b67af96012ddd46c5676cf340 ]
 
-Add .match_phy_device for the existing TJAs to differentiate between
-TJA1103 and TJA1104.
-TJA1103 and TJA1104 share the same PHY_ID but TJA1104 has MACsec
-capabilities while TJA1103 doesn't.
+In _badblocks_check(), there are lines of code like this,
+1246         sectors -= len;
+[snipped]
+1251         WARN_ON(sectors < 0);
 
-Signed-off-by: Andrei Botila <andrei.botila@oss.nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250228154320.2979000-2-andrei.botila@oss.nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The WARN_ON() at line 1257 doesn't make sense because sectors is
+unsigned long long type and never to be <0.
+
+Fix it by checking directly checking whether sectors is less than len.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Coly Li <colyli@kernel.org>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250309160556.42854-1-colyli@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/nxp-c45-tja11xx.c | 54 +++++++++++++++++++++++++++++--
- 1 file changed, 52 insertions(+), 2 deletions(-)
+ block/badblocks.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/nxp-c45-tja11xx.c b/drivers/net/phy/nxp-c45-tja11xx.c
-index e9fc54517449c..16e1c13ae2f8d 100644
---- a/drivers/net/phy/nxp-c45-tja11xx.c
-+++ b/drivers/net/phy/nxp-c45-tja11xx.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /* NXP C45 PHY driver
-- * Copyright 2021-2023 NXP
-+ * Copyright 2021-2025 NXP
-  * Author: Radu Pirea <radu-nicolae.pirea@oss.nxp.com>
-  */
+diff --git a/block/badblocks.c b/block/badblocks.c
+index db4ec8b9b2a8c..a9709771a1015 100644
+--- a/block/badblocks.c
++++ b/block/badblocks.c
+@@ -1349,14 +1349,15 @@ static int _badblocks_check(struct badblocks *bb, sector_t s, int sectors,
+ 	len = sectors;
  
-@@ -19,6 +19,8 @@
- 
- #include "nxp-c45-tja11xx.h"
- 
-+#define PHY_ID_MASK			GENMASK(31, 4)
-+/* Same id: TJA1103, TJA1104 */
- #define PHY_ID_TJA_1103			0x001BB010
- #define PHY_ID_TJA_1120			0x001BB031
- 
-@@ -1956,6 +1958,30 @@ static void tja1120_nmi_handler(struct phy_device *phydev,
- 	}
- }
- 
-+static int nxp_c45_macsec_ability(struct phy_device *phydev)
-+{
-+	bool macsec_ability;
-+	int phy_abilities;
+ update_sectors:
++	/* This situation should never happen */
++	WARN_ON(sectors < len);
 +
-+	phy_abilities = phy_read_mmd(phydev, MDIO_MMD_VEND1,
-+				     VEND1_PORT_ABILITIES);
-+	macsec_ability = !!(phy_abilities & MACSEC_ABILITY);
-+
-+	return macsec_ability;
-+}
-+
-+static int tja1103_match_phy_device(struct phy_device *phydev)
-+{
-+	return phy_id_compare(phydev->phy_id, PHY_ID_TJA_1103, PHY_ID_MASK) &&
-+	       !nxp_c45_macsec_ability(phydev);
-+}
-+
-+static int tja1104_match_phy_device(struct phy_device *phydev)
-+{
-+	return phy_id_compare(phydev->phy_id, PHY_ID_TJA_1103, PHY_ID_MASK) &&
-+	       nxp_c45_macsec_ability(phydev);
-+}
-+
- static const struct nxp_c45_regmap tja1120_regmap = {
- 	.vend1_ptp_clk_period	= 0x1020,
- 	.vend1_event_msg_filt	= 0x9010,
-@@ -2026,7 +2052,6 @@ static const struct nxp_c45_phy_data tja1120_phy_data = {
+ 	s += len;
+ 	sectors -= len;
  
- static struct phy_driver nxp_c45_driver[] = {
- 	{
--		PHY_ID_MATCH_MODEL(PHY_ID_TJA_1103),
- 		.name			= "NXP C45 TJA1103",
- 		.get_features		= nxp_c45_get_features,
- 		.driver_data		= &tja1103_phy_data,
-@@ -2048,6 +2073,31 @@ static struct phy_driver nxp_c45_driver[] = {
- 		.get_sqi		= nxp_c45_get_sqi,
- 		.get_sqi_max		= nxp_c45_get_sqi_max,
- 		.remove			= nxp_c45_remove,
-+		.match_phy_device	= tja1103_match_phy_device,
-+	},
-+	{
-+		.name			= "NXP C45 TJA1104",
-+		.get_features		= nxp_c45_get_features,
-+		.driver_data		= &tja1103_phy_data,
-+		.probe			= nxp_c45_probe,
-+		.soft_reset		= nxp_c45_soft_reset,
-+		.config_aneg		= genphy_c45_config_aneg,
-+		.config_init		= nxp_c45_config_init,
-+		.config_intr		= tja1103_config_intr,
-+		.handle_interrupt	= nxp_c45_handle_interrupt,
-+		.read_status		= genphy_c45_read_status,
-+		.suspend		= genphy_c45_pma_suspend,
-+		.resume			= genphy_c45_pma_resume,
-+		.get_sset_count		= nxp_c45_get_sset_count,
-+		.get_strings		= nxp_c45_get_strings,
-+		.get_stats		= nxp_c45_get_stats,
-+		.cable_test_start	= nxp_c45_cable_test_start,
-+		.cable_test_get_status	= nxp_c45_cable_test_get_status,
-+		.set_loopback		= genphy_c45_loopback,
-+		.get_sqi		= nxp_c45_get_sqi,
-+		.get_sqi_max		= nxp_c45_get_sqi_max,
-+		.remove			= nxp_c45_remove,
-+		.match_phy_device	= tja1104_match_phy_device,
- 	},
- 	{
- 		PHY_ID_MATCH_MODEL(PHY_ID_TJA_1120),
+ 	if (sectors > 0)
+ 		goto re_check;
+ 
+-	WARN_ON(sectors < 0);
+-
+ 	if (unacked_badblocks > 0)
+ 		rv = -1;
+ 	else if (acked_badblocks > 0)
 -- 
 2.39.5
 
