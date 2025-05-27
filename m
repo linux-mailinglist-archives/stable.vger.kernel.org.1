@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-146896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F34AC5588
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:12:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B1FAC5540
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A567A3BADAE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 109914A3AB2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A13278750;
-	Tue, 27 May 2025 17:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3BA25DAE1;
+	Tue, 27 May 2025 17:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGrjAjew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/FLPqM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B4E19E7F9;
-	Tue, 27 May 2025 17:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293CA2798F8;
+	Tue, 27 May 2025 17:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365643; cv=none; b=NgkozaX3lMCpW3cTgzn0485GYI3+0OyD2gFZamNF6mQA4CuW+pv5SNSzFWGwZamiX8AshP7yWcknanXrg3OwAuY8M/oQuqOefuf62Clid3UhjklEF0Pk3pZhGg2RqvJ6MDt1y7kQCH0mXpa1/oEomdteanSGdqXxFKf/fmLwmqc=
+	t=1748365768; cv=none; b=EmNUpz7TgbmNWayDWRf/YifKMziA4CHPxmXCNb3FSCC2ST7U3c2kCsU9zTE1W7+i00CkLh0LtVPiHgSMpeyjhh55fJq//xxrRbvXzbuB4owW6AeF3y20uBQdt75ouZQ/48juveJQKNDXijWePeqr5vUnT9di60+LYN3B5eZl3AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365643; c=relaxed/simple;
-	bh=ipfTIv2kEyxGkEcnpUkrgE+EePxgvXDIZ0HLAF7DCHY=;
+	s=arc-20240116; t=1748365768; c=relaxed/simple;
+	bh=kvm5lYIkQKiY3ZtJE5Eepo1foCK1QvYyuUI5Of9Vvmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSa/mT7Lx+rylQupQqeSiS3y8VeLt0Q5cv2KqGfK/ipBUTviw0Vok7q/ion+KFHf/Ko5Yh4cg5IkR/UXqCHuqVPPoaX+DSX0iiFNhLjK5gQ9CDNzceHvCCyevx39tWk4x1UTle/EQgyFFjKA88b0RWXB1F1rvhYS4VqW4NLd554=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGrjAjew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503F0C4CEE9;
-	Tue, 27 May 2025 17:07:22 +0000 (UTC)
+	 MIME-Version; b=uNofG11dzNdq69VCdJeKOaiRxPWvh4xD03c1J4p62EkiWQsaDXhKTDI6gq59YknKt/O+57YUfhMDxDGt2u5WJ9f2h3bMW5eocTAKMO/zE9cGQvyhrNvYHgVZLEvElgv9YSQp6mjZgk//Bu3+Ke0DD8IGQOC9RutiMDXqgRg2KA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/FLPqM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2FAC4CEE9;
+	Tue, 27 May 2025 17:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365643;
-	bh=ipfTIv2kEyxGkEcnpUkrgE+EePxgvXDIZ0HLAF7DCHY=;
+	s=korg; t=1748365768;
+	bh=kvm5lYIkQKiY3ZtJE5Eepo1foCK1QvYyuUI5Of9Vvmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGrjAjewvorzwyvv4Jyt3Ct8wlEt8c1iSodplf28/IPLvuKqfRKzpFKZZjsE9mpBI
-	 s6fEdHXJf1sxPH9PdhiSFlrHYdQbV4+bB5K5DUVMotxygf1XR/jIzXM9+gTJW/lDmu
-	 WoUxiT/c7lMLZpBvGLhYij9YwxM6wjbingTs+llo=
+	b=s/FLPqM/yG7zkLpQ70f9RS8+Sp42RdhPPSw8eonJVVBl0clVB0PQJOwJb5MPRVKxm
+	 hjUnPSTr4B1WFAXVUBS/8GbRELw/xU/sFfXdXlkGHfJrte0Tf5UFanQrM2xFRtBs2b
+	 9NCEwi5cxgmxPSMBhNuglpuCxOW52C9foQhqMn8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Depeng Shao <quic_depengs@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
 	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 441/626] media: qcom: camss: csid: Only add TPG v4l2 ctrl if TPG hardware is available
-Date: Tue, 27 May 2025 18:25:34 +0200
-Message-ID: <20250527162502.922801247@linuxfoundation.org>
+Subject: [PATCH 6.12 442/626] media: qcom: camss: Add default case in vfe_src_pad_code
+Date: Tue, 27 May 2025 18:25:35 +0200
+Message-ID: <20250527162502.962688603@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -68,136 +69,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Depeng Shao <quic_depengs@quicinc.com>
 
-[ Upstream commit 2f1361f862a68063f37362f1beb400e78e289581 ]
+[ Upstream commit 2f4204bb00b32eca3391a468d3b37e87feb96fa9 ]
 
-There is no CSID TPG on some SoCs, so the v4l2 ctrl in CSID driver
-shouldn't be registered. Checking the supported TPG modes to indicate
-if the TPG hardware exists or not and only registering v4l2 ctrl for
-CSID only when the TPG hardware is present.
+Add a default case in vfe_src_pad_code to get rid of a compile
+warning if a new hw enum is added.
 
 Signed-off-by: Depeng Shao <quic_depengs@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/qcom/camss/camss-csid.c    | 60 +++++++++++--------
- 1 file changed, 35 insertions(+), 25 deletions(-)
+ drivers/media/platform/qcom/camss/camss-vfe.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
-index 858db5d4ca75c..e51f2ed3f0315 100644
---- a/drivers/media/platform/qcom/camss/camss-csid.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid.c
-@@ -683,11 +683,13 @@ static int csid_set_stream(struct v4l2_subdev *sd, int enable)
- 	int ret;
- 
- 	if (enable) {
--		ret = v4l2_ctrl_handler_setup(&csid->ctrls);
--		if (ret < 0) {
--			dev_err(csid->camss->dev,
--				"could not sync v4l2 controls: %d\n", ret);
--			return ret;
-+		if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED) {
-+			ret = v4l2_ctrl_handler_setup(&csid->ctrls);
-+			if (ret < 0) {
-+				dev_err(csid->camss->dev,
-+					"could not sync v4l2 controls: %d\n", ret);
-+				return ret;
-+			}
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/media/platform/qcom/camss/camss-vfe.c
+index 83c5a36d071fc..8f6b0eccefb48 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -398,6 +398,10 @@ static u32 vfe_src_pad_code(struct vfe_line *line, u32 sink_code,
+ 			return sink_code;
  		}
- 
- 		if (!csid->testgen.enabled &&
-@@ -761,7 +763,8 @@ static void csid_try_format(struct csid_device *csid,
  		break;
- 
- 	case MSM_CSID_PAD_SRC:
--		if (csid->testgen_mode->cur.val == 0) {
-+		if (csid->testgen.nmodes == CSID_PAYLOAD_MODE_DISABLED ||
-+		    csid->testgen_mode->cur.val == 0) {
- 			/* Test generator is disabled, */
- 			/* keep pad formats in sync */
- 			u32 code = fmt->code;
-@@ -811,7 +814,8 @@ static int csid_enum_mbus_code(struct v4l2_subdev *sd,
- 
- 		code->code = csid->res->formats->formats[code->index].code;
- 	} else {
--		if (csid->testgen_mode->cur.val == 0) {
-+		if (csid->testgen.nmodes == CSID_PAYLOAD_MODE_DISABLED ||
-+		    csid->testgen_mode->cur.val == 0) {
- 			struct v4l2_mbus_framefmt *sink_fmt;
- 
- 			sink_fmt = __csid_get_format(csid, sd_state,
-@@ -1190,7 +1194,8 @@ static int csid_link_setup(struct media_entity *entity,
- 
- 		/* If test generator is enabled */
- 		/* do not allow a link from CSIPHY to CSID */
--		if (csid->testgen_mode->cur.val != 0)
-+		if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED &&
-+		    csid->testgen_mode->cur.val != 0)
- 			return -EBUSY;
- 
- 		sd = media_entity_to_v4l2_subdev(remote->entity);
-@@ -1283,24 +1288,27 @@ int msm_csid_register_entity(struct csid_device *csid,
- 		 MSM_CSID_NAME, csid->id);
- 	v4l2_set_subdevdata(sd, csid);
- 
--	ret = v4l2_ctrl_handler_init(&csid->ctrls, 1);
--	if (ret < 0) {
--		dev_err(dev, "Failed to init ctrl handler: %d\n", ret);
--		return ret;
--	}
-+	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED) {
-+		ret = v4l2_ctrl_handler_init(&csid->ctrls, 1);
-+		if (ret < 0) {
-+			dev_err(dev, "Failed to init ctrl handler: %d\n", ret);
-+			return ret;
-+		}
- 
--	csid->testgen_mode = v4l2_ctrl_new_std_menu_items(&csid->ctrls,
--				&csid_ctrl_ops, V4L2_CID_TEST_PATTERN,
--				csid->testgen.nmodes, 0, 0,
--				csid->testgen.modes);
-+		csid->testgen_mode =
-+			v4l2_ctrl_new_std_menu_items(&csid->ctrls,
-+						     &csid_ctrl_ops, V4L2_CID_TEST_PATTERN,
-+						     csid->testgen.nmodes, 0, 0,
-+						     csid->testgen.modes);
- 
--	if (csid->ctrls.error) {
--		dev_err(dev, "Failed to init ctrl: %d\n", csid->ctrls.error);
--		ret = csid->ctrls.error;
--		goto free_ctrl;
--	}
-+		if (csid->ctrls.error) {
-+			dev_err(dev, "Failed to init ctrl: %d\n", csid->ctrls.error);
-+			ret = csid->ctrls.error;
-+			goto free_ctrl;
-+		}
- 
--	csid->subdev.ctrl_handler = &csid->ctrls;
-+		csid->subdev.ctrl_handler = &csid->ctrls;
-+	}
- 
- 	ret = csid_init_formats(sd, NULL);
- 	if (ret < 0) {
-@@ -1331,7 +1339,8 @@ int msm_csid_register_entity(struct csid_device *csid,
- media_cleanup:
- 	media_entity_cleanup(&sd->entity);
- free_ctrl:
--	v4l2_ctrl_handler_free(&csid->ctrls);
-+	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED)
-+		v4l2_ctrl_handler_free(&csid->ctrls);
- 
- 	return ret;
++	default:
++		WARN(1, "Unsupported HW version: %x\n",
++		     vfe->camss->res->version);
++		break;
+ 	}
+ 	return 0;
  }
-@@ -1344,7 +1353,8 @@ void msm_csid_unregister_entity(struct csid_device *csid)
- {
- 	v4l2_device_unregister_subdev(&csid->subdev);
- 	media_entity_cleanup(&csid->subdev.entity);
--	v4l2_ctrl_handler_free(&csid->ctrls);
-+	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED)
-+		v4l2_ctrl_handler_free(&csid->ctrls);
- }
- 
- inline bool csid_is_lite(struct csid_device *csid)
 -- 
 2.39.5
 
