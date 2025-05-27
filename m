@@ -1,182 +1,318 @@
-Return-Path: <stable+bounces-146709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB34AC5444
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:58:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE022AC56F3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 260DA1BA4094
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:58:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B4B74A6073
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8042327E1CA;
-	Tue, 27 May 2025 16:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D1814AD2B;
+	Tue, 27 May 2025 17:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPMokfb8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a7eYOgBd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413C9194A67
-	for <stable@vger.kernel.org>; Tue, 27 May 2025 16:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9355627FD49
+	for <stable@vger.kernel.org>; Tue, 27 May 2025 17:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365064; cv=none; b=DWvsUXQQUaYtSKf9eQCK70M8y5wRn0jEdGmg55HQ/X01YrKG0voZ95UBixd1ycLtCot18XK2i0P2rkRc4ifuHaUBGbSDlyjDfKTD+ejkDDx9juLzEwR1L+OBlwDHj+FvcaJNNyhmDL+OhgNlD+qtodiFORuj7Bh1ys+6Q+fvIpM=
+	t=1748366848; cv=none; b=KJC/tVko5bWwUPP9cgsTRKyiyly8NMCYfuZFYyZZC6z6TE44E0M4gDBBoOLNEewYFjCoz9oomvlj4WW2kAYjkp/2GMrJts7HPHk6YpYZzc2bwJdcoqrnSzDCwEbauFj3GciUdjw4rfJkpqoC5QULgMrHCqZ3QNZiRrl9+toORd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365064; c=relaxed/simple;
-	bh=R5hLVj+JmJT6JvPi1+0u3PsooaMXKEKlGdOSpfYpReQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LwZyQlBAof2KtoqqGxwwGz5kIUASJbmZLeh8feZD77/gS40OjwvN7Dfvrhfy+FtgV7IM0vKEf5qxe9ybSPAefzY6Qbqj4/RDJx826ER0GaNkuu0cFt+126aSSFQKSVLpQL+Kp65MpXVtlywz5z6T1aH+9kcGyMJDGisv6CQWLAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPMokfb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DA1C4CEE9;
-	Tue, 27 May 2025 16:57:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365064;
-	bh=R5hLVj+JmJT6JvPi1+0u3PsooaMXKEKlGdOSpfYpReQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=TPMokfb8mLmq9sRit8rhZgGuWlV6XZeNNt4X0lM8U1qwzpr3Mfpwh0//j0zsDNRcq
-	 jeDf/Q8kro16BKz3mWWnja1Mp/ow1BjKnZkD7WfMDS6UifrWTpH+XJ4cOitB10VRJc
-	 9HRFzJdT9fuZIwUBdB60defu0OKRxHRMJLG8rjvU=
-Subject: FAILED: patch "[PATCH] x86/mm/init: Handle the special case of device private pages" failed to apply to 5.15-stable tree
-To: balbirs@nvidia.com,airlied@gmail.com,akpm@linux-foundation.org,alexander.deucher@amd.com,brgerst@gmail.com,christian.koenig@amd.com,hch@lst.de,hpa@zytor.com,jgross@suse.com,mingo@kernel.org,pierre-eric.pelloux-prayer@amd.com,simona@ffwll.ch,spasswolf@web.de,torvalds@linux-foundation.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 27 May 2025 18:55:50 +0200
-Message-ID: <2025052750-fondness-revocable-a23b@gregkh>
+	s=arc-20240116; t=1748366848; c=relaxed/simple;
+	bh=A3wIyJffHxPfmIV8B1isgc1zlN/9ZV21pjg8oWliHrI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VNTa3JQXHjAQB/JESpaClXlteJ4ABHPfgHEwg0Dk48lwkZHeiVMT8h/4eN2oXZ6DkR/cFQ7djqe6yyCAFi8NO51S5GtvDLsm2uLa3MSrC8iHrL1J2WTSNjWBjq6MIisnKLpLfy1pQvEpHwTftefFKqhWv9/xAJodWU9zVA5KKJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a7eYOgBd; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748366845;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PQzpXQ7vkWBPskbjX+BkGNGUSRzfgukO2SXDGxgoMMs=;
+	b=a7eYOgBdJPna/lB5ID6wllKSJ6+yPdJuTrupBbSuLHppzxxHfYWkAGIyqQzxkkvvDZQGub
+	7fbJme8lOXJZYvazAlXzgzHIUyIYPAoxTOCqoKFE/0PBjASmogyj38ZZ/6Ucuz6op/t6QN
+	sI570cafdjdhqWcUS/wvjXSapRNxlPs=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-41-4kxQt5GJP7mz-DiVtzcNLA-1; Tue, 27 May 2025 13:27:23 -0400
+X-MC-Unique: 4kxQt5GJP7mz-DiVtzcNLA-1
+X-Mimecast-MFC-AGG-ID: 4kxQt5GJP7mz-DiVtzcNLA_1748366841
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c53e316734so546206885a.2
+        for <stable@vger.kernel.org>; Tue, 27 May 2025 10:27:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748366841; x=1748971641;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PQzpXQ7vkWBPskbjX+BkGNGUSRzfgukO2SXDGxgoMMs=;
+        b=Qwn4MHghzQr0CMgeKWCHJT3bvZVOMqeoU/r0lKzafCkmx8ezr7zdz5usI1wgv0E/HJ
+         RZK3l/CEH8ViZoBY2e+ynHxS/j+qXQUhWQKYrNm2k+dr8VIEfqlyfUxp4rxNbdaSsxhm
+         8BErN/b6L93UPqEFRPPGBriIOPXnsZ8jpZ55MZY4jQ4ffv9W2SFcVbYMJ/1ThlWCFqHd
+         Cq37wY097LGIXWbIT4fqY7cZzPBGuOXWm3ZjH6YF3OIFjo+a8NE630n14ssOn9fWRrX7
+         iiy/rCC2H1WdXhl1lsUxGXZ2MxDqw1IoGvnba+lH3X4C1w38jM/hhAGlDc/kdELRCzc0
+         PnAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcVZ2XCqNsZE6QtwmixFiaoMdW+mMnoMMXzNMbwgsqcqmpaHDFwZtitwAHZmWmhUrBG3Cs+Vc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyfy8QzI86qxlZYGFCo2Yl7kyzxJrBuvrmMcU3MCjLCAQ6yGMpZ
+	s5JdZsYiuuCOi6WPpQtLI/ldrsNsxApH8inGOM9ifaKHkzCtz7SadgYsaoc1cYLm6tzm7V36fd0
+	Po4JDD7d76jDEuCig/0lA8i6LswL88Eb85cSwxMtB7mjLayUxdNIWkfP0PA==
+X-Gm-Gg: ASbGncsCA4eQzZ4nRd8dwk4YWxCVx6aoCkGFn5fSVr1+tPXlXpq7vTzh4FTFwghEP3w
+	jmnciHgQMWlX05fCC9+Lvdfx8cmEIAcqkT2vmbAjB4hh0JWNZ1xZioSCL9MANsr0lvy6YzxGmsn
+	+3bCHgK5zmc8MvQQwaolNCuPFyMpXfKDbKryUcYTGQqDUo+KicTZ4ejKNqYEGA4kg+kJUR/mU2d
+	q1ItfAmliUeov4TZydzoTQl/H1a7jApi+krG9Z91TF7JtB3oNoVPJBjZTaZWQ39VboI1fO8HNbT
+	dW8tCydvJmM9I3MPfiIlEM8izUHbmx8DIUvHlngHLzOSQj/knYR8wLdiM3E=
+X-Received: by 2002:a05:620a:f0d:b0:7cd:40:351 with SMTP id af79cd13be357-7ceecc33e6fmr1955055485a.58.1748366841217;
+        Tue, 27 May 2025 10:27:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEV8ht+49lI5qLVclM9XNHjng2TBDERfNRW0n/yJWFo6Oh60ZUmXJ0766q4+2Vo8i8akgpwrQ==
+X-Received: by 2002:a05:620a:f0d:b0:7cd:40:351 with SMTP id af79cd13be357-7ceecc33e6fmr1955050985a.58.1748366840741;
+        Tue, 27 May 2025 10:27:20 -0700 (PDT)
+Received: from ?IPV6:2600:4040:5308:eb00:a77e:fec5:d269:f23e? ([2600:4040:5308:eb00:a77e:fec5:d269:f23e])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cedf7930b5sm770956985a.89.2025.05.27.10.27.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 May 2025 10:27:20 -0700 (PDT)
+Message-ID: <ccdc7888-68a2-497a-bc28-f0c0297473b4@redhat.com>
+Date: Tue, 27 May 2025 13:27:19 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 472/626] dm vdo vio-pool: allow variable-sized
+ metadata vios
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Ken Raeburn <raeburn@redhat.com>,
+ Mikulas Patocka <mpatocka@redhat.com>, Sasha Levin <sashal@kernel.org>
+References: <20250527162445.028718347@linuxfoundation.org>
+ <20250527162504.171843154@linuxfoundation.org>
+From: Matthew Sakai <msakai@redhat.com>
+In-Reply-To: <20250527162504.171843154@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 5/27/25 12:26 PM, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+There's no reason to take this patch for 6.12, it can just be dropped.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This patch adds a new interface, but the subsequent patches that use 
+that interface are not being backported. So it won't hurt anything, but 
+it's also useless in 6.12.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7170130e4c72ce0caa0cb42a1627c635cc262821
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025052750-fondness-revocable-a23b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+Matt
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7170130e4c72ce0caa0cb42a1627c635cc262821 Mon Sep 17 00:00:00 2001
-From: Balbir Singh <balbirs@nvidia.com>
-Date: Tue, 1 Apr 2025 11:07:52 +1100
-Subject: [PATCH] x86/mm/init: Handle the special case of device private pages
- in add_pages(), to not increase max_pfn and trigger dma_addressing_limited()
- bounce buffers
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-As Bert Karwatzki reported, the following recent commit causes a
-performance regression on AMD iGPU and dGPU systems:
-
-  7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
-
-It exposed a bug with nokaslr and zone device interaction.
-
-The root cause of the bug is that, the GPU driver registers a zone
-device private memory region. When KASLR is disabled or the above commit
-is applied, the direct_map_physmem_end is set to much higher than 10 TiB
-typically to the 64TiB address. When zone device private memory is added
-to the system via add_pages(), it bumps up the max_pfn to the same
-value. This causes dma_addressing_limited() to return true, since the
-device cannot address memory all the way up to max_pfn.
-
-This caused a regression for games played on the iGPU, as it resulted in
-the DMA32 zone being used for GPU allocations.
-
-Fix this by not bumping up max_pfn on x86 systems, when pgmap is passed
-into add_pages(). The presence of pgmap is used to determine if device
-private memory is being added via add_pages().
-
-More details:
-
-devm_request_mem_region() and request_free_mem_region() request for
-device private memory. iomem_resource is passed as the base resource
-with start and end parameters. iomem_resource's end depends on several
-factors, including the platform and virtualization. On x86 for example
-on bare metal, this value is set to boot_cpu_data.x86_phys_bits.
-boot_cpu_data.x86_phys_bits can change depending on support for MKTME.
-By default it is set to the same as log2(direct_map_physmem_end) which
-is 46 to 52 bits depending on the number of levels in the page table.
-The allocation routines used iomem_resource's end and
-direct_map_physmem_end to figure out where to allocate the region.
-
-[ arch/powerpc is also impacted by this problem, but this patch does not fix
-  the issue for PowerPC. ]
-
-Testing:
-
- 1. Tested on a virtual machine with test_hmm for zone device inseration
-
- 2. A previous version of this patch was tested by Bert, please see:
-    https://lore.kernel.org/lkml/d87680bab997fdc9fb4e638983132af235d9a03a.camel@web.de/
-
-[ mingo: Clarified the comments and the changelog. ]
-
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Tested-by: Bert Karwatzki <spasswolf@web.de>
-Fixes: 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Link: https://lore.kernel.org/r/20250401000752.249348-1-balbirs@nvidia.com
-
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 519aa53114fa..821a0b53b21c 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -959,9 +959,18 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
- 	ret = __add_pages(nid, start_pfn, nr_pages, params);
- 	WARN_ON_ONCE(ret);
- 
--	/* update max_pfn, max_low_pfn and high_memory */
--	update_end_of_memory_vars(start_pfn << PAGE_SHIFT,
--				  nr_pages << PAGE_SHIFT);
-+	/*
-+	 * Special case: add_pages() is called by memremap_pages() for adding device
-+	 * private pages. Do not bump up max_pfn in the device private path,
-+	 * because max_pfn changes affect dma_addressing_limited().
-+	 *
-+	 * dma_addressing_limited() returning true when max_pfn is the device's
-+	 * addressable memory can force device drivers to use bounce buffers
-+	 * and impact their performance negatively:
-+	 */
-+	if (!params->pgmap)
-+		/* update max_pfn, max_low_pfn and high_memory */
-+		update_end_of_memory_vars(start_pfn << PAGE_SHIFT, nr_pages << PAGE_SHIFT);
- 
- 	return ret;
- }
+> ------------------
+> 
+> From: Ken Raeburn <raeburn@redhat.com>
+> 
+> [ Upstream commit f979da512553a41a657f2c1198277e84d66f8ce3 ]
+> 
+> With larger-sized metadata vio pools, vdo will sometimes need to
+> issue I/O with a smaller size than the allocated size. Since
+> vio_reset_bio is where the bvec array and I/O size are initialized,
+> this reset interface must now specify what I/O size to use.
+> 
+> Signed-off-by: Ken Raeburn <raeburn@redhat.com>
+> Signed-off-by: Matthew Sakai <msakai@redhat.com>
+> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   drivers/md/dm-vdo/io-submitter.c |  6 ++++--
+>   drivers/md/dm-vdo/io-submitter.h | 18 +++++++++++++---
+>   drivers/md/dm-vdo/types.h        |  3 +++
+>   drivers/md/dm-vdo/vio.c          | 36 +++++++++++++++++++-------------
+>   drivers/md/dm-vdo/vio.h          |  2 ++
+>   5 files changed, 46 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/md/dm-vdo/io-submitter.c b/drivers/md/dm-vdo/io-submitter.c
+> index ab62abe18827b..a664be89c15d7 100644
+> --- a/drivers/md/dm-vdo/io-submitter.c
+> +++ b/drivers/md/dm-vdo/io-submitter.c
+> @@ -327,6 +327,7 @@ void vdo_submit_data_vio(struct data_vio *data_vio)
+>    * @error_handler: the handler for submission or I/O errors (may be NULL)
+>    * @operation: the type of I/O to perform
+>    * @data: the buffer to read or write (may be NULL)
+> + * @size: the I/O amount in bytes
+>    *
+>    * The vio is enqueued on a vdo bio queue so that bio submission (which may block) does not block
+>    * other vdo threads.
+> @@ -338,7 +339,7 @@ void vdo_submit_data_vio(struct data_vio *data_vio)
+>    */
+>   void __submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
+>   			   bio_end_io_t callback, vdo_action_fn error_handler,
+> -			   blk_opf_t operation, char *data)
+> +			   blk_opf_t operation, char *data, int size)
+>   {
+>   	int result;
+>   	struct vdo_completion *completion = &vio->completion;
+> @@ -349,7 +350,8 @@ void __submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
+>   
+>   	vdo_reset_completion(completion);
+>   	completion->error_handler = error_handler;
+> -	result = vio_reset_bio(vio, data, callback, operation | REQ_META, physical);
+> +	result = vio_reset_bio_with_size(vio, data, size, callback, operation | REQ_META,
+> +					 physical);
+>   	if (result != VDO_SUCCESS) {
+>   		continue_vio(vio, result);
+>   		return;
+> diff --git a/drivers/md/dm-vdo/io-submitter.h b/drivers/md/dm-vdo/io-submitter.h
+> index 80748699496f2..3088f11055fdd 100644
+> --- a/drivers/md/dm-vdo/io-submitter.h
+> +++ b/drivers/md/dm-vdo/io-submitter.h
+> @@ -8,6 +8,7 @@
+>   
+>   #include <linux/bio.h>
+>   
+> +#include "constants.h"
+>   #include "types.h"
+>   
+>   struct io_submitter;
+> @@ -26,14 +27,25 @@ void vdo_submit_data_vio(struct data_vio *data_vio);
+>   
+>   void __submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
+>   			   bio_end_io_t callback, vdo_action_fn error_handler,
+> -			   blk_opf_t operation, char *data);
+> +			   blk_opf_t operation, char *data, int size);
+>   
+>   static inline void vdo_submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
+>   					   bio_end_io_t callback, vdo_action_fn error_handler,
+>   					   blk_opf_t operation)
+>   {
+>   	__submit_metadata_vio(vio, physical, callback, error_handler,
+> -			      operation, vio->data);
+> +			      operation, vio->data, vio->block_count * VDO_BLOCK_SIZE);
+> +}
+> +
+> +static inline void vdo_submit_metadata_vio_with_size(struct vio *vio,
+> +						     physical_block_number_t physical,
+> +						     bio_end_io_t callback,
+> +						     vdo_action_fn error_handler,
+> +						     blk_opf_t operation,
+> +						     int size)
+> +{
+> +	__submit_metadata_vio(vio, physical, callback, error_handler,
+> +			      operation, vio->data, size);
+>   }
+>   
+>   static inline void vdo_submit_flush_vio(struct vio *vio, bio_end_io_t callback,
+> @@ -41,7 +53,7 @@ static inline void vdo_submit_flush_vio(struct vio *vio, bio_end_io_t callback,
+>   {
+>   	/* FIXME: Can we just use REQ_OP_FLUSH? */
+>   	__submit_metadata_vio(vio, 0, callback, error_handler,
+> -			      REQ_OP_WRITE | REQ_PREFLUSH, NULL);
+> +			      REQ_OP_WRITE | REQ_PREFLUSH, NULL, 0);
+>   }
+>   
+>   #endif /* VDO_IO_SUBMITTER_H */
+> diff --git a/drivers/md/dm-vdo/types.h b/drivers/md/dm-vdo/types.h
+> index dbe892b10f265..cdf36e7d77021 100644
+> --- a/drivers/md/dm-vdo/types.h
+> +++ b/drivers/md/dm-vdo/types.h
+> @@ -376,6 +376,9 @@ struct vio {
+>   	/* The size of this vio in blocks */
+>   	unsigned int block_count;
+>   
+> +	/* The amount of data to be read or written, in bytes */
+> +	unsigned int io_size;
+> +
+>   	/* The data being read or written. */
+>   	char *data;
+>   
+> diff --git a/drivers/md/dm-vdo/vio.c b/drivers/md/dm-vdo/vio.c
+> index b291578f726f5..7c417c1af4516 100644
+> --- a/drivers/md/dm-vdo/vio.c
+> +++ b/drivers/md/dm-vdo/vio.c
+> @@ -188,14 +188,23 @@ void vdo_set_bio_properties(struct bio *bio, struct vio *vio, bio_end_io_t callb
+>   
+>   /*
+>    * Prepares the bio to perform IO with the specified buffer. May only be used on a VDO-allocated
+> - * bio, as it assumes the bio wraps a 4k buffer that is 4k aligned, but there does not have to be a
+> - * vio associated with the bio.
+> + * bio, as it assumes the bio wraps a 4k-multiple buffer that is 4k aligned, but there does not
+> + * have to be a vio associated with the bio.
+>    */
+>   int vio_reset_bio(struct vio *vio, char *data, bio_end_io_t callback,
+>   		  blk_opf_t bi_opf, physical_block_number_t pbn)
+>   {
+> -	int bvec_count, offset, len, i;
+> +	return vio_reset_bio_with_size(vio, data, vio->block_count * VDO_BLOCK_SIZE,
+> +				       callback, bi_opf, pbn);
+> +}
+> +
+> +int vio_reset_bio_with_size(struct vio *vio, char *data, int size, bio_end_io_t callback,
+> +			    blk_opf_t bi_opf, physical_block_number_t pbn)
+> +{
+> +	int bvec_count, offset, i;
+>   	struct bio *bio = vio->bio;
+> +	int vio_size = vio->block_count * VDO_BLOCK_SIZE;
+> +	int remaining;
+>   
+>   	bio_reset(bio, bio->bi_bdev, bi_opf);
+>   	vdo_set_bio_properties(bio, vio, callback, bi_opf, pbn);
+> @@ -204,22 +213,21 @@ int vio_reset_bio(struct vio *vio, char *data, bio_end_io_t callback,
+>   
+>   	bio->bi_io_vec = bio->bi_inline_vecs;
+>   	bio->bi_max_vecs = vio->block_count + 1;
+> -	len = VDO_BLOCK_SIZE * vio->block_count;
+> +	if (VDO_ASSERT(size <= vio_size, "specified size %d is not greater than allocated %d",
+> +		       size, vio_size) != VDO_SUCCESS)
+> +		size = vio_size;
+> +	vio->io_size = size;
+>   	offset = offset_in_page(data);
+> -	bvec_count = DIV_ROUND_UP(offset + len, PAGE_SIZE);
+> +	bvec_count = DIV_ROUND_UP(offset + size, PAGE_SIZE);
+> +	remaining = size;
+>   
+> -	/*
+> -	 * If we knew that data was always on one page, or contiguous pages, we wouldn't need the
+> -	 * loop. But if we're using vmalloc, it's not impossible that the data is in different
+> -	 * pages that can't be merged in bio_add_page...
+> -	 */
+> -	for (i = 0; (i < bvec_count) && (len > 0); i++) {
+> +	for (i = 0; (i < bvec_count) && (remaining > 0); i++) {
+>   		struct page *page;
+>   		int bytes_added;
+>   		int bytes = PAGE_SIZE - offset;
+>   
+> -		if (bytes > len)
+> -			bytes = len;
+> +		if (bytes > remaining)
+> +			bytes = remaining;
+>   
+>   		page = is_vmalloc_addr(data) ? vmalloc_to_page(data) : virt_to_page(data);
+>   		bytes_added = bio_add_page(bio, page, bytes, offset);
+> @@ -231,7 +239,7 @@ int vio_reset_bio(struct vio *vio, char *data, bio_end_io_t callback,
+>   		}
+>   
+>   		data += bytes;
+> -		len -= bytes;
+> +		remaining -= bytes;
+>   		offset = 0;
+>   	}
+>   
+> diff --git a/drivers/md/dm-vdo/vio.h b/drivers/md/dm-vdo/vio.h
+> index 3490e9f59b04a..74e8fd7c8c029 100644
+> --- a/drivers/md/dm-vdo/vio.h
+> +++ b/drivers/md/dm-vdo/vio.h
+> @@ -123,6 +123,8 @@ void vdo_set_bio_properties(struct bio *bio, struct vio *vio, bio_end_io_t callb
+>   
+>   int vio_reset_bio(struct vio *vio, char *data, bio_end_io_t callback,
+>   		  blk_opf_t bi_opf, physical_block_number_t pbn);
+> +int vio_reset_bio_with_size(struct vio *vio, char *data, int size, bio_end_io_t callback,
+> +			    blk_opf_t bi_opf, physical_block_number_t pbn);
+>   
+>   void update_vio_error_stats(struct vio *vio, const char *format, ...)
+>   	__printf(2, 3);
 
 
