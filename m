@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-146995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AD3AC559D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D25ACAC58E3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:50:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 548A67AFB7F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E3544C11BD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25D228030E;
-	Tue, 27 May 2025 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB8627D784;
+	Tue, 27 May 2025 17:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KObcG44K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gR6CnaEX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC042798E6;
-	Tue, 27 May 2025 17:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA3528001F;
+	Tue, 27 May 2025 17:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365948; cv=none; b=WFTy+q/3Cf+qsrPqmrIumB8kkITRfoKVaxqy89fuy0DkJnHEglSoiDWVC3JOpEpS0MitY/sILJy3TZDqkakR82zFXa9WpaNfO41WQh4NKKg2fGR53lIDM35IjXqh4MhzC9CNBSC8biIAnffobpxzq32nFfagLQhDtcjeAAHptC8=
+	t=1748368220; cv=none; b=iXNJ1vRPcLodhaG7DmerskKAxs0VrCaZF+fVvkU5m06sMh6r8QfkBZhgZcFSD6OD0Ycl8jQ1ksg1tHVdrLFxQqzbVzbqOP3t3NIycUMU2rmoAknVp+SeP/LCDHJFFIrrOaZr8C7yNmE9GYpOlQWxlanGtm1GtTopv/pF/ZJQ42I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365948; c=relaxed/simple;
-	bh=zUv9unDr/csTW4Hl9SKuvhO5S+8g/QxqdJ5xeIZVfVs=;
+	s=arc-20240116; t=1748368220; c=relaxed/simple;
+	bh=yEZBbgjTiC93EnaJZwy2bJR4zPBJASpQFNkTuUQAErk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKLWrHDgCaVWzwMlAfwWLZZztiHfyn1bI5hU8Ic34H2q3NhSl5VrBhXD5K+SXagQ/GZKG0J1U+vLhg7fiknMK+Zwd04XG5HjFfHrMPZ5Oa9yGN3+BYFEEg24hfAWGu1sXYCalHbG5D4M+/7r0jtmEACzVntZHT2AgAyvZY0cLGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KObcG44K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C93CC4CEE9;
-	Tue, 27 May 2025 17:12:27 +0000 (UTC)
+	 MIME-Version; b=PMx/8fWZxHcz/gq2M/2MZgfStzxjMfms0f9CMfRDBEPjTHIzG8o993WOHRJuCRCer2uzuCpggYBCUIWcWCORCiycM4obf2ON4HxPJvjcHMdOsJoe1enxBMdzmLmTp3RxX1XV11PoAoHavkhvKHqVR1Ix26T9RQtBpg620GDAtkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gR6CnaEX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE7DC4CEE9;
+	Tue, 27 May 2025 17:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365947;
-	bh=zUv9unDr/csTW4Hl9SKuvhO5S+8g/QxqdJ5xeIZVfVs=;
+	s=korg; t=1748368219;
+	bh=yEZBbgjTiC93EnaJZwy2bJR4zPBJASpQFNkTuUQAErk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KObcG44Kwes0rMu9m9WUbBXnJ59iopn8LTHdlfL2lY40yA8gTS6V3AozLuDciqiLk
-	 EaPrF9xJLtPkSRg+lHfynvVDV2sed9r0yNXyReSmMWqFSHA34UxsHxVDFv8GVyADr+
-	 VGz0jCcs7NPD06PLfFkfQPGDs5KusW5nvHA/uWB0=
+	b=gR6CnaEXsuO6mcLWftv1IoNPaK4pBpDsX9ECXHPdzSZ6Mr4ydj8kbQR6Si13jw/av
+	 zNc09e0qNa3pHEnKk/RcMONasYuvjNU/n4nM7V3123R/IuFxjFFQkQHKZmrbMQiH2t
+	 Qsrvk1UfGMH4bTcG5czOaW9/t/vwhDcx5Jm1fpLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Rik van Riel <riel@surriel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Auger <eric.auger@redhat.com>,
+	Eric Auger <eauger@redhat.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 540/626] kernel/fork: only call untrack_pfn_clear() on VMAs duplicated for fork()
+Subject: [PATCH 6.14 636/783] virtgpu: dont reset on shutdown
 Date: Tue, 27 May 2025 18:27:13 +0200
-Message-ID: <20250527162506.927604804@linuxfoundation.org>
+Message-ID: <20250527162539.044087424@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,99 +64,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit e9f180d7cfde23b9f8eebd60272465176373ab2c ]
+[ Upstream commit 183a08715af1491d381b4e22efd61578fbe05fa5 ]
 
-Not intuitive, but vm_area_dup() located in kernel/fork.c is not only used
-for duplicating VMAs during fork(), but also for duplicating VMAs when
-splitting VMAs or when mremap()'ing them.
+It looks like GPUs are used after shutdown is invoked.
+Thus, breaking virtio gpu in the shutdown callback is not a good idea -
+guest hangs attempting to finish console drawing, with these warnings:
 
-VM_PFNMAP mappings can at least get ordinarily mremap()'ed (no change in
-size) and apparently also shrunk during mremap(), which implies
-duplicating the VMA in __split_vma() first.
+[   20.504464] WARNING: CPU: 0 PID: 568 at drivers/gpu/drm/virtio/virtgpu_vq.c:358 virtio_gpu_queue_ctrl_sgs+0x236/0x290 [virtio_gpu]
+[   20.505685] Modules linked in: nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink vfat fat intel_rapl_msr intel_rapl_common intel_uncore_frequency_common nfit libnvdimm kvm_intel kvm rapl iTCO_wdt iTCO_vendor_support virtio_gpu virtio_dma_buf pcspkr drm_shmem_helper i2c_i801 drm_kms_helper lpc_ich i2c_smbus virtio_balloon joydev drm fuse xfs libcrc32c ahci libahci crct10dif_pclmul crc32_pclmul crc32c_intel libata virtio_net ghash_clmulni_intel net_failover virtio_blk failover serio_raw dm_mirror dm_region_hash dm_log dm_mod
+[   20.511847] CPU: 0 PID: 568 Comm: kworker/0:3 Kdump: loaded Tainted: G        W         -------  ---  5.14.0-578.6675_1757216455.el9.x86_64 #1
+[   20.513157] Hardware name: Red Hat KVM/RHEL, BIOS edk2-20241117-3.el9 11/17/2024
+[   20.513918] Workqueue: events drm_fb_helper_damage_work [drm_kms_helper]
+[   20.514626] RIP: 0010:virtio_gpu_queue_ctrl_sgs+0x236/0x290 [virtio_gpu]
+[   20.515332] Code: 00 00 48 85 c0 74 0c 48 8b 78 08 48 89 ee e8 51 50 00 00 65 ff 0d 42 e3 74 3f 0f 85 69 ff ff ff 0f 1f 44 00 00 e9 5f ff ff ff <0f> 0b e9 3f ff ff ff 48 83 3c 24 00 74 0e 49 8b 7f 40 48 85 ff 74
+[   20.517272] RSP: 0018:ff34f0a8c0787ad8 EFLAGS: 00010282
+[   20.517820] RAX: 00000000fffffffb RBX: 0000000000000000 RCX: 0000000000000820
+[   20.518565] RDX: 0000000000000000 RSI: ff34f0a8c0787be0 RDI: ff218bef03a26300
+[   20.519308] RBP: ff218bef03a26300 R08: 0000000000000001 R09: ff218bef07224360
+[   20.520059] R10: 0000000000008dc0 R11: 0000000000000002 R12: ff218bef02630028
+[   20.520806] R13: ff218bef0263fb48 R14: ff218bef00cb8000 R15: ff218bef07224360
+[   20.521555] FS:  0000000000000000(0000) GS:ff218bef7ba00000(0000) knlGS:0000000000000000
+[   20.522397] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   20.522996] CR2: 000055ac4f7871c0 CR3: 000000010b9f2002 CR4: 0000000000771ef0
+[   20.523740] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[   20.524477] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+[   20.525223] PKRU: 55555554
+[   20.525515] Call Trace:
+[   20.525777]  <TASK>
+[   20.526003]  ? show_trace_log_lvl+0x1c4/0x2df
+[   20.526464]  ? show_trace_log_lvl+0x1c4/0x2df
+[   20.526925]  ? virtio_gpu_queue_fenced_ctrl_buffer+0x82/0x2c0 [virtio_gpu]
+[   20.527643]  ? virtio_gpu_queue_ctrl_sgs+0x236/0x290 [virtio_gpu]
+[   20.528282]  ? __warn+0x7e/0xd0
+[   20.528621]  ? virtio_gpu_queue_ctrl_sgs+0x236/0x290 [virtio_gpu]
+[   20.529256]  ? report_bug+0x100/0x140
+[   20.529643]  ? handle_bug+0x3c/0x70
+[   20.530010]  ? exc_invalid_op+0x14/0x70
+[   20.530421]  ? asm_exc_invalid_op+0x16/0x20
+[   20.530862]  ? virtio_gpu_queue_ctrl_sgs+0x236/0x290 [virtio_gpu]
+[   20.531506]  ? virtio_gpu_queue_ctrl_sgs+0x174/0x290 [virtio_gpu]
+[   20.532148]  virtio_gpu_queue_fenced_ctrl_buffer+0x82/0x2c0 [virtio_gpu]
+[   20.532843]  virtio_gpu_primary_plane_update+0x3e2/0x460 [virtio_gpu]
+[   20.533520]  drm_atomic_helper_commit_planes+0x108/0x320 [drm_kms_helper]
+[   20.534233]  drm_atomic_helper_commit_tail+0x45/0x80 [drm_kms_helper]
+[   20.534914]  commit_tail+0xd2/0x130 [drm_kms_helper]
+[   20.535446]  drm_atomic_helper_commit+0x11b/0x140 [drm_kms_helper]
+[   20.536097]  drm_atomic_commit+0xa4/0xe0 [drm]
+[   20.536588]  ? __pfx___drm_printfn_info+0x10/0x10 [drm]
+[   20.537162]  drm_atomic_helper_dirtyfb+0x192/0x270 [drm_kms_helper]
+[   20.537823]  drm_fbdev_shmem_helper_fb_dirty+0x43/0xa0 [drm_shmem_helper]
+[   20.538536]  drm_fb_helper_damage_work+0x87/0x160 [drm_kms_helper]
+[   20.539188]  process_one_work+0x194/0x380
+[   20.539612]  worker_thread+0x2fe/0x410
+[   20.540007]  ? __pfx_worker_thread+0x10/0x10
+[   20.540456]  kthread+0xdd/0x100
+[   20.540791]  ? __pfx_kthread+0x10/0x10
+[   20.541190]  ret_from_fork+0x29/0x50
+[   20.541566]  </TASK>
+[   20.541802] ---[ end trace 0000000000000000 ]---
 
-In case of ordinary mremap() (no change in size), we first duplicate the
-VMA in copy_vma_and_data()->copy_vma() to then call untrack_pfn_clear() on
-the old VMA: we effectively move the VM_PAT reservation.  So the
-untrack_pfn_clear() call on the new VMA duplicating is wrong in that
-context.
+It looks like the shutdown is called in the middle of console drawing, so
+we should either wait for it to finish, or let drm handle the shutdown.
 
-Splitting of VMAs seems problematic, because we don't duplicate/adjust the
-reservation when splitting the VMA.  Instead, in memtype_erase() -- called
-during zapping/munmap -- we shrink a reservation in case only the end
-address matches: Assume we split a VMA into A and B, both would share a
-reservation until B is unmapped.
+This patch implements this second option:
 
-So when unmapping B, the reservation would be updated to cover only A.
-When unmapping A, we would properly remove the now-shrunk reservation.
-That scenario describes the mremap() shrinking (old_size > new_size),
-where we split + unmap B, and the untrack_pfn_clear() on the new VMA when
-is wrong.
+Add an option for drivers to bypass the common break+reset handling.
+As DRM is careful to flush/synchronize outstanding buffers, it looks like
+GPU can just have a NOP there.
 
-What if we manage to split a VM_PFNMAP VMA into A and B and unmap A first?
-It would be broken because we would never free the reservation.  Likely,
-there are ways to trigger such a VMA split outside of mremap().
-
-Affecting other VMA duplication was not intended, vm_area_dup() being used
-outside of kernel/fork.c was an oversight.  So let's fix that for; how to
-handle VMA splits better should be investigated separately.
-
-With a simple reproducer that uses mprotect() to split such a VMA I can
-trigger
-
-x86/PAT: pat_mremap:26448 freeing invalid memtype [mem 0x00000000-0x00000fff]
-
-Link: https://lkml.kernel.org/r/20250422144942.2871395-1-david@redhat.com
-Fixes: dc84bc2aba85 ("x86/mm/pat: Fix VM_PAT handling when fork() fails in copy_page_range()")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Eric Auger <eric.auger@redhat.com>
+Fixes: 8bd2fa086a04 ("virtio: break and reset virtio devices on device_shutdown()")
+Cc: Eric Auger <eauger@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <8490dbeb6f79ed039e6c11d121002618972538a3.1744293540.git.mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/virtio/virtgpu_drv.c | 9 +++++++++
+ drivers/virtio/virtio.c              | 6 ++++++
+ include/linux/virtio.h               | 3 +++
+ 3 files changed, 18 insertions(+)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 12decadff468f..97c9afe3efc38 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -505,10 +505,6 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
- 	vma_numab_state_init(new);
- 	dup_anon_vma_name(orig, new);
- 
--	/* track_pfn_copy() will later take care of copying internal state. */
--	if (unlikely(new->vm_flags & VM_PFNMAP))
--		untrack_pfn_clear(new);
--
- 	return new;
+diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
+index 6a67c6297d583..8719b778a1ff0 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.c
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
+@@ -125,6 +125,14 @@ static void virtio_gpu_remove(struct virtio_device *vdev)
+ 	drm_dev_put(dev);
  }
  
-@@ -699,6 +695,11 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
- 		tmp = vm_area_dup(mpnt);
- 		if (!tmp)
- 			goto fail_nomem;
++static void virtio_gpu_shutdown(struct virtio_device *vdev)
++{
++	/*
++	 * drm does its own synchronization on shutdown.
++	 * Do nothing here, opt out of device reset.
++	 */
++}
 +
-+		/* track_pfn_copy() will later take care of copying internal state. */
-+		if (unlikely(tmp->vm_flags & VM_PFNMAP))
-+			untrack_pfn_clear(tmp);
+ static void virtio_gpu_config_changed(struct virtio_device *vdev)
+ {
+ 	struct drm_device *dev = vdev->priv;
+@@ -159,6 +167,7 @@ static struct virtio_driver virtio_gpu_driver = {
+ 	.id_table = id_table,
+ 	.probe = virtio_gpu_probe,
+ 	.remove = virtio_gpu_remove,
++	.shutdown = virtio_gpu_shutdown,
+ 	.config_changed = virtio_gpu_config_changed
+ };
+ 
+diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+index 150753c3b5782..95d5d7993e5b1 100644
+--- a/drivers/virtio/virtio.c
++++ b/drivers/virtio/virtio.c
+@@ -407,6 +407,12 @@ static void virtio_dev_shutdown(struct device *_d)
+ 	if (!drv)
+ 		return;
+ 
++	/* If the driver has its own shutdown method, use that. */
++	if (drv->shutdown) {
++		drv->shutdown(dev);
++		return;
++	}
 +
- 		retval = vma_dup_policy(mpnt, tmp);
- 		if (retval)
- 			goto fail_nomem_policy;
+ 	/*
+ 	 * Some devices get wedged if you kick them after they are
+ 	 * reset. Mark all vqs as broken to make sure we don't.
+diff --git a/include/linux/virtio.h b/include/linux/virtio.h
+index 4d16c13d0df58..64cb4b04be7ad 100644
+--- a/include/linux/virtio.h
++++ b/include/linux/virtio.h
+@@ -220,6 +220,8 @@ size_t virtio_max_dma_size(const struct virtio_device *vdev);
+  *    occurs.
+  * @reset_done: optional function to call after transport specific reset
+  *    operation has finished.
++ * @shutdown: synchronize with the device on shutdown. If provided, replaces
++ *    the virtio core implementation.
+  */
+ struct virtio_driver {
+ 	struct device_driver driver;
+@@ -237,6 +239,7 @@ struct virtio_driver {
+ 	int (*restore)(struct virtio_device *dev);
+ 	int (*reset_prepare)(struct virtio_device *dev);
+ 	int (*reset_done)(struct virtio_device *dev);
++	void (*shutdown)(struct virtio_device *dev);
+ };
+ 
+ #define drv_to_virtio(__drv)	container_of_const(__drv, struct virtio_driver, driver)
 -- 
 2.39.5
 
