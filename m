@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-146853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4C6AC54EB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDAAAC5846
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C5667A1883
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBB6C4A0F84
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340B72798E6;
-	Tue, 27 May 2025 17:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2292D27FD62;
+	Tue, 27 May 2025 17:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAAtBAMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kV97H5Ph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D7726868E;
-	Tue, 27 May 2025 17:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A2842A9B;
+	Tue, 27 May 2025 17:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365512; cv=none; b=TehKOEQsZNQhyY/J1u2fNNvBAldx3od7th3Lcu4Sz8CAqRB0OZ8MB98rFD4RjzyRbun0S1K4kBHo0KjWUdPUDQbLIhq7RrByIGGHNfuzUV2nOzGuDows9m3Dw+eY3uf3wkD2Y8nR66v3nieWwhPxU6Uc+fkPNU4S5WnWPyVJWTA=
+	t=1748367772; cv=none; b=jtCnjYMuOBXkv7yrXc8tl/CVnBS8daJ7A4/7mmyJdWmiDQNsLQySQtIaCk+gS0m2sGhqneFnwXBVxBW5EcFeX/Km0V2zNS/Wk0LczVYnuBaNlFmCUxziJeJqSPPMPxwCj9LBXvHazJao26hHSUnF4Qqa6Bo5u10pIT7aoQDKVoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365512; c=relaxed/simple;
-	bh=1LIDophlfmVZ0LIewFNxaVxUHLpexUnDNAoB6yUOmeI=;
+	s=arc-20240116; t=1748367772; c=relaxed/simple;
+	bh=2CyyaP5e0RcUQd0CVqae1m6RVAFAh+GYSGcNAcqqtic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lP1DrNwhtHatdQV3dPyJbRA9NnrKRxSz22JAPV1sawKNWkiWKwV9Do3Xx3LFfmgskmZa9oFnTqMlwNuEkA/psbGbHIcYMil8RpeIGHrQSVlFKW5CtCRXlYvP5lzm5WL6eYx3W6kBB+j75ZrhGR3l79QYzglvNBDsJvX+KH8af3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAAtBAMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BC9C4CEF3;
-	Tue, 27 May 2025 17:05:09 +0000 (UTC)
+	 MIME-Version; b=acv39/ITywVxHb8R/FlmeaJzmKPfhX/foxqL+nxJI/Fp4Z4JZpw62XzXH+AkHCi1Yn5R6zh++68N5bJWEpqdat6vrEl60w1iGdDzp2ugK3hnIYX7XIJvs94DfSaToNEdB7gKDPR4hUn9YSVMHgI2JxmDnPv7E168A15D5OGYl+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kV97H5Ph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458CBC4CEE9;
+	Tue, 27 May 2025 17:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365510;
-	bh=1LIDophlfmVZ0LIewFNxaVxUHLpexUnDNAoB6yUOmeI=;
+	s=korg; t=1748367772;
+	bh=2CyyaP5e0RcUQd0CVqae1m6RVAFAh+GYSGcNAcqqtic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAAtBAMT3DrHfpbhZ8vXu0CCy69K8sFN5BbbwuTJARNUPlJYbzIU2vBS5AivwODKf
-	 k7N+NKMSPTPxsBf2EjnDke3iIsIK236W9nAsjjBovbq9d39EHP/028TsO2bTz46Bjk
-	 fwHMl2NhVmUVriT2Z0AhoQDrSLukeg6YxtxL6wO0=
+	b=kV97H5PhWYU+89HKUMVK7+TtnxYpwaNzD3Zl9FmuEpUBBQm2eD9pwSZpwJgS5uOXt
+	 8Mpw3xlUIyfOO/8NyUa7ZxtG04ot6g/kZxjPcbgAKNA45hNc1Mmg33XjLbG9qb2DaQ
+	 8lVlgFGXyNuXRbsYTk82BBfKNhhPnp4HiEe3BLmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Austin Zheng <Austin.Zheng@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Shuo Liu <shuox.liu@linux.alibaba.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 399/626] drm/amd/display: Use Nominal vBlank If Provided Instead Of Capping It
+Subject: [PATCH 6.14 495/783] amdgpu/soc15: enable asic reset for dGPU in case of suspend abort
 Date: Tue, 27 May 2025 18:24:52 +0200
-Message-ID: <20250527162501.232004596@linuxfoundation.org>
+Message-ID: <20250527162533.293113463@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Austin Zheng <Austin.Zheng@amd.com>
+From: Jiang Liu <gerry@linux.alibaba.com>
 
-[ Upstream commit 41df56b1fc24cc36fffb10e437385b3a49fbb5e2 ]
+[ Upstream commit 38e8ca3e4b6de1c6e49d0140264cfc8d314a5f70 ]
 
-[Why/How]
-vBlank used to determine the max vStartup is based on the smallest between
-the vblank provided by the timing and vblank in ip_caps.
-Extra vblank time is not considered if the vblank provided by the timing ends
-up being higher than what's defined by the ip_caps
+When GPU suspend is aborted, do the same for dGPU as APU to reset
+soc15 asic. Otherwise it may cause following errors:
+[  547.229463] amdgpu 0001:81:00.0: [drm:amdgpu_ring_test_helper [amdgpu]] *ERROR* ring kiq_0.2.1.0 test failed (-110)
 
-Use 1 less than the vblank size in case the timing is interlaced
-so vstartup will always be less than vblank_nom.
+[  555.126827] amdgpu 0000:0a:00.0: [drm:amdgpu_ring_test_helper [amdgpu]] *ERROR* ring kiq_0.2.1.0 test failed (-110)
+[  555.126901] [drm:amdgpu_gfx_enable_kcq [amdgpu]] *ERROR* KCQ enable failed
+[  555.126957] [drm:amdgpu_device_ip_resume_phase2 [amdgpu]] *ERROR* resume of IP block <gfx_v9_4_3> failed -110
+[  555.126959] amdgpu 0000:0a:00.0: amdgpu: amdgpu_device_ip_resume failed (-110).
+[  555.126965] PM: dpm_run_callback(): pci_pm_resume+0x0/0xe0 returns -110
+[  555.126966] PM: Device 0000:0a:00.0 failed to resume async: error -110
 
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+This fix has been tested on Mi308X.
+
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Tested-by: Shuo Liu <shuox.liu@linux.alibaba.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/2462b4b12eb9d025e82525178d568cbaa4c223ff.1736739303.git.gerry@linux.alibaba.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c       | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/soc15.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-index e2a3764d9d181..0090b7bc232bf 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-@@ -3630,13 +3630,12 @@ static unsigned int CalculateMaxVStartup(
- 	double line_time_us = (double)timing->h_total / ((double)timing->pixel_clock_khz / 1000);
- 	unsigned int vblank_actual = timing->v_total - timing->v_active;
- 	unsigned int vblank_nom_default_in_line = (unsigned int)math_floor2((double)vblank_nom_default_us / line_time_us, 1.0);
--	unsigned int vblank_nom_input = (unsigned int)math_min2(timing->vblank_nom, vblank_nom_default_in_line);
--	unsigned int vblank_avail = (vblank_nom_input == 0) ? vblank_nom_default_in_line : vblank_nom_input;
-+	unsigned int vblank_avail = (timing->vblank_nom == 0) ? vblank_nom_default_in_line : (unsigned int)timing->vblank_nom;
- 
- 	vblank_size = (unsigned int)math_min2(vblank_actual, vblank_avail);
- 
- 	if (timing->interlaced && !ptoi_supported)
--		max_vstartup_lines = (unsigned int)(math_floor2(vblank_size / 2.0, 1.0));
-+		max_vstartup_lines = (unsigned int)(math_floor2((vblank_size - 1) / 2.0, 1.0));
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
+index e98fb3fa36a88..6e09613de8cd2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -604,12 +604,10 @@ soc15_asic_reset_method(struct amdgpu_device *adev)
+ static bool soc15_need_reset_on_resume(struct amdgpu_device *adev)
+ {
+ 	/* Will reset for the following suspend abort cases.
+-	 * 1) Only reset on APU side, dGPU hasn't checked yet.
+-	 * 2) S3 suspend aborted in the normal S3 suspend or
+-	 *    performing pm core test.
++	 * 1) S3 suspend aborted in the normal S3 suspend
++	 * 2) S3 suspend aborted in performing pm core test.
+ 	 */
+-	if (adev->flags & AMD_IS_APU && adev->in_s3 &&
+-			!pm_resume_via_firmware())
++	if (adev->in_s3 && !pm_resume_via_firmware())
+ 		return true;
  	else
- 		max_vstartup_lines = vblank_size - (unsigned int)math_max2(1.0, math_ceil2(write_back_delay_us / line_time_us, 1.0));
- #ifdef __DML_VBA_DEBUG__
+ 		return false;
 -- 
 2.39.5
 
