@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBABAAC58F4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D92EEAC55C8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5FBD4C12CE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DB854A4B52
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEB127FD64;
-	Tue, 27 May 2025 17:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B176627FD49;
+	Tue, 27 May 2025 17:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1f+d87k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRCjv9jW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1798B2566;
-	Tue, 27 May 2025 17:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB5127F16A;
+	Tue, 27 May 2025 17:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368268; cv=none; b=PPHaFJwGoMRlcNZ/+yFur1dd+ezm26kyi0ZIzap5JC+9UAGzQ+HZS+xMKZOb57XsiS+8Hu3FH9+br6tadjyZ6zMfUej7c4BLM51gdBAlDHdWIw4tZ95y4kXXPfPfhoI7k/X8Fp4g/2vviJC0shoNNrKUH1f/GoqZLP79zzfs9qU=
+	t=1748365997; cv=none; b=dSTK/B8gNQzhtKfc5J0Xkgywz8kOFSjEzUr3aL56HRh8UYXHSj0X3o9qd0gdiv4jzZ0QbKuARnM1ucPuwcdD2apXxT+hkLPXgaDiMflC3wlIBMxrK7EU0DI1QmrCm8qOVwXGaZlwmYy61JoPTHXUXSiKi6Y9eqCO/GIxddxhr9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368268; c=relaxed/simple;
-	bh=5Qyq+HQfS3ORInVFXwKo1sSdWg2YZqGm+Pa42uiXiiI=;
+	s=arc-20240116; t=1748365997; c=relaxed/simple;
+	bh=QmZ9ZqS8NxDjqu8qkc4818NX7OLru3xefzTVhp1pqTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pu5oyKG9UHLMX2ysBc6a+umqr0QXyoss1WQXsGHiMxpNMj0vuhJQytnDCYPl2C70MqeuSeqEJARtegwEHoL4yC2hDzEVeg6ONSiqarUDRzooIaXy6MBn2SQ8fMNkLEzz8/DCyfl71xEf1Q/JXUX/KgMLQa5KcgGTv0CXNb7gEyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1f+d87k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F39C4CEE9;
-	Tue, 27 May 2025 17:51:07 +0000 (UTC)
+	 MIME-Version; b=foa5Z9k1eG9whKmGNR5uAmtsk5iIHSh+0X0fdstUVKejWavgcNI0NOf+LeK5OnS0YGsAHoAJrpCtVsx5wTMA55g8TjgX86ZiRTwuTZfWqRWjhxMp2ZVoSDIEmTD9eJe5dZPBXWXSMfnUUO1SldKf/QFcE9+cf4ogYd3e02L6rU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRCjv9jW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4A6C4CEE9;
+	Tue, 27 May 2025 17:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368268;
-	bh=5Qyq+HQfS3ORInVFXwKo1sSdWg2YZqGm+Pa42uiXiiI=;
+	s=korg; t=1748365997;
+	bh=QmZ9ZqS8NxDjqu8qkc4818NX7OLru3xefzTVhp1pqTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1f+d87k+X72ONaPl39B196VH2T0OhZ3QdyWCXxbpchCZHvYAV0jfdvxWZZzLHqoM
-	 0TJ/KPSBfxhl8rRtGGc/7u3gUaUDRMpilOIWVSSQbZoo/eNdrepUlS3vngbbgWi646
-	 TtrT/JY2ZjbNtk9DB0p/jzU2rjd0S71s8wT+p/EQ=
+	b=kRCjv9jWXsIgVZcnuMIsMfNTZ/BIy1ius3bfwqI/JiDCngaawTIo33YSaxZIAVm+d
+	 4HZFaFxz9/GIWOPz6CIY5weK3STw+KlVe47/cKHtBZBGz7pY0ui7G+8WKdE9Lc3wde
+	 vqvz5BKT8bfH12xV34UmKFOLkcNrBS3b7ltqH1Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ga=C5=A1per=20Nemgar?= <gasper.nemgar@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Christian Hesse <mail@eworm.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 653/783] platform/x86: ideapad-laptop: add support for some new buttons
-Date: Tue, 27 May 2025 18:27:30 +0200
-Message-ID: <20250527162539.722432073@linuxfoundation.org>
+Subject: [PATCH 6.12 558/626] loop: dont require ->write_iter for writable files in loop_configure
+Date: Tue, 27 May 2025 18:27:31 +0200
+Message-ID: <20250527162507.642320643@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gašper Nemgar <gasper.nemgar@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 02c6e43397c39edd0c172859bf8c851b46be09a8 ]
+[ Upstream commit 355341e4359b2d5edf0ed5e117f7e9e7a0a5dac0 ]
 
-Add entries to unsupported WMI codes in ideapad_keymap[] and one
-check for WMI code 0x13d to trigger platform_profile_cycle().
+Block devices can be opened read-write even if they can't be written to
+for historic reasons.  Remove the check requiring file->f_op->write_iter
+when the block devices was opened in loop_configure. The call to
+loop_check_backing_file just below ensures the ->write_iter is present
+for backing files opened for writing, which is the only check that is
+actually needed.
 
-Signed-off-by: Gašper Nemgar <gasper.nemgar@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250418070738.7171-1-gasper.nemgar@gmail.com
-[ij: joined nested if ()s & major tweaks to changelog]
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: f5c84eff634b ("loop: Add sanity check for read/write_iter")
+Reported-by: Christian Hesse <mail@eworm.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250520135420.1177312-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/block/loop.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index 30bd366d7b58a..b740c7bb81015 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1308,6 +1308,16 @@ static const struct key_entry ideapad_keymap[] = {
- 	/* Specific to some newer models */
- 	{ KE_KEY,	0x3e | IDEAPAD_WMI_KEY, { KEY_MICMUTE } },
- 	{ KE_KEY,	0x3f | IDEAPAD_WMI_KEY, { KEY_RFKILL } },
-+	/* Star- (User Assignable Key) */
-+	{ KE_KEY,	0x44 | IDEAPAD_WMI_KEY, { KEY_PROG1 } },
-+	/* Eye */
-+	{ KE_KEY,	0x45 | IDEAPAD_WMI_KEY, { KEY_PROG3 } },
-+	/* Performance toggle also Fn+Q, handled inside ideapad_wmi_notify() */
-+	{ KE_KEY,	0x3d | IDEAPAD_WMI_KEY, { KEY_PROG4 } },
-+	/* shift + prtsc */
-+	{ KE_KEY,   0x2d | IDEAPAD_WMI_KEY, { KEY_CUT } },
-+	{ KE_KEY,   0x29 | IDEAPAD_WMI_KEY, { KEY_TOUCHPAD_TOGGLE } },
-+	{ KE_KEY,   0x2a | IDEAPAD_WMI_KEY, { KEY_ROOT_MENU } },
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index fa9c77b8f4d23..0843d229b0f76 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -969,9 +969,6 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 	if (!file)
+ 		return -EBADF;
  
- 	{ KE_END },
- };
-@@ -2094,6 +2104,12 @@ static void ideapad_wmi_notify(struct wmi_device *wdev, union acpi_object *data)
- 		dev_dbg(&wdev->dev, "WMI fn-key event: 0x%llx\n",
- 			data->integer.value);
- 
-+		/* performance button triggered by 0x3d */
-+		if (data->integer.value == 0x3d && priv->dytc) {
-+			platform_profile_cycle();
-+			break;
-+		}
-+
- 		/* 0x02 FnLock, 0x03 Esc */
- 		if (data->integer.value == 0x02 || data->integer.value == 0x03)
- 			ideapad_fn_lock_led_notify(priv, data->integer.value == 0x02);
+-	if ((mode & BLK_OPEN_WRITE) && !file->f_op->write_iter)
+-		return -EINVAL;
+-
+ 	error = loop_check_backing_file(file);
+ 	if (error)
+ 		return error;
 -- 
 2.39.5
 
