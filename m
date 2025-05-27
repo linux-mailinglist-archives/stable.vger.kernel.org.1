@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-147088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EED0AC5616
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A2DAC55F7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4092B188DF59
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 139C07AFF3A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D7C27E1CA;
-	Tue, 27 May 2025 17:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA72C27D766;
+	Tue, 27 May 2025 17:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzUwPPDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snOx47NB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831031DB34C;
-	Tue, 27 May 2025 17:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676E0182D7;
+	Tue, 27 May 2025 17:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366247; cv=none; b=nP+1AWqahQfS8oLGE+g9DW4jS3alKMitGO21Vs3XqTK8Rb207dHAHFv0gPtWynTLnB7ev/d53nizG046qMPR847JFzrr0l0ya3Wn0TnWugRpK9XY1hMUaDj+kt6o16qOQGvIlvqA96qU9pWZivbZ1pVIvDbpFDWmqmlo0g9cjAE=
+	t=1748366191; cv=none; b=Hfl4eOuXk6usrrPxtMPgSXQgXFWvb+e0zNKp+AigZr3JvDngQbUUanlH6+hfABBinJNQV/fVcmvazcTTYKIvyYhwGPPxHRil9x3wv8/Gyxe3+wWpr1zevHdzIdb0MlPoH3T40XmxFRolppR+TQg+bPZ58diZpK4APw4crjUccLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366247; c=relaxed/simple;
-	bh=TAJQAeuKI23WEJlzs+2DLYiPrHk9JN+YhvLBl0Cvoa4=;
+	s=arc-20240116; t=1748366191; c=relaxed/simple;
+	bh=01Hd7+D9LM27uwNHf+FUqx+9M2UAuaWvXmY8eqmQXV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SdCJyJ56NHctvAxFWp0hUzl41PEMcL80dqhcGskU7I3YSqvOVpvMqwptGNaHqdZHm9gFf3sKweaZUJmQ3+LfCess/LDJZ8UOqh6Kq3KQL0ZBbme9nOdxrRuTbnBPH3HavWDy3eQwHwLzu3dNYVrPyUta3FzgsfvfNf48tzEk6Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzUwPPDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEBEC4CEE9;
-	Tue, 27 May 2025 17:17:26 +0000 (UTC)
+	 MIME-Version; b=IYhQV5lkm6JIWHe7fh1PpNTmAjyednQW9zOSQ1T4Zm6reHrHkK55uKxZHjS4IJQEIlclk3nOYOPW686T+tYk8O2AMxK3XFMm0r+Zgiqv939QNn6evq+/rzamAW/Z6DjyEJ+Djv3zBU/oS7S8DkNEsk5iqxRMwgCndv46H9dgE+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snOx47NB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE96C4CEE9;
+	Tue, 27 May 2025 17:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366247;
-	bh=TAJQAeuKI23WEJlzs+2DLYiPrHk9JN+YhvLBl0Cvoa4=;
+	s=korg; t=1748366191;
+	bh=01Hd7+D9LM27uwNHf+FUqx+9M2UAuaWvXmY8eqmQXV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yzUwPPDkPXDCEl+MQ+q57e+y810zXNB7kbhvIT9RxQOp+zJJYapj+n6Wi0LvKxC5l
-	 nqauYnCk/7y1p/gwvRZ7OwfHoUnFHQuy4b4cakTUkmB/Ac0hl4qpKKRd05PQ3epNwT
-	 3gHC9xtOq2AxprQXoA5tRIRak8rkTiH8LKkBUKPw=
+	b=snOx47NB1BvhEnkSskuKp9nS/aFPo3xKAgw5FerK1sPXfJcyVPsgj9hdYNBIK5Gxn
+	 v27D+tglRfRRZ/bwc3keWNQAD2OE1W1ltAG4LfLEtwCENf9VvHx0o8ZmOsFKHDas3U
+	 gmkca7vrIjZZJog2k+JO4EZvkqsWLpLdEvYA84fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 608/626] platform/x86: think-lmi: Fix attribute name usage for non-compliant items
-Date: Tue, 27 May 2025 18:28:21 +0200
-Message-ID: <20250527162509.701623120@linuxfoundation.org>
+Subject: [PATCH 6.12 609/626] spi: use container_of_cont() for to_spi_device()
+Date: Tue, 27 May 2025 18:28:22 +0200
+Message-ID: <20250527162509.747746092@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -60,117 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 8508427a6e21c1ef01ae4c9f4e2675fc99deb949 ]
+[ Upstream commit 1007ae0d464ceb55a3740634790521d3543aaab9 ]
 
-A few, quite rare, WMI attributes have names that are not compatible with
-filenames, e.g. "Intel VT for Directed I/O (VT-d)".
-For these cases the '/' gets replaced with '\' for display, but doesn't
-get switched again when doing the WMI access.
+Some places in the spi core pass in a const pointer to a device and the
+default container_of() casts that away, which is not a good idea.
+Preserve the proper const attribute by using container_of_const() for
+to_spi_device() instead, which is what it was designed for.
 
-Fix this by keeping the original attribute name and using that for sending
-commands to the BIOS
+Note, this removes the NULL check for a device pointer in the call, but
+no one was ever checking for that return value, and a device pointer
+should never be NULL overall anyway, so this should be a safe change.
 
-Fixes: a40cd7ef22fb ("platform/x86: think-lmi: Add WMI interface support on Lenovo platforms")
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20250520005027.3840705-1-mpearson-lenovo@squebb.ca
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>
+Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2025052230-fidgeting-stooge-66f5@gregkh
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/think-lmi.c | 26 ++++++++++++++------------
- drivers/platform/x86/think-lmi.h |  1 +
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ include/linux/spi/spi.h | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index 4cfb53206cb84..1abd8378f158d 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -995,8 +995,8 @@ static ssize_t current_value_store(struct kobject *kobj,
- 			ret = -EINVAL;
- 			goto out;
- 		}
--		set_str = kasprintf(GFP_KERNEL, "%s,%s,%s", setting->display_name,
--					new_setting, tlmi_priv.pwd_admin->signature);
-+		set_str = kasprintf(GFP_KERNEL, "%s,%s,%s", setting->name,
-+				    new_setting, tlmi_priv.pwd_admin->signature);
- 		if (!set_str) {
- 			ret = -ENOMEM;
- 			goto out;
-@@ -1026,7 +1026,7 @@ static ssize_t current_value_store(struct kobject *kobj,
- 				goto out;
- 		}
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 4b95663163e0b..71ad766932d31 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -247,10 +247,7 @@ struct spi_device {
+ static_assert((SPI_MODE_KERNEL_MASK & SPI_MODE_USER_MASK) == 0,
+ 	      "SPI_MODE_USER_MASK & SPI_MODE_KERNEL_MASK must not overlap");
  
--		set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->display_name,
-+		set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->name,
- 				    new_setting);
- 		if (!set_str) {
- 			ret = -ENOMEM;
-@@ -1054,11 +1054,11 @@ static ssize_t current_value_store(struct kobject *kobj,
- 		}
+-static inline struct spi_device *to_spi_device(const struct device *dev)
+-{
+-	return dev ? container_of(dev, struct spi_device, dev) : NULL;
+-}
++#define to_spi_device(__dev)	container_of_const(__dev, struct spi_device, dev)
  
- 		if (auth_str)
--			set_str = kasprintf(GFP_KERNEL, "%s,%s,%s", setting->display_name,
--					new_setting, auth_str);
-+			set_str = kasprintf(GFP_KERNEL, "%s,%s,%s", setting->name,
-+					    new_setting, auth_str);
- 		else
--			set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->display_name,
--					new_setting);
-+			set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->name,
-+					    new_setting);
- 		if (!set_str) {
- 			ret = -ENOMEM;
- 			goto out;
-@@ -1568,9 +1568,6 @@ static int tlmi_analyze(void)
- 			continue;
- 		}
- 
--		/* It is not allowed to have '/' for file name. Convert it into '\'. */
--		strreplace(item, '/', '\\');
--
- 		/* Remove the value part */
- 		strreplace(item, ',', '\0');
- 
-@@ -1582,11 +1579,16 @@ static int tlmi_analyze(void)
- 			goto fail_clear_attr;
- 		}
- 		setting->index = i;
-+
-+		strscpy(setting->name, item);
-+		/* It is not allowed to have '/' for file name. Convert it into '\'. */
-+		strreplace(item, '/', '\\');
- 		strscpy(setting->display_name, item);
-+
- 		/* If BIOS selections supported, load those */
- 		if (tlmi_priv.can_get_bios_selections) {
--			ret = tlmi_get_bios_selections(setting->display_name,
--					&setting->possible_values);
-+			ret = tlmi_get_bios_selections(setting->name,
-+						       &setting->possible_values);
- 			if (ret || !setting->possible_values)
- 				pr_info("Error retrieving possible values for %d : %s\n",
- 						i, setting->display_name);
-diff --git a/drivers/platform/x86/think-lmi.h b/drivers/platform/x86/think-lmi.h
-index e1975ffebeb42..7f9632a53736f 100644
---- a/drivers/platform/x86/think-lmi.h
-+++ b/drivers/platform/x86/think-lmi.h
-@@ -84,6 +84,7 @@ struct tlmi_pwd_setting {
- struct tlmi_attr_setting {
- 	struct kobject kobj;
- 	int index;
-+	char name[TLMI_SETTINGS_MAXLEN];
- 	char display_name[TLMI_SETTINGS_MAXLEN];
- 	char *possible_values;
- };
+ /* Most drivers won't need to care about device refcounting */
+ static inline struct spi_device *spi_dev_get(struct spi_device *spi)
 -- 
 2.39.5
 
