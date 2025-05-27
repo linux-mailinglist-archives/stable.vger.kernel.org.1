@@ -1,58 +1,52 @@
-Return-Path: <stable+bounces-146759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1582AAC546E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF575AC5470
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17D134A2BB3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AA924A2BDE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C268E1D88D7;
-	Tue, 27 May 2025 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FDA27B51A;
+	Tue, 27 May 2025 17:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhKYYtEr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhIdpNq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F39D185E7F;
-	Tue, 27 May 2025 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D441A154C15;
+	Tue, 27 May 2025 17:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365221; cv=none; b=ijcuiUGHEZ/86VygXzjvJQzSQEHEON6UM8Kp1TaYS2RgnpPdFypQOF1AyYY/F5GDBwew/xmTsFC8Y3kPUE8P8VpVkduaIXIN7AmTwnZZ6DBBwp7cWhojcrkzUzF7JA9OZBnHcuasERCYK5aze4p5ASxmvGOscdu923WIKG0J8P8=
+	t=1748365226; cv=none; b=Bln+QT1H05xYsBrWNtXaqbrplcDjSrACncLotc8ysKbMyANUmNFUTAusufjUz+7dQOS+CWGCfpfcEoYM6bcFPB3/AXWDOdxfNkkr7gU3wP1eMVVVactYAoBECix2m0umMGpQJEWSC3d73JqToVGdwtcFp/9Vp1ac3KaFFlOvf8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365221; c=relaxed/simple;
-	bh=V8VxRhQpLdXzVXG398pXORsi2ysqSzg/X9zCUxL0eq0=;
+	s=arc-20240116; t=1748365226; c=relaxed/simple;
+	bh=DlkO285FWLfCJbFFXoxXovPgUjSGLco3YgHB2QYvb8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOzUqlTzYns7VEBIZAnSbXDmKM0PThcKpGw/MVbuCJ8tDZEeXrl729mt9knCrj1n/5qss+IO6s+6nYaTns8KwhZnvu/kXz+gJscj9g5N/F9aH0o21Mo7muHYKCEcg9Z+1buvKaLeS5w335OPgh1XmZ/hVgEu/iaaCKW1+LTc9Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhKYYtEr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B02C4CEE9;
-	Tue, 27 May 2025 17:00:20 +0000 (UTC)
+	 MIME-Version; b=I1jGoSoCKU7PnHvrsZ+ERM8vlHjuGBA2szUWIk4uAJLHHoH02yT/NkbPLRpMhSrfBptK4OQMnu0w8kx6vPyljPu36saPgE5VUDoKpjmdXY/ta+LmoGYHnvNh6x+vjDu5RhbQmIMmgVM1Rkm9VFEPSc8DfqteAhn8EBCkUnsmv4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhIdpNq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF98C4CEE9;
+	Tue, 27 May 2025 17:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365221;
-	bh=V8VxRhQpLdXzVXG398pXORsi2ysqSzg/X9zCUxL0eq0=;
+	s=korg; t=1748365226;
+	bh=DlkO285FWLfCJbFFXoxXovPgUjSGLco3YgHB2QYvb8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhKYYtErvMFt4lAyqMwn/5OMue87Hbto5Nip5ltw3XnAIZ0JQd4xbux1sN/zxt5RV
-	 3PApLF2koQ9POX+PWxrJG1BKVSz2XlQdIC2a0uAOcYHlOKcBJVHsOoYHtsWz0T0EIO
-	 HbjcZhQc5b8oQ3dK/IWLvYD+wEsWviwa4QI+PFWc=
+	b=nhIdpNq5rXOTuc5BjkRRug3Q0E8B1dOVcpXW1KHg4apAfG+OM6FPCZ27Yvmb/1vjY
+	 OEdAzqJNAkxuJHy+UT6dzsuzEkPpzUNkok2+hUn6nffSiBZlLLJfA9CBXe876e5p6V
+	 5y2JWMDHM+uG1245jwDrZbL6/fTTwURF6mcyTv1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balbir Singh <balbirs@nvidia.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.12 305/626] x86/kaslr: Reduce KASLR entropy on most x86 systems
-Date: Tue, 27 May 2025 18:23:18 +0200
-Message-ID: <20250527162457.425427604@linuxfoundation.org>
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 306/626] crypto: ahash - Set default reqsize from ahash_alg
+Date: Tue, 27 May 2025 18:23:19 +0200
+Message-ID: <20250527162457.467926937@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -71,86 +65,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Balbir Singh <balbirs@nvidia.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 7ffb791423c7c518269a9aad35039ef824a40adb ]
+[ Upstream commit 9e01aaa1033d6e40f8d7cf4f20931a61ce9e3f04 ]
 
-When CONFIG_PCI_P2PDMA=y (which is basically enabled on all
-large x86 distros), it maps the PFN's via a ZONE_DEVICE
-mapping using devm_memremap_pages(). The mapped virtual
-address range corresponds to the pci_resource_start()
-of the BAR address and size corresponding to the BAR length.
+Add a reqsize field to struct ahash_alg and use it to set the
+default reqsize so that algorithms with a static reqsize are
+not forced to create an init_tfm function.
 
-When KASLR is enabled, the direct map range of the kernel is
-reduced to the size of physical memory plus additional padding.
-If the BAR address is beyond this limit, PCI peer to peer DMA
-mappings fail.
-
-Fix this by not shrinking the size of the direct map when
-CONFIG_PCI_P2PDMA=y.
-
-This reduces the total available entropy, but it's better than
-the current work around of having to disable KASLR completely.
-
-[ mingo: Clarified the changelog to point out the broad impact ... ]
-
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com> # drivers/pci/Kconfig
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/lkml/20250206023201.1481957-1-balbirs@nvidia.com/
-Link: https://lore.kernel.org/r/20250206234234.1912585-1-balbirs@nvidia.com
---
- arch/x86/mm/kaslr.c | 10 ++++++++--
- drivers/pci/Kconfig |  6 ++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/kaslr.c | 10 ++++++++--
- drivers/pci/Kconfig |  6 ++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ crypto/ahash.c        | 4 ++++
+ include/crypto/hash.h | 3 +++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
-index 230f1dee4f095..e0b0ec0f82457 100644
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -109,8 +109,14 @@ void __init kernel_randomize_memory(void)
- 	memory_tb = DIV_ROUND_UP(max_pfn << PAGE_SHIFT, 1UL << TB_SHIFT) +
- 		CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING;
+diff --git a/crypto/ahash.c b/crypto/ahash.c
+index bcd9de009a91b..fe19bf7f15eb9 100644
+--- a/crypto/ahash.c
++++ b/crypto/ahash.c
+@@ -473,6 +473,7 @@ static int crypto_ahash_init_tfm(struct crypto_tfm *tfm)
+ 	struct ahash_alg *alg = crypto_ahash_alg(hash);
  
--	/* Adapt physical memory region size based on available memory */
--	if (memory_tb < kaslr_regions[0].size_tb)
-+	/*
-+	 * Adapt physical memory region size based on available memory,
-+	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
-+	 * device BAR space assuming the direct map space is large enough
-+	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
-+	 * to the physical BAR address.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
- 		kaslr_regions[0].size_tb = memory_tb;
+ 	crypto_ahash_set_statesize(hash, alg->halg.statesize);
++	crypto_ahash_set_reqsize(hash, alg->reqsize);
  
- 	/*
-diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-index 0d94e4a967d81..7cef00d9d7ab6 100644
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -194,6 +194,12 @@ config PCI_P2PDMA
- 	  P2P DMA transactions must be between devices behind the same root
- 	  port.
+ 	if (tfm->__crt_alg->cra_type == &crypto_shash_type)
+ 		return crypto_init_ahash_using_shash(tfm);
+@@ -638,6 +639,9 @@ static int ahash_prepare_alg(struct ahash_alg *alg)
+ 	if (alg->halg.statesize == 0)
+ 		return -EINVAL;
  
-+	  Enabling this option will reduce the entropy of x86 KASLR memory
-+	  regions. For example - on a 46 bit system, the entropy goes down
-+	  from 16 bits to 15 bits. The actual reduction in entropy depends
-+	  on the physical address bits, on processor features, kernel config
-+	  (5 level page table) and physical memory present on the system.
++	if (alg->reqsize && alg->reqsize < alg->halg.statesize)
++		return -EINVAL;
 +
- 	  If unsure, say N.
+ 	err = hash_prepare_alg(&alg->halg);
+ 	if (err)
+ 		return err;
+diff --git a/include/crypto/hash.h b/include/crypto/hash.h
+index 2d5ea9f9ff43e..6692253f0b5be 100644
+--- a/include/crypto/hash.h
++++ b/include/crypto/hash.h
+@@ -132,6 +132,7 @@ struct ahash_request {
+  *	      This is a counterpart to @init_tfm, used to remove
+  *	      various changes set in @init_tfm.
+  * @clone_tfm: Copy transform into new object, may allocate memory.
++ * @reqsize: Size of the request context.
+  * @halg: see struct hash_alg_common
+  */
+ struct ahash_alg {
+@@ -148,6 +149,8 @@ struct ahash_alg {
+ 	void (*exit_tfm)(struct crypto_ahash *tfm);
+ 	int (*clone_tfm)(struct crypto_ahash *dst, struct crypto_ahash *src);
  
- config PCI_LABEL
++	unsigned int reqsize;
++
+ 	struct hash_alg_common halg;
+ };
+ 
 -- 
 2.39.5
 
