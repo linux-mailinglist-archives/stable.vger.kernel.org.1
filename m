@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3777AAC580B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB12AC54C7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB301BC1966
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0361BA57D8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD5B280023;
-	Tue, 27 May 2025 17:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BFC1D432D;
+	Tue, 27 May 2025 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEClanPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1QOHi3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA951CAA7B;
-	Tue, 27 May 2025 17:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B5223ED75;
+	Tue, 27 May 2025 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367610; cv=none; b=nB1iZEK170prchZS2nqfdUQN8Rxn3lPCIX6CzDfXhqA2zisitMuzAnCyQzKILZdY8X5j1LMza8wu4SCZ1FW+Ow7mwdrz5hpGOy6zee0dohuncDsjCuAUotqM0myBtRvuXXoEu6C3H/0TVvtKHrjCAh5UbPveb9k5JAh7wi4/3+U=
+	t=1748365396; cv=none; b=o+ZhXvufmbT7G0HftJ5QJgyqDyYS6abiCu932MpQL0qNvLXA1164klkqbPTpwVA4T9P6tQzWwoQZ2h0F6qTXxAA4PiD+7oQ6Rn0gX1uHIz12SoHgSU5wYWu4iOxF0aB1G71IwcMwHCeM5sdvsgtdZJw/5jKI/t+veJ7FdLs+SB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367610; c=relaxed/simple;
-	bh=tD8MEq5uj93rUtq6usOpj3On/8dVzYbbC1asamPrBmg=;
+	s=arc-20240116; t=1748365396; c=relaxed/simple;
+	bh=6A4dFzSAlyJj13dh+dJzbl+lSBHUCMcZvuR5jPIxYQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9kjcfzyuXL8wxsugpNcf89ppRQjA1InijF08heflUEv0imiXYf3q74PWIx3qbCs9NCgPjiJdQ7+Ebf/Mc3klQn/EYDYfOn/8NRYXIZyf5pEDgVjDlwEniVJzKCQasAlW6jUjkdZ2uAXa11G5WQn/8OhUjmkdHP/sbqTMqE1b+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEClanPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE2EC4CEE9;
-	Tue, 27 May 2025 17:40:09 +0000 (UTC)
+	 MIME-Version; b=aAMpUZ3QE3eQ34c99DqpKCylD6X5YIkJbDR/PdjJJag+ZnwJjJMvWaQ6jELVjg3Sipj/Vorr3a7R5oM8kI/pcBX7kfpJN7lnp7w3TQvf+rQvlh9USN2Sp8vIN3Ch3b0Xe3W8MBDkMrYvzngNGqD5TPFO07ishndGmjFdrFaMSoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1QOHi3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD39BC4CEE9;
+	Tue, 27 May 2025 17:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367610;
-	bh=tD8MEq5uj93rUtq6usOpj3On/8dVzYbbC1asamPrBmg=;
+	s=korg; t=1748365396;
+	bh=6A4dFzSAlyJj13dh+dJzbl+lSBHUCMcZvuR5jPIxYQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEClanPUdsDqcc74vUbU3vy62xIrMOqxZTf/4R9X8nFDCf/3aaGVFWox/D8N7IWyx
-	 0GqrvuV0NXJm7qn9ObD7e4+VPpNlompoidX8r+EAQ9kkjPz4OwPKdiui8auFDd3hw9
-	 f45wjxvyAItUt93yTnSkLXTDnyWq9I+KKmmcPuVo=
+	b=y1QOHi3pKvYOdd2vjqEa5axIa04oHcLWLY3EqYZoMXSWuzD+MFBd6tPtsuLruktxo
+	 S+m/GB0CKnt/0ooWYI5RwhzdHC3qXYC4ZtfKruc6xfdqczaNc5MRE+TLFiZ2Ex9Ozn
+	 5pOxdyF32t8AgYXd49u/YNT4yhR1FZiCnf767NNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 441/783] ASoC: tas2764: Mark SW_RESET as volatile
+Subject: [PATCH 6.12 345/626] eth: mlx4: dont try to complete XDP frames in netpoll
 Date: Tue, 27 May 2025 18:23:58 +0200
-Message-ID: <20250527162531.096501388@linuxfoundation.org>
+Message-ID: <20250527162459.043103107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit f37f1748564ac51d32f7588bd7bfc99913ccab8e ]
+[ Upstream commit 8fdeafd66edaf420ea0063a1f13442fe3470fe70 ]
 
-Since the bit is self-clearing.
+mlx4 doesn't support ndo_xdp_xmit / XDP_REDIRECT and wasn't
+using page pool until now, so it could run XDP completions
+in netpoll (NAPI budget == 0) just fine. Page pool has calling
+context requirements, make sure we don't try to call it from
+what is potentially HW IRQ context.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-3-dbab892a69b5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250213010635.1354034-3-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx4/en_tx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index bc0a73fc7ab41..31f94c8cf2844 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -652,6 +652,7 @@ static const struct regmap_range_cfg tas2764_regmap_ranges[] = {
- static bool tas2764_volatile_register(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
-+	case TAS2764_SW_RST:
- 	case TAS2764_INT_LTCH0 ... TAS2764_INT_LTCH4:
- 	case TAS2764_INT_CLK_CFG:
- 		return true;
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
+index 1ddb11cb25f91..6e077d202827a 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
+@@ -450,6 +450,8 @@ int mlx4_en_process_tx_cq(struct net_device *dev,
+ 
+ 	if (unlikely(!priv->port_up))
+ 		return 0;
++	if (unlikely(!napi_budget) && cq->type == TX_XDP)
++		return 0;
+ 
+ 	netdev_txq_bql_complete_prefetchw(ring->tx_queue);
+ 
 -- 
 2.39.5
 
