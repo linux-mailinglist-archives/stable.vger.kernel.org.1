@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-147663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903E0AC58A3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7ADAC5523
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD2D1BC24B1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6398417F530
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E820427F73D;
-	Tue, 27 May 2025 17:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9340527CB04;
+	Tue, 27 May 2025 17:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImmRlfEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPeTkJWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A604D26FDB7;
-	Tue, 27 May 2025 17:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505F770831;
+	Tue, 27 May 2025 17:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368043; cv=none; b=nCDzfPmzovYF1xVSYBi0iYbQJ/HZ+sYRv9x6ZHn63GqCxKk+nde5XOgyaZHhRRcz4u7pOdBpIBwxGPY+0woOR+AdEadoLQolt24Xd5oik0XgVZsUQnoy3TL7qbgSvBYyxqEcEiQeicw/G5mvJOqq6NgTmu/QwAqjKJ205UncdIc=
+	t=1748365677; cv=none; b=BC8TlHsrY5KJEhHVz6x5LkhV9cQa2+5IHuIF1gKMMjW4eOLV+jxsZMSjCV/BNC/6O5Vxb0DMtuP2fkOXPueN1qUBUngU/2Eb7RFQ18VPWosZYV2/QX0/wuSnH13oK77H6ennz+dmJJ0lXa11a0mIMO8ooS2133ItLNoYuSUDDPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368043; c=relaxed/simple;
-	bh=FzQT9ockW0Kg0hDYq4WpmvY0cMHyWhMNBz0FS1XFUQI=;
+	s=arc-20240116; t=1748365677; c=relaxed/simple;
+	bh=u4gctCutJfKC8GWSdaOIqUr5EuyEkmL/8gdtE29iUuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjalED9zP38JliyUsGASed3pGjtR+YIhj+eopzwWe2AvOjz+qf7sUPc7vi8dPoDhjL6lbPBE/hB/9qG5WxYfV+SHcgsgqaJtvNYWGw9zJ2FfJAnSGQDtG241RTIXFkFyr0vif5lpO9cIGIrVJsVc+y3DyjuTPp6jLPiXM/Z9lac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImmRlfEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284F8C4CEE9;
-	Tue, 27 May 2025 17:47:22 +0000 (UTC)
+	 MIME-Version; b=onzGkweG5iriVpzBYKAcnBCexAgq2ZScNYA+Dd0XmMeVpl+e44ca04ns1zGc7HcT9zkeOPMPr1qezvFsyMH7JXpvbP0LwJVir3RC9wFZC+5BVv1tEdJBv4qvDs6M9PZLXJaftjeW6Nl3k4x0BZXXight0YpIHjcfqGDrKtxWPiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPeTkJWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7158C4CEE9;
+	Tue, 27 May 2025 17:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368043;
-	bh=FzQT9ockW0Kg0hDYq4WpmvY0cMHyWhMNBz0FS1XFUQI=;
+	s=korg; t=1748365677;
+	bh=u4gctCutJfKC8GWSdaOIqUr5EuyEkmL/8gdtE29iUuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImmRlfEnYZTQNcJmj+5FMyX5+qT5ayuP5qaDNc9qJfjvARjr2RTGWfNHbjkUsYj1k
-	 64LGy6YABW2zJdVMM8gDqVuaCuFs7AUQSDI9fSukyx7MPhIBjYSZb9Gd9HaqFwNX/B
-	 PPbOmm/Rj/VIwilkAsYhYSy/EWX02uAwvbE0dPC4=
+	b=vPeTkJWkvTCqctjfJJYsdONvHlwDFYz8A4Gw+Rt5D/mhMZ5rI58LAWWAqGpF9CBt7
+	 bNIdTJu19zxL5C2uN8G4g7oNEA+jyPKVEHQrt55GITBW6vCmv1iHFlL5YrA21eKWzW
+	 fvEFUT8f7gPrsYStEmNMV25aQ/fKEDElUx6sLDSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mina Almasry <almasrymina@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 550/783] netdevsim: allow normal queue reset while down
+Subject: [PATCH 6.12 454/626] ice: treat dyn_allowed only as suggestion
 Date: Tue, 27 May 2025 18:25:47 +0200
-Message-ID: <20250527162535.549400525@linuxfoundation.org>
+Message-ID: <20250527162503.443703807@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +65,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 285b3f78eabd951e59e98f01f86abaaa6c76cd44 ]
+[ Upstream commit a8c2d3932c1106af2764cc6869b29bcf3cb5bc47 ]
 
-Resetting queues while the device is down should be legal.
-Allow it, test it. Ideally we'd test this with a real device
-supporting devmem but I don't have access to such devices.
+It can be needed to have some MSI-X allocated as static and rest as
+dynamic. For example on PF VSI. We want to always have minimum one MSI-X
+on it, because of that it is allocated as a static one, rest can be
+dynamic if it is supported.
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250206225638.1387810-5-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Change the ice_get_irq_res() to allow using static entries if they are
+free even if caller wants dynamic one.
+
+Adjust limit values to the new approach. Min and max in limit means the
+values that are valid, so decrease max and num_static by one.
+
+Set vsi::irq_dyn_alloc if dynamic allocation is supported.
+
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/netdev.c           | 10 ++++------
- tools/testing/selftests/net/nl_netdev.py | 18 +++++++++++++++++-
- 2 files changed, 21 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_irq.c | 25 ++++++++++++------------
+ drivers/net/ethernet/intel/ice/ice_lib.c |  2 ++
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index e4c0d77849b82..a41dc79e9c2e0 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -664,8 +664,11 @@ nsim_queue_mem_alloc(struct net_device *dev, void *per_queue_mem, int idx)
- 	if (ns->rq_reset_mode > 3)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
+index ad82ff7d19957..09f9c7ba52795 100644
+--- a/drivers/net/ethernet/intel/ice/ice_irq.c
++++ b/drivers/net/ethernet/intel/ice/ice_irq.c
+@@ -45,7 +45,7 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
+ /**
+  * ice_get_irq_res - get an interrupt resource
+  * @pf: board private structure
+- * @dyn_only: force entry to be dynamically allocated
++ * @dyn_allowed: allow entry to be dynamically allocated
+  *
+  * Allocate new irq entry in the free slot of the tracker. Since xarray
+  * is used, always allocate new entry at the lowest possible index. Set
+@@ -53,11 +53,12 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
+  *
+  * Returns allocated irq entry or NULL on failure.
+  */
+-static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
++static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
++					     bool dyn_allowed)
+ {
+-	struct xa_limit limit = { .max = pf->irq_tracker.num_entries,
++	struct xa_limit limit = { .max = pf->irq_tracker.num_entries - 1,
+ 				  .min = 0 };
+-	unsigned int num_static = pf->irq_tracker.num_static;
++	unsigned int num_static = pf->irq_tracker.num_static - 1;
+ 	struct ice_irq_entry *entry;
+ 	unsigned int index;
+ 	int ret;
+@@ -66,9 +67,9 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
+ 	if (!entry)
+ 		return NULL;
  
--	if (ns->rq_reset_mode == 1)
-+	if (ns->rq_reset_mode == 1) {
-+		if (!netif_running(ns->netdev))
-+			return -ENETDOWN;
- 		return nsim_create_page_pool(&qmem->pp, &ns->rq[idx]->napi);
-+	}
+-	/* skip preallocated entries if the caller says so */
+-	if (dyn_only)
+-		limit.min = num_static;
++	/* only already allocated if the caller says so */
++	if (!dyn_allowed)
++		limit.max = num_static;
  
- 	qmem->rq = nsim_queue_alloc();
- 	if (!qmem->rq)
-@@ -773,11 +776,6 @@ nsim_qreset_write(struct file *file, const char __user *data,
- 		return -EINVAL;
+ 	ret = xa_alloc(&pf->irq_tracker.entries, &index, entry, limit,
+ 		       GFP_KERNEL);
+@@ -78,7 +79,7 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
+ 		entry = NULL;
+ 	} else {
+ 		entry->index = index;
+-		entry->dynamic = index >= num_static;
++		entry->dynamic = index > num_static;
+ 	}
  
- 	rtnl_lock();
--	if (!netif_running(ns->netdev)) {
--		ret = -ENETDOWN;
--		goto exit_unlock;
--	}
--
- 	if (queue >= ns->netdev->real_num_rx_queues) {
- 		ret = -EINVAL;
- 		goto exit_unlock;
-diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
-index 93e8cb671c3d9..beaee5e4e2aab 100755
---- a/tools/testing/selftests/net/nl_netdev.py
-+++ b/tools/testing/selftests/net/nl_netdev.py
-@@ -35,6 +35,21 @@ def napi_list_check(nf) -> None:
-                         comment=f"queue count after reset queue {q} mode {i}")
+ 	return entry;
+@@ -272,7 +273,7 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
+ /**
+  * ice_alloc_irq - Allocate new interrupt vector
+  * @pf: board private structure
+- * @dyn_only: force dynamic allocation of the interrupt
++ * @dyn_allowed: allow dynamic allocation of the interrupt
+  *
+  * Allocate new interrupt vector for a given owner id.
+  * return struct msi_map with interrupt details and track
+@@ -285,20 +286,20 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
+  * interrupt will be allocated with pci_msix_alloc_irq_at.
+  *
+  * Some callers may only support dynamically allocated interrupts.
+- * This is indicated with dyn_only flag.
++ * This is indicated with dyn_allowed flag.
+  *
+  * On failure, return map with negative .index. The caller
+  * is expected to check returned map index.
+  *
+  */
+-struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_only)
++struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_allowed)
+ {
+ 	int sriov_base_vector = pf->sriov_base_vector;
+ 	struct msi_map map = { .index = -ENOENT };
+ 	struct device *dev = ice_pf_to_dev(pf);
+ 	struct ice_irq_entry *entry;
  
+-	entry = ice_get_irq_res(pf, dyn_only);
++	entry = ice_get_irq_res(pf, dyn_allowed);
+ 	if (!entry)
+ 		return map;
  
-+def nsim_rxq_reset_down(nf) -> None:
-+    """
-+    Test that the queue API supports resetting a queue
-+    while the interface is down. We should convert this
-+    test to testing real HW once more devices support
-+    queue API.
-+    """
-+    with NetdevSimDev(queue_count=4) as nsimdev:
-+        nsim = nsimdev.nsims[0]
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 121a5ad5c8e10..8961eebe67aa2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -567,6 +567,8 @@ ice_vsi_alloc_def(struct ice_vsi *vsi, struct ice_channel *ch)
+ 			return -ENOMEM;
+ 	}
+ 
++	vsi->irq_dyn_alloc = pci_msix_can_alloc_dyn(vsi->back->pdev);
 +
-+        ip(f"link set dev {nsim.ifname} down")
-+        for i in [0, 2, 3]:
-+            nsim.dfs_write("queue_reset", f"1 {i}")
-+
-+
- def page_pool_check(nf) -> None:
-     with NetdevSimDev() as nsimdev:
-         nsim = nsimdev.nsims[0]
-@@ -106,7 +121,8 @@ def page_pool_check(nf) -> None:
- 
- def main() -> None:
-     nf = NetdevFamily()
--    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check],
-+    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check,
-+              nsim_rxq_reset_down],
-              args=(nf, ))
-     ksft_exit()
- 
+ 	switch (vsi->type) {
+ 	case ICE_VSI_PF:
+ 	case ICE_VSI_SF:
 -- 
 2.39.5
 
