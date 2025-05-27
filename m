@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE67AC5714
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F2CAC5399
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E6B44A6C09
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635921BA3D1A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF4227E7C6;
-	Tue, 27 May 2025 17:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2A727A926;
+	Tue, 27 May 2025 16:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGB8sOAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QFVog60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B19F26B0B6;
-	Tue, 27 May 2025 17:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977EC1EA91;
+	Tue, 27 May 2025 16:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366917; cv=none; b=EQZZjWTFP47BWP24wrjGbOhUXXUBK/MPKdyA9JhKHy0n1rBT1L6qOhXMi0O7nfr8gH5iCdk/cT9qlanioVXG0gSO0aTcK5e14+QR3sw43BYwRLJf3oPuJoWCSTS0KOwA2wBuhlGTO4rBlOfiUWKUlMt6eIE+WhyjtXg0z3zL5fY=
+	t=1748364551; cv=none; b=Rv5H/93XC0KY+Z+uWtVei8Lm8l8qc8IzciVI21WYCZKeK2TlhQPsROY+JpCq4E/yR31qGpEYCRwGqRvfrhZJAQ7wxKHYPtzf5/AeF3g/BP3FylJZIDdvaCm1ZYchXXQzK7r7nF8YAWFI71ubQLt5x1q5rkDW9Mi9/lYk3TQ2x0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366917; c=relaxed/simple;
-	bh=EdoWPQ2fNPjuvzFeQfYieJMWPeG6cU+c+QwW5trerkY=;
+	s=arc-20240116; t=1748364551; c=relaxed/simple;
+	bh=+ZwxsHdUx/r9RTjkahTCm6JcqO0YRsKHutnP24zlCXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/QM98dc9fXI9JdFH+UGPSRenbgXgreJ6F6pywvl82rtyLXK+kNb+6TWGiLr8xjZCavnFqQ9Ce8pH9JjlS83S02ciJRyZl5MNJcfYfs8+2akplwKWfnzDWvIJFcq3WodpTqri96+Rv3Is3PZthNb2hNZ39XkurUgTk2PuSkblSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGB8sOAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3E2C4CEE9;
-	Tue, 27 May 2025 17:28:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KEjTSa1DIPRtXz8ydaYlIaFzcOYyw2R+FtFUkiI9idFpAviQmbNGw+TfIrOCe7h0atMa4H9wIqgGWLRo1TwXXPyGpLvOgPG2pZAmjpcdyKLixBgWP6pQ3Mqn3Cbnt6sJGVcXs5YPKIRABW2ZW7wisyQDD2C6E+sl8jOsrBb4jco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QFVog60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21852C4CEE9;
+	Tue, 27 May 2025 16:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366917;
-	bh=EdoWPQ2fNPjuvzFeQfYieJMWPeG6cU+c+QwW5trerkY=;
+	s=korg; t=1748364551;
+	bh=+ZwxsHdUx/r9RTjkahTCm6JcqO0YRsKHutnP24zlCXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGB8sOAKqs6VkfmLNUD/tP3qLpz10EXrTadTeRxRsp3kF+/7MdDtaMacUDnEyZyZv
-	 998rS760JQeN2y1xjkwHo1n0KI1C4HUaPG/snuHNe1ZQoA2GpnpDtjka1oDvXFK5p8
-	 gsKS7MUuVllqGGKmB3JM8sRBXkWQMuzbMnGZUs2Y=
+	b=1QFVog60P6fI3dlSnsGI1uKRD3rMZXAPRHL8kbVxFjsWlBVJbNtcMPrla9LkwRS1a
+	 yHFC6FkNKA0g5V3s2fmQackjA8jaZB6sfVuTVhvlVAWJ8GpwaT0f+ePOFzPZEb7RQk
+	 2UXHg1FpEW+KQ/5QC/qlg6dY8k/brlfetjOY/an8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 188/783] drm/amdgpu: Update SRIOV video codec caps
-Date: Tue, 27 May 2025 18:19:45 +0200
-Message-ID: <20250527162520.808630371@linuxfoundation.org>
+Subject: [PATCH 6.12 093/626] PCI: vmd: Disable MSI remapping bypass under Xen
+Date: Tue, 27 May 2025 18:19:46 +0200
+Message-ID: <20250527162448.826740274@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit 19478f2011f8b53dee401c91423c4e0b73753e4f ]
+[ Upstream commit 6c4d5aadf5df31ea0ac025980670eee9beaf466b ]
 
-There have been multiple fixes to the video caps that are missing for
-SRIOV. Update the SRIOV caps with correct values.
+MSI remapping bypass (directly configuring MSI entries for devices on the
+VMD bus) won't work under Xen, as Xen is not aware of devices in such bus,
+and hence cannot configure the entries using the pIRQ interface in the PV
+case, and in the PVH case traps won't be setup for MSI entries for such
+devices.
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Until Xen is aware of devices in the VMD bus prevent the
+VMD_FEAT_CAN_BYPASS_MSI_REMAP capability from being used when running as
+any kind of Xen guest.
+
+The MSI remapping bypass is an optional feature of VMD bridges, and hence
+when running under Xen it will be masked and devices will be forced to
+redirect its interrupts from the VMD bridge.  That mode of operation must
+always be supported by VMD bridges and works when Xen is not aware of
+devices behind the VMD bridge.
+
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Message-ID: <20250219092059.90850-3-roger.pau@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nv.c    | 16 ++++++++--------
- drivers/gpu/drm/amd/amdgpu/soc21.c | 10 ++--------
- 2 files changed, 10 insertions(+), 16 deletions(-)
+ drivers/pci/controller/vmd.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/nv.c b/drivers/gpu/drm/amd/amdgpu/nv.c
-index 95c609317a8d7..efca7dc27d68d 100644
---- a/drivers/gpu/drm/amd/amdgpu/nv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nv.c
-@@ -141,23 +141,23 @@ static struct amdgpu_video_codec_info sriov_sc_video_codecs_encode_array[] = {
- };
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index 94ceec50a2b94..8df064b62a2ff 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -17,6 +17,8 @@
+ #include <linux/rculist.h>
+ #include <linux/rcupdate.h>
  
- static struct amdgpu_video_codec_info sriov_sc_video_codecs_decode_array_vcn0[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 1920, 1088, 3)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 1920, 1088, 5)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 16384, 16384, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_AV1, 8192, 4352, 0)},
- };
++#include <xen/xen.h>
++
+ #include <asm/irqdomain.h>
  
- static struct amdgpu_video_codec_info sriov_sc_video_codecs_decode_array_vcn1[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 1920, 1088, 3)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 1920, 1088, 5)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 16384, 16384, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
- };
+ #define VMD_CFGBAR	0
+@@ -970,6 +972,24 @@ static int vmd_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	struct vmd_dev *vmd;
+ 	int err;
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc21.c b/drivers/gpu/drm/amd/amdgpu/soc21.c
-index 62ad67d0b598f..c66cff399f63d 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc21.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
-@@ -117,23 +117,17 @@ static struct amdgpu_video_codecs sriov_vcn_4_0_0_video_codecs_encode_vcn1 = {
- };
- 
- static struct amdgpu_video_codec_info sriov_vcn_4_0_0_video_codecs_decode_array_vcn0[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 16384, 16384, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_AV1, 8192, 4352, 0)},
- };
- 
- static struct amdgpu_video_codec_info sriov_vcn_4_0_0_video_codecs_decode_array_vcn1[] = {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 16384, 16384, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
- };
++	if (xen_domain()) {
++		/*
++		 * Xen doesn't have knowledge about devices in the VMD bus
++		 * because the config space of devices behind the VMD bridge is
++		 * not known to Xen, and hence Xen cannot discover or configure
++		 * them in any way.
++		 *
++		 * Bypass of MSI remapping won't work in that case as direct
++		 * write by Linux to the MSI entries won't result in functional
++		 * interrupts, as Xen is the entity that manages the host
++		 * interrupt controller and must configure interrupts.  However
++		 * multiplexing of interrupts by the VMD bridge will work under
++		 * Xen, so force the usage of that mode which must always be
++		 * supported by VMD bridges.
++		 */
++		features &= ~VMD_FEAT_CAN_BYPASS_MSI_REMAP;
++	}
++
+ 	if (resource_size(&dev->resource[VMD_CFGBAR]) < (1 << 20))
+ 		return -ENOMEM;
  
 -- 
 2.39.5
