@@ -1,113 +1,167 @@
-Return-Path: <stable+bounces-146425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9520BAC4AE1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 10:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E04FCAC4B07
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 11:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52359189E43C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 08:58:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74089189EE4D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 09:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75E524DCEB;
-	Tue, 27 May 2025 08:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E16248F4E;
+	Tue, 27 May 2025 09:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mikaelkw.online header.i=@mikaelkw.online header.b="AY6F70ne"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nLOg2s6X"
 X-Original-To: stable@vger.kernel.org
-Received: from dispatch1-eu1.ppe-hosted.com (dispatch1-eu1.ppe-hosted.com [185.132.181.8])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58D324A066;
-	Tue, 27 May 2025 08:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.181.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91AC3C01
+	for <stable@vger.kernel.org>; Tue, 27 May 2025 09:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748336294; cv=none; b=dwpPVceh3uKiTPBDaK/b5KCqQGHeN53FiixaejTDz9p/P4W9LR1k3A+tgV/DNS5oqt9DZGRgVwYr9jgl6GbVZHLDZZgieH3fmg4qh5A+QKzmzgmnddSjc+YieXm4AShlKuPL2huIzm64b0pwUtpXq31Ov0rzCBi6DqEchXOghoE=
+	t=1748336722; cv=none; b=DCaSROMacy6RT8z/tGIFUaZ0PVVgRqmKRNMz/tYmzqTqhMXJ90bIZuAldZkb7oN/3ECEc6O58KKjuCTDKHNb0YM3ELSK3ijg1tpVuHO9jr0BnSekGp2V7UKXEkE1ETVI76z7C7yQ5iQ6f2GwioX/LmIGyVDJC8F+aOp5iql+qQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748336294; c=relaxed/simple;
-	bh=fIznW0zf7tRzozO0jQVRIS3oEoNRlp1hVjIZ4iMGIJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHowdOlpAaDkDajYFfEKMJFaFv1a+4EmiwwOfaDteqK2fHr8mrixOpiwV0XvAzX6Kx4pE9cfnn5w/3xKJQ00KTQNusJ7bIdFhdJ2EGTJ0Rz3LHAD9J92a8/NBGajNmOA3E/KcpDlHVaIDk2I33J1IuZ9lus23hyFuP6l8lCJM+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mikaelkw.online; spf=pass smtp.mailfrom=mikaelkw.online; dkim=pass (2048-bit key) header.d=mikaelkw.online header.i=@mikaelkw.online header.b=AY6F70ne; arc=none smtp.client-ip=185.132.181.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mikaelkw.online
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mikaelkw.online
-Received: from dispatch1-eu1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-eu1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 3DFB9345840;
-	Tue, 27 May 2025 08:58:11 +0000 (UTC)
-Received: from engine.ppe-hosted.com (unknown [10.70.45.136])
-	by dispatch1-eu1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 0E706600B8;
-	Tue, 27 May 2025 08:58:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mikaelkw.online;
- h=cc:cc:content-transfer-encoding:content-transfer-encoding:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
- s=pp-selector; bh=FfwiLz0qMLCe8pRJ2Xqblg8YMQN3QxXuQ0AQptgDjjY=;
- b=AY6F70neblY6M/62p9wx6POO9G2QYcyS2bxwQpTmGOCDMKMUGK01krhicplC+C8WC2C0sj0zi+t+RUN/cpVyYd+Kl5UuHs4zcLevmaxw734KQLTsuFDPgnMLODFCE6rJNG+B29C9jDIcH8yXpZ9SJZvaJxCCmGXB1t3/HxSLRxrhke6I6dMHEfY7qyJ/SAQiuJtcIYPupuTRJzLqJ7/SVvzia3VERwN5eiDLj92l6IJqqDhMAreURoswcrKRI2H+ZR8XQOlAvpdR0/BfPVX+Zk74iHxHQubJGiclCbwc+mBvxVFmjwZdTxAHKHyFQRgqV4pOn/qn9mqpkcpuf7sSLg==
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from test-ubuntu-rev3.. (78-26-16-15.network.trollfjord.no [78.26.16.15])
-	by mx1-eu1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 5454DB00056;
-	Tue, 27 May 2025 08:58:01 +0000 (UTC)
-From: Mikael Wessel <post@mikaelkw.online>
-To: netdev@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org,
-	torvalds@linuxfoundation.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew@lunn.ch,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	security@kernel.org,
-	stable@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	linux-kernel@vger.kernel.org,
-	Mikael Wessel <post@mikaelkw.online>
-Subject: [PATCH v2 1/1] e1000e: fix heap overflow in e1000_set_eeprom()
-Date: Tue, 27 May 2025 10:56:12 +0200
-Message-ID: <20250527085612.11354-2-post@mikaelkw.online>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250527085612.11354-1-post@mikaelkw.online>
-References: <20250527085612.11354-1-post@mikaelkw.online>
+	s=arc-20240116; t=1748336722; c=relaxed/simple;
+	bh=CRpfTBPGsU/+tqdI9xlMiEq0T70swRutbZRigIjFYyc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RjzomvrC6OAItVz/CM9RnZPhnsEPaASkYH8jgs0ev3YTQrHeoN7JCuzGZ1/ywy0kv6GEIiPT9uBCJPfp3/RfdlaKa/cwV48kv2klD3M4xcUNBKxrw3SJ47wz3Rx9k16U9tgery4NL1IiWr9oYz7MYSs1o0n685+mYXHNj6Tjwg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nLOg2s6X; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e7d998f5f8dso1605216276.0
+        for <stable@vger.kernel.org>; Tue, 27 May 2025 02:05:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748336720; x=1748941520; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LTZd01UwRRbxtjj6Iv0AjAyRW61W+KGsLF4BZOeCQNY=;
+        b=nLOg2s6XbZ+9gRzR1FyfkX+jn5Zwk+lbSOdqo2W3guvUk9F6dWNBPLJ+XcZU/FE6JA
+         f3bqa1dUHmANelb1y7Iu6k1dISLzsJwdVi82JX6A5bE9nuzXNjyxH0gh9e/kLazaTGvt
+         QeOEsqtE01frCgz7NROoVzevM+vQTuLc7AUYlu6+KQ7lftZQb+cZLaW1dywWEua6HgyK
+         TfM/Aaeqvk6zOUdM+8BDWVrb3eLjrz5czR7FCLX2kS/OPyHvhvCyWZm8/uOskc8PPUFN
+         XDrr95m13CZXYrex+TcUOSsxQ5vqqYOWl9HPYGfJX+pEQwOK9wmzYg/xEWqgbJ6GRBd5
+         SfLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748336720; x=1748941520;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LTZd01UwRRbxtjj6Iv0AjAyRW61W+KGsLF4BZOeCQNY=;
+        b=vio6PImDLtdMU3orJZvYzBWFkgrjyRX84YcynG6N9piAtGwb2ydP+234UI4AmAX1wQ
+         59/zUUQp7TckPKiNtjxdqc7csd4kXHWW5hmZ7rwVvD0dWo9Vhkzxzt8ldoWWgcq/Xg+o
+         sWDoqJ9rEsjCXCqPAFFKhxrIVUlsWeLx9Il1zhNp10l4EQ5v14mho6N0rwXRyoqUMvj5
+         vr38+3pUtF2Xs57kaT3KBw52RcLxQZ7zq1P4+hcPuAX/KKx4nRVKZssTcvbk75yH5BWM
+         LXx8x+QSomhLipE329QKGtymOkBrqVCq1Se8+Y0eYOT+1OTezgvgmOeu2AXCrxJzwpLz
+         jwtA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJg7nv3Cb+vjau3JUb+HF9Cmu+yVb35eijdxNxuiQmuatCsbYdyRp8k2LNGsbMJFqFavO2rco=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywgzg3zkWB16cbPY7zp7PcO2uL0kyPZIX4iYY1wbAbfGOtVwZNL
+	SvOLiY4SmqR1tfDu5ILlkHaF63OegqTQ7BiJXpRngmt8TDtWvVTVAjBTFK03pmxiZUbvy+i6H+t
+	Ei2920yoQfx3HC0gKfyfulmtpPZv9tThKguaFkjJp
+X-Gm-Gg: ASbGncskUn8J6zjz1AqSCmg7+XY6EdHIsB6fL6Bc4UAkXK7R8Uv4Q9qe5keOSXAQA8p
+	PV3z1CcWmBxsB0URzZd2V33TT9U8hVZQvlz+8/JnId+N9mtbXqSIoPJG247rEpBVErcNci5vFUR
+	Axx5RAgYA3I7Qd85mmd74j1WitKLOmsHDNsXPOZteTtJTnAxatgjQ7UVU=
+X-Google-Smtp-Source: AGHT+IFKMIHWgeFu3xBM1RWDE/WEs3TcahlWcU3GOovHQ5dAwRv/prvQiF+8ccGJ492KAiRXV4sznqZrP7KO0+OOKwU=
+X-Received: by 2002:a05:6902:6c09:b0:e7d:81c7:3291 with SMTP id
+ 3f1490d57ef6-e7d912e0c0fmr11236246276.0.1748336719732; Tue, 27 May 2025
+ 02:05:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1748336282-23qMi_kDexex
-X-PPE-STACK: {"stack":"eu1"}
-X-MDID-O:
- eu1;fra;1748336282;23qMi_kDexex;<post@mikaelkw.online>;7544ea0f74a3697a45f5192d6efff48c
-X-PPE-TRUSTED: V=1;DIR=OUT;
+References: <20250527074737.21641-1-brgl@bgdev.pl>
+In-Reply-To: <20250527074737.21641-1-brgl@bgdev.pl>
+From: Hsin-chen Chuang <chharry@google.com>
+Date: Tue, 27 May 2025 17:04:42 +0800
+X-Gm-Features: AX0GCFt06KcqokYcO9FSO7kQTD9JduQQO9FBuLb_nJmBU7e9JKNOWhA7JnDhj40
+Message-ID: <CADg1FFdVu7BjLi+Jr4KaHnkQBJCShOCpc7veXmqKN0nYkdhAYg@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: hci_qca: move the SoC type check to the right place
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+	Balakrishna Godavarthi <bgodavar@qti.qualcomm.com>, Jiating Wang <jiatingw@qti.qualcomm.com>, 
+	Vincent Chuang <vincentch@google.com>, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The ETHTOOL_SETEEPROM ioctl copies user data into a kmalloc'ed buffer
-without validating eeprom->len and eeprom->offset.  A CAP_NET_ADMIN
-user can overflow the heap and crash the kernel or gain code execution.
+On Tue, May 27, 2025 at 3:47=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
+>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> Commit 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL
+> returned by gpiod_get_optional()") accidentally changed the prevous
 
-Validate length and offset before memcpy().
+typo: previous
 
-Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-Reported-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Mikael Wessel <post@mikaelkw.online>
-Cc: stable@vger.kernel.org
----
- drivers/net/ethernet/intel/e1000e/ethtool.c | 3 +++
- 1 file changed, 3 insertions(+)
+> behavior where power control would be disabled without the BT_EN GPIO
+> only on QCA_WCN6750 and QCA_WCN6855 while also getting the error check
+> wrong. We should treat every IS_ERR() return value from
+> devm_gpiod_get_optional() as a reason to bail-out while we should only
+> set power_ctrl_enabled to false on the two models mentioned above. While
+> at it: use dev_err_probe() to save a LOC.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL retu=
+rned by gpiod_get_optional()")
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> ---
+>  drivers/bluetooth/hci_qca.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+> index e00590ba24fdb..a2dc39c005f4f 100644
+> --- a/drivers/bluetooth/hci_qca.c
+> +++ b/drivers/bluetooth/hci_qca.c
+> @@ -2415,14 +2415,14 @@ static int qca_serdev_probe(struct serdev_device =
+*serdev)
+>
+>                 qcadev->bt_en =3D devm_gpiod_get_optional(&serdev->dev, "=
+enable",
+>                                                GPIOD_OUT_LOW);
+> -               if (IS_ERR(qcadev->bt_en) &&
+> -                   (data->soc_type =3D=3D QCA_WCN6750 ||
+> -                    data->soc_type =3D=3D QCA_WCN6855)) {
+> -                       dev_err(&serdev->dev, "failed to acquire BT_EN gp=
+io\n");
+> -                       return PTR_ERR(qcadev->bt_en);
+> -               }
+> +               if (IS_ERR(qcadev->bt_en))
+> +                       return dev_err_probe(&serdev->dev,
+> +                                            PTR_ERR(qcadev->bt_en),
+> +                                            "failed to acquire BT_EN gpi=
+o\n");
+>
+> -               if (!qcadev->bt_en)
+> +               if (!qcadev->bt_en &&
+> +                   (data->soc_type =3D=3D QCA_WCN6750 ||
+> +                    data->soc_type =3D=3D QCA_WCN6855))
+>                         power_ctrl_enabled =3D false;
+>
+>                 qcadev->sw_ctrl =3D devm_gpiod_get_optional(&serdev->dev,=
+ "swctrl",
+> --
+> 2.48.1
+>
 
-diff --git a/drivers/net/ethernet/intel/e1000e/ethtool.c b/drivers/net/ethernet/intel/e1000e/ethtool.c
-index 9364bc2b4eb1..98e541e39730 100644
---- a/drivers/net/ethernet/intel/e1000e/ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
-@@ -596,6 +596,9 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 	for (i = 0; i < last_word - first_word + 1; i++)
- 		le16_to_cpus(&eeprom_buff[i]);
- 
-+        if (eeprom->len > max_len ||
-+            eeprom->offset > max_len - eeprom->len)
-+                return -EINVAL;
- 	memcpy(ptr, bytes, eeprom->len);
- 
- 	for (i = 0; i < last_word - first_word + 1; i++)
--- 
-2.48.1
+Thanks for the fix!
 
+Tested on a Chromebook device with WCN3991 chip.
+Without the patch the hdev->reset callback would make the HCI device
+unrecoverable, and with the patch the callback can reset the HCI
+device smoothly.
+
+Tested-by: Hsin-chen Chuang <chharry@chromium.org>
+Reviewed-by: Hsin-chen Chuang <chharry@chromium.org>
+
+
+Best Regards,
+Hsin-chen
 
