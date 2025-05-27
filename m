@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-147764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2A7AC5912
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A70AAC55EA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EB527AE3D0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D61987AFBE8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F5327FD64;
-	Tue, 27 May 2025 17:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A46A182D7;
+	Tue, 27 May 2025 17:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtW9xCqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlQpijJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D459327D784;
-	Tue, 27 May 2025 17:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165E61E89C;
+	Tue, 27 May 2025 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368356; cv=none; b=TdL+5HdIKrMaMjAUGBMbFA990j5Yp9pteqmktsMg+eeAq5thGNSn72kFFNkZZbdDIOBitifmsppFfXr5zhgBIFCxFDNQJiMclyOG7rWTezr6g5fsEDJGCD76/Va726NlHtFP1/pBAabm73GQ8A0mmvrgQDlAricD8orVYAq+nMY=
+	t=1748366158; cv=none; b=FqCTUZjlR0FI3Wbu8oznFhcmpT0DZXjdJp5L0Lr+y5MU9HyCWcuFvJSR13NX/VzSHZsLSIU+Gj0km8jMQaRxr9gEu2x4qBDfKdeRLGFfOdQcN+aJ17D81t1hLriJMMihcuMeocD4hrf8rjYZM2BmH7k4Z/DKhxQuHjIqMUt8jJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368356; c=relaxed/simple;
-	bh=bbjWelZWF8Lo/HrdQ+Idv7YfPWC3iJ77o9ewv8hU5ck=;
+	s=arc-20240116; t=1748366158; c=relaxed/simple;
+	bh=y6lJMMaPr0AvPFPRsUC0yPYwMKLQUk7KF2K+AFF45SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wy7AFuhEhd4cekNVS/zxyop62DkwrZFTrJnpB2aUYPLe4erTMX8gfrS029xDKBvvnNnZ+/cQLc/ArAO/KJvKaPno5K3ZwyuibBlnylj0vh1RCVHMnZ+ova+pN4/evuRwyUO/gvMMJaTjMC8FGrqgc/6xdXsW2fFf9jsDv1TmQnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtW9xCqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A1BC4CEE9;
-	Tue, 27 May 2025 17:52:36 +0000 (UTC)
+	 MIME-Version; b=D/X1szmRvXcKd761pdIWvFB4r/28Dt8FHMuz0lpHf2Wa/jFlrZPopkQ6wkHJYZz8V532YyQehs5SoHlfAPjMZMS72CA9gQ8IA7wtqvTQKVs72zxLLQb1kbCcDOaR2rje/dTXMZLDP/ugHlOX++BhYRrtzslhoDgeJAfuGWW4YCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlQpijJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8A7C4CEE9;
+	Tue, 27 May 2025 17:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368356;
-	bh=bbjWelZWF8Lo/HrdQ+Idv7YfPWC3iJ77o9ewv8hU5ck=;
+	s=korg; t=1748366157;
+	bh=y6lJMMaPr0AvPFPRsUC0yPYwMKLQUk7KF2K+AFF45SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtW9xCqF2MTp020Amx6vy2YL3my+r2CTBT8HWchK6kgQaIdwhwg40WXNCo1jxrM/h
-	 ad2luWVRNP41chH1O/Nv4hcvXnyGniOqxy5pGcENG7y/+ORiX2RlFCSdxV1wY4W9f5
-	 gFeeBleAokrJ7RUFhdVd9oxn+F53eh8bBOvi2qKs=
+	b=vlQpijJV8lIRvkrjDEutru+kc3sTgZ4CH0WFBav0AMqPbOBHCWl09Ayf+AsJFgk3t
+	 aANXnE/aR1lNyUN1Degs55Yl63DyG7RHsc85dZ6e3GhwLDHWsLoFWVFjMRhd5JZocj
+	 VqjeOoEFPAGTZihYjUz9eZRHEF7JF+zUEBsd4hgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 674/783] tools: ynl-gen: validate 0 len strings from kernel
-Date: Tue, 27 May 2025 18:27:51 +0200
-Message-ID: <20250527162540.575564249@linuxfoundation.org>
+	syzbot+32d4647f551007595173@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 579/626] ALSA: pcm: Fix race of buffer access at PCM OSS layer
+Date: Tue, 27 May 2025 18:27:52 +0200
+Message-ID: <20250527162508.504577123@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4720f9707c783f642332dee3d56dccaefa850e42 ]
+commit 93a81ca0657758b607c3f4ba889ae806be9beb73 upstream.
 
-Strings from the kernel are guaranteed to be null terminated and
-ynl_attr_validate() checks for this. But it doesn't check if the string
-has a len of 0, which would cause problems when trying to access
-data[len - 1]. Fix this by checking that len is positive.
+The PCM OSS layer tries to clear the buffer with the silence data at
+initialization (or reconfiguration) of a stream with the explicit call
+of snd_pcm_format_set_silence() with runtime->dma_area.  But this may
+lead to a UAF because the accessed runtime->dma_area might be freed
+concurrently, as it's performed outside the PCM ops.
 
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250503043050.861238-1-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For avoiding it, move the code into the PCM core and perform it inside
+the buffer access lock, so that it won't be changed during the
+operation.
+
+Reported-by: syzbot+32d4647f551007595173@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/68164d8e.050a0220.11da1b.0019.GAE@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250516080817.20068-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/net/ynl/lib/ynl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/sound/pcm.h      |    2 ++
+ sound/core/oss/pcm_oss.c |    3 +--
+ sound/core/pcm_native.c  |   11 +++++++++++
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
-index ce32cb35007d6..c4da34048ef85 100644
---- a/tools/net/ynl/lib/ynl.c
-+++ b/tools/net/ynl/lib/ynl.c
-@@ -364,7 +364,7 @@ int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
- 		     "Invalid attribute (binary %s)", policy->name);
- 		return -1;
- 	case YNL_PT_NUL_STR:
--		if ((!policy->len || len <= policy->len) && !data[len - 1])
-+		if (len && (!policy->len || len <= policy->len) && !data[len - 1])
- 			break;
- 		yerr(yarg->ys, YNL_ERROR_ATTR_INVALID,
- 		     "Invalid attribute (string %s)", policy->name);
--- 
-2.39.5
-
+--- a/include/sound/pcm.h
++++ b/include/sound/pcm.h
+@@ -1428,6 +1428,8 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
+ #define snd_pcm_lib_mmap_iomem	NULL
+ #endif
+ 
++void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
++
+ /**
+  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
+  * @dma: DMA number
+--- a/sound/core/oss/pcm_oss.c
++++ b/sound/core/oss/pcm_oss.c
+@@ -1074,8 +1074,7 @@ static int snd_pcm_oss_change_params_loc
+ 	runtime->oss.params = 0;
+ 	runtime->oss.prepare = 1;
+ 	runtime->oss.buffer_used = 0;
+-	if (runtime->dma_area)
+-		snd_pcm_format_set_silence(runtime->format, runtime->dma_area, bytes_to_samples(runtime, runtime->dma_bytes));
++	snd_pcm_runtime_buffer_set_silence(runtime);
+ 
+ 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
+ 
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -723,6 +723,17 @@ static void snd_pcm_buffer_access_unlock
+ 	atomic_inc(&runtime->buffer_accessing);
+ }
+ 
++/* fill the PCM buffer with the current silence format; called from pcm_oss.c */
++void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
++{
++	snd_pcm_buffer_access_lock(runtime);
++	if (runtime->dma_area)
++		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
++					   bytes_to_samples(runtime, runtime->dma_bytes));
++	snd_pcm_buffer_access_unlock(runtime);
++}
++EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
++
+ #if IS_ENABLED(CONFIG_SND_PCM_OSS)
+ #define is_oss_stream(substream)	((substream)->oss.oss)
+ #else
 
 
 
