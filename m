@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9886AC56D2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75567AC537F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1F744A5F4B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B852617184F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E0A27D784;
-	Tue, 27 May 2025 17:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB75D27D784;
+	Tue, 27 May 2025 16:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5TaIh04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6OGnD4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3505E1E89C;
-	Tue, 27 May 2025 17:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85242CCC0;
+	Tue, 27 May 2025 16:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366723; cv=none; b=qePNmjzMEyAdVuHlmK/LViVa1ihEdXxVFdY1EPZTH+UO/xqwDXB7c8NFbym64pw/zhMPc94Fu0czaEO/Z3cRqpunK/cvkpBA3nyzFG/bxOeXczwJiTh5Vo0JhKFu4zJ+AlURbtr9Q2sgWp3stmgKJyW9EiEtc12qDq+JClf+vJQ=
+	t=1748364466; cv=none; b=o+O4ciLtsAsM9GzTRuwA5VsitDduYhtmTOm9tk08XZnJaElRpEl03tl5LqkuYZWOKRHbDf9aLJNudSfFJIhiPgke7nBsTQge44C4vSIUPdm+QdEKfIKdaUpZPprXTkEBwnO396bRYYt+vcfsjyUGIbKaqZd75iJ2FMVbbEkABSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366723; c=relaxed/simple;
-	bh=PoaPzjJusEajyf0HPX12YCTxr78qam14kTeq5l6B3xQ=;
+	s=arc-20240116; t=1748364466; c=relaxed/simple;
+	bh=zL9UWgxS2hizKxfzMIdEZ9rr4cmSyxHzx7z3irw6gEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEPzekO5GgVG9aZyORUqqWN9pILkJz8FmXY1Bbo1QOtzjS2nV/etP5HQ0/lBoivO204Sa5HxbqCZjDGjjihJt7I+LdomfmvY8cLtKsydJMtb1ZYuICCwgJUilZWqIWc49koeIxCEbUHjq+gS0tE/jjW68vgI0tg8g5MHw4ZkQV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5TaIh04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1E0C4CEE9;
-	Tue, 27 May 2025 17:25:22 +0000 (UTC)
+	 MIME-Version; b=umHpc/dG+KfTFIWSeAm3gnlsVsebmrxGopxhD1YvAmHZDvYq6FghdqmqDPByqoa2aK9jjsCUQ+U4j58qA9RZt9z7iNS01BH2M6BnRadrzvFCe78yVP5ZnUrRbT6do+cDVmCdiMseXsDsRV5SouqntRa++s/GB68pLgfYfbFBqkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6OGnD4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FF3C4CEE9;
+	Tue, 27 May 2025 16:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366723;
-	bh=PoaPzjJusEajyf0HPX12YCTxr78qam14kTeq5l6B3xQ=;
+	s=korg; t=1748364466;
+	bh=zL9UWgxS2hizKxfzMIdEZ9rr4cmSyxHzx7z3irw6gEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j5TaIh04FfV7pbw5IY8ghLKToOJLXNiSoAN/1ZhbrIBOiUDY67WxCtHMyonN2WZQO
-	 UllUViHbN/pkJW8pGOBYPZkO8cV9vmNEaLXwbkWbkzvALTZWxn08AAntOndxlufgOA
-	 gzgqhIU8DKd846FvJ8SHDm4v35rAJbi/AgpAekMQ=
+	b=g6OGnD4SyPjUFGx8n2SfDtEdRlry6V2IIj5TN2e92YE1oSaQoUpM+hOMEbUYI51d0
+	 IrI5fbir1JZSEsv1UK8x6vV6vJYQobHiZ/al6/I5CFr8sXci9z3zPupbxQfDwiEdrx
+	 D6VZzTt2ukM34mQERMup2iGET4qFiR0Xjz30sleE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 161/783] vfio/pci: Handle INTx IRQ_NOTCONNECTED
+Subject: [PATCH 6.12 065/626] fbdev: fsl-diu-fb: add missing device_remove_file()
 Date: Tue, 27 May 2025 18:19:18 +0200
-Message-ID: <20250527162519.725501601@linuxfoundation.org>
+Message-ID: <20250527162447.693986242@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Shixiong Ou <oushixiong@kylinos.cn>
 
-[ Upstream commit 860be250fc32de9cb24154bf21b4e36f40925707 ]
+[ Upstream commit 86d16cd12efa547ed43d16ba7a782c1251c80ea8 ]
 
-Some systems report INTx as not routed by setting pdev->irq to
-IRQ_NOTCONNECTED, resulting in a -ENOTCONN error when trying to
-setup eventfd signaling.  Include this in the set of conditions
-for which the PIN register is virtualized to zero.
+Call device_remove_file() when driver remove.
 
-Additionally consolidate vfio_pci_get_irq_count() to use this
-virtualized value in reporting INTx support via ioctl and sanity
-checking ioctl paths since pdev->irq is re-used when the device
-is in MSI mode.
-
-The combination of these results in both the config space of the
-device and the ioctl interface behaving as if the device does not
-support INTx.
-
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20250311230623.1264283-1-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_config.c |  3 ++-
- drivers/vfio/pci/vfio_pci_core.c   | 10 +---------
- drivers/vfio/pci/vfio_pci_intrs.c  |  2 +-
- 3 files changed, 4 insertions(+), 11 deletions(-)
+ drivers/video/fbdev/fsl-diu-fb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 94142581c98ce..14437396d7211 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -1814,7 +1814,8 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
- 					cpu_to_le16(PCI_COMMAND_MEMORY);
- 	}
+diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
+index 5ac8201c35337..b71d15794ce8b 100644
+--- a/drivers/video/fbdev/fsl-diu-fb.c
++++ b/drivers/video/fbdev/fsl-diu-fb.c
+@@ -1827,6 +1827,7 @@ static void fsl_diu_remove(struct platform_device *pdev)
+ 	int i;
  
--	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx)
-+	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx ||
-+	    vdev->pdev->irq == IRQ_NOTCONNECTED)
- 		vconfig[PCI_INTERRUPT_PIN] = 0;
+ 	data = dev_get_drvdata(&pdev->dev);
++	device_remove_file(&pdev->dev, &data->dev_attr);
+ 	disable_lcdc(&data->fsl_diu_info[0]);
  
- 	ret = vfio_cap_init(vdev);
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index a071f42511d3b..b8bfc909fd5d8 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -727,15 +727,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_finish_enable);
- static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_type)
- {
- 	if (irq_type == VFIO_PCI_INTX_IRQ_INDEX) {
--		u8 pin;
--
--		if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) ||
--		    vdev->nointx || vdev->pdev->is_virtfn)
--			return 0;
--
--		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
--
--		return pin ? 1 : 0;
-+		return vdev->vconfig[PCI_INTERRUPT_PIN] ? 1 : 0;
- 	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
- 		u8 pos;
- 		u16 flags;
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 8382c58343356..565966351dfad 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -259,7 +259,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
- 	if (!is_irq_none(vdev))
- 		return -EINVAL;
- 
--	if (!pdev->irq)
-+	if (!pdev->irq || pdev->irq == IRQ_NOTCONNECTED)
- 		return -ENODEV;
- 
- 	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
+ 	free_irq(data->irq, data->diu_reg);
 -- 
 2.39.5
 
