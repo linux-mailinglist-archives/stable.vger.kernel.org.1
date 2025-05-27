@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-147742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8350AC58FB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EA3AC55C9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D619E0247
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80E561BA6C96
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFCF28001E;
-	Tue, 27 May 2025 17:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0CA271464;
+	Tue, 27 May 2025 17:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXcOA20k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYD5TZd9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF00E2566;
-	Tue, 27 May 2025 17:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F6E1E89C;
+	Tue, 27 May 2025 17:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368288; cv=none; b=nb86V14i6huhQVVGN6U5aGuw8zjS3xOI0dl4/Ad0uPFRdPavPsfeFbuSpEa7CNmrmIwuNspk83GOrocirJ+j32gmOOYecFbVqwp9jyh/CpZFtb6czxboT8/0H4OcKsJx3+F5Glc4Tc2XHAGrfvT0mduSPCLQfWKmJPV3WNfaqZY=
+	t=1748366056; cv=none; b=aottABT6ZgUMIIO+MB4s7PyvlMjlL0rUyG3HmjUBb0217G46XNTQtG1yHRQx3+wSqhqkJy2P5Og/OByjk6wi4zC3uFctavnYBBo/F1VUknUZj73lJr2hxdqVqXIMuzavp8Ez7JNRItQwFgjFMNvgWY1SZLq5oQ/HODfTodpNL8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368288; c=relaxed/simple;
-	bh=fpFf4U1GyBHs+Sr8DEcqp7aHQThkiG86+BLcte0QuWs=;
+	s=arc-20240116; t=1748366056; c=relaxed/simple;
+	bh=8kxnQRGN9w6vWqKscCX+6gSeRq+3HCYJ9cjHxp88xcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Im2HqdXf3KBhBOcGFjvtWT/2tYg/LIAcHMzThutWvx35j54E81w6iV+p+9iNLuepJrvn2uHf+YVQiVT2cNerOvrZKNcTa9Stw67hVeDxjH4lewZFnENTYc2Aj4XWz5ENwy4IvB/eeZpMzrdcDe2OGd31U8lP8boZBAqJ3ru2GWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXcOA20k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECC9C4CEE9;
-	Tue, 27 May 2025 17:51:28 +0000 (UTC)
+	 MIME-Version; b=T5IzC2FcdlC1HnAZk4uL3Fdf5FiXy+QVeh/r1zdOFL9nVgVTMc2lLzT2Ir4awAQHpsiJlHnCwJEJRbfeOGI7SxbNUY05AqhnsIxkLAn7EbC42PgGFZWaSiQeTA4I15acDy3HEoMz+MYao3bTNxXXaCpXA7ZIeahlUqAjBjZYykg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYD5TZd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E6EC4CEE9;
+	Tue, 27 May 2025 17:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368288;
-	bh=fpFf4U1GyBHs+Sr8DEcqp7aHQThkiG86+BLcte0QuWs=;
+	s=korg; t=1748366056;
+	bh=8kxnQRGN9w6vWqKscCX+6gSeRq+3HCYJ9cjHxp88xcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXcOA20kmX4EdfztbdrhmgYHBZI9L5G19C6L7Cu4JeyOjwP2m57rzmHxbS4SHzk2f
-	 BFY0s8wr6jzm/EIw2yCOb+rlASNUw8RBcvQNiMqLPZ/TZC51O/U1mT7RrBKnyOiS45
-	 y+Zy0HXqhzB+sW5qFUmCXLjozmLb1XAO5CWaeM2s=
+	b=bYD5TZd9jNUOkySMxvphPqTIQhrKS5HrRa6gaIpDMRNxWnEzWJAgZYfVza0/9dGWQ
+	 GsVVHuqIKOfOq1S/J6pKp+R11S6/4PtvYgLnVYzANDDZJp1VIJIiB5+BSG8agqHSdM
+	 KLNN12K8kzwCjZarsURkgLw2RAAOIZqjIE6qnKVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaogang Chen <xiaogang.chen@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 642/783] drm/amdkfd: Fix error handling for missing PASID in kfd_process_device_init_vm
+Subject: [PATCH 6.12 546/626] driver core: Split devres APIs to device/devres.h
 Date: Tue, 27 May 2025 18:27:19 +0200
-Message-ID: <20250527162539.287123985@linuxfoundation.org>
+Message-ID: <20250527162507.168983075@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,306 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 2b04d04de956b44cc140d45cf8ebccfb378ce3bf ]
+[ Upstream commit a21cad9312767d26b5257ce0662699bb202cdda1 ]
 
-In the kfd_process_device_init_vm function, a valid error code is now
-returned when the associated Process Address Space ID (PASID) is not
-present.
+device.h is a huge header which is hard to follow and easy to miss
+something. Improve that by splitting devres APIs to device/devres.h.
 
-If the address space virtual memory (avm) does not have an associated
-PASID, the function sets the ret variable to -EINVAL before proceeding
-to the error handling section. This ensures that the calling function,
-such as kfd_ioctl_acquire_vm, can appropriately handle the error,
-thereby preventing any issues during virtual memory initialization.
+In particular this helps to speedup the build of the code that includes
+device.h solely for a devres APIs.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_process.c:1694 kfd_process_device_init_vm()
-warn: missing error code 'ret'
+While at it, cast the error pointers to __iomem using IOMEM_ERR_PTR()
+and fix sparse warnings.
 
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_process.c
-    1647 int kfd_process_device_init_vm(struct kfd_process_device *pdd,
-    1648                                struct file *drm_file)
-    1649 {
-    ...
-    1690
-    1691         if (unlikely(!avm->pasid)) {
-    1692                 dev_warn(pdd->dev->adev->dev, "WARN: vm %p has no pasid associated",
-    1693                                  avm);
---> 1694                 goto err_get_pasid;
-
-ret = -EINVAL?
-
-    1695         }
-
-Fixes: 8544374c0f82 ("drm/amdkfd: Have kfd driver use same PASID values from graphic driver")
-Reported by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Xiaogang Chen <xiaogang.chen@amd.com>
-Cc: Felix Kuehling <felix.kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 7dd7f39fce00 ("ASoC: SOF: Intel: hda: Fix UAF when reloading module")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/device.h        | 119 +-------------------------------
+ include/linux/device/devres.h | 124 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 125 insertions(+), 118 deletions(-)
+ create mode 100644 include/linux/device/devres.h
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index a7e0a16dac47b..3f411922534b3 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -1711,6 +1711,7 @@ int kfd_process_device_init_vm(struct kfd_process_device *pdd,
- 	if (unlikely(!avm->pasid)) {
- 		dev_warn(pdd->dev->adev->dev, "WARN: vm %p has no pasid associated",
- 				 avm);
-+		ret = -EINVAL;
- 		goto err_get_pasid;
- 	}
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 667cb6db90193..39120b172992e 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -26,9 +26,9 @@
+ #include <linux/atomic.h>
+ #include <linux/uidgid.h>
+ #include <linux/gfp.h>
+-#include <linux/overflow.h>
+ #include <linux/device/bus.h>
+ #include <linux/device/class.h>
++#include <linux/device/devres.h>
+ #include <linux/device/driver.h>
+ #include <linux/cleanup.h>
+ #include <asm/device.h>
+@@ -281,123 +281,6 @@ int __must_check device_create_bin_file(struct device *dev,
+ void device_remove_bin_file(struct device *dev,
+ 			    const struct bin_attribute *attr);
  
+-/* device resource management */
+-typedef void (*dr_release_t)(struct device *dev, void *res);
+-typedef int (*dr_match_t)(struct device *dev, void *res, void *match_data);
+-
+-void *__devres_alloc_node(dr_release_t release, size_t size, gfp_t gfp,
+-			  int nid, const char *name) __malloc;
+-#define devres_alloc(release, size, gfp) \
+-	__devres_alloc_node(release, size, gfp, NUMA_NO_NODE, #release)
+-#define devres_alloc_node(release, size, gfp, nid) \
+-	__devres_alloc_node(release, size, gfp, nid, #release)
+-
+-void devres_for_each_res(struct device *dev, dr_release_t release,
+-			 dr_match_t match, void *match_data,
+-			 void (*fn)(struct device *, void *, void *),
+-			 void *data);
+-void devres_free(void *res);
+-void devres_add(struct device *dev, void *res);
+-void *devres_find(struct device *dev, dr_release_t release,
+-		  dr_match_t match, void *match_data);
+-void *devres_get(struct device *dev, void *new_res,
+-		 dr_match_t match, void *match_data);
+-void *devres_remove(struct device *dev, dr_release_t release,
+-		    dr_match_t match, void *match_data);
+-int devres_destroy(struct device *dev, dr_release_t release,
+-		   dr_match_t match, void *match_data);
+-int devres_release(struct device *dev, dr_release_t release,
+-		   dr_match_t match, void *match_data);
+-
+-/* devres group */
+-void * __must_check devres_open_group(struct device *dev, void *id, gfp_t gfp);
+-void devres_close_group(struct device *dev, void *id);
+-void devres_remove_group(struct device *dev, void *id);
+-int devres_release_group(struct device *dev, void *id);
+-
+-/* managed devm_k.alloc/kfree for device drivers */
+-void *devm_kmalloc(struct device *dev, size_t size, gfp_t gfp) __alloc_size(2);
+-void *devm_krealloc(struct device *dev, void *ptr, size_t size,
+-		    gfp_t gfp) __must_check __realloc_size(3);
+-__printf(3, 0) char *devm_kvasprintf(struct device *dev, gfp_t gfp,
+-				     const char *fmt, va_list ap) __malloc;
+-__printf(3, 4) char *devm_kasprintf(struct device *dev, gfp_t gfp,
+-				    const char *fmt, ...) __malloc;
+-static inline void *devm_kzalloc(struct device *dev, size_t size, gfp_t gfp)
+-{
+-	return devm_kmalloc(dev, size, gfp | __GFP_ZERO);
+-}
+-static inline void *devm_kmalloc_array(struct device *dev,
+-				       size_t n, size_t size, gfp_t flags)
+-{
+-	size_t bytes;
+-
+-	if (unlikely(check_mul_overflow(n, size, &bytes)))
+-		return NULL;
+-
+-	return devm_kmalloc(dev, bytes, flags);
+-}
+-static inline void *devm_kcalloc(struct device *dev,
+-				 size_t n, size_t size, gfp_t flags)
+-{
+-	return devm_kmalloc_array(dev, n, size, flags | __GFP_ZERO);
+-}
+-static inline __realloc_size(3, 4) void * __must_check
+-devm_krealloc_array(struct device *dev, void *p, size_t new_n, size_t new_size, gfp_t flags)
+-{
+-	size_t bytes;
+-
+-	if (unlikely(check_mul_overflow(new_n, new_size, &bytes)))
+-		return NULL;
+-
+-	return devm_krealloc(dev, p, bytes, flags);
+-}
+-
+-void devm_kfree(struct device *dev, const void *p);
+-char *devm_kstrdup(struct device *dev, const char *s, gfp_t gfp) __malloc;
+-const char *devm_kstrdup_const(struct device *dev, const char *s, gfp_t gfp);
+-void *devm_kmemdup(struct device *dev, const void *src, size_t len, gfp_t gfp)
+-	__realloc_size(3);
+-
+-unsigned long devm_get_free_pages(struct device *dev,
+-				  gfp_t gfp_mask, unsigned int order);
+-void devm_free_pages(struct device *dev, unsigned long addr);
+-
+-#ifdef CONFIG_HAS_IOMEM
+-void __iomem *devm_ioremap_resource(struct device *dev,
+-				    const struct resource *res);
+-void __iomem *devm_ioremap_resource_wc(struct device *dev,
+-				       const struct resource *res);
+-
+-void __iomem *devm_of_iomap(struct device *dev,
+-			    struct device_node *node, int index,
+-			    resource_size_t *size);
+-#else
+-
+-static inline
+-void __iomem *devm_ioremap_resource(struct device *dev,
+-				    const struct resource *res)
+-{
+-	return ERR_PTR(-EINVAL);
+-}
+-
+-static inline
+-void __iomem *devm_ioremap_resource_wc(struct device *dev,
+-				       const struct resource *res)
+-{
+-	return ERR_PTR(-EINVAL);
+-}
+-
+-static inline
+-void __iomem *devm_of_iomap(struct device *dev,
+-			    struct device_node *node, int index,
+-			    resource_size_t *size)
+-{
+-	return ERR_PTR(-EINVAL);
+-}
+-
+-#endif
+-
+ /* allows to add/remove a custom action to devres stack */
+ void devm_remove_action(struct device *dev, void (*action)(void *), void *data);
+ void devm_release_action(struct device *dev, void (*action)(void *), void *data);
+diff --git a/include/linux/device/devres.h b/include/linux/device/devres.h
+new file mode 100644
+index 0000000000000..6b0b265058bcc
+--- /dev/null
++++ b/include/linux/device/devres.h
+@@ -0,0 +1,124 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _DEVICE_DEVRES_H_
++#define _DEVICE_DEVRES_H_
++
++#include <linux/err.h>
++#include <linux/gfp_types.h>
++#include <linux/numa.h>
++#include <linux/overflow.h>
++#include <linux/stdarg.h>
++#include <linux/types.h>
++
++struct device;
++struct device_node;
++struct resource;
++
++/* device resource management */
++typedef void (*dr_release_t)(struct device *dev, void *res);
++typedef int (*dr_match_t)(struct device *dev, void *res, void *match_data);
++
++void * __malloc
++__devres_alloc_node(dr_release_t release, size_t size, gfp_t gfp, int nid, const char *name);
++#define devres_alloc(release, size, gfp) \
++	__devres_alloc_node(release, size, gfp, NUMA_NO_NODE, #release)
++#define devres_alloc_node(release, size, gfp, nid) \
++	__devres_alloc_node(release, size, gfp, nid, #release)
++
++void devres_for_each_res(struct device *dev, dr_release_t release,
++			 dr_match_t match, void *match_data,
++			 void (*fn)(struct device *, void *, void *),
++			 void *data);
++void devres_free(void *res);
++void devres_add(struct device *dev, void *res);
++void *devres_find(struct device *dev, dr_release_t release, dr_match_t match, void *match_data);
++void *devres_get(struct device *dev, void *new_res, dr_match_t match, void *match_data);
++void *devres_remove(struct device *dev, dr_release_t release, dr_match_t match, void *match_data);
++int devres_destroy(struct device *dev, dr_release_t release, dr_match_t match, void *match_data);
++int devres_release(struct device *dev, dr_release_t release, dr_match_t match, void *match_data);
++
++/* devres group */
++void * __must_check devres_open_group(struct device *dev, void *id, gfp_t gfp);
++void devres_close_group(struct device *dev, void *id);
++void devres_remove_group(struct device *dev, void *id);
++int devres_release_group(struct device *dev, void *id);
++
++/* managed devm_k.alloc/kfree for device drivers */
++void * __alloc_size(2)
++devm_kmalloc(struct device *dev, size_t size, gfp_t gfp);
++void * __must_check __realloc_size(3)
++devm_krealloc(struct device *dev, void *ptr, size_t size, gfp_t gfp);
++static inline void *devm_kzalloc(struct device *dev, size_t size, gfp_t gfp)
++{
++	return devm_kmalloc(dev, size, gfp | __GFP_ZERO);
++}
++static inline void *devm_kmalloc_array(struct device *dev, size_t n, size_t size, gfp_t flags)
++{
++	size_t bytes;
++
++	if (unlikely(check_mul_overflow(n, size, &bytes)))
++		return NULL;
++
++	return devm_kmalloc(dev, bytes, flags);
++}
++static inline void *devm_kcalloc(struct device *dev, size_t n, size_t size, gfp_t flags)
++{
++	return devm_kmalloc_array(dev, n, size, flags | __GFP_ZERO);
++}
++static inline __realloc_size(3, 4) void * __must_check
++devm_krealloc_array(struct device *dev, void *p, size_t new_n, size_t new_size, gfp_t flags)
++{
++	size_t bytes;
++
++	if (unlikely(check_mul_overflow(new_n, new_size, &bytes)))
++		return NULL;
++
++	return devm_krealloc(dev, p, bytes, flags);
++}
++
++void devm_kfree(struct device *dev, const void *p);
++
++void * __realloc_size(3)
++devm_kmemdup(struct device *dev, const void *src, size_t len, gfp_t gfp);
++
++char * __malloc
++devm_kstrdup(struct device *dev, const char *s, gfp_t gfp);
++const char *devm_kstrdup_const(struct device *dev, const char *s, gfp_t gfp);
++char * __printf(3, 0) __malloc
++devm_kvasprintf(struct device *dev, gfp_t gfp, const char *fmt, va_list ap);
++char * __printf(3, 4) __malloc
++devm_kasprintf(struct device *dev, gfp_t gfp, const char *fmt, ...);
++
++unsigned long devm_get_free_pages(struct device *dev, gfp_t gfp_mask, unsigned int order);
++void devm_free_pages(struct device *dev, unsigned long addr);
++
++#ifdef CONFIG_HAS_IOMEM
++
++void __iomem *devm_ioremap_resource(struct device *dev, const struct resource *res);
++void __iomem *devm_ioremap_resource_wc(struct device *dev, const struct resource *res);
++
++void __iomem *devm_of_iomap(struct device *dev, struct device_node *node, int index,
++			    resource_size_t *size);
++#else
++
++static inline
++void __iomem *devm_ioremap_resource(struct device *dev, const struct resource *res)
++{
++	return IOMEM_ERR_PTR(-EINVAL);
++}
++
++static inline
++void __iomem *devm_ioremap_resource_wc(struct device *dev, const struct resource *res)
++{
++	return IOMEM_ERR_PTR(-EINVAL);
++}
++
++static inline
++void __iomem *devm_of_iomap(struct device *dev, struct device_node *node, int index,
++			    resource_size_t *size)
++{
++	return IOMEM_ERR_PTR(-EINVAL);
++}
++
++#endif
++
++#endif /* _DEVICE_DEVRES_H_ */
 -- 
 2.39.5
 
