@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-146784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B647AC548D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E01AC57F9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C95934A2DCD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:01:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 845CE1BC161F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6520A1D88D7;
-	Tue, 27 May 2025 17:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685FF280035;
+	Tue, 27 May 2025 17:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxyk70X9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeHU/Wvf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244EB78F32;
-	Tue, 27 May 2025 17:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247631DC998;
+	Tue, 27 May 2025 17:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365298; cv=none; b=alKTo1mV4NzSvPccZSdU/vd8NMAzGNa9Ul9iP7imrA3du8VoLtKUQDesMcDkPaNzhWo9IfEYe7PMsnXvrj16F4xvqVIG1R7DgSwtdQBhzreKjyMDTMIvmmh31JN1YwD2F/zkQ/J3WnBAXMq9YZdk6+V5eiH9ZhMsb5tPLdAVSOM=
+	t=1748367561; cv=none; b=HfcQLBYR/wv0JWLGrgeXlkdgjpvrca4Xo8pa0Mo8s0oIdvKnELa5/WZF3i4d58yR3GqMlqS1+f4lxDmGYhESayU3Ffvn6/5auPK2M2XhgVo+kg5WvvN/v9xFZ8go2GcAfeUE7J4f93WjvvAX6M6gA9EAXLILxpNwizdamHeMUfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365298; c=relaxed/simple;
-	bh=hLbM61zMa0q/KLuejOsBvCPF5X8DuvA4gZaLeSMZLJo=;
+	s=arc-20240116; t=1748367561; c=relaxed/simple;
+	bh=l05VTLVb16kcMlH3U1va6KkMNJ2Z0U2UO4V3CTDbGsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iu6ioeCm6U19PBhaYkmGl73ZRNsJtOFx+Hfmg1mq7gGpfXpIL19gmeA0a/pWW6IKBPgMAE3WgqTv26wO3STyrWfL4rovbbdgAY1XBXpRiJtuw3+oe0GLcFRBjL2sobc1a52O+ezhP3b+byb7kA50xjJL6c+kBm1jmJQo8rX12os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxyk70X9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F8BC4CEE9;
-	Tue, 27 May 2025 17:01:37 +0000 (UTC)
+	 MIME-Version; b=Hmp6r6tLVY5I6KNQi9vZFpuU3NrjOaVIlsUxe5c99PnISL54A76VDOLwMRsH6B37ClJ55Sxoprq58lSF0S/D4TORn6nte7M/bc6EUt0r3UPY3Eh+tsqNwBrUsUDOM6X5CqTrJ/iR71p7Qe6HAEYka0zDhxPl9A7KzakShRPkIeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeHU/Wvf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEB0C4CEEA;
+	Tue, 27 May 2025 17:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365298;
-	bh=hLbM61zMa0q/KLuejOsBvCPF5X8DuvA4gZaLeSMZLJo=;
+	s=korg; t=1748367561;
+	bh=l05VTLVb16kcMlH3U1va6KkMNJ2Z0U2UO4V3CTDbGsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxyk70X918LyzB7xkESIDujyWdGtf2sF1D7R1VTJH+MlQ0ZU1LP8kYLyjaq3VGVlM
-	 8IYz8glcnjPtvKvAGCXkBHepCRi9FNS1CgCWI9SJ47wI1Tvs69QFtME7hYuqAF4qJu
-	 G8+hxVgjL766idZ4p+poRlH7kWB+a6bA9vbE7JrA=
+	b=qeHU/Wvf19Ak182bZB8VoUtUuZrcwbdR0uSjInLYlp9npHgJgZpG4wiNxf5wog/iJ
+	 z2ATIV/1/BheqJvQ06o51P31x9tUvGntwWILrhZkqtRgDmnSpLW/W//WaGlUyCA6aT
+	 PW0+UIDWBgvrMfoCHlJqWtMDLS0AEBXjt6RTp9PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eddie James <eajames@linux.ibm.com>,
+	Ben Segall <bsegall@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 330/626] eeprom: ee1004: Check chip before probing
-Date: Tue, 27 May 2025 18:23:43 +0200
-Message-ID: <20250527162458.436993675@linuxfoundation.org>
+Subject: [PATCH 6.14 427/783] posix-timers: Invoke cond_resched() during exit_itimers()
+Date: Tue, 27 May 2025 18:23:44 +0200
+Message-ID: <20250527162530.510788632@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eddie James <eajames@linux.ibm.com>
+From: Benjamin Segall <bsegall@google.com>
 
-[ Upstream commit d9406677428e9234ea62bb2d2f5e996d1b777760 ]
+[ Upstream commit f99c5bb396b8d1424ed229d1ffa6f596e3b9c36b ]
 
-Like other eeprom drivers, check if the device is really there and
-functional before probing.
+exit_itimers() loops through every timer in the process to delete it.  This
+requires taking the system-wide hash_lock for each of these timers, and
+contends with other processes trying to create or delete timers.
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218220959.721698-1-eajames@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When a process creates hundreds of thousands of timers, and then exits
+while other processes contend with it, this can trigger softlockups on
+CONFIG_PREEMPT=n.
+
+Add a cond_resched() invocation into the loop to allow the system to make
+progress.
+
+Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/xm2634gg2n23.fsf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/eeprom/ee1004.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/time/posix-timers.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/eeprom/ee1004.c b/drivers/misc/eeprom/ee1004.c
-index 89224d4af4a20..e13f9fdd9d7b1 100644
---- a/drivers/misc/eeprom/ee1004.c
-+++ b/drivers/misc/eeprom/ee1004.c
-@@ -304,6 +304,10 @@ static int ee1004_probe(struct i2c_client *client)
- 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_READ_BYTE_DATA))
- 		return -EPFNOSUPPORT;
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 15ed343693101..43b08a04898a8 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -1107,8 +1107,10 @@ void exit_itimers(struct task_struct *tsk)
+ 	spin_unlock_irq(&tsk->sighand->siglock);
  
-+	err = i2c_smbus_read_byte(client);
-+	if (err < 0)
-+		return -ENODEV;
-+
- 	mutex_lock(&ee1004_bus_lock);
+ 	/* The timers are not longer accessible via tsk::signal */
+-	while (!hlist_empty(&timers))
++	while (!hlist_empty(&timers)) {
+ 		itimer_delete(hlist_entry(timers.first, struct k_itimer, list));
++		cond_resched();
++	}
  
- 	err = ee1004_init_bus_data(client);
+ 	/*
+ 	 * There should be no timers on the ignored list. itimer_delete() has
 -- 
 2.39.5
 
