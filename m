@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-146919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC963AC552F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898BAAC588A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEFA24A3A30
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:08:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5811BC2704
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8892798F8;
-	Tue, 27 May 2025 17:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA49A25A627;
+	Tue, 27 May 2025 17:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UO/xoSZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caW2sKxQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273E6278750;
-	Tue, 27 May 2025 17:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D631FB3;
+	Tue, 27 May 2025 17:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365715; cv=none; b=qBld1sV+XYhU8B6ezrkG3cJ9dKBjl+FwLy/1y6RH5bn5Y1FQ9RB8OApdwz/piwabc5n0C7n0MEJHilVm/HzV8kg6OnE+85w98Oijpc+3Nx1an7OJYNL3PtsJArStxKremWTSPolAZwq1oM5ZbhjOkLBTIn3Ti+5iPJSS2Q4Jbw0=
+	t=1748367984; cv=none; b=fM05A4qqOU1fEzAF73369o2T44BZmQEmlNJ+9eWUmUvCsvgRnWrc+caupF6fSzUXhGWv6Z+rcpE6S6GWdI3CMDnRPsbPpEWoIvicQIVyMD42DQMV75h3+S5iDte/sak1Jx6jCd8ZH9RL/c0egc5BymV3hzkl2d9M5cP8wO2oyL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365715; c=relaxed/simple;
-	bh=BLACL/vgCKcv/cw/CdQ7xoIEo1EW5s8Rp88Uu630CcQ=;
+	s=arc-20240116; t=1748367984; c=relaxed/simple;
+	bh=MDc42TrWAovL9NxNoMPLypxZB2GBUMMjtp91hhJlRoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ua4LiS9eP4XGFH2/FRpoE/wSWW/Jk4xYssS9m6/htINEFecgI5RTDBv8XZw33pvyjLhj/SkwVfU3UMtSF7Rw+QA98KJZGdD4MbuWC+mLL3GWg5ZbmwsqLud8HRqmv+Aus81f/poSxXQUttd40PtXMH6xlAjI/fL9WQ4UHPXCUQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UO/xoSZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997E7C4CEE9;
-	Tue, 27 May 2025 17:08:34 +0000 (UTC)
+	 MIME-Version; b=Sh3TNkfj2vQQCHmwamALFOiDv/OA9G+nzRgH6nBCOm9B5sFeUJPq5crhj09Vqj8c2d6yxAh8MrEElJWkr53f1BmwHODmLvSnR8SR/yOeiwxkpI9rxwFIv4xu0lNbN6rwwgaDfbouE3tc3+EESc7+OP3zJx0+A85VEE19Hb46OYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caW2sKxQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1817C4CEE9;
+	Tue, 27 May 2025 17:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365715;
-	bh=BLACL/vgCKcv/cw/CdQ7xoIEo1EW5s8Rp88Uu630CcQ=;
+	s=korg; t=1748367984;
+	bh=MDc42TrWAovL9NxNoMPLypxZB2GBUMMjtp91hhJlRoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UO/xoSZXKWvHw8B8clfTYSRn5BO2o4vNBteYyS9OiL56CI4oym8n2LnNDdtJDquIm
-	 s5s9yil98Hc2f8Kt1CAQEZuGe9ynyxFbrGZESon7Ojxaynwi9j1kCU+x0/enzrfwxl
-	 ywQowFlOl3udWzRf71SytVtNnqOKlZU3vWM2KKsE=
+	b=caW2sKxQyTSff/Jfp+51PFbrIs+yd2aHJVN1ELUjqB4snR+KaJzmeOz3PI+8jW1tC
+	 Q+yBVVIwM6Yuhl9Y3D85ADW1XHLFjP9VQggv+vrQhNoVJUyl4EqrvIaqDu1plAsxCG
+	 LkOv4mCNO/zBPxrEy2OvzkQc4b5/u07Y6gSvtNak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 465/626] scsi: st: Restore some drive settings after reset
+Subject: [PATCH 6.14 561/783] net/mlx5e: Avoid WARN_ON when configuring MQPRIO with HTB offload enabled
 Date: Tue, 27 May 2025 18:25:58 +0200
-Message-ID: <20250527162503.896861455@linuxfoundation.org>
+Message-ID: <20250527162535.992828865@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +64,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 7081dc75df79696d8322d01821c28e53416c932c ]
+[ Upstream commit 689805dcc474c2accb5cffbbcea1c06ee4a54570 ]
 
-Some of the allowed operations put the tape into a known position to
-continue operation assuming only the tape position has changed.  But reset
-sets partition, density and block size to drive default values. These
-should be restored to the values before reset.
+When attempting to enable MQPRIO while HTB offload is already
+configured, the driver currently returns `-EINVAL` and triggers a
+`WARN_ON`, leading to an unnecessary call trace.
 
-Normally the current block size and density are stored by the drive.  If
-the settings have been changed, the changed values have to be saved by the
-driver across reset.
+Update the code to handle this case more gracefully by returning
+`-EOPNOTSUPP` instead, while also providing a helpful user message.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250120194925.44432-2-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 24 +++++++++++++++++++++---
- drivers/scsi/st.h |  2 ++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 1cfd7e71dcdde..3e982c166baf9 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -952,7 +952,6 @@ static void reset_state(struct scsi_tape *STp)
- 		STp->partition = find_partition(STp);
- 		if (STp->partition < 0)
- 			STp->partition = 0;
--		STp->new_partition = STp->partition;
- 	}
- }
- 
-@@ -2926,14 +2925,17 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 		if (cmd_in == MTSETDENSITY) {
- 			(STp->buffer)->b_data[4] = arg;
- 			STp->density_changed = 1;	/* At least we tried ;-) */
-+			STp->changed_density = arg;
- 		} else if (cmd_in == SET_DENS_AND_BLK)
- 			(STp->buffer)->b_data[4] = arg >> 24;
- 		else
- 			(STp->buffer)->b_data[4] = STp->density;
- 		if (cmd_in == MTSETBLK || cmd_in == SET_DENS_AND_BLK) {
- 			ltmp = arg & MT_ST_BLKSIZE_MASK;
--			if (cmd_in == MTSETBLK)
-+			if (cmd_in == MTSETBLK) {
- 				STp->blksize_changed = 1; /* At least we tried ;-) */
-+				STp->changed_blksize = arg;
-+			}
- 		} else
- 			ltmp = STp->block_size;
- 		(STp->buffer)->b_data[9] = (ltmp >> 16);
-@@ -3634,9 +3636,25 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 				retval = (-EIO);
- 				goto out;
- 			}
--			reset_state(STp);
-+			reset_state(STp); /* Clears pos_unknown */
- 			/* remove this when the midlevel properly clears was_reset */
- 			STp->device->was_reset = 0;
-+
-+			/* Fix the device settings after reset, ignore errors */
-+			if (mtc.mt_op == MTREW || mtc.mt_op == MTSEEK ||
-+				mtc.mt_op == MTEOM) {
-+				if (STp->can_partitions) {
-+					/* STp->new_partition contains the
-+					 *  latest partition set
-+					 */
-+					STp->partition = 0;
-+					switch_partition(STp);
-+				}
-+				if (STp->density_changed)
-+					st_int_ioctl(STp, MTSETDENSITY, STp->changed_density);
-+				if (STp->blksize_changed)
-+					st_int_ioctl(STp, MTSETBLK, STp->changed_blksize);
-+			}
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index b0748e46b1ac4..ca56740f6d2f9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -3787,8 +3787,11 @@ static int mlx5e_setup_tc_mqprio(struct mlx5e_priv *priv,
+ 	/* MQPRIO is another toplevel qdisc that can't be attached
+ 	 * simultaneously with the offloaded HTB.
+ 	 */
+-	if (WARN_ON(mlx5e_selq_is_htb_enabled(&priv->selq)))
+-		return -EINVAL;
++	if (mlx5e_selq_is_htb_enabled(&priv->selq)) {
++		NL_SET_ERR_MSG_MOD(mqprio->extack,
++				   "MQPRIO cannot be configured when HTB offload is enabled.");
++		return -EOPNOTSUPP;
++	}
  
- 		if (mtc.mt_op != MTNOP && mtc.mt_op != MTSETBLK &&
-diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
-index 1aaaf5369a40f..6d31b894ee84c 100644
---- a/drivers/scsi/st.h
-+++ b/drivers/scsi/st.h
-@@ -165,6 +165,7 @@ struct scsi_tape {
- 	unsigned char compression_changed;
- 	unsigned char drv_buffer;
- 	unsigned char density;
-+	unsigned char changed_density;
- 	unsigned char door_locked;
- 	unsigned char autorew_dev;   /* auto-rewind device */
- 	unsigned char rew_at_close;  /* rewind necessary at close */
-@@ -172,6 +173,7 @@ struct scsi_tape {
- 	unsigned char cleaning_req;  /* cleaning requested? */
- 	unsigned char first_tur;     /* first TEST UNIT READY */
- 	int block_size;
-+	int changed_blksize;
- 	int min_block;
- 	int max_block;
- 	int recover_count;     /* From tape opening */
+ 	switch (mqprio->mode) {
+ 	case TC_MQPRIO_MODE_DCB:
 -- 
 2.39.5
 
