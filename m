@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-147314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443A9AC5721
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1188FAC53D2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F30B51BC0391
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99BF53A4261
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7637E27F4CB;
-	Tue, 27 May 2025 17:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5164027BF7C;
+	Tue, 27 May 2025 16:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIVp/Ggz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlpSLOl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B291CEAC2;
-	Tue, 27 May 2025 17:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB39263F5E;
+	Tue, 27 May 2025 16:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366960; cv=none; b=XLmPZ3XXlOyL7DrDXhosOU9oLN6aVUTwSjs6XoRdaeL/wgy3hmy4Vdd6PLd7v/BXcnEOau4RFDZmZrj0wrX8Bv70m7H9lcyGHu/vVVY1g9O9477qc40jXhk2SqoAVqfHFZNrZGPfjSiY900CTe07v1Ap5NSocVuZXLoxEBlezkI=
+	t=1748364695; cv=none; b=lHObpQdjxD2qDSk3/x9Im2vhJ24pfKwX2jB/cwrSsPM1von3cWc3CzURVT8S9iydCB21nLoENSt1O7awpQg+WmqKwRyInsad0sbNCFzDlZRL2YuSEoXnfQXqK+DxLk036aT9OVJt4OArAN64Mmfe5Imhs6VwOPyr/nJC2ySu9Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366960; c=relaxed/simple;
-	bh=X39bx7qFXvIBvfgY36Y7e/z7BAL9rfuVi5HF3zn08VM=;
+	s=arc-20240116; t=1748364695; c=relaxed/simple;
+	bh=l14/EBEijhWoGroJSALTMLLAjJ6VFV+8TdwrPafCUd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9o3HvxPNzZgJ7DfzCM5mWAd0LeDFlhK0RF2/5bIzQTtLperxyoROjKs/WRdpW38MfMfy8+6oI3hM3Y+j0kC5zFbDNfe6PVZnc/89uVNPz38zsettVlouwsqeEq+sozfIti7HQ+pS99f4Zt3+F6d63BmGnGvd7j83+5ZN14SKzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIVp/Ggz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14A1C4CEE9;
-	Tue, 27 May 2025 17:29:19 +0000 (UTC)
+	 MIME-Version; b=Lj/Mg3c/3cWQJO90c/d2og1W/AxDuyFISOPt0aaKSrXHGemymZAHZ4YoBWMlZAW4B+LZaG8UPeK8hdDoHvgZPTFVqERkc1Bs6DMvNy96panqItADQrSUZiz/UajNUZ7fSnHd+iA7zZF0CnCF94+6iW9ZyJcY5D4XecL8Ftzxruk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlpSLOl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921F9C4CEE9;
+	Tue, 27 May 2025 16:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366960;
-	bh=X39bx7qFXvIBvfgY36Y7e/z7BAL9rfuVi5HF3zn08VM=;
+	s=korg; t=1748364694;
+	bh=l14/EBEijhWoGroJSALTMLLAjJ6VFV+8TdwrPafCUd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIVp/Ggzf74t4YWlaZh+FBz8wZ9ia8nheHQ/LDLFJf3MT4YVW0tFUQ5xm3gPShE8D
-	 +bGbB5/q2AGC/cVVsQnHMDCEC0ME+pmyIaAY2h6xnu9WKQeorg2WZAF+SaAv3e+Gpa
-	 BYXF/feFx3Kl5AwXpG2QPgxBZhH1eYdrCtXoNLsI=
+	b=nlpSLOl1N9cMGyq67duBD1r5RAcmTnx+yT3cJckJk0SNCsnj1Aw9EwLK9E7jQPtoA
+	 Q7eGczI1Bgrs02UxsmXoutWkBrB4qU85WoYC1QAlIozb6aI1VQiMdvh1U2afyn3xuA
+	 ynPI+q+Gnkd0ur0RgH76jN6tWKUySk8Rz52sKwGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 233/783] gfs2: Check for empty queue in run_queue
+Subject: [PATCH 6.12 137/626] vfio/pci: Handle INTx IRQ_NOTCONNECTED
 Date: Tue, 27 May 2025 18:20:30 +0200
-Message-ID: <20250527162522.614559406@linuxfoundation.org>
+Message-ID: <20250527162450.600737287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit d838605fea6eabae3746a276fd448f6719eb3926 ]
+[ Upstream commit 860be250fc32de9cb24154bf21b4e36f40925707 ]
 
-In run_queue(), check if the queue of pending requests is empty instead
-of blindly assuming that it won't be.
+Some systems report INTx as not routed by setting pdev->irq to
+IRQ_NOTCONNECTED, resulting in a -ENOTCONN error when trying to
+setup eventfd signaling.  Include this in the set of conditions
+for which the PIN register is virtualized to zero.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Additionally consolidate vfio_pci_get_irq_count() to use this
+virtualized value in reporting INTx support via ioctl and sanity
+checking ioctl paths since pdev->irq is re-used when the device
+is in MSI mode.
+
+The combination of these results in both the config space of the
+device and the ioctl interface behaving as if the device does not
+support INTx.
+
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20250311230623.1264283-1-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/vfio/pci/vfio_pci_config.c |  3 ++-
+ drivers/vfio/pci/vfio_pci_core.c   | 10 +---------
+ drivers/vfio/pci/vfio_pci_intrs.c  |  2 +-
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 65c07aa957184..7f9cc7872214e 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -843,12 +843,13 @@ static void run_queue(struct gfs2_glock *gl, const int nonblock)
- __releases(&gl->gl_lockref.lock)
- __acquires(&gl->gl_lockref.lock)
- {
--	struct gfs2_holder *gh = NULL;
-+	struct gfs2_holder *gh;
- 
- 	if (test_bit(GLF_LOCK, &gl->gl_flags))
- 		return;
- 	set_bit(GLF_LOCK, &gl->gl_flags);
- 
-+	/* While a demote is in progress, the GLF_LOCK flag must be set. */
- 	GLOCK_BUG_ON(gl, test_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags));
- 
- 	if (test_bit(GLF_DEMOTE, &gl->gl_flags) &&
-@@ -860,18 +861,22 @@ __acquires(&gl->gl_lockref.lock)
- 		set_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
- 		GLOCK_BUG_ON(gl, gl->gl_demote_state == LM_ST_EXCLUSIVE);
- 		gl->gl_target = gl->gl_demote_state;
-+		do_xmote(gl, NULL, gl->gl_target);
-+		return;
- 	} else {
- 		if (test_bit(GLF_DEMOTE, &gl->gl_flags))
- 			gfs2_demote_wake(gl);
- 		if (do_promote(gl))
- 			goto out_unlock;
- 		gh = find_first_waiter(gl);
-+		if (!gh)
-+			goto out_unlock;
- 		gl->gl_target = gh->gh_state;
- 		if (!(gh->gh_flags & (LM_FLAG_TRY | LM_FLAG_TRY_1CB)))
- 			do_error(gl, 0); /* Fail queued try locks */
-+		do_xmote(gl, gh, gl->gl_target);
-+		return;
+diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+index ea2745c1ac5e6..8ea38e7421df4 100644
+--- a/drivers/vfio/pci/vfio_pci_config.c
++++ b/drivers/vfio/pci/vfio_pci_config.c
+@@ -1813,7 +1813,8 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
+ 					cpu_to_le16(PCI_COMMAND_MEMORY);
  	}
--	do_xmote(gl, gh, gl->gl_target);
--	return;
  
- out_sched:
- 	clear_bit(GLF_LOCK, &gl->gl_flags);
+-	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx)
++	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx ||
++	    vdev->pdev->irq == IRQ_NOTCONNECTED)
+ 		vconfig[PCI_INTERRUPT_PIN] = 0;
+ 
+ 	ret = vfio_cap_init(vdev);
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index c9eaba2276365..087c273a547fa 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -727,15 +727,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_finish_enable);
+ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_type)
+ {
+ 	if (irq_type == VFIO_PCI_INTX_IRQ_INDEX) {
+-		u8 pin;
+-
+-		if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) ||
+-		    vdev->nointx || vdev->pdev->is_virtfn)
+-			return 0;
+-
+-		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+-
+-		return pin ? 1 : 0;
++		return vdev->vconfig[PCI_INTERRUPT_PIN] ? 1 : 0;
+ 	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
+ 		u8 pos;
+ 		u16 flags;
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 8382c58343356..565966351dfad 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -259,7 +259,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 	if (!is_irq_none(vdev))
+ 		return -EINVAL;
+ 
+-	if (!pdev->irq)
++	if (!pdev->irq || pdev->irq == IRQ_NOTCONNECTED)
+ 		return -ENODEV;
+ 
+ 	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
 -- 
 2.39.5
 
