@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-146511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF845AC5373
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:47:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97274AC56E9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DD447A6DDD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 593494A67C9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313DE27D784;
-	Tue, 27 May 2025 16:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1473127FB38;
+	Tue, 27 May 2025 17:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cpz8Apn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcomyrOS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF0627A926;
-	Tue, 27 May 2025 16:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D6426F449;
+	Tue, 27 May 2025 17:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364447; cv=none; b=n7V3PclP9XUdL0NIIFCs/hP3175JzusBh+02UR45bvJbfazGgebAJReqppO0gcxmB5geDNzLTtG1SNqiGtbWVNhQt+mp0tOqtXDLfXPXFIbYNWcD2x433ezWJc3E8pFj5yPAR6VThSzg+9OupoFRiVNyx3FZHErkVJHwG+y0unI=
+	t=1748366818; cv=none; b=NA+OPEGvKQ2AsbUXbj0SCal2PT4bYbt8/6PlrDqM58gn3X9MPGGAIlzJkw0oJ/4aCASNRT/yLouWiu9tZQ1JVEqGDeU4zxRP7r+OKAfVaePObPG3QEdC4yob5e6DFUk2yXU94+0fVqRmTML6RO5gPYWunlN6WpKZivBd4BLcTsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364447; c=relaxed/simple;
-	bh=Js7fNXL2LeQhdxywurphEZCd4XufhqXwrQyNvptPKlA=;
+	s=arc-20240116; t=1748366818; c=relaxed/simple;
+	bh=EoTzmzAA9bNyjzy/T1ArjTUimHEUMe7EygNB+hnQWsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VKxnTB+4FsprNzD4ukfC5Kgr88STsGfHgcajWTLPh4LmVUaJVKfcCt0pg+pUyypXnfNjQNbvPZpM2smSKT/KyDTQ6uiGUjPaEoa0rfzXyWJqtPDhMkRTNf/GGFZvT6F7CW51qeda+3AnAW/kADvo+JIqrE5lxjqgvZ0HDrJE7n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cpz8Apn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70587C4CEE9;
-	Tue, 27 May 2025 16:47:26 +0000 (UTC)
+	 MIME-Version; b=ELsWdCLdUm+pm4yGDfCbgPZNre7KoqZRr08vQcTB3SZMuJo3Q/sqJv/lnejUkNyumacrUu7GFhDyAj5wxCdD+PYU0vy90chyUYcOozdolVI6AxrXAT6FgbxATy7bFPBJXQT2nIjrI/+570/9x0Mrkcv7g50zMRImwGqczWOJkfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcomyrOS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324D8C4CEE9;
+	Tue, 27 May 2025 17:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364446;
-	bh=Js7fNXL2LeQhdxywurphEZCd4XufhqXwrQyNvptPKlA=;
+	s=korg; t=1748366818;
+	bh=EoTzmzAA9bNyjzy/T1ArjTUimHEUMe7EygNB+hnQWsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cpz8ApnrZaKybrqdgxTOfHRT5P+fRwygnF8kg4SCMWkjTnXZTpigjG9pxtrcAaw8
-	 Z7BlNhes8dwxPxYjTBT9ujV0yZMJbzOyaG4kKUHVP2xI8quGI94aM+OoI97vobRbNW
-	 it8q+zy4fPae3W7uZacg1JwKod7oMRmMgiF9ZuuM=
+	b=OcomyrOSLuQSFPU2WsjIps61MiYVYpkQ4/DOIbwqES8gp9OdT7PVWUmxarOq+y76r
+	 N+rBQl+1EuH62xGFeN0STRkHYahgsFd/S332vIdOatJYg3T2wAepnTsQxgFnlavPRg
+	 maiDaDcBAlwW1pIixwEXR3jOm6jbskTNNvrlRudg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/626] tracing: Mark binary printing functions with __printf() attribute
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeremiah Lokan <jeremiahx.j.lokan@intel.com>
+Subject: [PATCH 6.14 155/783] ixgbe: add support for thermal sensor event reception
 Date: Tue, 27 May 2025 18:19:12 +0200
-Message-ID: <20250527162447.459027476@linuxfoundation.org>
+Message-ID: <20250527162519.475059645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,160 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ Upstream commit 196a062641fe68d9bfe0ad36b6cd7628c99ad22c ]
+[ Upstream commit affead2d904e8f82c0b89e23b3835242eb8c3e1a ]
 
-Binary printing functions are using printf() type of format, and compiler
-is not happy about them as is:
+E610 NICs unlike the previous devices utilising ixgbe driver
+are notified in the case of overheating by the FW ACI event.
 
-kernel/trace/trace.c:3292:9: error: function ‘trace_vbprintk’ might be a candidate for ‘gnu_printf’ format attribute [-Werror=suggest-attribute=format]
-kernel/trace/trace_seq.c:182:9: error: function ‘trace_seq_bprintf’ might be a candidate for ‘gnu_printf’ format attribute [-Werror=suggest-attribute=format]
+In event of overheat when threshold is exceeded, FW suspends all
+traffic and sends overtemp event to the driver. Then driver
+logs appropriate message and disables the adapter instance.
+The card remains in that state until the platform is rebooted.
 
-Fix the compilation errors by adding __printf() attribute.
+This approach is a solution to the fact current version of the
+E610 FW doesn't support reading thermal sensor data by the
+SW. So give to user at least any info that overtemp event
+has occurred, without interface disappearing from the OS
+without any note.
 
-While at it, move existing __printf() attributes from the implementations
-to the declarations. IT also fixes incorrect attribute parameters that are
-used for trace_array_printk().
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20250321144822.324050-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Jeremiah Lokan <jeremiahx.j.lokan@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250310174502.3708121-7-anthony.l.nguyen@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace.h     |  4 ++--
- include/linux/trace_seq.h |  8 ++++----
- kernel/trace/trace.c      | 11 +++--------
- kernel/trace/trace.h      | 16 +++++++++-------
- 4 files changed, 18 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 4 ++++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 3 +++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/include/linux/trace.h b/include/linux/trace.h
-index fdcd76b7be83d..7eaad857dee04 100644
---- a/include/linux/trace.h
-+++ b/include/linux/trace.h
-@@ -72,8 +72,8 @@ static inline int unregister_ftrace_export(struct trace_export *export)
- static inline void trace_printk_init_buffers(void)
- {
- }
--static inline int trace_array_printk(struct trace_array *tr, unsigned long ip,
--				     const char *fmt, ...)
-+static inline __printf(3, 4)
-+int trace_array_printk(struct trace_array *tr, unsigned long ip, const char *fmt, ...)
- {
- 	return 0;
- }
-diff --git a/include/linux/trace_seq.h b/include/linux/trace_seq.h
-index 1ef95c0287f05..a93ed5ac32265 100644
---- a/include/linux/trace_seq.h
-+++ b/include/linux/trace_seq.h
-@@ -88,8 +88,8 @@ extern __printf(2, 3)
- void trace_seq_printf(struct trace_seq *s, const char *fmt, ...);
- extern __printf(2, 0)
- void trace_seq_vprintf(struct trace_seq *s, const char *fmt, va_list args);
--extern void
--trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary);
-+extern __printf(2, 0)
-+void trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary);
- extern int trace_print_seq(struct seq_file *m, struct trace_seq *s);
- extern int trace_seq_to_user(struct trace_seq *s, char __user *ubuf,
- 			     int cnt);
-@@ -113,8 +113,8 @@ static inline __printf(2, 3)
- void trace_seq_printf(struct trace_seq *s, const char *fmt, ...)
- {
- }
--static inline void
--trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary)
-+static inline __printf(2, 0)
-+void trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary)
- {
- }
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 467f81239e12f..481f917f7ed28 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -3185,6 +3185,10 @@ static void ixgbe_handle_fw_event(struct ixgbe_adapter *adapter)
+ 		case ixgbe_aci_opc_get_link_status:
+ 			ixgbe_handle_link_status_event(adapter, &event);
+ 			break;
++		case ixgbe_aci_opc_temp_tca_event:
++			e_crit(drv, "%s\n", ixgbe_overheat_msg);
++			ixgbe_down(adapter);
++			break;
+ 		default:
+ 			e_warn(hw, "unknown FW async event captured\n");
+ 			break;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+index 8d06ade3c7cd9..617e07878e4f7 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+@@ -171,6 +171,9 @@ enum ixgbe_aci_opc {
+ 	ixgbe_aci_opc_done_alt_write			= 0x0904,
+ 	ixgbe_aci_opc_clear_port_alt_write		= 0x0906,
  
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 06104c2c66ab2..e773b0adcfc0a 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -3343,10 +3343,9 @@ int trace_vbprintk(unsigned long ip, const char *fmt, va_list args)
- }
- EXPORT_SYMBOL_GPL(trace_vbprintk);
- 
--__printf(3, 0)
--static int
--__trace_array_vprintk(struct trace_buffer *buffer,
--		      unsigned long ip, const char *fmt, va_list args)
-+static __printf(3, 0)
-+int __trace_array_vprintk(struct trace_buffer *buffer,
-+			  unsigned long ip, const char *fmt, va_list args)
- {
- 	struct trace_event_call *call = &event_print;
- 	struct ring_buffer_event *event;
-@@ -3399,7 +3398,6 @@ __trace_array_vprintk(struct trace_buffer *buffer,
- 	return len;
- }
- 
--__printf(3, 0)
- int trace_array_vprintk(struct trace_array *tr,
- 			unsigned long ip, const char *fmt, va_list args)
- {
-@@ -3429,7 +3427,6 @@ int trace_array_vprintk(struct trace_array *tr,
-  * Note, trace_array_init_printk() must be called on @tr before this
-  * can be used.
-  */
--__printf(3, 0)
- int trace_array_printk(struct trace_array *tr,
- 		       unsigned long ip, const char *fmt, ...)
- {
-@@ -3474,7 +3471,6 @@ int trace_array_init_printk(struct trace_array *tr)
- }
- EXPORT_SYMBOL_GPL(trace_array_init_printk);
- 
--__printf(3, 4)
- int trace_array_printk_buf(struct trace_buffer *buffer,
- 			   unsigned long ip, const char *fmt, ...)
- {
-@@ -3490,7 +3486,6 @@ int trace_array_printk_buf(struct trace_buffer *buffer,
- 	return ret;
- }
- 
--__printf(2, 0)
- int trace_vprintk(unsigned long ip, const char *fmt, va_list args)
- {
- 	return trace_array_vprintk(printk_trace, ip, fmt, args);
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 04ea327198ba8..82da3ac140242 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -818,13 +818,15 @@ static inline void __init disable_tracing_selftest(const char *reason)
- 
- extern void *head_page(struct trace_array_cpu *data);
- extern unsigned long long ns2usecs(u64 nsec);
--extern int
--trace_vbprintk(unsigned long ip, const char *fmt, va_list args);
--extern int
--trace_vprintk(unsigned long ip, const char *fmt, va_list args);
--extern int
--trace_array_vprintk(struct trace_array *tr,
--		    unsigned long ip, const char *fmt, va_list args);
++	/* TCA Events */
++	ixgbe_aci_opc_temp_tca_event                    = 0x0C94,
 +
-+__printf(2, 0)
-+int trace_vbprintk(unsigned long ip, const char *fmt, va_list args);
-+__printf(2, 0)
-+int trace_vprintk(unsigned long ip, const char *fmt, va_list args);
-+__printf(3, 0)
-+int trace_array_vprintk(struct trace_array *tr,
-+			unsigned long ip, const char *fmt, va_list args);
-+__printf(3, 4)
- int trace_array_printk_buf(struct trace_buffer *buffer,
- 			   unsigned long ip, const char *fmt, ...);
- void trace_printk_seq(struct trace_seq *s);
+ 	/* debug commands */
+ 	ixgbe_aci_opc_debug_dump_internals		= 0xFF08,
+ 
 -- 
 2.39.5
 
