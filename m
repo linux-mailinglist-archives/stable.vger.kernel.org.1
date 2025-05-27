@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7023BAC5352
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB35AC56C4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32EAF1BA394E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EA381BA7E7B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745DE27FD50;
-	Tue, 27 May 2025 16:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DC627FB02;
+	Tue, 27 May 2025 17:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMC48+Oc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZ5FqHmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC7BAD5A;
-	Tue, 27 May 2025 16:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D9927D776;
+	Tue, 27 May 2025 17:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364346; cv=none; b=M4Hatqys02bhkdXXKjD4Iz+w/8akzTqpImXT8sD6+3iqzsnQD2WTFxEV9r8dHZF5WWt1R8wO5y2i/XOJ12RKXNRUEIs8eWttyAablszfZReeICnypAeRrxMVkiMmCX0y5h07zY8hOH5vNLCgBSDxPvHj7atH/rTBI/dtqxzNMuI=
+	t=1748366701; cv=none; b=ljl3BiUkiLNUuxgWZZCavxcV1AmzNMnhVX2s77B/IH3TMPyKN82uL6tU87tq/fphYuEy4oNzsFOKZU4hKYodw44QUUviY3QeDegtxXk11U7S84rv/uQp/gM8uv36lm1m25wl9Ykp4SpP+t6eY2TAhgmW6FLFIT8JYfC19YZSLKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364346; c=relaxed/simple;
-	bh=kWZkCs/eLO/dcgHAmLtYWyuYxx8hUHNCkytbfIC2bhg=;
+	s=arc-20240116; t=1748366701; c=relaxed/simple;
+	bh=WmaDJUpP37iFdU/g5c7wrs8u8kXHt9akwwsTX5lOPHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2nd5WWaJ1A0yVqON7EX6/Nduw3H3MQfnekWcGcKkPmlggX7HbNylJCrmafAWMz/p6yETyGwvRnR2D4P/U0IPZGhk3a+chud9Opg8fLg2Z8QdlccyhpEud/k/zMYFgjzYWd+JHF+TeU4V+2CbaRoTGbK0qVAbAQMRU9AR/8fOFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMC48+Oc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA4EC4CEE9;
-	Tue, 27 May 2025 16:45:44 +0000 (UTC)
+	 MIME-Version; b=oVBF3Y8ldIQdRs5z/TcwdomqTc7gVu9pHV+pqzlr37MjLV1zkWQcIi3fAQtMxJ7vdKcV2cJ3sS1xClkIPUNN9sIJqpqYWVwOVfel3NMf7oyTZSPrgMj0a8C0Qqd/vfCTDautO/52RGPAT9C8ihDtmdk6VIkKnpWX48N0oWxxjSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZ5FqHmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A5CC4CEE9;
+	Tue, 27 May 2025 17:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364345;
-	bh=kWZkCs/eLO/dcgHAmLtYWyuYxx8hUHNCkytbfIC2bhg=;
+	s=korg; t=1748366701;
+	bh=WmaDJUpP37iFdU/g5c7wrs8u8kXHt9akwwsTX5lOPHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vMC48+OcinIV8vcL0bNK12m93x03NofRuMXdnrwaoiDN+ke97uqqp2gmfeanMREf3
-	 sBOGt+mQTLqxo2Xnm8TywRDkPryiEAUhN5212KCgLLkpiFzYcKni7ZxdcB9pwQTqpA
-	 4kPIZPr+R7L2KDupdxQsoxTe5Sk+xwFKToR9Mf/Q=
+	b=pZ5FqHmnJHQ5LufnaZ6kG0qjQ6eZU8dzPljg7HZexbqrHT64ZyfxZ0M+1yphuGrfz
+	 gEuuK5uMWTrlEFEnYGc7rXkddaLGlKEsg7NrUShK6zJ2GqwA1rF5GHN69qnG38li7W
+	 8K2ogVnScKqPV5kIR6GKqmHIXxDuGqr8ZUXx8y5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Quan Zhou <quan.zhou@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/626] scsi: mpi3mr: Add level check to control event logging
+Subject: [PATCH 6.14 123/783] wifi: mt76: mt7925: fix fails to enter low power mode in suspend state
 Date: Tue, 27 May 2025 18:18:40 +0200
-Message-ID: <20250527162446.171572726@linuxfoundation.org>
+Message-ID: <20250527162518.155649812@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-[ Upstream commit b0b7ee3b574a72283399b9232f6190be07f220c0 ]
+[ Upstream commit 2d5630b0c9466ac6549495828aa7dce7424a272a ]
 
-Ensure event logs are only generated when the debug logging level
-MPI3_DEBUG_EVENT is enabled. This prevents unnecessary logging.
+The mt7925 sometimes fails to enter low power mode during suspend.
+This is caused by the chip firmware sending an additional ACK event
+to the host after processing the suspend command. Due to timing issues,
+this event may not reach the host, causing the chip to get stuck.
+To resolve this, the ACK flag in the suspend command is removed,
+as it is not needed in the MT7925 architecture. This prevents the
+firmware from sending the additional ACK event, ensuring the device
+can reliably enter low power mode during suspend.
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250415101546.204018-1-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Link: https://patch.msgid.link/d056938144a3a0336c3a4e3cec6f271899f32bf7.1736775666.git.quan.zhou@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 +++
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index c0a372868e1d7..f6d3db3fd0d8e 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -174,6 +174,9 @@ static void mpi3mr_print_event_data(struct mpi3mr_ioc *mrioc,
- 	char *desc = NULL;
- 	u16 event;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 87b3a88038e3c..59fa812b30d35 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3294,6 +3294,9 @@ int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 		else
+ 			uni_txd->option = MCU_CMD_UNI_EXT_ACK;
  
-+	if (!(mrioc->logging_level & MPI3_DEBUG_EVENT))
-+		return;
++		if (cmd == MCU_UNI_CMD(HIF_CTRL))
++			uni_txd->option &= ~MCU_CMD_ACK;
 +
- 	event = event_reply->event;
+ 		goto exit;
+ 	}
  
- 	switch (event) {
 -- 
 2.39.5
 
