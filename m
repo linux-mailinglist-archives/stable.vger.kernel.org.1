@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-146637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CFEAC5417
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:56:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E0DAC572B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B4467A290B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:53:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFB1A18852F9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6BD27FD6E;
-	Tue, 27 May 2025 16:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7543B2522B4;
+	Tue, 27 May 2025 17:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXKYdMAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRcWqAkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE0227FD73;
-	Tue, 27 May 2025 16:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3362E19CD07;
+	Tue, 27 May 2025 17:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364845; cv=none; b=DYObhDOD8C7kEMMU/QF2L3W4BuaGMIFxsrDyXluWOeygavooCbyBK8OwrPjtN6Q7IqSKRjQQy2HJgaiPzjNJ0sQpYfLXGKvYRlDLfVMNCxicG/g3XABYuXq6LHdYywDk6spvYTVrAmOFLw5V+z/tIFVVSmZvMv1njf1zYlAq3jk=
+	t=1748366987; cv=none; b=iFhoStkpF5jqQwYS+PArP1S0c7X4ZUjZDHIPlEMzzaAyHiXPLjFBtdSA3vvdd+O3y0lr5UskcT7zyRYigiEvAsCv6qW8RGGD6LiELV765W0SgWaap6oZkWzzTu86seNpZV7iIR3ETCdQqnKm6wQY1bMHp9wRXciH5GDnkLGgXv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364845; c=relaxed/simple;
-	bh=X10aKGSuOQfL8Goqge+OUG0Muxp4MqWhJdsVzbGycsY=;
+	s=arc-20240116; t=1748366987; c=relaxed/simple;
+	bh=Rf3waK2CcH2+8nZXOL8fwjLAtzUZebwL/lv+elM0vzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gc3jHLuX3QI2Q60c+OtosPopHYN2SkMDO9r9GWlKz5wJtzg8L6cfZzrjPNMhRH4FazzoN5ZtXSGHQKgMmDGo18F/cAj5SSB2JCQ+HmJqjO7BF8aHl1bFcXDkl43Ua26Kw88syl/Y4F8RY/wyrWAPv3h+vI92CnHJRNd0+j9Qtfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXKYdMAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974EAC4CEE9;
-	Tue, 27 May 2025 16:54:04 +0000 (UTC)
+	 MIME-Version; b=tnzdMR370pRwq5Ivqkhe/bSrQ+1lbzyjXijNlibAqfjJ8WDKIPYzI9u/BrSyhMnRcD2H2txSB6E7K40LhVmydvktmbQczRWr5EDybrfKsWSLGDTyDDIvzqw8QGV1POEAkTCekeRivKuiv12J7Y1kOy4RGwDvMhZ/9YrckGqyPuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRcWqAkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0A2C4CEE9;
+	Tue, 27 May 2025 17:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364845;
-	bh=X10aKGSuOQfL8Goqge+OUG0Muxp4MqWhJdsVzbGycsY=;
+	s=korg; t=1748366987;
+	bh=Rf3waK2CcH2+8nZXOL8fwjLAtzUZebwL/lv+elM0vzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EXKYdMABxuAjOLpg087ifBaU7fzXa9PEaDtx7tddNoBtmybCtqJmSbHOpC7E321a2
-	 2EUzfepm0fSPc5x6Jm57ULj6M15d7TKX5+VgJ1Xh3LqzUUrQd8fNaDJ2+6NrVo5qRE
-	 l6KwfjWMY995wSjuMm0SnjqZLj0uk2aSSgCeOGHQ=
+	b=nRcWqAkXIhVdEB2c1JAzSxU1XqPqRUXVO8/2wGxjYKSND8etOpIv2AffeJFUnIJUv
+	 on+m0Xdb0VPZOL6SGhWPWIneMqeGm88cl1f3+PVET+2Z1bbME+SbXamcXFUGZViRLP
+	 RO3+bdytANTJhxZILt9NFl4S9bnuBdvnF3/yFqpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 144/626] thunderbolt: Do not add non-active NVM if NVM upgrade is disabled for retimer
-Date: Tue, 27 May 2025 18:20:37 +0200
-Message-ID: <20250527162450.880218735@linuxfoundation.org>
+Subject: [PATCH 6.14 241/783] iommu/amd/pgtbl_v2: Improve error handling
+Date: Tue, 27 May 2025 18:20:38 +0200
+Message-ID: <20250527162522.926936790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit ad79c278e478ca8c1a3bf8e7a0afba8f862a48a1 ]
+[ Upstream commit 36a1cfd497435ba5e37572fe9463bb62a7b1b984 ]
 
-This is only used to write a new NVM in order to upgrade the retimer
-firmware. It does not make sense to expose it if upgrade is disabled.
-This also makes it consistent with the router NVM upgrade.
+Return -ENOMEM if v2_alloc_pte() fails to allocate memory.
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250227162320.5805-4-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/retimer.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/iommu/amd/io_pgtable_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
-index eeb64433ebbca..3488be7620674 100644
---- a/drivers/thunderbolt/retimer.c
-+++ b/drivers/thunderbolt/retimer.c
-@@ -93,9 +93,11 @@ static int tb_retimer_nvm_add(struct tb_retimer *rt)
- 	if (ret)
- 		goto err_nvm;
+diff --git a/drivers/iommu/amd/io_pgtable_v2.c b/drivers/iommu/amd/io_pgtable_v2.c
+index c616de2c5926e..a56a273963059 100644
+--- a/drivers/iommu/amd/io_pgtable_v2.c
++++ b/drivers/iommu/amd/io_pgtable_v2.c
+@@ -254,7 +254,7 @@ static int iommu_v2_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
+ 		pte = v2_alloc_pte(cfg->amd.nid, pgtable->pgd,
+ 				   iova, map_size, gfp, &updated);
+ 		if (!pte) {
+-			ret = -EINVAL;
++			ret = -ENOMEM;
+ 			goto out;
+ 		}
  
--	ret = tb_nvm_add_non_active(nvm, nvm_write);
--	if (ret)
--		goto err_nvm;
-+	if (!rt->no_nvm_upgrade) {
-+		ret = tb_nvm_add_non_active(nvm, nvm_write);
-+		if (ret)
-+			goto err_nvm;
-+	}
- 
- 	rt->nvm = nvm;
- 	dev_dbg(&rt->dev, "NVM version %x.%x\n", nvm->major, nvm->minor);
 -- 
 2.39.5
 
