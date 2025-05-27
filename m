@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-146629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0AFAC5407
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:55:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0260AC574E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5A183BAB48
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:53:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAE204A6C7C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FDA27FB2A;
-	Tue, 27 May 2025 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4E527A133;
+	Tue, 27 May 2025 17:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFX1SZQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UGiXssw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6F32CCC0;
-	Tue, 27 May 2025 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1771DC998;
+	Tue, 27 May 2025 17:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364820; cv=none; b=S90cnIWvQSq+MNAHHtsmlmirvAHyciGwkS0kEjJMCWLcywXPmZlfJhMEKPbxauQOAChQzdWOEPRV2KIT/oNJIMbz9p8Up6N8uPKHR2a75QAt6agvzdcLQC0coVsQA9LqloaVw8OfEJfMuGnFFzBR1PyX/mpFz4JGPPqsMGaPQ+Q=
+	t=1748367080; cv=none; b=uWFGwFqLuWEPf+nS616YK2gt3tPFFWppP1loi2Ll+r2q6mDM2b5viI1R0eFAnRC2nVnmjW8CBvYRghszNoQ/ZXSwwHKxWQ1QEFnafy5KZVZ3XzhUhap09kFqIxaLJLwVgdRqrL1KiiO33k85pq85K4U04b5j6o+eRJq6VZq04bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364820; c=relaxed/simple;
-	bh=7ZvZlBwkPSa+PbDN7Jp36C22YU5br7OslYGtyqNZctA=;
+	s=arc-20240116; t=1748367080; c=relaxed/simple;
+	bh=HuSgZsht0OTOVEWLbACCFYUSO9cuSqSytI6ChE8cTwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/PxkpeodNStxiZQvKEhid9NcTzKEF7KA/LZgsBRHtTCTQtMtG5aWC4FaMitMn4EMHLvyOc7e6OKPggEtbykdI7bGTZyyvBNtHLfwku9emUyB58ZOQ0HRiepH8TbEGg9jFZzAdBMqqOTumL/kEPCjqgU/5s8f/Sr0SVjdy5hPJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFX1SZQr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E55C4CEE9;
-	Tue, 27 May 2025 16:53:39 +0000 (UTC)
+	 MIME-Version; b=eAfsdCZltBH03K6597eoc5/3t2IHl7ORtA7t8I1srlRTeXX16roL2R2424IRCERnIIJQpPihtuYKZCrYiG/2kBI0gNK/UUckTP5WBDZZsgKDOcMh3wczJTpTmEE/Hk20bkUL2PUy3nkdzGIdgfSOgYZMGo2yQW1LcSJhZw3Jup0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UGiXssw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0048FC4CEE9;
+	Tue, 27 May 2025 17:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364820;
-	bh=7ZvZlBwkPSa+PbDN7Jp36C22YU5br7OslYGtyqNZctA=;
+	s=korg; t=1748367080;
+	bh=HuSgZsht0OTOVEWLbACCFYUSO9cuSqSytI6ChE8cTwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFX1SZQr8VCKyvpv6La0RGNGnqdF8N0AXIh4Y2oFlyIYkvkAnkyQjQ4f4Ep0WKebs
-	 EHHYVR930SHnZGrzxM5mYqOBIF4rfpwhwsi6G6p/4CDWDAF0hEg61WaIZGJU9Rxpkz
-	 uEePzZpBzd6pizuQEaFmEirmVJhfTVfKa5NtFMb4=
+	b=1UGiXsswNRY0SHfMcwIlpYG3aZTSFxe4Av43tebI/mm9HxBPat8K6QpRvUEX8gZm7
+	 ByL/+cspjL8RLxj4k0+dshJeBxBoB8SPtqJMPd+orxnkr5k5HPUoxTd34EZRcG/sCW
+	 6xDpQ/S9/Tu8rIOPMZY0nyBCCKF90lmXYwBfohFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 175/626] arm64/mm: Check pmd_table() in pmd_trans_huge()
+Subject: [PATCH 6.14 271/783] dm cache: prevent BUG_ON by blocking retries on failed device resumes
 Date: Tue, 27 May 2025 18:21:08 +0200
-Message-ID: <20250527162452.124055701@linuxfoundation.org>
+Message-ID: <20250527162524.120496869@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit d1770e909898c108e8c7d30ca039053e8818a9c9 ]
+[ Upstream commit 5da692e2262b8f81993baa9592f57d12c2703dea ]
 
-Check for pmd_table() in pmd_trans_huge() rather then just checking for the
-PMD_TABLE_BIT. But ensure all present-invalid entries are handled correctly
-by always setting PTE_VALID before checking with pmd_table().
+A cache device failing to resume due to mapping errors should not be
+retried, as the failure leaves a partially initialized policy object.
+Repeating the resume operation risks triggering BUG_ON when reloading
+cache mappings into the incomplete policy object.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250221044227.1145393-8-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reproduce steps:
+
+1. create a cache metadata consisting of 512 or more cache blocks,
+   with some mappings stored in the first array block of the mapping
+   array. Here we use cache_restore v1.0 to build the metadata.
+
+cat <<EOF >> cmeta.xml
+<superblock uuid="" block_size="128" nr_cache_blocks="512" \
+policy="smq" hint_width="4">
+  <mappings>
+    <mapping cache_block="0" origin_block="0" dirty="false"/>
+  </mappings>
+</superblock>
+EOF
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
+dmsetup remove cmeta
+
+2. wipe the second array block of the mapping array to simulate
+   data degradations.
+
+mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
+
+3. try bringing up the cache device. The resume is expected to fail
+   due to the broken array block.
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dmsetup create cache --notable
+dmsetup load cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup resume cache
+
+4. try resuming the cache again. An unexpected BUG_ON is triggered
+   while loading cache mappings.
+
+dmsetup resume cache
+
+Kernel logs:
+
+(snip)
+------------[ cut here ]------------
+kernel BUG at drivers/md/dm-cache-policy-smq.c:752!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 332 Comm: dmsetup Not tainted 6.13.4 #3
+RIP: 0010:smq_load_mapping+0x3e5/0x570
+
+Fix by disallowing resume operations for devices that failed the
+initial attempt.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/md/dm-cache-target.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index c329ea061dc98..8ee56ae999c16 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -554,18 +554,6 @@ static inline int pmd_protnone(pmd_t pmd)
- #endif
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 9cb797a561d6e..6cee5eac8b9e2 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2899,6 +2899,27 @@ static dm_cblock_t get_cache_dev_size(struct cache *cache)
+ 	return to_cblock(size);
+ }
  
- #define pmd_present(pmd)	pte_present(pmd_pte(pmd))
--
--/*
-- * THP definitions.
-- */
--
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--static inline int pmd_trans_huge(pmd_t pmd)
--{
--	return pmd_val(pmd) && pmd_present(pmd) && !(pmd_val(pmd) & PMD_TABLE_BIT);
--}
--#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
--
- #define pmd_dirty(pmd)		pte_dirty(pmd_pte(pmd))
- #define pmd_young(pmd)		pte_young(pmd_pte(pmd))
- #define pmd_valid(pmd)		pte_valid(pmd_pte(pmd))
-@@ -725,6 +713,18 @@ extern pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
- #define pmd_leaf_size(pmd)	(pmd_cont(pmd) ? CONT_PMD_SIZE : PMD_SIZE)
- #define pte_leaf_size(pte)	(pte_cont(pte) ? CONT_PTE_SIZE : PAGE_SIZE)
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+static inline int pmd_trans_huge(pmd_t pmd)
++static bool can_resume(struct cache *cache)
 +{
 +	/*
-+	 * If pmd is present-invalid, pmd_table() won't detect it
-+	 * as a table, so force the valid bit for the comparison.
++	 * Disallow retrying the resume operation for devices that failed the
++	 * first resume attempt, as the failure leaves the policy object partially
++	 * initialized. Retrying could trigger BUG_ON when loading cache mappings
++	 * into the incomplete policy object.
 +	 */
-+	return pmd_val(pmd) && pmd_present(pmd) &&
-+	       !pmd_table(__pmd(pmd_val(pmd) | PTE_VALID));
-+}
-+#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
++	if (cache->sized && !cache->loaded_mappings) {
++		if (get_cache_mode(cache) != CM_WRITE)
++			DMERR("%s: unable to resume a failed-loaded cache, please check metadata.",
++			      cache_device_name(cache));
++		else
++			DMERR("%s: unable to resume cache due to missing proper cache table reload",
++			      cache_device_name(cache));
++		return false;
++	}
 +
- #if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS < 3
- static inline bool pud_sect(pud_t pud) { return false; }
- static inline bool pud_table(pud_t pud) { return true; }
++	return true;
++}
++
+ static bool can_resize(struct cache *cache, dm_cblock_t new_size)
+ {
+ 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+@@ -2947,6 +2968,9 @@ static int cache_preresume(struct dm_target *ti)
+ 	struct cache *cache = ti->private;
+ 	dm_cblock_t csize = get_cache_dev_size(cache);
+ 
++	if (!can_resume(cache))
++		return -EINVAL;
++
+ 	/*
+ 	 * Check to see if the cache has resized.
+ 	 */
 -- 
 2.39.5
 
