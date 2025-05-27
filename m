@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F82CAC5370
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:47:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6057AC56B6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E398189AA5D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088413BCBC3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CD727D766;
-	Tue, 27 May 2025 16:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B766F280300;
+	Tue, 27 May 2025 17:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mfPjSHU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+O2JyMB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9809194A67;
-	Tue, 27 May 2025 16:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7507B27EC73;
+	Tue, 27 May 2025 17:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364427; cv=none; b=p618lwbmXee1Yu3XxQG1EzfQlvyAdqwtV3/TZBypsKUneP9nJu/qjZrjPHfItoU3H+lM8MSTalI/zLQPnC2kWCY6vYsWvFuYuMYDVksriyDYHBm3lRclZzer5ceKJGpZ8x74+SVRKTy8GBqkUEffbFb2D5JwzeZQf6C48oHJww0=
+	t=1748366665; cv=none; b=pWsnFnqS9a1mSFkOAqoiowocfN4kc/wnVL8ncKMlCaGUcM7gdeTJL8X32tguYotLHhC+rbSXYO/zHiLdSBC8hDBJlPKmP4BA2O2TxnOyxfwJ95VcGxq1GM94+8zbQ5I6IPacmsjYhrM5wEnlHD+C8wD88FqmYXDJ8zV87tKDRRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364427; c=relaxed/simple;
-	bh=VPQbJVFTZ9sbMbEdylvvE/dzPGKAMTTSkDFW+V6pv4s=;
+	s=arc-20240116; t=1748366665; c=relaxed/simple;
+	bh=X7InmAU7jQWHi+ShgAgzu+SV0qZMVscLHmHaxHHm0+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZeEewJWLCfbF68s1D7+AJGvShXQ3e+zZHCNC6O33AYMDr73QICMeeB0ajr9bziRecQKHoCG5q8tReTDPsHNrJWCW1FZZ0DMpZrVUy2Uamn4Dv5mp3uPe1GKCFqVSKVLxOJZQ51RnicesWCyaFXAiCQ4MW+qjxoufEEtM7dXcX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mfPjSHU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C42C4CEE9;
-	Tue, 27 May 2025 16:47:04 +0000 (UTC)
+	 MIME-Version; b=X5K0w+sFU+7nUjJw4t4Ef1fs/WP5bQW0R2K4IMgjjfkocsu5qReJPzWHfaFfyAmZp7CY7ZJzwaLaOrMBIo1f+eom+zgIqeVXgvYe0XhMxjteRWqNqYZpU1ALSfrV5MsdIa3vCbp/3kp7itU5MyoCkQyJTJumBpXiVVEqqcKn2A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+O2JyMB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7DEC4CEEA;
+	Tue, 27 May 2025 17:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364425;
-	bh=VPQbJVFTZ9sbMbEdylvvE/dzPGKAMTTSkDFW+V6pv4s=;
+	s=korg; t=1748366665;
+	bh=X7InmAU7jQWHi+ShgAgzu+SV0qZMVscLHmHaxHHm0+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1mfPjSHUC563e0KKxlEYsVQIwHLfNmSfSGxOY5jZUwH7G96LjwjgoG3swPY7C7er7
-	 YKu6oFDZfJxLHX74TmnuphRbdSv2gDYLU4RVWpHoQuyv/ODwvP/ryxPQhEref+4fI+
-	 yJvR8KTeefZ1ioF9sAvqUseZejO06SJ+b/WoP/Xs=
+	b=F+O2JyMBlFxQ+ruynOpMVyzwn4hOHRWjaUSsKM7e32DGMX4/2DZg4iOrfpNzXL2C6
+	 Tjths29eqBosIYe3QJoQvnDoTi//jpr4Fw8i60/DRs1yO50LiERt7JHiFMtmEZcb3n
+	 uMqnPUESOuiH+2Fg0n8LJl6lCj2z9qxxtM7WOMa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Flora Cui <flora.cui@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/626] kconfig: merge_config: use an empty file as initfile
-Date: Tue, 27 May 2025 18:18:57 +0200
-Message-ID: <20250527162446.848246889@linuxfoundation.org>
+Subject: [PATCH 6.14 141/783] drm/amdgpu: release xcp_mgr on exit
+Date: Tue, 27 May 2025 18:18:58 +0200
+Message-ID: <20250527162518.901200801@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Flora Cui <flora.cui@amd.com>
 
-[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
+[ Upstream commit b5aaa82e2b12feaaa6958f7fa0917ddcc03c24ee ]
 
-The scripts/kconfig/merge_config.sh script requires an existing
-$INITFILE (or the $1 argument) as a base file for merging Kconfig
-fragments. However, an empty $INITFILE can serve as an initial starting
-point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
-if -m is not used. This variable can point to any configuration file
-containing preset config symbols (the merged output) as stated in
-Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
-contain just the merge output requiring the user to run make (i.e.
-KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
-olddefconfig).
+Free on driver cleanup.
 
-Instead of failing when `$INITFILE` is missing, create an empty file and
-use it as the starting point for merges.
-
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Flora Cui <flora.cui@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/merge_config.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
-index 0b7952471c18f..79c09b378be81 100755
---- a/scripts/kconfig/merge_config.sh
-+++ b/scripts/kconfig/merge_config.sh
-@@ -112,8 +112,8 @@ INITFILE=$1
- shift;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index c00a01c62724a..ea50f82b547d9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4778,6 +4778,9 @@ void amdgpu_device_fini_sw(struct amdgpu_device *adev)
+ 	kfree(adev->fru_info);
+ 	adev->fru_info = NULL;
  
- if [ ! -r "$INITFILE" ]; then
--	echo "The base file '$INITFILE' does not exist.  Exit." >&2
--	exit 1
-+	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
-+	touch "$INITFILE"
- fi
++	kfree(adev->xcp_mgr);
++	adev->xcp_mgr = NULL;
++
+ 	px = amdgpu_device_supports_px(adev_to_drm(adev));
  
- MERGE_LIST=$*
+ 	if (px || (!dev_is_removable(&adev->pdev->dev) &&
 -- 
 2.39.5
 
