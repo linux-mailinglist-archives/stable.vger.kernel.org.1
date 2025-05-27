@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44E3AC559B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D15AAC58E2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD5B07AFA0D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6020F9E00E1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A48C271464;
-	Tue, 27 May 2025 17:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1D942A9B;
+	Tue, 27 May 2025 17:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiFysIVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUak5BF0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450C4367;
-	Tue, 27 May 2025 17:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1CA280021;
+	Tue, 27 May 2025 17:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365938; cv=none; b=EJwgyllMXB6EF6s5zEBvqlIOx0m8T9+5/cGUXkyfo1L4wCul7L+fUsjRveQfPOSNqQWPgrdVJz6G6IONlTEuzrAi/gRlpZldidVZy5GTm09dEigwFNfl/W3NUkCBHE+yImR3GRDvBigne46aXp+e8ZvDkS9voxX8PqNYTgPhelk=
+	t=1748368212; cv=none; b=Be0O5oQyYUOAkhw90F+NwxeLia+FyKB4PxYsI/aP9yy7gWniQ6KjdrvuUaMsCmCH4JRgojEtfwS7xLDGzTAQdPNGBDVM6OhfMAF/yD/6E3syjxvLxinBF4OrgVotMPQH8Jd8odvU858A6CznmZZQELtY+x3aApWbp0XCks3BOnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365938; c=relaxed/simple;
-	bh=SDLDpWSuoDvWOEFnBoy4gYexFU3qR9gSAqCSyqWBo4E=;
+	s=arc-20240116; t=1748368212; c=relaxed/simple;
+	bh=ZbOKn2kD0QkrBg/b76mVP/l77uEpu7B9EjjHumBVDFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iuw9y3ZoTaeprmf/qBw85uLPmzo8XDY4ecBYz3ASGMDTKicPRMfMQbNx8L0vgTAV23U34R2nrx+EgR1OKpN+EnZtYkjkvSaGwVl0N/xZv1MOGXQ9OWPy9XEPVEpdn4oYtdequ+T4bP5tEQa301iDAfCuStZ08GML5eDHmD7/DCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiFysIVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66639C4CEE9;
-	Tue, 27 May 2025 17:12:15 +0000 (UTC)
+	 MIME-Version; b=mkRDugxTqkBm2Y6DsmkL7ER0j9bmzH8Cfwk6QLH7o2HUuk+d1o5KyOvijzhlJCFsFgnDX6svOt8DCUoyjR4yIJncVTQc76rpG66EYaoKjZ+4kpDukcu/LFEFxCOnccqjFLDYkBUUNOjusaszgkb35fPNyZRyfdozKvwG6giEHDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUak5BF0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB75C4CEE9;
+	Tue, 27 May 2025 17:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365935;
-	bh=SDLDpWSuoDvWOEFnBoy4gYexFU3qR9gSAqCSyqWBo4E=;
+	s=korg; t=1748368212;
+	bh=ZbOKn2kD0QkrBg/b76mVP/l77uEpu7B9EjjHumBVDFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiFysIVUPs9iDluJJe9pdMCqXssvZ5VbRiuWIfoqomS4WV39/530nk/LsDfDyARvc
-	 vNR/a26NUm2vLQ/Q3ToktqA2k9nHo98lWlNj6TbQrXZunTgnTRNarKgHOCQVfPL/sC
-	 lNQl9bv90+34jeyDMZtLhyyPVl2eECPriSeNEEQg=
+	b=jUak5BF0r3Xc7LPMhCxaEF+r6EP1RWNtferUnFWYenaHrL0oFdC5PhAd8wP86buo4
+	 JSaYz6h3IZybNyuaIA6Ysy+YR9aTcricxN+8gumQJH8muOXLEZduMWOLQp3jDhUbWU
+	 kELdXVbEmja4Jd7vnbhG5mgHUoOrcbpPrDabZQOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Brunner <tobias@strongswan.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Amber Lin <Amber.Lin@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviwanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 537/626] xfrm: Fix UDP GRO handling for some corner cases
-Date: Tue, 27 May 2025 18:27:10 +0200
-Message-ID: <20250527162506.810115747@linuxfoundation.org>
+Subject: [PATCH 6.14 634/783] drm/amdkfd: Correct F8_MODE for gfx950
+Date: Tue, 27 May 2025 18:27:11 +0200
+Message-ID: <20250527162538.965078096@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Brunner <tobias@strongswan.org>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit e3fd0577768584ece824c8b661c40fb3d912812a ]
+[ Upstream commit 0c7e053448945e5a4379dc4396c762d7422b11ca ]
 
-This fixes an issue that's caused if there is a mismatch between the data
-offset in the GRO header and the length fields in the regular sk_buff due
-to the pskb_pull()/skb_push() calls.  That's because the UDP GRO layer
-stripped off the UDP header via skb_gro_pull() already while the UDP
-header was explicitly not pulled/pushed in this function.
+Correct F8_MODE setting for gfx950 that was removed
 
-For example, an IKE packet that triggered this had len=data_len=1268 and
-the data_offset in the GRO header was 28 (IPv4 + UDP).  So pskb_pull()
-was called with an offset of 28-8=20, which reduced len to 1248 and via
-pskb_may_pull() and __pskb_pull_tail() it also set data_len to 1248.
-As the ESP offload module was not loaded, the function bailed out and
-called skb_push(), which restored len to 1268, however, data_len remained
-at 1248.
-
-So while skb_headlen() was 0 before, it was now 20.  The latter caused a
-difference of 8 instead of 28 (or 0 if pskb_pull()/skb_push() was called
-with the complete GRO data_offset) in gro_try_pull_from_frag0() that
-triggered a call to gro_pull_from_frag0() that corrupted the packet.
-
-This change uses a more GRO-like approach seen in other GRO receivers
-via skb_gro_header() to just read the actual data we are interested in
-and does not try to "restore" the UDP header at this point to call the
-existing function.  If the offload module is not loaded, it immediately
-bails out, otherwise, it only does a quick check to see if the packet
-is an IKE or keepalive packet instead of calling the existing function.
-
-Fixes: 172bf009c18d ("xfrm: Support GRO for IPv4 ESP in UDP encapsulation")
-Fixes: 221ddb723d90 ("xfrm: Support GRO for IPv6 ESP in UDP encapsulation")
-Signed-off-by: Tobias Brunner <tobias@strongswan.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 61972cd93af7 ("drm/amdkfd: Set per-process flags only once for gfx9/10/11/12")
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviwanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/xfrm4_input.c | 18 ++++++++++--------
- net/ipv6/xfrm6_input.c | 18 ++++++++++--------
- 2 files changed, 20 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index a620618cc568a..17d3fc2fab4cc 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -182,11 +182,15 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	int offset = skb_gro_offset(skb);
- 	const struct net_offload *ops;
- 	struct sk_buff *pp = NULL;
--	int ret;
--
--	offset = offset - sizeof(struct udphdr);
-+	int len, dlen;
-+	__u8 *udpdata;
-+	__be32 *udpdata32;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
+index 3264509408bc8..d85eadaa1e11b 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
+@@ -69,8 +69,7 @@ static bool set_cache_memory_policy_v9(struct device_queue_manager *dqm,
+ 		qpd->sh_mem_config |= 1 << SH_MEM_CONFIG__RETRY_DISABLE__SHIFT;
  
--	if (!pskb_pull(skb, offset))
-+	len = skb->len - offset;
-+	dlen = offset + min(len, 8);
-+	udpdata = skb_gro_header(skb, dlen, offset);
-+	udpdata32 = (__be32 *)udpdata;
-+	if (unlikely(!udpdata))
- 		return NULL;
+ 	if (KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 3) ||
+-		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 4) ||
+-		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 5, 0))
++		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 4))
+ 		qpd->sh_mem_config |= (1 << SH_MEM_CONFIG__F8_MODE__SHIFT);
  
- 	rcu_read_lock();
-@@ -194,11 +198,10 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	if (!ops || !ops->callbacks.gro_receive)
- 		goto out;
- 
--	ret = __xfrm4_udp_encap_rcv(sk, skb, false);
--	if (ret)
-+	/* check if it is a keepalive or IKE packet */
-+	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
- 		goto out;
- 
--	skb_push(skb, offset);
- 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
-@@ -208,7 +211,6 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 
- out:
- 	rcu_read_unlock();
--	skb_push(skb, offset);
- 	NAPI_GRO_CB(skb)->same_flow = 0;
- 	NAPI_GRO_CB(skb)->flush = 1;
- 
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 4abc5e9d63227..841c81abaaf4f 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -179,14 +179,18 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	int offset = skb_gro_offset(skb);
- 	const struct net_offload *ops;
- 	struct sk_buff *pp = NULL;
--	int ret;
-+	int len, dlen;
-+	__u8 *udpdata;
-+	__be32 *udpdata32;
- 
- 	if (skb->protocol == htons(ETH_P_IP))
- 		return xfrm4_gro_udp_encap_rcv(sk, head, skb);
- 
--	offset = offset - sizeof(struct udphdr);
--
--	if (!pskb_pull(skb, offset))
-+	len = skb->len - offset;
-+	dlen = offset + min(len, 8);
-+	udpdata = skb_gro_header(skb, dlen, offset);
-+	udpdata32 = (__be32 *)udpdata;
-+	if (unlikely(!udpdata))
- 		return NULL;
- 
- 	rcu_read_lock();
-@@ -194,11 +198,10 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	if (!ops || !ops->callbacks.gro_receive)
- 		goto out;
- 
--	ret = __xfrm6_udp_encap_rcv(sk, skb, false);
--	if (ret)
-+	/* check if it is a keepalive or IKE packet */
-+	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
- 		goto out;
- 
--	skb_push(skb, offset);
- 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
-@@ -208,7 +211,6 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 
- out:
- 	rcu_read_unlock();
--	skb_push(skb, offset);
- 	NAPI_GRO_CB(skb)->same_flow = 0;
- 	NAPI_GRO_CB(skb)->flush = 1;
- 
+ 	qpd->sh_mem_ape1_limit = 0;
 -- 
 2.39.5
 
