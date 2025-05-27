@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675A0AC56E3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009DDAC53AF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D040D4A67F1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96F318A1C3C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0B227FB02;
-	Tue, 27 May 2025 17:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD7B27FD5D;
+	Tue, 27 May 2025 16:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hciX7Yzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtQceNmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B9B1CD0C;
-	Tue, 27 May 2025 17:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C22727BF7C;
+	Tue, 27 May 2025 16:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366776; cv=none; b=pYCqgwL/tH2r47Ymqvj53SHSFyjZRS626S/upWR9tlyzm2koeGsrLNBfg/sF1zxanWgMx/G54eFG/CZ3NedSI7PU8wXNmae7OJf6F69JkvTWet8tQACp/UiXVelipzxZwyMlBX9ygPmcZTLwmkRwDcHeg5cLrlRrpGrl3Z1H91s=
+	t=1748364595; cv=none; b=f8tyIUPXVKJBsmXtAlgpqjkYJMJQX/MACfi6tGw0zq341exJd8J8YWML4q7rXFzec5/a0LtQrJC9k01rlDwueMD00oHdJnPCHg1f8Y5KtEGPkUfyp5im36gSUgiu0CFGLV7wHqZSmCOJ2RKmbBnPxpCDBqFXfo6R7s9ciJ5OL3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366776; c=relaxed/simple;
-	bh=5b+VXWwcRP3dnyQF77/ld0OdU+i8H3jCndUajN1kGds=;
+	s=arc-20240116; t=1748364595; c=relaxed/simple;
+	bh=pEeLogLcXj6e1LHi9n+VQgo5iBgiwDvabOxr2mibdMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o6qxSEe95ktBMAqOWlhooy1t8OAJHzxplVhsPBDX5z/tBfAxVFgIsq8zNdjLmggnmwz8VEfXt6RINPM5l0QLqZ7jpR+VlEGEg9gDlQXO/T62zIvxyqVeKa8eqdy23adm8de0HNFGtfYypnKrTtW9D83B9esj1BppDzlmL4iFeYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hciX7Yzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5278C4CEE9;
-	Tue, 27 May 2025 17:26:14 +0000 (UTC)
+	 MIME-Version; b=bdBOw9lfD6/RiVYVJP9eqo5YdeNrjRJGmxsttm6AM+CWOKFge2w6NA8enKSeraT/zWM1ZEGNNcCrz+FBZ59PZ4mmGdEAbZyMuF0uyYRguwX/eBY9IuulvJYTy6D/KT0YLEXUTa9yy/zPbzwMtBsiYPdQhuy7LGHlCu02WFXGOAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtQceNmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133FCC4CEE9;
+	Tue, 27 May 2025 16:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366775;
-	bh=5b+VXWwcRP3dnyQF77/ld0OdU+i8H3jCndUajN1kGds=;
+	s=korg; t=1748364595;
+	bh=pEeLogLcXj6e1LHi9n+VQgo5iBgiwDvabOxr2mibdMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hciX7YzpzXD5H6QWw+iRntRrNXx756G2ldzjw4rFB0cUwtFR5lPGYIAEUD6zpe875
-	 jN95fJipimkzyMPc3zHUXFutpkz6h3m9MvUxSwHYRPy6LVVzJG84jKH2tFhmEgZ7KN
-	 Q4cgMfI8gBc5pU4+vCV6BLQKjSIU9ao7LtWFt9Uc=
+	b=gtQceNmFhX2T6KVYPTomDuYXFtQs5UwmNtbl49peHknvubUHZ2uBIUkKXAUURiaf4
+	 Ed6FBjGo7Rfsd8druih5YTTUAYsAzv9K4np/hZTx7Sz5WUn1LpRdDRPO3eo3bkppUy
+	 PqgL6iMChqUFFeY+a0ZyvgVVblk5zCbFcmbQEMQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hans-Frieder Vogt <hfdevel@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 174/783] ASoC: mediatek: mt6359: Add stub for mt6359_accdet_enable_jack_detect
-Date: Tue, 27 May 2025 18:19:31 +0200
-Message-ID: <20250527162520.248401748@linuxfoundation.org>
+Subject: [PATCH 6.12 079/626] net: tn40xx: create swnode for mdio and aqr105 phy and add to mdiobus
+Date: Tue, 27 May 2025 18:19:32 +0200
+Message-ID: <20250527162448.256458833@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,244 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Hans-Frieder Vogt <hfdevel@gmx.net>
 
-[ Upstream commit 0116a7d84b32537a10d9bea1fd1bfc06577ef527 ]
+[ Upstream commit 25b6a6d29d4082f6ac231c056ac321a996eb55c9 ]
 
-Add a stub for mt6359_accdet_enable_jack_detect() to prevent linker
-failures in the machine sound drivers calling it when
-CONFIG_SND_SOC_MT6359_ACCDET is not enabled.
+In case of an AQR105-based device, create a software node for the mdio
+function, with a child node for the Aquantia AQR105 PHY, providing a
+firmware-name (and a bit more, which may be used for future checks) to
+allow the PHY to load a MAC specific firmware from the file system.
 
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://patch.msgid.link/20250306-mt8188-accdet-v3-3-7828e835ff4b@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The name of the PHY software node follows the naming convention suggested
+in the patch for the mdiobus_scan function (in the same patch series).
+
+Signed-off-by: Hans-Frieder Vogt <hfdevel@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250322-tn9510-v3a-v7-5-672a9a3d8628@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/mt6359-accdet.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/tehuti/tn40.c      |  5 +-
+ drivers/net/ethernet/tehuti/tn40.h      | 33 ++++++++++
+ drivers/net/ethernet/tehuti/tn40_mdio.c | 82 ++++++++++++++++++++++++-
+ 3 files changed, 117 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/mt6359-accdet.h b/sound/soc/codecs/mt6359-accdet.h
-index c234f2f4276a1..78ada3a5bfae5 100644
---- a/sound/soc/codecs/mt6359-accdet.h
-+++ b/sound/soc/codecs/mt6359-accdet.h
-@@ -123,6 +123,15 @@ struct mt6359_accdet {
- 	struct workqueue_struct *jd_workqueue;
+diff --git a/drivers/net/ethernet/tehuti/tn40.c b/drivers/net/ethernet/tehuti/tn40.c
+index a6965258441c4..558b791a97edd 100644
+--- a/drivers/net/ethernet/tehuti/tn40.c
++++ b/drivers/net/ethernet/tehuti/tn40.c
+@@ -1778,7 +1778,7 @@ static int tn40_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	ret = tn40_phy_register(priv);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to set up PHY.\n");
+-		goto err_free_irq;
++		goto err_cleanup_swnodes;
+ 	}
+ 
+ 	ret = tn40_priv_init(priv);
+@@ -1795,6 +1795,8 @@ static int tn40_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	return 0;
+ err_unregister_phydev:
+ 	tn40_phy_unregister(priv);
++err_cleanup_swnodes:
++	tn40_swnodes_cleanup(priv);
+ err_free_irq:
+ 	pci_free_irq_vectors(pdev);
+ err_unset_drvdata:
+@@ -1816,6 +1818,7 @@ static void tn40_remove(struct pci_dev *pdev)
+ 	unregister_netdev(ndev);
+ 
+ 	tn40_phy_unregister(priv);
++	tn40_swnodes_cleanup(priv);
+ 	pci_free_irq_vectors(priv->pdev);
+ 	pci_set_drvdata(pdev, NULL);
+ 	iounmap(priv->regs);
+diff --git a/drivers/net/ethernet/tehuti/tn40.h b/drivers/net/ethernet/tehuti/tn40.h
+index 490781fe51205..25da8686d4691 100644
+--- a/drivers/net/ethernet/tehuti/tn40.h
++++ b/drivers/net/ethernet/tehuti/tn40.h
+@@ -4,10 +4,13 @@
+ #ifndef _TN40_H_
+ #define _TN40_H_
+ 
++#include <linux/property.h>
+ #include "tn40_regs.h"
+ 
+ #define TN40_DRV_NAME "tn40xx"
+ 
++#define PCI_DEVICE_ID_TEHUTI_TN9510	0x4025
++
+ #define TN40_MDIO_SPEED_1MHZ (1)
+ #define TN40_MDIO_SPEED_6MHZ (6)
+ 
+@@ -102,10 +105,39 @@ struct tn40_txdb {
+ 	int size; /* Number of elements in the db */
  };
  
-+#if IS_ENABLED(CONFIG_SND_SOC_MT6359_ACCDET)
- int mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
- 				     struct snd_soc_jack *jack);
-+#else
-+static inline int
-+mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
-+				 struct snd_soc_jack *jack)
++#define NODE_PROP(_NAME, _PROP)	(		\
++	(const struct software_node) {		\
++		.name = _NAME,			\
++		.properties = _PROP,		\
++	})
++
++#define NODE_PAR_PROP(_NAME, _PAR, _PROP)	(	\
++	(const struct software_node) {		\
++		.name = _NAME,			\
++		.parent = _PAR,			\
++		.properties = _PROP,		\
++	})
++
++enum tn40_swnodes {
++	SWNODE_MDIO,
++	SWNODE_PHY,
++	SWNODE_MAX
++};
++
++struct tn40_nodes {
++	char phy_name[32];
++	char mdio_name[32];
++	struct property_entry phy_props[3];
++	struct software_node swnodes[SWNODE_MAX];
++	const struct software_node *group[SWNODE_MAX + 1];
++};
++
+ struct tn40_priv {
+ 	struct net_device *ndev;
+ 	struct pci_dev *pdev;
+ 
++	struct tn40_nodes nodes;
++
+ 	struct napi_struct napi;
+ 	/* RX FIFOs: 1 for data (full) descs, and 2 for free descs */
+ 	struct tn40_rxd_fifo rxd_fifo0;
+@@ -225,6 +257,7 @@ static inline void tn40_write_reg(struct tn40_priv *priv, u32 reg, u32 val)
+ 
+ int tn40_set_link_speed(struct tn40_priv *priv, u32 speed);
+ 
++void tn40_swnodes_cleanup(struct tn40_priv *priv);
+ int tn40_mdiobus_init(struct tn40_priv *priv);
+ 
+ int tn40_phy_register(struct tn40_priv *priv);
+diff --git a/drivers/net/ethernet/tehuti/tn40_mdio.c b/drivers/net/ethernet/tehuti/tn40_mdio.c
+index af18615d64a8a..5bb0cbc87d064 100644
+--- a/drivers/net/ethernet/tehuti/tn40_mdio.c
++++ b/drivers/net/ethernet/tehuti/tn40_mdio.c
+@@ -14,6 +14,8 @@
+ 	 (FIELD_PREP(TN40_MDIO_PRTAD_MASK, (port))))
+ #define TN40_MDIO_CMD_READ BIT(15)
+ 
++#define AQR105_FIRMWARE "tehuti/aqr105-tn40xx.cld"
++
+ static void tn40_mdio_set_speed(struct tn40_priv *priv, u32 speed)
+ {
+ 	void __iomem *regs = priv->regs;
+@@ -111,6 +113,56 @@ static int tn40_mdio_write_c45(struct mii_bus *mii_bus, int addr, int devnum,
+ 	return  tn40_mdio_write(mii_bus->priv, addr, devnum, regnum, val);
+ }
+ 
++/* registers an mdio node and an aqr105 PHY at address 1
++ * tn40_mdio-%id {
++ *	ethernet-phy@1 {
++ *		compatible = "ethernet-phy-id03a1.b4a3";
++ *		reg = <1>;
++ *		firmware-name = AQR105_FIRMWARE;
++ *	};
++ * };
++ */
++static int tn40_swnodes_register(struct tn40_priv *priv)
 +{
-+	return -EOPNOTSUPP;
++	struct tn40_nodes *nodes = &priv->nodes;
++	struct pci_dev *pdev = priv->pdev;
++	struct software_node *swnodes;
++	u32 id;
++
++	id = pci_dev_id(pdev);
++
++	snprintf(nodes->phy_name, sizeof(nodes->phy_name), "ethernet-phy@1");
++	snprintf(nodes->mdio_name, sizeof(nodes->mdio_name), "tn40_mdio-%x",
++		 id);
++
++	swnodes = nodes->swnodes;
++
++	swnodes[SWNODE_MDIO] = NODE_PROP(nodes->mdio_name, NULL);
++
++	nodes->phy_props[0] = PROPERTY_ENTRY_STRING("compatible",
++						    "ethernet-phy-id03a1.b4a3");
++	nodes->phy_props[1] = PROPERTY_ENTRY_U32("reg", 1);
++	nodes->phy_props[2] = PROPERTY_ENTRY_STRING("firmware-name",
++						    AQR105_FIRMWARE);
++	swnodes[SWNODE_PHY] = NODE_PAR_PROP(nodes->phy_name,
++					    &swnodes[SWNODE_MDIO],
++					    nodes->phy_props);
++
++	nodes->group[SWNODE_PHY] = &swnodes[SWNODE_PHY];
++	nodes->group[SWNODE_MDIO] = &swnodes[SWNODE_MDIO];
++	return software_node_register_node_group(nodes->group);
 +}
-+#endif
- #endif
++
++void tn40_swnodes_cleanup(struct tn40_priv *priv)
++{
++	/* cleanup of swnodes is only needed for AQR105-based cards */
++	if (priv->pdev->device == PCI_DEVICE_ID_TEHUTI_TN9510) {
++		fwnode_handle_put(dev_fwnode(&priv->mdio->dev));
++		device_remove_software_node(&priv->mdio->dev);
++		software_node_unregister_node_group(priv->nodes.group);
++	}
++}
++
+ int tn40_mdiobus_init(struct tn40_priv *priv)
+ {
+ 	struct pci_dev *pdev = priv->pdev;
+@@ -129,14 +181,40 @@ int tn40_mdiobus_init(struct tn40_priv *priv)
+ 
+ 	bus->read_c45 = tn40_mdio_read_c45;
+ 	bus->write_c45 = tn40_mdio_write_c45;
++	priv->mdio = bus;
++
++	/* provide swnodes for AQR105-based cards only */
++	if (pdev->device == PCI_DEVICE_ID_TEHUTI_TN9510) {
++		ret = tn40_swnodes_register(priv);
++		if (ret) {
++			pr_err("swnodes failed\n");
++			return ret;
++		}
++
++		ret = device_add_software_node(&bus->dev,
++					       priv->nodes.group[SWNODE_MDIO]);
++		if (ret) {
++			dev_err(&pdev->dev,
++				"device_add_software_node failed: %d\n", ret);
++			goto err_swnodes_unregister;
++		}
++	}
+ 
+ 	ret = devm_mdiobus_register(&pdev->dev, bus);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register mdiobus %d %u %u\n",
+ 			ret, bus->state, MDIOBUS_UNREGISTERED);
+-		return ret;
++		goto err_swnodes_cleanup;
+ 	}
+ 	tn40_mdio_set_speed(priv, TN40_MDIO_SPEED_6MHZ);
+-	priv->mdio = bus;
+ 	return 0;
++
++err_swnodes_unregister:
++	software_node_unregister_node_group(priv->nodes.group);
++	return ret;
++err_swnodes_cleanup:
++	tn40_swnodes_cleanup(priv);
++	return ret;
+ }
++
++MODULE_FIRMWARE(AQR105_FIRMWARE);
 -- 
 2.39.5
 
