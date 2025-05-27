@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-147320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB08AC572F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2A6AC53CF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D07783AC0EC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C65AD1899FD3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01062522B4;
-	Tue, 27 May 2025 17:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E7027FB0C;
+	Tue, 27 May 2025 16:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKK4T3MT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMHwgrcY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4EA1DB34C;
-	Tue, 27 May 2025 17:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5880A19E7F9;
+	Tue, 27 May 2025 16:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366978; cv=none; b=qzji2t/O3ltFAYL+e0j0qMlPRGt4xiVPmL1Dmjr9EPOgk97We8a7BM2x4KK0YiAOCRk4NJ6Nw0+aLcS1zgPiAImphVUT2LcvMNzoO66s9ONiF884geiXUfFm4Mtx5mH15Cp+EKfxotgxsz0ACDRLSyMwz0ngpJz7YBny4gPkBD4=
+	t=1748364715; cv=none; b=PSWmrp0O0/ofFNErOTW8lD0JErZurlqdLaH0Exl+0imYqDscmhugHBekuN3vCZhf5ELLIksw8msEq+FI/xdxiKm0wJJApoDArNUuOgDdDOWHfsVFXVAx85yNtOS+whW02Pf9cFhxgC76jqAjjQSsEb0565yVNHmjJCBrLz/NUHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366978; c=relaxed/simple;
-	bh=57JpOkSRTyD/eRVg3Q3eZGyyOQWdzbWLBoi1MKRqVZ4=;
+	s=arc-20240116; t=1748364715; c=relaxed/simple;
+	bh=LApymSNP8iPOvrJiriN3bTKJWlMjQPNJyGmGm8aD/Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MftA451+9gvUCGko7G6DXXV8KBnf65souqURsGoGdgd5a5VadIdFCwCs4LC5OTVz9Rx0UbLjbBazZ73j5rrLPhVPhbzh5vfRcpYRFzlr2OFlH+S4e3vjLzL22gESdms14HhkxiTxjQaLNwL8S6dWxsXPnukrT6OweGxRgUEaY9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKK4T3MT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF202C4CEE9;
-	Tue, 27 May 2025 17:29:37 +0000 (UTC)
+	 MIME-Version; b=p2NenxWgRlQ3Qqinfyow1c8677teyhJlXWVEpb7QmUdHdrn/0vyz5tnzVApeHUO+MMp25DIVdoCuwiYsUkm2DAYnnAF8wXbZR7gBLNWc//Q2g4ZIZMbhiuanQIHbRhvKYltZdYD0sV0RWJImKvbM4ePzzPSJbX9uemm6Jyym4NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMHwgrcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D81C4AF09;
+	Tue, 27 May 2025 16:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366978;
-	bh=57JpOkSRTyD/eRVg3Q3eZGyyOQWdzbWLBoi1MKRqVZ4=;
+	s=korg; t=1748364715;
+	bh=LApymSNP8iPOvrJiriN3bTKJWlMjQPNJyGmGm8aD/Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKK4T3MTj/RVTG1Sa5ZnFjOJUGiBB82G9wkUA+cjHI49f86tCJu2GjzeWQc8dC58o
-	 BcyBlOWlhbiVnZYgTAgBCBVjbHU7nuygVMXn8hdT0saM3k6PnCBARU6LZP3bQJ4spR
-	 ICxOtuvq4zPHRq6N6SRw9kGTmlq5lPhHkWZ4nTgg=
+	b=QMHwgrcYTdktgHsmi0xNArMrfSGgTdXuInKO0oHyGM8qfJOWKrGCMIFHAePyTonPy
+	 ywHiOuUIrXgT9OYbkeXl+LluS9tzImJTflZaDdTInS7W7AoYR67bCLxLsMh9jEY1vg
+	 0m/zWHcJ24xVTYVkE1xMtrm1PqQ2CNpEbjVuAr8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Mike Leach <mike.leach@linaro.org>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 238/783] coresight-etb10: change etb_drvdata spinlocks type to raw_spinlock_t
+Subject: [PATCH 6.12 142/626] rtc: rv3032: fix EERD location
 Date: Tue, 27 May 2025 18:20:35 +0200
-Message-ID: <20250527162522.811167909@linuxfoundation.org>
+Message-ID: <20250527162450.799910764@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,151 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit 6b80c0abe475ed1017c5e862636049aa1cc17a1a ]
+[ Upstream commit b0f9cb4a0706b0356e84d67e48500b77b343debe ]
 
-In coresight-etb10 drivers, etb_drvdata->spinlock can be held
-during __schedule() by perf_event_task_sched_out()/in().
+EERD is bit 2 in CTRL1
 
-Since etb_drvdata->spinlock type is spinlock_t and
-perf_event_task_sched_out()/in() is called after acquiring rq_lock,
-which is raw_spinlock_t (an unsleepable lock),
-this poses an issue in PREEMPT_RT kernel where spinlock_t is sleepable.
-
-To address this, change type etb_drvdata->spinlock in coresight-etb10 drivers,
-which can be called by perf_event_task_sched_out()/in(),
-from spinlock_t to raw_spinlock_t.
-
-Reviewed-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250306121110.1647948-6-yeoreum.yun@arm.com
+Link: https://lore.kernel.org/r/20250306214243.1167692-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etb10.c | 26 +++++++++----------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/rtc/rtc-rv3032.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etb10.c b/drivers/hwtracing/coresight/coresight-etb10.c
-index aea9ac9c4bd06..7948597d483d2 100644
---- a/drivers/hwtracing/coresight/coresight-etb10.c
-+++ b/drivers/hwtracing/coresight/coresight-etb10.c
-@@ -84,7 +84,7 @@ struct etb_drvdata {
- 	struct clk		*atclk;
- 	struct coresight_device	*csdev;
- 	struct miscdevice	miscdev;
--	spinlock_t		spinlock;
-+	raw_spinlock_t		spinlock;
- 	local_t			reading;
- 	pid_t			pid;
- 	u8			*buf;
-@@ -145,7 +145,7 @@ static int etb_enable_sysfs(struct coresight_device *csdev)
- 	unsigned long flags;
- 	struct etb_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+diff --git a/drivers/rtc/rtc-rv3032.c b/drivers/rtc/rtc-rv3032.c
+index 35b2e36b426a0..cb01038a2e27f 100644
+--- a/drivers/rtc/rtc-rv3032.c
++++ b/drivers/rtc/rtc-rv3032.c
+@@ -69,7 +69,7 @@
+ #define RV3032_CLKOUT2_FD_MSK		GENMASK(6, 5)
+ #define RV3032_CLKOUT2_OS		BIT(7)
  
--	spin_lock_irqsave(&drvdata->spinlock, flags);
-+	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
+-#define RV3032_CTRL1_EERD		BIT(3)
++#define RV3032_CTRL1_EERD		BIT(2)
+ #define RV3032_CTRL1_WADA		BIT(5)
  
- 	/* Don't messup with perf sessions. */
- 	if (coresight_get_mode(csdev) == CS_MODE_PERF) {
-@@ -163,7 +163,7 @@ static int etb_enable_sysfs(struct coresight_device *csdev)
- 
- 	csdev->refcnt++;
- out:
--	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-+	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
- 	return ret;
- }
- 
-@@ -176,7 +176,7 @@ static int etb_enable_perf(struct coresight_device *csdev, void *data)
- 	struct perf_output_handle *handle = data;
- 	struct cs_buffers *buf = etm_perf_sink_config(handle);
- 
--	spin_lock_irqsave(&drvdata->spinlock, flags);
-+	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
- 
- 	/* No need to continue if the component is already in used by sysFS. */
- 	if (coresight_get_mode(drvdata->csdev) == CS_MODE_SYSFS) {
-@@ -219,7 +219,7 @@ static int etb_enable_perf(struct coresight_device *csdev, void *data)
- 	}
- 
- out:
--	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-+	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
- 	return ret;
- }
- 
-@@ -352,11 +352,11 @@ static int etb_disable(struct coresight_device *csdev)
- 	struct etb_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&drvdata->spinlock, flags);
-+	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
- 
- 	csdev->refcnt--;
- 	if (csdev->refcnt) {
--		spin_unlock_irqrestore(&drvdata->spinlock, flags);
-+		raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
- 		return -EBUSY;
- 	}
- 
-@@ -366,7 +366,7 @@ static int etb_disable(struct coresight_device *csdev)
- 	/* Dissociate from monitored process. */
- 	drvdata->pid = -1;
- 	coresight_set_mode(csdev, CS_MODE_DISABLED);
--	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-+	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
- 
- 	dev_dbg(&csdev->dev, "ETB disabled\n");
- 	return 0;
-@@ -443,7 +443,7 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
- 
- 	capacity = drvdata->buffer_depth * ETB_FRAME_SIZE_WORDS;
- 
--	spin_lock_irqsave(&drvdata->spinlock, flags);
-+	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
- 
- 	/* Don't do anything if another tracer is using this sink */
- 	if (csdev->refcnt != 1)
-@@ -566,7 +566,7 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
- 	__etb_enable_hw(drvdata);
- 	CS_LOCK(drvdata->base);
- out:
--	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-+	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
- 
- 	return to_read;
- }
-@@ -587,13 +587,13 @@ static void etb_dump(struct etb_drvdata *drvdata)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&drvdata->spinlock, flags);
-+	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
- 	if (coresight_get_mode(drvdata->csdev) == CS_MODE_SYSFS) {
- 		__etb_disable_hw(drvdata);
- 		etb_dump_hw(drvdata);
- 		__etb_enable_hw(drvdata);
- 	}
--	spin_unlock_irqrestore(&drvdata->spinlock, flags);
-+	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
- 
- 	dev_dbg(&drvdata->csdev->dev, "ETB dumped\n");
- }
-@@ -746,7 +746,7 @@ static int etb_probe(struct amba_device *adev, const struct amba_id *id)
- 	drvdata->base = base;
- 	desc.access = CSDEV_ACCESS_IOMEM(base);
- 
--	spin_lock_init(&drvdata->spinlock);
-+	raw_spin_lock_init(&drvdata->spinlock);
- 
- 	drvdata->buffer_depth = etb_get_buffer_depth(drvdata);
- 
+ #define RV3032_CTRL2_STOP		BIT(0)
 -- 
 2.39.5
 
