@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-146561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0383AC53AC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037C3AC56F9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B243D4A1C1A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EB1F7A9360
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC9B27FD6B;
-	Tue, 27 May 2025 16:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066F4277808;
+	Tue, 27 May 2025 17:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBR+HncT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kr2ftSqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1976927D784;
-	Tue, 27 May 2025 16:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B551326F449;
+	Tue, 27 May 2025 17:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364602; cv=none; b=Ux6qT8SzQk3RXRLZ6Kxawmt9d7feZTCL7zgztoETm5NU/XbJJPJin6Qjh1xc8SNDHP7Ns0geFHOgHPFG4t26/X5Stz7ItGQwxiOaol0ZVzzCA9m7pVWeBMB2c6N3W/qlV3gkcRIJHObP2+O72lQRW6S+Xq7qLXIMeBf2cQOtb24=
+	t=1748366870; cv=none; b=oK8jTRmg5S+wjqYFX1dzwpTWijXVsz9q3KKLA1+Q8G7KeNTYkth2UMs5VToMpvs1+I4VH7YiL485ffme7A2NitSVcorF/WVvprEYu6FnmQeS/W/9YLwpct4vRyCKWc9hsLIzoc7q88xaL+cf1wyadiKyyzha9opzA9cnLcKCbdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364602; c=relaxed/simple;
-	bh=vgEmh/qc0pqxLrmZxaZiTuMJJnPQNn+nzrYCya/RAFQ=;
+	s=arc-20240116; t=1748366870; c=relaxed/simple;
+	bh=h70WJLA4J7yfgNwWg/SQPTS/+NKpYHh003h/Zu10Lwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArpnP7KWEIdgByJwewIwTtSwGw+kFdYN92VaOeH7pOVlnhcEymAdAUsET0KNkxAv+ucZyPc8Wb7EZMW1yQCtcAHAagKNEUEesETkibv1BRn43sZk2L5Eii230t2VS6kIFYrNf+Xn87y5NZP/nC1F4CrSVGS7yolr1fKoi0Ly4pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBR+HncT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AC7C4CEE9;
-	Tue, 27 May 2025 16:50:01 +0000 (UTC)
+	 MIME-Version; b=T1UUmJXyReskRr2f8NaG5bhcoHOfYrDZdD4lOUQMRjpfLrHwqPEs/oeXysMH+axlooA9V7W7IYF0SCzl+MQW8XeJOwpgMfFCtSQqWDvEqvWGEG3jo9DZFBIWmuzSTNQpIDyd1fD1tGnXVG5reosFD/IFiBLim8PcxKn1ZaNHpvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kr2ftSqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDF1C4CEE9;
+	Tue, 27 May 2025 17:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364601;
-	bh=vgEmh/qc0pqxLrmZxaZiTuMJJnPQNn+nzrYCya/RAFQ=;
+	s=korg; t=1748366870;
+	bh=h70WJLA4J7yfgNwWg/SQPTS/+NKpYHh003h/Zu10Lwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBR+HncTLlfdz9+e+6/eU8dvCWDSeyXIfX6s2/4m+IAfNGg2qxZX7S9RayIbn+3gA
-	 zRFjKLDnkS17mfOShjF3NQ9fvI07HkYMLGvgkrjXRF4q4O9O2bZzn6SYQ96mJpR1+W
-	 t9iwFeRJdQbk6PSL290ocOAgHfThhvn/QrdmcgmQ=
+	b=kr2ftSqPdHklHgmrzd6TXL9VxuuAkXJQm0ZrOjh3qBPVLj2pCk2K6hp+fkhHyt0XP
+	 vrKe1rygezt1OtiZWpJV+AhN1RkBEe9r4AOqCQb9OthQvmQd+R94gRbdouy5c5Ac+O
+	 pZ0Xk1HvwodBRK5e/7p+h+A4gtmgB1hRa36pBJeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Huth <thuth@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Brian Gerst <brgerst@gmail.com>,
+	Dian-Syuan Yang <dian_syuan0116@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/626] x86/headers: Replace __ASSEMBLY__ with __ASSEMBLER__ in UAPI headers
+Subject: [PATCH 6.14 203/783] wifi: rtw89: set force HE TB mode when connecting to 11ax AP
 Date: Tue, 27 May 2025 18:20:00 +0200
-Message-ID: <20250527162449.390083369@linuxfoundation.org>
+Message-ID: <20250527162521.411190054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,234 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Huth <thuth@redhat.com>
+From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 
-[ Upstream commit 8a141be3233af7d4f7014ebc44d5452d46b2b1be ]
+[ Upstream commit a9b56f219a0fa550f92e65ac58443a7892380e09 ]
 
-__ASSEMBLY__ is only defined by the Makefile of the kernel, so
-this is not really useful for UAPI headers (unless the userspace
-Makefile defines it, too). Let's switch to __ASSEMBLER__ which
-gets set automatically by the compiler when compiling assembly
-code.
+Some of 11ax AP set the UL HE-SIG-A2 reserved subfield to all 0s, which
+will cause the 11be chip to recognize trigger frame as EHT. We propose
+a method to bypass the "UL HE-SIG-A2 reserved subfield" and always uses
+HE TB in response to the AP's trigger frame.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Link: https://lore.kernel.org/r/20250310104256.123527-1-thuth@redhat.com
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250306021144.12854-6-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/uapi/asm/bootparam.h  | 4 ++--
- arch/x86/include/uapi/asm/e820.h       | 4 ++--
- arch/x86/include/uapi/asm/ldt.h        | 4 ++--
- arch/x86/include/uapi/asm/msr.h        | 4 ++--
- arch/x86/include/uapi/asm/ptrace-abi.h | 6 +++---
- arch/x86/include/uapi/asm/ptrace.h     | 4 ++--
- arch/x86/include/uapi/asm/setup_data.h | 4 ++--
- arch/x86/include/uapi/asm/signal.h     | 8 ++++----
- 8 files changed, 19 insertions(+), 19 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.c      | 26 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/mac.h      |  2 ++
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  1 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  4 +++
+ 4 files changed, 33 insertions(+)
 
-diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-index 9b82eebd7add5..dafbf581c515d 100644
---- a/arch/x86/include/uapi/asm/bootparam.h
-+++ b/arch/x86/include/uapi/asm/bootparam.h
-@@ -26,7 +26,7 @@
- #define XLF_5LEVEL_ENABLED		(1<<6)
- #define XLF_MEM_ENCRYPTION		(1<<7)
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index a37c6d525d6f0..2c74d7781bd40 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -4826,6 +4826,32 @@ void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
+ 		rtw89_write32_set(rtwdev, reg, mac->narrow_bw_ru_dis.mask);
+ }
  
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
++void rtw89_mac_set_he_tb(struct rtw89_dev *rtwdev,
++			 struct rtw89_vif_link *rtwvif_link)
++{
++	struct ieee80211_bss_conf *bss_conf;
++	bool set;
++	u32 reg;
++
++	if (rtwdev->chip->chip_gen != RTW89_CHIP_BE)
++		return;
++
++	rcu_read_lock();
++
++	bss_conf = rtw89_vif_rcu_dereference_link(rtwvif_link, true);
++	set = bss_conf->he_support && !bss_conf->eht_support;
++
++	rcu_read_unlock();
++
++	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_CLIENT_OM_CTRL,
++				   rtwvif_link->mac_idx);
++
++	if (set)
++		rtw89_write32_set(rtwdev, reg, B_BE_TRIG_DIS_EHTTB);
++	else
++		rtw89_write32_clr(rtwdev, reg, B_BE_TRIG_DIS_EHTTB);
++}
++
+ void rtw89_mac_stop_ap(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvif_link)
+ {
+ 	rtw89_mac_port_cfg_func_sw(rtwdev, rtwvif_link);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 8edea96d037f6..373366a602e0b 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -1185,6 +1185,8 @@ void rtw89_mac_port_cfg_rx_sync(struct rtw89_dev *rtwdev,
+ 				struct rtw89_vif_link *rtwvif_link, bool en);
+ void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
+ 					struct rtw89_vif_link *rtwvif_link);
++void rtw89_mac_set_he_tb(struct rtw89_dev *rtwdev,
++			 struct rtw89_vif_link *rtwvif_link);
+ void rtw89_mac_stop_ap(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvif_link);
+ void rtw89_mac_enable_beacon_for_ap_vifs(struct rtw89_dev *rtwdev, bool en);
+ int rtw89_mac_remove_vif(struct rtw89_dev *rtwdev, struct rtw89_vif_link *vif);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index b3669e0074df9..7c9b53a9ba3b7 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -670,6 +670,7 @@ static void __rtw89_ops_bss_link_assoc(struct rtw89_dev *rtwdev,
+ 	rtw89_chip_cfg_txpwr_ul_tb_offset(rtwdev, rtwvif_link);
+ 	rtw89_mac_port_update(rtwdev, rtwvif_link);
+ 	rtw89_mac_set_he_obss_narrow_bw_ru(rtwdev, rtwvif_link);
++	rtw89_mac_set_he_tb(rtwdev, rtwvif_link);
+ }
  
- #include <linux/types.h>
- #include <linux/screen_info.h>
-@@ -210,6 +210,6 @@ enum x86_hardware_subarch {
- 	X86_NR_SUBARCHS,
- };
+ static void __rtw89_ops_bss_assoc(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 10d0efa7a58ef..850ae5bf50ef3 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -7095,6 +7095,10 @@
+ #define B_BE_MACLBK_RDY_NUM_MASK GENMASK(7, 3)
+ #define B_BE_MACLBK_EN BIT(0)
  
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #endif /* _ASM_X86_BOOTPARAM_H */
-diff --git a/arch/x86/include/uapi/asm/e820.h b/arch/x86/include/uapi/asm/e820.h
-index 2f491efe3a126..55bc668671560 100644
---- a/arch/x86/include/uapi/asm/e820.h
-+++ b/arch/x86/include/uapi/asm/e820.h
-@@ -54,7 +54,7 @@
-  */
- #define E820_RESERVED_KERN        128
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <linux/types.h>
- struct e820entry {
- 	__u64 addr;	/* start of memory segment */
-@@ -76,7 +76,7 @@ struct e820map {
- #define BIOS_ROM_BASE		0xffe00000
- #define BIOS_ROM_END		0xffffffff
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- 
- #endif /* _UAPI_ASM_X86_E820_H */
-diff --git a/arch/x86/include/uapi/asm/ldt.h b/arch/x86/include/uapi/asm/ldt.h
-index d62ac5db093b4..a82c039d8e6a7 100644
---- a/arch/x86/include/uapi/asm/ldt.h
-+++ b/arch/x86/include/uapi/asm/ldt.h
-@@ -12,7 +12,7 @@
- /* The size of each LDT entry. */
- #define LDT_ENTRY_SIZE	8
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- /*
-  * Note on 64bit base and limit is ignored and you cannot set DS/ES/CS
-  * not to the default values if you still want to do syscalls. This
-@@ -44,5 +44,5 @@ struct user_desc {
- #define MODIFY_LDT_CONTENTS_STACK	1
- #define MODIFY_LDT_CONTENTS_CODE	2
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASM_X86_LDT_H */
-diff --git a/arch/x86/include/uapi/asm/msr.h b/arch/x86/include/uapi/asm/msr.h
-index e7516b402a00f..4b8917ca28fe7 100644
---- a/arch/x86/include/uapi/asm/msr.h
-+++ b/arch/x86/include/uapi/asm/msr.h
-@@ -2,7 +2,7 @@
- #ifndef _UAPI_ASM_X86_MSR_H
- #define _UAPI_ASM_X86_MSR_H
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #include <linux/types.h>
- #include <linux/ioctl.h>
-@@ -10,5 +10,5 @@
- #define X86_IOC_RDMSR_REGS	_IOWR('c', 0xA0, __u32[8])
- #define X86_IOC_WRMSR_REGS	_IOWR('c', 0xA1, __u32[8])
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- #endif /* _UAPI_ASM_X86_MSR_H */
-diff --git a/arch/x86/include/uapi/asm/ptrace-abi.h b/arch/x86/include/uapi/asm/ptrace-abi.h
-index 16074b9c93bb5..5823584dea132 100644
---- a/arch/x86/include/uapi/asm/ptrace-abi.h
-+++ b/arch/x86/include/uapi/asm/ptrace-abi.h
-@@ -25,7 +25,7 @@
- 
- #else /* __i386__ */
- 
--#if defined(__ASSEMBLY__) || defined(__FRAME_OFFSETS)
-+#if defined(__ASSEMBLER__) || defined(__FRAME_OFFSETS)
- /*
-  * C ABI says these regs are callee-preserved. They aren't saved on kernel entry
-  * unless syscall needs a complete, fully filled "struct pt_regs".
-@@ -57,7 +57,7 @@
- #define EFLAGS 144
- #define RSP 152
- #define SS 160
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- /* top of stack page */
- #define FRAME_SIZE 168
-@@ -87,7 +87,7 @@
- 
- #define PTRACE_SINGLEBLOCK	33	/* resume execution until next branch */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <linux/types.h>
- #endif
- 
-diff --git a/arch/x86/include/uapi/asm/ptrace.h b/arch/x86/include/uapi/asm/ptrace.h
-index 85165c0edafc8..e0b5b4f6226b1 100644
---- a/arch/x86/include/uapi/asm/ptrace.h
-+++ b/arch/x86/include/uapi/asm/ptrace.h
-@@ -7,7 +7,7 @@
- #include <asm/processor-flags.h>
- 
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #ifdef __i386__
- /* this struct defines the way the registers are stored on the
-@@ -81,6 +81,6 @@ struct pt_regs {
- 
- 
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- 
- #endif /* _UAPI_ASM_X86_PTRACE_H */
-diff --git a/arch/x86/include/uapi/asm/setup_data.h b/arch/x86/include/uapi/asm/setup_data.h
-index b111b0c185449..50c45ead4e7c9 100644
---- a/arch/x86/include/uapi/asm/setup_data.h
-+++ b/arch/x86/include/uapi/asm/setup_data.h
-@@ -18,7 +18,7 @@
- #define SETUP_INDIRECT			(1<<31)
- #define SETUP_TYPE_MAX			(SETUP_ENUM_MAX | SETUP_INDIRECT)
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #include <linux/types.h>
- 
-@@ -78,6 +78,6 @@ struct ima_setup_data {
- 	__u64 size;
- } __attribute__((packed));
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #endif /* _UAPI_ASM_X86_SETUP_DATA_H */
-diff --git a/arch/x86/include/uapi/asm/signal.h b/arch/x86/include/uapi/asm/signal.h
-index f777346450ec3..1067efabf18b5 100644
---- a/arch/x86/include/uapi/asm/signal.h
-+++ b/arch/x86/include/uapi/asm/signal.h
-@@ -2,7 +2,7 @@
- #ifndef _UAPI_ASM_X86_SIGNAL_H
- #define _UAPI_ASM_X86_SIGNAL_H
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <linux/types.h>
- #include <linux/compiler.h>
- 
-@@ -16,7 +16,7 @@ struct siginfo;
- typedef unsigned long sigset_t;
- 
- #endif /* __KERNEL__ */
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- 
- #define SIGHUP		 1
-@@ -68,7 +68,7 @@ typedef unsigned long sigset_t;
- 
- #include <asm-generic/signal-defs.h>
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- 
- # ifndef __KERNEL__
-@@ -106,6 +106,6 @@ typedef struct sigaltstack {
- 	__kernel_size_t ss_size;
- } stack_t;
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #endif /* _UAPI_ASM_X86_SIGNAL_H */
++#define R_BE_CLIENT_OM_CTRL 0x11040
++#define R_BE_CLIENT_OM_CTRL_C1 0x15040
++#define B_BE_TRIG_DIS_EHTTB BIT(24)
++
+ #define R_BE_WMAC_NAV_CTL 0x11080
+ #define R_BE_WMAC_NAV_CTL_C1 0x15080
+ #define B_BE_WMAC_NAV_UPPER_EN BIT(26)
 -- 
 2.39.5
 
