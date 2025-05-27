@@ -1,55 +1,68 @@
-Return-Path: <stable+bounces-146983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1413AC55EE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB03AC58D3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCC1B3BFFFB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 863827A3199
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C080E28002F;
-	Tue, 27 May 2025 17:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3915827CCF0;
+	Tue, 27 May 2025 17:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMFnZVfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiwAp+uZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C14A27FD49;
-	Tue, 27 May 2025 17:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB42A42A9B;
+	Tue, 27 May 2025 17:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365911; cv=none; b=oIJ66qO6rngtutPed16Czikzw1RhctB+Edc5ZVP2HeYwG+kPJp1D+hn+NFISOOTzirwmzXzji3AyzAlcSGniD/xE/dGuv8UTJqT63D/Lzpn0MgxAo55KyqKTvEzKrEMp3QAlhribHld2DsTW7xXJXJF/78q91/RwTUXsHeu1OFE=
+	t=1748368183; cv=none; b=MeQK7ZUmJmcd6WqFEEOzsyQKV9AThB0rtupjmfpnm7yAapL4aTPcxbA4+uiOVMk9+rgjpuAcwcUkgysD2E2n8YdRw1CGMlABw3B/oPazJJvYF4SZF9rPeckz0FKoeSz8CnIsWd27CUGeLhPJeflWJJiHrsN9AVrmrDe9I++IV6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365911; c=relaxed/simple;
-	bh=Oe7FzaDLlT/rzBxGGPmFMUC2JxzycPwgsBJSKGoKRTM=;
+	s=arc-20240116; t=1748368183; c=relaxed/simple;
+	bh=xrubuF/7iC6H4LjZtAXhrrmfFunDFsZ/oBokfpa/DAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWliH7gTATlL/28iDkOTaGbwo/WyfBf0E+ne5hjh3LuD/oqz5VqTSfg3/N4lcr2h1EBtBr2xVAcPPTtz9wrkyvPy2QNbwh38LIAQAHFKFtlSki+ZnAr/yb2tdRgJJsmPgVgxHC/vYeibE4ykB/F3SyRyld799PYqNHHyQHSsWsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMFnZVfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980CDC4CEE9;
-	Tue, 27 May 2025 17:11:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HkxXPdH5sDf/QwW/tTPIMOAJZRFjFdq0qBPgrfGHLX7WyiYr/Kub7z8c5ieH/W71QP7PQ8UgrQS07whNQmRySIwUQI887yFKomPW+CgOIcITotz1sSmYFDvRGaeQHYAUUcifunJu2rhFxcOZuSy8dvfOwjx65VcxYlEt/mSTzpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiwAp+uZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0F1C4CEE9;
+	Tue, 27 May 2025 17:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365911;
-	bh=Oe7FzaDLlT/rzBxGGPmFMUC2JxzycPwgsBJSKGoKRTM=;
+	s=korg; t=1748368181;
+	bh=xrubuF/7iC6H4LjZtAXhrrmfFunDFsZ/oBokfpa/DAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMFnZVfL6UzszEXpwyTTltFBNBzOzFtX7ivSchvu/kjWYhjQbntvY0x8i1H5IBceA
-	 dKNtL+PJ5N/J2hIV0mAjyh8UwIIX0IPEh+vsBArr1MqSHsPURn8B7WnDHCU4RjQILG
-	 ynswlz+ztPywMpwVzngOVO81RfPZmDBr86itKMdA=
+	b=EiwAp+uZZLCZlpgfaU2GQJG6597gl/vndI5WccJBbbvCk39OQPsrjvrHdvIy1OyYG
+	 RfTJkmT9tJ5dfyqMUUi3DkACHWU8LfmC7i0o10D+T924wkk1RW1D6YkqowZGa5KJ2b
+	 xHyyQ9Bw8VOqGKYx+BgwClESQnhAB7eyFQmY5X/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Pekka Paalanen <pekka.paalanen@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Rob Clark <robdclark@gmail.com>,
+	Simon Ser <contact@emersion.fr>,
+	Manasi Navare <navaremanasi@google.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Simona Vetter <simona.vetter@intel.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 529/626] wifi: iwlwifi: add support for Killer on MTL
+Subject: [PATCH 6.14 625/783] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
 Date: Tue, 27 May 2025 18:27:02 +0200
-Message-ID: <20250527162506.486887607@linuxfoundation.org>
+Message-ID: <20250527162538.602836096@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +72,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-[ Upstream commit ebedf8b7f05b9c886d68d63025db8d1b12343157 ]
+[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
 
-For now, we need another entry for these devices, this
-will be changed completely for 6.16.
+msm is automagically upgrading normal commits to full modesets, and
+that's a big no-no:
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219926
-Link: https://patch.msgid.link/20250506214258.2efbdc9e9a82.I31915ec252bd1c74bd53b89a0e214e42a74b6f2e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+- for one this results in full on->off->on transitions on all these
+  crtc, at least if you're using the usual helpers. Which seems to be
+  the case, and is breaking uapi
+
+- further even if the ctm change itself would not result in flicker,
+  this can hide modesets for other reasons. Which again breaks the
+  uapi
+
+v2: I forgot the case of adding unrelated crtc state. Add that case
+and link to the existing kerneldoc explainers. This has come up in an
+irc discussion with Manasi and Ville about intel's bigjoiner mode.
+Also cc everyone involved in the msm irc discussion, more people
+joined after I sent out v1.
+
+v3: Wording polish from Pekka and Thomas
+
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Manasi Navare <navaremanasi@google.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 9141ea57abfce..68989d183e82a 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -587,6 +587,8 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
- 	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
- 	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
-+	IWL_DEV_INFO(0x7F70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
-+	IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
- 
- 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
- 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma, iwl_ax411_killer_1690s_name),
+diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
+index 31ca88deb10d2..1ded9a8d4e84d 100644
+--- a/include/drm/drm_atomic.h
++++ b/include/drm/drm_atomic.h
+@@ -376,8 +376,27 @@ struct drm_atomic_state {
+ 	 *
+ 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
+ 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
+-	 * never consult this flag, instead looking at the output of
+-	 * drm_atomic_crtc_needs_modeset().
++	 * generally not consult this flag, but instead look at the output of
++	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
++	 *
++	 * - Drivers must not consult @allow_modeset in the atomic commit path.
++	 *   Use drm_atomic_crtc_needs_modeset() instead.
++	 *
++	 * - Drivers must consult @allow_modeset before adding unrelated struct
++	 *   drm_crtc_state to this commit by calling
++	 *   drm_atomic_get_crtc_state(). See also the warning in the
++	 *   documentation for that function.
++	 *
++	 * - Drivers must never change this flag, it is under the exclusive
++	 *   control of userspace.
++	 *
++	 * - Drivers may consult @allow_modeset in the atomic check path, if
++	 *   they have the choice between an optimal hardware configuration
++	 *   which requires a modeset, and a less optimal configuration which
++	 *   can be committed without a modeset. An example would be suboptimal
++	 *   scanout FIFO allocation resulting in increased idle power
++	 *   consumption. This allows userspace to avoid flickering and delays
++	 *   for the normal composition loop at reasonable cost.
+ 	 */
+ 	bool allow_modeset : 1;
+ 	/**
 -- 
 2.39.5
 
