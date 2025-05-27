@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DB8AC5863
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14528AC550B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 418B37A4E2C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF0D61BA5515
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5109228001E;
-	Tue, 27 May 2025 17:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4696C27A446;
+	Tue, 27 May 2025 17:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnfBbGgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQxcTgKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE961D63EF;
-	Tue, 27 May 2025 17:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0244926868E;
+	Tue, 27 May 2025 17:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367862; cv=none; b=IXnefpwvIwP9zwri9Lz7gaF8+BV3I9eR81NXNbMTfhx0WWRBe06X/xNXex6OLheG+k/Im8OxLno495qhCnN+cHu1nwDTCTkjX6L1mQ/g7iGYZOJX2BWu6Oo3he0nj1XJQomFe+IxdU/l3ns1QchNUvV0TCNKe3iFpedVVGAB/X0=
+	t=1748365593; cv=none; b=YTNUNApzt79vWLvlV1ylnqSrzR3CnwugjUm82QzNoa3ftHGmMe14Pkqhmfv8aYcyvu3I5zYR70tYpTsPJjM8oWyk9DYVgUPI9L3i1LBXR2dwq9JTSYSn8EpCOyD+SL0naydQOuoFBANW31ZjWa7fW3b6E6KsCFBG15ZejUJXWrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367862; c=relaxed/simple;
-	bh=0OnMaRwGpDAOn9CDjuVo6/ZAGNgg1vUFK1U6m1bx1q4=;
+	s=arc-20240116; t=1748365593; c=relaxed/simple;
+	bh=Bhj1B2vZSNPOf4Tjj9ZiiG9LTJG+Ze3/AhRI8eHGqFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwy+pfhcfCHK+dmnwglgkhtfWoSXHl70KNLkPr38Mn26it4E5l8hYsXNFr06MQu+3H/YOSyGQ6aenYGHQj377Ul4eZriZ/0zh0KrW3iui3FexXQHVBD5N5OrAXAWWnawNAb1EInIhT/Bu5qtztHYfinfBTtAsXomgLJ44Ydwrzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnfBbGgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83531C4CEE9;
-	Tue, 27 May 2025 17:44:21 +0000 (UTC)
+	 MIME-Version; b=jSz4nH0hMjjpt+e3m21lXlbRlGBhEu8SIcQVg7eEdbjPPy+eUfIYYvy9JX+GCOVKoS59efODNoop691oSQTxRDo0iqrEeWkDs6V0ykRDsnKcDsXaJruuJluEtyiZxsHZej/+W5ILllcMk2tC9Ng1wLbOJrsMVzy+QCYwO+nO34M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQxcTgKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A62C4CEE9;
+	Tue, 27 May 2025 17:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367861;
-	bh=0OnMaRwGpDAOn9CDjuVo6/ZAGNgg1vUFK1U6m1bx1q4=;
+	s=korg; t=1748365592;
+	bh=Bhj1B2vZSNPOf4Tjj9ZiiG9LTJG+Ze3/AhRI8eHGqFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnfBbGgW2FO52W1M9xaGj1VkgrLCWvD0by+K3S4FMtDKDi7nnH71hqoh7VF6Z/tU8
-	 TvYJLPE2VWi0RERed6yiA5lP4okmy9m7/sXe4ZVgNg39M7surUz2fXN3BbIm6eL5en
-	 ckU8YHsnpprtdsUx8Mq+HyABSQ3y1S7mrjAZVDpM=
+	b=GQxcTgKYgzvGBXkqTgwTfjdD1/mUwI9zoSjWMcZToqPEZE/4gRTIABOrRoyZ71s78
+	 yT3W/9h15pneHa+2V/aul6zKSq+VBquEpx601aAqnEMTp1YzaoC3jICt2K9NRfnkFX
+	 jAa6XZ+4cDuFFV9fG1/wqsQvg1kxkC1F8QD3hFGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 523/783] wifi: mac80211: set ieee80211_prep_tx_info::link_id upon Auth Rx
+Subject: [PATCH 6.12 427/626] leds: trigger: netdev: Configure LED blink interval for HW offload
 Date: Tue, 27 May 2025 18:25:20 +0200
-Message-ID: <20250527162534.449741242@linuxfoundation.org>
+Message-ID: <20250527162502.362964645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 8c60179b64434894eac1ffab7396bac131bc8b6e ]
+[ Upstream commit c629c972b310af41e9e072febb6dae9a299edde6 ]
 
-This will be used by the low level driver.
-Note that link_id  will be 0 in case of a non-MLO authentication.
-Also fix a call-site of mgd_prepare_tx() where the link_id was not
-populated.
+In case a PHY LED implements .blink_set callback to set LED blink
+interval, call it even if .hw_control is already set, as that LED
+blink interval likely controls the blink rate of that HW offloaded
+LED. For PHY LEDs, that can be their activity blinking interval.
 
-Update the documentation to reflect the current state
-ieee80211_prep_tx_info::link_id is also available in mgd_complete_tx().
+The software blinking is not affected by this change.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.6a590f189ce5.I1fc5c0da26b143f5b07191eb592f01f7083d55ae@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+With this change, the LED interval setting looks something like this:
+$ echo netdev > /sys/class/leds/led:green:lan/trigger
+$ echo 1 > /sys/class/leds/led:green:lan/brightness
+$ echo 250 > /sys/class/leds/led:green:lan/interval
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20250120113740.91807-1-marex@denx.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h    | 4 ++--
- net/mac80211/driver-ops.h | 3 ++-
- net/mac80211/mlme.c       | 4 +++-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/leds/trigger/ledtrig-netdev.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index dcbb2e54746c7..b421526aae851 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -7,7 +7,7 @@
-  * Copyright 2007-2010	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2025 Intel Corporation
-  */
+diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
+index 4b0863db901a9..356a55ced2c28 100644
+--- a/drivers/leds/trigger/ledtrig-netdev.c
++++ b/drivers/leds/trigger/ledtrig-netdev.c
+@@ -68,6 +68,7 @@ struct led_netdev_data {
+ 	unsigned int last_activity;
  
- #ifndef MAC80211_H
-@@ -3829,7 +3829,7 @@ enum ieee80211_reconfig_type {
-  * @was_assoc: set if this call is due to deauth/disassoc
-  *	while just having been associated
-  * @link_id: the link id on which the frame will be TX'ed.
-- *	Only used with the mgd_prepare_tx() method.
-+ *	0 for a non-MLO connection.
-  */
- struct ieee80211_prep_tx_info {
- 	u16 duration;
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 5acecc7bd4a99..307587c8a0037 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -2,7 +2,7 @@
- /*
- * Portions of this file
- * Copyright(c) 2016 Intel Deutschland GmbH
--* Copyright (C) 2018-2019, 2021-2024 Intel Corporation
-+* Copyright (C) 2018-2019, 2021-2025 Intel Corporation
- */
+ 	unsigned long mode;
++	unsigned long blink_delay;
+ 	int link_speed;
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported_link_modes);
+ 	u8 duplex;
+@@ -86,6 +87,10 @@ static void set_baseline_state(struct led_netdev_data *trigger_data)
+ 	/* Already validated, hw control is possible with the requested mode */
+ 	if (trigger_data->hw_control) {
+ 		led_cdev->hw_control_set(led_cdev, trigger_data->mode);
++		if (led_cdev->blink_set) {
++			led_cdev->blink_set(led_cdev, &trigger_data->blink_delay,
++					    &trigger_data->blink_delay);
++		}
  
- #ifndef __MAC80211_DRIVER_OPS
-@@ -955,6 +955,7 @@ static inline void drv_mgd_complete_tx(struct ieee80211_local *local,
  		return;
- 	WARN_ON_ONCE(sdata->vif.type != NL80211_IFTYPE_STATION);
+ 	}
+@@ -454,10 +459,11 @@ static ssize_t interval_store(struct device *dev,
+ 			      size_t size)
+ {
+ 	struct led_netdev_data *trigger_data = led_trigger_get_drvdata(dev);
++	struct led_classdev *led_cdev = trigger_data->led_cdev;
+ 	unsigned long value;
+ 	int ret;
  
-+	info->link_id = info->link_id < 0 ? 0 : info->link_id;
- 	trace_drv_mgd_complete_tx(local, sdata, info->duration,
- 				  info->subtype, info->success);
- 	if (local->ops->mgd_complete_tx)
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ca247609f11bf..8235400b7e5d8 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -8,7 +8,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2025 Intel Corporation
-  */
+-	if (trigger_data->hw_control)
++	if (trigger_data->hw_control && !led_cdev->blink_set)
+ 		return -EINVAL;
  
- #include <linux/delay.h>
-@@ -4579,6 +4579,8 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 	auth_transaction = le16_to_cpu(mgmt->u.auth.auth_transaction);
- 	status_code = le16_to_cpu(mgmt->u.auth.status_code);
+ 	ret = kstrtoul(buf, 0, &value);
+@@ -466,9 +472,13 @@ static ssize_t interval_store(struct device *dev,
  
-+	info.link_id = ifmgd->auth_data->link_id;
-+
- 	if (auth_alg != ifmgd->auth_data->algorithm ||
- 	    (auth_alg != WLAN_AUTH_SAE &&
- 	     auth_transaction != ifmgd->auth_data->expected_transaction) ||
+ 	/* impose some basic bounds on the timer interval */
+ 	if (value >= 5 && value <= 10000) {
+-		cancel_delayed_work_sync(&trigger_data->work);
++		if (trigger_data->hw_control) {
++			trigger_data->blink_delay = value;
++		} else {
++			cancel_delayed_work_sync(&trigger_data->work);
+ 
+-		atomic_set(&trigger_data->interval, msecs_to_jiffies(value));
++			atomic_set(&trigger_data->interval, msecs_to_jiffies(value));
++		}
+ 		set_baseline_state(trigger_data);	/* resets timer */
+ 	}
+ 
 -- 
 2.39.5
 
