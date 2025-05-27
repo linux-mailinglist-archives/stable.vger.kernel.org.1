@@ -1,121 +1,162 @@
-Return-Path: <stable+bounces-147881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4585CAC5ADF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 21:38:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F7DAC5AEE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 21:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94E068A54AD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73AA28A2134
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAA228A3F2;
-	Tue, 27 May 2025 19:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383932DCBF0;
+	Tue, 27 May 2025 19:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b="Ox9w5Kfx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.aaazen.com (99-33-87-210.lightspeed.sntcca.sbcglobal.net [99.33.87.210])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEFB2701D6;
-	Tue, 27 May 2025 19:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.33.87.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC35354F81
+	for <stable@vger.kernel.org>; Tue, 27 May 2025 19:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748374710; cv=none; b=Ai/OcACPVEC2E7DgBV7c4IYN6bnJc+ZIyT84r1qykpmbOJVyBJESYUIG33e+lozLAm/8eqV6qHJScUIlmAfT2bnn0ng1BeAt63wf3JRj+ksANYSBy2BAiUBJHrroSBVdYa9n0bVhShM+JOVZwMRrfdn8Fu02HRkJkmjaQHCobs8=
+	t=1748375115; cv=none; b=Rspjr0VGhoUh/VjUkC8xGXDTBrNfjFyNvfNXv5+p2HjtIGDtoi4Rxp+/bGfHW6MgPcWMseTwTD7y6QAme4WC/3AqacRw5cMZYupXfY1KEI56e/W9IPgriOqgD8uXb0lYYx0P4AhBh4FA5zVDAW891ut4nf8kVY2GVOdzwc0//eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748374710; c=relaxed/simple;
-	bh=KPnnEbEzDg1iO5SPzFnVAGmm/vw403K+t6jriv7b9v4=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=nYlwrkhsYmVtl4qJnckQE7V34SDwAYs4aKdEy436PSUUypCdwDYG1GEvxvSu/Ce9aJr+Zhd7sUoZ85+iUbS0PbA8F2jfKmSQWtKgIVb9U6SXDTe22WC2RsLIAcD4cNVzt8b9IiAJwXiMufykuWO5c/oWUq0lhm+8ZoeYMcISKow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com; spf=pass smtp.mailfrom=aaazen.com; arc=none smtp.client-ip=99.33.87.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaazen.com
-Received: from localhost (localhost [127.0.0.1])
-	by thursday.test (OpenSMTPD) with ESMTP id a4d15d45;
-	Tue, 27 May 2025 12:31:47 -0700 (PDT)
-Date: Tue, 27 May 2025 12:31:47 -0700 (PDT)
-From: Richard Narron <richard@aaazen.com>
-X-X-Sender: richard@thursday.test
-To: Guenter Roeck <linux@roeck-us.net>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Linux stable <stable@vger.kernel.org>, 
-    Linux kernel <linux-kernel@vger.kernel.org>, 
-    Linus Torvalds <torvalds@linux-foundation.org>, 
-    Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-    Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH 5.15 00/59] 5.15.184-rc1 review
-In-Reply-To: <0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net>
-Message-ID: <67f03e41-245e-202-f0df-687cc4d9a915@aaazen.com>
-References: <20250520125753.836407405@linuxfoundation.org> <0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net>
+	s=arc-20240116; t=1748375115; c=relaxed/simple;
+	bh=7uFjyvxlMG9Jro52mtHPkeSk3WljRlHZIKEUy4WdKzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BU9pbJCBaMX3Zlp1r5YipWacvL+/her6kyabmPBZrt+GK5B2aqjFuc9/kjQ7UsDaDA1hNdyjcwUSZ5yO/JuxRW1aXnJqGawfchXUzQ3NOT6Xja3dLl1iXD7qOQKrTC5g95lx6dOpWuamqU2ed4LqcKvd3C62CYQLyyPQXNbvS7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b=Ox9w5Kfx; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1748375099; x=1748979899; i=natalie.vock@gmx.de;
+	bh=yy55+GQV07DU1PlzulpC7ZxEesUJ7cu0Lq4pW8qpSO8=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Ox9w5KfxuQqHQbX5WA7aHw/zkE1JIBgYtSfmKgMVW7QESlzq+TGKOo0LaIMINhQR
+	 io00drwGalWBHCg0EmJuGrC0pDKiCPJLZAZXqrHNSfrnxeTPgv/7QE+0AnFFRVm4O
+	 Vr1T/V0PCUh1Yalw/SUMxFxvcYGVuCjdE/TRlhTUpSqwaVEeQpyePC+FrOKGicYQE
+	 MVWJhmyAZVieNSEi+fddmpmTVdPZo7QvtKwmjV1SmL5ugEr9L4yRtr/l75j+/lyWO
+	 ho5ST6gD63xjwh0zzbA3G3cUGHf6V/S+yHpCLwUpruS8ea/0+VSauIZHejiGEq22S
+	 agGFPx4ow1mMaUKhSw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([109.91.201.165]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MMGRA-1ua0wn2Pva-00LF1d; Tue, 27 May 2025 21:44:59 +0200
+From: Natalie Vock <natalie.vock@gmx.de>
+To: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	Natalie Vock <natalie.vock@gmx.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/buddy: Add public helper to dirty blocks
+Date: Tue, 27 May 2025 21:43:52 +0200
+Message-ID: <20250527194353.8023-2-natalie.vock@gmx.de>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250527194353.8023-1-natalie.vock@gmx.de>
+References: <20250527194353.8023-1-natalie.vock@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:euWBSkH/f7kf5t01BmVT6vYLv/uqhWZUx+ZzS3mguzTWxtVN4Y8
+ GT6j+7qC2TDS2a+S7udASu0bTcRn//gdrL/ailn3KPDRtP2Vpsqk8RmPqf667NtjCMraBPg
+ c9hrBvdBEUaMkoSsEaR+MAPdfkN63yjkna0iPiAXCoQEkH/G2KDHln/5u9rILPH5d56Is/r
+ Ch8Kn64dT8ZIbLj/zsC0A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+tnUOAMDi18=;teqbMi9YqtVcxHYenirkFNud8Pe
+ o59S27g7TgH6KIHTfxAVzd4cKXfgIic+BF4VUDGZwpRg5sMt5WA5Ci8zbTeo0TJgKe7CWRl4L
+ nOFl91+wRrNdRafsuLmoTwZP2OQM2Rmkzk/hQ+TWx0oaSo1Ar63wbksGhwjdHBqAoCPiG868y
+ Z0+aw4u0L6vCiEEX3IMyHbgg/FqH/X8a8QkEJKkoXj6V/HYygNp9R0BJ8mMUdS5fmaSys6zfu
+ e94MG2fNvumGaIIBQxYFori4VGOSlsup3ghK2QiITlThgcK0HcqZY99l+cLfls1KZdY9kG6Yt
+ gx5yS9y+pZbbo6aEGsXHPi7gv1wsNjUPmthSGxZywC86gaV2IMji3snz2MVyyXFMSDxDI01ub
+ qxxOIof+syO0n4uQnDn87IuTIWsxfnLrAy49A62bid47RvMj+oiskj2BwAgCidMBVjCp+mtos
+ MZ5ju14LgDDoUEW8S/cBLWFEMtyyiLaLhaGLuV5tfAGPmumBFlTXzsjIZR4typsI/fA3mbv/j
+ SeyplRYoAvHn28aSZA64kGFYy5RvW5P/lwwzv4ppe9urJXELLFda9NRqEJnaNsOXU03JsO37D
+ gY+UF2APedFbosNDxHptZSqMczExYFYzWhzle9515e29F5XHaIv7N0vs7urrOaonS23dIVvZY
+ 68xtHmFZIgBhkr1+1/HmGoX5gJAt2WmIohIsyr6DXFRlmIlfF2Hii25MQiPSag+wrbR8YKnXl
+ moAoWGejixGql2IvB85H0aI71IYVXfeRyPmOwWCzu4D2i5ucpnD4CjIrckEkImFSlF+XmUhyq
+ 1g/POIi7CXRAeE+zYa258rRpHISdiAukPJzQFMW0mj+hVQgln1TWaDqT1G+w4POyZOFHjsD6j
+ YRfNgBotcY7skB8AfXJMW8cfRFOUHOMXnqLsvdZsnWl5VO/OHauFl4d+YmeYLrwKJKAwdVWM9
+ 7fQwUypIWZsBzibxW6KC4UvX6nBknbu4/ms6hhrhCAYB31izsCyU08ZhTeq4M9BlWSDOv+fMR
+ 4E7oOdGThHg5wyvOM3LXZgeLjEfTwUlzc5YwjZoAXIpklhc0jz4kTfx1m1Z19b0CbRoXyEGFG
+ 4madAQOw7bVlPa1raXL/m3A7UIVqEAKFTLWqNS58G4nNcqzqmZ0pnvLF69NnQUViSPYfLgH47
+ R7ykYBL1vVWstQXI3F7cWJTVpvFEMINU4hJd2CyTNNMBEfRdHT/mzOofBVnx1wqC7ihdQE8NX
+ knlO+rAX6KieTj1tQK9tkB+TXOGJPmPNBWqfZf7irpKilkBJjfM85F0EZwHvDtaqNayPl1odt
+ ekvWERt2MmRGRe67xYSl3hj8YEzC8AEo5APNK5XR/63ia9cniGJX+8e5q14EBNw/YGKuCPTvv
+ I59J0gT40QxCExOSEPv2sEScqvuvnVbCfpeXH5SYMiN6nDYFkb85v6YXIgfi6DAtNOXEuowVa
+ YnCWTksR1DfQzCsn/mrD1xuGRwU+ZDGWNUyd7HIMBx+F/oZ6jPoTrgOTFF0uiRn7mFcR2nAGf
+ 1LYUIJ5nTMBqm7ygO7l+7ReM9ohnaMKoowCOEa92HWlLmgpGZ3ED5DYfo6N+1QBCEH96+cKu7
+ okupkgswQNGg2OOTupGaf1Qb8CsJpDlqFO5gimrhm6AoqvEgZk12p+MRkLKzXuKnTJjJZ63qq
+ ftgn8DPiDvAFvKB/T2bXt4uohoi+F/5KB8K3I/T6Kqc1RYrURha/23FGj4Gkl0yAuHEqur0SS
+ 80B1Z5utiWvUtGM0EgoDLLZ1FEDNUSo1/YXPRoUR8aeIYPsVMZYWnF5xII+OYK1OksPlR4csc
+ nsEiTchd2H8KUxk/tpRGKgtCsxaWSIe9eMt2Ux2XAqeih4C4QPtTlD2VOTbkiCg4FfqMlNULF
+ F87sdaefKo/rxxBs8KOHsHXZe5zsgbWbYv8UxSR/ym9NzU0/0EPGgV7b7PODRwRzqQn2YRgeZ
+ 2a9z5Uu8nEOIQgBiCgpv4+RNDh3URjSk3/CfV+gnE35pjo+4cYNjgWGPVzjvYiyGT/nH7LwSa
+ 5Fe8s1RdZ9natb7AZgEl5UUYl0hjryfo08AfLAmTRvhR2VHghFqyrN5Uw2OmkGPyiQAZF9ujR
+ nqnmhqMn5JSsoARfcASc+Yi/jUG9Ci8unLUqw5hOfMbimtc/JCVDizazYJFnpZVSNo7RMxQCQ
+ /8v0UIifB4mgnHFZJ40hR3psjKgWjFghAkWf/CVvFWX8GqGxgrEtdDioIZjPjfV0m6Qy7vmmq
+ hGc5LoztHrtFOPLffqYXajWDnPzuVf+DtSn6UOieIXYXB2hIxFrHdfxuFZ8f3WJPcHfdFlOi2
+ Q6IILnwmqmlYwD5pCjDw4tJO30sOXEev8mC0eiWcVQC4kPJwSdZVKmsWRAQjxMAzMkHvhcNAC
+ 8+X8FQMsBfmLyY9TfbJ2kbpxfOQdXeg6Msqw48MoaUgWV1BA3rmeL/T+/l8/0LBAtm+Nf0cZN
+ bzaU9XjaSTp1zVUCsuBFA4VFZ7e+D+ORVPJ59z1DKOHn6KE5zjt2LCTY4HW9kqw6JtFl43w1K
+ HMVwVQChi9G4lwmpY7yNqVpe11G3B+h/4mhP+LlQwL59KbtVvCX+jhVGkVh9WdpLs50vhyuyv
+ k/N3kPvOYrFkjmfWUnqJpyK0i/pBWU7u3GgJIbppP5FFmnzKq+f2uzGCcLOmpzNnghpIOPPhx
+ R1MwwA3I6Jc9xjKNj1FgKbizq1QCPsbIi27rJO2fP7KnE7jpAuGMMd/fg++ii9m0RzH6KKgAP
+ zOnty6KSCZMlikbgCAxdIQ7805qvjjI/9U2vCBeB14pMf/WiY5wVacASJVTq0qs23kI1pLBAY
+ 5OLjp75/Upw4veN64yjCmKsImOI3GEbSUkdCB27xdDgOgvTVzT6xZlDNgiQtxDiMnUSOmPbma
+ BhyZ7FdohhNU5LUy2rqUt3yrJH+9WD2i3aIj5YNgBeJYIoEx82lSRfrjkB+ZrtPL3gfsUaRjg
+ 5LFMjdvsgYJEmhxJpcNtgdfwAOxYvL0wcsoGI1toAHuieI1pkaCVoPrbERjDfklShh1edAvMa
+ lvqXVhAbthCgtaavrb2MmeYdKYCq1Gsn0G/yMm1GgDmrTSjnZh+s3OaN8r7u3rNHQ+E3eo3Q0
+ ERd7tdzpY67rLkmjLsTP/M9VBr4WU3IYEfoeeLwKRaU8KB05vh4iPuv4uxmUUbMBGuRLz8O3n
+ 2/KjihYRzsiR8Rw72vksv4ak7AncExIJrpICfxVZSlonPAg==
 
-On Fri, 23 May 2025, Guenter Roeck wrote:
+Cleared blocks that are handed out to users after allocation cannot be
+presumed to remain cleared. Thus, allocators using drm_buddy need to
+dirty all blocks on the allocation success path. Provide a helper for
+them to use.
 
-> On 5/20/25 06:49, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.15.184 release.
-> > There are 59 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
-> > Anything received after that time might be too late.
-> >
->
-> Build reference: v5.15.184
-> Compiler version: x86_64-linux-gcc (GCC) 12.4.0
-> Assembler version: GNU assembler (GNU Binutils) 2.40
->
-> Configuration file workarounds:
->     "s/CONFIG_FRAME_WARN=.*/CONFIG_FRAME_WARN=0/"
->
-> Building i386:defconfig ... passed
-> Building i386:allyesconfig ... failed
-> --------------
-> Error log:
-> x86_64-linux-ld: arch/x86/kernel/static_call.o: in function
-> `__static_call_transform':
-> static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
-> make[1]: [Makefile:1234: vmlinux] Error 1 (ignored)
-> --------------
-> Building i386:allmodconfig ... failed
-> --------------
-> Error log:
-> x86_64-linux-ld: arch/x86/kernel/static_call.o: in function
-> `__static_call_transform':
-> static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
-> make[1]: [Makefile:1234: vmlinux] Error 1 (ignored)
-> --------------
->
-> In v5.15.y, cpu_wants_rethunk_at is only built if CONFIG_STACK_VALIDATION=y,
-> but that is not supported for i386 builds. The dummy function in
-> arch/x86/include/asm/alternative.h doesn't take that dependency into account.
->
+Fixes: 96950929eb232 ("drm/buddy: Implement tracking clear page feature")
+Cc: stable@vger.kernel.org
 
-I found this bug too using the Slackware 15.0 32-bit kernel
-configuration.
+Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
+=2D--
+ include/drm/drm_buddy.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Here is a simple work around patch, but there may be a better solution...
-
---- arch/x86/kernel/static_call.c.orig	2025-05-22 05:08:28.000000000 -0700
-+++ arch/x86/kernel/static_call.c	2025-05-27 10:25:27.630496538 -0700
-@@ -81,9 +81,12 @@
- 		break;
-
- 	case RET:
+diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
+index 9689a7c5dd36..48628ff1c24f 100644
+=2D-- a/include/drm/drm_buddy.h
++++ b/include/drm/drm_buddy.h
+@@ -142,6 +142,12 @@ drm_buddy_block_size(struct drm_buddy *mm,
+ 	return mm->chunk_size << drm_buddy_block_order(block);
+ }
+=20
++static inline void
++drm_buddy_block_set_dirty(struct drm_buddy_block *block)
++{
++	block->header &=3D ~DRM_BUDDY_HEADER_CLEAR;
++}
 +
-+#ifdef CONFIG_64BIT
- 		if (cpu_wants_rethunk_at(insn))
- 			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
- 		else
-+#endif
- 			code = &retinsn;
- 		break;
+ int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size);
+=20
+ void drm_buddy_fini(struct drm_buddy *mm);
+=2D-=20
+2.49.0
 
---------------
-Richard Narron
 
