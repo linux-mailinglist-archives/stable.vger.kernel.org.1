@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-146922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C908AC552D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBE1AC5895
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F6DD7A2667
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5AB3ADAF9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAEA27A463;
-	Tue, 27 May 2025 17:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E50827C149;
+	Tue, 27 May 2025 17:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwN8pe1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivQUdHGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB729139579;
-	Tue, 27 May 2025 17:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE5F7263B;
+	Tue, 27 May 2025 17:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365724; cv=none; b=awGS7hQJGbMhHXpXUgg6A23IAPm126pPPILP1gLBh5a01Fbzf99X+VnTZQmxGEqw9Ow4xcOjYDJb6HdYZOhtdo2voNDTntSG2Jxqr7otKdHgpiHznKSV2PzVUZK3AEEcr3x0gWPRRL9aWFb4OFdQhAFjQICkUX4a5WrGx4cIAno=
+	t=1748367992; cv=none; b=d0uG/WF108yL4dP9jn6zfiY6zB+YIzR7YofvHO8iorZqKpDxPZ6IX4pbx7PibSBpjtCKLEPj1XYpcmYM0YLcdA9OcbfE1tAKoo62cUqV86vHJwqyLg/Uh2yKqxiA5Vox2CnfPMUCEWc3IMR0DqdcSONw7zXwPROvGbYjRw2mQok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365724; c=relaxed/simple;
-	bh=AnM7I4PA/2ZhN5g2Ljz88zG9A3gnti5lk9tfCFJh/iQ=;
+	s=arc-20240116; t=1748367992; c=relaxed/simple;
+	bh=cSqs5lqRvWz7KEAohw3yaolvka2nw9A6/TCLeaM5tiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBTUgVxg/g/osfS8/0H1HQ5hE8r5CwviuLtY5Ba+6AsmEfDsogrYyffR9Idm4qe8OjF4j31bozqDWGtyqcMmD0CLioCqA3Fu2EHg24M7MdG4Imu/hrsl3xMOzY/lJmAPM1Gx6Xiy0eNH/EeBiHWYtf6AgLvn5clVWfBsDBh3rDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwN8pe1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F79C4CEE9;
-	Tue, 27 May 2025 17:08:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DglROQfDCkaO+8ssz6PivDmDpvp+pow/3ixQFtNFC7bsMunONG/X7E0Gn0JAK0O2d4He/KrbSph7HHRVL8J2iHYFWB4W4GCOzey03Wk1pYC7tB6vH5JGqJqFxqQABZ0V8OcGFpHUtxMa5DWZ9R7GXwrYNI32aedbNAco4w4wpDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivQUdHGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533ADC4CEE9;
+	Tue, 27 May 2025 17:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365724;
-	bh=AnM7I4PA/2ZhN5g2Ljz88zG9A3gnti5lk9tfCFJh/iQ=;
+	s=korg; t=1748367992;
+	bh=cSqs5lqRvWz7KEAohw3yaolvka2nw9A6/TCLeaM5tiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jwN8pe1jL2IVpvA7V2ThkSZxQIibyLZWCh36nkR+/CLS8ITtghINExY+pZTkeqyV6
-	 rCrDfEswQ9IuNXExhqoIYrxAsPQ1LUjwE/S4bMINJIh/WNqGEZhTjnOiGVZQeWXJov
-	 ZQMlZcis5O9WhwufEklEVjfdSurtfBJU4SulW00s=
+	b=ivQUdHGE1SWBrZuxgzT7T0n04HE/3OQyKzLDBA4t/8LQBGOONssajV7TI29iu8rhx
+	 7BOm/1r9VxtYcaND5KYAbxbWOhjwfRgtsZdd8mrowjj4K/vpqR/TX2ksx/W9RBeALy
+	 SqeU2PFAo5FfH/Zu5LuLn32YHckMuyJvoIoeO8xY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naman Trivedi <naman.trivedimanojbhai@amd.com>,
-	Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 468/626] arm64: zynqmp: add clock-output-names property in clock nodes
+Subject: [PATCH 6.14 564/783] ipv4: ip_gre: Fix set but not used warning in ipgre_err() if IPv4-only
 Date: Tue, 27 May 2025 18:26:01 +0200
-Message-ID: <20250527162504.012909699@linuxfoundation.org>
+Message-ID: <20250527162536.110788890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Trivedi <naman.trivedimanojbhai@amd.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 385a59e7f7fb3438466a0712cc14672c708bbd57 ]
+[ Upstream commit 50f37fc2a39c4a8cc4813629b4cf239b71c6097d ]
 
-Add clock-output-names property to clock nodes, so that the resulting
-clock name do not change when clock node name is changed.
-Also, replace underscores with hyphens in the clock node names as per
-dt-schema rule.
+if CONFIG_NET_IPGRE is enabled, but CONFIG_IPV6 is disabled:
 
-Signed-off-by: Naman Trivedi <naman.trivedimanojbhai@amd.com>
-Acked-by: Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>
-Link: https://lore.kernel.org/r/20241122095712.1166883-1-naman.trivedimanojbhai@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+    net/ipv4/ip_gre.c: In function ‘ipgre_err’:
+    net/ipv4/ip_gre.c:144:22: error: variable ‘data_len’ set but not used [-Werror=unused-but-set-variable]
+      144 |         unsigned int data_len = 0;
+	  |                      ^~~~~~~~
+
+Fix this by moving all data_len processing inside the IPV6-only section
+that uses its result.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501121007.2GofXmh5-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/d09113cfe2bfaca02f3dddf832fb5f48dd20958b.1738704881.git.geert@linux-m68k.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ net/ipv4/ip_gre.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
-index 60d1b1acf9a03..385fed8a852af 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
-@@ -10,39 +10,44 @@
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index ed1b6b44faf80..c9f11a046c263 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -141,7 +141,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	const struct iphdr *iph;
+ 	const int type = icmp_hdr(skb)->type;
+ 	const int code = icmp_hdr(skb)->code;
+-	unsigned int data_len = 0;
+ 	struct ip_tunnel *t;
  
- #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
- / {
--	pss_ref_clk: pss_ref_clk {
-+	pss_ref_clk: pss-ref-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <33333333>;
-+		clock-output-names = "pss_ref_clk";
- 	};
+ 	if (tpi->proto == htons(ETH_P_TEB))
+@@ -182,7 +181,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	case ICMP_TIME_EXCEEDED:
+ 		if (code != ICMP_EXC_TTL)
+ 			return 0;
+-		data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
+ 		break;
  
--	video_clk: video_clk {
-+	video_clk: video-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <27000000>;
-+		clock-output-names = "video_clk";
- 	};
+ 	case ICMP_REDIRECT:
+@@ -190,10 +188,16 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	}
  
--	pss_alt_ref_clk: pss_alt_ref_clk {
-+	pss_alt_ref_clk: pss-alt-ref-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <0>;
-+		clock-output-names = "pss_alt_ref_clk";
- 	};
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (tpi->proto == htons(ETH_P_IPV6) &&
+-	    !ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
+-					type, data_len))
+-		return 0;
++	if (tpi->proto == htons(ETH_P_IPV6)) {
++		unsigned int data_len = 0;
++
++		if (type == ICMP_TIME_EXCEEDED)
++			data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
++
++		if (!ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
++						type, data_len))
++			return 0;
++	}
+ #endif
  
--	gt_crx_ref_clk: gt_crx_ref_clk {
-+	gt_crx_ref_clk: gt-crx-ref-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <108000000>;
-+		clock-output-names = "gt_crx_ref_clk";
- 	};
- 
--	aux_ref_clk: aux_ref_clk {
-+	aux_ref_clk: aux-ref-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <27000000>;
-+		clock-output-names = "aux_ref_clk";
- 	};
- };
- 
+ 	if (t->parms.iph.daddr == 0 ||
 -- 
 2.39.5
 
