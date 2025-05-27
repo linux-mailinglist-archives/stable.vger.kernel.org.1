@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDAFAC5850
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA592AC556E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6C41BC1F24
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2C098A38E4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90B028002F;
-	Tue, 27 May 2025 17:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5132B276057;
+	Tue, 27 May 2025 17:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8l2uq15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtC+RuAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8499E28001E;
-	Tue, 27 May 2025 17:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD6126868E;
+	Tue, 27 May 2025 17:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367810; cv=none; b=NLs/KanGB9tAhD27GdRLmaGLSRofwsck9PC0vlA9JnrU1h/BBbI+m0N8SmDCZgn2yUY+NHuj4iSaEoRlBAFmxb1DzCeG2N21liSooqOFRFzGPpQhIhSgP1tL49DsU/r4nV/I6TShO6JdfxkkghpcGrwALfW3NIciAhStMj2P360=
+	t=1748365556; cv=none; b=EB10wmeY84rsEyOHiTQwvSF8y5QpqsT2fUZmsLD04XzX8LE4bONwH9AmhoRgFNV+bswVASd44L8VvoNXaLFFnmcL0I4zE9akZU2EuWC9ywFsfUoo/AHIZbgoG+FhZ5/X9VFT65WtXTxUrcHANqNiV7zQnL5YJT609QFN6WVM8Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367810; c=relaxed/simple;
-	bh=UqdSHXiaTwlxXck3JWpKGaUokZ0luSCTY53o84O6AKk=;
+	s=arc-20240116; t=1748365556; c=relaxed/simple;
+	bh=3xxwe3sfl/ESdE7X89cjYQR5q6+pO8Eh9kf/At6eQjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkJpvhsHcoC6foWUAC9T8g6RN7zwEZ/Hf+jZO11rAXd+ENCTFpKyNGd4z305aK+6eu9PQfp0xV2tR7HPJYbHLICRwVqgiezKCvK7SqvDKCTS1XPhVB0M4RmNXLF1Y48gbMrrpL1YRfnBHn18jpiN9wiDa7XX58KPj3CzDCXDE3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8l2uq15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97059C4CEEA;
-	Tue, 27 May 2025 17:43:29 +0000 (UTC)
+	 MIME-Version; b=B78rwFoLQKjtERz8QpzSznGuFF2Oj/lvbMP5r3fTlxV+SR0XbZ4tPnRH6GzpdVZVNbnnIdPBRyEOEA0Sbv0tMvPXd6hrNHO31x3V6bohpEkakgPWRQXIkvaWX5uPA7nhUbBSJ/CCEdlGIbFjouTr2qc3poytXdxB37kCwuxRJYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtC+RuAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECA8C4CEE9;
+	Tue, 27 May 2025 17:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367810;
-	bh=UqdSHXiaTwlxXck3JWpKGaUokZ0luSCTY53o84O6AKk=;
+	s=korg; t=1748365555;
+	bh=3xxwe3sfl/ESdE7X89cjYQR5q6+pO8Eh9kf/At6eQjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8l2uq15N12mkf6onGp1CBK77TeMiMww47Rjzl8BYSldqT2Ql2WcnwLLnvHLdlWBa
-	 DgtJb15nkqf56KstNreKi4CpIJQwq2cnoNE06YeXP1f71451n0q7HxgNR74qJ5oFiD
-	 LREJ+yeSJyU0aO/3N8ht5tvEs7lZ9qjk3wgDsya4=
+	b=rtC+RuAx+0+iHfZPVvFfE4g/Y1KTliipR59i0wfrJqLxSXBl+xN2upgvFPTKquc2g
+	 B0oQwzOTHouP/hJ1s6GzUqnQkkIe9Iw9jFrYEHNLKrBvY5Pz9JUvqTKaXmyfrHauvH
+	 UCPEGOTpQq1f4eu4DpD+b2imaX77MPqdtlo3JYB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 479/783] drm/amdkfd: fix missing L2 cache info in topology
-Date: Tue, 27 May 2025 18:24:36 +0200
-Message-ID: <20250527162532.638981827@linuxfoundation.org>
+Subject: [PATCH 6.12 384/626] soundwire: amd: change the soundwire wake enable/disable sequence
+Date: Tue, 27 May 2025 18:24:37 +0200
+Message-ID: <20250527162500.615180564@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 5ffd56822a7159917306d99f18fd15dfd7288f20 ]
+[ Upstream commit dcc48a73eae7f791b1a6856ea1bcc4079282c88d ]
 
-In some ASICs L2 cache info may miss in kfd topology,
-because the first bitmap may be empty, that means
-the first cu may be inactive, so to find the first
-active cu will solve the issue.
+During runtime suspend scenario, SoundWire wake should be enabled and
+during system level suspend scenario SoundWire wake should be disabled.
 
-v2: Only find the first active cu in the first xcc
+Implement the SoundWire wake enable/disable sequence as per design flow
+for SoundWire poweroff mode.
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250207065841.4718-2-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/soundwire/amd_manager.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index 334c576a75b14..98317eda2cdb4 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -1683,17 +1683,32 @@ static int fill_in_l2_l3_pcache(struct kfd_cache_properties **props_ext,
- 				int cache_type, unsigned int cu_processor_id,
- 				struct kfd_node *knode)
- {
--	unsigned int cu_sibling_map_mask;
-+	unsigned int cu_sibling_map_mask = 0;
- 	int first_active_cu;
- 	int i, j, k, xcc, start, end;
- 	int num_xcc = NUM_XCC(knode->xcc_mask);
- 	struct kfd_cache_properties *pcache = NULL;
- 	enum amdgpu_memory_partition mode;
- 	struct amdgpu_device *adev = knode->adev;
-+	bool found = false;
- 
- 	start = ffs(knode->xcc_mask) - 1;
- 	end = start + num_xcc;
--	cu_sibling_map_mask = cu_info->bitmap[start][0][0];
-+
-+	/* To find the bitmap in the first active cu in the first
-+	 * xcc, it is based on the assumption that evrey xcc must
-+	 * have at least one active cu.
-+	 */
-+	for (i = 0; i < gfx_info->max_shader_engines && !found; i++) {
-+		for (j = 0; j < gfx_info->max_sh_per_se && !found; j++) {
-+			if (cu_info->bitmap[start][i % 4][j % 4]) {
-+				cu_sibling_map_mask =
-+					cu_info->bitmap[start][i % 4][j % 4];
-+				found = true;
-+			}
-+		}
-+	}
-+
- 	cu_sibling_map_mask &=
- 		((1 << pcache_info[cache_type].num_cu_shared) - 1);
- 	first_active_cu = ffs(cu_sibling_map_mask);
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index 0d01849c35861..e3d5e6c1d582c 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -1110,6 +1110,7 @@ static int __maybe_unused amd_suspend(struct device *dev)
+ 		amd_sdw_wake_enable(amd_manager, false);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
++		amd_sdw_wake_enable(amd_manager, false);
+ 		/*
+ 		 * As per hardware programming sequence on AMD platforms,
+ 		 * clock stop should be invoked first before powering-off
+@@ -1137,6 +1138,7 @@ static int __maybe_unused amd_suspend_runtime(struct device *dev)
+ 		amd_sdw_wake_enable(amd_manager, true);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
++		amd_sdw_wake_enable(amd_manager, true);
+ 		ret = amd_sdw_clock_stop(amd_manager);
+ 		if (ret)
+ 			return ret;
 -- 
 2.39.5
 
