@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-146639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A03EAC53FC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:54:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA246AC577D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6A901BA4451
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:54:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 318F63A189E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFE027FD76;
-	Tue, 27 May 2025 16:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3980727FB38;
+	Tue, 27 May 2025 17:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpBm9/mF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e28kHGOw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A26927E7CF;
-	Tue, 27 May 2025 16:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FDE27FD53;
+	Tue, 27 May 2025 17:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364851; cv=none; b=ufsliOP66TSIZ95lPc3GrMMIo1FB1Eq3s1NQGCJ9El8voRkbWAWzzQ8rKz681hXw05Yz7t5s3+fEj/lxpqiQCrUDZ/+QIUnYjiIq220Rr+MocEuAGymLmJVL5h3CBFTwz6SvvYdUEQAXdyo8WqYzaWfg/c7/xBxyB59FNknjyP0=
+	t=1748367213; cv=none; b=kKKkDA2fC+D7bHqnSsvcivIutZFvTjf/DoT4YtRG7AoSH3YvKEv82GTibq4ZXuMSwLKUVojjy5tnN8VhjJ6k5J9F5OZ/b/IpLlj2lgl2tOMdXBEnIvMp2hdTlMRGzlqH0/VTzgqT1JF9P/fBZ0I6mYuQGvWb9DMWYHH3nXNzvhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364851; c=relaxed/simple;
-	bh=jN592LgemYMHzZgO2XgOWkDsrYSLs7NESJMqHvQLy7A=;
+	s=arc-20240116; t=1748367213; c=relaxed/simple;
+	bh=xBqA2l8vUtkzz/X2A4eb/IHB32s7ak/yu2rSfPNmFWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruMJBkxG5aFYc71550g/Cn6uERJ/GHl3epHLkSbIVDtdNXqrxxTJvFukp8hv+6Mjlk43bgWBUZcwqunkdP4smZoMLLK9WrVQCz7XyJNkj7/kySSE7vVK5Y0TWhF4ggXlqFstMoOlIXXm1U9EMiFHPqaAqnwjcRqD451F9lgyjNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpBm9/mF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BF6C4CEE9;
-	Tue, 27 May 2025 16:54:10 +0000 (UTC)
+	 MIME-Version; b=CZQBpSjaIXlS2j7NTW4qnkoMPJExpRteF3lFqRsa5Bx7x7dIIlRvbED0LE7Dt/dzKBIcyQ444sXvhOmBgkJPKD4wuSfSIrfRr6aZc/wNzxcci7UNaydjLPDi0IJsyEsbq+4yOJYgtLfxFdyco1bv7L3t7BifiRczk2t7ZfqkvYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e28kHGOw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54848C4CEE9;
+	Tue, 27 May 2025 17:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364851;
-	bh=jN592LgemYMHzZgO2XgOWkDsrYSLs7NESJMqHvQLy7A=;
+	s=korg; t=1748367212;
+	bh=xBqA2l8vUtkzz/X2A4eb/IHB32s7ak/yu2rSfPNmFWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpBm9/mFaV9hGuwYxLrI3RgfWKZ7kuu1uUESfZdV4lkAbOHVVDqTABuhnFn8KMUVU
-	 aHzB9XQu6XMMVd236seQz+xJjWPc8NDMzFf0E2/gOKUtzCl1DPMjSn5oMwaaV2C855
-	 NEghPVm+FE9EvcxXphBqbjBE8sbTPAdrIjA6Srxc=
+	b=e28kHGOwY7z/GCYUSKUc4Jqybud/tfs/yVGOR16hKzFO5TQfJEJs8fv3cYlBzzaKZ
+	 zHwnZhKg3Ov8hvvzfiBnkmSfkiQJeQlaKhx34g63dg/foKDbjK3eHeiO7v/M+6JBR1
+	 Le710388z1YRnPGaxSB9jMoE4LDrCqxMZGgpVLWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Dillon Varone <Dillon.Varone@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/626] wifi: iwlwifi: mark Br device not integrated
-Date: Tue, 27 May 2025 18:21:20 +0200
-Message-ID: <20250527162452.610517181@linuxfoundation.org>
+Subject: [PATCH 6.14 284/783] drm/amd/display: Fix p-state type when p-state is unsupported
+Date: Tue, 27 May 2025 18:21:21 +0200
+Message-ID: <20250527162524.653495798@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Dillon Varone <Dillon.Varone@amd.com>
 
-[ Upstream commit 5f0ab2f35a43773a0dfe1297129a8dbff906b932 ]
+[ Upstream commit a025f424af0407b7561bd5e6217295dde3abbc2e ]
 
-This is a discrete device, don't mark it as integrated.
-This also means we cannot set the LTR delay.
+[WHY&HOW]
+P-state type would remain on previously used when unsupported which
+causes confusion in logging and visual confirm, so set back to zero
+when unsupported.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308231427.9bb69393fcc9.I197129383e5441c8139cbb0e810ae0b71198a37c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
+Signed-off-by: Dillon Varone <Dillon.Varone@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-index ab7c0f8d54f42..d3542af0f625e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
-@@ -148,11 +148,9 @@ const struct iwl_cfg_trans_params iwl_br_trans_cfg = {
- 	.mq_rx_supported = true,
- 	.rf_id = true,
- 	.gen2 = true,
--	.integrated = true,
- 	.umac_prph_offset = 0x300000,
- 	.xtal_latency = 12000,
- 	.low_latency_xtal = true,
--	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+index a49604b7701f7..1406ee4bff801 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+@@ -563,6 +563,7 @@ void set_p_state_switch_method(
+ 	if (!dc->ctx || !dc->ctx->dmub_srv || !pipe_ctx || !vba)
+ 		return;
  
- const char iwl_br_name[] = "Intel(R) TBD Br device";
++	pipe_ctx->p_state_type = P_STATE_UNKNOWN;
+ 	if (vba->DRAMClockChangeSupport[vba->VoltageLevel][vba->maxMpcComb] !=
+ 			dm_dram_clock_change_unsupported) {
+ 		/* MCLK switching is supported */
 -- 
 2.39.5
 
