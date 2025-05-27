@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-146715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B321AC548C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC373AC57A8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7FC77A9197
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D4654A7838
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1835827FB0C;
-	Tue, 27 May 2025 16:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C913427F178;
+	Tue, 27 May 2025 17:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1o3f6U3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARmadnvm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E80194A67;
-	Tue, 27 May 2025 16:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EFB3C01;
+	Tue, 27 May 2025 17:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365082; cv=none; b=ak5GrjeSBCn1uj63y1MYtBrxfsJ7kxGWOW9TMHsLJdfM0gHIihZOK9gsnxFMGRRqiDSDgNOYQS3Q1jaFoROs/TEsUlXzNnW7dFu2XlF8BznE48YuckJrccgd1zEsqEcMpCrEFH3qDfixcKf30VfNM8lz8wb1Jx8MBpqqImf67I0=
+	t=1748367344; cv=none; b=d1SWcw8n7/V0xCvYmefHo+m3pTtmiMf+Wlin5TJjkeGGj8X+yp1TzEaRkBQM/CqLg0YRRH+Tcn6uB2tittCcqc60uJEIjsFl/pgKYJ92OhSWMZZeBHF01KGc/XZsl1INf9e5NPr8y4ys+pA7Grps7d62ISqcMiL3QG0K2j+CLKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365082; c=relaxed/simple;
-	bh=/nPs+HYYLFi5QlLutsB73HZDqbiIjr+13wOeYx9N1KY=;
+	s=arc-20240116; t=1748367344; c=relaxed/simple;
+	bh=WUU+niHGdATDcVGROAZCq2qoFEq/aYlzQLdGxAh/TkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3MvLrHcLQXemmRoX63zOX52HWb07Y7luaoc/zj3mI7DmN9fq/7tRocK4V00LHvQtJbIoRYYY8aOtNaTWBFN0d6V+o1OEbjNLBvcJG3EclmQ1Adhj/jmYKQ4YzaC1jd7JDrrQyNuO6pEXBsBCVsqfFdIYhOeOdwCSlI/2ylNjno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1o3f6U3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52497C4CEEB;
-	Tue, 27 May 2025 16:58:02 +0000 (UTC)
+	 MIME-Version; b=AaLXT8WgYw/um/67iidhytm6IXwfQH2JYETAALw217Uc7oMNcGYqhnP+OwMJ65kGO55yI1tiLPPSZVrUeQnrzj/BrPIX18/NS3zHDliyIwsF465tzMh7iADW/rQUAJAcxH8FJi78p6can7sc4kvPckiOAVnRIgdTzAI1W6f/tiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARmadnvm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31ADC4CEE9;
+	Tue, 27 May 2025 17:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365082;
-	bh=/nPs+HYYLFi5QlLutsB73HZDqbiIjr+13wOeYx9N1KY=;
+	s=korg; t=1748367344;
+	bh=WUU+niHGdATDcVGROAZCq2qoFEq/aYlzQLdGxAh/TkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1o3f6U3ag9A5KduQT/tI5JqY/aZk9+jwhUV3cg2qdMMQhKhxJUSGqIw1J5Ra67KD
-	 +40m/7XWksktU0Zgx5RdSbeGI4Hp+uI3H8yPmH/NpaNk48HBW+iMWEEH7jShKXR9Zd
-	 6+hwDy9A1mZRAlyVGTupFoEuti5wLKLQVM0ZLJE4=
+	b=ARmadnvm1RFi5FY4PfsXdQs3E/o6CAXjaKImgKcYh74eCSJuV1/kM02dzXkZ+v3cP
+	 4d6vYlIsD41Di1q6qEPvzsqa3EUjbHwVnAr7VHQbLwXxD5+ETZnKx1sGKmicRN7glo
+	 mr0QfYMlhMB8+6pjPrNTB2LCdeqQ5tJVjbtUBb2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 262/626] drm/mediatek: mtk_dpi: Add checks for reg_h_fre_con existence
+Subject: [PATCH 6.14 358/783] x86/nmi: Add an emergency handler in nmi_desc & use it in nmi_shootdown_cpus()
 Date: Tue, 27 May 2025 18:22:35 +0200
-Message-ID: <20250527162455.655100425@linuxfoundation.org>
+Message-ID: <20250527162527.658722363@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 8c9da7cd0bbcc90ab444454fecf535320456a312 ]
+[ Upstream commit fe37c699ae3eed6e02ee55fbf5cb9ceb7fcfd76c ]
 
-In preparation for adding support for newer DPI instances which
-do support direct-pin but do not have any H_FRE_CON register,
-like the one found in MT8195 and MT8188, add a branch to check
-if the reg_h_fre_con variable was declared in the mtk_dpi_conf
-structure for the probed SoC DPI version.
+Depending on the type of panics, it was found that the
+__register_nmi_handler() function can be called in NMI context from
+nmi_shootdown_cpus() leading to a lockdep splat:
 
-As a note, this is useful specifically only for cases in which
-the support_direct_pin variable is true, so mt8195-dpintf is
-not affected by any issue.
+  WARNING: inconsistent lock state
+  inconsistent {INITIAL USE} -> {IN-NMI} usage.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-6-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+   lock(&nmi_desc[0].lock);
+   <Interrupt>
+     lock(&nmi_desc[0].lock);
+
+  Call Trace:
+    _raw_spin_lock_irqsave
+    __register_nmi_handler
+    nmi_shootdown_cpus
+    kdump_nmi_shootdown_cpus
+    native_machine_crash_shutdown
+    __crash_kexec
+
+In this particular case, the following panic message was printed before:
+
+  Kernel panic - not syncing: Fatal hardware error!
+
+This message seemed to be given out from __ghes_panic() running in
+NMI context.
+
+The __register_nmi_handler() function which takes the nmi_desc lock
+with irq disabled shouldn't be called from NMI context as this can
+lead to deadlock.
+
+The nmi_shootdown_cpus() function can only be invoked once. After the
+first invocation, all other CPUs should be stuck in the newly added
+crash_nmi_callback() and cannot respond to a second NMI.
+
+Fix it by adding a new emergency NMI handler to the nmi_desc
+structure and provide a new set_emergency_nmi_handler() helper to set
+crash_nmi_callback() in any context. The new emergency handler will
+preempt other handlers in the linked list. That will eliminate the need
+to take any lock and serve the panic in NMI use case.
+
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Rik van Riel <riel@surriel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250206191844.131700-1-longman@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/nmi.h |  2 ++
+ arch/x86/kernel/nmi.c      | 42 ++++++++++++++++++++++++++++++++++++++
+ arch/x86/kernel/reboot.c   | 10 +++------
+ 3 files changed, 47 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index 9c11d3158324c..20a50180d4d49 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -410,12 +410,13 @@ static void mtk_dpi_config_swap_input(struct mtk_dpi *dpi, bool enable)
+diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
+index 41a0ebb699ec6..f677382093f36 100644
+--- a/arch/x86/include/asm/nmi.h
++++ b/arch/x86/include/asm/nmi.h
+@@ -56,6 +56,8 @@ int __register_nmi_handler(unsigned int, struct nmiaction *);
  
- static void mtk_dpi_config_2n_h_fre(struct mtk_dpi *dpi)
- {
--	mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, H_FRE_2N, H_FRE_2N);
-+	if (dpi->conf->reg_h_fre_con)
-+		mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, H_FRE_2N, H_FRE_2N);
- }
+ void unregister_nmi_handler(unsigned int, const char *);
  
- static void mtk_dpi_config_disable_edge(struct mtk_dpi *dpi)
++void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler);
++
+ void stop_nmi(void);
+ void restart_nmi(void);
+ void local_touch_nmi(void);
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index ed163c8c8604e..9a95d00f14233 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -40,8 +40,12 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/nmi.h>
+ 
++/*
++ * An emergency handler can be set in any context including NMI
++ */
+ struct nmi_desc {
+ 	raw_spinlock_t lock;
++	nmi_handler_t emerg_handler;
+ 	struct list_head head;
+ };
+ 
+@@ -132,9 +136,22 @@ static void nmi_check_duration(struct nmiaction *action, u64 duration)
+ static int nmi_handle(unsigned int type, struct pt_regs *regs)
  {
--	if (dpi->conf->edge_sel_en)
-+	if (dpi->conf->edge_sel_en && dpi->conf->reg_h_fre_con)
- 		mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, 0, EDGE_SEL_EN);
+ 	struct nmi_desc *desc = nmi_to_desc(type);
++	nmi_handler_t ehandler;
+ 	struct nmiaction *a;
+ 	int handled=0;
+ 
++	/*
++	 * Call the emergency handler, if set
++	 *
++	 * In the case of crash_nmi_callback() emergency handler, it will
++	 * return in the case of the crashing CPU to enable it to complete
++	 * other necessary crashing actions ASAP. Other handlers in the
++	 * linked list won't need to be run.
++	 */
++	ehandler = desc->emerg_handler;
++	if (ehandler)
++		return ehandler(type, regs);
++
+ 	rcu_read_lock();
+ 
+ 	/*
+@@ -224,6 +241,31 @@ void unregister_nmi_handler(unsigned int type, const char *name)
  }
+ EXPORT_SYMBOL_GPL(unregister_nmi_handler);
+ 
++/**
++ * set_emergency_nmi_handler - Set emergency handler
++ * @type:    NMI type
++ * @handler: the emergency handler to be stored
++ *
++ * Set an emergency NMI handler which, if set, will preempt all the other
++ * handlers in the linked list. If a NULL handler is passed in, it will clear
++ * it. It is expected that concurrent calls to this function will not happen
++ * or the system is screwed beyond repair.
++ */
++void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler)
++{
++	struct nmi_desc *desc = nmi_to_desc(type);
++
++	if (WARN_ON_ONCE(desc->emerg_handler == handler))
++		return;
++	desc->emerg_handler = handler;
++
++	/*
++	 * Ensure the emergency handler is visible to other CPUs before
++	 * function return
++	 */
++	smp_wmb();
++}
++
+ static void
+ pci_serr_error(unsigned char reason, struct pt_regs *regs)
+ {
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index dc1dd3f3e67fc..9aaac1f9f45b5 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -926,15 +926,11 @@ void nmi_shootdown_cpus(nmi_shootdown_cb callback)
+ 	shootdown_callback = callback;
+ 
+ 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
+-	/* Would it be better to replace the trap vector here? */
+-	if (register_nmi_handler(NMI_LOCAL, crash_nmi_callback,
+-				 NMI_FLAG_FIRST, "crash"))
+-		return;		/* Return what? */
++
+ 	/*
+-	 * Ensure the new callback function is set before sending
+-	 * out the NMI
++	 * Set emergency handler to preempt other handlers.
+ 	 */
+-	wmb();
++	set_emergency_nmi_handler(NMI_LOCAL, crash_nmi_callback);
+ 
+ 	apic_send_IPI_allbutself(NMI_VECTOR);
  
 -- 
 2.39.5
