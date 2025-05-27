@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBE4AC55DD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C581AC5906
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF6664A4909
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 374B94C1555
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE1227D766;
-	Tue, 27 May 2025 17:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A5028030B;
+	Tue, 27 May 2025 17:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKvhJAgK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW/xbBM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C868278750;
-	Tue, 27 May 2025 17:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BDB28030E;
+	Tue, 27 May 2025 17:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366053; cv=none; b=bt1l36rDJF+NS75ClyF9Jsbr4bkngufFpvCcwwMrVol6O7xTg748cjm2omw+qt/mZWWBdeV40vknWyT9pDEHOUQOQgrVNQBh3X89ZIWCxJt6Dwllu3wCxFP7bGNv4kpng6DJA2nr26qu2tHEg5hFK/sYEqUM0OgTOty44LJslXY=
+	t=1748368329; cv=none; b=V3n7psczrHvtieeYjFG0y3L1V5XWBMBLKf19on/fgkRiZKQZoGt2+hAstqBH5AkW+t9dgbdhSmcW68ZNvXjel/a25Q6largVLG7we0fQtIpsWuHirOjw5yflzzhlow8VMxRFR4tZ/nWl1s48Ia7ypNvVs6bbU41rSVsI1PhRKbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366053; c=relaxed/simple;
-	bh=Rei3Ll0eH4Sl4bJbZaBJxH5Vxl+m95N0cumP5V+SWHk=;
+	s=arc-20240116; t=1748368329; c=relaxed/simple;
+	bh=GWuo9WLn/tWVGzWvajamTi0Dpd9cyuAUMnrjUTfTDjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zdtemnd0sAXJK4VHmvA40kwKWGviwzbhCCMGoMeo7L3qHViTjWkk123o3+Ii3ylzaBrazVagu4iHc0Ncc01uYn9EV72eCLW99W20KcpZbHhXdhMAJ8nN5aKc8ArAdKznMGUojTAEmVhN7X+1lawwuMjusmVqgesXuMKHOIMo3tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKvhJAgK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09E8C4CEE9;
-	Tue, 27 May 2025 17:14:12 +0000 (UTC)
+	 MIME-Version; b=peV4z/ISnl2xwAyfpG9gMUOMbjVTd5cCyTHFT2TIyvHecbuiQjNlzLqvKYNOYzuIm3RL/KxmMdfVaEsUiaXbGpoRqOg8mX9NWGizmg+Y4ybPEdgHNpsm7fjLrFRVDdZW6OBnRHUu4AwZwS73mmiUT7eyn17rqdjDdybZ33Ch8Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW/xbBM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDB2C4CEE9;
+	Tue, 27 May 2025 17:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366053;
-	bh=Rei3Ll0eH4Sl4bJbZaBJxH5Vxl+m95N0cumP5V+SWHk=;
+	s=korg; t=1748368328;
+	bh=GWuo9WLn/tWVGzWvajamTi0Dpd9cyuAUMnrjUTfTDjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKvhJAgKg1Wj2ax0zDRKQxXSHsAXFLMlKJ+Zl8AI+v6Cxr3upRaUGWYYwgZ14/Z6O
-	 v+gFWFKrNvJ4kgPT0akwUXoThdKnNJNkHBZvY1QRS5QxnBYcl0At9MF40zbUkuyUyG
-	 Q1NVn0QqyRVeqQtyrJMezbH/cTl+DNnwxehni934=
+	b=xW/xbBM+qcmw3du7lT/y3aJnJA7mf5jvKKBYYSkIK2FbXFwKc3pwChYFipWTpMPSa
+	 Gi1xGLFwY6n3vTjTJ8cq9lwnqv19rhpmMVlKYbOXr3LQFYXZeoaFy3lH68/ZfSKB34
+	 j+lE7keO1kU2hBkPEe5hp+DyXNu9GfgUKapJffWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 574/626] can: bcm: add missing rcu read protection for procfs content
-Date: Tue, 27 May 2025 18:27:47 +0200
-Message-ID: <20250527162508.295510218@linuxfoundation.org>
+	Goldwyn Rodrigues <rgoldwyn@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 671/783] btrfs: correct the order of prelim_ref arguments in btrfs__prelim_ref
+Date: Tue, 27 May 2025 18:27:48 +0200
+Message-ID: <20250527162540.447325198@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 
-commit dac5e6249159ac255dad9781793dbe5908ac9ddb upstream.
+[ Upstream commit bc7e0975093567f51be8e1bdf4aa5900a3cf0b1e ]
 
-When the procfs content is generated for a bcm_op which is in the process
-to be removed the procfs output might show unreliable data (UAF).
+btrfs_prelim_ref() calls the old and new reference variables in the
+incorrect order. This causes a NULL pointer dereference because oldref
+is passed as NULL to trace_btrfs_prelim_ref_insert().
 
-As the removal of bcm_op's is already implemented with rcu handling this
-patch adds the missing rcu_read_lock() and makes sure the list entries
-are properly removed under rcu protection.
+Note, trace_btrfs_prelim_ref_insert() is being called with newref as
+oldref (and oldref as NULL) on purpose in order to print out
+the values of newref.
 
-Fixes: f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly synchronize_rcu()")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Suggested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250519125027.11900-2-socketcan@hartkopp.net
-Cc: stable@vger.kernel.org # >= 5.4
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To reproduce:
+echo 1 > /sys/kernel/debug/tracing/events/btrfs/btrfs_prelim_ref_insert/enable
+
+Perform some writeback operations.
+
+Backtrace:
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 115949067 P4D 115949067 PUD 11594a067 PMD 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 1 UID: 0 PID: 1188 Comm: fsstress Not tainted 6.15.0-rc2-tester+ #47 PREEMPT(voluntary)  7ca2cef72d5e9c600f0c7718adb6462de8149622
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-2-gc13ff2cd-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:trace_event_raw_event_btrfs__prelim_ref+0x72/0x130
+ Code: e8 43 81 9f ff 48 85 c0 74 78 4d 85 e4 0f 84 8f 00 00 00 49 8b 94 24 c0 06 00 00 48 8b 0a 48 89 48 08 48 8b 52 08 48 89 50 10 <49> 8b 55 18 48 89 50 18 49 8b 55 20 48 89 50 20 41 0f b6 55 28 88
+ RSP: 0018:ffffce44820077a0 EFLAGS: 00010286
+ RAX: ffff8c6b403f9014 RBX: ffff8c6b55825730 RCX: 304994edf9cf506b
+ RDX: d8b11eb7f0fdb699 RSI: ffff8c6b403f9010 RDI: ffff8c6b403f9010
+ RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000010
+ R10: 00000000ffffffff R11: 0000000000000000 R12: ffff8c6b4e8fb000
+ R13: 0000000000000000 R14: ffffce44820077a8 R15: ffff8c6b4abd1540
+ FS:  00007f4dc6813740(0000) GS:ffff8c6c1d378000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000018 CR3: 000000010eb42000 CR4: 0000000000750ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  prelim_ref_insert+0x1c1/0x270
+  find_parent_nodes+0x12a6/0x1ee0
+  ? __entry_text_end+0x101f06/0x101f09
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  btrfs_is_data_extent_shared+0x167/0x640
+  ? fiemap_process_hole+0xd0/0x2c0
+  extent_fiemap+0xa5c/0xbc0
+  ? __entry_text_end+0x101f05/0x101f09
+  btrfs_fiemap+0x7e/0xd0
+  do_vfs_ioctl+0x425/0x9d0
+  __x64_sys_ioctl+0x75/0xc0
+
+Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ include/trace/events/btrfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -219,7 +219,9 @@ static int bcm_proc_show(struct seq_file
- 	seq_printf(m, " / bound %s", bcm_proc_getifname(net, ifname, bo->ifindex));
- 	seq_printf(m, " <<<\n");
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 549ab3b419618..3efc00cc1bcd2 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -1928,7 +1928,7 @@ DECLARE_EVENT_CLASS(btrfs__prelim_ref,
+ 	TP_PROTO(const struct btrfs_fs_info *fs_info,
+ 		 const struct prelim_ref *oldref,
+ 		 const struct prelim_ref *newref, u64 tree_size),
+-	TP_ARGS(fs_info, newref, oldref, tree_size),
++	TP_ARGS(fs_info, oldref, newref, tree_size),
  
--	list_for_each_entry(op, &bo->rx_ops, list) {
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(op, &bo->rx_ops, list) {
- 
- 		unsigned long reduction;
- 
-@@ -275,6 +277,9 @@ static int bcm_proc_show(struct seq_file
- 		seq_printf(m, "# sent %ld\n", op->frames_abs);
- 	}
- 	seq_putc(m, '\n');
-+
-+	rcu_read_unlock();
-+
- 	return 0;
- }
- #endif /* CONFIG_PROC_FS */
-@@ -858,7 +863,7 @@ static int bcm_delete_rx_op(struct list_
- 						  REGMASK(op->can_id),
- 						  bcm_rx_handler, op);
- 
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return 1; /* done */
- 		}
-@@ -878,7 +883,7 @@ static int bcm_delete_tx_op(struct list_
- 	list_for_each_entry_safe(op, n, ops, list) {
- 		if ((op->can_id == mh->can_id) && (op->ifindex == ifindex) &&
- 		    (op->flags & CAN_FD_FRAME) == (mh->flags & CAN_FD_FRAME)) {
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return 1; /* done */
- 		}
-@@ -1300,7 +1305,7 @@ static int bcm_rx_setup(struct bcm_msg_h
- 					      bcm_rx_handler, op, "bcm", sk);
- 		if (err) {
- 			/* this bcm rx op is broken -> remove it */
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return err;
- 		}
+ 	TP_STRUCT__entry_btrfs(
+ 		__field(	u64,  root_id		)
+-- 
+2.39.5
+
 
 
 
