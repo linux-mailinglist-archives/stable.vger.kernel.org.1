@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-147765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E800AC5915
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E590AC55D4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0ADF1BA3012
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEA467A5540
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B7927FD4C;
-	Tue, 27 May 2025 17:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62CD271464;
+	Tue, 27 May 2025 17:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHzkQrEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2v/o9Uwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186DF27D784;
-	Tue, 27 May 2025 17:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746AA367;
+	Tue, 27 May 2025 17:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368360; cv=none; b=KBbeBtu8zkqceNgxAlSORE3k2KL0ADoQP+T4Eb9DtJyRkSu3cmCq3n6/vXPeKb7sopzNF27fvldO4GC/BbyPjMziH3nKNXplRl9pzEQF8Serjwk4Yj277GU5OkYSjifwvpP0/5KaAYHpuT3Zqu7EMQuhNX0KhBHjF5PuyPfFVk4=
+	t=1748366084; cv=none; b=a4DniJCi+ju4pHdeKLTzZDFIojTRBHAQ3+YdseQ/W+7pVsgHvMZboGljk6BdHm2+jTS92ol1m4jU4JAI3uqZOStC7lGLfwSPU/MKy9Rhvvj5Pmua84ZI7eg8+BfSrF4z+TGgChJ+gfmV557UXd2WTuwXzpB9DN3R9FxYMauOXUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368360; c=relaxed/simple;
-	bh=jyWAs4qYUr0KWucV8H7uBRUq7s9Pm/543b37jF41E9U=;
+	s=arc-20240116; t=1748366084; c=relaxed/simple;
+	bh=r5qTUD2FrAKo1ps1wYSC9LtRE6Q99CcxBf9DlqaH21Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VM5iHnZYLlcomrp+GPL0MO1MlZ2TWHC5kZET8cgBpTlvCY1L8p/zk+43nTErHyQvCVGuIn9rGiKoQwJAUFFR20CHvMynPg2MPibRfqsif9hvm/pUue3tYF7G0kBb9bvp3hAFsTUEhJvP/3AS8LqzNZ+bE/Sk1WY+m5vzgiSJcRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHzkQrEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DC2C4CEE9;
-	Tue, 27 May 2025 17:52:38 +0000 (UTC)
+	 MIME-Version; b=rdM8qKMvfkyRz+MbLAB5tW5l+brhf3+nt0pxImIxF4sh5gWM/fWNLot+AguLM66UT3TfubIM2O7tfxezPs4w6EJHYkcjEPh33dOGF0uyUm1YzEOW7bj2zO6Wo8hdlNmYQ41tKCgZ9zdtS1qucKrTo31UjwFljCKKnsAHkGOVvI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2v/o9Uwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D842BC4CEE9;
+	Tue, 27 May 2025 17:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368359;
-	bh=jyWAs4qYUr0KWucV8H7uBRUq7s9Pm/543b37jF41E9U=;
+	s=korg; t=1748366084;
+	bh=r5qTUD2FrAKo1ps1wYSC9LtRE6Q99CcxBf9DlqaH21Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHzkQrEgdES/XUsKCfnxZL45sSy0HAJigkULL3uK76LTMGDLyW4NPtVzAnwf2PPuj
-	 v7nzW3SWy7UK9bqOd3fH4jfAnPPOGqQaJs2nSodL+kdDnqdJ7UjtWL058MD2Qrg2uK
-	 nFbl2VZhwNIPF42I+VFd9oMDgd4x6QrMCuVbwdvU=
+	b=2v/o9UwgJj24GCaPhBg2jRY1hEHRVBmiVTY8jtUyCKSLQhbzjD8ahSIPE64fTqmv5
+	 cuXz/drKl4LtsaQ1dPLftfDRypWPm9jbiksH6dTZn6L/MmOy5GRdcKOLxURrWD5tbR
+	 Y5gRd0lhXKNar0uoC1RQPYpwnIAD0+WuOlcbZVc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 682/783] espintcp: fix skb leaks
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 586/626] pmdomain: renesas: rcar: Remove obsolete nullify checks
 Date: Tue, 27 May 2025 18:27:59 +0200
-Message-ID: <20250527162540.902513071@linuxfoundation.org>
+Message-ID: <20250527162508.789613839@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 63c1f19a3be3169e51a5812d22a6d0c879414076 ]
+commit 13a6d4265665201a795a2ff5a3e6e4d183fc9c33 upstream.
 
-A few error paths are missing a kfree_skb.
+All nullify users and helpers were removed, but the R-Car SYSC drivers
+still checked for nullified domains.  Remove the obsolete checks.
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c8d87704444a8ac7 ("pmdomain: renesas: rcar-sysc: Remove rcar_sysc_nullify() helper")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/107f2bf9f13b29f0f623d2959a5347ec151fb089.1745840768.git.geert+renesas@glider.be
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/esp4.c     | 4 +++-
- net/ipv6/esp6.c     | 4 +++-
- net/xfrm/espintcp.c | 4 +++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/pmdomain/renesas/rcar-gen4-sysc.c | 5 -----
+ drivers/pmdomain/renesas/rcar-sysc.c      | 5 -----
+ 2 files changed, 10 deletions(-)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 0e4076866c0a4..876df672c0bfa 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -199,8 +199,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
+diff --git a/drivers/pmdomain/renesas/rcar-gen4-sysc.c b/drivers/pmdomain/renesas/rcar-gen4-sysc.c
+index 66409cff2083..e001b5c25bed 100644
+--- a/drivers/pmdomain/renesas/rcar-gen4-sysc.c
++++ b/drivers/pmdomain/renesas/rcar-gen4-sysc.c
+@@ -338,11 +338,6 @@ static int __init rcar_gen4_sysc_pd_init(void)
+ 		struct rcar_gen4_sysc_pd *pd;
+ 		size_t n;
  
- 	sk = esp_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
+-		if (!area->name) {
+-			/* Skip NULLified area */
+-			continue;
+-		}
+-
+ 		n = strlen(area->name) + 1;
+ 		pd = kzalloc(sizeof(*pd) + n, GFP_KERNEL);
+ 		if (!pd) {
+diff --git a/drivers/pmdomain/renesas/rcar-sysc.c b/drivers/pmdomain/renesas/rcar-sysc.c
+index dce1a6d37e80..047495f54e8a 100644
+--- a/drivers/pmdomain/renesas/rcar-sysc.c
++++ b/drivers/pmdomain/renesas/rcar-sysc.c
+@@ -396,11 +396,6 @@ static int __init rcar_sysc_pd_init(void)
+ 		struct rcar_sysc_pd *pd;
+ 		size_t n;
  
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 9e73944e3b530..574989b82179c 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -216,8 +216,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	sk = esp6_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index fe82e2d073006..fc7a603b04f13 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -171,8 +171,10 @@ int espintcp_queue_out(struct sock *sk, struct sk_buff *skb)
- 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
- 
- 	if (skb_queue_len(&ctx->out_queue) >=
--	    READ_ONCE(net_hotdata.max_backlog))
-+	    READ_ONCE(net_hotdata.max_backlog)) {
-+		kfree_skb(skb);
- 		return -ENOBUFS;
-+	}
- 
- 	__skb_queue_tail(&ctx->out_queue, skb);
- 
+-		if (!area->name) {
+-			/* Skip NULLified area */
+-			continue;
+-		}
+-
+ 		n = strlen(area->name) + 1;
+ 		pd = kzalloc(sizeof(*pd) + n, GFP_KERNEL);
+ 		if (!pd) {
 -- 
-2.39.5
+2.49.0
 
 
 
