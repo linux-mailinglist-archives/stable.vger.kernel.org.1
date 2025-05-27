@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8386BAC55E9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B11DAC592A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D54B1BA6A87
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAEE43B05FF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7931DB34C;
-	Tue, 27 May 2025 17:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EFC27FB3D;
+	Tue, 27 May 2025 17:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMp3Sk5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1uJN5YN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3F41E89C;
-	Tue, 27 May 2025 17:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536201DFF0;
+	Tue, 27 May 2025 17:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366151; cv=none; b=P3W0h/Xroh2C+s9Ak4Wk+LH2Bnrzm26vjKg4IGzpWzFoQPxdL0koP7cT0/oeGe2eLh9avrfpy8zkSopUVa8P+ZAf9kvvvIBo9ipcK6Ewd8VMKZT6310YFFmfxmrOAHGNAa+fXFZEUuQ+eDocSTrqqg1UAH+WXIWy+5I2ZXNfwIQ=
+	t=1748368428; cv=none; b=RwCFn7oPffXAbmOa8LUFvzHccX5D8NQRvrvdIZvERISadlujLMiRf9l3ApBjCLQngc4AVZb91xK7eLWg1qVbreA12nSLVyiVJzubKncRKMAiOAzaDzDonHEuBTQTmrT8thGGtq8iLL0LWkmrZ14F1oC2U+aoYBPAKpbMAG6ffDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366151; c=relaxed/simple;
-	bh=kPlehD9WECxDw4R9kSM5dVey+lavUajjmZa5tMxLf3k=;
+	s=arc-20240116; t=1748368428; c=relaxed/simple;
+	bh=xUTST2WxosuI7GedfTkUDpnwarWviPPt9AvcU0E9Qa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RrLdsE8PyloxGpaN0Xdszx64tr4ukHilXiMiwOQuWasH6GpU+Zc+UO1fA8akBZsEYaQ+5SFAyNabMygS1YQAKgsf+m4bRKFzE+P42cIYpAZJ/ITH1C9FF/tB4HtJ7fjn58BdkApJ57E/C9tI5lWxQ/idJBePUyq+mgw2KZaYo+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMp3Sk5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9060BC4CEE9;
-	Tue, 27 May 2025 17:15:50 +0000 (UTC)
+	 MIME-Version; b=a0Sq0a1YYBsh3/aEsh+6RbXCs+mIf+1RejummFw40Cc3X4Ouxe3dknGZ4Ntml3lDDvNEmGev21wv/RU/Vqn58ps+wghdKLO8hckJXliZ4gdlY36gK/cWXezT1mm5AjD0M2OseScWP4ASdk92kwvtaWWOe1DcA7bENvZEwGgZA9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1uJN5YN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7848C4CEE9;
+	Tue, 27 May 2025 17:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366151;
-	bh=kPlehD9WECxDw4R9kSM5dVey+lavUajjmZa5tMxLf3k=;
+	s=korg; t=1748368428;
+	bh=xUTST2WxosuI7GedfTkUDpnwarWviPPt9AvcU0E9Qa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZMp3Sk5Oy2h1WFN3YB/d1CA69Ftzi1rhnXFUFNdtGGZCegBPFgGp2O2JBnR6t/K1W
-	 SG9JlV3XEIucbY8sT2hrEX/gXgKhFo6MOzqy8vRYJ1OvilBhoRANvBl1H8jzL2duAn
-	 SboSX1Dx250ghODYcl+6/yiv9RNpIb9p7KeZCWJo=
+	b=n1uJN5YNC14kUUhSMa0eGUEfJPj3yXO05KPdcH4zSg4qPAcc4OYYU0+od4PWs/ImT
+	 yN7/esqTMldgOUx6W5jMsebM2P73HPMQT1p7ridPtizuiVu7tVWzLwRk0149rt6Bkh
+	 0RGNClZHxs0EBqYp2XIUG2l3r1x9loC/C1Bc4L5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Guoyu Yin <y04609127@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 606/626] Revert "arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection"
+Subject: [PATCH 6.14 702/783] mr: consolidate the ipmr_can_free_table() checks.
 Date: Tue, 27 May 2025 18:28:19 +0200
-Message-ID: <20250527162509.617443012@linuxfoundation.org>
+Message-ID: <20250527162541.707660484@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,169 +63,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 573f99c7585f597630f14596550c79e73ffaeef4 ]
+[ Upstream commit c46286fdd6aa1d0e33c245bcffe9ff2428a777bd ]
 
-This reverts commit 531fdbeedeb89bd32018a35c6e137765c9cc9e97.
+Guoyu Yin reported a splat in the ipmr netns cleanup path:
 
-Hardware that uses I2C wasn't designed with high speeds in mind, so
-communication with PMIC via RSB can intermittently fail. Go back to I2C
-as higher speed and efficiency isn't worth the trouble.
+WARNING: CPU: 2 PID: 14564 at net/ipv4/ipmr.c:440 ipmr_free_table net/ipv4/ipmr.c:440 [inline]
+WARNING: CPU: 2 PID: 14564 at net/ipv4/ipmr.c:440 ipmr_rules_exit+0x135/0x1c0 net/ipv4/ipmr.c:361
+Modules linked in:
+CPU: 2 UID: 0 PID: 14564 Comm: syz.4.838 Not tainted 6.14.0 #1
+Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:ipmr_free_table net/ipv4/ipmr.c:440 [inline]
+RIP: 0010:ipmr_rules_exit+0x135/0x1c0 net/ipv4/ipmr.c:361
+Code: ff df 48 c1 ea 03 80 3c 02 00 75 7d 48 c7 83 60 05 00 00 00 00 00 00 5b 5d 41 5c 41 5d 41 5e e9 71 67 7f 00 e8 4c 2d 8a fd 90 <0f> 0b 90 eb 93 e8 41 2d 8a fd 0f b6 2d 80 54 ea 01 31 ff 89 ee e8
+RSP: 0018:ffff888109547c58 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888108c12dc0 RCX: ffffffff83e09868
+RDX: ffff8881022b3300 RSI: ffffffff83e098d4 RDI: 0000000000000005
+RBP: ffff888104288000 R08: 0000000000000000 R09: ffffed10211825c9
+R10: 0000000000000001 R11: ffff88801816c4a0 R12: 0000000000000001
+R13: ffff888108c13320 R14: ffff888108c12dc0 R15: fffffbfff0b74058
+FS:  00007f84f39316c0(0000) GS:ffff88811b100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f84f3930f98 CR3: 0000000113b56000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ ipmr_net_exit_batch+0x50/0x90 net/ipv4/ipmr.c:3160
+ ops_exit_list+0x10c/0x160 net/core/net_namespace.c:177
+ setup_net+0x47d/0x8e0 net/core/net_namespace.c:394
+ copy_net_ns+0x25d/0x410 net/core/net_namespace.c:516
+ create_new_namespaces+0x3f6/0xaf0 kernel/nsproxy.c:110
+ unshare_nsproxy_namespaces+0xc3/0x180 kernel/nsproxy.c:228
+ ksys_unshare+0x78d/0x9a0 kernel/fork.c:3342
+ __do_sys_unshare kernel/fork.c:3413 [inline]
+ __se_sys_unshare kernel/fork.c:3411 [inline]
+ __x64_sys_unshare+0x31/0x40 kernel/fork.c:3411
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xa6/0x1a0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f84f532cc29
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f84f3931038 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
+RAX: ffffffffffffffda RBX: 00007f84f5615fa0 RCX: 00007f84f532cc29
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000400
+RBP: 00007f84f53fba18 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f84f5615fa0 R15: 00007fff51c5f328
+ </TASK>
 
-Fixes: 531fdbeedeb8 ("arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection")
-Link: https://github.com/LibreELEC/LibreELEC.tv/issues/7731
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250413135848.67283-1-jernej.skrabec@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+The running kernel has CONFIG_IP_MROUTE_MULTIPLE_TABLES disabled, and
+the sanity check for such build is still too loose.
+
+Address the issue consolidating the relevant sanity check in a single
+helper regardless of the kernel configuration. Also share it between
+the ipv4 and ipv6 code.
+
+Reported-by: Guoyu Yin <y04609127@gmail.com>
+Fixes: 50b94204446e ("ipmr: tune the ipmr_can_free_table() checks.")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/372dc261e1bf12742276e1b984fc5a071b7fc5a8.1747321903.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/allwinner/sun50i-h6-beelink-gs1.dts   | 38 +++++++++----------
- .../dts/allwinner/sun50i-h6-orangepi-3.dts    | 14 +++----
- .../dts/allwinner/sun50i-h6-orangepi.dtsi     | 22 +++++------
- 3 files changed, 37 insertions(+), 37 deletions(-)
+ include/linux/mroute_base.h |  5 +++++
+ net/ipv4/ipmr.c             | 12 +-----------
+ net/ipv6/ip6mr.c            | 12 +-----------
+ 3 files changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-index 3be1e8c2fdb9c..1012103df25f7 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-@@ -151,28 +151,12 @@
- 	vcc-pg-supply = <&reg_aldo1>;
+diff --git a/include/linux/mroute_base.h b/include/linux/mroute_base.h
+index 58a2401e4b551..0075f6e5c3da9 100644
+--- a/include/linux/mroute_base.h
++++ b/include/linux/mroute_base.h
+@@ -262,6 +262,11 @@ struct mr_table {
+ 	int			mroute_reg_vif_num;
  };
  
--&r_ir {
--	linux,rc-map-name = "rc-beelink-gs1";
--	status = "okay";
--};
--
--&r_pio {
--	/*
--	 * FIXME: We can't add that supply for now since it would
--	 * create a circular dependency between pinctrl, the regulator
--	 * and the RSB Bus.
--	 *
--	 * vcc-pl-supply = <&reg_aldo1>;
--	 */
--	vcc-pm-supply = <&reg_aldo1>;
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
- 
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -290,6 +274,22 @@
- 	};
- };
- 
-+&r_ir {
-+	linux,rc-map-name = "rc-beelink-gs1";
-+	status = "okay";
-+};
++static inline bool mr_can_free_table(struct net *net)
++{
++	return !check_net(net) || !net_initialized(net);
++}
 +
-+&r_pio {
-+	/*
-+	 * PL0 and PL1 are used for PMIC I2C
-+	 * don't enable the pl-supply else
-+	 * it will fail at boot
-+	 *
-+	 * vcc-pl-supply = <&reg_aldo1>;
-+	 */
-+	vcc-pm-supply = <&reg_aldo1>;
-+};
-+
- &spdif {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&spdif_tx_pin>;
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-index 6c3bfe3d09d9a..14cc99b216224 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-@@ -175,16 +175,12 @@
- 	vcc-pg-supply = <&reg_vcc_wifi_io>;
- };
+ #ifdef CONFIG_IP_MROUTE_COMMON
+ void vif_device_init(struct vif_device *v,
+ 		     struct net_device *dev,
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 21ae7594a8525..69df45c4a0aae 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -120,11 +120,6 @@ static void ipmr_expire_process(struct timer_list *t);
+ 				lockdep_rtnl_is_held() ||		\
+ 				list_empty(&net->ipv4.mr_tables))
  
--&r_ir {
--	status = "okay";
--};
+-static bool ipmr_can_free_table(struct net *net)
+-{
+-	return !check_net(net) || !net_initialized(net);
+-}
 -
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
+ static struct mr_table *ipmr_mr_table_iter(struct net *net,
+ 					   struct mr_table *mrt)
+ {
+@@ -317,11 +312,6 @@ EXPORT_SYMBOL(ipmr_rule_default);
+ #define ipmr_for_each_table(mrt, net) \
+ 	for (mrt = net->ipv4.mrt; mrt; mrt = NULL)
  
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -295,6 +291,10 @@
- 	};
- };
- 
-+&r_ir {
-+	status = "okay";
-+};
-+
- &rtc {
- 	clocks = <&ext_osc32k>;
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-index 13b07141c3344..bab0f63dcc5be 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-@@ -112,20 +112,12 @@
- 	vcc-pg-supply = <&reg_aldo1>;
- };
- 
--&r_ir {
--	status = "okay";
--};
+-static bool ipmr_can_free_table(struct net *net)
+-{
+-	return !check_net(net);
+-}
 -
--&r_pio {
--	vcc-pm-supply = <&reg_bldo3>;
--};
+ static struct mr_table *ipmr_mr_table_iter(struct net *net,
+ 					   struct mr_table *mrt)
+ {
+@@ -437,7 +427,7 @@ static void ipmr_free_table(struct mr_table *mrt)
+ {
+ 	struct net *net = read_pnet(&mrt->net);
+ 
+-	WARN_ON_ONCE(!ipmr_can_free_table(net));
++	WARN_ON_ONCE(!mr_can_free_table(net));
+ 
+ 	timer_shutdown_sync(&mrt->ipmr_expire_timer);
+ 	mroute_clean_tables(mrt, MRT_FLUSH_VIFS | MRT_FLUSH_VIFS_STATIC |
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 535e9f72514c0..33351acc45e10 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -108,11 +108,6 @@ static void ipmr_expire_process(struct timer_list *t);
+ 				lockdep_rtnl_is_held() || \
+ 				list_empty(&net->ipv6.mr6_tables))
+ 
+-static bool ip6mr_can_free_table(struct net *net)
+-{
+-	return !check_net(net) || !net_initialized(net);
+-}
 -
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
+ static struct mr_table *ip6mr_mr_table_iter(struct net *net,
+ 					    struct mr_table *mrt)
+ {
+@@ -306,11 +301,6 @@ EXPORT_SYMBOL(ip6mr_rule_default);
+ #define ip6mr_for_each_table(mrt, net) \
+ 	for (mrt = net->ipv6.mrt6; mrt; mrt = NULL)
  
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -240,6 +232,14 @@
- 	};
- };
+-static bool ip6mr_can_free_table(struct net *net)
+-{
+-	return !check_net(net);
+-}
+-
+ static struct mr_table *ip6mr_mr_table_iter(struct net *net,
+ 					    struct mr_table *mrt)
+ {
+@@ -416,7 +406,7 @@ static void ip6mr_free_table(struct mr_table *mrt)
+ {
+ 	struct net *net = read_pnet(&mrt->net);
  
-+&r_ir {
-+	status = "okay";
-+};
-+
-+&r_pio {
-+	vcc-pm-supply = <&reg_bldo3>;
-+};
-+
- &rtc {
- 	clocks = <&ext_osc32k>;
- };
+-	WARN_ON_ONCE(!ip6mr_can_free_table(net));
++	WARN_ON_ONCE(!mr_can_free_table(net));
+ 
+ 	timer_shutdown_sync(&mrt->ipmr_expire_timer);
+ 	mroute_clean_tables(mrt, MRT6_FLUSH_MIFS | MRT6_FLUSH_MIFS_STATIC |
 -- 
 2.39.5
 
