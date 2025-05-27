@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DC0AC5514
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:07:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E15DAC5867
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7C61882744
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDA1D7A54B4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7DC2798E6;
-	Tue, 27 May 2025 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E2827E7CF;
+	Tue, 27 May 2025 17:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgT8O5co"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBD6WfCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DA713A244;
-	Tue, 27 May 2025 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54351D63EF;
+	Tue, 27 May 2025 17:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365608; cv=none; b=qjB6ktNz/0dweoAOYrOv8NF2FrqKdlRw04S9l4V75ZPQS0LhIBzi8sX1p33HJBSP5gkmCMpeR2hWhlzYUgqlCsSXPnWZn+xa6VpGhVsfM6N8qKZqf4fXelfx8sqoj8OdfbGyKv94YQZjpd1MpNP0sTHtko6bUCr4QsNtVU1giUw=
+	t=1748367874; cv=none; b=IrTz77Ca70vaM3ptURRuE4v1jlPeOEJEWeGvsk2Mexmd2tE0INHsLKQKH5OlzXA+PifULw5/PmJBD+ydCX1oHtowoLbcspas2Z1B7b/auFQjFV2KA4vkOAb5i+DRzdvFd4Qxfe9j3Oa0Gg2Xg+P3E9wuX7NBYIIsJzgKsqBaatw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365608; c=relaxed/simple;
-	bh=pI/6WB2WVs+IYqulkSb7Ku/vOcQ+dgdOq4+WsogpCuk=;
+	s=arc-20240116; t=1748367874; c=relaxed/simple;
+	bh=VwZnoAyCCRlaVrzJxxVl4vmwMB6o51FS/JfrSCvQPP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYkFb+DheraSPnS/QWuZtRSxqF8dAXFM3enRxgi5W8KHFVwB1H23O+UjegeAOs7F/nhMH0CTUbPrru9Y6beLqhhjCuVKsBOB6s21WDr6IZl0I/7kFR1fpWitdhb58ED4gZedCR96pEbjnsLWPx5JK3Uel5BffIizMIwKoBxObDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgT8O5co; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A36C4CEED;
-	Tue, 27 May 2025 17:06:47 +0000 (UTC)
+	 MIME-Version; b=aks0mSE8YvlaEiMrMHwyqenTAdzRiRcyaOZTVi/ZoaGcH560d63cfQ9Gkm6Gx18F3ZirS8VMwIgQS6PYQIgGtIdyROIFEgx9sxS7n7D/p8j3e4+7lauKN0uyMznu4P4XAj+lXMBBjj05Yly749LfxcsrzR7zoxRfWpCbkP2si0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBD6WfCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293C6C4CEE9;
+	Tue, 27 May 2025 17:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365608;
-	bh=pI/6WB2WVs+IYqulkSb7Ku/vOcQ+dgdOq4+WsogpCuk=;
+	s=korg; t=1748367874;
+	bh=VwZnoAyCCRlaVrzJxxVl4vmwMB6o51FS/JfrSCvQPP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgT8O5co+kOSZPOQPNU7VSXsCHQKEY2uO8BlwZ2lsOfhaK5ec9EU7LESlrgPOJkc5
-	 hCT9szC1zueELNJGs8xCIB3RiyMQhafsTZ/g8t6BocWDs/VQgBvSoo+pdCLgrClcMc
-	 RFGXMz8jyihQxleNoAH71Qy0ZEQSZR/pqWzJH9uQ=
+	b=PBD6WfCDcDlXBrh1wFk8fEzmEkXOkOAj1PESWv3JJA9aXS2zP6KhETQ54Ye+W5KRz
+	 Ig93JbSPl74eUOA+9dRd5kkSho8JfjBxAzPNw7ORsEanaT09Sw4o9tnCAwRjNFJ7+h
+	 66d9FfvDhDuEbJsUxcvcH/5RN6RvHK5pleDVQfDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Gaurav Batra <gbatra@linux.ibm.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 431/626] wifi: rtw88: Fix __rtw_download_firmware() for RTL8814AU
+Subject: [PATCH 6.14 527/783] powerpc/pseries/iommu: memory notifier incorrectly adds TCEs for pmemory
 Date: Tue, 27 May 2025 18:25:24 +0200
-Message-ID: <20250527162502.520350269@linuxfoundation.org>
+Message-ID: <20250527162534.613676459@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Gaurav Batra <gbatra@linux.ibm.com>
 
-[ Upstream commit 8425f5c8f04dbcf11ade78f984a494fc0b90e7a0 ]
+[ Upstream commit 6aa989ab2bd0d37540c812b4270006ff794662e7 ]
 
-Don't call ltecoex_read_reg() and ltecoex_reg_write() when the
-ltecoex_addr member of struct rtw_chip_info is NULL. The RTL8814AU
-doesn't have this feature.
+iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
+notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
+(DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
+for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
+dynamically mapped when the device driver instructs to do so.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/55b5641f-094e-4f94-9f79-ac053733f2cf@gmail.com
+The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
+after LPAR boot. The command to do so is -
+
+daxctl reconfigure-device --mode=system-ram dax0.0 --force
+
+This will dynamically add pmemory range to LPAR RAM eventually invoking
+iommu_mem_notifier(). The address range of pmemory is way beyond the Max
+RAM that the LPAR can have. Which means, this range is beyond the DDW
+created for the device, at device initialization time.
+
+As a result when TCEs are pre-mapped for the pmemory range, by
+iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
+command, daxctl, to add pmemory as RAM.
+
+The solution is to not pre-map TCEs for pmemory.
+
+Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+Tested-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250130183854.92258-1-gbatra@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/mmzone.h      |  1 +
+ arch/powerpc/mm/numa.c                 |  2 +-
+ arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
+ 3 files changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index 564f5988ee82a..d1c4f5cdcb21d 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -783,7 +783,8 @@ static int __rtw_download_firmware(struct rtw_dev *rtwdev,
- 	if (!check_firmware_size(data, size))
- 		return -EINVAL;
+diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+index d99863cd6cde4..049152f8d597a 100644
+--- a/arch/powerpc/include/asm/mmzone.h
++++ b/arch/powerpc/include/asm/mmzone.h
+@@ -29,6 +29,7 @@ extern cpumask_var_t node_to_cpumask_map[];
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ extern unsigned long max_pfn;
+ u64 memory_hotplug_max(void);
++u64 hot_add_drconf_memory_max(void);
+ #else
+ #define memory_hotplug_max() memblock_end_of_DRAM()
+ #endif
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 3c1da08304d03..603a0f652ba61 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -1336,7 +1336,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
+ 	return nid;
+ }
  
--	if (!ltecoex_read_reg(rtwdev, 0x38, &ltecoex_bckp))
-+	if (rtwdev->chip->ltecoex_addr &&
-+	    !ltecoex_read_reg(rtwdev, 0x38, &ltecoex_bckp))
- 		return -EBUSY;
+-static u64 hot_add_drconf_memory_max(void)
++u64 hot_add_drconf_memory_max(void)
+ {
+ 	struct device_node *memory = NULL;
+ 	struct device_node *dn = NULL;
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index ae6f7a235d8b2..8f32340960e21 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -1284,17 +1284,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
  
- 	wlan_cpu_enable(rtwdev, false);
-@@ -801,7 +802,8 @@ static int __rtw_download_firmware(struct rtw_dev *rtwdev,
+ static phys_addr_t ddw_memory_hotplug_max(void)
+ {
+-	resource_size_t max_addr = memory_hotplug_max();
+-	struct device_node *memory;
++	resource_size_t max_addr;
  
- 	wlan_cpu_enable(rtwdev, true);
+-	for_each_node_by_type(memory, "memory") {
+-		struct resource res;
+-
+-		if (of_address_to_resource(memory, 0, &res))
+-			continue;
+-
+-		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
+-	}
++#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
++	max_addr = hot_add_drconf_memory_max();
++#else
++	max_addr = memblock_end_of_DRAM();
++#endif
  
--	if (!ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp)) {
-+	if (rtwdev->chip->ltecoex_addr &&
-+	    !ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp)) {
- 		ret = -EBUSY;
- 		goto dlfw_fail;
- 	}
+ 	return max_addr;
+ }
+@@ -1600,7 +1596,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 
+ 	if (direct_mapping) {
+ 		/* DDW maps the whole partition, so enable direct DMA mapping */
+-		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
++		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
+ 					    win64->value, tce_setrange_multi_pSeriesLP_walk);
+ 		if (ret) {
+ 			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
+@@ -2349,11 +2345,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+ 	struct memory_notify *arg = data;
+ 	int ret = 0;
+ 
++	/* This notifier can get called when onlining persistent memory as well.
++	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
++	 * always be above ddw_memory_hotplug_max()
++	 */
++
+ 	switch (action) {
+ 	case MEM_GOING_ONLINE:
+ 		spin_lock(&dma_win_list_lock);
+ 		list_for_each_entry(window, &dma_win_list, list) {
+-			if (window->direct) {
++			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
++				ddw_memory_hotplug_max()) {
+ 				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+ 						arg->nr_pages, window->prop);
+ 			}
+@@ -2365,7 +2367,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+ 	case MEM_OFFLINE:
+ 		spin_lock(&dma_win_list_lock);
+ 		list_for_each_entry(window, &dma_win_list, list) {
+-			if (window->direct) {
++			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
++				ddw_memory_hotplug_max()) {
+ 				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+ 						arg->nr_pages, window->prop);
+ 			}
 -- 
 2.39.5
 
