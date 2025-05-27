@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223E0AC538B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347BFAC56C2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F77B7AE4E2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51EAD4A6182
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A43427BF7C;
-	Tue, 27 May 2025 16:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C857527D776;
+	Tue, 27 May 2025 17:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRuqmIvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR44xyk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82FA1EA91;
-	Tue, 27 May 2025 16:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E92927FD4C;
+	Tue, 27 May 2025 17:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364503; cv=none; b=DXf6nKGBsCPQrCp5DnmX94Wz7RT2hSW8s/wruaYSJXPCjQM4i07O5yuegQLZIHpUi/wii3Az7X7x6P4xpztrAXPV4wis/nkrMgbRq4dEiu15+W0hqaI0weEv5XQEohU/S2/L8JgrYi1Q3Y9Umi22UPyaCyzCvyaKa9Pb10CbM7M=
+	t=1748366673; cv=none; b=IN5++T9waNkYNmsX/giIU2qGULtxQmy06MC4+k8qkdJWoxGveXFuZNztf/fUmS+7qvPcIFCAidL6BUGMGxzXTV5x/7GLUHElcOcRn8Hiyg4TvIBzLidIry6uT5lhSlr0JhkJ9curLcLggxXy9fpaeeZjBDregkRiW449rYFQwiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364503; c=relaxed/simple;
-	bh=vwXe7r75HAsetmAS6BFo3c5jC8/J/uxQMFREJz4bqPQ=;
+	s=arc-20240116; t=1748366673; c=relaxed/simple;
+	bh=hYcCvCG/nkc69KRWWr6k6rgwividhSGisBWR8KzkZF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xx/SZgXlfZnIr6v9cgDwLo6w5uKw56dp0DuyBV3Vfs0KPbjisFmEZsglfIVIULL+6xX+Y7ZiaWIPyXLGUQMrP396Qt6liWzIt24On/jr/USNwKZEMmqFjqOkcKeHL8bRquB+YD8vD6wAQEnQjzmHS7ZmorWvqiDXx4VgiWllA/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRuqmIvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46811C4CEE9;
-	Tue, 27 May 2025 16:48:23 +0000 (UTC)
+	 MIME-Version; b=fbpMbCFU7IBMJNwqES61/WMMf3bcmdyPx+yNTuL9s5vZL+xI0d62itpSnAdfSbcyaaiY3f/uTRUVJ62LfDxrHoDm3A1gPbjiwyb/SuXVS4lCg7YvZMxyh2Y21QmDVKHMV0IougOBsbocrGuNb5wJm8h568JDXMOKMd1vQfJtyAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR44xyk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E28BC4CEE9;
+	Tue, 27 May 2025 17:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364503;
-	bh=vwXe7r75HAsetmAS6BFo3c5jC8/J/uxQMFREJz4bqPQ=;
+	s=korg; t=1748366671;
+	bh=hYcCvCG/nkc69KRWWr6k6rgwividhSGisBWR8KzkZF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRuqmIvErFvH8Iv6kzBgnw0AuM1Nu207inCfoTirErej6BRjLWrB2kECp226p9jTf
-	 OmBtlwaPtiGuYQwhP0exDXNdskAD7OZvKbqsMIjUYBUXslfnoM1O9rrKN6v3JvUttY
-	 RzMNQhObcQEQxrghcjx3EKsm6gxT84uTSSCfSjjo=
+	b=fR44xyk2EEJAt1RjcAXVOL5vutGwiqqFR1uizQVEw2aMDJUeTDn5zaUQwsOI1D/DV
+	 Kwp0Y22Ug4Vf0uWl+ceBoLe4MecYfXaINs6CWCoqMpDGt4jjRMQuzkAp/4P5voUd00
+	 sfDGf7PyeZ76hAjGpOvRPsGEUPUZcOt2CenpVJNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/626] cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES
+Subject: [PATCH 6.14 143/783] drm/amdgpu: dont free conflicting apertures for non-display devices
 Date: Tue, 27 May 2025 18:19:00 +0200
-Message-ID: <20250527162446.973299415@linuxfoundation.org>
+Message-ID: <20250527162518.979417977@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit e255612b5ed9f179abe8196df7c2ba09dd227900 ]
+[ Upstream commit 9deacd6c55f1b31e5ab20db79df2e14ac480203c ]
 
-Some operations, like WRITE, does not require FILE_READ_ATTRIBUTES access.
+PCI_CLASS_ACCELERATOR_PROCESSING devices won't ever be
+the sysfb, so there is no need to free conflicting
+apertures.
 
-So when FILE_READ_ATTRIBUTES is not explicitly requested for
-smb2_open_file() then first try to do SMB2 CREATE with FILE_READ_ATTRIBUTES
-access (like it was before) and then fallback to SMB2 CREATE without
-FILE_READ_ATTRIBUTES access (less common case).
-
-This change allows to complete WRITE operation to a file when it does not
-grant FILE_READ_ATTRIBUTES permission and its parent directory does not
-grant READ_DATA permission (parent directory READ_DATA is implicit grant of
-child FILE_READ_ATTRIBUTES permission).
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index e836bc2193ddd..b313c128ffbab 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -107,16 +107,25 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
- 	int err_buftype = CIFS_NO_BUFFER;
- 	struct cifs_fid *fid = oparms->fid;
- 	struct network_resiliency_req nr_ioctl_req;
-+	bool retry_without_read_attributes = false;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index ea50f82b547d9..28190b0ac5fca 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4370,10 +4370,17 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	if (r)
+ 		return r;
  
- 	smb2_path = cifs_convert_path_to_utf16(oparms->path, oparms->cifs_sb);
- 	if (smb2_path == NULL)
- 		return -ENOMEM;
- 
--	oparms->desired_access |= FILE_READ_ATTRIBUTES;
-+	if (!(oparms->desired_access & FILE_READ_ATTRIBUTES)) {
-+		oparms->desired_access |= FILE_READ_ATTRIBUTES;
-+		retry_without_read_attributes = true;
+-	/* Get rid of things like offb */
+-	r = aperture_remove_conflicting_pci_devices(adev->pdev, amdgpu_kms_driver.name);
+-	if (r)
+-		return r;
++	/*
++	 * No need to remove conflicting FBs for non-display class devices.
++	 * This prevents the sysfb from being freed accidently.
++	 */
++	if ((pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA ||
++	    (pdev->class >> 8) == PCI_CLASS_DISPLAY_OTHER) {
++		/* Get rid of things like offb */
++		r = aperture_remove_conflicting_pci_devices(adev->pdev, amdgpu_kms_driver.name);
++		if (r)
++			return r;
 +	}
- 	smb2_oplock = SMB2_OPLOCK_LEVEL_BATCH;
  
- 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 		       &err_buftype);
-+	if (rc == -EACCES && retry_without_read_attributes) {
-+		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
-+		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
-+			       &err_buftype);
-+	}
- 	if (rc && data) {
- 		struct smb2_hdr *hdr = err_iov.iov_base;
- 
+ 	/* Enable TMZ based on IP_VERSION */
+ 	amdgpu_gmc_tmz_set(adev);
 -- 
 2.39.5
 
