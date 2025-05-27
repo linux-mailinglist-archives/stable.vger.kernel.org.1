@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CF6AC539C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:49:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFA0AC56F8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9215F170389
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4810C1BA4AB4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8606C1EA91;
-	Tue, 27 May 2025 16:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E93827FB38;
+	Tue, 27 May 2025 17:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfHNdIzJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iuy5YSTj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453512CCC0;
-	Tue, 27 May 2025 16:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C86D14AD2B;
+	Tue, 27 May 2025 17:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364558; cv=none; b=Uh3SS5dOlh4X6Fv7udZLIZEtnXrgucGbtDBstoqTlVbSxoMrig1KAiQ2uCXbqujN33/5ucOp6SuwDsA8h53NWZEJ2lZfNt8UlHmo5YSX7cdmySvGw+t36bPcfnZh4IA++LJJe4JhYJJqquZi+d2f40M3iJnNHb7cec48I3gxaxU=
+	t=1748366831; cv=none; b=fneQdgsfZnqHHoLvjYDTrp1v25dB7huwd+KQjT+sX8AlI9b3IBwSCbIVDjchmP7oFosQkTthJuEf/w9KNaHCubJlWcj0X7T+R3sX8h2n0NIziEMOKrkQT0DPW6JpAaBUa13kHAyNlHgAfieIUjZs8B9qv3SDDb3g7R6o5G7aMsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364558; c=relaxed/simple;
-	bh=mfbL/3ujACFDIZFhLQuZURa4TxNZ97GfyhI/K4jN9H8=;
+	s=arc-20240116; t=1748366831; c=relaxed/simple;
+	bh=HHacueO61vWumicG714wCThYnkxKQooEp82oV/V9VdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0JXYSOWEbCU8TntWy/yA0ZQkMQb/UyMPhyfo+wiUKxj8ptls/tXsG4GYyyA3D0AxBTDapHsVE1t4yocQPirBhoE2wGUd14eZADqv2LhmWuv06BvwgNOz0HeMXXow1kG/3c3WGCPZbMP4MTjgOZkLuG18CZ2CF9nnz5cAFP6Vfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfHNdIzJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FA8C4CEE9;
-	Tue, 27 May 2025 16:49:17 +0000 (UTC)
+	 MIME-Version; b=FNk7PLjSBI6m/GZE0jShaTOI1A1tscLcIMf1iFSJnhR66TVP5qmT4foOip6uYgX5o2+SXyTSO7sv/ntsIsogkUgtFvi1QCMQa4b6lOMvhyIIHv0AJdb/nnPrvUIrL++57vb8YGSb9MlVuAjfHowkD4XqAK1/SSCCvTtq74BN2ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iuy5YSTj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA40C4CEE9;
+	Tue, 27 May 2025 17:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364558;
-	bh=mfbL/3ujACFDIZFhLQuZURa4TxNZ97GfyhI/K4jN9H8=;
+	s=korg; t=1748366830;
+	bh=HHacueO61vWumicG714wCThYnkxKQooEp82oV/V9VdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfHNdIzJnLrqE4aCYoEEjeQETCdVktd8xe+yRF5h+IVRSjWEeYsIDSa3HT+KhIHZv
-	 N4axaDCoExwrX9SnHiMD3VjeJpeFTdXYlKOKPhkRy2C94cp/++M43qR8voHM1ZGIxu
-	 13QQb3E63z6FXk115r/L9xp1V88tMF4mJT1jJ5R8=
+	b=Iuy5YSTjH4RyZx7P2mNCKAOF23w+2d3QMDhBdcORdN2QxQ2QNXZGYA3qvj0IXyt0P
+	 i2aSSGQTkROg+KzA9G7dLoY/6vtIyttXBBEY9Gszeq4bwUfISjdtkErFEUhQJelSD+
+	 Gy1mqur64FdASeV4zmRM6HBtFxOfFXKaihAqQF7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Bretz <bretznic@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/626] ext4: on a remount, only log the ro or r/w state when it has changed
+Subject: [PATCH 6.14 191/783] clk: qcom: lpassaudiocc-sc7280: Add support for LPASS resets for QCM6490
 Date: Tue, 27 May 2025 18:19:48 +0200
-Message-ID: <20250527162448.906849437@linuxfoundation.org>
+Message-ID: <20250527162520.930875849@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Bretz <bretznic@gmail.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit d7b0befd09320e3356a75cb96541c030515e7f5f ]
+[ Upstream commit cdbbc480f4146cb659af97f4020601fde5fb65a7 ]
 
-A user complained that a message such as:
+On the QCM6490 boards, the LPASS firmware controls the complete clock
+controller functionalities and associated power domains. However, only
+the LPASS resets required to be controlled by the high level OS. Thus,
+add support for the resets in the clock driver to enable the Audio SW
+driver to assert/deassert the audio resets as needed.
 
-EXT4-fs (nvme0n1p3): re-mounted UUID ro. Quota mode: none.
-
-implied that the file system was previously mounted read/write and was
-now remounted read-only, when it could have been some other mount
-state that had changed by the "mount -o remount" operation.  Fix this
-by only logging "ro"or "r/w" when it has changed.
-
-https://bugzilla.kernel.org/show_bug.cgi?id=219132
-
-Signed-off-by: Nicolas Bretz <bretznic@gmail.com>
-Link: https://patch.msgid.link/20250319171011.8372-1-bretznic@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20250221-lpass_qcm6490_resets-v5-2-6be0c0949a83@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/lpassaudiocc-sc7280.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 4291ab3c20be6..473909c4a3784 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6744,6 +6744,7 @@ static int ext4_reconfigure(struct fs_context *fc)
- {
- 	struct super_block *sb = fc->root->d_sb;
+diff --git a/drivers/clk/qcom/lpassaudiocc-sc7280.c b/drivers/clk/qcom/lpassaudiocc-sc7280.c
+index 45e7264770866..22169da08a51a 100644
+--- a/drivers/clk/qcom/lpassaudiocc-sc7280.c
++++ b/drivers/clk/qcom/lpassaudiocc-sc7280.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+  * Copyright (c) 2021, The Linux Foundation. All rights reserved.
++ * Copyright (c) 2025, Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/clk-provider.h>
+@@ -713,14 +714,24 @@ static const struct qcom_reset_map lpass_audio_cc_sc7280_resets[] = {
+ 	[LPASS_AUDIO_SWR_WSA_CGCR] = { 0xb0, 1 },
+ };
+ 
++static const struct regmap_config lpass_audio_cc_sc7280_reset_regmap_config = {
++	.name = "lpassaudio_cc_reset",
++	.reg_bits = 32,
++	.reg_stride = 4,
++	.val_bits = 32,
++	.fast_io = true,
++	.max_register = 0xc8,
++};
++
+ static const struct qcom_cc_desc lpass_audio_cc_reset_sc7280_desc = {
+-	.config = &lpass_audio_cc_sc7280_regmap_config,
++	.config = &lpass_audio_cc_sc7280_reset_regmap_config,
+ 	.resets = lpass_audio_cc_sc7280_resets,
+ 	.num_resets = ARRAY_SIZE(lpass_audio_cc_sc7280_resets),
+ };
+ 
+ static const struct of_device_id lpass_audio_cc_sc7280_match_table[] = {
+-	{ .compatible = "qcom,sc7280-lpassaudiocc" },
++	{ .compatible = "qcom,qcm6490-lpassaudiocc", .data = &lpass_audio_cc_reset_sc7280_desc },
++	{ .compatible = "qcom,sc7280-lpassaudiocc", .data = &lpass_audio_cc_sc7280_desc },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, lpass_audio_cc_sc7280_match_table);
+@@ -752,13 +763,17 @@ static int lpass_audio_cc_sc7280_probe(struct platform_device *pdev)
+ 	struct regmap *regmap;
  	int ret;
-+	bool old_ro = sb_rdonly(sb);
  
- 	fc->s_fs_info = EXT4_SB(sb);
- 
-@@ -6755,9 +6756,9 @@ static int ext4_reconfigure(struct fs_context *fc)
- 	if (ret < 0)
++	desc = device_get_match_data(&pdev->dev);
++
++	if (of_device_is_compatible(pdev->dev.of_node, "qcom,qcm6490-lpassaudiocc"))
++		return qcom_cc_probe_by_index(pdev, 1, desc);
++
+ 	ret = lpass_audio_setup_runtime_pm(pdev);
+ 	if (ret)
  		return ret;
  
--	ext4_msg(sb, KERN_INFO, "re-mounted %pU %s. Quota mode: %s.",
--		 &sb->s_uuid, sb_rdonly(sb) ? "ro" : "r/w",
--		 ext4_quota_mode(sb));
-+	ext4_msg(sb, KERN_INFO, "re-mounted %pU%s.",
-+		 &sb->s_uuid,
-+		 (old_ro != sb_rdonly(sb)) ? (sb_rdonly(sb) ? " ro" : " r/w") : "");
+ 	lpass_audio_cc_sc7280_regmap_config.name = "lpassaudio_cc";
+ 	lpass_audio_cc_sc7280_regmap_config.max_register = 0x2f000;
+-	desc = &lpass_audio_cc_sc7280_desc;
  
- 	return 0;
- }
+ 	regmap = qcom_cc_map(pdev, desc);
+ 	if (IS_ERR(regmap)) {
+@@ -772,7 +787,7 @@ static int lpass_audio_cc_sc7280_probe(struct platform_device *pdev)
+ 	regmap_write(regmap, 0x4, 0x3b);
+ 	regmap_write(regmap, 0x8, 0xff05);
+ 
+-	ret = qcom_cc_really_probe(&pdev->dev, &lpass_audio_cc_sc7280_desc, regmap);
++	ret = qcom_cc_really_probe(&pdev->dev, desc, regmap);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to register LPASS AUDIO CC clocks\n");
+ 		goto exit;
 -- 
 2.39.5
 
