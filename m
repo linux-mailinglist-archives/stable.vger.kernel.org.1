@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773E5AC574A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:31:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2368AAC53F6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83CE11BC08FA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:31:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D0587AFCB0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E229527F178;
-	Tue, 27 May 2025 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8A127E1CA;
+	Tue, 27 May 2025 16:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9T3W9Ck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpwGcJjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C4427FD4C;
-	Tue, 27 May 2025 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0978E194A67;
+	Tue, 27 May 2025 16:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367069; cv=none; b=Zi9B/11Iq6xV6rzqDV3mDSSci+73zV2MdZO91haLzYuJ9i4kADznndkyaqiVeUpKy8AJdBXCoZ+pIDN2HhrnIkjCM6ktWoKEzpa4Z1ynUxCFv4n1KsHrh35x+KFmxP23JvPZVzwH0pmtxpL/4RJaCCkN3AVBpv9v2qeW6dEBIx8=
+	t=1748364808; cv=none; b=ZpcDOpt4gfHprl3ezvl+/tekjj3HiWGec9wd5dLX8eV6g6mc1J+b9daAWQyQsthjo+BZ7Cmdqkna/IXJ8yVt/EluRcESx1+ZFtXcrQechncZa2X2rxJh4suwhthzRWGMNguiF9dkAQNatOo0JyoaS1+ndXDgKBz/pN5G+e6gIpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367069; c=relaxed/simple;
-	bh=htf9tHDG4F5NrMgiLq565vPtLT2/fuSJdPLIu97JyzI=;
+	s=arc-20240116; t=1748364808; c=relaxed/simple;
+	bh=DJQaJzwQTvsHW7zPw05vDZHKvIWvRTXHUroF97KWl8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RethVEMC8tXrv214SIoa4V259TLfDzfRQQkzxGHEOEyUegE3ILutU140lWIkzrnu310Qsf1yg/1KJvAzs29IArcgXB+MYCMiA++yc1NYYRKx3CyVNWFXGvxsyc2JJAiyj6+JM/PSDOsdwSXIcdxJccDu1MWb/rcR7TtoNPZ11ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9T3W9Ck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D554C4CEE9;
-	Tue, 27 May 2025 17:31:08 +0000 (UTC)
+	 MIME-Version; b=KR1iHHKMOWZa1QZV5tnb+fTtD+3M8cE3cdWZde3FUWCwFzypvQmso4fdXvTE00+bnKw0pjFI9ncw03PoB8/X1JvKk72ABAZFR8aEUnTZMk+Au9++BzZ21K1DINT23yXG8REM+N0oITsFvMdTrhHbZWbMhmxcu73EFYAlr6Z9YVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpwGcJjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF7BC4CEE9;
+	Tue, 27 May 2025 16:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367069;
-	bh=htf9tHDG4F5NrMgiLq565vPtLT2/fuSJdPLIu97JyzI=;
+	s=korg; t=1748364807;
+	bh=DJQaJzwQTvsHW7zPw05vDZHKvIWvRTXHUroF97KWl8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9T3W9CkvI4yt0df9cT2S29IKHsZouSSiUGHEnTb3zfcrXQE2yXgbKcyovf1NEVmh
-	 /3nr+C0IgZui5XL5ygbGPYVDPXftEVFy+6RnFtJ/V+SSQSLTBRVPNHkELknCYm2o8+
-	 bZ8okaxMQaHuMFDjgsQYTuenJ8/WhboNY90xrywQ=
+	b=bpwGcJjKspzuE+0oT26C6sv22YZVKeJdTkeoTWbm5rIZbdzJPsJkJTLFBixkOasde
+	 xah/TT6gjjSeztk0WKgMdIo/30zz9pOGyHaKLPhQb+cxfV4ewO8Zkaqrjq8io6CU3H
+	 nKNePy3jh6Wf6xMWv6St3hk7L7CYp/bCqMblR27c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 268/783] media: c8sectpfe: Call of_node_put(i2c_bus) only once in c8sectpfe_probe()
+Subject: [PATCH 6.12 172/626] netfilter: conntrack: Bound nf_conntrack sysctl writes
 Date: Tue, 27 May 2025 18:21:05 +0200
-Message-ID: <20250527162524.001961123@linuxfoundation.org>
+Message-ID: <20250527162452.007080577@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-[ Upstream commit b773530a34df0687020520015057075f8b7b4ac4 ]
+[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
 
-An of_node_put(i2c_bus) call was immediately used after a pointer check
-for an of_find_i2c_adapter_by_node() call in this function implementation.
-Thus call such a function only once instead directly before the check.
+nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
+be written any negative value, which would then be stored in the
+unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
 
-This issue was transformed by using the Coccinelle software.
+While the do_proc_dointvec_conv function is supposed to limit writing
+handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
+being written in an unsigned int leads to a very high value, exceeding
+this limit.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
+minimum value is 1.
+
+The proc_handlers have thus been updated to proc_dointvec_minmax in
+order to specify the following write bounds :
+
+* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
+  and SYSCTL_INT_MAX.
+
+* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
+  and SYSCTL_INT_MAX as defined in the sysctl documentation.
+
+With this patch applied, sysctl writes outside the defined in the bound
+will thus lead to a write error :
+
+```
+sysctl -w net.netfilter.nf_conntrack_expect_max=-1
+sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
+```
+
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-index 7b3a37957e3ae..d151d2ed1f64b 100644
---- a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-+++ b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-@@ -797,13 +797,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
- 		}
- 		tsin->i2c_adapter =
- 			of_find_i2c_adapter_by_node(i2c_bus);
-+		of_node_put(i2c_bus);
- 		if (!tsin->i2c_adapter) {
- 			dev_err(&pdev->dev, "No i2c adapter found\n");
--			of_node_put(i2c_bus);
- 			ret = -ENODEV;
- 			goto err_node_put;
- 		}
--		of_node_put(i2c_bus);
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 7d4f0fa8b609d..3ea60ff7a6a49 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -619,7 +619,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_COUNT] = {
+ 		.procname	= "nf_conntrack_count",
+@@ -655,7 +657,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_ct_expect_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_ACCT] = {
+ 		.procname	= "nf_conntrack_acct",
+@@ -948,7 +952,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ };
  
- 		/* Acquire reset GPIO and activate it */
- 		tsin->rst_gpio = devm_fwnode_gpiod_get(dev,
 -- 
 2.39.5
 
