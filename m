@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-146929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB9FAC5538
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4EAAC5893
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6185A17FFCD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C594C7B0B88
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103DB2798F8;
-	Tue, 27 May 2025 17:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2931327A131;
+	Tue, 27 May 2025 17:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THLSbKkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dyy/fsfQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F96139579;
-	Tue, 27 May 2025 17:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D855825A627;
+	Tue, 27 May 2025 17:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365746; cv=none; b=o90hbszE9DUKOJiDMjKXWjgJJl2WownKtJbjUZSHnvC1Ffk0g6c81hBvYx59vwZtRYFEaAD2cmp5z5FFw1aMHMbT35xS9Be/ik5aeVYuB0wnFdkPxykM+P/hJmdfe3w38dgnmBHmyNgivL6XizE7wa06q2/0kKUze8CD/vPSrSU=
+	t=1748368011; cv=none; b=EvEftdxjsxecOl7Viy3Bomh2EqYV/TfZlVJA/rzfxlnecAhDD4vYVewAODE0k9kZHU/mJhjSbhapGa7gcHOYB30mB7XZ6Vx/aHtvZCWUgmWj4gt2xr4uEDeWtjeyR7LARe5XpxjgZcFLLrM2OsJ2NRqi9kfqO+Rb8YFqcZViBFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365746; c=relaxed/simple;
-	bh=7xkU43q8ZhCTZiF+Z0BgGYee+Yf2p8M5E1ZEvD06dw0=;
+	s=arc-20240116; t=1748368011; c=relaxed/simple;
+	bh=c3R8jGX3ny2pKYb8RcUkNgA5ipfnRRvS+9+5+88AljI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jOMCK/jHjrJf2EECqQiSUgHE96k/raT6tTHtMg4lveK1JuMPUxGTu6b9psZBmxCZdlb9JdHHZnULKFvtN3bRkscRFXQjEEtKEIFQw7bGf2G278tR2xpGr3vjN89Cyv4bTLrmPucUBVUiOA7tdp53usW6Nkmu8p3SyqfdTy4QQMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THLSbKkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28315C4CEE9;
-	Tue, 27 May 2025 17:09:05 +0000 (UTC)
+	 MIME-Version; b=pbnDW2Wpfjg6EXuciUv2Gs6bzW/l9Gk7PHjY8IvezmQ31F3+OLV68JEiLR4TKiDHBpIgE/ec5FjtUmkCbo06Y6WouxMHBewM2e9DoieqpkOeS1aW01ctjHm6BO3ddPZqVOtIyJJHaJCU3KzTv3v6RFrthMA3M4+eYWqevR3v20s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dyy/fsfQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462DEC4CEE9;
+	Tue, 27 May 2025 17:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365746;
-	bh=7xkU43q8ZhCTZiF+Z0BgGYee+Yf2p8M5E1ZEvD06dw0=;
+	s=korg; t=1748368011;
+	bh=c3R8jGX3ny2pKYb8RcUkNgA5ipfnRRvS+9+5+88AljI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THLSbKkVjCP8eSa9/q/LKyapEG0Ibao/XeB8GiN/8jFlpsjpJ02XRUl36+hNXayXF
-	 hvKCsjZmoGNzScpPSYb9jyoHryy7Ct26XmrbM9tPJ8zJqREL1Us/Q/yXrYhh/4+JOb
-	 1J00GtmPQLxxuISSuZuLpZE0zZ4i1KpCTkjyq6xI=
+	b=Dyy/fsfQJM3AZyVKAEAZI9f4+MhXpDzph/mCIjh333efeLn/m0stDQg5IPpfS4X4a
+	 5pVFK4MC6MNdNWpV5NtAEwBG1BBQ2yql/5CnmbCmHB5S/UPMOBpP1zFzCFwVDAULBU
+	 fAJbD/t5Tr4HlFSfMbfMEKEFRZoLRPVtrWlejAzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Matthew Sakai <msakai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 474/626] dm vdo: use a short static string for thread name prefix
+Subject: [PATCH 6.14 570/783] rcu: handle quiescent states for PREEMPT_RCU=n, PREEMPT_COUNT=y
 Date: Tue, 27 May 2025 18:26:07 +0200
-Message-ID: <20250527162504.249517357@linuxfoundation.org>
+Message-ID: <20250527162536.356067712@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +63,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Sakai <msakai@redhat.com>
+From: Ankur Arora <ankur.a.arora@oracle.com>
 
-[ Upstream commit 3280c9313c9adce01550cc9f00edfb1dc7c744da ]
+[ Upstream commit 83b28cfe796464ebbde1cf7916c126da6d572685 ]
 
-Also remove MODULE_NAME and a BUG_ON check, both unneeded.
+With PREEMPT_RCU=n, cond_resched() provides urgently needed quiescent
+states for read-side critical sections via rcu_all_qs().
+One reason why this was needed: lacking preempt-count, the tick
+handler has no way of knowing whether it is executing in a
+read-side critical section or not.
 
-This fixes a warning about string truncation in snprintf that
-will never happen in practice:
+With (PREEMPT_LAZY=y, PREEMPT_DYNAMIC=n), we get (PREEMPT_COUNT=y,
+PREEMPT_RCU=n). In this configuration cond_resched() is a stub and
+does not provide quiescent states via rcu_all_qs().
+(PREEMPT_RCU=y provides this information via rcu_read_unlock() and
+its nesting counter.)
 
-drivers/md/dm-vdo/vdo.c: In function ‘vdo_make’:
-drivers/md/dm-vdo/vdo.c:564:5: error: ‘%s’ directive output may be truncated writing up to 55 bytes into a region of size 16 [-Werror=format-truncation=]
-    "%s%u", MODULE_NAME, instance);
-     ^~
-drivers/md/dm-vdo/vdo.c:563:2: note: ‘snprintf’ output between 2 and 66 bytes into a destination of size 16
-  snprintf(vdo->thread_name_prefix, sizeof(vdo->thread_name_prefix),
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    "%s%u", MODULE_NAME, instance);
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+So, use the availability of preempt_count() to report quiescent states
+in rcu_flavor_sched_clock_irq().
 
-Reported-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Matthew Sakai <msakai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Suggested-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-vdo/vdo.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ kernel/rcu/tree_plugin.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-vdo/vdo.c b/drivers/md/dm-vdo/vdo.c
-index fff847767755a..b897f88250d2a 100644
---- a/drivers/md/dm-vdo/vdo.c
-+++ b/drivers/md/dm-vdo/vdo.c
-@@ -31,9 +31,7 @@
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 3600152b858e8..4328ff3252a35 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -975,13 +975,16 @@ static void rcu_preempt_check_blocked_tasks(struct rcu_node *rnp)
+  */
+ static void rcu_flavor_sched_clock_irq(int user)
+ {
+-	if (user || rcu_is_cpu_rrupt_from_idle()) {
++	if (user || rcu_is_cpu_rrupt_from_idle() ||
++	     (IS_ENABLED(CONFIG_PREEMPT_COUNT) &&
++	      (preempt_count() == HARDIRQ_OFFSET))) {
  
- #include <linux/completion.h>
- #include <linux/device-mapper.h>
--#include <linux/kernel.h>
- #include <linux/lz4.h>
--#include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/spinlock.h>
- #include <linux/types.h>
-@@ -142,12 +140,6 @@ static void finish_vdo_request_queue(void *ptr)
- 	vdo_unregister_allocating_thread();
- }
- 
--#ifdef MODULE
--#define MODULE_NAME THIS_MODULE->name
--#else
--#define MODULE_NAME "dm-vdo"
--#endif  /* MODULE */
--
- static const struct vdo_work_queue_type default_queue_type = {
- 	.start = start_vdo_request_queue,
- 	.finish = finish_vdo_request_queue,
-@@ -559,8 +551,7 @@ int vdo_make(unsigned int instance, struct device_config *config, char **reason,
- 	*vdo_ptr = vdo;
- 
- 	snprintf(vdo->thread_name_prefix, sizeof(vdo->thread_name_prefix),
--		 "%s%u", MODULE_NAME, instance);
--	BUG_ON(vdo->thread_name_prefix[0] == '\0');
-+		 "vdo%u", instance);
- 	result = vdo_allocate(vdo->thread_config.thread_count,
- 			      struct vdo_thread, __func__, &vdo->threads);
- 	if (result != VDO_SUCCESS) {
+ 		/*
+ 		 * Get here if this CPU took its interrupt from user
+-		 * mode or from the idle loop, and if this is not a
+-		 * nested interrupt.  In this case, the CPU is in
+-		 * a quiescent state, so note it.
++		 * mode, from the idle loop without this being a nested
++		 * interrupt, or while not holding the task preempt count
++		 * (with PREEMPT_COUNT=y). In this case, the CPU is in a
++		 * quiescent state, so note it.
+ 		 *
+ 		 * No memory barrier is required here because rcu_qs()
+ 		 * references only CPU-local variables that other CPUs
 -- 
 2.39.5
 
