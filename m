@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-147406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86ABAC5786
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD230AC5431
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BFD11BA8105
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F95F1893EE9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F2A27F178;
-	Tue, 27 May 2025 17:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5883E276057;
+	Tue, 27 May 2025 16:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxayyVB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmPCzJrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D641B3C01;
-	Tue, 27 May 2025 17:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FFD280330;
+	Tue, 27 May 2025 16:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367243; cv=none; b=ZVWVU25Tr3ro1cjTZWdt5EW3V72iph8P2H5tq4GXxctKoQBilPjmAdM6+BoL4WKV//oqhuykafEwuatRUnpHL7v1OAvcngGP8zv4FdhhJY/FGqjPPF0Fjiz/XdbAnG0AFg+p9rmWgkViu5YOjBooqhP4i0O0Vo6AfN4zll12lGY=
+	t=1748364980; cv=none; b=GUVzhUMr2LfNSvLI+jkDiZtX2HADoVrWhUAE79w2DF1L9SwxfZsWOHHVrpD6JdAzCmMccFs7ZFvZfSIjc0DmuOwiMdxBVDObUyCwF9I+7vxigp+YbuZAu05Tnf9obSUL9351A73o953d/LgywHsUvk9H9qX4htuaCk2hA3Pjw5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367243; c=relaxed/simple;
-	bh=/gTm365KnUszfyMTRqtMSPeVvmPrfGaPvZ/Q64kfa1c=;
+	s=arc-20240116; t=1748364980; c=relaxed/simple;
+	bh=M/f7h6nvEnwo0QC4NLrVmsDxr30rZg4UCrjCOXK1Y9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j3z59ndA1sgKaOZ6ovtD4RCPBDP5UFFHcs4JC55TFjhgswBAksArWDK8aGUwoQA2Z+rs6rel9Mh698OCi94bzA1OlpUNMW8DUNWA11DsaAlctOGUe4t1enDwwClM4knqefb90rrT2Ze9LVQj1OteNU41aL2iVKPqZYnt4LDB0A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxayyVB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6B9C4CEE9;
-	Tue, 27 May 2025 17:34:03 +0000 (UTC)
+	 MIME-Version; b=mjEaqY1yAZgbMfLI37Bg6xQoXToaPvR5a+lH+scilZWBjAcbqlF0GZSqVqPJutuPhkYctr4cZcgb5P3RKtRa9uzyPyKI4zl1LbCRGx/qgQ780WNDlmPEbN+3h5UwG0p57Su60LD7UN701UD5RDj8Arf2t+I9b/pe8WAgZtjYqmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmPCzJrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA44C4CEEB;
+	Tue, 27 May 2025 16:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367243;
-	bh=/gTm365KnUszfyMTRqtMSPeVvmPrfGaPvZ/Q64kfa1c=;
+	s=korg; t=1748364979;
+	bh=M/f7h6nvEnwo0QC4NLrVmsDxr30rZg4UCrjCOXK1Y9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxayyVB5r48+I0Q2wESL72tozoe52PJsGpFNWFxsNrTstqwnET8Z0xZQZLQkQ2e+H
-	 4WSCralvlcA/yB0rf7XDa1YuqwZrvg7Cj63M2JE+nkzgBG67eMhHfPkzsAd/pHIvIG
-	 FWZJOeRF/IgCLusdGEZssLCXEwIxB0VqoIuZyL3o=
+	b=PmPCzJrST6HWRAqyvbNwV+8MzyUL8mZHY3cFB/OFFj/7UskkRFpY9YbPhzhz+KM7L
+	 83xsXX2YbF+8ofLr+EBSpYUPFwu0XFtmcSOfkjuuLh5p7jsV/3kOyyEAm/x6iW8nhB
+	 IUTbnuUmLjLPPP6U4hcZ9nOZ8a1ddmZ4gXNlnTAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <svarbanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 325/783] PCI: brcmstb: Expand inbound window size up to 64GB
+Subject: [PATCH 6.12 229/626] net: phylink: use pl->link_interface in phylink_expects_phy()
 Date: Tue, 27 May 2025 18:22:02 +0200
-Message-ID: <20250527162526.296204812@linuxfoundation.org>
+Message-ID: <20250527162454.323585958@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <svarbanov@suse.de>
+From: Choong Yong Liang <yong.liang.choong@linux.intel.com>
 
-[ Upstream commit 25a98c727015638baffcfa236e3f37b70cedcf87 ]
+[ Upstream commit b63263555eaafbf9ab1a82f2020bbee872d83759 ]
 
-The BCM2712 memory map can support up to 64GB of system memory, thus
-expand the inbound window size in calculation helper function.
+The phylink_expects_phy() function allows MAC drivers to check if they are
+expecting a PHY to attach. The checking condition in phylink_expects_phy()
+aims to achieve the same result as the checking condition in
+phylink_attach_phy().
 
-The change is safe for the currently supported SoCs that have smaller
-inbound window sizes.
+However, the checking condition in phylink_expects_phy() uses
+pl->link_config.interface, while phylink_attach_phy() uses
+pl->link_interface.
 
-Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Jim Quinlan <james.quinlan@broadcom.com>
-Tested-by: Ivan T. Ivanov <iivanov@suse.de>
-Link: https://lore.kernel.org/r/20250224083559.47645-7-svarbanov@suse.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Initially, both pl->link_interface and pl->link_config.interface are set
+to SGMII, and pl->cfg_link_an_mode is set to MLO_AN_INBAND.
+
+When the interface switches from SGMII to 2500BASE-X,
+pl->link_config.interface is updated by phylink_major_config().
+At this point, pl->cfg_link_an_mode remains MLO_AN_INBAND, and
+pl->link_config.interface is set to 2500BASE-X.
+Subsequently, when the STMMAC interface is taken down
+administratively and brought back up, it is blocked by
+phylink_expects_phy().
+
+Since phylink_expects_phy() and phylink_attach_phy() aim to achieve the
+same result, phylink_expects_phy() should check pl->link_interface,
+which never changes, instead of pl->link_config.interface, which is
+updated by phylink_major_config().
+
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Link: https://patch.msgid.link/20250227121522.1802832-2-yong.liang.choong@linux.intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/phylink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index 1a3bdc01b0747..ff217a0b80ad3 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -309,8 +309,8 @@ static int brcm_pcie_encode_ibar_size(u64 size)
- 	if (log2_in >= 12 && log2_in <= 15)
- 		/* Covers 4KB to 32KB (inclusive) */
- 		return (log2_in - 12) + 0x1c;
--	else if (log2_in >= 16 && log2_in <= 35)
--		/* Covers 64KB to 32GB, (inclusive) */
-+	else if (log2_in >= 16 && log2_in <= 36)
-+		/* Covers 64KB to 64GB, (inclusive) */
- 		return log2_in - 15;
- 	/* Something is awry so disable */
- 	return 0;
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 3e9957b6aa148..b78dfcbec936c 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1811,7 +1811,7 @@ bool phylink_expects_phy(struct phylink *pl)
+ {
+ 	if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
+ 	    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
+-	     phy_interface_mode_is_8023z(pl->link_config.interface)))
++	     phy_interface_mode_is_8023z(pl->link_interface)))
+ 		return false;
+ 	return true;
+ }
 -- 
 2.39.5
 
