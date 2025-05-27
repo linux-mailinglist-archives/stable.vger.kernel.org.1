@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-147652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C82AC5892
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3848DAC5537
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EE5F4C0AE4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB1737A3D29
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E0E25C6EC;
-	Tue, 27 May 2025 17:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25FD27CB04;
+	Tue, 27 May 2025 17:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boGV59zh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRikfKJH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA81F1E25E3;
-	Tue, 27 May 2025 17:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F351139579;
+	Tue, 27 May 2025 17:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368008; cv=none; b=AJTFzUp9/Q291PypJt8f03rWKul99mRQasl6SkCXHtdyrrkvu+fcJpgx8mKqWPcJ2tyUFF70Gb5joZwQI2Yby0PX17ngTK6q4mSgu9nyOMlssRSsiw0DZ+M9DMLT6b28infObAurS5UmKpdJmYjVBGTR0LRFMdc3GKl70sRIT64=
+	t=1748365743; cv=none; b=FEineVHK0Na3dwTJ0PTg0XpzWiTNfdFMj5W6Yz2ksVXJk67VhY3oOAd30d3Q5TKuCZMLFZtA2jRzwbfXcg5z1FZr8yYTQis4hz7wCd+0ijPaM0CoIv53X8oj6xqC6FRuN/LHmVg7avHN4HbxUTQguKdf/mRHJWQ3X+mLeFvZW2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368008; c=relaxed/simple;
-	bh=/w8lXvkwapoeof/0jwLLewb/MG+S2Y+RGWEwfa2csyw=;
+	s=arc-20240116; t=1748365743; c=relaxed/simple;
+	bh=+xdlizxoN2KlhmbR5/4nYlp+eF2mun4++bAfNIT8Yrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VAFzx8EQxnqiENhXdNQ1KLbeMdPXiiD4mFPSJeQWROylncCuf2wC1w60xlH/r0fjLluZHVtpwLUcU+0wTN3b0x90kh4T6ThA8Vedyi9PZy0tJhxAXYe0+9zqYgInx+MpZvPlHbKiGJ6JmttXi97SAZsbTohORO3zN2sMfbKmRIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boGV59zh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658FBC4CEE9;
-	Tue, 27 May 2025 17:46:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B6j4YRpYt0S7ALJVabDyarfgHP0oVuEzwIY+mcEn3NIITL5e7uqHwR6id+5WP+s9eSN0Bt4f/ECiAnLOl+E7MEwL7gXekuM7iPKG4UvuEUKCQ92SeztcB/K2Hts+9w4Yp7YGP0FTfqN5KP4tEvAehbz4jFKKBhgmtKP+PISdu3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRikfKJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F116AC4CEE9;
+	Tue, 27 May 2025 17:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368008;
-	bh=/w8lXvkwapoeof/0jwLLewb/MG+S2Y+RGWEwfa2csyw=;
+	s=korg; t=1748365743;
+	bh=+xdlizxoN2KlhmbR5/4nYlp+eF2mun4++bAfNIT8Yrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boGV59zhiqinJakZZ7OPJ+6nDEqk7WH6Kq4tMPVjKAVgS5iJBVk+qk5xSig12hQG3
-	 qflMYGijh7rb+ZDGjF1KrqQqC+cFJY21+S2oPijnSh7sWPmwrJbZjnbIidzWsRvaj2
-	 z/Ki1wCnLav1UKjTU04VtFruwKOU6Te/SmswW58I=
+	b=JRikfKJHLfFSUy1DA5LXxFd30Om2JXPtytaFoUb89WA9H90ZqZA3W1pO2Fy2Q+5Fj
+	 sK1IsX4C0b6+FtPfirNu1AqPsVcxnap+UjfJceR4AdBfcb0ojDrAJ9OhVoBGbnWChF
+	 GD9zQ1hHP0MBclNg0VRiNHzZGWk1VQrqHd8/eUJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Chung Chung <cchung@redhat.com>,
+	Matthew Sakai <msakai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 569/783] ice: treat dyn_allowed only as suggestion
+Subject: [PATCH 6.12 473/626] dm vdo indexer: prevent unterminated string warning
 Date: Tue, 27 May 2025 18:26:06 +0200
-Message-ID: <20250527162536.314711408@linuxfoundation.org>
+Message-ID: <20250527162504.210129128@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,137 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Chung Chung <cchung@redhat.com>
 
-[ Upstream commit a8c2d3932c1106af2764cc6869b29bcf3cb5bc47 ]
+[ Upstream commit f4e99b846c90163d350c69d6581ac38dd5818eb8 ]
 
-It can be needed to have some MSI-X allocated as static and rest as
-dynamic. For example on PF VSI. We want to always have minimum one MSI-X
-on it, because of that it is allocated as a static one, rest can be
-dynamic if it is supported.
+Fix array initialization that triggers a warning:
 
-Change the ice_get_irq_res() to allow using static entries if they are
-free even if caller wants dynamic one.
+error: initializer-string for array of ‘unsigned char’ is too long
+ [-Werror=unterminated-string-initialization]
 
-Adjust limit values to the new approach. Min and max in limit means the
-values that are valid, so decrease max and num_static by one.
-
-Set vsi::irq_dyn_alloc if dynamic allocation is supported.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Chung Chung <cchung@redhat.com>
+Signed-off-by: Matthew Sakai <msakai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_irq.c | 25 ++++++++++++------------
- drivers/net/ethernet/intel/ice/ice_lib.c |  2 ++
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/md/dm-vdo/indexer/index-layout.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
-index ad82ff7d19957..09f9c7ba52795 100644
---- a/drivers/net/ethernet/intel/ice/ice_irq.c
-+++ b/drivers/net/ethernet/intel/ice/ice_irq.c
-@@ -45,7 +45,7 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
- /**
-  * ice_get_irq_res - get an interrupt resource
-  * @pf: board private structure
-- * @dyn_only: force entry to be dynamically allocated
-+ * @dyn_allowed: allow entry to be dynamically allocated
-  *
-  * Allocate new irq entry in the free slot of the tracker. Since xarray
-  * is used, always allocate new entry at the lowest possible index. Set
-@@ -53,11 +53,12 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
-  *
-  * Returns allocated irq entry or NULL on failure.
+diff --git a/drivers/md/dm-vdo/indexer/index-layout.c b/drivers/md/dm-vdo/indexer/index-layout.c
+index 627adc24af3b7..053b7845d1f34 100644
+--- a/drivers/md/dm-vdo/indexer/index-layout.c
++++ b/drivers/md/dm-vdo/indexer/index-layout.c
+@@ -54,7 +54,6 @@
+  * Each save also has a unique nonce.
   */
--static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
-+static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
-+					     bool dyn_allowed)
- {
--	struct xa_limit limit = { .max = pf->irq_tracker.num_entries,
-+	struct xa_limit limit = { .max = pf->irq_tracker.num_entries - 1,
- 				  .min = 0 };
--	unsigned int num_static = pf->irq_tracker.num_static;
-+	unsigned int num_static = pf->irq_tracker.num_static - 1;
- 	struct ice_irq_entry *entry;
- 	unsigned int index;
- 	int ret;
-@@ -66,9 +67,9 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
- 	if (!entry)
- 		return NULL;
  
--	/* skip preallocated entries if the caller says so */
--	if (dyn_only)
--		limit.min = num_static;
-+	/* only already allocated if the caller says so */
-+	if (!dyn_allowed)
-+		limit.max = num_static;
+-#define MAGIC_SIZE 32
+ #define NONCE_INFO_SIZE 32
+ #define MAX_SAVES 2
  
- 	ret = xa_alloc(&pf->irq_tracker.entries, &index, entry, limit,
- 		       GFP_KERNEL);
-@@ -78,7 +79,7 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
- 		entry = NULL;
- 	} else {
- 		entry->index = index;
--		entry->dynamic = index >= num_static;
-+		entry->dynamic = index > num_static;
- 	}
+@@ -98,9 +97,11 @@ enum region_type {
+ #define SUPER_VERSION_CURRENT 3
+ #define SUPER_VERSION_MAXIMUM 7
  
- 	return entry;
-@@ -272,7 +273,7 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
- /**
-  * ice_alloc_irq - Allocate new interrupt vector
-  * @pf: board private structure
-- * @dyn_only: force dynamic allocation of the interrupt
-+ * @dyn_allowed: allow dynamic allocation of the interrupt
-  *
-  * Allocate new interrupt vector for a given owner id.
-  * return struct msi_map with interrupt details and track
-@@ -285,20 +286,20 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
-  * interrupt will be allocated with pci_msix_alloc_irq_at.
-  *
-  * Some callers may only support dynamically allocated interrupts.
-- * This is indicated with dyn_only flag.
-+ * This is indicated with dyn_allowed flag.
-  *
-  * On failure, return map with negative .index. The caller
-  * is expected to check returned map index.
-  *
-  */
--struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_only)
-+struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_allowed)
- {
- 	int sriov_base_vector = pf->sriov_base_vector;
- 	struct msi_map map = { .index = -ENOENT };
- 	struct device *dev = ice_pf_to_dev(pf);
- 	struct ice_irq_entry *entry;
+-static const u8 LAYOUT_MAGIC[MAGIC_SIZE] = "*ALBIREO*SINGLE*FILE*LAYOUT*001*";
++static const u8 LAYOUT_MAGIC[] = "*ALBIREO*SINGLE*FILE*LAYOUT*001*";
+ static const u64 REGION_MAGIC = 0x416c6252676e3031; /* 'AlbRgn01' */
  
--	entry = ice_get_irq_res(pf, dyn_only);
-+	entry = ice_get_irq_res(pf, dyn_allowed);
- 	if (!entry)
- 		return map;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index e0785e820d601..021ed7451bb9f 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -567,6 +567,8 @@ ice_vsi_alloc_def(struct ice_vsi *vsi, struct ice_channel *ch)
- 			return -ENOMEM;
- 	}
- 
-+	vsi->irq_dyn_alloc = pci_msix_can_alloc_dyn(vsi->back->pdev);
++#define MAGIC_SIZE (sizeof(LAYOUT_MAGIC) - 1)
 +
- 	switch (vsi->type) {
- 	case ICE_VSI_PF:
- 	case ICE_VSI_SF:
+ struct region_header {
+ 	u64 magic;
+ 	u64 region_blocks;
 -- 
 2.39.5
 
