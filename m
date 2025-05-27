@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191ECAC5811
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC637AC5483
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2F591BC195C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5441BA4ECA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA0E27FD4C;
-	Tue, 27 May 2025 17:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181C51A3159;
+	Tue, 27 May 2025 17:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PptVn19j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3IE85Ll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF3442A9B;
-	Tue, 27 May 2025 17:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C622578F32;
+	Tue, 27 May 2025 17:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367633; cv=none; b=buUnnrselPjpnlRTFL5NfirpeqzjecGd+aRjnPrUIQa3Y2uW2AcrhiPeXrpySKpg5/ngW7FjQ42DUcWKqsaOtFxrhXDVMHBiLDQ8qdeA9uviFjPaj8lLkoFeqOJxvE855WO413AXRctH4TLDlRsKDcLEFlRElXse918IgkPA/P8=
+	t=1748365276; cv=none; b=JwRtfna1P+lsHyWpBjJ1Hcz3aB7zx92i2YULyuQ6Mzr9S6LB4iAe8QlWcB31Ske4LwPtf8Hluul4sVKdxnJJBB8l9A0BESDq/pX+XZSBUDPFYW/WpkC7LAwV85v0zcCYtdbLL9AvzNwmYIA2thqpajBsrOAVr4woxAlxoZzLuA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367633; c=relaxed/simple;
-	bh=a+a801v5rNYTdsYgWE25yY688TRTP7r+X+ctsZKo2Vg=;
+	s=arc-20240116; t=1748365276; c=relaxed/simple;
+	bh=rM85SsjUgrZCI33oqKiBmm/9edb+Wby4kylt6y8o6g8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htZvgwzrvSXOsGHLOWp6lyqbz4T6piTCbgPkRfkQhnL+tLpoF5btLyYB0sbxwQLId/7zdJ6/7aQKM3i+eg0Nmeu7unlgvg7fh0t/CImQfEeGx4G7FLsjXeaJhoHOL25JMuT/pTx/f7e7fSenb58Zv/ilgIPUfC4hqU8XgcBjrWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PptVn19j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9303DC4CEE9;
-	Tue, 27 May 2025 17:40:32 +0000 (UTC)
+	 MIME-Version; b=fOZkev89QQUyA7DJSLl30E+SdIHxAHMJjZD3tpZJDGxXejYc1YTmp2uNR3r9HIYXL/TYl66cAFSTPBejJIN+BCRgDYYeKKjuLai1vlnFX6rRiawubB6neckcbMZCGRmAYUCqPX2mZSrPozbBY6XfRHvHP7Q3rCzkRodaSNcbTMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3IE85Ll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E59C4CEE9;
+	Tue, 27 May 2025 17:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367633;
-	bh=a+a801v5rNYTdsYgWE25yY688TRTP7r+X+ctsZKo2Vg=;
+	s=korg; t=1748365276;
+	bh=rM85SsjUgrZCI33oqKiBmm/9edb+Wby4kylt6y8o6g8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PptVn19jlmKmH79zX1AkwigpUVWrYUagC4oMjcwvoa+k3Rn2cEsR9tIRrX0qbHIKB
-	 K3x38p/bcpjm/sboGXPhT6g0VZpKw8WWkYLwICrvjTsMq9kcPsBtm9+hUu9+iH+f0F
-	 f0WjQAKGjc7TxYXXkOX4D3AiR0NcAwZvT2tPf0z0=
+	b=W3IE85LlC/RVmkIeLOUKoy25IXOsdY1vYhjhfO4VaTVB/9CzacbzsND2sVs+NHgxZ
+	 y+QHWpQWjgldMPS24k9zuXniqxnd9FwWlUD7hD02Sc9Fed3dtSev7LTfisYlkJfqjp
+	 92u6XuVtvnls76PUwEm9V9DKRZp0Ooh7EmYiy8gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Kuan-Chung Chen <damon.chen@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 420/783] bpf: dont do clean_live_states when state->loop_entry->branches > 0
+Subject: [PATCH 6.12 324/626] wifi: rtw89: 8922a: fix incorrect STA-ID in EHT MU PPDU
 Date: Tue, 27 May 2025 18:23:37 +0200
-Message-ID: <20250527162530.201806418@linuxfoundation.org>
+Message-ID: <20250527162458.198236185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Kuan-Chung Chen <damon.chen@realtek.com>
 
-[ Upstream commit 9e63fdb0cbdf3268c86638a8274f4d5549a82820 ]
+[ Upstream commit bdce0574243b43b3bb2064f609c0c326df44c4c6 ]
 
-verifier.c:is_state_visited() uses RANGE_WITHIN states comparison rules
-for cached states that have loop_entry with non-zero branches count
-(meaning that loop_entry's verification is not yet done).
+EHT MU PPDU contains user field of EHT-SIG field with STA-ID that
+must match AID subfield in the Associate Response. Add a necessary
+setting to prevent these from being inconsistent.
 
-The RANGE_WITHIN rules in regsafe()/stacksafe() require register and
-stack objects types to be identical in current and old states.
-
-verifier.c:clean_live_states() replaces registers and stack spills
-with NOT_INIT/STACK_INVALID marks, if these registers/stack spills are
-not read in any child state. This means that clean_live_states() works
-against loop convergence logic under some conditions. See selftest in
-the next patch for a specific example.
-
-Mitigate this by prohibiting clean_verifier_state() when
-state->loop_entry->branches > 0.
-
-This undoes negative verification performance impact of the
-copy_verifier_state() fix from the previous patch.
-Below is comparison between master and current patch.
-
-selftests:
-
-File                                Program                       Insns (A)  Insns (B)  Insns    (DIFF)  States (A)  States (B)  States  (DIFF)
-----------------------------------  ----------------------------  ---------  ---------  ---------------  ----------  ----------  --------------
-arena_htab.bpf.o                    arena_htab_llvm                     717        423   -294 (-41.00%)          57          37   -20 (-35.09%)
-arena_htab_asm.bpf.o                arena_htab_asm                      597        445   -152 (-25.46%)          47          37   -10 (-21.28%)
-arena_list.bpf.o                    arena_list_add                     1493       1822   +329 (+22.04%)          30          37    +7 (+23.33%)
-arena_list.bpf.o                    arena_list_del                      309        261    -48 (-15.53%)          23          15    -8 (-34.78%)
-iters.bpf.o                         checkpoint_states_deletion        18125      22154  +4029 (+22.23%)         818         918  +100 (+12.22%)
-iters.bpf.o                         iter_nested_deeply_iters            593        367   -226 (-38.11%)          67          43   -24 (-35.82%)
-iters.bpf.o                         iter_nested_iters                   813        772     -41 (-5.04%)          79          72     -7 (-8.86%)
-iters.bpf.o                         iter_subprog_check_stacksafe        155        135    -20 (-12.90%)          15          14     -1 (-6.67%)
-iters.bpf.o                         iter_subprog_iters                 1094        808   -286 (-26.14%)          88          68   -20 (-22.73%)
-iters.bpf.o                         loop_state_deps2                    479        356   -123 (-25.68%)          46          35   -11 (-23.91%)
-iters.bpf.o                         triple_continue                      35         31     -4 (-11.43%)           3           3     +0 (+0.00%)
-kmem_cache_iter.bpf.o               open_coded_iter                      63         59      -4 (-6.35%)           7           6    -1 (-14.29%)
-mptcp_subflow.bpf.o                 _getsockopt_subflow                 501        446    -55 (-10.98%)          25          23     -2 (-8.00%)
-pyperf600_iter.bpf.o                on_event                          12339       6379  -5960 (-48.30%)         441         286  -155 (-35.15%)
-verifier_bits_iter.bpf.o            max_words                            92         84      -8 (-8.70%)           8           7    -1 (-12.50%)
-verifier_iterating_callbacks.bpf.o  cond_break2                         113        192    +79 (+69.91%)          12          21    +9 (+75.00%)
-
-sched_ext:
-
-File               Program                 Insns (A)  Insns (B)  Insns      (DIFF)  States (A)  States (B)  States    (DIFF)
------------------  ----------------------  ---------  ---------  -----------------  ----------  ----------  ----------------
-bpf.bpf.o          layered_dispatch            11485       9039    -2446 (-21.30%)         848         662    -186 (-21.93%)
-bpf.bpf.o          layered_dump                 7422       5022    -2400 (-32.34%)         681         298    -383 (-56.24%)
-bpf.bpf.o          layered_enqueue             16854      13753    -3101 (-18.40%)        1611        1308    -303 (-18.81%)
-bpf.bpf.o          layered_init              1000001       5549  -994452 (-99.45%)       84672         523  -84149 (-99.38%)
-bpf.bpf.o          layered_runnable             3149       1899    -1250 (-39.70%)         288         151    -137 (-47.57%)
-bpf.bpf.o          p2dq_init                    2343       1936     -407 (-17.37%)         201         170     -31 (-15.42%)
-bpf.bpf.o          refresh_layer_cpumasks      16487       1285   -15202 (-92.21%)        1770         120   -1650 (-93.22%)
-bpf.bpf.o          rusty_select_cpu             1937       1386     -551 (-28.45%)         177         125     -52 (-29.38%)
-scx_central.bpf.o  central_dispatch              636        600       -36 (-5.66%)          63          59       -4 (-6.35%)
-scx_central.bpf.o  central_init                  913        632     -281 (-30.78%)          48          39      -9 (-18.75%)
-scx_nest.bpf.o     nest_init                     636        601       -35 (-5.50%)          60          58       -2 (-3.33%)
-scx_pair.bpf.o     pair_dispatch             1000001       1914  -998087 (-99.81%)       58169         142  -58027 (-99.76%)
-scx_qmap.bpf.o     qmap_dispatch                2393       2187      -206 (-8.61%)         196         174     -22 (-11.22%)
-scx_qmap.bpf.o     qmap_init                   16367      22777    +6410 (+39.16%)         603         768    +165 (+27.36%)
-
-'layered_init' and 'pair_dispatch' hit 1M on master, but are verified
-ok with this patch.
-
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20250215110411.3236773-4-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250217061235.32031-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/realtek/rtw89/fw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index e2801472c0ae4..68715b18df5e2 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -17830,12 +17830,16 @@ static void clean_verifier_state(struct bpf_verifier_env *env,
- static void clean_live_states(struct bpf_verifier_env *env, int insn,
- 			      struct bpf_verifier_state *cur)
- {
-+	struct bpf_verifier_state *loop_entry;
- 	struct bpf_verifier_state_list *sl;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 93d760b8b5e35..9346fe082040c 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -3128,9 +3128,10 @@ int rtw89_fw_h2c_assoc_cmac_tbl_g7(struct rtw89_dev *rtwdev,
+ 			      CCTLINFO_G7_W5_NOMINAL_PKT_PADDING3 |
+ 			      CCTLINFO_G7_W5_NOMINAL_PKT_PADDING4);
  
- 	sl = *explored_state(env, insn);
- 	while (sl) {
- 		if (sl->state.branches)
- 			goto next;
-+		loop_entry = get_loop_entry(&sl->state);
-+		if (loop_entry && loop_entry->branches)
-+			goto next;
- 		if (sl->state.insn_idx != insn ||
- 		    !same_callsites(&sl->state, cur))
- 			goto next;
+-	h2c->w6 = le32_encode_bits(vif->type == NL80211_IFTYPE_STATION ? 1 : 0,
++	h2c->w6 = le32_encode_bits(vif->cfg.aid, CCTLINFO_G7_W6_AID12_PAID) |
++		  le32_encode_bits(vif->type == NL80211_IFTYPE_STATION ? 1 : 0,
+ 				   CCTLINFO_G7_W6_ULDL);
+-	h2c->m6 = cpu_to_le32(CCTLINFO_G7_W6_ULDL);
++	h2c->m6 = cpu_to_le32(CCTLINFO_G7_W6_AID12_PAID | CCTLINFO_G7_W6_ULDL);
+ 
+ 	if (rtwsta_link) {
+ 		h2c->w8 = le32_encode_bits(link_sta->he_cap.has_he,
 -- 
 2.39.5
 
