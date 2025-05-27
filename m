@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-147481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE0CAC57DA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB48AC54F5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61AF91BC1844
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1E843A2FF1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5DF27F178;
-	Tue, 27 May 2025 17:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FBD27D784;
+	Tue, 27 May 2025 17:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r50AEUv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbrk5igI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7867C27CCF0;
-	Tue, 27 May 2025 17:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520B378F32;
+	Tue, 27 May 2025 17:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367470; cv=none; b=OGBfBz9GsTRQd3WbEXhkdsTamAdWvBRbxStLOTXLqauAWWEHxw5Ab3yKgnRSvUFFrL+yZlLP/zebkBDts3a+Gg6ljHTN8LHbpIDCMZcpPnCScv6nxgEtDT6GHbx3JwVtFpPtevvpgvaLg40eSoZ3pr+1ho+tcW2IyHRml3A776c=
+	t=1748365211; cv=none; b=ttvW3eRC2YxJ71W85pK5y/xSgQMEg7HsMNuxc9/MgestHVgHT9f7LYNltDQ9+B7qV61fChTlmsR+Mjkx1CD+OO4JL9+/+xkd2/xz/pCP7bxCkCnlMka89B1haDrmJZ3nQBtAgdCKmjkakFWwD0j2GSCLC90xucf9wtQhMB1cHrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367470; c=relaxed/simple;
-	bh=J4bLFwm2brhcfoPSAXgsQedqvu2WXoWXhmuqxuSKrQY=;
+	s=arc-20240116; t=1748365211; c=relaxed/simple;
+	bh=pL2f/Fa1SPMrgL9WsvaLoIQYTyMpPOO6XRjoedybtBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtFa0fO47TRJSsM36GtLX15H2luOaiHfoMTfzpsfp8aDHzOes1+jnuvb1Tup1EzLKIRpq9yAfBIsqsh3vW/SEHsxlGve9jEApNHg/skJ0FPcm4gYB1coD/O0TjamOMdXiTWQI1eUwkLPmEeNos6cZlCtvnE5+FbZ9fuyCyhzfI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r50AEUv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86EFC4CEE9;
-	Tue, 27 May 2025 17:37:49 +0000 (UTC)
+	 MIME-Version; b=p6OpeZzbLERGNKk8/GbIU5xOa5wTtrHNDEb8BZi/SZU2sdyqTwWtSCKob/UCB+7CZWn45H+IU5H9sqX0+WGT/89dO7yBZBfc3NKZ/RUN27+yFZsUV+Xwhm3VQHRPTbZIoCYn22j2RxcjLTmXXQgfbdhA/NDd5FVl4+x2aMDlH08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbrk5igI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC286C4CEE9;
+	Tue, 27 May 2025 17:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367470;
-	bh=J4bLFwm2brhcfoPSAXgsQedqvu2WXoWXhmuqxuSKrQY=;
+	s=korg; t=1748365211;
+	bh=pL2f/Fa1SPMrgL9WsvaLoIQYTyMpPOO6XRjoedybtBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r50AEUv52poSd1HW8OTpFHyuO/6VzD7rUTtP3NO/bfowIlnrERzeL7RISk8tNNK7U
-	 Aq0YOhzFmfEjBvFImjRwjZ5q75lsF9YxMk1pS+P5a/Q29jB55dAq48258PBwjfNpUV
-	 sKXF4EPE2KNFWYmnqG0Jg7Fw5kxmtW0Na9Hb5X40=
+	b=qbrk5igIaDWrrMXHpNERhwCPRdLKToqDiDSV4jI9XBO7EmXTN8+wWaNib+NCgbtne
+	 JPFhu2IgQYlzcQEyKZZNccJkkh7zD1dVzOyb9TzidWHfYyeIZ3H/PZyb73NWV18D+B
+	 s9rC9Qov3Qpum9YLz9ESIoDyTS/cWPuHYHhazopE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	Tianxiang Peng <txpeng@tencent.com>,
+	Hao Peng <flyingpeng@tencent.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 398/783] wifi: rtw89: fw: add blacklist to avoid obsolete secure firmware
+Subject: [PATCH 6.12 302/626] dm: fix unconditional IO throttle caused by REQ_PREFLUSH
 Date: Tue, 27 May 2025 18:23:15 +0200
-Message-ID: <20250527162529.303043337@linuxfoundation.org>
+Message-ID: <20250527162457.296118204@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,231 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Jinliang Zheng <alexjlzheng@gmail.com>
 
-[ Upstream commit f11d042b3a2e92ab1aa10e0da8e290bcdcf31d39 ]
+[ Upstream commit 88f7f56d16f568f19e1a695af34a7f4a6ce537a6 ]
 
-To ensure secure chip only runs expected secure firmware, stop using
-obsolete firmware in blacklist which weakness or flaw was found.
+When a bio with REQ_PREFLUSH is submitted to dm, __send_empty_flush()
+generates a flush_bio with REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC,
+which causes the flush_bio to be throttled by wbt_wait().
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250217064308.43559-2-pkshih@realtek.com
+An example from v5.4, similar problem also exists in upstream:
+
+    crash> bt 2091206
+    PID: 2091206  TASK: ffff2050df92a300  CPU: 109  COMMAND: "kworker/u260:0"
+     #0 [ffff800084a2f7f0] __switch_to at ffff80004008aeb8
+     #1 [ffff800084a2f820] __schedule at ffff800040bfa0c4
+     #2 [ffff800084a2f880] schedule at ffff800040bfa4b4
+     #3 [ffff800084a2f8a0] io_schedule at ffff800040bfa9c4
+     #4 [ffff800084a2f8c0] rq_qos_wait at ffff8000405925bc
+     #5 [ffff800084a2f940] wbt_wait at ffff8000405bb3a0
+     #6 [ffff800084a2f9a0] __rq_qos_throttle at ffff800040592254
+     #7 [ffff800084a2f9c0] blk_mq_make_request at ffff80004057cf38
+     #8 [ffff800084a2fa60] generic_make_request at ffff800040570138
+     #9 [ffff800084a2fae0] submit_bio at ffff8000405703b4
+    #10 [ffff800084a2fb50] xlog_write_iclog at ffff800001280834 [xfs]
+    #11 [ffff800084a2fbb0] xlog_sync at ffff800001280c3c [xfs]
+    #12 [ffff800084a2fbf0] xlog_state_release_iclog at ffff800001280df4 [xfs]
+    #13 [ffff800084a2fc10] xlog_write at ffff80000128203c [xfs]
+    #14 [ffff800084a2fcd0] xlog_cil_push at ffff8000012846dc [xfs]
+    #15 [ffff800084a2fda0] xlog_cil_push_work at ffff800001284a2c [xfs]
+    #16 [ffff800084a2fdb0] process_one_work at ffff800040111d08
+    #17 [ffff800084a2fe00] worker_thread at ffff8000401121cc
+    #18 [ffff800084a2fe70] kthread at ffff800040118de4
+
+After commit 2def2845cc33 ("xfs: don't allow log IO to be throttled"),
+the metadata submitted by xlog_write_iclog() should not be throttled.
+But due to the existence of the dm layer, throttling flush_bio indirectly
+causes the metadata bio to be throttled.
+
+Fix this by conditionally adding REQ_IDLE to flush_bio.bi_opf, which makes
+wbt_should_throttle() return false to avoid wbt_wait().
+
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Reviewed-by: Tianxiang Peng <txpeng@tencent.com>
+Reviewed-by: Hao Peng <flyingpeng@tencent.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.h     |  2 +
- drivers/net/wireless/realtek/rtw89/fw.c       | 52 ++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/fw.h       | 12 +++++
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bt.c    |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  1 +
- 9 files changed, 71 insertions(+), 1 deletion(-)
+ drivers/md/dm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 979587e92c849..c493153ec77b3 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -17,6 +17,7 @@ struct rtw89_dev;
- struct rtw89_pci_info;
- struct rtw89_mac_gen_def;
- struct rtw89_phy_gen_def;
-+struct rtw89_fw_blacklist;
- struct rtw89_efuse_block_cfg;
- struct rtw89_h2c_rf_tssi;
- struct rtw89_fw_txpwr_track_cfg;
-@@ -4251,6 +4252,7 @@ struct rtw89_chip_info {
- 	bool try_ce_fw;
- 	u8 bbmcu_nr;
- 	u32 needed_fw_elms;
-+	const struct rtw89_fw_blacklist *fw_blacklist;
- 	u32 fifo_size;
- 	bool small_fifo_size;
- 	u32 dle_scc_rsvd_size;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 3164ff69803a1..92e6bc05cbf66 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -38,6 +38,16 @@ struct rtw89_arp_rsp {
- 
- static const u8 mss_signature[] = {0x4D, 0x53, 0x53, 0x4B, 0x50, 0x4F, 0x4F, 0x4C};
- 
-+const struct rtw89_fw_blacklist rtw89_fw_blacklist_default = {
-+	.ver = 0x00,
-+	.list = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-+		 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-+		 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-+		 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-+	},
-+};
-+EXPORT_SYMBOL(rtw89_fw_blacklist_default);
-+
- union rtw89_fw_element_arg {
- 	size_t offset;
- 	enum rtw89_rf_path rf_path;
-@@ -344,6 +354,46 @@ static int __parse_formatted_mssc(struct rtw89_dev *rtwdev,
- 	return 0;
- }
- 
-+static int __check_secure_blacklist(struct rtw89_dev *rtwdev,
-+				    struct rtw89_fw_bin_info *info,
-+				    struct rtw89_fw_hdr_section_info *section_info,
-+				    const void *content)
-+{
-+	const struct rtw89_fw_blacklist *chip_blacklist = rtwdev->chip->fw_blacklist;
-+	const union rtw89_fw_section_mssc_content *section_content = content;
-+	struct rtw89_fw_secure *sec = &rtwdev->fw.sec;
-+	u8 byte_idx;
-+	u8 bit_mask;
-+
-+	if (!sec->secure_boot)
-+		return 0;
-+
-+	if (!info->secure_section_exist || section_info->ignore)
-+		return 0;
-+
-+	if (!chip_blacklist) {
-+		rtw89_err(rtwdev, "chip no blacklist for secure firmware\n");
-+		return -ENOENT;
-+	}
-+
-+	byte_idx = section_content->blacklist.bit_in_chip_list >> 3;
-+	bit_mask = BIT(section_content->blacklist.bit_in_chip_list & 0x7);
-+
-+	if (section_content->blacklist.ver > chip_blacklist->ver) {
-+		rtw89_err(rtwdev, "chip blacklist out of date (%u, %u)\n",
-+			  section_content->blacklist.ver, chip_blacklist->ver);
-+		return -EINVAL;
-+	}
-+
-+	if (chip_blacklist->list[byte_idx] & bit_mask) {
-+		rtw89_err(rtwdev, "firmware %u in chip blacklist\n",
-+			  section_content->blacklist.ver);
-+		return -EPERM;
-+	}
-+
-+	return 0;
-+}
-+
- static int __parse_security_section(struct rtw89_dev *rtwdev,
- 				    struct rtw89_fw_bin_info *info,
- 				    struct rtw89_fw_hdr_section_info *section_info,
-@@ -374,7 +424,7 @@ static int __parse_security_section(struct rtw89_dev *rtwdev,
- 		info->secure_section_exist = true;
- 	}
- 
--	return 0;
-+	return __check_secure_blacklist(rtwdev, info, section_info, content);
- }
- 
- static int rtw89_fw_hdr_parser_v1(struct rtw89_dev *rtwdev, const u8 *fw, u32 len,
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 2026bc2fd2acd..ee2be09bd3dbd 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -663,6 +663,11 @@ struct rtw89_fw_mss_pool_hdr {
- } __packed;
- 
- union rtw89_fw_section_mssc_content {
-+	struct {
-+		u8 pad[0x20];
-+		u8 bit_in_chip_list;
-+		u8 ver;
-+	} __packed blacklist;
- 	struct {
- 		u8 pad[58];
- 		__le32 v;
-@@ -673,6 +678,13 @@ union rtw89_fw_section_mssc_content {
- 	} __packed key_sign_len;
- } __packed;
- 
-+struct rtw89_fw_blacklist {
-+	u8 ver;
-+	u8 list[32];
-+};
-+
-+extern const struct rtw89_fw_blacklist rtw89_fw_blacklist_default;
-+
- static inline void SET_CTRL_INFO_MACID(void *table, u32 val)
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 19230404d8c2b..d29125ee9e72a 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1541,14 +1541,18 @@ static void __send_empty_flush(struct clone_info *ci)
  {
- 	le32p_replace_bits((__le32 *)(table) + 0, val, GENMASK(6, 0));
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index 24d48aced57ac..a1df4ba97cd4d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2445,6 +2445,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
- 	.try_ce_fw		= true,
- 	.bbmcu_nr		= 0,
- 	.needed_fw_elms		= 0,
-+	.fw_blacklist		= NULL,
- 	.fifo_size		= 196608,
- 	.small_fifo_size	= true,
- 	.dle_scc_rsvd_size	= 98304,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index eeb40a60c2b98..cd79a997fe022 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2162,6 +2162,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.try_ce_fw		= false,
- 	.bbmcu_nr		= 0,
- 	.needed_fw_elms		= 0,
-+	.fw_blacklist		= NULL,
- 	.fifo_size		= 458752,
- 	.small_fifo_size	= false,
- 	.dle_scc_rsvd_size	= 0,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 4335fa85c334b..fcb69fa6cf86d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -798,6 +798,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
- 	.try_ce_fw		= true,
- 	.bbmcu_nr		= 0,
- 	.needed_fw_elms		= 0,
-+	.fw_blacklist		= &rtw89_fw_blacklist_default,
- 	.fifo_size		= 196608,
- 	.small_fifo_size	= true,
- 	.dle_scc_rsvd_size	= 98304,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-index 7f64a5695486b..bc740e9abf263 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-@@ -732,6 +732,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
- 	.try_ce_fw		= true,
- 	.bbmcu_nr		= 0,
- 	.needed_fw_elms		= RTW89_AX_GEN_DEF_NEEDED_FW_ELEMENTS_NO_6GHZ,
-+	.fw_blacklist		= &rtw89_fw_blacklist_default,
- 	.fifo_size		= 458752,
- 	.small_fifo_size	= true,
- 	.dle_scc_rsvd_size	= 98304,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index 9778621d9bc41..63a2bc88cdbcd 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2954,6 +2954,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.try_ce_fw		= false,
- 	.bbmcu_nr		= 0,
- 	.needed_fw_elms		= 0,
-+	.fw_blacklist		= &rtw89_fw_blacklist_default,
- 	.fifo_size		= 458752,
- 	.small_fifo_size	= false,
- 	.dle_scc_rsvd_size	= 0,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 731bc6f18d38b..2696fdf350f63 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -2721,6 +2721,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
- 	.try_ce_fw		= false,
- 	.bbmcu_nr		= 1,
- 	.needed_fw_elms		= RTW89_BE_GEN_DEF_NEEDED_FW_ELEMENTS,
-+	.fw_blacklist		= &rtw89_fw_blacklist_default,
- 	.fifo_size		= 589824,
- 	.small_fifo_size	= false,
- 	.dle_scc_rsvd_size	= 0,
+ 	struct dm_table *t = ci->map;
+ 	struct bio flush_bio;
++	blk_opf_t opf = REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC;
++
++	if ((ci->io->orig_bio->bi_opf & (REQ_IDLE | REQ_SYNC)) ==
++	    (REQ_IDLE | REQ_SYNC))
++		opf |= REQ_IDLE;
+ 
+ 	/*
+ 	 * Use an on-stack bio for this, it's safe since we don't
+ 	 * need to reference it after submit. It's just used as
+ 	 * the basis for the clone(s).
+ 	 */
+-	bio_init(&flush_bio, ci->io->md->disk->part0, NULL, 0,
+-		 REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC);
++	bio_init(&flush_bio, ci->io->md->disk->part0, NULL, 0, opf);
+ 
+ 	ci->bio = &flush_bio;
+ 	ci->sector_count = 0;
 -- 
 2.39.5
 
