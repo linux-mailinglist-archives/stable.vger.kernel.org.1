@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-146682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0D9AC5427
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 521B7AC5776
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 435414A26A0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9144A7097
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7C2280A51;
-	Tue, 27 May 2025 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8F527BF79;
+	Tue, 27 May 2025 17:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4U9qtzI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0j1OR9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA30227FB2A;
-	Tue, 27 May 2025 16:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8BB27FB02;
+	Tue, 27 May 2025 17:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364982; cv=none; b=Xx0wDvZ1U3hVpp+4V3loq2vkDvKd03kFYe6s8tMrvdv86z4dgasgXA4lvLkAV2wE+RI2okLcM9i0z+lAzlt4nSL4Ybhr0/fR1hi/w6xazgqqk4uOYiIcU6KLaI4FrB5g0eD6xCaJ6N8Bbleh21vRjO+Wkrcw4c1tE0oqZDCXKk4=
+	t=1748367194; cv=none; b=EwJ/KnWZEeZpqPdorMVhbbIVoqyHdyGwaSe/qM+PHW/3WZB9PdGH4dCIcXvVC5LOjAR6jouSP6Y6R0SulRtLoKfpkXeAp63W1mh6mBn3hp7PvYDQJlmQKrLPJpXxqc8YbdxPK5Dfd59sUTuD1k42FumqpajrdHLfEY3hTOGN8aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364982; c=relaxed/simple;
-	bh=H6UE5znIQa3Zf8M9ftDkTdF5g3vxdRUOj2KeeErqx3I=;
+	s=arc-20240116; t=1748367194; c=relaxed/simple;
+	bh=u8LOYIyJnUm4/xLULUx0+uLb4UBswtJhsS843zeYSlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6Y/V9dv5MKQLBnx5k9K/rf7CCob1wjpovja9FLPFaGlRelc/1JodR+cPYlnkqnsc1FBBHIoA+RRCJUNGghoKFDxtggvbB54QtADJlF/P9WRAVMQ4EKfgeB8yAf0fxI7ir6bK8zDtdUv6pNc/QcHx3SzJOvg0NA+BY1XdrHF0+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4U9qtzI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C701C4CEE9;
-	Tue, 27 May 2025 16:56:22 +0000 (UTC)
+	 MIME-Version; b=PnqyvYp4byNeCJT+ZeE5utsXndiA4m/z58ca23vUOahTs4Uyak1EDCBVFFsBvFXlL1c4ZTx8p5xo9niNAhjvEhbE5SAfX5NovEnRXUz7RNqc50AXEzDXk65VGddbjRL3mRWRweicp1llDDFhYY/zjfIIF2ilrSeZ3rbHbhG61+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0j1OR9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBD0C4CEE9;
+	Tue, 27 May 2025 17:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364982;
-	bh=H6UE5znIQa3Zf8M9ftDkTdF5g3vxdRUOj2KeeErqx3I=;
+	s=korg; t=1748367194;
+	bh=u8LOYIyJnUm4/xLULUx0+uLb4UBswtJhsS843zeYSlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4U9qtzIaQ6MW8vO7au0sKSgFKIxhGbiEH4zqW+NYppuYHvlas7Q3FjEwj18Vcbyu
-	 9fM0SHPTRJu6NfeYGm4qLjSfZxcnmbfzj+yRWTgqBYt1BXYc7wwWP6hdKMVUlA8TGS
-	 pQKznQBJyGPTKqGXpKtdy0qntSDKvjSG6LsYdNiA=
+	b=S0j1OR9bE06wiyCdQt4zvXxARiem47+e58KbOt2nMx9wmb+57Ay+pB/vXq9oYQ1a4
+	 p8WNfOB48FpeG8MbqFu3VeyohLc/GCde9UwiRMjkSYUqbAKFbsj2puFCw98iHhC3Lg
+	 LRGIAT2BgiEKOHxMflSrE/+WwBMVHnzXpFYeLHL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-	Thierry Reding <treding@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Anuj Gupta <anuj20.g@samsung.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 212/626] arm64: tegra: p2597: Fix gpio for vdd-1v8-dis regulator
+Subject: [PATCH 6.14 308/783] block: mark bounce buffering as incompatible with integrity
 Date: Tue, 27 May 2025 18:21:45 +0200
-Message-ID: <20250527162453.629463518@linuxfoundation.org>
+Message-ID: <20250527162525.611757131@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +66,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit f34621f31e3be81456c903287f7e4c0609829e29 ]
+[ Upstream commit 5fd0268a8806d35dcaf89139bfcda92be51b2b2f ]
 
-According to the board schematics the enable pin of this regulator is
-connected to gpio line #9 of the first instance of the TCA9539
-GPIO expander, so adjust it.
+None of the few drivers still using the legacy block layer bounce
+buffering support integrity metadata.  Explicitly mark the features as
+incompatible and stop creating the slab and mempool for integrity
+buffers for the bounce bio_set.
 
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Link: https://lore.kernel.org/r/20250224-diogo-gpio_exp-v1-1-80fb84ac48c6@tecnico.ulisboa.pt
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20250225154449.422989-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-settings.c | 5 +++++
+ block/bounce.c       | 2 --
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
-index 63b94a04308e8..38d49d612c0c1 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
-@@ -1686,7 +1686,7 @@ vdd_1v8_dis: regulator-vdd-1v8-dis {
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
- 		regulator-always-on;
--		gpio = <&exp1 14 GPIO_ACTIVE_HIGH>;
-+		gpio = <&exp1 9 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 		vin-supply = <&vdd_1v8>;
- 	};
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 67b119ffa1689..c430c10c864b6 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -124,6 +124,11 @@ static int blk_validate_integrity_limits(struct queue_limits *lim)
+ 		return 0;
+ 	}
+ 
++	if (lim->features & BLK_FEAT_BOUNCE_HIGH) {
++		pr_warn("no bounce buffer support for integrity metadata\n");
++		return -EINVAL;
++	}
++
+ 	if (!IS_ENABLED(CONFIG_BLK_DEV_INTEGRITY)) {
+ 		pr_warn("integrity support disabled.\n");
+ 		return -EINVAL;
+diff --git a/block/bounce.c b/block/bounce.c
+index 0d898cd5ec497..09a9616cf2094 100644
+--- a/block/bounce.c
++++ b/block/bounce.c
+@@ -41,8 +41,6 @@ static void init_bounce_bioset(void)
+ 
+ 	ret = bioset_init(&bounce_bio_set, BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
+ 	BUG_ON(ret);
+-	if (bioset_integrity_create(&bounce_bio_set, BIO_POOL_SIZE))
+-		BUG_ON(1);
+ 
+ 	ret = bioset_init(&bounce_bio_split, BIO_POOL_SIZE, 0, 0);
+ 	BUG_ON(ret);
 -- 
 2.39.5
 
