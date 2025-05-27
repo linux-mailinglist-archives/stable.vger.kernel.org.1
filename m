@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-147706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6EEAC58D1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1413AC55EE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 788E88A7FD5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCC1B3BFFFB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1858427D786;
-	Tue, 27 May 2025 17:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C080E28002F;
+	Tue, 27 May 2025 17:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXtqug3b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMFnZVfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16D642A9B;
-	Tue, 27 May 2025 17:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C14A27FD49;
+	Tue, 27 May 2025 17:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368178; cv=none; b=S8EgAO7842ZU28Y994OVOgs4Tjhz9l4+YQjnBr2QNYgo6AlRK8c4sxaQfiM2E80J2PGUhzeTTPje2A43OgBcj8xf3NVn/RY6t58jbQthZmqDhbSHrTvIS5V8Cy7E+9KqHEE9VM8GRmMA1+UqJ3C/V48C0L96GCBKcu8QPxofP8o=
+	t=1748365911; cv=none; b=oIJ66qO6rngtutPed16Czikzw1RhctB+Edc5ZVP2HeYwG+kPJp1D+hn+NFISOOTzirwmzXzji3AyzAlcSGniD/xE/dGuv8UTJqT63D/Lzpn0MgxAo55KyqKTvEzKrEMp3QAlhribHld2DsTW7xXJXJF/78q91/RwTUXsHeu1OFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368178; c=relaxed/simple;
-	bh=36xij8rUCA/m+OGl+0dE8r6hDfmYUO0RF2feWvliaKA=;
+	s=arc-20240116; t=1748365911; c=relaxed/simple;
+	bh=Oe7FzaDLlT/rzBxGGPmFMUC2JxzycPwgsBJSKGoKRTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=decq4ambmWjm1VuZfBp1sKq8Vg5xbKOxWM7rMlZXBB5a3XSPoQnAv6cDMavqRfzaiksdrb+mpxokALlSFvJxoym1rE1mLgNfM7x/IrZZm2XnojaCBwxh5bqvG4dJ+CEhaEWW3Wl7JqL/vdjzV2O7ODOG5bbm8VHJ736MVxQW5bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXtqug3b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDD1C4CEEA;
-	Tue, 27 May 2025 17:49:37 +0000 (UTC)
+	 MIME-Version; b=pWliH7gTATlL/28iDkOTaGbwo/WyfBf0E+ne5hjh3LuD/oqz5VqTSfg3/N4lcr2h1EBtBr2xVAcPPTtz9wrkyvPy2QNbwh38LIAQAHFKFtlSki+ZnAr/yb2tdRgJJsmPgVgxHC/vYeibE4ykB/F3SyRyld799PYqNHHyQHSsWsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMFnZVfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980CDC4CEE9;
+	Tue, 27 May 2025 17:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368178;
-	bh=36xij8rUCA/m+OGl+0dE8r6hDfmYUO0RF2feWvliaKA=;
+	s=korg; t=1748365911;
+	bh=Oe7FzaDLlT/rzBxGGPmFMUC2JxzycPwgsBJSKGoKRTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WXtqug3bKx7rQs/M1+lyOJXo3HJqUseqw+9Ey2dOMPRDJr63bS65cPh8KQ3XnPYpe
-	 aao1AtUyToc+WKahexcPhKuG/4yqW7enY+1CQvcve81TZIkgsFiJdo5HkNIv1r5GD4
-	 A5v6Dlpu6jwt8AkeA5jggiOw4XGbuwZSuQGagx+k=
+	b=CMFnZVfL6UzszEXpwyTTltFBNBzOzFtX7ivSchvu/kjWYhjQbntvY0x8i1H5IBceA
+	 dKNtL+PJ5N/J2hIV0mAjyh8UwIIX0IPEh+vsBArr1MqSHsPURn8B7WnDHCU4RjQILG
+	 ynswlz+ztPywMpwVzngOVO81RfPZmDBr86itKMdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Oak Zeng <oak.zeng@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 624/783] drm/xe: Reject BO eviction if BO is bound to current VM
-Date: Tue, 27 May 2025 18:27:01 +0200
-Message-ID: <20250527162538.562523676@linuxfoundation.org>
+Subject: [PATCH 6.12 529/626] wifi: iwlwifi: add support for Killer on MTL
+Date: Tue, 27 May 2025 18:27:02 +0200
+Message-ID: <20250527162506.486887607@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oak Zeng <oak.zeng@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0af944f0e3082ff517958b1cea76fb9b8cb379dd ]
+[ Upstream commit ebedf8b7f05b9c886d68d63025db8d1b12343157 ]
 
-This is a follow up fix for
-https://patchwork.freedesktop.org/patch/msgid/20241203021929.1919730-1-oak.zeng@intel.com
-The overall goal is to fail vm_bind when there is memory pressure. See more
-details in the commit message of above patch. Abbove patch fixes the issue
-when user pass in a vm_id parameter during gem_create. If user doesn't pass
-in a vm_id during gem_create, above patch doesn't help.
+For now, we need another entry for these devices, this
+will be changed completely for 6.16.
 
-This patch further reject BO eviction (which could be triggered by bo validation)
-if BO is bound to the current VM. vm_bind could fail due to the eviction failure.
-The BO to VM reverse mapping structure is used to determine whether BO is bound
-to VM.
-
-v2:
-Move vm_bo definition from function scope to if(evict) clause (Thomas)
-Further constraint the condition by adding ctx->resv (Thomas)
-Add a short comment describe the change.
-
-Suggested-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Oak Zeng <oak.zeng@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250110210137.3181576-1-oak.zeng@intel.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219926
+Link: https://patch.msgid.link/20250506214258.2efbdc9e9a82.I31915ec252bd1c74bd53b89a0e214e42a74b6f2e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index d1eb87cb178bd..2070aa12059ce 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -713,6 +713,21 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
- 		goto out;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 9141ea57abfce..68989d183e82a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -587,6 +587,8 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
+ 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+ 	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
+ 	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
++	IWL_DEV_INFO(0x7F70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
++	IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
  
-+	/* Reject BO eviction if BO is bound to current VM. */
-+	if (evict && ctx->resv) {
-+		struct drm_gpuvm_bo *vm_bo;
-+
-+		drm_gem_for_each_gpuvm_bo(vm_bo, &bo->ttm.base) {
-+			struct xe_vm *vm = gpuvm_to_vm(vm_bo->vm);
-+
-+			if (xe_vm_resv(vm) == ctx->resv &&
-+			    xe_vm_in_preempt_fence_mode(vm)) {
-+				ret = -EBUSY;
-+				goto out;
-+			}
-+		}
-+	}
-+
- 	/*
- 	 * Failed multi-hop where the old_mem is still marked as
- 	 * TTM_PL_FLAG_TEMPORARY, should just be a dummy move.
+ 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
+ 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma, iwl_ax411_killer_1690s_name),
 -- 
 2.39.5
 
