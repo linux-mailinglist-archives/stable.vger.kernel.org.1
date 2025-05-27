@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-146491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B3DAC535F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4856AC56AC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C73101BA3A4E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E85FA3BC856
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D187C27C856;
-	Tue, 27 May 2025 16:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1158827FD6B;
+	Tue, 27 May 2025 17:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpnqrJvT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKNQc/en"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAD1AD5A;
-	Tue, 27 May 2025 16:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE45185E7F;
+	Tue, 27 May 2025 17:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364382; cv=none; b=VehlmoRonIm3Fw1AOah70+kAXfPRKJqOwRh0JtTC+uLg1hhBwL9WBwsK3gh/tTke9fpQui48YyL/hEb6D+GDdXL0D8E0egKhkc/xhgvdLRVe3CodLl7+2d4FIeFhqy93AFlLPCGtLGCR0lYirVL2HAbDYECFvE95tR415XjNDa4=
+	t=1748366643; cv=none; b=mgEgFDFpjyLSd8I765P+6iHd827W7ApbYCIT2Nn55t/bqvouBnSe20x7MKssKsujdQ9W9VoIoNQ/3+Y0YOkCpf10ds/uc/xKlrG500KXkkus4vpPbMCxFPRD96E7fMvkLAxhOzSMPN42LBnsQ7fneg7Zx8AEmlYPMXoTb6f7Hhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364382; c=relaxed/simple;
-	bh=CJQomE37qASmb2ae0Bb2kxLrDga+xCcYrkIY2uqU/tk=;
+	s=arc-20240116; t=1748366643; c=relaxed/simple;
+	bh=H59tWuNdH/TNSKbDQz50jb0SvWBI4TvAC9VaeEThL9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f5fv2VNEWB0FYFu04J7SCv9vh3g5tHBTW8MSEwGictdngshuP4UP+702vR1wFhJ/46PHANXvei+4VNvSUvPLLdx8B6Z3L6KoVi9VTJsaPZ80m9peDcL0JDRraDDqOy1bFIiBTb7853uESU4uV+wqy8Dqv2Pa2TCKcLM395Ujd2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpnqrJvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EA0C4CEE9;
-	Tue, 27 May 2025 16:46:21 +0000 (UTC)
+	 MIME-Version; b=n1Tg3r/n51CYvkK8MWxmIZPQoZgAsgYNs1UX4syqsiHPBw713+OExQ9qi63hJ5PGw+GQZA5j9Z7naaBM7YzmZCL0JsbiSRDg4KDq64Pv8IqYrbPcu34xj6VnFgwjRewgkTKSPgE8l5rrgf0GVVmhtiSpAYKoPQ8Wm0V+5znmVwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKNQc/en; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1485C4CEE9;
+	Tue, 27 May 2025 17:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364382;
-	bh=CJQomE37qASmb2ae0Bb2kxLrDga+xCcYrkIY2uqU/tk=;
+	s=korg; t=1748366643;
+	bh=H59tWuNdH/TNSKbDQz50jb0SvWBI4TvAC9VaeEThL9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpnqrJvTnEQVtE2SSCr5fE27LvAaf1sTHzi5u+nG51E94ADOudO9u33rZWE2s01sG
-	 j+swFu5AytnNU3gQ7PHyvqhoXYcD/3BD6WxFj2X6D/lbtHdaRx1Uh063V/3UmN1l7W
-	 d3U72MTZqx+1aYyG+JJx71kYCXKlwmMaYHeaQdpk=
+	b=YKNQc/enOQS/SqCFZL1y1viy/POXQRpow+GOvPLWKjUOEKssX+pY9y5MtYzosTM2I
+	 MaKBd9l6SeVIVlj74shqYiyXJB3uRIwcAUPOmUO8auE09p/r97EPIcS1+WGzvZ34YJ
+	 q3T2O9TWAe3QtKD7cdacrQSG4v/aZhfkdEXHLHzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	"Hao (Claire) Zhou" <hao.zhou@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/626] drm/amdgpu: Allow P2P access through XGMI
+Subject: [PATCH 6.14 134/783] btrfs: make btrfs_discard_workfn() block_group ref explicit
 Date: Tue, 27 May 2025 18:18:51 +0200
-Message-ID: <20250527162446.613066873@linuxfoundation.org>
+Message-ID: <20250527162518.612664772@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Kuehling <felix.kuehling@amd.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit a92741e72f91b904c1d8c3d409ed8dbe9c1f2b26 ]
+[ Upstream commit 895c6721d310c036dcfebb5ab845822229fa35eb ]
 
-If peer memory is accessible through XGMI, allow leaving it in VRAM
-rather than forcing its migration to GTT on DMABuf attachment.
+Currently, the async discard machinery owns a ref to the block_group
+when the block_group is queued on a discard list. However, to handle
+races with discard cancellation and the discard workfn, we have a
+specific logic to detect that the block_group is *currently* running in
+the workfn, to protect the workfn's usage amidst cancellation.
 
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Tested-by: Hao (Claire) Zhou <hao.zhou@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 372c8d72c3680fdea3fbb2d6b089f76b4a6d596a)
+As far as I can tell, this doesn't have any overt bugs (though
+finish_discard_pass() and remove_from_discard_list() racing can have a
+surprising outcome for the caller of remove_from_discard_list() in that
+it is again added at the end).
+
+But it is needlessly complicated to rely on locking and the nullity of
+discard_ctl->block_group. Simplify this significantly by just taking a
+refcount while we are in the workfn and unconditionally drop it in both
+the remove and workfn paths, regardless of if they race.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 30 ++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ fs/btrfs/discard.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-index 2f90fff1b9ddc..e63a32c214475 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -42,6 +42,29 @@
- #include <linux/dma-fence-array.h>
- #include <linux/pci-p2pdma.h>
+diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
+index e9cdc1759dada..de23c4b3515e5 100644
+--- a/fs/btrfs/discard.c
++++ b/fs/btrfs/discard.c
+@@ -168,13 +168,7 @@ static bool remove_from_discard_list(struct btrfs_discard_ctl *discard_ctl,
+ 	block_group->discard_eligible_time = 0;
+ 	queued = !list_empty(&block_group->discard_list);
+ 	list_del_init(&block_group->discard_list);
+-	/*
+-	 * If the block group is currently running in the discard workfn, we
+-	 * don't want to deref it, since it's still being used by the workfn.
+-	 * The workfn will notice this case and deref the block group when it is
+-	 * finished.
+-	 */
+-	if (queued && !running)
++	if (queued)
+ 		btrfs_put_block_group(block_group);
  
-+static const struct dma_buf_attach_ops amdgpu_dma_buf_attach_ops;
-+
-+/**
-+ * dma_buf_attach_adev - Helper to get adev of an attachment
-+ *
-+ * @attach: attachment
-+ *
-+ * Returns:
-+ * A struct amdgpu_device * if the attaching device is an amdgpu device or
-+ * partition, NULL otherwise.
-+ */
-+static struct amdgpu_device *dma_buf_attach_adev(struct dma_buf_attachment *attach)
-+{
-+	if (attach->importer_ops == &amdgpu_dma_buf_attach_ops) {
-+		struct drm_gem_object *obj = attach->importer_priv;
-+		struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
-+
-+		return amdgpu_ttm_adev(bo->tbo.bdev);
+ 	spin_unlock(&discard_ctl->lock);
+@@ -273,9 +267,10 @@ static struct btrfs_block_group *peek_discard_list(
+ 			block_group->discard_cursor = block_group->start;
+ 			block_group->discard_state = BTRFS_DISCARD_EXTENTS;
+ 		}
+-		discard_ctl->block_group = block_group;
+ 	}
+ 	if (block_group) {
++		btrfs_get_block_group(block_group);
++		discard_ctl->block_group = block_group;
+ 		*discard_state = block_group->discard_state;
+ 		*discard_index = block_group->discard_index;
+ 	}
+@@ -506,9 +501,20 @@ static void btrfs_discard_workfn(struct work_struct *work)
+ 
+ 	block_group = peek_discard_list(discard_ctl, &discard_state,
+ 					&discard_index, now);
+-	if (!block_group || !btrfs_run_discard_work(discard_ctl))
++	if (!block_group)
+ 		return;
++	if (!btrfs_run_discard_work(discard_ctl)) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
++		return;
 +	}
-+
-+	return NULL;
-+}
-+
- /**
-  * amdgpu_dma_buf_attach - &dma_buf_ops.attach implementation
-  *
-@@ -53,11 +76,13 @@
- static int amdgpu_dma_buf_attach(struct dma_buf *dmabuf,
- 				 struct dma_buf_attachment *attach)
- {
-+	struct amdgpu_device *attach_adev = dma_buf_attach_adev(attach);
- 	struct drm_gem_object *obj = dmabuf->priv;
- 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
- 
--	if (pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
-+	if (!amdgpu_dmabuf_is_xgmi_accessible(attach_adev, bo) &&
-+	    pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
- 		attach->peer2peer = false;
- 
- 	return 0;
-@@ -456,6 +481,9 @@ bool amdgpu_dmabuf_is_xgmi_accessible(struct amdgpu_device *adev,
- 	struct drm_gem_object *obj = &bo->tbo.base;
- 	struct drm_gem_object *gobj;
- 
-+	if (!adev)
-+		return false;
-+
- 	if (obj->import_attach) {
- 		struct dma_buf *dma_buf = obj->import_attach->dmabuf;
- 
+ 	if (now < block_group->discard_eligible_time) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
+ 		btrfs_discard_schedule_work(discard_ctl, false);
+ 		return;
+ 	}
+@@ -560,15 +566,7 @@ static void btrfs_discard_workfn(struct work_struct *work)
+ 	spin_lock(&discard_ctl->lock);
+ 	discard_ctl->prev_discard = trimmed;
+ 	discard_ctl->prev_discard_time = now;
+-	/*
+-	 * If the block group was removed from the discard list while it was
+-	 * running in this workfn, then we didn't deref it, since this function
+-	 * still owned that reference. But we set the discard_ctl->block_group
+-	 * back to NULL, so we can use that condition to know that now we need
+-	 * to deref the block_group.
+-	 */
+-	if (discard_ctl->block_group == NULL)
+-		btrfs_put_block_group(block_group);
++	btrfs_put_block_group(block_group);
+ 	discard_ctl->block_group = NULL;
+ 	__btrfs_discard_schedule_work(discard_ctl, now, false);
+ 	spin_unlock(&discard_ctl->lock);
 -- 
 2.39.5
 
