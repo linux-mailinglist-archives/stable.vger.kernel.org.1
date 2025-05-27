@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4518CAC57D1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3E6AC54E8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63EA41BA2EFC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:37:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E4BE8A2F7B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5948B27F178;
-	Tue, 27 May 2025 17:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A92327E1CA;
+	Tue, 27 May 2025 16:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coCoi6N7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDnzNQRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1693224C07D;
-	Tue, 27 May 2025 17:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F029527A900;
+	Tue, 27 May 2025 16:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367452; cv=none; b=VX2UzR6RvhlPRWO+MXUVyOsKf8Z0QN8BQH/urTLM/pJNsTXoqQfj1OrjAZJqdNp75l8Abd63StSXBqqILR8UKpvsN4kPmsVQ/xjGfjap2spRJelZJxbxxtxtYmZ4rpDmRFuXSN5VgAYK7SAcVD114z0uJxMyoJ1sjyz2OSnb3ao=
+	t=1748365196; cv=none; b=iCd+5sdhqeVThua1cDJfAyntAlX6DIoUjDWugIMauA4FKklLqqS9VAkRkagJegTO90I01Z6kuspuWRq7QAP+CqFUmULOQCjqdACvDUBXfjCpj3dfZnqkN5fke8yS62mY8lzmG/my3GtJQyGf/lunw0LeR9VRgm7TX+ZoJG65z+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367452; c=relaxed/simple;
-	bh=dy48UX/bYiuadfrVinGl7dn5l3+xprjRZxWSr5+PMr0=;
+	s=arc-20240116; t=1748365196; c=relaxed/simple;
+	bh=nHzzgRTioIicmeTifCzjLXoxGITvzt4XiVvEZC3mdYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljAejK2QSC9ifTmmMLtUb/V1vJGTLqH3nM9dL46RQ8/ezMKwiKwaMZyxaFybrw/g1jTfMaMHS3W7dWCEPNFQEs80MkEKLyePHgSmG09PJ+Cs8utq+uuDSOztvoa8m0Lfjyizxt784BcfdKDxIHNN2V5DlXR7ZdgrH/BVFwRBZ7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coCoi6N7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88105C4CEE9;
-	Tue, 27 May 2025 17:37:31 +0000 (UTC)
+	 MIME-Version; b=EmNnQjKUSOo3gRNVbQCKc1mmoSaI6mK3I00/KXpH0CHv5D9xLY3SQ7wrxytz5q2sV+9N9jjqugNQOB3AZchYD+DpaGUuhU4LGO2QYn1PKBNuK/TP+WBxaSpPGWu/0bzWrgKlQvN3nLPK3M57v6VADxq5bFYh3hMvpMcIOZQbejQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDnzNQRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232F3C4CEEF;
+	Tue, 27 May 2025 16:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367452;
-	bh=dy48UX/bYiuadfrVinGl7dn5l3+xprjRZxWSr5+PMr0=;
+	s=korg; t=1748365195;
+	bh=nHzzgRTioIicmeTifCzjLXoxGITvzt4XiVvEZC3mdYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=coCoi6N7q8rB3wmerwjPW1ilo3et+xN7FynxqmHFIL7NT1dtpUWiuTrKshEIA/8LS
-	 cvfdQ0YgcsUwwC5ouXV/+q0WflrS6aPilCPXDVmSv04aPOc6st/uiY+Xzodqoftlcv
-	 z0xRMUFaYBhODC836odpe/DCwYkaKg14eHpr7vGw=
+	b=CDnzNQRJFeluNAf1BT17LEs33EPmvfZxYUXo35pqVp7R7oI/wasnnzUPv8p7dKx7N
+	 3e7wsuZRvRPPumbBnliWYFVXW1GyBuc7+w++eKwintUWyANkTLJUSLWMhCG08E4vLW
+	 fA+yZTEun7ymkMxcez7EWCeSmhwGKM/dd6bmG5cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Matthias Fend <matthias.fend@emfend.at>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 393/783] wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
+Subject: [PATCH 6.12 297/626] media: tc358746: improve calculation of the D-PHY timing registers
 Date: Tue, 27 May 2025 18:23:10 +0200
-Message-ID: <20250527162529.097080677@linuxfoundation.org>
+Message-ID: <20250527162457.099217631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Matthias Fend <matthias.fend@emfend.at>
 
-[ Upstream commit c7eea1ba05ca5b0dbf77a27cf2e1e6e2fb3c0043 ]
+[ Upstream commit 78d7265e2e1ce349e7f3c6a085f2b66d7b73f4ca ]
 
-Set the RX mask and the highest RX rate according to the number of
-spatial streams the chip can receive. For RTL8814AU that is 3.
+When calculating D-PHY registers, using data rates that are not multiples
+of 16 can lead to precision loss in division operations. This can result in
+register values that produce timing violations against the MIPI standard.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/4e786f50-ed1c-4387-8b28-e6ff00e35e81@gmail.com
+An example:
+cfg->hs_clk_rate = 294MHz
+hf_clk = 18
+
+If the desired value in cfg->init is 100us, which is the minimum allowed
+value, then the LINEINITCNT register is calculated as 1799. But since the
+actual clock is 18.375MHz instead of 18MHz, this setting results in a time
+that is shorter than 100us and thus violates the standard. The correct
+value for LINEINITCNT would be 1837.
+
+Improve the precision of calculations by using Hz instead of MHz as unit.
+
+Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/media/i2c/tc358746.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index d66abb31f091b..f4ee4e922afa7 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1561,6 +1561,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
- {
- 	const struct rtw_chip_info *chip = rtwdev->chip;
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
-+	int i;
- 
- 	ht_cap->ht_supported = true;
- 	ht_cap->cap = 0;
-@@ -1580,17 +1581,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
- 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
- 	ht_cap->ampdu_density = chip->ampdu_density;
- 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
--	if (efuse->hw_cap.nss > 1) {
--		ht_cap->mcs.rx_mask[0] = 0xFF;
--		ht_cap->mcs.rx_mask[1] = 0xFF;
--		ht_cap->mcs.rx_mask[4] = 0x01;
--		ht_cap->mcs.rx_highest = cpu_to_le16(300);
--	} else {
--		ht_cap->mcs.rx_mask[0] = 0xFF;
--		ht_cap->mcs.rx_mask[1] = 0x00;
--		ht_cap->mcs.rx_mask[4] = 0x01;
--		ht_cap->mcs.rx_highest = cpu_to_le16(150);
--	}
-+
-+	for (i = 0; i < efuse->hw_cap.nss; i++)
-+		ht_cap->mcs.rx_mask[i] = 0xFF;
-+	ht_cap->mcs.rx_mask[4] = 0x01;
-+	ht_cap->mcs.rx_highest = cpu_to_le16(150 * efuse->hw_cap.nss);
+diff --git a/drivers/media/i2c/tc358746.c b/drivers/media/i2c/tc358746.c
+index 389582420ba78..048a1a381b333 100644
+--- a/drivers/media/i2c/tc358746.c
++++ b/drivers/media/i2c/tc358746.c
+@@ -460,24 +460,20 @@ static int tc358746_apply_misc_config(struct tc358746 *tc358746)
+ 	return err;
  }
  
- static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
+-/* Use MHz as base so the div needs no u64 */
+-static u32 tc358746_cfg_to_cnt(unsigned int cfg_val,
+-			       unsigned int clk_mhz,
+-			       unsigned int time_base)
++static u32 tc358746_cfg_to_cnt(unsigned long cfg_val, unsigned long clk_hz,
++			       unsigned long long time_base)
+ {
+-	return DIV_ROUND_UP(cfg_val * clk_mhz, time_base);
++	return div64_u64((u64)cfg_val * clk_hz + time_base - 1, time_base);
+ }
+ 
+-static u32 tc358746_ps_to_cnt(unsigned int cfg_val,
+-			      unsigned int clk_mhz)
++static u32 tc358746_ps_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
+ {
+-	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, USEC_PER_SEC);
++	return tc358746_cfg_to_cnt(cfg_val, clk_hz, PSEC_PER_SEC);
+ }
+ 
+-static u32 tc358746_us_to_cnt(unsigned int cfg_val,
+-			      unsigned int clk_mhz)
++static u32 tc358746_us_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
+ {
+-	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, 1);
++	return tc358746_cfg_to_cnt(cfg_val, clk_hz, USEC_PER_SEC);
+ }
+ 
+ static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
+@@ -492,7 +488,6 @@ static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
+ 
+ 	/* The hs_byte_clk is also called SYSCLK in the excel sheet */
+ 	hs_byte_clk = cfg->hs_clk_rate / 8;
+-	hs_byte_clk /= HZ_PER_MHZ;
+ 	hf_clk = hs_byte_clk / 2;
+ 
+ 	val = tc358746_us_to_cnt(cfg->init, hf_clk) - 1;
 -- 
 2.39.5
 
