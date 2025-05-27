@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B11DAC592A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 113A5AC55EB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAEE43B05FF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94BA51BA69CD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EFC27FB3D;
-	Tue, 27 May 2025 17:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E070A279782;
+	Tue, 27 May 2025 17:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1uJN5YN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zaj4AVqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536201DFF0;
-	Tue, 27 May 2025 17:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2BD1E89C;
+	Tue, 27 May 2025 17:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368428; cv=none; b=RwCFn7oPffXAbmOa8LUFvzHccX5D8NQRvrvdIZvERISadlujLMiRf9l3ApBjCLQngc4AVZb91xK7eLWg1qVbreA12nSLVyiVJzubKncRKMAiOAzaDzDonHEuBTQTmrT8thGGtq8iLL0LWkmrZ14F1oC2U+aoYBPAKpbMAG6ffDY=
+	t=1748366155; cv=none; b=daHzpIM4QaqGXarfMfdQUBco9mgFGhn8P6w3HId9mIDNr7ENgZxnultMNjI17F3LrDEil2nZRDCKjUTeeXgCX0Sm9EAF7FKZYJu113PtuclHBGB4E16mSWPzwi3ESoi7/kHggGrRRErFNBF0xDc8I1Tw9iLy9sxK+spUHbab+p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368428; c=relaxed/simple;
-	bh=xUTST2WxosuI7GedfTkUDpnwarWviPPt9AvcU0E9Qa4=;
+	s=arc-20240116; t=1748366155; c=relaxed/simple;
+	bh=/OBIMv/AK3EbwZs6H/WRYUiVNz1WcymJnYVGh0r4Zdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0Sq0a1YYBsh3/aEsh+6RbXCs+mIf+1RejummFw40Cc3X4Ouxe3dknGZ4Ntml3lDDvNEmGev21wv/RU/Vqn58ps+wghdKLO8hckJXliZ4gdlY36gK/cWXezT1mm5AjD0M2OseScWP4ASdk92kwvtaWWOe1DcA7bENvZEwGgZA9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1uJN5YN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7848C4CEE9;
-	Tue, 27 May 2025 17:53:47 +0000 (UTC)
+	 MIME-Version; b=fzQ/ip7ETHfpECqGtoAfrTq06Q6nokhAZOLswasPZrY9cNLDjfPH+63gX16vQG7Y7IGTyJseiQWfIhdyG3SwF4RvhkoAzRLQfu6fqsBDo/zcHSCChYBJ+zQ64BC6aiiRPh9F6SHlvkU740ap/Zc+UbzZ/ouW1UdP/mtzxGEYQ8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zaj4AVqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05F5C4CEE9;
+	Tue, 27 May 2025 17:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368428;
-	bh=xUTST2WxosuI7GedfTkUDpnwarWviPPt9AvcU0E9Qa4=;
+	s=korg; t=1748366154;
+	bh=/OBIMv/AK3EbwZs6H/WRYUiVNz1WcymJnYVGh0r4Zdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1uJN5YNC14kUUhSMa0eGUEfJPj3yXO05KPdcH4zSg4qPAcc4OYYU0+od4PWs/ImT
-	 yN7/esqTMldgOUx6W5jMsebM2P73HPMQT1p7ridPtizuiVu7tVWzLwRk0149rt6Bkh
-	 0RGNClZHxs0EBqYp2XIUG2l3r1x9loC/C1Bc4L5c=
+	b=Zaj4AVqSwOowsiBnOBOV2/IkgGyrn5zJ5JVXi740rTiPueL489rIk71CnZ8FNpfnw
+	 qtEJY3g+bCf2hFWMSxUpI7CRiIonjZQBjtjJemicOaRyS6vuv/2H1WGDnx4cKBzMEO
+	 PxSsdWxSp8UEAY/0ahZtoO8KhsWKFN94Ry9hakaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoyu Yin <y04609127@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 702/783] mr: consolidate the ipmr_can_free_table() checks.
-Date: Tue, 27 May 2025 18:28:19 +0200
-Message-ID: <20250527162541.707660484@linuxfoundation.org>
+Subject: [PATCH 6.12 607/626] ksmbd: fix stream write failure
+Date: Tue, 27 May 2025 18:28:20 +0200
+Message-ID: <20250527162509.657152839@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,167 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit c46286fdd6aa1d0e33c245bcffe9ff2428a777bd ]
+[ Upstream commit 1f4bbedd4e5a69b01cde2cc21d01151ab2d0884f ]
 
-Guoyu Yin reported a splat in the ipmr netns cleanup path:
+If there is no stream data in file, v_len is zero.
+So, If position(*pos) is zero, stream write will fail
+due to stream write position validation check.
+This patch reorganize stream write position validation.
 
-WARNING: CPU: 2 PID: 14564 at net/ipv4/ipmr.c:440 ipmr_free_table net/ipv4/ipmr.c:440 [inline]
-WARNING: CPU: 2 PID: 14564 at net/ipv4/ipmr.c:440 ipmr_rules_exit+0x135/0x1c0 net/ipv4/ipmr.c:361
-Modules linked in:
-CPU: 2 UID: 0 PID: 14564 Comm: syz.4.838 Not tainted 6.14.0 #1
-Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:ipmr_free_table net/ipv4/ipmr.c:440 [inline]
-RIP: 0010:ipmr_rules_exit+0x135/0x1c0 net/ipv4/ipmr.c:361
-Code: ff df 48 c1 ea 03 80 3c 02 00 75 7d 48 c7 83 60 05 00 00 00 00 00 00 5b 5d 41 5c 41 5d 41 5e e9 71 67 7f 00 e8 4c 2d 8a fd 90 <0f> 0b 90 eb 93 e8 41 2d 8a fd 0f b6 2d 80 54 ea 01 31 ff 89 ee e8
-RSP: 0018:ffff888109547c58 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff888108c12dc0 RCX: ffffffff83e09868
-RDX: ffff8881022b3300 RSI: ffffffff83e098d4 RDI: 0000000000000005
-RBP: ffff888104288000 R08: 0000000000000000 R09: ffffed10211825c9
-R10: 0000000000000001 R11: ffff88801816c4a0 R12: 0000000000000001
-R13: ffff888108c13320 R14: ffff888108c12dc0 R15: fffffbfff0b74058
-FS:  00007f84f39316c0(0000) GS:ffff88811b100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f84f3930f98 CR3: 0000000113b56000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- ipmr_net_exit_batch+0x50/0x90 net/ipv4/ipmr.c:3160
- ops_exit_list+0x10c/0x160 net/core/net_namespace.c:177
- setup_net+0x47d/0x8e0 net/core/net_namespace.c:394
- copy_net_ns+0x25d/0x410 net/core/net_namespace.c:516
- create_new_namespaces+0x3f6/0xaf0 kernel/nsproxy.c:110
- unshare_nsproxy_namespaces+0xc3/0x180 kernel/nsproxy.c:228
- ksys_unshare+0x78d/0x9a0 kernel/fork.c:3342
- __do_sys_unshare kernel/fork.c:3413 [inline]
- __se_sys_unshare kernel/fork.c:3411 [inline]
- __x64_sys_unshare+0x31/0x40 kernel/fork.c:3411
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xa6/0x1a0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f84f532cc29
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f84f3931038 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 00007f84f5615fa0 RCX: 00007f84f532cc29
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000040000400
-RBP: 00007f84f53fba18 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f84f5615fa0 R15: 00007fff51c5f328
- </TASK>
-
-The running kernel has CONFIG_IP_MROUTE_MULTIPLE_TABLES disabled, and
-the sanity check for such build is still too loose.
-
-Address the issue consolidating the relevant sanity check in a single
-helper regardless of the kernel configuration. Also share it between
-the ipv4 and ipv6 code.
-
-Reported-by: Guoyu Yin <y04609127@gmail.com>
-Fixes: 50b94204446e ("ipmr: tune the ipmr_can_free_table() checks.")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/372dc261e1bf12742276e1b984fc5a071b7fc5a8.1747321903.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0ca6df4f40cf ("ksmbd: prevent out-of-bounds stream writes by validating *pos")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mroute_base.h |  5 +++++
- net/ipv4/ipmr.c             | 12 +-----------
- net/ipv6/ip6mr.c            | 12 +-----------
- 3 files changed, 7 insertions(+), 22 deletions(-)
+ fs/smb/server/vfs.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/mroute_base.h b/include/linux/mroute_base.h
-index 58a2401e4b551..0075f6e5c3da9 100644
---- a/include/linux/mroute_base.h
-+++ b/include/linux/mroute_base.h
-@@ -262,6 +262,11 @@ struct mr_table {
- 	int			mroute_reg_vif_num;
- };
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index e059316be36fd..59ae63ab86857 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -426,10 +426,15 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 	ksmbd_debug(VFS, "write stream data pos : %llu, count : %zd\n",
+ 		    *pos, count);
  
-+static inline bool mr_can_free_table(struct net *net)
-+{
-+	return !check_net(net) || !net_initialized(net);
-+}
++	if (*pos >= XATTR_SIZE_MAX) {
++		pr_err("stream write position %lld is out of bounds\n",	*pos);
++		return -EINVAL;
++	}
 +
- #ifdef CONFIG_IP_MROUTE_COMMON
- void vif_device_init(struct vif_device *v,
- 		     struct net_device *dev,
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index 21ae7594a8525..69df45c4a0aae 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -120,11 +120,6 @@ static void ipmr_expire_process(struct timer_list *t);
- 				lockdep_rtnl_is_held() ||		\
- 				list_empty(&net->ipv4.mr_tables))
+ 	size = *pos + count;
+ 	if (size > XATTR_SIZE_MAX) {
+ 		size = XATTR_SIZE_MAX;
+-		count = (*pos + count) - XATTR_SIZE_MAX;
++		count = XATTR_SIZE_MAX - *pos;
+ 	}
  
--static bool ipmr_can_free_table(struct net *net)
--{
--	return !check_net(net) || !net_initialized(net);
--}
+ 	v_len = ksmbd_vfs_getcasexattr(idmap,
+@@ -443,13 +448,6 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 		goto out;
+ 	}
+ 
+-	if (v_len <= *pos) {
+-		pr_err("stream write position %lld is out of bounds (stream length: %zd)\n",
+-				*pos, v_len);
+-		err = -EINVAL;
+-		goto out;
+-	}
 -
- static struct mr_table *ipmr_mr_table_iter(struct net *net,
- 					   struct mr_table *mrt)
- {
-@@ -317,11 +312,6 @@ EXPORT_SYMBOL(ipmr_rule_default);
- #define ipmr_for_each_table(mrt, net) \
- 	for (mrt = net->ipv4.mrt; mrt; mrt = NULL)
- 
--static bool ipmr_can_free_table(struct net *net)
--{
--	return !check_net(net);
--}
--
- static struct mr_table *ipmr_mr_table_iter(struct net *net,
- 					   struct mr_table *mrt)
- {
-@@ -437,7 +427,7 @@ static void ipmr_free_table(struct mr_table *mrt)
- {
- 	struct net *net = read_pnet(&mrt->net);
- 
--	WARN_ON_ONCE(!ipmr_can_free_table(net));
-+	WARN_ON_ONCE(!mr_can_free_table(net));
- 
- 	timer_shutdown_sync(&mrt->ipmr_expire_timer);
- 	mroute_clean_tables(mrt, MRT_FLUSH_VIFS | MRT_FLUSH_VIFS_STATIC |
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 535e9f72514c0..33351acc45e10 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -108,11 +108,6 @@ static void ipmr_expire_process(struct timer_list *t);
- 				lockdep_rtnl_is_held() || \
- 				list_empty(&net->ipv6.mr6_tables))
- 
--static bool ip6mr_can_free_table(struct net *net)
--{
--	return !check_net(net) || !net_initialized(net);
--}
--
- static struct mr_table *ip6mr_mr_table_iter(struct net *net,
- 					    struct mr_table *mrt)
- {
-@@ -306,11 +301,6 @@ EXPORT_SYMBOL(ip6mr_rule_default);
- #define ip6mr_for_each_table(mrt, net) \
- 	for (mrt = net->ipv6.mrt6; mrt; mrt = NULL)
- 
--static bool ip6mr_can_free_table(struct net *net)
--{
--	return !check_net(net);
--}
--
- static struct mr_table *ip6mr_mr_table_iter(struct net *net,
- 					    struct mr_table *mrt)
- {
-@@ -416,7 +406,7 @@ static void ip6mr_free_table(struct mr_table *mrt)
- {
- 	struct net *net = read_pnet(&mrt->net);
- 
--	WARN_ON_ONCE(!ip6mr_can_free_table(net));
-+	WARN_ON_ONCE(!mr_can_free_table(net));
- 
- 	timer_shutdown_sync(&mrt->ipmr_expire_timer);
- 	mroute_clean_tables(mrt, MRT6_FLUSH_MIFS | MRT6_FLUSH_MIFS_STATIC |
+ 	if (v_len < size) {
+ 		wbuf = kvzalloc(size, KSMBD_DEFAULT_GFP);
+ 		if (!wbuf) {
 -- 
 2.39.5
 
