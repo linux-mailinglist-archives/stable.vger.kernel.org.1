@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-146588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C62AC53CC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D73EFAC5729
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C0B8A2115
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CD0D3A4F17
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5546D27BF7C;
-	Tue, 27 May 2025 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47BC27F4CB;
+	Tue, 27 May 2025 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTM5877q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teusnbdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120A019E7F9;
-	Tue, 27 May 2025 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650CB1DB34C;
+	Tue, 27 May 2025 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364689; cv=none; b=sJEeJqM3eK9xwzBBg8upI5LhfLij7DA3QQ6LINBqfSCf0SB88E6zjpEpPA76yaOkU+E1L4mORj8Q8sBwyDutmg+laaY7Wf9k/OviyXov4y4L6CBKJ1jqT2JWl47X+84pVJBeNDjgojxNp+6qd9IndxHD2Rx5mHU8sxco+AxxKys=
+	t=1748366954; cv=none; b=AncWRAnFvfJGXem2JxoCPlxFWMMzOyRgmAuoqgNnU1tk6mnuNxfbVe+4T/L/T1f/lM4SrBB6GtLmFFF7lNRfK2g9Bxe+bfI1BgNtSQmE8CXmvahSlgxqeSgM3PFSMpGRyT17jLCdTRCnKuGX64zp0RYC4FVkaTOaczhwXr2c13I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364689; c=relaxed/simple;
-	bh=pzwzRQGlFw4wOpFHJVG208V8c7yGCoJrwvAHUd2M0Gk=;
+	s=arc-20240116; t=1748366954; c=relaxed/simple;
+	bh=egsS7fJcPlGmjGN77UalJwtG3YNBLnGMXidlH2LxSUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aaqCyTVYz3aZXDdP2DXLl/Cin+Moxa2zzXGjZt66PbCA8oVaamFUz3vgOc/Y40T8ZLI9WchV96DimvnNaG33eGP8zR6uhFx0fx4b+SeQ2wvp4hk3PZQhzayoIRSeZKiSNv5qHC7fjp3Kg26ZrBKCauMWrU/KDWN+sUDx5cDJ0AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTM5877q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77269C4CEE9;
-	Tue, 27 May 2025 16:51:28 +0000 (UTC)
+	 MIME-Version; b=OMFj4Q32cQhl0y2NXKprtyeC6t46cMajuTSz0lcrrvk+3mbcx3o5SHS1lttcdsxS7JaGj+HOx/ntsXgu1Co9Lgkxh5rB+sTeLAXHAlNVnYFylMNlxfp+u8+cWesUiOaqvvf3lmdg6FREelniGzDhINqhpzZF8Fg/h5U1u6M9LLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=teusnbdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB4FC4CEE9;
+	Tue, 27 May 2025 17:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364688;
-	bh=pzwzRQGlFw4wOpFHJVG208V8c7yGCoJrwvAHUd2M0Gk=;
+	s=korg; t=1748366954;
+	bh=egsS7fJcPlGmjGN77UalJwtG3YNBLnGMXidlH2LxSUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTM5877qCxsOKbk9D0njoVRmvbGLBZTeMSXfh7exfV19SOoWB55LwqSHge2YDiT50
-	 17Y4whF8sR87dPmS6oArLE17lIvH1Ce3G137UGlb+Uf6fO0Xe09oGaFsmK+nQcFnc7
-	 DKeTIC4le/0mtzm+tXPZcbk890LE1WYbWzHWW08M=
+	b=teusnbdJAy9LnqJ3uA1enx7aiRPX4TDUfcOOeCEMsL1SzKcoH5cYOcFz8EjoTbJXJ
+	 ozINVET89n08SGGLipei0s2sAVapT6UY6Sa/oJ5VeEQfCgvBPrjmBcXZ+KM5e1BLEz
+	 QbK61JLAk58j7ja7fljBhM/d1jbKxDmUu60LRSc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Cruise Hung <cruise.hung@amd.com>,
+	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
+	Peichen Huang <PeiChen.Huang@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/626] scsi: st: Tighten the page format heuristics with MODE SELECT
+Subject: [PATCH 6.14 231/783] drm/amd/display: not abort link train when bw is low
 Date: Tue, 27 May 2025 18:20:28 +0200
-Message-ID: <20250527162450.513410412@linuxfoundation.org>
+Message-ID: <20250527162522.527745596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +64,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Peichen Huang <PeiChen.Huang@amd.com>
 
-[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
+[ Upstream commit 8a21da2842bb22b2b80e5902d0438030d729bfd3 ]
 
-In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
-not correctly implement it. The st driver first tries MODE SELECT with the
-page format bit set to set the block descriptor.  If not successful, the
-non-page format is tried.
+[WHY]
+DP tunneling should not abort link train even bandwidth become
+too low after downgrade. Otherwise, it would fail compliance test.
 
-The test only tests the sense code and this triggers also from illegal
-parameter in the parameter list. The test is limited to "old" devices and
-made more strict to remove false alarms.
+[HOW}
+Do link train with downgrade settings even bandwidth is not enough
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Cruise Hung <cruise.hung@amd.com>
+Reviewed-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Signed-off-by: Peichen Huang <PeiChen.Huang@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/link/protocols/link_dp_training.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index a17441635ff3a..1c0951168f646 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3081,7 +3081,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 			   cmd_in == MTSETDRVBUFFER ||
- 			   cmd_in == SET_DENS_AND_BLK) {
- 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
--			    !(STp->use_pf & PF_TESTED)) {
-+				cmdstatp->sense_hdr.asc == 0x24 &&
-+				(STp->device)->scsi_level <= SCSI_2 &&
-+				!(STp->use_pf & PF_TESTED)) {
- 				/* Try the other possible state of Page Format if not
- 				   already tried */
- 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+index 751c18e592ea5..7848ddb94456c 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+@@ -1782,13 +1782,10 @@ bool perform_link_training_with_retries(
+ 			is_link_bw_min = ((cur_link_settings.link_rate <= LINK_RATE_LOW) &&
+ 				(cur_link_settings.lane_count <= LANE_COUNT_ONE));
+ 
+-			if (is_link_bw_low) {
++			if (is_link_bw_low)
+ 				DC_LOG_WARNING(
+ 					"%s: Link(%d) bandwidth too low after fallback req_bw(%d) > link_bw(%d)\n",
+ 					__func__, link->link_index, req_bw, link_bw);
+-
+-				return false;
+-			}
+ 		}
+ 
+ 		msleep(delay_between_attempts);
 -- 
 2.39.5
 
