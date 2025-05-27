@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-147336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEA0AC573A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D098AC5719
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69DA93B23F7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AD0917C6C5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0402127FB02;
-	Tue, 27 May 2025 17:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A206C280008;
+	Tue, 27 May 2025 17:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMT0Ke7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uv02+nqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52372566;
-	Tue, 27 May 2025 17:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDE427FD4C;
+	Tue, 27 May 2025 17:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367027; cv=none; b=Gag3fm/z0qZ/nhxnfqPyKG9JleBHz899GuwpwzcayxuX088IMFwzDW/I9Fi7DqgTGkEUD1m/PgDAb/XmQp5Ursvk4rECs0VTodoBL2XntYo9XqM/XgCQu7yQ6km8K+8WpUJo7kBrPxUthL7DEpGLUwpZEuwdQAEEfRFTWii5cAA=
+	t=1748366929; cv=none; b=VA/PbQNfTQrnFsa+YdNNM2AwaJzm8qCOMHIpLgdjIJTTNbt/w2ELrn7jraBNHdOHX/RYIO0w1aqNUh1yE7LdftbIjGnR7j/n3DuLBaWErXQcIhRBA6k0hsgyvgBoPXhA5lZ1LEmoD5hEzwvfN+gcxcV21wMKynUAZ5u0E/17nzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367027; c=relaxed/simple;
-	bh=ZByjT47l3bI9TCepItSSzkAj3HSM61uUSmJYB5Onqaw=;
+	s=arc-20240116; t=1748366929; c=relaxed/simple;
+	bh=ct9VdcN5Tm2xgp1OJGudG3hgML3+hN5L2VC2tuLQ1os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BveYxYJS/W/roFezZIyMB4FIkJZR107ItfQL+GGxtM1HM8cs+V9qanxpXn5hbHV/CzYZEdmgQxFibiYDp5GYWG4R521eBOEljUpkiFor+vQ2idh313BZeUrI2rxrqbGZ+GBpykTxykBTsOgga4dX2mHJb2k5ImcXBLD59wS9vnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMT0Ke7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19409C4CEE9;
-	Tue, 27 May 2025 17:30:26 +0000 (UTC)
+	 MIME-Version; b=JHPnMhuQbHmGXvb6KAsutTNzMZDSU00nDx7o3a4S4aa7DNUfuxbZKtDZa9ygNK90cA4f7xaepkFwWGc64lXgTWa32K00EkqylqEEkN4KLlxzSq6xg9NNhR1k9JjD8k5OXKW+lm4uy4CrWaPbhilUrPKAq7+aYsXUY3aHUKdxdZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uv02+nqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B835FC4CEE9;
+	Tue, 27 May 2025 17:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367027;
-	bh=ZByjT47l3bI9TCepItSSzkAj3HSM61uUSmJYB5Onqaw=;
+	s=korg; t=1748366929;
+	bh=ct9VdcN5Tm2xgp1OJGudG3hgML3+hN5L2VC2tuLQ1os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMT0Ke7GPb0c/Wikb22RxDy8YaOjrJOv1jRJJoJQ5ZjquqofNR4qeAjabfFLO1cc2
-	 LsXY2+MiMXrDxBjgbmoSmUPU0mkRf+o1qGmuEA3FNlW+5nU7mEuIlOVdxTILtes6mw
-	 TiRDW8+2SLlpig1A5A6CC5NqvhRrr2U5pyfa9M9c=
+	b=Uv02+nqh9FoOImGzl7Ld+NMuzxvInytjCBfSc/y7xsaB7YWN4lXy1BkQlvcSo5ZhN
+	 YUzMoem7TR+XIGAQdqHFwX+o/8FphKZyPnPZOWHlBwFo4UG74JKo/vDhNtVmmH8C5c
+	 5d9mpumKzeXdiCEx/rh6eaus+tvqCWbi0tYNuvrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Petr Mladek <pmladek@suse.com>,
+	John Ogness <john.ogness@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 214/783] iommu: Keep dev->iommu state consistent
-Date: Tue, 27 May 2025 18:20:11 +0200
-Message-ID: <20250527162521.845616866@linuxfoundation.org>
+Subject: [PATCH 6.14 215/783] printk: Check CON_SUSPEND when unblanking a console
+Date: Tue, 27 May 2025 18:20:12 +0200
+Message-ID: <20250527162521.885490130@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -67,86 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Marcos Paulo de Souza <mpdesouza@suse.com>
 
-[ Upstream commit 3832862eb9c4dfa0e80b2522bfaedbc8a43de97d ]
+[ Upstream commit 72c96a2dacc0fb056d13a5f02b0845c4c910fe54 ]
 
-At the moment, if of_iommu_configure() allocates dev->iommu itself via
-iommu_fwspec_init(), then suffers a DT parsing failure, it cleans up the
-fwspec but leaves the empty dev_iommu hanging around. So far this is
-benign (if a tiny bit wasteful), but we'd like to be able to reason
-about dev->iommu having a consistent and unambiguous lifecycle. Thus
-make sure that the of_iommu cleanup undoes precisely whatever it did.
+The commit 9e70a5e109a4 ("printk: Add per-console suspended state")
+introduced the CON_SUSPENDED flag for consoles. The suspended consoles
+will stop receiving messages, so don't unblank suspended consoles
+because it won't be showing anything either way.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/d219663a3f23001f23d520a883ac622d70b4e642.1740753261.git.robin.murphy@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20250226-printk-renaming-v1-5-0b878577f2e6@suse.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu-priv.h | 2 ++
- drivers/iommu/iommu.c      | 2 +-
- drivers/iommu/of_iommu.c   | 6 +++++-
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ kernel/printk/printk.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
-index de5b54eaa8bf1..a5913c0b02a0a 100644
---- a/drivers/iommu/iommu-priv.h
-+++ b/drivers/iommu/iommu-priv.h
-@@ -17,6 +17,8 @@ static inline const struct iommu_ops *dev_iommu_ops(struct device *dev)
- 	return dev->iommu->iommu_dev->ops;
- }
- 
-+void dev_iommu_free(struct device *dev);
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 057db78876cd9..13d4210d8862f 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -3340,7 +3340,12 @@ void console_unblank(void)
+ 	 */
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(c) {
+-		if ((console_srcu_read_flags(c) & CON_ENABLED) && c->unblank) {
++		short flags = console_srcu_read_flags(c);
 +
- const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
++		if (flags & CON_SUSPENDED)
++			continue;
++
++		if ((flags & CON_ENABLED) && c->unblank) {
+ 			found_unblank = true;
+ 			break;
+ 		}
+@@ -3377,7 +3382,12 @@ void console_unblank(void)
  
- static inline const struct iommu_ops *iommu_fwspec_ops(struct iommu_fwspec *fwspec)
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 1efe7cddb4fe3..3a2804a98203b 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -352,7 +352,7 @@ static struct dev_iommu *dev_iommu_get(struct device *dev)
- 	return param;
- }
- 
--static void dev_iommu_free(struct device *dev)
-+void dev_iommu_free(struct device *dev)
- {
- 	struct dev_iommu *param = dev->iommu;
- 
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index 97987cd78da93..e10a68b5ffde1 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -116,6 +116,7 @@ static void of_pci_check_device_ats(struct device *dev, struct device_node *np)
- int of_iommu_configure(struct device *dev, struct device_node *master_np,
- 		       const u32 *id)
- {
-+	bool dev_iommu_present;
- 	int err;
- 
- 	if (!master_np)
-@@ -127,6 +128,7 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
- 		mutex_unlock(&iommu_probe_device_lock);
- 		return 0;
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(c) {
+-		if ((console_srcu_read_flags(c) & CON_ENABLED) && c->unblank)
++		short flags = console_srcu_read_flags(c);
++
++		if (flags & CON_SUSPENDED)
++			continue;
++
++		if ((flags & CON_ENABLED) && c->unblank)
+ 			c->unblank();
  	}
-+	dev_iommu_present = dev->iommu;
- 
- 	/*
- 	 * We don't currently walk up the tree looking for a parent IOMMU.
-@@ -147,8 +149,10 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
- 		err = of_iommu_configure_device(master_np, dev, id);
- 	}
- 
--	if (err)
-+	if (err && dev_iommu_present)
- 		iommu_fwspec_free(dev);
-+	else if (err && dev->iommu)
-+		dev_iommu_free(dev);
- 	mutex_unlock(&iommu_probe_device_lock);
- 
- 	if (!err && dev->bus)
+ 	console_srcu_read_unlock(cookie);
 -- 
 2.39.5
 
