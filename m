@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-147289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91567AC5706
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:28:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86271AC53C6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BF061883A75
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6B388A1D4C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1161D27FD4C;
-	Tue, 27 May 2025 17:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D2F27A926;
+	Tue, 27 May 2025 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJwW5+P5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJ2mdiRf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEABD1DB34C;
-	Tue, 27 May 2025 17:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DC61B6D08;
+	Tue, 27 May 2025 16:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366882; cv=none; b=uMn4aJzjEZ/Tilzj5UzD15XZhwjQUQkbzlLEYJn5BFbuLD8WOUA+68RBvYQ7+h+PDM6T9DkD7Gqx2P3n0eIFW34FD6FnHSSE8ZX1jODYtu7LEmG6gFQRIgp/tnIbrd+Rx+nq3lzJQHhk3b5xiLJolDI07Hp6S4O2Y8TmczoKtqs=
+	t=1748364670; cv=none; b=j9kimSkxRL0m+oBAMBxGZiAB2rLAgCinYYC7jMNRGq68jFdz8qE5qYGIo5QsiYrixEMuWvMM+uoz/W7M/fZ36GeE8mCgDhG70j/tchdqhzwPHQSHaIK+1n2jCZzYYXP6N+HnP5aKcBre2/8R41JxFJuf+8q2cV48+4jkcfIUgp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366882; c=relaxed/simple;
-	bh=3zHAxKJroQ6YXx+3rD3meznskmaWkRGoN69AX2ERnYU=;
+	s=arc-20240116; t=1748364670; c=relaxed/simple;
+	bh=fYUlb8V7Do4JMM0hEEXeNRoyC7ahjv3loRzNnCCYKn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/GtLBFbfJSr7H+x/YRA6PXC42luQiySksXibbXZTTErnDYiFIyVNI6bD7FenLaYdZMBZU5ybdALhu3QupUg275NROAY5qxJUIO4zwEwZHoztrtKzIVhpHkHb1K5WtT4vnSZnlGPUd7A7Pm42XxNp3TF6tc9PvDEn5g0qIcxfxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJwW5+P5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32239C4CEEA;
-	Tue, 27 May 2025 17:28:01 +0000 (UTC)
+	 MIME-Version; b=aQ/fPCfeIF27CMhns/De7yuJFrzdKzdl7R+bPLPt3XoZtYPnSpxS2e8jHamVukSwKqj/ggWjMAEhCJHdb5f7gK00C2pBFamPAlxtq5UM2W2Sdfcn6qVpbG3rkYavwyN3W/KBfnXqTF1fHUUlJtwuomiDLgZkLrIn/ppcjDwm9cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJ2mdiRf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86E4C4CEE9;
+	Tue, 27 May 2025 16:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366882;
-	bh=3zHAxKJroQ6YXx+3rD3meznskmaWkRGoN69AX2ERnYU=;
+	s=korg; t=1748364670;
+	bh=fYUlb8V7Do4JMM0hEEXeNRoyC7ahjv3loRzNnCCYKn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJwW5+P5rl2q6GmJYl+KxeNMN2bvEvEKkv1EnfASJeSr9AJqeEPpdRvrHxeeZ9Vm2
-	 63qxmOCBQycBbn7nVWiJm8eayYjNnpxL7srythobH5g0aF9b5ePPXPcRhej7gV/ONa
-	 AAMcuc8YSayAZgeymzH2d05ebffEv7bAnGT+oqa4=
+	b=kJ2mdiRfyhSwbJSKZOTuK93rgwm0HtV1JZPTsf0rDruitiri4uKP8p6fZ1E8+SIr2
+	 einIW2ZAXgrgsiCiqfnlW5iqlHNAB8zIbzA6DTKY/gLmQ0pq2YAeO3EHXI1GCEktrw
+	 mFjDi3MyXiMcm0CeLQ78XDpHGR3FdEtixGfyl5S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 207/783] arm64/mm: Check pmd_table() in pmd_trans_huge()
-Date: Tue, 27 May 2025 18:20:04 +0200
-Message-ID: <20250527162521.567351596@linuxfoundation.org>
+Subject: [PATCH 6.12 112/626] i2c: qup: Vote for interconnect bandwidth to DRAM
+Date: Tue, 27 May 2025 18:20:05 +0200
+Message-ID: <20250527162449.586493039@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-[ Upstream commit d1770e909898c108e8c7d30ca039053e8818a9c9 ]
+[ Upstream commit d4f35233a6345f62637463ef6e0708f44ffaa583 ]
 
-Check for pmd_table() in pmd_trans_huge() rather then just checking for the
-PMD_TABLE_BIT. But ensure all present-invalid entries are handled correctly
-by always setting PTE_VALID before checking with pmd_table().
+When the I2C QUP controller is used together with a DMA engine it needs
+to vote for the interconnect path to the DRAM. Otherwise it may be
+unable to access the memory quickly enough.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250221044227.1145393-8-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+The requested peak bandwidth is dependent on the I2C core clock.
+
+To avoid sending votes too often the bandwidth is always requested when
+a DMA transfer starts, but dropped only on runtime suspend. Runtime
+suspend should only happen if no transfer is active. After resumption we
+can defer the next vote until the first DMA transfer actually happens.
+
+The implementation is largely identical to the one introduced for
+spi-qup in commit ecdaa9473019 ("spi: qup: Vote for interconnect
+bandwidth to DRAM") since both drivers represent the same hardware
+block.
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20231128-i2c-qup-dvfs-v1-3-59a0e3039111@kernkonzept.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/i2c/busses/i2c-qup.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 0b2a2ad1b9e83..abf990ce175b1 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -548,18 +548,6 @@ static inline int pmd_protnone(pmd_t pmd)
- #endif
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index d480162a4d394..eb97abcb4cd33 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -14,6 +14,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
++#include <linux/interconnect.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -150,6 +151,8 @@
+ /* TAG length for DATA READ in RX FIFO  */
+ #define READ_RX_TAGS_LEN		2
  
- #define pmd_present(pmd)	pte_present(pmd_pte(pmd))
--
--/*
-- * THP definitions.
-- */
--
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--static inline int pmd_trans_huge(pmd_t pmd)
--{
--	return pmd_val(pmd) && pmd_present(pmd) && !(pmd_val(pmd) & PMD_TABLE_BIT);
--}
--#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
--
- #define pmd_dirty(pmd)		pte_dirty(pmd_pte(pmd))
- #define pmd_young(pmd)		pte_young(pmd_pte(pmd))
- #define pmd_valid(pmd)		pte_valid(pmd_pte(pmd))
-@@ -724,6 +712,18 @@ extern pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
- #define pmd_leaf_size(pmd)	(pmd_cont(pmd) ? CONT_PMD_SIZE : PMD_SIZE)
- #define pte_leaf_size(pte)	(pte_cont(pte) ? CONT_PTE_SIZE : PAGE_SIZE)
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+static inline int pmd_trans_huge(pmd_t pmd)
-+{
-+	/*
-+	 * If pmd is present-invalid, pmd_table() won't detect it
-+	 * as a table, so force the valid bit for the comparison.
-+	 */
-+	return pmd_val(pmd) && pmd_present(pmd) &&
-+	       !pmd_table(__pmd(pmd_val(pmd) | PTE_VALID));
-+}
-+#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
++#define QUP_BUS_WIDTH			8
 +
- #if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS < 3
- static inline bool pud_sect(pud_t pud) { return false; }
- static inline bool pud_table(pud_t pud) { return true; }
+ static unsigned int scl_freq;
+ module_param_named(scl_freq, scl_freq, uint, 0444);
+ MODULE_PARM_DESC(scl_freq, "SCL frequency override");
+@@ -227,6 +230,7 @@ struct qup_i2c_dev {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	struct clk		*pclk;
++	struct icc_path		*icc_path;
+ 	struct i2c_adapter	adap;
+ 
+ 	int			clk_ctl;
+@@ -255,6 +259,10 @@ struct qup_i2c_dev {
+ 	/* To configure when bus is in run state */
+ 	u32			config_run;
+ 
++	/* bandwidth votes */
++	u32			src_clk_freq;
++	u32			cur_bw_clk_freq;
++
+ 	/* dma parameters */
+ 	bool			is_dma;
+ 	/* To check if the current transfer is using DMA */
+@@ -453,6 +461,23 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
+ 	return ret;
+ }
+ 
++static int qup_i2c_vote_bw(struct qup_i2c_dev *qup, u32 clk_freq)
++{
++	u32 needed_peak_bw;
++	int ret;
++
++	if (qup->cur_bw_clk_freq == clk_freq)
++		return 0;
++
++	needed_peak_bw = Bps_to_icc(clk_freq * QUP_BUS_WIDTH);
++	ret = icc_set_bw(qup->icc_path, 0, needed_peak_bw);
++	if (ret)
++		return ret;
++
++	qup->cur_bw_clk_freq = clk_freq;
++	return 0;
++}
++
+ static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
+ {
+ 	struct qup_i2c_block *blk = &qup->blk;
+@@ -838,6 +863,10 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
+ 	int ret = 0;
+ 	int idx = 0;
+ 
++	ret = qup_i2c_vote_bw(qup, qup->src_clk_freq);
++	if (ret)
++		return ret;
++
+ 	enable_irq(qup->irq);
+ 	ret = qup_i2c_req_dma(qup);
+ 
+@@ -1643,6 +1672,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
+ 	config = readl(qup->base + QUP_CONFIG);
+ 	config |= QUP_CLOCK_AUTO_GATE;
+ 	writel(config, qup->base + QUP_CONFIG);
++	qup_i2c_vote_bw(qup, 0);
+ 	clk_disable_unprepare(qup->pclk);
+ }
+ 
+@@ -1743,6 +1773,11 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 			goto fail_dma;
+ 		}
+ 		qup->is_dma = true;
++
++		qup->icc_path = devm_of_icc_get(&pdev->dev, NULL);
++		if (IS_ERR(qup->icc_path))
++			return dev_err_probe(&pdev->dev, PTR_ERR(qup->icc_path),
++					     "failed to get interconnect path\n");
+ 	}
+ 
+ nodma:
+@@ -1791,6 +1826,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 		qup_i2c_enable_clocks(qup);
+ 		src_clk_freq = clk_get_rate(qup->clk);
+ 	}
++	qup->src_clk_freq = src_clk_freq;
+ 
+ 	/*
+ 	 * Bootloaders might leave a pending interrupt on certain QUP's,
 -- 
 2.39.5
 
