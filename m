@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-147495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9BAAC57E6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB214AC5458
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E40E171CF1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADFAB188B458
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AD41DC998;
-	Tue, 27 May 2025 17:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC50194A67;
+	Tue, 27 May 2025 16:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmFThx4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnPi3VTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6422827CCF0;
-	Tue, 27 May 2025 17:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282DB27FB0C;
+	Tue, 27 May 2025 16:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367514; cv=none; b=PGs7boTLWvqOrPpi+2Cfa/6X1bYY0cpxMv93s+lKo6m960h/GeJehzW+ntFUYwr2kSITxOSFaLfDZS24BfzSGJHW7Uyeqcv4SkF26gvHdutxe9wylG410FZP12P2hGJ0w5OrysT3kiwkgOV/Co+GVGO4KPQmhPkWsTbcemo3lSE=
+	t=1748365162; cv=none; b=YRokGDW2QqbH99XvQmwoYZCU3WXbHWMZJXCBDYkw18K0AmhtictmEl/xZ0UjCXfJ2JC+YDqV60JaHPnjw65AbewFjAA47nMnw6VfZmHi6+qbsaynKckPO7hjl1VhzCvbvEb92BCTm3egahPGh6AhWZu9aIOzVMZmsvuIE3gJbyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367514; c=relaxed/simple;
-	bh=HNNyMe2oTO/quMmGgdvtlfejLuloyJLetDSH45jDIao=;
+	s=arc-20240116; t=1748365162; c=relaxed/simple;
+	bh=SXweyudoxjz15hm9qY7JErAZ+i5Ea/3yiT3XOpUnJO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4QSJre6EKW1I7RfP5aOIsoA6AVS5G8vsLMtBD0Yem4Y2anxRKScvQ8McFHIHwPZ5/SUnT0IrjuxkeTPnZ0Ro3lrw31yFJwmOHmBdTHF7Pc+HWoRVobDatbLDD09HSMRhQyoOZMEl/kUlMI09CaSZ3eERjyE2jUFoFDBK6t3cYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmFThx4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77A8C4CEE9;
-	Tue, 27 May 2025 17:38:33 +0000 (UTC)
+	 MIME-Version; b=kR0DPhwyPXQFbp2qZGbrVSAErILfm9vVloMfaGJWaXKXTciFUgcbAhxLlim18c70qo3FkrMAfktuN8QIbL7YMYQWthQ89nDO2nKLFdvrurd7gKTmPS7DQz6OOyZYC0HNyl+u4uqGkFznM+i+F3m44dJunjmd5jYW9rIUsVcSusM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnPi3VTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD80C4CEEB;
+	Tue, 27 May 2025 16:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367514;
-	bh=HNNyMe2oTO/quMmGgdvtlfejLuloyJLetDSH45jDIao=;
+	s=korg; t=1748365158;
+	bh=SXweyudoxjz15hm9qY7JErAZ+i5Ea/3yiT3XOpUnJO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmFThx4jFZKmDzUJ5buFbRBUiE9VI1i+j7Mgia6tExVj8ZWsmo8P2CohjyDDHSzSb
-	 +Brd4KXrKIhW2GHyUReS/RK6Si2XT2Z6CUD7xIDxc7xKX1yJODVMAA7Pk9jtv5NfLg
-	 mfGRKgb2ikzy9DJGxZXPeuOZLorxVpzO5yOotVKc=
+	b=VnPi3VTG5VDWgFMroWPg2nL+/yCdNKce14qvAj7vMdE1vGAzIMZkJR7L5BzJm1RGd
+	 5/hN4lp93c0SMZ2jDUz/k5cioJayGVkCBJKa657Zpl3OAUMx139oJeJQRw59TgrPNV
+	 BiWqHZu/vm79dXhyLV77HE6sNrDmqu++NqYNtJNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Nir Lichtman <nir@lichtman.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Masahiro Yamada <yamada.masahiro@socionext.com>,
+	Michal Marek <michal.lkml@markovi.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 382/783] MIPS: Use arch specific syscall name match function
+Subject: [PATCH 6.12 286/626] x86/build: Fix broken copy command in genimage.sh when making isoimage
 Date: Tue, 27 May 2025 18:22:59 +0200
-Message-ID: <20250527162528.648759805@linuxfoundation.org>
+Message-ID: <20250527162456.652220434@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Nir Lichtman <nir@lichtman.org>
 
-[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
+[ Upstream commit e451630226bd09dc730eedb4e32cab1cc7155ae8 ]
 
-On MIPS system, most of the syscall function name begin with prefix
-sys_. Some syscalls are special such as clone/fork, function name of
-these begin with __sys_. Since scratch registers need be saved in
-stack when these system calls happens.
+Problem: Currently when running the "make isoimage" command there is an
+error related to wrong parameters passed to the cp command:
 
-With ftrace system call method, system call functions are declared with
-SYSCALL_DEFINEx, metadata of the system call symbol name begins with
-sys_. Here mips specific function arch_syscall_match_sym_name is used to
-compare function name between sys_call_table[] and metadata of syscall
-symbol.
+  "cp: missing destination file operand after 'arch/x86/boot/isoimage/'"
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+This is caused because FDINITRDS is an empty array.
+
+Solution: Check if FDINITRDS is empty before executing the "cp" command,
+similar to how it is done in the case of hdimage.
+
+Signed-off-by: Nir Lichtman <nir@lichtman.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Link: https://lore.kernel.org/r/20250110120500.GA923218@lichtman.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/x86/boot/genimage.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
-index dc025888f6d28..b41fc10446688 100644
---- a/arch/mips/include/asm/ftrace.h
-+++ b/arch/mips/include/asm/ftrace.h
-@@ -91,4 +91,20 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
- 
- #endif /* __ASSEMBLY__ */
- #endif /* CONFIG_FUNCTION_TRACER */
-+
-+#ifdef CONFIG_FTRACE_SYSCALLS
-+#ifndef __ASSEMBLY__
-+/*
-+ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
-+ * for instance). We should also match the sys_ variant with those.
-+ */
-+#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
-+static inline bool arch_syscall_match_sym_name(const char *sym,
-+					       const char *name)
-+{
-+	return !strcmp(sym, name) ||
-+		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
-+}
-+#endif /* __ASSEMBLY__ */
-+#endif /* CONFIG_FTRACE_SYSCALLS */
- #endif /* _ASM_MIPS_FTRACE_H */
+diff --git a/arch/x86/boot/genimage.sh b/arch/x86/boot/genimage.sh
+index c9299aeb7333e..3882ead513f74 100644
+--- a/arch/x86/boot/genimage.sh
++++ b/arch/x86/boot/genimage.sh
+@@ -22,6 +22,7 @@
+ # This script requires:
+ #   bash
+ #   syslinux
++#   genisoimage
+ #   mtools (for fdimage* and hdimage)
+ #   edk2/OVMF (for hdimage)
+ #
+@@ -251,7 +252,9 @@ geniso() {
+ 	cp "$isolinux" "$ldlinux" "$tmp_dir"
+ 	cp "$FBZIMAGE" "$tmp_dir"/linux
+ 	echo default linux "$KCMDLINE" > "$tmp_dir"/isolinux.cfg
+-	cp "${FDINITRDS[@]}" "$tmp_dir"/
++	if [ ${#FDINITRDS[@]} -gt 0 ]; then
++		cp "${FDINITRDS[@]}" "$tmp_dir"/
++	fi
+ 	genisoimage -J -r -appid 'LINUX_BOOT' -input-charset=utf-8 \
+ 		    -quiet -o "$FIMAGE" -b isolinux.bin \
+ 		    -c boot.cat -no-emul-boot -boot-load-size 4 \
 -- 
 2.39.5
 
