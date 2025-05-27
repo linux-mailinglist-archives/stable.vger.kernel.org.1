@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-146473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07967AC534C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:45:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B080FAC56BA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7553BDD27
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:45:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6CD1BA7C74
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C0727FD67;
-	Tue, 27 May 2025 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780BB27FD73;
+	Tue, 27 May 2025 17:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUKaWlT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDiymfLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F56C27FD5A;
-	Tue, 27 May 2025 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B681E89C;
+	Tue, 27 May 2025 17:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364327; cv=none; b=evvNJUd+MLpPqnvsQgZQH51q+XIyP5d2uPY0IzRkEpAWz0sWHz19cLK570+rRvNRdfOETKvhdHOqhqPnVrWvXq9GEIeGLWxIIzC6Z7DiwEWje2Zr/giO+FC0A9meWbpdgcyEO2gHLdVNhMPh1VcLnHNCyyPLrZhIqFCgDsJZlok=
+	t=1748366674; cv=none; b=lWADGcbvEIj1Q9oND602h0iSk4vnv90FOZ8DQ2AXHWMoM+6A1EhKyDNAX63+maKWjB/8+K9hb1N2ZkP9REWBJrIUFRz94xt6jELnPtyImMB84TQwzS8aSgr7gvSH8w9H++VvAlaeZktPsxlI5czqnfmDmWqVLz7heJE4aO2r2Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364327; c=relaxed/simple;
-	bh=te1oUk36MBdrZiyOCEs09124/Cqq/UMyHsPuCQv4Y2k=;
+	s=arc-20240116; t=1748366674; c=relaxed/simple;
+	bh=/JeT/8e0Imz6O7qt/Rvyrb+3tYXpCH9rYO8QS3Z0+QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ld3Pgj4OL4ZtA4Td0I+NZo2/5eyYNOsLWMSs1J8Y1pAFgm2mJt80jLQHLazBXRcbUtgHgBa0F8rzFB23Wk+4VjJ1/nGSM9dCLo7dAi/UVWPEF5iWXpyA8hvXtQro+oDkXqkTXHQenYZ9lFdKVPSs3XW8NRtPkQeH9L6qrMg/ZcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUKaWlT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AEAC4CEE9;
-	Tue, 27 May 2025 16:45:26 +0000 (UTC)
+	 MIME-Version; b=ovOg325Pobe+Y6TkqzsjYsCNikUsKggealx7Z/new7CTwrVOPdmQKxYUSxa1wVD2jUTyl7/p3bQedaTcvyG4f5i5a3Wyjhuvj8cweXeVzNziIuFtADqf2d8MotXvXiBd1teVxKdBzS5TWe5JYUo2KWQYwVw+vBS2bgf5rNYu1Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDiymfLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF79BC4CEE9;
+	Tue, 27 May 2025 17:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364327;
-	bh=te1oUk36MBdrZiyOCEs09124/Cqq/UMyHsPuCQv4Y2k=;
+	s=korg; t=1748366674;
+	bh=/JeT/8e0Imz6O7qt/Rvyrb+3tYXpCH9rYO8QS3Z0+QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUKaWlT4dtIOjl5UpvpQHCK1trJtAp+TfSsrRMfSHn1xM8Vu6wn8swep8y3H5crtY
-	 G0Yd0Rihw9KLkRRNHPEDOp7+Ii35VqOunpf0QRbI3IRePYAutG4r5h6cvDmLZEZ/Wl
-	 ZBCooBVCRrMdm/6c05msaRm4IzVeJmbf4OH+mBkk=
+	b=yDiymfLC25BNzGRQoyMJXh8YDpiLaP4DvlES7H5A1O5ImxrHiZFx9YRVTiZYblSZE
+	 rbaPb2MUcke9bX3hLDpd4m/BlX9Qch3KHWGmdkCGEZrsNCyw7k36Horj/6ZwDxx8Ei
+	 1IEkZ/Jz9GJ5NxgpB8EzInldDfGTcC5edQdqjnm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/626] intel_th: avoid using deprecated page->mapping, index fields
+Subject: [PATCH 6.14 117/783] wifi: mt76: mt7996: use the correct vif link for scanning/roc
 Date: Tue, 27 May 2025 18:18:34 +0200
-Message-ID: <20250527162445.928902759@linuxfoundation.org>
+Message-ID: <20250527162517.913482213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 8e553520596bbd5ce832e26e9d721e6a0c797b8b ]
+[ Upstream commit 13b4c81083cc4b59fb639a511c0a9a7c38efde7e ]
 
-The struct page->mapping, index fields are deprecated and soon to be only
-available as part of a folio.
+Use the newly added offchannel_link pointer in vif data
 
-It is likely the intel_th code which sets page->mapping, index is was
-implemented out of concern that some aspect of the page fault logic may
-encounter unexpected problems should they not.
-
-However, the appropriate interface for inserting kernel-allocated memory is
-vm_insert_page() in a VM_MIXEDMAP. By using the helper function
-vmf_insert_mixed() we can do this with minimal churn in the existing fault
-handler.
-
-By doing so, we bypass the remainder of the faulting logic. The pages are
-still pinned so there is no possibility of anything unexpected being done
-with the pages once established.
-
-It would also be reasonable to pre-map everything on fault, however to
-minimise churn we retain the fault handler.
-
-We also eliminate all code which clears page->mapping on teardown as this
-has now become unnecessary.
-
-The MSU code relies on faulting to function correctly, so is by definition
-dependent on CONFIG_MMU. We avoid spurious reports about compilation
-failure for unsupported platforms by making this requirement explicit in
-Kconfig as part of this change too.
-
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Link: https://lore.kernel.org/r/20250331125608.60300-1-lorenzo.stoakes@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250311103646.43346-5-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/Kconfig |  1 +
- drivers/hwtracing/intel_th/msu.c   | 31 +++++++-----------------------
- 2 files changed, 8 insertions(+), 24 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 40 +++++++++++++------
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  1 +
+ 2 files changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/hwtracing/intel_th/Kconfig b/drivers/hwtracing/intel_th/Kconfig
-index 4b6359326ede9..4f7d2b6d79e29 100644
---- a/drivers/hwtracing/intel_th/Kconfig
-+++ b/drivers/hwtracing/intel_th/Kconfig
-@@ -60,6 +60,7 @@ config INTEL_TH_STH
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 019c925ae600e..88f9d9059d5f2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -832,7 +832,8 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 	u8 band_idx = (info->hw_queue & MT_TX_HW_QUEUE_PHY) >> 2;
+ 	u8 p_fmt, q_idx, omac_idx = 0, wmm_idx = 0;
+ 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
+-	struct mt76_vif_link *mvif;
++	struct mt76_vif_link *mlink = NULL;
++	struct mt7996_vif *mvif;
+ 	u16 tx_count = 15;
+ 	u32 val;
+ 	bool inband_disc = !!(changed & (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
+@@ -840,11 +841,18 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 	bool beacon = !!(changed & (BSS_CHANGED_BEACON |
+ 				    BSS_CHANGED_BEACON_ENABLED)) && (!inband_disc);
  
- config INTEL_TH_MSU
- 	tristate "Intel(R) Trace Hub Memory Storage Unit"
-+	depends on MMU
- 	help
- 	  Memory Storage Unit (MSU) trace output device enables
- 	  storing STP traces to system memory. It supports single
-diff --git a/drivers/hwtracing/intel_th/msu.c b/drivers/hwtracing/intel_th/msu.c
-index 66123d684ac9e..93b65a9731d72 100644
---- a/drivers/hwtracing/intel_th/msu.c
-+++ b/drivers/hwtracing/intel_th/msu.c
-@@ -19,6 +19,7 @@
- #include <linux/io.h>
- #include <linux/workqueue.h>
- #include <linux/dma-mapping.h>
-+#include <linux/pfn_t.h>
- 
- #ifdef CONFIG_X86
- #include <asm/set_memory.h>
-@@ -967,7 +968,6 @@ static void msc_buffer_contig_free(struct msc *msc)
- 	for (off = 0; off < msc->nr_pages << PAGE_SHIFT; off += PAGE_SIZE) {
- 		struct page *page = virt_to_page(msc->base + off);
- 
--		page->mapping = NULL;
- 		__free_page(page);
+-	mvif = vif ? (struct mt76_vif_link *)vif->drv_priv : NULL;
+-	if (mvif) {
+-		omac_idx = mvif->omac_idx;
+-		wmm_idx = mvif->wmm_idx;
+-		band_idx = mvif->band_idx;
++	if (vif) {
++		mvif = (struct mt7996_vif *)vif->drv_priv;
++		if (wcid->offchannel)
++			mlink = rcu_dereference(mvif->mt76.offchannel_link);
++		if (!mlink)
++			mlink = &mvif->deflink.mt76;
++	}
++
++	if (mlink) {
++		omac_idx = mlink->omac_idx;
++		wmm_idx = mlink->wmm_idx;
++		band_idx = mlink->band_idx;
  	}
  
-@@ -1149,9 +1149,6 @@ static void __msc_buffer_win_free(struct msc *msc, struct msc_window *win)
- 	int i;
+ 	if (inband_disc) {
+@@ -910,13 +918,13 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 			     is_multicast_ether_addr(hdr->addr1);
+ 		u8 idx = MT7996_BASIC_RATES_TBL;
  
- 	for_each_sg(win->sgt->sgl, sg, win->nr_segs, i) {
--		struct page *page = msc_sg_page(sg);
--
--		page->mapping = NULL;
- 		dma_free_coherent(msc_dev(win->msc)->parent->parent, PAGE_SIZE,
- 				  sg_virt(sg), sg_dma_address(sg));
+-		if (mvif) {
+-			if (mcast && mvif->mcast_rates_idx)
+-				idx = mvif->mcast_rates_idx;
+-			else if (beacon && mvif->beacon_rates_idx)
+-				idx = mvif->beacon_rates_idx;
++		if (mlink) {
++			if (mcast && mlink->mcast_rates_idx)
++				idx = mlink->mcast_rates_idx;
++			else if (beacon && mlink->beacon_rates_idx)
++				idx = mlink->beacon_rates_idx;
+ 			else
+-				idx = mvif->basic_rates_idx;
++				idx = mlink->basic_rates_idx;
+ 		}
+ 
+ 		val = FIELD_PREP(MT_TXD6_TX_RATE, idx) | MT_TXD6_FIXED_BW;
+@@ -984,8 +992,14 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 
+ 	if (vif) {
+ 		struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++		struct mt76_vif_link *mlink = NULL;
++
++		if (wcid->offchannel)
++			mlink = rcu_dereference(mvif->mt76.offchannel_link);
++		if (!mlink)
++			mlink = &mvif->deflink.mt76;
+ 
+-		txp->fw.bss_idx = mvif->deflink.mt76.idx;
++		txp->fw.bss_idx = mlink->idx;
  	}
-@@ -1592,22 +1589,10 @@ static void msc_mmap_close(struct vm_area_struct *vma)
- {
- 	struct msc_iter *iter = vma->vm_file->private_data;
- 	struct msc *msc = iter->msc;
--	unsigned long pg;
  
- 	if (!atomic_dec_and_mutex_lock(&msc->mmap_count, &msc->buf_mutex))
- 		return;
+ 	txp->fw.token = cpu_to_le16(id);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 980a059b3b38f..b01cc7ef47999 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -249,6 +249,7 @@ int mt7996_vif_link_add(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 	mlink->band_idx = band_idx;
+ 	mlink->wmm_idx = vif->type == NL80211_IFTYPE_AP ? 0 : 3;
+ 	mlink->wcid = &link->sta.wcid;
++	mlink->wcid->offchannel = mlink->offchannel;
  
--	/* drop page _refcounts */
--	for (pg = 0; pg < msc->nr_pages; pg++) {
--		struct page *page = msc_buffer_get_page(msc, pg);
--
--		if (WARN_ON_ONCE(!page))
--			continue;
--
--		if (page->mapping)
--			page->mapping = NULL;
--	}
--
- 	/* last mapping -- drop user_count */
- 	atomic_dec(&msc->user_count);
- 	mutex_unlock(&msc->buf_mutex);
-@@ -1617,16 +1602,14 @@ static vm_fault_t msc_mmap_fault(struct vm_fault *vmf)
- {
- 	struct msc_iter *iter = vmf->vma->vm_file->private_data;
- 	struct msc *msc = iter->msc;
-+	struct page *page;
- 
--	vmf->page = msc_buffer_get_page(msc, vmf->pgoff);
--	if (!vmf->page)
-+	page = msc_buffer_get_page(msc, vmf->pgoff);
-+	if (!page)
- 		return VM_FAULT_SIGBUS;
- 
--	get_page(vmf->page);
--	vmf->page->mapping = vmf->vma->vm_file->f_mapping;
--	vmf->page->index = vmf->pgoff;
--
--	return 0;
-+	get_page(page);
-+	return vmf_insert_mixed(vmf->vma, vmf->address, page_to_pfn_t(page));
- }
- 
- static const struct vm_operations_struct msc_mmap_ops = {
-@@ -1667,7 +1650,7 @@ static int intel_th_msc_mmap(struct file *file, struct vm_area_struct *vma)
- 		atomic_dec(&msc->user_count);
- 
- 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
--	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTCOPY);
-+	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTCOPY | VM_MIXEDMAP);
- 	vma->vm_ops = &msc_mmap_ops;
- 	return ret;
- }
+ 	ret = mt7996_mcu_add_dev_info(phy, vif, link_conf, mlink, true);
+ 	if (ret)
 -- 
 2.39.5
 
