@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FC2AC56BF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB84AC5351
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31DE58A3731
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:24:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8052C3BEFE5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF5B27FD73;
-	Tue, 27 May 2025 17:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FABB27F737;
+	Tue, 27 May 2025 16:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrozxtlD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3/zdGpN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8420627FD6E;
-	Tue, 27 May 2025 17:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118D127C856;
+	Tue, 27 May 2025 16:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366692; cv=none; b=Pw74tac41eNPGEnBUgPQBiAe0Degj6PSdUUDqEwmOI1c/X09y8Tc35JzOi0uuIbrcsjVIxXU9afTkxVSmelnbSjrFQDnSEGmzterj/8YS8C/rz6Pt1275nnlH8BeMKDpJJtEvxHtVkZUgWXKiV9PfJe0g0zPxraVjaaHjZwAnkQ=
+	t=1748364336; cv=none; b=MjLq7HCaXLLZJV5ZT9TeVbCbpPzr3BWpIdtbBjQ3J/dWzN3qNUwOhhbbeM0Xa0uJ3cOt5SAsBupkBX73cTf73gBb33tpgYeMkOsgyoGbSl5Y2Eh6dceLMCRLm5SLTxY/qPzQDPeiXi37ASFPh1XFsAcf4dc4SjVqHOUKkc7VEE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366692; c=relaxed/simple;
-	bh=CimIsZoKUcMt+tFESbFN+ZspBRCiMOGX8MPXb6CHx98=;
+	s=arc-20240116; t=1748364336; c=relaxed/simple;
+	bh=bmOb30sKa70WIX/AM/DLicQd4vguY0/jAlPsJJXiXHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJzQFLncmvv8Jh3WwiqqnSup074BelcoYsdowKKPUYx7LOygg/IXx1HwnWeGlFnWUKf9AXVlHo/LmpgKvKReTr7aPt6+wu/K5SLj/foi0351XVnT64zFdCL2rKTWpcqyrOkCaH+pOvesW1wdFa+cC8As09qWmqHQpU5hUwzHjbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrozxtlD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF789C4CEED;
-	Tue, 27 May 2025 17:24:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=facj+WESf3SAOVhc3NcvP1X/zC6qy6ePBm9n7BqXjaUDZDJHTCEfL62+0PLWTcZnsRTV5WSet1Fh4IsIxmtquQx222/xWNA6bQd+XH5nwNFvYAKZzkhrwYNk/yPzH3mV2OfvtuyR26K5TSLVvBVjd3Ttd3PDdNoSVDXXy7MWlf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3/zdGpN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934EEC4CEE9;
+	Tue, 27 May 2025 16:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366692;
-	bh=CimIsZoKUcMt+tFESbFN+ZspBRCiMOGX8MPXb6CHx98=;
+	s=korg; t=1748364335;
+	bh=bmOb30sKa70WIX/AM/DLicQd4vguY0/jAlPsJJXiXHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vrozxtlDkH2x530jJCeZDhv/IrDNFmm62LYYxYKfW+8K6yy8cB7IicjB3gD0Z6YHM
-	 KKebxyRkK1wA4pf1MDYLE6+5+z70lBCUHUgS3+T+oZyJpTzgDbv6VXiPc0vP/qFJKo
-	 YLZSpJkFxWKwR84MoxqdHlqb8la7Ft04n7BxuKY8=
+	b=l3/zdGpN0nz/pC1giYTzD7M2Q0870t2ErZb1cGLjungmDNwQ38mO1TS4dnX3qB30t
+	 dhkjr3UfF0P/iyRI6r7cffPidxfB6ON6IwhUZ/Cw+0n5efB03M+Iy4dYpNhIDMHT9f
+	 kHjBVVvTj8CuXiFgE7+OLLBpzRHy8U63XyfZuuMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	gao xu <gaoxu2@honor.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 120/783] wifi: mt76: mt7996: revise TXS size
+Subject: [PATCH 6.12 024/626] cgroup: Fix compilation issue due to cgroup_mutex not being exported
 Date: Tue, 27 May 2025 18:18:37 +0200
-Message-ID: <20250527162518.033398283@linuxfoundation.org>
+Message-ID: <20250527162446.054571661@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: gaoxu <gaoxu2@honor.com>
 
-[ Upstream commit 593c829b4326f7b3b15a69e97c9044ecbad3c319 ]
+[ Upstream commit 87c259a7a359e73e6c52c68fcbec79988999b4e6 ]
 
-Size of MPDU/PPDU TXS is 12 DWs.
-In mt7996/mt7992, last 4 DWs are reserved, so TXS size was mistakenly
-considered to be 8 DWs. However, in mt7990, 9th DW of TXS starts to be used.
+When adding folio_memcg function call in the zram module for
+Android16-6.12, the following error occurs during compilation:
+ERROR: modpost: "cgroup_mutex" [../soc-repo/zram.ko] undefined!
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Link: https://patch.msgid.link/20250311103646.43346-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+This error is caused by the indirect call to lockdep_is_held(&cgroup_mutex)
+within folio_memcg. The export setting for cgroup_mutex is controlled by
+the CONFIG_PROVE_RCU macro. If CONFIG_LOCKDEP is enabled while
+CONFIG_PROVE_RCU is not, this compilation error will occur.
+
+To resolve this issue, add a parallel macro CONFIG_LOCKDEP control to
+ensure cgroup_mutex is properly exported when needed.
+
+Signed-off-by: gao xu <gaoxu2@honor.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h | 3 +++
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c       | 4 ++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ kernel/cgroup/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-index db0c29e65185c..487ad716f872a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-@@ -314,6 +314,9 @@ enum tx_frag_idx {
- #define MT_TXFREE_INFO_COUNT		GENMASK(27, 24)
- #define MT_TXFREE_INFO_STAT		GENMASK(29, 28)
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index e63d6f3b00470..62933468aaf46 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -90,7 +90,7 @@
+ DEFINE_MUTEX(cgroup_mutex);
+ DEFINE_SPINLOCK(css_set_lock);
  
-+#define MT_TXS_HDR_SIZE			4 /* Unit: DW */
-+#define MT_TXS_SIZE			12 /* Unit: DW */
-+
- #define MT_TXS0_BW			GENMASK(31, 29)
- #define MT_TXS0_TID			GENMASK(28, 26)
- #define MT_TXS0_AMPDU			BIT(25)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 88f9d9059d5f2..c7e8336027334 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1413,7 +1413,7 @@ bool mt7996_rx_check(struct mt76_dev *mdev, void *data, int len)
- 		mt7996_mac_tx_free(dev, data, len);
- 		return false;
- 	case PKT_TYPE_TXS:
--		for (rxd += 4; rxd + 8 <= end; rxd += 8)
-+		for (rxd += MT_TXS_HDR_SIZE; rxd + MT_TXS_SIZE <= end; rxd += MT_TXS_SIZE)
- 			mt7996_mac_add_txs(dev, rxd);
- 		return false;
- 	case PKT_TYPE_RX_FW_MONITOR:
-@@ -1456,7 +1456,7 @@ void mt7996_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 		mt7996_mcu_rx_event(dev, skb);
- 		break;
- 	case PKT_TYPE_TXS:
--		for (rxd += 4; rxd + 8 <= end; rxd += 8)
-+		for (rxd += MT_TXS_HDR_SIZE; rxd + MT_TXS_SIZE <= end; rxd += MT_TXS_SIZE)
- 			mt7996_mac_add_txs(dev, rxd);
- 		dev_kfree_skb(skb);
- 		break;
+-#ifdef CONFIG_PROVE_RCU
++#if (defined CONFIG_PROVE_RCU || defined CONFIG_LOCKDEP)
+ EXPORT_SYMBOL_GPL(cgroup_mutex);
+ EXPORT_SYMBOL_GPL(css_set_lock);
+ #endif
 -- 
 2.39.5
 
