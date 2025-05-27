@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-147213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D620AC56AB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B3DAC535F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A06653AC105
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C73101BA3A4E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A186627FD64;
-	Tue, 27 May 2025 17:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D187C27C856;
+	Tue, 27 May 2025 16:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09aBQ8lR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpnqrJvT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAAD27F4CB;
-	Tue, 27 May 2025 17:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAD1AD5A;
+	Tue, 27 May 2025 16:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366637; cv=none; b=OHsZO728Qz7m3BE5Uq/zSSPZwYGdErO68pZaMjhtCFvrSoSfNcj8tksKKu/G+0/SIcKz4QSrIVJbuI6yJ8v/mn0jFuAdU68gakM/fh5yKZDNa0hXJPKCcSJppztGP2EUW+cdT6X4uSwcS9wKi5OIj8oMNxbYPcz1ANeDimtAmT8=
+	t=1748364382; cv=none; b=VehlmoRonIm3Fw1AOah70+kAXfPRKJqOwRh0JtTC+uLg1hhBwL9WBwsK3gh/tTke9fpQui48YyL/hEb6D+GDdXL0D8E0egKhkc/xhgvdLRVe3CodLl7+2d4FIeFhqy93AFlLPCGtLGCR0lYirVL2HAbDYECFvE95tR415XjNDa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366637; c=relaxed/simple;
-	bh=7doVSZOSS47QVYFIMItb6Z9WJTLNdrnuAOsqGkbkQS4=;
+	s=arc-20240116; t=1748364382; c=relaxed/simple;
+	bh=CJQomE37qASmb2ae0Bb2kxLrDga+xCcYrkIY2uqU/tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=beEebGXVnl2yZ8rfBXYIycZpa1NW4SBbD3IQM8bBIcH0zfJjfn3a4YVuxaUKJqTeD4KkyDo96QVu7RZvWuoM1Ix6pXmqUMFMFf5/sjv9bDZ9Lp1B9gKib4w+Ft5qzzKWNShx+A1QlcYbH+CbwJ1FabUsMjLQwXls+6TGnu/QYUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09aBQ8lR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B890C4CEE9;
-	Tue, 27 May 2025 17:23:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f5fv2VNEWB0FYFu04J7SCv9vh3g5tHBTW8MSEwGictdngshuP4UP+702vR1wFhJ/46PHANXvei+4VNvSUvPLLdx8B6Z3L6KoVi9VTJsaPZ80m9peDcL0JDRraDDqOy1bFIiBTb7853uESU4uV+wqy8Dqv2Pa2TCKcLM395Ujd2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpnqrJvT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EA0C4CEE9;
+	Tue, 27 May 2025 16:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366636;
-	bh=7doVSZOSS47QVYFIMItb6Z9WJTLNdrnuAOsqGkbkQS4=;
+	s=korg; t=1748364382;
+	bh=CJQomE37qASmb2ae0Bb2kxLrDga+xCcYrkIY2uqU/tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09aBQ8lRDqlf2g7ouwoePWiDuW2jcIwuzPga94p6yzug5hq9D6uQ0nUQbbbqWfXRS
-	 PoGoPNIqDlir7VHVFuMt0z5+vfuQLygFK86D+LjoQ9WrI4MuJCE6N6GrOo++2OxWfR
-	 jZDWE+dNJ2EUt2x1h/K8d1Kcir7eF4/97pKt+nvY=
+	b=lpnqrJvTnEQVtE2SSCr5fE27LvAaf1sTHzi5u+nG51E94ADOudO9u33rZWE2s01sG
+	 j+swFu5AytnNU3gQ7PHyvqhoXYcD/3BD6WxFj2X6D/lbtHdaRx1Uh063V/3UmN1l7W
+	 d3U72MTZqx+1aYyG+JJx71kYCXKlwmMaYHeaQdpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	"Hao (Claire) Zhou" <hao.zhou@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 133/783] i2c: pxa: fix call balance of i2c->clk handling routines
-Date: Tue, 27 May 2025 18:18:50 +0200
-Message-ID: <20250527162518.572808447@linuxfoundation.org>
+Subject: [PATCH 6.12 038/626] drm/amdgpu: Allow P2P access through XGMI
+Date: Tue, 27 May 2025 18:18:51 +0200
+Message-ID: <20250527162446.613066873@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Felix Kuehling <felix.kuehling@amd.com>
 
-[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
+[ Upstream commit a92741e72f91b904c1d8c3d409ed8dbe9c1f2b26 ]
 
-If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
-disabled in any path.
+If peer memory is accessible through XGMI, allow leaving it in VRAM
+rather than forcing its migration to GTT on DMABuf attachment.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Tested-by: Hao (Claire) Zhou <hao.zhou@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 372c8d72c3680fdea3fbb2d6b089f76b4a6d596a)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pxa.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 30 ++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
-index cb69884826739..4415a29f749b9 100644
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -1503,7 +1503,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
- 				i2c->adap.name);
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+index 2f90fff1b9ddc..e63a32c214475 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -42,6 +42,29 @@
+ #include <linux/dma-fence-array.h>
+ #include <linux/pci-p2pdma.h>
  
--	clk_prepare_enable(i2c->clk);
-+	ret = clk_prepare_enable(i2c->clk);
-+	if (ret)
-+		return dev_err_probe(&dev->dev, ret,
-+				     "failed to enable clock\n");
++static const struct dma_buf_attach_ops amdgpu_dma_buf_attach_ops;
++
++/**
++ * dma_buf_attach_adev - Helper to get adev of an attachment
++ *
++ * @attach: attachment
++ *
++ * Returns:
++ * A struct amdgpu_device * if the attaching device is an amdgpu device or
++ * partition, NULL otherwise.
++ */
++static struct amdgpu_device *dma_buf_attach_adev(struct dma_buf_attachment *attach)
++{
++	if (attach->importer_ops == &amdgpu_dma_buf_attach_ops) {
++		struct drm_gem_object *obj = attach->importer_priv;
++		struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
++
++		return amdgpu_ttm_adev(bo->tbo.bdev);
++	}
++
++	return NULL;
++}
++
+ /**
+  * amdgpu_dma_buf_attach - &dma_buf_ops.attach implementation
+  *
+@@ -53,11 +76,13 @@
+ static int amdgpu_dma_buf_attach(struct dma_buf *dmabuf,
+ 				 struct dma_buf_attachment *attach)
+ {
++	struct amdgpu_device *attach_adev = dma_buf_attach_adev(attach);
+ 	struct drm_gem_object *obj = dmabuf->priv;
+ 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
+ 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
  
- 	if (i2c->use_pio) {
- 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
+-	if (pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
++	if (!amdgpu_dmabuf_is_xgmi_accessible(attach_adev, bo) &&
++	    pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
+ 		attach->peer2peer = false;
+ 
+ 	return 0;
+@@ -456,6 +481,9 @@ bool amdgpu_dmabuf_is_xgmi_accessible(struct amdgpu_device *adev,
+ 	struct drm_gem_object *obj = &bo->tbo.base;
+ 	struct drm_gem_object *gobj;
+ 
++	if (!adev)
++		return false;
++
+ 	if (obj->import_attach) {
+ 		struct dma_buf *dma_buf = obj->import_attach->dmabuf;
+ 
 -- 
 2.39.5
 
