@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-146486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5531AC5359
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 638C8AC56A7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFB794A1044
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4831416FB4B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC371AD5A;
-	Tue, 27 May 2025 16:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164381D88D7;
+	Tue, 27 May 2025 17:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqTGIYl3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqlbWW28"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97527194A67;
-	Tue, 27 May 2025 16:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A2B1E89C;
+	Tue, 27 May 2025 17:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364366; cv=none; b=fc7nA/mLR9iYA1/QQnti0fyyNRE4aNM2sKIjlb20q9HBf+zBRRO+ePBsWBfMJHjayh/24FUx1Q8EM2vcP7zI09asYPOCLgSRvtSS4AULYS3wk05LePrJsNvBB8YNkjB2Nyi9EAUxZWRAnWT8e8HahI4agyiIJTmEIHkqsyxezn8=
+	t=1748366627; cv=none; b=qdTdUSIlMYtg3uNwV/D34ZFXsn2sOj98EUHg2X++U8PHlqQOhSovwwzyC5URYsGS7GEQH9jv9ihWh6IEeus4IF4f7lEPwrGQTJa6WDuTs7Zd7vlSW4B35EJAxLn5dgzquc8jb4Rk0u/4KSvJuxrQE/VEPAOaNr2alHGG2tgImFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364366; c=relaxed/simple;
-	bh=oyFtLuaVKvsJFxssws/Q3a2ZUNcsvlN2PqpbSj3fg/w=;
+	s=arc-20240116; t=1748366627; c=relaxed/simple;
+	bh=t39FoV0CA4Omo/tGWUrpwxRywBb/wpdJyoQAuetdpEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdoB8vbVUshIKVE6S4Q0X8ajOA2c++mJiOio1GMLXdt6bmpymkhlOqnBYt52Hkco7Z4SBVkCeQfUwig53xXLUgFfGeD5h/apOp5sTHswLQAPwM4vy2wAtdjyya3peT200ixhhd11A5cUcdXZOjuFN5Kn1PJabOm36aMv9ea/dwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqTGIYl3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AAAC4CEE9;
-	Tue, 27 May 2025 16:46:05 +0000 (UTC)
+	 MIME-Version; b=aanzlNaCFhn3VArgRTTaHuRq8Kpp9iIJUdrca5IqcEPqIXuOO7I/azV7HAes8EQAHtqwmDzBZ2zXZrRf/aFZ74qkKYyK+FLjRc1xMoYBkaEE7ogcEnCB65kIn3nUq67PYOhjtw6xWDrwVUX5xPEf0/KpuIpgcSbiWMpNR7KjoxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqlbWW28; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F10C4CEE9;
+	Tue, 27 May 2025 17:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364366;
-	bh=oyFtLuaVKvsJFxssws/Q3a2ZUNcsvlN2PqpbSj3fg/w=;
+	s=korg; t=1748366627;
+	bh=t39FoV0CA4Omo/tGWUrpwxRywBb/wpdJyoQAuetdpEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqTGIYl3gfI9vHRTaR4c+pvaKnFINus8e/hHMpmTAZyV/RWirSZVburxHjI4//0FV
-	 Erfa4BFwpoFi/AjXrJYIqkbKz+YrP14jWyewUQhv1VqTWi3NCl07Fi4hho52Uj6JrD
-	 NNvbHNyqA+blblbK4/dkLIAzCUgV+fEsK/SedrMo=
+	b=XqlbWW28PkeG4OCfcDaDIL/30CcUWFPzq0jsxLd9L9ZOqn9HgMsH4LASIrGzZky8q
+	 wJtgWHrFXY2kjPx+By4ZTBieMrxFSI+xyw5a7No7xhiJ726wZPT0OfCqlNgRumf2nS
+	 tV1/+/hAQBpZ4RcOosEQ1fX2WqjrPtM47xDkTP4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	kdevops@lists.linux.dev
-Subject: [PATCH 6.12 033/626] fs/buffer: use sleeping version of __find_get_block()
-Date: Tue, 27 May 2025 18:18:46 +0200
-Message-ID: <20250527162446.413427997@linuxfoundation.org>
+	Philip Redkin <me@rarity.fan>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rik van Riel <riel@surriel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 130/783] x86/mm: Check return value from memblock_phys_alloc_range()
+Date: Tue, 27 May 2025 18:18:47 +0200
+Message-ID: <20250527162518.446960768@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Philip Redkin <me@rarity.fan>
 
-[ Upstream commit 5b67d43976828dea2394eae2556b369bb7a61f64 ]
+[ Upstream commit 631ca8909fd5c62b9fda9edda93924311a78a9c4 ]
 
-Convert to the new nonatomic flavor to benefit from potential performance
-benefits and adapt in the future vs migration such that semantics
-are kept.
+At least with CONFIG_PHYSICAL_START=0x100000, if there is < 4 MiB of
+contiguous free memory available at this point, the kernel will crash
+and burn because memblock_phys_alloc_range() returns 0 on failure,
+which leads memblock_phys_free() to throw the first 4 MiB of physical
+memory to the wolves.
 
-Convert write_boundary_block() which already takes the buffer
-lock as well as bdev_getblk() depending on the respective gpf flags.
-There are no changes in semantics.
+At a minimum it should fail gracefully with a meaningful diagnostic,
+but in fact everything seems to work fine without the weird reserve
+allocation.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Link: https://kdevops.org/ext4/v6.15-rc2.html # [0]
-Link: https://lore.kernel.org/all/aAAEvcrmREWa1SKF@bombadil.infradead.org/ # [1]
-Link: https://lore.kernel.org/20250418015921.132400-4-dave@stgolabs.net
-Tested-by: kdevops@lists.linux.dev # [0] [1]
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Philip Redkin <me@rarity.fan>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/94b3e98f-96a7-3560-1f76-349eb95ccf7f@rarity.fan
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/buffer.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/x86/mm/init.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index b04705eb6cc57..e9e84512a027a 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -658,7 +658,9 @@ EXPORT_SYMBOL(generic_buffers_fsync);
- void write_boundary_block(struct block_device *bdev,
- 			sector_t bblock, unsigned blocksize)
- {
--	struct buffer_head *bh = __find_get_block(bdev, bblock + 1, blocksize);
-+	struct buffer_head *bh;
-+
-+	bh = __find_get_block_nonatomic(bdev, bblock + 1, blocksize);
- 	if (bh) {
- 		if (buffer_dirty(bh))
- 			write_dirty_buffer(bh, 0);
-@@ -1446,7 +1448,12 @@ EXPORT_SYMBOL(__find_get_block_nonatomic);
- struct buffer_head *bdev_getblk(struct block_device *bdev, sector_t block,
- 		unsigned size, gfp_t gfp)
- {
--	struct buffer_head *bh = __find_get_block(bdev, block, size);
-+	struct buffer_head *bh;
-+
-+	if (gfpflags_allow_blocking(gfp))
-+		bh = __find_get_block_nonatomic(bdev, block, size);
-+	else
-+		bh = __find_get_block(bdev, block, size);
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 62aa4d66a032d..bfa444a7dbb04 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -645,8 +645,13 @@ static void __init memory_map_top_down(unsigned long map_start,
+ 	 */
+ 	addr = memblock_phys_alloc_range(PMD_SIZE, PMD_SIZE, map_start,
+ 					 map_end);
+-	memblock_phys_free(addr, PMD_SIZE);
+-	real_end = addr + PMD_SIZE;
++	if (!addr) {
++		pr_warn("Failed to release memory for alloc_low_pages()");
++		real_end = max(map_start, ALIGN_DOWN(map_end, PMD_SIZE));
++	} else {
++		memblock_phys_free(addr, PMD_SIZE);
++		real_end = addr + PMD_SIZE;
++	}
  
- 	might_alloc(gfp);
- 	if (bh)
+ 	/* step_size need to be small so pgt_buf from BRK could cover it */
+ 	step_size = PMD_SIZE;
 -- 
 2.39.5
 
