@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-147693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC08AC58C3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8149AC556A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C99171BC2BCB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B657C1BA6064
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B465A28003C;
-	Tue, 27 May 2025 17:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1D827CB04;
+	Tue, 27 May 2025 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH47neHy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsB638iH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6855927BF8D;
-	Tue, 27 May 2025 17:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFA686347;
+	Tue, 27 May 2025 17:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368138; cv=none; b=a9qKCY3xK3myk+S8pdh9jESIgQCw7NrySrNIrVF5HrraV+S8BHpvi66j+mTiwAVby9KA97TDoDbyywa56jDQt1WUItTu+mYWeE0d9Y94bNRhECs37Xa3FNu9m1TkN1t7A52TgNywnGUO5O2LZIsdAx7DeWvGShc3dRwkb87zdvo=
+	t=1748365870; cv=none; b=GKiIvQutEViBSfv5UjJ4odvYUOfCHviZJZzHbMY2ktmiqFE19wO+abLw47hqjlmzm2fnD3m0BjAWl4E22pGZ0dK01BWrJbHoLremvYxw5Ew+pP8KkfFGOIrPhrOSmC1ZkfprEd0fXuKiGU/k12mlL0EeyF/Iu65eIjhhXsiHQ4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368138; c=relaxed/simple;
-	bh=2l+2vZDbDSb2iXpzeWkMN1+8o2h+dpTOzvwfRlj4qrw=;
+	s=arc-20240116; t=1748365870; c=relaxed/simple;
+	bh=jeU6DWQbn34pXQvW9gXh5UMpIYOo4C3ZZ8RoZzsZtNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8RAEXuKgBcdZqbyhZguzfISaxzAv0JzxHzCEn7sj1gLkxmWgRh3LkEt/pXPQnSt/kB5WuUslhJAFy1SnPK5BNPXlqGZlbh9JqgiAkilTQ+WL2+0gp46wDlBdWyjQq+JUtdBtfrTGpOR6Idd69qpkogNPm8cgpqbmqbQ+O0CIw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH47neHy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D4AC4CEE9;
-	Tue, 27 May 2025 17:48:57 +0000 (UTC)
+	 MIME-Version; b=Rh8gr651Xi37fbZtEAOLvfNVAjPlOhFZynXkCSEw4Z1rycJdymk1fAH+LDOzxPJ6GJbyL12/9dkNVbKenIFPty9NzloNW8CCLGBjLxSSUDFsrrCkhCw/hmhpvreQ1VLeknV/wheOuBjGQ3Jm5sSgUyVJS5yrV8XxNp9s9tNjdP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsB638iH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4F5C4CEE9;
+	Tue, 27 May 2025 17:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368138;
-	bh=2l+2vZDbDSb2iXpzeWkMN1+8o2h+dpTOzvwfRlj4qrw=;
+	s=korg; t=1748365869;
+	bh=jeU6DWQbn34pXQvW9gXh5UMpIYOo4C3ZZ8RoZzsZtNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qH47neHyv0iECVm5mUAbJyvfhaw79mINkaaqMBnYUCRs8T2dWOXHgxMoRYZD8/3wI
-	 Psj8Z/fuDYJpPDEvzyTjDm6pqufTTnQ98ec7YNJMGL+dZSjUGhQrqPwVmh4rBCo3bm
-	 RTxrVgNT7BXOIhN6JrZkUf60eOCc0Q1x4qDSd8pw=
+	b=bsB638iHpzHNG/07/LqKUqz3Dw77r+iGQ+k2POlycJ6UyfRKz6Daj0TSNE1Wnwvii
+	 crYg+uQQlmNKDP3sJI0G7y89qVGYCmJj7dcn2RlVpcXztb826e5mKvpk1T3hXCnrFA
+	 DP3xS5nkKj3iieqCnZgsGLo/mfCCO4nfr+6T6j4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 580/783] scsi: lpfc: Reduce log message generation during ELS ring clean up
+Subject: [PATCH 6.12 484/626] wifi: rtw89: add wiphy_lock() to work that isnt held wiphy_lock() yet
 Date: Tue, 27 May 2025 18:26:17 +0200
-Message-ID: <20250527162536.761197600@linuxfoundation.org>
+Message-ID: <20250527162504.650546890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 8eccc58d71eafbd2635077916b68fda15791d270 ]
+[ Upstream commit ebfc9199df05d37b67f4d1b7ee997193f3d2e7c8 ]
 
-A clean up log message is output from lpfc_els_flush_cmd() for each
-outstanding ELS I/O and repeated for every NPIV instance.  The log message
-should only be generated for active I/Os matching the NPIV vport.  Thus,
-move the vport check to before logging the message.
+To ensure where are protected by driver mutex can also be protected by
+wiphy_lock(), so afterward we can remove driver mutex safely.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-2-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250122060310.31976-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_els.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/regd.c | 2 ++
+ drivers/net/wireless/realtek/rtw89/ser.c  | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index 1d7db49a8fe45..318dc83e9a2ac 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -9569,18 +9569,16 @@ lpfc_els_flush_cmd(struct lpfc_vport *vport)
- 	mbx_tmo_err = test_bit(MBX_TMO_ERR, &phba->bit_flags);
- 	/* First we need to issue aborts to outstanding cmds on txcmpl */
- 	list_for_each_entry_safe(piocb, tmp_iocb, &pring->txcmplq, list) {
-+		if (piocb->vport != vport)
-+			continue;
-+
- 		lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
- 				 "2243 iotag = 0x%x cmd_flag = 0x%x "
--				 "ulp_command = 0x%x this_vport %x "
--				 "sli_flag = 0x%x\n",
-+				 "ulp_command = 0x%x sli_flag = 0x%x\n",
- 				 piocb->iotag, piocb->cmd_flag,
- 				 get_job_cmnd(phba, piocb),
--				 (piocb->vport == vport),
- 				 phba->sli.sli_flag);
+diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
+index bb064a086970b..e8df68818da01 100644
+--- a/drivers/net/wireless/realtek/rtw89/regd.c
++++ b/drivers/net/wireless/realtek/rtw89/regd.c
+@@ -695,6 +695,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
+ 	struct rtw89_dev *rtwdev = hw->priv;
  
--		if (piocb->vport != vport)
--			continue;
--
- 		if ((phba->sli.sli_flag & LPFC_SLI_ACTIVE) && !mbx_tmo_err) {
- 			if (piocb->cmd_flag & LPFC_IO_LIBDFC)
- 				continue;
++	wiphy_lock(wiphy);
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw89_leave_ps_mode(rtwdev);
+ 
+@@ -712,6 +713,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 
+ exit:
+ 	mutex_unlock(&rtwdev->mutex);
++	wiphy_unlock(wiphy);
+ }
+ 
+ /* Maximum Transmit Power field (@raw) can be EIRP or PSD.
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 7b203bb7f151a..02c2ac12f197a 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -156,9 +156,11 @@ static void ser_state_run(struct rtw89_ser *ser, u8 evt)
+ 	rtw89_debug(rtwdev, RTW89_DBG_SER, "ser: %s receive %s\n",
+ 		    ser_st_name(ser), ser_ev_name(ser, evt));
+ 
++	wiphy_lock(rtwdev->hw->wiphy);
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw89_leave_lps(rtwdev);
+ 	mutex_unlock(&rtwdev->mutex);
++	wiphy_unlock(rtwdev->hw->wiphy);
+ 
+ 	ser->st_tbl[ser->state].st_func(ser, evt);
+ }
+@@ -707,9 +709,11 @@ static void ser_l2_reset_st_hdl(struct rtw89_ser *ser, u8 evt)
+ 
+ 	switch (evt) {
+ 	case SER_EV_STATE_IN:
++		wiphy_lock(rtwdev->hw->wiphy);
+ 		mutex_lock(&rtwdev->mutex);
+ 		ser_l2_reset_st_pre_hdl(ser);
+ 		mutex_unlock(&rtwdev->mutex);
++		wiphy_unlock(rtwdev->hw->wiphy);
+ 
+ 		ieee80211_restart_hw(rtwdev->hw);
+ 		ser_set_alarm(ser, SER_RECFG_TIMEOUT, SER_EV_L2_RECFG_TIMEOUT);
 -- 
 2.39.5
 
