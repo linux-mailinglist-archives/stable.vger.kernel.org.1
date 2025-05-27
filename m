@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-147655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B66AC5894
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CE0AC556D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B78D97B0AE9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDDE81BA60BA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F65C27A131;
-	Tue, 27 May 2025 17:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E10D27D776;
+	Tue, 27 May 2025 17:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgCbtH6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vg8YaZdw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09ADD25A627;
-	Tue, 27 May 2025 17:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF67886347;
+	Tue, 27 May 2025 17:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368018; cv=none; b=IO1R/FweWUJ1N+yEuzNUnPx9G71xlexxueaXIpD0ZRShAoMA6TubzKGu4WuoFhv+HaMgmaujJBPT0MSw8nJIl2d3cxfySPTKIQYisvtTWqIEFJyViUr6Xrr1MHDyPZLvsgwqK0+kkAN3iB6dlEVRzK0u+JSJ8L+O4MN4WnEo91E=
+	t=1748365872; cv=none; b=m1OCqRghHvNqNwtGiuq1dAPPtPx6E0DCzMIsoY4l5qFtvkJWXC1GB6itsdZnu6prSlyysJhlbzHJrNM5NgPeBf84+KuxQgoIFgrqEDug8cOJp3T4KiSGAihlScdLkFnG2Fa9dUVYGE52Z5WM10gsiirqRkBa1WjH5iqqvx3bp5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368018; c=relaxed/simple;
-	bh=yKlcvWhp+O+bPLo/GLI4ww2r2MvaXBHwaB7D/DrRBsc=;
+	s=arc-20240116; t=1748365872; c=relaxed/simple;
+	bh=uFvkQKZAFoRRsSIhQiOtd3Oegv/+dpxQPVJYCVtONkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhOaJX/18eDzfWJlFDCqWJANZ1A7vOHBG1YlZZnuzV8+dgoNcSFJmHyf6VHPkJ6shx/KjEbSJZeC66nw0uyr9EyuXKaXoBM0JtMHC2QmL1vVhKqJ/DmlI8xLQue1A9xp++wD+Fe8f0AgFxpqzwfW/1YWXwMUYIBjmN+3mcrUnKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgCbtH6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDBCC4CEE9;
-	Tue, 27 May 2025 17:46:57 +0000 (UTC)
+	 MIME-Version; b=VglyS4c4bDFePJ4U2cthZuLfWmXk9g4+fD2/8u815vknFpn8lxGxhF6dgdJPmfX3RHSZvn+i1PSb6+V26k40Fg07NlEKepzAXy9v1alZP/AxakMufCNOFsUtw3/yfvU3ots1u9HguixXTOz9jPU5NbPjUvAJeRda+v9XAzd0o0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vg8YaZdw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1A2C4CEE9;
+	Tue, 27 May 2025 17:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368017;
-	bh=yKlcvWhp+O+bPLo/GLI4ww2r2MvaXBHwaB7D/DrRBsc=;
+	s=korg; t=1748365872;
+	bh=uFvkQKZAFoRRsSIhQiOtd3Oegv/+dpxQPVJYCVtONkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgCbtH6nXoZyJwXbYahqJbNvZJx/SmBue/vhIOWAW6WfkZ/7hcA48VF9n3vVDPtzs
-	 1T/Gvs7DnF7dLzZHE7cUQUIXBhsYMz551UXS3pvpiz7IfHr3nqbVGfdzB8FjrZ+uss
-	 it1LLr5oPP+me/dwzOVCOP55J7lbHZYAku6dzqdQ=
+	b=Vg8YaZdw+MwC7dbugKqWOQMfzXWNAuI7RRFntFq/nAwq1o9fggaFomvyAkAeLs8kB
+	 ehvBdl3l6UwQtoFb/Vc2B4c2J1aXQHwdY2SsNnb1X7rq5dMhZ6b86V7BgSAsASUiQI
+	 RFwWuNCVt4Q6pS7QqAB974z/XRqF+xiP62pPBBUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 571/783] rcu: handle unstable rdp in rcu_read_unlock_strict()
+Subject: [PATCH 6.12 475/626] drm/ast: Find VBIOS mode from regular display size
 Date: Tue, 27 May 2025 18:26:08 +0200
-Message-ID: <20250527162536.395892385@linuxfoundation.org>
+Message-ID: <20250527162504.291913959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankur Arora <ankur.a.arora@oracle.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit fcf0e25ad4c8d14d2faab4d9a17040f31efce205 ]
+[ Upstream commit c81202906b5cd56db403e95db3d29c9dfc8c74c1 ]
 
-rcu_read_unlock_strict() can be called with preemption enabled
-which can make for an unstable rdp and a racy norm value.
+The ast driver looks up supplied display modes from an internal list of
+display modes supported by the VBIOS.
 
-Fix this by dropping the preempt-count in __rcu_read_unlock()
-after the call to rcu_read_unlock_strict(), adjusting the
-preempt-count check appropriately.
+Do not use the crtc_-prefixed display values from struct drm_display_mode
+for looking up the VBIOS mode. The fields contain raw values that the
+driver programs to hardware. They are affected by display settings like
+double-scan or interlace.
 
-Suggested-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Instead use the regular vdisplay and hdisplay fields for lookup. As the
+programmed values can now differ from the values used for lookup, set
+struct drm_display_mode.crtc_vdisplay and .crtc_hdisplay from the VBIOS
+mode.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250131092257.115596-9-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcupdate.h |  2 +-
- kernel/rcu/tree_plugin.h | 11 ++++++++++-
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ast/ast_mode.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index bd69ddc102fbc..0844ab3288519 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -95,9 +95,9 @@ static inline void __rcu_read_lock(void)
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index ed496fb32bf34..24ed1cd3caf17 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -131,7 +131,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		return false;
+ 	}
  
- static inline void __rcu_read_unlock(void)
- {
--	preempt_enable();
- 	if (IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD))
- 		rcu_read_unlock_strict();
-+	preempt_enable();
- }
+-	switch (mode->crtc_hdisplay) {
++	switch (mode->hdisplay) {
+ 	case 640:
+ 		vbios_mode->enh_table = &res_640x480[refresh_rate_index];
+ 		break;
+@@ -145,7 +145,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1152x864[refresh_rate_index];
+ 		break;
+ 	case 1280:
+-		if (mode->crtc_vdisplay == 800)
++		if (mode->vdisplay == 800)
+ 			vbios_mode->enh_table = &res_1280x800[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1280x1024[refresh_rate_index];
+@@ -157,7 +157,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1440x900[refresh_rate_index];
+ 		break;
+ 	case 1600:
+-		if (mode->crtc_vdisplay == 900)
++		if (mode->vdisplay == 900)
+ 			vbios_mode->enh_table = &res_1600x900[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1600x1200[refresh_rate_index];
+@@ -166,7 +166,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1680x1050[refresh_rate_index];
+ 		break;
+ 	case 1920:
+-		if (mode->crtc_vdisplay == 1080)
++		if (mode->vdisplay == 1080)
+ 			vbios_mode->enh_table = &res_1920x1080[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1920x1200[refresh_rate_index];
+@@ -210,6 +210,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 	hborder = (vbios_mode->enh_table->flags & HBorder) ? 8 : 0;
+ 	vborder = (vbios_mode->enh_table->flags & VBorder) ? 8 : 0;
  
- static inline int rcu_preempt_depth(void)
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 4328ff3252a35..3c0bbbbb686fe 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -833,8 +833,17 @@ void rcu_read_unlock_strict(void)
- {
- 	struct rcu_data *rdp;
++	adjusted_mode->crtc_hdisplay = vbios_mode->enh_table->hde;
+ 	adjusted_mode->crtc_htotal = vbios_mode->enh_table->ht;
+ 	adjusted_mode->crtc_hblank_start = vbios_mode->enh_table->hde + hborder;
+ 	adjusted_mode->crtc_hblank_end = vbios_mode->enh_table->ht - hborder;
+@@ -219,6 +220,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 					 vbios_mode->enh_table->hfp +
+ 					 vbios_mode->enh_table->hsync);
  
--	if (irqs_disabled() || preempt_count() || !rcu_state.gp_kthread)
-+	if (irqs_disabled() || in_atomic_preempt_off() || !rcu_state.gp_kthread)
- 		return;
-+
-+	/*
-+	 * rcu_report_qs_rdp() can only be invoked with a stable rdp and
-+	 * from the local CPU.
-+	 *
-+	 * The in_atomic_preempt_off() check ensures that we come here holding
-+	 * the last preempt_count (which will get dropped once we return to
-+	 * __rcu_read_unlock().
-+	 */
- 	rdp = this_cpu_ptr(&rcu_data);
- 	rdp->cpu_no_qs.b.norm = false;
- 	rcu_report_qs_rdp(rdp);
++	adjusted_mode->crtc_vdisplay = vbios_mode->enh_table->vde;
+ 	adjusted_mode->crtc_vtotal = vbios_mode->enh_table->vt;
+ 	adjusted_mode->crtc_vblank_start = vbios_mode->enh_table->vde + vborder;
+ 	adjusted_mode->crtc_vblank_end = vbios_mode->enh_table->vt - vborder;
 -- 
 2.39.5
 
