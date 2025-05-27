@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955A6AC590B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D978FAC55CC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FB8A188FBFE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51C461BA6D32
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE909194A45;
-	Tue, 27 May 2025 17:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BA327E7C8;
+	Tue, 27 May 2025 17:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOI16WpG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgQcm6Er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE26B280021;
-	Tue, 27 May 2025 17:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73159367;
+	Tue, 27 May 2025 17:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368322; cv=none; b=fwmEJgWNl7sQ7aq0ehGG7j0uIZ/EGKE9boLFJkQigdMU8p7P9RS7cYXCe8/eGIVOrtqIrxit1Jzf1AsQ4COwNeRYuEqN6S4LhsCGdYxsNWbleBbzecMJ/bzGWcMgGYQov/X75dlewKBz48AxDe3gpOZtfqjuR/w12Vi54OVcELs=
+	t=1748366062; cv=none; b=IZGRgYd0nMR4Qp7tHaMml66z/mEbHvd6GRD/fMsu6b9MC8/1akeoWgcCfx4bMrQV3c9EOrNmHG+yaSxAE8cZAV/hLLZc0UfyQiefo2hqVm1umXbOP5eCuaHduRBAaykfGQmt0zY4xyxprHClKqClQKWPgUd5JKw6svkf6TKblz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368322; c=relaxed/simple;
-	bh=NWC/SQz66fvMC0Ga3KTldamZlHOMxS2vBGGVDpiu/FY=;
+	s=arc-20240116; t=1748366062; c=relaxed/simple;
+	bh=lpD5+ohnLSHVWvhu8g3C/I1utG8hpMM/Wg9GOkBCzB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzuyI9ZsNwfXk6ieu62b0gU8WdBbXkPZc+86CYZbT7mg42Ku5M9fezm6/Xu6JzqIbVKd/V1YRk4/qXqTBwZgSn5YtddmrX7V4kbK2W+zxNgZ96xKU6dBmCK2bSczJG1+GD/AqO8wWm2VGhaPQuviWGM5vz8b09WwmoqxpYBdZC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOI16WpG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF5EC4CEE9;
-	Tue, 27 May 2025 17:52:01 +0000 (UTC)
+	 MIME-Version; b=RB1QK6XCoYhOdR4GQk5uI6/FNH68823kFh8bbQU74I/0TNjYuFNI/wUv29laQwiRpJA6r7DsKCC9Y1lC1L/hGxTvaXTr3IXoFDDnX7PRQ7ICG5UxvmJinWBFcu+JbotIwx0lvKRg3cbpLKfv39DU1hEe7iXuNfKqEAFw1Na/j34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgQcm6Er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D358DC4CEE9;
+	Tue, 27 May 2025 17:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368322;
-	bh=NWC/SQz66fvMC0Ga3KTldamZlHOMxS2vBGGVDpiu/FY=;
+	s=korg; t=1748366062;
+	bh=lpD5+ohnLSHVWvhu8g3C/I1utG8hpMM/Wg9GOkBCzB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOI16WpGGrizVwXmIFCuwGqEJ9EKkxBhFMacbpkO59vuSAYILKWcfQUbgEfDe513s
-	 IA8KcqSvYnI42Dw9mmGKV7D//UkAQhgroPyzuLSLI+Kgko+ESVm9q/9yWY5c+Y54KF
-	 GVgxqkcCwWINhANL24WeH4Kv0sN0OJ1PFzC0nus8=
+	b=KgQcm6EruHG/iFIZzJkjEn4VHhSs8Dv9kxa3IXZpPdoQrW2i2Ztul1wMYN+4ljnAL
+	 uhDGYy99BhszMjFJkKsfnLQYbbouU61qIPHAdjMU5wuOnykPg8r0tm9Nh5wbwQe3iH
+	 dDjRCyMbc/MG+0bp/l9YAANnjosQVkdk7ojEVuwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaogang Chen <xiaogang.chen@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Tavian Barnes <tavianator@tavianator.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 643/783] drm/amdkfd: Fix pasid value leak
-Date: Tue, 27 May 2025 18:27:20 +0200
-Message-ID: <20250527162539.326318651@linuxfoundation.org>
+Subject: [PATCH 6.12 548/626] ASoC: SOF: Intel: hda: Fix UAF when reloading module
+Date: Tue, 27 May 2025 18:27:21 +0200
+Message-ID: <20250527162507.248834195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+From: Tavian Barnes <tavianator@tavianator.com>
 
-[ Upstream commit 10e08943caedfb4b0b95933d248503a6f6b9fef6 ]
+[ Upstream commit 7dd7f39fce0022b386ef1ea5ffef92ecc7dfc6af ]
 
-Curret kfd does not allocate pasid values, instead uses pasid value for each
-vm from graphic driver. So should not prevent graphic driver from releasing
-pasid values since the values are allocated by graphic driver, not kfd driver
-anymore. This patch does not stop graphic driver release pasid values.
+hda_generic_machine_select() appends -idisp to the tplg filename by
+allocating a new string with devm_kasprintf(), then stores the string
+right back into the global variable snd_soc_acpi_intel_hda_machines.
+When the module is unloaded, this memory is freed, resulting in a global
+variable pointing to freed memory.  Reloading the module then triggers
+a use-after-free:
 
-Fixes: 8544374c0f82 ("drm/amdkfd: Have kfd driver use same PASID values from graphic driver")
-Signed-off-by: Xiaogang Chen <xiaogang.chen@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+BUG: KFENCE: use-after-free read in string+0x48/0xe0
+
+Use-after-free read at 0x00000000967e0109 (in kfence-#99):
+ string+0x48/0xe0
+ vsnprintf+0x329/0x6e0
+ devm_kvasprintf+0x54/0xb0
+ devm_kasprintf+0x58/0x80
+ hda_machine_select.cold+0x198/0x17a2 [snd_sof_intel_hda_generic]
+ sof_probe_work+0x7f/0x600 [snd_sof]
+ process_one_work+0x17b/0x330
+ worker_thread+0x2ce/0x3f0
+ kthread+0xcf/0x100
+ ret_from_fork+0x31/0x50
+ ret_from_fork_asm+0x1a/0x30
+
+kfence-#99: 0x00000000198a940f-0x00000000ace47d9d, size=64, cache=kmalloc-64
+
+allocated by task 333 on cpu 8 at 17.798069s (130.453553s ago):
+ devm_kmalloc+0x52/0x120
+ devm_kvasprintf+0x66/0xb0
+ devm_kasprintf+0x58/0x80
+ hda_machine_select.cold+0x198/0x17a2 [snd_sof_intel_hda_generic]
+ sof_probe_work+0x7f/0x600 [snd_sof]
+ process_one_work+0x17b/0x330
+ worker_thread+0x2ce/0x3f0
+ kthread+0xcf/0x100
+ ret_from_fork+0x31/0x50
+ ret_from_fork_asm+0x1a/0x30
+
+freed by task 1543 on cpu 4 at 141.586686s (6.665010s ago):
+ release_nodes+0x43/0xb0
+ devres_release_all+0x90/0xf0
+ device_unbind_cleanup+0xe/0x70
+ device_release_driver_internal+0x1c1/0x200
+ driver_detach+0x48/0x90
+ bus_remove_driver+0x6d/0xf0
+ pci_unregister_driver+0x42/0xb0
+ __do_sys_delete_module+0x1d1/0x310
+ do_syscall_64+0x82/0x190
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fix it by copying the match array with devm_kmemdup_array() before we
+modify it.
+
+Fixes: 5458411d7594 ("ASoC: SOF: Intel: hda: refactoring topology name fixup for HDA mach")
+Suggested-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Tavian Barnes <tavianator@tavianator.com>
+Link: https://patch.msgid.link/570b15570b274520a0d9052f4e0f064a29c950ef.1747229716.git.tavianator@tavianator.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  2 --
- .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 21 -------------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c        | 14 -------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h        |  1 -
- drivers/gpu/drm/amd/amdkfd/kfd_process.c      |  5 +----
- 5 files changed, 1 insertion(+), 42 deletions(-)
+ sound/soc/sof/intel/hda.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-index a160ffe80b3de..55d5399676951 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-@@ -303,8 +303,6 @@ int amdgpu_amdkfd_gpuvm_acquire_process_vm(struct amdgpu_device *adev,
- 					struct amdgpu_vm *avm,
- 					void **process_info,
- 					struct dma_fence **ef);
--void amdgpu_amdkfd_gpuvm_release_process_vm(struct amdgpu_device *adev,
--					void *drm_priv);
- uint64_t amdgpu_amdkfd_gpuvm_get_process_page_dir(void *drm_priv);
- size_t amdgpu_amdkfd_get_available_memory(struct amdgpu_device *adev,
- 					uint8_t xcp_id);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index 0c8129f8d3635..b3c8eae460425 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1578,27 +1578,6 @@ void amdgpu_amdkfd_gpuvm_destroy_cb(struct amdgpu_device *adev,
- 	}
- }
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index c924a998d6f90..9c8f79e55ec5d 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -1007,7 +1007,21 @@ static void hda_generic_machine_select(struct snd_sof_dev *sdev,
+ 		if (!*mach && codec_num <= 2) {
+ 			bool tplg_fixup = false;
  
--void amdgpu_amdkfd_gpuvm_release_process_vm(struct amdgpu_device *adev,
--					    void *drm_priv)
--{
--	struct amdgpu_vm *avm;
--
--	if (WARN_ON(!adev || !drm_priv))
--		return;
--
--	avm = drm_priv_to_vm(drm_priv);
--
--	pr_debug("Releasing process vm %p\n", avm);
--
--	/* The original pasid of amdgpu vm has already been
--	 * released during making a amdgpu vm to a compute vm
--	 * The current pasid is managed by kfd and will be
--	 * released on kfd process destroy. Set amdgpu pasid
--	 * to 0 to avoid duplicate release.
--	 */
--	amdgpu_vm_release_compute(adev, avm);
--}
--
- uint64_t amdgpu_amdkfd_gpuvm_get_process_page_dir(void *drm_priv)
- {
- 	struct amdgpu_vm *avm = drm_priv_to_vm(drm_priv);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index f0d675c0fc69c..21be10d46cf9c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2687,20 +2687,6 @@ int amdgpu_vm_make_compute(struct amdgpu_device *adev, struct amdgpu_vm *vm)
- 	return r;
- }
+-			hda_mach = snd_soc_acpi_intel_hda_machines;
++			/*
++			 * make a local copy of the match array since we might
++			 * be modifying it
++			 */
++			hda_mach = devm_kmemdup_array(sdev->dev,
++					snd_soc_acpi_intel_hda_machines,
++					2, /* we have one entry + sentinel in the array */
++					sizeof(snd_soc_acpi_intel_hda_machines[0]),
++					GFP_KERNEL);
++			if (!hda_mach) {
++				dev_err(bus->dev,
++					"%s: failed to duplicate the HDA match table\n",
++					__func__);
++				return;
++			}
  
--/**
-- * amdgpu_vm_release_compute - release a compute vm
-- * @adev: amdgpu_device pointer
-- * @vm: a vm turned into compute vm by calling amdgpu_vm_make_compute
-- *
-- * This is a correspondant of amdgpu_vm_make_compute. It decouples compute
-- * pasid from vm. Compute should stop use of vm after this call.
-- */
--void amdgpu_vm_release_compute(struct amdgpu_device *adev, struct amdgpu_vm *vm)
--{
--	amdgpu_vm_set_pasid(adev, vm, 0);
--	vm->is_compute_context = false;
--}
--
- static int amdgpu_vm_stats_is_zero(struct amdgpu_vm *vm)
- {
- 	for (int i = 0; i < __AMDGPU_PL_NUM; ++i) {
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-index 5010a3107bf89..f3ad687125ad6 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-@@ -489,7 +489,6 @@ int amdgpu_vm_set_pasid(struct amdgpu_device *adev, struct amdgpu_vm *vm,
- long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout);
- int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm, int32_t xcp_id);
- int amdgpu_vm_make_compute(struct amdgpu_device *adev, struct amdgpu_vm *vm);
--void amdgpu_vm_release_compute(struct amdgpu_device *adev, struct amdgpu_vm *vm);
- void amdgpu_vm_fini(struct amdgpu_device *adev, struct amdgpu_vm *vm);
- int amdgpu_vm_lock_pd(struct amdgpu_vm *vm, struct drm_exec *exec,
- 		      unsigned int num_fences);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index 3f411922534b3..7c0c24732481e 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -1059,11 +1059,8 @@ static void kfd_process_destroy_pdds(struct kfd_process *p)
- 		kfd_process_device_destroy_cwsr_dgpu(pdd);
- 		kfd_process_device_destroy_ib_mem(pdd);
- 
--		if (pdd->drm_file) {
--			amdgpu_amdkfd_gpuvm_release_process_vm(
--					pdd->dev->adev, pdd->drm_priv);
-+		if (pdd->drm_file)
- 			fput(pdd->drm_file);
--		}
- 
- 		if (pdd->qpd.cwsr_kaddr && !pdd->qpd.cwsr_base)
- 			free_pages((unsigned long)pdd->qpd.cwsr_kaddr,
+ 			dev_info(bus->dev, "using HDA machine driver %s now\n",
+ 				 hda_mach->drv_name);
 -- 
 2.39.5
 
