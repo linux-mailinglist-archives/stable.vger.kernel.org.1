@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-147212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACF3AC56A9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A71AC535D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70C6A3BA58F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 135944A1064
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481BD27FB0C;
-	Tue, 27 May 2025 17:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E8C1D6DC5;
+	Tue, 27 May 2025 16:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bscglo07"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEJYhYO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032AA27FD6F;
-	Tue, 27 May 2025 17:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30197AD5A;
+	Tue, 27 May 2025 16:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366634; cv=none; b=J6RANqc13YCkRHKqUCzN6s2wCQrZ2b0cdfYVMz6kGe/aJdTM9FVeNQ09Vj+U4tAxJotN9k/gwPky9hLSsPspdzQZ0+Rvy+Ha8Hey5k1lk6Pw/EmNr7dNg1Rmm0eVTIPWpHuO50zi0Q/bqX7rwjYBDk9jewKVev3FA2hgxYeMkKk=
+	t=1748364381; cv=none; b=XY85ibbRu4nPyi4dbte39qnmjUwaWbeYtStukffzmUV8Ha8yEJJcGD0mDjryESnfVebJn8ZeU6Rb5FXNbf6VJIDjyvDsLuYJG1wxLBtZq0zQcE3lBGGx1tVnRgnY24HVVVHTZ7OJqk7H/Ez0LciroBUjhumqDBUKp88IeU2ZWxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366634; c=relaxed/simple;
-	bh=2Wt7VZ0lywYOPIEQXI23VuPiMaU0o5XJ7vC+1EJehdA=;
+	s=arc-20240116; t=1748364381; c=relaxed/simple;
+	bh=1IbiJjvv3NRrxvhJG7bLszyaiMD2ZvCKrvjhYyxAudw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQbVvo/Z4qNB5kRtkUEV9avCO+pnpbQVdcO408Hm9wtba/WPYMzLdl68hN1B7ZQF+JW3+lEq//DLsn/6e20s+oTpRDxXSmBontTA7KV6jitZVzy616zwEWzHQNCZfUiqdZpOA1v1d20jIxiYFIMooYCkcEnixbEZ2nbXwzq/mVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bscglo07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5B6C4CEEA;
-	Tue, 27 May 2025 17:23:53 +0000 (UTC)
+	 MIME-Version; b=fFcJahJ9B4Yd79tCTDs55GZNY2eViR709Z5VWcPaonV2P0q/pWeyniHgKjPbmWeKrDIEQIzX21td5p4fnMFIn8AVHnzuf1wZaNOPr/wZQLZHPvDxD3YeUeCvITCUBE4cTfaUdy0NDL2QdJyvHqehLNG3p8q/d23Eeq03rQeuAFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEJYhYO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A2BC4CEE9;
+	Tue, 27 May 2025 16:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366633;
-	bh=2Wt7VZ0lywYOPIEQXI23VuPiMaU0o5XJ7vC+1EJehdA=;
+	s=korg; t=1748364379;
+	bh=1IbiJjvv3NRrxvhJG7bLszyaiMD2ZvCKrvjhYyxAudw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bscglo071HPzsiAZ3dCJUKhimdU/oBz1dvFO5tBEt+g7qE3SzJhvCg7sTLPqhhiqK
-	 guiiQXO9ieTTHmS9Y4ggP/bMR6JEtzgwwJww0YGwqKu9nE3jZZggU6YryLPdCKeIgD
-	 vBHvCp16J35TgiBhnMDyxhNrPtGsvQJdEo4LDjoc=
+	b=jEJYhYO+8QLZCPkkpHKwfZRH1AUBHhGa5VbQ81yjQ7bwIPLXKJwsLmlrLU50E6ZAK
+	 HQOgglyvsOOTFG9fGhJMP5wyBlSfEjMZAsmuTFK42A3Mxv8/6JOZGTLIGcjdxeyfM7
+	 toG86Ei2y8bEhYRotkY0t9aev4CfgQk8mNlcUips=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanket Goswami <Sanket.Goswami@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Nicholas Susanto <nsusanto@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Mark Broadworth <mark.broadworth@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 132/783] i2c: amd-asf: Set cmd variable when encountering an error
-Date: Tue, 27 May 2025 18:18:49 +0200
-Message-ID: <20250527162518.524646196@linuxfoundation.org>
+Subject: [PATCH 6.12 037/626] drm/amd/display: Enable urgent latency adjustment on DCN35
+Date: Tue, 27 May 2025 18:18:50 +0200
+Message-ID: <20250527162446.574830528@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+From: Nicholas Susanto <nsusanto@amd.com>
 
-[ Upstream commit b719afaa1e5d88a1b51d76adf344ff4a48efdb45 ]
+[ Upstream commit 756c85e4d0ddc497b4ad5b1f41ad54e838e06188 ]
 
-In the event of ASF error during the transfer, update the cmd and exit
-the process, as data processing is not performed when a command fails.
+[Why]
 
-Co-developed-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Sanket Goswami <Sanket.Goswami@amd.com>
-Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250217090258.398540-2-Shyam-sundar.S-k@amd.com
+Urgent latency adjustment was disabled on DCN35 due to issues with P0
+enablement on some platforms. Without urgent latency, underflows occur
+when doing certain high timing configurations. After testing, we found
+that reenabling urgent latency didn't reintroduce p0 support on multiple
+platforms.
+
+[How]
+
+renable urgent latency on DCN35 and setting it to 3000 Mhz.
+
+This reverts commit 3412860cc4c0c484f53f91b371483e6e4440c3e5.
+
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Nicholas Susanto <nsusanto@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit cd74ce1f0cddffb3f36d0995d0f61e89f0010738)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-amd-asf-plat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-amd-asf-plat.c b/drivers/i2c/busses/i2c-amd-asf-plat.c
-index 93ebec162c6dd..61bc714c28d70 100644
---- a/drivers/i2c/busses/i2c-amd-asf-plat.c
-+++ b/drivers/i2c/busses/i2c-amd-asf-plat.c
-@@ -69,7 +69,7 @@ static void amd_asf_process_target(struct work_struct *work)
- 	/* Check if no error bits are set in target status register */
- 	if (reg & ASF_ERROR_STATUS) {
- 		/* Set bank as full */
--		cmd = 0;
-+		cmd = 1;
- 		reg |= GENMASK(3, 2);
- 		outb_p(reg, ASFDATABNKSEL);
- 	} else {
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+index 47d785204f29c..beed7adbbd43e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -195,9 +195,9 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_5_soc = {
+ 	.dcn_downspread_percent = 0.5,
+ 	.gpuvm_min_page_size_bytes = 4096,
+ 	.hostvm_min_page_size_bytes = 4096,
+-	.do_urgent_latency_adjustment = 0,
++	.do_urgent_latency_adjustment = 1,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+-	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
++	.urgent_latency_adjustment_fabric_clock_reference_mhz = 3000,
+ };
+ 
+ void dcn35_build_wm_range_table_fpu(struct clk_mgr *clk_mgr)
 -- 
 2.39.5
 
