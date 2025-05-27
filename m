@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0299AC5753
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:31:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12739AC547B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA0D34A6D34
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:31:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81E863A4F1A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770A527BF79;
-	Tue, 27 May 2025 17:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1223280021;
+	Tue, 27 May 2025 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2rzHozg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1P3beMhh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348791AF0BB;
-	Tue, 27 May 2025 17:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD99A27FD63;
+	Tue, 27 May 2025 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367101; cv=none; b=ATSJR3k5Q/gn2gLiX3R1j/f6X2yXoteGpxyVJcX2bXQkJ6bT0z4xRMduVeeiKPfhIHwo6hcg98Xv9gqcZDjQLtN+MXa9NdiriipcRpgYYbKsFjohXT7VQCV3Ae9mcDiiXBexNkbXTU6jkaiBIHjVncao5WG82KnMhbutTfD1N1U=
+	t=1748364929; cv=none; b=NSCDNkg6cdIX2r1EV7kPBD6htlNcvKbHpzYWZMeRYevf4/YL53SCtsEWMlwsQW6cCftrI9bnrt91nmRDLIhR4hgkClaVz2hIuXAEIyayfRsxOINZw0fnSZysgBuFa403gnAFT8XCWyY3JfUQhZiQtcL/pWeZIGqVwYWbA9QEyWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367101; c=relaxed/simple;
-	bh=QzERjcPNHwUPV27a8OKhE0uERvfXCmzOFyKtO+VTB7k=;
+	s=arc-20240116; t=1748364929; c=relaxed/simple;
+	bh=D1OvNAsfXGPrrjYISxW2mn/0B2EyUVsMV4ldf1E2M94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aqRa2oZhp1UonYumxcI4PDfLC/flEn//qqOISfh9EDAigW+MLVpBZ8wZz8pGmYzbQPotSTWvQ9MyBB+pshqkpSsyQyJ9jNqHwKyi2HWoQ5V+/8Dtn69+KHH4wFOnnkJZ0JTpXY5wMAcx36Cx1dXJnXobVuKe3hXVjF7AvqavCT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2rzHozg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1798C4CEE9;
-	Tue, 27 May 2025 17:31:40 +0000 (UTC)
+	 MIME-Version; b=I2PbquttfGy7Mfuj6SOOZ7z1DbzlEbd5m5xJPLfop+lByPUIp+J0PVksiJ3c5xYM994heah/QC8L/V3CeLDdh6NniI4D8Vo6V4WiFyEbrox2b/i/GA1DqHedxhUNJP7RSQft+21Cm9aKeOzOwYDmaKIDSnW1EmPNHk8kbHcnugc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1P3beMhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22BAC4CEEF;
+	Tue, 27 May 2025 16:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367101;
-	bh=QzERjcPNHwUPV27a8OKhE0uERvfXCmzOFyKtO+VTB7k=;
+	s=korg; t=1748364929;
+	bh=D1OvNAsfXGPrrjYISxW2mn/0B2EyUVsMV4ldf1E2M94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2rzHozgbqiPc9k0cdA6t4hsxFc2oZ/S9iVze6R77xrPB7pPHnXP7YHd6wBd8XD+G
-	 yogWtdP9sOSuNQ0Kz0cWDcX/uWZQ6svpTymu5fy5betbI0flQluAJMvYvfCO5GY+9S
-	 lk7Dx1scqkWqvqDZt9BmRqMfamiTvDxmmzIanVdk=
+	b=1P3beMhhh5Bhn0Z33oIl38W0pzzV51E1Nj1IYJ1jEvFwo3pJRfVIkdVtA7kXmNGRT
+	 bysjozU0zb/jeEOCTKyQqOwz6kft4MAbWbkXEfTYzgJ7QQZJBoFsgEJnJm3EJh10MX
+	 FNsDdIzkEDZs4WNcm84iniDzlFGAM6bhGLsB1SMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Kurt Borja <kuurtb@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 277/783] remoteproc: qcom_wcnss: Handle platforms with only single power domain
+Subject: [PATCH 6.12 181/626] hwmon: (dell-smm) Increment the number of fans
 Date: Tue, 27 May 2025 18:21:14 +0200
-Message-ID: <20250527162524.365019082@linuxfoundation.org>
+Message-ID: <20250527162452.365501160@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit 65991ea8a6d1e68effdc01d95ebe39f1653f7b71 ]
+[ Upstream commit dbcfcb239b3b452ef8782842c36fb17dd1b9092f ]
 
-Both MSM8974 and MSM8226 have only CX as power domain with MX & PX being
-handled as regulators. Handle this case by reodering pd_names to have CX
-first, and handling that the driver core will already attach a single
-power domain internally.
+Some Alienware laptops that support the SMM interface, may have up to 4
+fans.
 
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-[luca: minor changes]
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-Link: https://lore.kernel.org/r/20250206-wcnss-singlepd-v2-2-9a53ee953dee@lucaweiss.eu
-[bjorn: Added missing braces to else after multi-statement if]
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Tested on an Alienware x15 r1.
+
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250304055249.51940-2-kuurtb@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_wcnss.c | 33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ Documentation/hwmon/dell-smm-hwmon.rst | 14 +++++++-------
+ drivers/hwmon/dell-smm-hwmon.c         |  5 ++++-
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
-index 5b5664603eed2..775b056d795a8 100644
---- a/drivers/remoteproc/qcom_wcnss.c
-+++ b/drivers/remoteproc/qcom_wcnss.c
-@@ -117,10 +117,10 @@ static const struct wcnss_data pronto_v1_data = {
- 	.pmu_offset = 0x1004,
- 	.spare_offset = 0x1088,
+diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmon/dell-smm-hwmon.rst
+index 74905675d71f9..5a4edb6565cf9 100644
+--- a/Documentation/hwmon/dell-smm-hwmon.rst
++++ b/Documentation/hwmon/dell-smm-hwmon.rst
+@@ -32,12 +32,12 @@ Temperature sensors and fans can be queried and set via the standard
+ =============================== ======= =======================================
+ Name				Perm	Description
+ =============================== ======= =======================================
+-fan[1-3]_input                  RO      Fan speed in RPM.
+-fan[1-3]_label                  RO      Fan label.
+-fan[1-3]_min                    RO      Minimal Fan speed in RPM
+-fan[1-3]_max                    RO      Maximal Fan speed in RPM
+-fan[1-3]_target                 RO      Expected Fan speed in RPM
+-pwm[1-3]                        RW      Control the fan PWM duty-cycle.
++fan[1-4]_input                  RO      Fan speed in RPM.
++fan[1-4]_label                  RO      Fan label.
++fan[1-4]_min                    RO      Minimal Fan speed in RPM
++fan[1-4]_max                    RO      Maximal Fan speed in RPM
++fan[1-4]_target                 RO      Expected Fan speed in RPM
++pwm[1-4]                        RW      Control the fan PWM duty-cycle.
+ pwm1_enable                     WO      Enable or disable automatic BIOS fan
+                                         control (not supported on all laptops,
+                                         see below for details).
+@@ -93,7 +93,7 @@ Again, when you find new codes, we'd be happy to have your patches!
+ ---------------------------
  
--	.pd_names = { "mx", "cx" },
-+	.pd_names = { "cx", "mx" },
- 	.vregs = (struct wcnss_vreg_info[]) {
--		{ "vddmx", 950000, 1150000, 0 },
- 		{ "vddcx", .super_turbo = true},
-+		{ "vddmx", 950000, 1150000, 0 },
- 		{ "vddpx", 1800000, 1800000, 0 },
- 	},
- 	.num_pd_vregs = 2,
-@@ -131,10 +131,10 @@ static const struct wcnss_data pronto_v2_data = {
- 	.pmu_offset = 0x1004,
- 	.spare_offset = 0x1088,
+ The driver also exports the fans as thermal cooling devices with
+-``type`` set to ``dell-smm-fan[1-3]``. This allows for easy fan control
++``type`` set to ``dell-smm-fan[1-4]``. This allows for easy fan control
+ using one of the thermal governors.
  
--	.pd_names = { "mx", "cx" },
-+	.pd_names = { "cx", "mx" },
- 	.vregs = (struct wcnss_vreg_info[]) {
--		{ "vddmx", 1287500, 1287500, 0 },
- 		{ "vddcx", .super_turbo = true },
-+		{ "vddmx", 1287500, 1287500, 0 },
- 		{ "vddpx", 1800000, 1800000, 0 },
- 	},
- 	.num_pd_vregs = 2,
-@@ -397,8 +397,17 @@ static irqreturn_t wcnss_stop_ack_interrupt(int irq, void *dev)
- static int wcnss_init_pds(struct qcom_wcnss *wcnss,
- 			  const char * const pd_names[WCNSS_MAX_PDS])
- {
-+	struct device *dev = wcnss->dev;
- 	int i, ret;
+ Module parameters
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index f5bdf842040e6..b043fbd15c9da 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -73,7 +73,7 @@
+ #define DELL_SMM_LEGACY_EXECUTE	0x1
  
-+	/* Handle single power domain */
-+	if (dev->pm_domain) {
-+		wcnss->pds[0] = dev;
-+		wcnss->num_pds = 1;
-+		pm_runtime_enable(dev);
-+		return 0;
-+	}
-+
- 	for (i = 0; i < WCNSS_MAX_PDS; i++) {
- 		if (!pd_names[i])
- 			break;
-@@ -418,8 +427,15 @@ static int wcnss_init_pds(struct qcom_wcnss *wcnss,
+ #define DELL_SMM_NO_TEMP	10
+-#define DELL_SMM_NO_FANS	3
++#define DELL_SMM_NO_FANS	4
  
- static void wcnss_release_pds(struct qcom_wcnss *wcnss)
- {
-+	struct device *dev = wcnss->dev;
- 	int i;
- 
-+	/* Handle single power domain */
-+	if (wcnss->num_pds == 1 && dev->pm_domain) {
-+		pm_runtime_disable(dev);
-+		return;
-+	}
-+
- 	for (i = 0; i < wcnss->num_pds; i++)
- 		dev_pm_domain_detach(wcnss->pds[i], false);
- }
-@@ -437,10 +453,13 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
- 	 * the regulators for the power domains. For old device trees we need to
- 	 * reserve extra space to manage them through the regulator interface.
- 	 */
--	if (wcnss->num_pds)
--		info += num_pd_vregs;
--	else
-+	if (wcnss->num_pds) {
-+		info += wcnss->num_pds;
-+		/* Handle single power domain case */
-+		num_vregs += num_pd_vregs - wcnss->num_pds;
-+	} else {
- 		num_vregs += num_pd_vregs;
-+	}
- 
- 	bulk = devm_kcalloc(wcnss->dev,
- 			    num_vregs, sizeof(struct regulator_bulk_data),
+ struct smm_regs {
+ 	unsigned int eax;
+@@ -1074,11 +1074,14 @@ static const struct hwmon_channel_info * const dell_smm_info[] = {
+ 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
+ 			   HWMON_F_TARGET,
+ 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
++			   HWMON_F_TARGET,
++			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
+ 			   HWMON_F_TARGET
+ 			   ),
+ 	HWMON_CHANNEL_INFO(pwm,
+ 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
+ 			   HWMON_PWM_INPUT,
++			   HWMON_PWM_INPUT,
+ 			   HWMON_PWM_INPUT
+ 			   ),
+ 	NULL
 -- 
 2.39.5
 
