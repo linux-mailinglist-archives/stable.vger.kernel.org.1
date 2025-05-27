@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-147632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924BDAC587F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D51AC5539
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B68C4C09D1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDA1E1BA5D4D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E36627BF8D;
-	Tue, 27 May 2025 17:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8B627D776;
+	Tue, 27 May 2025 17:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGn8emYr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scKF09Gw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED4F1FB3;
-	Tue, 27 May 2025 17:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09548139579;
+	Tue, 27 May 2025 17:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367945; cv=none; b=eBDYJV5o+zaJ+FuwUjmbZAY/IWItGZVJ/aAGmlMPGaC9IWbxnIW9cACuAu3JGkvvLr+x5UCtz5H/77og40UMtBw39oiZceIrVyC8jJNy9jyg7xG29iD7ABFk8brGkBsvpAlUMv4uqpW3h9CvrrpNXqXJQ6n0dM++OPU660aZcEI=
+	t=1748365750; cv=none; b=ApPdB8wNfvSUhj7XOf4JEtN6gc7xVdXzsGRgJ46tTuGHo7Vto3VSsgBbBg0+SrlwMjypeiAuhyTqBvI3bxq2h8C2grI/ynvxcmFKryrtC3TFMfIipaP1tEC3wc8QAV88P9igycv11GeZDR4QO287esvteyzofNWWYdMnsUpJ5cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367945; c=relaxed/simple;
-	bh=dYDldtsV7xwXvTj6nOKfCpzA1455KV1lr8LUmhzkkLk=;
+	s=arc-20240116; t=1748365750; c=relaxed/simple;
+	bh=uChY627mp2HaoGjvTlNiUopRQWWuV9endS+9JeEMVK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwkQRH4mv+xcOYmNPbEjYYgO1zBjlaO426Mf0KjfOZbbDU2BlHwzgLo+IjQV3Q6kpQdyDXG1a/1LGgWQMD+PG7dwP1310udaduLF0m/mCM05A6KS9Z9hmgOsIDmki7RuVSWdzgIhwCWNjOR8O8CWU8M1c0UiKZW5UalAe6XNf1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGn8emYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE6BC4CEE9;
-	Tue, 27 May 2025 17:45:44 +0000 (UTC)
+	 MIME-Version; b=sUCu66ZMCQuY3ZBaGL1x34xKWQ6HH85LcEbuvrfz5XQtftbTtOdT422M3E26YTpjH28nrQLCpFTEI56JzLDwmoKs6sGQayKsfmQsnJEEt5RfgVRs9FQ+TJrJ/1ZnYAXslUjbUBuA46Q1PKzj4/h+NsRqh8jHvLfhSl23mMvyW7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scKF09Gw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B267C4CEE9;
+	Tue, 27 May 2025 17:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367945;
-	bh=dYDldtsV7xwXvTj6nOKfCpzA1455KV1lr8LUmhzkkLk=;
+	s=korg; t=1748365749;
+	bh=uChY627mp2HaoGjvTlNiUopRQWWuV9endS+9JeEMVK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGn8emYrM4LIL5uhSWBttiGXo3um5pHadzhovwULmdNBcCo/H+L6eSXq3Z6CueVml
-	 B/564KCyI+ZleYuHvZOUOoO79+qr9j9ASVJIAw3rKv1QcVxRDTzTEKizr4lXM0jlFL
-	 IZy0ZcJmV8sdxDNY24M2c8y89SevjvVGzdVKP4Cw=
+	b=scKF09GwMFBHmv82ynGgvh58Dq8D4+4sMjkBYEvoPiPjp70MMqU1JuL9H/hk1jtrD
+	 CMtDVjUpO005dSZNdPgW7CupUtsjv4ib6GD89jUBpvPMJGFBxlsZhZVLE1G8c9kcOj
+	 5M0L5UNRAV83hizDxcFsi7C/DJF55yC4QZBKfsz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 542/783] wifi: rtw88: Fix __rtw_download_firmware() for RTL8814AU
+Subject: [PATCH 6.12 446/626] net/mlx5e: Avoid WARN_ON when configuring MQPRIO with HTB offload enabled
 Date: Tue, 27 May 2025 18:25:39 +0200
-Message-ID: <20250527162535.229709381@linuxfoundation.org>
+Message-ID: <20250527162503.120637283@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +66,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 8425f5c8f04dbcf11ade78f984a494fc0b90e7a0 ]
+[ Upstream commit 689805dcc474c2accb5cffbbcea1c06ee4a54570 ]
 
-Don't call ltecoex_read_reg() and ltecoex_reg_write() when the
-ltecoex_addr member of struct rtw_chip_info is NULL. The RTL8814AU
-doesn't have this feature.
+When attempting to enable MQPRIO while HTB offload is already
+configured, the driver currently returns `-EINVAL` and triggers a
+`WARN_ON`, leading to an unnecessary call trace.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/55b5641f-094e-4f94-9f79-ac053733f2cf@gmail.com
+Update the code to handle this case more gracefully by returning
+`-EOPNOTSUPP` instead, while also providing a helpful user message.
+
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index ea6406df42b3d..0491f501c1383 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -785,7 +785,8 @@ static int __rtw_download_firmware(struct rtw_dev *rtwdev,
- 	if (!check_firmware_size(data, size))
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 38055537b12ac..4a2f58a9d7066 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -3759,8 +3759,11 @@ static int mlx5e_setup_tc_mqprio(struct mlx5e_priv *priv,
+ 	/* MQPRIO is another toplevel qdisc that can't be attached
+ 	 * simultaneously with the offloaded HTB.
+ 	 */
+-	if (WARN_ON(mlx5e_selq_is_htb_enabled(&priv->selq)))
+-		return -EINVAL;
++	if (mlx5e_selq_is_htb_enabled(&priv->selq)) {
++		NL_SET_ERR_MSG_MOD(mqprio->extack,
++				   "MQPRIO cannot be configured when HTB offload is enabled.");
++		return -EOPNOTSUPP;
++	}
  
--	if (!ltecoex_read_reg(rtwdev, 0x38, &ltecoex_bckp))
-+	if (rtwdev->chip->ltecoex_addr &&
-+	    !ltecoex_read_reg(rtwdev, 0x38, &ltecoex_bckp))
- 		return -EBUSY;
- 
- 	wlan_cpu_enable(rtwdev, false);
-@@ -803,7 +804,8 @@ static int __rtw_download_firmware(struct rtw_dev *rtwdev,
- 
- 	wlan_cpu_enable(rtwdev, true);
- 
--	if (!ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp)) {
-+	if (rtwdev->chip->ltecoex_addr &&
-+	    !ltecoex_reg_write(rtwdev, 0x38, ltecoex_bckp)) {
- 		ret = -EBUSY;
- 		goto dlfw_fail;
- 	}
+ 	switch (mqprio->mode) {
+ 	case TC_MQPRIO_MODE_DCB:
 -- 
 2.39.5
 
