@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3420AC588F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 216DEAC5530
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8098E1BC2729
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA1A37A2A78
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4963425C6EC;
-	Tue, 27 May 2025 17:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE1827A463;
+	Tue, 27 May 2025 17:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOwv7g+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqx0lXOs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072FC7263B;
-	Tue, 27 May 2025 17:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DD025A323;
+	Tue, 27 May 2025 17:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367997; cv=none; b=oHt5FpyAQG3tSgop9bikx3PTGdcaAVbn2nbhh86Uu08GsXU1smNxPZIw4pPJ6YlQb8OVzLW6JezGASjeeqPxQkHpPeKHZWUfES6iI6glUI+/IBSmR0n2Ozsarb0eCX+e5ERRzmIUHcUQmOZ9/VRR1zki33bMa5/6NpRSdCZ+jgs=
+	t=1748365728; cv=none; b=b1YamDZdRsfRW2uJMlIXnXUp8SZu3TzeXpKo/0O0oU8MSLU0+ze22LdvbltAtq4TPs+ZffANT+c6liBy+I3beXYvHwNC0o6X01cDtHz4G8BOAWEw5tE5BSqxBrBq2VgZvtqcOT70g5nGaR/C0PpIdv3qTmL531WSqj5q53fUko8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367997; c=relaxed/simple;
-	bh=xV0SXz17XN26d3Oi5Cla/pQA+2Cr6DHTnvpZf+dK5Ug=;
+	s=arc-20240116; t=1748365728; c=relaxed/simple;
+	bh=8esODaBkO/PEACmUwnYrkrwlREAhn8fC/073YI26938=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2s1p+vWNQo2SLRtR+r6jU3WsUKJ3IeJI0x+ndOGpFZ1z9OBL653sBtRc1fTN+JyQ5gx2M2OQUyvP3moEev7zuEP3g+qbzVRM0k+DzFY+U4vX4fcdXlisAyviq1iMdQsOmztETPdpplnYZpijjlsQbBnLyBlxzhI+9fE6yCDb/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOwv7g+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6980AC4CEE9;
-	Tue, 27 May 2025 17:46:36 +0000 (UTC)
+	 MIME-Version; b=nPcnrGD92JBIb/qIwadbRem/SnWZMRH1dMJYa0bHK3Ydl/ydMFxQbIqMTYxjG2oHGztJij6nVmFNpEEsZhSc7IVqR42ABtjQfMjQ/ODYV292WRJip/lnYvcbLN/sGO28Wlwblyw4xswfXNL9T5UH3dxpXN5Oxu1Id18fT17lXOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqx0lXOs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A07C4CEE9;
+	Tue, 27 May 2025 17:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367996;
-	bh=xV0SXz17XN26d3Oi5Cla/pQA+2Cr6DHTnvpZf+dK5Ug=;
+	s=korg; t=1748365727;
+	bh=8esODaBkO/PEACmUwnYrkrwlREAhn8fC/073YI26938=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOwv7g+Fyx8uEsbvX32CT8dY/5Ne1qQmq9waSCeKGwJfQnNnHkh57BFTZL0vqpo/Y
-	 xXug/Qop8x4y0K6j6dDMF/JwDZ9gtsUX/xHgzeOsQ3MVZ5r5FvPmt+oU2KY63Lzxa/
-	 2L0vZMUWTIFpRRUoAGhzE5kph4Diu78ISGV7xDQI=
+	b=kqx0lXOsc2Fce+fkeerpl+ubvioXmrjvrScEhpBtfqtWBZmc4RSdK311XKvFeNOR1
+	 OZjkrckvjdH7fECbiUldVhj0bEQ7RoOG/lfYfdOlFH+J5vtZAhgcEf7HvKvgR10s6c
+	 wVsbCnM0twyj8xf6VHAfyKjTDI1yMirp+dAlJmTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 565/783] r8169: dont scan PHY addresses > 0
+Subject: [PATCH 6.12 469/626] ASoC: codecs: pcm3168a: Allow for 24-bit in provider mode
 Date: Tue, 27 May 2025 18:26:02 +0200
-Message-ID: <20250527162536.151750896@linuxfoundation.org>
+Message-ID: <20250527162504.051705051@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit faac69a4ae5abb49e62c79c66b51bb905c9aa5ec ]
+[ Upstream commit 7d92a38d67e5d937b64b20aa4fd14451ee1772f3 ]
 
-The PHY address is a dummy, because r8169 PHY access registers
-don't support a PHY address. Therefore scan address 0 only.
+As per codec device specification, 24-bit is allowed in provider mode.
+Update the code to reflect that.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/830637dd-4016-4a68-92b3-618fcac6589d@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250203141051.2361323-4-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/pcm3168a.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 485ecd62e585d..267105ba92744 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -5250,6 +5250,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
- 	new_bus->priv = tp;
- 	new_bus->parent = &pdev->dev;
- 	new_bus->irq[0] = PHY_MAC_INTERRUPT;
-+	new_bus->phy_mask = GENMASK(31, 1);
- 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "r8169-%x-%x",
- 		 pci_domain_nr(pdev->bus), pci_dev_id(pdev));
- 
+diff --git a/sound/soc/codecs/pcm3168a.c b/sound/soc/codecs/pcm3168a.c
+index fac0617ab95b6..6cbb8d0535b02 100644
+--- a/sound/soc/codecs/pcm3168a.c
++++ b/sound/soc/codecs/pcm3168a.c
+@@ -493,9 +493,9 @@ static int pcm3168a_hw_params(struct snd_pcm_substream *substream,
+ 		}
+ 		break;
+ 	case 24:
+-		if (provider_mode || (format == SND_SOC_DAIFMT_DSP_A) ||
+-		    		     (format == SND_SOC_DAIFMT_DSP_B)) {
+-			dev_err(component->dev, "24-bit slots not supported in provider mode, or consumer mode using DSP\n");
++		if (!provider_mode && ((format == SND_SOC_DAIFMT_DSP_A) ||
++				       (format == SND_SOC_DAIFMT_DSP_B))) {
++			dev_err(component->dev, "24-bit slots not supported in consumer mode using DSP\n");
+ 			return -EINVAL;
+ 		}
+ 		break;
 -- 
 2.39.5
 
