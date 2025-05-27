@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-146982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4066AC55ED
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC522AC58C7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87FA73BFDF6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A96A1BC2BC7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6996A280012;
-	Tue, 27 May 2025 17:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7642227CCF0;
+	Tue, 27 May 2025 17:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/5FyiqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dp6NGtZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2567727E1CA;
-	Tue, 27 May 2025 17:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DAD42A9B;
+	Tue, 27 May 2025 17:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365908; cv=none; b=kDx46/MNY4Rp1Xm1IJ6/xpUmzm0ERGJfNHk9h2TvBjqQE/1b8oJ85k5dBBOUUJB2fUuJNh+Irnvje856OO8jD4KQjEMVdfrD0V1bKX0fgZE3uWjpcypIOQy+LE7qj1bEdvvJb/fILwIIW8hWJwYSkPPu/RpL360uTSFYfAhIAdI=
+	t=1748368156; cv=none; b=ni9SvO7zLOfTVx4OC63BORaUZH6Cbqbi54pDlPcKsP6K5dPB1LhB+QyE0EV51db0RWOUetzayJRt3aU1MzhjQMT4TnaHHkX/56XvQjGVStXJQjjHJRzMS+iWD3o6FAtmH6AQSRID1Seqh98OjX21UDBQOqgDPgp3rjXK5RDlFfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365908; c=relaxed/simple;
-	bh=h2Dw0ohfJWtkEb9NqqtZSFswAPDlg9YPASY11Y9iTwQ=;
+	s=arc-20240116; t=1748368156; c=relaxed/simple;
+	bh=T6+Xl4wBAHmS3V/e6NSXWmA3MeULlbGI4BFMAiAmpTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=or5kyRmW567Cs1larth4QhjgILZlCeD6IpFy1qFBfzBv7c64/0eC4h4TpWc+utYeZiAKO4VZ5puJJCwcfEb1p2j65Yg316h+qdewgvmS/TWwHIo4EKQm7xqlmZI6dXoxo+WmSdHIWXwpmtwh31CeUVUUJXYWopHDLkKhy389GBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/5FyiqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A2EC4CEE9;
-	Tue, 27 May 2025 17:11:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dRNXUo+vyySfVgXUb7Hac6VcVtDYcJk+uaBuE6OASwqZhcC15+8heNOfG6KmgL81RCM0or0i+xPS4Oi+qJbmTvmNGxevj6Tepey1QaQkA5+RDGDN63986e9hYn6gBW1RkuNmWhdn+wAZ/Ok/srhGTZo/MNCN42IoxnNWZSVIVhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dp6NGtZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3403EC4CEE9;
+	Tue, 27 May 2025 17:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365908;
-	bh=h2Dw0ohfJWtkEb9NqqtZSFswAPDlg9YPASY11Y9iTwQ=;
+	s=korg; t=1748368153;
+	bh=T6+Xl4wBAHmS3V/e6NSXWmA3MeULlbGI4BFMAiAmpTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/5FyiqNxmS8ol/OLF9huyqAB44gGPOVMi9ca0kJA6uJSua/fUs/qZRHt7mqaT1OJ
-	 XocqrU7MNNaTlpAn7Qech3yVKjm7pTgvteWLpQEwJD70UY1EZydByb0Zs9Ha54DtgS
-	 X71rbWQ2WTd5e7soesOun4tN1LHLiuttq7jLad9o=
+	b=Dp6NGtZ4DRZDz1SSX6MKoL8IOM8dfcdApfzh3A/YS8jWodbq16GMjaSWjBIJZXDU7
+	 7qU/SiKMgYvJCZf3Cnux4Gvy4YTE6qZh+R/UW/hFzmaL20idhXjud8w0/KMMtEwJ/Z
+	 v0CTDh8XvRuaRWbiJXnLyh9YNW1fuqtEtz4vvf1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ga=C5=A1per=20Nemgar?= <gasper.nemgar@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 511/626] platform/x86: ideapad-laptop: add support for some new buttons
-Date: Tue, 27 May 2025 18:26:44 +0200
-Message-ID: <20250527162505.728095711@linuxfoundation.org>
+Subject: [PATCH 6.14 608/783] drm/xe/pf: Move VFs reprovisioning to worker
+Date: Tue, 27 May 2025 18:26:45 +0200
+Message-ID: <20250527162537.910705106@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +66,146 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gašper Nemgar <gasper.nemgar@gmail.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 02c6e43397c39edd0c172859bf8c851b46be09a8 ]
+[ Upstream commit a4d1c5d0b99b75263a5626d2e52d569db3844b33 ]
 
-Add entries to unsupported WMI codes in ideapad_keymap[] and one
-check for WMI code 0x13d to trigger platform_profile_cycle().
+Since the GuC is reset during GT reset, we need to re-send the
+entire SR-IOV provisioning configuration to the GuC. But since
+this whole configuration is protected by the PF master mutex and
+we can't avoid making allocations under this mutex (like during
+LMEM provisioning), we can't do this reprovisioning from gt-reset
+path if we want to be reclaim-safe. Move VFs reprovisioning to a
+async worker that we will start from the gt-reset path.
 
-Signed-off-by: Gašper Nemgar <gasper.nemgar@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20250418070738.7171-1-gasper.nemgar@gmail.com
-[ij: joined nested if ()s & major tweaks to changelog]
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Michał Winiarski <michal.winiarski@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250125215505.720-1-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/xe/xe_gt_sriov_pf.c       | 43 +++++++++++++++++++++--
+ drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h | 10 ++++++
+ 2 files changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index c908f52ed717b..bdb4cbee42058 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1297,6 +1297,16 @@ static const struct key_entry ideapad_keymap[] = {
- 	/* Specific to some newer models */
- 	{ KE_KEY,	0x3e | IDEAPAD_WMI_KEY, { KEY_MICMUTE } },
- 	{ KE_KEY,	0x3f | IDEAPAD_WMI_KEY, { KEY_RFKILL } },
-+	/* Star- (User Assignable Key) */
-+	{ KE_KEY,	0x44 | IDEAPAD_WMI_KEY, { KEY_PROG1 } },
-+	/* Eye */
-+	{ KE_KEY,	0x45 | IDEAPAD_WMI_KEY, { KEY_PROG3 } },
-+	/* Performance toggle also Fn+Q, handled inside ideapad_wmi_notify() */
-+	{ KE_KEY,	0x3d | IDEAPAD_WMI_KEY, { KEY_PROG4 } },
-+	/* shift + prtsc */
-+	{ KE_KEY,   0x2d | IDEAPAD_WMI_KEY, { KEY_CUT } },
-+	{ KE_KEY,   0x29 | IDEAPAD_WMI_KEY, { KEY_TOUCHPAD_TOGGLE } },
-+	{ KE_KEY,   0x2a | IDEAPAD_WMI_KEY, { KEY_ROOT_MENU } },
- 
- 	{ KE_END },
- };
-@@ -2083,6 +2093,12 @@ static void ideapad_wmi_notify(struct wmi_device *wdev, union acpi_object *data)
- 		dev_dbg(&wdev->dev, "WMI fn-key event: 0x%llx\n",
- 			data->integer.value);
- 
-+		/* performance button triggered by 0x3d */
-+		if (data->integer.value == 0x3d && priv->dytc) {
-+			platform_profile_cycle();
-+			break;
-+		}
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
+index b80930a6bc1a2..c08efca6420e7 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
+@@ -15,7 +15,11 @@
+ #include "xe_gt_sriov_pf_helpers.h"
+ #include "xe_gt_sriov_pf_migration.h"
+ #include "xe_gt_sriov_pf_service.h"
++#include "xe_gt_sriov_printk.h"
+ #include "xe_mmio.h"
++#include "xe_pm.h"
 +
- 		/* 0x02 FnLock, 0x03 Esc */
- 		if (data->integer.value == 0x02 || data->integer.value == 0x03)
- 			ideapad_fn_lock_led_notify(priv, data->integer.value == 0x02);
++static void pf_worker_restart_func(struct work_struct *w);
+ 
+ /*
+  * VF's metadata is maintained in the flexible array where:
+@@ -41,6 +45,11 @@ static int pf_alloc_metadata(struct xe_gt *gt)
+ 	return 0;
+ }
+ 
++static void pf_init_workers(struct xe_gt *gt)
++{
++	INIT_WORK(&gt->sriov.pf.workers.restart, pf_worker_restart_func);
++}
++
+ /**
+  * xe_gt_sriov_pf_init_early - Prepare SR-IOV PF data structures on PF.
+  * @gt: the &xe_gt to initialize
+@@ -65,6 +74,8 @@ int xe_gt_sriov_pf_init_early(struct xe_gt *gt)
+ 	if (err)
+ 		return err;
+ 
++	pf_init_workers(gt);
++
+ 	return 0;
+ }
+ 
+@@ -161,6 +172,35 @@ void xe_gt_sriov_pf_sanitize_hw(struct xe_gt *gt, unsigned int vfid)
+ 	pf_clear_vf_scratch_regs(gt, vfid);
+ }
+ 
++static void pf_restart(struct xe_gt *gt)
++{
++	struct xe_device *xe = gt_to_xe(gt);
++
++	xe_pm_runtime_get(xe);
++	xe_gt_sriov_pf_config_restart(gt);
++	xe_gt_sriov_pf_control_restart(gt);
++	xe_pm_runtime_put(xe);
++
++	xe_gt_sriov_dbg(gt, "restart completed\n");
++}
++
++static void pf_worker_restart_func(struct work_struct *w)
++{
++	struct xe_gt *gt = container_of(w, typeof(*gt), sriov.pf.workers.restart);
++
++	pf_restart(gt);
++}
++
++static void pf_queue_restart(struct xe_gt *gt)
++{
++	struct xe_device *xe = gt_to_xe(gt);
++
++	xe_gt_assert(gt, IS_SRIOV_PF(xe));
++
++	if (!queue_work(xe->sriov.wq, &gt->sriov.pf.workers.restart))
++		xe_gt_sriov_dbg(gt, "restart already in queue!\n");
++}
++
+ /**
+  * xe_gt_sriov_pf_restart - Restart SR-IOV support after a GT reset.
+  * @gt: the &xe_gt
+@@ -169,6 +209,5 @@ void xe_gt_sriov_pf_sanitize_hw(struct xe_gt *gt, unsigned int vfid)
+  */
+ void xe_gt_sriov_pf_restart(struct xe_gt *gt)
+ {
+-	xe_gt_sriov_pf_config_restart(gt);
+-	xe_gt_sriov_pf_control_restart(gt);
++	pf_queue_restart(gt);
+ }
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h b/drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h
+index 0426b1a77069a..a64a6835ad656 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_types.h
+@@ -35,8 +35,17 @@ struct xe_gt_sriov_metadata {
+ 	struct xe_gt_sriov_state_snapshot snapshot;
+ };
+ 
++/**
++ * struct xe_gt_sriov_pf_workers - GT level workers used by the PF.
++ */
++struct xe_gt_sriov_pf_workers {
++	/** @restart: worker that executes actions post GT reset */
++	struct work_struct restart;
++};
++
+ /**
+  * struct xe_gt_sriov_pf - GT level PF virtualization data.
++ * @workers: workers data.
+  * @service: service data.
+  * @control: control data.
+  * @policy: policy data.
+@@ -45,6 +54,7 @@ struct xe_gt_sriov_metadata {
+  * @vfs: metadata for all VFs.
+  */
+ struct xe_gt_sriov_pf {
++	struct xe_gt_sriov_pf_workers workers;
+ 	struct xe_gt_sriov_pf_service service;
+ 	struct xe_gt_sriov_pf_control control;
+ 	struct xe_gt_sriov_pf_policy policy;
 -- 
 2.39.5
 
