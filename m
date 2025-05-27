@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-146514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7DEAC537A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7901AC537C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D6F13A9389
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B57A1888E5D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAAD27FB0C;
-	Tue, 27 May 2025 16:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C2827FB3D;
+	Tue, 27 May 2025 16:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXX2sUR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zday2jZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A793727A926;
-	Tue, 27 May 2025 16:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B122CCC0;
+	Tue, 27 May 2025 16:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364455; cv=none; b=EOyEenhhhr3omVMZDi86ieFst58cIKrXshdd3XKwOfGAAgWAtsykQ/tI/QKjdqGhrZjatfKHgb/Aw39AACXGFrTlIl51xq+QC/22YkVT9fyToSsEvZysUCpGJkvWdZLmEp3oMsG4IxqDetlHyjTaQg6jBspJP3gkscnWoRJQMsE=
+	t=1748364462; cv=none; b=afvOH+KlTtcqR2Khmo43OU4EGzcg2HwoU76STXklL2XLw4t6ugkEc8HKcXT8V/TegREToA35Fc7m7xEfvM25A0Bz6GeMvSCislA5UDg+6KG9C+CG7FIqgmBnJIzB6wPZTRq1GMPxm04jdU1MLmJSyBWf/aL2XwcrGVR7bs+XWXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364455; c=relaxed/simple;
-	bh=gXXm2XM9gCH8Ljv19Igmk0a9adYUuYJyPX9bUMwbRw8=;
+	s=arc-20240116; t=1748364462; c=relaxed/simple;
+	bh=2+g6GGR2vPnkIYbhkzyPPTlc62083RMlYqG8WeGapdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGdqSAc6JQ8zrrggDEmUrBR3WTqYZ8TUoYFdIO0shtkNU2j+/Toq/JfeO7TFMHY0eO3HlP8uhQLsLCXJleGFbbRunM+mrb4jXOID/ysp55NWFfKH7kDLjXQeN40NOm518wUsFmUN4F/yKjjNnfrFU+qbFeGVFHRoHI4PqafphAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXX2sUR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30400C4CEE9;
-	Tue, 27 May 2025 16:47:35 +0000 (UTC)
+	 MIME-Version; b=JzxVE8LjOcnVqvkQk4XcBn5ujsbfURUX2RVXs3nKKZ9KGWUAqvDg+oZkXoXrbYSLkIDhopqBxHDDEVhRR99sxhZ/XYUzIdjVG0KTMM1Srt0q9WnUG9p1NIBdnX/0+HCidOCqnxrCrv03i9asJXkF6hbedyncvR7gCGcxiUerfpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zday2jZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96431C4CEE9;
+	Tue, 27 May 2025 16:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364455;
-	bh=gXXm2XM9gCH8Ljv19Igmk0a9adYUuYJyPX9bUMwbRw8=;
+	s=korg; t=1748364460;
+	bh=2+g6GGR2vPnkIYbhkzyPPTlc62083RMlYqG8WeGapdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXX2sUR808xph1mquZlMrEjDXBDWS+65r4Gay4GCN1dB5VWgSDIS63vDskZrRyRiM
-	 5503E4jyX0oqhLfap0FrXIvW3pJASgZSvQ+YeVFSD0axn14mU3BCcopbnl3VTTe6qQ
-	 wQ4sKda9eCZ+JN8LZGmUinFFkLPVZOTR7BAN1k+I=
+	b=Zday2jZ/UjtYIJ5j/CoQr+mIgEAcNtTGUNtppuw4WYD53Cu4DMUEKHCfcyaZyPmjm
+	 ya3cwlCSIRmkiUMvD++KTjES20MFT5Onaj4MaZyDelnOKwK8bC39FO7l0bslhtFpZe
+	 VsvnZ2DZ8Dk0h2DpvjdlLtcMrRLZLamiwv3oS/V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huisong Li <lihuisong@huawei.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/626] mailbox: pcc: Use acpi_os_ioremap() instead of ioremap()
-Date: Tue, 27 May 2025 18:19:15 +0200
-Message-ID: <20250527162447.578876037@linuxfoundation.org>
+Subject: [PATCH 6.12 063/626] mailbox: use error ret code of of_parse_phandle_with_args()
+Date: Tue, 27 May 2025 18:19:16 +0200
+Message-ID: <20250527162447.617855509@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -68,47 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit d181acea5b864e91f38f5771b8961215ce5017ae ]
+[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
 
-The Platform Communication Channel (PCC) mailbox driver currently uses
-ioremap() to map channel shared memory regions. However it is preferred
-to use acpi_os_ioremap(), which is mapping function specific to EFI/ACPI
-defined memory regions. It ensures that the correct memory attributes
-are applied when mapping ACPI-provided regions.
+In case of error, of_parse_phandle_with_args() returns -EINVAL when the
+passed index is negative, or -ENOENT when the index is for an empty
+phandle. The mailbox core overwrote the error return code with a less
+precise -ENODEV. Use the error returned code from
+of_parse_phandle_with_args().
 
-While at it, also add checks for handling any errors with the mapping.
-
-Acked-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Adam Young <admiyo@os.amperecomputing.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/pcc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/mailbox/mailbox.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index f8215a8f656a4..49254d99a8ad6 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -419,8 +419,12 @@ int pcc_mbox_ioremap(struct mbox_chan *chan)
- 		return -1;
- 	pchan_info = chan->con_priv;
- 	pcc_mbox_chan = &pchan_info->chan;
--	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
--				       pcc_mbox_chan->shmem_size);
-+
-+	pcc_mbox_chan->shmem = acpi_os_ioremap(pcc_mbox_chan->shmem_base_addr,
-+					       pcc_mbox_chan->shmem_size);
-+	if (!pcc_mbox_chan->shmem)
-+		return -ENXIO;
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index d3d26a2c98956..cb174e788a96c 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -415,11 +415,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
+ 
+ 	mutex_lock(&con_mutex);
+ 
+-	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", index, &spec)) {
++	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
++					 index, &spec);
++	if (ret) {
+ 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
+ 		mutex_unlock(&con_mutex);
+-		return ERR_PTR(-ENODEV);
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	chan = ERR_PTR(-EPROBE_DEFER);
 -- 
 2.39.5
 
