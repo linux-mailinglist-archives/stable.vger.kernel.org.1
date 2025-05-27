@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AA0AC538A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 661DEAC56E6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41EF97AA028
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4AD23A3D62
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD8227CB04;
-	Tue, 27 May 2025 16:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AA214AD2B;
+	Tue, 27 May 2025 17:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjLS+vgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBYqnRwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4C5194A45;
-	Tue, 27 May 2025 16:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10D827D784;
+	Tue, 27 May 2025 17:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364500; cv=none; b=Xsfc0w41o+QjI6dSUnBLkoesHv12PVeOQNzTuSjqid1l0+mQq8sHZ724i3K23YOX4MtLs5ADsCJ7s+lAUnJPllQ+sadmdBlvZ/E0agNa96Gzba6ImkP6LcU8vacKA85cntU7jVuCoqKCARKJOO75MnANW4+EV9wtLqDy1wiMG7E=
+	t=1748366768; cv=none; b=UEZzdyRfgppTI7vNtYNiOhl7tlRD/KjO6ihmC5jtUOJsS+xtkj643d7D5l/fv9ehTGzC73A4qc4cTmySuupRpeLiSWy+e8WkQq44ImIVHsCuQ7fwP2ChexTC38g5KvCyr2h6Yav5la674hDwmuuD1nrME5kGijPTf7Q26CNUU7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364500; c=relaxed/simple;
-	bh=+RbCDNxP75dSRYAyVImOZFpRoCd4P3jMoVYA0Bdl8Ls=;
+	s=arc-20240116; t=1748366768; c=relaxed/simple;
+	bh=hb2LTwjyN5OsC2BLAlIJAkiGW5PFWFBGo4MqeqlxiMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIMcR3ySg1UT+bVW91uzcaS+j3iCvtLtdPodkOJdsxJ4EvFbqL0NuL0Fw6Rz3hJ87ZKQGzWrcceNkKE3TG952Guy2WVN8jakQFfxuq33LkXzktRY/zP1OnnLO7zJ1F9IS2sFIMFaXXS7h4G1G2v+HswgTz11v8/dMRTjoicJb+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjLS+vgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D12C4CEE9;
-	Tue, 27 May 2025 16:48:19 +0000 (UTC)
+	 MIME-Version; b=gMnq9/Rru84/cLoyEH9wzNkGlvhHFmiYjtjjQ3XYgzngA7dn8pWkBMm0JmrIDe5UgidsQyAOAnnMXkfH5Vb0EoUNMwONjfzN2ouRaGavvOIyASAITPBIDNjiHJmuYVFBuyXH2eRReruzBsxfswpg4XdmRCcoOS+a9bMWWQEt/3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBYqnRwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C65C4CEE9;
+	Tue, 27 May 2025 17:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364500;
-	bh=+RbCDNxP75dSRYAyVImOZFpRoCd4P3jMoVYA0Bdl8Ls=;
+	s=korg; t=1748366766;
+	bh=hb2LTwjyN5OsC2BLAlIJAkiGW5PFWFBGo4MqeqlxiMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjLS+vglgBAb7+wnFco5nHDB5Mc5T8lIoBMroxIttXO0co1+lyZgyX40Wiy8CQAJa
-	 aN3Ix0Z/e5vDna1KET59YG8QMqAq4TLppJnCtbrhiKiAchSxG5Qaktepwi4XtgEoaY
-	 R9piKbF3ky5YBmA71JLGVqparB8OhU2HxVkoO/yU=
+	b=fBYqnRwAzUiWDL/a58q8UtbCoXCOGzamhyCLtM25LFnMmtavIdFF0r1ijLSVMeMiH
+	 +ZVpAj3YC8ehXr98t9f/uL48noVPZdofnSsrb74X/37J+BfUehgWuoPz0CUjFVF9rR
+	 cLexMd85k3jJT+QjSIw3GlkVX/TCQ1rBfS7ThjAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/626] ASoC: codecs: wsa884x: Correct VI sense channel mask
-Date: Tue, 27 May 2025 18:19:28 +0200
-Message-ID: <20250527162448.093281233@linuxfoundation.org>
+Subject: [PATCH 6.14 172/783] ASoC: sma1307: Add NULL check in sma1307_setting_loaded()
+Date: Tue, 27 May 2025 18:19:29 +0200
+Message-ID: <20250527162520.169950473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 060fac202eb8e5c83961f0e0bf6dad8ab6e46643 ]
+[ Upstream commit 0ec6bd16705fe21d6429d6b8f7981eae2142bba8 ]
 
-VI sense port on WSA883x speaker takes only one channel, so use 0x1 as
-channel mask.  This fixes garbage being recorded by the speaker when
-testing the VI sense feedback path.
+All varibale allocated by kzalloc and devm_kzalloc could be NULL.
+Multiple pointer checks and their cleanup are added.
 
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250312-asoc-wsa88xx-visense-v1-2-9ca705881122@linaro.org
+This issue is found by our static analysis tool
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://patch.msgid.link/20250311015714.1333857-1-chenyuan0y@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa884x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/sma1307.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/sound/soc/codecs/wsa884x.c b/sound/soc/codecs/wsa884x.c
-index 560a2c04b6955..18b0ee8f15a55 100644
---- a/sound/soc/codecs/wsa884x.c
-+++ b/sound/soc/codecs/wsa884x.c
-@@ -891,7 +891,7 @@ static const struct sdw_port_config wsa884x_pconfig[WSA884X_MAX_SWR_PORTS] = {
- 	},
- 	[WSA884X_PORT_VISENSE] = {
- 		.num = WSA884X_PORT_VISENSE + 1,
--		.ch_mask = 0x3,
-+		.ch_mask = 0x1,
- 	},
- 	[WSA884X_PORT_CPS] = {
- 		.num = WSA884X_PORT_CPS + 1,
+diff --git a/sound/soc/codecs/sma1307.c b/sound/soc/codecs/sma1307.c
+index 480bcea48541e..b9d8136fe3dc1 100644
+--- a/sound/soc/codecs/sma1307.c
++++ b/sound/soc/codecs/sma1307.c
+@@ -1728,6 +1728,11 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
+ 	}
+ 
+ 	data = kzalloc(fw->size, GFP_KERNEL);
++	if (!data) {
++		release_firmware(fw);
++		sma1307->set.status = false;
++		return;
++	}
+ 	size = fw->size >> 2;
+ 	memcpy(data, fw->data, fw->size);
+ 
+@@ -1741,6 +1746,12 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
+ 	sma1307->set.header = devm_kzalloc(sma1307->dev,
+ 					   sma1307->set.header_size,
+ 					   GFP_KERNEL);
++	if (!sma1307->set.header) {
++		kfree(data);
++		sma1307->set.status = false;
++		return;
++	}
++
+ 	memcpy(sma1307->set.header, data,
+ 	       sma1307->set.header_size * sizeof(int));
+ 
+@@ -1756,6 +1767,13 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
+ 	sma1307->set.def
+ 	    = devm_kzalloc(sma1307->dev,
+ 			   sma1307->set.def_size * sizeof(int), GFP_KERNEL);
++	if (!sma1307->set.def) {
++		kfree(data);
++		kfree(sma1307->set.header);
++		sma1307->set.status = false;
++		return;
++	}
++
+ 	memcpy(sma1307->set.def,
+ 	       &data[sma1307->set.header_size],
+ 	       sma1307->set.def_size * sizeof(int));
+@@ -1768,6 +1786,16 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
+ 		    = devm_kzalloc(sma1307->dev,
+ 				   sma1307->set.mode_size * 2 * sizeof(int),
+ 				   GFP_KERNEL);
++		if (!sma1307->set.mode_set[i]) {
++			kfree(data);
++			kfree(sma1307->set.header);
++			kfree(sma1307->set.def);
++			for (int j = 0; j < i; j++)
++				kfree(sma1307->set.mode_set[j]);
++			sma1307->set.status = false;
++			return;
++		}
++
+ 		for (int j = 0; j < sma1307->set.mode_size; j++) {
+ 			sma1307->set.mode_set[i][2 * j]
+ 			    = data[offset + ((num_mode + 1) * j)];
 -- 
 2.39.5
 
