@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5EAAC58A5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1E7AC5562
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9D121BC2826
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE3CA4A3DAD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBAA27FB09;
-	Tue, 27 May 2025 17:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED2227E7CF;
+	Tue, 27 May 2025 17:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4+fHg1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NnbDuV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF9C1E25E3;
-	Tue, 27 May 2025 17:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFA027E7C6;
+	Tue, 27 May 2025 17:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368050; cv=none; b=tZxTWPdURPAU4M1kt2GnY7i/l6k2s/do/aywJC6xSqgucxOyTkBnOc4tqTywWgJKZhOQiSrC1zlT/NoHe+C5WzI2L/GHtbgGgWKwdhrzR+SYrfcoMqL5RNvzaMw/wDN6XAMfqYtsi18VnksWC7Ddzkc1qeST0yo6xGqvOuhnATA=
+	t=1748365854; cv=none; b=IDBEmlN1YkXtd6+lHIQBgo4GN5BgNIcu5pNg3zQQ8hawLbsD3MAJt/w6kOXzrNBn7tcqA4g5E4VDAYkoozixSZk1iQeXuzpote4kiac4ugUQtTh31xw/Fe4N8l2naErqFL102iWRl+DSItScPPFgkRY+HRQQSauFb1qqga04dX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368050; c=relaxed/simple;
-	bh=wt/RosMjzsB5sPXuOn0pJkNUd9KQEU4lxnwormUShmc=;
+	s=arc-20240116; t=1748365854; c=relaxed/simple;
+	bh=6jEPxKsh0LSPpOl6U5UBdIjtVKbscAl90CD4yjz4zzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfRj58KwF68WiVzbHK6fKfRahB2ry9so29jx0RXEm/ekbVjTAIfFOQJfYQPh9Z2+6S4zVoWPQSbeImsN+yFJiqy7cBA4RcVBgQpSR4Yl8uyK5vLaM3DLusOiRUTWSZgK+tSt9x8aLGIHSqZJehKQAm+na7frMMO6A7vJP9PElig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4+fHg1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCA9C4CEE9;
-	Tue, 27 May 2025 17:47:29 +0000 (UTC)
+	 MIME-Version; b=BrjojNIspBcY4/jpCGHzgs9rQFpMepOg9/GlQkV2R0SmRvw8coxXrMFv+AtYLkAIi+J1rlUO2F4rsE0QPtaFh27/FXwOr5YEl1fbUWy1wuddvqQG/qvT68XDrFHdP2DDobg/ngW/XIRLoYya5Tl5rkCA+5Jx5DWE5BQp4GBu+tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NnbDuV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6020FC4CEE9;
+	Tue, 27 May 2025 17:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368050;
-	bh=wt/RosMjzsB5sPXuOn0pJkNUd9KQEU4lxnwormUShmc=;
+	s=korg; t=1748365854;
+	bh=6jEPxKsh0LSPpOl6U5UBdIjtVKbscAl90CD4yjz4zzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4+fHg1M9nIFlXeGqGX7QQKpEfeWQ3i38GyAjz0dP3FNFQaPa8eyefudOeGArn7QZ
-	 MHn7thNQmZglvIHy/NK1nmesVaewCyoiu7H9F4oTWuFzC8SzjIVp2GwtgL/Go38TSw
-	 hFaNIVyi8MP2R+SitjF5a//oQ8xdmT+kIsULhokM=
+	b=0NnbDuV2h6d2xPf1SJXkWBunpDpEbEL0jKmpwRtHuPrRhz8qc7SKLrFRbcPGLzjP5
+	 cFlKg2W8SeVe1DMDt73H9uT+/CR3w1M2DvIgKhowIRfoX4alsR8crg0XcPI0/jGBRb
+	 JJTOboGrLf+GQuBzaD6HJsKqHMc/izdLSuXZ4/jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 575/783] drm/xe/relay: Dont use GFP_KERNEL for new transactions
+Subject: [PATCH 6.12 479/626] perf/amd/ibs: Fix perf_ibs_op.cnt_mask for CurCnt
 Date: Tue, 27 May 2025 18:26:12 +0200
-Message-ID: <20250527162536.562453046@linuxfoundation.org>
+Message-ID: <20250527162504.449888519@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
-[ Upstream commit 78d5d1e20d1de9422f013338a0f2311448588ba7 ]
+[ Upstream commit 46dcf85566170d4528b842bf83ffc350d71771fa ]
 
-VFs use a relay transaction during the resume/reset flow and use
-of the GFP_KERNEL flag may conflict with the reclaim:
+IBS Op uses two counters: MaxCnt and CurCnt. MaxCnt is programmed with
+the desired sample period. IBS hw generates sample when CurCnt reaches
+to MaxCnt. The size of these counter used to be 20 bits but later they
+were extended to 27 bits. The 7 bit extension is indicated by CPUID
+Fn8000_001B_EAX[6 / OpCntExt].
 
-     -> #0 (fs_reclaim){+.+.}-{0:0}:
- [ ]        __lock_acquire+0x1874/0x2bc0
- [ ]        lock_acquire+0xd2/0x310
- [ ]        fs_reclaim_acquire+0xc5/0x100
- [ ]        mempool_alloc_noprof+0x5c/0x1b0
- [ ]        __relay_get_transaction+0xdc/0xa10 [xe]
- [ ]        relay_send_to+0x251/0xe50 [xe]
- [ ]        xe_guc_relay_send_to_pf+0x79/0x3a0 [xe]
- [ ]        xe_gt_sriov_vf_connect+0x90/0x4d0 [xe]
- [ ]        xe_uc_init_hw+0x157/0x3b0 [xe]
- [ ]        do_gt_restart+0x1ae/0x650 [xe]
- [ ]        xe_gt_resume+0xb6/0x120 [xe]
- [ ]        xe_pm_runtime_resume+0x15b/0x370 [xe]
- [ ]        xe_pci_runtime_resume+0x73/0x90 [xe]
- [ ]        pci_pm_runtime_resume+0xa0/0x100
- [ ]        __rpm_callback+0x4d/0x170
- [ ]        rpm_callback+0x64/0x70
- [ ]        rpm_resume+0x594/0x790
- [ ]        __pm_runtime_resume+0x4e/0x90
- [ ]        xe_pm_runtime_get_ioctl+0x9c/0x160 [xe]
+perf_ibs->cnt_mask variable contains bit masks for MaxCnt and CurCnt.
+But IBS driver does not set upper 7 bits of CurCnt in cnt_mask even
+when OpCntExt CPUID bit is set. Fix this.
 
-Since we have a preallocated pool of relay transactions, which
-should cover all our normal relay use cases, we may use the
-GFP_NOWAIT flag when allocating new outgoing transactions.
+IBS driver uses cnt_mask[CurCnt] bits only while disabling an event.
+Fortunately, CurCnt bits are not read from MSR while re-enabling the
+event, instead MaxCnt is programmed with desired period and CurCnt is
+set to 0. Hence, we did not see any issues so far.
 
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Tested-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250131153713.808-1-michal.wajdeczko@intel.com
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/r/20250115054438.1021-5-ravi.bangoria@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_relay.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/amd/ibs.c         | 3 ++-
+ arch/x86/include/asm/perf_event.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_relay.c b/drivers/gpu/drm/xe/xe_guc_relay.c
-index 8f62de026724c..e5dc94f3e6181 100644
---- a/drivers/gpu/drm/xe/xe_guc_relay.c
-+++ b/drivers/gpu/drm/xe/xe_guc_relay.c
-@@ -225,7 +225,7 @@ __relay_get_transaction(struct xe_guc_relay *relay, bool incoming, u32 remote, u
- 	 * with CTB lock held which is marked as used in the reclaim path.
- 	 * Btw, that's one of the reason why we use mempool here!
- 	 */
--	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_KERNEL);
-+	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_NOWAIT);
- 	if (!txn)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index c3a2f6f57770a..8f3b5764e139d 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -1222,7 +1222,8 @@ static __init int perf_ibs_op_init(void)
+ 	if (ibs_caps & IBS_CAPS_OPCNTEXT) {
+ 		perf_ibs_op.max_period  |= IBS_OP_MAX_CNT_EXT_MASK;
+ 		perf_ibs_op.config_mask	|= IBS_OP_MAX_CNT_EXT_MASK;
+-		perf_ibs_op.cnt_mask    |= IBS_OP_MAX_CNT_EXT_MASK;
++		perf_ibs_op.cnt_mask    |= (IBS_OP_MAX_CNT_EXT_MASK |
++					    IBS_OP_CUR_CNT_EXT_MASK);
+ 	}
  
+ 	if (ibs_caps & IBS_CAPS_ZEN4)
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 7505bb5d260ab..aa351c4a20eee 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -520,6 +520,7 @@ struct pebs_xmm {
+  */
+ #define IBS_OP_CUR_CNT		(0xFFF80ULL<<32)
+ #define IBS_OP_CUR_CNT_RAND	(0x0007FULL<<32)
++#define IBS_OP_CUR_CNT_EXT_MASK	(0x7FULL<<52)
+ #define IBS_OP_CNT_CTL		(1ULL<<19)
+ #define IBS_OP_VAL		(1ULL<<18)
+ #define IBS_OP_ENABLE		(1ULL<<17)
 -- 
 2.39.5
 
