@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211C8AC593A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE48AC5628
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D73C4A4121
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0C053A4590
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F672566;
-	Tue, 27 May 2025 17:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6564271464;
+	Tue, 27 May 2025 17:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJIxe005"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PByjsERD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E79227FD64;
-	Tue, 27 May 2025 17:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63774182D7;
+	Tue, 27 May 2025 17:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368469; cv=none; b=rBe9JSlpkW4SGvPxVpgIo/GERZ0WHZ/7vn6yxWhAtQvn2s7WSCL4IDZL2rk/ImtcZB7/W2SdH56lNjMSFSq30tfwbisCgCkSoQeDFn11hceh66U8HmN3sVC9DoOJJ8HxsIupGrp5ANbj6i0LjWF8PnZ8QunIzZ1HIOEvM5C1P54=
+	t=1748366205; cv=none; b=pB4dJF0K7OIQ2MaHZ7kco9hT7PU9vJGewABYEjbBDAjCCFvK8Cp7KMKqwBMfuYCaJWMj34JTIXhLjxnm66+IZVPfEfa2OEJufah2NMqeHf9hVT2y0GyBXBZaNaIuwQqYKIgqn71+K2yZauRGd/sa8Z5C/oBBUK3HBadv7wzwKA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368469; c=relaxed/simple;
-	bh=mOwCdJjLSUu0DXmyP98nugLGDu4bexTMUu9+grIpyUc=;
+	s=arc-20240116; t=1748366205; c=relaxed/simple;
+	bh=kEooL6bZJ4NU1A2iFrVMVaG9qB5aplxzgtIQERo3IWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2ScIlw+0lDEDr1UmQvzsgL4JGXiufyAHXWivmj5kGbdJZNeqxla3YY8+NsHirVaN4vGe00eEglB/LnDLgEl4MiI8ownA9eh7MmKLeotj4wZy//XXhya8PFNJO9VK4Gh4QuYuhLik8Pehr97djaHgV1PCvux8HGJ+N7ihJzGH5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJIxe005; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5A1C4CEE9;
-	Tue, 27 May 2025 17:54:28 +0000 (UTC)
+	 MIME-Version; b=Plrh/D11d9v2HqHlaufb00uw8G1fOoq4iiC5XUg3zL3j8uzxhF9TmYVpwsW0UBa3Rodftm8mr1BF33lVrOk3G2by3eusMtWeSdJe6LegEwzdLc4qqW12WZVovywhyKYnsesyHTgix1mfqlXNAY8N9hYKPR6B5zwmpApn+u3GhSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PByjsERD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEF7C4CEE9;
+	Tue, 27 May 2025 17:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368469;
-	bh=mOwCdJjLSUu0DXmyP98nugLGDu4bexTMUu9+grIpyUc=;
+	s=korg; t=1748366205;
+	bh=kEooL6bZJ4NU1A2iFrVMVaG9qB5aplxzgtIQERo3IWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJIxe005SHLcxM+C5C9Qteq9lJ4TPR+lYbrmbcJ5U5ZEpK3dNRxrX6pVg/gsGPoVx
-	 hKu4+O6n9VybEaDZiwbp+waZ+GYGhqCqdt+oF/TtNo1g4qRUCH/RNXSTytwbmYwndN
-	 4PhxRznIKbH0cWQevxlYRrv0yjFbn/rqlIdLfpiA=
+	b=PByjsERDtZKyq0ZvmOvzlhnv91hQvMIR3uaX/eFS72EO82Xqoa0yo8Y55jb9Vcioz
+	 wQYb/bL1qy08PAvDA2T904vdaEmf0VIFsnVbmS785/T+ZkI3S+NKNjhPdUhYadj9Uq
+	 CfySOlteUAQABrEI6rZI+6H4fAndd/BGvy7QUzdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 717/783] octeontx2-pf: Avoid adding dcbnl_ops for LBK and SDP vf
+	Amber Lin <Amber.Lin@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviwanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 621/626] drm/amdkfd: Correct F8_MODE for gfx950
 Date: Tue, 27 May 2025 18:28:34 +0200
-Message-ID: <20250527162542.312125255@linuxfoundation.org>
+Message-ID: <20250527162510.227778604@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 184fb40f731bd3353b0887731f7caba66609e9cd ]
+commit 0c7e053448945e5a4379dc4396c762d7422b11ca upstream.
 
-Priority flow control is not supported for LBK and SDP vf. This patch
-adds support to not add dcbnl_ops for LBK and SDP vf.
+Correct F8_MODE setting for gfx950 that was removed
 
-Fixes: 8e67558177f8 ("octeontx2-pf: PFC config support with DCBx")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250519072658.2960851-1-sumang@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 61972cd93af7 ("drm/amdkfd: Set per-process flags only once for gfx9/10/11/12")
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviwanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-index 63ddd262d1229..1f53bd5e45604 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-@@ -729,9 +729,12 @@ static int otx2vf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	}
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
+@@ -69,8 +69,7 @@ static bool set_cache_memory_policy_v9(s
+ 		qpd->sh_mem_config |= 1 << SH_MEM_CONFIG__RETRY_DISABLE__SHIFT;
  
- #ifdef CONFIG_DCB
--	err = otx2_dcbnl_set_ops(netdev);
--	if (err)
--		goto err_free_zc_bmap;
-+	/* Priority flow control is not supported for LBK and SDP vf(s) */
-+	if (!(is_otx2_lbkvf(vf->pdev) || is_otx2_sdp_rep(vf->pdev))) {
-+		err = otx2_dcbnl_set_ops(netdev);
-+		if (err)
-+			goto err_free_zc_bmap;
-+	}
- #endif
- 	otx2_qos_init(vf, qos_txqs);
+ 	if (KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 3) ||
+-		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 4) ||
+-		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 5, 0))
++		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 4))
+ 		qpd->sh_mem_config |= (1 << SH_MEM_CONFIG__F8_MODE__SHIFT);
  
--- 
-2.39.5
-
+ 	qpd->sh_mem_ape1_limit = 0;
 
 
 
