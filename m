@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-147076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A143AAC5611
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F40AC593C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1E2C16BD5F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C66174874
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B112182D7;
-	Tue, 27 May 2025 17:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C12C280037;
+	Tue, 27 May 2025 17:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUvGMXl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I18jo7W1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574F1278750;
-	Tue, 27 May 2025 17:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B7E27D766;
+	Tue, 27 May 2025 17:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366211; cv=none; b=rbDDrVoN6RJ38HwcIqMxTuTq4y51IbVnrK3HKi1KiS7HhD5QvE/Zq9EjKbWPYVbUu0s60alKh5AvxOffdkDyWdYwRabmNhz8Kb14TxWcLdQ3WkHhm0rReCDz/utpHW6kfGwGGZtrHllxmIL3/NC+7hOwNi78Fqu372z8WdLDKjk=
+	t=1748368476; cv=none; b=auJreaAq6t75NQD3LzwemUBVXk0cqan1EwbO0BpEevXqIFo4Z6Rc+2H/HMu3bp2k0XV76zL6RfI3kBb5fZ6VAjrW69eGl1ZDEHrkFxNKei94Xl33ABFUiJV6kZC3A0BzF03D1uMKLcu3zVZ5ns5DtlL12RReGi3S1AGV56M69BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366211; c=relaxed/simple;
-	bh=ZwZSiMp7UHmm5nUbVnKNIxANL/VW2llVyGGGgWbwSh0=;
+	s=arc-20240116; t=1748368476; c=relaxed/simple;
+	bh=23LimxGTbJySPNKiuaUxLNAUHBSBWEJQoEHteULM1DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hF5ASecHpNum6XmqjiX5DUvyyakkVpMQkVNxLq3l7InUY8XBIoqeaE6kMBb0Gtgv8Vdxg7WDxZ0lvXG6x09z6mJZe7YBWx98G3WocbrPN3yWg35jnJTw8KTzxf37twbho2p6uPUFH7hWg+bJhvnx0DegHM/vMeujSyDQ4HSPCf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUvGMXl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9397C4CEE9;
-	Tue, 27 May 2025 17:16:50 +0000 (UTC)
+	 MIME-Version; b=LGp0I3oHcYT5Z2d4uzgLGthbZbhN4Ub+DMTsBPzqjVXzUSxcByv3sKLKWRwZujzMVPAEqycrT0RFfhvg0q0pH1x7EzOM/RgqmEZNsJwgKY6reVVKsQcYfVJqS1MQHcX8+k1aw64jYh1UyexVI0EvOWZG66WSGbEX2jhjckv9ETg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I18jo7W1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBE4C4CEE9;
+	Tue, 27 May 2025 17:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366211;
-	bh=ZwZSiMp7UHmm5nUbVnKNIxANL/VW2llVyGGGgWbwSh0=;
+	s=korg; t=1748368475;
+	bh=23LimxGTbJySPNKiuaUxLNAUHBSBWEJQoEHteULM1DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUvGMXl8fnxsFQ3Kkik/tzhkJtKMF/9g9PkhlSiRH8fXhwas2u9y4uSJdguaM8QTH
-	 yCH/0isVEEo14F+EOKyeBGC16ohMG1U3kzLDmCk28JijqOhoU5XIkZK5MWhIQdY5XL
-	 DtD0KdVP5gqcGusPLrAwi7dOS6pFVQXNFkON2jyE=
+	b=I18jo7W1IKxJ07fuxEUTlLQMBZRQ2HzUQHu5lrw0bKgBlXQ82tvvH36OlJzLOC0d7
+	 ULwrfwsQvAY1aJSduUMDyBhUl4C2W/maUBDV+Hk8MQCT12WbOgUhRiZGw6GgGbvKac
+	 TJkeryLPaDG0yi20yzsGYRWtA8XKR3tN0BPNZKI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.12 623/626] pinctrl: tegra: Fix off by one in tegra_pinctrl_get_group()
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 719/783] octeontx2-af: Set LMT_ENA bit for APR table entries
 Date: Tue, 27 May 2025 18:28:36 +0200
-Message-ID: <20250527162510.311788882@linuxfoundation.org>
+Message-ID: <20250527162542.392820864@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit 5a062c3c3b82004766bc3ece82b594d337076152 upstream.
+[ Upstream commit 0eefa27b493306928d88af6368193b134c98fd64 ]
 
-This should be >= pmx->soc->ngroups instead of > to avoid an out of
-bounds access.  The pmx->soc->groups[] array is allocated in
-tegra_pinctrl_probe().
+This patch enables the LMT line for a PF/VF by setting the
+LMT_ENA bit in the APR_LMT_MAP_ENTRY_S structure.
 
-Fixes: c12bfa0fee65 ("pinctrl-tegra: Restore SFSEL bit when freeing pins")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Kunwu Chan <kunwu.chan@linux.dev>
-Link: https://lore.kernel.org/82b40d9d-b437-42a9-9eb3-2328aa6877ac@stanley.mountain
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Additionally, it simplifies the logic for calculating the
+LMTST table index by consistently using the maximum
+number of hw supported VFs (i.e., 256).
+
+Fixes: 873a1e3d207a ("octeontx2-af: cn10k: Setting up lmtst map table").
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250521060834.19780-2-gakula@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/tegra/pinctrl-tegra.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/tegra/pinctrl-tegra.c
-+++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
-@@ -305,7 +305,7 @@ static const struct tegra_pingroup *tegr
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+index 7fa98aeb3663c..3838c04b78c22 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+@@ -15,13 +15,17 @@
+ #define LMT_TBL_OP_WRITE	1
+ #define LMT_MAP_TABLE_SIZE	(128 * 1024)
+ #define LMT_MAPTBL_ENTRY_SIZE	16
++#define LMT_MAX_VFS		256
++
++#define LMT_MAP_ENTRY_ENA      BIT_ULL(20)
++#define LMT_MAP_ENTRY_LINES    GENMASK_ULL(18, 16)
+ 
+ /* Function to perform operations (read/write) on lmtst map table */
+ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ 			       int lmt_tbl_op)
  {
- 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
+ 	void __iomem *lmt_map_base;
+-	u64 tbl_base;
++	u64 tbl_base, cfg;
  
--	if (group_index < 0 || group_index > pmx->soc->ngroups)
-+	if (group_index < 0 || group_index >= pmx->soc->ngroups)
- 		return NULL;
+ 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
  
- 	return &pmx->soc->groups[group_index];
+@@ -35,6 +39,13 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ 		*val = readq(lmt_map_base + index);
+ 	} else {
+ 		writeq((*val), (lmt_map_base + index));
++
++		cfg = FIELD_PREP(LMT_MAP_ENTRY_ENA, 0x1);
++		/* 2048 LMTLINES */
++		cfg |= FIELD_PREP(LMT_MAP_ENTRY_LINES, 0x6);
++
++		writeq(cfg, (lmt_map_base + (index + 8)));
++
+ 		/* Flushing the AP interceptor cache to make APR_LMT_MAP_ENTRY_S
+ 		 * changes effective. Write 1 for flush and read is being used as a
+ 		 * barrier and sets up a data dependency. Write to 0 after a write
+@@ -52,7 +63,7 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ #define LMT_MAP_TBL_W1_OFF  8
+ static u32 rvu_get_lmtst_tbl_index(struct rvu *rvu, u16 pcifunc)
+ {
+-	return ((rvu_get_pf(pcifunc) * rvu->hw->total_vfs) +
++	return ((rvu_get_pf(pcifunc) * LMT_MAX_VFS) +
+ 		(pcifunc & RVU_PFVF_FUNC_MASK)) * LMT_MAPTBL_ENTRY_SIZE;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
