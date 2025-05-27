@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE6CAC551C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FA8AC5869
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9570B188AE99
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87CC71BC2294
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C786C27CCC4;
-	Tue, 27 May 2025 17:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA0327FB2A;
+	Tue, 27 May 2025 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwNgXlQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3u71qOs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8529D13A244;
-	Tue, 27 May 2025 17:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8611D63EF;
+	Tue, 27 May 2025 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365652; cv=none; b=irGfv5SfJv+XJI6Ses82SwGROawV9WaZw4fQyHG2z7xIFYcFFGdtHxsNz+1skKLvyPDZXjSQVr6NqEcPJDX/d89h3Ou5Ncvlda6BY52gxvI+5RLLl6LAacXka+O1Sa6uWVvkaiFzdQ9miJ9atBMtikMggV/LhbmU2GcotN1oTeY=
+	t=1748367880; cv=none; b=GwfSgyMZAayMdt8euPInwt1MciIPZrL7NQCEFtiJKpYdvs/NAxfcWLRNygnI39yZ/IWEuvRcq6PgF+QOPvdH6tqNBWCRkIGMFsA+Axh9R9m9tm3l7WzOvMymwyRSzgfTezpd0e0D5krg2ELpBhCc6/KDkutS9ZxCkrUIs+yFLLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365652; c=relaxed/simple;
-	bh=wf45OkiiORwCYKMPYmQI39IFxIaUFNwao8bRaFDb1JQ=;
+	s=arc-20240116; t=1748367880; c=relaxed/simple;
+	bh=+F6VX9T6mJZ8JeucictaDgezntIh0PEFxFocIVZ1pc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZWcSIO9FbODRo9+urGJ7I8tMe5zuoC9vj0qUGHI1dDQDBWVkBVCtCddv3cWdE38gddHd5OLsXKidS57GLy9EFoDjNFA7UvFrTM/bLjK2XcfTf0duycVufNjjIX6zCoKD4f/cI1SJLCfDr2E/UgeCpi8NW3v9Iqk1bHlZfhPyc2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwNgXlQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACC9C4CEE9;
-	Tue, 27 May 2025 17:07:31 +0000 (UTC)
+	 MIME-Version; b=EiLMHU/t3/M5pUsdRUw1Fbv2nuc8SMkqtu+FXvPqRk8zn7mh7bMXDNUaMCRN4/CO7Ldq6Tx+qtJn5qG4PG6/k8FNIX+nQLfCZ2gp3LamwfHlF3rWkd1fVgGK9C/f0MskSUj2fi7u9xGHFb6z3ufk2/jN3mjCpyl3lu5psOKoQGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3u71qOs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C252C4CEE9;
+	Tue, 27 May 2025 17:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365652;
-	bh=wf45OkiiORwCYKMPYmQI39IFxIaUFNwao8bRaFDb1JQ=;
+	s=korg; t=1748367880;
+	bh=+F6VX9T6mJZ8JeucictaDgezntIh0PEFxFocIVZ1pc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwNgXlQwf2uOvu27G8gFa2v9x2EQ7NOcovkFF/utQTXzfDT1PGyTEukTogedXR5Po
-	 WgukuHGzZDP39X49ZlMFuFHn5Es5y2uS4sF047QFrroLjdH/iuoE8AuQwcjbETH7/D
-	 hF9B+NxxUBWtRxOD97qGiMe9HS3hsde3XrhGFbnY=
+	b=T3u71qOsz/IS8QaGCR4gDIHVTjuGL0lBdasqNDL1Q6zT8bYYLL6eoPygAp/kEQN5/
+	 hhe7Tlr0X7kq1mYlmUH3QVNiQN5wg1p8FnKAmplSZxfxlre8D3cg6hQ1NIsfhNiKBZ
+	 uNTrnrnPYrk/c0RDdlMgGtNfW7R+mC+/L+biPopM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 415/626] wifi: iwlwifi: dont warn during reprobe
+Subject: [PATCH 6.14 511/783] xfrm: prevent high SEQ input in non-ESN mode
 Date: Tue, 27 May 2025 18:25:08 +0200
-Message-ID: <20250527162501.868179379@linuxfoundation.org>
+Message-ID: <20250527162533.952102974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 696cca64308dc641d0bbe4aa2c09dd9752aa288d ]
+[ Upstream commit e3aa43a50a6455831e3c32dabc7ece38d9cd9d05 ]
 
-During reprobe, the sw state is being destroyd, and so is the
-connection. When the peer STA is being removed, the opmode sends a
-command to flush the TXQs of the STA and uses iwl_trans_wait_txq_empty.
+In non-ESN mode, the SEQ numbers are limited to 32 bits and seq_hi/oseq_hi
+are not used. So make sure that user gets proper error message, in case
+such assignment occurred.
 
-This one warns if the FW is not alive, but it really shouldn't if
-there is a FW error - and return silently instead, just like we do when
-sending a hcmd.
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250205145347.76425b10e5a0.I3bf0de2eb090a8b94c4e36d93dd91df61fadb808@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/xfrm/xfrm_user.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index 311b167ea09ed..510e04b721da6 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -454,6 +454,9 @@ IWL_EXPORT_SYMBOL(iwl_trans_txq_enable_cfg);
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 82a768500999b..b5266e0848e82 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -178,6 +178,12 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
+ 				       "Replay seq and seq_hi should be 0 for output SA");
+ 			return -EINVAL;
+ 		}
++		if (rs->oseq_hi && !(p->flags & XFRM_STATE_ESN)) {
++			NL_SET_ERR_MSG(
++				extack,
++				"Replay oseq_hi should be 0 in non-ESN mode for output SA");
++			return -EINVAL;
++		}
+ 		if (rs->bmp_len) {
+ 			NL_SET_ERR_MSG(extack, "Replay bmp_len should 0 for output SA");
+ 			return -EINVAL;
+@@ -190,6 +196,12 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
+ 				       "Replay oseq and oseq_hi should be 0 for input SA");
+ 			return -EINVAL;
+ 		}
++		if (rs->seq_hi && !(p->flags & XFRM_STATE_ESN)) {
++			NL_SET_ERR_MSG(
++				extack,
++				"Replay seq_hi should be 0 in non-ESN mode for input SA");
++			return -EINVAL;
++		}
+ 	}
  
- int iwl_trans_wait_txq_empty(struct iwl_trans *trans, int queue)
- {
-+	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status)))
-+		return -EIO;
-+
- 	if (WARN_ONCE(trans->state != IWL_TRANS_FW_ALIVE,
- 		      "bad state = %d\n", trans->state))
- 		return -EIO;
+ 	return 0;
 -- 
 2.39.5
 
