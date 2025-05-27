@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0820AC536E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:47:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F318AC56EF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD7683B8C43
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 333E63A4CE7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5B127C854;
-	Tue, 27 May 2025 16:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2281280030;
+	Tue, 27 May 2025 17:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISiT18DM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqlvgPdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76047194A67;
-	Tue, 27 May 2025 16:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A023E280012;
+	Tue, 27 May 2025 17:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364428; cv=none; b=Xt41u8bJi03dwq4CraZrs1wnYCI8n4Np7XhRaFZDbLSkpY5Ku9Gk8G+RkeAsv4ly8H1jsMeunvTfUaZy1PWKSTWXBM9kXFQCw9uPN+LpiHjgyvOC1TtnjoqE9gNpBcqwoqZ/MB03y+09sJcKVbkjwGWzQekuBcyw8Qp7RF4RzLE=
+	t=1748366786; cv=none; b=dFk84TWBLMVXmgrOnQl4lK1E2ldiGGhzjpWjhqTtU/qoYNhUUtYBJMvUPQ8caxcLu7NQEuOVbB0r5KAyFjIFa8ZommpAKVjmNsx+Zz7PGZHAlCmKIMmTCu3Zp3QF8bAPH9xSGjW9ZqN7wbWK7x2hpGZOZ7cyTKDJaRC65/jiibU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364428; c=relaxed/simple;
-	bh=Z2libKXmS3L/5Hl4vaIjET8+vi+G+Ai+0FO+Vcpwurw=;
+	s=arc-20240116; t=1748366786; c=relaxed/simple;
+	bh=iYfKhxp3QvZCX9cVfvdwsWHSgKY1M89GU4X9w2jrrJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9OJ+OwsJdV5iNoxEZwmyI18OimiJrhRlAoma1pcW9yy7Jfaec6jsee0XT2LmrQglF2P0aRHh4IaHstkDe7buU4Dv/QgOgo0W5Rgxm/7poVvR2uQEZ3VNV7+zMHgZ4kKcCW/F35AU49EsTWgP/KIy3LWnLtBobFff6l94poVy6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISiT18DM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7876C4CEED;
-	Tue, 27 May 2025 16:47:07 +0000 (UTC)
+	 MIME-Version; b=hVBv2/NLsf4TeQAZ7QPIx68XqtdwHrzzWt7Hr5sEsFz70z2oNSn1UbRHevgoXSl98vkwoMIihJTNlKQRrE2SxhMArTvprd5A8zQiB0+antih84l29k72FImHkg1k3yj1PQE+B4K0Qiupb1qOE0VaCqRCGlib3vpIfGW/4fP7xGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqlvgPdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C8DC4CEE9;
+	Tue, 27 May 2025 17:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364428;
-	bh=Z2libKXmS3L/5Hl4vaIjET8+vi+G+Ai+0FO+Vcpwurw=;
+	s=korg; t=1748366786;
+	bh=iYfKhxp3QvZCX9cVfvdwsWHSgKY1M89GU4X9w2jrrJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISiT18DMvLk5ygmSqlEz4JDjO87Wz6XRxt+tgZ4IHeY4y0j/fWc3Cs/haN1fX12r9
-	 R67Ogw63hOE44xn1h7YXJTzakGifDM47VUdIr4b7ERS7ixwoKqX2is80IRwFDzSvEy
-	 GgeLV+dhQV+VLWrVB28h2Yuqum2+U4DXVxvEwOYA=
+	b=cqlvgPdJ1N27SiYBwlvfe4NqyikealggRNipwf9TftCcDJMAmu9CiWf1iNQ4UZKAm
+	 2OkYCt69cRKEMz7L/3+F15LLnlwSeRmkwDUYmxO+HdGRDsNq6f9R1gP3jik4xyNAr5
+	 OpiCjpSvKWpa9ZClNhVgudqg93yAHH6E35FOFn1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 053/626] io_uring/msg: initialise msg request opcode
-Date: Tue, 27 May 2025 18:19:06 +0200
-Message-ID: <20250527162447.214682048@linuxfoundation.org>
+Subject: [PATCH 6.14 150/783] um: Store full CSGSFS and SS register from mcontext
+Date: Tue, 27 May 2025 18:19:07 +0200
+Message-ID: <20250527162519.269631487@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit 9cc0bbdaba2a66ad90bc6ce45163b7745baffe98 ]
+[ Upstream commit cef721e0d53d2b64f2ba177c63a0dfdd7c0daf17 ]
 
-It's risky to have msg request opcode set to garbage, so at least
-initialise it to nop. Later we might want to add a user inaccessible
-opcode for such cases.
+Doing this allows using registers as retrieved from an mcontext to be
+pushed to a process using PTRACE_SETREGS.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/9afe650fcb348414a4529d89f52eb8969ba06efd.1743190078.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+It is not entirely clear to me why CSGSFS was masked. Doing so creates
+issues when using the mcontext as process state in seccomp and simply
+copying the register appears to work perfectly fine for ptrace.
+
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Link: https://patch.msgid.link/20250224181827.647129-2-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/msg_ring.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/um/os-Linux/mcontext.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/io_uring/msg_ring.c b/io_uring/msg_ring.c
-index 7fd9badcfaf81..35b1b585e9cbe 100644
---- a/io_uring/msg_ring.c
-+++ b/io_uring/msg_ring.c
-@@ -94,6 +94,7 @@ static int io_msg_remote_post(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 		kmem_cache_free(req_cachep, req);
- 		return -EOWNERDEAD;
- 	}
-+	req->opcode = IORING_OP_NOP;
- 	req->cqe.user_data = user_data;
- 	io_req_set_res(req, res, cflags);
- 	percpu_ref_get(&ctx->refs);
+diff --git a/arch/x86/um/os-Linux/mcontext.c b/arch/x86/um/os-Linux/mcontext.c
+index e80ab7d281177..1b0d95328b2c7 100644
+--- a/arch/x86/um/os-Linux/mcontext.c
++++ b/arch/x86/um/os-Linux/mcontext.c
+@@ -27,7 +27,6 @@ void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)
+ 	COPY(RIP);
+ 	COPY2(EFLAGS, EFL);
+ 	COPY2(CS, CSGSFS);
+-	regs->gp[CS / sizeof(unsigned long)] &= 0xffff;
+-	regs->gp[CS / sizeof(unsigned long)] |= 3;
++	regs->gp[SS / sizeof(unsigned long)] = mc->gregs[REG_CSGSFS] >> 48;
+ #endif
+ }
 -- 
 2.39.5
 
