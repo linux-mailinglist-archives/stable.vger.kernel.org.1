@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-147654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89805AC589A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D37AC553C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC31C188F018
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D81444A3A3A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7491C1E25E3;
-	Tue, 27 May 2025 17:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7100227D776;
+	Tue, 27 May 2025 17:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tf3o2KK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRwRsp4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F1A1FB3;
-	Tue, 27 May 2025 17:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C91525DAE1;
+	Tue, 27 May 2025 17:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368015; cv=none; b=JwXNGQVq6VX8sQaTd/Tz74jkUsLKwUSCon2ZFUb9DhlKKE9yILVk6r9VI093DUm9iPu9pisWepqlTgxAr/zQZzD7LedD27RSXbdVHaBYgSrrvHWhEIt3tvj/u+4DjsV3rQfql/OAA0vUIIolwootyg7jCM7iUv/QW6SIwl9+RQU=
+	t=1748365759; cv=none; b=QcdnS/KCgr5XDMVMh2DJDB4R/G9uD2p7OGQ+cZzN36YHZR242v7MQmzameTtyniySjq56KeYlFRqW+Px6Agztpk4UcR5SRelXc/ZScU7G7zO+QkXM/EjhDW5b0+Sc1nfQNnyc7X53fkD1MDs7/HFFPP85wSL+JrrEFpEh4GzX0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368015; c=relaxed/simple;
-	bh=zv6zrrMS7vJUAONnOkj67AXibQOuQNAUZPJVtSblSb4=;
+	s=arc-20240116; t=1748365759; c=relaxed/simple;
+	bh=ALnEFMn3w9LdtomcKG44nVEHb5/aP9bTEMXyj6LpjEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=boJhq1wlkW8Fx3z8i44q4z8Xpkg7b0u86Z+eLq2sWFbkMnRKfmTLv8c63EHeKt10CmU+LQUdFCS3xRfT/VpbxFSa3CX4fFgubvi6RqYxrRYWzDYoskFJLZT2Hq8gwUf39FVPa8YRMyoV4yD9lC86Gc3/EQazpBkRXPcTZoupeZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tf3o2KK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E30C4CEE9;
-	Tue, 27 May 2025 17:46:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QVJZlW5ksiBC40cy4d0fHZXxa27jOgiCdfCgCQcvaMdIUlRCMuVLriMHysnPsoPDM+jia4Kbik9ev0lr6/vzJf0ozyjdGQ9pL8UDiQ+hK9iIaT8WFWhmqPUyiVucaoMe7DHxtlGpbAtJCoK/AD025WfSOdHsKAqddBCCncGU/to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRwRsp4i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEDDC4CEE9;
+	Tue, 27 May 2025 17:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368015;
-	bh=zv6zrrMS7vJUAONnOkj67AXibQOuQNAUZPJVtSblSb4=;
+	s=korg; t=1748365759;
+	bh=ALnEFMn3w9LdtomcKG44nVEHb5/aP9bTEMXyj6LpjEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tf3o2KK2v2+0y77GhrmHoSt/M3+8AkWTnpwnSX8+XVM10Ev0eRAUCvWGQPGdsYz/v
-	 QLITqgOUVm/ICsdp3SLETOR1Qzr+s+s8o0sY4gFNIterVRB/oDu503mrYmGIauHdR9
-	 ZpImFzdaJQR4mzvFSzQTdgU/wXjX/MSZrVvDJyRQ=
+	b=SRwRsp4icbB3S4pgDZ1ROD9c6ug9XruQD4ssH41h37vpIMZLNubDN66QUgZZNJR4Q
+	 Yo4n+veIGFkf7v9CplweCQaXTvLW1D5fAk/lDIq+VNCAkpkfeXYoHvnpq3b3kADmx6
+	 zm19WSXCM912O+lQGrFtvGPnrr06p+AVl8h2Ykdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 544/783] wifi: rtw89: fw: validate multi-firmware header before getting its size
-Date: Tue, 27 May 2025 18:25:41 +0200
-Message-ID: <20250527162535.312182341@linuxfoundation.org>
+Subject: [PATCH 6.12 449/626] ipv4: ip_gre: Fix set but not used warning in ipgre_err() if IPv4-only
+Date: Tue, 27 May 2025 18:25:42 +0200
+Message-ID: <20250527162503.247451023@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +62,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 2b8bdc5237014cc61784b3676cbaca5325959f3d ]
+[ Upstream commit 50f37fc2a39c4a8cc4813629b4cf239b71c6097d ]
 
-To access firmware elements appended after multi-firmware, add its size
-as offset to get start address of firmware elements.
+if CONFIG_NET_IPGRE is enabled, but CONFIG_IPV6 is disabled:
 
-         +-----+-------+------+---------+--------------+ --
-         | sig | fw_nr | rsvd | version | reserved     |   \
-         +---------------------------------------------+   |
- fw 0    | cv | type | mp | rsvd | shift | size | rsvd |   |
-         +---------------------------------------------+   |
- fw 1    | cv | type | mp | rsvd | shift | size | rsvd |   |
-         +---------------------------------------------+   |
- fw N-1  |                  ...                        |   |
-         +=============================================+   | mfw size
-         |               fw 0 content                  |   |
-         +=============================================+   |
-         |               fw 1 content                  |   |
-         +=============================================+   |
-         |                  ...                        |   |
-         +=============================================+   |
-         |               fw N -1 content               |   |
-         +=============================================+ --/
-         |             fw element TLV X                |
-         +=============================================+
-         |             fw element TLV Y                |
-         +=============================================+
-         |             fw element TLV Z                |
-         +=============================================+
+    net/ipv4/ip_gre.c: In function ‘ipgre_err’:
+    net/ipv4/ip_gre.c:144:22: error: variable ‘data_len’ set but not used [-Werror=unused-but-set-variable]
+      144 |         unsigned int data_len = 0;
+	  |                      ^~~~~~~~
 
-To avoid Coverity warning when getting mfw size, validate it header ahead.
+Fix this by moving all data_len processing inside the IPV6-only section
+that uses its result.
 
-Addresses-Coverity-ID: 1544385 ("Untrusted array index read")
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250203072911.47313-5-pkshih@realtek.com
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501121007.2GofXmh5-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/d09113cfe2bfaca02f3dddf832fb5f48dd20958b.1738704881.git.geert@linux-m68k.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/ip_gre.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index f4b3438615541..aed0647955d8e 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -601,12 +601,17 @@ static u32 rtw89_mfw_get_size(struct rtw89_dev *rtwdev)
- 		(const struct rtw89_mfw_hdr *)firmware->data;
- 	const struct rtw89_mfw_info *mfw_info;
- 	u32 size;
-+	int ret;
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index f1f31ebfc7934..9667f27740258 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -141,7 +141,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	const struct iphdr *iph;
+ 	const int type = icmp_hdr(skb)->type;
+ 	const int code = icmp_hdr(skb)->code;
+-	unsigned int data_len = 0;
+ 	struct ip_tunnel *t;
  
- 	if (mfw_hdr->sig != RTW89_MFW_SIG) {
- 		rtw89_warn(rtwdev, "not mfw format\n");
- 		return 0;
+ 	if (tpi->proto == htons(ETH_P_TEB))
+@@ -182,7 +181,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	case ICMP_TIME_EXCEEDED:
+ 		if (code != ICMP_EXC_TTL)
+ 			return 0;
+-		data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
+ 		break;
+ 
+ 	case ICMP_REDIRECT:
+@@ -190,10 +188,16 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
  	}
  
-+	ret = rtw89_mfw_validate_hdr(rtwdev, firmware, mfw_hdr);
-+	if (ret)
-+		return ret;
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (tpi->proto == htons(ETH_P_IPV6) &&
+-	    !ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
+-					type, data_len))
+-		return 0;
++	if (tpi->proto == htons(ETH_P_IPV6)) {
++		unsigned int data_len = 0;
 +
- 	mfw_info = &mfw_hdr->info[mfw_hdr->fw_nr - 1];
- 	size = le32_to_cpu(mfw_info->shift) + le32_to_cpu(mfw_info->size);
++		if (type == ICMP_TIME_EXCEEDED)
++			data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
++
++		if (!ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
++						type, data_len))
++			return 0;
++	}
+ #endif
  
+ 	if (t->parms.iph.daddr == 0 ||
 -- 
 2.39.5
 
