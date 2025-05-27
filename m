@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009DDAC53AF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 788C4AC56EA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96F318A1C3C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:49:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C7D3A474E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD7B27FD5D;
-	Tue, 27 May 2025 16:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B4227FD70;
+	Tue, 27 May 2025 17:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtQceNmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPTJr9BA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C22727BF7C;
-	Tue, 27 May 2025 16:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FCA277808;
+	Tue, 27 May 2025 17:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364595; cv=none; b=f8tyIUPXVKJBsmXtAlgpqjkYJMJQX/MACfi6tGw0zq341exJd8J8YWML4q7rXFzec5/a0LtQrJC9k01rlDwueMD00oHdJnPCHg1f8Y5KtEGPkUfyp5im36gSUgiu0CFGLV7wHqZSmCOJ2RKmbBnPxpCDBqFXfo6R7s9ciJ5OL3g=
+	t=1748366780; cv=none; b=a7RS7RU57N0jIxHw9UO1CbzUNxgsGtBqUAuJKvVsL8/fWV0iyutMi64P1nOq1/KhcTFuhdOJ/Glc02mMY3fAg+oPDCbJ/QR0KxIyxVfgiQgphnCteuQsCCBjijYK273EtGB21WvtKlvPhmK+VSWJhK3/ye+BbzreKnwKWSRvnfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364595; c=relaxed/simple;
-	bh=pEeLogLcXj6e1LHi9n+VQgo5iBgiwDvabOxr2mibdMk=;
+	s=arc-20240116; t=1748366780; c=relaxed/simple;
+	bh=uAfYUxnLFu2yjP6WZ7HjAUUJg6Jm8HuOnFvtUNPV0i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdBOw9lfD6/RiVYVJP9eqo5YdeNrjRJGmxsttm6AM+CWOKFge2w6NA8enKSeraT/zWM1ZEGNNcCrz+FBZ59PZ4mmGdEAbZyMuF0uyYRguwX/eBY9IuulvJYTy6D/KT0YLEXUTa9yy/zPbzwMtBsiYPdQhuy7LGHlCu02WFXGOAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtQceNmF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133FCC4CEE9;
-	Tue, 27 May 2025 16:49:54 +0000 (UTC)
+	 MIME-Version; b=lED+ZqRRDlIX/yIHmNYj4fy0hwjFHM0dL3yYUzPX03cc0M2xaA2k08dANv0Zxd3mrKM/RV49VQtKeI8zeJQdnRVhdYWQH9puGwWj529cjMkEFMR9aeXy/J/ANp4oKX4PkFzaoYaOgXYT2kl32EcCW6mIDFNAcWK4/ASZHeiHNQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPTJr9BA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40690C4CEE9;
+	Tue, 27 May 2025 17:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364595;
-	bh=pEeLogLcXj6e1LHi9n+VQgo5iBgiwDvabOxr2mibdMk=;
+	s=korg; t=1748366780;
+	bh=uAfYUxnLFu2yjP6WZ7HjAUUJg6Jm8HuOnFvtUNPV0i4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gtQceNmFhX2T6KVYPTomDuYXFtQs5UwmNtbl49peHknvubUHZ2uBIUkKXAUURiaf4
-	 Ed6FBjGo7Rfsd8druih5YTTUAYsAzv9K4np/hZTx7Sz5WUn1LpRdDRPO3eo3bkppUy
-	 PqgL6iMChqUFFeY+a0ZyvgVVblk5zCbFcmbQEMQg=
+	b=FPTJr9BA5Qn8n0g9M9tYxxsjKShCJjnb4mXqYyhVzhk/iOobnJr0Ykg/P2l/9uVom
+	 Ig4ORFEFWN/fGAqOj1keQoDjOsBsyZYNhgA0oHoYf2T+FbwVemq9WTBuRwrpWX26sX
+	 pz5TOp7OeqzQdht80/UPyl7a+pAbJN0eR27LlNwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans-Frieder Vogt <hfdevel@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rae Moar <rmoar@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <shuah@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/626] net: tn40xx: create swnode for mdio and aqr105 phy and add to mdiobus
+Subject: [PATCH 6.14 175/783] kunit: tool: Fix bug in parsing test plan
 Date: Tue, 27 May 2025 18:19:32 +0200
-Message-ID: <20250527162448.256458833@linuxfoundation.org>
+Message-ID: <20250527162520.288742830@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,242 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans-Frieder Vogt <hfdevel@gmx.net>
+From: Rae Moar <rmoar@google.com>
 
-[ Upstream commit 25b6a6d29d4082f6ac231c056ac321a996eb55c9 ]
+[ Upstream commit 1d4c06d51963f89f67c7b75d5c0c34e9d1bb2ae6 ]
 
-In case of an AQR105-based device, create a software node for the mdio
-function, with a child node for the Aquantia AQR105 PHY, providing a
-firmware-name (and a bit more, which may be used for future checks) to
-allow the PHY to load a MAC specific firmware from the file system.
+A bug was identified where the KTAP below caused an infinite loop:
 
-The name of the PHY software node follows the naming convention suggested
-in the patch for the mdiobus_scan function (in the same patch series).
+ TAP version 13
+ ok 4 test_case
+ 1..4
 
-Signed-off-by: Hans-Frieder Vogt <hfdevel@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250322-tn9510-v3a-v7-5-672a9a3d8628@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The infinite loop was caused by the parser not parsing a test plan
+if following a test result line.
+
+Fix this bug by parsing test plan line to avoid the infinite loop.
+
+Link: https://lore.kernel.org/r/20250313192714.1380005-1-rmoar@google.com
+Signed-off-by: Rae Moar <rmoar@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <shuah@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/tehuti/tn40.c      |  5 +-
- drivers/net/ethernet/tehuti/tn40.h      | 33 ++++++++++
- drivers/net/ethernet/tehuti/tn40_mdio.c | 82 ++++++++++++++++++++++++-
- 3 files changed, 117 insertions(+), 3 deletions(-)
+ tools/testing/kunit/kunit_parser.py | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/tehuti/tn40.c b/drivers/net/ethernet/tehuti/tn40.c
-index a6965258441c4..558b791a97edd 100644
---- a/drivers/net/ethernet/tehuti/tn40.c
-+++ b/drivers/net/ethernet/tehuti/tn40.c
-@@ -1778,7 +1778,7 @@ static int tn40_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	ret = tn40_phy_register(priv);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to set up PHY.\n");
--		goto err_free_irq;
-+		goto err_cleanup_swnodes;
- 	}
- 
- 	ret = tn40_priv_init(priv);
-@@ -1795,6 +1795,8 @@ static int tn40_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	return 0;
- err_unregister_phydev:
- 	tn40_phy_unregister(priv);
-+err_cleanup_swnodes:
-+	tn40_swnodes_cleanup(priv);
- err_free_irq:
- 	pci_free_irq_vectors(pdev);
- err_unset_drvdata:
-@@ -1816,6 +1818,7 @@ static void tn40_remove(struct pci_dev *pdev)
- 	unregister_netdev(ndev);
- 
- 	tn40_phy_unregister(priv);
-+	tn40_swnodes_cleanup(priv);
- 	pci_free_irq_vectors(priv->pdev);
- 	pci_set_drvdata(pdev, NULL);
- 	iounmap(priv->regs);
-diff --git a/drivers/net/ethernet/tehuti/tn40.h b/drivers/net/ethernet/tehuti/tn40.h
-index 490781fe51205..25da8686d4691 100644
---- a/drivers/net/ethernet/tehuti/tn40.h
-+++ b/drivers/net/ethernet/tehuti/tn40.h
-@@ -4,10 +4,13 @@
- #ifndef _TN40_H_
- #define _TN40_H_
- 
-+#include <linux/property.h>
- #include "tn40_regs.h"
- 
- #define TN40_DRV_NAME "tn40xx"
- 
-+#define PCI_DEVICE_ID_TEHUTI_TN9510	0x4025
+diff --git a/tools/testing/kunit/kunit_parser.py b/tools/testing/kunit/kunit_parser.py
+index 29fc27e8949bd..da53a709773a2 100644
+--- a/tools/testing/kunit/kunit_parser.py
++++ b/tools/testing/kunit/kunit_parser.py
+@@ -759,7 +759,7 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest:
+ 		# If parsing the main/top-level test, parse KTAP version line and
+ 		# test plan
+ 		test.name = "main"
+-		ktap_line = parse_ktap_header(lines, test, printer)
++		parse_ktap_header(lines, test, printer)
+ 		test.log.extend(parse_diagnostic(lines))
+ 		parse_test_plan(lines, test)
+ 		parent_test = True
+@@ -768,13 +768,12 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest:
+ 		# the KTAP version line and/or subtest header line
+ 		ktap_line = parse_ktap_header(lines, test, printer)
+ 		subtest_line = parse_test_header(lines, test)
++		test.log.extend(parse_diagnostic(lines))
++		parse_test_plan(lines, test)
+ 		parent_test = (ktap_line or subtest_line)
+ 		if parent_test:
+-			# If KTAP version line and/or subtest header is found, attempt
+-			# to parse test plan and print test header
+-			test.log.extend(parse_diagnostic(lines))
+-			parse_test_plan(lines, test)
+ 			print_test_header(test, printer)
 +
- #define TN40_MDIO_SPEED_1MHZ (1)
- #define TN40_MDIO_SPEED_6MHZ (6)
- 
-@@ -102,10 +105,39 @@ struct tn40_txdb {
- 	int size; /* Number of elements in the db */
- };
- 
-+#define NODE_PROP(_NAME, _PROP)	(		\
-+	(const struct software_node) {		\
-+		.name = _NAME,			\
-+		.properties = _PROP,		\
-+	})
-+
-+#define NODE_PAR_PROP(_NAME, _PAR, _PROP)	(	\
-+	(const struct software_node) {		\
-+		.name = _NAME,			\
-+		.parent = _PAR,			\
-+		.properties = _PROP,		\
-+	})
-+
-+enum tn40_swnodes {
-+	SWNODE_MDIO,
-+	SWNODE_PHY,
-+	SWNODE_MAX
-+};
-+
-+struct tn40_nodes {
-+	char phy_name[32];
-+	char mdio_name[32];
-+	struct property_entry phy_props[3];
-+	struct software_node swnodes[SWNODE_MAX];
-+	const struct software_node *group[SWNODE_MAX + 1];
-+};
-+
- struct tn40_priv {
- 	struct net_device *ndev;
- 	struct pci_dev *pdev;
- 
-+	struct tn40_nodes nodes;
-+
- 	struct napi_struct napi;
- 	/* RX FIFOs: 1 for data (full) descs, and 2 for free descs */
- 	struct tn40_rxd_fifo rxd_fifo0;
-@@ -225,6 +257,7 @@ static inline void tn40_write_reg(struct tn40_priv *priv, u32 reg, u32 val)
- 
- int tn40_set_link_speed(struct tn40_priv *priv, u32 speed);
- 
-+void tn40_swnodes_cleanup(struct tn40_priv *priv);
- int tn40_mdiobus_init(struct tn40_priv *priv);
- 
- int tn40_phy_register(struct tn40_priv *priv);
-diff --git a/drivers/net/ethernet/tehuti/tn40_mdio.c b/drivers/net/ethernet/tehuti/tn40_mdio.c
-index af18615d64a8a..5bb0cbc87d064 100644
---- a/drivers/net/ethernet/tehuti/tn40_mdio.c
-+++ b/drivers/net/ethernet/tehuti/tn40_mdio.c
-@@ -14,6 +14,8 @@
- 	 (FIELD_PREP(TN40_MDIO_PRTAD_MASK, (port))))
- #define TN40_MDIO_CMD_READ BIT(15)
- 
-+#define AQR105_FIRMWARE "tehuti/aqr105-tn40xx.cld"
-+
- static void tn40_mdio_set_speed(struct tn40_priv *priv, u32 speed)
- {
- 	void __iomem *regs = priv->regs;
-@@ -111,6 +113,56 @@ static int tn40_mdio_write_c45(struct mii_bus *mii_bus, int addr, int devnum,
- 	return  tn40_mdio_write(mii_bus->priv, addr, devnum, regnum, val);
- }
- 
-+/* registers an mdio node and an aqr105 PHY at address 1
-+ * tn40_mdio-%id {
-+ *	ethernet-phy@1 {
-+ *		compatible = "ethernet-phy-id03a1.b4a3";
-+ *		reg = <1>;
-+ *		firmware-name = AQR105_FIRMWARE;
-+ *	};
-+ * };
-+ */
-+static int tn40_swnodes_register(struct tn40_priv *priv)
-+{
-+	struct tn40_nodes *nodes = &priv->nodes;
-+	struct pci_dev *pdev = priv->pdev;
-+	struct software_node *swnodes;
-+	u32 id;
-+
-+	id = pci_dev_id(pdev);
-+
-+	snprintf(nodes->phy_name, sizeof(nodes->phy_name), "ethernet-phy@1");
-+	snprintf(nodes->mdio_name, sizeof(nodes->mdio_name), "tn40_mdio-%x",
-+		 id);
-+
-+	swnodes = nodes->swnodes;
-+
-+	swnodes[SWNODE_MDIO] = NODE_PROP(nodes->mdio_name, NULL);
-+
-+	nodes->phy_props[0] = PROPERTY_ENTRY_STRING("compatible",
-+						    "ethernet-phy-id03a1.b4a3");
-+	nodes->phy_props[1] = PROPERTY_ENTRY_U32("reg", 1);
-+	nodes->phy_props[2] = PROPERTY_ENTRY_STRING("firmware-name",
-+						    AQR105_FIRMWARE);
-+	swnodes[SWNODE_PHY] = NODE_PAR_PROP(nodes->phy_name,
-+					    &swnodes[SWNODE_MDIO],
-+					    nodes->phy_props);
-+
-+	nodes->group[SWNODE_PHY] = &swnodes[SWNODE_PHY];
-+	nodes->group[SWNODE_MDIO] = &swnodes[SWNODE_MDIO];
-+	return software_node_register_node_group(nodes->group);
-+}
-+
-+void tn40_swnodes_cleanup(struct tn40_priv *priv)
-+{
-+	/* cleanup of swnodes is only needed for AQR105-based cards */
-+	if (priv->pdev->device == PCI_DEVICE_ID_TEHUTI_TN9510) {
-+		fwnode_handle_put(dev_fwnode(&priv->mdio->dev));
-+		device_remove_software_node(&priv->mdio->dev);
-+		software_node_unregister_node_group(priv->nodes.group);
-+	}
-+}
-+
- int tn40_mdiobus_init(struct tn40_priv *priv)
- {
- 	struct pci_dev *pdev = priv->pdev;
-@@ -129,14 +181,40 @@ int tn40_mdiobus_init(struct tn40_priv *priv)
- 
- 	bus->read_c45 = tn40_mdio_read_c45;
- 	bus->write_c45 = tn40_mdio_write_c45;
-+	priv->mdio = bus;
-+
-+	/* provide swnodes for AQR105-based cards only */
-+	if (pdev->device == PCI_DEVICE_ID_TEHUTI_TN9510) {
-+		ret = tn40_swnodes_register(priv);
-+		if (ret) {
-+			pr_err("swnodes failed\n");
-+			return ret;
-+		}
-+
-+		ret = device_add_software_node(&bus->dev,
-+					       priv->nodes.group[SWNODE_MDIO]);
-+		if (ret) {
-+			dev_err(&pdev->dev,
-+				"device_add_software_node failed: %d\n", ret);
-+			goto err_swnodes_unregister;
-+		}
-+	}
- 
- 	ret = devm_mdiobus_register(&pdev->dev, bus);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register mdiobus %d %u %u\n",
- 			ret, bus->state, MDIOBUS_UNREGISTERED);
--		return ret;
-+		goto err_swnodes_cleanup;
- 	}
- 	tn40_mdio_set_speed(priv, TN40_MDIO_SPEED_6MHZ);
--	priv->mdio = bus;
- 	return 0;
-+
-+err_swnodes_unregister:
-+	software_node_unregister_node_group(priv->nodes.group);
-+	return ret;
-+err_swnodes_cleanup:
-+	tn40_swnodes_cleanup(priv);
-+	return ret;
- }
-+
-+MODULE_FIRMWARE(AQR105_FIRMWARE);
+ 	expected_count = test.expected_count
+ 	subtests = []
+ 	test_num = 1
 -- 
 2.39.5
 
