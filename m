@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-146762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421D4AC5474
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD1FAC57E2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC691BA4F97
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE81F8A6BA1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389632798E6;
-	Tue, 27 May 2025 17:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8072E27E7CF;
+	Tue, 27 May 2025 17:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ufm0KZRh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5C6nFp4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60F178F32;
-	Tue, 27 May 2025 17:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4421A3159;
+	Tue, 27 May 2025 17:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365230; cv=none; b=aeD1ofM5KKGvoAnaBNonOrpOQ5aOQSwOoxP7UKCOo1Tsqas0800Ytj3Ic0O4ET0fPATmv1Mwlbr8Bdi/uWbOUa8DZOpAiOSBr9LWQYho/X4V3KnbEnWjct4kXy30OWqjRPfQI3dINe+6/XclLyamZC1dE8ne6Rdm+FWwkSBal00=
+	t=1748367486; cv=none; b=PvE3k6+MAiuICHRWJ+oKXmRg37nCWqzd+pQXEqY9wNaY4FpNHeczbYBwC3dmFWgF5mX6dPDN4piKX11ItcRaniuZOUch9BH89onIUN63B4rwRsOYo8YkQfIkqDjmTjyXFV87Kn9ONy8fpybzNFGrFXV6LYQe0lWCDBDXfaMwClk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365230; c=relaxed/simple;
-	bh=cxr+n5nYvgCDnsxKCOPwRTiu4VveEHjEzYxMwqeSFzk=;
+	s=arc-20240116; t=1748367486; c=relaxed/simple;
+	bh=uiakvEDJhbeTcKr1DhogdbRIo4cjVjGS9A1vZP3GlJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnYrxjQ4V3aUuYThs1gaX+GswD+bGSjAf8wViHVL/kmQHd62dtKIfklHA7gABPnaDas6ra4K/cttqB1X4On8Q1Zo576aUCHtNSCaE77wZKRsIcbrBjKn505GlEZSeEFSibV2A4vWH9weaPJH/8KTmXHrEE4l5z3qYN3IunBAJbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufm0KZRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4F6C4CEE9;
-	Tue, 27 May 2025 17:00:29 +0000 (UTC)
+	 MIME-Version; b=YC/byOghdb4i2ZYf3B1E8vCW6CTlJq5QYoESm/Ls291Jr8erJAWKaGWUD9f89EdatWZ57xOahbMaPE0UckmARIJx3qKiVPJFvhtrsQ0uWGaWQOMOhd3YBe6fsEabpgyrk3+4JIY0ViWHmwBGpAR6wIsCryn16iE9iBxSSPBE5aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5C6nFp4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D34C4CEE9;
+	Tue, 27 May 2025 17:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365229;
-	bh=cxr+n5nYvgCDnsxKCOPwRTiu4VveEHjEzYxMwqeSFzk=;
+	s=korg; t=1748367486;
+	bh=uiakvEDJhbeTcKr1DhogdbRIo4cjVjGS9A1vZP3GlJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ufm0KZRhxF+SjlK+HtZhH0LezbbaGwtI6ZqbZm1k3dIHmEoYqhR7x3Rc49Ss+C7sU
-	 iQIbks1UHPczFBPQCTGY8avsJmugExUpeRi0TckhLQ8qpB4DikJyKbpROXmkmUaZga
-	 cZfpk/ojNpQFANkSyEGpbPetIt/Z0H1MuAMVvFrE=
+	b=h5C6nFp4xprTuju99bKv8Ma+T/QUnvVrrxUjx+W0Y9l6i9puYB0eVtqUtkHd3I2SM
+	 Ad7YY+WcvkiK8uLJ0a6AFSzkU5o4DaQtn1ghya60omdjt78NKkRPyvf9SpIfDLI6jb
+	 7fb0ThSPe7yEnno8swnC3ZKbpaety9hSo+9I9Lpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 307/626] crypto: skcipher - Zap type in crypto_alloc_sync_skcipher
+Subject: [PATCH 6.14 403/783] i3c: master: svc: Flush FIFO before sending Dynamic Address Assignment(DAA)
 Date: Tue, 27 May 2025 18:23:20 +0200
-Message-ID: <20250527162457.507110397@linuxfoundation.org>
+Message-ID: <20250527162529.509004117@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit ee509efc74ddbc59bb5d6fd6e050f9ef25f74bff ]
+[ Upstream commit a892ee4cf22a50e1d6988d0464a9a421f3e5db2f ]
 
-The type needs to be zeroed as otherwise the user could use it to
-allocate an asynchronous sync skcipher.
+Ensure the FIFO is empty before issuing the DAA command to prevent
+incorrect command data from being sent. Align with other data transfers,
+such as svc_i3c_master_start_xfer_locked(), which flushes the FIFO before
+sending a command.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20250129162250.3629189-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/skcipher.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i3c/master/svc-i3c-master.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/crypto/skcipher.c b/crypto/skcipher.c
-index ceed7f33a67ba..fd3273b519dc0 100644
---- a/crypto/skcipher.c
-+++ b/crypto/skcipher.c
-@@ -844,6 +844,7 @@ struct crypto_sync_skcipher *crypto_alloc_sync_skcipher(
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index a18fe62962b0c..2cf2c567f8931 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -899,6 +899,8 @@ static int svc_i3c_master_do_daa_locked(struct svc_i3c_master *master,
+ 	u32 reg;
+ 	int ret, i;
  
- 	/* Only sync algorithms allowed. */
- 	mask |= CRYPTO_ALG_ASYNC | CRYPTO_ALG_SKCIPHER_REQSIZE_LARGE;
-+	type &= ~(CRYPTO_ALG_ASYNC | CRYPTO_ALG_SKCIPHER_REQSIZE_LARGE);
- 
- 	tfm = crypto_alloc_tfm(alg_name, &crypto_skcipher_type, type, mask);
- 
++	svc_i3c_master_flush_fifo(master);
++
+ 	while (true) {
+ 		/* clean SVC_I3C_MINT_IBIWON w1c bits */
+ 		writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
 -- 
 2.39.5
 
