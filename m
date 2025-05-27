@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466A8AC555D
+	by mail.lfdr.de (Postfix) with ESMTPS id 008AFAC555E
 	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AC0C8A28C0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A0CB8A29F5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3218127D784;
-	Tue, 27 May 2025 17:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B5C271476;
+	Tue, 27 May 2025 17:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN2TmUgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo3Eu2iE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24F11DC998;
-	Tue, 27 May 2025 17:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB202110E;
+	Tue, 27 May 2025 17:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365505; cv=none; b=A+6KprbXj/y9a4omXUU6FlreAbMzDUMy5UB9KA3Y+q9nASw2yUqE9DCIv0RpeoL2TGtbxIli6w52/uKdgWyyJuJQp1ti6Lo5WlWi34v+qh5FvJ1YlOOzglWO7yLBLYoiguUjwGPYKSokboEm1dlkJsRZttJVm/N01IrMybyXPOo=
+	t=1748365508; cv=none; b=hNrvJUHpQeApTnE2i1QHiJzYfmoZg0y8fX8nI64WXaXYDB6SJyhrQuLaIzSHAQyCINp6ukUUIjGCGUFBofsVBJUr8vP4BoIev7x5Tot7VGxDXZL09K+hjOkK4OTV/bygo2MCJaTxfzHAFquEWxakHxCbKN+EaaZ3frV1KMr4kQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365505; c=relaxed/simple;
-	bh=rHkP3G2m4xyERLtR+ty7XNoQLWVL/X9ZVq2Z9aMiE38=;
+	s=arc-20240116; t=1748365508; c=relaxed/simple;
+	bh=gVb9fCj/8l3svltIcJU9CFrNx0rFEpVqL6X75y4EIAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dx5bgHicuLkGk1hvUMHcOGEIg+/zsGEk/KUNrFaWLCI51fsthDTC8wb+1W7A+dkJC2pWz2nhPD+MznmI7l+CuaeZvrpV+VKjZ7Nu+3Yiq+LKM5rMjZqDOCouVgDyg7hCB5FwvSE05kpEh/HHla7xiQMCK4SYB3d+IPZUWrqzryQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN2TmUgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C8BC4CEE9;
-	Tue, 27 May 2025 17:05:04 +0000 (UTC)
+	 MIME-Version; b=jCci2rbk7x3lInoUWy7Js09Jfw6GHkp7KMLkiZ4Snm+0neh5fb/vZ8itNYYnlpXiedTNAS71lQuTu9ZtyFyadjrjfBmeCXNKrN1sm8dRhguzhMhnyAEE7uQLUQjYEO+tx7jZw/8ZjMc0deAZCaXN9xKtIavxR2F0XSZ1qQSi0EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo3Eu2iE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE0CC4CEE9;
+	Tue, 27 May 2025 17:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365504;
-	bh=rHkP3G2m4xyERLtR+ty7XNoQLWVL/X9ZVq2Z9aMiE38=;
+	s=korg; t=1748365507;
+	bh=gVb9fCj/8l3svltIcJU9CFrNx0rFEpVqL6X75y4EIAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MN2TmUgx5TVOp36Zllv8+txhEnOTNarhcoAnEy6E4pMI0PlvE0LsNk01DnPFFL1Tz
-	 Ta4WYX9CRhFXz3ElEy9MpE7cxOF4o3t9nNuQCdVDskBYJ0HnsesalwrbiZDJPzHyOm
-	 iGhYibaDJHSPbdvWg+VorhQBw/AryGPeK9ZvPOAM=
+	b=Yo3Eu2iEGrQ0O66fkxvRLiy/PwMfGUji2gUO4PmCIyIiWLzV7DbuR7f6epb5XhNG1
+	 ISPH8RErtrIahzaBAFJI1D6df7cTGofd6avHTWZHnA7/Q5IxF9MUIDKRhKcYEBfMzI
+	 SvlOlPYuTNLz6vVgOyakAkLiCtEPxQTIN8vVBBck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <roman.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Joshua Aberback <joshua.aberback@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 397/626] drm/amd/display: Initial psr_version with correct setting
-Date: Tue, 27 May 2025 18:24:50 +0200
-Message-ID: <20250527162501.154179605@linuxfoundation.org>
+Subject: [PATCH 6.12 398/626] drm/amd/display: Increase block_sequence array size
+Date: Tue, 27 May 2025 18:24:51 +0200
+Message-ID: <20250527162501.191894621@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -69,38 +69,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Joshua Aberback <joshua.aberback@amd.com>
 
-[ Upstream commit d8c782cac5007e68e7484d420168f12d3490def6 ]
+[ Upstream commit 3a7810c212bcf2f722671dadf4b23ff70a7d23ee ]
 
-[Why & How]
-The initial setting for psr_version is not correct while
-create a virtual link.
+[Why]
+It's possible to generate more than 50 steps in hwss_build_fast_sequence,
+for example with a 6-pipe asic where all pipes are in one MPC chain. This
+overflows the block_sequence buffer and corrupts block_sequence_steps,
+causing a crash.
 
-The default psr_version should be DC_PSR_VERSION_UNSUPPORTED.
+[How]
+Expand block_sequence to 100 items. A naive upper bound on the possible
+number of steps for a 6-pipe asic, ignoring the potential for steps to be
+mutually exclusive, is 91 with current code, therefore 100 is sufficient.
 
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Joshua Aberback <joshua.aberback@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/inc/core_types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index fa7db10104c45..a99d3e2256f19 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -276,6 +276,7 @@ static bool create_links(
- 		link->link_id.type = OBJECT_TYPE_CONNECTOR;
- 		link->link_id.id = CONNECTOR_ID_VIRTUAL;
- 		link->link_id.enum_id = ENUM_ID_1;
-+		link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
- 		link->link_enc = kzalloc(sizeof(*link->link_enc), GFP_KERNEL);
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+index e1e3142cdc00a..62fb2009b3028 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+@@ -621,7 +621,7 @@ struct dc_state {
+ 	 */
+ 	struct bw_context bw_ctx;
  
- 		if (!link->link_enc) {
+-	struct block_sequence block_sequence[50];
++	struct block_sequence block_sequence[100];
+ 	unsigned int block_sequence_steps;
+ 	struct dc_dmub_cmd dc_dmub_cmd[10];
+ 	unsigned int dmub_cmd_count;
 -- 
 2.39.5
 
