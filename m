@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BCFAC536F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:47:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BAFEAC568C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 901D118939D1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6398D18872B8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DE02CCC0;
-	Tue, 27 May 2025 16:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B011B27F4CB;
+	Tue, 27 May 2025 17:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ef/cECF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rt4+/jhq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63710241679;
-	Tue, 27 May 2025 16:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAC31D88D7;
+	Tue, 27 May 2025 17:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364422; cv=none; b=C1Rp3UJsTtrKhvTy+kByDEgGJ8rSlmVTtfGP3srvhcn5ypErA/W2hJrgaqyDSPiA50Rcs2AWyqZtSyjdnETxGhJYu4SsdeiCNSV2+Zhv2NK2IH16Gz0WNqfyMOOu6+suCEQAFpuuFKu4gW8iqYDT6ybdTYPQjzXfezdGtetTf+Y=
+	t=1748366556; cv=none; b=dH1ZqHOWhQgHuHObSvbgo9/qhs78EE7ZxPT2Ra2dccwlqIUpRxZxZcGrqKuciYo5jcK55VuFCC1r/KU3pYb6KisBaJOGwID7BdUq372g5srx7IFamm+UsLckt3Q05U/IiGzPCPgqV3GkTbl6duFgMicTfSGBbTu1DJgQ1Zp5fbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364422; c=relaxed/simple;
-	bh=u+D4J3IdpXDGcHzvMvaW/aWGMrsgIVacNzbV3DpEZnw=;
+	s=arc-20240116; t=1748366556; c=relaxed/simple;
+	bh=MDpnTMOvmFzjDu+IOSUhBS3n+2gsBGs53JQj+mvI03Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3neyTla1kcPyvu6To4mv0wUjaexkfLpiYudTl9mHfkqzbDLzZIESQVbQXjC4EIAuDZWfyrbfSTuV/TEnLpoVY4FEH4PxjY0DKn9Ma8Hj47d7pkSbAuwPhWZdWuzg3rZ4RSKwP8y2FkvF+ALMHmRKapLMl3duqiy/lWZCmsc6Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ef/cECF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41AAC4CEE9;
-	Tue, 27 May 2025 16:47:01 +0000 (UTC)
+	 MIME-Version; b=Q8Mzyvy/q3cZNFyk/6SPJ7oUZUdSugz+SeiAbJQvB2MSU+4ftyKg3ZpPLOrcntogQq8gPmr6IYUpM3QGOX5EvZ23l33mIdts3Eh8XmD1L4WAVYXZdISK7jp8IoK1dAtFX6b59oUtpxFIA+QS/mCTHrCuZ64QPnvPStSRSSAh0I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rt4+/jhq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB35C4CEE9;
+	Tue, 27 May 2025 17:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364422;
-	bh=u+D4J3IdpXDGcHzvMvaW/aWGMrsgIVacNzbV3DpEZnw=;
+	s=korg; t=1748366556;
+	bh=MDpnTMOvmFzjDu+IOSUhBS3n+2gsBGs53JQj+mvI03Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Ef/cECF9XLEThequKLgWSvW+U3Ofy/3JDUJsg9n6HmIs9nd3oE+NcPNv1Gh7qlV+
-	 2S8VUfTld5vGF7+0YJE4wyFKlPdZMK3iheg8Ibyc/2LQWK3yrbvhlcY7yKpHtDOp1J
-	 ZSyOal+9wpJi3VniwEL35FoKw1FB313dsLtUoLxw=
+	b=rt4+/jhqqKy5lz2Gx+knqLGxxuuI8sEKMzYQcxIDbAadRI2i3TevF8QJdJr7/vSOM
+	 qoYJFBkWWS6OURAF6PF1m4XTc2rX0IvM63xMcdYNfxciU3PT3KvoiVVl7UrCuTi1e6
+	 glE1TYFccBDZ9cn2EDPlhABH8Hwz+dA9qcktG+XY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Nicolas Bretz <bretznic@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 010/626] cpufreq: Add SM8650 to cpufreq-dt-platdev blocklist
+Subject: [PATCH 6.14 106/783] ext4: on a remount, only log the ro or r/w state when it has changed
 Date: Tue, 27 May 2025 18:18:23 +0200
-Message-ID: <20250527162445.476985562@linuxfoundation.org>
+Message-ID: <20250527162517.459859605@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengyu Luo <mitltlatltl@gmail.com>
+From: Nicolas Bretz <bretznic@gmail.com>
 
-[ Upstream commit fc5414a4774e14e51a93499a6adfdc45f2de82e0 ]
+[ Upstream commit d7b0befd09320e3356a75cb96541c030515e7f5f ]
 
-SM8650 have already been supported by qcom-cpufreq-hw driver, but
-never been added to cpufreq-dt-platdev. This makes noise
+A user complained that a message such as:
 
-[    0.388525] cpufreq-dt cpufreq-dt: failed register driver: -17
-[    0.388537] cpufreq-dt cpufreq-dt: probe with driver cpufreq-dt failed with error -17
+EXT4-fs (nvme0n1p3): re-mounted UUID ro. Quota mode: none.
 
-So adding it to the cpufreq-dt-platdev driver's blocklist to fix it.
+implied that the file system was previously mounted read/write and was
+now remounted read-only, when it could have been some other mount
+state that had changed by the "mount -o remount" operation.  Fix this
+by only logging "ro"or "r/w" when it has changed.
 
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+https://bugzilla.kernel.org/show_bug.cgi?id=219132
+
+Signed-off-by: Nicolas Bretz <bretznic@gmail.com>
+Link: https://patch.msgid.link/20250319171011.8372-1-bretznic@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq-dt-platdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/super.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index 78ad3221fe077..67bac12d4d55b 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -172,6 +172,7 @@ static const struct of_device_id blocklist[] __initconst = {
- 	{ .compatible = "qcom,sm8350", },
- 	{ .compatible = "qcom,sm8450", },
- 	{ .compatible = "qcom,sm8550", },
-+	{ .compatible = "qcom,sm8650", },
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 528979de0f7c1..b4a02be2eacf6 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6776,6 +6776,7 @@ static int ext4_reconfigure(struct fs_context *fc)
+ {
+ 	struct super_block *sb = fc->root->d_sb;
+ 	int ret;
++	bool old_ro = sb_rdonly(sb);
  
- 	{ .compatible = "st,stih407", },
- 	{ .compatible = "st,stih410", },
+ 	fc->s_fs_info = EXT4_SB(sb);
+ 
+@@ -6787,9 +6788,9 @@ static int ext4_reconfigure(struct fs_context *fc)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ext4_msg(sb, KERN_INFO, "re-mounted %pU %s. Quota mode: %s.",
+-		 &sb->s_uuid, sb_rdonly(sb) ? "ro" : "r/w",
+-		 ext4_quota_mode(sb));
++	ext4_msg(sb, KERN_INFO, "re-mounted %pU%s.",
++		 &sb->s_uuid,
++		 (old_ro != sb_rdonly(sb)) ? (sb_rdonly(sb) ? " ro" : " r/w") : "");
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
