@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-147313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22D6AC571F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ED0AC53D1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D947E1785D3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA1443A3922
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2C127E7C6;
-	Tue, 27 May 2025 17:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6366F19E7F9;
+	Tue, 27 May 2025 16:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIYqI2OY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7fv2DsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2A91CEAC2;
-	Tue, 27 May 2025 17:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2140A271476;
+	Tue, 27 May 2025 16:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366957; cv=none; b=Ov8BJ6mgaUn0arsb+sK6rx01O6P1SS6hi7jPRzG8NAIH0wKlc77UGVaN22xbdoISiXmdlQCuP3yiFE1bhOVxrvkSIS1OCHEmjEvJNZBvlDiSX5Tf+co4a0nbDrFeELOnX/WBMBgH1ya9fK1eWjTjiz/NqFeTwAEo+URT+n5at/Q=
+	t=1748364692; cv=none; b=VOokb8CvZXI8zG8S0ymyLz4n35Qhdv5hChq7bk1sS4GUZ/zRBbXqNtweLGXnSl2HJ5+5/TcvsLyHEC5FAJIwgjeaLF2sPWUgVx0HLp4W0VEpcZejji4fBcCKUgnXSb9C38yq5dXJE2Ggnui71AFwUst3PhQhLdLREzj62a816I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366957; c=relaxed/simple;
-	bh=mwoM9/9F9Bw91w52+SqGX7+Wm2qvkrFVnm5LiyzhLrc=;
+	s=arc-20240116; t=1748364692; c=relaxed/simple;
+	bh=CPYAKZA9h/iooSYBM4NBIp+Uwo3bKNngYdpFIm6sdsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBFZ4CbkTdDgZDsBWmOnKGH6EuMlNdqiw61KwaEOntFcAd26tlRmQ3xVA/Z9YX8etTWPa7WjU0ZQiZDMlxWl9itEdDkPY6U1znAgcO3mpiFjVJ5+N5ig+LTdRfyBydbkYB7E4lXsOE/wZhp3U/EdZ6iBTwPegdAwOx7KT7Ucc44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIYqI2OY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1AEC4CEE9;
-	Tue, 27 May 2025 17:29:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dO+wlWOjr7JroHXgv14xe+X5Iw4YtYp1bovsCZ+o2sncYR8NJWQTxCXd+dgDUXsjNJDEOzforGTzNlyzjpqAJPSo11Yogmn/B/Jzv+jadVfeJgdg5qxYFs4Mc2AEecq8Td9+kv0+1NeZIs0F1Y//FCK7VZ/5nt7uyR+v/j8egcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7fv2DsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4CAC4CEE9;
+	Tue, 27 May 2025 16:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366957;
-	bh=mwoM9/9F9Bw91w52+SqGX7+Wm2qvkrFVnm5LiyzhLrc=;
+	s=korg; t=1748364692;
+	bh=CPYAKZA9h/iooSYBM4NBIp+Uwo3bKNngYdpFIm6sdsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIYqI2OYBoCkThIsXR+sI1yRzMLKeKbQBuuJ9ewZ9x6RjPUPbNXiV6/bzNpMq57Zr
-	 bZ5y/hakiYQ04f+ET6RwMHrWct68ceP2fQnVtR4r5IwC57ktC4UhUe512nh7TOXtOs
-	 SEbr3T+ePDWkgjTXXqvAhnS0Jr6b3Lr5zPG50pJE=
+	b=S7fv2DsQKm8F5KXtvYtkDGadvAcGTvLDt4214AA1OhmV0LJDtumz8qaYuEVVlz08n
+	 ciCkCo6sG5uGxiHsFoGtW4rrLxRFyr7q9RSeAfgKCiWAYT9bkHNJD2pWZElJ5V7+Xy
+	 UHMfOrTPU32X8ytgskWHmzdakde+79NnpYEkVEFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Chen <robin.chen@amd.com>,
-	Leon Huang <Leon.Huang1@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 232/783] drm/amd/display: Fix incorrect DPCD configs while Replay/PSR switch
+Subject: [PATCH 6.12 136/626] scsi: st: ERASE does not change tape location
 Date: Tue, 27 May 2025 18:20:29 +0200
-Message-ID: <20250527162522.573284530@linuxfoundation.org>
+Message-ID: <20250527162450.551892356@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Huang <Leon.Huang1@amd.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 0d9cabc8f591ea1cd97c071b853b75b155c13259 ]
+[ Upstream commit ad77cebf97bd42c93ab4e3bffd09f2b905c1959a ]
 
-[Why]
-When switching between PSR/Replay,
-the DPCD config of previous mode is not cleared,
-resulting in unexpected behavior in TCON.
+The SCSI ERASE command erases from the current position onwards.  Don't
+clear the position variables.
 
-[How]
-Initialize the DPCD in setup function
-
-Reviewed-by: Robin Chen <robin.chen@amd.com>
-Signed-off-by: Leon Huang <Leon.Huang1@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-3-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../link/protocols/link_edp_panel_control.c   | 25 ++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/scsi/st.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-index e0e3bb8653595..1e4adbc764ea6 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-@@ -675,6 +675,18 @@ bool edp_setup_psr(struct dc_link *link,
- 	if (!link)
- 		return false;
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 1c0951168f646..1cfd7e71dcdde 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -2894,7 +2894,6 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			timeout = STp->long_timeout * 8;
  
-+	//Clear PSR cfg
-+	memset(&psr_configuration, 0, sizeof(psr_configuration));
-+	dm_helpers_dp_write_dpcd(
-+		link->ctx,
-+		link,
-+		DP_PSR_EN_CFG,
-+		&psr_configuration.raw,
-+		sizeof(psr_configuration.raw));
-+
-+	if (link->psr_settings.psr_version == DC_PSR_VERSION_UNSUPPORTED)
-+		return false;
-+
- 	dc = link->ctx->dc;
- 	dmcu = dc->res_pool->dmcu;
- 	psr = dc->res_pool->psr;
-@@ -685,9 +697,6 @@ bool edp_setup_psr(struct dc_link *link,
- 	if (!dc_get_edp_link_panel_inst(dc, link, &panel_inst))
- 		return false;
- 
--
--	memset(&psr_configuration, 0, sizeof(psr_configuration));
--
- 	psr_configuration.bits.ENABLE                    = 1;
- 	psr_configuration.bits.CRC_VERIFICATION          = 1;
- 	psr_configuration.bits.FRAME_CAPTURE_INDICATION  =
-@@ -950,6 +959,16 @@ bool edp_setup_replay(struct dc_link *link, const struct dc_stream_state *stream
- 	if (!link)
- 		return false;
- 
-+	//Clear Replay config
-+	dm_helpers_dp_write_dpcd(link->ctx, link,
-+		DP_SINK_PR_ENABLE_AND_CONFIGURATION,
-+		(uint8_t *)&(replay_config.raw), sizeof(uint8_t));
-+
-+	if (!(link->replay_settings.config.replay_supported))
-+		return false;
-+
-+	link->replay_settings.config.replay_error_status.raw = 0;
-+
- 	dc = link->ctx->dc;
- 
- 	replay = dc->res_pool->replay;
+ 		DEBC_printk(STp, "Erasing tape.\n");
+-		fileno = blkno = at_sm = 0;
+ 		break;
+ 	case MTSETBLK:		/* Set block length */
+ 	case MTSETDENSITY:	/* Set tape density */
 -- 
 2.39.5
 
