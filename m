@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358D3AC5725
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E1AAC53C9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0CB188EAAD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DFBC4A1F2F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF0427D784;
-	Tue, 27 May 2025 17:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C78F19E7F9;
+	Tue, 27 May 2025 16:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2ePQWPr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nce9e15M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3051DB34C;
-	Tue, 27 May 2025 17:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA6A263F5E;
+	Tue, 27 May 2025 16:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366972; cv=none; b=fO5Z9QI3OEND4zueVgOLl7B+N4ejNKAKjeSN9rRl5WBtgLVG3aYT1wBnsko4JNP1xsoI6e/mA661efHu18DGarcbQn0oRJZT4CeSC3AhHU9OUsjzNSvGlkDBNPYjw/zRpg5kFQunAp7bDKDcQAS8zzgryNVi+a5qaDAEr/gJNXo=
+	t=1748364709; cv=none; b=Cww/s4T3knydnB9AHNt6tnoAL44SVRZnu0+lKYmyjsEp0Tec2mO/CNC49aUys9NEnyqprfEJHNCtLP18JM3Y9HMFauxv4d9Zd64HoI6go/jY+aymiVFghUBF6LqPowWARivc5Y/qZHj70kPYS8jfG4OVKqia25hebUyCerJBBXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366972; c=relaxed/simple;
-	bh=SK6FzQPdmCJW2+hRsb2OQ0/+rc+BW4dbnnwT4MAdHTU=;
+	s=arc-20240116; t=1748364709; c=relaxed/simple;
+	bh=AkgBZia+Utw+lBUvsZSCVAL0M6wHvLnZKT/JvcqFwSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbWkKMpUusG9hhCK/bZyozpchW5HQnz4gxkgkYFTM6SaMCiQvMoFcxCby7DPdA57+pgF7BJY6bIPmV4rpHp8v7KDArpKIGUFjpsEaxIKMeaZhsCfvFGhuO83RyIO+jkrcA33c2SN7H7ez3J8PXXd9hpTQFvffESDJ1nJ5hI7v5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2ePQWPr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611B8C4CEE9;
-	Tue, 27 May 2025 17:29:31 +0000 (UTC)
+	 MIME-Version; b=cxlQhYpycEkQMm6TRqCxgtyOKctFEtUowHhmcUhicrpYNF0L8H9LQchvpq9t3UQ4IMDP+TAW6Abfp3lPbbdvd5h4jZFHJfEUQM/NLKnjH5ZqoFoHsWjTHE/H8RAH63cIG/LEBynBWmyqcGCciMInDTB4CFUdkQVPSIIXTz/FB0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nce9e15M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B42CC4CEE9;
+	Tue, 27 May 2025 16:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366971;
-	bh=SK6FzQPdmCJW2+hRsb2OQ0/+rc+BW4dbnnwT4MAdHTU=;
+	s=korg; t=1748364708;
+	bh=AkgBZia+Utw+lBUvsZSCVAL0M6wHvLnZKT/JvcqFwSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2ePQWPrddMNImnUcsYP9tOYb66uBW9fUqcnnl1IL4nXZRFHjwPfEEHBioHeZPhoZ
-	 0Oj3QDWTvtcwlUxL7632BGmhQdOFrHEVbEaBC7avJVr4xKIIKT2To9yuZuXDy3687U
-	 iOLz2xiW7OEiQg6o8h0fQ01DUMWTohFVSWH37I4g=
+	b=nce9e15M0S1U0HtA1g1ei6CZiJpzKHUIc9lXSQFrgLnNcTVh7ZSVY4Ljw/WSXuKYu
+	 E6VyrbYnjdlDwxG+yZGj3MScwKWdsy1fAq6pZBvlnUqOu56rMUpQj5RE/lanT9z2H8
+	 XQj1LWHa7DMmbD7ZcsPENxigQV5Vv6WFVdRy2osE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Coly Li <colyli@kernel.org>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 236/783] badblocks: Fix a nonsense WARN_ON() which checks whether a u64 variable < 0
+Subject: [PATCH 6.12 140/626] jbd2: do not try to recover wiped journal
 Date: Tue, 27 May 2025 18:20:33 +0200
-Message-ID: <20250527162522.732462487@linuxfoundation.org>
+Message-ID: <20250527162450.718613168@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 7e76336e14de9a2b67af96012ddd46c5676cf340 ]
+[ Upstream commit a662f3c03b754e1f97a2781fa242e95bdb139798 ]
 
-In _badblocks_check(), there are lines of code like this,
-1246         sectors -= len;
-[snipped]
-1251         WARN_ON(sectors < 0);
+If a journal is wiped, we will set journal->j_tail to 0. However if
+'write' argument is not set (as it happens for read-only device or for
+ocfs2), the on-disk superblock is not updated accordingly and thus
+jbd2_journal_recover() cat try to recover the wiped journal. Fix the
+check in jbd2_journal_recover() to use journal->j_tail for checking
+empty journal instead.
 
-The WARN_ON() at line 1257 doesn't make sense because sectors is
-unsigned long long type and never to be <0.
-
-Fix it by checking directly checking whether sectors is less than len.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Coly Li <colyli@kernel.org>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250309160556.42854-1-colyli@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250206094657.20865-4-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/badblocks.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/jbd2/recovery.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/block/badblocks.c b/block/badblocks.c
-index dc147c0179612..23acdf7c6f363 100644
---- a/block/badblocks.c
-+++ b/block/badblocks.c
-@@ -1246,14 +1246,15 @@ static int _badblocks_check(struct badblocks *bb, sector_t s, sector_t sectors,
- 	len = sectors;
- 
- update_sectors:
-+	/* This situation should never happen */
-+	WARN_ON(sectors < len);
-+
- 	s += len;
- 	sectors -= len;
- 
- 	if (sectors > 0)
- 		goto re_check;
- 
--	WARN_ON(sectors < 0);
+diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
+index 667f67342c522..f85f401526c54 100644
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -287,19 +287,20 @@ static int fc_do_one_pass(journal_t *journal,
+ int jbd2_journal_recover(journal_t *journal)
+ {
+ 	int			err, err2;
+-	journal_superblock_t *	sb;
 -
- 	if (unacked_badblocks > 0)
- 		rv = -1;
- 	else if (acked_badblocks > 0)
+ 	struct recovery_info	info;
+ 
+ 	memset(&info, 0, sizeof(info));
+-	sb = journal->j_superblock;
+ 
+ 	/*
+ 	 * The journal superblock's s_start field (the current log head)
+ 	 * is always zero if, and only if, the journal was cleanly
+-	 * unmounted.
++	 * unmounted. We use its in-memory version j_tail here because
++	 * jbd2_journal_wipe() could have updated it without updating journal
++	 * superblock.
+ 	 */
+-	if (!sb->s_start) {
++	if (!journal->j_tail) {
++		journal_superblock_t *sb = journal->j_superblock;
++
+ 		jbd2_debug(1, "No recovery required, last transaction %d, head block %u\n",
+ 			  be32_to_cpu(sb->s_sequence), be32_to_cpu(sb->s_head));
+ 		journal->j_transaction_sequence = be32_to_cpu(sb->s_sequence) + 1;
 -- 
 2.39.5
 
