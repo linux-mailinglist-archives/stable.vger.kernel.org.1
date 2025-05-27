@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CE6AC5602
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0020AAC5905
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50F233B62BC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A114F4C1595
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2CC27FD49;
-	Tue, 27 May 2025 17:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECEE28003D;
+	Tue, 27 May 2025 17:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDvUZrG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjYMO2ZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488231E89C;
-	Tue, 27 May 2025 17:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D58F27FD76;
+	Tue, 27 May 2025 17:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366050; cv=none; b=cV8wSRE/MbYqzeM0r/v7ZYwFz4Z1WekHF5l8rd2Vzh6ub+AJh40UKSRC9NeWJ0gKxIcW+gVsiNoV1iHww7xADDtSGYS+VLfnSpHSiTqAYmBVej5v1kR/q7DG1LUBvwV3Cu8JqYDU/o+vkhN6O3nbDeDfThmmJqWFn0flh0POB7U=
+	t=1748368319; cv=none; b=McpokHLzn1BASmkPYHzVrRXxkMOGd5B3dW+RGDOu9m7Ri/DQQRHIXu4XgGv0GjadZHElAivR7zf653HS57nQ0keYA7C6iQOu/iYk98Rs/Ma4T2QQeIt3L8kLggWA04ZVooeeyq8YuI7USBJFXaYQWZ6v4r15phRNmV11OLhzPy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366050; c=relaxed/simple;
-	bh=kIv83E7UkfkJFxGuRjiTdGy216ro+KhmDoCnNV52L64=;
+	s=arc-20240116; t=1748368319; c=relaxed/simple;
+	bh=leg0yBgssGT0IX4ODoxtWRagMHHon7swK23f+56+OJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRdAJ6GpiKQEgY5yhLfjn1ZvhLCbQhvE2qIX8iKEBWbTDbMkQIKh8PZaLoI5tFasSC3KHTu0GLIT1qRDpnB5ngvR9+y+aFVQFSJIHHWjKimm9TtEGIEy2BdZFF8nEaZYyBjjAvoQbpj13fxbFMEUEfgQqOHzmKzF8yKiNtb6Z3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDvUZrG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9C6C4CEEB;
-	Tue, 27 May 2025 17:14:09 +0000 (UTC)
+	 MIME-Version; b=Bzk+qmpYdeNQR4OnLW0XfrqkAW9ZnHa74ZFeO5EQlYz9Eq5Tu9YvRBUWYGWkyHu/2kicjKFVx8TNBucA/oFfXEhjKxkcQbD/8Bi4oWdZwQ1IixlV0RJpLSXdDRQEye4Dx6AKsx8w/RMhC7+bzsW7MH4cfPCHfj6eWA2IBEPworU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjYMO2ZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8061AC4CEE9;
+	Tue, 27 May 2025 17:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366050;
-	bh=kIv83E7UkfkJFxGuRjiTdGy216ro+KhmDoCnNV52L64=;
+	s=korg; t=1748368318;
+	bh=leg0yBgssGT0IX4ODoxtWRagMHHon7swK23f+56+OJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDvUZrG3TCPeiT5rOHK8euu8ima2tmltfvIY9zDnLbVsxOgqPWkw58rwKffYDK/qk
-	 DoYqT26nlB9nHUIAaf9srqGROX05Yg3BzkFmsWkU3SXYzlHoHZ84GRUrfxT6ByZ0To
-	 saMlWh6D5v3i2p9XNRUYfRrmtLgpMdJQZUefVwag=
+	b=NjYMO2ZWMoYuYvE91spwC97ypsHBd9DKvQz6q6PTFBEAXmZxAFblOl3sPLrG1NG8H
+	 nirrWY9JG5CwLJF8C95wxTHA12GUgf6p6qwlFNpH9N1/qkfuB3KeJ1rLb7ubPAXjXe
+	 t3O2nVtfgyc8YJ+Wf1lrZSj/Vtg797P/kd96o6V8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [PATCH 6.12 573/626] can: bcm: add locking for bcm_op runtime updates
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 669/783] iio: imu: st_lsm6dsx: Fix wakeup source leaks on device unbind
 Date: Tue, 27 May 2025 18:27:46 +0200
-Message-ID: <20250527162508.244826419@linuxfoundation.org>
+Message-ID: <20250527162540.366568170@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,197 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit c2aba69d0c36a496ab4f2e81e9c2b271f2693fd7 upstream.
+[ Upstream commit 4551383e78d59b34eea3f4ed28ad22df99e25d59 ]
 
-The CAN broadcast manager (CAN BCM) can send a sequence of CAN frames via
-hrtimer. The content and also the length of the sequence can be changed
-resp reduced at runtime where the 'currframe' counter is then set to zero.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-Although this appeared to be a safe operation the updates of 'currframe'
-can be triggered from user space and hrtimer context in bcm_can_tx().
-Anderson Nascimento created a proof of concept that triggered a KASAN
-slab-out-of-bounds read access which can be prevented with a spin_lock_bh.
-
-At the rework of bcm_can_tx() the 'count' variable has been moved into
-the protected section as this variable can be modified from both contexts
-too.
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250519125027.11900-1-socketcan@hartkopp.net
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250406-b4-device-wakeup-leak-iio-v1-3-2d7d322a4a93@linaro.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c |   66 +++++++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 45 insertions(+), 21 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -58,6 +58,7 @@
- #include <linux/can/skb.h>
- #include <linux/can/bcm.h>
- #include <linux/slab.h>
-+#include <linux/spinlock.h>
- #include <net/sock.h>
- #include <net/net_namespace.h>
- 
-@@ -122,6 +123,7 @@ struct bcm_op {
- 	struct canfd_frame last_sframe;
- 	struct sock *sk;
- 	struct net_device *rx_reg_dev;
-+	spinlock_t bcm_tx_lock; /* protect currframe/count in runtime updates */
- };
- 
- struct bcm_sock {
-@@ -285,13 +287,18 @@ static void bcm_can_tx(struct bcm_op *op
- {
- 	struct sk_buff *skb;
- 	struct net_device *dev;
--	struct canfd_frame *cf = op->frames + op->cfsiz * op->currframe;
-+	struct canfd_frame *cf;
- 	int err;
- 
- 	/* no target device? => exit */
- 	if (!op->ifindex)
- 		return;
- 
-+	/* read currframe under lock protection */
-+	spin_lock_bh(&op->bcm_tx_lock);
-+	cf = op->frames + op->cfsiz * op->currframe;
-+	spin_unlock_bh(&op->bcm_tx_lock);
-+
- 	dev = dev_get_by_index(sock_net(op->sk), op->ifindex);
- 	if (!dev) {
- 		/* RFC: should this bcm_op remove itself here? */
-@@ -312,6 +319,10 @@ static void bcm_can_tx(struct bcm_op *op
- 	skb->dev = dev;
- 	can_skb_set_owner(skb, op->sk);
- 	err = can_send(skb, 1);
-+
-+	/* update currframe and count under lock protection */
-+	spin_lock_bh(&op->bcm_tx_lock);
-+
- 	if (!err)
- 		op->frames_abs++;
- 
-@@ -320,6 +331,11 @@ static void bcm_can_tx(struct bcm_op *op
- 	/* reached last frame? */
- 	if (op->currframe >= op->nframes)
- 		op->currframe = 0;
-+
-+	if (op->count > 0)
-+		op->count--;
-+
-+	spin_unlock_bh(&op->bcm_tx_lock);
- out:
- 	dev_put(dev);
- }
-@@ -430,7 +446,7 @@ static enum hrtimer_restart bcm_tx_timeo
- 	struct bcm_msg_head msg_head;
- 
- 	if (op->kt_ival1 && (op->count > 0)) {
--		op->count--;
-+		bcm_can_tx(op);
- 		if (!op->count && (op->flags & TX_COUNTEVT)) {
- 
- 			/* create notification to user */
-@@ -445,7 +461,6 @@ static enum hrtimer_restart bcm_tx_timeo
- 
- 			bcm_send_to_user(op, &msg_head, NULL, 0);
- 		}
--		bcm_can_tx(op);
- 
- 	} else if (op->kt_ival2) {
- 		bcm_can_tx(op);
-@@ -956,6 +971,27 @@ static int bcm_tx_setup(struct bcm_msg_h
- 		}
- 		op->flags = msg_head->flags;
- 
-+		/* only lock for unlikely count/nframes/currframe changes */
-+		if (op->nframes != msg_head->nframes ||
-+		    op->flags & TX_RESET_MULTI_IDX ||
-+		    op->flags & SETTIMER) {
-+
-+			spin_lock_bh(&op->bcm_tx_lock);
-+
-+			if (op->nframes != msg_head->nframes ||
-+			    op->flags & TX_RESET_MULTI_IDX) {
-+				/* potentially update changed nframes */
-+				op->nframes = msg_head->nframes;
-+				/* restart multiple frame transmission */
-+				op->currframe = 0;
-+			}
-+
-+			if (op->flags & SETTIMER)
-+				op->count = msg_head->count;
-+
-+			spin_unlock_bh(&op->bcm_tx_lock);
-+		}
-+
- 	} else {
- 		/* insert new BCM operation for the given can_id */
- 
-@@ -963,9 +999,14 @@ static int bcm_tx_setup(struct bcm_msg_h
- 		if (!op)
- 			return -ENOMEM;
- 
-+		spin_lock_init(&op->bcm_tx_lock);
- 		op->can_id = msg_head->can_id;
- 		op->cfsiz = CFSIZ(msg_head->flags);
- 		op->flags = msg_head->flags;
-+		op->nframes = msg_head->nframes;
-+
-+		if (op->flags & SETTIMER)
-+			op->count = msg_head->count;
- 
- 		/* create array for CAN frames and copy the data */
- 		if (msg_head->nframes > 1) {
-@@ -1024,22 +1065,8 @@ static int bcm_tx_setup(struct bcm_msg_h
- 
- 	} /* if ((op = bcm_find_op(&bo->tx_ops, msg_head->can_id, ifindex))) */
- 
--	if (op->nframes != msg_head->nframes) {
--		op->nframes   = msg_head->nframes;
--		/* start multiple frame transmission with index 0 */
--		op->currframe = 0;
--	}
--
--	/* check flags */
--
--	if (op->flags & TX_RESET_MULTI_IDX) {
--		/* start multiple frame transmission with index 0 */
--		op->currframe = 0;
--	}
--
- 	if (op->flags & SETTIMER) {
- 		/* set timer values */
--		op->count = msg_head->count;
- 		op->ival1 = msg_head->ival1;
- 		op->ival2 = msg_head->ival2;
- 		op->kt_ival1 = bcm_timeval_to_ktime(msg_head->ival1);
-@@ -1056,11 +1083,8 @@ static int bcm_tx_setup(struct bcm_msg_h
- 		op->flags |= TX_ANNOUNCE;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 4fdcc2acc94ed..96c6106b95eef 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -2719,8 +2719,11 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
  	}
  
--	if (op->flags & TX_ANNOUNCE) {
-+	if (op->flags & TX_ANNOUNCE)
- 		bcm_can_tx(op);
--		if (op->count)
--			op->count--;
--	}
+ 	if (device_property_read_bool(dev, "wakeup-source") ||
+-	    (pdata && pdata->wakeup_source))
+-		device_init_wakeup(dev, true);
++	    (pdata && pdata->wakeup_source)) {
++		err = devm_device_init_wakeup(dev);
++		if (err)
++			return dev_err_probe(dev, err, "Failed to init wakeup\n");
++	}
  
- 	if (op->flags & STARTTIMER)
- 		bcm_tx_start_timer(op);
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
