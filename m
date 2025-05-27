@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DC0AC555F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 955BBAC58BD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03E3A1BA6039
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6209C1BC2B38
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6473427CCF0;
-	Tue, 27 May 2025 17:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A050727FD4A;
+	Tue, 27 May 2025 17:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYrw6ngJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLoIv++4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206E0139579;
-	Tue, 27 May 2025 17:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C53942A9B;
+	Tue, 27 May 2025 17:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365852; cv=none; b=CKwCtKf3IDdDuZqrDCw/53TQwJvDsFEEzqZ1BM73UEAScgHF4/E8dYbBXFko9kgaozQda3ywEodYSWeQzxfh9tr6pIkB/Y2ylochgyCw1C184ybSWYfaJJpji01rsyaxhzlBEiieG3BMSHDw/CYINzZ80HsgvAMLmfHXjTVQXkk=
+	t=1748368122; cv=none; b=MFZa3/CsFUulhruaYeg+d43wEWRASS3ZLtqNfG2km5rwi3wWG5qkoRofHXKgJxASaq3atELPwPzwsjWp9TMFjpt3Rh9GKY89qzfgqQRgXhHRLAnes8cASFwlZFIctCwit6C5wbaoh0YdtSFN+HGIuE/rTe7JyByRtsFhT0BbJEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365852; c=relaxed/simple;
-	bh=Ev49vztQgMB25fA9TziNCVF88IW9BPpRgvpfhIOHYms=;
+	s=arc-20240116; t=1748368122; c=relaxed/simple;
+	bh=gP56Edu/PLJEQFk6nA8JcAFDsg9cc4LXfCPPrpK46cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cU5ifVcg+I4gjk8CDMhQzS5iVsL4vCXWFU6uXYNpdCG/WkVKLOy3t+dB/8H/wpcd1WvDx6ZOZgUcTRfn+an2R9mOOFkj9gp3ypEfemKSyONfR6RC6RwoImmbkHKqOIZZz0XC5ZY6mIa/g3tMgT3K3FXhfh8eVJIjZ/T+ypARJsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYrw6ngJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FCFC4CEE9;
-	Tue, 27 May 2025 17:10:51 +0000 (UTC)
+	 MIME-Version; b=kLLHzb5DThtsgJJhOK/xaBb1CeGiKWQ8COoNHefCqf7NS+/CuR7Gk7V1cUnuBe1zBP7PxWFYzxkcBuQLaHN0LIe8n88WMLiX+dE0/q2ztRNVtAjSp65v4WkhLoee+vycS9fbfmVo/98J7hCBYgAhca/FL0Gag75fX08Tc34FhI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLoIv++4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62AEC4CEE9;
+	Tue, 27 May 2025 17:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365852;
-	bh=Ev49vztQgMB25fA9TziNCVF88IW9BPpRgvpfhIOHYms=;
+	s=korg; t=1748368122;
+	bh=gP56Edu/PLJEQFk6nA8JcAFDsg9cc4LXfCPPrpK46cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYrw6ngJ0tocRqxH2DKOM/yHMQhCgRP3WSHonlOLDZYpgHhkGk6J898F0oIT4d3xM
-	 61r9/aDBxa/m3G3m2uQ7RJEMi2Iabub9nEkrJYL0rmjNrbUUvEkDjMuyg7sryNkm/g
-	 bdo4/hQgv7JuaH8zdoL9851RgpzudH+oqHqGUYEY=
+	b=MLoIv++4ZQ5+T8LcsXkw/FcEaUY+X1zQKb2EBZY2J9YO7T+BtmOhAECH/YOR9x9UX
+	 mvKtOHM0vJvtuwWK0x2eaK0+akUx4/y8ueai1TaoxRg64LJO6WYv4dbo6D6IN3CgXw
+	 SKyhcX2gUP8y5PqFuEbEy1lXed5+w1dWbUXgS7Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 508/626] smb: server: smb2pdu: check return value of xa_store()
+Subject: [PATCH 6.14 604/783] accel/qaic: Mask out SR-IOV PCI resources
 Date: Tue, 27 May 2025 18:26:41 +0200
-Message-ID: <20250527162505.603803370@linuxfoundation.org>
+Message-ID: <20250527162537.755715805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Youssef Samir <quic_yabdulra@quicinc.com>
 
-[ Upstream commit af5226abb40cae959f424f7ca614787a1c87ce48 ]
+[ Upstream commit 8685520474bfc0fe4be83c3cbfe3fb3e1ca1514a ]
 
-xa_store() may fail so check its return value and return error code if
-error occurred.
+During the initialization of the qaic device, pci_select_bars() is
+used to fetch a bitmask of the BARs exposed by the device. On devices
+that have Virtual Functions capabilities, the bitmask includes SR-IOV
+BARs.
 
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Use a mask to filter out SR-IOV BARs if they exist.
+
+Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250117170943.2643280-6-quic_jhugo@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/accel/qaic/qaic_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index f0760d786502f..08d9a7cfba8cd 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1448,7 +1448,7 @@ static int ntlm_authenticate(struct ksmbd_work *work,
- {
- 	struct ksmbd_conn *conn = work->conn;
- 	struct ksmbd_session *sess = work->sess;
--	struct channel *chann = NULL;
-+	struct channel *chann = NULL, *old;
- 	struct ksmbd_user *user;
- 	u64 prev_id;
- 	int sz, rc;
-@@ -1560,7 +1560,12 @@ static int ntlm_authenticate(struct ksmbd_work *work,
- 				return -ENOMEM;
+diff --git a/drivers/accel/qaic/qaic_drv.c b/drivers/accel/qaic/qaic_drv.c
+index 81819b9ef8d4f..32f0e81d3e304 100644
+--- a/drivers/accel/qaic/qaic_drv.c
++++ b/drivers/accel/qaic/qaic_drv.c
+@@ -431,7 +431,7 @@ static int init_pci(struct qaic_device *qdev, struct pci_dev *pdev)
+ 	int bars;
+ 	int ret;
  
- 			chann->conn = conn;
--			xa_store(&sess->ksmbd_chann_list, (long)conn, chann, KSMBD_DEFAULT_GFP);
-+			old = xa_store(&sess->ksmbd_chann_list, (long)conn, chann,
-+					KSMBD_DEFAULT_GFP);
-+			if (xa_is_err(old)) {
-+				kfree(chann);
-+				return xa_err(old);
-+			}
- 		}
- 	}
+-	bars = pci_select_bars(pdev, IORESOURCE_MEM);
++	bars = pci_select_bars(pdev, IORESOURCE_MEM) & 0x3f;
  
+ 	/* make sure the device has the expected BARs */
+ 	if (bars != (BIT(0) | BIT(2) | BIT(4))) {
 -- 
 2.39.5
 
