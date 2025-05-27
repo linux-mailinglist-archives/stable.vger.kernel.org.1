@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-146649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF74AC5436
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73519AC5471
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 765513BF93F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:54:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A05EB3A3BE5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E9127FD67;
-	Tue, 27 May 2025 16:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D845D27FB0C;
+	Tue, 27 May 2025 16:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhkZgAiG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzrkNv2H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00CC27FB0C;
-	Tue, 27 May 2025 16:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964DA276057;
+	Tue, 27 May 2025 16:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364882; cv=none; b=S+zT7QGiEvZje99QbEcGIcOROVskwu6AdeWBVxs0o99y3GvMFFrRL/FK/ON/wpBgt1ZzpTunNhfvb4iBBrQt7iUF3LiN2Qg4j6qSg5DFDnvSMwCiMI+Fb50iRr0LuM66RK/Vx0XqzTFCj3zVhyENKOpFd59S9Vq+fnOra4fEeNE=
+	t=1748364917; cv=none; b=DgND+YQhBqKHbk8RtjPpohbKNAoJPAOdYFlCyZ36jnYgsOeE7M/SSzQ1GAk1KyQDAjuZCce+LdRb+N+WHP2oC0w/i5xhQtIUqhw8mIKZpLtSP0a6UKwAjOYhEBuvuik8JmQC5PGr5YJSKYsnOiSqDBbfrXRePSBlQJpKjIYYV9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364882; c=relaxed/simple;
-	bh=D0wRFi5tUoORMS3SuXMl+HYAhx7WlDazoXiObQle/qk=;
+	s=arc-20240116; t=1748364917; c=relaxed/simple;
+	bh=V5U1Mt/XxKGhqG2v2hucLjM+7K6JOSSSfHeBILAwPh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGiiQR+twcUh/9eQ7cwDPk+qRW6XY3+5Qn2jOezSTWSRPXmvfUcb4qGB+X96bZbQRcZIHoI4A+ngrIDgIrBr6b6l0zlFIxZPiflopiK6RiQLSJhTqHuIQOQDF+8SofJTUkpEmY3nFDvUCoKplmrtYiUPGpxkf0DdhTpD238HYrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhkZgAiG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE76C4CEE9;
-	Tue, 27 May 2025 16:54:41 +0000 (UTC)
+	 MIME-Version; b=YH2TtqN7+dDNYMQxACArUwSslJQ/9jGyNNNnLDtZiKx+n4BQP0ZKzv0jxjI3LSwbLidGseujAzVwOONMJ2nhsFojzH7RUnb9WEN+VepJsteRweR4lwNQGk3zO5UP69IaixwSKD7g174Tp7i8Tt6wv3aDSEenMFjy653HXct8Ljk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzrkNv2H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1CBC4CEE9;
+	Tue, 27 May 2025 16:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364882;
-	bh=D0wRFi5tUoORMS3SuXMl+HYAhx7WlDazoXiObQle/qk=;
+	s=korg; t=1748364917;
+	bh=V5U1Mt/XxKGhqG2v2hucLjM+7K6JOSSSfHeBILAwPh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhkZgAiGjFghS/0474fBxb9p0l+zx1XRojTFAjAhoTN1fzUZF+O11ElnAPwkfqDNq
-	 DN0MPcpfdf303QEPxKf7bhVyycsK4xOTkyNTWa9hJu1cELmNif1th7Wi6SKDVLPnYM
-	 C4xeW0ELuBwdv2dRR32/ADGmebxWUdIZhFGHx3uI=
+	b=DzrkNv2HWiZg0WZqSZUhW0hfsYmXwFZNyMgoIuHGw+DDW48Xs9mfqyCrbe9+AdEQp
+	 5Ye7CpC9mqLsyz8iNjJK/kKoA72p1G5qCfKlWZTZIWBK6Wc7tJgbls6shPymnPrfk6
+	 yjd+gzhbEXDhlta2VKZwnYtg4a7LWIdsEEIJcAfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 179/626] usb: xhci: Dont change the status of stalled TDs on failed Stop EP
-Date: Tue, 27 May 2025 18:21:12 +0200
-Message-ID: <20250527162452.287377879@linuxfoundation.org>
+Subject: [PATCH 6.12 180/626] wifi: iwlwifi: mvm: fix setting the TK when associated
+Date: Tue, 27 May 2025 18:21:13 +0200
+Message-ID: <20250527162452.326042292@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -66,66 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit dfc88357b6b6356dadea06b2c0bc8041f5e11720 ]
+[ Upstream commit 3ad61970ac9e164be1b09b46c01aa942e8966132 ]
 
-When the device stalls an endpoint, current TD is assigned -EPIPE
-status and Reset Endpoint is queued. If a Stop Endpoint is pending
-at the time, it will run before Reset Endpoint and fail due to the
-stall. Its handler will change TD's status to -EPROTO before Reset
-Endpoint handler runs and initiates giveback.
+When running secured ranging and the initiator is associated with
+the responder, the TK was not set in the range request command.
+Fix it.
 
-Check if the stall has already been handled and don't try to do it
-again. Since xhci_handle_halted_endpoint() performs this check too,
-not overwriting td->status is the only difference.
-
-I haven't seen this case yet, but I have seen a related one where
-the xHC has already executed Reset Endpoint, EP Context state is
-now Stopped and EP_HALTED is set. If the xHC took a bit longer to
-execute Reset Endpoint, said case would become this one.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250311154551.4035726-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308231427.603dc31579d9.Icd19d797e56483c08dd22c55b96fee481c4d2f3d@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 3e70e4f6bf083..fbc8419a54730 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1156,7 +1156,14 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 	 */
- 		switch (GET_EP_CTX_STATE(ep_ctx)) {
- 		case EP_STATE_HALTED:
--			xhci_dbg(xhci, "Stop ep completion raced with stall, reset ep\n");
-+			xhci_dbg(xhci, "Stop ep completion raced with stall\n");
-+			/*
-+			 * If the halt happened before Stop Endpoint failed, its transfer event
-+			 * should have already been handled and Reset Endpoint should be pending.
-+			 */
-+			if (ep->ep_state & EP_HALTED)
-+				goto reset_done;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+index 55245f913286b..2ed7a0d77ef83 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+@@ -773,7 +773,11 @@ iwl_mvm_ftm_set_secured_ranging(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 
+ 			target.bssid = bssid;
+ 			target.cipher = cipher;
++			target.tk = NULL;
+ 			ieee80211_iter_keys(mvm->hw, vif, iter, &target);
 +
- 			if (ep->ep_state & EP_HAS_STREAMS) {
- 				reset_type = EP_SOFT_RESET;
- 			} else {
-@@ -1167,8 +1174,11 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			}
- 			/* reset ep, reset handler cleans up cancelled tds */
- 			err = xhci_handle_halted_endpoint(xhci, ep, td, reset_type);
-+			xhci_dbg(xhci, "Stop ep completion resetting ep, status %d\n", err);
- 			if (err)
- 				break;
-+reset_done:
-+			/* Reset EP handler will clean up cancelled TDs */
- 			ep->ep_state &= ~EP_STOP_CMD_PENDING;
- 			return;
- 		case EP_STATE_STOPPED:
++			if (!WARN_ON(!target.tk))
++				memcpy(tk, target.tk, TK_11AZ_LEN);
+ 		} else {
+ 			memcpy(tk, entry->tk, sizeof(entry->tk));
+ 		}
 -- 
 2.39.5
 
