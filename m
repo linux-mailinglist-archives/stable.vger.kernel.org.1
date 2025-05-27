@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-147286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCD2AC570B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:28:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FAEAC53B4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 104FD3A7BBC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ECE68A2024
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7581F27F4CB;
-	Tue, 27 May 2025 17:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EF928001E;
+	Tue, 27 May 2025 16:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhoA42tT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nn6itlJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3222E1DB34C;
-	Tue, 27 May 2025 17:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7462027FD7F;
+	Tue, 27 May 2025 16:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366873; cv=none; b=V5seN36e/9x8dLumv/uhAt58MwEanvWNZibJeyW5/ypPuu7ZmiJYvuqhjkpvtR1L85olJQ7t31J/ikjSPrDF1BlNQNFfcqAuVf5tYAqpm6y+R/pItoEIt/xdGeMul4K5QmmNBWg5GZ4r1noYgSwhHz2biZb2WAPAiSlE1SRdb6s=
+	t=1748364605; cv=none; b=dyARPN/atEUroGGjlGyHkwehpVBo1Y9GJ+IcM52rjau74+QRM0AlZsbo91sVPXH41TUbX7MZWKuK8UlIokRixcN3p7Nv8DztD1D43omT5icVsoc7XgLCjHZyQAVm4sRH/brwETCpH+614UxunUIpdNEkWyCF/xHNDVVRl7jS3IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366873; c=relaxed/simple;
-	bh=P7VDblTjvQhZCQ2pEQKbL3JXClMolTmTDnmyoa7AT7A=;
+	s=arc-20240116; t=1748364605; c=relaxed/simple;
+	bh=wTJJGUhD/mrtpUb+FbE7hINK7nwMQJEVZUfG5fx883E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWNUl4MeaahN+Djryz9TUzI1BAikB+ML2h9l3npHxhwDLzZ+XhqyywwzZfNeNdHknhlaBQjU9o/fxsub2fZ0eyjlvf0Gq6N2LFCctIOJ5jYe9rmTvC1TroN08G4EGeyka62Iv4hwkt0L7FSA5+NgQrE4BvbzCaSoicH9tFfxYFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhoA42tT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABDF1C4CEE9;
-	Tue, 27 May 2025 17:27:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jBm3EPVh45hHWCXoT/uKqppuoUmpcHT/PDTasLIe1OJ10itQbRJJpyallcqosYtqWX7Yb/YqATkpEbCnvj1cVaHdsqsvRVaxH0TZ290y6tcffZ/6srjRjp5KWs7AhjFxLLdRMzL2qyG5ayCl14zeQpEofpI1Ul51AoisUz3W9jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nn6itlJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02997C4CEE9;
+	Tue, 27 May 2025 16:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366873;
-	bh=P7VDblTjvQhZCQ2pEQKbL3JXClMolTmTDnmyoa7AT7A=;
+	s=korg; t=1748364605;
+	bh=wTJJGUhD/mrtpUb+FbE7hINK7nwMQJEVZUfG5fx883E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhoA42tTzqBCMaqT3SUrWZE/6ZopGjuZZiIpIEgLaiYXgkb/VnHpAUOQjNiOGeN0r
-	 dRLh70Gls0f5hJIb8NbQul2lYe8Rp1c9m2evwogtGpMErAHV3ibOJf9nIThfQ1Q3N7
-	 +Dgde7yurqBytslx/Q/432b+d5GdDknOzvUXIrq8=
+	b=Nn6itlJuQusHKRfU7v+MBIMl54KhXYMnH2PI6nLm3op1k3BXmyc91YRZb7GV8nhSG
+	 3Tu/87qfTvDkXhh2UCN8jgV3NdzJrP/bBHW0xWg9ne5h27i+VOXmZ9va6VkW75JFnl
+	 kosE8XE3cgp4JGGKpi/LFQtPBzC5eKKsK+42F4wM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Uros Bizjak <ubizjak@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 204/783] netfilter: conntrack: Bound nf_conntrack sysctl writes
+Subject: [PATCH 6.12 108/626] x86/stackprotector/64: Only export __ref_stack_chk_guard on CONFIG_SMP
 Date: Tue, 27 May 2025 18:20:01 +0200
-Message-ID: <20250527162521.450277411@linuxfoundation.org>
+Message-ID: <20250527162449.429382128@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+From: Ingo Molnar <mingo@kernel.org>
 
-[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
+[ Upstream commit 91d5451d97ce35cbd510277fa3b7abf9caa4e34d ]
 
-nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
-be written any negative value, which would then be stored in the
-unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
+The __ref_stack_chk_guard symbol doesn't exist on UP:
 
-While the do_proc_dointvec_conv function is supposed to limit writing
-handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
-being written in an unsigned int leads to a very high value, exceeding
-this limit.
+  <stdin>:4:15: error: ‘__ref_stack_chk_guard’ undeclared here (not in a function)
 
-Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
-minimum value is 1.
+Fix the #ifdef around the entry.S export.
 
-The proc_handlers have thus been updated to proc_dointvec_minmax in
-order to specify the following write bounds :
-
-* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
-  and SYSCTL_INT_MAX.
-
-* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
-  and SYSCTL_INT_MAX as defined in the sysctl documentation.
-
-With this patch applied, sysctl writes outside the defined in the bound
-will thus lead to a write error :
-
-```
-sysctl -w net.netfilter.nf_conntrack_expect_max=-1
-sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
-```
-
-Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lore.kernel.org/r/20250123190747.745588-8-brgerst@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/entry/entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
-index 502cf10aab41d..2f666751c7e7c 100644
---- a/net/netfilter/nf_conntrack_standalone.c
-+++ b/net/netfilter/nf_conntrack_standalone.c
-@@ -618,7 +618,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
- 		.data		= &nf_conntrack_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	[NF_SYSCTL_CT_COUNT] = {
- 		.procname	= "nf_conntrack_count",
-@@ -654,7 +656,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
- 		.data		= &nf_ct_expect_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ONE,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	[NF_SYSCTL_CT_ACCT] = {
- 		.procname	= "nf_conntrack_acct",
-@@ -947,7 +951,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
- 		.data		= &nf_conntrack_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- };
- 
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index 58e3124ee2b42..5b96249734ada 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -63,7 +63,7 @@ THUNK warn_thunk_thunk, __warn_thunk
+  * entirely in the C code, and use an alias emitted by the linker script
+  * instead.
+  */
+-#ifdef CONFIG_STACKPROTECTOR
++#if defined(CONFIG_STACKPROTECTOR) && defined(CONFIG_SMP)
+ EXPORT_SYMBOL(__ref_stack_chk_guard);
+ #endif
+ #endif
 -- 
 2.39.5
 
