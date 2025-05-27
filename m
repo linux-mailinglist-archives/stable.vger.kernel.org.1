@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-147508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D2CAC57F8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B647AC548D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B26F1BC1742
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C95934A2DCD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC05E27FB2A;
-	Tue, 27 May 2025 17:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6520A1D88D7;
+	Tue, 27 May 2025 17:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjdfkVZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxyk70X9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A779527CCF0;
-	Tue, 27 May 2025 17:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244EB78F32;
+	Tue, 27 May 2025 17:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367560; cv=none; b=nMSQA9aAeUhZoPye6uMd/Z0XB3+MwUKE9T2eLRfHef2lSUcAWUKa+JS/2YSKzFOJum2s0B3xrpImqALVevwu1P+PuRh077lfafSbvcDEhF+4Whq4CnazzoFiSpLA2pWN7ug+Tx6YseDGKEs5nQY8b431UhN3MY6g9gVcWWfZNeg=
+	t=1748365298; cv=none; b=alKTo1mV4NzSvPccZSdU/vd8NMAzGNa9Ul9iP7imrA3du8VoLtKUQDesMcDkPaNzhWo9IfEYe7PMsnXvrj16F4xvqVIG1R7DgSwtdQBhzreKjyMDTMIvmmh31JN1YwD2F/zkQ/J3WnBAXMq9YZdk6+V5eiH9ZhMsb5tPLdAVSOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367560; c=relaxed/simple;
-	bh=I2TZYDGk8iAgR/cSktuCls1myrtpd3TXDVCCxrl4wXE=;
+	s=arc-20240116; t=1748365298; c=relaxed/simple;
+	bh=hLbM61zMa0q/KLuejOsBvCPF5X8DuvA4gZaLeSMZLJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uf8KmIMWo4gOvCuBpDjOKy/enRNf+LP3VeKunk8uNPDnyeJ/Gwd42Uwt/X0HVl0ixcwuFgKO6OgwFRcyjoyDuW7r4WzcJluSVeJbRQ54ImeowWTBiG1u5MVpPyWhL4jgJc+TkCPtCKc+OBW5yKXFFwK0b0Fe+Mb0ENMS4DESi4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjdfkVZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CC2C4CEE9;
-	Tue, 27 May 2025 17:39:17 +0000 (UTC)
+	 MIME-Version; b=iu6ioeCm6U19PBhaYkmGl73ZRNsJtOFx+Hfmg1mq7gGpfXpIL19gmeA0a/pWW6IKBPgMAE3WgqTv26wO3STyrWfL4rovbbdgAY1XBXpRiJtuw3+oe0GLcFRBjL2sobc1a52O+ezhP3b+byb7kA50xjJL6c+kBm1jmJQo8rX12os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxyk70X9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F8BC4CEE9;
+	Tue, 27 May 2025 17:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367558;
-	bh=I2TZYDGk8iAgR/cSktuCls1myrtpd3TXDVCCxrl4wXE=;
+	s=korg; t=1748365298;
+	bh=hLbM61zMa0q/KLuejOsBvCPF5X8DuvA4gZaLeSMZLJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjdfkVZo+7D7Nm2s2BgHf6Y/33C/v1T+sy1ps1qb87b6HYm6HNkZ3+Gt+3aXgCiIU
-	 eNx9SOxRSzIREahkgYoiV4mseZkieN+8IJaYJu0muxzaYCdAZdlQqhl1IfItE8+kOp
-	 LYejxxNMYCT0+91G+5H24Jl+U4tE51Xw1cYLtgUA=
+	b=pxyk70X918LyzB7xkESIDujyWdGtf2sF1D7R1VTJH+MlQ0ZU1LP8kYLyjaq3VGVlM
+	 8IYz8glcnjPtvKvAGCXkBHepCRi9FNS1CgCWI9SJ47wI1Tvs69QFtME7hYuqAF4qJu
+	 G8+hxVgjL766idZ4p+poRlH7kWB+a6bA9vbE7JrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Gerst <brgerst@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eddie James <eajames@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 426/783] x86/boot: Disable stack protector for early boot code
+Subject: [PATCH 6.12 330/626] eeprom: ee1004: Check chip before probing
 Date: Tue, 27 May 2025 18:23:43 +0200
-Message-ID: <20250527162530.470565771@linuxfoundation.org>
+Message-ID: <20250527162458.436993675@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Gerst <brgerst@gmail.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit a9a76b38aaf577887103e3ebb41d70e6aa5a4b19 ]
+[ Upstream commit d9406677428e9234ea62bb2d2f5e996d1b777760 ]
 
-On 64-bit, this will prevent crashes when the canary access is changed
-from %gs:40 to %gs:__stack_chk_guard(%rip).  RIP-relative addresses from
-the identity-mapped early boot code will target the wrong address with
-zero-based percpu.  KASLR could then shift that address to an unmapped
-page causing a crash on boot.
+Like other eeprom drivers, check if the device is really there and
+functional before probing.
 
-This early boot code runs well before user-space is active and does not
-need stack protector enabled.
-
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250123190747.745588-4-brgerst@gmail.com
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250218220959.721698-1-eajames@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/eeprom/ee1004.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index b43eb7e384eba..84cfa179802c3 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -44,6 +44,8 @@ KCOV_INSTRUMENT_unwind_orc.o				:= n
- KCOV_INSTRUMENT_unwind_frame.o				:= n
- KCOV_INSTRUMENT_unwind_guess.o				:= n
+diff --git a/drivers/misc/eeprom/ee1004.c b/drivers/misc/eeprom/ee1004.c
+index 89224d4af4a20..e13f9fdd9d7b1 100644
+--- a/drivers/misc/eeprom/ee1004.c
++++ b/drivers/misc/eeprom/ee1004.c
+@@ -304,6 +304,10 @@ static int ee1004_probe(struct i2c_client *client)
+ 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_READ_BYTE_DATA))
+ 		return -EPFNOSUPPORT;
  
-+CFLAGS_head32.o := -fno-stack-protector
-+CFLAGS_head64.o := -fno-stack-protector
- CFLAGS_irq.o := -I $(src)/../include/asm/trace
++	err = i2c_smbus_read_byte(client);
++	if (err < 0)
++		return -ENODEV;
++
+ 	mutex_lock(&ee1004_bus_lock);
  
- obj-y			+= head_$(BITS).o
+ 	err = ee1004_init_bus_data(client);
 -- 
 2.39.5
 
