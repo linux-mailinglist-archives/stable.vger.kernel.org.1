@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FCAAC5701
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14786AC539F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBF5E3B6820
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A00078A18CD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EAF277808;
-	Tue, 27 May 2025 17:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7163B1D63EF;
+	Tue, 27 May 2025 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of1AiQzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/qK4vK9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD0714AD2B;
-	Tue, 27 May 2025 17:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED49194A45;
+	Tue, 27 May 2025 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366839; cv=none; b=ot6T9gRkQY8MW0I8OFwOMgwNNfKx1atuewlazx8tFb0n0aK9fpewPjMNE2I5JL3SL2aT9tHuvZhbz/FKr4x2WbFE36uPWj8haweWk1nv5FT4np/6JfYqegMoFjy3RyPgdvTJt3rR9ui5/EgVsWBFZhIqnigt8HjFju2uhioJFPU=
+	t=1748364567; cv=none; b=ShzETupPPx0DkbRxoC5lQ65Dia7AUDt9pXNatYg6cZDOXzMnK2RagjaJ1Xwb1jsVQeKwgH0L0CF4/bY+neWZ4zZfjf0jJxd+x1wn28UFY8XsOEnZcoSRe4SYSPC6IhLpuD/QXycdI3BopUWuBzq8nnHd1wGOUJh3zRPGTSsDBAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366839; c=relaxed/simple;
-	bh=j804xBCP1NeUmj5wkJEZteR5cBNEdyq8s1qkCuXnzl4=;
+	s=arc-20240116; t=1748364567; c=relaxed/simple;
+	bh=CP7Lwe16tlwE1HjHMhpvwXn7hqtq6Ec1NTSVBxvCmeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNtz+5UWV1AUV7DqjNMmmV2y2GUgU8Jr1Qu1ISXFxTa2X34k++ykHItXDwkUhnoGSUEPPsSoTuIg5f3itbmwxE5Up7cXTfeldfQa7TrL3Pw/Zzu+Um9aDwKkfj1a1+NszhO8y3rKT1y3t9bf1B9fn+tWWY0fNQIt/tpCW5rdwCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=of1AiQzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64465C4CEE9;
-	Tue, 27 May 2025 17:27:16 +0000 (UTC)
+	 MIME-Version; b=Ie94hEepjoeQyrtXaEwM+cDyBJk1LC0xgKX2GxU+Qo83c4qWQokGyAkTyTc1TNkg0K7PwNZhi7e6UYPZ8LIfFW9pkbRfv2eAToYtIHdQsHhI8Wcyg1aVKFTnX/k2uSipZePdPyLo3lCuETc2mmi35ryOB+Rzo3EQgvWXx8vPRDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/qK4vK9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE13C4CEE9;
+	Tue, 27 May 2025 16:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366836;
-	bh=j804xBCP1NeUmj5wkJEZteR5cBNEdyq8s1qkCuXnzl4=;
+	s=korg; t=1748364567;
+	bh=CP7Lwe16tlwE1HjHMhpvwXn7hqtq6Ec1NTSVBxvCmeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=of1AiQzCfGaUSx3ttTWtMW/7E+lSYtuv1oEUgki7FQr5ArF2HppBKFhIyqojrubHr
-	 p3uhV+/8yzPRPhVeQb9OiAa9D02J2nSUOUSRo6zmiTgHkDfTzukeK6VFUYWFv5ygRR
-	 ljOhR1PDLG30mTy5NbeWMjpO5iAW3rRKpOFK4aBg=
+	b=l/qK4vK931G7H5CST9yitljD9Cpbqj0w7sCUP1aF83xzkWNIPXvW6ZVu+9ZSHTGxd
+	 B2LEwvFM835A+8Ke9CwbCBb9u0j4D5LbV2ed55swUYuIdFdbT+TyAeEm9u+IEy/R4S
+	 xQwXhvKvnYtQO2CoypG9bX6SDKVZKiqvtZSyrV6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manuel Fombuena <fombuena@outlook.com>,
-	Lee Jones <lee@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 193/783] leds: leds-st1202: Initialize hardware before DT node child operations
+Subject: [PATCH 6.12 097/626] pidfs: improve multi-threaded exec and premature thread-group leader exit polling
 Date: Tue, 27 May 2025 18:19:50 +0200
-Message-ID: <20250527162521.013411822@linuxfoundation.org>
+Message-ID: <20250527162448.984815110@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manuel Fombuena <fombuena@outlook.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit a17d9e736ddd78323e77d3066c1e86371a99023c ]
+[ Upstream commit 0fb482728ba1ee2130eaa461bf551f014447997c ]
 
-Arguably, there are more chances of errors occurring during the
-initialization of the hardware, so this should complete successfully
-before the devicetree node's children are initialized.
+This is another attempt trying to make pidfd polling for multi-threaded
+exec and premature thread-group leader exit consistent.
 
-st1202_dt_init() fills the led_classdev struct.
+A quick recap of these two cases:
 
-st1202_setup() initializes the hardware. Specifically, resets the chip,
-enables its phase-shift delay feature, enables the device and disables all
-the LEDs channels. All that writing to registers, with no input from
-st1202_dt_init().
+(1) During a multi-threaded exec by a subthread, i.e., non-thread-group
+    leader thread, all other threads in the thread-group including the
+    thread-group leader are killed and the struct pid of the
+    thread-group leader will be taken over by the subthread that called
+    exec. IOW, two tasks change their TIDs.
 
-Real-world testing corroborates that calling st1202_setup() before
-st1202_dt_init() doesn't cause any issue during initialization.
+(2) A premature thread-group leader exit means that the thread-group
+    leader exited before all of the other subthreads in the thread-group
+    have exited.
 
-Switch the order of st1202_dt_init() and st1202_setup() to ensure the
-hardware is correctly initialized before the led_classdev struct is
-filled.
+Both cases lead to inconsistencies for pidfd polling with PIDFD_THREAD.
+Any caller that holds a PIDFD_THREAD pidfd to the current thread-group
+leader may or may not see an exit notification on the file descriptor
+depending on when poll is performed. If the poll is performed before the
+exec of the subthread has concluded an exit notification is generated
+for the old thread-group leader. If the poll is performed after the exec
+of the subthread has concluded no exit notification is generated for the
+old thread-group leader.
 
-Signed-off-by: Manuel Fombuena <fombuena@outlook.com>
-Link: https://lore.kernel.org/r/CWLP123MB54731877A8DC54EDD33F0229C5C22@CWLP123MB5473.GBRP123.PROD.OUTLOOK.COM
-Signed-off-by: Lee Jones <lee@kernel.org>
+The correct behavior would be to simply not generate an exit
+notification on the struct pid of a subhthread exec because the struct
+pid is taken over by the subthread and thus remains alive.
+
+But this is difficult to handle because a thread-group may exit
+prematurely as mentioned in (2). In that case an exit notification is
+reliably generated but the subthreads may continue to run for an
+indeterminate amount of time and thus also may exec at some point.
+
+So far there was no way to distinguish between (1) and (2) internally.
+This tiny series tries to address this problem by discarding
+PIDFD_THREAD notification on premature thread-group leader exit.
+
+If that works correctly then no exit notifications are generated for a
+PIDFD_THREAD pidfd for a thread-group leader until all subthreads have
+been reaped. If a subthread should exec aftewards no exit notification
+will be generated until that task exits or it creates subthreads and
+repeates the cycle.
+
+Co-Developed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250320-work-pidfs-thread_group-v4-1-da678ce805bf@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-st1202.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/pidfs.c      |    9 +++++----
+ kernel/exit.c   |    6 +++---
+ kernel/signal.c |    3 +--
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/leds/leds-st1202.c b/drivers/leds/leds-st1202.c
-index 4cebc0203c227..ccea216c11f9b 100644
---- a/drivers/leds/leds-st1202.c
-+++ b/drivers/leds/leds-st1202.c
-@@ -350,11 +350,11 @@ static int st1202_probe(struct i2c_client *client)
- 		return ret;
- 	chip->client = client;
+--- a/fs/pidfs.c
++++ b/fs/pidfs.c
+@@ -95,20 +95,21 @@ static void pidfd_show_fdinfo(struct seq
+ static __poll_t pidfd_poll(struct file *file, struct poll_table_struct *pts)
+ {
+ 	struct pid *pid = pidfd_pid(file);
+-	bool thread = file->f_flags & PIDFD_THREAD;
+ 	struct task_struct *task;
+ 	__poll_t poll_flags = 0;
  
--	ret = st1202_dt_init(chip);
-+	ret = st1202_setup(chip);
- 	if (ret < 0)
- 		return ret;
+ 	poll_wait(file, &pid->wait_pidfd, pts);
+ 	/*
+-	 * Depending on PIDFD_THREAD, inform pollers when the thread
+-	 * or the whole thread-group exits.
++	 * Don't wake waiters if the thread-group leader exited
++	 * prematurely. They either get notified when the last subthread
++	 * exits or not at all if one of the remaining subthreads execs
++	 * and assumes the struct pid of the old thread-group leader.
+ 	 */
+ 	guard(rcu)();
+ 	task = pid_task(pid, PIDTYPE_PID);
+ 	if (!task)
+ 		poll_flags = EPOLLIN | EPOLLRDNORM | EPOLLHUP;
+-	else if (task->exit_state && (thread || thread_group_empty(task)))
++	else if (task->exit_state && !delay_group_leader(task))
+ 		poll_flags = EPOLLIN | EPOLLRDNORM;
  
--	ret = st1202_setup(chip);
-+	ret = st1202_dt_init(chip);
- 	if (ret < 0)
- 		return ret;
+ 	return poll_flags;
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -742,10 +742,10 @@ static void exit_notify(struct task_stru
  
--- 
-2.39.5
-
+ 	tsk->exit_state = EXIT_ZOMBIE;
+ 	/*
+-	 * sub-thread or delay_group_leader(), wake up the
+-	 * PIDFD_THREAD waiters.
++	 * Ignore thread-group leaders that exited before all
++	 * subthreads did.
+ 	 */
+-	if (!thread_group_empty(tsk))
++	if (!delay_group_leader(tsk))
+ 		do_notify_pidfd(tsk);
+ 
+ 	if (unlikely(tsk->ptrace)) {
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -2063,8 +2063,7 @@ bool do_notify_parent(struct task_struct
+ 	WARN_ON_ONCE(!tsk->ptrace &&
+ 	       (tsk->group_leader != tsk || !thread_group_empty(tsk)));
+ 	/*
+-	 * tsk is a group leader and has no threads, wake up the
+-	 * non-PIDFD_THREAD waiters.
++	 * Notify for thread-group leaders without subthreads.
+ 	 */
+ 	if (thread_group_empty(tsk))
+ 		do_notify_pidfd(tsk);
 
 
 
