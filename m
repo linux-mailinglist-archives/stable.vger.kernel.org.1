@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FEBAC571A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CADAC53C0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31D5A1BC03C1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 369F51BA40CE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E241F27FD41;
-	Tue, 27 May 2025 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E0927A926;
+	Tue, 27 May 2025 16:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEYyoJAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9bMYuKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4CA1CEAC2;
-	Tue, 27 May 2025 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236F2194A45;
+	Tue, 27 May 2025 16:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366935; cv=none; b=MHG7zQ0+SsVZMrnAl9UwakiKcCA3IB3LcBhQV61vIfbunGwapZIcZInMLDG11VKJ4u9qEoq0VU3hCo+CukMdDT/FZJZxO3UpMEjBKqrOww1WyagrAuGIE5CENU26bdbBpu1keoZtVPd229Ehr4/MNrxQebeX2Hoc/SNUIqMj3aw=
+	t=1748364667; cv=none; b=QtJa2clevCSXMWjk48aI6hU+/2dUPY2TuFr3bX5rciD+lXf5cJAQ/wc2LMaZ2iPf1WJHv3lRzvNjxfhbDP6ALRmcWqnQLGcgZC98BiJJpkR4T9T/1InX55Tjq+u6h3nFbBnq1wGcVreUlBxe89E9AY7HyFZ7OOxDYc9Rhthg6kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366935; c=relaxed/simple;
-	bh=TC5liaJyfv3Dz4dV9VwjBAyP6aa55jc0xIWaWSjZeFE=;
+	s=arc-20240116; t=1748364667; c=relaxed/simple;
+	bh=6JjcTRvtaRWODpB6UUlSk3h7ISFKQFc79F24G3YBBgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPh53UQkb8UyEuGS/SFoYcfJx9PMqDTAcVd1Jn+J1m6P2LM0uBtjN/A9gaccWu81JOMCdgsnx1V9pNzR/cLnBD3stc/6wTpLii8n37iQs/vw9XCH9GVZK2D1TxurJo1yS/Rmbhb2Trdh1nBKszebDKpvE5QR+3VRJkkqzsXUM2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEYyoJAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9ADC4CEE9;
-	Tue, 27 May 2025 17:28:54 +0000 (UTC)
+	 MIME-Version; b=e72WiZx6IcQWfgPHwXXkRHXVFtludp0+lxRrmyzektG3Qxx4qY1AMeBnuKbtIDSazP0GGKzrZ8B7nVsPuRVL6JrSZKiBfrzZmXJKALDW7yavzK9TXS2TjMGOwr5VlI6cHpWN3g322NkWdeSL3gBizPUN3VRnq8cerTgLV1U8grs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9bMYuKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1284C4CEE9;
+	Tue, 27 May 2025 16:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366935;
-	bh=TC5liaJyfv3Dz4dV9VwjBAyP6aa55jc0xIWaWSjZeFE=;
+	s=korg; t=1748364667;
+	bh=6JjcTRvtaRWODpB6UUlSk3h7ISFKQFc79F24G3YBBgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEYyoJAzEupKV14tvg/Z1E5CTcHhWSjjFMPSqPdph/xmnOM8NFCoNxq2aejdNLeJ2
-	 o8pdK3wwXqCvpRYt83S2MxRDnQ2jBm9YtYgEAj4IFqHLNXfkacBNqFEL8Q+wDxb/hw
-	 +RN6lO+wtPCnRDcfjxmuHk/iRvaT0biMPMkZDOY8=
+	b=R9bMYuKCcEseJrfB3FEXyLdHK3Apnle/X0hsl2Fcg7COPAFFFaTD6c/FeIASygebF
+	 jvscUIn1uGxxmGLxnQfXkicBxDROxdSQJC+0mj13VhuFdEpGWEoH/MJ6dAIfq7/KTu
+	 lpt53yb/Oc5BVH9ORwHqWibAQmQnYdHjR+Wj4DqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
 	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 225/783] wifi: mac80211: fix U-APSD check in ML reconfiguration
+Subject: [PATCH 6.12 129/626] um: Update min_low_pfn to match changes in uml_reserved
 Date: Tue, 27 May 2025 18:20:22 +0200
-Message-ID: <20250527162522.282842304@linuxfoundation.org>
+Message-ID: <20250527162450.268872037@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 7a6a740be17e049a2742c76bb1dadb3d78c930d9 ]
+[ Upstream commit e82cf3051e6193f61e03898f8dba035199064d36 ]
 
-If U-APSD isn't enabled by us, then IEEE80211_STA_UAPSD_ENABLED
-won't be set, but the AP can still support it in that case. Only
-require U-APSD from the AP if we enabled it, don't require it to
-be disabled on the AP if we didn't.
+When uml_reserved is updated, min_low_pfn must also be updated
+accordingly. Otherwise, min_low_pfn will not accurately reflect
+the lowest available PFN.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308225541.b4674be12a38.I01959e448c6a2a3e8bc5d561bbae9e8d2cca616a@changeid
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250221041855.1156109-1-tiwei.btw@antgroup.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/um/kernel/mem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 3f30c4c1f78bb..f92cbbc32a9e5 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -10216,12 +10216,11 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
- 			}
- 		}
+diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+index a5b4fe2ad9315..6ca9ea4a230bc 100644
+--- a/arch/um/kernel/mem.c
++++ b/arch/um/kernel/mem.c
+@@ -70,6 +70,7 @@ void __init mem_init(void)
+ 	map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);
+ 	memblock_free((void *)brk_end, uml_reserved - brk_end);
+ 	uml_reserved = brk_end;
++	min_low_pfn = PFN_UP(__pa(uml_reserved));
  
--		/* Require U-APSD support to be similar to the current valid
--		 * links
--		 */
--		if (uapsd_supported !=
--		    !!(sdata->u.mgd.flags & IEEE80211_STA_UAPSD_ENABLED)) {
-+		/* Require U-APSD support if we enabled it */
-+		if (sdata->u.mgd.flags & IEEE80211_STA_UAPSD_ENABLED &&
-+		    !uapsd_supported) {
- 			err = -EINVAL;
-+			sdata_info(sdata, "U-APSD on but not available on (all) new links\n");
- 			goto err_free;
- 		}
- 
+ 	/* this will put all low memory onto the freelists */
+ 	memblock_free_all();
 -- 
 2.39.5
 
