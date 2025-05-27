@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-147258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F318AC56EF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:27:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC85AC5372
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 333E63A4CE7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF241188301B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2281280030;
-	Tue, 27 May 2025 17:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0291727F4D5;
+	Tue, 27 May 2025 16:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqlvgPdJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbnzZHk4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A023E280012;
-	Tue, 27 May 2025 17:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B196E255E26;
+	Tue, 27 May 2025 16:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366786; cv=none; b=dFk84TWBLMVXmgrOnQl4lK1E2ldiGGhzjpWjhqTtU/qoYNhUUtYBJMvUPQ8caxcLu7NQEuOVbB0r5KAyFjIFa8ZommpAKVjmNsx+Zz7PGZHAlCmKIMmTCu3Zp3QF8bAPH9xSGjW9ZqN7wbWK7x2hpGZOZ7cyTKDJaRC65/jiibU=
+	t=1748364431; cv=none; b=ZJhM2SVC8drLmhCCbsAP1x4dfMSopp31OBqodLfwKWPikeF2ts7STt6LobRQn30c+cVjRVYMC7bCF+xqLoQJ4/OQI5YtEiuNE20puPMgMDSRtceSE+jrspWc9QCp2k+00VqX8UfFfELDijLJH0CYBjqtgt3OyB3PjqY3ZsxCBgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366786; c=relaxed/simple;
-	bh=iYfKhxp3QvZCX9cVfvdwsWHSgKY1M89GU4X9w2jrrJs=;
+	s=arc-20240116; t=1748364431; c=relaxed/simple;
+	bh=JFRW+y0x8gaDmOE/NlZ4kKA0xRoO6E0+8OrvicC5vQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVBv2/NLsf4TeQAZ7QPIx68XqtdwHrzzWt7Hr5sEsFz70z2oNSn1UbRHevgoXSl98vkwoMIihJTNlKQRrE2SxhMArTvprd5A8zQiB0+antih84l29k72FImHkg1k3yj1PQE+B4K0Qiupb1qOE0VaCqRCGlib3vpIfGW/4fP7xGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqlvgPdJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C8DC4CEE9;
-	Tue, 27 May 2025 17:26:25 +0000 (UTC)
+	 MIME-Version; b=HTCDJbV5KSXB5qDyRABqiBYSvzNJZZWkA4tHe9H5joXkrY9ePvGh/2ILa553WvyPAuhK6dKL4biRscaIIX5S9p493/bOCGbuZeMt+ObxO4SOGuRwyJO/moCaYpE15xi05Ol4wAgCL/+LlB/LRvz89cgi3N311Xz2CFIVlTB8ldU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbnzZHk4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374CEC4CEE9;
+	Tue, 27 May 2025 16:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366786;
-	bh=iYfKhxp3QvZCX9cVfvdwsWHSgKY1M89GU4X9w2jrrJs=;
+	s=korg; t=1748364431;
+	bh=JFRW+y0x8gaDmOE/NlZ4kKA0xRoO6E0+8OrvicC5vQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cqlvgPdJ1N27SiYBwlvfe4NqyikealggRNipwf9TftCcDJMAmu9CiWf1iNQ4UZKAm
-	 2OkYCt69cRKEMz7L/3+F15LLnlwSeRmkwDUYmxO+HdGRDsNq6f9R1gP3jik4xyNAr5
-	 OpiCjpSvKWpa9ZClNhVgudqg93yAHH6E35FOFn1U=
+	b=NbnzZHk4uVLVPBmSgseTAeAbBhjjzNnUh6sP2GPQdI5/lzAA2dRY07ly4qviFmM7n
+	 5wBxsOCXav4w54dncb0I5R+CDZwxQwY3jfNFOITXVsC0qriazj5Qtj3rEZo8TM1bu8
+	 lEs4g/ar/usHkAdGtiTn9CNW1JqNBZAJaUj8sxqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 150/783] um: Store full CSGSFS and SS register from mcontext
+Subject: [PATCH 6.12 054/626] NFSv4: Check for delegation validity in nfs_start_delegation_return_locked()
 Date: Tue, 27 May 2025 18:19:07 +0200
-Message-ID: <20250527162519.269631487@linuxfoundation.org>
+Message-ID: <20250527162447.254688475@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit cef721e0d53d2b64f2ba177c63a0dfdd7c0daf17 ]
+[ Upstream commit 9e8f324bd44c1fe026b582b75213de4eccfa1163 ]
 
-Doing this allows using registers as retrieved from an mcontext to be
-pushed to a process using PTRACE_SETREGS.
+Check that the delegation is still attached after taking the spin lock
+in nfs_start_delegation_return_locked().
 
-It is not entirely clear to me why CSGSFS was masked. Doing so creates
-issues when using the mcontext as process state in seccomp and simply
-copying the register appears to work perfectly fine for ptrace.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Link: https://patch.msgid.link/20250224181827.647129-2-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/um/os-Linux/mcontext.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/nfs/delegation.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/um/os-Linux/mcontext.c b/arch/x86/um/os-Linux/mcontext.c
-index e80ab7d281177..1b0d95328b2c7 100644
---- a/arch/x86/um/os-Linux/mcontext.c
-+++ b/arch/x86/um/os-Linux/mcontext.c
-@@ -27,7 +27,6 @@ void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)
- 	COPY(RIP);
- 	COPY2(EFLAGS, EFL);
- 	COPY2(CS, CSGSFS);
--	regs->gp[CS / sizeof(unsigned long)] &= 0xffff;
--	regs->gp[CS / sizeof(unsigned long)] |= 3;
-+	regs->gp[SS / sizeof(unsigned long)] = mc->gregs[REG_CSGSFS] >> 48;
- #endif
- }
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 325ba0663a6de..8bdbc4dca89ca 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -307,7 +307,8 @@ nfs_start_delegation_return_locked(struct nfs_inode *nfsi)
+ 	if (delegation == NULL)
+ 		goto out;
+ 	spin_lock(&delegation->lock);
+-	if (!test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
++	if (delegation->inode &&
++	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
+ 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
+ 		/* Refcount matched in nfs_end_delegation_return() */
+ 		ret = nfs_get_delegation(delegation);
 -- 
 2.39.5
 
