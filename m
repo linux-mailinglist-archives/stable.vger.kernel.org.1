@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-147599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8977DAC585C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D2CAC54FF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C35D1BC202C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A9871BA55F2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA6027CCF0;
-	Tue, 27 May 2025 17:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC4527A446;
+	Tue, 27 May 2025 17:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9lAghuR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dq4ppA/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C0686347;
-	Tue, 27 May 2025 17:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF0C2110E;
+	Tue, 27 May 2025 17:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367843; cv=none; b=V95JGzJWERSB2vsSgPOtVzuAdbniDekwcVwoWqnobN2hF/2R1PbVTvRs06WAE2cHyx6nx+577nWv4DQmFYk7wb3vPehauc227zLu2fOVX0V79u0Te3uNyQ4w0MkoFsBwkq2cmOR94JzV7aEqUbjnOjE3831lq2/JYlWrP6i8xXw=
+	t=1748365544; cv=none; b=h3O+ZFUC1CRshI5Grzl7Y/mblP6XgSi1mCbZw+IQYPlD1YY2zRabe40og02Rphykk1CBFz5BDvVhidTdmB0gXajmMKxw80QpI4rCQIX8lR8rHnOYgnxKG/XRqNYN/3nwCpmBnGfR3uOBTaQD8XhPbC6RY/b6NF/WIzru2gK7zLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367843; c=relaxed/simple;
-	bh=sBTN21Ca1Rdv6rP3PrKY9P/+NmWaXg8ZpsKQQRz0uX8=;
+	s=arc-20240116; t=1748365544; c=relaxed/simple;
+	bh=jlut9F5UDL9NwDYkb9dm7odifTltC6mRaN5wYqzUGqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C03MSgf8dqqZT/rDcGk5VWwcJ+ItkMRUeRXkacc/lsK0js3WeAnyiH3c2mHor1Ru3c8why+lRxdETI3sG7MLd25zFSdVhNxVTmEAxpwkFGFCo1mtvysgjB70e1cBA1YN0e0Xr2EtbXaPXtKXAc7z5iVFnpDQIJ4za8Ez0pVNppk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9lAghuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F83C4CEE9;
-	Tue, 27 May 2025 17:44:02 +0000 (UTC)
+	 MIME-Version; b=TcKWNU9s77atYwP3gefK0FDW2ophHGEQ2tPY6Sz1kFXfgXAKmGo3F3QLiy8aJIuGezxeOtQ8FzBVNK73DfGQm8PoJLgH5lLaUaZdNIV7zBQw/qMUr/U7bebnP3sE7m9f0tnGupI55mYq165qZchR1C9vzJBsqQUJ6YfWYxE6aIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dq4ppA/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A22C4CEE9;
+	Tue, 27 May 2025 17:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367843;
-	bh=sBTN21Ca1Rdv6rP3PrKY9P/+NmWaXg8ZpsKQQRz0uX8=;
+	s=korg; t=1748365543;
+	bh=jlut9F5UDL9NwDYkb9dm7odifTltC6mRaN5wYqzUGqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9lAghuRZD4kv9bg5VHUqAdGx19RU1YbOg3DDZjhMo50vWd+0AgXbk5nf5uR7lddC
-	 LhpAFLfIbo34NmYeDAkYn5SAjC8xqUyvnrCTRgBY7i5HnDTFtHJtqlWplIH4F/9ojy
-	 8hK+q32m1IW6wFpa3JqCIGEdY0TxH3ogqPTIyjkw=
+	b=dq4ppA/7FYcIWCBU52LH5sTawngOhKd1VB498wlqlp0ED9k05y0cIsITMjHVfwqqP
+	 ffJhOqEa0pVTmgdbLMcRmo5akYL7sCjuNqLaeODOelUp9G8vidYEfX7ZUSog4Lsm4/
+	 NM9i4r/NwPhyR0DPwPnPjPbTfdbVCfB2n3MdTMqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Chong Qiao <qiaochong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 476/783] net: stmmac: dwmac-loongson: Set correct {tx,rx}_fifo_size
+Subject: [PATCH 6.12 380/626] pinctrl: renesas: rzg2l: Add suspend/resume support for pull up/down
 Date: Tue, 27 May 2025 18:24:33 +0200
-Message-ID: <20250527162532.512214776@linuxfoundation.org>
+Message-ID: <20250527162500.454690065@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 8dbf0c7556454b52af91bae305ca71500c31495c ]
+[ Upstream commit b2bd65fbb617353e3c46ba5206b3b030fa0f260c ]
 
-Now for dwmac-loongson {tx,rx}_fifo_size are uninitialised, which means
-zero. This means dwmac-loongson doesn't support changing MTU because in
-stmmac_change_mtu() it requires the fifo size be no less than MTU. Thus,
-set the correct tx_fifo_size and rx_fifo_size for it (16KB multiplied by
-queue counts).
+The Renesas RZ/G3S supports a power-saving mode where power to most of
+the SoC components is lost, including the PIN controller.  Save and
+restore the pull-up/pull-down register contents to ensure the
+functionality is preserved after a suspend/resume cycle.
 
-Here {tx,rx}_fifo_size is initialised with the initial value (also the
-maximum value) of {tx,rx}_queues_to_use. So it will keep as 16KB if we
-don't change the queue count, and will be larger than 16KB if we change
-(decrease) the queue count. However stmmac_change_mtu() still work well
-with current logic (MTU cannot be larger than 16KB for stmmac).
-
-Note: the Fixes tag picked here is the oldest commit and key commit of
-the dwmac-loongson series "stmmac: Add Loongson platform support".
-
-Acked-by: Yanteng Si <si.yanteng@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://patch.msgid.link/20250210134328.2755328-1-chenhuacai@loongson.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250205100116.2032765-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index ab7c2750c1042..702ea5a00b56d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -590,6 +590,9 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
- 	if (ret)
- 		goto err_disable_device;
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index d90685cfe2e1a..bde58f5a743cb 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -311,6 +311,7 @@ struct rzg2l_pinctrl_pin_settings {
+  * @pmc: PMC registers cache
+  * @pfc: PFC registers cache
+  * @iolh: IOLH registers cache
++ * @pupd: PUPD registers cache
+  * @ien: IEN registers cache
+  * @sd_ch: SD_CH registers cache
+  * @eth_poc: ET_POC registers cache
+@@ -324,6 +325,7 @@ struct rzg2l_pinctrl_reg_cache {
+ 	u32	*pfc;
+ 	u32	*iolh[2];
+ 	u32	*ien[2];
++	u32	*pupd[2];
+ 	u8	sd_ch[2];
+ 	u8	eth_poc[2];
+ 	u8	eth_mode;
+@@ -2539,6 +2541,11 @@ static int rzg2l_pinctrl_reg_cache_alloc(struct rzg2l_pinctrl *pctrl)
+ 		if (!cache->ien[i])
+ 			return -ENOMEM;
  
-+	plat->tx_fifo_size = SZ_16K * plat->tx_queues_to_use;
-+	plat->rx_fifo_size = SZ_16K * plat->rx_queues_to_use;
++		cache->pupd[i] = devm_kcalloc(pctrl->dev, nports, sizeof(*cache->pupd[i]),
++					      GFP_KERNEL);
++		if (!cache->pupd[i])
++			return -ENOMEM;
 +
- 	if (dev_of_node(&pdev->dev))
- 		ret = loongson_dwmac_dt_config(pdev, plat, &res);
- 	else
+ 		/* Allocate dedicated cache. */
+ 		dedicated_cache->iolh[i] = devm_kcalloc(pctrl->dev, n_dedicated_pins,
+ 							sizeof(*dedicated_cache->iolh[i]),
+@@ -2779,7 +2786,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 	struct rzg2l_pinctrl_reg_cache *cache = pctrl->cache;
+ 
+ 	for (u32 port = 0; port < nports; port++) {
+-		bool has_iolh, has_ien;
++		bool has_iolh, has_ien, has_pupd;
+ 		u32 off, caps;
+ 		u8 pincnt;
+ 		u64 cfg;
+@@ -2791,6 +2798,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 		caps = FIELD_GET(PIN_CFG_MASK, cfg);
+ 		has_iolh = !!(caps & (PIN_CFG_IOLH_A | PIN_CFG_IOLH_B | PIN_CFG_IOLH_C));
+ 		has_ien = !!(caps & PIN_CFG_IEN);
++		has_pupd = !!(caps & PIN_CFG_PUPD);
+ 
+ 		if (suspend)
+ 			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PFC(off), cache->pfc[port]);
+@@ -2809,6 +2817,15 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 			}
+ 		}
+ 
++		if (has_pupd) {
++			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PUPD(off),
++						 cache->pupd[0][port]);
++			if (pincnt >= 4) {
++				RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PUPD(off),
++							 cache->pupd[1][port]);
++			}
++		}
++
+ 		RZG2L_PCTRL_REG_ACCESS16(suspend, pctrl->base + PM(off), cache->pm[port]);
+ 		RZG2L_PCTRL_REG_ACCESS8(suspend, pctrl->base + P(off), cache->p[port]);
+ 
 -- 
 2.39.5
 
