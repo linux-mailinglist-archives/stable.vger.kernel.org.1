@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A19AAC5570
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44453AC58ED
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C29B1BA60F2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:11:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E38E4C11EF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FD825DAE1;
-	Tue, 27 May 2025 17:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EE627FD4C;
+	Tue, 27 May 2025 17:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4QUliyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpZMVgdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D70E86347;
-	Tue, 27 May 2025 17:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5531127BF8D;
+	Tue, 27 May 2025 17:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365878; cv=none; b=nvUyvkhSx/xsUDqXlurflBjVSAM8eQWpL7nhqqbjRL92erz29TIray4Hd6fmL83oKypfIOa+1dP0dCsg4qlvu+41qHoWqcdF2qe+LdOHY+lzQuPX7o26gJe7R9tv00xVuSvHsEMjlxyvr34oKFzg/n3NdCv/hKWUZXxnv6sagJE=
+	t=1748368247; cv=none; b=iHRYX+/+j3yAgfxlrccDJIyj2IwPTPBCgpUaq71BAHxuWIC0Nz8wvuHCw/kKBOYm5136HrL7n+VBnJ0RVDw2yDkw7rybvcIs2aGqT7dumOJMz5Hw7WlxKl/Wx4FqhNNAOY1PvrHfiDkLDzsmr9Tjj2vpdg8YvYLYmKvpD6pcoPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365878; c=relaxed/simple;
-	bh=t2fKQnErLqWtXE06ciBb4ULu6GWh+X90HF6FoV6KajU=;
+	s=arc-20240116; t=1748368247; c=relaxed/simple;
+	bh=2Adm7+Tpu8XnShht4dyMqa6QC2MfQxih0LoXXIYB9+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjkliNyq7d72T5BSD3G53+QqELWj69G4Q5Si2CrJzwLcdaej/cnIbdfSVONl9vVaHJqHog3u/J+ZiUZq6mnazcGXXftJ0kc3R5/gsoEFX2UfJJ7pJzknQ287AadShQGnNcbMEE2FudoBnIe2GNtuvZccQ2be6jQNGGzyyqXGgpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4QUliyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C38DC4CEE9;
-	Tue, 27 May 2025 17:11:17 +0000 (UTC)
+	 MIME-Version; b=BHzPNzTsg7SI9h2VF9Y7hmEBJFEpRe00JUDur0QmH5TmgAI7fLtc30ASZk19JfF7snHmq0ROli6lCHVaUT1S+Jvzb9ntTaOcjUQdU5lpi+fFHKseylCc1HDZSrJPOct2jbzwqEkLAHjGUuGY2yq41e0hRr+hvR26Vhh+Ta/wkzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpZMVgdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87EFC4CEE9;
+	Tue, 27 May 2025 17:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365878;
-	bh=t2fKQnErLqWtXE06ciBb4ULu6GWh+X90HF6FoV6KajU=;
+	s=korg; t=1748368247;
+	bh=2Adm7+Tpu8XnShht4dyMqa6QC2MfQxih0LoXXIYB9+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4QUliyUR+Oy2wbQ15ROYGXweQcxJHpR/xbgeGqIUMXUnR07tT1092J5bmdvQa3Ex
-	 mA1V2mZc79GO4z1RIzseNfTIogPZQNfCp0cuN4NtRmaVxla/xX0krNY5YSpnzydRKA
-	 jiBIgxZK6X43Iaxhzva5BkIdHWgQHyzlhWIOMPZU=
+	b=FpZMVgdJDR6n6NY3K92O/CFS8rH+U0pW0w172d+OSEHFCLD33670cw7hF/uAzV4l5
+	 FkolaJRbdGjOgeTxlP8z7nbkk3cBaLdoDnIOhMRHV2uGACd7dS5dlaFPJ4pniA364R
+	 N1fcasr+29fznD2hcUmU2KkB2KvzvqN+5l1kHijM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3e77fd302e99f5af9394@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 519/626] io_uring/fdinfo: annotate racy sq/cq head/tail reads
+Subject: [PATCH 6.14 615/783] drm/ast: Hide Gens 1 to 3 TX detection in branch
 Date: Tue, 27 May 2025 18:26:52 +0200
-Message-ID: <20250527162506.046933155@linuxfoundation.org>
+Message-ID: <20250527162538.195798659@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit f024d3a8ded0d8d2129ae123d7a5305c29ca44ce ]
+[ Upstream commit 87478ba50a05a1f44508316ae109622e8a85adc9 ]
 
-syzbot complains about the cached sq head read, and it's totally right.
-But we don't need to care, it's just reading fdinfo, and reading the
-CQ or SQ tail/head entries are known racy in that they are just a view
-into that very instant and may of course be outdated by the time they
-are reported.
+Gen7 only supports ASTDP. Gens 4 to 6 support various TX chips,
+except ASTDP. These boards detect the TX chips by reading the SoC
+scratch register as VGACRD1.
 
-Annotate both the SQ head and CQ tail read with data_race() to avoid
-this syzbot complaint.
+Gens 1 to 3 only support SIL164. These boards read the DVO bit from
+VGACRA3. Hence move this test behind a branch, so that it does not
+run on later generations.
 
-Link: https://lore.kernel.org/io-uring/6811f6dc.050a0220.39e3a1.0d0e.GAE@google.com/
-Reported-by: syzbot+3e77fd302e99f5af9394@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250117103450.28692-6-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/fdinfo.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ast/ast_main.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/io_uring/fdinfo.c b/io_uring/fdinfo.c
-index 6b1247664b355..ecdbe473a49f7 100644
---- a/io_uring/fdinfo.c
-+++ b/io_uring/fdinfo.c
-@@ -83,11 +83,11 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
- 	seq_printf(m, "SqMask:\t0x%x\n", sq_mask);
- 	seq_printf(m, "SqHead:\t%u\n", sq_head);
- 	seq_printf(m, "SqTail:\t%u\n", sq_tail);
--	seq_printf(m, "CachedSqHead:\t%u\n", ctx->cached_sq_head);
-+	seq_printf(m, "CachedSqHead:\t%u\n", data_race(ctx->cached_sq_head));
- 	seq_printf(m, "CqMask:\t0x%x\n", cq_mask);
- 	seq_printf(m, "CqHead:\t%u\n", cq_head);
- 	seq_printf(m, "CqTail:\t%u\n", cq_tail);
--	seq_printf(m, "CachedCqTail:\t%u\n", ctx->cached_cq_tail);
-+	seq_printf(m, "CachedCqTail:\t%u\n", data_race(ctx->cached_cq_tail));
- 	seq_printf(m, "SQEs:\t%u\n", sq_tail - sq_head);
- 	sq_entries = min(sq_tail - sq_head, ctx->sq_entries);
- 	for (i = 0; i < sq_entries; i++) {
+diff --git a/drivers/gpu/drm/ast/ast_main.c b/drivers/gpu/drm/ast/ast_main.c
+index bc37c65305d48..96470fc8e6e53 100644
+--- a/drivers/gpu/drm/ast/ast_main.c
++++ b/drivers/gpu/drm/ast/ast_main.c
+@@ -96,21 +96,21 @@ static void ast_detect_tx_chip(struct ast_device *ast, bool need_post)
+ 	/* Check 3rd Tx option (digital output afaik) */
+ 	ast->tx_chip = AST_TX_NONE;
+ 
+-	/*
+-	 * VGACRA3 Enhanced Color Mode Register, check if DVO is already
+-	 * enabled, in that case, assume we have a SIL164 TMDS transmitter
+-	 *
+-	 * Don't make that assumption if we the chip wasn't enabled and
+-	 * is at power-on reset, otherwise we'll incorrectly "detect" a
+-	 * SIL164 when there is none.
+-	 */
+-	if (!need_post) {
+-		jreg = ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xa3, 0xff);
+-		if (jreg & 0x80)
+-			ast->tx_chip = AST_TX_SIL164;
+-	}
+-
+-	if (IS_AST_GEN4(ast) || IS_AST_GEN5(ast) || IS_AST_GEN6(ast)) {
++	if (AST_GEN(ast) <= 3) {
++		/*
++		 * VGACRA3 Enhanced Color Mode Register, check if DVO is already
++		 * enabled, in that case, assume we have a SIL164 TMDS transmitter
++		 *
++		 * Don't make that assumption if we the chip wasn't enabled and
++		 * is at power-on reset, otherwise we'll incorrectly "detect" a
++		 * SIL164 when there is none.
++		 */
++		if (!need_post) {
++			jreg = ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xa3, 0xff);
++			if (jreg & 0x80)
++				ast->tx_chip = AST_TX_SIL164;
++		}
++	} else if (IS_AST_GEN4(ast) || IS_AST_GEN5(ast) || IS_AST_GEN6(ast)) {
+ 		/*
+ 		 * On AST GEN4+, look the configuration set by the SoC in
+ 		 * the SOC scratch register #1 bits 11:8 (interestingly marked
 -- 
 2.39.5
 
