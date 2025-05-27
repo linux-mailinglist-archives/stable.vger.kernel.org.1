@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45349AC5545
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98EB3AC58A6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D7B1BA5E6A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B7AD1BC2895
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3269325A323;
-	Tue, 27 May 2025 17:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C678427FB10;
+	Tue, 27 May 2025 17:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKPBg+R4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y57pd7iX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24E0139579;
-	Tue, 27 May 2025 17:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729B127BF8D;
+	Tue, 27 May 2025 17:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365784; cv=none; b=DxtKbZBxhTakwCSopC+eLaxMgeJUI0csDHIv3CreUxkFpjFXHyEbhaKtTCAea4X2G3WOPGOL9nSfc8bx1cl7bbbl7f8ISVf7HtADzjnSG8M8MBHbhYh7IAKJ0sSz1z4IiQPJcc4+iN5TPpygu0PBqpshi6HRT7DKaGFvmKVIJ8w=
+	t=1748368053; cv=none; b=FHaji54HiZkUXmDKISWswivqMdhAa6fk3tob5bX01omcbDxpfy7Fza6jcJnfYOba7pG2hmbUT1oV5AFjP12o9Xu/ZNKPWqMuqDSDYsUazk+dE6Jlc4LMCgJs4oY1ZPCd2U9Fqil8Gk5ZdAqyw4njE7S8F2p29B+EffY/RvgfQAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365784; c=relaxed/simple;
-	bh=KZsgiC1cnc/OHE2zn3tnJFceDSaNwXf2u7TpXcCZzaA=;
+	s=arc-20240116; t=1748368053; c=relaxed/simple;
+	bh=FrelKAJXtWm9ArAA8cRCGHk14MtbSAq0EqwuuKHJA5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEOULc/emcySfKkoN62rW6/yxvx14WJ9F3CymfGlohbSGtPGmKTQ7vpNTf/lWXR2cT5//nvLwiHqW7kJZ92ZbwqZh+gnX0LFQKntT8xeoSxwGtQpVxbz4SSk3QCKac773cHkXic9cygAHergZhDK1ShWk6ucM5/MUwKHmLZDNkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKPBg+R4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4116C4CEE9;
-	Tue, 27 May 2025 17:09:42 +0000 (UTC)
+	 MIME-Version; b=T0F2NbP4aeTXswHJ0/YxgCGrg+LhlSNYTeTbeHu87taaNfnPLm3dgK42fOldZ3GyuXADyu2Y9d7w2OuFv2IwWAEBxxpAqgr0jTM9ok0yugqNNIinpRikjArzjSud4yCRe7xaBA6VlFd4ca7TQX4l4x7pISC6gEnZpJWtEH6UKi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y57pd7iX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1ECBC4CEE9;
+	Tue, 27 May 2025 17:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365783;
-	bh=KZsgiC1cnc/OHE2zn3tnJFceDSaNwXf2u7TpXcCZzaA=;
+	s=korg; t=1748368053;
+	bh=FrelKAJXtWm9ArAA8cRCGHk14MtbSAq0EqwuuKHJA5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKPBg+R4hm48t5eqZh++iHBqJFqxRuEPiK57jjs9iC2SHueLczCbt8ghiDFUoujVF
-	 4TPrkfYxfGtmz3WJmuuuKLvtt7tRC2oUeJxqFnibioMgmi+muA5oBGp/bwLSVgUfFO
-	 ulXeJME5Z4d81b19zJwOlOkwdwTQSAdgbx2zaXrY=
+	b=Y57pd7iXS+5WdD/j7z90zZOtupF2vNGOXYpL4iyvsA4Gi1iUoTqW0fYgjrX3PdJ0B
+	 RZCUbBxEzrnYT0eKMReCHyQBugeCvBXwa5zip5rRI2sROD98qHSBqRwuw82AQ5gU6b
+	 1Oojy4K/YEtE0iQir7IzZbTbKC1xkCmcIYzNrwL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youssef Samir <quic_yabdulra@quicinc.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Naman Trivedi <naman.trivedimanojbhai@amd.com>,
+	Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 488/626] accel/qaic: Mask out SR-IOV PCI resources
+Subject: [PATCH 6.14 584/783] arm64: zynqmp: add clock-output-names property in clock nodes
 Date: Tue, 27 May 2025 18:26:21 +0200
-Message-ID: <20250527162504.808933407@linuxfoundation.org>
+Message-ID: <20250527162536.927132715@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youssef Samir <quic_yabdulra@quicinc.com>
+From: Naman Trivedi <naman.trivedimanojbhai@amd.com>
 
-[ Upstream commit 8685520474bfc0fe4be83c3cbfe3fb3e1ca1514a ]
+[ Upstream commit 385a59e7f7fb3438466a0712cc14672c708bbd57 ]
 
-During the initialization of the qaic device, pci_select_bars() is
-used to fetch a bitmask of the BARs exposed by the device. On devices
-that have Virtual Functions capabilities, the bitmask includes SR-IOV
-BARs.
+Add clock-output-names property to clock nodes, so that the resulting
+clock name do not change when clock node name is changed.
+Also, replace underscores with hyphens in the clock node names as per
+dt-schema rule.
 
-Use a mask to filter out SR-IOV BARs if they exist.
-
-Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250117170943.2643280-6-quic_jhugo@quicinc.com
+Signed-off-by: Naman Trivedi <naman.trivedimanojbhai@amd.com>
+Acked-by: Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>
+Link: https://lore.kernel.org/r/20241122095712.1166883-1-naman.trivedimanojbhai@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/accel/qaic/qaic_drv.c b/drivers/accel/qaic/qaic_drv.c
-index f139c564eadf9..10e711c96a670 100644
---- a/drivers/accel/qaic/qaic_drv.c
-+++ b/drivers/accel/qaic/qaic_drv.c
-@@ -432,7 +432,7 @@ static int init_pci(struct qaic_device *qdev, struct pci_dev *pdev)
- 	int bars;
- 	int ret;
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
+index 60d1b1acf9a03..385fed8a852af 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
+@@ -10,39 +10,44 @@
  
--	bars = pci_select_bars(pdev, IORESOURCE_MEM);
-+	bars = pci_select_bars(pdev, IORESOURCE_MEM) & 0x3f;
+ #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+ / {
+-	pss_ref_clk: pss_ref_clk {
++	pss_ref_clk: pss-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <33333333>;
++		clock-output-names = "pss_ref_clk";
+ 	};
  
- 	/* make sure the device has the expected BARs */
- 	if (bars != (BIT(0) | BIT(2) | BIT(4))) {
+-	video_clk: video_clk {
++	video_clk: video-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <27000000>;
++		clock-output-names = "video_clk";
+ 	};
+ 
+-	pss_alt_ref_clk: pss_alt_ref_clk {
++	pss_alt_ref_clk: pss-alt-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <0>;
++		clock-output-names = "pss_alt_ref_clk";
+ 	};
+ 
+-	gt_crx_ref_clk: gt_crx_ref_clk {
++	gt_crx_ref_clk: gt-crx-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <108000000>;
++		clock-output-names = "gt_crx_ref_clk";
+ 	};
+ 
+-	aux_ref_clk: aux_ref_clk {
++	aux_ref_clk: aux-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <27000000>;
++		clock-output-names = "aux_ref_clk";
+ 	};
+ };
+ 
 -- 
 2.39.5
 
