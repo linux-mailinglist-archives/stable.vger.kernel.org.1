@@ -1,177 +1,73 @@
-Return-Path: <stable+bounces-146459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9032FAC530D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:32:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BB2AC5323
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AE4217F5B8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 298211BA118C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA66A27F16D;
-	Tue, 27 May 2025 16:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3E8267B73;
+	Tue, 27 May 2025 16:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=pm.me header.i=@pm.me header.b="clIfl1/b"
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="b7EjclcV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F38279329;
-	Tue, 27 May 2025 16:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEE019E7F9
+	for <stable@vger.kernel.org>; Tue, 27 May 2025 16:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748363542; cv=none; b=oMHHL29FQoRkLjyNfsRiYGghnYTfO4qrADMQkTkPlWrHzwZZJRw2A+gIR56hFGckIXf1iEsfG1DM2VYTCkXUIHvHsgNE4D5HIZuM3lgcbC1meUos7ktq3cvU7U0zkCbFlf/kyc0dVjUburLYLIU6r18luNS4/98khie97r/lhDo=
+	t=1748363928; cv=none; b=m8YqCmROp/Mav1Eiy8LJ8VeACZKithfiG5gF06QoSfDej1zg7RU5FTLQHaGmIhIUiLWA6Xgg8/FZEmzalXK9AE+OxRx8q2PA1nOCTNOHGqQ3MiP+CnPbAjvlSpBgDhMZNxUHsFjxfVrH+cz1s/jV9f3oyaLTOceMyCVFcvMBnK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748363542; c=relaxed/simple;
-	bh=kFbKuKSn0OZ9knzwWvd7+06HGMPMlb3adA3RbCTnMKc=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=qadfdRSQEMaNILWxMt9v5UpXvabVrBSVVBxS+p2j02NfwweVDTxvQn6zenzKY0382ga/qlq2gIyeNtytUNXwEFTIe2povDnF9xV5WVZS7e6tHcQKmMEtkrvTBe+jwubZeGV9fdTTSJfN9EMynI+eQA9HLwyAIu5QDJdPqgQLK5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=clIfl1/b; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1748363536; x=1748622736;
-	bh=xcKUc/kOE+to0tTeVZ2ljp2J0YIa+my4ALpGiSB6LPU=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=clIfl1/bQ7zs4Az7MPQsdpU5KOXabISlUXrfRN3ZRHbUgGdLxiYdckv08Kqnp8fud
-	 raRNYi2HSkRcYqEcyniwEmgp/x/MJIUh+N2AIuV4eM7Y66e+64sONQ3hgP20JT+/4V
-	 gD7JKGkQnoCtqZhpEhj9nPYeePGn7IarFjHDxJV5jcNhNDW3izpUUL/TcZbrUtUl+7
-	 nVrN1ZLCYvG9EP02rAExwmP/FR8wDXK/MPDN1faaFEWizSChsj2gNj8FbesKnqcCnm
-	 0REv2G3lLBinMCXOZ4yf6rkHFY+F0WcMw/A1vgXjX9W/2MfbEr5HRmzrRyMZ1SAEEv
-	 JAs/TzWsowKMg==
-Date: Tue, 27 May 2025 16:32:11 +0000
-To: Srinivas Kandagatla <srini@kernel.org>
-From: "Michael C. Pratt" <mcpratt@pm.me>
-Cc: Christian Lamparter <chunkeey@gmail.com>, =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, linux-kernel@vger.kernel.org, "Michael C . Pratt" <mcpratt@pm.me>, INAGAKI Hiroshi <musashino.open@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH v1 RESEND stable tags] nvmem: layouts: u-boot-env: remove crc32 endianness conversion
-Message-ID: <20250527163123.9201-1-mcpratt@pm.me>
-Feedback-ID: 27397442:user:proton
-X-Pm-Message-ID: 031be010564a882665cc183088ff5591c6526fd8
+	s=arc-20240116; t=1748363928; c=relaxed/simple;
+	bh=AnWgM8Rts5STzVt1NmumhNAaeaS1CRYHnAS95osahfE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hhvycm6JDBFPfJiU+UzGi99Q9ZJql0hZtGX7bE2VNUe72ufcnJNICK8i4JaK882q2IuHP9+svk46GNPeHczfyGjLN8lSwVFc0ZYlvDZyVVhCEL+lFtstCh6/2UAuOCk6ULI798chTNMVYJJ+2Gq8F8W0bDfbS/UyNT/A5BX03lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=b7EjclcV; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
+	s=dkim_2024-02-03; t=1748363922;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AnWgM8Rts5STzVt1NmumhNAaeaS1CRYHnAS95osahfE=;
+	b=b7EjclcVSpMXmItDA8AZ1pmWijdD6sZL1cNt1gT7os3lDqtWLvQtkrlFfuY/b6nH6L1Hf6
+	pdECl99ah9DHttAQ==
+Message-ID: <35cbb1ab-12ef-473e-8c09-2135a077c3a3@hardfalcon.net>
+Date: Tue, 27 May 2025 18:38:40 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: Patch "libbpf: Pass BPF token from find_prog_btf_id to
+ BPF_BTF_GET_FD_BY_ID" has been added to the 6
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+References: <20250522210809.3119959-1-sashalkernel!org>
+ <97e0dda6-b2f3-4433-b19c-dbc5d538669c@hardfalcon.net>
+ <2025052724-backstab-activator-702d@gregkh>
+ <26815461-6d90-4b18-834f-520b4dd814a1@hardfalcon.net>
+ <2025052705-sandbar-ambitious-ed02@gregkh>
+Content-Language: en-US, de-DE
+From: Pascal Ernster <git@hardfalcon.net>
+In-Reply-To: <2025052705-sandbar-ambitious-ed02@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 11 Oct 2022, it was reported that the crc32 verification
-of the u-boot environment failed only on big-endian systems
-for the u-boot-env nvmem layout driver with the following error.
+[2025-05-27 17:50] Greg Kroah-Hartman:
+> thanks for checking!
 
-  Invalid calculated CRC32: 0x88cd6f09 (expected: 0x096fcd88)
-
-This problem has been present since the driver was introduced,
-and before it was made into a layout driver.
-
-The suggested fix at the time was to use further endianness
-conversion macros in order to have both the stored and calculated
-crc32 values to compare always represented in the system's endianness.
-This was not accepted due to sparse warnings
-and some disagreement on how to handle the situation.
-Later on in a newer revision of the patch, it was proposed to use
-cpu_to_le32() for both values to compare instead of le32_to_cpu()
-and store the values as __le32 type to remove compilation errors.
-
-The necessity of this is based on the assumption that the use of crc32()
-requires endianness conversion because the algorithm uses little-endian,
-however, this does not prove to be the case and the issue is unrelated.
-
-Upon inspecting the current kernel code,
-there already is an existing use of le32_to_cpu() in this driver,
-which suggests there already is special handling for big-endian systems,
-however, it is big-endian systems that have the problem.
-
-This, being the only functional difference between architectures
-in the driver combined with the fact that the suggested fix
-was to use the exact same endianness conversion for the values
-brings up the possibility that it was not necessary to begin with,
-as the same endianness conversion for two values expected to be the same
-is expected to be equivalent to no conversion at all.
-
-After inspecting the u-boot environment of devices of both endianness
-and trying to remove the existing endianness conversion,
-the problem is resolved in an equivalent way as the other suggested fixes.
-
-Ultimately, it seems that u-boot is agnostic to endianness
-at least for the purpose of environment variables.
-In other words, u-boot reads and writes the stored crc32 value
-with the same endianness that the crc32 value is calculated with
-in whichever endianness a certain architecture runs on.
-
-Therefore, the u-boot-env driver does not need to convert endianness.
-Remove the usage of endianness macros in the u-boot-env driver,
-and change the type of local variables to maintain the same return type.
-
-If there is a special situation in the case of endianness,
-it would be a corner case and should be handled by a unique "compatible".
-
-Even though it is not necessary to use endianness conversion macros here,
-it may be useful to use them in the future for consistent error printing.
-
-Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment variabl=
-es")
-Reported-by: INAGAKI Hiroshi <musashino.open@gmail.com>
-Link: https://lore.kernel.org/all/20221011024928.1807-1-musashino.open@gmai=
-l.com
-Cc: <stable@vger.kernel.org> # 6.12.x
-Cc: <stable@vger.kernel.org> # 6.6.x: f4cf4e5: Revert "nvmem: add new confi=
-g option"
-Cc: <stable@vger.kernel.org> # 6.6.x: 7f38b70: of: device: Export of_device=
-_make_bus_id()
-Cc: <stable@vger.kernel.org> # 6.6.x: 4a1a402: nvmem: Move of_nvmem_layout_=
-get_container() in another header
-Cc: <stable@vger.kernel.org> # 6.6.x: fc29fd8: nvmem: core: Rework layouts =
-to become regular devices
-Cc: <stable@vger.kernel.org> # 6.6.x: 0331c61: nvmem: core: Expose cells th=
-rough sysfs
-Cc: <stable@vger.kernel.org> # 6.6.x: 401df0d: nvmem: layouts: refactor .ad=
-d_cells() callback arguments
-Cc: <stable@vger.kernel.org> # 6.6.x: 6d0ca4a: nvmem: layouts: store owner =
-from modules with nvmem_layout_driver_register()
-Cc: <stable@vger.kernel.org> # 6.6.x: 5f15811: nvmem: layouts: add U-Boot e=
-nv layout
-Cc: <stable@vger.kernel.org> # 6.6.x
-Signed-off-by: Michael C. Pratt <mcpratt@pm.me>
----
- drivers/nvmem/layouts/u-boot-env.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/nvmem/layouts/u-boot-env.c b/drivers/nvmem/layouts/u-b=
-oot-env.c
-index 731e6f4f12b2..21f6dcf905dd 100644
---- a/drivers/nvmem/layouts/u-boot-env.c
-+++ b/drivers/nvmem/layouts/u-boot-env.c
-@@ -92,7 +92,7 @@ int u_boot_env_parse(struct device *dev, struct nvmem_dev=
-ice *nvmem,
- =09size_t crc32_data_offset;
- =09size_t crc32_data_len;
- =09size_t crc32_offset;
--=09__le32 *crc32_addr;
-+=09uint32_t *crc32_addr;
- =09size_t data_offset;
- =09size_t data_len;
- =09size_t dev_size;
-@@ -143,8 +143,8 @@ int u_boot_env_parse(struct device *dev, struct nvmem_d=
-evice *nvmem,
- =09=09goto err_kfree;
- =09}
-=20
--=09crc32_addr =3D (__le32 *)(buf + crc32_offset);
--=09crc32 =3D le32_to_cpu(*crc32_addr);
-+=09crc32_addr =3D (uint32_t *)(buf + crc32_offset);
-+=09crc32 =3D *crc32_addr;
- =09crc32_data_len =3D dev_size - crc32_data_offset;
- =09data_len =3D dev_size - data_offset;
-=20
-
-base-commit: 38fec10eb60d687e30c8c6b5420d86e8149f7557
---=20
-2.30.2
+You're welcome, thanks your your work! :)
 
 
+Pascal
 
