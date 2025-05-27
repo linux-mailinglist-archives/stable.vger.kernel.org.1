@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01391AC58A9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5794AAC55A9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67CFA1BC17A7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE06A3AFE21
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C98271476;
-	Tue, 27 May 2025 17:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC10627CCF0;
+	Tue, 27 May 2025 17:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSIg/6rU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQ717j4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A348D1FB3;
-	Tue, 27 May 2025 17:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AD1139579;
+	Tue, 27 May 2025 17:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368062; cv=none; b=gMF1hiO+dd2V9CnRRYL6B400HqsE4GozvGdZ44gTq+us/pbZ0TvXZBJUhUofyhkX4toPV324MVVZeRkDo3PL61N9GYoA5ckScKwpZOtvXnPHAAnCw0mmWqZDe9IXvs5xnZVkNylMprFpgDujspUvHfGzF4s5CEuE+/izXUyXN7g=
+	t=1748365794; cv=none; b=FD+2aGI83o+ZGsZ++pYxV67IX7AJInPzaUWx1B7fGipSg8eeuAMNmVcLJge+m6uSsMnImV4eWta7AXEGP71TnWldW+tSpi42SHriRp5zC9BrB8tm1RS+gF8qb3pENozK88H2Tl1c86PCkhd8/M6fo0+RKOy4ySssqFI0nZBCIJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368062; c=relaxed/simple;
-	bh=ydSAONpcerV/29sxV48HDR3DoZtY/TDZMORgQmAW6Us=;
+	s=arc-20240116; t=1748365794; c=relaxed/simple;
+	bh=r9A4G87KyqTmBDivq7QCSYGsRv4WDJpqeTdByFqGGEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HURCifDWWleiQnJ1deZxPeY/RHO7LTzZBCGEvzzDNkp1Tr7GTcfncj3qCtMT8Tu3YjPCymwVkeK5dq8rwMDOfvp+pxzks9lmpyAJ3mMx8xA83JFGEg5VL9EoLArzIofbQprHCwKOmHuquBVzYw8lW7yRbJjhTrle0photLScbc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSIg/6rU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31338C4CEE9;
-	Tue, 27 May 2025 17:47:42 +0000 (UTC)
+	 MIME-Version; b=UAMBgfVph9skG5El5CN+y6Q/fwiNfXbKqXMdHET/8ol/B03F6wmcuxfLGevBd54HX7/ixsr04Z6A/P8uhIHqHVUVGimsFZnmXeHRZSkJhk6VKVHhx9fZr0IErPE3BYfG3Qtkc86A1Tc2IsEJ88YoNAZ82t8ZhWaI/yr7iGu6i/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQ717j4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86529C4CEE9;
+	Tue, 27 May 2025 17:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368062;
-	bh=ydSAONpcerV/29sxV48HDR3DoZtY/TDZMORgQmAW6Us=;
+	s=korg; t=1748365793;
+	bh=r9A4G87KyqTmBDivq7QCSYGsRv4WDJpqeTdByFqGGEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSIg/6rUU0hWR4s4i8oMWq9gmJODyGh42NRGi9Td15Wm1BdSCNpQlUZn1wRIcVmbE
-	 n8ZV1wl/gfIbhRfRaRBU6BnGZ3ReG3EmkrLTYNq0IzYiuw1JKeU69KnBaSCYHvXQoO
-	 RhkrOimUTW+P+JO1la1noqzVfifCrEk9PM7ZIvPU=
+	b=tQ717j4xWrO4yeGpKkz9BBtqNhw4G3Ejx/BGrIfCV0tW3bhfye3l6oHsa21o3cywc
+	 qda9MccPRG/ZJ7TQEoYf4iMQ2OFdypxasXU+sHOE+oqy1Y7JdKXjqCKOp1i6GRPDpE
+	 rdzh5c4QInhtQCdL7Tc2/fYz3nucop8w4HXgSlWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anup Patel <anup@brainfault.org>,
+	Aaradhana Sahu <quic_aarasahu@quicinc.com>,
+	Aditya Kumar Singh <quic_adisi@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 587/783] irqchip/riscv-aplic: Add support for hart indexes
+Subject: [PATCH 6.12 491/626] wifi: ath12k: Fetch regdb.bin file from board-2.bin
 Date: Tue, 27 May 2025 18:26:24 +0200
-Message-ID: <20250527162537.044317865@linuxfoundation.org>
+Message-ID: <20250527162504.934732322@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
 
-[ Upstream commit b93afe8a3ac53ae52296d65acfaa9c5f582a48cc ]
+[ Upstream commit 24f587572acf7509127dbdfcbf1b681ef84eeba0 ]
 
-RISC-V APLIC specification defines "hart index" in:
+Currently, ath12k_core_fetch_regdb() finds regdb.bin file through
+board id's but in board-2.bin file regdb.bin file is present with
+default board id because of which regdb.bin is not fetched.
 
-  https://github.com/riscv/riscv-aia
+Add support to fetch regdb.bin file from board-2.bin through
+default board id.
 
-Within a given interrupt domain, each of the domain’s harts has a unique
-index number in the range 0 to 2^14 − 1 (= 16,383). The index number a
-domain associates with a hart may or may not have any relationship to the
-unique hart identifier (“hart ID”) that the RISC-V Privileged Architecture
-assigns to the hart. Two different interrupt domains may employ entirely
-different index numbers for the same set of harts.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 
-Further, this document says in "4.5 Memory-mapped control region for an
-interrupt domain":
-
-The array of IDC structures may include some for potential hart index
-numbers that are not actual hart index numbers in the domain. For example,
-the first IDC structure is always for hart index 0, but 0 is not
-necessarily a valid index number for any hart in the domain.
-
-Support arbitrary hart indices specified in an optional APLIC property
-"riscv,hart-indexes" which is specified as an array of u32 elements, one
-per interrupt target. If this property is not specified, fallback to use
-logical hart indices within the domain.
-
-Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/all/20250129091637.1667279-3-vladimir.kondratiev@mobileye.com
+Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Link: https://patch.msgid.link/20250116032835.118397-1-quic_aarasahu@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-aplic-direct.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-direct.c b/drivers/irqchip/irq-riscv-aplic-direct.c
-index 7cd6b646774b9..205ad61d15e49 100644
---- a/drivers/irqchip/irq-riscv-aplic-direct.c
-+++ b/drivers/irqchip/irq-riscv-aplic-direct.c
-@@ -31,7 +31,7 @@ struct aplic_direct {
- };
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 51252e8bc1ae9..8bb8ee98188bf 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -161,7 +161,7 @@ EXPORT_SYMBOL(ath12k_core_resume);
  
- struct aplic_idc {
--	unsigned int		hart_index;
-+	u32			hart_index;
- 	void __iomem		*regs;
- 	struct aplic_direct	*direct;
- };
-@@ -219,6 +219,20 @@ static int aplic_direct_parse_parent_hwirq(struct device *dev, u32 index,
- 	return 0;
+ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 					   size_t name_len, bool with_variant,
+-					   bool bus_type_mode)
++					   bool bus_type_mode, bool with_default)
+ {
+ 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
+ 	char variant[9 + ATH12K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
+@@ -192,7 +192,9 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 			  "bus=%s,qmi-chip-id=%d,qmi-board-id=%d%s",
+ 			  ath12k_bus_str(ab->hif.bus),
+ 			  ab->qmi.target.chip_id,
+-			  ab->qmi.target.board_id, variant);
++			  with_default ?
++			  ATH12K_BOARD_ID_DEFAULT : ab->qmi.target.board_id,
++			  variant);
+ 		break;
+ 	}
+ 
+@@ -204,19 +206,19 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ static int ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 					 size_t name_len)
+ {
+-	return __ath12k_core_create_board_name(ab, name, name_len, true, false);
++	return __ath12k_core_create_board_name(ab, name, name_len, true, false, false);
  }
  
-+static int aplic_direct_get_hart_index(struct device *dev, u32 logical_index,
-+				       u32 *hart_index)
-+{
-+	const char *prop_hart_index = "riscv,hart-indexes";
-+	struct device_node *np = to_of_node(dev->fwnode);
-+
-+	if (!np || !of_property_present(np, prop_hart_index)) {
-+		*hart_index = logical_index;
-+		return 0;
-+	}
-+
-+	return of_property_read_u32_index(np, prop_hart_index, logical_index, hart_index);
-+}
-+
- int aplic_direct_setup(struct device *dev, void __iomem *regs)
+ static int ath12k_core_create_fallback_board_name(struct ath12k_base *ab, char *name,
+ 						  size_t name_len)
  {
- 	int i, j, rc, cpu, current_cpu, setup_count = 0;
-@@ -265,8 +279,12 @@ int aplic_direct_setup(struct device *dev, void __iomem *regs)
- 		cpumask_set_cpu(cpu, &direct->lmask);
+-	return __ath12k_core_create_board_name(ab, name, name_len, false, false);
++	return __ath12k_core_create_board_name(ab, name, name_len, false, false, true);
+ }
  
- 		idc = per_cpu_ptr(&aplic_idcs, cpu);
--		idc->hart_index = i;
--		idc->regs = priv->regs + APLIC_IDC_BASE + i * APLIC_IDC_SIZE;
-+		rc = aplic_direct_get_hart_index(dev, i, &idc->hart_index);
-+		if (rc) {
-+			dev_warn(dev, "hart index not found for IDC%d\n", i);
-+			continue;
-+		}
-+		idc->regs = priv->regs + APLIC_IDC_BASE + idc->hart_index * APLIC_IDC_SIZE;
- 		idc->direct = direct;
+ static int ath12k_core_create_bus_type_board_name(struct ath12k_base *ab, char *name,
+ 						  size_t name_len)
+ {
+-	return __ath12k_core_create_board_name(ab, name, name_len, false, true);
++	return __ath12k_core_create_board_name(ab, name, name_len, false, true, true);
+ }
  
- 		aplic_idc_set_delivery(idc, true);
+ const struct firmware *ath12k_core_firmware_request(struct ath12k_base *ab,
 -- 
 2.39.5
 
