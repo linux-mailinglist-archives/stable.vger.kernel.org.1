@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E047CAC57B9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E467EAC54E6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFBFE4A7BE6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB4EA8A2EE3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8102B27CCF0;
-	Tue, 27 May 2025 17:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8698427E1CA;
+	Tue, 27 May 2025 16:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJw8tTvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6dF5y8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6173C01;
-	Tue, 27 May 2025 17:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4533B194A67;
+	Tue, 27 May 2025 16:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367395; cv=none; b=iNXGZEQeRZHQ4Mmstnbl0g7iEV8qqLN4ndU0aoLZ6LewFDZGnWU6giD2gCcaQJP2ZLv4KaZVG3kvBec6D3b2CcdR3V61LRiAesuQQvQUjlpCM7svRnsef/st4yPg2g0vBWgzZBA2rfceIUIhBHNr54+hqsi53AV7n+Fofgd7fJ4=
+	t=1748365189; cv=none; b=hON+9zTSEfPzjFbQWmLysygzgYFk8j4KyyrGfocd4rej/1xCj+iEXZOiFJ+BWCB77yGheh0gMIdN42IuKVRbXPVFksgLwHU+2RSVI164yKAM3GkF2cpdWw9wpPvDLwxETUByeJ/GlQQmwcpJi2ge3VxG636QI95KtVPIwheUywo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367395; c=relaxed/simple;
-	bh=MijYgIoH+fMAYaomhrkMMS/c07aP37iUp+2dQdJWhQE=;
+	s=arc-20240116; t=1748365189; c=relaxed/simple;
+	bh=gDbuONY8QV058CmvIFYjDNojQlZQDXeTaiRfyH+tAOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uj1A8csrRJWKNhq+xRqDXSjC6kJTl2RrwwKW1Lx/+x9PZFfa5iY21FYTE08wBDsxtootPF2kvgJZ1sRKHlMesiEwGas/v/zgGZsbqg8tFRQWvyIAqKa5k+A/vOt8MIycxiGL347cZIPSz+3p5Bat8p7VxQmKg7WNJE9KNl+ueCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJw8tTvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A8EC4CEE9;
-	Tue, 27 May 2025 17:36:34 +0000 (UTC)
+	 MIME-Version; b=cR98CCxib0FCJWMzVzMLQ0GbIi/DmFeeYuMMr0GlUcM6voGl4kMGcKK8gVgvKrM48UKyHiENJn3z9ddypEh3ntL9mpcP4/WPgkncPT4K91RJiFLaBEDu+7keH9HkPx4l2gGuFOfdA2G/50qmi9KI8G8YBoljUpZfx3scUBH+FkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6dF5y8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B86C4CEE9;
+	Tue, 27 May 2025 16:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367394;
-	bh=MijYgIoH+fMAYaomhrkMMS/c07aP37iUp+2dQdJWhQE=;
+	s=korg; t=1748365189;
+	bh=gDbuONY8QV058CmvIFYjDNojQlZQDXeTaiRfyH+tAOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJw8tTvSonvHMJWErvJbjE8G5ayOpL9Q2eQk91h88XFaMSF02LE3jlM0oXesqN3Gz
-	 Z/+yuilskya7mWfIttbspELZOd/J/VVdRDXJqO2+s8RKDI7XafBlrVtcFkcX6/EOc1
-	 TTOQT5kd/lmhtuiszkvpSq7RvM3RjDmqPWhj6IUE=
+	b=O6dF5y8db9Cfzq7xAfk/XuA0tU4WEdOPJZWTdUeBLjQMnJN5cC3+3RWk/Nx+kPZY+
+	 qfTWvab2ZqaYCvqcLjro0Q3W1QYXjFhNrLYDkOhz+jM+/f0VsCWy+TR1u1M/9KoyHH
+	 JjoxH/XylSjD24NMUabWhaJ2m5Su8uAPFbds7A3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Yuanjun Gong <ruc_gongyuanjun@163.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 373/783] bpf: arm64: Silence "UBSAN: negation-overflow" warning
-Date: Tue, 27 May 2025 18:22:50 +0200
-Message-ID: <20250527162528.276407428@linuxfoundation.org>
+Subject: [PATCH 6.12 278/626] leds: pwm-multicolor: Add check for fwnode_property_read_u32
+Date: Tue, 27 May 2025 18:22:51 +0200
+Message-ID: <20250527162456.319661212@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 239860828f8660e2be487e2fbdae2640cce3fd67 ]
+[ Upstream commit 6d91124e7edc109f114b1afe6d00d85d0d0ac174 ]
 
-With UBSAN, test_bpf.ko triggers warnings like:
+Add a check to the return value of fwnode_property_read_u32()
+in case it fails.
 
-UBSAN: negation-overflow in arch/arm64/net/bpf_jit_comp.c:1333:28
-negation of -2147483648 cannot be represented in type 's32' (aka 'int'):
-
-Silence these warnings by casting imm to u32 first.
-
-Reported-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Tested-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20250218080240.2431257-1-song@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Link: https://lore.kernel.org/r/20250223121459.2889484-1-ruc_gongyuanjun@163.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/leds/rgb/leds-pwm-multicolor.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 3126881fe6768..970c49bb7ed47 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -274,7 +274,7 @@ static inline void emit_a64_add_i(const bool is64, const int dst, const int src,
- {
- 	if (is_addsub_imm(imm)) {
- 		emit(A64_ADD_I(is64, dst, src, imm), ctx);
--	} else if (is_addsub_imm(-imm)) {
-+	} else if (is_addsub_imm(-(u32)imm)) {
- 		emit(A64_SUB_I(is64, dst, src, -imm), ctx);
- 	} else {
- 		emit_a64_mov_i(is64, tmp, imm, ctx);
-@@ -1208,7 +1208,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
- 	case BPF_ALU64 | BPF_SUB | BPF_K:
- 		if (is_addsub_imm(imm)) {
- 			emit(A64_SUB_I(is64, dst, dst, imm), ctx);
--		} else if (is_addsub_imm(-imm)) {
-+		} else if (is_addsub_imm(-(u32)imm)) {
- 			emit(A64_ADD_I(is64, dst, dst, -imm), ctx);
- 		} else {
- 			emit_a64_mov_i(is64, tmp, imm, ctx);
-@@ -1379,7 +1379,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
- 	case BPF_JMP32 | BPF_JSLE | BPF_K:
- 		if (is_addsub_imm(imm)) {
- 			emit(A64_CMP_I(is64, dst, imm), ctx);
--		} else if (is_addsub_imm(-imm)) {
-+		} else if (is_addsub_imm(-(u32)imm)) {
- 			emit(A64_CMN_I(is64, dst, -imm), ctx);
- 		} else {
- 			emit_a64_mov_i(is64, tmp, imm, ctx);
+diff --git a/drivers/leds/rgb/leds-pwm-multicolor.c b/drivers/leds/rgb/leds-pwm-multicolor.c
+index e1a81e0109e8a..c0aa34b1d0e2d 100644
+--- a/drivers/leds/rgb/leds-pwm-multicolor.c
++++ b/drivers/leds/rgb/leds-pwm-multicolor.c
+@@ -135,8 +135,11 @@ static int led_pwm_mc_probe(struct platform_device *pdev)
+ 
+ 	/* init the multicolor's LED class device */
+ 	cdev = &priv->mc_cdev.led_cdev;
+-	fwnode_property_read_u32(mcnode, "max-brightness",
++	ret = fwnode_property_read_u32(mcnode, "max-brightness",
+ 				 &cdev->max_brightness);
++	if (ret)
++		goto release_mcnode;
++
+ 	cdev->flags = LED_CORE_SUSPENDRESUME;
+ 	cdev->brightness_set_blocking = led_pwm_mc_set;
+ 
 -- 
 2.39.5
 
