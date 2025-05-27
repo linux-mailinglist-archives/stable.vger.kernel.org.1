@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062B0AC5413
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:55:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D61AC575E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D95FE7A3C40
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CC981BA596A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A327FD61;
-	Tue, 27 May 2025 16:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D1827FB38;
+	Tue, 27 May 2025 17:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2y3BTa7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRi8G9+b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6651427FD53;
-	Tue, 27 May 2025 16:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C643227A133;
+	Tue, 27 May 2025 17:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364834; cv=none; b=IZoXwdSyhVHldiPwqxP0eZ+SI/VKTNncVX0Qurq17kmRwEt+PigcY6tDPp8/2q6dQy7gE2Yaxw9DjMxppv5b8MLs2rNg9wYOXFoCd4OThy5yMXpjF7WppnWKNTHmZqAt9sYf7yp/wPnGaA+zubJeL0BWqiQF1WmMISTY64kjyiU=
+	t=1748367125; cv=none; b=hF70iLoS1t+gVVqmuzDMNzaMZW2aMV3xT/xZYrg8bxoBAEFX55G734cfmT30uGe6hS9OUiX+QE7euYl58DopUfUx9VSXBBJ3D3jIhlfpPCb0UA7w534weNBFvp7NBN1XBQZ5vzchj+/oa/Ei1bTSwIQRaZTAAYbyiYI594+QSHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364834; c=relaxed/simple;
-	bh=Z7G+cjR0bj4mqvK6LaIwH9kcaXwzqvIkKeClEq+GvK4=;
+	s=arc-20240116; t=1748367125; c=relaxed/simple;
+	bh=tdSHUaEm5JHt/tkdKsjaoZwJzYvz59f1N6kOyJu6zS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sj4kf096H7WTFQIyiDftn5z0Og+5E7MqhIPr8Jb9WhgVijjUyuwM8p97LtTxmtdpYdgYQl/e5K51hT6LkJ3ZPKvL9yYu+E+684RySqCYxWQ5p4GkAZvp3jKMIevnrWq82AxO6pkEzDnonoGKaOO0cleQ9HJ0IhUQkoncYvdgC7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2y3BTa7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A98EC4CEE9;
-	Tue, 27 May 2025 16:53:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S/DjxSlEnWxO9WnE70lMhGfK0KNendk/IhtvGZ4XKSbTMnwmxjV9ybrHVwSEgYn7fqY89eK/AyS5w1lEOaOxRDHZMxSn1qRcB8ZqlMpVjbRc8JrWN0xnoKni9z+IZ4EEyEFhpyyT0jOGyTXJwZb9B0MdlO7p1kUD3dW8tdKAKm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRi8G9+b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3198AC4CEEA;
+	Tue, 27 May 2025 17:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364832;
-	bh=Z7G+cjR0bj4mqvK6LaIwH9kcaXwzqvIkKeClEq+GvK4=;
+	s=korg; t=1748367125;
+	bh=tdSHUaEm5JHt/tkdKsjaoZwJzYvz59f1N6kOyJu6zS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W2y3BTa722EdMPWrOnDj7FfrynFwVmeUmLicn15+VctYW8U02nQgnVh3h2nMnyAWL
-	 N35ZhrWWaB3g7C6cKEHyARLdhM9epdkOF0Yq1+ZUI2MP69Z15fz7azdBxl5iiEt1Mx
-	 mFMEoG9ts6p9dJihWfrMjsNFQRSUSEJtD+HfDjXo=
+	b=VRi8G9+bmL/0Jmot97TJKjITxoUjaUoYwpjmfXMBch7yoxEFLjCk0lUjQbFKck51i
+	 3sd092o2j/tNLAt8YGuZhm1YM6xk9ACVE30gzo3N7laWSheL3hJbgBvdISbTCBJXzm
+	 A43sEPO3fIJ7QOo5OiVVnMKecgCgjr37lJ+6lc1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seyediman Seyedarab <imandevel@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 150/626] kbuild: fix argument parsing in scripts/config
-Date: Tue, 27 May 2025 18:20:43 +0200
-Message-ID: <20250527162451.123395827@linuxfoundation.org>
+Subject: [PATCH 6.14 247/783] misc: pci_endpoint_test: Give disabled BARs a distinct error code
+Date: Tue, 27 May 2025 18:20:44 +0200
+Message-ID: <20250527162523.167242757@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seyediman Seyedarab <imandevel@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit f757f6011c92b5a01db742c39149bed9e526478f ]
+[ Upstream commit 7e80bbef1d697dbce7a39cfad0df770880fe3f29 ]
 
-The script previously assumed --file was always the first argument,
-which caused issues when it appeared later. This patch updates the
-parsing logic to scan all arguments to find --file, sets the config
-file correctly, and resets the argument list with the remaining
-commands.
+The current code returns -ENOMEM if test->bar[barno] is NULL.
 
-It also fixes --refresh to respect --file by passing KCONFIG_CONFIG=$FN
-to make oldconfig.
+There can be two reasons why test->bar[barno] is NULL:
 
-Signed-off-by: Seyediman Seyedarab <imandevel@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+  1) The pci_ioremap_bar() call in pci_endpoint_test_probe() failed.
+  2) The BAR was skipped, because it is disabled by the endpoint.
+
+Many PCI endpoint controller drivers will disable all BARs in their
+init function. A disabled BAR will have a size of 0.
+
+A PCI endpoint function driver will be able to enable any BAR that
+is not marked as BAR_RESERVED (which means that the BAR should not
+be touched by the EPF driver).
+
+Thus, perform check if the size is 0, before checking if
+test->bar[barno] is NULL, such that we can return different errors.
+
+This will allow the selftests to return SKIP instead of FAIL for
+disabled BARs.
+
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250123120147.3603409-3-cassel@kernel.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/config | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ drivers/misc/pci_endpoint_test.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/config b/scripts/config
-index ff88e2faefd35..ea475c07de283 100755
---- a/scripts/config
-+++ b/scripts/config
-@@ -32,6 +32,7 @@ commands:
-                              Disable option directly after other option
- 	--module-after|-M beforeopt option
-                              Turn option into module directly after other option
-+	--refresh            Refresh the config using old settings
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index 4c0f37ad0281b..8a7e860c06812 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -295,11 +295,13 @@ static int pci_endpoint_test_bar(struct pci_endpoint_test *test,
+ 	struct pci_dev *pdev = test->pdev;
+ 	int buf_size;
  
- 	commands can be repeated multiple times
++	bar_size = pci_resource_len(pdev, barno);
++	if (!bar_size)
++		return -ENODATA;
++
+ 	if (!test->bar[barno])
+ 		return -ENOMEM;
  
-@@ -124,16 +125,22 @@ undef_var() {
- 	txt_delete "^# $name is not set" "$FN"
- }
+-	bar_size = pci_resource_len(pdev, barno);
+-
+ 	if (barno == test->test_reg_bar)
+ 		bar_size = 0x4;
  
--if [ "$1" = "--file" ]; then
--	FN="$2"
--	if [ "$FN" = "" ] ; then
--		usage
-+FN=.config
-+CMDS=()
-+while [[ $# -gt 0 ]]; do
-+	if [ "$1" = "--file" ]; then
-+		if [ "$2" = "" ]; then
-+			usage
-+		fi
-+		FN="$2"
-+		shift 2
-+	else
-+		CMDS+=("$1")
-+		shift
- 	fi
--	shift 2
--else
--	FN=.config
--fi
-+done
- 
-+set -- "${CMDS[@]}"
- if [ "$1" = "" ] ; then
- 	usage
- fi
-@@ -217,9 +224,8 @@ while [ "$1" != "" ] ; do
- 		set_var "${CONFIG_}$B" "${CONFIG_}$B=m" "${CONFIG_}$A"
- 		;;
- 
--	# undocumented because it ignores --file (fixme)
- 	--refresh)
--		yes "" | make oldconfig
-+		yes "" | make oldconfig KCONFIG_CONFIG=$FN
- 		;;
- 
- 	*)
 -- 
 2.39.5
 
