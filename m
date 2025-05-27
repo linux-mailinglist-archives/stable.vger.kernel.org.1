@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-147710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43265AC58D5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CE2AC5597
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 066DE1BC2D9E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E45B27AF33C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8010727D786;
-	Tue, 27 May 2025 17:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96C727FD64;
+	Tue, 27 May 2025 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Un6n9Etq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvo2pMcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D86842A9B;
-	Tue, 27 May 2025 17:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945F32110E;
+	Tue, 27 May 2025 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368191; cv=none; b=WeNMozryn6cv2Qo8UDU9ZfoyPSXX9plPvAn1iXm5HZIroDKrttqwaN0/XXr2Mu4ulY2ZNUHWLJWcQwCWlGdSOF5vWfzZ/evSrhE4V1aR5djxFZJySHILqliAgDV/2OSW093iYSp42yZJWlK7bRkk1P5qyEjmg6M2muZPPWzxGQU=
+	t=1748365920; cv=none; b=fioRE8z/AtXfwa0UjAWj1lGTLot71yEPnwj5TtH0H37HO3J72IgvdF2gk7tnxFDLdMLipRjNUi6KEnaAGjggopU88Vst4wnqmNdQ0ciDxH4UNGYyPKvhPVr7EefkbTEc3RyRZtP5wCTk4WFFMljKwiaGUmgzLwZzEO/JRO0piFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368191; c=relaxed/simple;
-	bh=TsMvn1a3uyFs70ifyaPK22nINvXPAuPi4AYpW703t+M=;
+	s=arc-20240116; t=1748365920; c=relaxed/simple;
+	bh=f5N3Ntd4Rw41ygKgZm3vKQk17svRiIFOmyCjAboS2nE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WsLBhws2UTj+dQcHFPzOvGjTCoXZWnCVtl+5o4+h2cSOaca5XmRFwLd7VPodXMpHQjplyvev/iY+whjxFQcW5OgDx2UFSIXv34eaMRPe2i6x+SWoNjFj8f6zjiIulTFd7pDRs5PCH3HINbD4+DX07u9FHNW3iPV9cB9kW2x9KFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Un6n9Etq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAD1C4CEE9;
-	Tue, 27 May 2025 17:49:49 +0000 (UTC)
+	 MIME-Version; b=B1DHHqTAcny23lhCnB+XBda5OiFsRc2Fz1EUToewfd7zw5gioD/N4G/RNxPdjPYhsOexS0r1RtKlP5JJwdfTu82QYdq8doqfCJMrbpRKh2Cj1iMjQCN3IXKbMHTXZqbinhcAe11cGSrvNnt7YO/emE4hiIsPKFLcgnonCNBlYWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvo2pMcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BF2C4CEE9;
+	Tue, 27 May 2025 17:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368190;
-	bh=TsMvn1a3uyFs70ifyaPK22nINvXPAuPi4AYpW703t+M=;
+	s=korg; t=1748365920;
+	bh=f5N3Ntd4Rw41ygKgZm3vKQk17svRiIFOmyCjAboS2nE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Un6n9EtqmMa4mPmUGsifZsbf4/7mMEOzZe4yFsXBWlrTDjKbraCwRy3DTDalUpbbd
-	 ASVcvuUuxPrDv8XhMckSM8PL7MyMjj+6RrelgxDRHVVeluTBqBrQlv/xMtCFQd6eeF
-	 LOchZsnpUvYs+arBmcHDhWuKLQwANz+kqPKVnA6I=
+	b=pvo2pMcBgnWgGZ791YLoI+FwPgjg39e+HGT3JVdxNR96w6HAJkr+jUrqgt+498myy
+	 LIcjVcO531vfH022KQlp+3XW9Uq871TWSrEkOkHSVxptnGQgaxXZFDkeN2mqnPrxpU
+	 hBqytRfTL4vbJnyDze8WmaP+ugG0bClNd3h6isT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Austin Zheng <Austin.Zheng@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 627/783] drm/xe: Add locks in gtidle code
-Date: Tue, 27 May 2025 18:27:04 +0200
-Message-ID: <20250527162538.683470736@linuxfoundation.org>
+Subject: [PATCH 6.12 532/626] drm/amd/display: Call FP Protect Before Mode Programming/Mode Support
+Date: Tue, 27 May 2025 18:27:05 +0200
+Message-ID: <20250527162506.608854881@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+From: Austin Zheng <Austin.Zheng@amd.com>
 
-[ Upstream commit d160dc6f53914d729be7fcb7afbd0e9e6a3725b2 ]
+[ Upstream commit eba692ca3abca258b3214a6e4126afefad1822f0 ]
 
-The update of the residency values needs to be protected by a lock to
-avoid multiple entrypoints, for example when multiple userspace clients
-read the sysfs file. Other in-kernel clients are going to be added to
-sample these values, making the problem worse. Protect those updates
-with a raw_spinlock so it can be called by future integration with perf
-pmu.
+[Why]
+Memory allocation occurs within dml21_validate() for adding phantom planes.
+May cause kernel to be tainted due to usage of FP Start.
 
-Suggested-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250110173308.2412232-2-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+[How]
+Move FP start from dml21_validate to before mode programming/mode support.
+Calculations requiring floating point are all done within mode programming
+or mode support.
+
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fe3250f10819b411808ab9ae1d824c5fc9b59170)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_idle.c       | 23 ++++++++++++++++++++---
- drivers/gpu/drm/xe/xe_gt_idle.h       |  1 +
- drivers/gpu/drm/xe/xe_gt_idle_types.h |  3 +++
- 3 files changed, 24 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_idle.c b/drivers/gpu/drm/xe/xe_gt_idle.c
-index ffd3ba7f66561..fbbace7b0b12a 100644
---- a/drivers/gpu/drm/xe/xe_gt_idle.c
-+++ b/drivers/gpu/drm/xe/xe_gt_idle.c
-@@ -69,6 +69,8 @@ static u64 get_residency_ms(struct xe_gt_idle *gtidle, u64 cur_residency)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+index e3e4f40bd4123..dcbe327209d5d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+@@ -221,7 +221,9 @@ static bool dml21_mode_check_and_programming(const struct dc *in_dc, struct dc_s
+ 	if (!result)
+ 		return false;
+ 
++	DC_FP_START();
+ 	result = dml2_build_mode_programming(mode_programming);
++	DC_FP_END();
+ 	if (!result)
+ 		return false;
+ 
+@@ -271,7 +273,9 @@ static bool dml21_check_mode_support(const struct dc *in_dc, struct dc_state *co
+ 	mode_support->dml2_instance = dml_init->dml2_instance;
+ 	dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
+ 	dml_ctx->v21.mode_programming.dml2_instance->scratch.build_mode_programming_locals.mode_programming_params.programming = dml_ctx->v21.mode_programming.programming;
++	DC_FP_START();
+ 	is_supported = dml2_check_mode_supported(mode_support);
++	DC_FP_END();
+ 	if (!is_supported)
+ 		return false;
+ 
+@@ -282,16 +286,12 @@ bool dml21_validate(const struct dc *in_dc, struct dc_state *context, struct dml
  {
- 	u64 delta, overflow_residency, prev_residency;
+ 	bool out = false;
  
-+	lockdep_assert_held(&gtidle->lock);
-+
- 	overflow_residency = BIT_ULL(32);
+-	DC_FP_START();
+-
+ 	/* Use dml_validate_only for fast_validate path */
+ 	if (fast_validate)
+ 		out = dml21_check_mode_support(in_dc, context, dml_ctx);
+ 	else
+ 		out = dml21_mode_check_and_programming(in_dc, context, dml_ctx);
  
- 	/*
-@@ -275,8 +277,21 @@ static ssize_t idle_status_show(struct device *dev,
- 
- 	return sysfs_emit(buff, "%s\n", gt_idle_state_to_string(state));
+-	DC_FP_END();
+-
+ 	return out;
  }
--static DEVICE_ATTR_RO(idle_status);
  
-+u64 xe_gt_idle_residency_msec(struct xe_gt_idle *gtidle)
-+{
-+	struct xe_guc_pc *pc = gtidle_to_pc(gtidle);
-+	u64 residency;
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&gtidle->lock, flags);
-+	residency = get_residency_ms(gtidle, gtidle->idle_residency(pc));
-+	raw_spin_unlock_irqrestore(&gtidle->lock, flags);
-+
-+	return residency;
-+}
-+
-+static DEVICE_ATTR_RO(idle_status);
- static ssize_t idle_residency_ms_show(struct device *dev,
- 				      struct device_attribute *attr, char *buff)
- {
-@@ -285,10 +300,10 @@ static ssize_t idle_residency_ms_show(struct device *dev,
- 	u64 residency;
- 
- 	xe_pm_runtime_get(pc_to_xe(pc));
--	residency = gtidle->idle_residency(pc);
-+	residency = xe_gt_idle_residency_msec(gtidle);
- 	xe_pm_runtime_put(pc_to_xe(pc));
- 
--	return sysfs_emit(buff, "%llu\n", get_residency_ms(gtidle, residency));
-+	return sysfs_emit(buff, "%llu\n", residency);
- }
- static DEVICE_ATTR_RO(idle_residency_ms);
- 
-@@ -331,6 +346,8 @@ int xe_gt_idle_init(struct xe_gt_idle *gtidle)
- 	if (!kobj)
- 		return -ENOMEM;
- 
-+	raw_spin_lock_init(&gtidle->lock);
-+
- 	if (xe_gt_is_media_type(gt)) {
- 		snprintf(gtidle->name, sizeof(gtidle->name), "gt%d-mc", gt->info.id);
- 		gtidle->idle_residency = xe_guc_pc_mc6_residency;
-diff --git a/drivers/gpu/drm/xe/xe_gt_idle.h b/drivers/gpu/drm/xe/xe_gt_idle.h
-index 4455a6501cb07..591a01e181bcc 100644
---- a/drivers/gpu/drm/xe/xe_gt_idle.h
-+++ b/drivers/gpu/drm/xe/xe_gt_idle.h
-@@ -17,5 +17,6 @@ void xe_gt_idle_disable_c6(struct xe_gt *gt);
- void xe_gt_idle_enable_pg(struct xe_gt *gt);
- void xe_gt_idle_disable_pg(struct xe_gt *gt);
- int xe_gt_idle_pg_print(struct xe_gt *gt, struct drm_printer *p);
-+u64 xe_gt_idle_residency_msec(struct xe_gt_idle *gtidle);
- 
- #endif /* _XE_GT_IDLE_H_ */
-diff --git a/drivers/gpu/drm/xe/xe_gt_idle_types.h b/drivers/gpu/drm/xe/xe_gt_idle_types.h
-index b8b297a3f8848..a3667c567f8a7 100644
---- a/drivers/gpu/drm/xe/xe_gt_idle_types.h
-+++ b/drivers/gpu/drm/xe/xe_gt_idle_types.h
-@@ -6,6 +6,7 @@
- #ifndef _XE_GT_IDLE_SYSFS_TYPES_H_
- #define _XE_GT_IDLE_SYSFS_TYPES_H_
- 
-+#include <linux/spinlock.h>
- #include <linux/types.h>
- 
- struct xe_guc_pc;
-@@ -31,6 +32,8 @@ struct xe_gt_idle {
- 	u64 cur_residency;
- 	/** @prev_residency: previous residency counter */
- 	u64 prev_residency;
-+	/** @lock: Lock protecting idle residency counters */
-+	raw_spinlock_t lock;
- 	/** @idle_status: get the current idle state */
- 	enum xe_gt_idle_state (*idle_status)(struct xe_guc_pc *pc);
- 	/** @idle_residency: get idle residency counter */
 -- 
 2.39.5
 
