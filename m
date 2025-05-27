@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC83AC54BA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B571FAC5814
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 462CD18875E6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7996C1BC1958
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A366A276051;
-	Tue, 27 May 2025 17:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A0127F16D;
+	Tue, 27 May 2025 17:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJ4/rT8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goSv1eOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6133678F32;
-	Tue, 27 May 2025 17:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62CC1CAA7B;
+	Tue, 27 May 2025 17:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365377; cv=none; b=axKmS4Bip3TMc9aI7tglUZzqmrx+iQnx/pAxSE6KsS1SwDj4aigqNtfBPw7fl6WGimTEJoe00SQBHGVUHknYJABxHFh6I/kgkUWVf94xjUrJddq+9Xtpn9pq3R2E4Db76C0cBGgCnykS89VGT3g4Y1YisySDUgwrsWtfkK2jwY0=
+	t=1748367642; cv=none; b=dtrV53XQDGsAmECYFRniYEb0qK193I/uOXcOYaCqiKygaXxJ2kbVN99fu4Mi3XmA1aBVHvqjnUcBwThtkkXkPgVrKm8/89w0J9r4R11AVtSqfrq/Pw1dvXIIvTeIktZrPltenqTbRB74uUxAL/WF1k+EJvGPPvLlnMGGxqb6igc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365377; c=relaxed/simple;
-	bh=OI5crT65KPE0w1hDBTry/V8FjhFTeNIH+gD0ECHMFcM=;
+	s=arc-20240116; t=1748367642; c=relaxed/simple;
+	bh=bqvJsNnxE+8GlKGqfCoeRmFYcZKnPZtTIP6eKuKZES4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EX4O6xnV4yJsyAKAYfB5q3VnOYYB6izO3EKOGZURgb55FqTPBNM+ZgikQJDtlKcdsr+YAyf3+uYUjn1tG1CjAZIcnodKzsBTg8/aLSC3LOafMxU+dlJpv9pue4YizDSZag29MDOBCIKSuR/1e/vmOGavnKI9Dux5ti1dadg8zYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJ4/rT8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E73C4CEED;
-	Tue, 27 May 2025 17:02:56 +0000 (UTC)
+	 MIME-Version; b=C0HGTEltAqP+nC0Gp3kAepPV/yXPFd7gGlUHm/sdo18lnLZT3bR+n1OjRav7ceXQmoF7XOVtZBo6JvTylmYF930IqKN1YvMfPgzIU1KoG0Ph6oK64yAAGHVciJ3HSKk08H/fNk8cuNK3v7s5dFXl1EoxQ7zKK45yV5yLhCptjXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goSv1eOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F089C4CEE9;
+	Tue, 27 May 2025 17:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365377;
-	bh=OI5crT65KPE0w1hDBTry/V8FjhFTeNIH+gD0ECHMFcM=;
+	s=korg; t=1748367642;
+	bh=bqvJsNnxE+8GlKGqfCoeRmFYcZKnPZtTIP6eKuKZES4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJ4/rT8YjXqAXqM86jA2Mkyvviwwd3Ck9VJXB0S+e5zESJvtYtgd/WyTLPHDkcAsW
-	 2JhoFYjMKLnGNCWHaypKAX9D/bbKiYMONquri7LXHuuLl/NmIKuerJCFnR/3aNv73N
-	 +KaoD068KbZWyvZ4EhmFGt9oe75E4gGTGlTjHgQA=
+	b=goSv1eObuz0bOzbvMmcTtA+urCuVn4Q73nS42fV1iWxMLre/FRaLFnMWesMb8ouUM
+	 WrMQR+a/Nn78OHZJfay7Udo8DLohOatfmcOkfZBtIVkuXBi5vnp74AOjZyn0OlHeJO
+	 Ilo5hfjeOok3C02pAwYtVZMXEXUK/QONN56CiqOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siva Durga Prasad Paladugu <siva.durga.prasad.paladugu@amd.com>,
-	Nava kishore Manne <nava.kishore.manne@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 357/626] firmware: xilinx: Dont send linux address to get fpga config get status
+Subject: [PATCH 6.14 453/783] media: i2c: ov2740: Free control handler on error path
 Date: Tue, 27 May 2025 18:24:10 +0200
-Message-ID: <20250527162459.520662964@linuxfoundation.org>
+Message-ID: <20250527162531.572662842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siva Durga Prasad Paladugu <siva.durga.prasad.paladugu@amd.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 5abc174016052caff1bcf4cedb159bd388411e98 ]
+[ Upstream commit 71dfb2c7548994aad6cb0a316c2601e7144d15a5 ]
 
-Fpga get config status just returns status through ret_payload and there
-is no need to allocate local buf and send its address through SMC args.
-Moreover, the address that is being passed till now is linux virtual
-address and is incorrect.
-Corresponding modification has been done in the firmware to avoid using the
-address sent by linux.
+The control handler wasn't freed if v4l2_fwnode_device_parse() failed. Do
+that now.
 
-Signed-off-by: Siva Durga Prasad Paladugu <siva.durga.prasad.paladugu@amd.com>
-Signed-off-by: Nava kishore Manne <nava.kishore.manne@amd.com>
-Link: https://lore.kernel.org/r/20250207054951.1650534-1-nava.kishore.manne@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Co-developed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/xilinx/zynqmp.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/media/i2c/ov2740.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/xilinx/zynqmp.c b/drivers/firmware/xilinx/zynqmp.c
-index add8acf66a9c7..5578158f13750 100644
---- a/drivers/firmware/xilinx/zynqmp.c
-+++ b/drivers/firmware/xilinx/zynqmp.c
-@@ -1012,17 +1012,13 @@ EXPORT_SYMBOL_GPL(zynqmp_pm_fpga_get_status);
- int zynqmp_pm_fpga_get_config_status(u32 *value)
- {
- 	u32 ret_payload[PAYLOAD_ARG_CNT];
--	u32 buf, lower_addr, upper_addr;
- 	int ret;
+diff --git a/drivers/media/i2c/ov2740.c b/drivers/media/i2c/ov2740.c
+index 9a5d118b87b01..04e93618f408a 100644
+--- a/drivers/media/i2c/ov2740.c
++++ b/drivers/media/i2c/ov2740.c
+@@ -828,8 +828,10 @@ static int ov2740_init_controls(struct ov2740 *ov2740)
+ 				     0, 0, ov2740_test_pattern_menu);
  
- 	if (!value)
- 		return -EINVAL;
+ 	ret = v4l2_fwnode_device_parse(&client->dev, &props);
+-	if (ret)
++	if (ret) {
++		v4l2_ctrl_handler_free(ctrl_hdlr);
+ 		return ret;
++	}
  
--	lower_addr = lower_32_bits((u64)&buf);
--	upper_addr = upper_32_bits((u64)&buf);
--
- 	ret = zynqmp_pm_invoke_fn(PM_FPGA_READ, ret_payload, 4,
--				  XILINX_ZYNQMP_PM_FPGA_CONFIG_STAT_OFFSET, lower_addr, upper_addr,
-+				  XILINX_ZYNQMP_PM_FPGA_CONFIG_STAT_OFFSET, 0, 0,
- 				  XILINX_ZYNQMP_PM_FPGA_READ_CONFIG_REG);
+ 	v4l2_ctrl_new_fwnode_properties(ctrl_hdlr, &ov2740_ctrl_ops, &props);
  
- 	*value = ret_payload[1];
 -- 
 2.39.5
 
