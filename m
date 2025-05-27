@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10000AC54D2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DF1AC582C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8790D178A80
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5CCE4C04B5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04CE26868E;
-	Tue, 27 May 2025 17:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7DA27CCF0;
+	Tue, 27 May 2025 17:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MO0vgQOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iq2fl1bO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA89276051;
-	Tue, 27 May 2025 17:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B05542A9B;
+	Tue, 27 May 2025 17:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365452; cv=none; b=elQehLVBZEebjr841dMYdeutrKXzOPG0uOKusk21Vc2ZOGdAGeOTJiPWxcaxWcCof77TVqcJzk9O8SV252pKz8cpetDVhKqCg2LkpCkzCQCdXeeHwTyAh4bo1UYLw6nbWVl90K2XwQ84alHJrqWsYJv6JgDxe/qoGuSAODOD/II=
+	t=1748367706; cv=none; b=LIdRoOxpTX2By6QZmplD4DPLpQTTG7/sdc9xLjcBFbRoebCiwfB3t7AVtDtNTm8RF299Pze40fLm/a0+2HED13CVD/zklCqY/zOs+Tqovr7Mp+h9MNBu2W+GekSqUgmA7Wuu1+jIbWwVU839knhmjUft22vdIfbDCmNoh7cB488=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365452; c=relaxed/simple;
-	bh=fM3qcjB17DBFeIHDM77BXtqWi0LMPW3D0rqDwaZak14=;
+	s=arc-20240116; t=1748367706; c=relaxed/simple;
+	bh=eAx2UkyDsvqWeJuNhyWP3IwRUDK2US51Xn+1jywGvCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGW9ACV0GxqN3A4eM60B1jZH02wEVUpyb2+2M0+QpR+0eFUk2NtvLle+hfhty58o2sfwJ8LrWFVVK7aWfB54l5Ddur5Q3tqdagdZ/65U/e7VkSkz78Tx8pOSRO1XLs7SCh+occJRsPkFccJPJHK8jDf59JeB4bfl1rKwPcs8L0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MO0vgQOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE94C4CEE9;
-	Tue, 27 May 2025 17:04:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uQ/b8uzbZ0gZTvYLJI50LMqrNz02zFP7v0r0exNq1lrehC/7Uq3wrl5Hp96WPNBJOPBD4kYzb/HLVvtrCrn+zT+nTrksYHJ95Ih0pFDinl5ZTZrp2Ax3oUgQ1e839KZYMs/TNqfwBova6ez0cOy1Yoe2nDhBUS+3ZhhWrsrr3FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iq2fl1bO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC42C4CEE9;
+	Tue, 27 May 2025 17:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365452;
-	bh=fM3qcjB17DBFeIHDM77BXtqWi0LMPW3D0rqDwaZak14=;
+	s=korg; t=1748367706;
+	bh=eAx2UkyDsvqWeJuNhyWP3IwRUDK2US51Xn+1jywGvCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MO0vgQOwBwpHVhquq2fHjWZB2+TBTpTJ7guodASPa+aA3iVW7wEcIw4V2HRbu5KIs
-	 Q3rVeaNmqbWQAdg4trtLmLAwUkb0AsePde6gBZ49c4s0CI+OAiIbaD7niyHKopqiNw
-	 40iOuLoVjRCSeoykW/OLU/wSNaDlRbLx1LYHIJWg=
+	b=Iq2fl1bOh3mff/5JI4XYD1jy9LgcN+wAr4zMmusrkpDmvi8yjn/1Fz3vJfjF1ep5M
+	 OxmR8riLMqscwtC6VwdWnzCINnQFGOG4bN4aF/MIxYr3tqC39SBK2FcC2d/ugK8TT+
+	 vVzJ3/isPvVvQHygY5ks9VCMWy9xllfxR6TYyeZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 350/626] hrtimers: Replace hrtimer_clock_to_base_table with switch-case
+Subject: [PATCH 6.14 446/783] drm/xe/pf: Release all VFs configs on device removal
 Date: Tue, 27 May 2025 18:24:03 +0200
-Message-ID: <20250527162459.238484656@linuxfoundation.org>
+Message-ID: <20250527162531.297598523@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 4441b976dfeff0d3579e8da3c0283300c618a553 ]
+[ Upstream commit 611160b02a40ce3f60ab94eea85b394dca1cafd2 ]
 
-Clang and GCC complain about overlapped initialisers in the
-hrtimer_clock_to_base_table definition. With `make W=1` and CONFIG_WERROR=y
-(which is default nowadays) this breaks the build:
+If we try to manually provision VFs using debugfs and then we
+try to unload the driver, we will see complains like:
 
-  CC      kernel/time/hrtimer.o
-kernel/time/hrtimer.c:124:21: error: initializer overrides prior initialization of this subobject [-Werror,-Winitializer-overrides]
-  124 |         [CLOCK_REALTIME]        = HRTIMER_BASE_REALTIME,
+ [ ] Memory manager not clean during takedown.
+ [ ] RIP: 0010:drm_mm_takedown+0x3f/0x100
+ [ ] [drm:drm_mm_takedown] *ERROR* node [fedff000 + 00001000]: inserted at
+      drm_mm_insert_node_in_range+0x2bd/0x520
+      xe_ggtt_node_insert+0x52/0x90 [xe]
+      pf_provision_vf_ggtt+0x1fa/0xac0 [xe]
+      xe_gt_sriov_pf_config_set_ggtt+0x79/0x7a0 [xe]
+      ggtt_set+0x53/0x80 [xe]
+      simple_attr_write_xsigned.isra.0+0xd2/0x150
+      simple_attr_write+0x14/0x30
+      debugfs_attr_write+0x4e/0x80
 
-kernel/time/hrtimer.c:122:27: note: previous initialization is here
-  122 |         [0 ... MAX_CLOCKS - 1]  = HRTIMER_MAX_CLOCK_BASES,
+ [ ] xe 0000:00:02.0: [drm] *ERROR* GT0: GUC ID manager unclean (1/65535)
+ [ ] xe 0000:00:02.0: [drm] GT0:      total 65535
+ [ ] xe 0000:00:02.0: [drm] GT0:      used 1
+ [ ] xe 0000:00:02.0: [drm] GT0:      range 65534..65534 (1)
 
-(and similar for CLOCK_MONOTONIC, CLOCK_BOOTTIME, and CLOCK_TAI).
+ [ ] xe 0000:00:02.0: [drm] *ERROR* GT0: GuC doorbells manager unclean (1/256)
+ [ ] xe 0000:00:02.0: [drm] GT0:      count: 256
+ [ ] xe 0000:00:02.0: [drm] GT0:      available range: 1..255 (255)
+ [ ] xe 0000:00:02.0: [drm] GT0:      available total: 255
+ [ ] xe 0000:00:02.0: [drm] GT0:      reserved range: 0..0 (1)
+ [ ] xe 0000:00:02.0: [drm] GT0:      reserved total: 1
 
-hrtimer_clockid_to_base(), which uses the table, is only used in
-__hrtimer_init(), which is not a hotpath.
+This could be easily fixed by adding config release action.
 
-Therefore replace the table lookup with a switch case in
-hrtimer_clockid_to_base() to avoid this warning.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250214134424.3367619-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250211155034.1028-1-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_sriov_pf.c        |  6 +++++
+ drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c | 29 ++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_gt_sriov_pf_config.h |  1 +
+ 3 files changed, 36 insertions(+)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index db9c06bb23116..06fbc226341fd 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -117,16 +117,6 @@ DEFINE_PER_CPU(struct hrtimer_cpu_base, hrtimer_bases) =
- 	.csd = CSD_INIT(retrigger_next_event, NULL)
- };
- 
--static const int hrtimer_clock_to_base_table[MAX_CLOCKS] = {
--	/* Make sure we catch unsupported clockids */
--	[0 ... MAX_CLOCKS - 1]	= HRTIMER_MAX_CLOCK_BASES,
--
--	[CLOCK_REALTIME]	= HRTIMER_BASE_REALTIME,
--	[CLOCK_MONOTONIC]	= HRTIMER_BASE_MONOTONIC,
--	[CLOCK_BOOTTIME]	= HRTIMER_BASE_BOOTTIME,
--	[CLOCK_TAI]		= HRTIMER_BASE_TAI,
--};
--
- static inline bool hrtimer_base_is_online(struct hrtimer_cpu_base *base)
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
+index 6f906c8e8108b..b80930a6bc1a2 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf.c
+@@ -78,6 +78,12 @@ int xe_gt_sriov_pf_init_early(struct xe_gt *gt)
+  */
+ int xe_gt_sriov_pf_init(struct xe_gt *gt)
  {
- 	if (!IS_ENABLED(CONFIG_HOTPLUG_CPU))
-@@ -1597,14 +1587,19 @@ u64 hrtimer_next_event_without(const struct hrtimer *exclude)
- 
- static inline int hrtimer_clockid_to_base(clockid_t clock_id)
- {
--	if (likely(clock_id < MAX_CLOCKS)) {
--		int base = hrtimer_clock_to_base_table[clock_id];
--
--		if (likely(base != HRTIMER_MAX_CLOCK_BASES))
--			return base;
-+	switch (clock_id) {
-+	case CLOCK_REALTIME:
-+		return HRTIMER_BASE_REALTIME;
-+	case CLOCK_MONOTONIC:
-+		return HRTIMER_BASE_MONOTONIC;
-+	case CLOCK_BOOTTIME:
-+		return HRTIMER_BASE_BOOTTIME;
-+	case CLOCK_TAI:
-+		return HRTIMER_BASE_TAI;
-+	default:
-+		WARN(1, "Invalid clockid %d. Using MONOTONIC\n", clock_id);
-+		return HRTIMER_BASE_MONOTONIC;
- 	}
--	WARN(1, "Invalid clockid %d. Using MONOTONIC\n", clock_id);
--	return HRTIMER_BASE_MONOTONIC;
++	int err;
++
++	err = xe_gt_sriov_pf_config_init(gt);
++	if (err)
++		return err;
++
+ 	return xe_gt_sriov_pf_migration_init(gt);
  }
  
- static void __hrtimer_init(struct hrtimer *timer, clockid_t clock_id,
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
+index 4bd255adfb401..aaca54b40091f 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
+@@ -2320,6 +2320,35 @@ int xe_gt_sriov_pf_config_restore(struct xe_gt *gt, unsigned int vfid,
+ 	return err;
+ }
+ 
++static void fini_config(void *arg)
++{
++	struct xe_gt *gt = arg;
++	struct xe_device *xe = gt_to_xe(gt);
++	unsigned int n, total_vfs = xe_sriov_pf_get_totalvfs(xe);
++
++	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
++	for (n = 1; n <= total_vfs; n++)
++		pf_release_vf_config(gt, n);
++	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
++}
++
++/**
++ * xe_gt_sriov_pf_config_init - Initialize SR-IOV configuration data.
++ * @gt: the &xe_gt
++ *
++ * This function can only be called on PF.
++ *
++ * Return: 0 on success or a negative error code on failure.
++ */
++int xe_gt_sriov_pf_config_init(struct xe_gt *gt)
++{
++	struct xe_device *xe = gt_to_xe(gt);
++
++	xe_gt_assert(gt, IS_SRIOV_PF(xe));
++
++	return devm_add_action_or_reset(xe->drm.dev, fini_config, gt);
++}
++
+ /**
+  * xe_gt_sriov_pf_config_restart - Restart SR-IOV configurations after a GT reset.
+  * @gt: the &xe_gt
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.h b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.h
+index f894e9d4abba2..513e6512a575b 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.h
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.h
+@@ -63,6 +63,7 @@ int xe_gt_sriov_pf_config_restore(struct xe_gt *gt, unsigned int vfid,
+ 
+ bool xe_gt_sriov_pf_config_is_empty(struct xe_gt *gt, unsigned int vfid);
+ 
++int xe_gt_sriov_pf_config_init(struct xe_gt *gt);
+ void xe_gt_sriov_pf_config_restart(struct xe_gt *gt);
+ 
+ int xe_gt_sriov_pf_config_print_ggtt(struct xe_gt *gt, struct drm_printer *p);
 -- 
 2.39.5
 
