@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16B9AC5938
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0FAAC55EF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 314784A78BE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22C7F167E0A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFEE280036;
-	Tue, 27 May 2025 17:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36BB27D766;
+	Tue, 27 May 2025 17:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBvKzlLK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dY5rl7H1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FD1263F5E;
-	Tue, 27 May 2025 17:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED1313790B;
+	Tue, 27 May 2025 17:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368456; cv=none; b=JKd4cnXhbPjes0BaNak3NJiNJqkc40mWNcyorhfST18rPxLLBtXB4nL4E9ix/e3gkz6NUM5OYU14+EfOBBpnLSIQCJnAmtciY3S6QZaTnyVclqM+PLEq+22ZByC/rN/D8d93OPT9+uF4p//zCgUwPM3ocu4KgjYxWSgrhf/1RT0=
+	t=1748366111; cv=none; b=UDVpj/sDGF1Uva0Tw2QTWJXItnNBS5EsF8Z98d8PeeSJjhiLtA4+5nZFqttxrnEh5V3diVBkAssB/D9tNVdUN7t+cIlN6rOiwNBBe1mv1zZYb2bbA3KQ3q7uTK0mSWewNKYmWb6epqE17d6HtMcYWpFvuwXL/Y7zjb3iZUXAEfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368456; c=relaxed/simple;
-	bh=DqmyGEGqHxU3lDgzA5vMcDu28iMONP4e9bP3jhxGP2c=;
+	s=arc-20240116; t=1748366111; c=relaxed/simple;
+	bh=LgRqqsglq1xUx2O467xKrDOUyhtj8FgPoJ2Bs66GkNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rwkG/fiTuY4hTQmOWdr/ZKyKW1Dg1Pi9jNsTJHn8J2QzjBjqeryjgbqqKVDxnuOHMp9NnT5pnPxViU1eB5mYl8ApIT+A79gJKQddygxhp3VBCBR7AqqgXNRR5hIAwEGie2C/xe3BOjkWjwe0IEfx8QVVU+arC6Dp/cLXJewV3y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBvKzlLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BDDC4CEE9;
-	Tue, 27 May 2025 17:54:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P34tsxZUogbGRsAwCFpJzDfG4XBr7jQ9JKloSjQvJzFwZNzngdgvU0Km9Xum/yje6ELAP/4O0htIUNbPUCEzc2nO60SCCZZTw8JW7CkB7itknC+bsvzN39VEkkwikhHcVG9kUV1mcxDREUtjqnRYxfHjv1EOYD3lcl2+P16Wlh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dY5rl7H1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F6DC4CEE9;
+	Tue, 27 May 2025 17:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368456;
-	bh=DqmyGEGqHxU3lDgzA5vMcDu28iMONP4e9bP3jhxGP2c=;
+	s=korg; t=1748366111;
+	bh=LgRqqsglq1xUx2O467xKrDOUyhtj8FgPoJ2Bs66GkNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBvKzlLKkda3U1u+w4bh7hazX38uP8KKixD8hPKaCOU6IP62J3WtDOYNs2gR8QUWC
-	 xNgVLSpOG5az0/Xohnrl1ahtPKknN+oRNQlLRdw+nLCVJouDv9iXfrdV/tDFcL5LIU
-	 gEjd6NW8brBOuw8hsCwqIUUqX31Z6u0RAAsVME+M=
+	b=dY5rl7H14NvjisORRKkHy/C3Mqt/fIzat0IPW8qXK0Ya2r4w/31RyzP67hp3Bu8F1
+	 xeOqYMrm9NyeT/KMHhPAv4J5Rf5UybgCIkz9b0CNkWFg7bDvVh5A8WoaApJ5lGiwiQ
+	 MCDwLRTKPq40iW+pwyhxFH05xIbJRK88jLGlJzpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 673/783] btrfs: avoid NULL pointer dereference if no valid csum tree
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 577/626] ASoc: SOF: topology: connect DAI to a single DAI link
 Date: Tue, 27 May 2025 18:27:50 +0200
-Message-ID: <20250527162540.535981015@linuxfoundation.org>
+Message-ID: <20250527162508.416758944@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-[ Upstream commit f95d186255b319c48a365d47b69bd997fecb674e ]
+commit 6052f05254b4fe7b16bbd8224779af52fba98b71 upstream.
 
-[BUG]
-When trying read-only scrub on a btrfs with rescue=idatacsums mount
-option, it will crash with the following call trace:
+The partial matching of DAI widget to link names, can cause problems if
+one of the widget names is a substring of another. E.g. with names
+"Foo1" and Foo10", it's not possible to correctly link up "Foo1".
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000208
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  CPU: 1 UID: 0 PID: 835 Comm: btrfs Tainted: G           O        6.15.0-rc3-custom+ #236 PREEMPT(full)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
-  RIP: 0010:btrfs_lookup_csums_bitmap+0x49/0x480 [btrfs]
-  Call Trace:
-   <TASK>
-   scrub_find_fill_first_stripe+0x35b/0x3d0 [btrfs]
-   scrub_simple_mirror+0x175/0x290 [btrfs]
-   scrub_stripe+0x5f7/0x6f0 [btrfs]
-   scrub_chunk+0x9a/0x150 [btrfs]
-   scrub_enumerate_chunks+0x333/0x660 [btrfs]
-   btrfs_scrub_dev+0x23e/0x600 [btrfs]
-   btrfs_ioctl+0x1dcf/0x2f80 [btrfs]
-   __x64_sys_ioctl+0x97/0xc0
-   do_syscall_64+0x4f/0x120
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Modify the logic so that if multiple DAI links match the widget stream
+name, prioritize a full match if one is found.
 
-[CAUSE]
-Mount option "rescue=idatacsums" will completely skip loading the csum
-tree, so that any data read will not find any data csum thus we will
-ignore data checksum verification.
-
-Normally call sites utilizing csum tree will check the fs state flag
-NO_DATA_CSUMS bit, but unfortunately scrub does not check that bit at all.
-
-This results in scrub to call btrfs_search_slot() on a NULL pointer
-and triggered above crash.
-
-[FIX]
-Check both extent and csum tree root before doing any tree search.
-
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe88788779fc ("ASoC: SOF: topology: Use partial match for connecting DAI link and DAI widget")
+Link: https://github.com/thesofproject/linux/issues/5308
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250509085318.13936-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/scrub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/sof/topology.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 531312efee8df..5d0060eb8ff4c 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -1541,8 +1541,8 @@ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
- 	u64 extent_gen;
- 	int ret;
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -1059,7 +1059,7 @@ static int sof_connect_dai_widget(struct
+ 				  struct snd_sof_dai *dai)
+ {
+ 	struct snd_soc_card *card = scomp->card;
+-	struct snd_soc_pcm_runtime *rtd;
++	struct snd_soc_pcm_runtime *rtd, *full, *partial;
+ 	struct snd_soc_dai *cpu_dai;
+ 	int stream;
+ 	int i;
+@@ -1076,12 +1076,22 @@ static int sof_connect_dai_widget(struct
+ 	else
+ 		goto end;
  
--	if (unlikely(!extent_root)) {
--		btrfs_err(fs_info, "no valid extent root for scrub");
-+	if (unlikely(!extent_root || !csum_root)) {
-+		btrfs_err(fs_info, "no valid extent or csum root for scrub");
- 		return -EUCLEAN;
- 	}
- 	memset(stripe->sectors, 0, sizeof(struct scrub_sector_verification) *
--- 
-2.39.5
-
++	full = NULL;
++	partial = NULL;
+ 	list_for_each_entry(rtd, &card->rtd_list, list) {
+ 		/* does stream match DAI link ? */
+-		if (!rtd->dai_link->stream_name ||
+-		    !strstr(rtd->dai_link->stream_name, w->sname))
+-			continue;
++		if (rtd->dai_link->stream_name) {
++			if (!strcmp(rtd->dai_link->stream_name, w->sname)) {
++				full = rtd;
++				break;
++			} else if (strstr(rtd->dai_link->stream_name, w->sname)) {
++				partial = rtd;
++			}
++		}
++	}
+ 
++	rtd = full ? full : partial;
++	if (rtd) {
+ 		for_each_rtd_cpu_dais(rtd, i, cpu_dai) {
+ 			/*
+ 			 * Please create DAI widget in the right order
 
 
 
