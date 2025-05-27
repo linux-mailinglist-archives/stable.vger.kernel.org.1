@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-146957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB87AC5554
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4853EAC58B6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CD3B1BA5FC2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C78A27A3C53
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122C127C854;
-	Tue, 27 May 2025 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9DE27BF8D;
+	Tue, 27 May 2025 17:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIY8Yr9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1ZL03Jm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C335D139579;
-	Tue, 27 May 2025 17:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1FE42A9B;
+	Tue, 27 May 2025 17:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365832; cv=none; b=TYsU6p+UYNxt88x00ZSsW6WlsS2r3I0FqjqYjYfHI3XgKv27M3r46mJleTPJlwOnvgoohMZT7SJsgToGM+3kcIC1ZccTXZIn9kzvR5MAqLoE+HWfcBoNGqHb62xcLIE+1SonglVxuyDIBCWEpBz5s1xaheRztVUtg09bdcjNvtA=
+	t=1748368107; cv=none; b=Tyz+H0/HH6Klbwnoa9UzriF7GciBF8pjUlPTROoGAEjM7pVCBMzf4FY7apY6uWW+3QYjcdSOr0GHx/q78WIbbGTKad3t6he81ox0hgiI1soWapPYFakLqWDJjkOGgLUbugoG4wLGGvwMecz0hWvqvFXy6zmeizBlTJLARcTjp2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365832; c=relaxed/simple;
-	bh=FfEqjFSURMZtBteaKGgq2vnouXRPTSQ/0Rfi947Q8Uw=;
+	s=arc-20240116; t=1748368107; c=relaxed/simple;
+	bh=B7idli6IhQq/5lrYSXAhaBUcLJ7e/TnBPOcjdPC4lIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glsncDA7z+Bb/8w899YreF6LBzkrZSVkK1NF6TeuBWTk2u6wFZya0V9W+Lt4Nm4Ww3b8ywBLSX/7mRK1S+O5IQyazK6GRpo1OvhikTA0w6aMUe1DF7AmWFQysc5YxUzk+xSJP9H80NAyhx1RqAuTheJ/QQP5csnq8q6Idq0MzPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIY8Yr9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C544C4CEE9;
-	Tue, 27 May 2025 17:10:31 +0000 (UTC)
+	 MIME-Version; b=FgTvnZzqbBeo6dT82N8GSmwx3P8b0x3WLDTGVYGvlN8UWMv1FUUxccbbbfG/5xzTmtXTirPMqjhjbnkn612hGRSpmMoAvdK+Se+Ata8ikl94hM3WGbMNDeX7L6C4cUl1O0Kw7Y/4DqInx4YctePuGG7nSr03bTelG9SPLzhaPxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1ZL03Jm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9ADC4CEE9;
+	Tue, 27 May 2025 17:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365832;
-	bh=FfEqjFSURMZtBteaKGgq2vnouXRPTSQ/0Rfi947Q8Uw=;
+	s=korg; t=1748368106;
+	bh=B7idli6IhQq/5lrYSXAhaBUcLJ7e/TnBPOcjdPC4lIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIY8Yr9Otb4wKmE7QjStjfUlyKOpWVYgbhnpTzKUsYkuuyiibCvnINoWKhiFKrkGu
-	 Hd+xG40lbwGQjWbe5Qeq5mZ192D3TUjOvtcnivQAvl8i+UJxj+Qmw6LNudHOuGZWUb
-	 kUzMek/mzVeKVRSNzGpckgIqlcaw8PRCQwyPIyvE=
+	b=O1ZL03JmpZhvv3aUCxCUlUIj2oYszDqrkoNObtBYIYG1Tz/lERBuPULM6rKq/ZCb/
+	 rBNV8KhUI1KSB4LayyYUW7A6I1Qn3zUraQBBvDcJtMPhfr2Y2/BjuWIbgJhC0vpBVQ
+	 SaTzWQsXK11yAnlIV2GE+xgAwcvyUN4oyioGg0yU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 503/626] drm/panel-edp: Add Starry 116KHD024006
-Date: Tue, 27 May 2025 18:26:36 +0200
-Message-ID: <20250527162505.410488881@linuxfoundation.org>
+Subject: [PATCH 6.14 600/783] wifi: rtw89: add wiphy_lock() to work that isnt held wiphy_lock() yet
+Date: Tue, 27 May 2025 18:26:37 +0200
+Message-ID: <20250527162537.578090711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 749b5b279e5636cdcef51e15d67b77162cca6caa ]
+[ Upstream commit ebfc9199df05d37b67f4d1b7ee997193f3d2e7c8 ]
 
-We have a few reports of sc7180-trogdor-pompom devices that have a
-panel in them that IDs as STA 0x0004 and has the following raw EDID:
+To ensure where are protected by driver mutex can also be protected by
+wiphy_lock(), so afterward we can remove driver mutex safely.
 
-  00 ff ff ff ff ff ff 00  4e 81 04 00 00 00 00 00
-  10 20 01 04 a5 1a 0e 78  0a dc dd 96 5b 5b 91 28
-  1f 52 54 00 00 00 01 01  01 01 01 01 01 01 01 01
-  01 01 01 01 01 01 8e 1c  56 a0 50 00 1e 30 28 20
-  55 00 00 90 10 00 00 18  00 00 00 00 00 00 00 00
-  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
-  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 fe
-  00 31 31 36 4b 48 44 30  32 34 30 30 36 0a 00 e6
-
-We've been unable to locate a datasheet for this panel and our partner
-has not been responsive, but all Starry eDP datasheets that we can
-find agree on the same timing (delay_100_500_e200) so it should be
-safe to use that here instead of the super conservative timings. We'll
-still go a little extra conservative and allow `hpd_absent` of 200
-instead of 100 because that won't add any real-world delay in most
-cases.
-
-We'll associate the string from the EDID ("116KHD024006") with this
-panel. Given that the ID is the suspicious value of 0x0004 it seems
-likely that Starry doesn't always update their IDs but the string will
-still work to differentiate if we ever need to in the future.
-
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250109142853.1.Ibcc3009933fd19507cc9c713ad0c99c7a9e4fe17@changeid
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250122060310.31976-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-edp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw89/regd.c | 2 ++
+ drivers/net/wireless/realtek/rtw89/ser.c  | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index 767e47a2b0c14..663af985d1b38 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -1983,6 +1983,7 @@ static const struct edp_panel_entry edp_panels[] = {
- 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x153a, &delay_200_500_e50, "LQ140T1JH01"),
- 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x154c, &delay_200_500_p2e100, "LQ116M1JW10"),
+diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
+index 80b2f74589eb9..5b8d95c90d739 100644
+--- a/drivers/net/wireless/realtek/rtw89/regd.c
++++ b/drivers/net/wireless/realtek/rtw89/regd.c
+@@ -720,6 +720,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
+ 	struct rtw89_dev *rtwdev = hw->priv;
  
-+	EDP_PANEL_ENTRY('S', 'T', 'A', 0x0004, &delay_200_500_e200, "116KHD024006"),
- 	EDP_PANEL_ENTRY('S', 'T', 'A', 0x0100, &delay_100_500_e200, "2081116HHD028001-51D"),
++	wiphy_lock(wiphy);
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw89_leave_ps_mode(rtwdev);
  
- 	{ /* sentinal */ }
+@@ -737,6 +738,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
+ 
+ exit:
+ 	mutex_unlock(&rtwdev->mutex);
++	wiphy_unlock(wiphy);
+ }
+ 
+ /* Maximum Transmit Power field (@raw) can be EIRP or PSD.
+diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
+index 26a944d3b6727..d0c8584308c06 100644
+--- a/drivers/net/wireless/realtek/rtw89/ser.c
++++ b/drivers/net/wireless/realtek/rtw89/ser.c
+@@ -156,9 +156,11 @@ static void ser_state_run(struct rtw89_ser *ser, u8 evt)
+ 	rtw89_debug(rtwdev, RTW89_DBG_SER, "ser: %s receive %s\n",
+ 		    ser_st_name(ser), ser_ev_name(ser, evt));
+ 
++	wiphy_lock(rtwdev->hw->wiphy);
+ 	mutex_lock(&rtwdev->mutex);
+ 	rtw89_leave_lps(rtwdev);
+ 	mutex_unlock(&rtwdev->mutex);
++	wiphy_unlock(rtwdev->hw->wiphy);
+ 
+ 	ser->st_tbl[ser->state].st_func(ser, evt);
+ }
+@@ -708,9 +710,11 @@ static void ser_l2_reset_st_hdl(struct rtw89_ser *ser, u8 evt)
+ 
+ 	switch (evt) {
+ 	case SER_EV_STATE_IN:
++		wiphy_lock(rtwdev->hw->wiphy);
+ 		mutex_lock(&rtwdev->mutex);
+ 		ser_l2_reset_st_pre_hdl(ser);
+ 		mutex_unlock(&rtwdev->mutex);
++		wiphy_unlock(rtwdev->hw->wiphy);
+ 
+ 		ieee80211_restart_hw(rtwdev->hw);
+ 		ser_set_alarm(ser, SER_RECFG_TIMEOUT, SER_EV_L2_RECFG_TIMEOUT);
 -- 
 2.39.5
 
