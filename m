@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-147444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99E6AC57AD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEA9AC544A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DBAE1BC1277
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 119901BA485F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECE627FB10;
-	Tue, 27 May 2025 17:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BBB27FD53;
+	Tue, 27 May 2025 16:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4UAgHKH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXTSGGlV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D312110E;
-	Tue, 27 May 2025 17:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5302CCC0;
+	Tue, 27 May 2025 16:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367361; cv=none; b=W8j6mc0MrNT8/c6zkd2MXdXuFkNZncmYPojpkk+Fp3NgFpKSsohCg6DYTuAf5RvmyHweejVtdSIVDjzq1h9n810lNFHLLibu3/f39SAWv4wcnaJjYlsl7NAPgsIPZhH6ws2PjyZw67H6yxFRkWKKlwKScYcSW1cecBekFsWvcuo=
+	t=1748365103; cv=none; b=i/Zcp/fLirTSfyZ+P9WqWAdjpGrgUc/FyRrySoqDWKwHO067lE4uOhtsQzZ3Iq4THTKd0xM2YpvmXcW841EFxH6rCgt1i8IZZnM6XgLmJnxtRopLR7vOb+ApGB4ImTcVCH5wnNvJzzOZwNdlrnnU6WCOdCQw3/sj521+46YIWfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367361; c=relaxed/simple;
-	bh=q64wa35TJKQINCsPlXxJvGrIfHmYZMa4a3ba2wD8fDw=;
+	s=arc-20240116; t=1748365103; c=relaxed/simple;
+	bh=uB04S/mnCeUHWd7kea8aP5vhxqxc9fWP7vChfUzaIO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cS6lvhBylGr03GfpVgSA3lC2SuifekbsjVNw3YgMAk2cuY3Gl/azeokohbgskPUOkNW+mTL3xzCHwywtnHjjnowUy+KhIMr52mncIDtaKFPyLm6BPyugR4mO3zOUcfDEBdfVo3kSDrcqIFXO1+agtHVJQE+w3x9HPPrgYgP5PeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4UAgHKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A57AC4CEE9;
-	Tue, 27 May 2025 17:36:00 +0000 (UTC)
+	 MIME-Version; b=H4ZGA3JrJh7M6bhtdwMY0ssVEgL2RU+PRMa1bgAZ+fsVRdxXbJBSjqyAdQWovRZrPxGkbc2R/rj1Kr5KudDCutPOyozTY6vA/jRx2BxmfYJ1gJESuGGtaAdXz9vYN7Sqwy+7RI6yfFXVlAABv6DjJ9QGY27uIvmM2lAhfV9nqVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXTSGGlV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B655C4CEE9;
+	Tue, 27 May 2025 16:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367360;
-	bh=q64wa35TJKQINCsPlXxJvGrIfHmYZMa4a3ba2wD8fDw=;
+	s=korg; t=1748365102;
+	bh=uB04S/mnCeUHWd7kea8aP5vhxqxc9fWP7vChfUzaIO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4UAgHKHXtfCWpeztJEBrXtjd97DVseerAC8TjNCoVyXf7ZUWirAFf8pH5QO/vxPG
-	 WjIKhRigZNGPI4VA2rnqEKoSK9ukOafZTgbaWvZTwNfty73rWBzBbmqd3WG3+EJMOh
-	 51k+afaO5aQaPgiB8UOyW9a2+CG3AJgGCl0SM35g=
+	b=rXTSGGlVOdhhKtm2nDPK4A/iK25YF9aO3Av04wmxJOEGcP/kBLMEa3YlGPl3baTEW
+	 gsK1Cz49fZ9Yzuhs7HgKhNNiQnBTPfnJ5aeo/QYtclx8PeD2jTqKQ7UbpTAnf3NA1W
+	 eX2V8TVmuNf8XC116bdADTeLncP8YeS5K5zQRg0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Vinith Kumar R <quic_vinithku@quicinc.com>,
+	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 363/783] media: tc358746: improve calculation of the D-PHY timing registers
+Subject: [PATCH 6.12 267/626] wifi: ath12k: Report proper tx completion status to mac80211
 Date: Tue, 27 May 2025 18:22:40 +0200
-Message-ID: <20250527162527.864907854@linuxfoundation.org>
+Message-ID: <20250527162455.865573261@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Fend <matthias.fend@emfend.at>
+From: Vinith Kumar R <quic_vinithku@quicinc.com>
 
-[ Upstream commit 78d7265e2e1ce349e7f3c6a085f2b66d7b73f4ca ]
+[ Upstream commit d2d9c9b8de725e1006d3aa3d18678a732f5d3584 ]
 
-When calculating D-PHY registers, using data rates that are not multiples
-of 16 can lead to precision loss in division operations. This can result in
-register values that produce timing violations against the MIPI standard.
+Currently Tx completion for few exception packets are received from
+firmware and the tx status updated to mac80211. The tx status values of
+HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP and HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL
+are considered as tx failure and reported as tx failure to mac80211.
+But these failure status is due to internal firmware tx drop and these
+packets were not tried to transmit in the air.
+In case of mesh this invalid tx status report might trigger mpath broken
+issue due to increase in mpath fail average.
+So do not report these tx status as tx failure instead free the skb
+by calling ieee80211_free_txskb(), and that will be accounted as dropped
+frame.
 
-An example:
-cfg->hs_clk_rate = 294MHz
-hf_clk = 18
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 
-If the desired value in cfg->init is 100us, which is the minimum allowed
-value, then the LINEINITCNT register is calculated as 1799. But since the
-actual clock is 18.375MHz instead of 18MHz, this setting results in a time
-that is shorter than 100us and thus violates the standard. The correct
-value for LINEINITCNT would be 1837.
-
-Improve the precision of calculations by using Hz instead of MHz as unit.
-
-Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
+Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Link: https://patch.msgid.link/20241122173432.2064858-1-quic_tamizhr@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358746.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_tx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358746.c b/drivers/media/i2c/tc358746.c
-index 389582420ba78..048a1a381b333 100644
---- a/drivers/media/i2c/tc358746.c
-+++ b/drivers/media/i2c/tc358746.c
-@@ -460,24 +460,20 @@ static int tc358746_apply_misc_config(struct tc358746 *tc358746)
- 	return err;
- }
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index 44406e0b4a342..ad21fbfbcbe22 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -557,13 +557,13 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
  
--/* Use MHz as base so the div needs no u64 */
--static u32 tc358746_cfg_to_cnt(unsigned int cfg_val,
--			       unsigned int clk_mhz,
--			       unsigned int time_base)
-+static u32 tc358746_cfg_to_cnt(unsigned long cfg_val, unsigned long clk_hz,
-+			       unsigned long long time_base)
- {
--	return DIV_ROUND_UP(cfg_val * clk_mhz, time_base);
-+	return div64_u64((u64)cfg_val * clk_hz + time_base - 1, time_base);
- }
- 
--static u32 tc358746_ps_to_cnt(unsigned int cfg_val,
--			      unsigned int clk_mhz)
-+static u32 tc358746_ps_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
- {
--	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, USEC_PER_SEC);
-+	return tc358746_cfg_to_cnt(cfg_val, clk_hz, PSEC_PER_SEC);
- }
- 
--static u32 tc358746_us_to_cnt(unsigned int cfg_val,
--			      unsigned int clk_mhz)
-+static u32 tc358746_us_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
- {
--	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, 1);
-+	return tc358746_cfg_to_cnt(cfg_val, clk_hz, USEC_PER_SEC);
- }
- 
- static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
-@@ -492,7 +488,6 @@ static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
- 
- 	/* The hs_byte_clk is also called SYSCLK in the excel sheet */
- 	hs_byte_clk = cfg->hs_clk_rate / 8;
--	hs_byte_clk /= HZ_PER_MHZ;
- 	hf_clk = hs_byte_clk / 2;
- 
- 	val = tc358746_us_to_cnt(cfg->init, hf_clk) - 1;
+ 	switch (wbm_status) {
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_OK:
+-	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
+-	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
+ 		ts.acked = (wbm_status == HAL_WBM_REL_HTT_TX_COMP_STATUS_OK);
+ 		ts.ack_rssi = le32_get_bits(status_desc->info2,
+ 					    HTT_TX_WBM_COMP_INFO2_ACK_RSSI);
+ 		ath12k_dp_tx_htt_tx_complete_buf(ab, msdu, tx_ring, &ts);
+ 		break;
++	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
++	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
+ 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
 -- 
 2.39.5
 
