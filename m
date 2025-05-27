@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-147558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2512AC582E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51095AC54EF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35C4B3A9A9C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1396A4A3183
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BF427D786;
-	Tue, 27 May 2025 17:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C201DC998;
+	Tue, 27 May 2025 17:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4vHC6Kr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsMFDe3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B7B1AF0BB;
-	Tue, 27 May 2025 17:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3C426868E;
+	Tue, 27 May 2025 17:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367712; cv=none; b=klYf+xU4QIb6EoyzXtMD74GogJ6Dp+ByKwzoDiSCTEKNXksonHPKBHONxFVSmQr56/DeFcY97uryFULDjbpOiYNPFNRnrhdg1UPeYUkb8znnid6ofJEtS3ib7uAK/KKAvqauwuAzgoQgAFVBQp2qwKA34ht9VVrMpXyHxvao5FY=
+	t=1748365532; cv=none; b=J/4GPRFFY88fkSwRqsyCUtzJk9h4EbOIPRnYjqcFygmSQ5RiIkLwQZHJyzVxdc2TX8HhXOPFQKwiuyzd2F/xSGwuWhgRx8DP370VRbZ5xw5/UIZrDyXIF5iaaDJk5iZOhw9xdyZzD6ZWAXvAfCK0EEY3Tn5ONIq+9a0GSqarNYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367712; c=relaxed/simple;
-	bh=Nr4zJwILTuk0ELcmLiypqDbXac3vPckbZVllw9UZnlY=;
+	s=arc-20240116; t=1748365532; c=relaxed/simple;
+	bh=6x0jXoFpnd8iMwZIDKzHVAnZUBNfxtcYkrDBZ/baO1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjgpjP+f4ZCx1Xa+ugGd9t7i6JuwRjq7gF1qfO+cOECL6C/WM8ld/+muYdCyjylcf5JXmVCwY4l73reqJ4OLg3gs5T8cGeb+S+42VdsLmTkcuVatgl6kS7TjHiz7Lg3eEpFLmIgVkTnCjyt/dwc2QhjF1wcOXdF+V8cOjHB+45k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4vHC6Kr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA2EC4CEE9;
-	Tue, 27 May 2025 17:41:51 +0000 (UTC)
+	 MIME-Version; b=LgM+7/F1/0vqBlc40Xshda4+VnNKdEivKWtFJJN2QauQU5l1nC4eo0BhTJkPwLfBpJv4euYSd77p4K/VzgNZfE1/oJ3uuqvrB+lBvvwlAkr8Imtnavm1K7EyhIlNfqFzCQ15ZtiQfjgHXzIc9d16Hf6xfIBi2DLkWKQFHdxa6AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsMFDe3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB16C4CEE9;
+	Tue, 27 May 2025 17:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367712;
-	bh=Nr4zJwILTuk0ELcmLiypqDbXac3vPckbZVllw9UZnlY=;
+	s=korg; t=1748365532;
+	bh=6x0jXoFpnd8iMwZIDKzHVAnZUBNfxtcYkrDBZ/baO1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B4vHC6KrvD6rlv6wmahFoWb5lLqST7osfCca1DdtXqDCUbiubFq530cbI+9dy6FMw
-	 NJLZ02GxGJb4KR2x/rfUeuqBHp+U+xM2O6kx3Nz6s8+RsxZ4CzPU/Icg786KwyIpo4
-	 mlFcNz4Xqb1DAfayyfrDoShNcnI5C56JMfiOHrF0=
+	b=zsMFDe3gZI/M2C5vglwc2PvAHG5hO9Ce5mcEU9XLmfTbmkvw1pfrEinxSbWogD7f2
+	 zFwMdeuhZt6CvA8dZ9N9Wqkz6SxEzwYebQ4rHHTkjhY/vG1DXrjtRq4ne97GY87CP8
+	 b0iOW/UFpPfPONskQ0jSkVRhhHpDv5WAG1BSfrU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vinod Koul <vkoul@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 474/783] soundwire: cadence_master: set frame shape and divider based on actual clk freq
-Date: Tue, 27 May 2025 18:24:31 +0200
-Message-ID: <20250527162532.432214493@linuxfoundation.org>
+Subject: [PATCH 6.12 379/626] serial: sh-sci: Update the suspend/resume support
+Date: Tue, 27 May 2025 18:24:32 +0200
+Message-ID: <20250527162500.414638820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +60,168 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit e738d77f78b3ac085dfb51be414e93464abba7ec ]
+[ Upstream commit 22a6984c5b5df8eab864d7f3e8b94d5a554d31ab ]
 
-Frame shape and curr_dr_freq could be updated by sdw_compute_bus_params().
-Peripherals will set curr_dr_freq as their frequency. Managers
-should do the same. Then update frame shape according to the actual
-bus frequency.
+The Renesas RZ/G3S supports a power saving mode where power to most of the
+SoC components is turned off. When returning from this power saving mode,
+SoC components need to be re-configured.
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://lore.kernel.org/r/20250205074232.87537-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The SCIFs on the Renesas RZ/G3S need to be re-configured as well when
+returning from this power saving mode. The sh-sci code already configures
+the SCIF clocks, power domain and registers by calling uart_resume_port()
+in sci_resume(). On suspend path the SCIF UART ports are suspended
+accordingly (by calling uart_suspend_port() in sci_suspend()). The only
+missing setting is the reset signal. For this assert/de-assert the reset
+signal on driver suspend/resume.
+
+In case the no_console_suspend is specified by the user, the registers need
+to be saved on suspend path and restore on resume path. To do this the
+sci_console_save()/sci_console_restore() functions were added. There is no
+need to cache/restore the status or FIFO registers. Only the control
+registers. The registers that will be saved/restored on suspend/resume are
+specified by the struct sci_suspend_regs data structure.
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250207113313.545432-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sh-sci.c | 71 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index f367670ea991b..68be8ff3f02b1 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -1341,7 +1341,7 @@ static u32 cdns_set_initial_frame_shape(int n_rows, int n_cols)
- 	return val;
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 80efe3b0ed0c3..779074b1c2be4 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -104,6 +104,15 @@ struct plat_sci_reg {
+ 	u8 offset, size;
+ };
+ 
++struct sci_suspend_regs {
++	u16 scsmr;
++	u16 scscr;
++	u16 scfcr;
++	u16 scsptr;
++	u8 scbrr;
++	u8 semr;
++};
++
+ struct sci_port_params {
+ 	const struct plat_sci_reg regs[SCIx_NR_REGS];
+ 	unsigned int fifosize;
+@@ -134,6 +143,8 @@ struct sci_port {
+ 	struct dma_chan			*chan_tx;
+ 	struct dma_chan			*chan_rx;
+ 
++	struct reset_control		*rstc;
++
+ #ifdef CONFIG_SERIAL_SH_SCI_DMA
+ 	struct dma_chan			*chan_tx_saved;
+ 	struct dma_chan			*chan_rx_saved;
+@@ -153,6 +164,7 @@ struct sci_port {
+ 	int				rx_trigger;
+ 	struct timer_list		rx_fifo_timer;
+ 	int				rx_fifo_timeout;
++	struct sci_suspend_regs		suspend_regs;
+ 	u16				hscif_tot;
+ 
+ 	bool has_rtscts;
+@@ -3384,6 +3396,7 @@ static struct plat_sci_port *sci_parse_dt(struct platform_device *pdev,
+ 	}
+ 
+ 	sp = &sci_ports[id];
++	sp->rstc = rstc;
+ 	*dev_id = id;
+ 
+ 	p->type = SCI_OF_TYPE(data);
+@@ -3532,13 +3545,57 @@ static int sci_probe(struct platform_device *dev)
+ 	return 0;
  }
  
--static void cdns_init_clock_ctrl(struct sdw_cdns *cdns)
-+static int cdns_init_clock_ctrl(struct sdw_cdns *cdns)
++static void sci_console_save(struct sci_port *s)
++{
++	struct sci_suspend_regs *regs = &s->suspend_regs;
++	struct uart_port *port = &s->port;
++
++	if (sci_getreg(port, SCSMR)->size)
++		regs->scsmr = sci_serial_in(port, SCSMR);
++	if (sci_getreg(port, SCSCR)->size)
++		regs->scscr = sci_serial_in(port, SCSCR);
++	if (sci_getreg(port, SCFCR)->size)
++		regs->scfcr = sci_serial_in(port, SCFCR);
++	if (sci_getreg(port, SCSPTR)->size)
++		regs->scsptr = sci_serial_in(port, SCSPTR);
++	if (sci_getreg(port, SCBRR)->size)
++		regs->scbrr = sci_serial_in(port, SCBRR);
++	if (sci_getreg(port, SEMR)->size)
++		regs->semr = sci_serial_in(port, SEMR);
++}
++
++static void sci_console_restore(struct sci_port *s)
++{
++	struct sci_suspend_regs *regs = &s->suspend_regs;
++	struct uart_port *port = &s->port;
++
++	if (sci_getreg(port, SCSMR)->size)
++		sci_serial_out(port, SCSMR, regs->scsmr);
++	if (sci_getreg(port, SCSCR)->size)
++		sci_serial_out(port, SCSCR, regs->scscr);
++	if (sci_getreg(port, SCFCR)->size)
++		sci_serial_out(port, SCFCR, regs->scfcr);
++	if (sci_getreg(port, SCSPTR)->size)
++		sci_serial_out(port, SCSPTR, regs->scsptr);
++	if (sci_getreg(port, SCBRR)->size)
++		sci_serial_out(port, SCBRR, regs->scbrr);
++	if (sci_getreg(port, SEMR)->size)
++		sci_serial_out(port, SEMR, regs->semr);
++}
++
+ static __maybe_unused int sci_suspend(struct device *dev)
  {
- 	struct sdw_bus *bus = &cdns->bus;
- 	struct sdw_master_prop *prop = &bus->prop;
-@@ -1355,14 +1355,25 @@ static void cdns_init_clock_ctrl(struct sdw_cdns *cdns)
- 		prop->default_row,
- 		prop->default_col);
+ 	struct sci_port *sport = dev_get_drvdata(dev);
  
-+	if (!prop->default_frame_rate || !prop->default_row) {
-+		dev_err(cdns->dev, "Default frame_rate %d or row %d is invalid\n",
-+			prop->default_frame_rate, prop->default_row);
-+		return -EINVAL;
+-	if (sport)
++	if (sport) {
+ 		uart_suspend_port(&sci_uart_driver, &sport->port);
+ 
++		if (!console_suspend_enabled && uart_console(&sport->port))
++			sci_console_save(sport);
++		else
++			return reset_control_assert(sport->rstc);
 +	}
 +
- 	/* Set clock divider */
--	divider	= (prop->mclk_freq / prop->max_clk_freq) - 1;
-+	divider	= (prop->mclk_freq * SDW_DOUBLE_RATE_FACTOR /
-+		bus->params.curr_dr_freq) - 1;
- 
- 	cdns_updatel(cdns, CDNS_MCP_CLK_CTRL0,
- 		     CDNS_MCP_CLK_MCLKD_MASK, divider);
- 	cdns_updatel(cdns, CDNS_MCP_CLK_CTRL1,
- 		     CDNS_MCP_CLK_MCLKD_MASK, divider);
- 
-+	/* Set frame shape base on the actual bus frequency. */
-+	prop->default_col = bus->params.curr_dr_freq /
-+			    prop->default_frame_rate / prop->default_row;
-+
- 	/*
- 	 * Frame shape changes after initialization have to be done
- 	 * with the bank switch mechanism
-@@ -1375,6 +1386,8 @@ static void cdns_init_clock_ctrl(struct sdw_cdns *cdns)
- 	ssp_interval = prop->default_frame_rate / SDW_CADENCE_GSYNC_HZ;
- 	cdns_writel(cdns, CDNS_MCP_SSP_CTRL0, ssp_interval);
- 	cdns_writel(cdns, CDNS_MCP_SSP_CTRL1, ssp_interval);
-+
-+	return 0;
+ 	return 0;
  }
  
- /**
-@@ -1408,9 +1421,12 @@ EXPORT_SYMBOL(sdw_cdns_soft_reset);
-  */
- int sdw_cdns_init(struct sdw_cdns *cdns)
+@@ -3546,8 +3603,18 @@ static __maybe_unused int sci_resume(struct device *dev)
  {
-+	int ret;
- 	u32 val;
+ 	struct sci_port *sport = dev_get_drvdata(dev);
  
--	cdns_init_clock_ctrl(cdns);
-+	ret = cdns_init_clock_ctrl(cdns);
-+	if (ret)
-+		return ret;
+-	if (sport)
++	if (sport) {
++		if (!console_suspend_enabled && uart_console(&sport->port)) {
++			sci_console_restore(sport);
++		} else {
++			int ret = reset_control_deassert(sport->rstc);
++
++			if (ret)
++				return ret;
++		}
++
+ 		uart_resume_port(&sci_uart_driver, &sport->port);
++	}
  
- 	sdw_cdns_check_self_clearing_bits(cdns, __func__, false, 0);
- 
+ 	return 0;
+ }
 -- 
 2.39.5
 
