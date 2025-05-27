@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887E5AC5923
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBFAAC55E7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A081BC32A6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:53:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 138037AD0F0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE51280036;
-	Tue, 27 May 2025 17:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BDC27FD62;
+	Tue, 27 May 2025 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJ8ggs5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylubLGSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EE627FB3D;
-	Tue, 27 May 2025 17:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8231DB34C;
+	Tue, 27 May 2025 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368416; cv=none; b=YIFHL8kllPVTgtpcdjOnn87Lkqck2XnSS/ni3uAmPJlD/Eki0MjSgOavIdr1XaJy9RZ/6I1fxs9tpiTEH5EaNSRm1jXrWphNfTplfOZptMT0P6K3oVjIdMc6vp625K5A/GTUUCYiKOdLTJgwSNtrhVjraWzHAt52dwmLg9et/wU=
+	t=1748366139; cv=none; b=maptAlJ6PpIH0dpYRGTt3WpqqBbJ4V7gj+gN2hhJrz/4/yq0Q8TZgkr4PhdNSmp3/b7BCbBYcYVJ33UCM7paPQZMQHQ9p5dFCnps6mxoYnvCirEm6sI17VtRHiBLflIyf8fQexDMO7ngftu/s0FMr087tG1Vv7Ut/euyOv9w8/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368416; c=relaxed/simple;
-	bh=Oxdv2AC71tWJpXvRoorWRpoR82325zxLzoy2xM/wYko=;
+	s=arc-20240116; t=1748366139; c=relaxed/simple;
+	bh=SY6e4pn38EE+o/7MFced7T8f5pfGw/SYY4dxDBtz7YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+l6Gl6sJXG0q4XWVblp2PuR92heNiiG4LphNle+UlubMihNNs5D2zvkrXFmX0JMY7DKheGCLoUyF2Yo8ke9p4H7tB7ImN3TZJ1/atggRJiEV0BkWl0upMboBVEQc7rXAia4QPyoHgvxdCWNUaAOirh8JDy07LbGlTZeQG9myv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJ8ggs5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A28EC4CEE9;
-	Tue, 27 May 2025 17:53:35 +0000 (UTC)
+	 MIME-Version; b=rwBy47M9/p2rblmNbHP84JLQRzUArHLPi3vZLYKJpbZREyDUn4k5/XLNclx6rgsT7RGcz70dEFcOLXKpVOzAY+DdWbEEhn05SwMoyw8GmA+9mzkExvUml904AlA0Gm9eSQ8Ppl3cUbRDoja9FqZtga4LAy17iQLqpA3kIzhpQV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylubLGSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E2DC4CEE9;
+	Tue, 27 May 2025 17:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368416;
-	bh=Oxdv2AC71tWJpXvRoorWRpoR82325zxLzoy2xM/wYko=;
+	s=korg; t=1748366139;
+	bh=SY6e4pn38EE+o/7MFced7T8f5pfGw/SYY4dxDBtz7YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJ8ggs5iNQoos8ZxwG+cl+4I4VIcUAX+sonjGi4KuIGUxcvPkrAiWaBu3izAd4HQ8
-	 BLRRlHCWIyxAM7WNXYJMPw8UcCaCbq6di4ahq4JaUDyDgpoJ1SGwNagnWEXeyDw9xm
-	 y5aRCT0wMtL9Z0cbECDNvD0cV7mYL+nXsrgUFk+U=
+	b=ylubLGSmG+jIc7T7fxQvVq7sUOXB/HjYj2SxF261txdNFGikf7FSSeLoH4IEKAd+9
+	 1PmL3zGugKqjthc2p+rzOe1Zc5BpfNLtKer2lT3NyFCkCy3AWwW83qHexJWAfVXHab
+	 9yzFi2B4f/AtZmi1IJfyyG+u0iqtBFYoJMQepWNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 699/783] Bluetooth: btusb: use skb_pull to avoid unsafe access in QCA dump handling
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+00f7f5b884b117ee6773@syzkaller.appspotmail.com,
+	syzbot+f30591e72bfc24d4715b@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 603/626] nilfs2: fix deadlock warnings caused by lock dependency in init_nilfs()
 Date: Tue, 27 May 2025 18:28:16 +0200
-Message-ID: <20250527162541.588476287@linuxfoundation.org>
+Message-ID: <20250527162509.497368790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,197 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 4bcb0c7dc25446b99fc7a8fa2a143d69f3314162 ]
+commit fb881cd7604536b17a1927fb0533f9a6982ffcc5 upstream.
 
-Use skb_pull() and skb_pull_data() to safely parse QCA dump packets.
+After commit c0e473a0d226 ("block: fix race between set_blocksize and read
+paths") was merged, set_blocksize() called by sb_set_blocksize() now locks
+the inode of the backing device file.  As a result of this change, syzbot
+started reporting deadlock warnings due to a circular dependency involving
+the semaphore "ns_sem" of the nilfs object, the inode lock of the backing
+device file, and the locks that this inode lock is transitively dependent
+on.
 
-This avoids direct pointer math on skb->data, which could lead to
-invalid access if the packet is shorter than expected.
+This is caused by a new lock dependency added by the above change, since
+init_nilfs() calls sb_set_blocksize() in the lock section of "ns_sem".
+However, these warnings are false positives because init_nilfs() is called
+in the early stage of the mount operation and the filesystem has not yet
+started.
 
-Fixes: 20981ce2d5a5 ("Bluetooth: btusb: Add WCN6855 devcoredump support")
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reason why "ns_sem" is locked in init_nilfs() was to avoid a race
+condition in nilfs_fill_super() caused by sharing a nilfs object among
+multiple filesystem instances (super block structures) in the early
+implementation.  However, nilfs objects and super block structures have
+long ago become one-to-one, and there is no longer any need to use the
+semaphore there.
+
+So, fix this issue by removing the use of the semaphore "ns_sem" in
+init_nilfs().
+
+Link: https://lkml.kernel.org/r/20250503053327.12294-1-konishi.ryusuke@gmail.com
+Fixes: c0e473a0d226 ("block: fix race between set_blocksize and read paths")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+00f7f5b884b117ee6773@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=00f7f5b884b117ee6773
+Tested-by: syzbot+00f7f5b884b117ee6773@syzkaller.appspotmail.com
+Reported-by: syzbot+f30591e72bfc24d4715b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f30591e72bfc24d4715b
+Tested-by: syzbot+f30591e72bfc24d4715b@syzkaller.appspotmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 98 ++++++++++++++++-----------------------
- 1 file changed, 40 insertions(+), 58 deletions(-)
+ fs/nilfs2/the_nilfs.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index ccd0a21da3955..b15f3ed767c53 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3014,9 +3014,8 @@ static void btusb_coredump_qca(struct hci_dev *hdev)
- static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- {
- 	int ret = 0;
-+	unsigned int skip = 0;
- 	u8 pkt_type;
--	u8 *sk_ptr;
--	unsigned int sk_len;
- 	u16 seqno;
- 	u32 dump_size;
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -693,8 +693,6 @@ int init_nilfs(struct the_nilfs *nilfs,
+ 	int blocksize;
+ 	int err;
  
-@@ -3025,18 +3024,13 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- 	struct usb_device *udev = btdata->udev;
- 
- 	pkt_type = hci_skb_pkt_type(skb);
--	sk_ptr = skb->data;
--	sk_len = skb->len;
-+	skip = sizeof(struct hci_event_hdr);
-+	if (pkt_type == HCI_ACLDATA_PKT)
-+		skip += sizeof(struct hci_acl_hdr);
- 
--	if (pkt_type == HCI_ACLDATA_PKT) {
--		sk_ptr += HCI_ACL_HDR_SIZE;
--		sk_len -= HCI_ACL_HDR_SIZE;
--	}
+-	down_write(&nilfs->ns_sem);
 -
--	sk_ptr += HCI_EVENT_HDR_SIZE;
--	sk_len -= HCI_EVENT_HDR_SIZE;
-+	skb_pull(skb, skip);
-+	dump_hdr = (struct qca_dump_hdr *)skb->data;
+ 	blocksize = sb_min_blocksize(sb, NILFS_MIN_BLOCK_SIZE);
+ 	if (!blocksize) {
+ 		nilfs_err(sb, "unable to set blocksize");
+@@ -767,7 +765,6 @@ int init_nilfs(struct the_nilfs *nilfs,
+ 	set_nilfs_init(nilfs);
+ 	err = 0;
+  out:
+-	up_write(&nilfs->ns_sem);
+ 	return err;
  
--	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
- 	seqno = le16_to_cpu(dump_hdr->seqno);
- 	if (seqno == 0) {
- 		set_bit(BTUSB_HW_SSR_ACTIVE, &btdata->flags);
-@@ -3056,16 +3050,15 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- 
- 		btdata->qca_dump.ram_dump_size = dump_size;
- 		btdata->qca_dump.ram_dump_seqno = 0;
--		sk_ptr += offsetof(struct qca_dump_hdr, data0);
--		sk_len -= offsetof(struct qca_dump_hdr, data0);
-+
-+		skb_pull(skb, offsetof(struct qca_dump_hdr, data0));
- 
- 		usb_disable_autosuspend(udev);
- 		bt_dev_info(hdev, "%s memdump size(%u)\n",
- 			    (pkt_type == HCI_ACLDATA_PKT) ? "ACL" : "event",
- 			    dump_size);
- 	} else {
--		sk_ptr += offsetof(struct qca_dump_hdr, data);
--		sk_len -= offsetof(struct qca_dump_hdr, data);
-+		skb_pull(skb, offsetof(struct qca_dump_hdr, data));
- 	}
- 
- 	if (!btdata->qca_dump.ram_dump_size) {
-@@ -3085,7 +3078,6 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- 		return ret;
- 	}
- 
--	skb_pull(skb, skb->len - sk_len);
- 	hci_devcd_append(hdev, skb);
- 	btdata->qca_dump.ram_dump_seqno++;
- 	if (seqno == QCA_LAST_SEQUENCE_NUM) {
-@@ -3113,68 +3105,58 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- /* Return: true if the ACL packet is a dump packet, false otherwise. */
- static bool acl_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	u8 *sk_ptr;
--	unsigned int sk_len;
--
- 	struct hci_event_hdr *event_hdr;
- 	struct hci_acl_hdr *acl_hdr;
- 	struct qca_dump_hdr *dump_hdr;
-+	struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
-+	bool is_dump = false;
- 
--	sk_ptr = skb->data;
--	sk_len = skb->len;
--
--	acl_hdr = hci_acl_hdr(skb);
--	if (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE)
-+	if (!clone)
- 		return false;
- 
--	sk_ptr += HCI_ACL_HDR_SIZE;
--	sk_len -= HCI_ACL_HDR_SIZE;
--	event_hdr = (struct hci_event_hdr *)sk_ptr;
--
--	if ((event_hdr->evt != HCI_VENDOR_PKT) ||
--	    (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
--		return false;
-+	acl_hdr = skb_pull_data(clone, sizeof(*acl_hdr));
-+	if (!acl_hdr || (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE))
-+		goto out;
- 
--	sk_ptr += HCI_EVENT_HDR_SIZE;
--	sk_len -= HCI_EVENT_HDR_SIZE;
-+	event_hdr = skb_pull_data(clone, sizeof(*event_hdr));
-+	if (!event_hdr || (event_hdr->evt != HCI_VENDOR_PKT))
-+		goto out;
- 
--	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
--	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
--	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
--	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
--		return false;
-+	dump_hdr = skb_pull_data(clone, sizeof(*dump_hdr));
-+	if (!dump_hdr || (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
-+	   (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
-+		goto out;
- 
--	return true;
-+	is_dump = true;
-+out:
-+	consume_skb(clone);
-+	return is_dump;
- }
- 
- /* Return: true if the event packet is a dump packet, false otherwise. */
- static bool evt_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	u8 *sk_ptr;
--	unsigned int sk_len;
--
- 	struct hci_event_hdr *event_hdr;
- 	struct qca_dump_hdr *dump_hdr;
-+	struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
-+	bool is_dump = false;
- 
--	sk_ptr = skb->data;
--	sk_len = skb->len;
--
--	event_hdr = hci_event_hdr(skb);
--
--	if ((event_hdr->evt != HCI_VENDOR_PKT)
--	    || (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
-+	if (!clone)
- 		return false;
- 
--	sk_ptr += HCI_EVENT_HDR_SIZE;
--	sk_len -= HCI_EVENT_HDR_SIZE;
-+	event_hdr = skb_pull_data(clone, sizeof(*event_hdr));
-+	if (!event_hdr || (event_hdr->evt != HCI_VENDOR_PKT))
-+		goto out;
- 
--	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
--	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
--	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
--	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
--		return false;
-+	dump_hdr = skb_pull_data(clone, sizeof(*dump_hdr));
-+	if (!dump_hdr || (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
-+	   (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
-+		goto out;
- 
--	return true;
-+	is_dump = true;
-+out:
-+	consume_skb(clone);
-+	return is_dump;
- }
- 
- static int btusb_recv_acl_qca(struct hci_dev *hdev, struct sk_buff *skb)
--- 
-2.39.5
-
+  failed_sbh:
 
 
 
