@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-147824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F571AC595A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:55:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825C7AC561C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5C79E0D08
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:55:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 970534A477C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A010280332;
-	Tue, 27 May 2025 17:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6233127E7C1;
+	Tue, 27 May 2025 17:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYBfYBZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlA3/0ea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045CF27FB3D;
-	Tue, 27 May 2025 17:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE7B26F469;
+	Tue, 27 May 2025 17:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368546; cv=none; b=VsvySgY+C7iUXv5UX2aOHbMxZGAHDW5P/kQ3HcfJMr2GdFpGI0KFovv7CzzBjgy5VvfrMGEN3Jhoa3hR7rCbUlrCvvPOwLFV7TwutWZdtoXI0i6SD2c9GhFUG7SL1jToMR5MyKdo6MZV8pVfaOI379xwOg1iVs1kcisZCTR1YO8=
+	t=1748366235; cv=none; b=N5J2dWXlQwDrByyQSxzYXvs7CLcpnM9stN9IRvP/PHMm+yxg9UhTPaa/CsdgH5McabO8DNqh+23NB4XeZNPfNxiqDWG529wPtC6vsdjocuMJi7wvH9gnNAV/wKkq9cXaYMC28YYSOfagm3p+niVCnJf4xaCHsXB2Jk07XUQO5SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368546; c=relaxed/simple;
-	bh=cLAD6gHjkwSqydvMjDeqGhNU+o3gmfJz2ePnhPThhKA=;
+	s=arc-20240116; t=1748366235; c=relaxed/simple;
+	bh=P0gNpGR6UwjWYVlKlhWn5yMcHI/qOG2TRimj+/h6eGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IzXdSvSl3kO0ofhR3JBJLrvkSnankSAC6zLOwJNk2y6CL2TgFOX/7z9WMUOU6YTp7MlrT4QH+F58DzRZLe9bMAPzxrkqCeBdBtlTa98CeMEX1C8DJiB4OQqbHhrvtWjV/n3M2idcOdKAggjvVruaqcwRYvcR7u9JrGsTpZC+LrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYBfYBZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B8CC4CEE9;
-	Tue, 27 May 2025 17:55:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=roRh5nU9tZtQpPHViDmuaOvH2MsmB492kkPsvL9dJKgc7FJRwbzZEQ1FJaLFsy9zc3WtnxwbtC0pgWxeqsi0cfbMwYdTx7p8RZdxeVhsod+6yokTr6QpNswTs8pkk6uf5r5mXZF5++ggJfWCM5JjV6Py2U9VkFn6zs68KCHRGNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlA3/0ea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FE6C4CEE9;
+	Tue, 27 May 2025 17:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368545;
-	bh=cLAD6gHjkwSqydvMjDeqGhNU+o3gmfJz2ePnhPThhKA=;
+	s=korg; t=1748366235;
+	bh=P0gNpGR6UwjWYVlKlhWn5yMcHI/qOG2TRimj+/h6eGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYBfYBZHYWoAfQ26/PrDgTkOAng+kcdDaL1JtYcASDo64NVoz0Enpd2asvF7gN4Or
-	 Qk4PjlmRdnw9+tNqKfJuIps6BOdrCCsoHXJc+D98jeyl0eIONjtJ6of2p6UVZdaG53
-	 Ng1Lskv4/p5UBc7gIW8kKvtlBiDovSHR8sPy/zUw=
+	b=KlA3/0eamaJVbiqL4QkkzgusCbdlW0BLkki+UNWCYCLVaIdoXW2HWBsOO0o8lCg5b
+	 RGxlEicRXqBrejUOT1rXydoKgjefdk4MfQWjJbjoXzUqfLzbXs6O1uTRQDiELduStz
+	 cWlrrUJoONy0x5p99+TT1gWGbwEoHvY9afrY/P00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 710/783] xsk: Bring back busy polling support in XDP_COPY
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.12 614/626] gcc-15: make unterminated string initialization just a warning
 Date: Tue, 27 May 2025 18:28:27 +0200
-Message-ID: <20250527162542.028792137@linuxfoundation.org>
+Message-ID: <20250527162509.945880114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +59,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samiullah Khawaja <skhawaja@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit b95ed5517354a5f451fb9b3771776ca4c0b65ac3 ]
+commit d5d45a7f26194460964eb5677a9226697f7b7fdd upstream.
 
-Commit 5ef44b3cb43b ("xsk: Bring back busy polling support") fixed the
-busy polling support in xsk for XDP_ZEROCOPY after it was broken in
-commit 86e25f40aa1e ("net: napi: Add napi_config"). The busy polling
-support with XDP_COPY remained broken since the napi_id setup in
-xsk_rcv_check was removed.
+gcc-15 enabling -Wunterminated-string-initialization in -Wextra by
+default was done with the best intentions, but the warning is still
+quite broken.
 
-Bring back the setup of napi_id for XDP_COPY so socket level SO_BUSYPOLL
-can be used to poll the underlying napi.
+What annoys me about the warning is that this is a very traditional AND
+CORRECT way to initialize fixed byte arrays in C:
 
-Do the setup of napi_id for XDP_COPY in xsk_bind, as it is done
-currently for XDP_ZEROCOPY. The setup of napi_id for XDP_COPY in
-xsk_bind is safe because xsk_rcv_check checks that the rx queue at which
-the packet arrives is equal to the queue_id that was supplied in bind.
-This is done for both XDP_COPY and XDP_ZEROCOPY mode.
+	unsigned char hex[16] = "0123456789abcdef";
 
-Tested using AF_XDP support in virtio-net by running the xsk_rr AF_XDP
-benchmarking tool shared here:
-https://lore.kernel.org/all/20250320163523.3501305-1-skhawaja@google.com/T/
+and we use this all over the kernel.  And the warning is fine, but gcc
+developers apparently never made a reasonable way to disable it.  As is
+(sadly) tradition with these things.
 
-Enabled socket busy polling using following commands in qemu,
+Yes, there's "__attribute__((nonstring))", and we have a macro to make
+that absolutely disgusting syntax more palatable (ie the kernel syntax
+for that monstrosity is just "__nonstring").
 
-```
-sudo ethtool -L eth0 combined 1
-echo 400 | sudo tee /proc/sys/net/core/busy_read
-echo 100 | sudo tee /sys/class/net/eth0/napi_defer_hard_irqs
-echo 15000   | sudo tee /sys/class/net/eth0/gro_flush_timeout
-```
+But that attribute is misdesigned.  What you'd typically want to do is
+tell the compiler that you are using a type that isn't a string but a
+byte array, but that doesn't work at all:
 
-Fixes: 5ef44b3cb43b ("xsk: Bring back busy polling support")
-Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	warning: ‘nonstring’ attribute does not apply to types [-Wattributes]
+
+and because of this fundamental mis-design, you then have to mark each
+instance of that pattern.
+
+This is particularly noticeable in our ACPI code, because ACPI has this
+notion of a 4-byte "type name" that gets used all over, and is exactly
+this kind of byte array.
+
+This is a sad oversight, because the warning is useful, but really would
+be so much better if gcc had also given a sane way to indicate that we
+really just want a byte array type at a type level, not the broken "each
+and every array definition" level.
+
+So now instead of creating a nice "ACPI name" type using something like
+
+	typedef char acpi_name_t[4] __nonstring;
+
+we have to do things like
+
+	char name[ACPI_NAMESEG_SIZE] __nonstring;
+
+in every place that uses this concept and then happens to have the
+typical initializers.
+
+This is annoying me mainly because I think the warning _is_ a good
+warning, which is why I'm not just turning it off in disgust.  But it is
+hampered by this bad implementation detail.
+
+[ And obviously I'm doing this now because system upgrades for me are
+  something that happen in the middle of the release cycle: don't do it
+  before or during travel, or just before or during the busy merge
+  window period. ]
+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xdp/xsk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Makefile |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index c13e13fa79fc0..dc67870b76122 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -1301,7 +1301,7 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
- 	xs->queue_id = qid;
- 	xp_add_xsk(xs->pool, xs);
+--- a/Makefile
++++ b/Makefile
+@@ -1001,6 +1001,9 @@ KBUILD_CFLAGS += $(call cc-option, -fstr
+ KBUILD_CFLAGS-$(CONFIG_CC_NO_STRINGOP_OVERFLOW) += $(call cc-option, -Wno-stringop-overflow)
+ KBUILD_CFLAGS-$(CONFIG_CC_STRINGOP_OVERFLOW) += $(call cc-option, -Wstringop-overflow)
  
--	if (xs->zc && qid < dev->real_num_rx_queues) {
-+	if (qid < dev->real_num_rx_queues) {
- 		struct netdev_rx_queue *rxq;
++#Currently, disable -Wunterminated-string-initialization as an error
++KBUILD_CFLAGS += $(call cc-option, -Wno-error=unterminated-string-initialization)
++
+ # disable invalid "can't wrap" optimizations for signed / pointers
+ KBUILD_CFLAGS	+= -fno-strict-overflow
  
- 		rxq = __netif_get_rx_queue(dev, qid);
--- 
-2.39.5
-
 
 
 
