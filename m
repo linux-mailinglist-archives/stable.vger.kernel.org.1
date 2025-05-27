@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD053AC544C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:58:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37921AC57B3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BD314A1FBD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:58:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05E9C1BC13A2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE6E27E1CA;
-	Tue, 27 May 2025 16:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211893C01;
+	Tue, 27 May 2025 17:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NnxEBq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8jwj0o+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E762CCC0;
-	Tue, 27 May 2025 16:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A0927CCF0;
+	Tue, 27 May 2025 17:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365119; cv=none; b=o9G7PwYeaSIW9B56Otg4uS+G6cl0OAbgegbY3Ga2RnkW91zfwxMLfufjyUEB3dsF/wtS/JlUTw1lpRdbUHsoZvv5iAiwgJmstlRb976uMSOUsHiSQhXiy4/WZDDifZAS5EluPau/LBPh9xAK9N1314imsfpONKsazkAglLtN69Q=
+	t=1748367379; cv=none; b=rkt1u3EmCliw0yuMMed3fPg2E299dnJvRcI/cTJcCVYJqRtArXZYJlkF0+HhohZdBbgWkkXbgNYPtYRXnvUsXDhgfCETECgpf6GUCYT6veRcXjGupy8BM5EkjiUKRmXtFes1EbkYgT2+WKp/qThVXXZYSvEP16S8ksybdF4/W8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365119; c=relaxed/simple;
-	bh=Wo8BvY2Hk4WRXY1LYwslp4TqqCLf0yyqAhX5wlefIs8=;
+	s=arc-20240116; t=1748367379; c=relaxed/simple;
+	bh=nqluXvKEGPkvPOCCodGnwdXU75nbWLqbkXDfZYlohsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gs1Tbkl8Vd/VszcRwLEA4NcHkL+BVjgTm8y3fY/mATPXFzgzYugXIJsm+VMJVpa1teujw35+MeQLTYJji2ADFdqKZtX00iWnmi3TB5smR4tPcvDB/ntld8saGZ6tTyTweUZBvwulyHQ8/12c2jqffGS658/lsG+w591NXe/iDdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NnxEBq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAD7C4CEE9;
-	Tue, 27 May 2025 16:58:38 +0000 (UTC)
+	 MIME-Version; b=DTxitSp/Yu1XXpntO886kYyue7o4vnhoV9JjotsqF8x5brGiY64b5UJMS0pDv28zEjwt8xfijL5wdyaRcUZ7hgGrdyNW/MU9zeWnHIqYE1h6byZ/UnpBa6mvJuGLW6eBMqYTK2eVH76kQ4jPEs9EyCX9i2SLwjlV+qqQ3Dx/nDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8jwj0o+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F679C4CEEA;
+	Tue, 27 May 2025 17:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365118;
-	bh=Wo8BvY2Hk4WRXY1LYwslp4TqqCLf0yyqAhX5wlefIs8=;
+	s=korg; t=1748367379;
+	bh=nqluXvKEGPkvPOCCodGnwdXU75nbWLqbkXDfZYlohsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2NnxEBq+nHzbPKMYQos0GGHcvHHy4aoSO2ROWh9fsCQVx4YXOu6Xado5Lxv+dJzzz
-	 aFO14rgThlfzJqV4RL276M7Phk91FrI1/DvLWuMn0A8ejDWVlEQAXu3sGN3xbwFeOo
-	 jTfKq8gUHxLrFhP6DMJljxzONK9wL4nVF10bhcIw=
+	b=B8jwj0o+t7LBFCkAfzTcryBP+7286oaKplUs29M8TdsV21TK0JTW8LL8YPnQQSMNC
+	 sNWOdSJlsvopdMc1aerp0fwf2seoqaDHBcyR8sZOGdHR3kLdWmtpfHlHiF8u3gY0A1
+	 O/WXDiJOmWhic8549PJyHhBdJXiSaG6S8Wz/b2Ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	Nandakumar Edamana <nandakumar@nandakumar.co.in>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 272/626] drm/xe/pf: Create a link between PF and VF devices
+Subject: [PATCH 6.14 368/783] libbpf: Fix out-of-bound read
 Date: Tue, 27 May 2025 18:22:45 +0200
-Message-ID: <20250527162456.079720937@linuxfoundation.org>
+Message-ID: <20250527162528.067584602@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
 
-[ Upstream commit 8c0aff7d92e2be25717669eb65a81a89740a24f2 ]
+[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
 
-When both PF and VF devices are enabled on the host, they
-resume simultaneously during system resume.
+In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
+that it will be at least two characters long due to the presence of checks for
+opening and closing quotes. But the check for the closing quote
+(value[len - 1] != '"') misses the fact that it could be checking the opening
+quote itself in case of an invalid input that consists of just the opening
+quote.
 
-However, the PF must finish provisioning the VF before any
-VFs can successfully resume.
+This commit adds an explicit check to make sure the string is at least two
+characters long.
 
-Establish a parent-child device link between the PF and VF
-devices to ensure the correct order of resumption.
-
-V4 -> V5:
-- Added missing break in the error condition.
-V3 -> V4:
-- Made xe_pci_pf_get_vf_dev() as a static function and updated
-  input parameter types.
-- Updated xe_sriov_warn() to xe_sriov_abort() when VF device
-  cannot be found.
-V2 -> V3:
-- Added function documentation for xe_pci_pf_get_vf_dev().
-- Added assertion if not called from PF.
-V1 -> V2:
-- Added a helper function to get VF pci_dev.
-- Updated xe_sriov_notice() to xe_sriov_warn() if vf pci_dev
-  is not found.
-
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Reviewed-by: Piotr Piorkowski <piotr.piorkowski@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250224102807.11065-2-satyanarayana.k.v.p@intel.com
+Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pci_sriov.c | 51 +++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pci_sriov.c b/drivers/gpu/drm/xe/xe_pci_sriov.c
-index aaceee748287e..09ee8a06fe2ed 100644
---- a/drivers/gpu/drm/xe/xe_pci_sriov.c
-+++ b/drivers/gpu/drm/xe/xe_pci_sriov.c
-@@ -62,6 +62,55 @@ static void pf_reset_vfs(struct xe_device *xe, unsigned int num_vfs)
- 			xe_gt_sriov_pf_control_trigger_flr(gt, n);
- }
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 6b436ec872b0f..1791a12b1aac5 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -2106,7 +2106,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
+ 	}
  
-+static struct pci_dev *xe_pci_pf_get_vf_dev(struct xe_device *xe, unsigned int vf_id)
-+{
-+	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
-+
-+	xe_assert(xe, IS_SRIOV_PF(xe));
-+
-+	/* caller must use pci_dev_put() */
-+	return pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-+			pdev->bus->number,
-+			pci_iov_virtfn_devfn(pdev, vf_id));
-+}
-+
-+static void pf_link_vfs(struct xe_device *xe, int num_vfs)
-+{
-+	struct pci_dev *pdev_pf = to_pci_dev(xe->drm.dev);
-+	struct device_link *link;
-+	struct pci_dev *pdev_vf;
-+	unsigned int n;
-+
-+	/*
-+	 * When both PF and VF devices are enabled on the host, during system
-+	 * resume they are resuming in parallel.
-+	 *
-+	 * But PF has to complete the provision of VF first to allow any VFs to
-+	 * successfully resume.
-+	 *
-+	 * Create a parent-child device link between PF and VF devices that will
-+	 * enforce correct resume order.
-+	 */
-+	for (n = 1; n <= num_vfs; n++) {
-+		pdev_vf = xe_pci_pf_get_vf_dev(xe, n - 1);
-+
-+		/* unlikely, something weird is happening, abort */
-+		if (!pdev_vf) {
-+			xe_sriov_err(xe, "Cannot find VF%u device, aborting link%s creation!\n",
-+				     n, str_plural(num_vfs));
-+			break;
-+		}
-+
-+		link = device_link_add(&pdev_vf->dev, &pdev_pf->dev,
-+				       DL_FLAG_AUTOREMOVE_CONSUMER);
-+		/* unlikely and harmless, continue with other VFs */
-+		if (!link)
-+			xe_sriov_notice(xe, "Failed linking VF%u\n", n);
-+
-+		pci_dev_put(pdev_vf);
-+	}
-+}
-+
- static int pf_enable_vfs(struct xe_device *xe, int num_vfs)
- {
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
-@@ -92,6 +141,8 @@ static int pf_enable_vfs(struct xe_device *xe, int num_vfs)
- 	if (err < 0)
- 		goto failed;
- 
-+	pf_link_vfs(xe, num_vfs);
-+
- 	xe_sriov_info(xe, "Enabled %u of %u VF%s\n",
- 		      num_vfs, total_vfs, str_plural(total_vfs));
- 	return num_vfs;
+ 	len = strlen(value);
+-	if (value[len - 1] != '"') {
++	if (len < 2 || value[len - 1] != '"') {
+ 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
+ 			ext->name, value);
+ 		return -EINVAL;
 -- 
 2.39.5
 
