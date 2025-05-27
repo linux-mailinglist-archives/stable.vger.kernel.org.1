@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A240AC5400
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:54:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A42FAC5744
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D5BB3ADD6B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:52:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 525941BC0880
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFC927F737;
-	Tue, 27 May 2025 16:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9021327F178;
+	Tue, 27 May 2025 17:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x70siK9m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Emk1bikP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E6E194A67;
-	Tue, 27 May 2025 16:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8BE1AF0BB;
+	Tue, 27 May 2025 17:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364795; cv=none; b=fTzxa26qu3zx3wjTkFJLoPBEtEYFyXX9HUgdQQAeJAiZNpwjWy5IDfMrR3JTSdgYcVDbsaVk00d/eu67cl8PVQQLRmesqCZugDEV2/XIiCAOmELleKk2ewU7oMb8tPCBgXKtJNV+7WBRm1daASbDQlJCE4QDfb5oj9C4AFEwjL0=
+	t=1748367055; cv=none; b=ErwR7A9uwq6sMON7rn5kDVysR1uVWvYDjnLCqnZhr2heeeBGwSwcdCXKGjQmD7oTQJeieenGci7PvmUoqlE0hHj+1f7OwcA1Y0CEpFC1lTrNCWDqJRhJwAUx/ytta7AjKV0mC/04UlV+1LhOOG2g3OkvNFePVMPNe/6jnTaM9Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364795; c=relaxed/simple;
-	bh=3Xj12IEdb9Hoz+9A+8qNO737XndQ0VB5zIeGI24q5pA=;
+	s=arc-20240116; t=1748367055; c=relaxed/simple;
+	bh=KHOQ5n0/Bit4a+oCPeVFm4gpUoKVHiNHhN3XmjZYogM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfvaFV+uGINpiHapNMMt/9gvuHeSAY1LIPoO55HyjxrAo/MTLcecQp1NsR6QLkoiC8VYERC/xyELfIKqhTvCXxxhIk8Nx0pDCs6XnbGhflsHkcJ0P/Cd/XEobIt+jy1exvnHQzI0FIoOR0VHBDAhAq15nvrLkEltIjl2llEKKcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x70siK9m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D597C4CEE9;
-	Tue, 27 May 2025 16:53:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dzswye0UzEkFStdF+xg64PCm7UdmEwJK1UJOTFeJFqErfOcsTyFpk4TeDrbHGRXT6P67dtRXmk09pr2PLQY/pAPz5aCXe97/cTXnERa2CjZD+SW6PL3O6jPQm5EvQltx6h20Q90575LtGReya+AqL5gXQlfq58ZYaNoO/V5xMts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Emk1bikP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B346C4CEE9;
+	Tue, 27 May 2025 17:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364794;
-	bh=3Xj12IEdb9Hoz+9A+8qNO737XndQ0VB5zIeGI24q5pA=;
+	s=korg; t=1748367054;
+	bh=KHOQ5n0/Bit4a+oCPeVFm4gpUoKVHiNHhN3XmjZYogM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x70siK9mWzXkWOE4XsiYT3vXhAEXB8NqlQVHClNYHV0bdi2CMVBbl3p6nlMWFeqSt
-	 h/JR9s5Dkt/GIKs0K3h7FauKtepjEHacgUazkXmuqX4BlVfDSzdFKZNNkaJM3V3ZzT
-	 m2BOa/BVr24aTUiqppH3EQcWlk0W3E/UGqX1A484=
+	b=Emk1bikPlJDFUksErOmAqQbgaWEkS2RvtkRFYK6hFmn7RAUxthxdz342NSGallIoK
+	 geSLKf4RPUPf5beENt0wHq6bz2eV8PqiJ4bqok/yDJm0cQtUEIGgI/R5TbEi7rQ7ly
+	 Th0cJVkcl7+UiJWYZ8EhxCMa+jVcdGBiC7aPkBIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Simon Horman <horms@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/626] net: stmmac: dwmac-rk: Validate GRF and peripheral GRF during probe
+Subject: [PATCH 6.14 264/783] drm/xe: Nuke VMs mapping upon close
 Date: Tue, 27 May 2025 18:21:01 +0200
-Message-ID: <20250527162451.847530469@linuxfoundation.org>
+Message-ID: <20250527162523.846371339@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +60,197 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 247e84f66a3d1946193d739fec5dc3d69833fd00 ]
+[ Upstream commit 074e40d9c2a84939fe28d7121d3469db50f34a3d ]
 
-All Rockchip GMAC variants typically write to GRF regs to control e.g.
-interface mode, speed and MAC rx/tx delay. Newer SoCs such as RK3576 and
-RK3588 use a mix of GRF and peripheral GRF regs. These syscon regmaps is
-located with help of a rockchip,grf and rockchip,php-grf phandle.
+Clear root PT entry and invalidate entire VM's address space when
+closing the VM. Will prevent the GPU from accessing any of the VM's
+memory after closing.
 
-However, validating the rockchip,grf and rockchip,php-grf syscon regmap
-is deferred until e.g. interface mode or speed is configured, inside the
-individual SoC specific operations.
+v2:
+ - s/vma/vm in kernel doc (CI)
+ - Don't nuke migration VM as this occur at driver unload (CI)
+v3:
+ - Rebase and pull into SVM series (Thomas)
+ - Wait for pending binds (Thomas)
+v5:
+ - Remove xe_gt_tlb_invalidation_fence_fini in error case (Matt Auld)
+ - Drop local migration bool (Thomas)
+v7:
+ - Add drm_dev_enter/exit protecting invalidation (CI, Matt Auld)
 
-Change to validate the rockchip,grf and rockchip,php-grf syscon regmap
-at probe time to simplify all SoC specific operations.
-
-This should not introduce any backward compatibility issues as all
-GMAC nodes have been added together with a rockchip,grf phandle (and
-rockchip,php-grf where required) in their initial commit.
-
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250308213720.2517944-3-jonas@kwiboo.se
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306012657.3505757-12-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 21 +++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c | 22 ++++++++++++++
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h |  2 ++
+ drivers/gpu/drm/xe/xe_pt.c                  | 14 +++++++++
+ drivers/gpu/drm/xe/xe_pt.h                  |  3 ++
+ drivers/gpu/drm/xe/xe_vm.c                  | 32 +++++++++++++++++++++
+ 5 files changed, 73 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 50073bdade46e..8f90eae937741 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -33,6 +33,7 @@ struct rk_gmac_ops {
- 	void (*set_clock_selection)(struct rk_priv_data *bsp_priv, bool input,
- 				    bool enable);
- 	void (*integrated_phy_powerup)(struct rk_priv_data *bsp_priv);
-+	bool php_grf_required;
- 	bool regs_valid;
- 	u32 regs[];
- };
-@@ -1263,6 +1264,7 @@ static const struct rk_gmac_ops rk3576_ops = {
- 	.set_rgmii_speed = rk3576_set_gmac_speed,
- 	.set_rmii_speed = rk3576_set_gmac_speed,
- 	.set_clock_selection = rk3576_set_clock_selection,
-+	.php_grf_required = true,
- 	.regs_valid = true,
- 	.regs = {
- 		0x2a220000, /* gmac0 */
-@@ -1410,6 +1412,7 @@ static const struct rk_gmac_ops rk3588_ops = {
- 	.set_rgmii_speed = rk3588_set_gmac_speed,
- 	.set_rmii_speed = rk3588_set_gmac_speed,
- 	.set_clock_selection = rk3588_set_clock_selection,
-+	.php_grf_required = true,
- 	.regs_valid = true,
- 	.regs = {
- 		0xfe1b0000, /* gmac0 */
-@@ -1830,8 +1833,22 @@ static struct rk_priv_data *rk_gmac_setup(struct platform_device *pdev,
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+index 9405d83d4db2a..084cbdeba8eaa 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+@@ -418,6 +418,28 @@ int xe_gt_tlb_invalidation_range(struct xe_gt *gt,
+ 	return send_tlb_invalidation(&gt->uc.guc, fence, action, len);
+ }
  
- 	bsp_priv->grf = syscon_regmap_lookup_by_phandle(dev->of_node,
- 							"rockchip,grf");
--	bsp_priv->php_grf = syscon_regmap_lookup_by_phandle(dev->of_node,
--							    "rockchip,php-grf");
-+	if (IS_ERR(bsp_priv->grf)) {
-+		dev_err_probe(dev, PTR_ERR(bsp_priv->grf),
-+			      "failed to lookup rockchip,grf\n");
-+		return ERR_CAST(bsp_priv->grf);
-+	}
++/**
++ * xe_gt_tlb_invalidation_vm - Issue a TLB invalidation on this GT for a VM
++ * @gt: graphics tile
++ * @vm: VM to invalidate
++ *
++ * Invalidate entire VM's address space
++ */
++void xe_gt_tlb_invalidation_vm(struct xe_gt *gt, struct xe_vm *vm)
++{
++	struct xe_gt_tlb_invalidation_fence fence;
++	u64 range = 1ull << vm->xe->info.va_bits;
++	int ret;
 +
-+	if (ops->php_grf_required) {
-+		bsp_priv->php_grf =
-+			syscon_regmap_lookup_by_phandle(dev->of_node,
-+							"rockchip,php-grf");
-+		if (IS_ERR(bsp_priv->php_grf)) {
-+			dev_err_probe(dev, PTR_ERR(bsp_priv->php_grf),
-+				      "failed to lookup rockchip,php-grf\n");
-+			return ERR_CAST(bsp_priv->php_grf);
++	xe_gt_tlb_invalidation_fence_init(gt, &fence, true);
++
++	ret = xe_gt_tlb_invalidation_range(gt, &fence, 0, range, vm->usm.asid);
++	if (ret < 0)
++		return;
++
++	xe_gt_tlb_invalidation_fence_wait(&fence);
++}
++
+ /**
+  * xe_gt_tlb_invalidation_vma - Issue a TLB invalidation on this GT for a VMA
+  * @gt: GT structure
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+index 672acfcdf0d70..abe9b03d543e6 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+@@ -12,6 +12,7 @@
+ 
+ struct xe_gt;
+ struct xe_guc;
++struct xe_vm;
+ struct xe_vma;
+ 
+ int xe_gt_tlb_invalidation_init_early(struct xe_gt *gt);
+@@ -21,6 +22,7 @@ int xe_gt_tlb_invalidation_ggtt(struct xe_gt *gt);
+ int xe_gt_tlb_invalidation_vma(struct xe_gt *gt,
+ 			       struct xe_gt_tlb_invalidation_fence *fence,
+ 			       struct xe_vma *vma);
++void xe_gt_tlb_invalidation_vm(struct xe_gt *gt, struct xe_vm *vm);
+ int xe_gt_tlb_invalidation_range(struct xe_gt *gt,
+ 				 struct xe_gt_tlb_invalidation_fence *fence,
+ 				 u64 start, u64 end, u32 asid);
+diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
+index dc24baa840924..148d90611eebf 100644
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -218,6 +218,20 @@ void xe_pt_destroy(struct xe_pt *pt, u32 flags, struct llist_head *deferred)
+ 	xe_pt_free(pt);
+ }
+ 
++/**
++ * xe_pt_clear() - Clear a page-table.
++ * @xe: xe device.
++ * @pt: The page-table.
++ *
++ * Clears page-table by setting to zero.
++ */
++void xe_pt_clear(struct xe_device *xe, struct xe_pt *pt)
++{
++	struct iosys_map *map = &pt->bo->vmap;
++
++	xe_map_memset(xe, map, 0, 0, SZ_4K);
++}
++
+ /**
+  * DOC: Pagetable building
+  *
+diff --git a/drivers/gpu/drm/xe/xe_pt.h b/drivers/gpu/drm/xe/xe_pt.h
+index 9ab386431cadd..8e43912ae8e94 100644
+--- a/drivers/gpu/drm/xe/xe_pt.h
++++ b/drivers/gpu/drm/xe/xe_pt.h
+@@ -13,6 +13,7 @@ struct dma_fence;
+ struct xe_bo;
+ struct xe_device;
+ struct xe_exec_queue;
++struct xe_svm_range;
+ struct xe_sync_entry;
+ struct xe_tile;
+ struct xe_vm;
+@@ -35,6 +36,8 @@ void xe_pt_populate_empty(struct xe_tile *tile, struct xe_vm *vm,
+ 
+ void xe_pt_destroy(struct xe_pt *pt, u32 flags, struct llist_head *deferred);
+ 
++void xe_pt_clear(struct xe_device *xe, struct xe_pt *pt);
++
+ int xe_pt_update_ops_prepare(struct xe_tile *tile, struct xe_vma_ops *vops);
+ struct dma_fence *xe_pt_update_ops_run(struct xe_tile *tile,
+ 				       struct xe_vma_ops *vops);
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 5956631c0d40a..785b8960050bd 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -8,6 +8,7 @@
+ #include <linux/dma-fence-array.h>
+ #include <linux/nospec.h>
+ 
++#include <drm/drm_drv.h>
+ #include <drm/drm_exec.h>
+ #include <drm/drm_print.h>
+ #include <drm/ttm/ttm_tt.h>
+@@ -1582,9 +1583,40 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
+ 
+ static void xe_vm_close(struct xe_vm *vm)
+ {
++	struct xe_device *xe = vm->xe;
++	bool bound;
++	int idx;
++
++	bound = drm_dev_enter(&xe->drm, &idx);
++
+ 	down_write(&vm->lock);
++
+ 	vm->size = 0;
++
++	if (!((vm->flags & XE_VM_FLAG_MIGRATION))) {
++		struct xe_tile *tile;
++		struct xe_gt *gt;
++		u8 id;
++
++		/* Wait for pending binds */
++		dma_resv_wait_timeout(xe_vm_resv(vm),
++				      DMA_RESV_USAGE_BOOKKEEP,
++				      false, MAX_SCHEDULE_TIMEOUT);
++
++		if (bound) {
++			for_each_tile(tile, xe, id)
++				if (vm->pt_root[id])
++					xe_pt_clear(xe, vm->pt_root[id]);
++
++			for_each_gt(gt, xe, id)
++				xe_gt_tlb_invalidation_vm(gt, vm);
 +		}
 +	}
++
+ 	up_write(&vm->lock);
++
++	if (bound)
++		drm_dev_exit(idx);
+ }
  
- 	if (plat->phy_node) {
- 		bsp_priv->integrated_phy = of_property_read_bool(plat->phy_node,
+ void xe_vm_close_and_put(struct xe_vm *vm)
 -- 
 2.39.5
 
