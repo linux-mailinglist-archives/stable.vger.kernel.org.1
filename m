@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4321AC553F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848C2AC581E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E3D3B2573
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDB927A9BCC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D3C1D432D;
-	Tue, 27 May 2025 17:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7A727CCF0;
+	Tue, 27 May 2025 17:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oj6cSST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij0qh6o5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8011DC998;
-	Tue, 27 May 2025 17:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EDF42A9B;
+	Tue, 27 May 2025 17:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365402; cv=none; b=Q95yF99uhQj+fzsseev/i3oku5l3HKNgsTV0uJOGgPlMqtMocE8XoyQDy/Yk16MU4RzOvXnXsqBHp4i1zmcXKDxMD80eHrJgag0ieIdRQfvWTwzpT1EwL8+AYER93qriNDaPqT48yqRI7aV3oS50cZoRrBg6uDPCgoP1CGaZiOU=
+	t=1748367664; cv=none; b=twiwY5Y/dQY8vr8sb0tBdeNkdwD35uAhSqOim4C8jnmrR+9W4TSP/trosFNzabho0g4oUU69NImyCZVFtiReXxXBt3GQVYHQP3JojDmmDImtLv6pv8HHy7i5qCQAAhlrWh5GH/QLNEjZAzIY+WsYVjkIxS8pBKkUfMffEzX/QXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365402; c=relaxed/simple;
-	bh=3isGyo10J9G82TbPIK7QYHnHXNd+plgh3eBXoeX07k8=;
+	s=arc-20240116; t=1748367664; c=relaxed/simple;
+	bh=Zvj74UrOWX62rFVsjPGDJOcD+v6MQaR+XOxqnTDFlzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt8j23h7epX8PpiSECSx50VyuHlgRgtcsPcn9oo618oJDoeqQF+VtFzYp0zexICZw5svRaqNVr40Yaet3t1h2y7EWnrvM0AVmaYXvYQEpaNLV7ZGqHm59vPQdhDZPNA8KjQ6k4OjQbF7OtbHvFF1PZ+F/je90XurA4cG3TbyD8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oj6cSST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB0FC4CEE9;
-	Tue, 27 May 2025 17:03:21 +0000 (UTC)
+	 MIME-Version; b=bi+D6aUK6L97TxlHwbELUz6K6566xG+38BwwHUrTauzJzG8YFA5upDAsgs9IAXQ/mCJQttzU1KGb1iEmoG84hlSNDAP3KCz8mpU1eI2LV0QBwL4iAb0/DA8nDAl2524DzzJAORmSeSQ692VJzSFalWYnMN+RavhxkelhGS89wnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij0qh6o5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C1EC4CEE9;
+	Tue, 27 May 2025 17:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365402;
-	bh=3isGyo10J9G82TbPIK7QYHnHXNd+plgh3eBXoeX07k8=;
+	s=korg; t=1748367663;
+	bh=Zvj74UrOWX62rFVsjPGDJOcD+v6MQaR+XOxqnTDFlzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0oj6cSST5ky3wTWV392I8qpJ7tGxD8Ie7kurqWUZ428pLrHJtSZ8uO3yp1DD3yh8+
-	 RYGYos6vTx9OXxjDhrdEB3PfBD2YaELijjCACL+PHVwiQacG3DMKpRBRx2HCfCXKAy
-	 so4pwOzOXUlXxwC1UbIRAMMzvqKW9neNPMBvyN9I=
+	b=ij0qh6o53D3xA0IX6Hi0R1yA1s6H77A5Z8OFqYO2U4TUDShxW9p5/bbOhv0pmaDED
+	 iftfZvSYI+oJAVfKrhtDWBwINiDVan+mNaBkE2VOMstLC+ncXPTtrXcCC+nU2aPL61
+	 0C0+2tiJHj/hVpXN95ArmaVyAqSeUMlrJwP4wiVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 364/626] smack: recognize ipv4 CIPSO w/o categories
+Subject: [PATCH 6.14 460/783] clk: qcom: clk-alpha-pll: Do not use random stack value for recalc rate
 Date: Tue, 27 May 2025 18:24:17 +0200
-Message-ID: <20250527162459.801276578@linuxfoundation.org>
+Message-ID: <20250527162531.861986468@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
+[ Upstream commit 7a243e1b814a02ab40793026ef64223155d86395 ]
 
-If SMACK label has CIPSO representation w/o categories, e.g.:
+If regmap_read() fails, random stack value was used in calculating new
+frequency in recalc_rate() callbacks.  Such failure is really not
+expected as these are all MMIO reads, however code should be here
+correct and bail out.  This also avoids possible warning on
+uninitialized value.
 
-| # cat /smack/cipso2
-| foo  10
-| @ 250/2
-| ...
-
-then SMACK does not recognize such CIPSO in input ipv4 packets
-and substitues '*' label instead. Audit records may look like
-
-| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
-|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
-
-This happens in two steps:
-
-1) security/smack/smackfs.c`smk_set_cipso
-   does not clear NETLBL_SECATTR_MLS_CAT
-   from (struct smack_known *)skp->smk_netlabel.flags
-   on assigning CIPSO w/o categories:
-
-| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
-
-2) security/smack/smack_lsm.c`smack_from_secattr
-   can not match skp->smk_netlabel with input packet's
-   struct netlbl_lsm_secattr *sap
-   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
-   but skp->smk_netlabel.flags have (what is incorrect):
-
-| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
-| 	if ((skp->smk_netlabel.flags &
-| 		 NETLBL_SECATTR_MLS_CAT) == 0)
-| 		found = 1;
-| 	break;
-| }
-
-This commit sets/clears NETLBL_SECATTR_MLS_CAT in
-skp->smk_netlabel.flags according to the presense of CIPSO categories.
-The update of smk_netlabel is not atomic, so input packets processing
-still may be incorrect during short time while update proceeds.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250212-b4-clk-qcom-clean-v3-1-499f37444f5d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index 5dd1e164f9b13..d27e8b916bfb9 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -933,6 +933,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-+		if (ncats.attr.mls.cat)
-+			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
-+		else
-+			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
- 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
- 		synchronize_rcu();
- 		netlbl_catmap_free(old_cat);
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 9a65d14acf71c..cec0afea8e446 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -709,14 +709,19 @@ clk_alpha_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
+ 	if (ctl & PLL_ALPHA_EN) {
+-		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low);
++		if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low))
++			return 0;
+ 		if (alpha_width > 32) {
+-			regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+-				    &high);
++			if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
++					&high))
++				return 0;
+ 			a = (u64)high << 32 | low;
+ 		} else {
+ 			a = low & GENMASK(alpha_width - 1, 0);
+@@ -942,8 +947,11 @@ alpha_pll_huayra_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, alpha = 0, ctl, alpha_m, alpha_n;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+ 	if (ctl & PLL_ALPHA_EN) {
+ 		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &alpha);
+@@ -1137,8 +1145,11 @@ clk_trion_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, frac, alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
+ }
+@@ -1196,7 +1207,8 @@ clk_alpha_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll_postdiv *pll = to_clk_alpha_pll_postdiv(hw);
+ 	u32 ctl;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+ 	ctl >>= PLL_POST_DIV_SHIFT;
+ 	ctl &= PLL_POST_DIV_MASK(pll);
+@@ -1412,8 +1424,11 @@ static unsigned long alpha_pll_fabia_recalc_rate(struct clk_hw *hw,
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, frac, alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
+ }
+@@ -1563,7 +1578,8 @@ clk_trion_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct regmap *regmap = pll->clkr.regmap;
+ 	u32 i, div = 1, val;
+ 
+-	regmap_read(regmap, PLL_USER_CTL(pll), &val);
++	if (regmap_read(regmap, PLL_USER_CTL(pll), &val))
++		return 0;
+ 
+ 	val >>= pll->post_div_shift;
+ 	val &= PLL_POST_DIV_MASK(pll);
+@@ -2484,9 +2500,12 @@ static unsigned long alpha_pll_lucid_evo_recalc_rate(struct clk_hw *hw,
+ 	struct regmap *regmap = pll->clkr.regmap;
+ 	u32 l, frac;
+ 
+-	regmap_read(regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(regmap, PLL_L_VAL(pll), &l))
++		return 0;
+ 	l &= LUCID_EVO_PLL_L_VAL_MASK;
+-	regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac);
++
++	if (regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, pll_alpha_width(pll));
+ }
+@@ -2699,7 +2718,8 @@ static unsigned long clk_rivian_evo_pll_recalc_rate(struct clk_hw *hw,
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
+ 
+ 	return parent_rate * l;
+ }
 -- 
 2.39.5
 
