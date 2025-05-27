@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FC2AC5382
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE6CAC56E0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0CF1885AB8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60C4F4A6342
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CB91B6D08;
-	Tue, 27 May 2025 16:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00576281375;
+	Tue, 27 May 2025 17:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsK8p2e1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDbs3aDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DF31D63EF;
-	Tue, 27 May 2025 16:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2AC27FD41;
+	Tue, 27 May 2025 17:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364497; cv=none; b=maVigqobvzPaaQHg25Z4lan44dD9cJqrv72weJF7FmENukMY9QPt9HCIsJ0vTzr5BvTFR1JFHlMbYug9HXjVLOLK7ofxd98GaeZE6S4mAEBmuRXxoPGBMx8GuDsJN1tI+MV+/vbNsBEUKPPDFg0Rz2ukdJN5LJI3++8uHUO4U5A=
+	t=1748366755; cv=none; b=ZV7n3EIREjAmoTjJEVRJIYCO8XGsjl2kVTsZuScCvFP7gvXJZkKRGpBTcS8of5pcO+6pQm//H8bze1wMDQnxnyqrtKMleCtetvzhklVyKZgazaiz+o16YVuvtf4oQSJbrJs7pFbhKAAjrPsnrdLLioMn1Be2g5d0knJg+GV3Qmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364497; c=relaxed/simple;
-	bh=o472906vaSjMuibz+puAQvwqYHWO9Foq4RM7x56WDu8=;
+	s=arc-20240116; t=1748366755; c=relaxed/simple;
+	bh=MLEV+HPQTv5EoXhP0xbeqjxmvapw/pJMQFNPrEE8jBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=is+igKakJt4dj4qllrrlv4P/CVmU/dVr1MTJBc2QdCK/JZr5aPAMDcu6jdR5ojI6aA6jf2EXamPNY1GhhOG8D+3BKWlCS7dKQOapbsaQdibbxy2b0q26+FwXEOWW8tWMjRFfTJ0NPIEPsYmJLfmfD27cIfRo4YGaIBkpoNeWwz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsK8p2e1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9A5C4CEE9;
-	Tue, 27 May 2025 16:48:16 +0000 (UTC)
+	 MIME-Version; b=ELOpFWuDSG9YaeTW+lYAZrdT8h1u0qRuHZcJIYUvYkY3aK7HW/CNTKWxvomsb4FfjKgVU6lVBewf/3Gn4POwqbYGejly001KfWZIojGi073adlclyEiBW45TiwvbinZSTyIZRiird/uMWxLfWEnDr7CWJJAePjv9HyMOcTPoQQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDbs3aDJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3F8C4CEEA;
+	Tue, 27 May 2025 17:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364497;
-	bh=o472906vaSjMuibz+puAQvwqYHWO9Foq4RM7x56WDu8=;
+	s=korg; t=1748366755;
+	bh=MLEV+HPQTv5EoXhP0xbeqjxmvapw/pJMQFNPrEE8jBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsK8p2e1vyGCZAUtgTqglSK63Yr5tweju0YmlppO5OjGIYIB+vHRtSuIP7PQ3APCq
-	 5QeACz8WkoZR9nvxbKys6oeMlwaAJqzKQen/lCJq5ljPJuNo9fzFt0QODE95ay+Vmt
-	 mCXthxeePLH+2n0Mc2w3xxxnhMn0PP9bFD7lqZK4=
+	b=cDbs3aDJaU6C2P8RXujKVYs8/bnRHFdprayWZQPPmNiola8lnWIqclXIDIv2amWQk
+	 jEJLO6Hb0twKLBvY8+FmpEq0FI3XPRPs8v0wZqAPvJUkiELETz0iicQSVMbUg7Xhhf
+	 ClT4/XrBUZ1w7jWGl2T15dOM0EnN19LQpW2/VpJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luis de Arquer <luis.dearquer@inertim.com>,
-	Mark Brown <broonie@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/626] spi-rockchip: Fix register out of bounds access
+Subject: [PATCH 6.14 170/783] erofs: initialize decompression early
 Date: Tue, 27 May 2025 18:19:27 +0200
-Message-ID: <20250527162448.053475665@linuxfoundation.org>
+Message-ID: <20250527162520.090980562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis de Arquer <luis.dearquer@inertim.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 7a874e8b54ea21094f7fd2d428b164394c6cb316 ]
+[ Upstream commit fe1e57d44d7f106df9048e815e4862cf63921220 ]
 
-Do not write native chip select stuff for GPIO chip selects.
-GPIOs can be numbered much higher than native CS.
-Also, it makes no sense.
+ - Rename erofs_init_managed_cache() to z_erofs_init_super();
+ - Move the initialization of managed_pslots into z_erofs_init_super() too;
+ - Move z_erofs_init_super() and packed inode preparation upwards, before
+   the root inode initialization.
 
-Signed-off-by: Luis de Arquer <luis.dearquer@inertim.com>
-Link: https://patch.msgid.link/365ccddfba110549202b3520f4401a6a936e82a8.camel@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Therefore, the root directory can also be compressible.
+
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Acked-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20250317054840.3483000-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/internal.h |  4 ++--
+ fs/erofs/super.c    | 46 ++++++++++++++++++++++-----------------------
+ fs/erofs/zdata.c    |  4 ++--
+ 3 files changed, 26 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 40a64a598a749..5008489d6fac8 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -547,7 +547,7 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
- 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
- 	if (spi->mode & SPI_LSB_FIRST)
- 		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
--	if (spi->mode & SPI_CS_HIGH)
-+	if ((spi->mode & SPI_CS_HIGH) && !(spi_get_csgpiod(spi, 0)))
- 		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index efd25f3101f1f..2b8d9a10f0026 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -446,6 +446,7 @@ int __init erofs_init_shrinker(void);
+ void erofs_exit_shrinker(void);
+ int __init z_erofs_init_subsystem(void);
+ void z_erofs_exit_subsystem(void);
++int z_erofs_init_super(struct super_block *sb);
+ unsigned long z_erofs_shrink_scan(struct erofs_sb_info *sbi,
+ 				  unsigned long nr_shrink);
+ int z_erofs_map_blocks_iter(struct inode *inode, struct erofs_map_blocks *map,
+@@ -455,7 +456,6 @@ void z_erofs_put_gbuf(void *ptr);
+ int z_erofs_gbuf_growsize(unsigned int nrpages);
+ int __init z_erofs_gbuf_init(void);
+ void z_erofs_gbuf_exit(void);
+-int erofs_init_managed_cache(struct super_block *sb);
+ int z_erofs_parse_cfgs(struct super_block *sb, struct erofs_super_block *dsb);
+ #else
+ static inline void erofs_shrinker_register(struct super_block *sb) {}
+@@ -464,7 +464,7 @@ static inline int erofs_init_shrinker(void) { return 0; }
+ static inline void erofs_exit_shrinker(void) {}
+ static inline int z_erofs_init_subsystem(void) { return 0; }
+ static inline void z_erofs_exit_subsystem(void) {}
+-static inline int erofs_init_managed_cache(struct super_block *sb) { return 0; }
++static inline int z_erofs_init_super(struct super_block *sb) { return 0; }
+ #endif	/* !CONFIG_EROFS_FS_ZIP */
  
- 	if (xfer->rx_buf && xfer->tx_buf)
+ #ifdef CONFIG_EROFS_FS_BACKED_BY_FILE
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index 9f2bce5af9c83..b30125a2a5011 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -631,9 +631,16 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	else
+ 		sb->s_flags &= ~SB_POSIXACL;
+ 
+-#ifdef CONFIG_EROFS_FS_ZIP
+-	xa_init(&sbi->managed_pslots);
+-#endif
++	err = z_erofs_init_super(sb);
++	if (err)
++		return err;
++
++	if (erofs_sb_has_fragments(sbi) && sbi->packed_nid) {
++		inode = erofs_iget(sb, sbi->packed_nid);
++		if (IS_ERR(inode))
++			return PTR_ERR(inode);
++		sbi->packed_inode = inode;
++	}
+ 
+ 	inode = erofs_iget(sb, sbi->root_nid);
+ 	if (IS_ERR(inode))
+@@ -645,24 +652,11 @@ static int erofs_fc_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		iput(inode);
+ 		return -EINVAL;
+ 	}
+-
+ 	sb->s_root = d_make_root(inode);
+ 	if (!sb->s_root)
+ 		return -ENOMEM;
+ 
+ 	erofs_shrinker_register(sb);
+-	if (erofs_sb_has_fragments(sbi) && sbi->packed_nid) {
+-		sbi->packed_inode = erofs_iget(sb, sbi->packed_nid);
+-		if (IS_ERR(sbi->packed_inode)) {
+-			err = PTR_ERR(sbi->packed_inode);
+-			sbi->packed_inode = NULL;
+-			return err;
+-		}
+-	}
+-	err = erofs_init_managed_cache(sb);
+-	if (err)
+-		return err;
+-
+ 	err = erofs_xattr_prefixes_init(sb);
+ 	if (err)
+ 		return err;
+@@ -798,6 +792,16 @@ static int erofs_init_fs_context(struct fs_context *fc)
+ 	return 0;
+ }
+ 
++static void erofs_drop_internal_inodes(struct erofs_sb_info *sbi)
++{
++	iput(sbi->packed_inode);
++	sbi->packed_inode = NULL;
++#ifdef CONFIG_EROFS_FS_ZIP
++	iput(sbi->managed_cache);
++	sbi->managed_cache = NULL;
++#endif
++}
++
+ static void erofs_kill_sb(struct super_block *sb)
+ {
+ 	struct erofs_sb_info *sbi = EROFS_SB(sb);
+@@ -807,6 +811,7 @@ static void erofs_kill_sb(struct super_block *sb)
+ 		kill_anon_super(sb);
+ 	else
+ 		kill_block_super(sb);
++	erofs_drop_internal_inodes(sbi);
+ 	fs_put_dax(sbi->dif0.dax_dev, NULL);
+ 	erofs_fscache_unregister_fs(sb);
+ 	erofs_sb_free(sbi);
+@@ -817,17 +822,10 @@ static void erofs_put_super(struct super_block *sb)
+ {
+ 	struct erofs_sb_info *const sbi = EROFS_SB(sb);
+ 
+-	DBG_BUGON(!sbi);
+-
+ 	erofs_unregister_sysfs(sb);
+ 	erofs_shrinker_unregister(sb);
+ 	erofs_xattr_prefixes_cleanup(sb);
+-#ifdef CONFIG_EROFS_FS_ZIP
+-	iput(sbi->managed_cache);
+-	sbi->managed_cache = NULL;
+-#endif
+-	iput(sbi->packed_inode);
+-	sbi->packed_inode = NULL;
++	erofs_drop_internal_inodes(sbi);
+ 	erofs_free_dev_context(sbi->devs);
+ 	sbi->devs = NULL;
+ 	erofs_fscache_unregister_fs(sb);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 67acef591646c..87192635b2d20 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -641,18 +641,18 @@ static const struct address_space_operations z_erofs_cache_aops = {
+ 	.invalidate_folio = z_erofs_cache_invalidate_folio,
+ };
+ 
+-int erofs_init_managed_cache(struct super_block *sb)
++int z_erofs_init_super(struct super_block *sb)
+ {
+ 	struct inode *const inode = new_inode(sb);
+ 
+ 	if (!inode)
+ 		return -ENOMEM;
+-
+ 	set_nlink(inode, 1);
+ 	inode->i_size = OFFSET_MAX;
+ 	inode->i_mapping->a_ops = &z_erofs_cache_aops;
+ 	mapping_set_gfp_mask(inode->i_mapping, GFP_KERNEL);
+ 	EROFS_SB(sb)->managed_cache = inode;
++	xa_init(&EROFS_SB(sb)->managed_pslots);
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
