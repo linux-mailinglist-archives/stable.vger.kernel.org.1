@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-147749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0134AC5902
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5067DAC55D6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DB721888F34
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF2EC4A4242
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD62280021;
-	Tue, 27 May 2025 17:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377C328003D;
+	Tue, 27 May 2025 17:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQKsrrh1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOF0ZgcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD362566;
-	Tue, 27 May 2025 17:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DC52798E6;
+	Tue, 27 May 2025 17:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368310; cv=none; b=KcoAm4VNXvtnzZrLFUerkIa5y7JKM4BhzMT8wwOqmW5N+/4/1547YWTON3NHyXi+jgrjUB9Vk5S7LKuKpzmw+ajR9DGQB+cC/1S+B0zC/VVRHYd+/7NZ8D+jXz0oHQk+ao+zpXytfYlDtoJjdylm87HS2bke69Sfpp8sCMildSc=
+	t=1748366038; cv=none; b=mqCGkcynRMYHMTmWaK8rjjYVDcxX7dijB3DlKwn43u0YA3wG2ob45m3DA8wWUClQnLmsdsqvTz5NRAzNWpy7UTUaLTentvarUTPogqWcKjQMmhWahkZ1BNDfHx5kkLUO858+QKPZk7aQNfWtRnDRZ3vP73VyQ3kla5nnfYxzSm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368310; c=relaxed/simple;
-	bh=J/AO0H4b8vX2dxICYyrqOD6rpP0M5Yaa9Wn1kmFy4pg=;
+	s=arc-20240116; t=1748366038; c=relaxed/simple;
+	bh=FWi0NDMw1ap4IuVv5zIhoOu+kSNJ272bkKGcQRA12OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVUcjm1qfaHHsinNPCuFBWjyfS/sD/FswpyQkK8MuZAKMnPaYAvvXpUMSge+JjQz6irCd7pijnO53kp/nysAfI+9DggIQlANj0Uy+n8KsoLXinebPWRxHYSllF2mxo0lOtq1WTtJg22CNRpLXy6Am5aSWZXp6yplQN63AoiKPvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQKsrrh1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E5BC4CEE9;
-	Tue, 27 May 2025 17:51:49 +0000 (UTC)
+	 MIME-Version; b=NOjo7H4xK4Eed/0BHfwFWC6sW/tiUVAKR8XrHjSlYCMlz2BL1a3XxFYmsiUob/DAuJOfBRQaLBzxyAQn0G31fxAoQbQYq6kywR2yxQGwc87r+k8YXSY/wnhCr8T9HfZk9Ez7rVs9u/QYd7TE8FHutbEMTZnGHu9bydB0gKwdh4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOF0ZgcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792C7C4CEE9;
+	Tue, 27 May 2025 17:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368310;
-	bh=J/AO0H4b8vX2dxICYyrqOD6rpP0M5Yaa9Wn1kmFy4pg=;
+	s=korg; t=1748366037;
+	bh=FWi0NDMw1ap4IuVv5zIhoOu+kSNJ272bkKGcQRA12OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQKsrrh1hHJH6v+vb8FJolqBBCowe9GhIehlt2ueMlZaEIWLLSwIkE4XZi7xDVSY3
-	 zM7mm5Oup2kaSkJGY6yutsQxMkzjOenuR0B44CpkCx2l2XHBUqCTit2BzIOJbj3rRH
-	 zTiMG1aM7QLB929WNYfetPGC4uIKhqrXaogjBYFs=
+	b=AOF0ZgcEZHQXQZQFdTDn9ZmKMUF0Vsrj7v9NoU3dHE10QdloeoXXfdb5IxdvtZIOq
+	 u+5gTEsOFNoJAH6ZchWEXgqv+NAf3UbAapteCAbxx17oJ2SeA8oTDek+l4pSc4sIoq
+	 TH2m+wOtLZnwLhOgBcuinEvGpARlxY66O6k0O1C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 666/783] ASoC: intel/sdw_utils: Add volume limit to cs35l56 speakers
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 570/626] crypto: algif_hash - fix double free in hash_accept
 Date: Tue, 27 May 2025 18:27:43 +0200
-Message-ID: <20250527162540.244882235@linuxfoundation.org>
+Message-ID: <20250527162508.126390157@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-[ Upstream commit d5463e531c128ff1b141fdba2e13345cd50028a4 ]
+commit b2df03ed4052e97126267e8c13ad4204ea6ba9b6 upstream.
 
-The volume control for cs35l56 speakers has a maximum gain of +12 dB.
-However, for many use cases, this can cause distorted audio, depending
-various factors, such as other signal-processing elements in the chain,
-for example if the audio passes through a gain control before reaching
-the amp or the signal path has been tuned for a particular maximum
-gain in the amp.
+If accept(2) is called on socket type algif_hash with
+MSG_MORE flag set and crypto_ahash_import fails,
+sk2 is freed. However, it is also freed in af_alg_release,
+leading to slab-use-after-free error.
 
-In the case of systems which use the soc_sdw_* driver, audio will
-likely be distorted in all cases above 0 dB, therefore add a volume
-limit of 400, which is 0 dB maximum volume inside this driver.
-
-The volume limit should be applied to both soundwire and soundwire
-bridge configurations.
-
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250430103134.24579-3-sbinding@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/soc_sdw_utils.h                |  1 +
- sound/soc/sdw_utils/soc_sdw_bridge_cs35l56.c |  4 ++++
- sound/soc/sdw_utils/soc_sdw_cs_amp.c         | 24 ++++++++++++++++++++
- 3 files changed, 29 insertions(+)
+ crypto/algif_hash.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/sound/soc_sdw_utils.h b/include/sound/soc_sdw_utils.h
-index 36a4a1e1d8ca2..d8bd5d37131aa 100644
---- a/include/sound/soc_sdw_utils.h
-+++ b/include/sound/soc_sdw_utils.h
-@@ -226,6 +226,7 @@ int asoc_sdw_cs_amp_init(struct snd_soc_card *card,
- 			 bool playback);
- int asoc_sdw_cs_spk_feedback_rtd_init(struct snd_soc_pcm_runtime *rtd,
- 				      struct snd_soc_dai *dai);
-+int asoc_sdw_cs35l56_volume_limit(struct snd_soc_card *card, const char *name_prefix);
+--- a/crypto/algif_hash.c
++++ b/crypto/algif_hash.c
+@@ -265,10 +265,6 @@ static int hash_accept(struct socket *so
+ 		goto out_free_state;
  
- /* MAXIM codec support */
- int asoc_sdw_maxim_init(struct snd_soc_card *card,
-diff --git a/sound/soc/sdw_utils/soc_sdw_bridge_cs35l56.c b/sound/soc/sdw_utils/soc_sdw_bridge_cs35l56.c
-index 246e5c2e0af55..c7e55f4433514 100644
---- a/sound/soc/sdw_utils/soc_sdw_bridge_cs35l56.c
-+++ b/sound/soc/sdw_utils/soc_sdw_bridge_cs35l56.c
-@@ -60,6 +60,10 @@ static int asoc_sdw_bridge_cs35l56_asp_init(struct snd_soc_pcm_runtime *rtd)
+ 	err = crypto_ahash_import(&ctx2->req, state);
+-	if (err) {
+-		sock_orphan(sk2);
+-		sock_put(sk2);
+-	}
  
- 	/* 4 x 16-bit sample slots and FSYNC=48000, BCLK=3.072 MHz */
- 	for_each_rtd_codec_dais(rtd, i, codec_dai) {
-+		ret = asoc_sdw_cs35l56_volume_limit(card, codec_dai->component->name_prefix);
-+		if (ret)
-+			return ret;
-+
- 		ret = snd_soc_dai_set_tdm_slot(codec_dai, tx_mask, rx_mask, 4, 16);
- 		if (ret < 0)
- 			return ret;
-diff --git a/sound/soc/sdw_utils/soc_sdw_cs_amp.c b/sound/soc/sdw_utils/soc_sdw_cs_amp.c
-index 4b6181cf29716..35b550bcd4ded 100644
---- a/sound/soc/sdw_utils/soc_sdw_cs_amp.c
-+++ b/sound/soc/sdw_utils/soc_sdw_cs_amp.c
-@@ -16,6 +16,25 @@
- 
- #define CODEC_NAME_SIZE	8
- #define CS_AMP_CHANNELS_PER_AMP	4
-+#define CS35L56_SPK_VOLUME_0DB 400 /* 0dB Max */
-+
-+int asoc_sdw_cs35l56_volume_limit(struct snd_soc_card *card, const char *name_prefix)
-+{
-+	char *volume_ctl_name;
-+	int ret;
-+
-+	volume_ctl_name = kasprintf(GFP_KERNEL, "%s Speaker Volume", name_prefix);
-+	if (!volume_ctl_name)
-+		return -ENOMEM;
-+
-+	ret = snd_soc_limit_volume(card, volume_ctl_name, CS35L56_SPK_VOLUME_0DB);
-+	if (ret)
-+		dev_err(card->dev, "%s limit set failed: %d\n", volume_ctl_name, ret);
-+
-+	kfree(volume_ctl_name);
-+	return ret;
-+}
-+EXPORT_SYMBOL_NS(asoc_sdw_cs35l56_volume_limit, "SND_SOC_SDW_UTILS");
- 
- int asoc_sdw_cs_spk_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_dai *dai)
- {
-@@ -40,6 +59,11 @@ int asoc_sdw_cs_spk_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_dai
- 
- 		snprintf(widget_name, sizeof(widget_name), "%s SPK",
- 			 codec_dai->component->name_prefix);
-+
-+		ret = asoc_sdw_cs35l56_volume_limit(card, codec_dai->component->name_prefix);
-+		if (ret)
-+			return ret;
-+
- 		ret = snd_soc_dapm_add_routes(&card->dapm, &route, 1);
- 		if (ret)
- 			return ret;
--- 
-2.39.5
-
+ out_free_state:
+ 	kfree_sensitive(state);
 
 
 
