@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-147501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E03AC57EA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C27AC5501
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CF8189BAEB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7643A8A4701
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20AE27F16D;
-	Tue, 27 May 2025 17:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E9A25FA1D;
+	Tue, 27 May 2025 17:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYlvzFrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsVy7p29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE2C1A3159;
-	Tue, 27 May 2025 17:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B939D78F32;
+	Tue, 27 May 2025 17:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367533; cv=none; b=H02YJLhr3WAt83Q6Mc8/+PY+u6oX+THNBsIys2MYte9BoSbr1ykhDzXyTZtIepajqXrTzcn2TIGA1NTgLE38qnyAccmmIzvzUMYrWWLRgGiPtFGDCehh9dA9a4t78NLCfuIBxG/KCKdizhtbnJfM/oOj5/+9sbIdpKA3pmZXlDw=
+	t=1748365244; cv=none; b=SfN8uIXj2hcJ8plB6GFef+SJogqeSmo/2BS4dhO3X9SQ14L5/Ag/gMmrT+HDLywxfTCzNkNxEvQGi+ClVMVZd5sGy8DOYD7m0J2Y7/Oh4qOMR5hL/Ew17NmgDso5MOj+c6WpiWpCa++lm57dmUhI4lxsAnzYtO9yUpUTBgDnXsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367533; c=relaxed/simple;
-	bh=csaGidVQpb1dtuWTJ9Sev2eW2gSZwFYkk0dChFfUHlo=;
+	s=arc-20240116; t=1748365244; c=relaxed/simple;
+	bh=XmOJ7sz8CJUF2BjpWQRqJwQw9ntXf7wJMQ0q388/Clw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcuKOa4dSFiwzah/nvSy43KizHVzKkZmMxcFT+BAfi/1s2jMXhc4Id47W1eiLJ/lKMwC8xyD79XIKJHQVHykNskf4w2etQJQT2sT8Kg6vjEXbIpzXU0g+GJ7hRlGTRFPQrI8RWzrWyW4tH3G+jVAkoocv6SQUfy/BPixe0BohpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYlvzFrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF23FC4CEE9;
-	Tue, 27 May 2025 17:38:52 +0000 (UTC)
+	 MIME-Version; b=h265PjDV8OMJdwiFtv/8k81h4LuPCssPiZ2VtrR6nqnuBvfGlPU3wyFWMFjNOb+4xzj+3r0ZOJMpjM31NMUw6KzTXOnIdcO/PsKencX2L8rWxSrJoPbNQZeoQ4/wxlxs0LEVjseRp15enVuWvi5WgIi4zk2b8oAE/B3wEDN/odI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsVy7p29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DF4C4CEE9;
+	Tue, 27 May 2025 17:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367533;
-	bh=csaGidVQpb1dtuWTJ9Sev2eW2gSZwFYkk0dChFfUHlo=;
+	s=korg; t=1748365244;
+	bh=XmOJ7sz8CJUF2BjpWQRqJwQw9ntXf7wJMQ0q388/Clw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYlvzFrTPnQfZF4xiN/vurAOEuw2h3RuAFvZpk9rMhh/ryMJNQxKbRi2s3/w0TfsF
-	 AdN4sEXoBFg5TSR3MQQN4qEZbRdVDPamvW4YSFTUPZ9klJAJVExPnLvOXuEQ1ZLLcY
-	 v/0/IKFmmzhdSN6+JqevFKP8a6974BpnoBkI8egY=
+	b=DsVy7p29Zee+8lXs+Y06MyZ8TPvNTf7Cucoio21M1lD3t3HM3NpVUhxLympyAMKqB
+	 H/tgrN+JZY+5QVQ3TgI0LyU3wr2HsIgtNp+lFBHvNVksRzbmy/Uz50hlcs9lVDiVMm
+	 cx7o2vkSqiB55X0J1KOrK1dXu0TO9EgZXJBQ7eTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>,
+	Roopni Devanathan <quic_rdevanat@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 378/783] crypto: skcipher - Zap type in crypto_alloc_sync_skcipher
+Subject: [PATCH 6.12 282/626] wifi: ath12k: Improve BSS discovery with hidden SSID in 6 GHz band
 Date: Tue, 27 May 2025 18:22:55 +0200
-Message-ID: <20250527162528.485091944@linuxfoundation.org>
+Message-ID: <20250527162456.491973081@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
 
-[ Upstream commit ee509efc74ddbc59bb5d6fd6e050f9ef25f74bff ]
+[ Upstream commit 27d38bdfd416f4db70e09c3bef3b030c86fd235a ]
 
-The type needs to be zeroed as otherwise the user could use it to
-allocate an asynchronous sync skcipher.
+Currently, sometimes, the station is unable to identify the configured
+AP SSID in its scan results when the AP is not broadcasting its name
+publicly and has a hidden SSID.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Currently, channel dwell time for an ath12k station is 30 ms. Sometimes,
+station can send broadcast probe request to AP close to the end of dwell
+time. In some of these cases, before AP sends a response to the received
+probe request, the dwell time on the station side would come to an end.
+So, the station will move to scan next channel and will not be able to
+acknowledge the unicast probe response.
+
+Resolve this issue by increasing station's channel dwell time to 70 ms,
+so that the it remains on the same channel for a longer period. This
+would increase the station's chance of receiving probe response from the
+AP. The station will then send a response acknowledgment back to the AP,
+thus leading to successful scan and BSS discovery.
+
+With an increased dwell time, scan would take longer than it takes now.
+But, this fix is an improvement for hidden SSID scan issue.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250207060005.153835-1-quic_rdevanat@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/skcipher.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/skcipher.c b/crypto/skcipher.c
-index a9eb2dcf28982..2d2b1589a0097 100644
---- a/crypto/skcipher.c
-+++ b/crypto/skcipher.c
-@@ -681,6 +681,7 @@ struct crypto_sync_skcipher *crypto_alloc_sync_skcipher(
- 
- 	/* Only sync algorithms allowed. */
- 	mask |= CRYPTO_ALG_ASYNC | CRYPTO_ALG_SKCIPHER_REQSIZE_LARGE;
-+	type &= ~(CRYPTO_ALG_ASYNC | CRYPTO_ALG_SKCIPHER_REQSIZE_LARGE);
- 
- 	tfm = crypto_alloc_tfm(alg_name, &crypto_skcipher_type, type, mask);
- 
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index a6ba97949440e..30836a09d5506 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -2206,8 +2206,8 @@ void ath12k_wmi_start_scan_init(struct ath12k *ar,
+ 	arg->dwell_time_active = 50;
+ 	arg->dwell_time_active_2g = 0;
+ 	arg->dwell_time_passive = 150;
+-	arg->dwell_time_active_6g = 40;
+-	arg->dwell_time_passive_6g = 30;
++	arg->dwell_time_active_6g = 70;
++	arg->dwell_time_passive_6g = 70;
+ 	arg->min_rest_time = 50;
+ 	arg->max_rest_time = 500;
+ 	arg->repeat_probe_time = 0;
 -- 
 2.39.5
 
