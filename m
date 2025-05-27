@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98F3AC5472
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C75AC5770
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3DAF3A414B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB8A17E54B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BD027FD61;
-	Tue, 27 May 2025 16:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D8827FB02;
+	Tue, 27 May 2025 17:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4HLWqMD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZ+DYYl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B36276057;
-	Tue, 27 May 2025 16:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C2226B0B6;
+	Tue, 27 May 2025 17:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364920; cv=none; b=OuBJ0kzcYNzwxhj1gFIPyvaS2n2DLMHtomT6c1BtspcgksmwPJ8hT6nw6nFfcTFyHukuB8lyH5bw4m35j53UcgL4kHaC8OdwrDQTyD9G3G7ZT4zqYyR8L2QIlJktrEQ8JsM7IR+wgrsJ6OM/Q7N9XEmLNHfAaAeFy/4XSCN0AHo=
+	t=1748367179; cv=none; b=tRxY6A59T9Lh/XzMaGc+b/7yddElW5+W5I5QCZVfLTyd/NlM13kiissYYPweFSjAj0G8VAejt9mVlGtQUSDiB6wb+b04kHcCaMAvyxg9Lxar/jlLSoPUMAuYjORsG4zFA6iEPujBTIxqUkiORzitnYFGbaOPTAOE3iiAWNSX2p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364920; c=relaxed/simple;
-	bh=PG/6gTD96AE2SrloO+D1a+Hs1LoratzfOEQ3n5Uk8Ec=;
+	s=arc-20240116; t=1748367179; c=relaxed/simple;
+	bh=iDElEEpqDd4wpmfK3Rf6WQeJ6d2AFzSovVIqhLenhOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qR4Gx1HRwYSx0eOCpaPh/iOrp80FGbULJPDOfqrFmBhBcHb+oa0LVONr72TULAt6OldLwEIntvALWQFy20dvnaB1hkhugS1HbqTUddnzcTMR1HLXZcWKEg5HgT1CyZKPVI5UdBqudMwcmjfreLeIuoOzXMtTR39L5e/0REZe7ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4HLWqMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65A2C4CEE9;
-	Tue, 27 May 2025 16:55:19 +0000 (UTC)
+	 MIME-Version; b=b+QLIALigD7H/STE5vh/2TcOY6haeXwvN83aKSnTJqGpvvYHfhS45hYD0drccK6Z0xfZ1PnRXtYvky18vU03+vD5ykqfJHyr8Tz1z3oTQv/+dE3udMW1wGqJQN5Ov8T169qUMvZImBD1OxV29ZJvba4nKkaZFWzwyZV4b9Gh9bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZ+DYYl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B73C4CEE9;
+	Tue, 27 May 2025 17:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364920;
-	bh=PG/6gTD96AE2SrloO+D1a+Hs1LoratzfOEQ3n5Uk8Ec=;
+	s=korg; t=1748367179;
+	bh=iDElEEpqDd4wpmfK3Rf6WQeJ6d2AFzSovVIqhLenhOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4HLWqMDgOkP152kzXpLsQodiMgUwENe9u8UxaKnZK4CtQhTexXw9PtPsd+Bh21/b
-	 raF7H8Ej5W0nHIQU0IKYIdSCm3uICewV6ZajOuX8jlGmahxzv0+n2VeGaA2uAv9qMp
-	 J5W4raKoo7HLYZKaB6UmYVIZtOjx8mtkN4zNai0o=
+	b=KZ+DYYl7AtN67LwUQhxoOSrf+gMGDJiwgXMuozCE5UW/07ZXPja6ygu9BgTav1IOX
+	 t0qlKBC9pnRMq+0WMSYFMwOIkLbX843nMv6Z8UEq+ff0WIH1dNHyhMf/PXLJ8U4a1l
+	 XxU9SGU4hYSbg/vOqHoaNZFHcre1fT/fgEKwmMW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	David Sterba <dsterba@suse.com>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	kailang@realtek.com,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 207/626] crypto: lzo - Fix compression buffer overrun
+Subject: [PATCH 6.14 303/783] ALSA: hda/realtek: Enable PC beep passthrough for HP EliteBook 855 G7
 Date: Tue, 27 May 2025 18:21:40 +0200
-Message-ID: <20250527162453.430292413@linuxfoundation.org>
+Message-ID: <20250527162525.408828242@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,376 +63,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 
-[ Upstream commit cc47f07234f72cbd8e2c973cdbf2a6730660a463 ]
+[ Upstream commit aa85822c611aef7cd4dc17d27121d43e21bb82f0 ]
 
-Unlike the decompression code, the compression code in LZO never
-checked for output overruns.  It instead assumes that the caller
-always provides enough buffer space, disregarding the buffer length
-provided by the caller.
+PC speaker works well on this platform in BIOS and in Linux until sound
+card drivers are loaded. Then it stops working.
 
-Add a safe compression interface that checks for the end of buffer
-before each write.  Use the safe interface in crypto/lzo.
+There seems to be a beep generator node at 0x1a in this CODEC
+(ALC269_TYPE_ALC215) but it seems to be only connected to capture mixers
+at nodes 0x22 and 0x23.
+If I unmute the mixer input for 0x1a at node 0x23 and start recording
+from its "ALC285 Analog" capture device I can clearly hear beeps in that
+recording.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+So the beep generator is indeed working properly, however I wasn't able to
+figure out any way to connect it to speakers.
+
+However, the bits in the "Passthrough Control" register (0x36) seems to
+work at least partially: by zeroing "B" and "h" and setting "S" I can at
+least make the PIT PC speaker output appear either in this laptop speakers
+or headphones (depending on whether they are connected or not).
+
+There are some caveats, however:
+* If the CODEC gets runtime-suspended the beeps stop so it needs HDA beep
+device for keeping it awake during beeping.
+
+* If the beep generator node is generating any beep the PC beep passthrough
+seems to be temporarily inhibited, so the HDA beep device has to be
+prevented from using the actual beep generator node - but the beep device
+is still necessary due to the previous point.
+
+* In contrast with other platforms here beep amplification has to be
+disabled otherwise the beeps output are WAY louder than they were on pure
+BIOS setup.
+
+Unless someone (from Realtek probably) knows how to make the beep generator
+node output appear in speakers / headphones using PC beep passthrough seems
+to be the only way to make PC speaker beeping actually work on this
+platform.
+
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Acked-by: kailang@realtek.com
+Link: https://patch.msgid.link/7461f695b4daed80f2fc4b1463ead47f04f9ad05.1739741254.git.mail@maciej.szmigiero.name
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/lzo-rle.c              |   2 +-
- crypto/lzo.c                  |   2 +-
- include/linux/lzo.h           |   8 +++
- lib/lzo/Makefile              |   2 +-
- lib/lzo/lzo1x_compress.c      | 102 +++++++++++++++++++++++++---------
- lib/lzo/lzo1x_compress_safe.c |  18 ++++++
- 6 files changed, 106 insertions(+), 28 deletions(-)
- create mode 100644 lib/lzo/lzo1x_compress_safe.c
+ include/sound/hda_codec.h     |  1 +
+ sound/pci/hda/hda_beep.c      | 15 +++++++++------
+ sound/pci/hda/patch_realtek.c | 34 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/crypto/lzo-rle.c b/crypto/lzo-rle.c
-index 0631d975bfac1..0abc2d87f0420 100644
---- a/crypto/lzo-rle.c
-+++ b/crypto/lzo-rle.c
-@@ -55,7 +55,7 @@ static int __lzorle_compress(const u8 *src, unsigned int slen,
- 	size_t tmp_len = *dlen; /* size_t(ulong) <-> uint on 64 bit */
+diff --git a/include/sound/hda_codec.h b/include/sound/hda_codec.h
+index 575e55aa08ca9..c1fe6290d04dc 100644
+--- a/include/sound/hda_codec.h
++++ b/include/sound/hda_codec.h
+@@ -195,6 +195,7 @@ struct hda_codec {
+ 	/* beep device */
+ 	struct hda_beep *beep;
+ 	unsigned int beep_mode;
++	bool beep_just_power_on;
+ 
+ 	/* widget capabilities cache */
+ 	u32 *wcaps;
+diff --git a/sound/pci/hda/hda_beep.c b/sound/pci/hda/hda_beep.c
+index e51d475725576..13a7d92e8d8d0 100644
+--- a/sound/pci/hda/hda_beep.c
++++ b/sound/pci/hda/hda_beep.c
+@@ -31,8 +31,9 @@ static void generate_tone(struct hda_beep *beep, int tone)
+ 			beep->power_hook(beep, true);
+ 		beep->playing = 1;
+ 	}
+-	snd_hda_codec_write(codec, beep->nid, 0,
+-			    AC_VERB_SET_BEEP_CONTROL, tone);
++	if (!codec->beep_just_power_on)
++		snd_hda_codec_write(codec, beep->nid, 0,
++				    AC_VERB_SET_BEEP_CONTROL, tone);
+ 	if (!tone && beep->playing) {
+ 		beep->playing = 0;
+ 		if (beep->power_hook)
+@@ -212,10 +213,12 @@ int snd_hda_attach_beep_device(struct hda_codec *codec, int nid)
+ 	struct hda_beep *beep;
  	int err;
  
--	err = lzorle1x_1_compress(src, slen, dst, &tmp_len, ctx);
-+	err = lzorle1x_1_compress_safe(src, slen, dst, &tmp_len, ctx);
+-	if (!snd_hda_get_bool_hint(codec, "beep"))
+-		return 0; /* disabled explicitly by hints */
+-	if (codec->beep_mode == HDA_BEEP_MODE_OFF)
+-		return 0; /* disabled by module option */
++	if (!codec->beep_just_power_on) {
++		if (!snd_hda_get_bool_hint(codec, "beep"))
++			return 0; /* disabled explicitly by hints */
++		if (codec->beep_mode == HDA_BEEP_MODE_OFF)
++			return 0; /* disabled by module option */
++	}
  
- 	if (err != LZO_E_OK)
- 		return -EINVAL;
-diff --git a/crypto/lzo.c b/crypto/lzo.c
-index ebda132dd22bf..8338851c7406a 100644
---- a/crypto/lzo.c
-+++ b/crypto/lzo.c
-@@ -55,7 +55,7 @@ static int __lzo_compress(const u8 *src, unsigned int slen,
- 	size_t tmp_len = *dlen; /* size_t(ulong) <-> uint on 64 bit */
- 	int err;
+ 	beep = kzalloc(sizeof(*beep), GFP_KERNEL);
+ 	if (beep == NULL)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 2ff02fb6f7e94..025c80fa68b05 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -28,6 +28,7 @@
+ #include <sound/hda_codec.h>
+ #include "hda_local.h"
+ #include "hda_auto_parser.h"
++#include "hda_beep.h"
+ #include "hda_jack.h"
+ #include "hda_generic.h"
+ #include "hda_component.h"
+@@ -7034,6 +7035,30 @@ static void alc285_fixup_hp_envy_x360(struct hda_codec *codec,
+ 	}
+ }
  
--	err = lzo1x_1_compress(src, slen, dst, &tmp_len, ctx);
-+	err = lzo1x_1_compress_safe(src, slen, dst, &tmp_len, ctx);
- 
- 	if (err != LZO_E_OK)
- 		return -EINVAL;
-diff --git a/include/linux/lzo.h b/include/linux/lzo.h
-index e95c7d1092b28..4d30e3624acd2 100644
---- a/include/linux/lzo.h
-+++ b/include/linux/lzo.h
-@@ -24,10 +24,18 @@
- int lzo1x_1_compress(const unsigned char *src, size_t src_len,
- 		     unsigned char *dst, size_t *dst_len, void *wrkmem);
- 
-+/* Same as above but does not write more than dst_len to dst. */
-+int lzo1x_1_compress_safe(const unsigned char *src, size_t src_len,
-+			  unsigned char *dst, size_t *dst_len, void *wrkmem);
++static void alc285_fixup_hp_beep(struct hda_codec *codec,
++				 const struct hda_fixup *fix, int action)
++{
++	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
++		codec->beep_just_power_on = true;
++	} else  if (action == HDA_FIXUP_ACT_INIT) {
++#ifdef CONFIG_SND_HDA_INPUT_BEEP
++		/*
++		 * Just enable loopback to internal speaker and headphone jack.
++		 * Disable amplification to get about the same beep volume as
++		 * was on pure BIOS setup before loading the driver.
++		 */
++		alc_update_coef_idx(codec, 0x36, 0x7070, BIT(13));
 +
- /* This requires 'wrkmem' of size LZO1X_1_MEM_COMPRESS */
- int lzorle1x_1_compress(const unsigned char *src, size_t src_len,
- 		     unsigned char *dst, size_t *dst_len, void *wrkmem);
- 
-+/* Same as above but does not write more than dst_len to dst. */
-+int lzorle1x_1_compress_safe(const unsigned char *src, size_t src_len,
-+			     unsigned char *dst, size_t *dst_len, void *wrkmem);
++		snd_hda_enable_beep_device(codec, 1);
 +
- /* safe decompression with overrun testing */
- int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
- 			  unsigned char *dst, size_t *dst_len);
-diff --git a/lib/lzo/Makefile b/lib/lzo/Makefile
-index 2f58fafbbdddc..fc7b2b7ef4b20 100644
---- a/lib/lzo/Makefile
-+++ b/lib/lzo/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
--lzo_compress-objs := lzo1x_compress.o
-+lzo_compress-objs := lzo1x_compress.o lzo1x_compress_safe.o
- lzo_decompress-objs := lzo1x_decompress_safe.o
- 
- obj-$(CONFIG_LZO_COMPRESS) += lzo_compress.o
-diff --git a/lib/lzo/lzo1x_compress.c b/lib/lzo/lzo1x_compress.c
-index 47d6d43ea9578..7b10ca86a8930 100644
---- a/lib/lzo/lzo1x_compress.c
-+++ b/lib/lzo/lzo1x_compress.c
-@@ -18,11 +18,22 @@
- #include <linux/lzo.h>
- #include "lzodefs.h"
- 
--static noinline size_t
--lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
--		    unsigned char *out, size_t *out_len,
--		    size_t ti, void *wrkmem, signed char *state_offset,
--		    const unsigned char bitstream_version)
-+#undef LZO_UNSAFE
-+
-+#ifndef LZO_SAFE
-+#define LZO_UNSAFE 1
-+#define LZO_SAFE(name) name
-+#define HAVE_OP(x) 1
++#if !IS_ENABLED(CONFIG_INPUT_PCSPKR)
++		dev_warn_once(hda_codec_dev(codec),
++			      "enable CONFIG_INPUT_PCSPKR to get PC beeps\n");
 +#endif
-+
-+#define NEED_OP(x) if (!HAVE_OP(x)) goto output_overrun
-+
-+static noinline int
-+LZO_SAFE(lzo1x_1_do_compress)(const unsigned char *in, size_t in_len,
-+			      unsigned char **out, unsigned char *op_end,
-+			      size_t *tp, void *wrkmem,
-+			      signed char *state_offset,
-+			      const unsigned char bitstream_version)
- {
- 	const unsigned char *ip;
- 	unsigned char *op;
-@@ -30,8 +41,9 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
- 	const unsigned char * const ip_end = in + in_len - 20;
- 	const unsigned char *ii;
- 	lzo_dict_t * const dict = (lzo_dict_t *) wrkmem;
-+	size_t ti = *tp;
- 
--	op = out;
-+	op = *out;
- 	ip = in;
- 	ii = ip;
- 	ip += ti < 4 ? 4 - ti : 0;
-@@ -116,25 +128,32 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
- 		if (t != 0) {
- 			if (t <= 3) {
- 				op[*state_offset] |= t;
-+				NEED_OP(4);
- 				COPY4(op, ii);
- 				op += t;
- 			} else if (t <= 16) {
-+				NEED_OP(17);
- 				*op++ = (t - 3);
- 				COPY8(op, ii);
- 				COPY8(op + 8, ii + 8);
- 				op += t;
- 			} else {
- 				if (t <= 18) {
-+					NEED_OP(1);
- 					*op++ = (t - 3);
- 				} else {
- 					size_t tt = t - 18;
-+					NEED_OP(1);
- 					*op++ = 0;
- 					while (unlikely(tt > 255)) {
- 						tt -= 255;
-+						NEED_OP(1);
- 						*op++ = 0;
- 					}
-+					NEED_OP(1);
- 					*op++ = tt;
- 				}
-+				NEED_OP(t);
- 				do {
- 					COPY8(op, ii);
- 					COPY8(op + 8, ii + 8);
-@@ -151,6 +170,7 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
- 		if (unlikely(run_length)) {
- 			ip += run_length;
- 			run_length -= MIN_ZERO_RUN_LENGTH;
-+			NEED_OP(4);
- 			put_unaligned_le32((run_length << 21) | 0xfffc18
- 					   | (run_length & 0x7), op);
- 			op += 4;
-@@ -243,10 +263,12 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
- 		ip += m_len;
- 		if (m_len <= M2_MAX_LEN && m_off <= M2_MAX_OFFSET) {
- 			m_off -= 1;
-+			NEED_OP(2);
- 			*op++ = (((m_len - 1) << 5) | ((m_off & 7) << 2));
- 			*op++ = (m_off >> 3);
- 		} else if (m_off <= M3_MAX_OFFSET) {
- 			m_off -= 1;
-+			NEED_OP(1);
- 			if (m_len <= M3_MAX_LEN)
- 				*op++ = (M3_MARKER | (m_len - 2));
- 			else {
-@@ -254,14 +276,18 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
- 				*op++ = M3_MARKER | 0;
- 				while (unlikely(m_len > 255)) {
- 					m_len -= 255;
-+					NEED_OP(1);
- 					*op++ = 0;
- 				}
-+				NEED_OP(1);
- 				*op++ = (m_len);
- 			}
-+			NEED_OP(2);
- 			*op++ = (m_off << 2);
- 			*op++ = (m_off >> 6);
- 		} else {
- 			m_off -= 0x4000;
-+			NEED_OP(1);
- 			if (m_len <= M4_MAX_LEN)
- 				*op++ = (M4_MARKER | ((m_off >> 11) & 8)
- 						| (m_len - 2));
-@@ -282,11 +308,14 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
- 				m_len -= M4_MAX_LEN;
- 				*op++ = (M4_MARKER | ((m_off >> 11) & 8));
- 				while (unlikely(m_len > 255)) {
-+					NEED_OP(1);
- 					m_len -= 255;
- 					*op++ = 0;
- 				}
-+				NEED_OP(1);
- 				*op++ = (m_len);
- 			}
-+			NEED_OP(2);
- 			*op++ = (m_off << 2);
- 			*op++ = (m_off >> 6);
- 		}
-@@ -295,14 +324,20 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
- 		ii = ip;
- 		goto next;
- 	}
--	*out_len = op - out;
--	return in_end - (ii - ti);
-+	*out = op;
-+	*tp = in_end - (ii - ti);
-+	return LZO_E_OK;
-+
-+output_overrun:
-+	return LZO_E_OUTPUT_OVERRUN;
- }
- 
--static int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
--		     unsigned char *out, size_t *out_len,
--		     void *wrkmem, const unsigned char bitstream_version)
-+static int LZO_SAFE(lzogeneric1x_1_compress)(
-+	const unsigned char *in, size_t in_len,
-+	unsigned char *out, size_t *out_len,
-+	void *wrkmem, const unsigned char bitstream_version)
- {
-+	unsigned char * const op_end = out + *out_len;
- 	const unsigned char *ip = in;
- 	unsigned char *op = out;
- 	unsigned char *data_start;
-@@ -326,14 +361,18 @@ static int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
- 	while (l > 20) {
- 		size_t ll = min_t(size_t, l, m4_max_offset + 1);
- 		uintptr_t ll_end = (uintptr_t) ip + ll;
-+		int err;
-+
- 		if ((ll_end + ((t + ll) >> 5)) <= ll_end)
- 			break;
- 		BUILD_BUG_ON(D_SIZE * sizeof(lzo_dict_t) > LZO1X_1_MEM_COMPRESS);
- 		memset(wrkmem, 0, D_SIZE * sizeof(lzo_dict_t));
--		t = lzo1x_1_do_compress(ip, ll, op, out_len, t, wrkmem,
--					&state_offset, bitstream_version);
-+		err = LZO_SAFE(lzo1x_1_do_compress)(
-+			ip, ll, &op, op_end, &t, wrkmem,
-+			&state_offset, bitstream_version);
-+		if (err != LZO_E_OK)
-+			return err;
- 		ip += ll;
--		op += *out_len;
- 		l  -= ll;
- 	}
- 	t += l;
-@@ -342,20 +381,26 @@ static int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
- 		const unsigned char *ii = in + in_len - t;
- 
- 		if (op == data_start && t <= 238) {
-+			NEED_OP(1);
- 			*op++ = (17 + t);
- 		} else if (t <= 3) {
- 			op[state_offset] |= t;
- 		} else if (t <= 18) {
-+			NEED_OP(1);
- 			*op++ = (t - 3);
- 		} else {
- 			size_t tt = t - 18;
-+			NEED_OP(1);
- 			*op++ = 0;
- 			while (tt > 255) {
- 				tt -= 255;
-+				NEED_OP(1);
- 				*op++ = 0;
- 			}
-+			NEED_OP(1);
- 			*op++ = tt;
- 		}
-+		NEED_OP(t);
- 		if (t >= 16) do {
- 			COPY8(op, ii);
- 			COPY8(op + 8, ii + 8);
-@@ -368,31 +413,38 @@ static int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
- 		} while (--t > 0);
- 	}
- 
-+	NEED_OP(3);
- 	*op++ = M4_MARKER | 1;
- 	*op++ = 0;
- 	*op++ = 0;
- 
- 	*out_len = op - out;
- 	return LZO_E_OK;
-+
-+output_overrun:
-+	return LZO_E_OUTPUT_OVERRUN;
- }
- 
--int lzo1x_1_compress(const unsigned char *in, size_t in_len,
--		     unsigned char *out, size_t *out_len,
--		     void *wrkmem)
-+int LZO_SAFE(lzo1x_1_compress)(const unsigned char *in, size_t in_len,
-+			       unsigned char *out, size_t *out_len,
-+			       void *wrkmem)
- {
--	return lzogeneric1x_1_compress(in, in_len, out, out_len, wrkmem, 0);
-+	return LZO_SAFE(lzogeneric1x_1_compress)(
-+		in, in_len, out, out_len, wrkmem, 0);
- }
- 
--int lzorle1x_1_compress(const unsigned char *in, size_t in_len,
--		     unsigned char *out, size_t *out_len,
--		     void *wrkmem)
-+int LZO_SAFE(lzorle1x_1_compress)(const unsigned char *in, size_t in_len,
-+				  unsigned char *out, size_t *out_len,
-+				  void *wrkmem)
- {
--	return lzogeneric1x_1_compress(in, in_len, out, out_len,
--				       wrkmem, LZO_VERSION);
-+	return LZO_SAFE(lzogeneric1x_1_compress)(
-+		in, in_len, out, out_len, wrkmem, LZO_VERSION);
- }
- 
--EXPORT_SYMBOL_GPL(lzo1x_1_compress);
--EXPORT_SYMBOL_GPL(lzorle1x_1_compress);
-+EXPORT_SYMBOL_GPL(LZO_SAFE(lzo1x_1_compress));
-+EXPORT_SYMBOL_GPL(LZO_SAFE(lzorle1x_1_compress));
- 
-+#ifndef LZO_UNSAFE
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("LZO1X-1 Compressor");
 +#endif
-diff --git a/lib/lzo/lzo1x_compress_safe.c b/lib/lzo/lzo1x_compress_safe.c
-new file mode 100644
-index 0000000000000..371c9f8494928
---- /dev/null
-+++ b/lib/lzo/lzo1x_compress_safe.c
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ *  LZO1X Compressor from LZO
-+ *
-+ *  Copyright (C) 1996-2012 Markus F.X.J. Oberhumer <markus@oberhumer.com>
-+ *
-+ *  The full LZO package can be found at:
-+ *  http://www.oberhumer.com/opensource/lzo/
-+ *
-+ *  Changed for Linux kernel use by:
-+ *  Nitin Gupta <nitingupta910@gmail.com>
-+ *  Richard Purdie <rpurdie@openedhand.com>
-+ */
++	}
++}
 +
-+#define LZO_SAFE(name) name##_safe
-+#define HAVE_OP(x) ((size_t)(op_end - op) >= (size_t)(x))
-+
-+#include "lzo1x_compress.c"
+ /* for hda_fixup_thinkpad_acpi() */
+ #include "thinkpad_helper.c"
+ 
+@@ -7819,6 +7844,7 @@ enum {
+ 	ALC285_FIXUP_HP_GPIO_LED,
+ 	ALC285_FIXUP_HP_MUTE_LED,
+ 	ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED,
++	ALC285_FIXUP_HP_BEEP_MICMUTE_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED_COEFBIT2,
+ 	ALC236_FIXUP_HP_GPIO_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED,
+@@ -9415,6 +9441,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_spectre_x360_mute_led,
+ 	},
++	[ALC285_FIXUP_HP_BEEP_MICMUTE_LED] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc285_fixup_hp_beep,
++		.chained = true,
++		.chain_id = ALC285_FIXUP_HP_MUTE_LED,
++	},
+ 	[ALC236_FIXUP_HP_MUTE_LED_COEFBIT2] = {
+ 	    .type = HDA_FIXUP_FUNC,
+ 	    .v.func = alc236_fixup_hp_mute_led_coefbit2,
+@@ -10519,7 +10551,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8730, "HP ProBook 445 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8735, "HP ProBook 435 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8736, "HP", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+-	SND_PCI_QUIRK(0x103c, 0x8760, "HP", ALC285_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x8760, "HP EliteBook 8{4,5}5 G7", ALC285_FIXUP_HP_BEEP_MICMUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x876e, "HP ENVY x360 Convertible 13-ay0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x877a, "HP", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x877d, "HP", ALC236_FIXUP_HP_MUTE_LED),
 -- 
 2.39.5
 
