@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3493AC5718
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B558AC53DB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C82F3ABD46
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A00E57AEC5D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBAA27FD4A;
-	Tue, 27 May 2025 17:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6357727D784;
+	Tue, 27 May 2025 16:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGQDEKC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/89iFG1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3C5194A45;
-	Tue, 27 May 2025 17:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB9F27A900;
+	Tue, 27 May 2025 16:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366905; cv=none; b=JSr+BUvX7Q3vOJTjGGlmT+M0PHtVuXa3IlgmdDeplMn1MLGJCPsC/reNtJhONStYaXJXpPZLutbkhmGtsYUft8SDUc2zsUIRdrGt/9KXUm+64PhWrVPRO6rkNjvJtHkUTmhbFNwpsKvwQ31uBUv7mSQmjpOWmhX2x66jRReRvGU=
+	t=1748364731; cv=none; b=Hm3XmNijf5+LCYMggfbuZoNPtpthwfynqw7fg8NPrHT45PpLNtJXf/yX6Ns+gPjikktg2l3IuG+x7UWs+gDkS2SrNsfo2Xi82QBl+HSTxIlcKBskPtVR3GKXgmxr2FeustouA4D1DbqzYc6xgiJ9KUokeqlvy4oYJm97Gjf3Qfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366905; c=relaxed/simple;
-	bh=PDvX7ZCJpS80Krai38yB9E1PCZW2z3DqApsZj07otGU=;
+	s=arc-20240116; t=1748364731; c=relaxed/simple;
+	bh=h4fI+Qyo6AjW2xSOvl0xVzOd6lttU0nGyGJoefiDHl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iX3S72frudzHAAnH1JsvAi5GJuPsvBpenealOnon82JRYKjF6XNhfDMlEso7SbNkytP6MADdIGoaDcIiJhzpxZ5trfMsoWfim7q7iGl87uepr4HQ7hnpDkuYDBhw320/ZqF0Orh3CKFLFXesBcGOJ4Y514Cc7wrgzc87o820FGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGQDEKC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690BDC4CEE9;
-	Tue, 27 May 2025 17:28:24 +0000 (UTC)
+	 MIME-Version; b=aVRPQsxzplkV5ZsxT/mcnp0cdMk0V8yWvHGZTGItfS6IUvZYckR53Exm3N3HO9mE9mVdLSfiVKZ80Ynocb2mljaj2aFZQQlHZH0UK6mjDUMfFONTR/MCXH1YdLFIw9gE3O3mHXV/8172mOrvF25WNbyaYHV/+/xNlhLEMKnAIss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/89iFG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A111EC4CEE9;
+	Tue, 27 May 2025 16:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366904;
-	bh=PDvX7ZCJpS80Krai38yB9E1PCZW2z3DqApsZj07otGU=;
+	s=korg; t=1748364731;
+	bh=h4fI+Qyo6AjW2xSOvl0xVzOd6lttU0nGyGJoefiDHl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGQDEKC0RPX5i+ytvfQSOiLMsKhDIdeFiq9aMCFgGnoGfy9SYVUigEq233/TurTEi
-	 seuXw3CIgq67/iksu0vcTFkg0YWLBrSjaskHi63PCjTmmq41XIwEWdDV0UmDg79aNq
-	 R+c4DTjh036AKS6YCzycMx+ToCxUGaX3cVNSTE2Q=
+	b=I/89iFG1IP2ZnnQTc65AYPfV475Wzn7NZxOYEqfe2Xt+mjzagaWKzA1X3ZaohDd9V
+	 BswEvf6XZDbFduY8+dGHCtbizBhwGnGKClv2lRklR+oYR9+c0olvPmez5Nxpn8Zjm/
+	 GL85W4S5xuMqalcX0ON0O1xzsZAm+p7b44x3gZrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	David Sterba <dsterba@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 213/783] hwmon: (dell-smm) Increment the number of fans
+Subject: [PATCH 6.12 117/626] btrfs: fix non-empty delayed iputs list on unmount due to async workers
 Date: Tue, 27 May 2025 18:20:10 +0200
-Message-ID: <20250527162521.806166021@linuxfoundation.org>
+Message-ID: <20250527162449.788964349@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit dbcfcb239b3b452ef8782842c36fb17dd1b9092f ]
+[ Upstream commit cda76788f8b0f7de3171100e3164ec1ce702292e ]
 
-Some Alienware laptops that support the SMM interface, may have up to 4
-fans.
+At close_ctree() after we have ran delayed iputs either explicitly through
+calling btrfs_run_delayed_iputs() or later during the call to
+btrfs_commit_super() or btrfs_error_commit_super(), we assert that the
+delayed iputs list is empty.
 
-Tested on an Alienware x15 r1.
+We have (another) race where this assertion might fail because we have
+queued an async write into the fs_info->workers workqueue. Here's how it
+happens:
 
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250304055249.51940-2-kuurtb@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+1) We are submitting a data bio for an inode that is not the data
+   relocation inode, so we call btrfs_wq_submit_bio();
+
+2) btrfs_wq_submit_bio() submits a work for the fs_info->workers queue
+   that will run run_one_async_done();
+
+3) We enter close_ctree(), flush several work queues except
+   fs_info->workers, explicitly run delayed iputs with a call to
+   btrfs_run_delayed_iputs() and then again shortly after by calling
+   btrfs_commit_super() or btrfs_error_commit_super(), which also run
+   delayed iputs;
+
+4) run_one_async_done() is executed in the work queue, and because there
+   was an IO error (bio->bi_status is not 0) it calls btrfs_bio_end_io(),
+   which drops the final reference on the associated ordered extent by
+   calling btrfs_put_ordered_extent() - and that adds a delayed iput for
+   the inode;
+
+5) At close_ctree() we find that after stopping the cleaner and
+   transaction kthreads the delayed iputs list is not empty, failing the
+   following assertion:
+
+      ASSERT(list_empty(&fs_info->delayed_iputs));
+
+Fix this by flushing the fs_info->workers workqueue before running delayed
+iputs at close_ctree().
+
+David reported this when running generic/648, which exercises IO error
+paths by using the DM error table.
+
+Reported-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/hwmon/dell-smm-hwmon.rst | 14 +++++++-------
- drivers/hwmon/dell-smm-hwmon.c         |  5 ++++-
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ fs/btrfs/disk-io.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmon/dell-smm-hwmon.rst
-index 74905675d71f9..5a4edb6565cf9 100644
---- a/Documentation/hwmon/dell-smm-hwmon.rst
-+++ b/Documentation/hwmon/dell-smm-hwmon.rst
-@@ -32,12 +32,12 @@ Temperature sensors and fans can be queried and set via the standard
- =============================== ======= =======================================
- Name				Perm	Description
- =============================== ======= =======================================
--fan[1-3]_input                  RO      Fan speed in RPM.
--fan[1-3]_label                  RO      Fan label.
--fan[1-3]_min                    RO      Minimal Fan speed in RPM
--fan[1-3]_max                    RO      Maximal Fan speed in RPM
--fan[1-3]_target                 RO      Expected Fan speed in RPM
--pwm[1-3]                        RW      Control the fan PWM duty-cycle.
-+fan[1-4]_input                  RO      Fan speed in RPM.
-+fan[1-4]_label                  RO      Fan label.
-+fan[1-4]_min                    RO      Minimal Fan speed in RPM
-+fan[1-4]_max                    RO      Maximal Fan speed in RPM
-+fan[1-4]_target                 RO      Expected Fan speed in RPM
-+pwm[1-4]                        RW      Control the fan PWM duty-cycle.
- pwm1_enable                     WO      Enable or disable automatic BIOS fan
-                                         control (not supported on all laptops,
-                                         see below for details).
-@@ -93,7 +93,7 @@ Again, when you find new codes, we'd be happy to have your patches!
- ---------------------------
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index e0e740e4d7c75..147c50ef912ac 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4282,6 +4282,19 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
+ 	 */
+ 	btrfs_flush_workqueue(fs_info->delalloc_workers);
  
- The driver also exports the fans as thermal cooling devices with
--``type`` set to ``dell-smm-fan[1-3]``. This allows for easy fan control
-+``type`` set to ``dell-smm-fan[1-4]``. This allows for easy fan control
- using one of the thermal governors.
- 
- Module parameters
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index cd00adaad1b41..79e5606e6d2f8 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -73,7 +73,7 @@
- #define DELL_SMM_LEGACY_EXECUTE	0x1
- 
- #define DELL_SMM_NO_TEMP	10
--#define DELL_SMM_NO_FANS	3
-+#define DELL_SMM_NO_FANS	4
- 
- struct smm_regs {
- 	unsigned int eax;
-@@ -1074,11 +1074,14 @@ static const struct hwmon_channel_info * const dell_smm_info[] = {
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
- 			   HWMON_F_TARGET,
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
-+			   HWMON_F_TARGET,
-+			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
- 			   HWMON_F_TARGET
- 			   ),
- 	HWMON_CHANNEL_INFO(pwm,
- 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
- 			   HWMON_PWM_INPUT,
-+			   HWMON_PWM_INPUT,
- 			   HWMON_PWM_INPUT
- 			   ),
- 	NULL
++	/*
++	 * We can have ordered extents getting their last reference dropped from
++	 * the fs_info->workers queue because for async writes for data bios we
++	 * queue a work for that queue, at btrfs_wq_submit_bio(), that runs
++	 * run_one_async_done() which calls btrfs_bio_end_io() in case the bio
++	 * has an error, and that later function can do the final
++	 * btrfs_put_ordered_extent() on the ordered extent attached to the bio,
++	 * which adds a delayed iput for the inode. So we must flush the queue
++	 * so that we don't have delayed iputs after committing the current
++	 * transaction below and stopping the cleaner and transaction kthreads.
++	 */
++	btrfs_flush_workqueue(fs_info->workers);
++
+ 	/*
+ 	 * When finishing a compressed write bio we schedule a work queue item
+ 	 * to finish an ordered extent - btrfs_finish_compressed_write_work()
 -- 
 2.39.5
 
