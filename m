@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDBF2AC5548
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32875AC58AB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9850F4A3B98
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 580011BC1AB7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6335925DAE1;
-	Tue, 27 May 2025 17:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4B727CCF0;
+	Tue, 27 May 2025 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIVyRLru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyuoGNI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20243139579;
-	Tue, 27 May 2025 17:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7B8271476;
+	Tue, 27 May 2025 17:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365799; cv=none; b=AVxJo5Meitg0aM18YPh+NBUux1w8KIU3ukAvxUSArUT1xpaGMs9EPKzpeizAC80xal+8tiJoW0uZeIvXhO6/lDxB1YBaC2BzVbU1g1m3eq7dEdmoy/9TpV2PcXR1TMCy1TyhBqazRq4/c3hRJLEN5VkHwGgdOS+uYLBEKX1K788=
+	t=1748368068; cv=none; b=KRuoxVsVlnzxWf2+hMV1BaFiYzvbLqRimno7TnPQrnyfPcHErpWmZ8t78oOZs78hoMB1HGqi04ziC0J7C8P4w6Dw2ydETkaqKy9+YYJw/+qWbvy4Ix04u4hCPxQ7Z5U0TaqQk3krIwFbXNzUUaFSlLJnexpXTFztKtF803fl0Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365799; c=relaxed/simple;
-	bh=Hy0IWDFeiTkvsC7id8Pk2hl3pIylz7w9wrqvY8DX70E=;
+	s=arc-20240116; t=1748368068; c=relaxed/simple;
+	bh=89UMIw1VMkuUc99xaMLqPKHPQURPAjSbliTIPXRKXUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=un6AaP8b6AQql4youxle2cUyBvpmsHg0afdE+nRaq+HF1UrN5c8a7RpwHkcVrs9ESAj2k1KxZdywQdYIgveXp7aacSqn+BpGFSLpXNX1UOoE004MQyawxvKD91UAfv0x8CRz424nYagBB8G3ydLu1fZH1ljFZQEBWAsrerbno5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIVyRLru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91092C4CEE9;
-	Tue, 27 May 2025 17:09:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LPH3ekYI3wkxGmhRw7fvzSzTK9uSrf88waMXkgfEEdEurV5fABP6/4zFmWMoKIZqS5fcoYEYBb2jxmE5//uPYnFJMDm9jjzXHHxbqGiqsZQJ3ItwRpv6OMOsSMZwmTujKryiyw22eLxfZrQFFlxt40J9PVoZuiSn8Z3GeBBxXuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyuoGNI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357D0C4CEE9;
+	Tue, 27 May 2025 17:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365799;
-	bh=Hy0IWDFeiTkvsC7id8Pk2hl3pIylz7w9wrqvY8DX70E=;
+	s=korg; t=1748368068;
+	bh=89UMIw1VMkuUc99xaMLqPKHPQURPAjSbliTIPXRKXUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIVyRLruw50yS0dyr5+WneA8dlVUWywNcU2S3JUk6Grz7UE+ekbmFwlUfSm21wdrT
-	 FLu1xsyVD+HKGh4PDtysWN8FfYxSGoBffV0EiM6cbxqUbYyBE79jgES/B1jW+x0pkv
-	 HniOXzyAQbfXD05bpFu365u7ivf7Za6v9uoCJn/I=
+	b=jyuoGNI7ufPRJSnmSl/gnbazL35+v3AutGHAN8DjcbgYO0P1L8PhQtOsvX7tkUGAj
+	 ammuaCOTlC9j1gTRqvj4oFJLoCrWa0YvYvT4mcNHXr2lth69jaJzjlspNvSwD/yruv
+	 30MURzwVyhvYyW0e+zg5pKK0z9bDwGt69t/+qfCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Chung Chung <cchung@redhat.com>,
+	Matthew Sakai <msakai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 493/626] drm: bridge: adv7511: fill stream capabilities
+Subject: [PATCH 6.14 589/783] dm vdo indexer: prevent unterminated string warning
 Date: Tue, 27 May 2025 18:26:26 +0200
-Message-ID: <20250527162505.013070171@linuxfoundation.org>
+Message-ID: <20250527162537.120994185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Chung Chung <cchung@redhat.com>
 
-[ Upstream commit c852646f12d4cd5b4f19eeec2976c5d98c0382f8 ]
+[ Upstream commit f4e99b846c90163d350c69d6581ac38dd5818eb8 ]
 
-Set no_i2s_capture and no_spdif_capture flags in hdmi_codec_pdata structure
-to report that the ADV7511 HDMI bridge does not support i2s or spdif audio
-capture.
+Fix array initialization that triggers a warning:
 
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250108170356.413063-2-olivier.moysan@foss.st.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+error: initializer-string for array of ‘unsigned char’ is too long
+ [-Werror=unterminated-string-initialization]
+
+Signed-off-by: Chung Chung <cchung@redhat.com>
+Signed-off-by: Matthew Sakai <msakai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/dm-vdo/indexer/index-layout.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index 8f786592143b6..24e1e11acf697 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -244,7 +244,9 @@ static const struct hdmi_codec_pdata codec_data = {
- 	.ops = &adv7511_codec_ops,
- 	.max_i2s_channels = 2,
- 	.i2s = 1,
-+	.no_i2s_capture = 1,
- 	.spdif = 1,
-+	.no_spdif_capture = 1,
- };
+diff --git a/drivers/md/dm-vdo/indexer/index-layout.c b/drivers/md/dm-vdo/indexer/index-layout.c
+index af8fab83b0f3e..61edf2b72427d 100644
+--- a/drivers/md/dm-vdo/indexer/index-layout.c
++++ b/drivers/md/dm-vdo/indexer/index-layout.c
+@@ -54,7 +54,6 @@
+  * Each save also has a unique nonce.
+  */
  
- int adv7511_audio_init(struct device *dev, struct adv7511 *adv7511)
+-#define MAGIC_SIZE 32
+ #define NONCE_INFO_SIZE 32
+ #define MAX_SAVES 2
+ 
+@@ -98,9 +97,11 @@ enum region_type {
+ #define SUPER_VERSION_CURRENT 3
+ #define SUPER_VERSION_MAXIMUM 7
+ 
+-static const u8 LAYOUT_MAGIC[MAGIC_SIZE] = "*ALBIREO*SINGLE*FILE*LAYOUT*001*";
++static const u8 LAYOUT_MAGIC[] = "*ALBIREO*SINGLE*FILE*LAYOUT*001*";
+ static const u64 REGION_MAGIC = 0x416c6252676e3031; /* 'AlbRgn01' */
+ 
++#define MAGIC_SIZE (sizeof(LAYOUT_MAGIC) - 1)
++
+ struct region_header {
+ 	u64 magic;
+ 	u64 region_blocks;
 -- 
 2.39.5
 
