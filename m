@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-147383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93992AC576C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D481AC546D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528763B6F33
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB063A321D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B0427F728;
-	Tue, 27 May 2025 17:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C7B2CCC0;
+	Tue, 27 May 2025 16:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utvKxBrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8fqe9Z4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43AE2110E;
-	Tue, 27 May 2025 17:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D681A27F4CB;
+	Tue, 27 May 2025 16:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367172; cv=none; b=AVq6hgF+GTTKECyGABwS6gE/Zo2PlPaZNXRTW6XDah2hlI2IViiil/X/Ia2WkoxusV3RZpHPE4pDcsXNdidEP6lnEYlTrQ6/PXBP0KOOKpQoSSis3OPP/X6JfoapJ7ZIL61f+39FKGSRIXEYnZ2JxZB5LDK2HLwKOoQZlKeG72Q=
+	t=1748364911; cv=none; b=J+hFmyGc4K3K3FAUa/mPASynBZErEp4z3Kv/l7mJqYAoRS0bSJoMmBEMwrFnupy36yI3W4UvXhto++1hw4m8GQ3PqQi2Evf/V5tz/0RiO3HsuAjL5DgHNzWFSr4q/FZSv//b/bhqzkUdkfAw7DHA4Y8VqPHH0p6b8AwJfbjdBiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367172; c=relaxed/simple;
-	bh=94uZIlDEIn0s+G/xPYS1V61n3O/gkex0PryZWRQL2ZA=;
+	s=arc-20240116; t=1748364911; c=relaxed/simple;
+	bh=XdveT+lXC9rTJb727HrEoqvUPQPbx3zwmiMnrLY6Yv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfdzfNbn3lXw4+pD7ygFwyrvWUPVhDoiXiAnRrK19PrjHomvwl/rsuWRhiF/0PIajHvx+pZnYYmgSv+dFmxt9SsmEFwCqUZ8TIROiZjvpVZGghKodg1CCSKm404s+YJs0xPMZcJfEd480u0mPOXcB0K5sixIhRXbhvus+CUdei4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utvKxBrQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6438CC4CEE9;
-	Tue, 27 May 2025 17:32:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BoUCcxPuvxQ/3/++Lt77YLvg5G1XtiZZJ/ZiX9djtTruDfVXwGtk9F18WxczQ97kEz1Afh9Jj5qk+OcEGpm9HOkpX6RRq6fbvcUyoAUwigX0r+mi+/PlJPgateG1edyucUJLpSUvtfh2OBYJRBRsC+q6mZcXqxkTkDqTfluPFXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8fqe9Z4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C2DC4CEE9;
+	Tue, 27 May 2025 16:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367172;
-	bh=94uZIlDEIn0s+G/xPYS1V61n3O/gkex0PryZWRQL2ZA=;
+	s=korg; t=1748364911;
+	bh=XdveT+lXC9rTJb727HrEoqvUPQPbx3zwmiMnrLY6Yv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utvKxBrQjIYxsGuzaRVox65BGuZ3JANSKdccKEWmM7k00XZ+D99VMLAwEVi/UZftv
-	 fkR3jVOKgxAtp1c3l/Mghv88TmzIEPYnk62yeLGKRjWPjuhqqMDV1PwgQEdOdoRvz9
-	 j0pWYn23iGlTHLhm7j4OgdNz3CmzrmybAdU06Tpw=
+	b=g8fqe9Z4tnZriCt9JyjlJMRUirY2wfZQ5O8eOczN63Nh3LHFwunthXO+eSIvqTubm
+	 47JGwUmH4CHllC0kHrkmYsvsVZ/fdTzeHNIEuUx05pt/x++E7j7LZ/7py4/mV+7eyL
+	 REldQUylXbY+jdzRCcdJ0Lp9rnlk491+vQVnsh68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 301/783] perf/core: Fix perf_mmap() failure path
+Subject: [PATCH 6.12 205/626] PCI: endpoint: pci-epf-test: Fix double free that causes kernel to oops
 Date: Tue, 27 May 2025 18:21:38 +0200
-Message-ID: <20250527162525.329395125@linuxfoundation.org>
+Message-ID: <20250527162453.349913243@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Christian Bruel <christian.bruel@foss.st.com>
 
-[ Upstream commit 66477c7230eb1f9b90deb8c0f4da2bac2053c329 ]
+[ Upstream commit 934e9d137d937706004c325fa1474f9e3f1ba10a ]
 
-When f_ops->mmap() returns failure, m_ops->close() is *not* called.
+Fix a kernel oops found while testing the stm32_pcie Endpoint driver
+with handling of PERST# deassertion:
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20241104135519.248358497@infradead.org
+During EP initialization, pci_epf_test_alloc_space() allocates all BARs,
+which are further freed if epc_set_bar() fails (for instance, due to no
+free inbound window).
+
+However, when pci_epc_set_bar() fails, the error path:
+
+  pci_epc_set_bar() ->
+    pci_epf_free_space()
+
+does not clear the previous assignment to epf_test->reg[bar].
+
+Then, if the host reboots, the PERST# deassertion restarts the BAR
+allocation sequence with the same allocation failure (no free inbound
+window), creating a double free situation since epf_test->reg[bar] was
+deallocated and is still non-NULL.
+
+Thus, make sure that pci_epf_alloc_space() and pci_epf_free_space()
+invocations are symmetric, and as such, set epf_test->reg[bar] to NULL
+when memory is freed.
+
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
+Link: https://lore.kernel.org/r/20250124123043.96112-1-christian.bruel@foss.st.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index de838d3819ca7..dda1670b3539a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6834,7 +6834,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 	if (!ret)
- 		ret = map_range(rb, vma);
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index 14b4c68ab4e1a..21aa3709e2577 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -703,6 +703,7 @@ static int pci_epf_test_set_bar(struct pci_epf *epf)
+ 		if (ret) {
+ 			pci_epf_free_space(epf, epf_test->reg[bar], bar,
+ 					   PRIMARY_INTERFACE);
++			epf_test->reg[bar] = NULL;
+ 			dev_err(dev, "Failed to set BAR%d\n", bar);
+ 			if (bar == test_reg_bar)
+ 				return ret;
+@@ -878,6 +879,7 @@ static void pci_epf_test_free_space(struct pci_epf *epf)
  
--	if (event->pmu->event_mapped)
-+	if (!ret && event->pmu->event_mapped)
- 		event->pmu->event_mapped(event, vma->vm_mm);
+ 		pci_epf_free_space(epf, epf_test->reg[bar], bar,
+ 				   PRIMARY_INTERFACE);
++		epf_test->reg[bar] = NULL;
+ 	}
+ }
  
- 	return ret;
 -- 
 2.39.5
 
