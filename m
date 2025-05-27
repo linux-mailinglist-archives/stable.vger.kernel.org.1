@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-147733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EA6AC58F2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F206AC55C5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A41359E0020
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CE9316ECAE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498A727FD4C;
-	Tue, 27 May 2025 17:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D492820A0;
+	Tue, 27 May 2025 17:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Srhuy1Em"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vh/9MT+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CE827D766;
-	Tue, 27 May 2025 17:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE51E27E1CA;
+	Tue, 27 May 2025 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368262; cv=none; b=USjkIDvdxqMC3mnXBtV2Y7HcOLG1HCDj6kHoyp+34ttBsafMc1WHES/6w5HOnIO2Mlr4AvAxtRj+P1I+AE1FPswviTxJXeAdxyyeyhpBHbt+R5uHzzWHPMJZTaqQJ4iAU9+iPIQpOwwH8iKLRDxcF+tq/aHzzd1TzOyBfSM8G2U=
+	t=1748365987; cv=none; b=T2d4mXcWcwtrH1+s7/hzPVbIgKt8NmKDR9KjRkWZ+x5BrmBh1pjWSJiCRhkgUIB7omFJphkqKFd1Q9aiTq6joW8s2Lhx2Wtiyx3f0EJzYl3562Gzj1VdJo9ipAhkL0det+LJ3l6jmb6vs434Ua3eE19oK9COgC4qdZLon9VfKss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368262; c=relaxed/simple;
-	bh=AYHHhEGSOd9xznuDiIO3jbcpXe1GQTYVQPdhpYuqm9M=;
+	s=arc-20240116; t=1748365987; c=relaxed/simple;
+	bh=rZxEVjGAFwkfpRgOkZeydtdFxr0UAZXgz/qSJgkuFF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FRkvMXGCIOxDvLg93goianskKlh2hZaqI0Eal0MNR7aENgqKwlQ4oEsZonxFstJdXGQQqCpDBWitTA7WZJjpAChvJG3dvvzmKhUuUNbruFy9qpVZE0nsuTrUqCHnqDiBwZs9eZnYADYjcdlS3lZaKRRiJ4Z4q/uVOd5/CsUIBCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Srhuy1Em; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D795C4CEE9;
-	Tue, 27 May 2025 17:51:01 +0000 (UTC)
+	 MIME-Version; b=lDsrxzZHmBZZtlxFEab06PvrADe9U1gyr7hcEzwPskvw9Bx0gcTEhW7WDhfI41k3NT2aqaCX1UbviYMP6Dh0p54jfafoQQV/1YMTrTA27YFpB/ifnk15V0cw5EYy6GHfCMJUmXE+NORabTi+/snijs0BGhBsDys2ecsKo4SR20Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vh/9MT+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C923C4CEE9;
+	Tue, 27 May 2025 17:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368261;
-	bh=AYHHhEGSOd9xznuDiIO3jbcpXe1GQTYVQPdhpYuqm9M=;
+	s=korg; t=1748365987;
+	bh=rZxEVjGAFwkfpRgOkZeydtdFxr0UAZXgz/qSJgkuFF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Srhuy1EmK59HOXwXf8q8+KKsWfqIaA3jVPNm34tP++aUzxzxWzZeV8i3p8rhmKkIy
-	 1mrJ8ou7SRtgjPRi8OcpOCm18Csr+Ycsluu+JuTn2jRpchRJMlTwmOpzbVOeubBVSo
-	 O3zUQH2Tqleno74MI0XU/Xg1dK5f7CxxzZV0rGhE=
+	b=vh/9MT+MBGkQ1eIUEp60TO0MNVfJOhUPLwxQHSO+b0r+cUUj5mt5LJBroHOKb7F+N
+	 F53BWHqg+FM+4Te8MOGPWNt+gjFZqVu3iQCqN51luzF5eZFX5G9M3y9u7EnrXaSTBG
+	 H3tLJIeu6QTA7ijBJkd7C+aNcRfNboAOFFlbbSzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Saranya Gopal <saranya.gopal@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 651/783] platform/x86/intel: hid: Add Pantherlake support
+Subject: [PATCH 6.12 555/626] ice: fix vf->num_mac count with port representors
 Date: Tue, 27 May 2025 18:27:28 +0200
-Message-ID: <20250527162539.643593714@linuxfoundation.org>
+Message-ID: <20250527162507.518628849@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saranya Gopal <saranya.gopal@intel.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 12df9ec3e1955aed6a0c839f2375cd8e5d5150cf ]
+[ Upstream commit bbd95160a03dbfcd01a541f25c27ddb730dfbbd5 ]
 
-Add Pantherlake ACPI device ID to the Intel HID driver.
+The ice_vc_repr_add_mac() function indicates that it does not store the MAC
+address filters in the firmware. However, it still increments vf->num_mac.
+This is incorrect, as vf->num_mac should represent the number of MAC
+filters currently programmed to firmware.
 
-While there, clean up the device ID table to remove the ", 0" parts.
+Indeed, we only perform this increment if the requested filter is a unicast
+address that doesn't match the existing vf->hw_lan_addr. In addition,
+ice_vc_repr_del_mac() does not decrement the vf->num_mac counter. This
+results in the counter becoming out of sync with the actual count.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Saranya Gopal <saranya.gopal@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250421041332.830136-1-saranya.gopal@intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+As it turns out, vf->num_mac is currently only used in legacy made without
+port representors. The single place where the value is checked is for
+enforcing a filter limit on untrusted VFs.
+
+Upcoming patches to support VF Live Migration will use this value when
+determining the size of the TLV for MAC address filters. Fix the
+representor mode function to stop incrementing the counter incorrectly.
+
+Fixes: ac19e03ef780 ("ice: allow process VF opcodes in different ways")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/hid.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index 88a1a9ff2f344..0b5e43444ed60 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -44,16 +44,17 @@ MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Alex Hung");
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index c8c1d48ff793d..87ffd25b268a2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -3877,7 +3877,6 @@ static int ice_vc_repr_add_mac(struct ice_vf *vf, u8 *msg)
+ 		}
  
- static const struct acpi_device_id intel_hid_ids[] = {
--	{"INT33D5", 0},
--	{"INTC1051", 0},
--	{"INTC1054", 0},
--	{"INTC1070", 0},
--	{"INTC1076", 0},
--	{"INTC1077", 0},
--	{"INTC1078", 0},
--	{"INTC107B", 0},
--	{"INTC10CB", 0},
--	{"", 0},
-+	{ "INT33D5" },
-+	{ "INTC1051" },
-+	{ "INTC1054" },
-+	{ "INTC1070" },
-+	{ "INTC1076" },
-+	{ "INTC1077" },
-+	{ "INTC1078" },
-+	{ "INTC107B" },
-+	{ "INTC10CB" },
-+	{ "INTC10CC" },
-+	{ }
- };
- MODULE_DEVICE_TABLE(acpi, intel_hid_ids);
+ 		ice_vfhw_mac_add(vf, &al->list[i]);
+-		vf->num_mac++;
+ 		break;
+ 	}
  
 -- 
 2.39.5
