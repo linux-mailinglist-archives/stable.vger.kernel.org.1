@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-147756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34E5AC590F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16B9AC5938
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45A813BE80A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 314784A78BE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D92E27FD4C;
-	Tue, 27 May 2025 17:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFEE280036;
+	Tue, 27 May 2025 17:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHLRH+EF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBvKzlLK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCA627BF8D;
-	Tue, 27 May 2025 17:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FD1263F5E;
+	Tue, 27 May 2025 17:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368332; cv=none; b=mqXqNpyvekDsPGJu3dLsLJYK59sd7y2Tw1v3leuUq46H5i76dlA8L+zmNef1kg1x6w4y8PBvfF5rCLanXPsdquq7PWsCtnJeUydVBDPzNnSyNu3xb0EsA7tnD0Jx7bZMNfPTnCo0cQPr6xp3cG2ljVMig16lwLO4uqpozhLPEZk=
+	t=1748368456; cv=none; b=JKd4cnXhbPjes0BaNak3NJiNJqkc40mWNcyorhfST18rPxLLBtXB4nL4E9ix/e3gkz6NUM5OYU14+EfOBBpnLSIQCJnAmtciY3S6QZaTnyVclqM+PLEq+22ZByC/rN/D8d93OPT9+uF4p//zCgUwPM3ocu4KgjYxWSgrhf/1RT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368332; c=relaxed/simple;
-	bh=NtoKO7yn9/p8aKG7v3WhIBI7gww/KX2HxWrwo27so2Q=;
+	s=arc-20240116; t=1748368456; c=relaxed/simple;
+	bh=DqmyGEGqHxU3lDgzA5vMcDu28iMONP4e9bP3jhxGP2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaQaUgIeHqa6wDv0PlJvbq4xvWuFD4lGwWckwEBPrL5ldAx9vpz2XMvQJjEzDMz3ktz6TzLU7SXcu5be/7uf1uAQ2DczsBJKZWk29UFarVLurXAeuEVPaNlYfThTjz8W8A4YZabuzjcM+MH3A+j/9fkftwXCYNNWU9OieJHH190=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHLRH+EF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E3DC4CEE9;
-	Tue, 27 May 2025 17:52:11 +0000 (UTC)
+	 MIME-Version; b=rwkG/fiTuY4hTQmOWdr/ZKyKW1Dg1Pi9jNsTJHn8J2QzjBjqeryjgbqqKVDxnuOHMp9NnT5pnPxViU1eB5mYl8ApIT+A79gJKQddygxhp3VBCBR7AqqgXNRR5hIAwEGie2C/xe3BOjkWjwe0IEfx8QVVU+arC6Dp/cLXJewV3y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBvKzlLK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BDDC4CEE9;
+	Tue, 27 May 2025 17:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368331;
-	bh=NtoKO7yn9/p8aKG7v3WhIBI7gww/KX2HxWrwo27so2Q=;
+	s=korg; t=1748368456;
+	bh=DqmyGEGqHxU3lDgzA5vMcDu28iMONP4e9bP3jhxGP2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WHLRH+EFgx7gx2BXybO50832TrOg5Hs+YfuuS5Q2wh8fxHcRhnNZaePSqjQIhuquG
-	 +PbmzLSO4VOH6IcAXLcwUruA5/ECZxVXWQJS4M9qRyg7sJSpTREYiJasFgbb9s4PRZ
-	 EZY8tVJZIIxXnf7qwkLhv2N33JO2NVo7IGTt4Cpc=
+	b=qBvKzlLKkda3U1u+w4bh7hazX38uP8KKixD8hPKaCOU6IP62J3WtDOYNs2gR8QUWC
+	 xNgVLSpOG5az0/Xohnrl1ahtPKknN+oRNQlLRdw+nLCVJouDv9iXfrdV/tDFcL5LIU
+	 gEjd6NW8brBOuw8hsCwqIUUqX31Z6u0RAAsVME+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
 	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 672/783] btrfs: handle empty eb->folios in num_extent_folios()
-Date: Tue, 27 May 2025 18:27:49 +0200
-Message-ID: <20250527162540.488383444@linuxfoundation.org>
+Subject: [PATCH 6.14 673/783] btrfs: avoid NULL pointer dereference if no valid csum tree
+Date: Tue, 27 May 2025 18:27:50 +0200
+Message-ID: <20250527162540.535981015@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -67,37 +67,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit d6fe0c69b3aa5c985380b794bdf8e6e9b1811e60 ]
+[ Upstream commit f95d186255b319c48a365d47b69bd997fecb674e ]
 
-num_extent_folios() unconditionally calls folio_order() on
-eb->folios[0]. If that is NULL this will be a segfault. It is reasonable
-for it to return 0 as the number of folios in the eb when the first
-entry is NULL, so do that instead.
+[BUG]
+When trying read-only scrub on a btrfs with rescue=idatacsums mount
+option, it will crash with the following call trace:
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
+  BUG: kernel NULL pointer dereference, address: 0000000000000208
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  CPU: 1 UID: 0 PID: 835 Comm: btrfs Tainted: G           O        6.15.0-rc3-custom+ #236 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
+  RIP: 0010:btrfs_lookup_csums_bitmap+0x49/0x480 [btrfs]
+  Call Trace:
+   <TASK>
+   scrub_find_fill_first_stripe+0x35b/0x3d0 [btrfs]
+   scrub_simple_mirror+0x175/0x290 [btrfs]
+   scrub_stripe+0x5f7/0x6f0 [btrfs]
+   scrub_chunk+0x9a/0x150 [btrfs]
+   scrub_enumerate_chunks+0x333/0x660 [btrfs]
+   btrfs_scrub_dev+0x23e/0x600 [btrfs]
+   btrfs_ioctl+0x1dcf/0x2f80 [btrfs]
+   __x64_sys_ioctl+0x97/0xc0
+   do_syscall_64+0x4f/0x120
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[CAUSE]
+Mount option "rescue=idatacsums" will completely skip loading the csum
+tree, so that any data read will not find any data csum thus we will
+ignore data checksum verification.
+
+Normally call sites utilizing csum tree will check the fs state flag
+NO_DATA_CSUMS bit, but unfortunately scrub does not check that bit at all.
+
+This results in scrub to call btrfs_search_slot() on a NULL pointer
+and triggered above crash.
+
+[FIX]
+Check both extent and csum tree root before doing any tree search.
+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/scrub.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index 6c5328bfabc22..2aefc64cdd295 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -297,6 +297,8 @@ static inline int num_extent_pages(const struct extent_buffer *eb)
-  */
- static inline int num_extent_folios(const struct extent_buffer *eb)
- {
-+	if (!eb->folios[0])
-+		return 0;
- 	if (folio_order(eb->folios[0]))
- 		return 1;
- 	return num_extent_pages(eb);
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index 531312efee8df..5d0060eb8ff4c 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -1541,8 +1541,8 @@ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
+ 	u64 extent_gen;
+ 	int ret;
+ 
+-	if (unlikely(!extent_root)) {
+-		btrfs_err(fs_info, "no valid extent root for scrub");
++	if (unlikely(!extent_root || !csum_root)) {
++		btrfs_err(fs_info, "no valid extent or csum root for scrub");
+ 		return -EUCLEAN;
+ 	}
+ 	memset(stripe->sectors, 0, sizeof(struct scrub_sector_verification) *
 -- 
 2.39.5
 
