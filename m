@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4222AC57AB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E34AC54C0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E238A6065
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D39243BDAD6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534DF27F178;
-	Tue, 27 May 2025 17:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A7427CB04;
+	Tue, 27 May 2025 16:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9w/jdYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIj4+O7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101FB3C01;
-	Tue, 27 May 2025 17:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD212CCC0;
+	Tue, 27 May 2025 16:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367355; cv=none; b=Xwi/XuBpKRFRiaIYZ0vvNSdJqLup0/+23YDBo6CwUCj5TP4D0jUgU03eLkhQlByT+2I7HYGeEiFYeYYYitU9EHx/N5qYXVccsIQEU2dopE/mcgZ+PaiZ/7hf1St6pcZuJgNg5LLzk5/S9UO1r8GIoaGA7QVsPxRdfZxaqH1eArs=
+	t=1748365097; cv=none; b=sTWnx3PM6mXhBjxkX8C91fqOXOhsyDy5GXFf4ECupisO0PYTbZ9tMhkkTI3xfolEdXp1yPr/DGt7SOJh+6dxJ84nDEjZu1oAB+dRX9qKC5ZUs1lGCKs0SA4f+3ml3m78MGIHz/q2LHxWSeQSs5J4owbrWJQ1XpiAypqBk1HLz+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367355; c=relaxed/simple;
-	bh=/gkIIJJK+D+54mJX6/NXDPg43L6JyEVdz1vejA4Dzks=;
+	s=arc-20240116; t=1748365097; c=relaxed/simple;
+	bh=gS+sbUqkcP7WkX4sCqpaQa29lHEWlb4u/LDhsa8DUvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRXbpbbnSuhrJ/fOHAOm8qdbmlJ1tWq75RpGsoxfQNjjtnZorScV7kstvzTfsKMj5PXmDzyHByAUwbIw/YMT/Bzvd9qT2GIYuDYi2MMpZzI9eoTYK6Wn0A5brqLFOYdq0ilk91khjkM+jjLsCiXTw0ss3xSy8TVpUyw0hNYAO6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9w/jdYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA14C4CEE9;
-	Tue, 27 May 2025 17:35:54 +0000 (UTC)
+	 MIME-Version; b=dkQVFlWTVlTLRpZ9aYJbOMVKcVGW6/THHlm37QA26Tzy6XBoFi0fu4jzC1m0r36xxkK7r0+KsDR63DwELzE/Ya9FoYqcbMkkELn/ZX1HR41i0otHZoX+ID1BNh0RskTOKnvjlE3yO7mHPf3t2GPmpA8X2AHlkD9sd7sO7VY01EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIj4+O7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8263BC4CEEB;
+	Tue, 27 May 2025 16:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367354;
-	bh=/gkIIJJK+D+54mJX6/NXDPg43L6JyEVdz1vejA4Dzks=;
+	s=korg; t=1748365097;
+	bh=gS+sbUqkcP7WkX4sCqpaQa29lHEWlb4u/LDhsa8DUvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9w/jdYcX5sexdncy0SIN/mc9xwrIHBxvu6G7CWqv6gQA6OqPGiaVT/N5AsFAxeJK
-	 KAzc5tirDW6zdQEJnwczFCgR5WyRAdOurhMnTQ5e78ALZaUxQwdDna8PzhK98meP0J
-	 906RT01rEtyO5rl7NXzAtjTwQpxKKWgV9bNXlW68=
+	b=wIj4+O7BpLMC15kP7ssmfKGVeg2qz7z43QxNI73mK96WaeHx2QEZqfIaP0Us7Jxi6
+	 dEzqaV5sengMbIcS1FrVF37+1GJnNPmJmdA2YjUssulxrcITUXhACHCuXqi5RupGk1
+	 EKDspqLY74x4iJ9gzNK0xx4FN/0HnVy/bVQlDQlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Janne Grunau <j@jannau.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Sven Peter <sven@svenpeter.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 361/783] cpuidle: menu: Avoid discarding useful information
+Subject: [PATCH 6.12 265/626] soc: apple: rtkit: Use high prio work queue
 Date: Tue, 27 May 2025 18:22:38 +0200
-Message-ID: <20250527162527.784011854@linuxfoundation.org>
+Message-ID: <20250527162455.777778868@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
+[ Upstream commit 22af2fac88fa5dbc310bfe7d0b66d4de3ac47305 ]
 
-When giving up on making a high-confidence prediction,
-get_typical_interval() always returns UINT_MAX which means that the
-next idle interval prediction will be based entirely on the time till
-the next timer.  However, the information represented by the most
-recent intervals may not be completely useless in those cases.
+rtkit messages as communication with the DCP firmware for framebuffer
+swaps or input events are time critical so use WQ_HIGHPRI to prevent
+user space CPU load to increase latency.
+With kwin_wayland 6's explicit sync mode user space load was able to
+delay the IOMFB rtkit communication enough to miss vsync for surface
+swaps. Minimal test scenario is constantly resizing a glxgears
+Xwayland window.
 
-Namely, the largest recent idle interval is an upper bound on the
-recently observed idle duration, so it is reasonable to assume that
-the next idle duration is unlikely to exceed it.  Moreover, this is
-still true after eliminating the suspected outliers if the sample
-set still under consideration is at least as large as 50% of the
-maximum sample set size.
-
-Accordingly, make get_typical_interval() return the current maximum
-recent interval value in that case instead of UINT_MAX.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
+Signed-off-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://lore.kernel.org/r/20250226-apple-soc-misc-v2-3-c3ec37f9021b@svenpeter.dev
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/soc/apple/rtkit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 28363bfa3e4c9..42b77d820d0fb 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -192,8 +192,19 @@ static unsigned int get_typical_interval(struct menu_device *data)
- 	 * This can deal with workloads that have long pauses interspersed
- 	 * with sporadic activity with a bunch of short pauses.
- 	 */
--	if ((divisor * 4) <= INTERVALS * 3)
-+	if (divisor * 4 <= INTERVALS * 3) {
-+		/*
-+		 * If there are sufficiently many data points still under
-+		 * consideration after the outliers have been eliminated,
-+		 * returning without a prediction would be a mistake because it
-+		 * is likely that the next interval will not exceed the current
-+		 * maximum, so return the latter in that case.
-+		 */
-+		if (divisor >= INTERVALS / 2)
-+			return max;
-+
- 		return UINT_MAX;
-+	}
+diff --git a/drivers/soc/apple/rtkit.c b/drivers/soc/apple/rtkit.c
+index e6d940292c9fb..00d59a81db88b 100644
+--- a/drivers/soc/apple/rtkit.c
++++ b/drivers/soc/apple/rtkit.c
+@@ -667,7 +667,7 @@ struct apple_rtkit *apple_rtkit_init(struct device *dev, void *cookie,
+ 	rtk->mbox->rx = apple_rtkit_rx;
+ 	rtk->mbox->cookie = rtk;
  
- 	thresh = max - 1;
- 	goto again;
+-	rtk->wq = alloc_ordered_workqueue("rtkit-%s", WQ_MEM_RECLAIM,
++	rtk->wq = alloc_ordered_workqueue("rtkit-%s", WQ_HIGHPRI | WQ_MEM_RECLAIM,
+ 					  dev_name(rtk->dev));
+ 	if (!rtk->wq) {
+ 		ret = -ENOMEM;
 -- 
 2.39.5
 
