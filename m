@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C4AAC5884
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CC7AC5591
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F468A76EA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 318E38A45C3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65651B4F0A;
-	Tue, 27 May 2025 17:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CDE27CCF0;
+	Tue, 27 May 2025 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ol9nGI+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okt6yJzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8283C1FB3;
-	Tue, 27 May 2025 17:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EBC70831;
+	Tue, 27 May 2025 17:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367961; cv=none; b=ql6l6eFbYzaVWNd63Z4x92KDm/vUXSjoSkt5wxY2hznTGg1Iq842koyvj47TEDYvRzagV2debNBkaDD0n+VEGR4ctvC7q30WC3MgPaFcs/iacz2ZBmEAahyvFRMPvCK+zxDp3OlbpJpGvUtqGyYfafgfH88UJFBCtraqL/08aPo=
+	t=1748365696; cv=none; b=GNJjqg3/dwqPLYmdC7rhDRsw+mmthL4cIJVPALYDVp285YsrPDRNoPey+BdhnpO5+JAjC42ouEd/uWl8Z4MSa3whRj/p4oRK+W+E+OnZB6jJ6Uk2qTToZ+2UVuhAy4NqQwrO7puZcb2NZIiVHql1I00FC7rmbT53jza1cHNrCOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367961; c=relaxed/simple;
-	bh=vTgEfA+yNzK9iIhqA2uHe1F0amDXol9rEJbRreEXfLY=;
+	s=arc-20240116; t=1748365696; c=relaxed/simple;
+	bh=5cxAnxt5UFRwcttP1ondzIKINAZmHE2KgEQVFh7fK6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M1cz/A2n9yIi9CaF54PIR6tRla2g4cCXliTInEM+beBSBBTJPxpPEHM76ObAOAnBjsLEtnoXq0WG06PAx3k31+1OBcJrUyypvG5qirHwIVV6JbaMtSYRgsE72Lv/6M6fO3j/8PsqnMEB7mS10I7n4H9G4QUfTfpH+W2ZcYwgTl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ol9nGI+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13F0C4CEE9;
-	Tue, 27 May 2025 17:46:00 +0000 (UTC)
+	 MIME-Version; b=ng5gKHrf5GTwRR6647+tmDW9JPHw3azeFmU6Y9zdZdVIqZyTFSXxyXUgU+HKC8Rc1kX8VptCNYeJP9BV7O2mufpHgQuoVQ0Nr0U9pnTafwgAeIIhLEv0PD3DYJSIt5o5W5kUtJXR9zoLs9RCbfgSps60jTzCOwfDNFuKOwCv02o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okt6yJzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E35C4CEE9;
+	Tue, 27 May 2025 17:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367961;
-	bh=vTgEfA+yNzK9iIhqA2uHe1F0amDXol9rEJbRreEXfLY=;
+	s=korg; t=1748365696;
+	bh=5cxAnxt5UFRwcttP1ondzIKINAZmHE2KgEQVFh7fK6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ol9nGI+Qrt8VZ5g8DWsWAAyvf/U9ZsUrNKohYQv6ijz+VwMmuBDC+BIZeqihuKfXB
-	 e/abKAtpvN5Do1M3mJ6LG1Pa2H55I7O9sdFP4T+iFSFlBIB5puUyhBOHDxI2mC00Mb
-	 1xmNrJ6LoImll1h/idqubAdD8Cz3jrEWPx8U6FIg=
+	b=Okt6yJzb7v99zBCggBb/9Q9Bel8JWlyeO6lGs1Uq0Cc1iLxbDA44k57BZs7KMXZJ2
+	 tps/jyQCTgNzwCRQCauqYKjZhy3Ja8w1ifcSyeXgg6vg6Gr5j22HMA1EGgRPla5U/k
+	 TMUzrjPBHWr6fBh06mb77CSU+MSRmbdkcSewIW0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 555/783] f2fs: introduce f2fs_base_attr for global sysfs entries
-Date: Tue, 27 May 2025 18:25:52 +0200
-Message-ID: <20250527162535.747544443@linuxfoundation.org>
+Subject: [PATCH 6.12 460/626] drm/xe/relay: Dont use GFP_KERNEL for new transactions
+Date: Tue, 27 May 2025 18:25:53 +0200
+Message-ID: <20250527162503.684741332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,157 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 21925ede449e038ed6f9efdfe0e79f15bddc34bc ]
+[ Upstream commit 78d5d1e20d1de9422f013338a0f2311448588ba7 ]
 
-In /sys/fs/f2fs/features, there's no f2fs_sb_info, so let's avoid to get
-the pointer.
+VFs use a relay transaction during the resume/reset flow and use
+of the GFP_KERNEL flag may conflict with the reclaim:
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+     -> #0 (fs_reclaim){+.+.}-{0:0}:
+ [ ]        __lock_acquire+0x1874/0x2bc0
+ [ ]        lock_acquire+0xd2/0x310
+ [ ]        fs_reclaim_acquire+0xc5/0x100
+ [ ]        mempool_alloc_noprof+0x5c/0x1b0
+ [ ]        __relay_get_transaction+0xdc/0xa10 [xe]
+ [ ]        relay_send_to+0x251/0xe50 [xe]
+ [ ]        xe_guc_relay_send_to_pf+0x79/0x3a0 [xe]
+ [ ]        xe_gt_sriov_vf_connect+0x90/0x4d0 [xe]
+ [ ]        xe_uc_init_hw+0x157/0x3b0 [xe]
+ [ ]        do_gt_restart+0x1ae/0x650 [xe]
+ [ ]        xe_gt_resume+0xb6/0x120 [xe]
+ [ ]        xe_pm_runtime_resume+0x15b/0x370 [xe]
+ [ ]        xe_pci_runtime_resume+0x73/0x90 [xe]
+ [ ]        pci_pm_runtime_resume+0xa0/0x100
+ [ ]        __rpm_callback+0x4d/0x170
+ [ ]        rpm_callback+0x64/0x70
+ [ ]        rpm_resume+0x594/0x790
+ [ ]        __pm_runtime_resume+0x4e/0x90
+ [ ]        xe_pm_runtime_get_ioctl+0x9c/0x160 [xe]
+
+Since we have a preallocated pool of relay transactions, which
+should cover all our normal relay use cases, we may use the
+GFP_NOWAIT flag when allocating new outgoing transactions.
+
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Tested-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250131153713.808-1-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 74 ++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 52 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_relay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index d15c68b28952b..b419555e1ea7f 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -61,6 +61,12 @@ struct f2fs_attr {
- 	int id;
- };
+diff --git a/drivers/gpu/drm/xe/xe_guc_relay.c b/drivers/gpu/drm/xe/xe_guc_relay.c
+index ade6162dc2598..0e5b43e1518ea 100644
+--- a/drivers/gpu/drm/xe/xe_guc_relay.c
++++ b/drivers/gpu/drm/xe/xe_guc_relay.c
+@@ -224,7 +224,7 @@ __relay_get_transaction(struct xe_guc_relay *relay, bool incoming, u32 remote, u
+ 	 * with CTB lock held which is marked as used in the reclaim path.
+ 	 * Btw, that's one of the reason why we use mempool here!
+ 	 */
+-	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_KERNEL);
++	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_NOWAIT);
+ 	if (!txn)
+ 		return ERR_PTR(-ENOMEM);
  
-+struct f2fs_base_attr {
-+	struct attribute attr;
-+	ssize_t (*show)(struct f2fs_base_attr *a, char *buf);
-+	ssize_t (*store)(struct f2fs_base_attr *a, const char *buf, size_t len);
-+};
-+
- static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 			     struct f2fs_sb_info *sbi, char *buf);
- 
-@@ -862,6 +868,25 @@ static void f2fs_sb_release(struct kobject *kobj)
- 	complete(&sbi->s_kobj_unregister);
- }
- 
-+static ssize_t f2fs_base_attr_show(struct kobject *kobj,
-+				struct attribute *attr, char *buf)
-+{
-+	struct f2fs_base_attr *a = container_of(attr,
-+				struct f2fs_base_attr, attr);
-+
-+	return a->show ? a->show(a, buf) : 0;
-+}
-+
-+static ssize_t f2fs_base_attr_store(struct kobject *kobj,
-+				struct attribute *attr,
-+				const char *buf, size_t len)
-+{
-+	struct f2fs_base_attr *a = container_of(attr,
-+				struct f2fs_base_attr, attr);
-+
-+	return a->store ? a->store(a, buf, len) : 0;
-+}
-+
- /*
-  * Note that there are three feature list entries:
-  * 1) /sys/fs/f2fs/features
-@@ -880,14 +905,13 @@ static void f2fs_sb_release(struct kobject *kobj)
-  *     please add new on-disk feature in this list only.
-  *     - ref. F2FS_SB_FEATURE_RO_ATTR()
-  */
--static ssize_t f2fs_feature_show(struct f2fs_attr *a,
--		struct f2fs_sb_info *sbi, char *buf)
-+static ssize_t f2fs_feature_show(struct f2fs_base_attr *a, char *buf)
- {
- 	return sysfs_emit(buf, "supported\n");
- }
- 
- #define F2FS_FEATURE_RO_ATTR(_name)				\
--static struct f2fs_attr f2fs_attr_##_name = {			\
-+static struct f2fs_base_attr f2fs_base_attr_##_name = {		\
- 	.attr = {.name = __stringify(_name), .mode = 0444 },	\
- 	.show	= f2fs_feature_show,				\
- }
-@@ -1256,37 +1280,38 @@ static struct attribute *f2fs_attrs[] = {
- };
- ATTRIBUTE_GROUPS(f2fs);
- 
-+#define BASE_ATTR_LIST(name) (&f2fs_base_attr_##name.attr)
- static struct attribute *f2fs_feat_attrs[] = {
- #ifdef CONFIG_FS_ENCRYPTION
--	ATTR_LIST(encryption),
--	ATTR_LIST(test_dummy_encryption_v2),
-+	BASE_ATTR_LIST(encryption),
-+	BASE_ATTR_LIST(test_dummy_encryption_v2),
- #if IS_ENABLED(CONFIG_UNICODE)
--	ATTR_LIST(encrypted_casefold),
-+	BASE_ATTR_LIST(encrypted_casefold),
- #endif
- #endif /* CONFIG_FS_ENCRYPTION */
- #ifdef CONFIG_BLK_DEV_ZONED
--	ATTR_LIST(block_zoned),
-+	BASE_ATTR_LIST(block_zoned),
- #endif
--	ATTR_LIST(atomic_write),
--	ATTR_LIST(extra_attr),
--	ATTR_LIST(project_quota),
--	ATTR_LIST(inode_checksum),
--	ATTR_LIST(flexible_inline_xattr),
--	ATTR_LIST(quota_ino),
--	ATTR_LIST(inode_crtime),
--	ATTR_LIST(lost_found),
-+	BASE_ATTR_LIST(atomic_write),
-+	BASE_ATTR_LIST(extra_attr),
-+	BASE_ATTR_LIST(project_quota),
-+	BASE_ATTR_LIST(inode_checksum),
-+	BASE_ATTR_LIST(flexible_inline_xattr),
-+	BASE_ATTR_LIST(quota_ino),
-+	BASE_ATTR_LIST(inode_crtime),
-+	BASE_ATTR_LIST(lost_found),
- #ifdef CONFIG_FS_VERITY
--	ATTR_LIST(verity),
-+	BASE_ATTR_LIST(verity),
- #endif
--	ATTR_LIST(sb_checksum),
-+	BASE_ATTR_LIST(sb_checksum),
- #if IS_ENABLED(CONFIG_UNICODE)
--	ATTR_LIST(casefold),
-+	BASE_ATTR_LIST(casefold),
- #endif
--	ATTR_LIST(readonly),
-+	BASE_ATTR_LIST(readonly),
- #ifdef CONFIG_F2FS_FS_COMPRESSION
--	ATTR_LIST(compression),
-+	BASE_ATTR_LIST(compression),
- #endif
--	ATTR_LIST(pin_file),
-+	BASE_ATTR_LIST(pin_file),
- 	NULL,
- };
- ATTRIBUTE_GROUPS(f2fs_feat);
-@@ -1362,9 +1387,14 @@ static struct kset f2fs_kset = {
- 	.kobj	= {.ktype = &f2fs_ktype},
- };
- 
-+static const struct sysfs_ops f2fs_feat_attr_ops = {
-+	.show	= f2fs_base_attr_show,
-+	.store	= f2fs_base_attr_store,
-+};
-+
- static const struct kobj_type f2fs_feat_ktype = {
- 	.default_groups = f2fs_feat_groups,
--	.sysfs_ops	= &f2fs_attr_ops,
-+	.sysfs_ops	= &f2fs_feat_attr_ops,
- };
- 
- static struct kobject f2fs_feat = {
 -- 
 2.39.5
 
