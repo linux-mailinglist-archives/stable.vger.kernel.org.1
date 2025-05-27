@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA050AC5556
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645BAAC58B7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B45F34A3CF9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 242171BC2A1F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8333627CCF0;
-	Tue, 27 May 2025 17:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1CC27FD4A;
+	Tue, 27 May 2025 17:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyNZrlOY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzXzaz0y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8A92798E6;
-	Tue, 27 May 2025 17:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B43127CCF0;
+	Tue, 27 May 2025 17:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365836; cv=none; b=hQioOwYOnDLyhEbEsChDW7Y1G9FkS0h61Yl7ljwaTGMZAMF8rT1hSYndvklThVWe+FSJ5beN5RQxOeWhVeZUWWyOSEgl7EgugZ72DmIbnKQ8f14UDCyAJKgnKUqOn7cQyXeaEt9TvFo/oxG3HU48K3TwMcT0E4/TJcOPrUKhleM=
+	t=1748368110; cv=none; b=qx6PqWkRpq/RSq8fBwxIYX3VOyf8b0O0UdXGdBFqATMLMD4H8xvqGDyBs6EHq9tmgjqhliYTLkJOrx9QPKr9xQK4EZBVo8SqDhCdR1Fsb3kr7auNBMazsvIJ5KB3fd2UMk8F9pBeDK6HwpPyPwf9mZ3P8yq55yTViF1ofLyiJ7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365836; c=relaxed/simple;
-	bh=LsERmwYXHy0uTssGmFM9/Ovka9KADOhnZjr3/mmyHsw=;
+	s=arc-20240116; t=1748368110; c=relaxed/simple;
+	bh=ELpOj3zQOOQHPebGMCBCEbq5vyT+YeFj4QjhbGwwkfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xp7ERtXZ6Qxy76HOp5soPDHp6XeFLjaKmJuNMxuLDHr+1Lvg59NViRNpU4p2AbPgQmM9JeFsFn81VEN+WGv0Ijpi34IkqR42cRe9IgD5aXOHT9tQJGmFxsY2piqa1AbuAdKHy80IN0e8KWZNKkGR7o1/lSod9fli9OoE2f6IoIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyNZrlOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435CCC4CEE9;
-	Tue, 27 May 2025 17:10:35 +0000 (UTC)
+	 MIME-Version; b=ifaQTLr71s5MbUvTpIT+uKeV80ay6Gm+XMcjKNL2eEUYDxw9DYW4MQKvw73E985Qzb0/v1ljTv+2qpCzDEka3pn2MCRkWIMtTddJPDiKVZJa7hG7Le+VVt5bPBH/Por2F2DgTFKLB3Da9F+dfrWkkF4q/vmYe4tWAK64lHaA8qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzXzaz0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E606C4CEE9;
+	Tue, 27 May 2025 17:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365835;
-	bh=LsERmwYXHy0uTssGmFM9/Ovka9KADOhnZjr3/mmyHsw=;
+	s=korg; t=1748368109;
+	bh=ELpOj3zQOOQHPebGMCBCEbq5vyT+YeFj4QjhbGwwkfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyNZrlOYRk2h/4+Wi5p3ATqG/k9bV6R7DfVpRvKpyukRou5XiuW3L2kn2XhWDAtBI
-	 7TSoJuH/rmtySB1qed6s8Msjhi1E6odHvURbJntUAp0WKUrSGzVX8vZrM8tDsj0rC4
-	 2rJ6R3zgBnPzVH8YkHBzI6UaTEoM/SSje+YPPJmQ=
+	b=xzXzaz0yE6hJ+worEsXaTMiqZesI+szkOFfHE94nB1p8gS+nY3Cyob4a62gdfZHMJ
+	 hAe/3tSqF3pvGrcorQ3JXcgkb+xEuU2+iVLIJVjX/SefhiKqxomzXM2wPLxRfsI4BM
+	 RcwHPFdoZkA2HfcNoKywlgBVf1YDEH7YSgNmtwJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 504/626] drm: Add valid clones check
-Date: Tue, 27 May 2025 18:26:37 +0200
-Message-ID: <20250527162505.449368662@linuxfoundation.org>
+Subject: [PATCH 6.14 601/783] spi: zynqmp-gqspi: Always acknowledge interrupts
+Date: Tue, 27 May 2025 18:26:38 +0200
+Message-ID: <20250527162537.618396861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+[ Upstream commit 89785306453ce6d949e783f6936821a0b7649ee2 ]
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+RXEMPTY can cause an IRQ, even though we may not do anything about it
+(such as if we are waiting for more received data). We must still handle
+these IRQs because we can tell they were caused by the device.
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250116224130.2684544-6-sean.anderson@linux.dev
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/spi/spi-zynqmp-gqspi.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 32902f77f00dd..40e4e1b6c9110 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -574,6 +574,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index d800d79f62a70..12ab13edab543 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -799,7 +799,6 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
+ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
+ {
+ 	struct zynqmp_qspi *xqspi = (struct zynqmp_qspi *)dev_id;
+-	irqreturn_t ret = IRQ_NONE;
+ 	u32 status, mask, dma_status = 0;
  
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
-+
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -745,6 +769,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
+ 	status = zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST);
+@@ -814,27 +813,24 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
+ 				   dma_status);
  	}
  
- 	/*
+-	if (mask & GQSPI_ISR_TXNOT_FULL_MASK) {
++	if (!mask && !dma_status)
++		return IRQ_NONE;
++
++	if (mask & GQSPI_ISR_TXNOT_FULL_MASK)
+ 		zynqmp_qspi_filltxfifo(xqspi, GQSPI_TX_FIFO_FILL);
+-		ret = IRQ_HANDLED;
+-	}
+ 
+-	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK) {
++	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK)
+ 		zynqmp_process_dma_irq(xqspi);
+-		ret = IRQ_HANDLED;
+-	} else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
+-			(mask & GQSPI_IER_GENFIFOEMPTY_MASK)) {
++	else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
++			(mask & GQSPI_IER_GENFIFOEMPTY_MASK))
+ 		zynqmp_qspi_readrxfifo(xqspi, GQSPI_RX_FIFO_FILL);
+-		ret = IRQ_HANDLED;
+-	}
+ 
+ 	if (xqspi->bytes_to_receive == 0 && xqspi->bytes_to_transfer == 0 &&
+ 	    ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
+ 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
+ 		complete(&xqspi->data_completion);
+-		ret = IRQ_HANDLED;
+ 	}
+-	return ret;
++	return IRQ_HANDLED;
+ }
+ 
+ /**
 -- 
 2.39.5
 
