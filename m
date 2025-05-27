@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-147568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B4CAC583C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FEEAC54ED
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D8CE3B9724
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B939C1BA57B1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE45280038;
-	Tue, 27 May 2025 17:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF0227B51A;
+	Tue, 27 May 2025 17:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwfFCQdk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGLJXpzH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972AA1DC998;
-	Tue, 27 May 2025 17:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D8B2110E;
+	Tue, 27 May 2025 17:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367744; cv=none; b=JvForkt4CNnx2KwcGaEn7tRcg5fykvLk92T+XyOxC2TlYgFN+TAUgiGGBEoVBW7oz7wKJGBpnGms1oyY76pCvCdRfQGIOZE9mGfWcjDRVCHegTAsd/Fw5KKUaDb4DQNibprqrHhVXZG/nY8peuQ8u/Ag3gt+GGBvcAXCvzEC5dE=
+	t=1748365480; cv=none; b=Ck0n3EFw+4K2AZouQgxpIfRNRIafJ1+yFEBh7yBruAZrZjTdpiQY8ZMVDfkSpsx7QHmgrUR5naEwAuOusR1yNN/JBuyPaUTzkhWGaJsn+2ohpkcW1vJG21tWIL2lohndO+eczipI54xvfOmbWX6cSO3L5S/foUqo46trgSi5p2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367744; c=relaxed/simple;
-	bh=VqfTDot4cgTnhYXnc948xdbcyQmKCPdyFNyayO8S8ZA=;
+	s=arc-20240116; t=1748365480; c=relaxed/simple;
+	bh=7253E2RrfOft0XUutUrltqWI0rfF6z88Q/5LG464Tik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dqGbUYgv/mXOahMNIGnlMEarkMt+rq49z8KrcIfO3+s3h+3qVuDiJk/jLD0X26SlpcXHdC1sHvaMtMiivcEl6bK1Mvaa6GLhEFvAD2QMhFeSy+PqepSUBqU2Dw2lDiKqNPzP/V+LseLR0jRu7+8PV5lYKpni34DdgQZrBIimb+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwfFCQdk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B0AC4CEE9;
-	Tue, 27 May 2025 17:42:23 +0000 (UTC)
+	 MIME-Version; b=dSOvbpnuakaTS2F9sSH2xTLxOiW9olyiYZ74Hy1uuA2mYEWBdbuYlP7fV7wrU0GG4WV+2XJWZz1QDpfZNa8mSwpZoIYoyCmAKX5d8DL2wQg3W0wwaTyhR5naLRGdaGxplvSI+sZCBEZ/Hg1Tsq7LwQSEsJmZ7b//ZXyK0ZdtNR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGLJXpzH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D22C4CEE9;
+	Tue, 27 May 2025 17:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367744;
-	bh=VqfTDot4cgTnhYXnc948xdbcyQmKCPdyFNyayO8S8ZA=;
+	s=korg; t=1748365480;
+	bh=7253E2RrfOft0XUutUrltqWI0rfF6z88Q/5LG464Tik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwfFCQdkqvk8UHkDT8wC/hrvYSbPCmXf8jVzhuhO74VJvgigzM55scBiOeOFScvYB
-	 mGOKQTdFgzscz/5U2Em1uu0ehF7JfRn9LQYZ4Wxfwpj3MPVesJHAuiLf0MfVsJXli5
-	 gQA4B1DM/Asmmml6jEfm0AIgBoJzt542HamK2ids=
+	b=EGLJXpzH61hOJLO+1aeNvIsJqQvk1VG9YyB3INGYeo7IiidAAVne8Tsrnxo3HXk2V
+	 PUEwUnSbWWs6SnX+TxF1CMOsm8FOMt/zhotGi2sKg3/HrrYZho/gEqw/PI951wfD4k
+	 gGUuzmcpW+yf1kCq2fjOSwz8cyhPH4SL3aqaPAbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Koo <anthony.koo@amd.com>,
-	Martin Tsai <Martin.Tsai@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 486/783] drm/amd/display: Support multiple options during psr entry.
+Subject: [PATCH 6.12 390/626] drm/amd/display: pass calculated dram_speed_mts to dml2
 Date: Tue, 27 May 2025 18:24:43 +0200
-Message-ID: <20250527162532.919929046@linuxfoundation.org>
+Message-ID: <20250527162500.869506312@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Tsai <Martin.Tsai@amd.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 3a5fa55455db6a11248a25f24570c365f9246144 ]
+[ Upstream commit b40d022ec06ade9f6c809091dc188422a0f0946d ]
 
-[WHY]
-Some panels may not handle idle pattern properly during PSR entry.
+[why]
+currently dml2 is using a hard coded 16 to convert memclk to dram_speed_mts.
+for apu, this depends on wck_ratio.
 
-[HOW]
-Add a condition to allow multiple options on power down
-sequence during PSR1 entry.
+change to pass the already calculated dram_speed_mts from fpu to dml2.
 
-Reviewed-by: Anthony Koo <anthony.koo@amd.com>
-Signed-off-by: Martin Tsai <Martin.Tsai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+v2: use existing calculation of dram_speed_mts for now to avoid regression
+
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Roman Li <Roman.Li@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_types.h       | 7 +++++++
- drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c   | 4 ++++
- drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h | 6 ++++++
- 3 files changed, 17 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c   | 2 ++
+ drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c | 1 +
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h     | 1 +
+ 3 files changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
-index 0c2aa91f0a111..e60898c2df01a 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
-@@ -1033,6 +1033,13 @@ struct psr_settings {
- 	unsigned int psr_sdp_transmit_line_num_deadline;
- 	uint8_t force_ffu_mode;
- 	unsigned int psr_power_opt;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+index beed7adbbd43e..c90dee4e9116a 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -367,6 +367,8 @@ void dcn35_update_bw_bounding_box_fpu(struct dc *dc,
+ 				clock_limits[i].socclk_mhz;
+ 			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].memclk_mhz =
+ 				clk_table->entries[i].memclk_mhz * clk_table->entries[i].wck_ratio;
 +
-+	/**
-+	 * Some panels cannot handle idle pattern during PSR entry.
-+	 * To power down phy before disable stream to avoid sending
-+	 * idle pattern.
-+	 */
-+	uint8_t power_down_phy_before_disable_stream;
++			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].dram_speed_mts = clock_limits[i].dram_speed_mts;
+ 			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].dtbclk_mhz =
+ 				clock_limits[i].dtbclk_mhz;
+ 			dc->dml2_options.bbox_overrides.clks_table.num_entries_per_clk.num_dcfclk_levels =
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c
+index a201dbb743d79..79d921adc2153 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn351/dcn351_fpu.c
+@@ -401,6 +401,7 @@ void dcn351_update_bw_bounding_box_fpu(struct dc *dc,
+ 				clock_limits[i].socclk_mhz;
+ 			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].memclk_mhz =
+ 				clk_table->entries[i].memclk_mhz * clk_table->entries[i].wck_ratio;
++			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].dram_speed_mts = clock_limits[i].dram_speed_mts;
+ 			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].dtbclk_mhz =
+ 				clock_limits[i].dtbclk_mhz;
+ 			dc->dml2_options.bbox_overrides.clks_table.num_entries_per_clk.num_dcfclk_levels =
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
+index 0f944fcfd5a5b..785226945699d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
+@@ -159,6 +159,7 @@ struct dml2_clks_table_entry {
+ 	unsigned int dtbclk_mhz;
+ 	unsigned int dispclk_mhz;
+ 	unsigned int dppclk_mhz;
++	unsigned int dram_speed_mts; /*which is based on wck_ratio*/
  };
  
- enum replay_coasting_vtotal_type {
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-index 88c75c243bf8a..ff3b8244ba3d0 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-@@ -418,6 +418,10 @@ static bool dmub_psr_copy_settings(struct dmub_psr *dmub,
- 	copy_settings_data->relock_delay_frame_cnt = 0;
- 	if (link->dpcd_caps.sink_dev_id == DP_BRANCH_DEVICE_ID_001CF8)
- 		copy_settings_data->relock_delay_frame_cnt = 2;
-+
-+	copy_settings_data->power_down_phy_before_disable_stream =
-+		link->psr_settings.power_down_phy_before_disable_stream;
-+
- 	copy_settings_data->dsc_slice_height = psr_context->dsc_slice_height;
- 
- 	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-index d0fe324cb5371..8cf89aed024b7 100644
---- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-+++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-@@ -3118,6 +3118,12 @@ struct dmub_cmd_psr_copy_settings_data {
- 	 * Some panels request main link off before xth vertical line
- 	 */
- 	uint16_t poweroff_before_vertical_line;
-+	/**
-+	 * Some panels cannot handle idle pattern during PSR entry.
-+	 * To power down phy before disable stream to avoid sending
-+	 * idle pattern.
-+	 */
-+	uint8_t power_down_phy_before_disable_stream;
- };
- 
- /**
+ struct dml2_clks_num_entries {
 -- 
 2.39.5
 
