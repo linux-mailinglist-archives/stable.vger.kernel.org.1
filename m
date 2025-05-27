@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-147807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C0CAC5943
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:55:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33854AC5607
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C528B1BC3517
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:55:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 174D87B02D5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF8A28001F;
-	Tue, 27 May 2025 17:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE761DB34C;
+	Tue, 27 May 2025 17:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWZPyywi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1nUcI3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7848E263F5E;
-	Tue, 27 May 2025 17:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19228182D7;
+	Tue, 27 May 2025 17:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368494; cv=none; b=Y/MWGHMh1TVaPr+atCdHq8hu3XQZbhGn+n2WTY8lUMLujCLEgC5re+qQFAFiVJ75jB2BCouhjR7gTgrtNINv56kUVX/kbw0sf8NRDJWL5yMeN0y0CVHztYg9fs5Q+X9VbGZXQhC2DV15CFRywCdMuIuojCLzF7S8xG5k5GMToRY=
+	t=1748366226; cv=none; b=VX2sTFI93KTjYbvIc9HbzzYB0xzcRSYvviC6Ctjm5aRWsnCSitM2nnC67ISYeowPb/5NDAdHmbVmpXLxQ0H4fsOR2iaAdLxgKdvf63gy+4kEgBuzdUcH8sq5FvCubceJY5lKzOvqrVnw7fNpWueIrBNlcfNepX57+dUMRagYTdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368494; c=relaxed/simple;
-	bh=JrSy3CBQjHYLdz1HPHn9p6xDmSb3tqZWb3r7qdVeTjc=;
+	s=arc-20240116; t=1748366226; c=relaxed/simple;
+	bh=lqSzu+aas9G1LcpFIS/mPfDB8F+ithE26EnuOuOUIoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpTVdsi255/aaR+Pkf2WRPviuePbmkURwBZytF2Ld2damR9fmroxQeAfEhi3A8inLdLHHYmSPwRMF13vPw67L3rsWbyDUyGNLqUzrUse54agbcPTUGuJcJ+s5pJnEnhGTlFj9GG/Gy7akHr3RhSqo08OCNUXSXULbAidcHqhyR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWZPyywi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01338C4CEE9;
-	Tue, 27 May 2025 17:54:53 +0000 (UTC)
+	 MIME-Version; b=B/U23B1883nJWD/n647SjGIWRjNYG2L0UjlNqP2yV1inwCfNcRAqxkf4dkqmPi9owRc3app516Q61G42nMNL3QED0MhjYijj+9zerhVVpFU3hd2NiZVpyM6PrRBD23pSvxtLc+YT6jyKD4BQTsq3JP/SZk753gwgg3k3wn7rPMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1nUcI3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9932BC4CEE9;
+	Tue, 27 May 2025 17:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368494;
-	bh=JrSy3CBQjHYLdz1HPHn9p6xDmSb3tqZWb3r7qdVeTjc=;
+	s=korg; t=1748366226;
+	bh=lqSzu+aas9G1LcpFIS/mPfDB8F+ithE26EnuOuOUIoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWZPyywiHX6CuuHWaVY3Jq8BIri/Oqh1GSUgrbtK8PUf9u9A+1bv7ORqUJGYWKGdI
-	 RTkWJVuM1MCN+se4k79lexZOMafrYYKUHkRW+GrObsVXrKiGbgwX/a8kvF6KxUGheU
-	 ibsCa4WZRxQGUicVBDNuGblnOIMyZ+Z+zy23p9Vk=
+	b=M1nUcI3NxhMexbGV62gCLsmZHy6W6GM/t7qEU22GGkID2i8HtnwoBZT8S2s1bWPbH
+	 werh8NAwFAeh6EJj83XUZYHhc2VKTE6f/SOeB5qkosEFnHO0GgLBUv8E3SV2kF3HEa
+	 jchwiZFV2YgVjtiUWnvd/b6LP9bX7uPUt0/6pJrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 707/783] pinctrl: qcom: switch to devm_register_sys_off_handler()
+Subject: [PATCH 6.12 611/626] spi: spi-fsl-dspi: Halt the module after a new message transfer
 Date: Tue, 27 May 2025 18:28:24 +0200
-Message-ID: <20250527162541.910607614@linuxfoundation.org>
+Message-ID: <20250527162509.827095905@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
 
-[ Upstream commit 41e452e6933d14146381ea25cff5e4d1ac2abea1 ]
+[ Upstream commit 8a30a6d35a11ff5ccdede7d6740765685385a917 ]
 
-Error-handling paths in msm_pinctrl_probe() don't call
-a function required to unroll restart handler registration,
-unregister_restart_handler(). Instead of adding calls to this function,
-switch the msm pinctrl code into using devm_register_sys_off_handler().
+The XSPI mode implementation in this driver still uses the EOQ flag to
+signal the last word in a transmission and deassert the PCS signal.
+However, at speeds lower than ~200kHZ, the PCS signal seems to remain
+asserted even when SR[EOQF] = 1 indicates the end of a transmission.
+This is a problem for target devices which require the deassertation of
+the PCS signal between transfers.
 
-Fixes: cf1fc1876289 ("pinctrl: qcom: use restart_notifier mechanism for ps_hold")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/20250513-pinctrl-msm-fix-v2-2-249999af0fc1@oss.qualcomm.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Hence, this commit 'forces' the deassertation of the PCS by stopping the
+module through MCR[HALT] after completing a new transfer. According to
+the reference manual, the module stops or transitions from the Running
+state to the Stopped state after the current frame, when any one of the
+following conditions exist:
+- The value of SR[EOQF] = 1.
+- The chip is in Debug mode and the value of MCR[FRZ] = 1.
+- The value of MCR[HALT] = 1.
+
+This shouldn't be done if the last transfer in the message has cs_change
+set.
+
+Fixes: ea93ed4c181b ("spi: spi-fsl-dspi: Use EOQ for last word in buffer even for XSPI mode")
+Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-2-bea884630cfb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
-index 82f0cc43bbf4f..0eb816395dc64 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -44,7 +44,6 @@
-  * @pctrl:          pinctrl handle.
-  * @chip:           gpiochip handle.
-  * @desc:           pin controller descriptor
-- * @restart_nb:     restart notifier block.
-  * @irq:            parent irq for the TLMM irq_chip.
-  * @intr_target_use_scm: route irq to application cpu using scm calls
-  * @lock:           Spinlock to protect register resources as well
-@@ -64,7 +63,6 @@ struct msm_pinctrl {
- 	struct pinctrl_dev *pctrl;
- 	struct gpio_chip chip;
- 	struct pinctrl_desc desc;
--	struct notifier_block restart_nb;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index b8e7e6dbe0030..0466a94ea6b5c 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -62,6 +62,7 @@
+ #define SPI_SR_TFIWF			BIT(18)
+ #define SPI_SR_RFDF			BIT(17)
+ #define SPI_SR_CMDFFF			BIT(16)
++#define SPI_SR_TXRXS			BIT(30)
+ #define SPI_SR_CLEAR			(SPI_SR_TCFQF | \
+ 					SPI_SR_TFUF | SPI_SR_TFFF | \
+ 					SPI_SR_CMDTCF | SPI_SR_SPEF | \
+@@ -921,9 +922,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 	struct spi_transfer *transfer;
+ 	bool cs = false;
+ 	int status = 0;
++	u32 val = 0;
++	bool cs_change = false;
  
- 	int irq;
+ 	message->actual_length = 0;
  
-@@ -1471,10 +1469,9 @@ static int msm_gpio_init(struct msm_pinctrl *pctrl)
- 	return 0;
- }
- 
--static int msm_ps_hold_restart(struct notifier_block *nb, unsigned long action,
--			       void *data)
-+static int msm_ps_hold_restart(struct sys_off_data *data)
- {
--	struct msm_pinctrl *pctrl = container_of(nb, struct msm_pinctrl, restart_nb);
-+	struct msm_pinctrl *pctrl = data->cb_data;
- 
- 	writel(0, pctrl->regs[0] + PS_HOLD_OFFSET);
- 	mdelay(1000);
-@@ -1485,7 +1482,11 @@ static struct msm_pinctrl *poweroff_pctrl;
- 
- static void msm_ps_hold_poweroff(void)
- {
--	msm_ps_hold_restart(&poweroff_pctrl->restart_nb, 0, NULL);
-+	struct sys_off_data data = {
-+		.cb_data = poweroff_pctrl,
-+	};
++	/* Put DSPI in running mode if halted. */
++	regmap_read(dspi->regmap, SPI_MCR, &val);
++	if (val & SPI_MCR_HALT) {
++		regmap_update_bits(dspi->regmap, SPI_MCR, SPI_MCR_HALT, 0);
++		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
++		       !(val & SPI_SR_TXRXS))
++			;
++	}
 +
-+	msm_ps_hold_restart(&data);
- }
+ 	list_for_each_entry(transfer, &message->transfers, transfer_list) {
+ 		dspi->cur_transfer = transfer;
+ 		dspi->cur_msg = message;
+@@ -953,6 +965,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 				dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
+ 		}
  
- static void msm_pinctrl_setup_pm_reset(struct msm_pinctrl *pctrl)
-@@ -1495,9 +1496,11 @@ static void msm_pinctrl_setup_pm_reset(struct msm_pinctrl *pctrl)
++		cs_change = transfer->cs_change;
+ 		dspi->tx = transfer->tx_buf;
+ 		dspi->rx = transfer->rx_buf;
+ 		dspi->len = transfer->len;
+@@ -988,6 +1001,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 			dspi_deassert_cs(spi, &cs);
+ 	}
  
- 	for (i = 0; i < pctrl->soc->nfunctions; i++)
- 		if (!strcmp(func[i].name, "ps_hold")) {
--			pctrl->restart_nb.notifier_call = msm_ps_hold_restart;
--			pctrl->restart_nb.priority = 128;
--			if (register_restart_handler(&pctrl->restart_nb))
-+			if (devm_register_sys_off_handler(pctrl->dev,
-+							  SYS_OFF_MODE_RESTART,
-+							  128,
-+							  msm_ps_hold_restart,
-+							  pctrl))
- 				dev_err(pctrl->dev,
- 					"failed to setup restart handler.\n");
- 			poweroff_pctrl = pctrl;
-@@ -1599,8 +1602,6 @@ void msm_pinctrl_remove(struct platform_device *pdev)
- 	struct msm_pinctrl *pctrl = platform_get_drvdata(pdev);
++	if (status || !cs_change) {
++		/* Put DSPI in stop mode */
++		regmap_update_bits(dspi->regmap, SPI_MCR,
++				   SPI_MCR_HALT, SPI_MCR_HALT);
++		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
++		       val & SPI_SR_TXRXS)
++			;
++	}
++
+ 	message->status = status;
+ 	spi_finalize_current_message(ctlr);
  
- 	gpiochip_remove(&pctrl->chip);
--
--	unregister_restart_handler(&pctrl->restart_nb);
- }
- EXPORT_SYMBOL(msm_pinctrl_remove);
+@@ -1245,6 +1267,8 @@ static int dspi_init(struct fsl_dspi *dspi)
+ 	if (!spi_controller_is_target(dspi->ctlr))
+ 		mcr |= SPI_MCR_HOST;
+ 
++	mcr |= SPI_MCR_HALT;
++
+ 	regmap_write(dspi->regmap, SPI_MCR, mcr);
+ 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
  
 -- 
 2.39.5
