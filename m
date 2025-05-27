@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-147436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF64CAC57A5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705E2AC5488
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F8FA8A3338
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC0EB7A88EF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5D727FB10;
-	Tue, 27 May 2025 17:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A73B27E1CA;
+	Tue, 27 May 2025 16:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxYGd2b1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X075YHTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA6C3C01;
-	Tue, 27 May 2025 17:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35026194A67;
+	Tue, 27 May 2025 16:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367336; cv=none; b=nRUHYmws4Tgwt+RpO51K/yKQHvcHq55VxXWpqV65OVDMXTXSiuJ1Kg52M/fiB9dJU4PUu5yt+p4cE7BdekY3Eg5uPzX8Z8I8VXal0mWA1gs4P79il+qc8f79HJhEVqnzgG76Bb851xuGcFtn9HfDnhX027qybwi475W0XadwsRE=
+	t=1748365071; cv=none; b=p5JNXcVraFk1zWhvCAaY3YwARQKfH6bDTCzx8LWDp0Jsob9OaEaH9J8EYextM58XS7AhOxn/0/pqXIYzf5BkdDHCm0yMe13XOA62RIyCuZoSWv+y5Iun5LhZBgcczMqv1w/82UK2UvhOao5TbN8RjGTtJN/RgnDiNSA4XIqxAHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367336; c=relaxed/simple;
-	bh=xvbZMLwc1jDX1Cu5rPVdg7yxxqY6lJp6W0BGaudPAcI=;
+	s=arc-20240116; t=1748365071; c=relaxed/simple;
+	bh=EJ0Zs4jnZ+PVfREpA9hdmUxgtlhpD3OIaPC/twF8UJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnEaU90xyjPO16Kmd5nEPoHY5+ssemfk2ZuZyNws3tZNbj3qmhOuDeCJp5+4NdksjoaVVLG/MIOQboGsQdmLg/4IqQkGwJQUmC+ptRDei5efhef+c0QIIA15BE4+ydPU0Vi7FpHgGIZ9fRbeh1fW8CFWT+6g5o0qHod9eEcAH5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxYGd2b1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D54CC4CEE9;
-	Tue, 27 May 2025 17:35:35 +0000 (UTC)
+	 MIME-Version; b=hjg8MisAdr/SCijjXlzELwroUg9cjmIpSlp7Klpt46lTzFqsI5WjyfzYAB7aVetq+PzkCEqnso4ANOklRZWcd98QOQvJav3ROVsETlkvh9w/kjrmyZ8jc65aTcxrKROw9W8em6GXU143fY86LDrVgeAJPsqQbfG9G2R1OW3sUlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X075YHTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B067AC4CEE9;
+	Tue, 27 May 2025 16:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367335;
-	bh=xvbZMLwc1jDX1Cu5rPVdg7yxxqY6lJp6W0BGaudPAcI=;
+	s=korg; t=1748365071;
+	bh=EJ0Zs4jnZ+PVfREpA9hdmUxgtlhpD3OIaPC/twF8UJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxYGd2b1GBGq4r1oqQKTlBfqVDnI4YzfrKiNWj39FwFITih0sZwEl+c6pDdgRZxRn
-	 Ah3MBLt0IIdP1IIjTnJAxQN6cGeak7e8BKwIFUdZpqIJFdrW3umUrSP2x7ZkFr9Q/f
-	 puCERGWGBpLrO0U+RMopUIYffYFqTVmjYHSlDgs8=
+	b=X075YHTqEzjwBkguUOTEHJmcqIwHQxNOc7iTLXq4uv8uNcngznGCoj0MPzY1/Zs+Y
+	 Mjmez1CgoTN/q5+t407KdUwKaBukXroxwHTA7adXkgUDxqvHOOv7W07QmmEOdSui/i
+	 sFBujGVhS55bkBudcUEPvwq7eDWDPhainH6eIMOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samson Tam <Samson.Tam@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Kaplan <David.Kaplan@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 355/783] drm/amd/display: Fix mismatch type comparison in custom_float
+Subject: [PATCH 6.12 259/626] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
 Date: Tue, 27 May 2025 18:22:32 +0200
-Message-ID: <20250527162527.526947188@linuxfoundation.org>
+Message-ID: <20250527162455.537651094@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +66,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samson Tam <Samson.Tam@amd.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 86f06bcbb54e93f3c7b5e22ae37e72882b74c4b0 ]
+[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
 
-[Why & How]
-Passing uint into uchar function param.  Pass uint instead
+Change the default value of spectre v2 in user mode to respect the
+CONFIG_MITIGATION_SPECTRE_V2 config option.
 
-Signed-off-by: Samson Tam <Samson.Tam@amd.com>
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Currently, user mode spectre v2 is set to auto
+(SPECTRE_V2_USER_CMD_AUTO) by default, even if
+CONFIG_MITIGATION_SPECTRE_V2 is disabled.
+
+Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
+Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
+set the value to none (SPECTRE_V2_USER_CMD_NONE).
+
+Important to say the command line argument "spectre_v2_user" overwrites
+the default value in both cases.
+
+When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
+to opt-in for specific mitigations independently. In this scenario,
+setting spectre_v2= will not enable spectre_v2_user=, and command line
+options spectre_v2_user and spectre_v2 are independent when
+CONFIG_MITIGATION_SPECTRE_V2=n.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: David Kaplan <David.Kaplan@amd.com>
+Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c | 2 +-
- drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  2 ++
+ arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c b/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c
-index 131f1e3949d33..52d97918a3bd2 100644
---- a/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.c
-@@ -346,7 +346,7 @@ struct spl_fixed31_32 spl_fixpt_exp(struct spl_fixed31_32 arg)
- 		if (m > 0)
- 			return spl_fixpt_shl(
- 				spl_fixed31_32_exp_from_taylor_series(r),
--				(unsigned char)m);
-+				(unsigned int)m);
- 		else
- 			return spl_fixpt_div_int(
- 				spl_fixed31_32_exp_from_taylor_series(r),
-diff --git a/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h b/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h
-index ed2647f9a0999..9f349ffe91485 100644
---- a/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h
-+++ b/drivers/gpu/drm/amd/display/dc/spl/spl_fixpt31_32.h
-@@ -189,7 +189,7 @@ static inline struct spl_fixed31_32 spl_fixpt_clamp(
-  * @brief
-  * result = arg << shift
-  */
--static inline struct spl_fixed31_32 spl_fixpt_shl(struct spl_fixed31_32 arg, unsigned char shift)
-+static inline struct spl_fixed31_32 spl_fixpt_shl(struct spl_fixed31_32 arg, unsigned int shift)
- {
- 	SPL_ASSERT(((arg.value >= 0) && (arg.value <= LLONG_MAX >> shift)) ||
- 		((arg.value < 0) && (arg.value >= ~(LLONG_MAX >> shift))));
-@@ -203,7 +203,7 @@ static inline struct spl_fixed31_32 spl_fixpt_shl(struct spl_fixed31_32 arg, uns
-  * @brief
-  * result = arg >> shift
-  */
--static inline struct spl_fixed31_32 spl_fixpt_shr(struct spl_fixed31_32 arg, unsigned char shift)
-+static inline struct spl_fixed31_32 spl_fixpt_shr(struct spl_fixed31_32 arg, unsigned int shift)
- {
- 	bool negative = arg.value < 0;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index e691f75c97e7b..b5cb361485541 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6261,6 +6261,8 @@
  
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
++			Selecting specific mitigation does not force enable
++			user mitigations.
+ 
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index c683abd640fde..0e9ab0b9a4942 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1442,9 +1442,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
+ {
++	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
++	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
++		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
++
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1457,7 +1461,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return SPECTRE_V2_USER_CMD_AUTO;
++		return mode;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1467,8 +1471,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
+ 	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
+-	return SPECTRE_V2_USER_CMD_AUTO;
++	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
++	return mode;
+ }
+ 
+ static inline bool spectre_v2_in_ibrs_mode(enum spectre_v2_mitigation mode)
 -- 
 2.39.5
 
