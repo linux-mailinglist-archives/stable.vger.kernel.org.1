@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7A4AC554E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A33AC58AE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A5424A3C46
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA92C1BC28C8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD4E27CCF0;
-	Tue, 27 May 2025 17:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A321FB3;
+	Tue, 27 May 2025 17:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkJa5+z1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V93iAJ+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985FA139579;
-	Tue, 27 May 2025 17:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1180D27FB2A;
+	Tue, 27 May 2025 17:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365820; cv=none; b=dwWs89UQ7YZ/otCipCQ0e6+iwDFueGDgSqAkdzzFEtJ+ZSxVM9RAybdvgRKPILz0DIWyj8b1ViY2eE6EJ2mgcPfdIrny7112M55uf8BpTH1iWBuStMQ5RttftRU0nr2vyjpGzZkl6qVpqbs0c018B4e1DGFLR32zqrz/5nSao9Y=
+	t=1748368088; cv=none; b=Peqxj5UvHnry186nQ56xeZgG2tm3YQZ2d32KqX1qdwFWqRKNlEdRCHXX2mQkos4Fp/IdFZVE6v426I+Y1Jej2vhBe/2b9edz51nKKrViU8+07Hl4SxYKqiJBmL7QP/kOmTQv6fEm4CDBfdqpWZO4RHiOdH4VFJWHqtKxVXauE3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365820; c=relaxed/simple;
-	bh=5vjgtbQUsLR6U7LssFzlH3tx8AAFWePVrlEKy581UJU=;
+	s=arc-20240116; t=1748368088; c=relaxed/simple;
+	bh=3W3Scc8aodEHrzZ4q3r5IAHsQOoiE/7Qio3PpUDOXgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJO6i9UtHmKI5aoDM9eAEvpTDwPdqUNMWt3NBObktv5vDSuCR7ino/DF+lN4Umwuca2enGmy0VgCHALHeul5UDtqm5bMHLnKocVJcJMxYv0OepNeCMSRQ2pYG1J+Zrvzo9CaJc1kuWxrZItEXjjdP2xGJ3CZw13D/lTC5bZVoGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkJa5+z1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D24C4CEE9;
-	Tue, 27 May 2025 17:10:16 +0000 (UTC)
+	 MIME-Version; b=Ip1S8f+h17DvUwpD+6nZxq2HX04eHr8a7C1MVhbkQQC9vTLelMK8x9VP9nEtdJrDrqpPTSuT4jWAI19xYW7R4iMdNvCer8kYLYLjsP3fOXaZGhDANOj8pYk3s/ioa4pJkNBM1t7naOQwGO4o7V+LA+q0DoVKR+J/SvuMV7qghCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V93iAJ+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73913C4CEE9;
+	Tue, 27 May 2025 17:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365817;
-	bh=5vjgtbQUsLR6U7LssFzlH3tx8AAFWePVrlEKy581UJU=;
+	s=korg; t=1748368087;
+	bh=3W3Scc8aodEHrzZ4q3r5IAHsQOoiE/7Qio3PpUDOXgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkJa5+z13jl2IrTNBkG9WWIt6DJtijy4vm1FY4xnclJOf/kpwpcyP5S5WheeFJ2p+
-	 fdjXK0Xao1J+lqspk6br3uoVcna2TKUrdHMHKtCVYzxwyOtuHEIj6bTv/xMfto+u/a
-	 IEmjZY9Avj+02+Hr8+XIf5RwZi+iek98NU//a2oQ=
+	b=V93iAJ+gFANaAsLxprQ47yU7C+TwFpSPEWG1e4J1lXPZP/o/2OsG8ohcfLP6QPCdq
+	 yDKyMYRf3FpBxyAhG+A4SrKf378Im3f+p8PAcdk0VCyH18+BE+B7AlzsUkA8+fVG0x
+	 hpGuJswRsP+arpmCDbc3cnAtaTube/rDVJl4H68k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ching-Te Ku <ku920601@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 498/626] wifi: rtw89: coex: Separated Wi-Fi connecting event from Wi-Fi scan event
+Subject: [PATCH 6.14 594/783] firmware: arm_scmi: Relax duplicate name constraint across protocol ids
 Date: Tue, 27 May 2025 18:26:31 +0200
-Message-ID: <20250527162505.208844506@linuxfoundation.org>
+Message-ID: <20250527162537.321994547@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ching-Te Ku <ku920601@realtek.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 4a57346652154bb339c48b41166df9154cff33f5 ]
+[ Upstream commit 21ee965267bcbdd733be0f35344fa0f0226d7861 ]
 
-Wi-Fi connecting process don't need to assign to firmware slot control,
-if assign firmware slot control for Wi-Fi connecting event, firmware will
-not toggle slots because driver don't tell the slot schedule to firmware.
-Wi-Fi connecting event end should also cancel the 4way handshake status.
+Currently in scmi_protocol_device_request(), no duplicate scmi device
+name is allowed across any protocol. However scmi_dev_match_id() first
+matches the protocol id and then the name. So, there is no strict
+requirement to keep this scmi device name unique across all the protocols.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250110015416.10704-3-pkshih@realtek.com
+Relax the constraint on the duplicate name across the protocols and
+inhibit only within the same protocol id.
+
+Message-Id: <20250131141822.514342-1-sudeep.holla@arm.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/firmware/arm_scmi/bus.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 5f878f086f7cf..6cdbf02f405ae 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -5356,7 +5356,8 @@ static void _action_wl_scan(struct rtw89_dev *rtwdev)
- 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
- 	struct rtw89_btc_wl_dbcc_info *wl_dinfo = &wl->dbcc_info;
+diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+index 7d7af2262c013..5d799f6626963 100644
+--- a/drivers/firmware/arm_scmi/bus.c
++++ b/drivers/firmware/arm_scmi/bus.c
+@@ -42,7 +42,7 @@ static atomic_t scmi_syspower_registered = ATOMIC_INIT(0);
+  * This helper let an SCMI driver request specific devices identified by the
+  * @id_table to be created for each active SCMI instance.
+  *
+- * The requested device name MUST NOT be already existent for any protocol;
++ * The requested device name MUST NOT be already existent for this protocol;
+  * at first the freshly requested @id_table is annotated in the IDR table
+  * @scmi_requested_devices and then the requested device is advertised to any
+  * registered party via the @scmi_requested_devices_nh notification chain.
+@@ -52,7 +52,6 @@ static atomic_t scmi_syspower_registered = ATOMIC_INIT(0);
+ static int scmi_protocol_device_request(const struct scmi_device_id *id_table)
+ {
+ 	int ret = 0;
+-	unsigned int id = 0;
+ 	struct list_head *head, *phead = NULL;
+ 	struct scmi_requested_dev *rdev;
  
--	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
-+	if (btc->cx.state_map != BTC_WLINKING &&
-+	    RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
- 		_action_wl_25g_mcc(rtwdev);
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC, "[BTC], Scan offload!\n");
- 	} else if (rtwdev->dbcc_en) {
-@@ -7178,6 +7179,8 @@ void rtw89_btc_ntfy_scan_finish(struct rtw89_dev *rtwdev, u8 phy_idx)
- 		_fw_set_drv_info(rtwdev, CXDRVINFO_DBCC);
+@@ -67,19 +66,13 @@ static int scmi_protocol_device_request(const struct scmi_device_id *id_table)
  	}
  
-+	btc->dm.tdma_instant_excute = 1;
-+
- 	_run_coex(rtwdev, BTC_RSN_NTFY_SCAN_FINISH);
- }
- 
-@@ -7630,7 +7633,8 @@ void rtw89_btc_ntfy_role_info(struct rtw89_dev *rtwdev,
- 	else
- 		wl->status.map.connecting = 0;
- 
--	if (state == BTC_ROLE_MSTS_STA_DIS_CONN)
-+	if (state == BTC_ROLE_MSTS_STA_DIS_CONN ||
-+	    state == BTC_ROLE_MSTS_STA_CONN_END)
- 		wl->status.map._4way = false;
- 
- 	_run_coex(rtwdev, BTC_RSN_NTFY_ROLE_INFO);
+ 	/*
+-	 * Search for the matching protocol rdev list and then search
+-	 * of any existent equally named device...fails if any duplicate found.
++	 * Find the matching protocol rdev list and then search of any
++	 * existent equally named device...fails if any duplicate found.
+ 	 */
+ 	mutex_lock(&scmi_requested_devices_mtx);
+-	idr_for_each_entry(&scmi_requested_devices, head, id) {
+-		if (!phead) {
+-			/* A list found registered in the IDR is never empty */
+-			rdev = list_first_entry(head, struct scmi_requested_dev,
+-						node);
+-			if (rdev->id_table->protocol_id ==
+-			    id_table->protocol_id)
+-				phead = head;
+-		}
++	phead = idr_find(&scmi_requested_devices, id_table->protocol_id);
++	if (phead) {
++		head = phead;
+ 		list_for_each_entry(rdev, head, node) {
+ 			if (!strcmp(rdev->id_table->name, id_table->name)) {
+ 				pr_err("Ignoring duplicate request [%d] %s\n",
 -- 
 2.39.5
 
