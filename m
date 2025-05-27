@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF80AC53BF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FEBAC571A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EDBD4A1D01
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31D5A1BC03C1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED5227CB04;
-	Tue, 27 May 2025 16:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E241F27FD41;
+	Tue, 27 May 2025 17:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oqa6gPKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEYyoJAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E03A194A45;
-	Tue, 27 May 2025 16:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4CA1CEAC2;
+	Tue, 27 May 2025 17:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364664; cv=none; b=HcQah6T1FlPyRWIsPcQZ39MM4drckWCvV6leN5/XUAs/dBqcMM/8J4/yH34iCDPj7PwjxFblq7QdcqXXgeK4ZAzemLnvN6F5t9kUOeOLKCa/DqZQr9WDiGNX7zBVSlTQT9Pfj7uV/LyEQQ3bn49R1OY3zIuiyxFVG0x3qlCLgs0=
+	t=1748366935; cv=none; b=MHG7zQ0+SsVZMrnAl9UwakiKcCA3IB3LcBhQV61vIfbunGwapZIcZInMLDG11VKJ4u9qEoq0VU3hCo+CukMdDT/FZJZxO3UpMEjBKqrOww1WyagrAuGIE5CENU26bdbBpu1keoZtVPd229Ehr4/MNrxQebeX2Hoc/SNUIqMj3aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364664; c=relaxed/simple;
-	bh=4MY6SDPruyB9NRPy1Svr/ER0BDwHCgVd50MaX9ELhqg=;
+	s=arc-20240116; t=1748366935; c=relaxed/simple;
+	bh=TC5liaJyfv3Dz4dV9VwjBAyP6aa55jc0xIWaWSjZeFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXYpXn5KcTWS5xSH+vSFutTdD3LHskszQ4AkMWPxB88Bv9B/ozSQ3XS2cPLIgfRyVC+7B2fpZaqe4ow3a4KbSZKQJt4drQrLPz8kzb0cFxL0HR2deViNXwUdhnvYM/7KpjA0GdgmpwoAphUo5o1UGGBXEcENIYZFOIZpNOsOYuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oqa6gPKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A57C4CEE9;
-	Tue, 27 May 2025 16:51:03 +0000 (UTC)
+	 MIME-Version; b=jPh53UQkb8UyEuGS/SFoYcfJx9PMqDTAcVd1Jn+J1m6P2LM0uBtjN/A9gaccWu81JOMCdgsnx1V9pNzR/cLnBD3stc/6wTpLii8n37iQs/vw9XCH9GVZK2D1TxurJo1yS/Rmbhb2Trdh1nBKszebDKpvE5QR+3VRJkkqzsXUM2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEYyoJAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9ADC4CEE9;
+	Tue, 27 May 2025 17:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364664;
-	bh=4MY6SDPruyB9NRPy1Svr/ER0BDwHCgVd50MaX9ELhqg=;
+	s=korg; t=1748366935;
+	bh=TC5liaJyfv3Dz4dV9VwjBAyP6aa55jc0xIWaWSjZeFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oqa6gPKGsibbcxFzfDszbsWHTJ7ALw9psp3rEpJQhOdUzETivA6vuTFBTs6DlNY1v
-	 2z3WkyNuEANtwz9WhsRitQfjwlszwJ5kj43Cgp73D1vtRCcNuHwMMPu1PMElkNwp+C
-	 s+J0EJXOL7eOTiO1Y82LKPkDszymcI2AjW0CQluQ=
+	b=fEYyoJAzEupKV14tvg/Z1E5CTcHhWSjjFMPSqPdph/xmnOM8NFCoNxq2aejdNLeJ2
+	 o8pdK3wwXqCvpRYt83S2MxRDnQ2jBm9YtYgEAj4IFqHLNXfkacBNqFEL8Q+wDxb/hw
+	 +RN6lO+wtPCnRDcfjxmuHk/iRvaT0biMPMkZDOY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
 	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 128/626] um: Store full CSGSFS and SS register from mcontext
-Date: Tue, 27 May 2025 18:20:21 +0200
-Message-ID: <20250527162450.228947500@linuxfoundation.org>
+Subject: [PATCH 6.14 225/783] wifi: mac80211: fix U-APSD check in ML reconfiguration
+Date: Tue, 27 May 2025 18:20:22 +0200
+Message-ID: <20250527162522.282842304@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit cef721e0d53d2b64f2ba177c63a0dfdd7c0daf17 ]
+[ Upstream commit 7a6a740be17e049a2742c76bb1dadb3d78c930d9 ]
 
-Doing this allows using registers as retrieved from an mcontext to be
-pushed to a process using PTRACE_SETREGS.
+If U-APSD isn't enabled by us, then IEEE80211_STA_UAPSD_ENABLED
+won't be set, but the AP can still support it in that case. Only
+require U-APSD from the AP if we enabled it, don't require it to
+be disabled on the AP if we didn't.
 
-It is not entirely clear to me why CSGSFS was masked. Doing so creates
-issues when using the mcontext as process state in seccomp and simply
-copying the register appears to work perfectly fine for ptrace.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Link: https://patch.msgid.link/20250224181827.647129-2-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308225541.b4674be12a38.I01959e448c6a2a3e8bc5d561bbae9e8d2cca616a@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/um/os-Linux/mcontext.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mac80211/mlme.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/um/os-Linux/mcontext.c b/arch/x86/um/os-Linux/mcontext.c
-index e80ab7d281177..1b0d95328b2c7 100644
---- a/arch/x86/um/os-Linux/mcontext.c
-+++ b/arch/x86/um/os-Linux/mcontext.c
-@@ -27,7 +27,6 @@ void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)
- 	COPY(RIP);
- 	COPY2(EFLAGS, EFL);
- 	COPY2(CS, CSGSFS);
--	regs->gp[CS / sizeof(unsigned long)] &= 0xffff;
--	regs->gp[CS / sizeof(unsigned long)] |= 3;
-+	regs->gp[SS / sizeof(unsigned long)] = mc->gregs[REG_CSGSFS] >> 48;
- #endif
- }
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 3f30c4c1f78bb..f92cbbc32a9e5 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -10216,12 +10216,11 @@ int ieee80211_mgd_assoc_ml_reconf(struct ieee80211_sub_if_data *sdata,
+ 			}
+ 		}
+ 
+-		/* Require U-APSD support to be similar to the current valid
+-		 * links
+-		 */
+-		if (uapsd_supported !=
+-		    !!(sdata->u.mgd.flags & IEEE80211_STA_UAPSD_ENABLED)) {
++		/* Require U-APSD support if we enabled it */
++		if (sdata->u.mgd.flags & IEEE80211_STA_UAPSD_ENABLED &&
++		    !uapsd_supported) {
+ 			err = -EINVAL;
++			sdata_info(sdata, "U-APSD on but not available on (all) new links\n");
+ 			goto err_free;
+ 		}
+ 
 -- 
 2.39.5
 
