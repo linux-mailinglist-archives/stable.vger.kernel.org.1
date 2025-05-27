@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-146593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2418AC53CA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00655AC5716
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 844EC4A1F32
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323338A02B3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E4D27BF7C;
-	Tue, 27 May 2025 16:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80311DB34C;
+	Tue, 27 May 2025 17:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VozRy2Iv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doYddyA4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD3F263F5E;
-	Tue, 27 May 2025 16:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649C1280023;
+	Tue, 27 May 2025 17:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364705; cv=none; b=HGJH3+nkRS+alEwZfVPRYT+jFqzkOAtIpsQ0fa8gBfnmDTg2fkt9zd+m4Ic5yVoE8LhiCrZUbuBfNTmSWb5S5Nt1TMl1hNDXGLorUpgV80BmJFZce6ce3VghPLMGBRK8lPpmeBQvHtKbymEzQVsc82NI/HCWrC6CE0jH6dE4IlQ=
+	t=1748366892; cv=none; b=EuTlvwpJQkVwGg8ECOgH3M++JLyWRquEbE2rSeFGXxycyQ9p2V6yKBnrHMOBuC1XO8cAfPD8S/T3NaBPR3cxMncXQj2CkAp4Rvv6NkxkIJ91hpVgOIKyWf6/aSqcn7phDUxwVmwB9YG7WyNj8br6meOOWcMPbFUOPbLXX76tVYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364705; c=relaxed/simple;
-	bh=8FYICPDfTnMvMeYHjWW8bE0ZiorfsFo+2Z26xsvhsLM=;
+	s=arc-20240116; t=1748366892; c=relaxed/simple;
+	bh=K7R4nH+lbDFDLOeOCeSLyvgsUOFjFjGH3SvdwC6QDK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9y0QCcC5P3FEb21sf9l7nA5z8LrWxi/kAbskYQwRrJUU+q1PrLI65FHhy9IFJdXniA+XvaIVcSOrKeHAt6abVSj0O4hdF82xsg9/JtjXswoRiujJprWyG3Ivq8v9OZL1wh7SRZ1jK88OGS7zhLif2BnOnaEy5ywYmWKJ46LRfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VozRy2Iv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572C7C4CEE9;
-	Tue, 27 May 2025 16:51:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OFVTykzqayM0c9hFEEsh92rOmwsZ+WLOO1AjA0ayN/zmPYs4f8o28iO3ocGHhrrcdP8DLiY2vsOM6pRi/mNah/shFRU9QZ0imGJrzpFVPDgzuG7HwmuPBQwUPuFVybEYnZ4n0sC/tTAKh6cjMY3pDkedXe68l+iMqXzyM1Atwd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doYddyA4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA05C4CEE9;
+	Tue, 27 May 2025 17:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364705;
-	bh=8FYICPDfTnMvMeYHjWW8bE0ZiorfsFo+2Z26xsvhsLM=;
+	s=korg; t=1748366892;
+	bh=K7R4nH+lbDFDLOeOCeSLyvgsUOFjFjGH3SvdwC6QDK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VozRy2Iv79jzDHbIvU5snL0IpH8FfuV3DDm2XoRtyjyOZZKAbbHWBObD/KZPdPDYO
-	 PFzAFA5Qgo/yCf9NSMpeYuRkYV0+PaXzBHLMib1M5ZPb/sC1mK5sPRT6oRUUR7eZ3o
-	 6rgVmNUh6HmDyY/CF+gS7mcwjVlBV9QzFo48N5UM=
+	b=doYddyA4+jEuQMdzo1rKbLCuJu4UBZ631ek7CKQjaa6V0DfAJYL3iS0p67i7jWzjd
+	 b4/0CpiYiDrHk4WcGzwjJirMPT7Um3Q/rrg/fdBuBKjuoM4HYOyHybg2LkxXI2zV61
+	 JqHgd4gWM1xtf+kOLVwDAP+BfohSne5cz2Djcz44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Kyle Roeschley <kyle.roeschley@ni.com>,
+	Brad Mouring <brad.mouring@ni.com>,
+	Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/626] i2c: pxa: fix call balance of i2c->clk handling routines
-Date: Tue, 27 May 2025 18:20:06 +0200
-Message-ID: <20250527162449.625395382@linuxfoundation.org>
+Subject: [PATCH 6.14 210/783] mmc: sdhci: Disable SD card clock before changing parameters
+Date: Tue, 27 May 2025 18:20:07 +0200
+Message-ID: <20250527162521.687823743@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +63,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Erick Shepherd <erick.shepherd@ni.com>
 
-[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
+[ Upstream commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc ]
 
-If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
-disabled in any path.
+Per the SD Host Controller Simplified Specification v4.20 §3.2.3, change
+the SD card clock parameters only after first disabling the external card
+clock. Doing this fixes a spurious clock pulse on Baytrail and Apollo Lake
+SD controllers which otherwise breaks voltage switching with a specific
+Swissbit SD card.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
+Signed-off-by: Kyle Roeschley <kyle.roeschley@ni.com>
+Signed-off-by: Brad Mouring <brad.mouring@ni.com>
+Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250211214645.469279-1-erick.shepherd@ni.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pxa.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
-index 4d76e71cdd4be..afc1a8171f59e 100644
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -1503,7 +1503,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
- 				i2c->adap.name);
- 	}
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index f4a7733a8ad22..5f91b44891f9b 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2065,10 +2065,15 @@ void sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
  
--	clk_prepare_enable(i2c->clk);
-+	ret = clk_prepare_enable(i2c->clk);
-+	if (ret)
-+		return dev_err_probe(&dev->dev, ret,
-+				     "failed to enable clock\n");
+ 	host->mmc->actual_clock = 0;
  
- 	if (i2c->use_pio) {
- 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
+-	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
++	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
++	if (clk & SDHCI_CLOCK_CARD_EN)
++		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
++			SDHCI_CLOCK_CONTROL);
+ 
+-	if (clock == 0)
++	if (clock == 0) {
++		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+ 		return;
++	}
+ 
+ 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
+ 	sdhci_enable_clk(host, clk);
 -- 
 2.39.5
 
