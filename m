@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD19AC55F8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21225AC58D4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B04D3AB5E2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E309B1BC2D92
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044D7280CD3;
-	Tue, 27 May 2025 17:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AB027FB2A;
+	Tue, 27 May 2025 17:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoX/l+p6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJSf/atp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E59280A4C;
-	Tue, 27 May 2025 17:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F4E42A9B;
+	Tue, 27 May 2025 17:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365955; cv=none; b=uIoVEYBeA3bIiL4Sxq5C8OQLpe0wspMjP4Hvp5Q3jcupE5HfkFH6Frz7QbZBu4v1B578QwKhbTljvZzQRkVPIzujCpqOVO/8A/+yLMH1RMhhy7MGrKjeRDBE11QCmUHYek9l8aAREwyAz4eZZ1CD/rURrZqjrV1ZRy/GOUcHgOY=
+	t=1748368187; cv=none; b=GbmvD9N1vbCnd0MxsppBiSHD03rTI3DpRHXZD2g4a/stGIuerDggEP7KLkYFcoGRfpCVBXkdptpehx+uZr7a6xu7Bi/BxvY2bJA+qAj8qbDBI12EYreErnaZSbZPp4DvQlhrSgk9A829IkNxThjdR82Rl2+PutRWs57gZBmn320=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365955; c=relaxed/simple;
-	bh=aEnE+b3oxurXlnJP2+/7aubN3izZF4Xar836BslL6Gw=;
+	s=arc-20240116; t=1748368187; c=relaxed/simple;
+	bh=E4SJb0we//xUNs+avCXnn2W4Y8FN7yRA2RxJ6iocjd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJ8TOaDlr0UqRd8EXtb9CZ4+d4V6HHWy4wKNYK2iBZc7GljCaNUoBVMQkIpaRQ/lAsNN5SXC+7GIH8f52eG9q/2EltlbJzoShrnNQcY4ARsjCVsD03fgxRlXBMzCmQifmxuqk8y9RdQuI6SVyqdDe0DR+5YyHEUIfrFp+fnP0c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoX/l+p6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3019C4CEE9;
-	Tue, 27 May 2025 17:12:33 +0000 (UTC)
+	 MIME-Version; b=JFWu9GU2edvZ5PRjNJqRYVaApNtyw0H7yDjh32wM1TZMfFIE/XhyriIFuWU0SoxBL45pznSjUw353QTaqhJNV4KUmlLGBnEQwEj6jKkwwtLOfxsP9lpVwbRjyzbBflFOZ8VAjD2CkJNrN2NU1NXN6oD2Z4EuelJgyLcd5j+5ZQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJSf/atp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC419C4CEE9;
+	Tue, 27 May 2025 17:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365954;
-	bh=aEnE+b3oxurXlnJP2+/7aubN3izZF4Xar836BslL6Gw=;
+	s=korg; t=1748368187;
+	bh=E4SJb0we//xUNs+avCXnn2W4Y8FN7yRA2RxJ6iocjd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PoX/l+p6pjvOw3DcKEPxyPCpSoqPryv+DFsfTZloyfMSIKE06ttEqCV0Zr6siQUHZ
-	 gZwDbt+b8No7eXZJoLarr5Yti2dGT5TQIC3U1IwkEz4tZsSs4HcD4cpHLv3Pv+udKK
-	 KoK/Lp17RYVwmaBIp9lmDzpvvIG1WRDgvI6wCVRI=
+	b=eJSf/atpv4rbuYRQysnogCEQN8Q93xXEW2rSEaaXjdIJPTQ4J5NBSvxkwpJniklQO
+	 1aUVdEl7s3ETw96zfBQ1ZtR7vswJap+Pp8f8z15YhaH5irheIO+wLde/irYAxVOZMi
+	 IbtXODgFf5Kx5o/oh0blRNURnQrZs+Bjba1m1iGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 513/626] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
+Subject: [PATCH 6.14 609/783] wifi: ath12k: Fix end offset bit definition in monitor ring descriptor
 Date: Tue, 27 May 2025 18:26:46 +0200
-Message-ID: <20250527162505.806289220@linuxfoundation.org>
+Message-ID: <20250527162537.952677958@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
+[ Upstream commit 6788a666000d600bd8f2e9f991cad9cc805e7f01 ]
 
-Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
-model for making it working.
+End offset for the monitor destination ring descriptor is defined as
+16 bits, while the firmware definition specifies only 12 bits.
+The remaining bits (bit 12 to bit 15) are reserved and may contain
+junk values, leading to invalid information retrieval. Fix this issue
+by updating the correct genmask values.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Link: https://patch.msgid.link/20241223060132.3506372-8-quic_ppranees@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 1148e9498d8e8..b6434b4731261 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -576,6 +576,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{       /* Acer Aspire SW3-013 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
-+		},
-+		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
-+					BYT_RT5640_JD_SRC_JD2_IN4N |
-+					BYT_RT5640_OVCD_TH_2000UA |
-+					BYT_RT5640_OVCD_SF_0P75 |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
+index 7b0403d245e59..a102d27e5785f 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_desc.h
++++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
+@@ -2968,7 +2968,7 @@ struct hal_mon_buf_ring {
+ 
+ #define HAL_MON_DEST_COOKIE_BUF_ID      GENMASK(17, 0)
+ 
+-#define HAL_MON_DEST_INFO0_END_OFFSET		GENMASK(15, 0)
++#define HAL_MON_DEST_INFO0_END_OFFSET		GENMASK(11, 0)
+ #define HAL_MON_DEST_INFO0_FLUSH_DETECTED	BIT(16)
+ #define HAL_MON_DEST_INFO0_END_OF_PPDU		BIT(17)
+ #define HAL_MON_DEST_INFO0_INITIATOR		BIT(18)
 -- 
 2.39.5
 
