@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2107AC5594
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CBFAC58D0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2886216C2F9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E81C4C0D4C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E287283FC8;
-	Tue, 27 May 2025 17:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3069B27D786;
+	Tue, 27 May 2025 17:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jf4i4TW7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkL2E6cd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE86428368A;
-	Tue, 27 May 2025 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E321742A9B;
+	Tue, 27 May 2025 17:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365902; cv=none; b=iRpqT8eyB98XISsDmJWgsvLxMfcAm0Iil/kiT6kOJ5bm5/GExGgb7YC4IQkjOA95Iauxag7r3PKMKrUcxaRhMAzrLn/5Bci56Ro+8IimJFL3TcaiShPDa8zq5g+SqqLZMIW4iWCWQp2wA9IjEcdG1oKeOErkjKbVC5/5JvXRa7I=
+	t=1748368176; cv=none; b=iTAF27l5wb8FsuScoXI5l+B4ShW1eMJgUK+8L28lDn40WywHolTogQodXelmnuKivGxSaYYfCEWNLmJugVkoSCF5xgI9Xj6QhBu7lcBZWDKGHDHFOuak0uqG2csUazuQNjW2rfcNorBuYGwTdNqNTGqes7PUB7vmgfoysV2hAng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365902; c=relaxed/simple;
-	bh=rfx6EPQqduuLtNTBGjm/rOEihz6w0l6AZRzTBE9Ndww=;
+	s=arc-20240116; t=1748368176; c=relaxed/simple;
+	bh=rqwhdFXj/Cpb1LMPtxfDia55+nvf6v0aesl51l2eRj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkJO2p0Y41JaZ2gasLqYbHE6k/Qb9sbGgfdsYr9+yBKcJ5AW4QJBpH4Mzu5zw28uRjcsobYu1MGsH89lfpXW9qU8N9jLT/BCfKUw3qB6pUvWOS4BzwYHcSWFjmlF9TSoXke5eT/u9Z/1DWUYALmjkTEsPvuz30tCnlqjb6W9i64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jf4i4TW7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF44C4CEED;
-	Tue, 27 May 2025 17:11:41 +0000 (UTC)
+	 MIME-Version; b=mdzuA0F6DnsDukUDdwC8Lvq2KoH4TP9Bjn2jrTIqKGW1Rxm6HaBZq3FbdeGdlHfALU/4LHRRs+O3/jU16Df6rLeTLngbL3yNlvdYBqvWI7aySt9/EWd+flKndXxdSMWyirD9Cn69DhoKFp7EFArmyXYsPgpR8DlbUI7RDLz5OdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkL2E6cd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ABDC4CEEA;
+	Tue, 27 May 2025 17:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365902;
-	bh=rfx6EPQqduuLtNTBGjm/rOEihz6w0l6AZRzTBE9Ndww=;
+	s=korg; t=1748368175;
+	bh=rqwhdFXj/Cpb1LMPtxfDia55+nvf6v0aesl51l2eRj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jf4i4TW7PvxGIg7d1QnJmvPpMYT4MSXkOLFGBWmUTIOOtLTBXbV5owiP/dWUmuLf0
-	 wD2GhT5bBvyHHjDNQi4rS9QsR12leZXCBt9gLshYmSWq1w1rduaG5chblH1eA7/tkq
-	 EdIXkdFRLQVzP3slozO/Hd8nIcD+I8I4w0e8Wqrs=
+	b=PkL2E6cdXMQVWnwncTb/3xrqtG8pew1GC7U/AOJobPsUW+Nx2O3PabEZBa5UGSsgG
+	 5DK95J9BtHxXl8dO9HWfASmRfsXEZAZoEbLeVLj2OQ7ZQNXhR4/vmHrkfxm4PCYarS
+	 NyQpu9UF7XrrgGPxpZsZ8vMGKN8JbC4ekW0s43WI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 527/626] tools: ynl-gen: validate 0 len strings from kernel
+Subject: [PATCH 6.14 623/783] drm/xe/guc: Drop error messages about missing GuC logs
 Date: Tue, 27 May 2025 18:27:00 +0200
-Message-ID: <20250527162506.407690324@linuxfoundation.org>
+Message-ID: <20250527162538.522597755@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: John Harrison <John.C.Harrison@Intel.com>
 
-[ Upstream commit 4720f9707c783f642332dee3d56dccaefa850e42 ]
+[ Upstream commit 174e9ce0daf6af791386e96e76e743eb59e8a401 ]
 
-Strings from the kernel are guaranteed to be null terminated and
-ynl_attr_validate() checks for this. But it doesn't check if the string
-has a len of 0, which would cause problems when trying to access
-data[len - 1]. Fix this by checking that len is positive.
+The GuC log snapshot code would complain loudly if there was no GuC
+log to take a snapshot of or if the snapshot alloc failed. Originally,
+this code was only called on demand when a user (or developer)
+explicitly requested a dump of the log. Hence an error message was
+useful.
 
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250503043050.861238-1-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, it is now part of the general devcoredump file and is called
+for any GPU hang. Most people don't care about GuC logs and GPU hangs
+do not generally mean a kernel/GuC bug. More importantly, there are
+valid situations where there is no GuC log, e.g. SRIOV VFs.
+
+So drop the error message.
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3958
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250113194405.2033085-1-John.C.Harrison@Intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/lib/ynl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_log.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
-index ce32cb35007d6..c4da34048ef85 100644
---- a/tools/net/ynl/lib/ynl.c
-+++ b/tools/net/ynl/lib/ynl.c
-@@ -364,7 +364,7 @@ int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
- 		     "Invalid attribute (binary %s)", policy->name);
- 		return -1;
- 	case YNL_PT_NUL_STR:
--		if ((!policy->len || len <= policy->len) && !data[len - 1])
-+		if (len && (!policy->len || len <= policy->len) && !data[len - 1])
- 			break;
- 		yerr(yarg->ys, YNL_ERROR_ATTR_INVALID,
- 		     "Invalid attribute (string %s)", policy->name);
+diff --git a/drivers/gpu/drm/xe/xe_guc_log.c b/drivers/gpu/drm/xe/xe_guc_log.c
+index 0ca3056d8bd3f..80514a446ba28 100644
+--- a/drivers/gpu/drm/xe/xe_guc_log.c
++++ b/drivers/gpu/drm/xe/xe_guc_log.c
+@@ -149,16 +149,12 @@ struct xe_guc_log_snapshot *xe_guc_log_snapshot_capture(struct xe_guc_log *log,
+ 	size_t remain;
+ 	int i;
+ 
+-	if (!log->bo) {
+-		xe_gt_err(gt, "GuC log buffer not allocated\n");
++	if (!log->bo)
+ 		return NULL;
+-	}
+ 
+ 	snapshot = xe_guc_log_snapshot_alloc(log, atomic);
+-	if (!snapshot) {
+-		xe_gt_err(gt, "GuC log snapshot not allocated\n");
++	if (!snapshot)
+ 		return NULL;
+-	}
+ 
+ 	remain = snapshot->size;
+ 	for (i = 0; i < snapshot->num_chunks; i++) {
 -- 
 2.39.5
 
