@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D31AC58DC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:50:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B77FAC55F1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C72CD4C1068
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C638E8A0932
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263A427D784;
-	Tue, 27 May 2025 17:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3978527A463;
+	Tue, 27 May 2025 17:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDFRcxQp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9mbOXed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D2928033F;
-	Tue, 27 May 2025 17:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD31078F32;
+	Tue, 27 May 2025 17:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368199; cv=none; b=O/zCd+4gGbRhRAYdxE4TZgYQcSKaym9HPQcjrF8XFEDVeMjIcM9yCugMNhUk5Q/pQA+amwEGpjrX2ZSCP05yk6LMasX+KrsKMSMDvruvkBgDdvZji9qbZ+fXALcmgi78v+GU8gEwER4JQ5lMqeAZH+5exiKXTXcN9ld4aObrUI4=
+	t=1748365929; cv=none; b=KI9Jx8a2zKbxrrAm/EeYeDTiboivzfr/Pm2wgGxn8IAdnH1dhGuxdkh+QyBMtd20V82yY1I/pOoiS8N2ouZCqmzkiV3XW4vb4FvInE/MSKkCxnXsJDXEsnvLQRRqZCZJ6mgrNP0A2GiYtTIJKNH6rkhIl/d4UxQGeCyITfw4kEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368199; c=relaxed/simple;
-	bh=K6eQWgcvxyYKecMj74UmrFvfQoPksh6pW7NSBvbSOrI=;
+	s=arc-20240116; t=1748365929; c=relaxed/simple;
+	bh=fRYr15sbZj++cmPpWQXhGuGF3LcfwyhOfzhKvIl6zvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6AyxvmfVWlfOGl0DAB6Ti/DwyqZHqtlmAhejvcv98Px+cr/pJtahwbqsezJjtWpkemsMaHOl9r5/LooT5Plh9/VQuLeRxoAu1yPwYpjGYq/N7hE3sI5HXJg08rD65s4gsePINWrexkkdBYXxq76wgelxHEFbsHLBvK+zga6UJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDFRcxQp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C99C4CEEA;
-	Tue, 27 May 2025 17:49:59 +0000 (UTC)
+	 MIME-Version; b=QCZF6/UuuUZafa8zJM0jIJUzHkNLQbd7iwS6rM5yt6K7jUyBgFb0HYH8TOPFZfnqTLVtjEefBUcBruIQgAEjkcEWVkgu7dn0f6kOtNUk+7rsbRQQQdl132yLTQ1+8LOovipB8qSvPNswmTdKXr5rYrvxXt2SA77IzJ92oBTBLIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9mbOXed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5F2C4CEE9;
+	Tue, 27 May 2025 17:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368199;
-	bh=K6eQWgcvxyYKecMj74UmrFvfQoPksh6pW7NSBvbSOrI=;
+	s=korg; t=1748365929;
+	bh=fRYr15sbZj++cmPpWQXhGuGF3LcfwyhOfzhKvIl6zvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDFRcxQpASruQkANqlV3dyoves7+ihROWe47hv2H967/Q3gR5bJ8hsK/OpHErj4UX
-	 P6o5oy4c0XhMxKNU2c4xFBqPuw+jQW3bHmJNZkL16eP36AtvvmEluKENvgGp5lUKJ0
-	 anFVD/5Ys+5NBVSXtgi3of/JVTepgsUEU6EE9iZ8=
+	b=n9mbOXedWJ6l+rV5CUwOfMTwV219YH8RpQ3b32b4udQ60MSgIUPpoDVN35JmNYigR
+	 Letpxwuscfp98JN6iruZZt08vARJMwxQu1F2ZZpTXtqzCri+N1PrDhfB8r80s4cBjD
+	 sB9YWMScK91qWDyRqLvLmpUVOxTLPWNmeXBKqit0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 630/783] i3c: master: svc: Fix implicit fallthrough in svc_i3c_master_ibi_work()
-Date: Tue, 27 May 2025 18:27:07 +0200
-Message-ID: <20250527162538.802201586@linuxfoundation.org>
+Subject: [PATCH 6.12 535/626] espintcp: fix skb leaks
+Date: Tue, 27 May 2025 18:27:08 +0200
+Message-ID: <20250527162506.732283867@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit e8d2d287e26d9bd9114cf258a123a6b70812442e ]
+[ Upstream commit 63c1f19a3be3169e51a5812d22a6d0c879414076 ]
 
-Clang warns (or errors with CONFIG_WERROR=y):
+A few error paths are missing a kfree_skb.
 
-  drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
-    596 |         default:
-        |         ^
-  drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
-    596 |         default:
-        |         ^
-        |         break;
-  1 error generated.
-
-Clang is a little more pedantic than GCC, which does not warn when
-falling through to a case that is just break or return. Clang's version
-is more in line with the kernel's own stance in deprecated.rst, which
-states that all switch/case blocks must end in either break,
-fallthrough, continue, goto, or return. Add the missing break to silence
-the warning.
-
-Fixes: 0430bf9bc1ac ("i3c: master: svc: Fix missing STOP for master request")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/esp4.c     | 4 +++-
+ net/ipv6/esp6.c     | 4 +++-
+ net/xfrm/espintcp.c | 4 +++-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 2cf2c567f8931..75127b6c161f0 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -552,6 +552,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
- 		break;
- 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
- 		svc_i3c_master_emit_stop(master);
-+		break;
- 	default:
- 		break;
- 	}
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index f3281312eb5eb..f0a7f06df3ade 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -199,8 +199,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
+ 
+ 	sk = esp_find_tcp_sk(x);
+ 	err = PTR_ERR_OR_ZERO(sk);
+-	if (err)
++	if (err) {
++		kfree_skb(skb);
+ 		goto out;
++	}
+ 
+ 	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk))
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index b2400c226a325..3810cfbc44103 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -216,8 +216,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
+ 
+ 	sk = esp6_find_tcp_sk(x);
+ 	err = PTR_ERR_OR_ZERO(sk);
+-	if (err)
++	if (err) {
++		kfree_skb(skb);
+ 		goto out;
++	}
+ 
+ 	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk))
+diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+index fe82e2d073006..fc7a603b04f13 100644
+--- a/net/xfrm/espintcp.c
++++ b/net/xfrm/espintcp.c
+@@ -171,8 +171,10 @@ int espintcp_queue_out(struct sock *sk, struct sk_buff *skb)
+ 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
+ 
+ 	if (skb_queue_len(&ctx->out_queue) >=
+-	    READ_ONCE(net_hotdata.max_backlog))
++	    READ_ONCE(net_hotdata.max_backlog)) {
++		kfree_skb(skb);
+ 		return -ENOBUFS;
++	}
+ 
+ 	__skb_queue_tail(&ctx->out_queue, skb);
+ 
 -- 
 2.39.5
 
