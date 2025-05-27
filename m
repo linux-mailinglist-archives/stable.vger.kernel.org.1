@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D129CAC5503
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F237AC5860
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A13204A358C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 024A51BC20DA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55398276057;
-	Tue, 27 May 2025 17:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7A527A131;
+	Tue, 27 May 2025 17:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrGqlaQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER2TDDy2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138122110E;
-	Tue, 27 May 2025 17:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E711D63EF;
+	Tue, 27 May 2025 17:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365581; cv=none; b=XF3nKnF9uc/3kVR4bEikSXhK1FRreO7yvyunCgHO2/tXhYInVA1jSkFBs8OqOsHFpew8ZX38pNy+xrWQurz5kozPCuI9nokzveQ/Se1hYJlRwGcG8W2CgCqO0aQ3n2XqpILeQvdWl/DxoS7CiwqkdLgai+aE+Z0H95wLDyyJ0Pw=
+	t=1748367852; cv=none; b=MlxEUFkkaLMd2OqCCAXEHzSjDvkmPNHgAp67fJ+TrXs1LTub5yH01F9S3olGO8X7P6PW30oW8wrF5mjJbiod4r1GsS1MGE7kIvv/EJWYJ6CVDmZhW/F/P8ttb5zJxJq5K7+hCWj2UbHW9PlRmJsusDiXKcnnOZaEfgQSpO3Vk4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365581; c=relaxed/simple;
-	bh=WC+ST+c5xFIwO8zf+6jgsANwDU5PRATIjrmMnFQuKSE=;
+	s=arc-20240116; t=1748367852; c=relaxed/simple;
+	bh=Ks+FoSR8Ui2lVh3SOE4+5QPULXfUSEzv0VborlVoepo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vx8iiaE1BwL5ELvb0Cmo0q1EnZJBfeHs+g7Xo0gMtimyGEn/6iTKf61SoCgCMn5devfKwpFH+Opqm7NHVC+RB1dA4EU6Lfv+zOJVGqCoAmwU7M/Keto0XHaM1u+LPrRDlAkfr67CG23xXfFoaEVFzDRnnMoY/9w6WVWXnotP1LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrGqlaQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74436C4CEE9;
-	Tue, 27 May 2025 17:06:20 +0000 (UTC)
+	 MIME-Version; b=gvO9G7v5AxlIrybzqoi5JoevamBY2auozxeL/29w0MYjCbu4QrsNv+04eBgqTSdWaGkQMdXjksbhkANVo1hRYEa40lVhVgCiAikMT8xppQqEzBN1o/Ge6U4YXjB17roZlvGC11OOi2TVaUnRvz6tpeMdOWJNtCQpcA+20F35Opk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER2TDDy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BC2C4CEE9;
+	Tue, 27 May 2025 17:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365580;
-	bh=WC+ST+c5xFIwO8zf+6jgsANwDU5PRATIjrmMnFQuKSE=;
+	s=korg; t=1748367852;
+	bh=Ks+FoSR8Ui2lVh3SOE4+5QPULXfUSEzv0VborlVoepo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrGqlaQUb29vFmLTyMq9bMq6ugC9ka1Nj+jgkPMdqdRspZmnIiyqtLRIiCA2dVT5S
-	 mCyyg2LgLAExI64qDzzD0kU/mAqRzHjEXH/FhlBXC9DheOK0A6/WgQJKAH3JA7efcy
-	 YJSFsquJBzvsB5pxx0v/ZVvy9WAK90Ycuo7qs8BY=
+	b=ER2TDDy2koSJMxKkDfIxuAJ0PjpoVQM7ZFVnvfa1iNeu6ETa1yfkVIwVlEcsZWMej
+	 52SxVNINT0S3gH9SOvX6/aCGinmBUuq9ReDkGxZFA27v1rMQstHY5c6KS/fq7VFos3
+	 pFkJaI1V0AfB/H8rEPF+NQj2f8AL+OwbamVAUlcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 423/626] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
-Date: Tue, 27 May 2025 18:25:16 +0200
-Message-ID: <20250527162502.196494967@linuxfoundation.org>
+Subject: [PATCH 6.14 520/783] wifi: mac80211: always send max agg subframe num in strict mode
+Date: Tue, 27 May 2025 18:25:17 +0200
+Message-ID: <20250527162534.320737064@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
+[ Upstream commit 3fca951123b68df8d1b47bbf90409f8a3671362b ]
 
-The following patch will not set skb->sk from VRF path.
+Instead of only sending the correct number for EHT and up,
+always send the correct number as it should be in strict
+mode.
 
-Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
-in fib[46]_rule_configure().
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.5910263db6da.Icd1f93fabc9705e4e760d834095c29b60b934d9e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_rules.c  | 4 ++--
- net/ipv6/fib6_rules.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/mac80211/agg-tx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
-index b07292d50ee76..4563e5303c1a8 100644
---- a/net/ipv4/fib_rules.c
-+++ b/net/ipv4/fib_rules.c
-@@ -245,9 +245,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
--	struct net *net = sock_net(skb->sk);
-+	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
+diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
+index 61f2cac37728c..92120f9051499 100644
+--- a/net/mac80211/agg-tx.c
++++ b/net/mac80211/agg-tx.c
+@@ -9,7 +9,7 @@
+  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+  * Copyright 2007-2010, Intel Corporation
+  * Copyright(c) 2015-2017 Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2023 Intel Corporation
++ * Copyright (C) 2018 - 2024 Intel Corporation
+  */
  
- 	if (!inet_validate_dscp(frh->tos)) {
- 		NL_SET_ERR_MSG(extack,
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index 04a9ed5e8310f..29185c9ebd020 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -365,9 +365,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
-+	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct net *net = sock_net(skb->sk);
--	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
+ #include <linux/ieee80211.h>
+@@ -464,7 +464,8 @@ static void ieee80211_send_addba_with_timeout(struct sta_info *sta,
+ 	sta->ampdu_mlme.addba_req_num[tid]++;
+ 	spin_unlock_bh(&sta->lock);
  
- 	if (!inet_validate_dscp(frh->tos)) {
- 		NL_SET_ERR_MSG(extack,
+-	if (sta->sta.deflink.eht_cap.has_eht) {
++	if (sta->sta.deflink.eht_cap.has_eht ||
++	    ieee80211_hw_check(&local->hw, STRICT)) {
+ 		buf_size = local->hw.max_tx_aggregation_subframes;
+ 	} else if (sta->sta.deflink.he_cap.has_he) {
+ 		buf_size = min_t(u16, local->hw.max_tx_aggregation_subframes,
 -- 
 2.39.5
 
