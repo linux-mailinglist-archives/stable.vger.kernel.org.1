@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A4EAC5821
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE6DAC54C1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40A878A6876
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E6FB4A3231
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E686E27D786;
-	Tue, 27 May 2025 17:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12BA25A323;
+	Tue, 27 May 2025 17:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvG7eGQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtxiYsGe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A520342A9B;
-	Tue, 27 May 2025 17:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF5686347;
+	Tue, 27 May 2025 17:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367670; cv=none; b=C4v7S+zT9RmClr5xcQhrkE9qBxceXjUsdiq1HshmpttTCDqUIjiDR43Dt0d7rFdOrJ8SrwE/eFsyf36Gyu8JezmeUycOv/ULAqeZ8fwsfXh7AHVYr7l+ebYILZyVmIOS4KY6u0IGCk0aFl6Cl2Iu7RfBMZVJhAPpSfAD2dpF78E=
+	t=1748365408; cv=none; b=DQ8oPClxIm0yEaJkakaPCVhOjWRPO8YHVKwyr/EfEiKFGRHpA9tTR0trOpeKsY9Qmx1maIc4w+cqX+284Tm8yF3+6qL9OSwnHMjcB2RG6tlopsBN3VzMgZlm56Z8xIFjSBKx67AHxE1KCZ+sKqhraAr1luXK4/vx1iKFCir4URE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367670; c=relaxed/simple;
-	bh=Th0cK1P5Ri6vdDd1iTDshy7AwnwhwFAcn0sFzrfwCO8=;
+	s=arc-20240116; t=1748365408; c=relaxed/simple;
+	bh=kN3BDBo/MF72x/S9bjOJp1nuBKz9GbTlEc5W7LBtayk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9acsmaIOkzkw7On2aSCcYVAJdTozcMalBU+6nlOluHzfpcaSnKw22WcS6n8EogM1pbmSt+BiOnQMHC4GOv5J2ZvHSfsn82H2mQiwH48qlDvmg/3KrzQ2alTcw0bMIRS63CjAAjTGWT+YYnqNaWwBeil1iIJlPthgHQp5d0Wqo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvG7eGQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14333C4CEE9;
-	Tue, 27 May 2025 17:41:09 +0000 (UTC)
+	 MIME-Version; b=LXav1AUEU+R/m4YcKkU1oYuRP36mKsdHcrCW9yYAm11dQZKhoA7ABqBW1wBDxygm8Rbh4oq/9boPN1hvaJ0YBSSPx/6gQXapZm1mzmtG4Q3ErQbEiAGrxC7VQ6zkKEKNOv/TrfAc2XXtsIB3fy6ym3g676wzvfaDJ198ta2rzPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtxiYsGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C204C4CEE9;
+	Tue, 27 May 2025 17:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367670;
-	bh=Th0cK1P5Ri6vdDd1iTDshy7AwnwhwFAcn0sFzrfwCO8=;
+	s=korg; t=1748365408;
+	bh=kN3BDBo/MF72x/S9bjOJp1nuBKz9GbTlEc5W7LBtayk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NvG7eGQtVL5Vnr8+E399T2j6siCq4QtQbVAYYT+sVd5l2H6KxytNsKU5rhJth7Ojb
-	 2gW4Rdodco+2D1Y3As78vGx9RmyxI33S3KpGNm3Irs4HtVfUOWofHSSlemlP1QHJQA
-	 eY9z90M+B/G4ra8ckoDxu9WMM7HY6ZsXnVRdcDhY=
+	b=DtxiYsGeRL+fCFw8+Ri7SjeJTx0boPQxu7XVrdbhInAeWqxNsI2xOFtc5dIty6Uwk
+	 klgGdzXnF3XoyVZ5o4CH88Y9++rdcJfPq4XVS1Zxq8qdqTNOQxWQac+2X8R+cvlD8H
+	 xD0QlhI30PHwbQlhUO7WTwYB8Dm+z1QQoG9ZtruE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 462/783] drm/xe/debugfs: Add missing xe_pm_runtime_put in wedge_mode_set
+Subject: [PATCH 6.12 366/626] kunit: tool: Use qboot on QEMU x86_64
 Date: Tue, 27 May 2025 18:24:19 +0200
-Message-ID: <20250527162531.942869938@linuxfoundation.org>
+Message-ID: <20250527162459.894685140@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Brendan Jackman <jackmanb@google.com>
 
-[ Upstream commit b31e668d3111b100d16fd7db8db335328ce8c6d5 ]
+[ Upstream commit 08fafac4c9f289a9d9a22d838921e4b3eb22c664 ]
 
-xe_pm_runtime_put is missed in the failure path.
+As noted in [0], SeaBIOS (QEMU default) makes a mess of the terminal,
+qboot does not.
 
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213230322.1180621-1-shuicheng.lin@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+It turns out this is actually useful with kunit.py, since the user is
+exposed to this issue if they set --raw_output=all.
+
+qboot is also faster than SeaBIOS, but it's is marginal for this
+usecase.
+
+[0] https://lore.kernel.org/all/CA+i-1C0wYb-gZ8Mwh3WSVpbk-LF-Uo+njVbASJPe1WXDURoV7A@mail.gmail.com/
+
+Both SeaBIOS and qboot are x86-specific.
+
+Link: https://lore.kernel.org/r/20250124-kunit-qboot-v1-1-815e4d4c6f7c@google.com
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_debugfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/kunit/qemu_configs/x86_64.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_debugfs.c b/drivers/gpu/drm/xe/xe_debugfs.c
-index 6bfdd3a9913fd..92e6fa8fe3a17 100644
---- a/drivers/gpu/drm/xe/xe_debugfs.c
-+++ b/drivers/gpu/drm/xe/xe_debugfs.c
-@@ -175,6 +175,7 @@ static ssize_t wedged_mode_set(struct file *f, const char __user *ubuf,
- 		ret = xe_guc_ads_scheduler_policy_toggle_reset(&gt->uc.guc.ads);
- 		if (ret) {
- 			xe_gt_err(gt, "Failed to update GuC ADS scheduler policy. GuC may still cause engine reset even with wedged_mode=2\n");
-+			xe_pm_runtime_put(xe);
- 			return -EIO;
- 		}
- 	}
+diff --git a/tools/testing/kunit/qemu_configs/x86_64.py b/tools/testing/kunit/qemu_configs/x86_64.py
+index dc79490768630..4a6bf4e048f5b 100644
+--- a/tools/testing/kunit/qemu_configs/x86_64.py
++++ b/tools/testing/kunit/qemu_configs/x86_64.py
+@@ -7,4 +7,6 @@ CONFIG_SERIAL_8250_CONSOLE=y''',
+ 			   qemu_arch='x86_64',
+ 			   kernel_path='arch/x86/boot/bzImage',
+ 			   kernel_command_line='console=ttyS0',
+-			   extra_qemu_params=[])
++			   # qboot is faster than SeaBIOS and doesn't mess up
++			   # the terminal.
++			   extra_qemu_params=['-bios', 'qboot.rom'])
 -- 
 2.39.5
 
