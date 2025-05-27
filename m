@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645BAAC58B7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932A2AC5559
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 242171BC2A1F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E2094A3CD8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1CC27FD4A;
-	Tue, 27 May 2025 17:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292D825DAE1;
+	Tue, 27 May 2025 17:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzXzaz0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjDgqsPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B43127CCF0;
-	Tue, 27 May 2025 17:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D716B139579;
+	Tue, 27 May 2025 17:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368110; cv=none; b=qx6PqWkRpq/RSq8fBwxIYX3VOyf8b0O0UdXGdBFqATMLMD4H8xvqGDyBs6EHq9tmgjqhliYTLkJOrx9QPKr9xQK4EZBVo8SqDhCdR1Fsb3kr7auNBMazsvIJ5KB3fd2UMk8F9pBeDK6HwpPyPwf9mZ3P8yq55yTViF1ofLyiJ7U=
+	t=1748365841; cv=none; b=carlFmxL+nAGPAhk/dxSIXGaO166PuOJ8BV2OgFHs9o7hidXriJtSrDylMa0pnjJnWCpfjj0bn6ntz8Xpo5gdoXJrO6p2u0bBkQuUBstwep/SYJrozS2njeXm+Pi5uiaKe0N1p0Yz1rZ5S7kjrEQ4X566SINvgmrZvn9PteIFdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368110; c=relaxed/simple;
-	bh=ELpOj3zQOOQHPebGMCBCEbq5vyT+YeFj4QjhbGwwkfE=;
+	s=arc-20240116; t=1748365841; c=relaxed/simple;
+	bh=QL36vpgIej8PF9zmRbcj+oc1OUzUHcCfY+qY0yvuU7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifaQTLr71s5MbUvTpIT+uKeV80ay6Gm+XMcjKNL2eEUYDxw9DYW4MQKvw73E985Qzb0/v1ljTv+2qpCzDEka3pn2MCRkWIMtTddJPDiKVZJa7hG7Le+VVt5bPBH/Por2F2DgTFKLB3Da9F+dfrWkkF4q/vmYe4tWAK64lHaA8qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzXzaz0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E606C4CEE9;
-	Tue, 27 May 2025 17:48:29 +0000 (UTC)
+	 MIME-Version; b=qvLIDbFfoOHtCwfrsfOV73d7cdZLH1j3wdL9OdAeHb1OLO2V9D+Ef7Naeiz98YIjvkfMMR+s4d+VF++7wnKoBBRY8CYQIS0fVmgsn9/v65SK9Wn29JUt9zcBunz9o/Mw/ERtv1IXl9xXGe7JKwHa7JCK4UwRQZoWzeYhWu5O+rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjDgqsPZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66178C4CEE9;
+	Tue, 27 May 2025 17:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368109;
-	bh=ELpOj3zQOOQHPebGMCBCEbq5vyT+YeFj4QjhbGwwkfE=;
+	s=korg; t=1748365841;
+	bh=QL36vpgIej8PF9zmRbcj+oc1OUzUHcCfY+qY0yvuU7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzXzaz0yE6hJ+worEsXaTMiqZesI+szkOFfHE94nB1p8gS+nY3Cyob4a62gdfZHMJ
-	 hAe/3tSqF3pvGrcorQ3JXcgkb+xEuU2+iVLIJVjX/SefhiKqxomzXM2wPLxRfsI4BM
-	 RcwHPFdoZkA2HfcNoKywlgBVf1YDEH7YSgNmtwJ4=
+	b=FjDgqsPZErTfqZpridk9sMfjOTkpCdCS0U8A2rhiTffdzj/5JxnNtyTDuzgpXWC6P
+	 tad6+GcSsN1Jnt4b73stALPM+Bhwips+GYRtIbaUjv4QiaZ+ezJJCDUhAab7xMvbh4
+	 rWeHRXJt1Vj1t42VNitXWbaw6EP6zwZGnWQQQANQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 601/783] spi: zynqmp-gqspi: Always acknowledge interrupts
+Subject: [PATCH 6.12 505/626] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
 Date: Tue, 27 May 2025 18:26:38 +0200
-Message-ID: <20250527162537.618396861@linuxfoundation.org>
+Message-ID: <20250527162505.487195628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 89785306453ce6d949e783f6936821a0b7649ee2 ]
+[ Upstream commit a9a69c3b38c89d7992fb53db4abb19104b531d32 ]
 
-RXEMPTY can cause an IRQ, even though we may not do anything about it
-(such as if we are waiting for more received data). We must still handle
-these IRQs because we can tell they were caused by the device.
+Incorrect types are used as sizeof() arguments in devm_kcalloc().
+It should be sizeof(dai_link_data) for link_data instead of
+sizeof(snd_soc_dai_link).
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250116224130.2684544-6-sean.anderson@linux.dev
+This is found by our static analysis tool.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://patch.msgid.link/20250406210854.149316-1-chenyuan0y@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ sound/soc/fsl/imx-card.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index d800d79f62a70..12ab13edab543 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -799,7 +799,6 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
- static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- {
- 	struct zynqmp_qspi *xqspi = (struct zynqmp_qspi *)dev_id;
--	irqreturn_t ret = IRQ_NONE;
- 	u32 status, mask, dma_status = 0;
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 93dbe40008c00..e5ae435171d68 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -516,7 +516,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
+ 	if (!card->dai_link)
+ 		return -ENOMEM;
  
- 	status = zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST);
-@@ -814,27 +813,24 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- 				   dma_status);
- 	}
+-	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link), GFP_KERNEL);
++	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link_data), GFP_KERNEL);
+ 	if (!data->link_data)
+ 		return -ENOMEM;
  
--	if (mask & GQSPI_ISR_TXNOT_FULL_MASK) {
-+	if (!mask && !dma_status)
-+		return IRQ_NONE;
-+
-+	if (mask & GQSPI_ISR_TXNOT_FULL_MASK)
- 		zynqmp_qspi_filltxfifo(xqspi, GQSPI_TX_FIFO_FILL);
--		ret = IRQ_HANDLED;
--	}
- 
--	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK) {
-+	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK)
- 		zynqmp_process_dma_irq(xqspi);
--		ret = IRQ_HANDLED;
--	} else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
--			(mask & GQSPI_IER_GENFIFOEMPTY_MASK)) {
-+	else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
-+			(mask & GQSPI_IER_GENFIFOEMPTY_MASK))
- 		zynqmp_qspi_readrxfifo(xqspi, GQSPI_RX_FIFO_FILL);
--		ret = IRQ_HANDLED;
--	}
- 
- 	if (xqspi->bytes_to_receive == 0 && xqspi->bytes_to_transfer == 0 &&
- 	    ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
- 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
- 		complete(&xqspi->data_completion);
--		ret = IRQ_HANDLED;
- 	}
--	return ret;
-+	return IRQ_HANDLED;
- }
- 
- /**
 -- 
 2.39.5
 
