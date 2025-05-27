@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-147327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D27AC5732
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2206AC53FA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E64AD3A327A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8450E1BA43AD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6288277808;
-	Tue, 27 May 2025 17:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43B0280020;
+	Tue, 27 May 2025 16:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flyMfuQP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9x1e60Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7415F19CD07;
-	Tue, 27 May 2025 17:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744F727F737;
+	Tue, 27 May 2025 16:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366999; cv=none; b=fCaMa3EoWggexmdw4wMr6Ohj1ewRXqVFXCoHioIGobDTdkU4LT+HnPbMaCxpKi8VVsqsIcBSkYvqDC2izrpmcrpI5w9yac+T6kZ/mTsLRcTXWmSBaCViVzgFa8eTBC+bYxGOmMTA2NwTT/ot5O9HNZ1PSE/PcwUk5pdgnQIkJhc=
+	t=1748364826; cv=none; b=ePn93H4ov94ysfEvjSJlia7XRff1IP8qcpm39iDWJ72fSLe1mae/nXfGdc+zm/vUuIBwH7tcssK0EC5sJgp+O3YGWvh7024L7lJbu2jXv0mH91irslr33VFgGqmsLecs+i5VeXCXTAZJ7FyBqacpQpmDkgSOGi+V/DSuJkzd9jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366999; c=relaxed/simple;
-	bh=UwGLYJDkmMH21MD7kQJQtUIafV8neAt6UnTLogqa+tI=;
+	s=arc-20240116; t=1748364826; c=relaxed/simple;
+	bh=ZpteNH8DkMwsABoeg06nTbKDl3sPG2b/lyPcWy+7mXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOHghA/W0ufqqPwipTPrdZaaEmt9JDjSvRpsWkxVvhduLPJ817vVBu50tAuXwUjAeefujEtz3kbq9p/UrkzaZBSquaOWMycSiNBpdLibQSurZZDhPH3Swavk2ugxNvGVX7ezwvUaOesKG5ltdXofhP5xRivgCD6a9SmR5JEne78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flyMfuQP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65E4C4CEE9;
-	Tue, 27 May 2025 17:29:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Uj5yJv943vDyNZXJa9BR0zLXNR5RjEQ8z5STfbYxD6S2PWNhGh3cPYN24XCElPMZFawB1MTPaW0nbgS57oeRrtGo6ZxRybjM6ejik9417/t8bapfo2X40omt6vKXZNSgS0uI1P+I05Z2tdNzT1tl+tQP2NXr+NYrfgfW8ye+kmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9x1e60Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5490C4CEF1;
+	Tue, 27 May 2025 16:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366999;
-	bh=UwGLYJDkmMH21MD7kQJQtUIafV8neAt6UnTLogqa+tI=;
+	s=korg; t=1748364826;
+	bh=ZpteNH8DkMwsABoeg06nTbKDl3sPG2b/lyPcWy+7mXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flyMfuQPfJIKVPx7cuhdY6iFT93IQ6Fxd13EgV9eysyIt5RqEy4AjHRXsZtSwtaNB
-	 KEIF1MNWlSCw6Y4JK9+rw4SfSOF6mG9hdKCKwDGhXEg7Dry2okC11CLaTpRbQx6ymh
-	 XI0eEsvx/Wl1XSqJDGTrpGpaJ6Vf6eHfgkQ6s+DU=
+	b=I9x1e60YxH4uIDlcMT6A5M/QrsXjSDOyobhXXitH9LTT90emjW4Qk8VcNc2DUte9H
+	 bpSDf+VzHWqc2nECNV0uV2gLX8czv7iSoAUGCtRMHaLnDncD9pWNWdRC4673S8k/i3
+	 fttOelnOxYy9aU+ikO9H/aFULHxY8NwYTqIuQHhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyunghwan Seo <khwan.seo@samsung.com>,
-	Sangwook Shin <sw617.shin@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 244/783] watchdog: s3c2410_wdt: Fix PMU register bits for ExynosAutoV920 SoC
+Subject: [PATCH 6.12 148/626] ASoC: mediatek: mt6359: Add stub for mt6359_accdet_enable_jack_detect
 Date: Tue, 27 May 2025 18:20:41 +0200
-Message-ID: <20250527162523.046453412@linuxfoundation.org>
+Message-ID: <20250527162451.041363974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyunghwan Seo <khwan.seo@samsung.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 480ee8a260e6f87cbcdaff77ac2cbf6dc03f0f4f ]
+[ Upstream commit 0116a7d84b32537a10d9bea1fd1bfc06577ef527 ]
 
-Fix the PMU register bits for the ExynosAutoV920 SoC.
-This SoC has different bit information compared to its previous
-version, ExynosAutoV9, and we have made the necessary adjustments.
+Add a stub for mt6359_accdet_enable_jack_detect() to prevent linker
+failures in the machine sound drivers calling it when
+CONFIG_SND_SOC_MT6359_ACCDET is not enabled.
 
-rst_stat_bit:
-    - ExynosAutoV920 cl0 : 0
-    - ExynosAutoV920 cl1 : 1
-
-cnt_en_bit:
-    - ExynosAutoV920 cl0 : 8
-    - ExynosAutoV920 cl1 : 8
-
-Signed-off-by: Kyunghwan Seo <khwan.seo@samsung.com>
-Signed-off-by: Sangwook Shin <sw617.shin@samsung.com>
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250213004104.3881711-1-sw617.shin@samsung.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://patch.msgid.link/20250306-mt8188-accdet-v3-3-7828e835ff4b@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/s3c2410_wdt.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ sound/soc/codecs/mt6359-accdet.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/watchdog/s3c2410_wdt.c b/drivers/watchdog/s3c2410_wdt.c
-index 30450e99e5e9d..bdd81d8074b24 100644
---- a/drivers/watchdog/s3c2410_wdt.c
-+++ b/drivers/watchdog/s3c2410_wdt.c
-@@ -72,6 +72,8 @@
- #define EXYNOS850_CLUSTER1_WDTRESET_BIT		23
- #define EXYNOSAUTOV9_CLUSTER0_WDTRESET_BIT	25
- #define EXYNOSAUTOV9_CLUSTER1_WDTRESET_BIT	24
-+#define EXYNOSAUTOV920_CLUSTER0_WDTRESET_BIT	0
-+#define EXYNOSAUTOV920_CLUSTER1_WDTRESET_BIT	1
+diff --git a/sound/soc/codecs/mt6359-accdet.h b/sound/soc/codecs/mt6359-accdet.h
+index c234f2f4276a1..78ada3a5bfae5 100644
+--- a/sound/soc/codecs/mt6359-accdet.h
++++ b/sound/soc/codecs/mt6359-accdet.h
+@@ -123,6 +123,15 @@ struct mt6359_accdet {
+ 	struct workqueue_struct *jd_workqueue;
+ };
  
- #define GS_CLUSTER0_NONCPU_OUT			0x1220
- #define GS_CLUSTER1_NONCPU_OUT			0x1420
-@@ -312,9 +314,9 @@ static const struct s3c2410_wdt_variant drv_data_exynosautov920_cl0 = {
- 	.mask_bit = 2,
- 	.mask_reset_inv = true,
- 	.rst_stat_reg = EXYNOS5_RST_STAT_REG_OFFSET,
--	.rst_stat_bit = EXYNOSAUTOV9_CLUSTER0_WDTRESET_BIT,
-+	.rst_stat_bit = EXYNOSAUTOV920_CLUSTER0_WDTRESET_BIT,
- 	.cnt_en_reg = EXYNOSAUTOV920_CLUSTER0_NONCPU_OUT,
--	.cnt_en_bit = 7,
-+	.cnt_en_bit = 8,
- 	.quirks = QUIRK_HAS_WTCLRINT_REG | QUIRK_HAS_PMU_MASK_RESET |
- 		  QUIRK_HAS_PMU_RST_STAT | QUIRK_HAS_PMU_CNT_EN |
- 		  QUIRK_HAS_DBGACK_BIT,
-@@ -325,9 +327,9 @@ static const struct s3c2410_wdt_variant drv_data_exynosautov920_cl1 = {
- 	.mask_bit = 2,
- 	.mask_reset_inv = true,
- 	.rst_stat_reg = EXYNOS5_RST_STAT_REG_OFFSET,
--	.rst_stat_bit = EXYNOSAUTOV9_CLUSTER1_WDTRESET_BIT,
-+	.rst_stat_bit = EXYNOSAUTOV920_CLUSTER1_WDTRESET_BIT,
- 	.cnt_en_reg = EXYNOSAUTOV920_CLUSTER1_NONCPU_OUT,
--	.cnt_en_bit = 7,
-+	.cnt_en_bit = 8,
- 	.quirks = QUIRK_HAS_WTCLRINT_REG | QUIRK_HAS_PMU_MASK_RESET |
- 		  QUIRK_HAS_PMU_RST_STAT | QUIRK_HAS_PMU_CNT_EN |
- 		  QUIRK_HAS_DBGACK_BIT,
++#if IS_ENABLED(CONFIG_SND_SOC_MT6359_ACCDET)
+ int mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
+ 				     struct snd_soc_jack *jack);
++#else
++static inline int
++mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
++				 struct snd_soc_jack *jack)
++{
++	return -EOPNOTSUPP;
++}
++#endif
+ #endif
 -- 
 2.39.5
 
