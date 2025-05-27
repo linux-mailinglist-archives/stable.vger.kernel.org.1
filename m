@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1649FAC54B8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC55AC5839
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAB891BA5360
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD22E1BC11B3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357D91DC998;
-	Tue, 27 May 2025 17:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9253D27FD49;
+	Tue, 27 May 2025 17:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXTZOM0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6l6aocn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F6D1EA91;
-	Tue, 27 May 2025 17:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB1E1CAA7B;
+	Tue, 27 May 2025 17:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365371; cv=none; b=hEkYtXEpqStZ7JO6uAK4qMbHPZazeB9UrFx/yQhp+T6pEnUfPk5r0Tth8o7sRB+t3BCycU7xNwvSSO4LQu9rPceQKHHNx0k/JGhbnbXhw7e0PTOMMKu179OMNDJgofY+x/ulrC2PU0CKRvpXhFzTl86BwA2r1EuVPhXkFMHtlao=
+	t=1748367732; cv=none; b=ApaBn1xKPC77y6RaT0Ucce7Qdnbz36CTRhGrLWqdntx4G5K/xGKn2bsmrL9li6ryNnH569fqmz8THqeaShVfSsecLbOvQGidJXH4ox371hjfCp7+aobjJfhqC8OCMg7qAL7TyIPF4i8fPHAHQf0xLqfzqUSLkXmVSANUNYNZVQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365371; c=relaxed/simple;
-	bh=vkbRXP09So35AblRqwBn6Gqshp7RfoHQRYMb+WoXkwY=;
+	s=arc-20240116; t=1748367732; c=relaxed/simple;
+	bh=akzwz4jGzv8oLG43AJAe3o/GnHnB7jdERIrOEALF5bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLXd5obPSdlsYSYVuyEK61vkJ67NB1/HlzUz2WS25LA2W9BvMngjg9/qata7SWsJTS4YxVh97WQ4c0TUWRaj9jl/jszgs435kB/8lVtw/RK2E3OrPXLjhqs1E8JmFKTXa4dGhqJGin12Nbwj96rAT5XBkqKJTN7MRX0gkYoHrsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXTZOM0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A5FC4CEE9;
-	Tue, 27 May 2025 17:02:50 +0000 (UTC)
+	 MIME-Version; b=ucDQO8Hz43a+sWYc5DN+1eExiORx52SV7K6IxRpqEjSHGq5MZ9vejcxd2MR2NGqc/ntGdvSUk8TsqJcFiHW715Nncd/eQm3qniuRhTGmqHU1bOsFSbbMok71Ohg5chhgZ2sq6EgPwoFOywp50QrDwBvPPVgkvbV5559EaEPQRyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6l6aocn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E1AC4CEE9;
+	Tue, 27 May 2025 17:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365370;
-	bh=vkbRXP09So35AblRqwBn6Gqshp7RfoHQRYMb+WoXkwY=;
+	s=korg; t=1748367732;
+	bh=akzwz4jGzv8oLG43AJAe3o/GnHnB7jdERIrOEALF5bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXTZOM0KXZoyKHSBh1UtNw0hDHXNMKjGIj3SWT2XKC7GM60DBELxw4H4gEGerAPgh
-	 dvn6kI4qoDh3bhFeeIvXfyN+wOGvIF8LBDcdGYZ0AknpRlc8jwB0eJYmDpE6Z1R2mS
-	 ktgANQaTmg6WgPbrOUacemwb3YSLOJJB9BYp+aPI=
+	b=O6l6aocntAYLr3iM5l2OFYUntXuWovHH4lAXwAmGt4WNfQkGaVwAAdKV3NNsYyIZs
+	 eQ3mShZnmEOCT09tLxVwBgW5IDf+j9/JPB8Jt1qOARlwX6wXqr1gzSITX5DlPAy4db
+	 AMtWHGq2jqbysIrhjZ90ly7RuYU7/W9K3oscL+I0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 355/626] firmware: arm_ffa: Reject higher major version as incompatible
+Subject: [PATCH 6.14 451/783] media: stm32: csi: use ARRAY_SIZE to search D-PHY table
 Date: Tue, 27 May 2025 18:24:08 +0200
-Message-ID: <20250527162459.440118605@linuxfoundation.org>
+Message-ID: <20250527162531.491524774@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit efff6a7f16b34fd902f342b58bd8bafc2d6f2fd1 ]
+[ Upstream commit a3a91b6e62be24c5df47a800c367504cb41e502b ]
 
-When the firmware compatibility was handled previously in the commit
-8e3f9da608f1 ("firmware: arm_ffa: Handle compatibility with different firmware versions"),
-we only addressed firmware versions that have higher minor versions
-compared to the driver version which is should be considered compatible
-unless the firmware returns NOT_SUPPORTED.
+Within stm32_csi_start, use ARRAY_SIZE loop in order to search
+for the right setting.
+Avoid useless init of lanes_ie / lanes_en.
 
-However, if the firmware reports higher major version than the driver
-supported, we need to reject it. If the firmware can work in a compatible
-mode with the driver requested version, it must return the same major
-version as requested.
-
-Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
-Message-Id: <20250217-ffa_updates-v3-12-bd1d9de615e7@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/platform/st/stm32/stm32-csi.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index dce448687e28e..8dc8654f9f4b2 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -150,6 +150,14 @@ static int ffa_version_check(u32 *version)
- 		return -EOPNOTSUPP;
- 	}
+diff --git a/drivers/media/platform/st/stm32/stm32-csi.c b/drivers/media/platform/st/stm32/stm32-csi.c
+index 48941aae8c9b8..a4f8db608cedd 100644
+--- a/drivers/media/platform/st/stm32/stm32-csi.c
++++ b/drivers/media/platform/st/stm32/stm32-csi.c
+@@ -325,7 +325,6 @@ static const struct stm32_csi_mbps_phy_reg snps_stm32mp25[] = {
+ 	{ .mbps = 2400, .hsfreqrange = 0x47,	.osc_freq_target = 442 },
+ 	{ .mbps = 2450, .hsfreqrange = 0x48,	.osc_freq_target = 451 },
+ 	{ .mbps = 2500, .hsfreqrange = 0x49,	.osc_freq_target = 460 },
+-	{ /* sentinel */ }
+ };
  
-+	if (FFA_MAJOR_VERSION(ver.a0) > FFA_MAJOR_VERSION(FFA_DRIVER_VERSION)) {
-+		pr_err("Incompatible v%d.%d! Latest supported v%d.%d\n",
-+		       FFA_MAJOR_VERSION(ver.a0), FFA_MINOR_VERSION(ver.a0),
-+		       FFA_MAJOR_VERSION(FFA_DRIVER_VERSION),
-+		       FFA_MINOR_VERSION(FFA_DRIVER_VERSION));
-+		return -EINVAL;
+ static const struct v4l2_mbus_framefmt fmt_default = {
+@@ -444,13 +443,13 @@ static void stm32_csi_phy_reg_write(struct stm32_csi_dev *csidev,
+ static int stm32_csi_start(struct stm32_csi_dev *csidev,
+ 			   struct v4l2_subdev_state *state)
+ {
+-	const struct stm32_csi_mbps_phy_reg *phy_regs;
++	const struct stm32_csi_mbps_phy_reg *phy_regs = NULL;
+ 	struct v4l2_mbus_framefmt *sink_fmt;
+ 	const struct stm32_csi_fmts *fmt;
+ 	unsigned long phy_clk_frate;
++	u32 lanes_ie, lanes_en;
+ 	unsigned int mbps;
+-	u32 lanes_ie = 0;
+-	u32 lanes_en = 0;
++	unsigned int i;
+ 	s64 link_freq;
+ 	int ret;
+ 	u32 ccfr;
+@@ -474,11 +473,14 @@ static int stm32_csi_start(struct stm32_csi_dev *csidev,
+ 	mbps = div_s64(link_freq, 500000);
+ 	dev_dbg(csidev->dev, "Computed Mbps: %u\n", mbps);
+ 
+-	for (phy_regs = snps_stm32mp25; phy_regs->mbps != 0; phy_regs++)
+-		if (phy_regs->mbps >= mbps)
++	for (i = 0; i < ARRAY_SIZE(snps_stm32mp25); i++) {
++		if (snps_stm32mp25[i].mbps >= mbps) {
++			phy_regs = &snps_stm32mp25[i];
+ 			break;
++		}
 +	}
-+
- 	if (ver.a0 < FFA_MIN_VERSION) {
- 		pr_err("Incompatible v%d.%d! Earliest supported v%d.%d\n",
- 		       FFA_MAJOR_VERSION(ver.a0), FFA_MINOR_VERSION(ver.a0),
+ 
+-	if (!phy_regs->mbps) {
++	if (!phy_regs) {
+ 		dev_err(csidev->dev, "Unsupported PHY speed (%u Mbps)", mbps);
+ 		return -ERANGE;
+ 	}
+@@ -488,8 +490,8 @@ static int stm32_csi_start(struct stm32_csi_dev *csidev,
+ 		phy_regs->osc_freq_target);
+ 
+ 	/* Prepare lanes related configuration bits */
+-	lanes_ie |= STM32_CSI_SR1_DL0_ERRORS;
+-	lanes_en |= STM32_CSI_PCR_DL0EN;
++	lanes_ie = STM32_CSI_SR1_DL0_ERRORS;
++	lanes_en = STM32_CSI_PCR_DL0EN;
+ 	if (csidev->num_lanes == 2) {
+ 		lanes_ie |= STM32_CSI_SR1_DL1_ERRORS;
+ 		lanes_en |= STM32_CSI_PCR_DL1EN;
 -- 
 2.39.5
 
