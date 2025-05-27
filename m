@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-146839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF3CAC5551
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F834AC5859
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B14578A14B5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CABE17B143
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D4C271476;
-	Tue, 27 May 2025 17:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D9886347;
+	Tue, 27 May 2025 17:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYpPvBUJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zozk8nnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B9D25A323;
-	Tue, 27 May 2025 17:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18491C07C4;
+	Tue, 27 May 2025 17:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365468; cv=none; b=qLdb10+3za/DQX4qi2GJ1O2n6tLsfvvCov8o16BGuzsfIhIKNge07VUnVpmoXC5i1Pke09+nCjjzKsCxtAS3Ec/f0Ab0HgoXvlUBnXxmTLQpKsuUZDkjNETt8z9/NwRakWlCz+c5zrgByEdPd56Yub/lVeFUgyNRTBY7sJcrVJs=
+	t=1748367834; cv=none; b=O5rUow8AEjvnAamj20TY2V4i0Yz42RF+WS0m+UmnquXjec0IqNDEyvZwAcQcXlyUaiRAjc1qrGZLbp8Rugyv+VxxbROA36OAGpr/qmrLfEb+BnFuOu8x6t+tsyAoMZZcq7qt7ebYN2YqI9jQwMfeK8v1uLkL6IHs2GNJfo3YrAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365468; c=relaxed/simple;
-	bh=dKosc52lM0bxJ4UODjH9Xqi7uSqd/avXFzlYsipKJKQ=;
+	s=arc-20240116; t=1748367834; c=relaxed/simple;
+	bh=AoyUmmypEdzcJsy8owsbEJxxfSGtIqJ9zrCTgvSo2EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBls5ghr+59rvygdiwgRA78Oh7jVoX9NG6TgtBPan3AV6yZMl+ktDFvlKbbYlp7P+DcPJLxeA86MYfUgdQz0SZhUMgG+50QzABDoeuBPsscodXF1RYTc88rSMtwghIghI9xVl0n3QvQ7LekTWnmqM2wt5LQpVpEp0B2bbJebgaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYpPvBUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DD4C4CEE9;
-	Tue, 27 May 2025 17:04:27 +0000 (UTC)
+	 MIME-Version; b=dAz/2Fu8X2Xbx8glnnPEzZ3g+W1IfPSIaWF1fIGiCS40YdnZ3v5R0J4SCKvW1XEywPiQWjZegWNcg/nScv4RO2P2gK1wtiM2R/b+u1gsgZpv+cveiSquYyBUx3/kWty0MHZbjOcHp42gfYQiGnwYzHMy2H+kovpRx09bWrDFm1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zozk8nnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA6FC4CEE9;
+	Tue, 27 May 2025 17:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365468;
-	bh=dKosc52lM0bxJ4UODjH9Xqi7uSqd/avXFzlYsipKJKQ=;
+	s=korg; t=1748367833;
+	bh=AoyUmmypEdzcJsy8owsbEJxxfSGtIqJ9zrCTgvSo2EQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYpPvBUJNe7Kb4nJUJZmjLJL6evzSgDboBtD8JkGbyD1MgQ2b2ytQn87pFN5FVIFV
-	 lvpNBYxkvEUJH0xTvYbCsXNyQC2giOtZNsMJ1sWAFOiS+QujbTtzZ6ZZb9uJJeiyIr
-	 nRg0KsVwuDHi/+tmJtu0DJkWh35NIJ/UtaTS37/s=
+	b=zozk8nnKRDjH99NWVh+RtauVtib3stMr6FCqTxNP4hF5T19rF3Ns9O/I4c4E8Arvf
+	 Q3Xo1+uFIUY/I6eQdSI/TnxlcSsKZLvRdJEAs9TPlumi5I3a6qumgAxAexU4+zfaTz
+	 LyqmglAlDuUe0ZvLKT1r2pbVFDDu70nW0L+0Ah+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Chong Qiao <qiaochong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 386/626] net: stmmac: dwmac-loongson: Set correct {tx,rx}_fifo_size
-Date: Tue, 27 May 2025 18:24:39 +0200
-Message-ID: <20250527162500.701489082@linuxfoundation.org>
+Subject: [PATCH 6.14 483/783] drm/amd/display: Dont try AUX transactions on disconnected link
+Date: Tue, 27 May 2025 18:24:40 +0200
+Message-ID: <20250527162532.799596641@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +65,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
 
-[ Upstream commit 8dbf0c7556454b52af91bae305ca71500c31495c ]
+[ Upstream commit e8bffa52e0253cfd689813a620e64521256bc712 ]
 
-Now for dwmac-loongson {tx,rx}_fifo_size are uninitialised, which means
-zero. This means dwmac-loongson doesn't support changing MTU because in
-stmmac_change_mtu() it requires the fifo size be no less than MTU. Thus,
-set the correct tx_fifo_size and rx_fifo_size for it (16KB multiplied by
-queue counts).
+[Why]
+Setting link DPMS off in response to HPD disconnect creates AUX
+transactions on a link that is supposed to be disconnected. This can
+cause issues in some cases when the sink re-asserts HPD and expects
+source to re-enable the link.
 
-Here {tx,rx}_fifo_size is initialised with the initial value (also the
-maximum value) of {tx,rx}_queues_to_use. So it will keep as 16KB if we
-don't change the queue count, and will be larger than 16KB if we change
-(decrease) the queue count. However stmmac_change_mtu() still work well
-with current logic (MTU cannot be larger than 16KB for stmmac).
+[How]
+Avoid AUX transactions on disconnected link.
 
-Note: the Fixes tag picked here is the oldest commit and key commit of
-the dwmac-loongson series "stmmac: Add Loongson platform support".
-
-Acked-by: Yanteng Si <si.yanteng@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://patch.msgid.link/20250210134328.2755328-1-chenhuacai@loongson.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c   | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index ab7c2750c1042..702ea5a00b56d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -590,6 +590,9 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
- 	if (ret)
- 		goto err_disable_device;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
+index 2c73ac87cd665..c27ffec5d84fb 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
+@@ -75,7 +75,8 @@ void dp_disable_link_phy(struct dc_link *link,
+ 	struct dc  *dc = link->ctx->dc;
  
-+	plat->tx_fifo_size = SZ_16K * plat->tx_queues_to_use;
-+	plat->rx_fifo_size = SZ_16K * plat->rx_queues_to_use;
-+
- 	if (dev_of_node(&pdev->dev))
- 		ret = loongson_dwmac_dt_config(pdev, plat, &res);
- 	else
+ 	if (!link->wa_flags.dp_keep_receiver_powered &&
+-		!link->skip_implict_edp_power_control)
++			!link->skip_implict_edp_power_control &&
++			link->type != dc_connection_none)
+ 		dpcd_write_rx_power_ctrl(link, false);
+ 
+ 	dc->hwss.disable_link_output(link, link_res, signal);
+@@ -163,8 +164,9 @@ enum dc_status dp_set_fec_ready(struct dc_link *link, const struct link_resource
+ 	} else {
+ 		if (link->fec_state == dc_link_fec_ready) {
+ 			fec_config = 0;
+-			core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
+-				&fec_config, sizeof(fec_config));
++			if (link->type != dc_connection_none)
++				core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
++					&fec_config, sizeof(fec_config));
+ 
+ 			link_enc->funcs->fec_set_ready(link_enc, false);
+ 			link->fec_state = dc_link_fec_not_ready;
 -- 
 2.39.5
 
