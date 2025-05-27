@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-147194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B106CAC5698
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:23:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA16BAC536A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41CBE8A0515
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:22:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7575A3ADCD4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B3B27F4CB;
-	Tue, 27 May 2025 17:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427F72CCC0;
+	Tue, 27 May 2025 16:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0CSYRxH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbFlwra1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18552798F8;
-	Tue, 27 May 2025 17:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0044AAD5A;
+	Tue, 27 May 2025 16:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366577; cv=none; b=IK0SabQw0tbfBTZk7VeJo45CpM5HCIoACopOTbhcv9485ynyxguyDp0f/JRj1GXQn2wODpdaaOG3TWrk7a94M2lJs12250XTeqpz9Xbtdyeca7tvh1Shy8Rltcmdrj6i2SZP4kBaFDo/1KphHDcuuxea9v+wUqDCuYqpepFu1pA=
+	t=1748364410; cv=none; b=vB78J8+DLf/H+/LDYBiYXAZXrK2pXN5E8cnaFLhElhRc+DPVOosciOdC/63f+WsZJLcRBcQG93OxIDFAX0MJOy73Huz2UEcsQ5yY7Yk2VxYVFHsWTqb6hIWpbZxHbMPy/bMxYrhhiniSj3Si/dEtVAKN8CxsgriImROBYTpTT/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366577; c=relaxed/simple;
-	bh=zCMyJAuQJ9UzK9763hxZTh3r6fyCS6EDNublMCLTZ9M=;
+	s=arc-20240116; t=1748364410; c=relaxed/simple;
+	bh=eEQKfsyzc3xky4J6ALXlP2MapuOl/2vNAvtcdDucYE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NkLeaxhVgCDwGwOfFpti4ohm7+XBoUEF/VC+6TlERzA2LbL6pAzOWDBUJJnJYz1hKEUa8BrkbiB04J3tPQkh0m+oV0oI2DOSAsVzYqx6EDBbz8xQl63YYnQSGtR/eBhnJEvq9m/iYqraw/7ijBpJLWR/fTS8OVWZc1s7YZUaE8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0CSYRxH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2509DC4CEE9;
-	Tue, 27 May 2025 17:22:56 +0000 (UTC)
+	 MIME-Version; b=UCLkEnq9dqGUARi3lqV4uYk47QS7FRkP1hFZeZTIx9qwNMj+Ua+U+N6ZIXiIP+e0LGyLwvmPbZJfcF517QyPl7gFuwS+GksVZz2m2mo2fwFXR01yKv4p0m00pXcqiDB92ZgCfgH3T6DdyzNYIMcpaxirJ1CQwVCsirshmxBhuPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbFlwra1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655E9C4CEE9;
+	Tue, 27 May 2025 16:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366577;
-	bh=zCMyJAuQJ9UzK9763hxZTh3r6fyCS6EDNublMCLTZ9M=;
+	s=korg; t=1748364409;
+	bh=eEQKfsyzc3xky4J6ALXlP2MapuOl/2vNAvtcdDucYE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0CSYRxH2DydsdS92ZwDnoZmOIkz9trAqIecXPQ4KFk/3rWRw//jja3oAKTbMYk65
-	 hl7SwvolSiQV1fvk18qQV7+lLSW1vDEGcP9S+tKUjipZUyrYjK+IGeP/TRXcvDThf0
-	 cjoOderRAgBBWOJE4y4ctOdbe0+UX2OBh8noPH70=
+	b=KbFlwra1JFiLobWHOhFW5HF5zrUoL7hm7EQppEJwOhm4G6cjmerCDoCaJeCjL5m1O
+	 B+vyYyRAbf1UfHKvCUQQYSjBll4MzjlEIHSegjKV6yK3Dj/Vze5igy0J+AbqXoLNK2
+	 CsoTLqua9oCg8nLRtkb+Q7o8Aswvh7z0EJyFer9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Greg Thelen <gthelen@google.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 112/783] cgroup/rstat: avoid disabling irqs for O(num_cpu)
+Subject: [PATCH 6.12 016/626] nvmem: qfprom: switch to 4-byte aligned reads
 Date: Tue, 27 May 2025 18:18:29 +0200
-Message-ID: <20250527162517.711446396@linuxfoundation.org>
+Message-ID: <20250527162445.721286342@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +60,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 0efc297a3c4974dbd609ee36fc6345720b6ca735 ]
+[ Upstream commit 3566a737db87a9bf360c2fd36433c5149f805f2e ]
 
-cgroup_rstat_flush_locked() grabs the irq safe cgroup_rstat_lock while
-iterating all possible cpus. It only drops the lock if there is
-scheduler or spin lock contention. If neither, then interrupts can be
-disabled for a long time. On large machines this can disable interrupts
-for a long enough time to drop network packets. On 400+ CPU machines
-I've seen interrupt disabled for over 40 msec.
+All platforms since Snapdragon 8 Gen1 (SM8450) require using 4-byte
+reads to access QFPROM data. While older platforms were more than happy
+with 1-byte reads, change the qfprom driver to use 4-byte reads for all
+the platforms. Specify stride and word size of 4 bytes. To retain
+compatibility with the existing DT and to simplify porting data from
+vendor kernels, use fixup_dt_cell_info in order to bump alignment
+requirements.
 
-Prevent rstat from disabling interrupts while processing all possible
-cpus. Instead drop and reacquire cgroup_rstat_lock for each cpu. This
-approach was previously discussed in
-https://lore.kernel.org/lkml/ZBz%2FV5a7%2F6PZeM7S@slm.duckdns.org/,
-though this was in the context of an non-irq rstat spin lock.
-
-Benchmark this change with:
-1) a single stat_reader process with 400 threads, each reading a test
-   memcg's memory.stat repeatedly for 10 seconds.
-2) 400 memory hog processes running in the test memcg and repeatedly
-   charging memory until oom killed. Then they repeat charging and oom
-   killing.
-
-v6.14-rc6 with CONFIG_IRQSOFF_TRACER with stat_reader and hogs, finds
-interrupts are disabled by rstat for 45341 usec:
-  #  => started at: _raw_spin_lock_irq
-  #  => ended at:   cgroup_rstat_flush
-  #
-  #
-  #                    _------=> CPU#
-  #                   / _-----=> irqs-off/BH-disabled
-  #                  | / _----=> need-resched
-  #                  || / _---=> hardirq/softirq
-  #                  ||| / _--=> preempt-depth
-  #                  |||| / _-=> migrate-disable
-  #                  ||||| /     delay
-  #  cmd     pid     |||||| time  |   caller
-  #     \   /        ||||||  \    |    /
-  stat_rea-96532    52d....    0us*: _raw_spin_lock_irq
-  stat_rea-96532    52d.... 45342us : cgroup_rstat_flush
-  stat_rea-96532    52d.... 45342us : tracer_hardirqs_on <-cgroup_rstat_flush
-  stat_rea-96532    52d.... 45343us : <stack trace>
-   => memcg1_stat_format
-   => memory_stat_format
-   => memory_stat_show
-   => seq_read_iter
-   => vfs_read
-   => ksys_read
-   => do_syscall_64
-   => entry_SYSCALL_64_after_hwframe
-
-With this patch the CONFIG_IRQSOFF_TRACER doesn't find rstat to be the
-longest holder. The longest irqs-off holder has irqs disabled for
-4142 usec, a huge reduction from previous 45341 usec rstat finding.
-
-Running stat_reader memory.stat reader for 10 seconds:
-- without memory hogs: 9.84M accesses => 12.7M accesses
--    with memory hogs: 9.46M accesses => 11.1M accesses
-The throughput of memory.stat access improves.
-
-The mode of memory.stat access latency after grouping by of 2 buckets:
-- without memory hogs: 64 usec => 16 usec
--    with memory hogs: 64 usec =>  8 usec
-The memory.stat latency improves.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Greg Thelen <gthelen@google.com>
-Tested-by: Greg Thelen <gthelen@google.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20250411112251.68002-12-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/rstat.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/nvmem/qfprom.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
-index 3e01781aeb7bd..c4ce2f5a9745f 100644
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -323,13 +323,11 @@ static void cgroup_rstat_flush_locked(struct cgroup *cgrp)
- 			rcu_read_unlock();
- 		}
+diff --git a/drivers/nvmem/qfprom.c b/drivers/nvmem/qfprom.c
+index 116a39e804c70..a872c640b8c5a 100644
+--- a/drivers/nvmem/qfprom.c
++++ b/drivers/nvmem/qfprom.c
+@@ -321,19 +321,32 @@ static int qfprom_reg_read(void *context,
+ 			unsigned int reg, void *_val, size_t bytes)
+ {
+ 	struct qfprom_priv *priv = context;
+-	u8 *val = _val;
+-	int i = 0, words = bytes;
++	u32 *val = _val;
+ 	void __iomem *base = priv->qfpcorrected;
++	int words = DIV_ROUND_UP(bytes, sizeof(u32));
++	int i;
  
--		/* play nice and yield if necessary */
--		if (need_resched() || spin_needbreak(&cgroup_rstat_lock)) {
--			__cgroup_rstat_unlock(cgrp, cpu);
--			if (!cond_resched())
--				cpu_relax();
--			__cgroup_rstat_lock(cgrp, cpu);
--		}
-+		/* play nice and avoid disabling interrupts for a long time */
-+		__cgroup_rstat_unlock(cgrp, cpu);
-+		if (!cond_resched())
-+			cpu_relax();
-+		__cgroup_rstat_lock(cgrp, cpu);
- 	}
+ 	if (read_raw_data && priv->qfpraw)
+ 		base = priv->qfpraw;
+ 
+-	while (words--)
+-		*val++ = readb(base + reg + i++);
++	for (i = 0; i < words; i++)
++		*val++ = readl(base + reg + i * sizeof(u32));
+ 
+ 	return 0;
  }
  
++/* Align reads to word boundary */
++static void qfprom_fixup_dt_cell_info(struct nvmem_device *nvmem,
++				      struct nvmem_cell_info *cell)
++{
++	unsigned int byte_offset = cell->offset % sizeof(u32);
++
++	cell->bit_offset += byte_offset * BITS_PER_BYTE;
++	cell->offset -= byte_offset;
++	if (byte_offset && !cell->nbits)
++		cell->nbits = cell->bytes * BITS_PER_BYTE;
++}
++
+ static void qfprom_runtime_disable(void *data)
+ {
+ 	pm_runtime_disable(data);
+@@ -358,10 +371,11 @@ static int qfprom_probe(struct platform_device *pdev)
+ 	struct nvmem_config econfig = {
+ 		.name = "qfprom",
+ 		.add_legacy_fixed_of_cells = true,
+-		.stride = 1,
+-		.word_size = 1,
++		.stride = 4,
++		.word_size = 4,
+ 		.id = NVMEM_DEVID_AUTO,
+ 		.reg_read = qfprom_reg_read,
++		.fixup_dt_cell_info = qfprom_fixup_dt_cell_info,
+ 	};
+ 	struct device *dev = &pdev->dev;
+ 	struct resource *res;
 -- 
 2.39.5
 
