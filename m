@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-146742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CECAC54A1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACE2AC57E8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 946F07A6F80
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:58:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 491CF16493F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B3B2CCC0;
-	Tue, 27 May 2025 16:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A2F27F16D;
+	Tue, 27 May 2025 17:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ir/zA8yN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToqVJVH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF8A194A67;
-	Tue, 27 May 2025 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96E81A3159;
+	Tue, 27 May 2025 17:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365168; cv=none; b=EfhsYZGLbzVtbFNx4E4EQdYdLWcybVW1M27VH5ftkdxNlkoDeuTm6uXaivFzoP8VkV87FH8EgXL2RYw+BI+X7yz4xjKE1tZ15JWKgGDCDYA3AQFRQRemVXz+RWVY5drvUmEnywPlRYK+hS6a5wBlz3hFcyI+wHLGCR+3BS3NODo=
+	t=1748367526; cv=none; b=rW20OwMeiCeXAE9A8I0mqhCyMeksHzFtiV0mzt6LJ06FnuHCJfDrsVyl2jnZTJzwH8jSqxY8PvWI/RpB7nM6kdsD/3OozDWxiEzBIlw0p8vKH+nY5x2rwuwAKRr413QkcFJPqwhIxAFr73KstXi+gYYK5GZ5HW4tvXVOUzFJdbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365168; c=relaxed/simple;
-	bh=uCBoUqvcVP6KwwqviAwfKiWrqAtNVAsMYtZjTFqs1cA=;
+	s=arc-20240116; t=1748367526; c=relaxed/simple;
+	bh=MSI+MMqwsVTXlSNFUtwaLU5z5C+AoYKAbTETzfbND7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZB1rkWa5pPJprT7acBkMYa+LhZ0uIfNDOP1DjA3AgsxMA7EIxBmLShEkqe+l3DoorD5TleHg97MHtV4AmB7GY0ZiaNJESuTw5Fmzbwubo6BtuF0pC3of10akNVYvTFuph6WQB8b46CPKuez0bsrScv30jWWxbQWlfANMoHCgfMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ir/zA8yN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F758C4CEE9;
-	Tue, 27 May 2025 16:59:27 +0000 (UTC)
+	 MIME-Version; b=XiD3nI2EhXXGY2U1TTt3Vj3tqUEurUPjUWaOFGlk0omIX94aLkxVJ/KyVVnu0DNvtRp8F51XyWILwd5rPn0tZPP7zS243Q2s+clIKKcmR+g89BM1rESsHnsdKbFsLGOPSQDIch6UleuENOP527Nmeq92QFfsgCfOn2ki2UHm2uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToqVJVH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B83BC4CEEA;
+	Tue, 27 May 2025 17:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365167;
-	bh=uCBoUqvcVP6KwwqviAwfKiWrqAtNVAsMYtZjTFqs1cA=;
+	s=korg; t=1748367526;
+	bh=MSI+MMqwsVTXlSNFUtwaLU5z5C+AoYKAbTETzfbND7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ir/zA8yN22l928dYBGnjAN8D2e3zr2o9wQpNlP0mj2zQKmwMZBqMbBOfOfXb6Aqdc
-	 nAEzXaERls9KQ3RjV4aiE9ayCq7eE6mlD5ILTos9TyJ7NrcjfTkFymrZakUKoWkDpl
-	 0q7iPjLQKldKNqp8WL6C0IznqbLsHPSSU1J1GMGI=
+	b=ToqVJVH/0o1A5W1+55xX4sRTEQ6emEQpLvcApWebPc4rdA1xWi4TsC5Ih3fGOTfkY
+	 sBRC94ysabrvMpXz0sEVyhxNdqx5QX1CDC6E91R+x+gE3XZyfVxHd9Kc7YVpbPPoGg
+	 olGL+QmUN1qvi/olkvOS29kH+FxhKe0dsu/PppQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Navid Assadian <navid.assadian@amd.com>,
-	Joshua Aberback <joshua.aberback@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/626] drm/amd/display: Fix mismatch type comparison
-Date: Tue, 27 May 2025 18:23:02 +0200
-Message-ID: <20250527162456.776043841@linuxfoundation.org>
+Subject: [PATCH 6.14 386/783] genirq/msi: Store the IOMMU IOVA directly in msi_desc instead of iommu_cookie
+Date: Tue, 27 May 2025 18:23:03 +0200
+Message-ID: <20250527162528.813028532@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Assadian, Navid <navid.assadian@amd.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 26873260d394b1e33cdd720154aedf0af95327f9 ]
+[ Upstream commit 1f7df3a691740a7736bbc99dc4ed536120eb4746 ]
 
-The mismatch type comparison/assignment may cause data loss. Since the
-values are always non-negative, it is safe to use unsigned variables to
-resolve the mismatch.
+The IOMMU translation for MSI message addresses has been a 2-step process,
+separated in time:
 
-Signed-off-by: Navid Assadian <navid.assadian@amd.com>
-Reviewed-by: Joshua Aberback <joshua.aberback@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+ 1) iommu_dma_prepare_msi(): A cookie pointer containing the IOVA address
+    is stored in the MSI descriptor when an MSI interrupt is allocated.
+
+ 2) iommu_dma_compose_msi_msg(): this cookie pointer is used to compute a
+    translated message address.
+
+This has an inherent lifetime problem for the pointer stored in the cookie
+that must remain valid between the two steps. However, there is no locking
+at the irq layer that helps protect the lifetime. Today, this works under
+the assumption that the iommu domain is not changed while MSI interrupts
+being programmed. This is true for normal DMA API users within the kernel,
+as the iommu domain is attached before the driver is probed and cannot be
+changed while a driver is attached.
+
+Classic VFIO type1 also prevented changing the iommu domain while VFIO was
+running as it does not support changing the "container" after starting up.
+
+However, iommufd has improved this so that the iommu domain can be changed
+during VFIO operation. This potentially allows userspace to directly race
+VFIO_DEVICE_ATTACH_IOMMUFD_PT (which calls iommu_attach_group()) and
+VFIO_DEVICE_SET_IRQS (which calls into iommu_dma_compose_msi_msg()).
+
+This potentially causes both the cookie pointer and the unlocked call to
+iommu_get_domain_for_dev() on the MSI translation path to become UAFs.
+
+Fix the MSI cookie UAF by removing the cookie pointer. The translated IOVA
+address is already known during iommu_dma_prepare_msi() and cannot change.
+Thus, it can simply be stored as an integer in the MSI descriptor.
+
+The other UAF related to iommu_get_domain_for_dev() will be addressed in
+patch "iommu: Make iommu_dma_prepare_msi() into a generic operation" by
+using the IOMMU group mutex.
+
+Link: https://patch.msgid.link/r/a4f2cd76b9dc1833ee6c1cf325cba57def22231c.1740014950.git.nicolinc@nvidia.com
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/spl/dc_spl.c       | 4 ++--
- drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/iommu/dma-iommu.c | 28 +++++++++++++---------------
+ include/linux/msi.h       | 33 ++++++++++++---------------------
+ 2 files changed, 25 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c b/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
-index 014e8a296f0c7..54c7d6aecf51c 100644
---- a/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
-+++ b/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
-@@ -875,8 +875,8 @@ static bool spl_get_optimal_number_of_taps(
- 	  bool *enable_isharp)
- {
- 	int num_part_y, num_part_c;
--	int max_taps_y, max_taps_c;
--	int min_taps_y, min_taps_c;
-+	unsigned int max_taps_y, max_taps_c;
-+	unsigned int min_taps_y, min_taps_c;
- 	enum lb_memory_config lb_config;
- 	bool skip_easf = false;
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 2a9fa0c8cc00f..0f0caf59023c7 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -1815,7 +1815,7 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
+ 	static DEFINE_MUTEX(msi_prepare_lock); /* see below */
  
-diff --git a/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h b/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
-index 2a74ff5fdfdbc..a2c28949ec47f 100644
---- a/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
-@@ -479,7 +479,7 @@ struct spl_sharpness_range {
- };
- struct adaptive_sharpness {
- 	bool enable;
--	int sharpness_level;
-+	unsigned int sharpness_level;
- 	struct spl_sharpness_range sharpness_range;
- };
- enum linear_light_scaling	{	// convert it in translation logic
+ 	if (!domain || !domain->iova_cookie) {
+-		desc->iommu_cookie = NULL;
++		msi_desc_set_iommu_msi_iova(desc, 0, 0);
+ 		return 0;
+ 	}
+ 
+@@ -1827,11 +1827,12 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
+ 	mutex_lock(&msi_prepare_lock);
+ 	msi_page = iommu_dma_get_msi_page(dev, msi_addr, domain);
+ 	mutex_unlock(&msi_prepare_lock);
+-
+-	msi_desc_set_iommu_cookie(desc, msi_page);
+-
+ 	if (!msi_page)
+ 		return -ENOMEM;
++
++	msi_desc_set_iommu_msi_iova(
++		desc, msi_page->iova,
++		ilog2(cookie_msi_granule(domain->iova_cookie)));
+ 	return 0;
+ }
+ 
+@@ -1842,18 +1843,15 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
+  */
+ void iommu_dma_compose_msi_msg(struct msi_desc *desc, struct msi_msg *msg)
+ {
+-	struct device *dev = msi_desc_to_dev(desc);
+-	const struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
+-	const struct iommu_dma_msi_page *msi_page;
++#ifdef CONFIG_IRQ_MSI_IOMMU
++	if (desc->iommu_msi_shift) {
++		u64 msi_iova = desc->iommu_msi_iova << desc->iommu_msi_shift;
+ 
+-	msi_page = msi_desc_get_iommu_cookie(desc);
+-
+-	if (!domain || !domain->iova_cookie || WARN_ON(!msi_page))
+-		return;
+-
+-	msg->address_hi = upper_32_bits(msi_page->iova);
+-	msg->address_lo &= cookie_msi_granule(domain->iova_cookie) - 1;
+-	msg->address_lo += lower_32_bits(msi_page->iova);
++		msg->address_hi = upper_32_bits(msi_iova);
++		msg->address_lo = lower_32_bits(msi_iova) |
++				  (msg->address_lo & ((1 << desc->iommu_msi_shift) - 1));
++	}
++#endif
+ }
+ 
+ static int iommu_dma_init(void)
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index 59a421fc42bf0..63d0e51f7a801 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -165,6 +165,10 @@ struct msi_desc_data {
+  * @dev:	Pointer to the device which uses this descriptor
+  * @msg:	The last set MSI message cached for reuse
+  * @affinity:	Optional pointer to a cpu affinity mask for this descriptor
++ * @iommu_msi_iova: Optional shifted IOVA from the IOMMU to override the msi_addr.
++ *                  Only used if iommu_msi_shift != 0
++ * @iommu_msi_shift: Indicates how many bits of the original address should be
++ *                   preserved when using iommu_msi_iova.
+  * @sysfs_attr:	Pointer to sysfs device attribute
+  *
+  * @write_msi_msg:	Callback that may be called when the MSI message
+@@ -183,7 +187,8 @@ struct msi_desc {
+ 	struct msi_msg			msg;
+ 	struct irq_affinity_desc	*affinity;
+ #ifdef CONFIG_IRQ_MSI_IOMMU
+-	const void			*iommu_cookie;
++	u64				iommu_msi_iova : 58;
++	u64				iommu_msi_shift : 6;
+ #endif
+ #ifdef CONFIG_SYSFS
+ 	struct device_attribute		*sysfs_attrs;
+@@ -284,28 +289,14 @@ struct msi_desc *msi_next_desc(struct device *dev, unsigned int domid,
+ 
+ #define msi_desc_to_dev(desc)		((desc)->dev)
+ 
+-#ifdef CONFIG_IRQ_MSI_IOMMU
+-static inline const void *msi_desc_get_iommu_cookie(struct msi_desc *desc)
+-{
+-	return desc->iommu_cookie;
+-}
+-
+-static inline void msi_desc_set_iommu_cookie(struct msi_desc *desc,
+-					     const void *iommu_cookie)
+-{
+-	desc->iommu_cookie = iommu_cookie;
+-}
+-#else
+-static inline const void *msi_desc_get_iommu_cookie(struct msi_desc *desc)
++static inline void msi_desc_set_iommu_msi_iova(struct msi_desc *desc, u64 msi_iova,
++					       unsigned int msi_shift)
+ {
+-	return NULL;
+-}
+-
+-static inline void msi_desc_set_iommu_cookie(struct msi_desc *desc,
+-					     const void *iommu_cookie)
+-{
+-}
++#ifdef CONFIG_IRQ_MSI_IOMMU
++	desc->iommu_msi_iova = msi_iova >> msi_shift;
++	desc->iommu_msi_shift = msi_shift;
+ #endif
++}
+ 
+ int msi_domain_insert_msi_desc(struct device *dev, unsigned int domid,
+ 			       struct msi_desc *init_desc);
 -- 
 2.39.5
 
