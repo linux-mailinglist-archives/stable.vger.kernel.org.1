@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-147339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4E4AC573D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777F3AC53EC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A939C4A59FC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 218587AFA9C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF8227D784;
-	Tue, 27 May 2025 17:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB74F27E7C6;
+	Tue, 27 May 2025 16:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXRSv+p1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DlUArTv3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09E32566;
-	Tue, 27 May 2025 17:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F051DB34C;
+	Tue, 27 May 2025 16:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367036; cv=none; b=WcCOgxDb5bMbz2IwOay3ScnnIdldGmjUN7lRTchzffoxao1Gz5QdQIuA/m7cRSgPyUgp2kKn506MgPtJlWtj9z5TBrQm53ezNZOyJtRbGW/Hj1qKf1OOM+TLETokM2nxyyfQ2NsT9+SpItzvLIhpyh4SjAjv3/U9YDLivPjn6Jk=
+	t=1748364775; cv=none; b=X2gqABvt+dP8fiDOCowlR4Qk4YizgyhygGaaMbF0EVPdNFH0oDX3t6Pkg5swffbPRVLMrzXTCU2+eQVkZ6vrTq0WO8kQkxONwSiHYVt/KuysG0r5hjZk9yBlam7D1OU+WyFVcDVZriwZlWzqN94uoFsgq1Ayj/vYP7UrjHehkQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367036; c=relaxed/simple;
-	bh=wGpcgfhJb4sm9NvByPELO2Zto9iNm2ptI5G+HfHg/9k=;
+	s=arc-20240116; t=1748364775; c=relaxed/simple;
+	bh=wRs0eb7KIZyE8JEPg4N8M+e5Bdzf0JzhYWEXecix5ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/U+vVCJTDr8AmRu7OSVrj2a9Z+o8VmbWsbwLFTgvfUfbnYXRaiIiEoKCxXZMWbj5W3lbbUxU+oFBqR624gJ+fSw/bla/uqOelsIJvT74sJAtQlnfGMdmS7aCxXB4ljgD3NFZyqe/49v+6P3jwO5uRFlFKJrF4GcVvXtZGkErf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXRSv+p1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15FAC4CEE9;
-	Tue, 27 May 2025 17:30:35 +0000 (UTC)
+	 MIME-Version; b=JLl/UqP8C/EDm/qKLBHwDonT+K6s3I1j0LgTAiH09vekfZDgUtXI/daaC79rCZzVLZ2LXMmtP4Z69GHpt5G1Xz5969DFA4KuQVS2PuHSJ9pw2OfYZzTkJ5OHtQ3HS/Q2drU3738aXToefsqzX+ZWnwYIZXSs98RGCwLRRTtfhHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlUArTv3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB27EC4CEE9;
+	Tue, 27 May 2025 16:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367036;
-	bh=wGpcgfhJb4sm9NvByPELO2Zto9iNm2ptI5G+HfHg/9k=;
+	s=korg; t=1748364775;
+	bh=wRs0eb7KIZyE8JEPg4N8M+e5Bdzf0JzhYWEXecix5ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXRSv+p1JberGGb2MDyAOcvY6TGncStprB5B7LAaeVCfdzUUxXEzwDSq/btWaIvHy
-	 ELh82swMWHVN3P0UFBAJS9bFRLr/xbOnJQdH4kMqwql7fIZB4Q2K2F8WKI0mKmteMk
-	 NgugIBNnGtmyev2uX+6hD1CbzYdGvTPhLw9f5iSM=
+	b=DlUArTv3T56SRXvzupJX+sT4g8BSV4YkfxFqIw47BYe/FKfMfjutz1uxVLwh6tQu6
+	 thdzrR1U05+7KDCzHTsDGFp4BfeuhRRhi5LYprtcp8xdBgslJHd0NHRUKYceGQ0GL3
+	 FMxv2ZXZxdDb4J7hpX2+1w3G3/r2x9FDHCGWQfc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Schwab <schwab@linux-m68k.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 258/783] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
-Date: Tue, 27 May 2025 18:20:55 +0200
-Message-ID: <20250527162523.603960544@linuxfoundation.org>
+Subject: [PATCH 6.12 163/626] ext4: reject the data_err=abort option in nojournal mode
+Date: Tue, 27 May 2025 18:20:56 +0200
+Message-ID: <20250527162451.649488258@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Schwab <schwab@linux-m68k.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
+[ Upstream commit 26343ca0df715097065b02a6cddb4a029d5b9327 ]
 
-Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
-property on the i2s node.
+data_err=abort aborts the journal on I/O errors. However, this option is
+meaningless if journal is disabled, so it is rejected in nojournal mode
+to reduce unnecessary checks. Also, this option is ignored upon remount.
 
-Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-[maddy: added "commit" work in depends-on to avoid checkpatch error]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250122110533.4116662-4-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 57082fac46687..fe4659ba8c22a 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2889,11 +2889,11 @@ static void __init fixup_device_tree_pmac(void)
- 	char type[8];
- 	phandle node;
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 473909c4a3784..99117d1e1bdd5 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2787,6 +2787,13 @@ static int ext4_check_opt_consistency(struct fs_context *fc,
+ 	}
  
--	// Some pmacs are missing #size-cells on escc nodes
-+	// Some pmacs are missing #size-cells on escc or i2s nodes
- 	for (node = 0; prom_next_node(&node); ) {
- 		type[0] = '\0';
- 		prom_getprop(node, "device_type", type, sizeof(type));
--		if (prom_strcmp(type, "escc"))
-+		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
- 			continue;
- 
- 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+ 	if (is_remount) {
++		if (!sbi->s_journal &&
++		    ctx_test_mount_opt(ctx, EXT4_MOUNT_DATA_ERR_ABORT)) {
++			ext4_msg(NULL, KERN_WARNING,
++				 "Remounting fs w/o journal so ignoring data_err option");
++			ctx_clear_mount_opt(ctx, EXT4_MOUNT_DATA_ERR_ABORT);
++		}
++
+ 		if (ctx_test_mount_opt(ctx, EXT4_MOUNT_DAX_ALWAYS) &&
+ 		    (test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA)) {
+ 			ext4_msg(NULL, KERN_ERR, "can't mount with "
+@@ -5396,6 +5403,11 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 				 "data=, fs mounted w/o journal");
+ 			goto failed_mount3a;
+ 		}
++		if (test_opt(sb, DATA_ERR_ABORT)) {
++			ext4_msg(sb, KERN_ERR,
++				 "can't mount with data_err=abort, fs mounted w/o journal");
++			goto failed_mount3a;
++		}
+ 		sbi->s_def_mount_opt &= ~EXT4_MOUNT_JOURNAL_CHECKSUM;
+ 		clear_opt(sb, JOURNAL_CHECKSUM);
+ 		clear_opt(sb, DATA_FLAGS);
 -- 
 2.39.5
 
