@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86EC6AC55CE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C757AC590A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40A51BA66D9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271004C15AA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B8A1E89C;
-	Tue, 27 May 2025 17:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1BD28001F;
+	Tue, 27 May 2025 17:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIH7hg4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVsGa7qQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607DB27B51A;
-	Tue, 27 May 2025 17:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D7970831;
+	Tue, 27 May 2025 17:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366065; cv=none; b=AvJbh/E7V6cTu/CeGImRN0+mcHRCgpt9qz+8JOcIaHiGnLLlrwhMHld0IOb2l61QFRnCbgh9CexXFaYyX+l0+qUa9hqrLaJ2iQyLWGZZhGNCW6FGRC1rpWWozffoBYO+3dsMnxVh5iMQ1n4t3WUbKZyoNOlR4M94XW3OETVE7yA=
+	t=1748368338; cv=none; b=Dm/IEOIfT5z3EKnPastpyWl8qG0BhCl/tSqt/3AvmIFYd/wShY7Hyk/uJbe1j0IYUGLy6mICBI2/uiJ6prWzhxA2ul2jS85KfSVZhZbgGa/QWFSeKRjGkFNbfYWJAlYoFpGRvUhOqw4xglxZBYsRrneggJXSKWw9p0et5G/zgGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366065; c=relaxed/simple;
-	bh=t6vGKDCrVWE4zlZ0mEikhCmztRAW+TEFKynXmt17ipM=;
+	s=arc-20240116; t=1748368338; c=relaxed/simple;
+	bh=oDaIEVsy/539sAvzZdL+Di55u3FCoso135MD3Yp2f1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u648JR6lT7CJoW3tiUkF6Yq0S4z3BjohQy1Xq9Djbl6q9STe7nU+4kO00Hco+H71AKnrclNyCdLri6LJiiBZRC2kDZ/15365DX/MxjsApRtkPtllPYLevjgIsuG8XBTItZbjiv1r7YjLvFFv6vses3JlKJ0V6EhiT6LSRsj5P4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIH7hg4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C73C4CEEB;
-	Tue, 27 May 2025 17:14:24 +0000 (UTC)
+	 MIME-Version; b=USwx71FhOPuS3+RcpS+WiFqdH5Ia1hpwzC1xd8V093WCKenOwa8k/vELL4Q/1JU+6DgOQHMEW2PLsP0Yip0YmD80rCFT/W1g8UUDJdNCzsJ2XxToRoPxJu/0OuzY9dyk8mycl7AYvRHxFpQ4TcL6q8TZ8XvilPfTDLt+OzGR9wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVsGa7qQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B624C4CEEA;
+	Tue, 27 May 2025 17:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366065;
-	bh=t6vGKDCrVWE4zlZ0mEikhCmztRAW+TEFKynXmt17ipM=;
+	s=korg; t=1748368337;
+	bh=oDaIEVsy/539sAvzZdL+Di55u3FCoso135MD3Yp2f1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIH7hg4pKeWmhthGIka45Q12hhikSY2SW7Sz3UQc8bOVNc0jq7fLjxRMTsMGaP1s3
-	 QDg+U4BlTe7kAyit7bz2QlO+NoZI1fuXOYQ4Oe9s7V+0EmEE5sAhzkwVD6rCZBfQor
-	 5VdLByccVq4WQoXe2ilxcRq6NYcjXVIfhsTZFDys=
+	b=ZVsGa7qQ8GIxJkn9nCaWftohGMhrXBTDCc5+louRxHwWhWGwgmm8HlNUrtn/ZnZnV
+	 1lP/K+Z/tKRPf6/0tH2ax+wwuzYoZzxSyUyH/aRIhqyM4d1zGodKZcEZjRddzVhCO+
+	 jUoUyxxFtyfXvN6SF/0WkWSMQ0DZxrBvLM50GYwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Bresticker <abrestic@rivosinc.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anup Patel <anup@brainfault.org>,
+	kernel test robot <lkp@intel.com>,
+	Kate Hsuan <hpa@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 549/626] irqchip/riscv-imsic: Start local sync timer on correct CPU
+Subject: [PATCH 6.14 645/783] HID: Kconfig: Add LEDS_CLASS_MULTICOLOR dependency to HID_LOGITECH
 Date: Tue, 27 May 2025 18:27:22 +0200
-Message-ID: <20250527162507.288182803@linuxfoundation.org>
+Message-ID: <20250527162539.405868106@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Bresticker <abrestic@rivosinc.com>
+From: Kate Hsuan <hpa@redhat.com>
 
-[ Upstream commit 08fb624802d8786253994d8ebdbbcdaa186f04f5 ]
+[ Upstream commit 4465f4fa21e0e54c10896db3ed49dbd5a9aad3fd ]
 
-When starting the local sync timer to synchronize the state of a remote
-CPU it should be added on the CPU to be synchronized, not the initiating
-CPU. This results in interrupt delivery being delayed until the timer
-eventually runs (due to another mask/unmask/migrate operation) on the
-target CPU.
+The test bot found an issue with building hid-lg-g15.
 
-Fixes: 0f67911e821c ("irqchip/riscv-imsic: Separate next and previous pointers in IMSIC vector")
-Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/all/20250514171320.3494917-1-abrestic@rivosinc.com
+All errors (new ones prefixed by >>):
+
+   powerpc-linux-ld: drivers/hid/hid-lg-g15.o: in function `lg_g510_kbd_led_write':
+>> drivers/hid/hid-lg-g15.c:241:(.text+0x768): undefined reference to `led_mc_calc_color_components'
+   powerpc-linux-ld: drivers/hid/hid-lg-g15.o: in function `lg_g15_register_led':
+>> drivers/hid/hid-lg-g15.c:686:(.text+0xa9c): undefined reference to `devm_led_classdev_multicolor_register_ext'
+
+Since multicolor LED APIs manage the keyboard backlight settings of
+hid-lg-g15, the LEDS_CLASS_MULTICOLOR dependency was added to
+HID_LOGITECH.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502110032.VZ0J024X-lkp@intel.com/
+Fixes: a3a064146c50 ("HID: hid-lg-g15: Use standard multicolor LED API")
+Signed-off-by: Kate Hsuan <hpa@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-imsic-state.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/hid/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-riscv-imsic-state.c b/drivers/irqchip/irq-riscv-imsic-state.c
-index 1aeba76d72795..06ff0e17c0c33 100644
---- a/drivers/irqchip/irq-riscv-imsic-state.c
-+++ b/drivers/irqchip/irq-riscv-imsic-state.c
-@@ -186,17 +186,17 @@ static bool __imsic_local_sync(struct imsic_local_priv *lpriv)
- }
- 
- #ifdef CONFIG_SMP
--static void __imsic_local_timer_start(struct imsic_local_priv *lpriv)
-+static void __imsic_local_timer_start(struct imsic_local_priv *lpriv, unsigned int cpu)
- {
- 	lockdep_assert_held(&lpriv->lock);
- 
- 	if (!timer_pending(&lpriv->timer)) {
- 		lpriv->timer.expires = jiffies + 1;
--		add_timer_on(&lpriv->timer, smp_processor_id());
-+		add_timer_on(&lpriv->timer, cpu);
- 	}
- }
- #else
--static inline void __imsic_local_timer_start(struct imsic_local_priv *lpriv)
-+static inline void __imsic_local_timer_start(struct imsic_local_priv *lpriv, unsigned int cpu)
- {
- }
- #endif
-@@ -211,7 +211,7 @@ void imsic_local_sync_all(bool force_all)
- 	if (force_all)
- 		bitmap_fill(lpriv->dirty_bitmap, imsic->global.nr_ids + 1);
- 	if (!__imsic_local_sync(lpriv))
--		__imsic_local_timer_start(lpriv);
-+		__imsic_local_timer_start(lpriv, smp_processor_id());
- 
- 	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
- }
-@@ -256,7 +256,7 @@ static void __imsic_remote_sync(struct imsic_local_priv *lpriv, unsigned int cpu
- 				return;
- 		}
- 
--		__imsic_local_timer_start(lpriv);
-+		__imsic_local_timer_start(lpriv, cpu);
- 	}
- }
- #else
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index 4cfea399ebab2..76be97c5fc2ff 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -603,6 +603,7 @@ config HID_LOGITECH
+ 	tristate "Logitech devices"
+ 	depends on USB_HID
+ 	depends on LEDS_CLASS
++	depends on LEDS_CLASS_MULTICOLOR
+ 	default !EXPERT
+ 	help
+ 	Support for Logitech devices that are not fully compliant with HID standard.
 -- 
 2.39.5
 
