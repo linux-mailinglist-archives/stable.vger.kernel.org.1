@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A03AC5712
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1014AC5396
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 718A3167ED8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F718A1A2E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8B327FD64;
-	Tue, 27 May 2025 17:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4A41D63EF;
+	Tue, 27 May 2025 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLij+o8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQM39y4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5C71CD0C;
-	Tue, 27 May 2025 17:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0983A1EA91;
+	Tue, 27 May 2025 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366907; cv=none; b=mRjrDWQy4WUfgIojQrvib9si4EK5uu36HnNIdrlVAckVhsvcwPGiWX/+ugayuMtsoUNHv/9fI6yCHXS3u7z9949jmu0ucF34e4OjdFxX1wOhMu72p+80rJ05uJRhV6Ct+Ta/Q/JPuKtNMT5Eg3lHi2DAl80r7PqJ3axuqx3QPt0=
+	t=1748364539; cv=none; b=dGA38zP0B5M36TORtCkhkdk81+inThEzBs03WBSWRoqYRU+dDjfpRlO6TZRYH4MPn4hh4vm3JV6J2i7td6vCSWGeznWtbL7QB++jK5hII7jhnZU5NKwWEi0leo8GO8D0TMaghLtKFupMIJ6GR3i/s/pgGmiXZoKYWgQYSlu7Gho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366907; c=relaxed/simple;
-	bh=g7j6sAg1LEraELYf9V3+6Zxv9HxTQpdwrNiAuz9Gr9Y=;
+	s=arc-20240116; t=1748364539; c=relaxed/simple;
+	bh=IBZdjmyso2KyAHFHPBo5+IdpAG7HSpi2mk85LpiDVEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhvDuYDePHHFzYo12JsFu+0FvhsBY4+f4CxzXZqq9CkQ3FhAgHf8CK8I29Brz4WFjncy0rryijGT05ioC687lRGv0gSU8cifBT818K2q9PIAZdWX7OHXOfruoDoo4OqX4ke1vClrkFz7oQfwrW+eVscMUiB9oNgW8orf46uTssY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLij+o8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42230C4CEE9;
-	Tue, 27 May 2025 17:28:27 +0000 (UTC)
+	 MIME-Version; b=S+NWil9BXYK5PutBgev0TpTJJaCNh3wu9SMOTxoSTm1e6Es6kHOsUC71Pg5VkSO/r9Jle7hRDA9Bj0Lr3t9mB2v94lagsYLRohIds5cm6V2md30HAFOCnYnlpYQee8OtZFNQUCP7JO72y/5/hr3hqVjWtNJwvstzaJgIslI1zQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQM39y4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D23BC4CEE9;
+	Tue, 27 May 2025 16:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366907;
-	bh=g7j6sAg1LEraELYf9V3+6Zxv9HxTQpdwrNiAuz9Gr9Y=;
+	s=korg; t=1748364538;
+	bh=IBZdjmyso2KyAHFHPBo5+IdpAG7HSpi2mk85LpiDVEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLij+o8Gvn0W60OZqYHnqm5ogBRCigAEUjMK5IQR/XALP6nnAZAm676Imt5ovqhPW
-	 FQtVzcPw1VwnZGjFGmk2xLkhCBo8POFoJicuWsfdMO3Qqjhk8te7YITBy2q1j2OK73
-	 ua8dTkstSpmHGvdz1x+TE6ZVkZLws2FFi+9DwRTs=
+	b=TQM39y4IgsrzNxXS81TMitzs2oRmAXqgDgXPk8rD43JFuvsIw9SgldkMYaSi5oJPc
+	 r/x+tjT3/ZlDN+ZTHXQ9syCUghpZszfitXdh+gJmnZUadZIM4Q+DthRAB2586iqdfu
+	 CUR7/DkUL9QGEieKM8YuWxOX0twFzHcF/+pjVOxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	Lee Jones <lee@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 185/783] mfd: tps65219: Remove TPS65219_REG_TI_DEV_ID check
+Subject: [PATCH 6.12 089/626] tools/build: Dont pass test log files to linker
 Date: Tue, 27 May 2025 18:19:42 +0200
-Message-ID: <20250527162520.684118285@linuxfoundation.org>
+Message-ID: <20250527162448.661531814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 76b58d5111fdcffce615beb71520bc7a6f1742c9 ]
+[ Upstream commit 935e7cb5bb80106ff4f2fe39640f430134ef8cd8 ]
 
-The chipid macro/variable and regmap_read function call is not needed
-because the TPS65219_REG_TI_DEV_ID register value is not a consistent value
-across TPS65219 PMIC config versions. Reading from the DEV_ID register
-without a consistent value to compare it to isn't useful. There isn't a
-way to verify the match data ID is the same ID read from the DEV_ID device
-register. 0xF0 isn't a DEV_ID value consistent across TPS65219 NVM
-configurations.
+Separate test log files from object files. Depend on test log output
+but don't pass to the linker.
 
-For TPS65215, there is a consistent value in bits 5-0 of the DEV_ID
-register. However, there are other error checks in place within probe()
-that apply to both PMICs rather than keeping this isolated check for one
-PMIC.
-
-Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Link: https://lore.kernel.org/r/20250206173725.386720-4-s-ramamoorthy@ti.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250311213628.569562-2-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/tps65219.c | 7 -------
- 1 file changed, 7 deletions(-)
+ tools/build/Makefile.build | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-index 081c5a30b04a2..4aca922658e34 100644
---- a/drivers/mfd/tps65219.c
-+++ b/drivers/mfd/tps65219.c
-@@ -221,7 +221,6 @@ static const struct regmap_irq_chip tps65219_irq_chip = {
- static int tps65219_probe(struct i2c_client *client)
- {
- 	struct tps65219 *tps;
--	unsigned int chipid;
- 	bool pwr_button;
- 	int ret;
+diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+index 5fb3fb3d97e0f..ffe988867703b 100644
+--- a/tools/build/Makefile.build
++++ b/tools/build/Makefile.build
+@@ -149,6 +149,10 @@ objprefix    := $(subst ./,,$(OUTPUT)$(dir)/)
+ obj-y        := $(addprefix $(objprefix),$(obj-y))
+ subdir-obj-y := $(addprefix $(objprefix),$(subdir-obj-y))
  
-@@ -246,12 +245,6 @@ static int tps65219_probe(struct i2c_client *client)
- 	if (ret)
- 		return ret;
++# Separate out test log files from real build objects.
++test-y       := $(filter %_log, $(obj-y))
++obj-y        := $(filter-out %_log, $(obj-y))
++
+ # Final '$(obj)-in.o' object
+ in-target := $(objprefix)$(obj)-in.o
  
--	ret = regmap_read(tps->regmap, TPS65219_REG_TI_DEV_ID, &chipid);
--	if (ret) {
--		dev_err(tps->dev, "Failed to read device ID: %d\n", ret);
--		return ret;
--	}
--
- 	ret = devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
- 				   tps65219_cells, ARRAY_SIZE(tps65219_cells),
- 				   NULL, 0, regmap_irq_get_domain(tps->irq_data));
+@@ -159,7 +163,7 @@ $(subdir-y):
+ 
+ $(sort $(subdir-obj-y)): $(subdir-y) ;
+ 
+-$(in-target): $(obj-y) FORCE
++$(in-target): $(obj-y) $(test-y) FORCE
+ 	$(call rule_mkdir)
+ 	$(call if_changed,$(host)ld_multi)
+ 
 -- 
 2.39.5
 
