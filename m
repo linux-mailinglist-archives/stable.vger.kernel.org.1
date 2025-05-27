@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15941AC56DC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:26:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B29AC5387
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61E178A4F95
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830D83B7BC5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CAA27FD64;
-	Tue, 27 May 2025 17:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA2F263F5E;
+	Tue, 27 May 2025 16:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPI73VJ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2SPyWcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AC227D784;
-	Tue, 27 May 2025 17:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CA32CCC0;
+	Tue, 27 May 2025 16:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366747; cv=none; b=uw++dq2+ui/e417ev7vnK3u7UYVD5nnWgftQwsYxIT1Mm0Q1Vi4H+DpHzrMND6mIoecEQrwhVw8L9l0v6l7g1DaMHPAQf+CPb2173OHD3NacUSQdrzYpYq2eSw9LJUo3hXF7QMrQ8LmFyOah5+g0yIW77Cc8QYvKrn+DrrgyLlI=
+	t=1748364495; cv=none; b=FNp5AfUAcUoxcAootWym5mfq8kjeDOcOI8yUVXMzIU5Bdt32I+IrAU+yqb3PVTojXpDJp2EjIDaMLCQrWmZP+nlihQUzvyXH5FUHKSGfCBk034aYw7t00MvwEQlms1XUh0LkkxoFnV4jl1aMO56jLUuLEMtWjvEU8xqfauDQc2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366747; c=relaxed/simple;
-	bh=vGCz+FmqiNK7qK+eLGTazZeFaPAag0QR0BUTIjuMG6I=;
+	s=arc-20240116; t=1748364495; c=relaxed/simple;
+	bh=cuejeLGWlWHO/UWpXI0pcMLs64DfRkVqbwvH/YrDNeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JED0xTSEZeWqEtf1oC+WIQQXpRYHCq5YhCogt0BamI4OPHbK1d5BVd/XfITnlh69o2Zg1her2JVqG/rjFpFEBCyhF0LkOiG2sT/pp8H8D97K/2Q0rccr+jqTwHMr/l3DP2IqHby8DuAafif5wuzPfydUk7x0h1DtZmYd1d6AIFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPI73VJ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C8DC4CEE9;
-	Tue, 27 May 2025 17:25:46 +0000 (UTC)
+	 MIME-Version; b=DDmyGWwksDHXGWTzESeEwmbS0pGDJazl3mML/n9Hpzppk1YX0SXqw+ZIn/piafSPgm4sHNR7rrGuZn5pTZTcM+FOo5jJpGcEWnLHlJpLSnGvwEzj1ghpWxnS0r426KMnM/G4BhlhPLpdYEKCrOAm0ixUC4HbwM6Qyl6j/vp9WJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2SPyWcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AFCC4CEE9;
+	Tue, 27 May 2025 16:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366747;
-	bh=vGCz+FmqiNK7qK+eLGTazZeFaPAag0QR0BUTIjuMG6I=;
+	s=korg; t=1748364494;
+	bh=cuejeLGWlWHO/UWpXI0pcMLs64DfRkVqbwvH/YrDNeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPI73VJ6PCIpawBEEERgJGEcXm6j5UlfNM64aQ/8oQiQ40ObxUBBTZhmS1rPzByuL
-	 sQbpefeIC8Z+WYfqAB/BOenLGQPtj30SAhqwzxmpkirL9ISGXFh/365zdv0pPiQiVa
-	 Rmq2WHPAIblgpQS7BV0tmp0y3i99N0AgDKxPYOAI=
+	b=m2SPyWcTbZStKykGyWnFKVqD9bOAsR3Ha+V8X1/hV14Qdl+Yh4JgouhbqYGapsXBp
+	 QbrOk5wcuc7VMKj3xLMSK1gPn9Bk1XO36VyR/02gfRV5vgtx9tOZCc4yhRf1fbum83
+	 c5RDHvC/AIChKr9ChNXb6Mo//s2eShwvEM68/giQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Brendan Jackman <jackmanb@google.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 168/783] objtool: Fix error handling inconsistencies in check()
-Date: Tue, 27 May 2025 18:19:25 +0200
-Message-ID: <20250527162520.011372654@linuxfoundation.org>
+Subject: [PATCH 6.12 073/626] SUNRPC: rpcbind should never reset the port to the value 0
+Date: Tue, 27 May 2025 18:19:26 +0200
+Message-ID: <20250527162448.013483129@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit b745962cb97569aad026806bb0740663cf813147 ]
+[ Upstream commit 214c13e380ad7636631279f426387f9c4e3c14d9 ]
 
-Make sure all fatal errors are funneled through the 'out' label with a
-negative ret.
+If we already had a valid port number for the RPC service, then we
+should not allow the rpcbind client to set it to the invalid value '0'.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Brendan Jackman <jackmanb@google.com>
-Link: https://lore.kernel.org/r/0f49d6a27a080b4012e84e6df1e23097f44cc082.1741975349.git.jpoimboe@kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/sunrpc/rpcb_clnt.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 522ae26f581be..70f5b3fa587c5 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4633,8 +4633,10 @@ int check(struct objtool_file *file)
- 	init_cfi_state(&force_undefined_cfi);
- 	force_undefined_cfi.force_undefined = true;
+diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
+index 102c3818bc54d..53bcca365fb1c 100644
+--- a/net/sunrpc/rpcb_clnt.c
++++ b/net/sunrpc/rpcb_clnt.c
+@@ -820,9 +820,10 @@ static void rpcb_getport_done(struct rpc_task *child, void *data)
+ 	}
  
--	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3)))
-+	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3))) {
-+		ret = -1;
- 		goto out;
+ 	trace_rpcb_setport(child, map->r_status, map->r_port);
+-	xprt->ops->set_port(xprt, map->r_port);
+-	if (map->r_port)
++	if (map->r_port) {
++		xprt->ops->set_port(xprt, map->r_port);
+ 		xprt_set_bound(xprt);
 +	}
+ }
  
- 	cfi_hash_add(&init_cfi);
- 	cfi_hash_add(&func_cfi);
-@@ -4651,7 +4653,7 @@ int check(struct objtool_file *file)
- 	if (opts.retpoline) {
- 		ret = validate_retpoline(file);
- 		if (ret < 0)
--			return ret;
-+			goto out;
- 		warnings += ret;
- 	}
- 
-@@ -4687,7 +4689,7 @@ int check(struct objtool_file *file)
- 		 */
- 		ret = validate_unrets(file);
- 		if (ret < 0)
--			return ret;
-+			goto out;
- 		warnings += ret;
- 	}
- 
-@@ -4750,7 +4752,7 @@ int check(struct objtool_file *file)
- 	if (opts.prefix) {
- 		ret = add_prefix_symbols(file);
- 		if (ret < 0)
--			return ret;
-+			goto out;
- 		warnings += ret;
- 	}
- 
+ /*
 -- 
 2.39.5
 
