@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFBFAC5772
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0014AAC542A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20DD47ADA46
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 004601885ECF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB6627FD49;
-	Tue, 27 May 2025 17:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50EE280322;
+	Tue, 27 May 2025 16:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrKnZUJ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgZPRh0t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A222110E;
-	Tue, 27 May 2025 17:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B85280012;
+	Tue, 27 May 2025 16:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367188; cv=none; b=KyOlVcNf8c35U8Nn3vSCGwnPIu1GpaHXWDRtH7zBC0/SAXJiC9Uvcyqi+JMRhXe03BPAbk+3JSfVM4V+Sfm138VzeHast15wHxBr5PCvJvLRe4vFLIfSTsdn6tMlGYguyVgG3lqsNMo+sI6Uu7YSrhpWEExHhsBgbANu+jBguzw=
+	t=1748364950; cv=none; b=jnQcpji5P7SapMZLEUuN56sfAl6AWxO7hJpBEZXLqFfCN/AAd6odG9ldb88TBCLuRcMNDkXk+eF7oiWyGsAhHQgb2pPv88+6SA0OYXIHdluSTY63ExA86+t3XuU3A4fgpV2A3LkJgzoQj3jpjtA7vXhrovL/c8B64CRiN+1xJVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367188; c=relaxed/simple;
-	bh=r0muhJtmCraaG6mWR1yx2UbvGAvEYpc1i7bLqQ1wCbc=;
+	s=arc-20240116; t=1748364950; c=relaxed/simple;
+	bh=rl65A+2AZs+mzOv0UWSAWS/0UvxX/zl2hjJxDcU/xFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIkMSBuM5JQMRb2J+4G9wVGzzTfG0rqZbL1ZxVLyoDYY4uo22AHWwFjQpVqhyRj58+llxbI0CiZHdkwoNc19RbU7N54kD0z4iU5da3qkQM5YWsEqib6t+RYdhp5eTmr8LHjqiInI8+VGim0N+s8Exmyw+6Fo3TQUd26BnRpzkL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrKnZUJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8D8C4CEE9;
-	Tue, 27 May 2025 17:33:07 +0000 (UTC)
+	 MIME-Version; b=Z+jgbiuCdcJyTSH5JvkAWwglQ7RDB0TJDaIcBqPjo0cR2+PSZXrZ+rLAqhghDH0wQHLS2HJbgae6FX5w/dOV0CmxVykJ0/qO+hD0GBkixoeNnbuH0wimooAHioLcmob6byaeC6KhbIOWLLvfOGoO/KzhxE8w3V/jjDTJdg2ZcmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgZPRh0t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D977DC4CEE9;
+	Tue, 27 May 2025 16:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367188;
-	bh=r0muhJtmCraaG6mWR1yx2UbvGAvEYpc1i7bLqQ1wCbc=;
+	s=korg; t=1748364950;
+	bh=rl65A+2AZs+mzOv0UWSAWS/0UvxX/zl2hjJxDcU/xFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrKnZUJ1dvh9Ylw8avPc4JgexdCg+APNyubsRpKV55ydceKBVICMwALIRRiG3ZtIj
-	 wN6dEAqd0RJglzdUldh6TbQnw7iFkOOQm96iYfl0M8t5VdVSXoHJBwdmkzn7xJMord
-	 Fx4YtV0TFRNFwn6FaW3XHr2OeJimz0jwGPyhroeM=
+	b=VgZPRh0tuofJJsthBjY7o8hb2QTzlvTZso8fcI9eNY8nHqqn/3iQi7n5tGPotCoLr
+	 9LGsM1UGs2rRZWhoYeN1dXORnw64es+UWWxgZZMbU+6IKFFvLZr9qJHkeQva0o1kol
+	 RtOIMXcYGkim5KYQvOtlWuT2z8MGjb8LE4oCLaQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Emily Deng <Emily.Deng@amd.com>,
+	Xiaogang Chen <xiaogang.chen@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 306/783] ipv4: fib: Hold rtnl_net_lock() in ip_rt_ioctl().
-Date: Tue, 27 May 2025 18:21:43 +0200
-Message-ID: <20250527162525.532636061@linuxfoundation.org>
+Subject: [PATCH 6.12 211/626] drm/amdgpu: Fix missing drain retry fault the last entry
+Date: Tue, 27 May 2025 18:21:44 +0200
+Message-ID: <20250527162453.590972454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Emily Deng <Emily.Deng@amd.com>
 
-[ Upstream commit c0ebe1cdc2cff0dee092a67f2c50377bb5fcf43d ]
+[ Upstream commit fe2fa3be3d59ba67d6de54a0064441ec233cb50c ]
 
-ioctl(SIOCADDRT/SIOCDELRT) calls ip_rt_ioctl() to add/remove a route in
-the netns of the specified socket.
+While the entry get in svm_range_unmap_from_cpu is the last entry, and
+the entry is page fault, it also need to be dropped. So for equal case,
+it also need to be dropped.
 
-Let's hold rtnl_net_lock() there.
+v2:
+Only modify the svm_range_restore_pages.
 
-Note that rtentry_to_fib_config() can be called without rtnl_net_lock()
-if we convert rtentry.dev handling to RCU later.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250228042328.96624-11-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Emily Deng <Emily.Deng@amd.com>
+Reviewed-by: Xiaogang Chen<xiaogang.chen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_frontend.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h | 3 +++
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c   | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index 493c37ce232d3..8470e259d8fd8 100644
---- a/net/ipv4/fib_frontend.c
-+++ b/net/ipv4/fib_frontend.c
-@@ -553,18 +553,16 @@ static int rtentry_to_fib_config(struct net *net, int cmd, struct rtentry *rt,
- 			const struct in_ifaddr *ifa;
- 			struct in_device *in_dev;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
+index 508f02eb0cf8f..7de10208e8dde 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
+@@ -78,6 +78,9 @@ struct amdgpu_ih_ring {
+ #define amdgpu_ih_ts_after(t1, t2) \
+ 		(((int64_t)((t2) << 16) - (int64_t)((t1) << 16)) > 0LL)
  
--			in_dev = __in_dev_get_rtnl(dev);
-+			in_dev = __in_dev_get_rtnl_net(dev);
- 			if (!in_dev)
- 				return -ENODEV;
++#define amdgpu_ih_ts_after_or_equal(t1, t2) \
++		(((int64_t)((t2) << 16) - (int64_t)((t1) << 16)) >= 0LL)
++
+ /* provided by the ih block */
+ struct amdgpu_ih_funcs {
+ 	/* ring read/write ptr handling, called from interrupt context */
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index b50283864dcd2..f00d41be7fca2 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -3014,7 +3014,7 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
  
- 			*colon = ':';
- 
--			rcu_read_lock();
--			in_dev_for_each_ifa_rcu(ifa, in_dev) {
-+			in_dev_for_each_ifa_rtnl_net(net, ifa, in_dev) {
- 				if (strcmp(ifa->ifa_label, devname) == 0)
- 					break;
- 			}
--			rcu_read_unlock();
- 
- 			if (!ifa)
- 				return -ENODEV;
-@@ -635,7 +633,7 @@ int ip_rt_ioctl(struct net *net, unsigned int cmd, struct rtentry *rt)
- 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			return -EPERM;
- 
--		rtnl_lock();
-+		rtnl_net_lock(net);
- 		err = rtentry_to_fib_config(net, cmd, rt, &cfg);
- 		if (err == 0) {
- 			struct fib_table *tb;
-@@ -659,7 +657,7 @@ int ip_rt_ioctl(struct net *net, unsigned int cmd, struct rtentry *rt)
- 			/* allocated by rtentry_to_fib_config() */
- 			kfree(cfg.fc_mx);
- 		}
--		rtnl_unlock();
-+		rtnl_net_unlock(net);
- 		return err;
- 	}
- 	return -EINVAL;
+ 	/* check if this page fault time stamp is before svms->checkpoint_ts */
+ 	if (svms->checkpoint_ts[gpuidx] != 0) {
+-		if (amdgpu_ih_ts_after(ts,  svms->checkpoint_ts[gpuidx])) {
++		if (amdgpu_ih_ts_after_or_equal(ts,  svms->checkpoint_ts[gpuidx])) {
+ 			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
+ 			r = -EAGAIN;
+ 			goto out_unlock_svms;
 -- 
 2.39.5
 
