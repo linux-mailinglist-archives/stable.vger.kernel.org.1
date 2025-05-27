@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FB0AC5953
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D8FAC5619
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAC5B4C0983
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:55:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 423604A42ED
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416D8280A5C;
-	Tue, 27 May 2025 17:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9546927D766;
+	Tue, 27 May 2025 17:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqgG9lFG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGAiECzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF882263F5E;
-	Tue, 27 May 2025 17:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5149A182D7;
+	Tue, 27 May 2025 17:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368528; cv=none; b=cnhCCCwGGn9R+dee7/8VuQPp97zhqqLyxBfjmG80cDgusIJWM1yaMUVCTQH4nYAw0vdOaNjYuLkj7WXihj3CrhNczpEKBjqx8+4npe8P2bpbF8HHMsotqx9hjIpRDOWwJpr+a0tmMC1y0kkxxTGzPIbqoxYqJUm0ebC2Q+5iG8Q=
+	t=1748366229; cv=none; b=Uik6I/gNma7d0OiA9wSa2HoIrqpIxj1yIyvBpejz4kAz0Nd+Z0Us2ikJbcFFlf8b3jG4Qb1NPgKtS6SGVGEfDm2c9C0Hpz1neXLtjscceKhBsV0e+1wGwaILKr28w2uwQYpylhzycmwxl0f+oshiYfX/wK/EfocYiQD3b2PkWPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368528; c=relaxed/simple;
-	bh=0foBsOC6cuwOWvaA3aSDoyaFFPytdh00qO0NqdUWURw=;
+	s=arc-20240116; t=1748366229; c=relaxed/simple;
+	bh=jHC/f4uaG9M3WxwW8EOHmDUrM3ovuVLHyhUqEWHM9ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jhg1GAzjZdVFH3sx4t2vc/UaG71cxD11isR5uUZg3EwVx1SMbWuqk+J/ZW9LayFzxZHXiSK9oT4a5ta2s3NWFXV0wvWf6GplcAyPhvmuRJwRD8asyPkXV/nAEGOxKUgpaG2sxohCTNauJS3l0nbNuvcrnu3BrWh0of9Xtnldec0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqgG9lFG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4FCC4CEEA;
-	Tue, 27 May 2025 17:55:27 +0000 (UTC)
+	 MIME-Version; b=fp4ymCLI2bMTYc9CrbnXTTLWzGLk7MumlwPyWoAj4zadGYEpgUV36wO29CG/CkqPiVg/m7KJXi2ZlKEypVAsjlymeNegHlTRMZq0/VTywZolq/UunsdQVBp9PMNGWIYEncg2vOvBKFfvpmefL4tXMv/tBaV0TSX7DfTsxUdEo7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGAiECzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755A5C4CEE9;
+	Tue, 27 May 2025 17:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368527;
-	bh=0foBsOC6cuwOWvaA3aSDoyaFFPytdh00qO0NqdUWURw=;
+	s=korg; t=1748366228;
+	bh=jHC/f4uaG9M3WxwW8EOHmDUrM3ovuVLHyhUqEWHM9ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqgG9lFGjc1+dGQKiX/AtjndQ/72IPsD3aa7eGj475fBPwjttpIE/goSFGaVHvtAs
-	 JHbLLZS4KE/7Jpwt1NjDkWwu6NO6CQvAHOpTrHNsjAl3321QXebJDZXPnbiOz8pVnQ
-	 oTJrGzpHlx9fq1+yyDlH1dIcOcna5y54Fm9cvB2E=
+	b=pGAiECzWWXU1y+ODYDNrWLpLkyFJJDi6YGhQw4vC7JVzXQCetL+qJpc7WLfh4MM/1
+	 cfSUOfZblPFmYooHpyNbfLZEiKeMjnmNSjoKrPO6qcz5XT44F8FI6xtWbtHjFASXC2
+	 LgMWS35AXHkmE5G1hkGh87D3q4+Bi6rvBKuINPp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 708/783] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
+Subject: [PATCH 6.12 612/626] spi: spi-fsl-dspi: Reset SR flags before sending a new message
 Date: Tue, 27 May 2025 18:28:25 +0200
-Message-ID: <20250527162541.948936694@linuxfoundation.org>
+Message-ID: <20250527162509.868014044@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
+[ Upstream commit 7aba292eb15389073c7f3bd7847e3862dfdf604d ]
 
-While the MDIO address of the internal PHY on Allwinner sun8i chips is
-generally 1, of_mdio_parse_addr is used to cleanly parse the address
-from the device-tree instead of hardcoding it.
+If, in a previous transfer, the controller sends more data than expected
+by the DSPI target, SR.RFDF (RX FIFO is not empty) will remain asserted.
+When flushing the FIFOs at the beginning of a new transfer (writing 1
+into MCR.CLR_TXF and MCR.CLR_RXF), SR.RFDF should also be cleared.
+Otherwise, when running in target mode with DMA, if SR.RFDF remains
+asserted, the DMA callback will be fired before the controller sends any
+data.
 
-A commit reworking the code ditched the parsed value and hardcoded the
-value 1 instead, which didn't really break anything but is more fragile
-and not future-proof.
+Take this opportunity to reset all Status Register fields.
 
-Restore the initial behavior using the parsed address returned from the
-helper.
-
-Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5ce3cc567471 ("spi: spi-fsl-dspi: Provide support for DSPI slave mode operation (Vybryd vf610)")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-3-bea884630cfb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 4b7b2582a1201..9d31fa5bbe15e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -964,7 +964,7 @@ static int sun8i_dwmac_set_syscon(struct device *dev,
- 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
- 		 * address. No need to mask it again.
- 		 */
--		reg |= 1 << H3_EPHY_ADDR_SHIFT;
-+		reg |= ret << H3_EPHY_ADDR_SHIFT;
- 	} else {
- 		/* For SoCs without internal PHY the PHY selection bit should be
- 		 * set to 0 (external PHY).
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 0466a94ea6b5c..7c43df252328d 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -975,6 +975,8 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
+ 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
+ 
++		regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
++
+ 		spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
+ 				       dspi->progress, !dspi->irq);
+ 
 -- 
 2.39.5
 
