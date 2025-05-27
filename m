@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-147657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710AEAC589E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2AEAC58C6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DA333B8793
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A53817A2C6C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463857263B;
-	Tue, 27 May 2025 17:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB9A27FB02;
+	Tue, 27 May 2025 17:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQEucnIe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5bxmOBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0287325A627;
-	Tue, 27 May 2025 17:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996C527BF8D;
+	Tue, 27 May 2025 17:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368024; cv=none; b=iKf0ClV7BRe50CnksK8zGPtJdJ6ehYBllrAmnfJxdp6eCc9ExOl98o/+7rlnmlMo77DNec2DghX5q2tbE+F/bJiHCtFS0WS8dD1qRqsNkn/dikVWhWEFtLfp2g4CsahMHepnJX1gYWBkGAhEkMa3zKQQtkZdwrriU/JF9RkAvJE=
+	t=1748368150; cv=none; b=fUlxovdOSnCw4QmmNp0BdmDv9EhB7lN9BUTlyUTo4OpHP79+1v78dmDJuUzpZOw+92kLkIefU/EOgyQX9pkzMlAbsNasfS41zK4f28PhmRuTgn4O2945/tWKWppPoC2h9BYlMXnRQVjNRPswykMFIpnuFGeKTq5RvS1KHXVZXFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368024; c=relaxed/simple;
-	bh=MDjeEsSvK8JQMVNt6WEw4Nf6onEnDl3AdR5lJQtibqE=;
+	s=arc-20240116; t=1748368150; c=relaxed/simple;
+	bh=4E/PF3bIqFsdkI6q5yNZ2RtESvoxW/kc0fJXeQmdrUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4rdMS7sEyw6GopGcTgPJfM2aVaSn0v/ItEP8f6/7np3Ed8pSmNO1gt5451+IIVL3YEWPKvjk/gvusF0hOOquDu80Ip1AGjtUGtUcZO0qaLfyqo2OZ4gX2/LVJ0oQPZApIeXn4rUSqiEipM3tfpIO/D+QkHWMIzI+lYVH+KsuH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQEucnIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B73C4CEE9;
-	Tue, 27 May 2025 17:47:03 +0000 (UTC)
+	 MIME-Version; b=DpN6WWWf+hOJAOc3HrCWLZCxG5okoyt3PfgPwgufC7H6haryeXvif2O060rjEEnvKRJwqhQhTcXLNU8YoI56rQ5bdEsw5rHGRzPwWMhrwMAykZ7l6KYOnS7aEbHBL2W4sMq1EkbUJDySGEB7noS1v7lcoSWM62dNpMu7/52rU60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5bxmOBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0921CC4CEE9;
+	Tue, 27 May 2025 17:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368023;
-	bh=MDjeEsSvK8JQMVNt6WEw4Nf6onEnDl3AdR5lJQtibqE=;
+	s=korg; t=1748368150;
+	bh=4E/PF3bIqFsdkI6q5yNZ2RtESvoxW/kc0fJXeQmdrUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQEucnIe+YXbNnPs9utm4F5M5ul70zIJrN26qv7N7bSEjgpYdFq3QL8XIOBJrtQ4v
-	 IocTYgLATU8tWfZsgh7rpYaTX7HPYMQDu5UWP+CAJasTLWwMG2/pi7fb5n757haiF6
-	 mKr7x8AcfPcxP9mniug+oS+X2vZ3Pcvl6i+QSW7k=
+	b=q5bxmOBl0m5wc5tkGbT162tUKs2OUjIdHEe8juAyv841Koit4dfHszYLwJ5/4r0Nz
+	 9B65IcrRgfnkYYzT46vUEfGzoiOA1RkShuS9YQ8m3M1j8EYe5fb9M/GCvXXac3VuBk
+	 j6XwmbesMYpbpzzIUPWpH9WaDg4rHticlCQrBD7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 573/783] perf: Avoid the read if the count is already updated
-Date: Tue, 27 May 2025 18:26:10 +0200
-Message-ID: <20250527162536.484103665@linuxfoundation.org>
+Subject: [PATCH 6.14 574/783] ice: count combined queues using Rx/Tx count
+Date: Tue, 27 May 2025 18:26:11 +0200
+Message-ID: <20250527162536.522089276@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -66,142 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Zijlstra (Intel) <peterz@infradead.org>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 8ce939a0fa194939cc1f92dbd8bc1a7806e7d40a ]
+[ Upstream commit c3a392bdd31adc474f1009ee85c13fdd01fe800d ]
 
-The event may have been updated in the PMU-specific implementation,
-e.g., Intel PEBS counters snapshotting. The common code should not
-read and overwrite the value.
+Previous implementation assumes that there is 1:1 matching between
+vectors and queues. It isn't always true.
 
-The PERF_SAMPLE_READ in the data->sample_type can be used to detect
-whether the PMU-specific value is available. If yes, avoid the
-pmu->read() in the common code. Add a new flag, skip_read, to track the
-case.
+Get minimum value from Rx/Tx queues to determine combined queues number.
 
-Factor out a perf_pmu_read() to clean up the code.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250121152303.3128733-3-kan.liang@linux.intel.com
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/perf_event.h  |  8 +++++++-
- kernel/events/core.c        | 33 ++++++++++++++++-----------------
- kernel/events/ring_buffer.c |  1 +
- 3 files changed, 24 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 93ea9c6672f0e..3d5814c6d251c 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1098,7 +1098,13 @@ struct perf_output_handle {
- 	struct perf_buffer		*rb;
- 	unsigned long			wakeup;
- 	unsigned long			size;
--	u64				aux_flags;
-+	union {
-+		u64			flags;		/* perf_output*() */
-+		u64			aux_flags;	/* perf_aux_output*() */
-+		struct {
-+			u64		skip_read : 1;
-+		};
-+	};
- 	union {
- 		void			*addr;
- 		unsigned long		head;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index dda1670b3539a..6fa70b3826d0e 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1191,6 +1191,12 @@ static void perf_assert_pmu_disabled(struct pmu *pmu)
- 	WARN_ON_ONCE(*this_cpu_ptr(pmu->pmu_disable_count) == 0);
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index f241493a6ac88..6bbb304ad9ab7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3817,8 +3817,7 @@ static u32 ice_get_combined_cnt(struct ice_vsi *vsi)
+ 	ice_for_each_q_vector(vsi, q_idx) {
+ 		struct ice_q_vector *q_vector = vsi->q_vectors[q_idx];
  
-+static inline void perf_pmu_read(struct perf_event *event)
-+{
-+	if (event->state == PERF_EVENT_STATE_ACTIVE)
-+		event->pmu->read(event);
-+}
-+
- static void get_ctx(struct perf_event_context *ctx)
- {
- 	refcount_inc(&ctx->refcount);
-@@ -3478,8 +3484,7 @@ static void __perf_event_sync_stat(struct perf_event *event,
- 	 * we know the event must be on the current CPU, therefore we
- 	 * don't need to use it.
- 	 */
--	if (event->state == PERF_EVENT_STATE_ACTIVE)
--		event->pmu->read(event);
-+	perf_pmu_read(event);
+-		if (q_vector->rx.rx_ring && q_vector->tx.tx_ring)
+-			combined++;
++		combined += min(q_vector->num_ring_tx, q_vector->num_ring_rx);
+ 	}
  
- 	perf_event_update_time(event);
- 
-@@ -4625,15 +4630,8 @@ static void __perf_event_read(void *info)
- 
- 	pmu->read(event);
- 
--	for_each_sibling_event(sub, event) {
--		if (sub->state == PERF_EVENT_STATE_ACTIVE) {
--			/*
--			 * Use sibling's PMU rather than @event's since
--			 * sibling could be on different (eg: software) PMU.
--			 */
--			sub->pmu->read(sub);
--		}
--	}
-+	for_each_sibling_event(sub, event)
-+		perf_pmu_read(sub);
- 
- 	data->ret = pmu->commit_txn(pmu);
- 
-@@ -7451,9 +7449,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
- 	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
- 		values[n++] = running;
- 
--	if ((leader != event) &&
--	    (leader->state == PERF_EVENT_STATE_ACTIVE))
--		leader->pmu->read(leader);
-+	if ((leader != event) && !handle->skip_read)
-+		perf_pmu_read(leader);
- 
- 	values[n++] = perf_event_count(leader, self);
- 	if (read_format & PERF_FORMAT_ID)
-@@ -7466,9 +7463,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
- 	for_each_sibling_event(sub, leader) {
- 		n = 0;
- 
--		if ((sub != event) &&
--		    (sub->state == PERF_EVENT_STATE_ACTIVE))
--			sub->pmu->read(sub);
-+		if ((sub != event) && !handle->skip_read)
-+			perf_pmu_read(sub);
- 
- 		values[n++] = perf_event_count(sub, self);
- 		if (read_format & PERF_FORMAT_ID)
-@@ -7527,6 +7523,9 @@ void perf_output_sample(struct perf_output_handle *handle,
- {
- 	u64 sample_type = data->type;
- 
-+	if (data->sample_flags & PERF_SAMPLE_READ)
-+		handle->skip_read = 1;
-+
- 	perf_output_put(handle, *header);
- 
- 	if (sample_type & PERF_SAMPLE_IDENTIFIER)
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 09459647cb822..5130b119d0ae0 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -185,6 +185,7 @@ __perf_output_begin(struct perf_output_handle *handle,
- 
- 	handle->rb    = rb;
- 	handle->event = event;
-+	handle->flags = 0;
- 
- 	have_lost = local_read(&rb->lost);
- 	if (unlikely(have_lost)) {
+ 	return combined;
 -- 
 2.39.5
 
