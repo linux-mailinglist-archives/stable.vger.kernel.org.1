@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D21AC5886
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AF1AC5529
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1D028A772F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 918EC7A71B1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568CC25A627;
-	Tue, 27 May 2025 17:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2709270831;
+	Tue, 27 May 2025 17:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXT2jiej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXCt1qqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123621FB3;
-	Tue, 27 May 2025 17:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FE927A929;
+	Tue, 27 May 2025 17:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367969; cv=none; b=d6KmNeAkMiRW/I2pF7/4s15ztT+Gx1pEbeJSgVeDkAwPwO1wVDq4WoShkuzn97lIOZ0IWPpuydOq8W/RBl9D42vkTT/CwaDQjC2S1b2dlghGgdTUM1dhBctBaItiPVycH1CBKwu8mit61Ijy50piP6W5Ut6TSTa/vLS8qukWGA8=
+	t=1748365705; cv=none; b=DB2KKWWhXj8raZYTh8Sj5By0i2R4ptc0xtUwcBzZV+B73ISKukgRtMnNilO1Tfvm+MNpgX9kzHOK1/1sBUz+Png8ALaKsED9tER3f8bSNosQHcP8Ib33+DuxmUUOHM6mE1rmsVJKIRL6wE0X7G7b/9a+dcIa7WQESbaT+9bXxOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367969; c=relaxed/simple;
-	bh=3i7/8Udf2S1/feShLNz9jWT4haln+DlZYZoxG9Q6NKg=;
+	s=arc-20240116; t=1748365705; c=relaxed/simple;
+	bh=kB2BD9viQz3nGOPgZYgfHrpBSGZrSrTtrNMaYjjInpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=liw17Oz+nEo4f/bThY4dOGJwgogNxLFO1AbO+zVT+YBOBBxgfSKjQ3P/fWZ178XuHkPP8UDh1pX1K94y6D+2EwJiSdeM7o0QCewk7j4ycdqquQ0TorF+jmGRRW89qRxDi9+Jdb4b8v2rJEoFgfcwG30oet00fbcyEThhzbtYJZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXT2jiej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D6CC4CEE9;
-	Tue, 27 May 2025 17:46:08 +0000 (UTC)
+	 MIME-Version; b=KL7V5rsHOHEgXtaHvBvfEDmjwzVwtak0FOO33JH+INDGRcEr8AIHKsohIl1lnw7uDMNHPVwS+bFfDJAabSKsq2FcZ+QrsPEj2t7+Gz+ZitlmNB1tE0xSl7VZ7g4xkgazDcmr+w6wuRa2LoodEzCNAqK8zrA8wb/lBJX1g/6YU1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXCt1qqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2D0C4CEE9;
+	Tue, 27 May 2025 17:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367968;
-	bh=3i7/8Udf2S1/feShLNz9jWT4haln+DlZYZoxG9Q6NKg=;
+	s=korg; t=1748365705;
+	bh=kB2BD9viQz3nGOPgZYgfHrpBSGZrSrTtrNMaYjjInpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXT2jiejhQoAQA2P/NQeMlUlYSvnMfu+hKfbuT62vBBi5kI9C3emN7tiwrBV+ECSG
-	 f9ocdNK7j0223EbhXk0YP1G+w6VobtQhDt3MEb4u8R9F1ffhG7laYLDjKq64/AtLQx
-	 L0nnU49UY76hIYlvjYRJrSIoC4KGx9SugzrP/kkA=
+	b=eXCt1qqIuICuQpF3TCSHwSY4EiYTppFCdVguwdHwZluDDBIOSAa9z6wJDom/4PMEo
+	 t9SLXTgBpLjI++WxK0R9yh39PiHnwMv4rU/NDFYcy3r+Pq+OmZNiurYK5S0Bu1mdf5
+	 mO99mU5ooNCtdss5Q8Jqwyo3Ni/5hfUcOQfxB0C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Depeng Shao <quic_depengs@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 557/783] media: qcom: camss: Add default case in vfe_src_pad_code
-Date: Tue, 27 May 2025 18:25:54 +0200
-Message-ID: <20250527162535.830819999@linuxfoundation.org>
+Subject: [PATCH 6.12 462/626] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
+Date: Tue, 27 May 2025 18:25:55 +0200
+Message-ID: <20250527162503.774641311@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Depeng Shao <quic_depengs@quicinc.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 2f4204bb00b32eca3391a468d3b37e87feb96fa9 ]
+[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
 
-Add a default case in vfe_src_pad_code to get rid of a compile
-warning if a new hw enum is added.
+After a port swap between separate fabrics, there may be multiple nodes in
+the vport's fc_nodes list with the same fabric well known address.
+Duplication is temporary and eventually resolves itself after dev_loss_tmo
+expires, but nameserver queries may still occur before dev_loss_tmo.  This
+possibly results in returning stale fabric ndlp objects.  Fix by adding an
+nlp_state check to ensure the ndlp search routine returns the correct newer
+allocated ndlp fabric object.
 
-Signed-off-by: Depeng Shao <quic_depengs@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/media/platform/qcom/camss/camss-vfe.c
-index 95f6a1ac7eaf5..3c5811c6c028e 100644
---- a/drivers/media/platform/qcom/camss/camss-vfe.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe.c
-@@ -400,6 +400,10 @@ static u32 vfe_src_pad_code(struct vfe_line *line, u32 sink_code,
- 			return sink_code;
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 6e8d8a96c54fb..31dcabebc9b6d 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5622,6 +5622,7 @@ static struct lpfc_nodelist *
+ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ {
+ 	struct lpfc_nodelist *ndlp;
++	struct lpfc_nodelist *np = NULL;
+ 	uint32_t data1;
+ 
+ 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
+@@ -5636,14 +5637,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ 					 ndlp, ndlp->nlp_DID,
+ 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
+ 					 ndlp->active_rrqs_xri_bitmap);
+-			return ndlp;
++
++			/* Check for new or potentially stale node */
++			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
++				return ndlp;
++			np = ndlp;
  		}
- 		break;
-+	default:
-+		WARN(1, "Unsupported HW version: %x\n",
-+		     vfe->camss->res->version);
-+		break;
  	}
- 	return 0;
+ 
+-	/* FIND node did <did> NOT FOUND */
+-	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
+-			 "0932 FIND node did x%x NOT FOUND.\n", did);
+-	return NULL;
++	if (!np)
++		/* FIND node did <did> NOT FOUND */
++		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
++				 "0932 FIND node did x%x NOT FOUND.\n", did);
++
++	return np;
  }
+ 
+ struct lpfc_nodelist *
 -- 
 2.39.5
 
