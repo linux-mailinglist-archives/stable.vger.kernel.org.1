@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-147012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35503AC55BC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF216AC58F8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA871BA6A18
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 157E07A8122
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F2127F16A;
-	Tue, 27 May 2025 17:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4580E27FD64;
+	Tue, 27 May 2025 17:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcPibci+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1b//tMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D25278750;
-	Tue, 27 May 2025 17:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0096D2566;
+	Tue, 27 May 2025 17:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366001; cv=none; b=a5AvZvK3/AZ/R5BD/gdOeddyz0nO9Ld2XJpl8QHymWsihNJvltXrHICvyb8bDCcz6XHVlOAN/hrhvarHZXUQb1tlkHfZJ9tgkbhf0amxDfrJ6WPwaEibju//cPX96qg2aUwIDyTUM8iIN/4mVrPrO9TYv1FcuSNNf0Xj+kH6pOM=
+	t=1748368277; cv=none; b=ajRez6hWdqxGkAGmyFr6CfNJDAeRvNuHRNzlgmei4U7+5w+zvD/ONrhjVm20MwhKakPsJjMqVsuneWYyAaUUTAh02ulNx6OPviE4YQ6nXQJSVQVFRzKYboc8B4vuJcoCuXT71tCBSScPE+Gk9OLt/MHKXbqfli2ajElsOqqhn9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366001; c=relaxed/simple;
-	bh=wCS/mD26Lx9WvipeIqiqJoHgna6tQ2Z7Ihvnklyw/4E=;
+	s=arc-20240116; t=1748368277; c=relaxed/simple;
+	bh=eJ2MYl0WT0vINrnNJYbf7NUipbE+P1Z49JqIQFFbKCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxbCh652oHmhmybeclL90urxCl/JgxBb78uMqzmCtjehIm/nI/AlD5gRL8oyOKevePkhWtCdJoKqWRI+bhZpPCVWffKwzGGJsLfH8bNZVQFtaqW0D9Gona02/ts9eT4Qj/5nZUWzqK6RZ/u8sWFzUskT2r85G9UdwauOo+srRj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcPibci+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047A0C4CEE9;
-	Tue, 27 May 2025 17:13:19 +0000 (UTC)
+	 MIME-Version; b=RlLM5CIHdhKzYAee6gBk6zVjWtkqvFtmIiAXgpiy75ReZ7h9PDDo5ChhWo6PzBv7ti0gw98wGhThNEJsJh8wVIKyIXouS4aSzSdjv8qmmiq4MjCiybIhyrOFV5kqokdvtm30XEjkgtgSslHHYV90p9bm7AN6c+4hULvW93gG8MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1b//tMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62554C4CEE9;
+	Tue, 27 May 2025 17:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366000;
-	bh=wCS/mD26Lx9WvipeIqiqJoHgna6tQ2Z7Ihvnklyw/4E=;
+	s=korg; t=1748368276;
+	bh=eJ2MYl0WT0vINrnNJYbf7NUipbE+P1Z49JqIQFFbKCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcPibci+uDiiQVNF3y7mjL/h9txkdTMalyEzRi7dqaS1uTc2ljov76QzS71ThxD/H
-	 2QApR5nQeuEuGeSiA01eQlxNnpmwrNwUV0DOA4UJEq2+54SXHm6t5rUaA8eundldWi
-	 KD9pZ3RIa7XpIUiuDqcoR+DalGwpUXV/NTNxF8bE=
+	b=p1b//tMz4C4WIkMItlKFJIqg3LBjNwVCoX4ee56ep/FIU+UVMYw3Xt3klSJETUVVp
+	 u8P9mEK7FO6HwnNAnQ/DdiRM9rwt/92vQem5niAS2TzPxAJaJ7vZ9nBYePWxqEoGm+
+	 kRxrFjAknSRCeK791zo3XsM2QQkfPUeRfjf4FE0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 559/626] pinctrl: qcom: switch to devm_register_sys_off_handler()
-Date: Tue, 27 May 2025 18:27:32 +0200
-Message-ID: <20250527162507.680984785@linuxfoundation.org>
+Subject: [PATCH 6.14 656/783] ALSA: hda/realtek: Add quirk for HP Spectre x360 15-df1xxx
+Date: Tue, 27 May 2025 18:27:33 +0200
+Message-ID: <20250527162539.839917040@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 41e452e6933d14146381ea25cff5e4d1ac2abea1 ]
+[ Upstream commit be0c40da888840fe91b45474cb70779e6cbaf7ca ]
 
-Error-handling paths in msm_pinctrl_probe() don't call
-a function required to unroll restart handler registration,
-unregister_restart_handler(). Instead of adding calls to this function,
-switch the msm pinctrl code into using devm_register_sys_off_handler().
+HP Spectre x360 15-df1xxx with SSID 13c:863e requires similar
+workarounds that were applied to another HP Spectre x360 models;
+it has a mute LED only, no micmute LEDs, and needs the speaker GPIO
+seup.
 
-Fixes: cf1fc1876289 ("pinctrl: qcom: use restart_notifier mechanism for ps_hold")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/20250513-pinctrl-msm-fix-v2-2-249999af0fc1@oss.qualcomm.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220054
+Link: https://patch.msgid.link/20250427081035.11567-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ sound/pci/hda/patch_realtek.c | 42 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
-index a6bdff7a0bb25..018e96d921c05 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -43,7 +43,6 @@
-  * @pctrl:          pinctrl handle.
-  * @chip:           gpiochip handle.
-  * @desc:           pin controller descriptor
-- * @restart_nb:     restart notifier block.
-  * @irq:            parent irq for the TLMM irq_chip.
-  * @intr_target_use_scm: route irq to application cpu using scm calls
-  * @lock:           Spinlock to protect register resources as well
-@@ -63,7 +62,6 @@ struct msm_pinctrl {
- 	struct pinctrl_dev *pctrl;
- 	struct gpio_chip chip;
- 	struct pinctrl_desc desc;
--	struct notifier_block restart_nb;
- 
- 	int irq;
- 
-@@ -1470,10 +1468,9 @@ static int msm_gpio_init(struct msm_pinctrl *pctrl)
- 	return 0;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 025c80fa68b05..244fb8f9989b4 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6963,6 +6963,41 @@ static void alc285_fixup_hp_spectre_x360_eb1(struct hda_codec *codec,
+ 	}
  }
  
--static int msm_ps_hold_restart(struct notifier_block *nb, unsigned long action,
--			       void *data)
-+static int msm_ps_hold_restart(struct sys_off_data *data)
- {
--	struct msm_pinctrl *pctrl = container_of(nb, struct msm_pinctrl, restart_nb);
-+	struct msm_pinctrl *pctrl = data->cb_data;
- 
- 	writel(0, pctrl->regs[0] + PS_HOLD_OFFSET);
- 	mdelay(1000);
-@@ -1484,7 +1481,11 @@ static struct msm_pinctrl *poweroff_pctrl;
- 
- static void msm_ps_hold_poweroff(void)
- {
--	msm_ps_hold_restart(&poweroff_pctrl->restart_nb, 0, NULL);
-+	struct sys_off_data data = {
-+		.cb_data = poweroff_pctrl,
++/* GPIO1 = amplifier on/off */
++static void alc285_fixup_hp_spectre_x360_df1(struct hda_codec *codec,
++					     const struct hda_fixup *fix,
++					     int action)
++{
++	struct alc_spec *spec = codec->spec;
++	static const hda_nid_t conn[] = { 0x02 };
++	static const struct hda_pintbl pincfgs[] = {
++		{ 0x14, 0x90170110 },  /* front/high speakers */
++		{ 0x17, 0x90170130 },  /* back/bass speakers */
++		{ }
 +	};
 +
-+	msm_ps_hold_restart(&data);
- }
- 
- static void msm_pinctrl_setup_pm_reset(struct msm_pinctrl *pctrl)
-@@ -1494,9 +1495,11 @@ static void msm_pinctrl_setup_pm_reset(struct msm_pinctrl *pctrl)
- 
- 	for (i = 0; i < pctrl->soc->nfunctions; i++)
- 		if (!strcmp(func[i].name, "ps_hold")) {
--			pctrl->restart_nb.notifier_call = msm_ps_hold_restart;
--			pctrl->restart_nb.priority = 128;
--			if (register_restart_handler(&pctrl->restart_nb))
-+			if (devm_register_sys_off_handler(pctrl->dev,
-+							  SYS_OFF_MODE_RESTART,
-+							  128,
-+							  msm_ps_hold_restart,
-+							  pctrl))
- 				dev_err(pctrl->dev,
- 					"failed to setup restart handler.\n");
- 			poweroff_pctrl = pctrl;
-@@ -1598,8 +1601,6 @@ void msm_pinctrl_remove(struct platform_device *pdev)
- 	struct msm_pinctrl *pctrl = platform_get_drvdata(pdev);
- 
- 	gpiochip_remove(&pctrl->chip);
--
--	unregister_restart_handler(&pctrl->restart_nb);
- }
- EXPORT_SYMBOL(msm_pinctrl_remove);
- 
++	// enable mute led
++	alc285_fixup_hp_mute_led_coefbit(codec, fix, action);
++
++	switch (action) {
++	case HDA_FIXUP_ACT_PRE_PROBE:
++		/* needed for amp of back speakers */
++		spec->gpio_mask |= 0x01;
++		spec->gpio_dir |= 0x01;
++		snd_hda_apply_pincfgs(codec, pincfgs);
++		/* share DAC to have unified volume control */
++		snd_hda_override_conn_list(codec, 0x14, ARRAY_SIZE(conn), conn);
++		snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
++		break;
++	case HDA_FIXUP_ACT_INIT:
++		/* need to toggle GPIO to enable the amp of back speakers */
++		alc_update_gpio_data(codec, 0x01, true);
++		msleep(100);
++		alc_update_gpio_data(codec, 0x01, false);
++		break;
++	}
++}
++
+ static void alc285_fixup_hp_spectre_x360(struct hda_codec *codec,
+ 					  const struct hda_fixup *fix, int action)
+ {
+@@ -7743,6 +7778,7 @@ enum {
+ 	ALC280_FIXUP_HP_9480M,
+ 	ALC245_FIXUP_HP_X360_AMP,
+ 	ALC285_FIXUP_HP_SPECTRE_X360_EB1,
++	ALC285_FIXUP_HP_SPECTRE_X360_DF1,
+ 	ALC285_FIXUP_HP_ENVY_X360,
+ 	ALC288_FIXUP_DELL_HEADSET_MODE,
+ 	ALC288_FIXUP_DELL1_MIC_NO_PRESENCE,
+@@ -9818,6 +9854,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_spectre_x360_eb1
+ 	},
++	[ALC285_FIXUP_HP_SPECTRE_X360_DF1] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc285_fixup_hp_spectre_x360_df1
++	},
+ 	[ALC285_FIXUP_HP_ENVY_X360] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_envy_x360,
+@@ -10541,6 +10581,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
++	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+@@ -11457,6 +11498,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
+ 	{.id = ALC295_FIXUP_HP_OMEN, .name = "alc295-hp-omen"},
+ 	{.id = ALC285_FIXUP_HP_SPECTRE_X360, .name = "alc285-hp-spectre-x360"},
+ 	{.id = ALC285_FIXUP_HP_SPECTRE_X360_EB1, .name = "alc285-hp-spectre-x360-eb1"},
++	{.id = ALC285_FIXUP_HP_SPECTRE_X360_DF1, .name = "alc285-hp-spectre-x360-df1"},
+ 	{.id = ALC285_FIXUP_HP_ENVY_X360, .name = "alc285-hp-envy-x360"},
+ 	{.id = ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP, .name = "alc287-ideapad-bass-spk-amp"},
+ 	{.id = ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN, .name = "alc287-yoga9-bass-spk-pin"},
 -- 
 2.39.5
 
