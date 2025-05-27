@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-147882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F7DAC5AEE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 21:45:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86983AC5AEF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 21:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73AA28A2134
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 482751BA6781
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383932DCBF0;
-	Tue, 27 May 2025 19:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B411BF58;
+	Tue, 27 May 2025 19:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b="Ox9w5Kfx"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b="KO79ENi7"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC35354F81
-	for <stable@vger.kernel.org>; Tue, 27 May 2025 19:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88E745009
+	for <stable@vger.kernel.org>; Tue, 27 May 2025 19:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748375115; cv=none; b=Rspjr0VGhoUh/VjUkC8xGXDTBrNfjFyNvfNXv5+p2HjtIGDtoi4Rxp+/bGfHW6MgPcWMseTwTD7y6QAme4WC/3AqacRw5cMZYupXfY1KEI56e/W9IPgriOqgD8uXb0lYYx0P4AhBh4FA5zVDAW891ut4nf8kVY2GVOdzwc0//eg=
+	t=1748375120; cv=none; b=uytKe3MIQ1VW0CA5j1jxfYKU3WoRWfstmzeMrFE2PJN5EuFxGijAx246GrYQGJN7Ffbjk2DH7X3nk2ApaHLmWJCXsQlMFieWhHIBKT7RIB6pWYdugA5nsjiEbg6ZZge05K2Ycq01A+bzQ+Xbe0UZEjloGckbcvh3VVfSC2TkwZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748375115; c=relaxed/simple;
-	bh=7uFjyvxlMG9Jro52mtHPkeSk3WljRlHZIKEUy4WdKzc=;
+	s=arc-20240116; t=1748375120; c=relaxed/simple;
+	bh=hHiXx2dfR2wI9B4j1fNfS+yi4xkIC+xvmn+Bm3chrao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BU9pbJCBaMX3Zlp1r5YipWacvL+/her6kyabmPBZrt+GK5B2aqjFuc9/kjQ7UsDaDA1hNdyjcwUSZ5yO/JuxRW1aXnJqGawfchXUzQ3NOT6Xja3dLl1iXD7qOQKrTC5g95lx6dOpWuamqU2ed4LqcKvd3C62CYQLyyPQXNbvS7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b=Ox9w5Kfx; arc=none smtp.client-ip=212.227.15.15
+	 MIME-Version; b=d6o2kug9Cp1ig2SlTHa2jqhSUYP5FkIDoBjzN6QDwvwiJkIdG8nXND2b4ozLAbcU3CseVyCKMlipJITLK3t4zOkLsoDwtswusTMWtQn/giiLX2TlhNaiz3wzVNdcungFErT3W6zlpofAAmhjWD1htU139WxdRi8P0BKd0gOGuNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b=KO79ENi7; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1748375099; x=1748979899; i=natalie.vock@gmx.de;
-	bh=yy55+GQV07DU1PlzulpC7ZxEesUJ7cu0Lq4pW8qpSO8=;
+	s=s31663417; t=1748375100; x=1748979900; i=natalie.vock@gmx.de;
+	bh=Epo7gdDY+vOcQ702mnbNNZX+jejI0N2QF3Cp5n8Mdvg=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=Ox9w5KfxuQqHQbX5WA7aHw/zkE1JIBgYtSfmKgMVW7QESlzq+TGKOo0LaIMINhQR
-	 io00drwGalWBHCg0EmJuGrC0pDKiCPJLZAZXqrHNSfrnxeTPgv/7QE+0AnFFRVm4O
-	 Vr1T/V0PCUh1Yalw/SUMxFxvcYGVuCjdE/TRlhTUpSqwaVEeQpyePC+FrOKGicYQE
-	 MVWJhmyAZVieNSEi+fddmpmTVdPZo7QvtKwmjV1SmL5ugEr9L4yRtr/l75j+/lyWO
-	 ho5ST6gD63xjwh0zzbA3G3cUGHf6V/S+yHpCLwUpruS8ea/0+VSauIZHejiGEq22S
-	 agGFPx4ow1mMaUKhSw==
+	b=KO79ENi75rosQ7YihlsEZFqOBvuVfmzURf+LqZT71tZ6JHFVkGvf+W6uqqZIoTPO
+	 3X6aUNJfSqH8ctHv6lUqVbi4jdJDJTbYM+9bXu44VF32STVpXtOOLA0RHSvBKhgr6
+	 3u+9ICGcfwtnduJcPZqBHT5nPaOl4FVxfhWpgPEEmYH+UeXgwBu9DjMMjGK/JCh8i
+	 0dEjaC698a8IqytsGBcvqGNyhuzAI9TtcdwG4cRvpV/ok+KJdM4IfWb6d9cAermve
+	 pZnKsdmEUkN9rIXRBqdavt0eg9p+HpFP970hP4QMZ9iyekx2UyxK7aNykVq3eqbkr
+	 7Q45UOhkuxu1o+b4+Q==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from localhost.localdomain ([109.91.201.165]) by mail.gmx.net
  (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MMGRA-1ua0wn2Pva-00LF1d; Tue, 27 May 2025 21:44:59 +0200
+ 1N1fn0-1v4RwC0iTo-010ZmR; Tue, 27 May 2025 21:45:00 +0200
 From: Natalie Vock <natalie.vock@gmx.de>
 To: amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
@@ -61,9 +61,9 @@ Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
 	Natalie Vock <natalie.vock@gmx.de>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] drm/buddy: Add public helper to dirty blocks
-Date: Tue, 27 May 2025 21:43:52 +0200
-Message-ID: <20250527194353.8023-2-natalie.vock@gmx.de>
+Subject: [PATCH 2/2] drm/amdgpu: Dirty cleared blocks on allocation
+Date: Tue, 27 May 2025 21:43:53 +0200
+Message-ID: <20250527194353.8023-3-natalie.vock@gmx.de>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527194353.8023-1-natalie.vock@gmx.de>
 References: <20250527194353.8023-1-natalie.vock@gmx.de>
@@ -74,88 +74,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:euWBSkH/f7kf5t01BmVT6vYLv/uqhWZUx+ZzS3mguzTWxtVN4Y8
- GT6j+7qC2TDS2a+S7udASu0bTcRn//gdrL/ailn3KPDRtP2Vpsqk8RmPqf667NtjCMraBPg
- c9hrBvdBEUaMkoSsEaR+MAPdfkN63yjkna0iPiAXCoQEkH/G2KDHln/5u9rILPH5d56Is/r
- Ch8Kn64dT8ZIbLj/zsC0A==
+X-Provags-ID: V03:K1:dVN3WfoLH9ABYbROuTDWX1Z+A+OBgwagxLhxW+cGgjpcFCPxYCu
+ XNXy1Yp2jZ5/6MYMiPa059jv/yLqLt4qg1dFVWkkWqujUgXxqgon+l+57ftOw8nfZFNxQ61
+ zogG6E6WHfaLABbUo4WYtl+O/P7VYEf3+qTtYVYh4ShfOZG8sJp8tpDORQmDecmBCUpKJuX
+ vwEXFPWZc3tAr54fIafdQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:+tnUOAMDi18=;teqbMi9YqtVcxHYenirkFNud8Pe
- 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
+UI-OutboundReport: notjunk:1;M01:P0:OErwcn66BHM=;WVvaVE2TNzq9K5+1M50x7eaeknC
+ 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
+ L1ZHfKoIUTKPoogM
 
-Cleared blocks that are handed out to users after allocation cannot be
-presumed to remain cleared. Thus, allocators using drm_buddy need to
-dirty all blocks on the allocation success path. Provide a helper for
-them to use.
+If we hand out cleared blocks to users, they are expected to write
+at least some non-zero values somewhere. If we keep the CLEAR bit set on
+the block, amdgpu_fill_buffer will assume there is nothing to do and
+incorrectly skip clearing the block. Ultimately, the (still dirty) block
+will be reused as if it were cleared, without any wiping of the memory
+contents.
 
-Fixes: 96950929eb232 ("drm/buddy: Implement tracking clear page feature")
+Most severely, this means that any buffer allocated with
+AMDGPU_GEM_CREATE_VRAM_CLEARED | AMDGPU_GEM_CREATE_WIPE_ON_RELEASE
+(which is the case for **all userspace buffers**) are neither
+guaranteed to contain cleared VRAM, nor are they being wiped on
+release, potentially leaking application memory to arbitrary other
+applications.
+
+Fixes: a68c7eaa7a8ff ("drm/amdgpu: Enable clear page functionality")
 Cc: stable@vger.kernel.org
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
 
 Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
 =2D--
- include/drm/drm_buddy.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
-index 9689a7c5dd36..48628ff1c24f 100644
-=2D-- a/include/drm/drm_buddy.h
-+++ b/include/drm/drm_buddy.h
-@@ -142,6 +142,12 @@ drm_buddy_block_size(struct drm_buddy *mm,
- 	return mm->chunk_size << drm_buddy_block_order(block);
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/dr=
+m/amd/amdgpu/amdgpu_vram_mgr.c
+index 2d7f82e98df9..cecc67d0f0b8 100644
+=2D-- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -591,6 +591,13 @@ static int amdgpu_vram_mgr_new(struct ttm_resource_ma=
+nager *man,
+ 	list_for_each_entry(block, &vres->blocks, link) {
+ 		unsigned long start;
 =20
-+static inline void
-+drm_buddy_block_set_dirty(struct drm_buddy_block *block)
-+{
-+	block->header &=3D ~DRM_BUDDY_HEADER_CLEAR;
-+}
++		/*
++		 * Allocated blocks may be dirtied as soon as we return.
++		 * Mark all blocks as dirty here, otherwise we might
++		 * incorrectly assume the memory is still zeroed.
++		 */
++		drm_buddy_block_set_dirty(block);
 +
- int drm_buddy_init(struct drm_buddy *mm, u64 size, u64 chunk_size);
-=20
- void drm_buddy_fini(struct drm_buddy *mm);
+ 		start =3D amdgpu_vram_mgr_block_start(block) +
+ 			amdgpu_vram_mgr_block_size(block);
+ 		start >>=3D PAGE_SHIFT;
 =2D-=20
 2.49.0
 
