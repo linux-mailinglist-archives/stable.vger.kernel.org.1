@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-146955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEF8AC55B2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AB8AC58B1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37B863B1E6E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E101BC2A13
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C2327CB04;
-	Tue, 27 May 2025 17:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFF227E7CF;
+	Tue, 27 May 2025 17:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9YyzGLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wppnIvK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56032139579;
-	Tue, 27 May 2025 17:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D9E27BF8D;
+	Tue, 27 May 2025 17:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365826; cv=none; b=JQToNPEjQv/xebNA/kucSEbWPj4AXD65TNVHwNumEyY8XQ7Ob0KZB55G39Ju1ZNGgSY1FSiSQbldG69f6Um3kLbcHTPSvJMhalTGjJ5QA8bzZywrbj8lELI4D09HbXWCuX9XyREGefS9kDnnSgZbv4pFTQZK8sX/GkemOKxxR6Q=
+	t=1748368097; cv=none; b=FSa/VmW6guezh2CX9hiNnzLOIhMDdHMuvLcsmyZUGUjFxKidyeDMqJgUQPzYfzTB5IW9HrsJrvzoVVWeskcU8xKBCBNzT5YNYM7RuOgosgcfCKMqH6Jt3c75n0rjQGK0NmzKuF/4g9/2byzg4e1/yUkp+KrIit8wUUNH3K7y0d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365826; c=relaxed/simple;
-	bh=NjlJsRqsMkGNJrvMAT5vgvZXEgBybbuwypXFsLFb+uQ=;
+	s=arc-20240116; t=1748368097; c=relaxed/simple;
+	bh=EHsMu1IxQOcnZQdTwwXK7plbseNrPTgyF0X6X7cDQAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ezu8uyGzyMFXbuhawZNd+E8U9voiBpXYiBzeiNZasExaKhRRbnDgBDlEPBVWYU29hPhPxv8N+6NXCEGaS0zXbncqlUU2/U0BmGsaGvYK+Bc0bX7q6NU2aDOVtoOay9/7J+vZwYtiXg58y5Ja3He+6eauE1E4jKuJKw9cUgGJ4r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9YyzGLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F1AC4CEE9;
-	Tue, 27 May 2025 17:10:25 +0000 (UTC)
+	 MIME-Version; b=OwFqo8tE5zv4//roXBvnjaQ39PRty29istJBdo2/9p1nOKf31iq3SmKlvbwYGCyKSykJA53/XTJCApIErMViUEx3fsNLn8F9zRiT3UzCxigAVBG45S5NjV9UKcJkstH2711pdI0r5115zQbB0kys51HGOEn608kRVRT+bj7ul/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wppnIvK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3021CC4CEE9;
+	Tue, 27 May 2025 17:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365826;
-	bh=NjlJsRqsMkGNJrvMAT5vgvZXEgBybbuwypXFsLFb+uQ=;
+	s=korg; t=1748368097;
+	bh=EHsMu1IxQOcnZQdTwwXK7plbseNrPTgyF0X6X7cDQAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9YyzGLDXfBg0GyiNGaQPuen65z4nPyeijRu16XV3QT91fMKh1BxHlEJ0C2jzMeEv
-	 NggkNqEf3dG4T47Iej5B8lEDGc66vi343OILsKftPgpWgutynW+jHUQ1bhr9+RgvLx
-	 s4D1y+MW8gf9BdUy8TQd6adS6pAEp307jaANeW/w=
+	b=wppnIvK+hC58AQ19pgxlkeWrgV4mwpyl/6DxpMtJFkIYXt3VfMQxgAeOoLhbu7OeM
+	 8eRbePk4MqE0GQXEfFtfhQnQjWmsfPvqU1u7n4/Mi5BsW9wx+56yJwhZtRP2PYMrhE
+	 8iFYdbi4ThNb4EEPfV2A4HuKCbSqdtirqEFSClpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pekka Paalanen <pekka.paalanen@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Rob Clark <robdclark@gmail.com>,
-	Simon Ser <contact@emersion.fr>,
-	Manasi Navare <navaremanasi@google.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Simona Vetter <simona.vetter@intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 501/626] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
+Subject: [PATCH 6.14 597/783] clk: renesas: rzg2l-cpg: Refactor Runtime PM clock validation
 Date: Tue, 27 May 2025 18:26:34 +0200
-Message-ID: <20250527162505.329708456@linuxfoundation.org>
+Message-ID: <20250527162537.450260037@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,92 +60,169 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simona Vetter <simona.vetter@ffwll.ch>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
+[ Upstream commit f6f73b891bf6beff069fcacc7b4a796e1009bf26 ]
 
-msm is automagically upgrading normal commits to full modesets, and
-that's a big no-no:
+Refactor rzg2l_cpg_attach_dev to delegate clock validation for Runtime PM
+to the updated rzg2l_cpg_is_pm_clk function. Ensure validation of clocks
+associated with the power domain while excluding external and core clocks.
+Prevent incorrect Runtime PM management for clocks outside the domain's
+scope.
 
-- for one this results in full on->off->on transitions on all these
-  crtc, at least if you're using the usual helpers. Which seems to be
-  the case, and is breaking uapi
+Update rzg2l_cpg_is_pm_clk to operate on a per-power-domain basis. Verify
+clkspec.np against the domain's device node, check argument validity, and
+validate clock type (CPG_MOD). Use the no_pm_mod_clks array to exclude
+specific clocks from PM management.
 
-- further even if the ctm change itself would not result in flicker,
-  this can hide modesets for other reasons. Which again breaks the
-  uapi
-
-v2: I forgot the case of adding unrelated crtc state. Add that case
-and link to the existing kerneldoc explainers. This has come up in an
-irc discussion with Manasi and Ville about intel's bigjoiner mode.
-Also cc everyone involved in the msm irc discussion, more people
-joined after I sent out v1.
-
-v3: Wording polish from Pekka and Thomas
-
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Simon Ser <contact@emersion.fr>
-Cc: Manasi Navare <navaremanasi@google.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20241216210201.239855-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 102 +++++++++++++++++---------------
+ 1 file changed, 54 insertions(+), 48 deletions(-)
 
-diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
-index 31ca88deb10d2..1ded9a8d4e84d 100644
---- a/include/drm/drm_atomic.h
-+++ b/include/drm/drm_atomic.h
-@@ -376,8 +376,27 @@ struct drm_atomic_state {
- 	 *
- 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
- 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
--	 * never consult this flag, instead looking at the output of
--	 * drm_atomic_crtc_needs_modeset().
-+	 * generally not consult this flag, but instead look at the output of
-+	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
-+	 *
-+	 * - Drivers must not consult @allow_modeset in the atomic commit path.
-+	 *   Use drm_atomic_crtc_needs_modeset() instead.
-+	 *
-+	 * - Drivers must consult @allow_modeset before adding unrelated struct
-+	 *   drm_crtc_state to this commit by calling
-+	 *   drm_atomic_get_crtc_state(). See also the warning in the
-+	 *   documentation for that function.
-+	 *
-+	 * - Drivers must never change this flag, it is under the exclusive
-+	 *   control of userspace.
-+	 *
-+	 * - Drivers may consult @allow_modeset in the atomic check path, if
-+	 *   they have the choice between an optimal hardware configuration
-+	 *   which requires a modeset, and a less optimal configuration which
-+	 *   can be committed without a modeset. An example would be suboptimal
-+	 *   scanout FIFO allocation resulting in increased idle power
-+	 *   consumption. This allows userspace to avoid flickering and delays
-+	 *   for the normal composition loop at reasonable cost.
- 	 */
- 	bool allow_modeset : 1;
- 	/**
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index 4bd8862dc82be..91928db411dcd 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -1549,28 +1549,6 @@ static int rzg2l_cpg_reset_controller_register(struct rzg2l_cpg_priv *priv)
+ 	return devm_reset_controller_register(priv->dev, &priv->rcdev);
+ }
+ 
+-static bool rzg2l_cpg_is_pm_clk(struct rzg2l_cpg_priv *priv,
+-				const struct of_phandle_args *clkspec)
+-{
+-	const struct rzg2l_cpg_info *info = priv->info;
+-	unsigned int id;
+-	unsigned int i;
+-
+-	if (clkspec->args_count != 2)
+-		return false;
+-
+-	if (clkspec->args[0] != CPG_MOD)
+-		return false;
+-
+-	id = clkspec->args[1] + info->num_total_core_clks;
+-	for (i = 0; i < info->num_no_pm_mod_clks; i++) {
+-		if (info->no_pm_mod_clks[i] == id)
+-			return false;
+-	}
+-
+-	return true;
+-}
+-
+ /**
+  * struct rzg2l_cpg_pm_domains - RZ/G2L PM domains data structure
+  * @onecell_data: cell data
+@@ -1595,45 +1573,73 @@ struct rzg2l_cpg_pd {
+ 	u16 id;
+ };
+ 
++static bool rzg2l_cpg_is_pm_clk(struct rzg2l_cpg_pd *pd,
++				const struct of_phandle_args *clkspec)
++{
++	if (clkspec->np != pd->genpd.dev.of_node || clkspec->args_count != 2)
++		return false;
++
++	switch (clkspec->args[0]) {
++	case CPG_MOD: {
++		struct rzg2l_cpg_priv *priv = pd->priv;
++		const struct rzg2l_cpg_info *info = priv->info;
++		unsigned int id = clkspec->args[1];
++
++		if (id >= priv->num_mod_clks)
++			return false;
++
++		id += info->num_total_core_clks;
++
++		for (unsigned int i = 0; i < info->num_no_pm_mod_clks; i++) {
++			if (info->no_pm_mod_clks[i] == id)
++				return false;
++		}
++
++		return true;
++	}
++
++	case CPG_CORE:
++	default:
++		return false;
++	}
++}
++
+ static int rzg2l_cpg_attach_dev(struct generic_pm_domain *domain, struct device *dev)
+ {
+ 	struct rzg2l_cpg_pd *pd = container_of(domain, struct rzg2l_cpg_pd, genpd);
+-	struct rzg2l_cpg_priv *priv = pd->priv;
+ 	struct device_node *np = dev->of_node;
+ 	struct of_phandle_args clkspec;
+ 	bool once = true;
+ 	struct clk *clk;
++	unsigned int i;
+ 	int error;
+-	int i = 0;
+-
+-	while (!of_parse_phandle_with_args(np, "clocks", "#clock-cells", i,
+-					   &clkspec)) {
+-		if (rzg2l_cpg_is_pm_clk(priv, &clkspec)) {
+-			if (once) {
+-				once = false;
+-				error = pm_clk_create(dev);
+-				if (error) {
+-					of_node_put(clkspec.np);
+-					goto err;
+-				}
+-			}
+-			clk = of_clk_get_from_provider(&clkspec);
++
++	for (i = 0; !of_parse_phandle_with_args(np, "clocks", "#clock-cells", i, &clkspec); i++) {
++		if (!rzg2l_cpg_is_pm_clk(pd, &clkspec)) {
+ 			of_node_put(clkspec.np);
+-			if (IS_ERR(clk)) {
+-				error = PTR_ERR(clk);
+-				goto fail_destroy;
+-			}
++			continue;
++		}
+ 
+-			error = pm_clk_add_clk(dev, clk);
++		if (once) {
++			once = false;
++			error = pm_clk_create(dev);
+ 			if (error) {
+-				dev_err(dev, "pm_clk_add_clk failed %d\n",
+-					error);
+-				goto fail_put;
++				of_node_put(clkspec.np);
++				goto err;
+ 			}
+-		} else {
+-			of_node_put(clkspec.np);
+ 		}
+-		i++;
++		clk = of_clk_get_from_provider(&clkspec);
++		of_node_put(clkspec.np);
++		if (IS_ERR(clk)) {
++			error = PTR_ERR(clk);
++			goto fail_destroy;
++		}
++
++		error = pm_clk_add_clk(dev, clk);
++		if (error) {
++			dev_err(dev, "pm_clk_add_clk failed %d\n", error);
++			goto fail_put;
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
