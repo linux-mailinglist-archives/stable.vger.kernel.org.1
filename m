@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC41AC5461
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F4DDAC579E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 429177B050D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:55:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C1B1BC0ED1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCCF280012;
-	Tue, 27 May 2025 16:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5B927F178;
+	Tue, 27 May 2025 17:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KejJHsQK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfABeZux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673971EA91;
-	Tue, 27 May 2025 16:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984303C01;
+	Tue, 27 May 2025 17:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364956; cv=none; b=S/isbkC3/ROorI4oA8DlQwFrOAuiQmiIjtkkx6bvC/L4hMaS7KkgQTkw6MVEb45lu7XDcU1XS2Y206NdETv2C6RGFl9OnapKQSie56W4Lyr8xkwZzOBQPh2cSkb4q2po83AliBFlBw3NzNY3UtB8UdauOeUsDr/FhKdfqqAicxk=
+	t=1748367314; cv=none; b=lUPu3d+wJ/YcTN+UNiZu7GuozHXwoVlu4WW8WPT35676m2Lqx6xmHHdh3HRk3WG5L63kVAMCR3Vd0T7SSqXT+8fES5b2uW+vYeiiUXfhXFqafdeXEvyaF9VkszkAOe216cMEdPhNvXcQrAKp7++xQ7FqMShweeP1K7LBnAXn7gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364956; c=relaxed/simple;
-	bh=oPuFYCLND9ZixtKK42c1Dgr6sYfVtuguaecbmkOOTA0=;
+	s=arc-20240116; t=1748367314; c=relaxed/simple;
+	bh=Fv7ApyDZW9+qACUCUIMROkshDmcJj+TxmjZr8dkehDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LlnowQe9t2fqIWN2gL48IiXdcEweM870SpZ7XzYa0KqpUsdmQ9oCRmFv/WHcuq/wRLAJCdtoUNdU3tVeUKmYaOQ/gC8nBMzbzwT/Ufj76DxcDcbtJUrirPVKqwHG7Guw8sqjaP/33iNd60h0qCdgUeTXtQStHDUKe6+YTCw2cFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KejJHsQK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA638C4CEE9;
-	Tue, 27 May 2025 16:55:55 +0000 (UTC)
+	 MIME-Version; b=BFco0C3a46IkXXr9xNR3laiwhezqcaC5rK2EX4cRwy5IqbvNTzks0hnmsQSAmmheYWM69tQxx0RBdgpbe6wGQhda/1oiwRyLFwLO1GkAiriTBE39ZeJBh8BlavI2hGm+ZNAUFreIfpmKPSSZCqwxOQePI0cMhXWwS4jhkmXsXRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfABeZux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E0AC4CEE9;
+	Tue, 27 May 2025 17:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364956;
-	bh=oPuFYCLND9ZixtKK42c1Dgr6sYfVtuguaecbmkOOTA0=;
+	s=korg; t=1748367314;
+	bh=Fv7ApyDZW9+qACUCUIMROkshDmcJj+TxmjZr8dkehDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KejJHsQK/GK1/lCfcrF+vL07nqzLeNqxrLsyZ0nJ3cnUmCYhsf2GTRRMCH8seApzH
-	 lVgm/OUajchVsYom8/hzKJ/58Rwo1gjtsmw0tmNE2tmcayipzSGdnfhy99IB3VpPqJ
-	 p9CJlzX9HJTI8nOvLTDn0pLtERkVgSo9ajbiSKxk=
+	b=WfABeZux4jbahLFXv1BaIXMT9Y7+BIxvxNLFfoASABixLvSy/iPnvGMc/U9d7XNyE
+	 tCSgvKg9i6rKpuJb13fTVi8HtrTrfoquVyuvaJEQH+K4nJBzC5oE04W5cppNsPcbCX
+	 aVmVFTlRSjkTSoLio/ZLeEAt9Tau59x41AYsDNPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 221/626] soc: samsung: include linux/array_size.h where needed
+Subject: [PATCH 6.14 317/783] hwmon: (gpio-fan) Add missing mutex locks
 Date: Tue, 27 May 2025 18:21:54 +0200
-Message-ID: <20250527162453.998502407@linuxfoundation.org>
+Message-ID: <20250527162525.973682634@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 4c57930f68d90e0d52c396d058cfa9ed8447a6c4 ]
+[ Upstream commit 9fee7d19bab635f89223cc40dfd2c8797fdc4988 ]
 
-This does not necessarily get included through asm/io.h:
+set_fan_speed() is expected to be called with fan_data->lock being locked.
+Add locking for proper synchronization.
 
-drivers/soc/samsung/exynos3250-pmu.c:120:18: error: use of undeclared identifier 'ARRAY_SIZE'
-  120 |         for (i = 0; i < ARRAY_SIZE(exynos3250_list_feed); i++) {
-      |                         ^
-drivers/soc/samsung/exynos5250-pmu.c:162:18: error: use of undeclared identifier 'ARRAY_SIZE'
-  162 |         for (i = 0; i < ARRAY_SIZE(exynos5_list_both_cnt_feed); i++) {
-      |                         ^
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250305211446.43772-1-arnd@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20250210145934.761280-3-alexander.stein@ew.tq-group.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/samsung/exynos-asv.c     | 1 +
- drivers/soc/samsung/exynos-chipid.c  | 1 +
- drivers/soc/samsung/exynos-pmu.c     | 1 +
- drivers/soc/samsung/exynos-usi.c     | 1 +
- drivers/soc/samsung/exynos3250-pmu.c | 1 +
- drivers/soc/samsung/exynos5250-pmu.c | 1 +
- drivers/soc/samsung/exynos5420-pmu.c | 1 +
- 7 files changed, 7 insertions(+)
+ drivers/hwmon/gpio-fan.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
-index 97006cc3b9461..8e681f5195264 100644
---- a/drivers/soc/samsung/exynos-asv.c
-+++ b/drivers/soc/samsung/exynos-asv.c
-@@ -9,6 +9,7 @@
-  * Samsung Exynos SoC Adaptive Supply Voltage support
-  */
+diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
+index d92c536be9af7..b779240328d59 100644
+--- a/drivers/hwmon/gpio-fan.c
++++ b/drivers/hwmon/gpio-fan.c
+@@ -393,7 +393,12 @@ static int gpio_fan_set_cur_state(struct thermal_cooling_device *cdev,
+ 	if (state >= fan_data->num_speed)
+ 		return -EINVAL;
  
-+#include <linux/array_size.h>
- #include <linux/cpu.h>
- #include <linux/device.h>
- #include <linux/energy_model.h>
-diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
-index bba8d86ae1bb0..dedfe6d0fb3f3 100644
---- a/drivers/soc/samsung/exynos-chipid.c
-+++ b/drivers/soc/samsung/exynos-chipid.c
-@@ -12,6 +12,7 @@
-  * Samsung Exynos SoC Adaptive Supply Voltage and Chip ID support
-  */
++	mutex_lock(&fan_data->lock);
++
+ 	set_fan_speed(fan_data, state);
++
++	mutex_unlock(&fan_data->lock);
++
+ 	return 0;
+ }
  
-+#include <linux/array_size.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/mfd/syscon.h>
-diff --git a/drivers/soc/samsung/exynos-pmu.c b/drivers/soc/samsung/exynos-pmu.c
-index dd5256e5aae1a..c40313886a012 100644
---- a/drivers/soc/samsung/exynos-pmu.c
-+++ b/drivers/soc/samsung/exynos-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos - CPU PMU(Power Management Unit) support
+@@ -489,7 +494,11 @@ MODULE_DEVICE_TABLE(of, of_gpio_fan_match);
  
-+#include <linux/array_size.h>
- #include <linux/arm-smccc.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-diff --git a/drivers/soc/samsung/exynos-usi.c b/drivers/soc/samsung/exynos-usi.c
-index 114352695ac2b..5a93a68dba87f 100644
---- a/drivers/soc/samsung/exynos-usi.c
-+++ b/drivers/soc/samsung/exynos-usi.c
-@@ -6,6 +6,7 @@
-  * Samsung Exynos USI driver (Universal Serial Interface).
-  */
+ static void gpio_fan_stop(void *data)
+ {
++	struct gpio_fan_data *fan_data = data;
++
++	mutex_lock(&fan_data->lock);
+ 	set_fan_speed(data, 0);
++	mutex_unlock(&fan_data->lock);
+ }
  
-+#include <linux/array_size.h>
- #include <linux/clk.h>
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
-diff --git a/drivers/soc/samsung/exynos3250-pmu.c b/drivers/soc/samsung/exynos3250-pmu.c
-index 30f230ed1769c..4bad12a995422 100644
---- a/drivers/soc/samsung/exynos3250-pmu.c
-+++ b/drivers/soc/samsung/exynos3250-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos3250 - CPU PMU (Power Management Unit) support
+ static int gpio_fan_probe(struct platform_device *pdev)
+@@ -562,7 +571,9 @@ static int gpio_fan_suspend(struct device *dev)
  
-+#include <linux/array_size.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
+ 	if (fan_data->gpios) {
+ 		fan_data->resume_speed = fan_data->speed_index;
++		mutex_lock(&fan_data->lock);
+ 		set_fan_speed(fan_data, 0);
++		mutex_unlock(&fan_data->lock);
+ 	}
  
-diff --git a/drivers/soc/samsung/exynos5250-pmu.c b/drivers/soc/samsung/exynos5250-pmu.c
-index 7a2d50be6b4ac..2ae5c3e1b07a3 100644
---- a/drivers/soc/samsung/exynos5250-pmu.c
-+++ b/drivers/soc/samsung/exynos5250-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos5250 - CPU PMU (Power Management Unit) support
+ 	return 0;
+@@ -572,8 +583,11 @@ static int gpio_fan_resume(struct device *dev)
+ {
+ 	struct gpio_fan_data *fan_data = dev_get_drvdata(dev);
  
-+#include <linux/array_size.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
+-	if (fan_data->gpios)
++	if (fan_data->gpios) {
++		mutex_lock(&fan_data->lock);
+ 		set_fan_speed(fan_data, fan_data->resume_speed);
++		mutex_unlock(&fan_data->lock);
++	}
  
-diff --git a/drivers/soc/samsung/exynos5420-pmu.c b/drivers/soc/samsung/exynos5420-pmu.c
-index 6fedcd78cb451..58a2209795f78 100644
---- a/drivers/soc/samsung/exynos5420-pmu.c
-+++ b/drivers/soc/samsung/exynos5420-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos5420 - CPU PMU (Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/pm.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
+ 	return 0;
+ }
 -- 
 2.39.5
 
