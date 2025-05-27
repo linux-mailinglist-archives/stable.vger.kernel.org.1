@@ -1,215 +1,434 @@
-Return-Path: <stable+bounces-146429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1A2AC4BCE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 11:53:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8207CAC4BE2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 12:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49C0317A788
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 09:53:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A1A189913A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 10:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E95253B60;
-	Tue, 27 May 2025 09:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9017258CD8;
+	Tue, 27 May 2025 10:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UNAPR/iy"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="qh5EGn0X"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2054.outbound.protection.outlook.com [40.107.237.54])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA1D248F69;
-	Tue, 27 May 2025 09:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748339609; cv=fail; b=BumS7iq1NgK042BILkOrK7Ou965FEP63VMrd9/TOvoP5Z+kJvyyMlFNZ3WVKBwyXzic8po6Io+7sfUdPe0FIqj4UvdCcft8x77UASSP/VnB42j6BMijHzr5h2Bjljx65pV0D0C3YvJ1EwbXRxHAW3hgCMRir5jW924wp17T4vN0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748339609; c=relaxed/simple;
-	bh=9CkVYgTpqPLvv6Hr99uuZZRBHOVqR9Gca1SAgHn6LUQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=h6QPheTV2t0rrLYAIaHm5lPJjlsgBH05S8PdmaJYY3VpLJwqXtQZpWEEa6P1PrTUF/CTqSc53CdcYw5oQVp2yjDTxsG4kOFR7WAgjpJSMuDbgI0xHmtBoSqhA4AK9ta/Qn9t4ru5KiuMeA3/eWJgw6ky8ZGDY4qMErMG7EUOwm4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UNAPR/iy; arc=fail smtp.client-ip=40.107.237.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jQ0mjiAXFmhnWtAKuo2/3EDLzLzDfkB+bNj+XwG/PCzPxVp3+QIQrvgJiFbugNPbryFSiMFm574or7r5A0bSfHJjy5zQKS9QY589weiA///vLiAPb9vWQvl2a1C5p2fyU5zIWZ2J5T41SH2RLVrKBGDoFktfL12OcN+F/srr8Xnwg+HXbskgeKJ2l1Jt3PgTWobGDGRM8RcI6Sj5nxoFVUisryd5/TI9PHkppBstT3WtMKS/ugFOmf8DkEH994me7bPgtAqJOnIm7qEL5AhqQocTucU5F8AtFSraYCj9aKesMYCt7jyH17nvA7v+M9IUcIHfsbWdqgJ5IiUDDRVdgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y+P8lpo6TBwKIktp19GsIFYNH/5Iy9/nPyDOYPUbK0E=;
- b=HyvUFdIZDWjanKCbWPXufn4qaniRpUx7oN3PNf6Ln6LEWJN8jxdZbK3ZrvCUw+olgwMMq3uOkH3lm1D8JAQHMfKudEVxUZMHYUOBt3t2n7KAHhhlrFILIK8VCKxF3n9o7wk/x1EpBn7l4sShmKeo/Xaw9meOsxI4uuFu7Zrcoe2nvNE9qGeBS7rVyMPTiLvAuttHESapl7mJ7m8eLiC5KE2hlNmH1Y+GCz6TyjW4pDNo3GwEvYZYRvq/+zWrsOy9Uqxs/Z3y0XE85Yyxc8/ck4muAvASIurwA42Zlvg2UHt8ZOIFLSYe0MY5VbsFXAXsiDBf+fb4/m8uvWdFAzx9Ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y+P8lpo6TBwKIktp19GsIFYNH/5Iy9/nPyDOYPUbK0E=;
- b=UNAPR/iyz9FnTc8KDP1czb4t8vEmz6dr0A7aRqjFvxcQlTlfoExp+7QHOU3087QNVcJxBvKa8V8Cm3E+GA2iL8gIgLHuOFM5Soep4hBszK7f4WevdpiIOv1ZdSj7o+fT0mpdndYJgs/5Whts1cOrdIfW4MI1mHpGRPb5TwWOJC3lPcA+zkYhBOkXRq84x5ITlqCOLg1aszR2ALdYoqATK4hjZL5NI9nElGTj7IRaElJeWPKmEk4ioc7jO5vCsWVeObRZONyTM19JXR4+9iViOos7vbTDJwnhLkrpYUbi93vIgZ8FFSrvSLtOD6/iuK/mmwH9VbDOx2cFdm+gpYrJVw==
-Received: from CY8PR12MB7195.namprd12.prod.outlook.com (2603:10b6:930:59::11)
- by SJ5PPF28EF61683.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::98e) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.23; Tue, 27 May
- 2025 09:53:23 +0000
-Received: from CY8PR12MB7195.namprd12.prod.outlook.com
- ([fe80::c06c:905a:63f8:9cd]) by CY8PR12MB7195.namprd12.prod.outlook.com
- ([fe80::c06c:905a:63f8:9cd%5]) with mapi id 15.20.8769.021; Tue, 27 May 2025
- 09:53:23 +0000
-From: Parav Pandit <parav@nvidia.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: "stefanha@redhat.com" <stefanha@redhat.com>, "axboe@kernel.dk"
-	<axboe@kernel.dk>, "virtualization@lists.linux.dev"
-	<virtualization@lists.linux.dev>, "linux-block@vger.kernel.org"
-	<linux-block@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "NBU-Contact-Li Rongqing (EXTERNAL)"
-	<lirongqing@baidu.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "jasowang@redhat.com"
-	<jasowang@redhat.com>, Max Gurtovoy <mgurtovoy@nvidia.com>, Israel Rukshin
-	<israelr@nvidia.com>
-Subject: RE: [PATCH v2] virtio_blk: Fix disk deletion hang on device surprise
- removal
-Thread-Topic: [PATCH v2] virtio_blk: Fix disk deletion hang on device surprise
- removal
-Thread-Index: AQHbzkwlOUEmL26euUGJDrp2Zb0iwrPlWS6AgADgxZA=
-Date: Tue, 27 May 2025 09:53:23 +0000
-Message-ID:
- <CY8PR12MB7195F57BD94262177597DA22DC64A@CY8PR12MB7195.namprd12.prod.outlook.com>
-References: <20250526144007.124570-1-parav@nvidia.com>
- <20250526155340-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250526155340-mutt-send-email-mst@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR12MB7195:EE_|SJ5PPF28EF61683:EE_
-x-ms-office365-filtering-correlation-id: c651e0be-0f9e-4b5e-08d7-08dd9d0451c9
-x-ld-processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?nHkKBD67ss768QjiXNhNCFGlfGded79wnFbMdRz2H3cVYpsR3r7sKXxMIo9z?=
- =?us-ascii?Q?qcJVqOAi9bVRuvMHWPJBnNIROhwXjtqmq+NopVm3CvB2brpn50+MJfFtSSVL?=
- =?us-ascii?Q?DKXCkNghATZYzuSvfJ9gWvyl/M7El7wMQBsgAn0MVnaK+7XCCGA9LwK9IrZK?=
- =?us-ascii?Q?0/JN0XX7x7yc8h5HLNyTMwFFYVPL6MmFQOFhK5spWk8LQYB8dTwEmRIujSt5?=
- =?us-ascii?Q?tPpdvsiG/HK/XCDtpfmODhYX74zrzsIAzrYt3iFV+J78BYIdu/ixS2EqBKCH?=
- =?us-ascii?Q?U0FCHUpSCw/8psyeuj799dbvTDRYcVDjN9TdSdAQuzXwN9e7D2vH3ljKel4E?=
- =?us-ascii?Q?HIr1fEeGL0tSmykM20iauSrsZq71u05J/BaRamjZNnAl5oocJjfVwg0Suklx?=
- =?us-ascii?Q?Eb8KK8SwLoXcdYBoQzKV3Csi/Xzr1sCXOjZ/CDgmr6cNxZdni0J1W2cUT4SI?=
- =?us-ascii?Q?2frnlLkBM8qAoQ0BmIcfXR0EphMEAsXDBbtm++aF7OReOtDZjtZaAzog8Vgp?=
- =?us-ascii?Q?am5tb3VCf+ArgqiUkNrp5WRWgZTEZw/XgaPxkN4OvR0iJRczwsJvSnVOGcxL?=
- =?us-ascii?Q?ZtLacnsZoi4kDgoCiSUv0ddyN87k7+oCde3x+AmCE3cWRI7hoUia7uh1Stlv?=
- =?us-ascii?Q?+aAjqqBkFZvMSGTkk6Sk1PzlVjsM1V/6688XK5cgEkznz/a/+Fda10ewljyt?=
- =?us-ascii?Q?mVwFDrbmWmUh3E+9EaeQZ3YpW1S7iXnVql2KoPalUb+wOi632cEle/mZSFW7?=
- =?us-ascii?Q?ws0NkZbIAMxq8J9ONz6yuG00lCvFU/qWp1yYhHIXsf3Pa8E2EtSjiT/OIcZV?=
- =?us-ascii?Q?0IWQImhQCWjVsBPuf1bPDZFpO6qwhhRqKgK+HaqiVE/uKkJZaukmZa9zGXtk?=
- =?us-ascii?Q?8iaolVcTFkvFfhpjovBp5A9sE69MmX630rlOg6J6VErk7m5dg6yibqtF/khB?=
- =?us-ascii?Q?mCONazRMLN5HTovCYi9XyEvkS3Oxng5Mv71h3ZddZ7HG0OgBMTySW/LTQWNw?=
- =?us-ascii?Q?VIoiTAqQPJgpVd6E2a/KrUURVFUYROIabMk/nPXU1HTIj13huCQyDxaOmzfD?=
- =?us-ascii?Q?RWcPZ9K5oCCtxAxZ35EIFi1byilM2RgJ0e3luClqfp7af3Xh2g+zoLnxAnk5?=
- =?us-ascii?Q?ckve+Lr7Iir0Zp7xtgzbvQRx7vfaNSGzJSemP50FqhcL3+uKqqgmmGvdYFtI?=
- =?us-ascii?Q?NO82X7Em6jWRqW+uauVptb1YEFXbthMmgo16tn/l8fFJObKS9na0HZvBMd1L?=
- =?us-ascii?Q?aufEAtG15f1Y3QvY3hm0zOo416a9bQINrUJv4msTAAcC+MLiVETk15fUH4fR?=
- =?us-ascii?Q?mzIBDe6BBd/WilldbP0YxhDpQ/AMR6YsRMOmy6uFXIZ6L7CEil6QTZwO1G1J?=
- =?us-ascii?Q?Spu6MukL5/9pjfESC4H/hg8OhBIUUx4a2Xq1qKlemyDvEdgFDXdZxM7yJPI1?=
- =?us-ascii?Q?B2637DqzZFumw/ty8UJREV6ivHhU5870JIdhlsd9jCp1YV3x67d6Jg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7195.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?8/htoeUtgV+o83l7L8oS9EVS4vrCoxGhFKk5o9djHZmBXMOiuCqxysvEm4GH?=
- =?us-ascii?Q?61Mq6sIbMUUpBX7Xg0+zeCykbh/9A1sqkXlU1oxE2OoHgmeOwZpL/Iclwv+x?=
- =?us-ascii?Q?uY3bFNq+dsLaRyJhFUsVqMvOlufYDKlDEW4qc3fpfsMjROCgmhZZj6rIkgq+?=
- =?us-ascii?Q?8OAGeGFAu5u0gWrlTf1RJzS70CE4FiXa8pqPlTcETWFgpXB0IOcX5SK84NpD?=
- =?us-ascii?Q?xyn+l6z02JN4GAtj6U/7Az4WQFhLCNndSSCwv9ppQGe0tgjhBmsD8+hhR1+m?=
- =?us-ascii?Q?eAuiejIA+gzEdU7m59RxPFawqng62MOYboISRqYYMLg+/3653KxKIbvKzKQY?=
- =?us-ascii?Q?UvFKMZYZTV3dQRf0PZpEhBdAhJMpXAhtl3VgM0/ZTUfhy2pML5F6r9Ut67p8?=
- =?us-ascii?Q?4S7czrWsYZP4tR395u0HAQOUx5Cppxxit1TgcH4cLQXybDNo/FMi++BJIjlO?=
- =?us-ascii?Q?WmJHHgFChFMlyDXH8KNVdjdc+iHWzEhJWL2mOrkZeMA8Ek8JISRcOlql8wRb?=
- =?us-ascii?Q?RQFZv04LF5DSgspl5TAP9hqq/LFBZzuX6H5lircqxX7g+NbgY/hWDaEvHJWf?=
- =?us-ascii?Q?o9deiwDuTCgaCZXVZMAWryYWwjXmkOfZ2rv9Q/QXSJVngyypluCrlNaikV3o?=
- =?us-ascii?Q?JXrUt1jhnH403PG/SMIecLHfc7AdxXVHQgmARwcxUYYUYJHHk6J2dsY1puUK?=
- =?us-ascii?Q?9CYRUK8PDzYMDZplYONwHmex6iMMoOrUuOz0bVT2qEMm9mNJTqUYr9ULXQaI?=
- =?us-ascii?Q?rqKH3KPwMgwHpdd+ZYkHdf5znoU9gZSXQBpIzf89WpOeRk6LLjzdXipLndS0?=
- =?us-ascii?Q?Oy7Lr51JniEHv9CnVIsHio3mkdLbKkmi7nibJ2VL4SAAjZOG6TwShAdeERBU?=
- =?us-ascii?Q?it+CWRb41eU3l0Yqg3L4aMvRvVrsFQut13PZOiox5xuelyCMe3qgtCoT3aGK?=
- =?us-ascii?Q?jb5sphp59p6nVz6u+wlnK1DVVCwk9WthBeNWF2AAiA0SIi8dhKs3I/qMbQms?=
- =?us-ascii?Q?qOQgOg7AEW+FAIp554qu4ChD8EMmXvsEQc/nMUl0H3NYEzSZBHMGRdveORE7?=
- =?us-ascii?Q?wrbUV7Sn9AvgZIgEbZ2zqui3qBopt/P8d3OF1hgZsBCQrcCmFiQicM1UZWg/?=
- =?us-ascii?Q?J9g4DfPjEUzX0u06j/KOEieDsFYiq967P0qLT2Wja2z0IcHnn2W4CLTr7KB/?=
- =?us-ascii?Q?D4jpA+OYiA90TNyJ7hzX7vQo/LQO+Od5tdzartRDmzBmY7WLTgnOhvmq7YnK?=
- =?us-ascii?Q?+HiHRJRUaPJmLETM/pBIg45YEijoJnVUgA/8DQMV5fa+jyO6X0orQfWXyxix?=
- =?us-ascii?Q?CAG+SPg3p8uVVJDeQGN0DIEDESd5ciLj4QDTDfkpm33pcJ+V1LXu+NrUdBoE?=
- =?us-ascii?Q?7myTTR5+VDvGG0EPCA/bUWj+uFSwOZR5fD4bCc2T9XGzc680C+uX/3Fpeiq9?=
- =?us-ascii?Q?u2fVQFZ2jtdF1tcL+AnB0nQ+H5VklSORXDe0sFONq+mfRzU3PZbvqbYomcHu?=
- =?us-ascii?Q?H6ggiTB/Ngx9AW93YkXPWKe+DrFNqDjdEv12AQbM5IaOUpR0rLWb6IykspKi?=
- =?us-ascii?Q?sLdNK11akmx3bSIJpU+X9voX/sZpAtltVfVuUW23?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1D9155CBD;
+	Tue, 27 May 2025 10:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748340008; cv=none; b=tYlUsxWOyfMyxy/A+C17L4nAraUOH0+0kyqSjMaenGnAw3aEYZ9wqmHqW2uBswVD3VyvszHiRyQUuAZ0E5faA6l+ehiyKcoduObCr+F1UQC4S8cXkKTPduxkR0M+aNMZhE7kU+Vb/f3UQa+WNm8HFVZ2JXovZkRts0U5GOASOOI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748340008; c=relaxed/simple;
+	bh=wQ+OmNMHXauL/X1+jYXb0xror+G1Sgo2egtxlBWW6ik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E8Z772fNEhFekK/5LHlErHx0enUUtMuVU8AXsP2PEi21QxYbKbTFYQz/h9JdDf5c7YtNx1QDhan4IbMEBm1oefWAs6Xrr4MxKSTAAvzuu9cg/YYzEfx+0TiRsjUY0VskKacsOMClptjkjZ9m6K4VbJvTvhNhhPvvWe+PCYKGfEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=qh5EGn0X; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=vRP/ob8FSs6TOdw0XeEVjhrzBcMzoDAa7MarMhYa9C0=; b=qh5EGn0XPcUbBJl/X7VV47yGhR
+	0xUkgw1su/qI98O7ZZytz70pSwC6t7SsAfnOm/LLCFetzu4YljbYLWgFiRXNRT9iNYT1GeUDxbQ/5
+	DXp8h3We/4vs3euWC53DYAwJ16INpuIdco0+/sBOAXA66U0PSth8nLStwADZ/Fa7P60Yb9ZyTekQs
+	Wy+AdaXgM6jiP/LUhMDdQQ4cfOd0ePL236w1qMl5gl4bJFsMaglWkYB1pLPMS8l5F3oCqYjlA28Dv
+	6BqeE+jdg5jEsfKKlF046M0EczF2bUG/Vu6EVFuTysPmwfCw5bp7PrzQ7JzgwZeuQDISGXvre/uy5
+	cWCP2cVg==;
+Received: from 27-52-197-105.adsl.fetnet.net ([27.52.197.105] helo=[192.168.238.43])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1uJr63-00Dg5x-Iv; Tue, 27 May 2025 11:59:48 +0200
+Message-ID: <1df840eb-6d04-4023-8c48-ffdda45931d0@igalia.com>
+Date: Tue, 27 May 2025 17:59:40 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7195.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c651e0be-0f9e-4b5e-08d7-08dd9d0451c9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 May 2025 09:53:23.3804
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sa1Pn2Jmd8tQK6vdKfPgLOHdjPHAIadxJTIw6uKAjIJ3OtlQCpl7T+wgvjkW11rcNy9C962e2POkhJrIshCXwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF28EF61683
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/hugetlb: fix a deadlock with pagecache_folio and
+ hugetlb_fault_mutex_table
+To: Gavin Shan <gshan@redhat.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, mike.kravetz@oracle.com, kernel-dev@igalia.com,
+ stable@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+ Florent Revest <revest@google.com>
+References: <20250513093448.592150-1-gavinguo@igalia.com>
+ <5f5d8f85-c082-4cb9-93ef-d207309ba807@redhat.com>
+Content-Language: en-US
+From: Gavin Guo <gavinguo@igalia.com>
+In-Reply-To: <5f5d8f85-c082-4cb9-93ef-d207309ba807@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> From: Michael S. Tsirkin <mst@redhat.com>
-> Sent: Tuesday, May 27, 2025 1:45 AM
->=20
-> On Mon, May 26, 2025 at 02:40:33PM +0000, Parav Pandit wrote:
+Hi Gavin,
 
-[..]
-> > +	if (blk_mq_request_started(rq) && !blk_mq_request_completed(rq))
-> > +		blk_mq_complete_request(rq);
-> > +
-> > +	spin_unlock_irqrestore(&vq->lock, flags);
-> > +	return true;
-> > +}
-> > +
-> > +static void virtblk_broken_device_cleanup(struct virtio_blk *vblk) {
-> > +	struct request_queue *q =3D vblk->disk->queue;
-> > +
-> > +	if (!virtqueue_is_broken(vblk->vqs[0].vq))
-> > +		return;
->=20
-> can marking vqs broken be in progress such that 0 is already broken but
-> another one is not, yet?
-> if not pls add a comment explainging why.
->=20
-I missed to answer this previous email.
+On 5/26/25 12:41, Gavin Shan wrote:
+> Hi Gavin,
+> 
+> On 5/13/25 7:34 PM, Gavin Guo wrote:
+>> The patch fixes a deadlock which can be triggered by an internal
+>> syzkaller [1] reproducer and captured by bpftrace script [2] and its log
+>> [3] in this scenario:
+>>
+>> Process 1                              Process 2
+>> ---                       ---
+>> hugetlb_fault
+>>    mutex_lock(B) // take B
+>>    filemap_lock_hugetlb_folio
+>>      filemap_lock_folio
+>>        __filemap_get_folio
+>>          folio_lock(A) // take A
+>>    hugetlb_wp
+>>      mutex_unlock(B) // release B
+>>      ...                                hugetlb_fault
+>>      ...                                  mutex_lock(B) // take B
+>>                                           filemap_lock_hugetlb_folio
+>>                                             filemap_lock_folio
+>>                                               __filemap_get_folio
+>>                                                 folio_lock(A) // blocked
+>>      unmap_ref_private
+>>      ...
+>>      mutex_lock(B) // retake and blocked
+>>
+>> This is a ABBA deadlock involving two locks:
+>> - Lock A: pagecache_folio lock
+>> - Lock B: hugetlb_fault_mutex_table lock
+>>
+>> The deadlock occurs between two processes as follows:
+>> 1. The first process (let’s call it Process 1) is handling a
+>> copy-on-write (COW) operation on a hugepage via hugetlb_wp. Due to
+>> insufficient reserved hugetlb pages, Process 1, owner of the reserved
+>> hugetlb page, attempts to unmap a hugepage owned by another process
+>> (non-owner) to satisfy the reservation. Before unmapping, Process 1
+>> acquires lock B (hugetlb_fault_mutex_table lock) and then lock A
+>> (pagecache_folio lock). To proceed with the unmap, it releases Lock B
+>> but retains Lock A. After the unmap, Process 1 tries to reacquire Lock
+>> B. However, at this point, Lock B has already been acquired by another
+>> process.
+>>
+>> 2. The second process (Process 2) enters the hugetlb_fault handler
+>> during the unmap operation. It successfully acquires Lock B
+>> (hugetlb_fault_mutex_table lock) that was just released by Process 1,
+>> but then attempts to acquire Lock A (pagecache_folio lock), which is
+>> still held by Process 1.
+>>
+>> As a result, Process 1 (holding Lock A) is blocked waiting for Lock B
+>> (held by Process 2), while Process 2 (holding Lock B) is blocked waiting
+>> for Lock A (held by Process 1), constructing a ABBA deadlock scenario.
+>>
+>> The solution here is to unlock the pagecache_folio and provide the
+>> pagecache_folio_unlocked variable to the caller to have the visibility
+>> over the pagecache_folio status for subsequent handling.
+>>
+>> The error message:
+>> INFO: task repro_20250402_:13229 blocked for more than 64 seconds.
+>>        Not tainted 6.15.0-rc3+ #24
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:repro_20250402_ state:D stack:25856 pid:13229 tgid:13228 
+>> ppid:3513   task_flags:0x400040 flags:0x00004006
+>> Call Trace:
+>>   <TASK>
+>>   __schedule+0x1755/0x4f50
+>>   schedule+0x158/0x330
+>>   schedule_preempt_disabled+0x15/0x30
+>>   __mutex_lock+0x75f/0xeb0
+>>   hugetlb_wp+0xf88/0x3440
+>>   hugetlb_fault+0x14c8/0x2c30
+>>   trace_clock_x86_tsc+0x20/0x20
+>>   do_user_addr_fault+0x61d/0x1490
+>>   exc_page_fault+0x64/0x100
+>>   asm_exc_page_fault+0x26/0x30
+>> RIP: 0010:__put_user_4+0xd/0x20
+>>   copy_process+0x1f4a/0x3d60
+>>   kernel_clone+0x210/0x8f0
+>>   __x64_sys_clone+0x18d/0x1f0
+>>   do_syscall_64+0x6a/0x120
+>>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>> RIP: 0033:0x41b26d
+>>   </TASK>
+>> INFO: task repro_20250402_:13229 is blocked on a mutex likely owned by 
+>> task repro_20250402_:13250.
+>> task:repro_20250402_ state:D stack:28288 pid:13250 tgid:13228 
+>> ppid:3513   task_flags:0x400040 flags:0x00000006
+>> Call Trace:
+>>   <TASK>
+>>   __schedule+0x1755/0x4f50
+>>   schedule+0x158/0x330
+>>   io_schedule+0x92/0x110
+>>   folio_wait_bit_common+0x69a/0xba0
+>>   __filemap_get_folio+0x154/0xb70
+>>   hugetlb_fault+0xa50/0x2c30
+>>   trace_clock_x86_tsc+0x20/0x20
+>>   do_user_addr_fault+0xace/0x1490
+>>   exc_page_fault+0x64/0x100
+>>   asm_exc_page_fault+0x26/0x30
+>> RIP: 0033:0x402619
+>>   </TASK>
+>> INFO: task repro_20250402_:13250 blocked for more than 65 seconds.
+>>        Not tainted 6.15.0-rc3+ #24
+>> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+>> task:repro_20250402_ state:D stack:28288 pid:13250 tgid:13228 
+>> ppid:3513   task_flags:0x400040 flags:0x00000006
+>> Call Trace:
+>>   <TASK>
+>>   __schedule+0x1755/0x4f50
+>>   schedule+0x158/0x330
+>>   io_schedule+0x92/0x110
+>>   folio_wait_bit_common+0x69a/0xba0
+>>   __filemap_get_folio+0x154/0xb70
+>>   hugetlb_fault+0xa50/0x2c30
+>>   trace_clock_x86_tsc+0x20/0x20
+>>   do_user_addr_fault+0xace/0x1490
+>>   exc_page_fault+0x64/0x100
+>>   asm_exc_page_fault+0x26/0x30
+>> RIP: 0033:0x402619
+>>   </TASK>
+>>
+>> Showing all locks held in the system:
+>> 1 lock held by khungtaskd/35:
+>>   #0: ffffffff879a7440 (rcu_read_lock){....}-{1:3}, at: 
+>> debug_show_all_locks+0x30/0x180
+>> 2 locks held by repro_20250402_/13229:
+>>   #0: ffff888017d801e0 (&mm->mmap_lock){++++}-{4:4}, at: 
+>> lock_mm_and_find_vma+0x37/0x300
+>>   #1: ffff888000fec848 (&hugetlb_fault_mutex_table[i]){+.+.}-{4:4}, 
+>> at: hugetlb_wp+0xf88/0x3440
+>> 3 locks held by repro_20250402_/13250:
+>>   #0: ffff8880177f3d08 (vm_lock){++++}-{0:0}, at: 
+>> do_user_addr_fault+0x41b/0x1490
+>>   #1: ffff888000fec848 (&hugetlb_fault_mutex_table[i]){+.+.}-{4:4}, 
+>> at: hugetlb_fault+0x3b8/0x2c30
+>>   #2: ffff8880129500e8 (&resv_map->rw_sema){++++}-{4:4}, at: 
+>> hugetlb_fault+0x494/0x2c30
+>>
+>> Link: https://drive.google.com/file/d/1DVRnIW- 
+>> vSayU5J1re9Ct_br3jJQU6Vpb/view?usp=drive_link [1]
+>> Link: https://github.com/bboymimi/bpftracer/blob/master/scripts/ 
+>> hugetlb_lock_debug.bt [2]
+>> Link: https://drive.google.com/file/d/1bWq2-8o- 
+>> BJAuhoHWX7zAhI6ggfhVzQUI/view?usp=sharing [3]
+>> Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing 
+>> synchronization")
+>> Cc: <stable@vger.kernel.org>
+>> Cc: Hugh Dickins <hughd@google.com>
+>> Cc: Florent Revest <revest@google.com>
+>> Cc: Gavin Shan <gshan@redhat.com>
+>> Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+>> ---
+>>   mm/hugetlb.c | 33 ++++++++++++++++++++++++++++-----
+>>   1 file changed, 28 insertions(+), 5 deletions(-)
+>>
+> 
+> I guess the change log can become concise after the kernel log is 
+> dropped. The summarized
+> stack trace is sufficient to indicate how the dead locking scenario 
+> happens. Besides,
+> it's no need to mention bpftrace and its output. So the changelog would 
+> be simplified
+> to something like below. Please polish it a bit if you would to take it. 
+> The solution
+> looks good except some nitpicks as below.
+> 
+> ---
+> 
+> There is ABBA dead locking scenario happening between hugetlb_fault() 
+> and hugetlb_wp() on
+> the pagecache folio's lock and hugetlb global mutex, which is 
+> reproducible with syzkaller
+> [1]. As below stack traces reveal, process-1 tries to take the hugetlb 
+> global mutex (A3),
+> but with the pagecache folio's lock hold. Process-2 took the hugetlb 
+> global mutex but tries
+> to take the pagecache folio's lock.
+> 
+> [1] https://drive.google.com/file/d/1DVRnIW-vSayU5J1re9Ct_br3jJQU6Vpb/ 
+> view?usp=drive_link
+> 
+> Process-1                                       Process-2
+> =========                                       =========
+> hugetlb_fault
+>    mutex_lock                  (A1)
+>    filemap_lock_hugetlb_folio  (B1)
+>    hugetlb_wp
+>      alloc_hugetlb_folio       #error
+>        mutex_unlock            (A2)
+>                                                 hugetlb_fault
+>                                                   
+> mutex_lock                  (A4)
+>                                                   
+> filemap_lock_hugetlb_folio  (B4)
+>        unmap_ref_private
+>        mutex_lock              (A3)
+> 
+> Fix it by releasing the pagecache folio's lock at (A2) of process-1 so 
+> that pagecache folio's
+> lock is available to process-2 at (B4), to avoid the deadlock. In 
+> process-1, a new variable
+> is added to track if the pagecache folio's lock has been released by its 
+> child function
+> hugetlb_wp() to avoid double releases on the lock in hugetlb_fault(). 
+> The similar changes
+> are applied to hugetlb_no_page().
+> 
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index e3e6ac991b9c..ad54a74aa563 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -6115,7 +6115,8 @@ static void unmap_ref_private(struct mm_struct 
+>> *mm, struct vm_area_struct *vma,
+>>    * Keep the pte_same checks anyway to make transition from the mutex 
+>> easier.
+>>    */
+>>   static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
+>> -               struct vm_fault *vmf)
+>> +               struct vm_fault *vmf,
+>> +               bool *pagecache_folio_unlocked)
+> 
+> Nitpick: the variable may be renamed to 'pagecache_folio_locked' if 
+> you're happy
+> with.
+> 
+>>   {
+>>       struct vm_area_struct *vma = vmf->vma;
+>>       struct mm_struct *mm = vma->vm_mm;
+>> @@ -6212,6 +6213,22 @@ static vm_fault_t hugetlb_wp(struct folio 
+>> *pagecache_folio,
+>>               u32 hash;
+>>               folio_put(old_folio);
+>> +            /*
+>> +             * The pagecache_folio needs to be unlocked to avoid
+>                                                 ^^^^^^^^
+> 
+>                                                 has to be (?)
+> 
+>> +             * deadlock and we won't re-lock it in hugetlb_wp(). The
+>> +             * pagecache_folio could be truncated after being
+>> +             * unlocked. So its state should not be relied
+>                                                                  ^^^^^^
+>                                                                  
+> reliable (?)
+>> +             * subsequently.
+>> +             *
+>> +             * Setting *pagecache_folio_unlocked to true allows the
+>> +             * caller to handle any necessary logic related to the
+>> +             * folio's unlocked state.
+>> +             */
+>> +            if (pagecache_folio) {
+>> +                folio_unlock(pagecache_folio);
+>> +                if (pagecache_folio_unlocked)
+>> +                    *pagecache_folio_unlocked = true;
+>> +            }
+> 
+> The second section of the comments looks a bit redundant since the code 
+> changes
+> are self-explaining enough :-)
+> 
+>>               /*
+>>                * Drop hugetlb_fault_mutex and vma_lock before
+>>                * unmapping.  unmapping needs to hold vma_lock
+>> @@ -6566,7 +6583,7 @@ static vm_fault_t hugetlb_no_page(struct 
+>> address_space *mapping,
+>>       hugetlb_count_add(pages_per_huge_page(h), mm);
+>>       if ((vmf->flags & FAULT_FLAG_WRITE) && !(vma->vm_flags & 
+>> VM_SHARED)) {
+>>           /* Optimization, do the COW without a second fault */
+>> -        ret = hugetlb_wp(folio, vmf);
+>> +        ret = hugetlb_wp(folio, vmf, NULL);
+> 
+> It's not certain if we have another deadlock between hugetlb_no_page() 
+> and hugetlb_wp(),
+> similar to the existing one between hugetlb_fault() and hugetlb_wp(). So 
+> I think it's
+> reasonable to pass '&pagecache_folio_locked' to hugetlb_wp() here and 
+> skip to unlock
+> on pagecache_folio_locked == false in hugetlb_no_page(). It's not 
+> harmful at least.
 
-It should not happen during surprise removal case, because surprise removal=
- and remove() is serialized operation listed below,
+Thank you very much for taking the time to review my patch! I appreciate
+your feedback. :)
 
-virtio_pci_remove()
-    virtio_break_device()
-        mark N Vqs as broken..
-   unregister_virtio_device()
-        virtioblk_remove()
+After carefully reviewing the hugetlb_no_page function, I've made an
+observation regarding the pagecache_folio handling. Specifically, when
+pagecache_folio is assigned to vmf->pte, the vmf->ptl lock is held. This
+lock remains active when vmf->pte is later accessed in hugetlb_wp. The
+ptl lock ensures that the pte value is the same as the pagecache_folio
+assigned in hugetlb_no_page. As a result, the following comparison in
+hugetlb_wp will always evaluate to false because old_folio and
+pagecache_folio reference the same object:
 
-If one attempts to unbind the pci device and once the remove() crosses the =
-broken check, and after that if the pci device is removed
-(before existing virtblk_remove finishes, then yes, same hang can occur.
-Such thing requires an additional time out handling, which should be handle=
-d separate patch as new functionality.
-Since timeout handling would be additional, it won't replace the existing k=
-nown surprise removal case anyway.
-I anticipate that it will likely reuse pieces from the proposed cleanup() f=
-unction.
+         if (is_vma_resv_set(vma, HPAGE_RESV_OWNER) &&
+                         old_folio != pagecache_folio)
+                 cow_from_owner = true;
+
+Based on this analysis, passing pagecache_folio_locked in
+hugetlb_no_page is unnecessary. Let me know if I missed anything. Other
+comments look good to me. Thanks!
+
+> 
+>>       }
+>>       spin_unlock(vmf->ptl);
+>> @@ -6638,6 +6655,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, 
+>> struct vm_area_struct *vma,
+>>       struct hstate *h = hstate_vma(vma);
+>>       struct address_space *mapping;
+>>       int need_wait_lock = 0;
+>> +    bool pagecache_folio_unlocked = false;
+>>       struct vm_fault vmf = {
+>>           .vma = vma,
+>>           .address = address & huge_page_mask(h),
+>> @@ -6792,7 +6810,8 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, 
+>> struct vm_area_struct *vma,
+>>       if (flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) {
+>>           if (!huge_pte_write(vmf.orig_pte)) {
+>> -            ret = hugetlb_wp(pagecache_folio, &vmf);
+>> +            ret = hugetlb_wp(pagecache_folio, &vmf,
+>> +                    &pagecache_folio_unlocked);
+>>               goto out_put_page;
+>>           } else if (likely(flags & FAULT_FLAG_WRITE)) {
+>>               vmf.orig_pte = huge_pte_mkdirty(vmf.orig_pte);
+>> @@ -6809,10 +6828,14 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, 
+>> struct vm_area_struct *vma,
+>>   out_ptl:
+>>       spin_unlock(vmf.ptl);
+>> -    if (pagecache_folio) {
+>> +    /*
+>> +     * If the pagecache_folio is unlocked in hugetlb_wp(), we skip
+>> +     * folio_unlock() here.
+>> +     */
+>> +    if (pagecache_folio && !pagecache_folio_unlocked)
+>>           folio_unlock(pagecache_folio);
+>> +    if (pagecache_folio)
+>>           folio_put(pagecache_folio);
+>> -    }
+> 
+> The comments seem redundant since the code changes are self-explaining.
+> Besides, no need to validate 'pagecache_folio' for twice.
+> 
+>      if (pagecache_folio) {
+>          if (pagecache_folio_locked)
+>              folio_unlock(pagecache_folio);
+> 
+>          folio_put(pagecache_folio);
+>      }
+> 
+>>   out_mutex:
+>>       hugetlb_vma_unlock_read(vma);
+>>
+>> base-commit: d76bb1ebb5587f66b0f8b8099bfbb44722bc08b3
+> 
+> Thanks,
+> Gavin
+> 
+
 
