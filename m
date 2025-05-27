@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-146569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05A6AC53B2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3854AC571E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 769381BA3F99
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99B208A566B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D0F27CB04;
-	Tue, 27 May 2025 16:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9060727A935;
+	Tue, 27 May 2025 17:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyiD0X+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KeSmj1V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8526E1D63EF;
-	Tue, 27 May 2025 16:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E02C1DB34C;
+	Tue, 27 May 2025 17:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364629; cv=none; b=XKJutvwVyKqkK0B+lJn1zuAVOhHmImX2sbH+Kp/Fu3KM1e+mqMlQtoREXDGz6rwb5vXCZig/L0Y0tzOjZRdi0HFt2LjYmIldJ9RgLgPUBk1PHwnrGtiVAIQPuCfL49oKRgYZFe2WXDX+nQZm6NBhOMCOwf/cxBN1RSwpDA2jQAM=
+	t=1748366926; cv=none; b=mOoK0fCeOOXT8pDsnpspJSwnU2GrLgx19K5xF+BdXp59DKlVX5qBnWoQTCKbVyezvEKTduS7TBTHfJ0NMYI342tnYDH/J5EjyOCdWoCMXdpXA8ZFJBH0U4eETxJzDcWwZWeI4mBM8sM3zGy+ricn79ceLSOwM6ykU/XYeE5YBkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364629; c=relaxed/simple;
-	bh=l0Qr2+7bQco4D1cDdCKsOrZYj9kc0MbsW+emApl17Z8=;
+	s=arc-20240116; t=1748366926; c=relaxed/simple;
+	bh=MMFpDHr3Sf3nyAUKXDf63CnRRYY7zAwtVpV1V2G7V6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPV0NLMbIiQD06Vx52sIOUDJ7NHleabG3LBXiFwKx52lXdac/N8Ac41wph5//lltb3AGVJH0IVK8lUgCLNQSPP7NOj44mNCT+WwlbXSFwKvNS6xUtnIUdstwA2212VWGGJBCs6UIn0JuN8lRWMsl1G+wIEYUQbEscK3zfhocNxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyiD0X+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2042C4CEE9;
-	Tue, 27 May 2025 16:50:28 +0000 (UTC)
+	 MIME-Version; b=XJTj3NrwkgxGoNEm9hxUmx7mqeggnBgJ+bWC06C9KbjjpH/yB2O6ML4nz7PNDcyXvOmcTVJDf/MEHDOab+5a8cu1TJQs9qYgIWnwHKrGJzuzR2PY7JjulCCD42lwcna70HJnV/lppZPxo+69xKiUJOeX5OeJV57XACGYPirwtQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KeSmj1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1330C4CEE9;
+	Tue, 27 May 2025 17:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364629;
-	bh=l0Qr2+7bQco4D1cDdCKsOrZYj9kc0MbsW+emApl17Z8=;
+	s=korg; t=1748366926;
+	bh=MMFpDHr3Sf3nyAUKXDf63CnRRYY7zAwtVpV1V2G7V6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyiD0X+cC1SjLXOUTwbeWZbyhJmiVFaJdos8TUekP4LWVNG3MajkbjWI3L+VJZt99
-	 2YUtAwebGMOPwdD/9zrafDZYblu36Jxbv0aK7JtIMBQCEwuUhSiMpo2fYhgMtk7uac
-	 ZmGfNFl6feOaR3bZ8cCOF50Vyjle9DRO/Ktrb2AY=
+	b=2KeSmj1V7+NsfRmz0LrHJNVFhfXR9ZXjLHExrcIW1stRY/bSKt6q2XVIOuIWbp3Z3
+	 GQAwbe/dxdefgtP+bUHKMT6k5g/NfkjiimcmFSUF85XLYhXhqiAqu8U4kQbOm9egJx
+	 2CA9wkG0e79N8rf/rVAnhai6ADhRUBgid5FHiKyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/626] lockdep: Fix wait context check on softirq for PREEMPT_RT
+Subject: [PATCH 6.14 181/783] net/smc: use the correct ndev to find pnetid by pnetid table
 Date: Tue, 27 May 2025 18:19:38 +0200
-Message-ID: <20250527162448.497691356@linuxfoundation.org>
+Message-ID: <20250527162520.528385590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit 61c39d8c83e2077f33e0a2c8980a76a7f323f0ce ]
+[ Upstream commit bfc6c67ec2d64d0ca4e5cc3e1ac84298a10b8d62 ]
 
-Since:
+When using smc_pnet in SMC, it will only search the pnetid in the
+base_ndev of the netdev hierarchy(both HW PNETID and User-defined
+sw pnetid). This may not work for some scenarios when using SMC in
+container on cloud environment.
+In container, there have choices of different container network,
+such as directly using host network, virtual network IPVLAN, veth,
+etc. Different choices of container network have different netdev
+hierarchy. Examples of netdev hierarchy show below. (eth0 and eth1
+in host below is the netdev directly related to the physical device).
+            _______________________________
+           |   _________________           |
+           |  |POD              |          |
+           |  |                 |          |
+           |  | eth0_________   |          |
+           |  |____|         |__|          |
+           |       |         |             |
+           |       |         |             |
+           |   eth1|base_ndev| eth0_______ |
+           |       |         |    | RDMA  ||
+           | host  |_________|    |_______||
+           ---------------------------------
+     netdev hierarchy if directly using host network
+           ________________________________
+           |   _________________           |
+           |  |POD  __________  |          |
+           |  |    |upper_ndev| |          |
+           |  |eth0|__________| |          |
+           |  |_______|_________|          |
+           |          |lower netdev        |
+           |        __|______              |
+           |   eth1|         | eth0_______ |
+           |       |base_ndev|    | RDMA  ||
+           | host  |_________|    |_______||
+           ---------------------------------
+            netdev hierarchy if using IPVLAN
+            _______________________________
+           |   _____________________       |
+           |  |POD        _________ |      |
+           |  |          |base_ndev||      |
+           |  |eth0(veth)|_________||      |
+           |  |____________|________|      |
+           |               |pairs          |
+           |        _______|_              |
+           |       |         | eth0_______ |
+           |   veth|base_ndev|    | RDMA  ||
+           |       |_________|    |_______||
+           |        _________              |
+           |   eth1|base_ndev|             |
+           | host  |_________|             |
+           ---------------------------------
+             netdev hierarchy if using veth
+Due to some reasons, the eth1 in host is not RDMA attached netdevice,
+pnetid is needed to map the eth1(in host) with RDMA device so that POD
+can do SMC-R. Because the eth1(in host) is managed by CNI plugin(such
+as Terway, network management plugin in container environment), and in
+cloud environment the eth(in host) can dynamically be inserted by CNI
+when POD create and dynamically be removed by CNI when POD destroy and
+no POD related to the eth(in host) anymore. It is hard to config the
+pnetid to the eth1(in host). But it is easy to config the pnetid to the
+netdevice which can be seen in POD. When do SMC-R, both the container
+directly using host network and the container using veth network can
+successfully match the RDMA device, because the configured pnetid netdev
+is a base_ndev. But the container using IPVLAN can not successfully
+match the RDMA device and 0x03030000 fallback happens, because the
+configured pnetid netdev is not a base_ndev. Additionally, if config
+pnetid to the eth1(in host) also can not work for matching RDMA device
+when using veth network and doing SMC-R in POD.
 
-  0c1d7a2c2d32 ("lockdep: Remove softirq accounting on PREEMPT_RT.")
+To resolve the problems list above, this patch extends to search user
+-defined sw pnetid in the clc handshake ndev when no pnetid can be found
+in the base_ndev, and the base_ndev take precedence over ndev for backward
+compatibility. This patch also can unify the pnetid setup of different
+network choices list above in container(Config user-defined sw pnetid in
+the netdevice can be seen in POD).
 
-the wait context test for mutex usage within "in softirq context" fails
-as it references @softirq_context:
-
-    | wait context tests |
-    --------------------------------------------------------------------------
-                                   | rcu  | raw  | spin |mutex |
-    --------------------------------------------------------------------------
-                 in hardirq context:  ok  |  ok  |  ok  |  ok  |
-  in hardirq context (not threaded):  ok  |  ok  |  ok  |  ok  |
-                 in softirq context:  ok  |  ok  |  ok  |FAILED|
-
-As a fix, add lockdep map for BH disabled section. This fixes the
-issue by letting us catch cases when local_bh_disable() gets called
-with preemption disabled where local_lock doesn't get acquired.
-In the case of "in softirq context" selftest, local_bh_disable() was
-being called with preemption disable as it's early in the boot.
-
-[ boqun: Move the lockdep annotations into __local_bh_*() to avoid false
-         positives because of unpaired local_bh_disable() reported by
-	 Borislav Petkov and Peter Zijlstra, and make bh_lock_map
-	 only exist for PREEMPT_RT. ]
-
-[ mingo: Restored authorship and improved the bh_lock_map definition. ]
-
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250321143322.79651-1-boqun.feng@gmail.com
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/softirq.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ net/smc/smc_pnet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 8c4524ce65faf..00ff176350413 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -126,6 +126,18 @@ static DEFINE_PER_CPU(struct softirq_ctrl, softirq_ctrl) = {
- 	.lock	= INIT_LOCAL_LOCK(softirq_ctrl.lock),
- };
- 
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+static struct lock_class_key bh_lock_key;
-+struct lockdep_map bh_lock_map = {
-+	.name			= "local_bh",
-+	.key			= &bh_lock_key,
-+	.wait_type_outer	= LD_WAIT_FREE,
-+	.wait_type_inner	= LD_WAIT_CONFIG, /* PREEMPT_RT makes BH preemptible. */
-+	.lock_type		= LD_LOCK_PERCPU,
-+};
-+EXPORT_SYMBOL_GPL(bh_lock_map);
-+#endif
-+
- /**
-  * local_bh_blocked() - Check for idle whether BH processing is blocked
-  *
-@@ -148,6 +160,8 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
- 
- 	WARN_ON_ONCE(in_hardirq());
- 
-+	lock_map_acquire_read(&bh_lock_map);
-+
- 	/* First entry of a task into a BH disabled section? */
- 	if (!current->softirq_disable_cnt) {
- 		if (preemptible()) {
-@@ -211,6 +225,8 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
- 	WARN_ON_ONCE(in_hardirq());
- 	lockdep_assert_irqs_enabled();
- 
-+	lock_map_release(&bh_lock_map);
-+
- 	local_irq_save(flags);
- 	curcnt = __this_cpu_read(softirq_ctrl.cnt);
- 
-@@ -261,6 +277,8 @@ static inline void ksoftirqd_run_begin(void)
- /* Counterpart to ksoftirqd_run_begin() */
- static inline void ksoftirqd_run_end(void)
+diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
+index 716808f374a8d..b391c2ef463f2 100644
+--- a/net/smc/smc_pnet.c
++++ b/net/smc/smc_pnet.c
+@@ -1079,14 +1079,16 @@ static void smc_pnet_find_roce_by_pnetid(struct net_device *ndev,
+ 					 struct smc_init_info *ini)
  {
-+	/* pairs with the lock_map_acquire_read() in ksoftirqd_run_begin() */
-+	lock_map_release(&bh_lock_map);
- 	__local_bh_enable(SOFTIRQ_OFFSET, true);
- 	WARN_ON_ONCE(in_interrupt());
- 	local_irq_enable();
+ 	u8 ndev_pnetid[SMC_MAX_PNETID_LEN];
++	struct net_device *base_ndev;
+ 	struct net *net;
+ 
+-	ndev = pnet_find_base_ndev(ndev);
++	base_ndev = pnet_find_base_ndev(ndev);
+ 	net = dev_net(ndev);
+-	if (smc_pnetid_by_dev_port(ndev->dev.parent, ndev->dev_port,
++	if (smc_pnetid_by_dev_port(base_ndev->dev.parent, base_ndev->dev_port,
+ 				   ndev_pnetid) &&
++	    smc_pnet_find_ndev_pnetid_by_table(base_ndev, ndev_pnetid) &&
+ 	    smc_pnet_find_ndev_pnetid_by_table(ndev, ndev_pnetid)) {
+-		smc_pnet_find_rdma_dev(ndev, ini);
++		smc_pnet_find_rdma_dev(base_ndev, ini);
+ 		return; /* pnetid could not be determined */
+ 	}
+ 	_smc_pnet_find_roce_by_pnetid(ndev_pnetid, ini, NULL, net);
 -- 
 2.39.5
 
