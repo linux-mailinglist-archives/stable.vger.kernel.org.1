@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-147552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8141AC582D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC2AAC54C9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42E663A3A81
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B72677A1FA9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B9227D786;
-	Tue, 27 May 2025 17:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE74E27E7CF;
+	Tue, 27 May 2025 17:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgZdXQgU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LypG1Bo4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF2942A9B;
-	Tue, 27 May 2025 17:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6871DC998;
+	Tue, 27 May 2025 17:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367694; cv=none; b=jjRJX3IAkqY1wakM8Cd9czAqk9HgUmUfIkjhDRFbrHgvECwCaL/7x3uklBxw6nxA96ZuQYER8XcAlB+wrnbB0DRUX41DfynYLd0NLeBqyKX6K4AM/og/UlDOZ5tkik2jObazQAu8BPrJRPBe+PuFUZeX8Q8XDV7PhvKfj6TcCYo=
+	t=1748365437; cv=none; b=E+KDhmRU8rV4e1NwogtEIIxyWqmkPXxXFRwAiS7Wt4RNS/GMrFm7AbAssgTrcMZ4vSKZTZ3y6NhebPQupzW312O8YLa4RD4lq7TxZKBiNvHouAniRc/3993OqSOoApiifYvGz9R1JASOaQEwDbrhuXOjokl4V0FHWWil1DKVQeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367694; c=relaxed/simple;
-	bh=bX4twi7QHLBDpihEDWciEMnahoeMGPTf+fqTaXhnS6I=;
+	s=arc-20240116; t=1748365437; c=relaxed/simple;
+	bh=xt3CeJuNKuQa9OeJ4+nf5Y5lyuG5sdH8zNkb6Hj+zuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJUdHuQMynDyI0W8lx+ydV2uz9w3lF721VgPAt+xipUNs93Ui04gGmT9tHsPRg3zj+P0Z1bTgD6mbFh+jQV7Pzvp4tVDt8b8o+sqMA31lvPPW+mYSe40MtkKxJyCdBEzjHXbtWa0mYXwVdOQQKGcKBw6RCYPCgKpT6SdiFi5akA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgZdXQgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A4AC4CEE9;
-	Tue, 27 May 2025 17:41:34 +0000 (UTC)
+	 MIME-Version; b=cdMr6MrdMlOghA6gYAAnAeEmhXvt59WGKZzHbKWBYsYO0/8mYdNlp/i8n8ChibrGaWw4ZN6ezrdz6ISbHK0jGWT000awkKWQe20J8VIBTvPfZwjuCj9ntfyhYwCzuYZBUXOUG2bJH5cElUJm1kmQbjUZBG9Vv4fmLe+xy88jTRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LypG1Bo4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA3EC4CEEB;
+	Tue, 27 May 2025 17:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367694;
-	bh=bX4twi7QHLBDpihEDWciEMnahoeMGPTf+fqTaXhnS6I=;
+	s=korg; t=1748365437;
+	bh=xt3CeJuNKuQa9OeJ4+nf5Y5lyuG5sdH8zNkb6Hj+zuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HgZdXQgU9DjkAt7K2n8CIlK6K36UdKwXAD9Mhi7XlD19N9MFGzxZ/OCkzsEODCWim
-	 rTy2hlQSO5fyoWF1bY6hhiYtwX2gGPTfwDB3jWMYWNgZMdFM0HDbymQpohUwGhiQoz
-	 vYB7k4bSyjAHA6F42cbU/K17XHVkDkIYCK1M4b/Y=
+	b=LypG1Bo4Enng3+4nTjcLzHFDRFwdj3nktC4sUGaADObNnzmaPn4jP3JinZsVdRCHW
+	 bSkwUwqF7euikMhnXDSqYFo8M2eYGWbut0MasvKbspO8ixVuWxOGW+AmFIJc+UFVp5
+	 8GMAde701uygBiC2YagQrRadNWMPGTssEq37fn2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Deak <imre.deak@intel.com>,
+	Xin Wang <x.wang@intel.com>,
 	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Fei Yang <fei.yang@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 469/783] drm/xe/display: Remove hpd cancel work sync from runtime pm path
-Date: Tue, 27 May 2025 18:24:26 +0200
-Message-ID: <20250527162532.232127963@linuxfoundation.org>
+Subject: [PATCH 6.12 374/626] drm/xe/debugfs: fixed the return value of wedged_mode_set
+Date: Tue, 27 May 2025 18:24:27 +0200
+Message-ID: <20250527162500.216576933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Xin Wang <x.wang@intel.com>
 
-[ Upstream commit 1ed591582b7b894d2f7e7ab5cef2e9b0b6fef12b ]
+[ Upstream commit 6884d2051011f4db9e2f0b85709c79a8ced13bd6 ]
 
-This function will synchronously cancel and wait for many display
-work queue items, which might try to take the runtime pm reference
-causing a bad deadlock. So, remove it from the runtime_pm suspend patch.
+It is generally expected that the write() function should return a
+positive value indicating the number of bytes written or a negative
+error code if an error occurs. Returning 0 is unusual and can lead
+to unexpected behavior.
 
-Reported-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250212192447.402715-1-rodrigo.vivi@intel.com
+When the user program writes the same value to wedged_mode twice in
+a row, a lockup will occur, because the value expected to be
+returned by the write() function inside the program should be equal
+to the actual written value instead of 0.
+
+To reproduce the issue:
+echo 1 > /sys/kernel/debug/dri/0/wedged_mode
+echo 1 > /sys/kernel/debug/dri/0/wedged_mode   <- lockup here
+
+Signed-off-by: Xin Wang <x.wang@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Fei Yang <fei.yang@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213223615.2327367-1-x.wang@intel.com
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_display.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
-index b3921dbc52ff6..b735e30953cee 100644
---- a/drivers/gpu/drm/xe/display/xe_display.c
-+++ b/drivers/gpu/drm/xe/display/xe_display.c
-@@ -346,7 +346,8 @@ static void __xe_display_pm_suspend(struct xe_device *xe, bool runtime)
+diff --git a/drivers/gpu/drm/xe/xe_debugfs.c b/drivers/gpu/drm/xe/xe_debugfs.c
+index fe4319eb13fdf..051a37e477f4c 100644
+--- a/drivers/gpu/drm/xe/xe_debugfs.c
++++ b/drivers/gpu/drm/xe/xe_debugfs.c
+@@ -147,7 +147,7 @@ static ssize_t wedged_mode_set(struct file *f, const char __user *ubuf,
+ 		return -EINVAL;
  
- 	xe_display_flush_cleanup_work(xe);
+ 	if (xe->wedged.mode == wedged_mode)
+-		return 0;
++		return size;
  
--	intel_hpd_cancel_work(xe);
-+	if (!runtime)
-+		intel_hpd_cancel_work(xe);
+ 	xe->wedged.mode = wedged_mode;
  
- 	if (!runtime && has_display(xe)) {
- 		intel_display_driver_suspend_access(display);
 -- 
 2.39.5
 
