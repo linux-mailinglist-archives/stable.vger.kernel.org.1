@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A49AC55FB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EA6AC58F2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3953AF199
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A41359E0020
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F6F281361;
-	Tue, 27 May 2025 17:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498A727FD4C;
+	Tue, 27 May 2025 17:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpb5bP+7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Srhuy1Em"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C428927CCF0;
-	Tue, 27 May 2025 17:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CE827D766;
+	Tue, 27 May 2025 17:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365984; cv=none; b=HBsmYS67XwTDlimHR6rUDi589sv9wIHmOatV5SW3r1VU3QQhhirIAmtGDmuPHlv08KbUSItUidE8UD0EqrXFDrcD3irTlMuMei8E2kyxQ4H0nsUU1tAi3H889qRAHlB04mFnSvLLBoVLy/fwWlYLSQTkgBfIKAuZq+Fap63SSFs=
+	t=1748368262; cv=none; b=USjkIDvdxqMC3mnXBtV2Y7HcOLG1HCDj6kHoyp+34ttBsafMc1WHES/6w5HOnIO2Mlr4AvAxtRj+P1I+AE1FPswviTxJXeAdxyyeyhpBHbt+R5uHzzWHPMJZTaqQJ4iAU9+iPIQpOwwH8iKLRDxcF+tq/aHzzd1TzOyBfSM8G2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365984; c=relaxed/simple;
-	bh=+qzUdh+tTgGBgqV7u81Qcp3BUm1RQa8niVM6qaI98z0=;
+	s=arc-20240116; t=1748368262; c=relaxed/simple;
+	bh=AYHHhEGSOd9xznuDiIO3jbcpXe1GQTYVQPdhpYuqm9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOZ2NV7zl2mippJ+g9ez2e7uMVa1KVg6TEm3lcRQmdcx+KDIPbf7+pRY3XKgEpQ7qnIqFirBFTD2HlDEdO4Lf59mxjd0kh4N8kgVymmD46rTpXzpvsoudX5HyuFzBUcYMo9Veg7eyxsIW0i9r4YG357nq9MhtUWbdR9G7n2TFEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpb5bP+7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA54C4CEE9;
-	Tue, 27 May 2025 17:13:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FRkvMXGCIOxDvLg93goianskKlh2hZaqI0Eal0MNR7aENgqKwlQ4oEsZonxFstJdXGQQqCpDBWitTA7WZJjpAChvJG3dvvzmKhUuUNbruFy9qpVZE0nsuTrUqCHnqDiBwZs9eZnYADYjcdlS3lZaKRRiJ4Z4q/uVOd5/CsUIBCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Srhuy1Em; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D795C4CEE9;
+	Tue, 27 May 2025 17:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365984;
-	bh=+qzUdh+tTgGBgqV7u81Qcp3BUm1RQa8niVM6qaI98z0=;
+	s=korg; t=1748368261;
+	bh=AYHHhEGSOd9xznuDiIO3jbcpXe1GQTYVQPdhpYuqm9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpb5bP+7B47sSCoIcmbY4CYBo/m0AKwubvqgD+ZiopiADPIiLvVVSdriGrEGLqtxW
-	 /ToLZLx9mLKs+k2xsoBLeTDXvmPQdN8rnZTbkghc71Znm7gJKR5/zpZpoB30Xle4NE
-	 buAlZJq/ihsICopB2GfP0165z0DWRTKN1GEg3ZSg=
+	b=Srhuy1EmK59HOXwXf8q8+KKsWfqIaA3jVPNm34tP++aUzxzxWzZeV8i3p8rhmKkIy
+	 1mrJ8ou7SRtgjPRi8OcpOCm18Csr+Ycsluu+JuTn2jRpchRJMlTwmOpzbVOeubBVSo
+	 O3zUQH2Tqleno74MI0XU/Xg1dK5f7CxxzZV0rGhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Saranya Gopal <saranya.gopal@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 554/626] bridge: netfilter: Fix forwarding of fragmented packets
-Date: Tue, 27 May 2025 18:27:27 +0200
-Message-ID: <20250527162507.480852614@linuxfoundation.org>
+Subject: [PATCH 6.14 651/783] platform/x86/intel: hid: Add Pantherlake support
+Date: Tue, 27 May 2025 18:27:28 +0200
+Message-ID: <20250527162539.643593714@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Saranya Gopal <saranya.gopal@intel.com>
 
-[ Upstream commit 91b6dbced0ef1d680afdd69b14fc83d50ebafaf3 ]
+[ Upstream commit 12df9ec3e1955aed6a0c839f2375cd8e5d5150cf ]
 
-When netfilter defrag hooks are loaded (due to the presence of conntrack
-rules, for example), fragmented packets entering the bridge will be
-defragged by the bridge's pre-routing hook (br_nf_pre_routing() ->
-ipv4_conntrack_defrag()).
+Add Pantherlake ACPI device ID to the Intel HID driver.
 
-Later on, in the bridge's post-routing hook, the defragged packet will
-be fragmented again. If the size of the largest fragment is larger than
-what the kernel has determined as the destination MTU (using
-ip_skb_dst_mtu()), the defragged packet will be dropped.
+While there, clean up the device ID table to remove the ", 0" parts.
 
-Before commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
-ip_dst_mtu_maybe_forward"), ip_skb_dst_mtu() would return dst_mtu() as
-the destination MTU. Assuming the dst entry attached to the packet is
-the bridge's fake rtable one, this would simply be the bridge's MTU (see
-fake_mtu()).
-
-However, after above mentioned commit, ip_skb_dst_mtu() ends up
-returning the route's MTU stored in the dst entry's metrics. Ideally, in
-case the dst entry is the bridge's fake rtable one, this should be the
-bridge's MTU as the bridge takes care of updating this metric when its
-MTU changes (see br_change_mtu()).
-
-Unfortunately, the last operation is a no-op given the metrics attached
-to the fake rtable entry are marked as read-only. Therefore,
-ip_skb_dst_mtu() ends up returning 1500 (the initial MTU value) and
-defragged packets are dropped during fragmentation when dealing with
-large fragments and high MTU (e.g., 9k).
-
-Fix by moving the fake rtable entry's metrics to be per-bridge (in a
-similar fashion to the fake rtable entry itself) and marking them as
-writable, thereby allowing MTU changes to be reflected.
-
-Fixes: 62fa8a846d7d ("net: Implement read-only protection and COW'ing of metrics.")
-Fixes: 33eb9873a283 ("bridge: initialize fake_rtable metrics")
-Reported-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
-Closes: https://lore.kernel.org/netdev/PH0PR10MB4504888284FF4CBA648197D0ACB82@PH0PR10MB4504.namprd10.prod.outlook.com/
-Tested-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250515084848.727706-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Saranya Gopal <saranya.gopal@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250421041332.830136-1-saranya.gopal@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_nf_core.c | 7 ++-----
- net/bridge/br_private.h | 1 +
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel/hid.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/net/bridge/br_nf_core.c b/net/bridge/br_nf_core.c
-index 98aea5485aaef..a8c67035e23c0 100644
---- a/net/bridge/br_nf_core.c
-+++ b/net/bridge/br_nf_core.c
-@@ -65,17 +65,14 @@ static struct dst_ops fake_dst_ops = {
-  * ipt_REJECT needs it.  Future netfilter modules might
-  * require us to fill additional fields.
-  */
--static const u32 br_dst_default_metrics[RTAX_MAX] = {
--	[RTAX_MTU - 1] = 1500,
--};
--
- void br_netfilter_rtable_init(struct net_bridge *br)
- {
- 	struct rtable *rt = &br->fake_rtable;
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 88a1a9ff2f344..0b5e43444ed60 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -44,16 +44,17 @@ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Alex Hung");
  
- 	rcuref_init(&rt->dst.__rcuref, 1);
- 	rt->dst.dev = br->dev;
--	dst_init_metrics(&rt->dst, br_dst_default_metrics, true);
-+	dst_init_metrics(&rt->dst, br->metrics, false);
-+	dst_metric_set(&rt->dst, RTAX_MTU, br->dev->mtu);
- 	rt->dst.flags	= DST_NOXFRM | DST_FAKE_RTABLE;
- 	rt->dst.ops = &fake_dst_ops;
- }
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 041f6e571a209..df502cc1191c3 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -505,6 +505,7 @@ struct net_bridge {
- 		struct rtable		fake_rtable;
- 		struct rt6_info		fake_rt6_info;
- 	};
-+	u32				metrics[RTAX_MAX];
- #endif
- 	u16				group_fwd_mask;
- 	u16				group_fwd_mask_required;
+ static const struct acpi_device_id intel_hid_ids[] = {
+-	{"INT33D5", 0},
+-	{"INTC1051", 0},
+-	{"INTC1054", 0},
+-	{"INTC1070", 0},
+-	{"INTC1076", 0},
+-	{"INTC1077", 0},
+-	{"INTC1078", 0},
+-	{"INTC107B", 0},
+-	{"INTC10CB", 0},
+-	{"", 0},
++	{ "INT33D5" },
++	{ "INTC1051" },
++	{ "INTC1054" },
++	{ "INTC1070" },
++	{ "INTC1076" },
++	{ "INTC1077" },
++	{ "INTC1078" },
++	{ "INTC107B" },
++	{ "INTC10CB" },
++	{ "INTC10CC" },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, intel_hid_ids);
+ 
 -- 
 2.39.5
 
