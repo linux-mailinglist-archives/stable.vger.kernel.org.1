@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-146488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51AAAC535C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:46:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D92AC56A6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A73F51BA39E5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00D7F3B45D1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3733927D784;
-	Tue, 27 May 2025 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BE527FD76;
+	Tue, 27 May 2025 17:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6bsquoY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruErdp1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D145F2609F7;
-	Tue, 27 May 2025 16:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF7727FD6B;
+	Tue, 27 May 2025 17:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364372; cv=none; b=AXDHxg2bjVHMDnLFuIbvWMbypA6rUYhRrcwBZHGrzCu0OSxZ9GzpWrA/k3kSBpHsng6+pvOKu5KEbbGNwMdIntN2cqFmiK/Qu2W+ix/xUfzzo+6XG192NA5KN0BBHGzS5UQ0EB7smLW1MEps2N7zsXrtFdyk1VRtjM08WQ4TmqA=
+	t=1748366631; cv=none; b=LjdUWHS1Q4aJGDu9m3HZiHnzhGwNukny2bxLwwsiDebVDTT//aI2CeBZPi2OHdKYYTimhJGCwBTu5Bkg/JRWYBoeAw3mIFj96+nE0SwWCGfz9w2Es90NSi5UbMT1lGJFvPXwxSlih6i0AvodO8MOl2tBOhOF34FQwIHAiCRWU/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364372; c=relaxed/simple;
-	bh=SX7Fug2P6BeSXAO6L4R+Wr/kAqxp95ReuntzmiVhNBw=;
+	s=arc-20240116; t=1748366631; c=relaxed/simple;
+	bh=yAb5R4J+7R++DzIVREPbFfzQ921Lq7WAwA0Wcx+bFIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NG7Qe8jcsl65+UQE80UnmzBeffGbf7TZ2Q0BDVeYhxdMT4mpJGwx78Tq5HUORctBTsCF7tnmnxm8czxhdoqi002B3AlWva7fMx1GIYQ6XXMTAe4rSwxiCbXxkqbh9ZzK/2NHsUWAB5CDYyaaLpL6fkOa7zGcxC0t3oDDEVyfnRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6bsquoY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF71C4CEE9;
-	Tue, 27 May 2025 16:46:11 +0000 (UTC)
+	 MIME-Version; b=I1wC6X8UetOh816mbn3c4u+6a2WYABFcK6BXsANnhMZScaQtyQGps8f6/WT/Fxs6ybIT/qVErd+A4ttheh4dCWYPr52p02vyrgd0Zc3zNnmJQPfItLb2TQAF/eOmaCTRAx6flBU2JAVDicNrveCD8l9XJMZLcSGKws3rZku/YQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruErdp1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490C6C4CEEA;
+	Tue, 27 May 2025 17:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364372;
-	bh=SX7Fug2P6BeSXAO6L4R+Wr/kAqxp95ReuntzmiVhNBw=;
+	s=korg; t=1748366630;
+	bh=yAb5R4J+7R++DzIVREPbFfzQ921Lq7WAwA0Wcx+bFIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6bsquoYWLxdWRm7Ow8vHx7pKw9vv2ys4Cy2Bn44htKvIw4+8YolrU5LgR2dg1UQ0
-	 iYPPk1BY0F9nG+PGbYSpLb/5XkR7T3v5o2x8YUL0ydnPrY51/xEC82RPTS59c/y4k1
-	 iHT/7h8FPBwgsKJOQHjBKFoWOWrJ/TbFLROCvr8o=
+	b=ruErdp1fR1AYeOsuzwR0Zf65s+KalbbHzv5Agza+JJxY/xr0UX2jpiLBqWKB53yTr
+	 1JbWumdDqAF9pTgMYBVOPGFB3mDJVTppxUX7fEYs7iD9LPDJWD3DXw1AAAoJgtRGfW
+	 XdWetONkZTBVaGh1YSpQTwP9mfeUJvWTuBvSYrEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	kdevops@lists.linux.dev,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/626] fs/jbd2: use sleeping version of __find_get_block()
+Subject: [PATCH 6.14 131/783] i2c: qup: Vote for interconnect bandwidth to DRAM
 Date: Tue, 27 May 2025 18:18:48 +0200
-Message-ID: <20250527162446.494901404@linuxfoundation.org>
+Message-ID: <20250527162518.484646083@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-[ Upstream commit f76d4c28a46a9260d85e00dafc8f46d369365d33 ]
+[ Upstream commit d4f35233a6345f62637463ef6e0708f44ffaa583 ]
 
-Convert to the new nonatomic flavor to benefit from potential
-performance benefits and adapt in the future vs migration such
-that semantics are kept.
+When the I2C QUP controller is used together with a DMA engine it needs
+to vote for the interconnect path to the DRAM. Otherwise it may be
+unable to access the memory quickly enough.
 
-- jbd2_journal_revoke(): can sleep (has might_sleep() in the beginning)
+The requested peak bandwidth is dependent on the I2C core clock.
 
-- jbd2_journal_cancel_revoke(): only used from do_get_write_access() and
-    do_get_create_access() which do sleep. So can sleep.
+To avoid sending votes too often the bandwidth is always requested when
+a DMA transfer starts, but dropped only on runtime suspend. Runtime
+suspend should only happen if no transfer is active. After resumption we
+can defer the next vote until the first DMA transfer actually happens.
 
-- jbd2_clear_buffer_revoked_flags() - only called from journal commit code
-    which sleeps. So can sleep.
+The implementation is largely identical to the one introduced for
+spi-qup in commit ecdaa9473019 ("spi: qup: Vote for interconnect
+bandwidth to DRAM") since both drivers represent the same hardware
+block.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Link: https://kdevops.org/ext4/v6.15-rc2.html # [0]
-Link: https://lore.kernel.org/all/aAAEvcrmREWa1SKF@bombadil.infradead.org/ # [1]
-Link: https://lore.kernel.org/20250418015921.132400-6-dave@stgolabs.net
-Tested-by: kdevops@lists.linux.dev
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20231128-i2c-qup-dvfs-v1-3-59a0e3039111@kernkonzept.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/revoke.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/i2c/busses/i2c-qup.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/fs/jbd2/revoke.c b/fs/jbd2/revoke.c
-index ce63d5fde9c3a..f68fc8c255f00 100644
---- a/fs/jbd2/revoke.c
-+++ b/fs/jbd2/revoke.c
-@@ -345,7 +345,8 @@ int jbd2_journal_revoke(handle_t *handle, unsigned long long blocknr,
- 	bh = bh_in;
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index da20b4487c9a5..3a36d682ed572 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -14,6 +14,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
++#include <linux/interconnect.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -150,6 +151,8 @@
+ /* TAG length for DATA READ in RX FIFO  */
+ #define READ_RX_TAGS_LEN		2
  
- 	if (!bh) {
--		bh = __find_get_block(bdev, blocknr, journal->j_blocksize);
-+		bh = __find_get_block_nonatomic(bdev, blocknr,
-+						journal->j_blocksize);
- 		if (bh)
- 			BUFFER_TRACE(bh, "found on hash");
++#define QUP_BUS_WIDTH			8
++
+ static unsigned int scl_freq;
+ module_param_named(scl_freq, scl_freq, uint, 0444);
+ MODULE_PARM_DESC(scl_freq, "SCL frequency override");
+@@ -227,6 +230,7 @@ struct qup_i2c_dev {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	struct clk		*pclk;
++	struct icc_path		*icc_path;
+ 	struct i2c_adapter	adap;
+ 
+ 	int			clk_ctl;
+@@ -255,6 +259,10 @@ struct qup_i2c_dev {
+ 	/* To configure when bus is in run state */
+ 	u32			config_run;
+ 
++	/* bandwidth votes */
++	u32			src_clk_freq;
++	u32			cur_bw_clk_freq;
++
+ 	/* dma parameters */
+ 	bool			is_dma;
+ 	/* To check if the current transfer is using DMA */
+@@ -453,6 +461,23 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
+ 	return ret;
+ }
+ 
++static int qup_i2c_vote_bw(struct qup_i2c_dev *qup, u32 clk_freq)
++{
++	u32 needed_peak_bw;
++	int ret;
++
++	if (qup->cur_bw_clk_freq == clk_freq)
++		return 0;
++
++	needed_peak_bw = Bps_to_icc(clk_freq * QUP_BUS_WIDTH);
++	ret = icc_set_bw(qup->icc_path, 0, needed_peak_bw);
++	if (ret)
++		return ret;
++
++	qup->cur_bw_clk_freq = clk_freq;
++	return 0;
++}
++
+ static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
+ {
+ 	struct qup_i2c_block *blk = &qup->blk;
+@@ -838,6 +863,10 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
+ 	int ret = 0;
+ 	int idx = 0;
+ 
++	ret = qup_i2c_vote_bw(qup, qup->src_clk_freq);
++	if (ret)
++		return ret;
++
+ 	enable_irq(qup->irq);
+ 	ret = qup_i2c_req_dma(qup);
+ 
+@@ -1643,6 +1672,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
+ 	config = readl(qup->base + QUP_CONFIG);
+ 	config |= QUP_CLOCK_AUTO_GATE;
+ 	writel(config, qup->base + QUP_CONFIG);
++	qup_i2c_vote_bw(qup, 0);
+ 	clk_disable_unprepare(qup->pclk);
+ }
+ 
+@@ -1743,6 +1773,11 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 			goto fail_dma;
+ 		}
+ 		qup->is_dma = true;
++
++		qup->icc_path = devm_of_icc_get(&pdev->dev, NULL);
++		if (IS_ERR(qup->icc_path))
++			return dev_err_probe(&pdev->dev, PTR_ERR(qup->icc_path),
++					     "failed to get interconnect path\n");
  	}
-@@ -355,7 +356,8 @@ int jbd2_journal_revoke(handle_t *handle, unsigned long long blocknr,
  
- 		/* If there is a different buffer_head lying around in
- 		 * memory anywhere... */
--		bh2 = __find_get_block(bdev, blocknr, journal->j_blocksize);
-+		bh2 = __find_get_block_nonatomic(bdev, blocknr,
-+						 journal->j_blocksize);
- 		if (bh2) {
- 			/* ... and it has RevokeValid status... */
- 			if (bh2 != bh && buffer_revokevalid(bh2))
-@@ -466,7 +468,8 @@ int jbd2_journal_cancel_revoke(handle_t *handle, struct journal_head *jh)
- 	 * state machine will get very upset later on. */
- 	if (need_cancel) {
- 		struct buffer_head *bh2;
--		bh2 = __find_get_block(bh->b_bdev, bh->b_blocknr, bh->b_size);
-+		bh2 = __find_get_block_nonatomic(bh->b_bdev, bh->b_blocknr,
-+						 bh->b_size);
- 		if (bh2) {
- 			if (bh2 != bh)
- 				clear_buffer_revoked(bh2);
-@@ -495,9 +498,9 @@ void jbd2_clear_buffer_revoked_flags(journal_t *journal)
- 			struct jbd2_revoke_record_s *record;
- 			struct buffer_head *bh;
- 			record = (struct jbd2_revoke_record_s *)list_entry;
--			bh = __find_get_block(journal->j_fs_dev,
--					      record->blocknr,
--					      journal->j_blocksize);
-+			bh = __find_get_block_nonatomic(journal->j_fs_dev,
-+							record->blocknr,
-+							journal->j_blocksize);
- 			if (bh) {
- 				clear_buffer_revoked(bh);
- 				__brelse(bh);
+ nodma:
+@@ -1791,6 +1826,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 		qup_i2c_enable_clocks(qup);
+ 		src_clk_freq = clk_get_rate(qup->clk);
+ 	}
++	qup->src_clk_freq = src_clk_freq;
+ 
+ 	/*
+ 	 * Bootloaders might leave a pending interrupt on certain QUP's,
 -- 
 2.39.5
 
