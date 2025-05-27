@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1A8AC5533
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3144CAC581D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD4363AE2B2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68B998A68A6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD64B27D784;
-	Tue, 27 May 2025 17:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40AF27FD49;
+	Tue, 27 May 2025 17:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrofbPIm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQTEsBHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBA8276051;
-	Tue, 27 May 2025 17:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB631CAA7B;
+	Tue, 27 May 2025 17:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365380; cv=none; b=TF3NjHSFceDToabJZJeRBzWm3T/ylZfHW7t2WxPS26lm3zssDiFLmYLZynVD3BCDUvC+AkiO69QXDy1VUhkiDjTZfsy8YO7WqcAT7A1/JI+e2MPv7OcoLuHaqfJqDqrj09KSGcrd+NsYk9GtgXMHHe8xUL3x6hS3cUhY/JRWaVc=
+	t=1748367649; cv=none; b=NrzAVYQy3bcjZv8jhI5sP4doq5ebo1nyGz1+pLhg36ZjvSuwbufd90VheyXQCW179hrQ6llQr331RcHry0DwV56g578n34VP88Ux89bkobvvhM+r2Han4TByVZPsv3C8nIDoshlU8oDhMvtx6uffvSLVYWWYDw5XpKkqvReq9xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365380; c=relaxed/simple;
-	bh=E+al4RDfpmXdBLsGxbre1x7gf9WgJolhMw+YeAM/GMk=;
+	s=arc-20240116; t=1748367649; c=relaxed/simple;
+	bh=DXYLHcGmkjc1DreMAoj5ATZ+/GoSJwtTbzIbyloXEb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G7sKTjcQWDkdwbSiZz2RoYUZcOI+TnYhvzZmIF+GQLYhSQ8sPF0qb+lM8NTtrs0t7Z3wWOwWPfCw/yivGZzXXfWKx7md11Z9fpKwQZsWAfM0/r/oqoY3vw2ZFb+9gRRtpo/RNusf43U1FmQ0l5uZocJa/G4f7Q2xR1HAMkRBjLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrofbPIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4CBC4CEE9;
-	Tue, 27 May 2025 17:02:59 +0000 (UTC)
+	 MIME-Version; b=ll9bmhAfe5sCycPnACRs4QnI6+1b8KPa+b3JUbsm7UZ+53cXi+t1Gw/G6P3qZQh8GYETMNpx59i9PbmJNXhXGzd7YEczw/Gbno60zGdgqTHQRFnMYp6EDPsCQw3k9hmETm/i0NfyRKOhgYVOj/+oj/fzg3hDnVYZYIa3x+4Q2K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQTEsBHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1108C4CEE9;
+	Tue, 27 May 2025 17:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365380;
-	bh=E+al4RDfpmXdBLsGxbre1x7gf9WgJolhMw+YeAM/GMk=;
+	s=korg; t=1748367649;
+	bh=DXYLHcGmkjc1DreMAoj5ATZ+/GoSJwtTbzIbyloXEb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrofbPImav3DF7X9k17j00PCADzFvqymQEb+9Wn1wew8s33QjuKS8dspwo0Pk2QF/
-	 YOuqlE1aAz/aLx0FSG8mhIglBDS4UU7sv7MnhyCGrPxRAxLp/BbqklE2lLjTT2UyNp
-	 1OJtrQG9tQ0hRiEWCIE7EFyUCmxb+QQX8AZ3kv7c=
+	b=RQTEsBHj0lcdx6jiApfNSqtPLRlnYKGeHnexCIGgSIewtpEuWN/8nyOaItxNoEAiy
+	 1pFc8sfiYLIe2q7mi8/gKzOuOxrcbCT48EKJCcJY6rRzpFe7Ydhi48N2vLvtr7Ibvz
+	 WuMEtY6w1cW6fWbqRE4nMshqYZLhmJ83Kc7KwEws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	Mark Brown <broonie@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 358/626] ASoC: ops: Enforce platform maximum on initial value
-Date: Tue, 27 May 2025 18:24:11 +0200
-Message-ID: <20250527162459.560338671@linuxfoundation.org>
+Subject: [PATCH 6.14 455/783] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
+Date: Tue, 27 May 2025 18:24:12 +0200
+Message-ID: <20250527162531.651958960@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 783db6851c1821d8b983ffb12b99c279ff64f2ee ]
+[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
 
-Lower the volume if it is violating the platform maximum at its initial
-value (i.e. at the time of the 'snd_soc_limit_volume' call).
+GCC can see that the value range for "order" is capped, but this leads
+it to consider that it might be negative, leading to a false positive
+warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
 
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
-[Cherry picked from the Asahi kernel with fixups -- broonie]
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-volume-limit-v1-1-b98fcf4cdbad@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
+      |                                    ~~~~~~~~~~~^~~
+  'mlx4_alloc_db_from_pgdir': events 1-2
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                     |                         |                                                   |                     |                         (2) out of array bounds here
+      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
+                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
+../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
+  664 |         unsigned long          *bits[2];
+      |                                 ^~~~
+
+Switch the argument to unsigned int, which removes the compiler needing
+to consider negative values.
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
+ include/linux/mlx4/device.h                | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index b0e4e4168f38d..fb11003d56cf6 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -639,6 +639,33 @@ int snd_soc_get_volsw_range(struct snd_kcontrol *kcontrol,
+diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+index b330020dc0d67..f2bded847e61d 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
++++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
  }
- EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
  
-+static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
-+{
-+	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
-+	struct snd_ctl_elem_value uctl;
-+	int ret;
-+
-+	if (!mc->platform_max)
-+		return 0;
-+
-+	ret = kctl->get(kctl, &uctl);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (uctl.value.integer.value[0] > mc->platform_max)
-+		uctl.value.integer.value[0] = mc->platform_max;
-+
-+	if (snd_soc_volsw_is_stereo(mc) &&
-+	    uctl.value.integer.value[1] > mc->platform_max)
-+		uctl.value.integer.value[1] = mc->platform_max;
-+
-+	ret = kctl->put(kctl, &uctl);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- /**
-  * snd_soc_limit_volume - Set new limit to an existing volume control.
-  *
-@@ -663,7 +690,7 @@ int snd_soc_limit_volume(struct snd_soc_card *card,
- 		struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
- 		if (max <= mc->max - mc->min) {
- 			mc->platform_max = max;
--			ret = 0;
-+			ret = snd_soc_clip_to_platform_max(kctl);
- 		}
- 	}
- 	return ret;
+ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+-				    struct mlx4_db *db, int order)
++				    struct mlx4_db *db, unsigned int order)
+ {
+-	int o;
++	unsigned int o;
+ 	int i;
+ 
+ 	for (o = order; o <= 1; ++o) {
+@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+ 	return 0;
+ }
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
+ {
+ 	struct mlx4_priv *priv = mlx4_priv(dev);
+ 	struct mlx4_db_pgdir *pgdir;
+diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
+index 27f42f713c891..86f0f2a25a3d6 100644
+--- a/include/linux/mlx4/device.h
++++ b/include/linux/mlx4/device.h
+@@ -1135,7 +1135,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ 		       struct mlx4_buf *buf);
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
+ void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
+ 
+ int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
 -- 
 2.39.5
 
