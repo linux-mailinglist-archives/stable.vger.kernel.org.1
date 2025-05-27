@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FDBAC58F6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35503AC55BC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A951B9E01FF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA871BA6A18
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E89527FD76;
-	Tue, 27 May 2025 17:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F2127F16A;
+	Tue, 27 May 2025 17:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOYvcov7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcPibci+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8AF2566;
-	Tue, 27 May 2025 17:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D25278750;
+	Tue, 27 May 2025 17:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368274; cv=none; b=HZKNE3/aoMNPH8ftueRTkFQ8fagvt4wEe4pO+F5V5OZs2A/6qDiKakiWR58pK/W+BZvkClAJ3Dk/xQ3Xv355zgJDZtn1pjcaim3zeaKdSLdPkNEJuTm8oS9MOJDsC+OGboqvNX7mqyBPbyTHm0GLMzF9Env2/w96oKVC0747DXs=
+	t=1748366001; cv=none; b=a5AvZvK3/AZ/R5BD/gdOeddyz0nO9Ld2XJpl8QHymWsihNJvltXrHICvyb8bDCcz6XHVlOAN/hrhvarHZXUQb1tlkHfZJ9tgkbhf0amxDfrJ6WPwaEibju//cPX96qg2aUwIDyTUM8iIN/4mVrPrO9TYv1FcuSNNf0Xj+kH6pOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368274; c=relaxed/simple;
-	bh=6RBqwCDxWrOJUFtByhwRlPHQSq61Jc4uo7h8xq2XRcY=;
+	s=arc-20240116; t=1748366001; c=relaxed/simple;
+	bh=wCS/mD26Lx9WvipeIqiqJoHgna6tQ2Z7Ihvnklyw/4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ws/POgTlsx2G6teTyNuCeW3GQrMP+aHUPFhB6VFHHxtuqQZww8IvoAduDF9GevlVOsGw3jawK4XaiQ3AfrGVOIAlVFFKU/kbnwjUyza5ALD280B0QkaHsty/z6zfRuD/aOueKPxHvkAKCFSeCY2etW4mkT6SUaUqWr2cn7XmdIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOYvcov7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A15C4CEEB;
-	Tue, 27 May 2025 17:51:13 +0000 (UTC)
+	 MIME-Version; b=HxbCh652oHmhmybeclL90urxCl/JgxBb78uMqzmCtjehIm/nI/AlD5gRL8oyOKevePkhWtCdJoKqWRI+bhZpPCVWffKwzGGJsLfH8bNZVQFtaqW0D9Gona02/ts9eT4Qj/5nZUWzqK6RZ/u8sWFzUskT2r85G9UdwauOo+srRj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcPibci+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047A0C4CEE9;
+	Tue, 27 May 2025 17:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368273;
-	bh=6RBqwCDxWrOJUFtByhwRlPHQSq61Jc4uo7h8xq2XRcY=;
+	s=korg; t=1748366000;
+	bh=wCS/mD26Lx9WvipeIqiqJoHgna6tQ2Z7Ihvnklyw/4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOYvcov7QGESeHEM1PqT01+2f+WPSIvJM9seXHYNsS5OIbXRPR6pjOXJH8J6vPwyT
-	 iQkk5lNZb+v7rulRbndMcDQg3hkTfiJtJUX2sEove+41Y4n+TqCR1qbfC6gMCQYNtm
-	 2GGt8P1Jdgla/bckL6qldEtneh6wMSgFmtDYP86U=
+	b=wcPibci+uDiiQVNF3y7mjL/h9txkdTMalyEzRi7dqaS1uTc2ljov76QzS71ThxD/H
+	 2QApR5nQeuEuGeSiA01eQlxNnpmwrNwUV0DOA4UJEq2+54SXHm6t5rUaA8eundldWi
+	 KD9pZ3RIa7XpIUiuDqcoR+DalGwpUXV/NTNxF8bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 655/783] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
+Subject: [PATCH 6.12 559/626] pinctrl: qcom: switch to devm_register_sys_off_handler()
 Date: Tue, 27 May 2025 18:27:32 +0200
-Message-ID: <20250527162539.800798065@linuxfoundation.org>
+Message-ID: <20250527162507.680984785@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
+[ Upstream commit 41e452e6933d14146381ea25cff5e4d1ac2abea1 ]
 
-Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
-model for making it working.
+Error-handling paths in msm_pinctrl_probe() don't call
+a function required to unroll restart handler registration,
+unregister_restart_handler(). Instead of adding calls to this function,
+switch the msm pinctrl code into using devm_register_sys_off_handler().
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: cf1fc1876289 ("pinctrl: qcom: use restart_notifier mechanism for ps_hold")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/20250513-pinctrl-msm-fix-v2-2-249999af0fc1@oss.qualcomm.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/pinctrl/qcom/pinctrl-msm.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 6446cda0f8572..0f3b8f44e7011 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -576,6 +576,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{       /* Acer Aspire SW3-013 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
-+		},
-+		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
-+					BYT_RT5640_JD_SRC_JD2_IN4N |
-+					BYT_RT5640_OVCD_TH_2000UA |
-+					BYT_RT5640_OVCD_SF_0P75 |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
+index a6bdff7a0bb25..018e96d921c05 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -43,7 +43,6 @@
+  * @pctrl:          pinctrl handle.
+  * @chip:           gpiochip handle.
+  * @desc:           pin controller descriptor
+- * @restart_nb:     restart notifier block.
+  * @irq:            parent irq for the TLMM irq_chip.
+  * @intr_target_use_scm: route irq to application cpu using scm calls
+  * @lock:           Spinlock to protect register resources as well
+@@ -63,7 +62,6 @@ struct msm_pinctrl {
+ 	struct pinctrl_dev *pctrl;
+ 	struct gpio_chip chip;
+ 	struct pinctrl_desc desc;
+-	struct notifier_block restart_nb;
+ 
+ 	int irq;
+ 
+@@ -1470,10 +1468,9 @@ static int msm_gpio_init(struct msm_pinctrl *pctrl)
+ 	return 0;
+ }
+ 
+-static int msm_ps_hold_restart(struct notifier_block *nb, unsigned long action,
+-			       void *data)
++static int msm_ps_hold_restart(struct sys_off_data *data)
+ {
+-	struct msm_pinctrl *pctrl = container_of(nb, struct msm_pinctrl, restart_nb);
++	struct msm_pinctrl *pctrl = data->cb_data;
+ 
+ 	writel(0, pctrl->regs[0] + PS_HOLD_OFFSET);
+ 	mdelay(1000);
+@@ -1484,7 +1481,11 @@ static struct msm_pinctrl *poweroff_pctrl;
+ 
+ static void msm_ps_hold_poweroff(void)
+ {
+-	msm_ps_hold_restart(&poweroff_pctrl->restart_nb, 0, NULL);
++	struct sys_off_data data = {
++		.cb_data = poweroff_pctrl,
++	};
++
++	msm_ps_hold_restart(&data);
+ }
+ 
+ static void msm_pinctrl_setup_pm_reset(struct msm_pinctrl *pctrl)
+@@ -1494,9 +1495,11 @@ static void msm_pinctrl_setup_pm_reset(struct msm_pinctrl *pctrl)
+ 
+ 	for (i = 0; i < pctrl->soc->nfunctions; i++)
+ 		if (!strcmp(func[i].name, "ps_hold")) {
+-			pctrl->restart_nb.notifier_call = msm_ps_hold_restart;
+-			pctrl->restart_nb.priority = 128;
+-			if (register_restart_handler(&pctrl->restart_nb))
++			if (devm_register_sys_off_handler(pctrl->dev,
++							  SYS_OFF_MODE_RESTART,
++							  128,
++							  msm_ps_hold_restart,
++							  pctrl))
+ 				dev_err(pctrl->dev,
+ 					"failed to setup restart handler.\n");
+ 			poweroff_pctrl = pctrl;
+@@ -1598,8 +1601,6 @@ void msm_pinctrl_remove(struct platform_device *pdev)
+ 	struct msm_pinctrl *pctrl = platform_get_drvdata(pdev);
+ 
+ 	gpiochip_remove(&pctrl->chip);
+-
+-	unregister_restart_handler(&pctrl->restart_nb);
+ }
+ EXPORT_SYMBOL(msm_pinctrl_remove);
+ 
 -- 
 2.39.5
 
