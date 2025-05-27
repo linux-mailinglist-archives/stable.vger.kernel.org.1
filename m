@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0783EAC5420
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:56:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF10AC577E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C60084A250F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6435F1BA7A7F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92720280035;
-	Tue, 27 May 2025 16:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76C72798F8;
+	Tue, 27 May 2025 17:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sr8g9FGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arq6A/9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F673276057;
-	Tue, 27 May 2025 16:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954F63C01;
+	Tue, 27 May 2025 17:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364935; cv=none; b=Y85N8tfymLkmW6TEipWgwFY1Qef3sRGpu0aLwShEtVepLFqSdjpCjkrltcYJzCotOfL4tkhLqwKvSwQFFI74+kjqzXwVSOmUcPIcfNz4e74F/8ClUsuUxGx7CCBuTc0yimeoZXcUBU1t4pKiP4KPCwMRKxp6XBKuNTr0ZerKMV8=
+	t=1748367228; cv=none; b=FpJ0eBtjnOj6EZ+grIMqYFIAP03/GRGawkbWKSGkx96QsXe14sq3kbZ+FX/Z4sMLU89zq5DFNLjOr9/+x3qjLEca7imsSmhMnXK/8GWoOaTKgS/ngHPRZ0dmAYmMxVcb1KSV9Je6fusXAOM1MAoCM3UztiJEwxlrrqNGyw7Dn8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364935; c=relaxed/simple;
-	bh=6BzOdGwj8GZ9VZfZKdfEtMZxwSnuBfj6bCI2PBMXE7w=;
+	s=arc-20240116; t=1748367228; c=relaxed/simple;
+	bh=+/koIalzIxw8+6i1J1WyNRtNLLYaSP1y2+dODQSDd1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxtHB9ohIvQ1DviZXlrNVTcXId4WPskAkeWxCVrZypaq9Wq0xoopJmVlPRatu9gSuRnGqGcp62+9qEsVvpMslpZA0aDTKDcq1APfchFHO4JJkVHDu1QsVVmgXihqbKMoMFHZoQxKJVO2/hO52Ah4HYC5D51/wGcqTB5cdw0PzFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sr8g9FGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5E7C4CEE9;
-	Tue, 27 May 2025 16:55:34 +0000 (UTC)
+	 MIME-Version; b=ouk7IMOaSueBw0o7EPltn0LsvO33zmz6abMjNNRHRIwzAuE+fhwEMwyv1zd8/5iVecsGSDstc7rlb0vANsycMJnX/YmnoMaUopSK8zkLWRbLnKFAiDoJbdHMhkgJFZ6z3yPw9pvBax1CbD8UqEtQz0U3Ee8MnHc1VWwZchG0OfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arq6A/9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182C5C4CEE9;
+	Tue, 27 May 2025 17:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364935;
-	bh=6BzOdGwj8GZ9VZfZKdfEtMZxwSnuBfj6bCI2PBMXE7w=;
+	s=korg; t=1748367228;
+	bh=+/koIalzIxw8+6i1J1WyNRtNLLYaSP1y2+dODQSDd1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sr8g9FGMaAko65E4tiWnFpWEOkq6tYhsO0Fdq43/fGQR7llJkpseUHegg+v+nVPk1
-	 HG9AlG6A5XebxbcBHoeMIDrl68ZAW2P2zfpGKOuwp5eBP0pekPgt3O0Eps6GAlpFFV
-	 7BWSt7lY1QdV4H2M8Dp/HvUDh0YTLKuIC5Scww7g=
+	b=arq6A/9NmHDe2dPBZk1A1Zmo+3VOBEL6RwT4pyIcGZVeiLdnz7b70sVA9YCVGL2ZB
+	 kQnXlhpqm5IP0X7uDFWLDwN8am3CKGyfS0KnVNuuB4kpVFC4oCB72Kvk7auZabU3bC
+	 qcPG0fBWFWzLdVgF1QEXNdj0wCAd+srQTJ6FUT78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Petr Mladek <pmladek@suse.com>,
-	John Ogness <john.ogness@linutronix.de>,
+	Victor Lu <victorchengchi.lu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 183/626] printk: Check CON_SUSPEND when unblanking a console
+Subject: [PATCH 6.14 279/783] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
 Date: Tue, 27 May 2025 18:21:16 +0200
-Message-ID: <20250527162452.444908675@linuxfoundation.org>
+Message-ID: <20250527162524.442518560@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcos Paulo de Souza <mpdesouza@suse.com>
+From: Victor Lu <victorchengchi.lu@amd.com>
 
-[ Upstream commit 72c96a2dacc0fb056d13a5f02b0845c4c910fe54 ]
+[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
 
-The commit 9e70a5e109a4 ("printk: Add per-console suspended state")
-introduced the CON_SUSPENDED flag for consoles. The suspended consoles
-will stop receiving messages, so don't unblank suspended consoles
-because it won't be showing anything either way.
+SRIOV VF does not have write access to AGP BAR regs.
+Skip the writes to avoid a dmesg warning.
 
-Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20250226-printk-renaming-v1-5-0b878577f2e6@suse.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 881a26e18c658..3a91b739e8f30 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -3310,7 +3310,12 @@ void console_unblank(void)
- 	 */
- 	cookie = console_srcu_read_lock();
- 	for_each_console_srcu(c) {
--		if ((console_srcu_read_flags(c) & CON_ENABLED) && c->unblank) {
-+		short flags = console_srcu_read_flags(c);
-+
-+		if (flags & CON_SUSPENDED)
-+			continue;
-+
-+		if ((flags & CON_ENABLED) && c->unblank) {
- 			found_unblank = true;
- 			break;
- 		}
-@@ -3347,7 +3352,12 @@ void console_unblank(void)
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
+index 0e3ddea7b8e0f..a7bfc9f41d0e3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
+@@ -92,12 +92,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
+ {
+ 	uint64_t value;
  
- 	cookie = console_srcu_read_lock();
- 	for_each_console_srcu(c) {
--		if ((console_srcu_read_flags(c) & CON_ENABLED) && c->unblank)
-+		short flags = console_srcu_read_flags(c);
+-	/* Program the AGP BAR */
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
+-
+ 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
++		/* Program the AGP BAR */
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
 +
-+		if (flags & CON_SUSPENDED)
-+			continue;
-+
-+		if ((flags & CON_ENABLED) && c->unblank)
- 			c->unblank();
- 	}
- 	console_srcu_read_unlock(cookie);
+ 		/* Program the system aperture low logical page number. */
+ 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
+ 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
 -- 
 2.39.5
 
