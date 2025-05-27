@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-147592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D6FAC5856
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 270D2AC5589
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0E11BC1E1A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B2B3BE2A1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FC327CCF0;
-	Tue, 27 May 2025 17:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A044927CB04;
+	Tue, 27 May 2025 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIsogA6a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMikIXOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D565B1C07C4;
-	Tue, 27 May 2025 17:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE8219E7F9;
+	Tue, 27 May 2025 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367819; cv=none; b=Yz4e+Zr3HqsajaiXG19//85Vn1MKcGUe1WmHSVm4K2RPI5pkaBvPuDBMUok7b1MLyuRxwydUEiGGQcodL+vLIl7Cxmz0Zo9Nr17iAI8WyY2uQAdJZ4yfz+k7aoockKYdNPJOId77Kl5/+XfBPSCADowqOrz3K05SfQSpnfJ7p5s=
+	t=1748365646; cv=none; b=tUmIdSAu6Nd9zeeTReOCEkycEOpo8WhxfMJ48lEEGc/I5oqY+psdJv3NYdKCC3yQ9l04syt9k/eFMqXup63ELIICUVj6faNBxTbJTWgbRApl4l1PcxtQSiT5qiuwB5U0z6joCNnTYrtAPIsowVHkpZ/IlfWOIOfx7ktSJRujtSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367819; c=relaxed/simple;
-	bh=nVCU8uONFrmdl0CVaLfxW02JcF8FuKadcJZsweoT/0w=;
+	s=arc-20240116; t=1748365646; c=relaxed/simple;
+	bh=T77tAHw90JZwljtoM4x1WG8T4h3ZJqKgbIic0tM+ysk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csIMzbp8zURCOjvfktYE6js4ptYzdpX4w0rZtXvMICl+ktnZyscCJk00zXVR5VBFwiXiGssAT6zdpDfu8KRQfKXscxMO+O9ZeP3dtlW/sutRceYQQKdV95FSV20I1bnJgAxh+DftUVZKQCF/awNV7zOZ/9gt6GRsDmEguYAWPbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIsogA6a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDA2C4CEE9;
-	Tue, 27 May 2025 17:43:38 +0000 (UTC)
+	 MIME-Version; b=NB+o/azTHKT70i2U7aeT8PDFM97Bdio0R2usuctnQUpRtNutRdT2oemiHhJBucdsEFHwcdH9j1qNe+pVFPDt/24wVT1tkwcYbdZNDS2S5spoI20HmRX6t2QA5YR6kBcN1ZFvyvrIGjymM6+grLotIkA8MaoiFJNUuw6ziDYf+jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMikIXOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6383C4CEE9;
+	Tue, 27 May 2025 17:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367819;
-	bh=nVCU8uONFrmdl0CVaLfxW02JcF8FuKadcJZsweoT/0w=;
+	s=korg; t=1748365646;
+	bh=T77tAHw90JZwljtoM4x1WG8T4h3ZJqKgbIic0tM+ysk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIsogA6afbNNyPBvIJY52xHzSbiqLI1kK8TCFd9F9ku1Tn6fLK0+UpuadA01dBOGM
-	 BU5XTmk0jC7e3xd1SjCS/4Tb3KB3rt5zs1ArEim3faQBR7iOa9ERbyRi1Y46H7P01T
-	 JY5+E1qPBN3HSr3j6cRtbA0Vsee2/X48Rcta6tKk=
+	b=BMikIXOQepuAjxSvFREdao+/uGmFwH/VI6ZvuCkZHLF6+jaTQdO9syLlcZC5rRN1V
+	 alSXo56z+0KnjfRmIfa9UGZ0wGFAl6VMVdR2PNEkXnIGu4Dr1hYWz2n6ZI0roIej9/
+	 rkAwfeorrTZbqVzXKnUIRvmCVxUitT9tPHLyIa+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <witu@nvidia.com>,
-	Bodong Wang <bodong@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 508/783] net/mlx5e: reduce rep rxq depth to 256 for ECPF
-Date: Tue, 27 May 2025 18:25:05 +0200
-Message-ID: <20250527162533.827091025@linuxfoundation.org>
+Subject: [PATCH 6.12 413/626] mptcp: pm: userspace: flags: clearer msg if no remote addr
+Date: Tue, 27 May 2025 18:25:06 +0200
+Message-ID: <20250527162501.785854630@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <witu@nvidia.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit b9cc8f9d700867aaa77aedddfea85e53d5e5d584 ]
+[ Upstream commit 58b21309f97b08b6b9814d1ee1419249eba9ef08 ]
 
-By experiments, a single queue representor netdev consumes kernel
-memory around 2.8MB, and 1.8MB out of the 2.8MB is due to page
-pool for the RXQ. Scaling to a thousand representors consumes 2.8GB,
-which becomes a memory pressure issue for embedded devices such as
-BlueField-2 16GB / BlueField-3 32GB memory.
+Since its introduction in commit 892f396c8e68 ("mptcp: netlink: issue
+MP_PRIO signals from userspace PMs"), it was mandatory to specify the
+remote address, because of the 'if (rem->addr.family == AF_UNSPEC)'
+check done later one.
 
-Since representor netdevs mostly handles miss traffic, and ideally,
-most of the traffic will be offloaded, reduce the default non-uplink
-rep netdev's RXQ default depth from 1024 to 256 if mdev is ecpf eswitch
-manager. This saves around 1MB of memory per regular RQ,
-(1024 - 256) * 2KB, allocated from page pool.
+In theory, this attribute can be optional, but it sounds better to be
+precise to avoid sending the MP_PRIO on the wrong subflow, e.g. if there
+are multiple subflows attached to the same local ID. This can be relaxed
+later on if there is a need to act on multiple subflows with one
+command.
 
-With rxq depth of 256, the netlink page pool tool reports
-$./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-	 --dump page-pool-get
- {'id': 277,
-  'ifindex': 9,
-  'inflight': 128,
-  'inflight-mem': 786432,
-  'napi-id': 775}]
+For the moment, the check to see if attr_rem is NULL can be removed,
+because mptcp_pm_parse_entry() will do this check as well, no need to do
+that differently here.
 
-This is due to mtu 1500 + headroom consumes half pages, so 256 rxq
-entries consumes around 128 pages (thus create a page pool with
-size 128), shown above at inflight.
-
-Note that each netdev has multiple types of RQs, including
-Regular RQ, XSK, PTP, Drop, Trap RQ. Since non-uplink representor
-only supports regular rq, this patch only changes the regular RQ's
-default depth.
-
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Bodong Wang <bodong@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-8-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mptcp/pm_userspace.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 6667ec26e079b..07f38f472a279 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -65,6 +65,7 @@
- #define MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE \
- 	max(0x7, MLX5E_PARAMS_MINIMUM_LOG_SQ_SIZE)
- #define MLX5E_REP_PARAMS_DEF_NUM_CHANNELS 1
-+#define MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE 0x8
+diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
+index e35178f5205fa..bb76295d04c56 100644
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -589,11 +589,9 @@ int mptcp_userspace_pm_set_flags(struct sk_buff *skb, struct genl_info *info)
+ 	if (ret < 0)
+ 		goto set_flags_err;
  
- static const char mlx5e_rep_driver_name[] = "mlx5e_rep";
+-	if (attr_rem) {
+-		ret = mptcp_pm_parse_entry(attr_rem, info, false, &rem);
+-		if (ret < 0)
+-			goto set_flags_err;
+-	}
++	ret = mptcp_pm_parse_entry(attr_rem, info, false, &rem);
++	if (ret < 0)
++		goto set_flags_err;
  
-@@ -855,6 +856,8 @@ static void mlx5e_build_rep_params(struct net_device *netdev)
- 
- 	/* RQ */
- 	mlx5e_build_rq_params(mdev, params);
-+	if (!mlx5e_is_uplink_rep(priv) && mlx5_core_is_ecpf(mdev))
-+		params->log_rq_mtu_frames = MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE;
- 
- 	/* If netdev is already registered (e.g. move from nic profile to uplink,
- 	 * RTNL lock must be held before triggering netdev notifiers.
+ 	if (loc.addr.family == AF_UNSPEC ||
+ 	    rem.addr.family == AF_UNSPEC) {
 -- 
 2.39.5
 
