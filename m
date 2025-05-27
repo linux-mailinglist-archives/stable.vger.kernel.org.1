@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-147598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6890FAC585D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B4CAC583C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F2063A6DF7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D8CE3B9724
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C5C27A131;
-	Tue, 27 May 2025 17:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE45280038;
+	Tue, 27 May 2025 17:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtReDhVP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwfFCQdk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CAA86347;
-	Tue, 27 May 2025 17:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972AA1DC998;
+	Tue, 27 May 2025 17:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367840; cv=none; b=uiCjYpz/BQuGomsXdFftTlvrAHwmNlmz960y70Nk6zfhb30X57j7JaOY5aq/KeRGYdAumMyeYP3v3Az6xpPb9ZOpkoNBjtSJjRYIPmOmBfxXXc4UcVvCar34iiRJEs5/1/GXfbQhSyEkZJaBzP7WEMXE9gpKI3TU3HYB3z/FU40=
+	t=1748367744; cv=none; b=JvForkt4CNnx2KwcGaEn7tRcg5fykvLk92T+XyOxC2TlYgFN+TAUgiGGBEoVBW7oz7wKJGBpnGms1oyY76pCvCdRfQGIOZE9mGfWcjDRVCHegTAsd/Fw5KKUaDb4DQNibprqrHhVXZG/nY8peuQ8u/Ag3gt+GGBvcAXCvzEC5dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367840; c=relaxed/simple;
-	bh=Uz6VgIvUlWvXCoP2dGqa9+TW9KS+D5+tGufWFDtyjy8=;
+	s=arc-20240116; t=1748367744; c=relaxed/simple;
+	bh=VqfTDot4cgTnhYXnc948xdbcyQmKCPdyFNyayO8S8ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TuogRGggriAMD7AL3MMpAo0ehiKGws6TDHk99SDFtSy95O0bCQBojpXTyM6sBzp2nz56COcnmiN/zJe/W/cjrNX9AvZKDDB9BJDmN75KJ2dg4o3fAsVe1HNut4Injyih99BPGKBeNTe8cEAv9zc+YcQ45a9bCmPtM2UyHAekcMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtReDhVP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B971BC4CEE9;
-	Tue, 27 May 2025 17:43:59 +0000 (UTC)
+	 MIME-Version; b=dqGbUYgv/mXOahMNIGnlMEarkMt+rq49z8KrcIfO3+s3h+3qVuDiJk/jLD0X26SlpcXHdC1sHvaMtMiivcEl6bK1Mvaa6GLhEFvAD2QMhFeSy+PqepSUBqU2Dw2lDiKqNPzP/V+LseLR0jRu7+8PV5lYKpni34DdgQZrBIimb+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwfFCQdk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B0AC4CEE9;
+	Tue, 27 May 2025 17:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367840;
-	bh=Uz6VgIvUlWvXCoP2dGqa9+TW9KS+D5+tGufWFDtyjy8=;
+	s=korg; t=1748367744;
+	bh=VqfTDot4cgTnhYXnc948xdbcyQmKCPdyFNyayO8S8ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtReDhVPL6b64Kzl0XYf52LNMccvawie7x5+5Ao16ZztFA569Pecgu31PVevhoQZM
-	 WURLU0oJFHLhKkJH5+Eg7hZSp9RKwdDRBCiWT0Q+xyPUUSsuPLDcP0dTSXqO3+GNaH
-	 gmXMIjqN++Jlgh+3UIUlDwOnip7XBxUN7Q1NwKno=
+	b=qwfFCQdkqvk8UHkDT8wC/hrvYSbPCmXf8jVzhuhO74VJvgigzM55scBiOeOFScvYB
+	 mGOKQTdFgzscz/5U2Em1uu0ehF7JfRn9LQYZ4Wxfwpj3MPVesJHAuiLf0MfVsJXli5
+	 gQA4B1DM/Asmmml6jEfm0AIgBoJzt542HamK2ids=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asad Kamal <asad.kamal@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Anthony Koo <anthony.koo@amd.com>,
+	Martin Tsai <Martin.Tsai@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 485/783] drm/amd/pm: Skip P2S load for SMU v13.0.12
-Date: Tue, 27 May 2025 18:24:42 +0200
-Message-ID: <20250527162532.879510156@linuxfoundation.org>
+Subject: [PATCH 6.14 486/783] drm/amd/display: Support multiple options during psr entry.
+Date: Tue, 27 May 2025 18:24:43 +0200
+Message-ID: <20250527162532.919929046@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -67,36 +69,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Asad Kamal <asad.kamal@amd.com>
+From: Martin Tsai <Martin.Tsai@amd.com>
 
-[ Upstream commit 1fb85819d629676f1d53f40c3fffa25a33a881e4 ]
+[ Upstream commit 3a5fa55455db6a11248a25f24570c365f9246144 ]
 
-Skip P2S table load for SMU v13.0.12
+[WHY]
+Some panels may not handle idle pattern properly during PSR entry.
 
-Signed-off-by: Asad Kamal <asad.kamal@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+[HOW]
+Add a condition to allow multiple options on power down
+sequence during PSR1 entry.
+
+Reviewed-by: Anthony Koo <anthony.koo@amd.com>
+Signed-off-by: Martin Tsai <Martin.Tsai@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_types.h       | 7 +++++++
+ drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c   | 4 ++++
+ drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h | 6 ++++++
+ 3 files changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-index da7bd9227afeb..5f2a824918e3b 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-@@ -450,8 +450,9 @@ static int smu_v13_0_6_init_microcode(struct smu_context *smu)
- 	int var = (adev->pdev->device & 0xF);
- 	char ucode_prefix[15];
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index 0c2aa91f0a111..e60898c2df01a 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -1033,6 +1033,13 @@ struct psr_settings {
+ 	unsigned int psr_sdp_transmit_line_num_deadline;
+ 	uint8_t force_ffu_mode;
+ 	unsigned int psr_power_opt;
++
++	/**
++	 * Some panels cannot handle idle pattern during PSR entry.
++	 * To power down phy before disable stream to avoid sending
++	 * idle pattern.
++	 */
++	uint8_t power_down_phy_before_disable_stream;
+ };
  
--	/* No need to load P2S tables in IOV mode */
--	if (amdgpu_sriov_vf(adev))
-+	/* No need to load P2S tables in IOV mode or for smu v13.0.12 */
-+	if (amdgpu_sriov_vf(adev) ||
-+	    (amdgpu_ip_version(smu->adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 12)))
- 		return 0;
+ enum replay_coasting_vtotal_type {
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
+index 88c75c243bf8a..ff3b8244ba3d0 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
+@@ -418,6 +418,10 @@ static bool dmub_psr_copy_settings(struct dmub_psr *dmub,
+ 	copy_settings_data->relock_delay_frame_cnt = 0;
+ 	if (link->dpcd_caps.sink_dev_id == DP_BRANCH_DEVICE_ID_001CF8)
+ 		copy_settings_data->relock_delay_frame_cnt = 2;
++
++	copy_settings_data->power_down_phy_before_disable_stream =
++		link->psr_settings.power_down_phy_before_disable_stream;
++
+ 	copy_settings_data->dsc_slice_height = psr_context->dsc_slice_height;
  
- 	if (!(adev->flags & AMD_IS_APU)) {
+ 	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
+diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+index d0fe324cb5371..8cf89aed024b7 100644
+--- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
++++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+@@ -3118,6 +3118,12 @@ struct dmub_cmd_psr_copy_settings_data {
+ 	 * Some panels request main link off before xth vertical line
+ 	 */
+ 	uint16_t poweroff_before_vertical_line;
++	/**
++	 * Some panels cannot handle idle pattern during PSR entry.
++	 * To power down phy before disable stream to avoid sending
++	 * idle pattern.
++	 */
++	uint8_t power_down_phy_before_disable_stream;
+ };
+ 
+ /**
 -- 
 2.39.5
 
