@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-147569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D087AC5836
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB73AC5555
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D08354C0626
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB1603B83F5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BF127F16D;
-	Tue, 27 May 2025 17:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA262798E6;
+	Tue, 27 May 2025 17:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4z9Qsql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bC8YV59V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D6C1DC998;
-	Tue, 27 May 2025 17:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC9B2110E;
+	Tue, 27 May 2025 17:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367747; cv=none; b=epolqNP7tnMN3oMnKQnwxSMnQx4SvyJXSHnRcBv0MJPOwy/4gYR3dultcE0YRPm/DQeXhffnmkBSemzcZoPfRP8GSOHNcarK+IzGJVLjEiSZq9D4UsRtdszoQKQKhELsSnOK9ur7Etz61G8Fg25c6c1pvBgH8/r0jSqCAjBJ41A=
+	t=1748365483; cv=none; b=eLvajlNzdksy30tNHK0M5vVXiMwzpVgLg2C1ukvl1Ed5wA5LsouqcTYN/hYbX8QhDbFmsQ9NxjiEaJbRRFldDoGpYQb2nsJV/B/Rs7MUBk2l5xiRhwVCFcajBN508Q+6yWVUJVusQdNTi3F0QWjBnSEg/BwAdxPgoEKlixa+wKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367747; c=relaxed/simple;
-	bh=jkncdQHC09SPNuqXnGHPDxDF3djKy4Yb502XZyMTK2M=;
+	s=arc-20240116; t=1748365483; c=relaxed/simple;
+	bh=o9ypahR3DsGnGTEj9cghb8mxSEduyfpShcIx0rcA/TY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrV9rSR85C/Njd8n4lY9zVnGYm4r/dhAsJWVqANQpnrgfmHg8QJqg8jZfpZRTYUhp3g35tdrUSMGF7hXFYoep3lq3wpUdrwibZxbVpKt2wzd6j9Lij7So4zXXufNWNNhV9AG2umtBZlQPIwIb2o1Is97E4U1pPU4cPcLdZfb4Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4z9Qsql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BB1C4CEE9;
-	Tue, 27 May 2025 17:42:27 +0000 (UTC)
+	 MIME-Version; b=LgDOi1K1fx0Xsmjz4iU44ihe6rnvijGV983ClE+XvoML0MuAlOlXDWV3Wmj1kUaGpRkeTd92uTfhs+GcPoBh1CRC9GqUfow7xvS1JKE0WeNCy4WYzOatJ7VD6SDH+6N3x34S8YbQvY4kfMvLdGHVdufAOcjrTOmVguxoN4nNvgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bC8YV59V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28D3C4CEE9;
+	Tue, 27 May 2025 17:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367747;
-	bh=jkncdQHC09SPNuqXnGHPDxDF3djKy4Yb502XZyMTK2M=;
+	s=korg; t=1748365483;
+	bh=o9ypahR3DsGnGTEj9cghb8mxSEduyfpShcIx0rcA/TY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4z9QsqlJuoZmuQJoZWlQEM0MRbLVHz3ayVBqJsOH/61z2Y+TW2RRQ5JrcnEvF/Nj
-	 2BO7+SX4q76hoikh+t2cQQX8AL/Rb+g9NTVKgU/BUiPhBnFjI9c0JfNCl37jPXJ7Ro
-	 ZXG9b5mQkyFs9SPnvCgAGAiD1T/xm91qu3MDG9DE=
+	b=bC8YV59V0FUqqRpYQmnjR+hgtTFoEz6rjZeWBJmFoRVAzuWXaWvcHc5mv7pLGWW4h
+	 EB/NR5SXScnn9P96bInjUtDeB+ZuBPh+VCptOqpiSJab9M5Z68kOJ+Wi8f/tDuA98u
+	 v0vJKUxKRSJJU9pfP965z6rnpN2V15BcwoU53fd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Brandon Syu <Brandon.Syu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 487/783] Revert "drm/amd/display: Exit idle optimizations before attempt to access PHY"
+Subject: [PATCH 6.12 391/626] drm/amd/display: Dont try AUX transactions on disconnected link
 Date: Tue, 27 May 2025 18:24:44 +0200
-Message-ID: <20250527162532.958865053@linuxfoundation.org>
+Message-ID: <20250527162500.909386088@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +65,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brandon Syu <Brandon.Syu@amd.com>
+From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
 
-[ Upstream commit be704e5ef4bd66dee9bb3f876964327e3a247d31 ]
+[ Upstream commit e8bffa52e0253cfd689813a620e64521256bc712 ]
 
-This reverts commit de612738e9771bd66aeb20044486c457c512f684.
+[Why]
+Setting link DPMS off in response to HPD disconnect creates AUX
+transactions on a link that is supposed to be disconnected. This can
+cause issues in some cases when the sink re-asserts HPD and expects
+source to re-enable the link.
 
-Reason to revert: screen flashes or gray screen appeared half of the
-screen after resume from S4/S5.
+[How]
+Avoid AUX transactions on disconnected link.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Brandon Syu <Brandon.Syu@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 5 -----
- 1 file changed, 5 deletions(-)
+ .../gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c   | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index 94ceccfc04982..2f5f3e749a1ab 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -1889,7 +1889,6 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
- 	bool can_apply_edp_fast_boot = false;
- 	bool can_apply_seamless_boot = false;
- 	bool keep_edp_vdd_on = false;
--	struct dc_bios *dcb = dc->ctx->dc_bios;
- 	DC_LOGGER_INIT();
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
+index bafa52a0165a0..17c57cf98ec5c 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
+@@ -75,7 +75,8 @@ void dp_disable_link_phy(struct dc_link *link,
+ 	struct dc  *dc = link->ctx->dc;
  
+ 	if (!link->wa_flags.dp_keep_receiver_powered &&
+-		!link->skip_implict_edp_power_control)
++			!link->skip_implict_edp_power_control &&
++			link->type != dc_connection_none)
+ 		dpcd_write_rx_power_ctrl(link, false);
  
-@@ -1966,8 +1965,6 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
- 			hws->funcs.edp_backlight_control(edp_link_with_sink, false);
- 		}
- 		/*resume from S3, no vbios posting, no need to power down again*/
--		if (dcb && dcb->funcs && !dcb->funcs->is_accelerated_mode(dcb))
--			clk_mgr_exit_optimized_pwr_state(dc, dc->clk_mgr);
+ 	dc->hwss.disable_link_output(link, link_res, signal);
+@@ -163,8 +164,9 @@ enum dc_status dp_set_fec_ready(struct dc_link *link, const struct link_resource
+ 	} else {
+ 		if (link->fec_state == dc_link_fec_ready) {
+ 			fec_config = 0;
+-			core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
+-				&fec_config, sizeof(fec_config));
++			if (link->type != dc_connection_none)
++				core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
++					&fec_config, sizeof(fec_config));
  
- 		power_down_all_hw_blocks(dc);
- 
-@@ -1980,8 +1977,6 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
- 		disable_vga_and_power_gate_all_controllers(dc);
- 		if (edp_link_with_sink && !keep_edp_vdd_on)
- 			dc->hwss.edp_power_control(edp_link_with_sink, false);
--		if (dcb && dcb->funcs && !dcb->funcs->is_accelerated_mode(dcb))
--			clk_mgr_optimize_pwr_state(dc, dc->clk_mgr);
- 	}
- 	bios_set_scratch_acc_mode_change(dc->ctx->dc_bios, 1);
- }
+ 			link_enc->funcs->fec_set_ready(link_enc, false);
+ 			link->fec_state = dc_link_fec_not_ready;
 -- 
 2.39.5
 
