@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F932AC56D1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D30AC537E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F8B11BA82A4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23269189EECB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9740927D776;
-	Tue, 27 May 2025 17:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343B92CCC0;
+	Tue, 27 May 2025 16:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5I3XVyR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCeVzMd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547A2280008;
-	Tue, 27 May 2025 17:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40FD1D63EF;
+	Tue, 27 May 2025 16:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366735; cv=none; b=YYtuI45qf75lo77FKoDtMf2Z+qjrtp8Lleq2fDujifHe2piRw1uOhxEKgXgNga0J0ZK0zFrgvCCntorqBepMFw+A4/2BNlZx09T4DbPPUQmtlThMZt5qDGnXmX3zuytcHKEYk8njfufBnn9CzShDgJznz64mKXpEI8qYOMwPgRw=
+	t=1748364479; cv=none; b=kKHWFYwkLghl/RU9fTKnkp/GMezkhFyVC6e8ibc2f4ZGrSKz6OYtbnxYF8f0VmcRbVL1QGcRQcH1MLMDVwi3pDXc3iTrdBpS6KrQXBpBy6JbB/gcVZfBh4QCFZ8AKxcdXP4cDHXVW84apKMxzxviHS+FaheI21gEglz5j0/BQBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366735; c=relaxed/simple;
-	bh=caIJNPn6xTwiNvwH7FK4L0p5wl+oYPWZZ0fLO8A38GE=;
+	s=arc-20240116; t=1748364479; c=relaxed/simple;
+	bh=FPjxjLz5srXn0S6kC1DJHg7AWKtH1kMUgi0CzF/tgFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LtdGN6CqXLuIPGhVcjQRMzT9Z/1JFwQvY47UmQewPzORGSxPVRCH5yBmUAdGI9K8FC2pNy1CWnrTGHY2rTDDdERf6t8Fp/U5tWBwYK6CKSQZy14up7RHjKMiXlllJl8u8ffff7qHhpuooUcVvEsQ66uKNHTpoTvXiUyTMSdxopk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5I3XVyR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6912C4CEEB;
-	Tue, 27 May 2025 17:25:34 +0000 (UTC)
+	 MIME-Version; b=P8vazwIJr9TpazpOL2Yp7QM1Oh/kDHTt9md+9DXmMYREhaPxSgqGR5kIApaamQmZ9W9wB8ZBL2yHfdNHYo2VMPtPcdkY1wWsp1xpiUwEbujl1G7E726hTVxuA/kiQMvVUsf9Kx0KYbsaP5MkRxrvED1VYshKywPQf+DSFqOO/kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCeVzMd6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A596C4CEE9;
+	Tue, 27 May 2025 16:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366735;
-	bh=caIJNPn6xTwiNvwH7FK4L0p5wl+oYPWZZ0fLO8A38GE=;
+	s=korg; t=1748364478;
+	bh=FPjxjLz5srXn0S6kC1DJHg7AWKtH1kMUgi0CzF/tgFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5I3XVyRDsnllkaT8RIJeXhPUKojr8Y77RIJgmkVEw6NUZGqOxQ7pcW+sB4oztof0
-	 qjPoEW53HARmlqgiBdckPU3bZJq1e5wRRw8+mLit4EHXrjOnT40EjP406RWsy/uMMr
-	 6Ds4KbElJINmdcTVoFNtL1Ti3PxdZk3lkDCavI3U=
+	b=yCeVzMd6AHvTHJD5Obe712j7PF7Hp5lgHQb+RkQo2ji6G/SSXWkKLZkb8aRbHBJCA
+	 6xC9Ajn1xAKCDpdLzlmKjPoBWbd5s6RzJL/0KHr0d1brc9sYSV5WnW/fyxW7T+TqnR
+	 NvsaLnmyii0Ia50tF3zQmLnO5rDE99pQufe7yBps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 165/783] jbd2: do not try to recover wiped journal
+Subject: [PATCH 6.12 069/626] cifs: add validation check for the fields in smb_aces
 Date: Tue, 27 May 2025 18:19:22 +0200
-Message-ID: <20250527162519.887089995@linuxfoundation.org>
+Message-ID: <20250527162447.858593226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit a662f3c03b754e1f97a2781fa242e95bdb139798 ]
+[ Upstream commit eeb827f2922eb07ffbf7d53569cc95b38272646f ]
 
-If a journal is wiped, we will set journal->j_tail to 0. However if
-'write' argument is not set (as it happens for read-only device or for
-ocfs2), the on-disk superblock is not updated accordingly and thus
-jbd2_journal_recover() cat try to recover the wiped journal. Fix the
-check in jbd2_journal_recover() to use journal->j_tail for checking
-empty journal instead.
+cifs.ko is missing validation check when accessing smb_aces.
+This patch add validation check for the fields in smb_aces.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250206094657.20865-4-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/recovery.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/smb/client/cifsacl.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
-index 9192be7c19d83..23502f1a67c1e 100644
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -287,19 +287,20 @@ static int fc_do_one_pass(journal_t *journal,
- int jbd2_journal_recover(journal_t *journal)
- {
- 	int			err, err2;
--	journal_superblock_t *	sb;
--
- 	struct recovery_info	info;
+diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+index e36f0e2d7d21e..9a73478e00688 100644
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -811,7 +811,23 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 			return;
  
- 	memset(&info, 0, sizeof(info));
--	sb = journal->j_superblock;
- 
- 	/*
- 	 * The journal superblock's s_start field (the current log head)
- 	 * is always zero if, and only if, the journal was cleanly
--	 * unmounted.
-+	 * unmounted. We use its in-memory version j_tail here because
-+	 * jbd2_journal_wipe() could have updated it without updating journal
-+	 * superblock.
- 	 */
--	if (!sb->s_start) {
-+	if (!journal->j_tail) {
-+		journal_superblock_t *sb = journal->j_superblock;
+ 		for (i = 0; i < num_aces; ++i) {
++			if (end_of_acl - acl_base < acl_size)
++				break;
 +
- 		jbd2_debug(1, "No recovery required, last transaction %d, head block %u\n",
- 			  be32_to_cpu(sb->s_sequence), be32_to_cpu(sb->s_head));
- 		journal->j_transaction_sequence = be32_to_cpu(sb->s_sequence) + 1;
+ 			ppace[i] = (struct smb_ace *) (acl_base + acl_size);
++			acl_base = (char *)ppace[i];
++			acl_size = offsetof(struct smb_ace, sid) +
++				offsetof(struct smb_sid, sub_auth);
++
++			if (end_of_acl - acl_base < acl_size ||
++			    ppace[i]->sid.num_subauth == 0 ||
++			    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
++			    (end_of_acl - acl_base <
++			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
++			    (le16_to_cpu(ppace[i]->size) <
++			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth))
++				break;
++
+ #ifdef CONFIG_CIFS_DEBUG2
+ 			dump_ace(ppace[i], end_of_acl);
+ #endif
+@@ -855,7 +871,6 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 				(void *)ppace[i],
+ 				sizeof(struct smb_ace)); */
+ 
+-			acl_base = (char *)ppace[i];
+ 			acl_size = le16_to_cpu(ppace[i]->size);
+ 		}
+ 
 -- 
 2.39.5
 
