@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-147467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11439AC57CB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7D9AC54D5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113941BC15AD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:37:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 024618A1D8C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E398427FD53;
-	Tue, 27 May 2025 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75D327FD4C;
+	Tue, 27 May 2025 16:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqR5tDNd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPgrgP8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB9D2798F8;
-	Tue, 27 May 2025 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A0527FB0C;
+	Tue, 27 May 2025 16:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367430; cv=none; b=fsWJ8X54zlVgDisU9ptT9Z5DO5YG238R6060aAlAvNRXGKVdg/6B5qzh5z52wKsKYM/hxgBbEAcozA3RiZmDZZxPo5pCQFuzySonkTeGDLQql0IbjhucKRlPUAJaXo6LGycKnB+Ry5iK7ahDvKdfgWunGXjcOC2o/f4WhJeaIk4=
+	t=1748365140; cv=none; b=USd3TO8wHW+FRr2FB3PL3YaQrR9l3nUUA6R6HVCoSS7YDegijNmMFuL+g8VZ5153O2wYzWiaG34HPV0Ur69EdiAsNuyeDxDUorfJehvPCcHPlAsZUER0xPMd/kEoZV9quSRqUiGUI//lvXGKb1qDwvIXmENggFr/rJgwxFb4J44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367430; c=relaxed/simple;
-	bh=sX5orlJ1PHI9EEf2RNXoSzx1I8pq+zzd6JZDwS0Q7Ow=;
+	s=arc-20240116; t=1748365140; c=relaxed/simple;
+	bh=TmAZUyNHjrgox8fHCdxEG8x0LJWTKIBhCy0D24hYxd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDBkExvTZEExJeC1y6K9Yd1L8dZDP0vZOkZRqjIQAsYy6M4hXVll/1vfYqAhi3ATTaMRJSp9AZyENxio1btHwilHEDrxW/BMSz4XBO2lPakAX7F64APWEm6hQFKJaNTLRskulL7fxuhgTEhrlveWFkZb3/2LV5ZV5LQvvEItlWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqR5tDNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAC2C4CEE9;
-	Tue, 27 May 2025 17:37:09 +0000 (UTC)
+	 MIME-Version; b=rqDSG6eVSXQ7Q2z2TADU5CbMKApWeIqbsHgXRwbHTQAUCwiL5V6L2HW8JmYKvQUnwFLQ22QYQ6jImWUeTxfdnsZS8UoRLmglV5nztHbR5/bIORFq1VE6OOECRu5bHDz21lp3BVIdeSyWEk+BUCoIYW7MwHwVxdkEokqQRO8k0OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPgrgP8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F20C4CEE9;
+	Tue, 27 May 2025 16:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367430;
-	bh=sX5orlJ1PHI9EEf2RNXoSzx1I8pq+zzd6JZDwS0Q7Ow=;
+	s=korg; t=1748365140;
+	bh=TmAZUyNHjrgox8fHCdxEG8x0LJWTKIBhCy0D24hYxd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqR5tDNdGx8GE7g+qVg2BVic+kdI8e+4nA+J8WzlrkNwDaNU4s+E76t7UzSxBWFU1
-	 X19Rad9HKIK0QeDV7iTAQmCbbK4JBCMvBzGl1lis05I2/Hh5K8xefOsvNwICmj/taF
-	 1vWu/wv/99hsLYepbyCjnjRIYFIHzMqqWDvP5/8Y=
+	b=hPgrgP8Y7WvPoPtqkgRvUGyUh1+GBcR+sk50n4/jUlxv9q67oMN20jikwOOf9vNIZ
+	 k2z4vtHNsjofKEquNHl5r6LyW8wI1hJqgFDMwJWf6s2/xrCZSa9LNtiOcZK0/l6U63
+	 /mtdAXn6ieFrb7dnr4bVKFOZ5d82iH846IA471JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>,
-	Roopni Devanathan <quic_rdevanat@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Ian Rogers <irogers@google.com>,
+	Frederic Weisbecker <fweisbec@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 345/783] wifi: ath12k: Improve BSS discovery with hidden SSID in 6 GHz band
+Subject: [PATCH 6.12 249/626] perf/hw_breakpoint: Return EOPNOTSUPP for unsupported breakpoint type
 Date: Tue, 27 May 2025 18:22:22 +0200
-Message-ID: <20250527162527.114443278@linuxfoundation.org>
+Message-ID: <20250527162455.130201263@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-[ Upstream commit 27d38bdfd416f4db70e09c3bef3b030c86fd235a ]
+[ Upstream commit 061c991697062f3bf87b72ed553d1d33a0e370dd ]
 
-Currently, sometimes, the station is unable to identify the configured
-AP SSID in its scan results when the AP is not broadcasting its name
-publicly and has a hidden SSID.
+Currently, __reserve_bp_slot() returns -ENOSPC for unsupported
+breakpoint types on the architecture. For example, powerpc
+does not support hardware instruction breakpoints. This causes
+the perf_skip BPF selftest to fail, as neither ENOENT nor
+EOPNOTSUPP is returned by perf_event_open for unsupported
+breakpoint types. As a result, the test that should be skipped
+for this arch is not correctly identified.
 
-Currently, channel dwell time for an ath12k station is 30 ms. Sometimes,
-station can send broadcast probe request to AP close to the end of dwell
-time. In some of these cases, before AP sends a response to the received
-probe request, the dwell time on the station side would come to an end.
-So, the station will move to scan next channel and will not be able to
-acknowledge the unicast probe response.
+To resolve this, hw_breakpoint_event_init() should exit early by
+checking for unsupported breakpoint types using
+hw_breakpoint_slots_cached() and return the appropriate error
+(-EOPNOTSUPP).
 
-Resolve this issue by increasing station's channel dwell time to 70 ms,
-so that the it remains on the same channel for a longer period. This
-would increase the station's chance of receiving probe response from the
-AP. The station will then send a response acknowledgment back to the AP,
-thus leading to successful scan and BSS discovery.
-
-With an increased dwell time, scan would take longer than it takes now.
-But, this fix is an improvement for hidden SSID scan issue.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250207060005.153835-1-quic_rdevanat@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
+Link: https://lore.kernel.org/r/20250303092451.1862862-1-skb99@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/events/hw_breakpoint.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 7a87777e0a047..9cd7ceae5a4f8 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2373,8 +2373,8 @@ void ath12k_wmi_start_scan_init(struct ath12k *ar,
- 	arg->dwell_time_active = 50;
- 	arg->dwell_time_active_2g = 0;
- 	arg->dwell_time_passive = 150;
--	arg->dwell_time_active_6g = 40;
--	arg->dwell_time_passive_6g = 30;
-+	arg->dwell_time_active_6g = 70;
-+	arg->dwell_time_passive_6g = 70;
- 	arg->min_rest_time = 50;
- 	arg->max_rest_time = 500;
- 	arg->repeat_probe_time = 0;
+diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
+index 6c2cb4e4f48da..8f3f624419aa9 100644
+--- a/kernel/events/hw_breakpoint.c
++++ b/kernel/events/hw_breakpoint.c
+@@ -950,9 +950,10 @@ static int hw_breakpoint_event_init(struct perf_event *bp)
+ 		return -ENOENT;
+ 
+ 	/*
+-	 * no branch sampling for breakpoint events
++	 * Check if breakpoint type is supported before proceeding.
++	 * Also, no branch sampling for breakpoint events.
+ 	 */
+-	if (has_branch_stack(bp))
++	if (!hw_breakpoint_slots_cached(find_slot_idx(bp->attr.bp_type)) || has_branch_stack(bp))
+ 		return -EOPNOTSUPP;
+ 
+ 	err = register_perf_hw_breakpoint(bp);
 -- 
 2.39.5
 
