@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-146917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB97BAC5595
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B54AC5888
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7717F3A503F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:08:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EC164C0A32
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C72D27CB04;
-	Tue, 27 May 2025 17:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E00725A627;
+	Tue, 27 May 2025 17:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZvRbeLK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eE4AATM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6A6278750;
-	Tue, 27 May 2025 17:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9EE1FB3;
+	Tue, 27 May 2025 17:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365709; cv=none; b=twGbX8Ndyorhs/ciqII/2MpUX7TNoSUB2n9ddbt55ourDLVGCyidf7zoxm0+59ihYRb+qJGOOp/xzMq3GDxp0zqeNlP1I/Bd4NwFKwQ0EqEcthSxnVdyEP0rRuZkmatEcq3Oqjlnfui7h3W6IjO+XCIy6EZMWZe2wMgDpihJP2w=
+	t=1748367975; cv=none; b=pMmQfKHAfltAsvfFnwzvNheAI9V9fU08roIfKAYn+T2B8p6D5o41P4jvG/YzFks4SDHq73JrBbE2FADbbCpcY8hysg2zCAX1p0ZwvkbAdxo7pgRVJp6FaEPN3mtpxRw5I4/rgkj4Iaai5cQqP5LYf0KKJf30J+5oqM/TpJDxG0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365709; c=relaxed/simple;
-	bh=F3WLr5UGXnoE6C56yT8JemSHkXLN5ZAVfc8bs3fxSQ0=;
+	s=arc-20240116; t=1748367975; c=relaxed/simple;
+	bh=FD3AHGzWoFwB4vU4RCPxxoV5wExgUMwJNanenJOy/oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evRWzRPWdKT0GsgrU7uowETJ/wPAe7Yb3BELqYREdgmULee2A0PFPEp+v6rFqFi5SAtmz8gzXec/1ZjT8tViQAKVc2B/3a49D+dI7PVlTtoNz+MQvw1thBKANL8Z0WmrYyjrEOZqLOV5kEB0I1OFGOrVuJSDF4sZ/HZiqKkzGJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZvRbeLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4F2C4CEE9;
-	Tue, 27 May 2025 17:08:28 +0000 (UTC)
+	 MIME-Version; b=CD3bmKZFEqqRPl8A2d3nJE606c+7K9f80z+4DRqf2KGMMhgGX3U0Hjjp89BHSnhA1x7AMeepDh0fZe98hIFywA+2jedyy2DEWsHm59StB6KYc0mZKgdKMErpgm8HWEp3EOGIGW/JSLO5zWp8GXKvJ84tmfZeL65cn/BbyqckKdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eE4AATM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6675CC4CEE9;
+	Tue, 27 May 2025 17:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365708;
-	bh=F3WLr5UGXnoE6C56yT8JemSHkXLN5ZAVfc8bs3fxSQ0=;
+	s=korg; t=1748367974;
+	bh=FD3AHGzWoFwB4vU4RCPxxoV5wExgUMwJNanenJOy/oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZvRbeLKIdcoAgZM01/lay3uXwCNvsk8YobGeScXgNj4jmlGpzef7pjUcoyqYa8LP
-	 QOpt3yMbxj+G6BcsqoePDt9FgqMZxhnoUhorGDW1yjpzrpew/fSe7+ElAKGanj3wAr
-	 6NfT9XSfxugbUyrk0leO1pBQjK9OkMnD4F0YfdWM=
+	b=eE4AATM9Jb93Qp3xqcgUsPdtGW36+Bbvoe0veJOX6TxZ+e3cA6P6HIiwcoLpBfWeu
+	 B9ulIm3kDeSBLtVpicMJRcqQ1K+Sw2PcqaVdtDtb6/Ozh6j9jf7A4NtBKIrB7yuDTC
+	 DDreSMVZv6A71b4E0J8mQFUGJ7gVyT8HfglMQ5AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alexander Duyck <alexanderduyck@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 463/626] scsi: lpfc: Ignore ndlp rport mismatch in dev_loss_tmo callbk
+Subject: [PATCH 6.14 559/783] eth: fbnic: set IFF_UNICAST_FLT to avoid enabling promiscuous mode when adding unicast addrs
 Date: Tue, 27 May 2025 18:25:56 +0200
-Message-ID: <20250527162503.814714245@linuxfoundation.org>
+Message-ID: <20250527162535.911645468@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Alexander Duyck <alexanderduyck@meta.com>
 
-[ Upstream commit 23ed62897746f49f195d819ce6edeb1db27d1b72 ]
+[ Upstream commit 09717c28b76c30b1dc8c261c855ffb2406abab2e ]
 
-With repeated port swaps between separate fabrics, there can be multiple
-registrations for fabric well known address 0xfffffe.  This can cause ndlp
-reference confusion due to the usage of a single ndlp ptr that stores the
-rport object in fc_rport struct private storage during transport
-registration.  Subsequent registrations update the ndlp->rport field with
-the newer rport, so when transport layer triggers dev_loss_tmo for the
-earlier registered rport the ndlp->rport private storage is referencing the
-newer rport instead of the older rport in dev_loss_tmo callbk.
+I realized when we were adding unicast addresses we were enabling
+promiscuous mode. I did a bit of digging and realized we had overlooked
+setting the driver private flag to indicate we supported unicast filtering.
 
-Because the older ndlp->rport object is already cleaned up elsewhere in
-driver code during the time of fabric swap, check that the rport provided
-in dev_loss_tmo callbk actually matches the rport stored in the LLDD's
-ndlp->rport field.  Otherwise, skip dev_loss_tmo work on a stale rport.
+Example below shows the table with 00deadbeef01 as the main NIC address,
+and 5 additional addresses in the 00deadbeefX0 format.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+  # cat $dbgfs/mac_addr
+  Idx S TCAM Bitmap       Addr/Mask
+  ----------------------------------
+  00  0 00000000,00000000 000000000000
+                          000000000000
+  01  0 00000000,00000000 000000000000
+                          000000000000
+  02  0 00000000,00000000 000000000000
+                          000000000000
+  ...
+  24  0 00000000,00000000 000000000000
+                          000000000000
+  25  1 00100000,00000000 00deadbeef50
+                          000000000000
+  26  1 00100000,00000000 00deadbeef40
+                          000000000000
+  27  1 00100000,00000000 00deadbeef30
+                          000000000000
+  28  1 00100000,00000000 00deadbeef20
+                          000000000000
+  29  1 00100000,00000000 00deadbeef10
+                          000000000000
+  30  1 00100000,00000000 00deadbeef01
+                          000000000000
+  31  0 00000000,00000000 000000000000
+                          000000000000
+
+Before rule 31 would be active. With this change it correctly sticks
+to just the unicast filters.
+
+Signed-off-by: Alexander Duyck <alexanderduyck@meta.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250204010038.1404268-2-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_netdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 31dcabebc9b6d..f2e4237ff3d99 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -227,10 +227,16 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
- 	if (ndlp->nlp_state == NLP_STE_MAPPED_NODE)
- 		return;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+index 7a96b6ee773f3..1db57c42333ef 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+@@ -628,6 +628,8 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd)
+ 	fbnic_rss_key_fill(fbn->rss_key);
+ 	fbnic_rss_init_en_mask(fbn);
  
--	/* check for recovered fabric node */
--	if (ndlp->nlp_state == NLP_STE_UNMAPPED_NODE &&
--	    ndlp->nlp_DID == Fabric_DID)
-+	/* Ignore callback for a mismatched (stale) rport */
-+	if (ndlp->rport != rport) {
-+		lpfc_vlog_msg(vport, KERN_WARNING, LOG_NODE,
-+			      "6788 fc rport mismatch: d_id x%06x ndlp x%px "
-+			      "fc rport x%px node rport x%px state x%x "
-+			      "refcnt %u\n",
-+			      ndlp->nlp_DID, ndlp, rport, ndlp->rport,
-+			      ndlp->nlp_state, kref_read(&ndlp->kref));
- 		return;
-+	}
- 
- 	if (rport->port_name != wwn_to_u64(ndlp->nlp_portname.u.wwn))
- 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
++	netdev->priv_flags |= IFF_UNICAST_FLT;
++
+ 	netdev->features |=
+ 		NETIF_F_RXHASH |
+ 		NETIF_F_SG |
 -- 
 2.39.5
 
