@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348C3AC5773
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757D6AC5478
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803E21BC0B5D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:33:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F7CF3A4930
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7FD280035;
-	Tue, 27 May 2025 17:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7062727FD73;
+	Tue, 27 May 2025 16:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPAYEAN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA+NAeJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3CD28001E;
-	Tue, 27 May 2025 17:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C20227F737;
+	Tue, 27 May 2025 16:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367185; cv=none; b=EKM9eQk91RB1Hmwr2vLGF194IWVY631Q+SIQ/8zVaoIs30yLLMnd+eVYWSihBbDXKm3BG3Aw1jsq9Kl7z1gJxJPwKEzODGBHpCCrBMJzhBm/nNtWozOL+5Mnm4s98YUYIUaFszrr81w34LLIu3DpF2ElqWoYbSj5fEGBazw+NuU=
+	t=1748364926; cv=none; b=GMfXpGOvo5+scLtq6Xx20sm1u+kxmgx9HIooK9zzMtiE+e6eo97aDD4lvPvaAcL729uDqs9Oo2jDSjuV8m9DCQVh8hsof0ZyE64KWXns9EwLv4nFhgA+tAtIHa4iaImuaHvoaDFSczawwozmosKhr5N2JHsXZBRJJQqUOEzMQv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367185; c=relaxed/simple;
-	bh=2lz/uEeooc0n5D650+LvrD9+EyD5Koo7wLylr22Fbp8=;
+	s=arc-20240116; t=1748364926; c=relaxed/simple;
+	bh=LQraXGMF3DbzaCPeV+aug2ED+7z6J2bQMZwR6QVs4/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4KihfbxRsuviwz5DqcqckVsnebF7sAoopQRHu8d28cMEjiO84ARhQ5FqYipOaTfaKQxRa1hKTuyvd4tHW1+tfw2q7FbYP1veYhUO5VXbs3jPHa7uOMw+eaoEZD22UagIK+NPudV9Ri40AKEH9P4upQt9WWWxxj675FxMG7DUmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPAYEAN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC32C4CEEA;
-	Tue, 27 May 2025 17:33:04 +0000 (UTC)
+	 MIME-Version; b=vAINsYUaY0snCHfV7U/p80wPepWfYWzSPj3BYXEjGR6Zp/Jg23fc+1nTAyhZBrSVfLUiTFDyqa5UY6S6xiW/zX/CuyzJqT/AvLgW5wj7x1DWFmmEOBwxqTVev10Se/bFRTYfeN5L9VVNgxaiZ4+5tvjGWLM0NlorPRMmBpwpckI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA+NAeJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABCE7C4CEE9;
+	Tue, 27 May 2025 16:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367185;
-	bh=2lz/uEeooc0n5D650+LvrD9+EyD5Koo7wLylr22Fbp8=;
+	s=korg; t=1748364926;
+	bh=LQraXGMF3DbzaCPeV+aug2ED+7z6J2bQMZwR6QVs4/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KPAYEAN9+jqDQYFD02ZuSdermaUpY7C+7XRcA/rgc8vb009HQ1+lAXTYYYlWboLFv
-	 M1P/HEVCqsPagEqAJpAtRRQjaUajKm9R0L4Lf3Qz3A+U2SKqeYMMWx2bG77FJ6gqi8
-	 GiyzUjcuQ6R2oZfgq30f2+OxwPOAQn5w6XZXZafs=
+	b=IA+NAeJe2N3shX88BVjgSz9mGXwEHTiAuyJrJHONxMMCtBPnStD+m6JttomXe5r8k
+	 d6qFe1Puuv8yHRLc562zSvQw9CsMyf3gbp0/Iol/IHkBcE9W4bDs+tnim8qrn0QPAC
+	 8zr/tF6a+OPtAQxVXbbxGsdu/r0qDhRzubVYF0NM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Amber Lin <Amber.Lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 305/783] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
+Subject: [PATCH 6.12 209/626] drm/amdkfd: Set per-process flags only once for gfx9/10/11/12
 Date: Tue, 27 May 2025 18:21:42 +0200
-Message-ID: <20250527162525.493352534@linuxfoundation.org>
+Message-ID: <20250527162453.510945982@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +63,294 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 
-[ Upstream commit 254ba7e6032d3fc738050d500b0c1d8197af90ca ]
+[ Upstream commit 61972cd93af70738a6ad7f93e17cc7f68a01e182 ]
 
-fib_valid_key_len() is called in the beginning of fib_table_insert()
-or fib_table_delete() to check if the prefix length is valid.
+Define set_cache_memory_policy() for these asics and move all static
+changes from update_qpd() which is called each time a queue is created
+to set_cache_memory_policy() which is called once during process
+initialization
 
-fib_table_insert() and fib_table_delete() are called from 3 paths
-
-  - ip_rt_ioctl()
-  - inet_rtm_newroute() / inet_rtm_delroute()
-  - fib_magic()
-
-In the first ioctl() path, rtentry_to_fib_config() checks the prefix
-length with bad_mask().  Also, fib_magic() always passes the correct
-prefix: 32 or ifa->ifa_prefixlen, which is already validated.
-
-Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
-
-While at it, 2 direct returns in rtm_to_fib_config() are changed to
-goto to match other places in the same function
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250228042328.96624-12-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Reviewed-by: Amber Lin <Amber.Lin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
- net/ipv4/fib_trie.c     | 22 ----------------------
- 2 files changed, 16 insertions(+), 24 deletions(-)
+ .../amd/amdkfd/kfd_device_queue_manager_v10.c | 41 +++++++++++--------
+ .../amd/amdkfd/kfd_device_queue_manager_v11.c | 41 +++++++++++--------
+ .../amd/amdkfd/kfd_device_queue_manager_v12.c | 41 +++++++++++--------
+ .../amd/amdkfd/kfd_device_queue_manager_v9.c  | 36 +++++++++++++++-
+ 4 files changed, 107 insertions(+), 52 deletions(-)
 
-diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index 272e42d813230..493c37ce232d3 100644
---- a/net/ipv4/fib_frontend.c
-+++ b/net/ipv4/fib_frontend.c
-@@ -837,19 +837,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v10.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v10.c
+index 245a90dfc2f6b..b5f5f141353b5 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v10.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v10.c
+@@ -31,10 +31,17 @@ static int update_qpd_v10(struct device_queue_manager *dqm,
+ 			 struct qcm_process_device *qpd);
+ static void init_sdma_vm_v10(struct device_queue_manager *dqm, struct queue *q,
+ 			    struct qcm_process_device *qpd);
++static bool set_cache_memory_policy_v10(struct device_queue_manager *dqm,
++				   struct qcm_process_device *qpd,
++				   enum cache_policy default_policy,
++				   enum cache_policy alternate_policy,
++				   void __user *alternate_aperture_base,
++				   uint64_t alternate_aperture_size);
  
-+	if (cfg->fc_dst_len > 32) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
-+	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
- 	if (cfg->fc_nh_id) {
- 		if (cfg->fc_oif || cfg->fc_gw_family ||
- 		    cfg->fc_encap || cfg->fc_mp) {
- 			NL_SET_ERR_MSG(extack,
- 				       "Nexthop specification and nexthop id are mutually exclusive");
--			return -EINVAL;
-+			err = -EINVAL;
-+			goto errout;
- 		}
- 	}
+ void device_queue_manager_init_v10(
+ 	struct device_queue_manager_asic_ops *asic_ops)
+ {
++	asic_ops->set_cache_memory_policy = set_cache_memory_policy_v10;
+ 	asic_ops->update_qpd = update_qpd_v10;
+ 	asic_ops->init_sdma_vm = init_sdma_vm_v10;
+ 	asic_ops->mqd_manager_init = mqd_manager_init_v10;
+@@ -49,27 +56,27 @@ static uint32_t compute_sh_mem_bases_64bit(struct kfd_process_device *pdd)
+ 		private_base;
+ }
  
- 	if (has_gw && has_via) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Nexthop configuration can not contain both GATEWAY and VIA");
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto errout;
- 	}
+-static int update_qpd_v10(struct device_queue_manager *dqm,
+-			 struct qcm_process_device *qpd)
++static bool set_cache_memory_policy_v10(struct device_queue_manager *dqm,
++				   struct qcm_process_device *qpd,
++				   enum cache_policy default_policy,
++				   enum cache_policy alternate_policy,
++				   void __user *alternate_aperture_base,
++				   uint64_t alternate_aperture_size)
+ {
+-	struct kfd_process_device *pdd;
+-
+-	pdd = qpd_to_pdd(qpd);
+-
+-	/* check if sh_mem_config register already configured */
+-	if (qpd->sh_mem_config == 0) {
+-		qpd->sh_mem_config =
+-			(SH_MEM_ALIGNMENT_MODE_UNALIGNED <<
+-				SH_MEM_CONFIG__ALIGNMENT_MODE__SHIFT) |
+-			(3 << SH_MEM_CONFIG__INITIAL_INST_PREFETCH__SHIFT);
+-		qpd->sh_mem_ape1_limit = 0;
+-		qpd->sh_mem_ape1_base = 0;
+-	}
+-
+-	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(pdd);
++	qpd->sh_mem_config = (SH_MEM_ALIGNMENT_MODE_UNALIGNED <<
++			      SH_MEM_CONFIG__ALIGNMENT_MODE__SHIFT) |
++			      (3 << SH_MEM_CONFIG__INITIAL_INST_PREFETCH__SHIFT);
++	qpd->sh_mem_ape1_limit = 0;
++	qpd->sh_mem_ape1_base = 0;
++	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(qpd_to_pdd(qpd));
  
- 	if (!cfg->fc_table)
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index d6411ac810961..59a6f0a9638f9 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1187,22 +1187,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
+ 	pr_debug("sh_mem_bases 0x%X\n", qpd->sh_mem_bases);
++	return true;
++}
+ 
++static int update_qpd_v10(struct device_queue_manager *dqm,
++			 struct qcm_process_device *qpd)
++{
  	return 0;
  }
  
--static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
--{
--	if (plen > KEYLENGTH) {
--		NL_SET_ERR_MSG(extack, "Invalid prefix length");
--		return false;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v11.c
+index 2e129da7acb43..f436878d0d621 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v11.c
+@@ -30,10 +30,17 @@ static int update_qpd_v11(struct device_queue_manager *dqm,
+ 			 struct qcm_process_device *qpd);
+ static void init_sdma_vm_v11(struct device_queue_manager *dqm, struct queue *q,
+ 			    struct qcm_process_device *qpd);
++static bool set_cache_memory_policy_v11(struct device_queue_manager *dqm,
++				   struct qcm_process_device *qpd,
++				   enum cache_policy default_policy,
++				   enum cache_policy alternate_policy,
++				   void __user *alternate_aperture_base,
++				   uint64_t alternate_aperture_size);
+ 
+ void device_queue_manager_init_v11(
+ 	struct device_queue_manager_asic_ops *asic_ops)
+ {
++	asic_ops->set_cache_memory_policy = set_cache_memory_policy_v11;
+ 	asic_ops->update_qpd = update_qpd_v11;
+ 	asic_ops->init_sdma_vm = init_sdma_vm_v11;
+ 	asic_ops->mqd_manager_init = mqd_manager_init_v11;
+@@ -48,28 +55,28 @@ static uint32_t compute_sh_mem_bases_64bit(struct kfd_process_device *pdd)
+ 		private_base;
+ }
+ 
+-static int update_qpd_v11(struct device_queue_manager *dqm,
+-			 struct qcm_process_device *qpd)
++static bool set_cache_memory_policy_v11(struct device_queue_manager *dqm,
++				   struct qcm_process_device *qpd,
++				   enum cache_policy default_policy,
++				   enum cache_policy alternate_policy,
++				   void __user *alternate_aperture_base,
++				   uint64_t alternate_aperture_size)
+ {
+-	struct kfd_process_device *pdd;
+-
+-	pdd = qpd_to_pdd(qpd);
+-
+-	/* check if sh_mem_config register already configured */
+-	if (qpd->sh_mem_config == 0) {
+-		qpd->sh_mem_config =
+-			(SH_MEM_ALIGNMENT_MODE_UNALIGNED <<
+-				SH_MEM_CONFIG__ALIGNMENT_MODE__SHIFT) |
+-			(3 << SH_MEM_CONFIG__INITIAL_INST_PREFETCH__SHIFT);
+-
+-		qpd->sh_mem_ape1_limit = 0;
+-		qpd->sh_mem_ape1_base = 0;
 -	}
++	qpd->sh_mem_config = (SH_MEM_ALIGNMENT_MODE_UNALIGNED <<
++			      SH_MEM_CONFIG__ALIGNMENT_MODE__SHIFT) |
++			      (3 << SH_MEM_CONFIG__INITIAL_INST_PREFETCH__SHIFT);
+ 
+-	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(pdd);
++	qpd->sh_mem_ape1_limit = 0;
++	qpd->sh_mem_ape1_base = 0;
++	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(qpd_to_pdd(qpd));
+ 
+ 	pr_debug("sh_mem_bases 0x%X\n", qpd->sh_mem_bases);
++	return true;
++}
+ 
++static int update_qpd_v11(struct device_queue_manager *dqm,
++			 struct qcm_process_device *qpd)
++{
+ 	return 0;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v12.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v12.c
+index 4f3295b29dfb1..62ca1c8fcbaf9 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v12.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v12.c
+@@ -30,10 +30,17 @@ static int update_qpd_v12(struct device_queue_manager *dqm,
+ 			 struct qcm_process_device *qpd);
+ static void init_sdma_vm_v12(struct device_queue_manager *dqm, struct queue *q,
+ 			    struct qcm_process_device *qpd);
++static bool set_cache_memory_policy_v12(struct device_queue_manager *dqm,
++				   struct qcm_process_device *qpd,
++				   enum cache_policy default_policy,
++				   enum cache_policy alternate_policy,
++				   void __user *alternate_aperture_base,
++				   uint64_t alternate_aperture_size);
+ 
+ void device_queue_manager_init_v12(
+ 	struct device_queue_manager_asic_ops *asic_ops)
+ {
++	asic_ops->set_cache_memory_policy = set_cache_memory_policy_v12;
+ 	asic_ops->update_qpd = update_qpd_v12;
+ 	asic_ops->init_sdma_vm = init_sdma_vm_v12;
+ 	asic_ops->mqd_manager_init = mqd_manager_init_v12;
+@@ -48,28 +55,28 @@ static uint32_t compute_sh_mem_bases_64bit(struct kfd_process_device *pdd)
+ 		private_base;
+ }
+ 
+-static int update_qpd_v12(struct device_queue_manager *dqm,
+-			 struct qcm_process_device *qpd)
++static bool set_cache_memory_policy_v12(struct device_queue_manager *dqm,
++				   struct qcm_process_device *qpd,
++				   enum cache_policy default_policy,
++				   enum cache_policy alternate_policy,
++				   void __user *alternate_aperture_base,
++				   uint64_t alternate_aperture_size)
+ {
+-	struct kfd_process_device *pdd;
 -
--	if ((plen < KEYLENGTH) && (key << plen)) {
--		NL_SET_ERR_MSG(extack,
--			       "Invalid prefix for given prefix length");
--		return false;
+-	pdd = qpd_to_pdd(qpd);
+-
+-	/* check if sh_mem_config register already configured */
+-	if (qpd->sh_mem_config == 0) {
+-		qpd->sh_mem_config =
+-			(SH_MEM_ALIGNMENT_MODE_UNALIGNED <<
+-				SH_MEM_CONFIG__ALIGNMENT_MODE__SHIFT) |
+-			(3 << SH_MEM_CONFIG__INITIAL_INST_PREFETCH__SHIFT);
+-
+-		qpd->sh_mem_ape1_limit = 0;
+-		qpd->sh_mem_ape1_base = 0;
 -	}
--
--	return true;
--}
--
- static void fib_remove_alias(struct trie *t, struct key_vector *tp,
- 			     struct key_vector *l, struct fib_alias *old);
++	qpd->sh_mem_config = (SH_MEM_ALIGNMENT_MODE_UNALIGNED <<
++			      SH_MEM_CONFIG__ALIGNMENT_MODE__SHIFT) |
++			      (3 << SH_MEM_CONFIG__INITIAL_INST_PREFETCH__SHIFT);
  
-@@ -1223,9 +1207,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
+-	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(pdd);
++	qpd->sh_mem_ape1_limit = 0;
++	qpd->sh_mem_ape1_base = 0;
++	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(qpd_to_pdd(qpd));
  
- 	key = ntohl(cfg->fc_dst);
+ 	pr_debug("sh_mem_bases 0x%X\n", qpd->sh_mem_bases);
++	return true;
++}
  
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
++static int update_qpd_v12(struct device_queue_manager *dqm,
++			 struct qcm_process_device *qpd)
++{
+ 	return 0;
+ }
  
- 	fi = fib_create_info(cfg, extack);
-@@ -1717,9 +1698,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
+index 210bcc048f4c5..3264509408bc8 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
+@@ -30,10 +30,17 @@ static int update_qpd_v9(struct device_queue_manager *dqm,
+ 			 struct qcm_process_device *qpd);
+ static void init_sdma_vm_v9(struct device_queue_manager *dqm, struct queue *q,
+ 			    struct qcm_process_device *qpd);
++static bool set_cache_memory_policy_v9(struct device_queue_manager *dqm,
++				   struct qcm_process_device *qpd,
++				   enum cache_policy default_policy,
++				   enum cache_policy alternate_policy,
++				   void __user *alternate_aperture_base,
++				   uint64_t alternate_aperture_size);
  
- 	key = ntohl(cfg->fc_dst);
+ void device_queue_manager_init_v9(
+ 	struct device_queue_manager_asic_ops *asic_ops)
+ {
++	asic_ops->set_cache_memory_policy = set_cache_memory_policy_v9;
+ 	asic_ops->update_qpd = update_qpd_v9;
+ 	asic_ops->init_sdma_vm = init_sdma_vm_v9;
+ 	asic_ops->mqd_manager_init = mqd_manager_init_v9;
+@@ -48,10 +55,37 @@ static uint32_t compute_sh_mem_bases_64bit(struct kfd_process_device *pdd)
+ 		private_base;
+ }
  
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	l = fib_find_node(t, &tp, key);
- 	if (!l)
- 		return -ESRCH;
++static bool set_cache_memory_policy_v9(struct device_queue_manager *dqm,
++				   struct qcm_process_device *qpd,
++				   enum cache_policy default_policy,
++				   enum cache_policy alternate_policy,
++				   void __user *alternate_aperture_base,
++				   uint64_t alternate_aperture_size)
++{
++	qpd->sh_mem_config = SH_MEM_ALIGNMENT_MODE_UNALIGNED <<
++				SH_MEM_CONFIG__ALIGNMENT_MODE__SHIFT;
++
++	if (dqm->dev->kfd->noretry)
++		qpd->sh_mem_config |= 1 << SH_MEM_CONFIG__RETRY_DISABLE__SHIFT;
++
++	if (KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 3) ||
++		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 4) ||
++		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 5, 0))
++		qpd->sh_mem_config |= (1 << SH_MEM_CONFIG__F8_MODE__SHIFT);
++
++	qpd->sh_mem_ape1_limit = 0;
++	qpd->sh_mem_ape1_base = 0;
++	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(qpd_to_pdd(qpd));
++
++	pr_debug("sh_mem_bases 0x%X sh_mem_config 0x%X\n", qpd->sh_mem_bases,
++		 qpd->sh_mem_config);
++	return true;
++}
++
+ static int update_qpd_v9(struct device_queue_manager *dqm,
+ 			 struct qcm_process_device *qpd)
+ {
+-	struct kfd_process_device *pdd;
++	struct kfd_process_device *pdd = qpd_to_pdd(qpd);
+ 
+ 	pdd = qpd_to_pdd(qpd);
+ 
 -- 
 2.39.5
 
