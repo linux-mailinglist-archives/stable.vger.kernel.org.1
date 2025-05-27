@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-147395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C24AC577C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A03EAC53FC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B6A77A03F3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6A901BA4451
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D358280037;
-	Tue, 27 May 2025 17:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFE027FD76;
+	Tue, 27 May 2025 16:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbIob96+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpBm9/mF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9B927FB2A;
-	Tue, 27 May 2025 17:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A26927E7CF;
+	Tue, 27 May 2025 16:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367210; cv=none; b=NT97jJW+ajpHJ7NvoIgCYq1seZRamu7l4nWYU5DSXm6YHQnnBnSjY+XkN+KXNeF6Jv+IkzGVG4/fpJdwUbGL/1mSxuogu3d7hgqA9MqcstfNuf5ivsMrd9MsVx8WiyQ2rQzr5TidBmAmsxRzsDKUIplQwLWYI6/fsPKuTE5Jb6U=
+	t=1748364851; cv=none; b=ufsliOP66TSIZ95lPc3GrMMIo1FB1Eq3s1NQGCJ9El8voRkbWAWzzQ8rKz681hXw05Yz7t5s3+fEj/lxpqiQCrUDZ/+QIUnYjiIq220Rr+MocEuAGymLmJVL5h3CBFTwz6SvvYdUEQAXdyo8WqYzaWfg/c7/xBxyB59FNknjyP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367210; c=relaxed/simple;
-	bh=yMESuVj9Oae0QvcVDQpvfgskInGYzV3aoFU06jKgkJQ=;
+	s=arc-20240116; t=1748364851; c=relaxed/simple;
+	bh=jN592LgemYMHzZgO2XgOWkDsrYSLs7NESJMqHvQLy7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLKUQ1Q7sbi9KJRPJgQe6wgJrynfRgVXuWGQvRSlIHmwUg9gewqDbxRamlha+W5B3XofXDNC7Wi0HKE1yrgfzw3rfFwGvq6GJ9HnJtXYbYtDO+tNYhdXGpI3P0zNOheDdndR+JzqJjsIEggfuCsq5yeq9B/xCs9KLy5efL73yW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SbIob96+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2D2C4CEE9;
-	Tue, 27 May 2025 17:33:29 +0000 (UTC)
+	 MIME-Version; b=ruMJBkxG5aFYc71550g/Cn6uERJ/GHl3epHLkSbIVDtdNXqrxxTJvFukp8hv+6Mjlk43bgWBUZcwqunkdP4smZoMLLK9WrVQCz7XyJNkj7/kySSE7vVK5Y0TWhF4ggXlqFstMoOlIXXm1U9EMiFHPqaAqnwjcRqD451F9lgyjNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpBm9/mF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BF6C4CEE9;
+	Tue, 27 May 2025 16:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367209;
-	bh=yMESuVj9Oae0QvcVDQpvfgskInGYzV3aoFU06jKgkJQ=;
+	s=korg; t=1748364851;
+	bh=jN592LgemYMHzZgO2XgOWkDsrYSLs7NESJMqHvQLy7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SbIob96+0p5l1hHo9is1Wv16VRdzsuHoGGyr5tlCah3XP39SCpkJSgKCwLAihCvAt
-	 BLBiFVT8Uso11S5IL8zTA2baJgM1VyVGW5OCQmQtKYm0d02E4tsvI3xtL0bIpBtnO1
-	 b9QryBa/5v9djQ+gj52LQ7HAIgIencq7MdwwqZXQ=
+	b=SpBm9/mFaV9hGuwYxLrI3RgfWKZ7kuu1uUESfZdV4lkAbOHVVDqTABuhnFn8KMUVU
+	 aHzB9XQu6XMMVd236seQz+xJjWPc8NDMzFf0E2/gOKUtzCl1DPMjSn5oMwaaV2C855
+	 NEghPVm+FE9EvcxXphBqbjBE8sbTPAdrIjA6Srxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Dillon Varone <Dillon.Varone@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 283/783] drm/amd/display: Fix DMUB reset sequence for DCN401
+Subject: [PATCH 6.12 187/626] wifi: iwlwifi: mark Br device not integrated
 Date: Tue, 27 May 2025 18:21:20 +0200
-Message-ID: <20250527162524.612656989@linuxfoundation.org>
+Message-ID: <20250527162452.610517181@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,157 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dillon Varone <Dillon.Varone@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0dfcc2bf269010a6e093793034c048049a40ee93 ]
+[ Upstream commit 5f0ab2f35a43773a0dfe1297129a8dbff906b932 ]
 
-[WHY]
-It should no longer use DMCUB_SOFT_RESET as it can result
-in the memory request path becoming desynchronized.
+This is a discrete device, don't mark it as integrated.
+This also means we cannot set the LTR delay.
 
-[HOW]
-To ensure robustness in the reset sequence:
-1) Extend timeout on the "halt" command sent via gpint, and check for
-controller to enter "wait" as a stronger guarantee that there are no
-requests to memory still in flight.
-2) Remove usage of DMCUB_SOFT_RESET
-3) Rely on PSP to reset the controller safely
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Dillon Varone <Dillon.Varone@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250308231427.9bb69393fcc9.I197129383e5441c8139cbb0e810ae0b71198a37c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dmub/src/dmub_dcn401.c    | 47 ++++++++++++-------
- .../drm/amd/display/dmub/src/dmub_dcn401.h    |  3 +-
- 2 files changed, 32 insertions(+), 18 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/dr.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
-index 39a8cb6d7523c..e1c4fe1c6e3ee 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
-@@ -63,8 +63,10 @@ static inline void dmub_dcn401_translate_addr(const union dmub_addr *addr_in,
- void dmub_dcn401_reset(struct dmub_srv *dmub)
- {
- 	union dmub_gpint_data_register cmd;
--	const uint32_t timeout = 30;
--	uint32_t in_reset, scratch, i;
-+	const uint32_t timeout_us = 1 * 1000 * 1000; //1s
-+	const uint32_t poll_delay_us = 1; //1us
-+	uint32_t i = 0;
-+	uint32_t in_reset, scratch, pwait_mode;
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+index ab7c0f8d54f42..d3542af0f625e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/dr.c
+@@ -148,11 +148,9 @@ const struct iwl_cfg_trans_params iwl_br_trans_cfg = {
+ 	.mq_rx_supported = true,
+ 	.rf_id = true,
+ 	.gen2 = true,
+-	.integrated = true,
+ 	.umac_prph_offset = 0x300000,
+ 	.xtal_latency = 12000,
+ 	.low_latency_xtal = true,
+-	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
+ };
  
- 	REG_GET(DMCUB_CNTL2, DMCUB_SOFT_RESET, &in_reset);
- 
-@@ -75,32 +77,35 @@ void dmub_dcn401_reset(struct dmub_srv *dmub)
- 
- 		dmub->hw_funcs.set_gpint(dmub, cmd);
- 
--		/**
--		 * Timeout covers both the ACK and the wait
--		 * for remaining work to finish.
--		 *
--		 * This is mostly bound by the PHY disable sequence.
--		 * Each register check will be greater than 1us, so
--		 * don't bother using udelay.
--		 */
--
--		for (i = 0; i < timeout; ++i) {
-+		for (i = 0; i < timeout_us; i++) {
- 			if (dmub->hw_funcs.is_gpint_acked(dmub, cmd))
- 				break;
-+
-+			udelay(poll_delay_us);
- 		}
- 
--		for (i = 0; i < timeout; ++i) {
-+		for (; i < timeout_us; i++) {
- 			scratch = dmub->hw_funcs.get_gpint_response(dmub);
- 			if (scratch == DMUB_GPINT__STOP_FW_RESPONSE)
- 				break;
-+
-+			udelay(poll_delay_us);
- 		}
- 
--		/* Force reset in case we timed out, DMCUB is likely hung. */
-+		for (; i < timeout_us; i++) {
-+			REG_GET(DMCUB_CNTL, DMCUB_PWAIT_MODE_STATUS, &pwait_mode);
-+			if (pwait_mode & (1 << 0))
-+				break;
-+
-+			udelay(poll_delay_us);
-+		}
-+	}
-+
-+	if (i >= timeout_us) {
-+		/* timeout should never occur */
-+		BREAK_TO_DEBUGGER();
- 	}
- 
--	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
--	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
--	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
- 	REG_WRITE(DMCUB_INBOX1_RPTR, 0);
- 	REG_WRITE(DMCUB_INBOX1_WPTR, 0);
- 	REG_WRITE(DMCUB_OUTBOX1_RPTR, 0);
-@@ -131,7 +136,10 @@ void dmub_dcn401_backdoor_load(struct dmub_srv *dmub,
- 
- 	dmub_dcn401_get_fb_base_offset(dmub, &fb_base, &fb_offset);
- 
-+	/* reset and disable DMCUB and MMHUBBUB DMUIF */
- 	REG_UPDATE(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 1);
-+	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
-+	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
- 
- 	dmub_dcn401_translate_addr(&cw0->offset, fb_base, fb_offset, &offset);
- 
-@@ -151,6 +159,7 @@ void dmub_dcn401_backdoor_load(struct dmub_srv *dmub,
- 			DMCUB_REGION3_CW1_TOP_ADDRESS, cw1->region.top,
- 			DMCUB_REGION3_CW1_ENABLE, 1);
- 
-+	/* release DMCUB reset only to prevent premature execution */
- 	REG_UPDATE_2(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 0, DMCUB_MEM_UNIT_ID,
- 			0x20);
- }
-@@ -161,7 +170,10 @@ void dmub_dcn401_backdoor_load_zfb_mode(struct dmub_srv *dmub,
- {
- 	union dmub_addr offset;
- 
-+	/* reset and disable DMCUB and MMHUBBUB DMUIF */
- 	REG_UPDATE(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 1);
-+	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
-+	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
- 
- 	offset = cw0->offset;
- 
-@@ -181,6 +193,7 @@ void dmub_dcn401_backdoor_load_zfb_mode(struct dmub_srv *dmub,
- 			DMCUB_REGION3_CW1_TOP_ADDRESS, cw1->region.top,
- 			DMCUB_REGION3_CW1_ENABLE, 1);
- 
-+	/* release DMCUB reset only to prevent premature execution */
- 	REG_UPDATE_2(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 0, DMCUB_MEM_UNIT_ID,
- 			0x20);
- }
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
-index 4c8843b796950..31f95b27e227d 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
-@@ -169,7 +169,8 @@ struct dmub_srv;
- 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_INBOX0_RSP_INT_EN) \
- 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_ACK) \
- 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_STAT) \
--	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_EN)
-+	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_EN) \
-+	DMUB_SF(DMCUB_CNTL, DMCUB_PWAIT_MODE_STATUS)
- 
- struct dmub_srv_dcn401_reg_offset {
- #define DMUB_SR(reg) uint32_t reg;
+ const char iwl_br_name[] = "Intel(R) TBD Br device";
 -- 
 2.39.5
 
