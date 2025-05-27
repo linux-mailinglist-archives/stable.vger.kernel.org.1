@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-147378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24028AC5768
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:33:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0319AC545E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3A3618867A2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CE948A337D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7F91F8670;
-	Tue, 27 May 2025 17:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A78227FD76;
+	Tue, 27 May 2025 16:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQ4mRxyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkjyUiEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFF327BF79;
-	Tue, 27 May 2025 17:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A9728642A;
+	Tue, 27 May 2025 16:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367157; cv=none; b=RZ8D/qXLe6V1k00tB4IJLc5vmXxm2TqjwOmm1gD3ARBYeWt7lT/8DbPzmZk35iyXeyJL3ThOy16WfWoE8yW4oTqhhcs+WrNNc6+pZee3leMX0iiRDAWD8IWyHJvviWNNAQqvv2Dsoyoby+OVegi60iE4Ry31rkOjN8QuDYtEKBk=
+	t=1748364898; cv=none; b=GJXIXZF6PRB21CBAaY0i3tYgCohvAMrw9s4/S3jVDy9fX06O+rmo1ZIUDB+6m5uWnFqoZ+eVxiqaW/Pu7B7eS/79O0vHuxnEFpSuW9m7wajhi+R1O78VLANiaeqJ5l5jA4EjPoTLWUkCTf4kgGzpc5kCaVMboZcFypVicWG10bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367157; c=relaxed/simple;
-	bh=RWS+R3quPu596vWN0z3jvbrZo445hCoifRwXwNeSiQQ=;
+	s=arc-20240116; t=1748364898; c=relaxed/simple;
+	bh=/1Md3eer0JV0N2mETeRacl96y6ZLZLxNBB53U0R7Z5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBkVfh8oQqh3KpOYYHoEsEoeJWT8E0uodxlR8SfkaM4wg24XSiwU4mMuw5z6xfgPgarWDlJ5KOI3jqqgbTx89OT85n6qQeDYrFe7jhuo/LqKdLdvU10oTNOii8EQ0l/SNDen4LX/vuqaqFHeDWqSbfVvNc2hAqnql6wRj6gpbU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQ4mRxyx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC09C4CEE9;
-	Tue, 27 May 2025 17:32:36 +0000 (UTC)
+	 MIME-Version; b=BypD/J4wxAutAQqNj0VguI1upf/qLi650eOsPlAhxnwNaGy5DPIeo6WTtQxGhBIsddVMKUISs4f2dGii+2x6fO5CC7dNHjxJiK2q3eIOYr9aXSgH1yxG0+wZ6fyM+/7ivgtcVobyXyK4Pka3t9NbG/4fGyPmDfM8bqwno+KMnvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkjyUiEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441EEC4CEE9;
+	Tue, 27 May 2025 16:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367157;
-	bh=RWS+R3quPu596vWN0z3jvbrZo445hCoifRwXwNeSiQQ=;
+	s=korg; t=1748364898;
+	bh=/1Md3eer0JV0N2mETeRacl96y6ZLZLxNBB53U0R7Z5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQ4mRxyxflZ78cM6Wzdtn7fFcjpCC3NsGajcccepLkV3ZLzt2jjRlUiN8I5f1o43c
-	 XYzm7IK836ag1bJnrHIjcaA9nDRs5jdTQinuDOwpfkAWcxe73rNWQjbxyyvny4d7DY
-	 64vg7875aJyDIa4nu/PdIgp8y3J4b0cTeAMvtMtI=
+	b=CkjyUiEyqfOjYvB1YUYT08E1uVjz2gk/HA48wRqPYOp/A/bJbPxpjaiZnjHPbv6h5
+	 g54Aq4GlhJa/mP5Vow2GmN4qKvBrMhUY/5wkJjlnLL8Pn1ciupOlkh1cJ4aHC4+EQ3
+	 MVYai22jP/FWpy1Jx7vw6RMpaFpG2nyGe/W8K+lU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	James Clark <james.clark@linaro.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 297/783] ublk: enforce ublks_max only for unprivileged devices
+Subject: [PATCH 6.12 201/626] coresight-etb10: change etb_drvdata spinlocks type to raw_spinlock_t
 Date: Tue, 27 May 2025 18:21:34 +0200
-Message-ID: <20250527162525.173311534@linuxfoundation.org>
+Message-ID: <20250527162453.187746350@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +64,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 80bdfbb3545b6f16680a72c825063d08a6b44c7a ]
+[ Upstream commit 6b80c0abe475ed1017c5e862636049aa1cc17a1a ]
 
-Commit 403ebc877832 ("ublk_drv: add module parameter of ublks_max for
-limiting max allowed ublk dev"), claimed ublks_max was added to prevent
-a DoS situation with an untrusted user creating too many ublk devices.
-If that's the case, ublks_max should only restrict the number of
-unprivileged ublk devices in the system. Enforce the limit only for
-unprivileged ublk devices, and rename variables accordingly. Leave the
-external-facing parameter name unchanged, since changing it may break
-systems which use it (but still update its documentation to reflect its
-new meaning).
+In coresight-etb10 drivers, etb_drvdata->spinlock can be held
+during __schedule() by perf_event_task_sched_out()/in().
 
-As a result of this change, in a system where there are only normal
-(non-unprivileged) devices, the maximum number of such devices is
-increased to 1 << MINORBITS, or 1048576. That ought to be enough for
-anyone, right?
+Since etb_drvdata->spinlock type is spinlock_t and
+perf_event_task_sched_out()/in() is called after acquiring rq_lock,
+which is raw_spinlock_t (an unsleepable lock),
+this poses an issue in PREEMPT_RT kernel where spinlock_t is sleepable.
 
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250228-ublks_max-v1-1-04b7379190c0@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+To address this, change type etb_drvdata->spinlock in coresight-etb10 drivers,
+which can be called by perf_event_task_sched_out()/in(),
+from spinlock_t to raw_spinlock_t.
+
+Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250306121110.1647948-6-yeoreum.yun@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 42 ++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 15 deletions(-)
+ drivers/hwtracing/coresight/coresight-etb10.c | 26 +++++++++----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 7bbfc20f116a4..b462f7d16ee55 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -490,15 +490,17 @@ static wait_queue_head_t ublk_idr_wq;	/* wait until one idr is freed */
+diff --git a/drivers/hwtracing/coresight/coresight-etb10.c b/drivers/hwtracing/coresight/coresight-etb10.c
+index aea9ac9c4bd06..7948597d483d2 100644
+--- a/drivers/hwtracing/coresight/coresight-etb10.c
++++ b/drivers/hwtracing/coresight/coresight-etb10.c
+@@ -84,7 +84,7 @@ struct etb_drvdata {
+ 	struct clk		*atclk;
+ 	struct coresight_device	*csdev;
+ 	struct miscdevice	miscdev;
+-	spinlock_t		spinlock;
++	raw_spinlock_t		spinlock;
+ 	local_t			reading;
+ 	pid_t			pid;
+ 	u8			*buf;
+@@ -145,7 +145,7 @@ static int etb_enable_sysfs(struct coresight_device *csdev)
+ 	unsigned long flags;
+ 	struct etb_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
  
- static DEFINE_MUTEX(ublk_ctl_mutex);
+-	spin_lock_irqsave(&drvdata->spinlock, flags);
++	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
  
-+
-+#define UBLK_MAX_UBLKS UBLK_MINORS
-+
- /*
-- * Max ublk devices allowed to add
-+ * Max unprivileged ublk devices allowed to add
-  *
-  * It can be extended to one per-user limit in future or even controlled
-  * by cgroup.
-  */
--#define UBLK_MAX_UBLKS UBLK_MINORS
--static unsigned int ublks_max = 64;
--static unsigned int ublks_added;	/* protected by ublk_ctl_mutex */
-+static unsigned int unprivileged_ublks_max = 64;
-+static unsigned int unprivileged_ublks_added; /* protected by ublk_ctl_mutex */
+ 	/* Don't messup with perf sessions. */
+ 	if (coresight_get_mode(csdev) == CS_MODE_PERF) {
+@@ -163,7 +163,7 @@ static int etb_enable_sysfs(struct coresight_device *csdev)
  
- static struct miscdevice ublk_misc;
+ 	csdev->refcnt++;
+ out:
+-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
++	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
+ 	return ret;
+ }
  
-@@ -2375,7 +2377,8 @@ static int ublk_add_chdev(struct ublk_device *ub)
- 	if (ret)
- 		goto fail;
+@@ -176,7 +176,7 @@ static int etb_enable_perf(struct coresight_device *csdev, void *data)
+ 	struct perf_output_handle *handle = data;
+ 	struct cs_buffers *buf = etm_perf_sink_config(handle);
  
--	ublks_added++;
-+	if (ub->dev_info.flags & UBLK_F_UNPRIVILEGED_DEV)
-+		unprivileged_ublks_added++;
+-	spin_lock_irqsave(&drvdata->spinlock, flags);
++	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
+ 
+ 	/* No need to continue if the component is already in used by sysFS. */
+ 	if (coresight_get_mode(drvdata->csdev) == CS_MODE_SYSFS) {
+@@ -219,7 +219,7 @@ static int etb_enable_perf(struct coresight_device *csdev, void *data)
+ 	}
+ 
+ out:
+-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
++	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
+ 	return ret;
+ }
+ 
+@@ -352,11 +352,11 @@ static int etb_disable(struct coresight_device *csdev)
+ 	struct etb_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&drvdata->spinlock, flags);
++	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
+ 
+ 	csdev->refcnt--;
+ 	if (csdev->refcnt) {
+-		spin_unlock_irqrestore(&drvdata->spinlock, flags);
++		raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
+ 		return -EBUSY;
+ 	}
+ 
+@@ -366,7 +366,7 @@ static int etb_disable(struct coresight_device *csdev)
+ 	/* Dissociate from monitored process. */
+ 	drvdata->pid = -1;
+ 	coresight_set_mode(csdev, CS_MODE_DISABLED);
+-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
++	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
+ 
+ 	dev_dbg(&csdev->dev, "ETB disabled\n");
  	return 0;
-  fail:
- 	put_device(dev);
-@@ -2404,10 +2407,15 @@ static int ublk_add_tag_set(struct ublk_device *ub)
+@@ -443,7 +443,7 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
  
- static void ublk_remove(struct ublk_device *ub)
- {
-+	bool unprivileged;
-+
- 	ublk_stop_dev(ub);
- 	cdev_device_del(&ub->cdev, &ub->cdev_dev);
-+	unprivileged = ub->dev_info.flags & UBLK_F_UNPRIVILEGED_DEV;
- 	ublk_put_device(ub);
--	ublks_added--;
-+
-+	if (unprivileged)
-+		unprivileged_ublks_added--;
+ 	capacity = drvdata->buffer_depth * ETB_FRAME_SIZE_WORDS;
+ 
+-	spin_lock_irqsave(&drvdata->spinlock, flags);
++	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
+ 
+ 	/* Don't do anything if another tracer is using this sink */
+ 	if (csdev->refcnt != 1)
+@@ -566,7 +566,7 @@ static unsigned long etb_update_buffer(struct coresight_device *csdev,
+ 	__etb_enable_hw(drvdata);
+ 	CS_LOCK(drvdata->base);
+ out:
+-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
++	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
+ 
+ 	return to_read;
  }
- 
- static struct ublk_device *ublk_get_device_from_id(int idx)
-@@ -2669,7 +2677,8 @@ static int ublk_ctrl_add_dev(struct io_uring_cmd *cmd)
- 		return ret;
- 
- 	ret = -EACCES;
--	if (ublks_added >= ublks_max)
-+	if ((info.flags & UBLK_F_UNPRIVILEGED_DEV) &&
-+	    unprivileged_ublks_added >= unprivileged_ublks_max)
- 		goto out_unlock;
- 
- 	ret = -ENOMEM;
-@@ -3259,23 +3268,26 @@ static void __exit ublk_exit(void)
- module_init(ublk_init);
- module_exit(ublk_exit);
- 
--static int ublk_set_max_ublks(const char *buf, const struct kernel_param *kp)
-+static int ublk_set_max_unprivileged_ublks(const char *buf,
-+					   const struct kernel_param *kp)
+@@ -587,13 +587,13 @@ static void etb_dump(struct etb_drvdata *drvdata)
  {
- 	return param_set_uint_minmax(buf, kp, 0, UBLK_MAX_UBLKS);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&drvdata->spinlock, flags);
++	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
+ 	if (coresight_get_mode(drvdata->csdev) == CS_MODE_SYSFS) {
+ 		__etb_disable_hw(drvdata);
+ 		etb_dump_hw(drvdata);
+ 		__etb_enable_hw(drvdata);
+ 	}
+-	spin_unlock_irqrestore(&drvdata->spinlock, flags);
++	raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
+ 
+ 	dev_dbg(&drvdata->csdev->dev, "ETB dumped\n");
  }
+@@ -746,7 +746,7 @@ static int etb_probe(struct amba_device *adev, const struct amba_id *id)
+ 	drvdata->base = base;
+ 	desc.access = CSDEV_ACCESS_IOMEM(base);
  
--static int ublk_get_max_ublks(char *buf, const struct kernel_param *kp)
-+static int ublk_get_max_unprivileged_ublks(char *buf,
-+					   const struct kernel_param *kp)
- {
--	return sysfs_emit(buf, "%u\n", ublks_max);
-+	return sysfs_emit(buf, "%u\n", unprivileged_ublks_max);
- }
+-	spin_lock_init(&drvdata->spinlock);
++	raw_spin_lock_init(&drvdata->spinlock);
  
--static const struct kernel_param_ops ublk_max_ublks_ops = {
--	.set = ublk_set_max_ublks,
--	.get = ublk_get_max_ublks,
-+static const struct kernel_param_ops ublk_max_unprivileged_ublks_ops = {
-+	.set = ublk_set_max_unprivileged_ublks,
-+	.get = ublk_get_max_unprivileged_ublks,
- };
+ 	drvdata->buffer_depth = etb_get_buffer_depth(drvdata);
  
--module_param_cb(ublks_max, &ublk_max_ublks_ops, &ublks_max, 0644);
--MODULE_PARM_DESC(ublks_max, "max number of ublk devices allowed to add(default: 64)");
-+module_param_cb(ublks_max, &ublk_max_unprivileged_ublks_ops,
-+		&unprivileged_ublks_max, 0644);
-+MODULE_PARM_DESC(ublks_max, "max number of unprivileged ublk devices allowed to add(default: 64)");
- 
- MODULE_AUTHOR("Ming Lei <ming.lei@redhat.com>");
- MODULE_DESCRIPTION("Userspace block device");
 -- 
 2.39.5
 
