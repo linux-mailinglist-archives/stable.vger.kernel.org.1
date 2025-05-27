@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365F9AC58EF
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4066AC55ED
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C701B9E0143
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87FA73BFDF6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6189E27FD76;
-	Tue, 27 May 2025 17:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6996A280012;
+	Tue, 27 May 2025 17:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxnzOxGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/5FyiqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F95C27BF8D;
-	Tue, 27 May 2025 17:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2567727E1CA;
+	Tue, 27 May 2025 17:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368253; cv=none; b=PJxLR+dvAWUCVPaoLOJob6XB2cPvHZcBXqmff9Mqawo1f6cZbdLUt15LBAo4xe9GX+VmXCqVeG8xwIY2CvjvKo0HA9JktElkM4tVLQujCSVkzV6ddlRcfMBmmW9BGcGbVYQXYx4tiLv6YPzewAkKDvS1YZnDboV2iduAoTdgIJI=
+	t=1748365908; cv=none; b=kDx46/MNY4Rp1Xm1IJ6/xpUmzm0ERGJfNHk9h2TvBjqQE/1b8oJ85k5dBBOUUJB2fUuJNh+Irnvje856OO8jD4KQjEMVdfrD0V1bKX0fgZE3uWjpcypIOQy+LE7qj1bEdvvJb/fILwIIW8hWJwYSkPPu/RpL360uTSFYfAhIAdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368253; c=relaxed/simple;
-	bh=dlSlDWt3tmqXaI1H2ccJejpgK5Jb7ITi98+JgqApt0U=;
+	s=arc-20240116; t=1748365908; c=relaxed/simple;
+	bh=h2Dw0ohfJWtkEb9NqqtZSFswAPDlg9YPASY11Y9iTwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUNAIOg7gB6p0x4E8yhf16vUwoSLxsROUWjwk5TWda8b0fldtVb6PkdIUs9ANHdXdlwuE4RKXUDIYEhrRi5dKdKfWWwNznrgzx/cn6xJ1gP/R3dcAgBEMQfJUFFcISQoD1cRQd5pOaXrQlWHE691q+StS2X4KrI0lNfedfDOuHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxnzOxGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E59AC4CEE9;
-	Tue, 27 May 2025 17:50:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=or5kyRmW567Cs1larth4QhjgILZlCeD6IpFy1qFBfzBv7c64/0eC4h4TpWc+utYeZiAKO4VZ5puJJCwcfEb1p2j65Yg316h+qdewgvmS/TWwHIo4EKQm7xqlmZI6dXoxo+WmSdHIWXwpmtwh31CeUVUUJXYWopHDLkKhy389GBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/5FyiqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A2EC4CEE9;
+	Tue, 27 May 2025 17:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368253;
-	bh=dlSlDWt3tmqXaI1H2ccJejpgK5Jb7ITi98+JgqApt0U=;
+	s=korg; t=1748365908;
+	bh=h2Dw0ohfJWtkEb9NqqtZSFswAPDlg9YPASY11Y9iTwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxnzOxGHT2b+Qx42YQnDihPucXjvlxr8KFnbmU7jObBVe83eUdcW64mzNCjda6N4N
-	 /0/I7nQmvD+MpvIzLH2SeTN/g1cSn2Vv4l+oTWhrSC54aSRMwzqQ0xKybqEa7K/DRa
-	 V1PrZ7oGsaXq41Fr2YzTWVWcugvM2HG2iA2SHYqg=
+	b=p/5FyiqNxmS8ol/OLF9huyqAB44gGPOVMi9ca0kJA6uJSua/fUs/qZRHt7mqaT1OJ
+	 XocqrU7MNNaTlpAn7Qech3yVKjm7pTgvteWLpQEwJD70UY1EZydByb0Zs9Ha54DtgS
+	 X71rbWQ2WTd5e7soesOun4tN1LHLiuttq7jLad9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaradhana Sahu <quic_aarasahu@quicinc.com>,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	=?UTF-8?q?Ga=C5=A1per=20Nemgar?= <gasper.nemgar@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 607/783] wifi: ath12k: Fetch regdb.bin file from board-2.bin
+Subject: [PATCH 6.12 511/626] platform/x86: ideapad-laptop: add support for some new buttons
 Date: Tue, 27 May 2025 18:26:44 +0200
-Message-ID: <20250527162537.872553755@linuxfoundation.org>
+Message-ID: <20250527162505.728095711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+From: Gašper Nemgar <gasper.nemgar@gmail.com>
 
-[ Upstream commit 24f587572acf7509127dbdfcbf1b681ef84eeba0 ]
+[ Upstream commit 02c6e43397c39edd0c172859bf8c851b46be09a8 ]
 
-Currently, ath12k_core_fetch_regdb() finds regdb.bin file through
-board id's but in board-2.bin file regdb.bin file is present with
-default board id because of which regdb.bin is not fetched.
+Add entries to unsupported WMI codes in ideapad_keymap[] and one
+check for WMI code 0x13d to trigger platform_profile_cycle().
 
-Add support to fetch regdb.bin file from board-2.bin through
-default board id.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
-Reviewed-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Link: https://patch.msgid.link/20250116032835.118397-1-quic_aarasahu@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Gašper Nemgar <gasper.nemgar@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250418070738.7171-1-gasper.nemgar@gmail.com
+[ij: joined nested if ()s & major tweaks to changelog]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/platform/x86/ideapad-laptop.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index ffd173ff7b08c..d0aed4c56050d 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -173,7 +173,7 @@ EXPORT_SYMBOL(ath12k_core_resume);
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index c908f52ed717b..bdb4cbee42058 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1297,6 +1297,16 @@ static const struct key_entry ideapad_keymap[] = {
+ 	/* Specific to some newer models */
+ 	{ KE_KEY,	0x3e | IDEAPAD_WMI_KEY, { KEY_MICMUTE } },
+ 	{ KE_KEY,	0x3f | IDEAPAD_WMI_KEY, { KEY_RFKILL } },
++	/* Star- (User Assignable Key) */
++	{ KE_KEY,	0x44 | IDEAPAD_WMI_KEY, { KEY_PROG1 } },
++	/* Eye */
++	{ KE_KEY,	0x45 | IDEAPAD_WMI_KEY, { KEY_PROG3 } },
++	/* Performance toggle also Fn+Q, handled inside ideapad_wmi_notify() */
++	{ KE_KEY,	0x3d | IDEAPAD_WMI_KEY, { KEY_PROG4 } },
++	/* shift + prtsc */
++	{ KE_KEY,   0x2d | IDEAPAD_WMI_KEY, { KEY_CUT } },
++	{ KE_KEY,   0x29 | IDEAPAD_WMI_KEY, { KEY_TOUCHPAD_TOGGLE } },
++	{ KE_KEY,   0x2a | IDEAPAD_WMI_KEY, { KEY_ROOT_MENU } },
  
- static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- 					   size_t name_len, bool with_variant,
--					   bool bus_type_mode)
-+					   bool bus_type_mode, bool with_default)
- {
- 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
- 	char variant[9 + ATH12K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
-@@ -204,7 +204,9 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- 			  "bus=%s,qmi-chip-id=%d,qmi-board-id=%d%s",
- 			  ath12k_bus_str(ab->hif.bus),
- 			  ab->qmi.target.chip_id,
--			  ab->qmi.target.board_id, variant);
-+			  with_default ?
-+			  ATH12K_BOARD_ID_DEFAULT : ab->qmi.target.board_id,
-+			  variant);
- 		break;
- 	}
+ 	{ KE_END },
+ };
+@@ -2083,6 +2093,12 @@ static void ideapad_wmi_notify(struct wmi_device *wdev, union acpi_object *data)
+ 		dev_dbg(&wdev->dev, "WMI fn-key event: 0x%llx\n",
+ 			data->integer.value);
  
-@@ -216,19 +218,19 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- static int ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
- 					 size_t name_len)
- {
--	return __ath12k_core_create_board_name(ab, name, name_len, true, false);
-+	return __ath12k_core_create_board_name(ab, name, name_len, true, false, false);
- }
- 
- static int ath12k_core_create_fallback_board_name(struct ath12k_base *ab, char *name,
- 						  size_t name_len)
- {
--	return __ath12k_core_create_board_name(ab, name, name_len, false, false);
-+	return __ath12k_core_create_board_name(ab, name, name_len, false, false, true);
- }
- 
- static int ath12k_core_create_bus_type_board_name(struct ath12k_base *ab, char *name,
- 						  size_t name_len)
- {
--	return __ath12k_core_create_board_name(ab, name, name_len, false, true);
-+	return __ath12k_core_create_board_name(ab, name, name_len, false, true, true);
- }
- 
- const struct firmware *ath12k_core_firmware_request(struct ath12k_base *ab,
++		/* performance button triggered by 0x3d */
++		if (data->integer.value == 0x3d && priv->dytc) {
++			platform_profile_cycle();
++			break;
++		}
++
+ 		/* 0x02 FnLock, 0x03 Esc */
+ 		if (data->integer.value == 0x02 || data->integer.value == 0x03)
+ 			ideapad_fn_lock_led_notify(priv, data->integer.value == 0x02);
 -- 
 2.39.5
 
