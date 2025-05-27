@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-147158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A38AC566C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:21:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CE7AC5675
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:21:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC2363A76DA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:20:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E06E04A524B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF762798F8;
-	Tue, 27 May 2025 17:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698DD2798F8;
+	Tue, 27 May 2025 17:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E33cZjFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2ffcnWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0BB1E89C;
-	Tue, 27 May 2025 17:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EB419E967;
+	Tue, 27 May 2025 17:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366469; cv=none; b=ma3x2rJ02aJe/2TWgVngSFsBNLq2C7vEEsa38Fram5c4RfvpA8G4n7pAm8/QbAWmf37OfiyzHxsiNTRuqeJKK2tDpSfh6K9TBVaLVxenykU/eoR3c4bjazpV2JbMOy7693oJBYfJhZfT7V6V2Y2YISdJnHaxz4lQLEExxLzcrLg=
+	t=1748366475; cv=none; b=HZh9t7OeaCF6KlBmLRKfY4WwogKsfRKCxgmBzNzJIDSe5XLcolkjBCH0S53yFE2GQAJG2ceWQ7r/HJgyPTooRRB+KkFxlI101iZPtV/8Y0OlHd3csjpGbnFvGIzazBeGw5N38sW5pgw0luWpH6NIOezvgRoL5EBlA4SVjQ1izgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366469; c=relaxed/simple;
-	bh=0xNSYELjfqngMV+KYFRZYEp7CuY/qeOQE8ffcw7q3uI=;
+	s=arc-20240116; t=1748366475; c=relaxed/simple;
+	bh=EbpKPFnVkEhdrSGFaF/yTs/ZjVN4EVMTpcjynWn+2pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPjL8Q1ZcrzxEUkucr1RBaRZqxsSsc+auJ/SD/Gmg817Cl0OKFcbhVmf4Elxcz4NKTZqUtTQex1vH/R/eQ6QCVGU931QoiDHZ+5GFxL/5i/BjQcS2y1GwcGpy5EoNsCpcK+nbhC8s2MtJ6DzrD8UxKahPH4kOMGsI5E51IxsBgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E33cZjFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7717C4CEE9;
-	Tue, 27 May 2025 17:21:08 +0000 (UTC)
+	 MIME-Version; b=ZK4gd/sU9npYtSLd0xqX5dCkFpmiCnTVGXhZHxMrHoY+ColJDUyrm4YwsdZ7B4+ihSuwoIMh5uq6lGcRjYGQ7Z4ta5orVmtJ9T/7KEI7lftfNe1o73vOhZzNkDKVmlVGFpoDpjv4hB2zP6E4QUQmtiGIsZ3tIWVRvpMFydrqBDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2ffcnWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C2EC4CEEA;
+	Tue, 27 May 2025 17:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366469;
-	bh=0xNSYELjfqngMV+KYFRZYEp7CuY/qeOQE8ffcw7q3uI=;
+	s=korg; t=1748366475;
+	bh=EbpKPFnVkEhdrSGFaF/yTs/ZjVN4EVMTpcjynWn+2pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E33cZjFayCb9Eh7dP7pRjoE8TM6VAjzz4njbUJagvOPmpSC83r4o391nxZdqJH2LN
-	 D8ZLBm8NKpxz7e/7E7VNLGedkSP5iTRh8aF0xSaDInXy4DxzbSCoOjDWOmzcKDUlDO
-	 /HvbBjq3gnEHosNRGnHRA8aO9W+vlH3IEkLU11c0=
+	b=A2ffcnWMBbFsBf/xitF2bKmOi7zzuL/POrHuJHs350Biq/x3tjF9XzOZegXPXHw0c
+	 Q0fyi6YEuaHjDNoXKKsw7xPvw7MaCSxKD4isfH6ocr/lqfhWM9HpO+q5DX1Fe1HbGk
+	 pxZERIATMRDVQZddCSOPRKR9iOBjSDL1Iw+M3WLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Luis de Arquer <luis.dearquer@inertim.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 077/783] SUNRPC: rpcbind should never reset the port to the value 0
-Date: Tue, 27 May 2025 18:17:54 +0200
-Message-ID: <20250527162516.268591274@linuxfoundation.org>
+Subject: [PATCH 6.14 078/783] spi-rockchip: Fix register out of bounds access
+Date: Tue, 27 May 2025 18:17:55 +0200
+Message-ID: <20250527162516.312700846@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -67,38 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Luis de Arquer <luis.dearquer@inertim.com>
 
-[ Upstream commit 214c13e380ad7636631279f426387f9c4e3c14d9 ]
+[ Upstream commit 7a874e8b54ea21094f7fd2d428b164394c6cb316 ]
 
-If we already had a valid port number for the RPC service, then we
-should not allow the rpcbind client to set it to the invalid value '0'.
+Do not write native chip select stuff for GPIO chip selects.
+GPIOs can be numbered much higher than native CS.
+Also, it makes no sense.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Luis de Arquer <luis.dearquer@inertim.com>
+Link: https://patch.msgid.link/365ccddfba110549202b3520f4401a6a936e82a8.camel@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/rpcb_clnt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-rockchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
-index 102c3818bc54d..53bcca365fb1c 100644
---- a/net/sunrpc/rpcb_clnt.c
-+++ b/net/sunrpc/rpcb_clnt.c
-@@ -820,9 +820,10 @@ static void rpcb_getport_done(struct rpc_task *child, void *data)
- 	}
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 1bc012fce7cb8..1a6381de6f33d 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -547,7 +547,7 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
+ 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
+ 	if (spi->mode & SPI_LSB_FIRST)
+ 		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
+-	if (spi->mode & SPI_CS_HIGH)
++	if ((spi->mode & SPI_CS_HIGH) && !(spi_get_csgpiod(spi, 0)))
+ 		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
  
- 	trace_rpcb_setport(child, map->r_status, map->r_port);
--	xprt->ops->set_port(xprt, map->r_port);
--	if (map->r_port)
-+	if (map->r_port) {
-+		xprt->ops->set_port(xprt, map->r_port);
- 		xprt_set_bound(xprt);
-+	}
- }
- 
- /*
+ 	if (xfer->rx_buf && xfer->tx_buf)
 -- 
 2.39.5
 
