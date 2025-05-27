@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42EBAC5350
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:45:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE51AC56C1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E4B1BA38CA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85E088A3D1C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F26013A244;
-	Tue, 27 May 2025 16:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93A827FD56;
+	Tue, 27 May 2025 17:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ibOic3c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLna626T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFF71D6DC5;
-	Tue, 27 May 2025 16:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6396C27FD64;
+	Tue, 27 May 2025 17:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364338; cv=none; b=hBw4Xc+UkJckOd1w9uMUSPKrZECLFDGaE4CQz62tV8OCar7l6iegyGA3uswRIlgt20Zm7dJzjDhxwH0+n5xWLSZHvgR5Hl2tkxjDYXeqWiDjpX/dGMKbdspCRFYNNm07u40jOERl0OohPVOqvAsHtCphOUh3YXoG60KAGBaATUU=
+	t=1748366695; cv=none; b=JVQor8Cps/zdRurXk4sOCcuUttVD6bUyVU788LwWWtTVCzUxJx98cti8AuAUCc3YJjrkuH993pw8ivhh8kikUSto3wxfHlGv3yYTV6F9yFKclw8CIWEgBMsJsPfmD2CV8A2IraYXUQxMZduxQodmdytpFTh1a+j+wBI3VadCk2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364338; c=relaxed/simple;
-	bh=LKlROuwKMgLDmjWs22ht9BBXUowg4j9zB/tidqmtvnE=;
+	s=arc-20240116; t=1748366695; c=relaxed/simple;
+	bh=Gja+waShIWFQOOz9Cb7bzvm2xGtRrpGziSH/S1T2VMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsbyICE3Hthn5Oeo3dheYe8kPUIR6Jn8v0bVb3JNnAj1X2dOTKIIUwT77wNAd9afXrtjh6W5D1XO+53QvAfOrrn7Sl9YQTpU0a9W5u5/VNEDwdJkfYB/WOeji6wp3pVDCqPZ/6Zq6okcelb41L5gK6+XeFvdelOQCntpJkSzvn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ibOic3c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A650C4CEE9;
-	Tue, 27 May 2025 16:45:38 +0000 (UTC)
+	 MIME-Version; b=bWXklLx2ZQbice+PtJGQFwq4VW7j0UOyxUnEfg5QEPD7fIxAlYoh6ACXgwvROpQZO9RozbSiaBGHrbc1PTqVMA3IINAwLBeB6URrObbScEASYWN3lbpasZvdwQl3S/xE3F5AM3HtSx0NySv2RQuy4FJiOP95wdtB+Vcu1lTm9OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLna626T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64AFC4CEE9;
+	Tue, 27 May 2025 17:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364338;
-	bh=LKlROuwKMgLDmjWs22ht9BBXUowg4j9zB/tidqmtvnE=;
+	s=korg; t=1748366695;
+	bh=Gja+waShIWFQOOz9Cb7bzvm2xGtRrpGziSH/S1T2VMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ibOic3cUijRIdaQ2VPK/Q073ogSIkv5jaYuwu1VLmXA4xV1nodS1Z5IhlwTVqIiW
-	 Otw/ApinRPGwC7GeFgeXyZiYX5LvvYxDnxVuvo/nVOsDaqChIvd4Vtb/sWUVLu8nBU
-	 UaRLnp44OyYDkRc217PPDXKT9BKPxOIHC76p9dgY=
+	b=CLna626Tzn61T9H9hkU1C9DZuJSh7JJTsZ3hNtSz26nJeI0nwwOY5sBdZS6MEKQQw
+	 hSWoHrJONMB24MpZ9kmlNfZLfNRISexeOLGUSRh+uBHOnM1vOhiwF/BMSOKuslTMGz
+	 TUUdAezF5f0PlzeKb4XrDERxkKDylymK17qnsZgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/626] vhost_task: fix vhost_task_create() documentation
+Subject: [PATCH 6.14 121/783] wifi: mt76: mt7925: load the appropriate CLC data based on hardware type
 Date: Tue, 27 May 2025 18:18:38 +0200
-Message-ID: <20250527162446.093893591@linuxfoundation.org>
+Message-ID: <20250527162518.073511727@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit fec0abf52609c20279243699d08b660c142ce0aa ]
+[ Upstream commit f2027ef3f733d3f0bb7f27fa3343784058f946ab ]
 
-Commit cb380909ae3b ("vhost: return task creation error instead of NULL")
-changed the return value of vhost_task_create(), but did not update the
-documentation.
+Read the EEPROM to determine the hardware type and uses this to load the
+correct CLC data.
 
-Reflect the change in the documentation: on an error, vhost_task_create()
-returns an ERR_PTR() and no longer NULL.
-
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20250327124435.142831-1-sgarzare@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250304113649.867387-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/vhost_task.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 61 ++++++++++++++++++-
+ .../wireless/mediatek/mt76/mt7925/mt7925.h    |  3 +
+ 2 files changed, 63 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index 2ef2e1b800916..2f844c279a3e0 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -111,7 +111,7 @@ EXPORT_SYMBOL_GPL(vhost_task_stop);
-  * @arg: data to be passed to fn and handled_kill
-  * @name: the thread's name
-  *
-- * This returns a specialized task for use by the vhost layer or NULL on
-+ * This returns a specialized task for use by the vhost layer or ERR_PTR() on
-  * failure. The returned task is inactive, and the caller must fire it up
-  * through vhost_task_start().
-  */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index f8d45d43f7807..775ccd667dd3f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -631,6 +631,54 @@ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+ 				 enable, false);
+ }
+ 
++static int mt7925_mcu_read_eeprom(struct mt792x_dev *dev, u32 offset, u8 *val)
++{
++	struct {
++		u8 rsv[4];
++
++		__le16 tag;
++		__le16 len;
++
++		__le32 addr;
++		__le32 valid;
++		u8 data[MT7925_EEPROM_BLOCK_SIZE];
++	} __packed req = {
++		.tag = cpu_to_le16(1),
++		.len = cpu_to_le16(sizeof(req) - 4),
++		.addr = cpu_to_le32(round_down(offset,
++				    MT7925_EEPROM_BLOCK_SIZE)),
++	};
++	struct evt {
++		u8 rsv[4];
++
++		__le16 tag;
++		__le16 len;
++
++		__le32 ver;
++		__le32 addr;
++		__le32 valid;
++		__le32 size;
++		__le32 magic_num;
++		__le32 type;
++		__le32 rsv1[4];
++		u8 data[32];
++	} __packed *res;
++	struct sk_buff *skb;
++	int ret;
++
++	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_WM_UNI_CMD_QUERY(EFUSE_CTRL),
++					&req, sizeof(req), true, &skb);
++	if (ret)
++		return ret;
++
++	res = (struct evt *)skb->data;
++	*val = res->data[offset % MT7925_EEPROM_BLOCK_SIZE];
++
++	dev_kfree_skb(skb);
++
++	return 0;
++}
++
+ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ {
+ 	const struct mt76_connac2_fw_trailer *hdr;
+@@ -639,13 +687,20 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	struct mt792x_phy *phy = &dev->phy;
+ 	const struct firmware *fw;
++	u8 *clc_base = NULL, hw_encap = 0;
+ 	int ret, i, len, offset = 0;
+-	u8 *clc_base = NULL;
+ 
+ 	if (mt7925_disable_clc ||
+ 	    mt76_is_usb(&dev->mt76))
+ 		return 0;
+ 
++	if (mt76_is_mmio(&dev->mt76)) {
++		ret = mt7925_mcu_read_eeprom(dev, MT_EE_HW_TYPE, &hw_encap);
++		if (ret)
++			return ret;
++		hw_encap = u8_get_bits(hw_encap, MT_EE_HW_TYPE_ENCAP);
++	}
++
+ 	ret = request_firmware(&fw, fw_name, mdev->dev);
+ 	if (ret)
+ 		return ret;
+@@ -690,6 +745,10 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
+ 		if (phy->clc[clc->idx])
+ 			continue;
+ 
++		/* header content sanity */
++		if (u8_get_bits(clc->type, MT_EE_HW_TYPE_ENCAP) != hw_encap)
++			continue;
++
+ 		phy->clc[clc->idx] = devm_kmemdup(mdev->dev, clc,
+ 						  le32_to_cpu(clc->len),
+ 						  GFP_KERNEL);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index cb7b1a49fbd14..073e433069e0e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -167,9 +167,12 @@ enum mt7925_eeprom_field {
+ 	MT_EE_CHIP_ID =		0x000,
+ 	MT_EE_VERSION =		0x002,
+ 	MT_EE_MAC_ADDR =	0x004,
++	MT_EE_HW_TYPE =		0xa71,
+ 	__MT_EE_MAX =		0x9ff
+ };
+ 
++#define MT_EE_HW_TYPE_ENCAP     GENMASK(1, 0)
++
+ enum {
+ 	TXPWR_USER,
+ 	TXPWR_EEPROM,
 -- 
 2.39.5
 
