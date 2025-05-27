@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D1AAC5550
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 763F1AC58B4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE77D4A3BFA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AF083B5D47
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D983227CB04;
-	Tue, 27 May 2025 17:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D086182D7;
+	Tue, 27 May 2025 17:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yl7p9rUX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+om0Pe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9549A139579;
-	Tue, 27 May 2025 17:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3061FB3;
+	Tue, 27 May 2025 17:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365821; cv=none; b=dwxo57sCkdag867qwFiN6AjmtkIzgYKo4n+/gG7ZRcV4m3Rj4qs0OOkjLsnTMWSzuEyqIqxXmyfr3gpk7RHTn13tcsnB2BBjfGp87x+j5lXnNV/QuNQ8taN9oN46BIEeEULe3Tj3sSzojMdzzfHiNwxOmKgokKCym9Ag5d+CqCs=
+	t=1748368096; cv=none; b=sLMQ6MSH3y5YK1q3HtmvEpos1ybUxlPelUngBwfAA6BU82OX/6PXiW+MTFwGq2Cx0TJdLjHhoEDvf6EwaoTObL2kj+vgnWp3J3/b/9Azp7+re+3PRnB057AM6St0azVIWW9KcUssT90aIJ/gmJG4s0uGRdejeL2Ua42nea/ts2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365821; c=relaxed/simple;
-	bh=2QkwzVGv978aGxmZalp4xiT6uGB4vCEGfMlZfspTkvI=;
+	s=arc-20240116; t=1748368096; c=relaxed/simple;
+	bh=VsjAuVXLEJsa0mldV/LAwdl/nnJOE3Ufaxkh2k12deU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Axakp8RsVbSwDOy7qFlMLm5Jso/ufdr0WgR2rOySjOINBg5tKDw9QyPPek2rO79uwJYTcmiSfkebWlv23m4D6oiiMw7WtYF/94F5bYrSloYroHs/AsaZ1kH3e2SPURZDHRZkfzUn3fB0QfhgUx4wPRUbNGMm9RMeiUCnhlXsP8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yl7p9rUX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863DDC4CEEB;
-	Tue, 27 May 2025 17:10:19 +0000 (UTC)
+	 MIME-Version; b=m/Cidi4HAYeBe5K+tqE0LrKsuduuRsoGVEWeXqTOhpqb0S+eoeDyjsIowrBN9e4Aa3+QSP9cz30ZxUL5mIwfUY673ZCQWMoPRWITdyNZ8giOeZBtntir+ndWlZeQyFUmaop6T1WeVSMXFxXt1vxFODKx5GRExEFzwBhUNiFKkGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+om0Pe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F7FC4CEE9;
+	Tue, 27 May 2025 17:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365819;
-	bh=2QkwzVGv978aGxmZalp4xiT6uGB4vCEGfMlZfspTkvI=;
+	s=korg; t=1748368094;
+	bh=VsjAuVXLEJsa0mldV/LAwdl/nnJOE3Ufaxkh2k12deU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yl7p9rUXt54IDLR3fUgHgvF/3oFiW8g+ACm0YIArMk+AVhILaFoAfbxq48ElX5v8V
-	 VX5SZ+ElGCRb3st42bxtsZ0CApa27WTbMzQAf6g253hvKEHoM0PwlzhsfRN4cWUBi/
-	 OdubjZN/Zbq2dZFdA3vfbTsyhXPi6WRb16F1PRso=
+	b=i+om0Pe5nrHwQzR5qYPPZvNT4v1RR4SS0LjaJVdvbMWkLUaDkJPEgpzk4QeJYfryr
+	 +2oJ9AM5gk/cpvp7DldFF9UnccKReBVn9v46YmKkS+s7JZH6petuZDFbW68Pq0EluD
+	 WuorGoGW1YJw1jCkyd2xoQ66bvYnAm+RzsJjeM3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 499/626] drm/xe/sa: Always call drm_suballoc_manager_fini()
-Date: Tue, 27 May 2025 18:26:32 +0200
-Message-ID: <20250527162505.249456488@linuxfoundation.org>
+Subject: [PATCH 6.14 596/783] perf/amd/ibs: Fix ->config to sample period calculation for OP PMU
+Date: Tue, 27 May 2025 18:26:33 +0200
+Message-ID: <20250527162537.408306536@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
-[ Upstream commit 9cd3f4efc870463f17f6c29114c61fb6bfcaa291 ]
+[ Upstream commit 598bdf4fefff5af4ce6d26d16f7b2a20808fc4cb ]
 
-After successful call to drm_suballoc_manager_init() we should
-make sure to call drm_suballoc_manager_fini() as it may include
-some cleanup code even if we didn't start using it for real.
+Instead of using standard perf_event_attr->freq=0 and ->sample_period
+fields, IBS event in 'sample period mode' can also be opened by setting
+period value directly in perf_event_attr->config in a MaxCnt bit-field
+format.
 
-As we can abort init() early due to kvzalloc() failure, we should
-either explicitly call drm_suballoc_manager_fini() or, even better,
-postpone drm_suballoc_manager_init() once we finish all other
-preparation steps, so we can rely on fini() that will do cleanup.
+IBS OP MaxCnt bits are defined as:
 
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241220194205.995-2-michal.wajdeczko@intel.com
+  (high bits) IbsOpCtl[26:20] = IbsOpMaxCnt[26:20]
+  (low bits)  IbsOpCtl[15:0]  = IbsOpMaxCnt[19:4]
+
+Perf event sample period can be derived from MaxCnt bits as:
+
+  sample_period = (high bits) | ((low_bits) << 4);
+
+However, current code just masks MaxCnt bits and shifts all of them,
+including high bits, which is incorrect. Fix it.
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/r/20250115054438.1021-4-ravi.bangoria@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_sa.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/events/amd/ibs.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_sa.c b/drivers/gpu/drm/xe/xe_sa.c
-index fe2cb2a96f788..1d42547590067 100644
---- a/drivers/gpu/drm/xe/xe_sa.c
-+++ b/drivers/gpu/drm/xe/xe_sa.c
-@@ -57,8 +57,6 @@ struct xe_sa_manager *xe_sa_bo_manager_init(struct xe_tile *tile, u32 size, u32
- 	}
- 	sa_manager->bo = bo;
- 	sa_manager->is_iomem = bo->vmap.is_iomem;
--
--	drm_suballoc_manager_init(&sa_manager->base, managed_size, align);
- 	sa_manager->gpu_addr = xe_bo_ggtt_addr(bo);
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index 5d975c39701cb..58ad23205d59d 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -274,7 +274,7 @@ static int perf_ibs_init(struct perf_event *event)
+ {
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	struct perf_ibs *perf_ibs;
+-	u64 max_cnt, config;
++	u64 config;
+ 	int ret;
  
- 	if (bo->vmap.is_iomem) {
-@@ -72,6 +70,7 @@ struct xe_sa_manager *xe_sa_bo_manager_init(struct xe_tile *tile, u32 size, u32
- 		memset(sa_manager->cpu_ptr, 0, bo->ttm.base.size);
+ 	perf_ibs = get_ibs_pmu(event->attr.type);
+@@ -321,10 +321,19 @@ static int perf_ibs_init(struct perf_event *event)
+ 		if (!hwc->sample_period)
+ 			hwc->sample_period = 0x10;
+ 	} else {
+-		max_cnt = config & perf_ibs->cnt_mask;
++		u64 period = 0;
++
++		if (perf_ibs == &perf_ibs_op) {
++			period = (config & IBS_OP_MAX_CNT) << 4;
++			if (ibs_caps & IBS_CAPS_OPCNTEXT)
++				period |= config & IBS_OP_MAX_CNT_EXT_MASK;
++		} else {
++			period = (config & IBS_FETCH_MAX_CNT) << 4;
++		}
++
+ 		config &= ~perf_ibs->cnt_mask;
+-		event->attr.sample_period = max_cnt << 4;
+-		hwc->sample_period = event->attr.sample_period;
++		event->attr.sample_period = period;
++		hwc->sample_period = period;
  	}
  
-+	drm_suballoc_manager_init(&sa_manager->base, managed_size, align);
- 	ret = drmm_add_action_or_reset(&xe->drm, xe_sa_bo_manager_fini,
- 				       sa_manager);
- 	if (ret)
+ 	if (!hwc->sample_period)
 -- 
 2.39.5
 
