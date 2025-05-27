@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-147767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8723FAC5918
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:52:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A75E5AC560E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E75973BE64D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C009C3A0583
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FE027FD4C;
-	Tue, 27 May 2025 17:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD91271464;
+	Tue, 27 May 2025 17:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTSET7xT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiR3zzI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A89194A45;
-	Tue, 27 May 2025 17:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9AD367;
+	Tue, 27 May 2025 17:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368366; cv=none; b=G9f0jWvdBNio6aidq8aV66uygcRZVbdcAvhL56FcDRz7LVtrBzLntRg1jbrxagiBb/kFgSRBK12GEqCigtHKdoIOZs7qmK8TMHUtBcECS6Fn9MnlT3Xfz5DqFCGkVPwRz6nvZgYrCNT4/7A9S5pxYql7CRt9dqZ2stRdsMCa8ps=
+	t=1748366090; cv=none; b=QAgZhoZFrDxA7D3IjOfIXFLHexzpU7Ms0RtC5Myd2XTUE7+1oyc75vA3Cz34kRxoYN3iCdaGmco+JZ3BDgC9CZJBYFKlUp6gQTJDLAlKNYd9mbHw2gZFm6VdncKyI3L+huGtGR4GLjaWhF5BQnfKvhAjFr4SUudbhgEdR3Wn25E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368366; c=relaxed/simple;
-	bh=7PNloi1VkdJcJg3Ddzw3LZKz1Nc008L9aLZswh9Jvx4=;
+	s=arc-20240116; t=1748366090; c=relaxed/simple;
+	bh=xuBEO4P/LMwbiQiTYCOikI7X9yilvMGL8BLLKkHVwDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3GZSv2ce8pKnNiCWV/FwMtIhMzWUpcy2c7w7G6OKYd2QePZW2nCfykw6amh1YhfbBm0kUCayFKHfPq1qL3DqF9G99Kn+nZSO1hecel4M/0fM+dfk2uKf2IjWQW6asekWx+gGleRfNIYc3WgSyHI5szg5htiqeTv/cwCUMdYqq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTSET7xT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F08C4CEE9;
-	Tue, 27 May 2025 17:52:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kJuz+8io4by1cTKVGSbU+jLUT/HIdvsHfy5XMrGxHfoVfUjE+tp5NNTLw3KBTX0hpzywAuJsjN71LwKXBV9qq0gD02SvCRmntpn/YQm/KEZ1nJnKEp4pFe0E/ZBwwKYa0V5DRgdcOtC0GiNLCL4tb/YgnCRwma1SNVuJKkdkFdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiR3zzI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBCFC4CEE9;
+	Tue, 27 May 2025 17:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368366;
-	bh=7PNloi1VkdJcJg3Ddzw3LZKz1Nc008L9aLZswh9Jvx4=;
+	s=korg; t=1748366090;
+	bh=xuBEO4P/LMwbiQiTYCOikI7X9yilvMGL8BLLKkHVwDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTSET7xTfo7vKny29F2n/IkRWgN60zlg2nTubeJUBUl4b3BgMyfWROvE6yjy0JX1j
-	 C6VEzSgQt8hiPzu3iZ4DwW25Sgx14DWTvvB6uDOYNH1m+xSLgeof0ENY/YQs8oxP+M
-	 xNgry8V704x4Diz6HjMF7X+k2SILmVslFYsixi2g=
+	b=YiR3zzI7ts4N3A01wnNmLEf/MZSlmCmWFnPZZBOVmziXXDrHWPBrFda0yFfb3v9Gn
+	 3oWbyZduzE+oxzLpangqyP3xBeRzQs25rcpWtP/cqBiebGkep91SuxBfRdtz4Iwra4
+	 0Lh9rRVDzM3ZY5hc0FPDlzB3kYllJMKaob8dCGSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Brunner <tobias@strongswan.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 684/783] xfrm: Fix UDP GRO handling for some corner cases
+	Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 588/626] platform/x86: dell-wmi-sysman: Avoid buffer overflow in current_password_store()
 Date: Tue, 27 May 2025 18:28:01 +0200
-Message-ID: <20250527162540.984349814@linuxfoundation.org>
+Message-ID: <20250527162508.873478877@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,150 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Brunner <tobias@strongswan.org>
+From: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
 
-[ Upstream commit e3fd0577768584ece824c8b661c40fb3d912812a ]
+commit 4e89a4077490f52cde652d17e32519b666abf3a6 upstream.
 
-This fixes an issue that's caused if there is a mismatch between the data
-offset in the GRO header and the length fields in the regular sk_buff due
-to the pskb_pull()/skb_push() calls.  That's because the UDP GRO layer
-stripped off the UDP header via skb_gro_pull() already while the UDP
-header was explicitly not pulled/pushed in this function.
+If the 'buf' array received from the user contains an empty string, the
+'length' variable will be zero. Accessing the 'buf' array element with
+index 'length - 1' will result in a buffer overflow.
 
-For example, an IKE packet that triggered this had len=data_len=1268 and
-the data_offset in the GRO header was 28 (IPv4 + UDP).  So pskb_pull()
-was called with an offset of 28-8=20, which reduced len to 1248 and via
-pskb_may_pull() and __pskb_pull_tail() it also set data_len to 1248.
-As the ESP offload module was not loaded, the function bailed out and
-called skb_push(), which restored len to 1268, however, data_len remained
-at 1248.
+Add a check for an empty string.
 
-So while skb_headlen() was 0 before, it was now 20.  The latter caused a
-difference of 8 instead of 28 (or 0 if pskb_pull()/skb_push() was called
-with the complete GRO data_offset) in gro_try_pull_from_frag0() that
-triggered a call to gro_pull_from_frag0() that corrupted the packet.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-This change uses a more GRO-like approach seen in other GRO receivers
-via skb_gro_header() to just read the actual data we are interested in
-and does not try to "restore" the UDP header at this point to call the
-existing function.  If the offload module is not loaded, it immediately
-bails out, otherwise, it only does a quick check to see if the packet
-is an IKE or keepalive packet instead of calling the existing function.
-
-Fixes: 172bf009c18d ("xfrm: Support GRO for IPv4 ESP in UDP encapsulation")
-Fixes: 221ddb723d90 ("xfrm: Support GRO for IPv6 ESP in UDP encapsulation")
-Signed-off-by: Tobias Brunner <tobias@strongswan.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
+Link: https://lore.kernel.org/r/39973642a4f24295b4a8fad9109c5b08@kaspersky.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/xfrm4_input.c | 18 ++++++++++--------
- net/ipv6/xfrm6_input.c | 18 ++++++++++--------
- 2 files changed, 20 insertions(+), 16 deletions(-)
+ drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index b5b06323cfd94..0d31a8c108d4f 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -182,11 +182,15 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	int offset = skb_gro_offset(skb);
- 	const struct net_offload *ops;
- 	struct sk_buff *pp = NULL;
--	int ret;
--
--	offset = offset - sizeof(struct udphdr);
-+	int len, dlen;
-+	__u8 *udpdata;
-+	__be32 *udpdata32;
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
+@@ -45,7 +45,7 @@ static ssize_t current_password_store(st
+ 	int length;
  
--	if (!pskb_pull(skb, offset))
-+	len = skb->len - offset;
-+	dlen = offset + min(len, 8);
-+	udpdata = skb_gro_header(skb, dlen, offset);
-+	udpdata32 = (__be32 *)udpdata;
-+	if (unlikely(!udpdata))
- 		return NULL;
+ 	length = strlen(buf);
+-	if (buf[length-1] == '\n')
++	if (length && buf[length - 1] == '\n')
+ 		length--;
  
- 	rcu_read_lock();
-@@ -194,11 +198,10 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	if (!ops || !ops->callbacks.gro_receive)
- 		goto out;
- 
--	ret = __xfrm4_udp_encap_rcv(sk, skb, false);
--	if (ret)
-+	/* check if it is a keepalive or IKE packet */
-+	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
- 		goto out;
- 
--	skb_push(skb, offset);
- 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
-@@ -208,7 +211,6 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 
- out:
- 	rcu_read_unlock();
--	skb_push(skb, offset);
- 	NAPI_GRO_CB(skb)->same_flow = 0;
- 	NAPI_GRO_CB(skb)->flush = 1;
- 
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 4abc5e9d63227..841c81abaaf4f 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -179,14 +179,18 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	int offset = skb_gro_offset(skb);
- 	const struct net_offload *ops;
- 	struct sk_buff *pp = NULL;
--	int ret;
-+	int len, dlen;
-+	__u8 *udpdata;
-+	__be32 *udpdata32;
- 
- 	if (skb->protocol == htons(ETH_P_IP))
- 		return xfrm4_gro_udp_encap_rcv(sk, head, skb);
- 
--	offset = offset - sizeof(struct udphdr);
--
--	if (!pskb_pull(skb, offset))
-+	len = skb->len - offset;
-+	dlen = offset + min(len, 8);
-+	udpdata = skb_gro_header(skb, dlen, offset);
-+	udpdata32 = (__be32 *)udpdata;
-+	if (unlikely(!udpdata))
- 		return NULL;
- 
- 	rcu_read_lock();
-@@ -194,11 +198,10 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	if (!ops || !ops->callbacks.gro_receive)
- 		goto out;
- 
--	ret = __xfrm6_udp_encap_rcv(sk, skb, false);
--	if (ret)
-+	/* check if it is a keepalive or IKE packet */
-+	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
- 		goto out;
- 
--	skb_push(skb, offset);
- 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
-@@ -208,7 +211,6 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 
- out:
- 	rcu_read_unlock();
--	skb_push(skb, offset);
- 	NAPI_GRO_CB(skb)->same_flow = 0;
- 	NAPI_GRO_CB(skb)->flush = 1;
- 
--- 
-2.39.5
-
+ 	/* firmware does verifiation of min/max password length,
 
 
 
