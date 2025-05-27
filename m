@@ -1,180 +1,302 @@
-Return-Path: <stable+bounces-147894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12C6AC5DCB
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 01:30:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 981FAAC5DDC
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 01:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A13104A4C28
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 23:30:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 189103A39D7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 23:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68E6214A8A;
-	Tue, 27 May 2025 23:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372D521883F;
+	Tue, 27 May 2025 23:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1WhISlxp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXfmbp3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655E3B667;
-	Tue, 27 May 2025 23:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E509410FD;
+	Tue, 27 May 2025 23:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748388637; cv=none; b=eM30Tn5EkRf8AvUT8x8C9rgX4ZyBkw7d2/AVbmbGszMA3lx+iRoanwmfbHRXD9kY1Rh9DorOHvnvL1ehOvtvTLp+H5BcUlLJROHVm0rMxheiBJmkUq2JqjKORF31Tb7duJ9RKlSGgh1l+Riz0RTP05KzMeZjcC8nsxeADLJASXw=
+	t=1748389828; cv=none; b=BGE/trcPGQ93no9+JLao3ypyp+NhnqCn9//3SMqM17kTVt2Yrve994ce7AZFxxegg/iQwZQ/BlVvPjFSDtak9UejrgXsPGoM4ZeaMRN2bL8GYUMH3+dxDi+OJF19/A4h1rYtrLTwNSJMKtq5L35gkPCG5DJrjnmw91wKY2YvZYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748388637; c=relaxed/simple;
-	bh=Xshyk68K4HFk9unHjGw2wUHwY+IrVKbGgX+b/HmNfGU=;
-	h=Date:To:From:Subject:Message-Id; b=ApNGFVfh2Oosw4DBwjsFNZWTO0Bnjr+41rqbR02eYLGHtdbRtdv9Pk6eoZ5mVEhZXZzC7IiXlGYZaCtq0XB6yvxRcyX2I1a9K4OxoEblz+AfuHx4XQ9OeML6IB1ysEi8ouA28BAqgatw4iPCg8/eg51Y3h2AOzECg0oyJGPOVeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1WhISlxp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5954C4CEE9;
-	Tue, 27 May 2025 23:30:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1748388636;
-	bh=Xshyk68K4HFk9unHjGw2wUHwY+IrVKbGgX+b/HmNfGU=;
-	h=Date:To:From:Subject:From;
-	b=1WhISlxpkIo4kNgNuwt3sRbHlXOk0GnnTeYqeAZ8nrTxZ+A/cv8/DeA9SUoFPWKJ0
-	 9uocWjTCTyfmycibrTRySr5SAgPOn50D9DOemtPupDmvJVO4lUK2oVVuY9a0RpBo+O
-	 OX4vkArToJ5VxWgzz9E94AzjTN5JZq4kxoTn7hM0=
-Date: Tue, 27 May 2025 16:30:35 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,fengwei.yin@intel.com,dev.jain@arm.com,david@redhat.com,bharata@amd.com,baolin.wang@linux.alibaba.com,shivankg@amd.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-khugepaged-fix-race-with-folio-split-free-using-temporary-reference.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250527233036.B5954C4CEE9@smtp.kernel.org>
+	s=arc-20240116; t=1748389828; c=relaxed/simple;
+	bh=cPNFnn+ViLBMY0rx+pZm4e6pn/QkrpbjwICV29GcTpc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uET14Ph3emb4rdeuRxEAe6rPDCvv0EyjBhG46C6pz+urM9KXxZTxz/QgsvFZP+C+5c7z94pzBN8UOmeONtn03YbrFIsuNAwSPCJq4BFJmpcXfmQYnMq2nz54ocP177FB1F4DbPp7JXS8anX/C37uqSbKBZui4k8FBcq5aFu7cWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXfmbp3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02057C4CEE9;
+	Tue, 27 May 2025 23:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748389827;
+	bh=cPNFnn+ViLBMY0rx+pZm4e6pn/QkrpbjwICV29GcTpc=;
+	h=Date:From:To:Cc:Subject:From;
+	b=EXfmbp3oEZQCc0Ltxx3QbB2PowIdStG9ctJlXc1pjm7kqQBsap5AM9MIxVjlzYrsX
+	 70ZHBnAWQx+Web72mrP5DyOQ22KLU+Ri43qaylEjiMf5n51IJmcurBVuSFLJFxAqeY
+	 0q4D8hKeq8VD3+lZsHCZesGbczoYc5WdOrJCj9+BLTeEe2zKbt9sbMixlXZ3NYODoW
+	 0e0OvXhA1KcowLPN6VZp6U3F7EuW+pao0DyO1sE2c7BlgF1yJxT2PglylcVgfGqRxW
+	 X6CXy1nC/1YbNCoOUqg1baWmq/WwM/sFoFG6YFP6LdcoP88dnI3CkAMMUc7eF8FCBt
+	 c5jfX3C+Fe0og==
+Date: Tue, 27 May 2025 16:50:23 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, llvm@lists.linux.dev,
+	Jani Nikula <jani.nikula@intel.com>,
+	intel-gfx@lists.freedesktop.org
+Subject: Backports of 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 for 5.15 and
+ older
+Message-ID: <20250527235023.GA2613123@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="VGW1Kzzgue6WQK1O"
+Content-Disposition: inline
 
 
-The patch titled
-     Subject: mm/khugepaged: fix race with folio split/free using temporary reference
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-khugepaged-fix-race-with-folio-split-free-using-temporary-reference.patch
+--VGW1Kzzgue6WQK1O
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-khugepaged-fix-race-with-folio-split-free-using-temporary-reference.patch
+Hi Greg and Sasha,
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Please find attached backports of commit 2e43ae7dd71c ("drm/i915/gvt:
+fix unterminated-string-initialization warning") to address an instance
+of -Wunterminated-string-initialization that appears in the i915 driver
+with GCC 15 and Clang 21 due to its use of -Wextra. Please let me know
+if there are any issues.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Cheers,
+Nathan
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+--VGW1Kzzgue6WQK1O
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=5.4-2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81.patch
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+From 604141c490f8e7591a80b27dba1000cceadb35c9 Mon Sep 17 00:00:00 2001
+From: Jani Nikula <jani.nikula@intel.com>
+Date: Thu, 27 Mar 2025 14:47:39 +0200
+Subject: [PATCH 5.4] drm/i915/gvt: fix unterminated-string-initialization
+ warning
 
-------------------------------------------------------
-From: Shivank Garg <shivankg@amd.com>
-Subject: mm/khugepaged: fix race with folio split/free using temporary reference
-Date: Mon, 26 May 2025 18:28:18 +0000
+commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
 
-hpage_collapse_scan_file() calls is_refcount_suitable(), which in turn
-calls folio_mapcount().  folio_mapcount() checks folio_test_large() before
-proceeding to folio_large_mapcount(), but there is a race window where the
-folio may get split/freed between these checks, triggering:
+Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
+(which is "IntelGraphicsMem") drops the NUL termination of the
+string. This is intentional, but the compiler doesn't know this.
 
-  VM_WARN_ON_FOLIO(!folio_test_large(folio), folio)
+Switch to initializing header->signature directly from the string
+litaral, with sizeof destination rather than source. We don't treat the
+signature as a string other than for initialization; it's really just a
+blob of binary data.
 
-Take a temporary reference to the folio in hpage_collapse_scan_file(). 
-This stabilizes the folio during refcount check and prevents incorrect
-large folio detection due to concurrent split/free.  Use helper
-folio_expected_ref_count() + 1 to compare with folio_ref_count() instead
-of using is_refcount_suitable().
+Add a static assert for good measure to cross-check the sizes.
 
-Link: https://lkml.kernel.org/r/20250526182818.37978-1-shivankg@amd.com
-Fixes: 05c5323b2a34 ("mm: track mapcount of large folios in single value")
-Signed-off-by: Shivank Garg <shivankg@amd.com>
-Reported-by: syzbot+2b99589e33edbe9475ca@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6828470d.a70a0220.38f255.000c.GAE@google.com
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Bharata B Rao <bharata@amd.com>
-Cc: Fengwei Yin <fengwei.yin@intel.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mariano Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Kees Cook <kees@kernel.org>
+Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
+Tested-by: Nicolas Chauvet <kwizart@gmail.com>
+Tested-by: Damian Tometzki <damian@riscv-rocks.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
+Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+[nathan: Move static_assert() to top of function to avoid instance of
+         -Wdeclaration-after-statement due to lack of b5ec6fd286df]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
+ drivers/gpu/drm/i915/gvt/opregion.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
- mm/khugepaged.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
-
---- a/mm/khugepaged.c~mm-khugepaged-fix-race-with-folio-split-free-using-temporary-reference
-+++ a/mm/khugepaged.c
-@@ -2295,6 +2295,17 @@ static int hpage_collapse_scan_file(stru
- 			continue;
- 		}
- 
-+		if (!folio_try_get(folio)) {
-+			xas_reset(&xas);
-+			continue;
-+		}
+diff --git a/drivers/gpu/drm/i915/gvt/opregion.c b/drivers/gpu/drm/i915/gvt/opregion.c
+index 867e7629025b..7d347e2944a0 100644
+--- a/drivers/gpu/drm/i915/gvt/opregion.c
++++ b/drivers/gpu/drm/i915/gvt/opregion.c
+@@ -223,7 +223,8 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
+ 	u8 *buf;
+ 	struct opregion_header *header;
+ 	struct vbt v;
+-	const char opregion_signature[16] = OPREGION_SIGNATURE;
 +
-+		if (unlikely(folio != xas_reload(&xas))) {
-+			folio_put(folio);
-+			xas_reset(&xas);
-+			continue;
-+		}
++	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
+ 
+ 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
+ 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
+@@ -237,8 +238,9 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
+ 	/* emulated opregion with VBT mailbox only */
+ 	buf = (u8 *)vgpu_opregion(vgpu)->va;
+ 	header = (struct opregion_header *)buf;
+-	memcpy(header->signature, opregion_signature,
+-	       sizeof(opregion_signature));
 +
- 		if (folio_order(folio) == HPAGE_PMD_ORDER &&
- 		    folio->index == start) {
- 			/* Maybe PMD-mapped */
-@@ -2305,23 +2316,27 @@ static int hpage_collapse_scan_file(stru
- 			 * it's safe to skip LRU and refcount checks before
- 			 * returning.
- 			 */
-+			folio_put(folio);
- 			break;
- 		}
- 
- 		node = folio_nid(folio);
- 		if (hpage_collapse_scan_abort(node, cc)) {
- 			result = SCAN_SCAN_ABORT;
-+			folio_put(folio);
- 			break;
- 		}
- 		cc->node_load[node]++;
- 
- 		if (!folio_test_lru(folio)) {
- 			result = SCAN_PAGE_LRU;
-+			folio_put(folio);
- 			break;
- 		}
- 
--		if (!is_refcount_suitable(folio)) {
-+		if (folio_expected_ref_count(folio) + 1 != folio_ref_count(folio)) {
- 			result = SCAN_PAGE_COUNT;
-+			folio_put(folio);
- 			break;
- 		}
- 
-@@ -2333,6 +2348,7 @@ static int hpage_collapse_scan_file(stru
- 		 */
- 
- 		present += folio_nr_pages(folio);
-+		folio_put(folio);
- 
- 		if (need_resched()) {
- 			xas_pause(&xas);
-_
++	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
++
+ 	header->size = 0x8;
+ 	header->opregion_ver = 0x02000000;
+ 	header->mboxes = MBOX_VBT;
 
-Patches currently in -mm which might be from shivankg@amd.com are
+base-commit: 2c8115e4757809ffd537ed9108da115026d3581f
+-- 
+2.49.0
 
-mm-khugepaged-fix-race-with-folio-split-free-using-temporary-reference.patch
-mm-khugepaged-clean-up-refcount-check-using-folio_expected_ref_count.patch
 
+--VGW1Kzzgue6WQK1O
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=5.10-2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81.patch
+
+From 8df71970af64794683e6c537fbd2c8d6613ab9cf Mon Sep 17 00:00:00 2001
+From: Jani Nikula <jani.nikula@intel.com>
+Date: Thu, 27 Mar 2025 14:47:39 +0200
+Subject: [PATCH 5.10] drm/i915/gvt: fix unterminated-string-initialization
+ warning
+
+commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
+
+Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
+(which is "IntelGraphicsMem") drops the NUL termination of the
+string. This is intentional, but the compiler doesn't know this.
+
+Switch to initializing header->signature directly from the string
+litaral, with sizeof destination rather than source. We don't treat the
+signature as a string other than for initialization; it's really just a
+blob of binary data.
+
+Add a static assert for good measure to cross-check the sizes.
+
+Reported-by: Kees Cook <kees@kernel.org>
+Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
+Tested-by: Nicolas Chauvet <kwizart@gmail.com>
+Tested-by: Damian Tometzki <damian@riscv-rocks.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
+Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+[nathan: Move static_assert() to top of function to avoid instance of
+         -Wdeclaration-after-statement due to lack of b5ec6fd286df]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/gpu/drm/i915/gvt/opregion.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gvt/opregion.c b/drivers/gpu/drm/i915/gvt/opregion.c
+index 33569b910ed5..fbf1e67913f6 100644
+--- a/drivers/gpu/drm/i915/gvt/opregion.c
++++ b/drivers/gpu/drm/i915/gvt/opregion.c
+@@ -222,7 +222,8 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
+ 	u8 *buf;
+ 	struct opregion_header *header;
+ 	struct vbt v;
+-	const char opregion_signature[16] = OPREGION_SIGNATURE;
++
++	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
+ 
+ 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
+ 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
+@@ -236,8 +237,9 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
+ 	/* emulated opregion with VBT mailbox only */
+ 	buf = (u8 *)vgpu_opregion(vgpu)->va;
+ 	header = (struct opregion_header *)buf;
+-	memcpy(header->signature, opregion_signature,
+-	       sizeof(opregion_signature));
++
++	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
++
+ 	header->size = 0x8;
+ 	header->opregion_ver = 0x02000000;
+ 	header->mboxes = MBOX_VBT;
+
+base-commit: 024a4a45fdf87218e3c0925475b05a27bcea103f
+-- 
+2.49.0
+
+
+--VGW1Kzzgue6WQK1O
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=5.15-2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81.patch
+
+From 6881a5a1bf876e747fd99226e671aaaf85bc8e45 Mon Sep 17 00:00:00 2001
+From: Jani Nikula <jani.nikula@intel.com>
+Date: Thu, 27 Mar 2025 14:47:39 +0200
+Subject: [PATCH 5.15] drm/i915/gvt: fix unterminated-string-initialization
+ warning
+
+commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
+
+Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
+(which is "IntelGraphicsMem") drops the NUL termination of the
+string. This is intentional, but the compiler doesn't know this.
+
+Switch to initializing header->signature directly from the string
+litaral, with sizeof destination rather than source. We don't treat the
+signature as a string other than for initialization; it's really just a
+blob of binary data.
+
+Add a static assert for good measure to cross-check the sizes.
+
+Reported-by: Kees Cook <kees@kernel.org>
+Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
+Tested-by: Nicolas Chauvet <kwizart@gmail.com>
+Tested-by: Damian Tometzki <damian@riscv-rocks.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
+Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+[nathan: Move static_assert() to top of function to avoid instance of
+         -Wdeclaration-after-statement due to lack of b5ec6fd286df]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/gpu/drm/i915/gvt/opregion.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gvt/opregion.c b/drivers/gpu/drm/i915/gvt/opregion.c
+index 33569b910ed5..fbf1e67913f6 100644
+--- a/drivers/gpu/drm/i915/gvt/opregion.c
++++ b/drivers/gpu/drm/i915/gvt/opregion.c
+@@ -222,7 +222,8 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
+ 	u8 *buf;
+ 	struct opregion_header *header;
+ 	struct vbt v;
+-	const char opregion_signature[16] = OPREGION_SIGNATURE;
++
++	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
+ 
+ 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
+ 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
+@@ -236,8 +237,9 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
+ 	/* emulated opregion with VBT mailbox only */
+ 	buf = (u8 *)vgpu_opregion(vgpu)->va;
+ 	header = (struct opregion_header *)buf;
+-	memcpy(header->signature, opregion_signature,
+-	       sizeof(opregion_signature));
++
++	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
++
+ 	header->size = 0x8;
+ 	header->opregion_ver = 0x02000000;
+ 	header->mboxes = MBOX_VBT;
+
+base-commit: 98f47d0e9b8c557d3063d3ea661cbea1489af330
+-- 
+2.49.0
+
+
+--VGW1Kzzgue6WQK1O--
 
