@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-147114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0397BAC5630
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:19:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9897AC563A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06CA61BA6F91
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:19:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91C9C7A4AFC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CFC27FD49;
-	Tue, 27 May 2025 17:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C8F279782;
+	Tue, 27 May 2025 17:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM8HX7AH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l08hQS1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C5F1E89C;
-	Tue, 27 May 2025 17:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9A926F469;
+	Tue, 27 May 2025 17:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366331; cv=none; b=t+xJajXE2ho0oVgVJs/2yX68ULRJxGiWTkNnabmO90itUxfYntNTgUJbmnIG0SIR6bmo3y631Kj0BEDaJvS4cImBwQD8ZwXmI+2ywRMP1D4HBo9zWDtDLJg7tE26nn4JMoeV5kfLKtIXlsFrT1JHBVuqkGp0cwFwt2QL/Zw+VaA=
+	t=1748366338; cv=none; b=tzgjwS5ZHOtFCkya0EUsgwQ0aAbIcIqi/nNK2FnWzbWM0qM3+HJJ75UU7NW0Yfg85ULN976mWEoftnYEroyKfBKsHdlBITvKvoD1Wj3DKMgLSJ1LgWkxz9e09kMt3XPmw95GKmeA6k1/dlPCq6LosFOomdU+bcD/HlyL7UCDHyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366331; c=relaxed/simple;
-	bh=M6g/MEftlvbOQSkl2Ct2IjlIpgsCax6JgxOC5kMtVTI=;
+	s=arc-20240116; t=1748366338; c=relaxed/simple;
+	bh=qsVed7Iz796JymkftpvW7xOL7peN3bNDhzO/bj/FPEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rueNc3M/l4t5a1eyk4JQp1t8isiHLQiJ1pXP6fFAptff1oZ6517IJuyGohX4SKUdrzogWSQtZs8Qvqvi97+dNWHfH0I10ZoZ+Fhc/kzBvYA2l7q+8DWpeEdbh++xoo4O1YaLkRIggw+yY2Flfv1JcDiStvmDsV2TEOlLd/O7l/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RM8HX7AH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19A9C4CEE9;
-	Tue, 27 May 2025 17:18:50 +0000 (UTC)
+	 MIME-Version; b=AQWMSQ8UcCBw9nZWZ3VVTgsUE0Ak7HBngEd69O6v8yV4nd6LMZEFun1kdL3TJZLH6wHpm/84uHF4gZ9Y6kfSsD+e73QwUmEH0NesvUKTbNnNDq2lLBWwWoSMjHCwFVkwgxzHZLEG+OopfC51nYFTruHTUO6l/8yI8DUPzb5HsHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l08hQS1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A43C4CEE9;
+	Tue, 27 May 2025 17:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366331;
-	bh=M6g/MEftlvbOQSkl2Ct2IjlIpgsCax6JgxOC5kMtVTI=;
+	s=korg; t=1748366337;
+	bh=qsVed7Iz796JymkftpvW7xOL7peN3bNDhzO/bj/FPEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RM8HX7AHqzX4hhXlqhn+VaewJ/yw5L0Td+XmExtYKB3WvyUe5JvEzhLKScevrr1wQ
-	 /pJpgycuZEI7ZM9QNeXGPVB0u12fQ0/pZX7vPQbdmNkCeNGTfUnMUhqHiqn3Z8z98A
-	 0gQtbt1bs4u/8aLJX3DUyx1N47+Do/aGiyBxqodY=
+	b=l08hQS1gfSTcWyBmlQZKLTsxESzByOwyRfUho6fWytcxugFlzUrC+jK1c8PZb4Cd8
+	 7mptT8QVBbhItjYxQvIr5k1E5DlX7b5ub1bFNjVH/li/IF4i34owBBSr3JPFg1tImi
+	 pN+Oj/AlFesAB7Y/45bZ1iGoZVjAK5om8hi25mKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Luis Chamberlain <mcgrof@kernel.org>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 034/783] fs/jbd2: use sleeping version of __find_get_block()
-Date: Tue, 27 May 2025 18:17:11 +0200
-Message-ID: <20250527162514.512383120@linuxfoundation.org>
+Subject: [PATCH 6.14 035/783] fs/ext4: use sleeping version of sb_find_get_block()
+Date: Tue, 27 May 2025 18:17:12 +0200
+Message-ID: <20250527162514.555536559@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -71,81 +71,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Davidlohr Bueso <dave@stgolabs.net>
 
-[ Upstream commit f76d4c28a46a9260d85e00dafc8f46d369365d33 ]
+[ Upstream commit 6e8f57fd09c9fb569d10b2ccc3878155b702591a ]
 
-Convert to the new nonatomic flavor to benefit from potential
-performance benefits and adapt in the future vs migration such
-that semantics are kept.
-
-- jbd2_journal_revoke(): can sleep (has might_sleep() in the beginning)
-
-- jbd2_journal_cancel_revoke(): only used from do_get_write_access() and
-    do_get_create_access() which do sleep. So can sleep.
-
-- jbd2_clear_buffer_revoked_flags() - only called from journal commit code
-    which sleeps. So can sleep.
+Enable ext4_free_blocks() to use it, which has a cond_resched to begin
+with. Convert to the new nonatomic flavor to benefit from potential
+performance benefits and adapt in the future vs migration such that
+semantics are kept.
 
 Suggested-by: Jan Kara <jack@suse.cz>
 Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
 Link: https://kdevops.org/ext4/v6.15-rc2.html # [0]
 Link: https://lore.kernel.org/all/aAAEvcrmREWa1SKF@bombadil.infradead.org/ # [1]
-Link: https://lore.kernel.org/20250418015921.132400-6-dave@stgolabs.net
+Link: https://lore.kernel.org/20250418015921.132400-7-dave@stgolabs.net
 Tested-by: kdevops@lists.linux.dev
 Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/revoke.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ fs/ext4/mballoc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jbd2/revoke.c b/fs/jbd2/revoke.c
-index ce63d5fde9c3a..f68fc8c255f00 100644
---- a/fs/jbd2/revoke.c
-+++ b/fs/jbd2/revoke.c
-@@ -345,7 +345,8 @@ int jbd2_journal_revoke(handle_t *handle, unsigned long long blocknr,
- 	bh = bh_in;
- 
- 	if (!bh) {
--		bh = __find_get_block(bdev, blocknr, journal->j_blocksize);
-+		bh = __find_get_block_nonatomic(bdev, blocknr,
-+						journal->j_blocksize);
- 		if (bh)
- 			BUFFER_TRACE(bh, "found on hash");
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index b25a27c866969..d6f1e61c6dc82 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6644,7 +6644,8 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
+ 		for (i = 0; i < count; i++) {
+ 			cond_resched();
+ 			if (is_metadata)
+-				bh = sb_find_get_block(inode->i_sb, block + i);
++				bh = sb_find_get_block_nonatomic(inode->i_sb,
++								 block + i);
+ 			ext4_forget(handle, is_metadata, inode, bh, block + i);
+ 		}
  	}
-@@ -355,7 +356,8 @@ int jbd2_journal_revoke(handle_t *handle, unsigned long long blocknr,
- 
- 		/* If there is a different buffer_head lying around in
- 		 * memory anywhere... */
--		bh2 = __find_get_block(bdev, blocknr, journal->j_blocksize);
-+		bh2 = __find_get_block_nonatomic(bdev, blocknr,
-+						 journal->j_blocksize);
- 		if (bh2) {
- 			/* ... and it has RevokeValid status... */
- 			if (bh2 != bh && buffer_revokevalid(bh2))
-@@ -466,7 +468,8 @@ int jbd2_journal_cancel_revoke(handle_t *handle, struct journal_head *jh)
- 	 * state machine will get very upset later on. */
- 	if (need_cancel) {
- 		struct buffer_head *bh2;
--		bh2 = __find_get_block(bh->b_bdev, bh->b_blocknr, bh->b_size);
-+		bh2 = __find_get_block_nonatomic(bh->b_bdev, bh->b_blocknr,
-+						 bh->b_size);
- 		if (bh2) {
- 			if (bh2 != bh)
- 				clear_buffer_revoked(bh2);
-@@ -495,9 +498,9 @@ void jbd2_clear_buffer_revoked_flags(journal_t *journal)
- 			struct jbd2_revoke_record_s *record;
- 			struct buffer_head *bh;
- 			record = (struct jbd2_revoke_record_s *)list_entry;
--			bh = __find_get_block(journal->j_fs_dev,
--					      record->blocknr,
--					      journal->j_blocksize);
-+			bh = __find_get_block_nonatomic(journal->j_fs_dev,
-+							record->blocknr,
-+							journal->j_blocksize);
- 			if (bh) {
- 				clear_buffer_revoked(bh);
- 				__brelse(bh);
 -- 
 2.39.5
 
