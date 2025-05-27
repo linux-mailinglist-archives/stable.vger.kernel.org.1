@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63522AC5847
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 201CAAC556C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AEF41BC1077
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7193C8A36E6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D374280036;
-	Tue, 27 May 2025 17:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCB92110E;
+	Tue, 27 May 2025 17:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGFPqasJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ngwr+m44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C008280035;
-	Tue, 27 May 2025 17:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC8426868E;
+	Tue, 27 May 2025 17:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367776; cv=none; b=OBwSw3Y3Au9mR0S3ASHxCei0jwafQk2+Li3MnhA1ku1rbrtpj40NglgcPN5OJedS60lNz25g3cQXPM5NcxN8MUfv92BsaV7+KyCwQ6CpN2mkJoX6onW3rB0uytNZ83Ryu8FIGtzPmGZ3YveUb+2CadU/qUXxgOhHmKjQ0grSaxs=
+	t=1748365550; cv=none; b=pGvbs8pEXUZgDmob3Rk19of7/N2f/1jAGakIQ7QWHTD+EsJMgJdJ0mJBTid8N7t+8VVlqnkDfG0JbNKoBxTI79NhCgxk1vbeA17TPRDpXXi6JGJw8v6CW7vzOA8066b2TWEbWWDBpWX5W6MlDxgvJFvcj+L1SLEXo2IdZFh24L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367776; c=relaxed/simple;
-	bh=VGrk3c2hwdTn7Rv9F6Ewyjqv/JpalRazTCvqSBEiUhY=;
+	s=arc-20240116; t=1748365550; c=relaxed/simple;
+	bh=b56sm2T9v6+FQk5/XsEzaNpIh5foI+JBSBmE2+7JgaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LYkHkHpPQrL3wj74CJD8UjAPsoNmV1Dh3IVZggplhT7XrjOtNWxAYnut6hSOZruPfFV2CDXnNrxFy/FK9aMNxFgMePf/l6qX6RsooKiYWducWkPHwS9Aw+NPoqBjjUs9Y0STMwRTrsxbT4u90NYKCJJsDqdy7GfXvvpXvjUrIig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGFPqasJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E532C4CEE9;
-	Tue, 27 May 2025 17:42:55 +0000 (UTC)
+	 MIME-Version; b=QHbuuIWicQOzz8Ucklb7WvOus4zoEUfWFfOLdaFa/ci3f0cGmzAI5Sag8K5tjOJl9aFwU5ef+BZfKHuT8ooo5aqMYgdKx98OyZJzjh81yBBiuCNmup7kr9u2ftOa4tjhGEpBs4WhBKSpmecS3HuCuCPYxG1GI+bey6fqrxbkxIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ngwr+m44; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60870C4CEE9;
+	Tue, 27 May 2025 17:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367775;
-	bh=VGrk3c2hwdTn7Rv9F6Ewyjqv/JpalRazTCvqSBEiUhY=;
+	s=korg; t=1748365549;
+	bh=b56sm2T9v6+FQk5/XsEzaNpIh5foI+JBSBmE2+7JgaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGFPqasJz1a4GdrSy2CSHu49L9smeF6Yxl3fV6tSB371yU8wOyJng7QGRQh+/w3qZ
-	 +swW6E4dLpimz20YP04BSGO9/jzO/J8cE2JmNEdqbE3Ye8J45SXAIMYUe4brVi73M4
-	 x2jXW3c16Jahf7ABgdLnUzRtd6V0pjnIi1n7L8TA=
+	b=Ngwr+m447bVOjsmTdMVzZwWBGpu6C+vBU2MsoN0SPAVT3BGU+Pd2bkwVMtYwcoIry
+	 YtTp/BrXv6J8hQBVt7UpirX/j4E3mh9qCQDEADlkymUddNEcBBI+VCdoScWBaoFLUg
+	 heg79YRYvHR5A523H6T9eW75qh2dLrwad4j9e17Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 478/783] drm/amdgpu/mes11: fix set_hw_resources_1 calculation
+Subject: [PATCH 6.12 382/626] phy: core: dont require set_mode() callback for phy_get_mode() to work
 Date: Tue, 27 May 2025 18:24:35 +0200
-Message-ID: <20250527162532.591165905@linuxfoundation.org>
+Message-ID: <20250527162500.535883069@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1350dd3691b5f757a948e5b9895d62c422baeb90 ]
+[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
 
-It's GPU page size not CPU page size.  In most cases they
-are the same, but not always.  This can lead to overallocation
-on systems with larger pages.
+As reported by Damon Ding, the phy_get_mode() call doesn't work as
+expected unless the PHY driver has a .set_mode() call. This prompts PHY
+drivers to have empty stubs for .set_mode() for the sake of being able
+to get the mode.
 
-Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Make .set_mode() callback truly optional and update PHY's mode even if
+it there is none.
+
+Cc: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
+Tested-by: Damon Ding <damon.ding@rock-chips.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/phy-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-index 0f808ffcab943..68bb334393bb6 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -730,7 +730,7 @@ static int mes_v11_0_set_hw_resources(struct amdgpu_mes *mes)
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index 413f76e2d1744..e0a6a272f5714 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -405,13 +405,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
  
- static int mes_v11_0_set_hw_resources_1(struct amdgpu_mes *mes)
+ int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
  {
--	int size = 128 * PAGE_SIZE;
-+	int size = 128 * AMDGPU_GPU_PAGE_SIZE;
- 	int ret = 0;
- 	struct amdgpu_device *adev = mes->adev;
- 	union MESAPI_SET_HW_RESOURCES_1 mes_set_hw_res_pkt;
+-	int ret;
++	int ret = 0;
+ 
+-	if (!phy || !phy->ops->set_mode)
++	if (!phy)
+ 		return 0;
+ 
+ 	mutex_lock(&phy->mutex);
+-	ret = phy->ops->set_mode(phy, mode, submode);
++	if (phy->ops->set_mode)
++		ret = phy->ops->set_mode(phy, mode, submode);
+ 	if (!ret)
+ 		phy->attrs.mode = mode;
+ 	mutex_unlock(&phy->mutex);
 -- 
 2.39.5
 
