@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-147485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BF5AC57DD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421D4AC5474
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 923BC4A3C59
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC691BA4F97
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5578027EC99;
-	Tue, 27 May 2025 17:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389632798E6;
+	Tue, 27 May 2025 17:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLV+gDSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ufm0KZRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115831D63EF;
-	Tue, 27 May 2025 17:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60F178F32;
+	Tue, 27 May 2025 17:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367483; cv=none; b=en6sagSI0qiWKDZxo92xDcDsT+m1dFMPPSo9SUau6KagPWhw/g9VjVjUl5OTCa6rtIkBLqZZ+cPLINLlDm2ithTetd1fTcDyzkscFf37zMrUbiCaTIa4vUnYK9aKCj0dNeBq4pJlmgQgMg8h0PmmmfsULG+G8ooOVXoQ6TP2neA=
+	t=1748365230; cv=none; b=aeD1ofM5KKGvoAnaBNonOrpOQ5aOQSwOoxP7UKCOo1Tsqas0800Ytj3Ic0O4ET0fPATmv1Mwlbr8Bdi/uWbOUa8DZOpAiOSBr9LWQYho/X4V3KnbEnWjct4kXy30OWqjRPfQI3dINe+6/XclLyamZC1dE8ne6Rdm+FWwkSBal00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367483; c=relaxed/simple;
-	bh=iZici22X57r7OQvEelBV++wxlSMne3yuAQI2pelZ4Dw=;
+	s=arc-20240116; t=1748365230; c=relaxed/simple;
+	bh=cxr+n5nYvgCDnsxKCOPwRTiu4VveEHjEzYxMwqeSFzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWqDuPb3Mlnzi38NK3DCzoMtx8zu6ZfyxjDKKyCB389Id4/T23ylMVLD0E16wVljOAwInWXlf3IS1eeNFkoK5NV1Q6ZkR9l9GGCzvGg+hYXqiOVJptYaipl+eq7uqXKJdqYX1DMZfE1vEpemBhWTy4yBPsGM2dVEYIQ198p+DuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLV+gDSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D56C4CEE9;
-	Tue, 27 May 2025 17:38:02 +0000 (UTC)
+	 MIME-Version; b=SnYrxjQ4V3aUuYThs1gaX+GswD+bGSjAf8wViHVL/kmQHd62dtKIfklHA7gABPnaDas6ra4K/cttqB1X4On8Q1Zo576aUCHtNSCaE77wZKRsIcbrBjKn505GlEZSeEFSibV2A4vWH9weaPJH/8KTmXHrEE4l5z3qYN3IunBAJbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufm0KZRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4F6C4CEE9;
+	Tue, 27 May 2025 17:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367482;
-	bh=iZici22X57r7OQvEelBV++wxlSMne3yuAQI2pelZ4Dw=;
+	s=korg; t=1748365229;
+	bh=cxr+n5nYvgCDnsxKCOPwRTiu4VveEHjEzYxMwqeSFzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLV+gDSI3uljOwZqqShlgTlFdPXBQYyZEWKUy9KdQNDHQCbuig10mi8Tg2fhNNe0z
-	 /8qSyHpHwCqjKRHeHENFTREVnVSLegBQWh63Ol9Z8Kuzf8RBS4Lz2cYSlhfk8MVsQ2
-	 06L1TNgt70nuicf2XExOeLVJjPvS0P1WmDjtT11c=
+	b=Ufm0KZRhxF+SjlK+HtZhH0LezbbaGwtI6ZqbZm1k3dIHmEoYqhR7x3Rc49Ss+C7sU
+	 iQIbks1UHPczFBPQCTGY8avsJmugExUpeRi0TckhLQ8qpB4DikJyKbpROXmkmUaZga
+	 cZfpk/ojNpQFANkSyEGpbPetIt/Z0H1MuAMVvFrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jason Baron <jbaron@akamai.com>,
-	Tony Luck <tony.luck@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 402/783] EDAC/ie31200: work around false positive build warning
-Date: Tue, 27 May 2025 18:23:19 +0200
-Message-ID: <20250527162529.464827057@linuxfoundation.org>
+Subject: [PATCH 6.12 307/626] crypto: skcipher - Zap type in crypto_alloc_sync_skcipher
+Date: Tue, 27 May 2025 18:23:20 +0200
+Message-ID: <20250527162457.507110397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
+[ Upstream commit ee509efc74ddbc59bb5d6fd6e050f9ef25f74bff ]
 
-gcc-14 produces a bogus warning in some configurations:
+The type needs to be zeroed as otherwise the user could use it to
+allocate an asynchronous sync skcipher.
 
-drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
-drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
-  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
-      |                          ^~~~~~~~~
-drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
-  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
-      |                          ^~~~~~~~~
-
-I don't see any way the unintialized access could really happen here,
-but I can see why the compiler gets confused by the two loops.
-
-Instead, rework the two nested loops to only read the addr_decode
-registers and then keep only one instance of the dimm info structure.
-
-[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
-behind in the refactor and suggested moving it. I deleted the comment
-as unnecessry in front os a call to populate_dimm_info(). That seems
-pretty self-describing.]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Jason Baron <jbaron@akamai.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ crypto/skcipher.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 9b02a6b43ab58..a8dd55ec52cea 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -408,10 +408,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 	int i, j, ret;
- 	struct mem_ctl_info *mci = NULL;
- 	struct edac_mc_layer layers[2];
--	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
- 	void __iomem *window;
- 	struct ie31200_priv *priv;
--	u32 addr_decode, mad_offset;
-+	u32 addr_decode[IE31200_CHANNELS], mad_offset;
+diff --git a/crypto/skcipher.c b/crypto/skcipher.c
+index ceed7f33a67ba..fd3273b519dc0 100644
+--- a/crypto/skcipher.c
++++ b/crypto/skcipher.c
+@@ -844,6 +844,7 @@ struct crypto_sync_skcipher *crypto_alloc_sync_skcipher(
  
- 	/*
- 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
-@@ -469,19 +468,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
- 	}
+ 	/* Only sync algorithms allowed. */
+ 	mask |= CRYPTO_ALG_ASYNC | CRYPTO_ALG_SKCIPHER_REQSIZE_LARGE;
++	type &= ~(CRYPTO_ALG_ASYNC | CRYPTO_ALG_SKCIPHER_REQSIZE_LARGE);
  
--	/* populate DIMM info */
- 	for (i = 0; i < IE31200_CHANNELS; i++) {
--		addr_decode = readl(window + mad_offset +
-+		addr_decode[i] = readl(window + mad_offset +
- 					(i * 4));
--		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
--		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
--			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
--					   skl);
--			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
--				 dimm_info[i][j].size,
--				 dimm_info[i][j].dual_rank,
--				 dimm_info[i][j].x16_width);
--		}
-+		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
- 	}
+ 	tfm = crypto_alloc_tfm(alg_name, &crypto_skcipher_type, type, mask);
  
- 	/*
-@@ -492,14 +482,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 	 */
- 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
- 		for (j = 0; j < IE31200_CHANNELS; j++) {
-+			struct dimm_data dimm_info;
- 			struct dimm_info *dimm;
- 			unsigned long nr_pages;
- 
--			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
-+			populate_dimm_info(&dimm_info, addr_decode[j], i,
-+					   skl);
-+			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
-+				 dimm_info.size,
-+				 dimm_info.dual_rank,
-+				 dimm_info.x16_width);
-+
-+			nr_pages = IE31200_PAGES(dimm_info.size, skl);
- 			if (nr_pages == 0)
- 				continue;
- 
--			if (dimm_info[j][i].dual_rank) {
-+			if (dimm_info.dual_rank) {
- 				nr_pages = nr_pages / 2;
- 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
- 				dimm->nr_pages = nr_pages;
 -- 
 2.39.5
 
