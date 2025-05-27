@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-146887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32847AC5515
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E332FAC586B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD1B418849E6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A63DE1BC22F4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D2A26868E;
-	Tue, 27 May 2025 17:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B53427FB2A;
+	Tue, 27 May 2025 17:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soiMa/tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQIiHS8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E492110E;
-	Tue, 27 May 2025 17:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBBD1D63EF;
+	Tue, 27 May 2025 17:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365614; cv=none; b=cWVrwwwE25AxzcKOQNtkRGEh9jul09oproWEshQ6ImynROihPlAvT3aByC8x9EksFO8Atow/D2EAADhaqJC3x/pcV1pLufQ9Ws7nUa+XIRDmQJ/u8QTN7YNNZqr/1b5j9jt+R9kR7aZNbpm4uhAhVZNCg06NK++MwlOofxqX5NM=
+	t=1748367886; cv=none; b=eZnSTu+y9ZLWJYc5Tb3lSIDB4voRZvapNvoIr6Erb00cpgATc87+S/2NZjRE0GTdpSOKSEcgBNj1vsWSZLBKcxnpBSbjCJGwAAWdrefF8dsgwiq1HILUWo/b1ksvnH/2r07nFxsyZjda7WpFZ+IFQMUC8PmzDV5cosmyqYkcqT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365614; c=relaxed/simple;
-	bh=m7TpcE+Q7DcreXngDGj6XXCNqkb7jXWpzYfzg3aqaNU=;
+	s=arc-20240116; t=1748367886; c=relaxed/simple;
+	bh=Ju/PYkMGuW/Jk4wNG/zaRPCJdE3wHPCd8EEcDy9dLLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ui+4iU6VibwipYVZJFQhBpKZat9UGuWvjp9ZEzGViiPoPUHGW/THSZieAMXORTDI0k3YI6vdkde9fKCtx4kDdtkAstccAc6axVbyM7IeY64Ku2q9eksdb72RHRflRYiNom/+UfnxlwF9Ge9F4LaS4Lalq4RLsdWahgcXrnkOLTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soiMa/tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C5CC4CEE9;
-	Tue, 27 May 2025 17:06:53 +0000 (UTC)
+	 MIME-Version; b=rPHOS/vQXDnqoDcvlPfGMV1XxH6ohHv5wmHP+N5rvn0ijK0YOX5vSocvhsKIBvNyS5HJo3XDVp4x0M2Hk4WXhkX8+coDVYJ4n7Gg7t3KGVsCSbXOqRuA3t+3Lk9MvbV1btKICKEllmbBm1sswmobBt/+oPmVkmBEBumj/sB5pcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQIiHS8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1CEC4CEE9;
+	Tue, 27 May 2025 17:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365613;
-	bh=m7TpcE+Q7DcreXngDGj6XXCNqkb7jXWpzYfzg3aqaNU=;
+	s=korg; t=1748367886;
+	bh=Ju/PYkMGuW/Jk4wNG/zaRPCJdE3wHPCd8EEcDy9dLLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=soiMa/tjH4kbvRNyLxjWzfphUDkHLA4A4WGTGcGb9PLDO3xbNj8eMeKnL3CtOsjbG
-	 dJFOjkcSDmJEfLa+6EGbRi6IoYwcm5evpeivDvXtIN8dY00tqKei/COr0jmUvXKo2w
-	 hhsGIZLLdXV879fAtUBg3waKeHXcZQxTsy1CRE4s=
+	b=RQIiHS8vlYbb2SFI8XukJJR7xPwd4+G1WgWhVBtndYpUowODSLZBFGolgw5Eq2/W9
+	 Z8zUMDRFF+CwTw5AX25eFcR70eThdoW3BN0VJBq0KT4GRMRJDdj2hEW32ZtgzXPeJD
+	 bRWarBuDfikTw21twJk3F0Ofp5UEvP6sLR4Lg4nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 433/626] wifi: rtw89: fw: validate multi-firmware header before getting its size
-Date: Tue, 27 May 2025 18:25:26 +0200
-Message-ID: <20250527162502.601648532@linuxfoundation.org>
+Subject: [PATCH 6.14 530/783] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
+Date: Tue, 27 May 2025 18:25:27 +0200
+Message-ID: <20250527162534.734061353@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 2b8bdc5237014cc61784b3676cbaca5325959f3d ]
+[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
 
-To access firmware elements appended after multi-firmware, add its size
-as offset to get start address of firmware elements.
+The following patch will not set skb->sk from VRF path.
 
-         +-----+-------+------+---------+--------------+ --
-         | sig | fw_nr | rsvd | version | reserved     |   \
-         +---------------------------------------------+   |
- fw 0    | cv | type | mp | rsvd | shift | size | rsvd |   |
-         +---------------------------------------------+   |
- fw 1    | cv | type | mp | rsvd | shift | size | rsvd |   |
-         +---------------------------------------------+   |
- fw N-1  |                  ...                        |   |
-         +=============================================+   | mfw size
-         |               fw 0 content                  |   |
-         +=============================================+   |
-         |               fw 1 content                  |   |
-         +=============================================+   |
-         |                  ...                        |   |
-         +=============================================+   |
-         |               fw N -1 content               |   |
-         +=============================================+ --/
-         |             fw element TLV X                |
-         +=============================================+
-         |             fw element TLV Y                |
-         +=============================================+
-         |             fw element TLV Z                |
-         +=============================================+
+Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
+in fib[46]_rule_configure().
 
-To avoid Coverity warning when getting mfw size, validate it header ahead.
-
-Addresses-Coverity-ID: 1544385 ("Untrusted array index read")
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250203072911.47313-5-pkshih@realtek.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/fib_rules.c  | 4 ++--
+ net/ipv6/fib6_rules.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 9346fe082040c..520dc0bc01956 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -563,12 +563,17 @@ static u32 rtw89_mfw_get_size(struct rtw89_dev *rtwdev)
- 		(const struct rtw89_mfw_hdr *)firmware->data;
- 	const struct rtw89_mfw_info *mfw_info;
- 	u32 size;
-+	int ret;
+diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
+index 9517b8667e000..041c46787d941 100644
+--- a/net/ipv4/fib_rules.c
++++ b/net/ipv4/fib_rules.c
+@@ -245,9 +245,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
+-	struct net *net = sock_net(skb->sk);
++	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
  
- 	if (mfw_hdr->sig != RTW89_MFW_SIG) {
- 		rtw89_warn(rtwdev, "not mfw format\n");
- 		return 0;
- 	}
+ 	if (tb[FRA_FLOWLABEL] || tb[FRA_FLOWLABEL_MASK]) {
+ 		NL_SET_ERR_MSG(extack,
+diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
+index 67d39114d9a63..40af8fd6efa70 100644
+--- a/net/ipv6/fib6_rules.c
++++ b/net/ipv6/fib6_rules.c
+@@ -399,9 +399,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
++	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct net *net = sock_net(skb->sk);
+-	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
  
-+	ret = rtw89_mfw_validate_hdr(rtwdev, firmware, mfw_hdr);
-+	if (ret)
-+		return ret;
-+
- 	mfw_info = &mfw_hdr->info[mfw_hdr->fw_nr - 1];
- 	size = le32_to_cpu(mfw_info->shift) + le32_to_cpu(mfw_info->size);
- 
+ 	if (!inet_validate_dscp(frh->tos)) {
+ 		NL_SET_ERR_MSG(extack,
 -- 
 2.39.5
 
