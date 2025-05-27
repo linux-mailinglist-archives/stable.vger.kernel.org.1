@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-147137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41683AC5650
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:20:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F56AC5659
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B2541BA7209
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625CC1BA739B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7E624C07D;
-	Tue, 27 May 2025 17:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02B12798F8;
+	Tue, 27 May 2025 17:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqLb7SpE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trqxWSlU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F4D27933A;
-	Tue, 27 May 2025 17:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF1B1E89C;
+	Tue, 27 May 2025 17:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366404; cv=none; b=dHHl3ePBT2/jSTrEeL2zjE05TI2qkpjG+tfbfca7ymilyizbNZnRv6h3CXxY9y0BEe5lnmYvvgWLIUcBqdWnB7BjL6z6xLHods53ZiQHr2gz4LgsiUFVR1XE6VDPbULzewv9swGkKpVP3mykTUez55QCsrh+e7wB3lIwwjxNGwg=
+	t=1748366438; cv=none; b=t9b9yYVzUTZnYTMZ9KhkdBe7ZBWIvQqrkTRSIVgd1RfAbwDq7eAlH4EjN2jER66J9dMr8hy3s8kXkzbIoKoNSp/vnMdBIJ62OETes8Dloqh8+uQG0fwiWv68y6rYSvyVRO8XnYafEdknf5/ZUAw/+lIRqr8nbqNW7d5/vP3Em9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366404; c=relaxed/simple;
-	bh=1j6uI++PlvSUmYOscqfKh9cLHd6Tx6e7UzWYpTlVN3U=;
+	s=arc-20240116; t=1748366438; c=relaxed/simple;
+	bh=l/U/o8MqheRNafydARdvpT6o37r/pWgyv7yBw1EZbZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DQtmXF/EGFKhfM9mOkxEstvF1eJAVFCyfXGDyfZqLnRioHwxihMj9RFQ4kBMoFL1EY07a0ca+kl5TznK24BsDvHSfmKedwvS3lodgZlG1vDq4L794xhYKIVs/xIUgK6z9d6O6Svcp9+SDsWwkZllOpezeTzTMrYk6dJ45NbK6Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqLb7SpE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01DCC4CEE9;
-	Tue, 27 May 2025 17:20:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JtGMI3EDxHO3mHkB7Yv6CDouWPEBo3KtdAhbPiy97ovRZhjJSanIfwseNR9TFd6flq7GS7Qf38GRTj6b9kRRuBIuWLjOE76jNycwL6nyK4AXO1Dn+G44yEQuzPfO//uO4qsx79m68okxyTlAaTWkw2TWgg+QiyweYDal9Plpm+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trqxWSlU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8439C4CEE9;
+	Tue, 27 May 2025 17:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366404;
-	bh=1j6uI++PlvSUmYOscqfKh9cLHd6Tx6e7UzWYpTlVN3U=;
+	s=korg; t=1748366438;
+	bh=l/U/o8MqheRNafydARdvpT6o37r/pWgyv7yBw1EZbZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqLb7SpEh/ifLdx/aFjbx6ZRqS+TPVTz0G2nSaj5eJBGQ/dOfksT9yRVVFRJ/t6MO
-	 u120v//8wQDZ4VDPIadOrZvstFMRc0QgcDLD/LXlhtlbySuedPYMPW2uTNGe/6HFF7
-	 wAStLv9fVRy6gG3fz4qyz72IMNManBKt91rZOfc4=
+	b=trqxWSlUUrod2Ksqtn1jmBjmK0d7lteNhHMiF2EVxwglT4aKh1Y1JdLMs5CsoqQWq
+	 85kgUhbJQ3l58/Z+Uva2LVjcyTs22LD0gbdeC68WsaUwI/wUCEBKEk0nlpA7j9x0Id
+	 lfRySr6+S1u8QVq35DZYmAWOuNeOyAoqg2fiKgv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 049/783] cifs: Fix access_flags_to_smbopen_mode
-Date: Tue, 27 May 2025 18:17:26 +0200
-Message-ID: <20250527162515.129333820@linuxfoundation.org>
+Subject: [PATCH 6.14 050/783] cifs: Fix negotiate retry functionality
+Date: Tue, 27 May 2025 18:17:27 +0200
+Message-ID: <20250527162515.167439664@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -69,62 +69,100 @@ Content-Transfer-Encoding: 8bit
 
 From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 6aa9f1c9cd09c1c39a35da4fe5f43446ec18ce1e ]
+[ Upstream commit e94e882a6d69525c07589222cf3a6ff57ad12b5b ]
 
-When converting access_flags to SMBOPEN mode, check for all possible access
-flags, not only GENERIC_READ and GENERIC_WRITE flags.
+SMB negotiate retry functionality in cifs_negotiate() is currently broken
+and does not work when doing socket reconnect. Caller of this function,
+which is cifs_negotiate_protocol() requires that tcpStatus after successful
+execution of negotiate callback stay in CifsInNegotiate. But if the
+CIFSSMBNegotiate() called from cifs_negotiate() fails due to connection
+issues then tcpStatus is changed as so repeated CIFSSMBNegotiate() call
+does not help.
+
+Fix this problem by moving retrying code from negotiate callback (which is
+either cifs_negotiate() or smb2_negotiate()) to cifs_negotiate_protocol()
+which is caller of those callbacks. This allows to properly handle and
+implement correct transistions between tcpStatus states as function
+cifs_negotiate_protocol() already handles it.
+
+With this change, cifs_negotiate_protocol() now handles also -EAGAIN error
+set by the RFC1002_NEGATIVE_SESSION_RESPONSE processing after reconnecting
+with NetBIOS session.
 
 Signed-off-by: Pali Rohár <pali@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ fs/smb/client/connect.c | 10 ++++++++++
+ fs/smb/client/smb1ops.c |  7 -------
+ fs/smb/client/smb2ops.c |  3 ---
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 4fc9485c5d91a..c2abe79f0dd3b 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1038,15 +1038,31 @@ static __u16 convert_disposition(int disposition)
- static int
- access_flags_to_smbopen_mode(const int access_flags)
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index cc9c912db8def..92685fc675b59 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3922,11 +3922,13 @@ int
+ cifs_negotiate_protocol(const unsigned int xid, struct cifs_ses *ses,
+ 			struct TCP_Server_Info *server)
  {
--	int masked_flags = access_flags & (GENERIC_READ | GENERIC_WRITE);
--
--	if (masked_flags == GENERIC_READ)
--		return SMBOPEN_READ;
--	else if (masked_flags == GENERIC_WRITE)
-+	/*
-+	 * SYSTEM_SECURITY grants both read and write access to SACL, treat is as read/write.
-+	 * MAXIMUM_ALLOWED grants as many access as possible, so treat it as read/write too.
-+	 * SYNCHRONIZE as is does not grant any specific access, so do not check its mask.
-+	 * If only SYNCHRONIZE bit is specified then fallback to read access.
-+	 */
-+	bool with_write_flags = access_flags & (FILE_WRITE_DATA | FILE_APPEND_DATA | FILE_WRITE_EA |
-+						FILE_DELETE_CHILD | FILE_WRITE_ATTRIBUTES | DELETE |
-+						WRITE_DAC | WRITE_OWNER | SYSTEM_SECURITY |
-+						MAXIMUM_ALLOWED | GENERIC_WRITE | GENERIC_ALL);
-+	bool with_read_flags = access_flags & (FILE_READ_DATA | FILE_READ_EA | FILE_EXECUTE |
-+						FILE_READ_ATTRIBUTES | READ_CONTROL |
-+						SYSTEM_SECURITY | MAXIMUM_ALLOWED | GENERIC_ALL |
-+						GENERIC_EXECUTE | GENERIC_READ);
-+	bool with_execute_flags = access_flags & (FILE_EXECUTE | MAXIMUM_ALLOWED | GENERIC_ALL |
-+						GENERIC_EXECUTE);
-+
-+	if (with_write_flags && with_read_flags)
-+		return SMBOPEN_READWRITE;
-+	else if (with_write_flags)
- 		return SMBOPEN_WRITE;
--
--	/* just go for read/write */
--	return SMBOPEN_READWRITE;
-+	else if (with_execute_flags)
-+		return SMBOPEN_EXECUTE;
-+	else
-+		return SMBOPEN_READ;
++	bool in_retry = false;
+ 	int rc = 0;
+ 
+ 	if (!server->ops->need_neg || !server->ops->negotiate)
+ 		return -ENOSYS;
+ 
++retry:
+ 	/* only send once per connect */
+ 	spin_lock(&server->srv_lock);
+ 	if (server->tcpStatus != CifsGood &&
+@@ -3946,6 +3948,14 @@ cifs_negotiate_protocol(const unsigned int xid, struct cifs_ses *ses,
+ 	spin_unlock(&server->srv_lock);
+ 
+ 	rc = server->ops->negotiate(xid, ses, server);
++	if (rc == -EAGAIN) {
++		/* Allow one retry attempt */
++		if (!in_retry) {
++			in_retry = true;
++			goto retry;
++		}
++		rc = -EHOSTDOWN;
++	}
+ 	if (rc == 0) {
+ 		spin_lock(&server->srv_lock);
+ 		if (server->tcpStatus == CifsInNegotiate)
+diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
+index 808970e4a7142..e28cdaca47e12 100644
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -426,13 +426,6 @@ cifs_negotiate(const unsigned int xid,
+ {
+ 	int rc;
+ 	rc = CIFSSMBNegotiate(xid, ses, server);
+-	if (rc == -EAGAIN) {
+-		/* retry only once on 1st time connection */
+-		set_credits(server, 1);
+-		rc = CIFSSMBNegotiate(xid, ses, server);
+-		if (rc == -EAGAIN)
+-			rc = -EHOSTDOWN;
+-	}
+ 	return rc;
  }
  
- int
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 7aeac8dd9a1d1..6f89e087629fe 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -464,9 +464,6 @@ smb2_negotiate(const unsigned int xid,
+ 	server->CurrentMid = 0;
+ 	spin_unlock(&server->mid_lock);
+ 	rc = SMB2_negotiate(xid, ses, server);
+-	/* BB we probably don't need to retry with modern servers */
+-	if (rc == -EAGAIN)
+-		rc = -EHOSTDOWN;
+ 	return rc;
+ }
+ 
 -- 
 2.39.5
 
