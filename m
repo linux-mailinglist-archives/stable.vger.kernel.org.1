@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BBCAC55BB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48B3AC58C4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6D0F3A20FA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7938D8A7DEB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557F1274FF4;
-	Tue, 27 May 2025 17:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6580A27FD4A;
+	Tue, 27 May 2025 17:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrdXmibt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHNKh5uI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C7A86347;
-	Tue, 27 May 2025 17:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E4E42A9B;
+	Tue, 27 May 2025 17:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365867; cv=none; b=k1uEuEpe6G7ZACrnUZxEv1+IAo67C/OFQuIvIVefzhe6UWFppny9S23xGG5pJUEYi8O82iq4dFk31RLnWaVFthMXTv5PWBj4SU3uuVdaKM+51txPE6Bc/4OJfuR99Iw105b3/UNh5Z5h1gnaAyN25XqyLdxXF9ohiaMU+krj+J4=
+	t=1748368135; cv=none; b=T19Z37LAz/onmpl0LcXEfBcKFHOuPwEx+GClJlLUzfYQaM6U3jky2IdsqUqEyXTSpuopvIKcHbAcCL8ANCjI380VCNavKfwA2pBK9BDuIQTglD7zdYElri625R6mHTI3xD7d2Dz4+NIKq6j7XwU4fC8gbVephfIQ//flzfTiNE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365867; c=relaxed/simple;
-	bh=Q4vNlY3PFS64nmjjge69o3y86lf1DgArk1/Yn5MdfUs=;
+	s=arc-20240116; t=1748368135; c=relaxed/simple;
+	bh=OKwUsQcu8BNNIaFvI93+TrqosYdWyPbWgTEKzcBBXnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0zhzpmc98lB2Ea7OvMIrWIJVNqKWMD2dSY2ZNLuQt+tSqHXlCYAGt60DzBVp/xQidToQLyw/TPzdvqiJwQ2haquBQFuIMDPrDQwfYwvNtp3CbH3cK4EXpteImhGTy9XVXNU9V65KosTWXigncNvGfdtGA1SDWdFqiiFemXO4vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrdXmibt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2AEC4CEE9;
-	Tue, 27 May 2025 17:11:06 +0000 (UTC)
+	 MIME-Version; b=OLsaYrfvi1GGnUSLhuIgzKz0IbVqVQYMH7OTNa0fQOMIpmksDK/CJYStXKmSwrMbKNHwXkGKPlxhCy/om/xKM4YI/NATi19bBjtZbFaUhmUadEfLeA1v9Qe13PwctE8Bq4HFs9d9w7a7BXQvI0nFoRq5MNyL8rG1BIg0oj5KWrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHNKh5uI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73866C4CEE9;
+	Tue, 27 May 2025 17:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365866;
-	bh=Q4vNlY3PFS64nmjjge69o3y86lf1DgArk1/Yn5MdfUs=;
+	s=korg; t=1748368135;
+	bh=OKwUsQcu8BNNIaFvI93+TrqosYdWyPbWgTEKzcBBXnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XrdXmibt5cejj0+75jxCIPeSuGcN4ZvnAVKySwq+N1kQbuyJ9shJrq/SaqEcfrqK2
-	 BulugRsNa5ykHIQpP8Bpn9QGPDX5hHiJq7AdLr1LIDneot5saSOAk6SMO8stIoWO6R
-	 sOuJsXW6RhM0C3phPiawUwo0suOoJCaJ+j9tN7mk=
+	b=uHNKh5uIuBRM55S3aGcSkMBdREDncEva2+dKovPx61DkZKg0xIfHC+vC12gI73cSw
+	 NKyM3MCwqM1KY6TekRWwHhYEqU8hqGP7odeLemsl7vJIvkeBClEXbThbBTUSl+oxEn
+	 3I1/qs76n9Lbg5LTx7hveivRS29g+f8Ucxk7OaXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 483/626] wifi: rtw88: Dont use static local variable in rtw8822b_set_tx_power_index_by_rate
+Subject: [PATCH 6.14 579/783] scsi: lpfc: Free phba irq in lpfc_sli4_enable_msi() when pci_irq_vector() fails
 Date: Tue, 27 May 2025 18:26:16 +0200
-Message-ID: <20250527162504.610801414@linuxfoundation.org>
+Message-ID: <20250527162536.721868565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
+[ Upstream commit f0842902b383982d1f72c490996aa8fc29a7aa0d ]
 
-Some users want to plug two identical USB devices at the same time.
-This static variable could theoretically cause them to use incorrect
-TX power values.
+Fix smatch warning regarding missed calls to free_irq().  Free the phba IRQ
+in the failed pci_irq_vector cases.
 
-Move the variable to the caller and pass a pointer to it to
-rtw8822b_set_tx_power_index_by_rate().
+lpfc_init.c: lpfc_sli4_enable_msi() warn: 'phba->pcidev->irq' from
+             request_irq() not released.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250131000524.163662-3-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/scsi/lpfc/lpfc_init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 6edb17aea90e0..4a6c0a9266a09 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -976,11 +976,11 @@ static void rtw8822b_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
- }
- 
- static void
--rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
-+rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
-+				    u8 rs, u32 *phy_pwr_idx)
- {
- 	struct rtw_hal *hal = &rtwdev->hal;
- 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
--	static u32 phy_pwr_idx;
- 	u8 rate, rate_idx, pwr_index, shift;
- 	int j;
- 
-@@ -988,12 +988,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
- 		rate = rtw_rate_section[rs][j];
- 		pwr_index = hal->tx_pwr_tbl[path][rate];
- 		shift = rate & 0x3;
--		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
-+		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
- 		if (shift == 0x3) {
- 			rate_idx = rate & 0xfc;
- 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
--				    phy_pwr_idx);
--			phy_pwr_idx = 0;
-+				    *phy_pwr_idx);
-+			*phy_pwr_idx = 0;
- 		}
- 	}
- }
-@@ -1001,11 +1001,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
- static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
- {
- 	struct rtw_hal *hal = &rtwdev->hal;
-+	u32 phy_pwr_idx = 0;
- 	int rs, path;
- 
- 	for (path = 0; path < hal->rf_path_num; path++) {
- 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
--			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
-+			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
-+							    &phy_pwr_idx);
- 	}
- }
- 
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index bcadf11414c8a..411a6b927c5b0 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -13170,6 +13170,7 @@ lpfc_sli4_enable_msi(struct lpfc_hba *phba)
+ 	eqhdl = lpfc_get_eq_hdl(0);
+ 	rc = pci_irq_vector(phba->pcidev, 0);
+ 	if (rc < 0) {
++		free_irq(phba->pcidev->irq, phba);
+ 		pci_free_irq_vectors(phba->pcidev);
+ 		lpfc_printf_log(phba, KERN_WARNING, LOG_INIT,
+ 				"0496 MSI pci_irq_vec failed (%d)\n", rc);
+@@ -13250,6 +13251,7 @@ lpfc_sli4_enable_intr(struct lpfc_hba *phba, uint32_t cfg_mode)
+ 			eqhdl = lpfc_get_eq_hdl(0);
+ 			retval = pci_irq_vector(phba->pcidev, 0);
+ 			if (retval < 0) {
++				free_irq(phba->pcidev->irq, phba);
+ 				lpfc_printf_log(phba, KERN_WARNING, LOG_INIT,
+ 					"0502 INTR pci_irq_vec failed (%d)\n",
+ 					 retval);
 -- 
 2.39.5
 
