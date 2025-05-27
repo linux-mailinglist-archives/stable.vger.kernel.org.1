@@ -1,123 +1,174 @@
-Return-Path: <stable+bounces-147889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D761BAC5CD0
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 00:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FEEAC5CDC
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 00:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727FD9E530E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 22:15:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4548B3ABC01
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 22:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7041F4727;
-	Tue, 27 May 2025 22:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697C0217709;
+	Tue, 27 May 2025 22:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4Eg4CZP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLcwndHq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BD1139D0A
-	for <stable@vger.kernel.org>; Tue, 27 May 2025 22:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831652153CE;
+	Tue, 27 May 2025 22:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748384162; cv=none; b=XZPnQhr7ysDMZCRdCoDOC2NVu6r5dcBp+sksua+xdYruHuMOc5/gy9Oc9nRSMpeGttTDBsZHjpAgnAuH8sGMiGh8AoBkPSIPsb6FvsnueeGCPKedGKbbHaYhfRtYGTF0Z+5yU4/4DY6BrFpJT40e2kFbpGpC1pJrLo3H+ffjiQw=
+	t=1748384471; cv=none; b=R1WhKkLyopn/x/SRCfuQoN0fYjYyMmiEWum5OxVRLnlfZp8VC8G40gdFjUyK9AVvhZVOXvcQxaIUymBVUZggmujoO9P3bzsWF9AnBVCOd19kfbhuWRu+6SwYH8ZR0QuZxNkxdPw44NxUWHqycw/rbW4iwx7n+Vk2gAMU0Xh1Quo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748384162; c=relaxed/simple;
-	bh=LwspOpz/q8M8FYndGmv1U/jrdz9q+/K4Pl8pt+T3NVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=enkf4ww/o2xBoq7LHkNA8ljcrkcGneCaO4xGzTOc2s7v+ULKp0LbXZIVLZPap3zGdsNpJyOfO1C2iNMlFBXniYY+VXuDi3Qt3C4tI6JIfujnPLS2WlPHN8H5Ahm67R+sjYxVLJno+Fq/5jTXegZ+Df9RRZXMQyGYmaqSF3ZT9XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4Eg4CZP; arc=none smtp.client-ip=209.85.166.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-3dd81f9ce2eso1120865ab.1
-        for <stable@vger.kernel.org>; Tue, 27 May 2025 15:16:00 -0700 (PDT)
+	s=arc-20240116; t=1748384471; c=relaxed/simple;
+	bh=S9UzBIYhErpJNG51/Ztt0ImHInbBe/SvcYUPvzGBUV0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fE8k01tS+poMbJVIMqDa5vof36jXLVuZcy4XZw/v2+U+dMbxSwHciTLI8uVwwC9AGxI1DqINsfYxg52TkHn5WNqv/Xk0SgMNnYD79qut8epb3d04MEREQ6snE2fbUtbp6fgrtNzS/+XQXT+TuHKCuYLabkFhH1AxhWvpWx2xT3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLcwndHq; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-442eb5d143eso41884085e9.0;
+        Tue, 27 May 2025 15:21:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1748384159; x=1748988959; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8wuJpTcAx5O0GZhvVZEyTNMJ0cZvEH7zszqLSKSVXyo=;
-        b=D4Eg4CZPKpl7HE4BvgxJxOv4v9/6tYTI21EdCnMVvDyCTC/ZuJwNlxzaIO1y2OSCFj
-         vbYET5kn7MR4/W6GMLQQiFSKNiXtZ4u0m2Y5eNN4wiQA/oevsfq9Q3iTP9UK8mCOn+FT
-         skGPV+LgYC9wuSgL7znYp1KHCcBIEDUn9sEgQ=
+        d=gmail.com; s=20230601; t=1748384468; x=1748989268; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qtRNQ56JCfgrnMcDjdIFoHIc0A/gd+Rgg9E20WRMEWg=;
+        b=GLcwndHq9InENB2Tqf8r6ckKsmDJ1eS8m7fhh9jcGU7gvMjTLSlHQwiTU8or2dhWVD
+         ZBMwbH/kg5hL/iDEfupyw2X1ueFUWduAKjnTgDSTZJyJq6WRE9hj8oF+bqZFpJim0Es1
+         0S6jnWjovaFrU6xCoMODd1J+aQgDnMTBQ2iHap7hXVz+nMQIIz4HsKiPtPnf2utpPioR
+         uZDo6bqDHXnfDG+ALcYUNQkUAJ3dcrGEbl83mrmUHIcFcEbbuI9GMBRMQp03iu/EgRlu
+         GqBzmnxueujAu7gf5GMw78kiVtNWMGJG7NuBTUFdtxbUb9F0GFyjmjqXNCU40qmKNJzF
+         9GUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748384159; x=1748988959;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8wuJpTcAx5O0GZhvVZEyTNMJ0cZvEH7zszqLSKSVXyo=;
-        b=NptzdBWY9SNL+V8an4N+/V1aJR1yekj7mUjRCE/ZCNKBumInR215gAeXVlqYwEkDkL
-         2wd6Gzz+Lt/j98i1QkxzbVHIAmfhOaTLA4EqfLymgeVaI15INDzjJwgeIjf5X4NMjTRz
-         NRoadjaINTAVF744X/Qn8SqZBKo1X5GmPbX/nb1Cm3BwaqC+fTyUsOVMzrcJ2XotCDtU
-         Fgm90HjCmiIVKUSg4CA9bVcc7dZGrTMPD7SddcDVlCj7JbDt8UyGL6mwMWnHq3AcPUje
-         agrJTR5j8tQyoRuJalzZUssdqCXZTTN+VHj9E7OzqmbRwyUCTWl7ucagmEKmh6Z1LmNE
-         MJNw==
-X-Forwarded-Encrypted: i=1; AJvYcCULuCvmEYhGsG60BN/t4XFFp6VSD+qAVwKwoeuwGiWGY1raF9JPyKSZxfPkPVRRHpPBSFfiAiQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCmHi95F4E3bBtkM3zaUgOYDrsVser9VDoVoDNcsIXXUZeAC6Q
-	bSE5JNazxr7ZYfS990gk5MuB1+5TwY7TiIBWMYlP1yZ44w+7w+i5UomgLtjpY/IaszY=
-X-Gm-Gg: ASbGncty5cJmBjY/T01iZZGRfUnqbB1z7ubhEVOgNWHdwOKHWCcJpWwedg/eR/smwUG
-	Ns9NI433FilVSKzccbwB9wrDNXDEAVTYhBTWuQ97vA8jRzZ0z/SVikTxxhxuhaiVFiYky5Ejbbt
-	0D8XplNM2ml4x8WWwnvCOu9u0uNKhFuxAHCaBAcPtBIUhJn0LhpWXSDvASngebFjvK0qhjKq5iV
-	QKQPO9izhTbJoEwKrNfAOyfhzA0soGDJuEqngMCG+K/Zyaan+bdhXXAgHqC+wwVo2Q6nJyHaZ/Q
-	UcY/R8IAqDD729TWA4qOWJSgWNj1fk9jDfc2Bq5Eu69RStsdd8OFs8UKVIaGjA==
-X-Google-Smtp-Source: AGHT+IHbTz9EFncYF8rjj/KzAc3qGEa/ILP+C+ivpNQ25TSNUWFF1L/0Lxejv1TK90rByVWMwd61rg==
-X-Received: by 2002:a92:cb50:0:b0:3dc:9b89:6a3b with SMTP id e9e14a558f8ab-3dd8767decbmr21819055ab.8.1748384159428;
-        Tue, 27 May 2025 15:15:59 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4fdba6ac283sm64592173.129.2025.05.27.15.15.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 May 2025 15:15:58 -0700 (PDT)
-Message-ID: <85e05d82-08ff-4c69-a6bf-e8d697c73faa@linuxfoundation.org>
-Date: Tue, 27 May 2025 16:15:57 -0600
+        d=1e100.net; s=20230601; t=1748384468; x=1748989268;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qtRNQ56JCfgrnMcDjdIFoHIc0A/gd+Rgg9E20WRMEWg=;
+        b=bjtZHbqEKGsiNfektiufjQePl5m9HZ+lMdCzHdY6W+aIgG7BYN1QW2MuOBAq39Er8a
+         IRVn0mHdKCjeKvwLzGuRjc1We8J3OhU6S+FCJ6Q3J6c/95HbZmBzgGxNTjJFkztLp1lz
+         TFW6DSlee9GqUGC4/cWEFcENO7N6Af4uuRpA6V/b658fAtxmZCcEQjnc0v8NFGtOX53o
+         MLpfAtJAq9rE9CuSAcKiPPjFzzGhLEULQU/wAIpCZf6aINP0OBUHEWFBNYmsMyr1LIqm
+         I/JZppnNDq+xLu9Gcxz2Cs6IDPZKti62NiSUuQLrDrR4DfXJjqZzxrLEgaARFOPO6RpG
+         DK1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUaWZQeWtJqLMI0XAWBQwDlzVgUgms9R3avmSwqYmpGz6MkclCF1ScAvgcOeNf7qwjd7DtarR/+qyXVHa/9@vger.kernel.org, AJvYcCW//i9BI2Pk3V/nD7eFTbOcJMOo1YBEuaO4+li9F0l85tu5q83dI0kYYPzObjQLwP1hHuqrARK+8cLv@vger.kernel.org, AJvYcCWTGWSuAahiLarF+6A2kbsEoGMeylCQiyy26+jexJjB2sTw+KIekKOZLBYTXv2sXoaDCV3Df+HfJ1rsLw==@vger.kernel.org, AJvYcCXB13XRpjRj2ixfc7trJch6Tdse86//XdOaYHa4GkXBoMnPAFTzStMVrk+LQ9NHJ6cVh4zvUbfx@vger.kernel.org
+X-Gm-Message-State: AOJu0YybI5c2lx/TgwurXvJt3Tj1bAcYWgvTj8OijKTQd5BXX5Hx/itN
+	qQxfWzHW1csWg7pLe+oZlu9lNZ5QEPQPNhmeR9m/uF5SnMHThWL3HjQr
+X-Gm-Gg: ASbGncvXm3XzH3OkZjKfmOL6PqmuCjy3/e5fKDKT3ByCDE28xM5/ks573jQZBSNfi89
+	wVC6PnfjN4ykZQE4Erf5e78ibHYn3ZnIhN4mHc98uVd/ZW1HIqEgpDGqlP+r7iaMCuChUolAAnD
+	+7ecxn1qD8xCxBo/TD4mVfyX2Aw3TG52rJxVtxmW4D0m+6C+rOkTe5W45SBWcOdXxqR8gCZv2KT
+	Er7LcdVSMsJ2fpunS6MW7LYV+R98JkafdUo04pBDKZjrYafjeXtRt2citYswsRfQRclAe3V84JV
+	lVuVaiMZCan7yV7ImktzFJvJxWc8EGF/+ygn/Mm9d0KGOMlD/7GwlhvJc0F16lMUd4TAih9IhCk
+	g6G44ZJttm+xU/3IyzsO2
+X-Google-Smtp-Source: AGHT+IGJ4GaZDmuiWlWBMloHir3Uikj0Tke7oxruLs3NxHUz24IFjqZ/+AijntCgg1SM/vUTphqGVA==
+X-Received: by 2002:adf:f192:0:b0:3a4:e629:6504 with SMTP id ffacd0b85a97d-3a4e6296763mr1500013f8f.49.1748384467687;
+        Tue, 27 May 2025 15:21:07 -0700 (PDT)
+Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3a4e8bc377asm233366f8f.72.2025.05.27.15.21.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 May 2025 15:21:06 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>,
+	linux-mediatek@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/6] pinctrl: airoha: fix wrong PHY LED mux value for LED1 GPIO46
+Date: Wed, 28 May 2025 00:20:33 +0200
+Message-ID: <20250527222040.32000-2-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250527222040.32000-1-ansuelsmth@gmail.com>
+References: <20250527222040.32000-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/626] 6.12.31-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 5/27/25 10:18, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.31 release.
-> There are 626 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 29 May 2025 16:22:51 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.31-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+In all the MUX value for LED1 GPIO46 there is a Copy-Paste error where
+the MUX value is set to LED0_MODE_MASK instead of LED1_MODE_MASK.
 
-Compiled and booted on my test system. No dmesg regressions.
+This wasn't notice as there were no board that made use of the
+secondary PHY LED but looking at the internal Documentation the actual
+value should be LED1_MODE_MASK similar to the other GPIO entry.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Fix the wrong value to apply the correct MUX configuration.
 
-thanks,
--- Shuah
+Cc: stable@vger.kernel.org
+Fixes: 1c8ace2d0725 ("pinctrl: airoha: Add support for EN7581 SoC")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/pinctrl/mediatek/pinctrl-airoha.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+index b97b28ebb37a..8ef7f88477aa 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
++++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+@@ -1752,8 +1752,8 @@ static const struct airoha_pinctrl_func_group phy1_led1_func_group[] = {
+ 		.regmap[0] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+-			GPIO_LAN3_LED0_MODE_MASK,
+-			GPIO_LAN3_LED0_MODE_MASK
++			GPIO_LAN3_LED1_MODE_MASK,
++			GPIO_LAN3_LED1_MODE_MASK
+ 		},
+ 		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
+@@ -1816,8 +1816,8 @@ static const struct airoha_pinctrl_func_group phy2_led1_func_group[] = {
+ 		.regmap[0] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+-			GPIO_LAN3_LED0_MODE_MASK,
+-			GPIO_LAN3_LED0_MODE_MASK
++			GPIO_LAN3_LED1_MODE_MASK,
++			GPIO_LAN3_LED1_MODE_MASK
+ 		},
+ 		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
+@@ -1880,8 +1880,8 @@ static const struct airoha_pinctrl_func_group phy3_led1_func_group[] = {
+ 		.regmap[0] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+-			GPIO_LAN3_LED0_MODE_MASK,
+-			GPIO_LAN3_LED0_MODE_MASK
++			GPIO_LAN3_LED1_MODE_MASK,
++			GPIO_LAN3_LED1_MODE_MASK
+ 		},
+ 		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
+@@ -1944,8 +1944,8 @@ static const struct airoha_pinctrl_func_group phy4_led1_func_group[] = {
+ 		.regmap[0] = {
+ 			AIROHA_FUNC_MUX,
+ 			REG_GPIO_2ND_I2C_MODE,
+-			GPIO_LAN3_LED0_MODE_MASK,
+-			GPIO_LAN3_LED0_MODE_MASK
++			GPIO_LAN3_LED1_MODE_MASK,
++			GPIO_LAN3_LED1_MODE_MASK
+ 		},
+ 		.regmap[1] = {
+ 			AIROHA_FUNC_MUX,
+-- 
+2.48.1
+
 
