@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F087AC58C9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D11AC5574
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D141D7A30BC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:48:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B404A3EB3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5576027BF8D;
-	Tue, 27 May 2025 17:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331D7253B4C;
+	Tue, 27 May 2025 17:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbyxXIn/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSHFHC0F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE8327FB02;
-	Tue, 27 May 2025 17:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F4986347;
+	Tue, 27 May 2025 17:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368160; cv=none; b=HC/aO9T8bfTdUnlwBIRsYXx66oHzxRdrAyVxvo6a3PgrKR4fiiooJABR0HzYadmfczHi40W19YaGZsA66CdqgNnl+5pfTcniPwTLJyLt4IrJ4tzmPRKPEzGAOPe0ksSyIasSKYPq+2RX0edDqSUomtLuBcczONfoAv5AKN4aQq0=
+	t=1748365888; cv=none; b=uh4XMV2q3+BRtV1t0PyVDm0iLx3rPCPJfCicavYADYZdPBJCSgV7PBVmKKq5UvHgGI9Fzx3OLSiETfZTudQzu4XHb3SfgE2+cYqLQCZpSDpm3TvrFuPS2+NmEX/Xdfw0psIbipIZ/7HQfZLrNpXSmsNPRpITXBpn1F2xL9trMsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368160; c=relaxed/simple;
-	bh=W5EhVjEykx08aCcuY06QOMixQrFPNmj/5GHdK+Z8RYo=;
+	s=arc-20240116; t=1748365888; c=relaxed/simple;
+	bh=JgSy6Iv9QceHbyEElQtcO0ZIZjtyTLrEHswQqHySQIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItYaEmy263v0uyXcpF9ZigNLn26Hup0J8vK7tiPArbniTdxjjVEJAyo/8dEI9jLxA7itLNeeEfYu1uxbec12GsB/TSJy3mhoKRRvyLOujmFQnZ2JbFclYt1Ip5z9v7uN2pBX9MT8CCAZFxacdeUBCKrGbibvZqjSvzg7Bcx6qS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbyxXIn/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6B8C4CEE9;
-	Tue, 27 May 2025 17:49:19 +0000 (UTC)
+	 MIME-Version; b=V+G0ddiqvMXpHxVx48UncMzsEKuHKJd0UFacu0GkIjmtgIW0oAXLOY7CaV4OYPxXEavaVV4khvH/VmF3GFHrKiue7MtdUlhedopqocA7XDUgR+y7nRucid8y6jWfCRLsgu56ED4u+nnxWcdyKCcG0y20v0C+4TqjHd/epBPWG3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSHFHC0F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9F4C4CEE9;
+	Tue, 27 May 2025 17:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368159;
-	bh=W5EhVjEykx08aCcuY06QOMixQrFPNmj/5GHdK+Z8RYo=;
+	s=korg; t=1748365887;
+	bh=JgSy6Iv9QceHbyEElQtcO0ZIZjtyTLrEHswQqHySQIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbyxXIn/Ng/X85vHT9QdAkN2aTbKEYusW3Gx/YZYTvR7M/swH4tyKz7lkeOSQ4lXc
-	 THYDHIiepbUDaDWpQ/eErv4sych4ndvdoma2JGb+YdTv5w7N77+OqiChM9AnZTLCrr
-	 TXb2tJakJsm7LceSl3MtpAWG/SqzdZZc7KHUs+hk=
+	b=SSHFHC0FaF1sH03El8uVsb5JSn5PIcKE4z5C07TnLQuXJYjYbyl/7Qfa48GEbKtj8
+	 2kG4qvcfD4NJbHU0cQCBWwGI6mm1+aqh3wTslx+5SCKARAZuBS60JN38mYgnhYBGZo
+	 xXOzxoake0zjUFuhyfCW+Qonls9qxUPT06DCjyAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ching-Te Ku <ku920601@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 618/783] wifi: rtw89: coex: Separated Wi-Fi connecting event from Wi-Fi scan event
+Subject: [PATCH 6.12 522/626] ASoC: intel/sdw_utils: Add volume limit to cs42l43 speakers
 Date: Tue, 27 May 2025 18:26:55 +0200
-Message-ID: <20250527162538.319230846@linuxfoundation.org>
+Message-ID: <20250527162506.193187924@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ching-Te Ku <ku920601@realtek.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 4a57346652154bb339c48b41166df9154cff33f5 ]
+[ Upstream commit 02b44a2b2bdcee03cbb92484d31e9ca1b91b2a38 ]
 
-Wi-Fi connecting process don't need to assign to firmware slot control,
-if assign firmware slot control for Wi-Fi connecting event, firmware will
-not toggle slots because driver don't tell the slot schedule to firmware.
-Wi-Fi connecting event end should also cancel the 4way handshake status.
+The volume control for cs42l43 speakers has a maximum gain of +31.5 dB.
+However, for many use cases, this can cause distorted audio, depending
+various factors, such as other signal-processing elements in the chain,
+for example if the audio passes through a gain control before reaching
+the codec or the signal path has been tuned for a particular maximum
+gain in the codec.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250110015416.10704-3-pkshih@realtek.com
+In the case of systems which use the soc_sdw_cs42l43 driver, audio will
+likely be distorted in all cases above 0 dB, therefore add a volume
+limit of 128, which is 0 dB maximum volume inside this driver.
+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250430103134.24579-2-sbinding@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ sound/soc/sdw_utils/soc_sdw_cs42l43.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index d94a028555e20..7b10ee97c6277 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -5406,7 +5406,8 @@ static void _action_wl_scan(struct rtw89_dev *rtwdev)
- 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
- 	struct rtw89_btc_wl_dbcc_info *wl_dinfo = &wl->dbcc_info;
+diff --git a/sound/soc/sdw_utils/soc_sdw_cs42l43.c b/sound/soc/sdw_utils/soc_sdw_cs42l43.c
+index adb1c008e871d..2dc7787234c36 100644
+--- a/sound/soc/sdw_utils/soc_sdw_cs42l43.c
++++ b/sound/soc/sdw_utils/soc_sdw_cs42l43.c
+@@ -20,6 +20,8 @@
+ #include <sound/soc-dapm.h>
+ #include <sound/soc_sdw_utils.h>
  
--	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
-+	if (btc->cx.state_map != BTC_WLINKING &&
-+	    RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
- 		_action_wl_25g_mcc(rtwdev);
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC, "[BTC], Scan offload!\n");
- 	} else if (rtwdev->dbcc_en) {
-@@ -7221,6 +7222,8 @@ void rtw89_btc_ntfy_scan_finish(struct rtw89_dev *rtwdev, u8 phy_idx)
- 		_fw_set_drv_info(rtwdev, CXDRVINFO_DBCC);
++#define CS42L43_SPK_VOLUME_0DB	128 /* 0dB Max */
++
+ static const struct snd_soc_dapm_route cs42l43_hs_map[] = {
+ 	{ "Headphone", NULL, "cs42l43 AMP3_OUT" },
+ 	{ "Headphone", NULL, "cs42l43 AMP4_OUT" },
+@@ -117,6 +119,14 @@ int asoc_sdw_cs42l43_spk_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_so
+ 			return -ENOMEM;
  	}
  
-+	btc->dm.tdma_instant_excute = 1;
++	ret = snd_soc_limit_volume(card, "cs42l43 Speaker Digital Volume",
++				   CS42L43_SPK_VOLUME_0DB);
++	if (ret)
++		dev_err(card->dev, "cs42l43 speaker volume limit failed: %d\n", ret);
++	else
++		dev_info(card->dev, "Setting CS42L43 Speaker volume limit to %d\n",
++			 CS42L43_SPK_VOLUME_0DB);
 +
- 	_run_coex(rtwdev, BTC_RSN_NTFY_SCAN_FINISH);
- }
- 
-@@ -7669,7 +7672,8 @@ void rtw89_btc_ntfy_role_info(struct rtw89_dev *rtwdev,
- 	else
- 		wl->status.map.connecting = 0;
- 
--	if (state == BTC_ROLE_MSTS_STA_DIS_CONN)
-+	if (state == BTC_ROLE_MSTS_STA_DIS_CONN ||
-+	    state == BTC_ROLE_MSTS_STA_CONN_END)
- 		wl->status.map._4way = false;
- 
- 	_run_coex(rtwdev, BTC_RSN_NTFY_ROLE_INFO);
+ 	ret = snd_soc_dapm_add_routes(&card->dapm, cs42l43_spk_map,
+ 				      ARRAY_SIZE(cs42l43_spk_map));
+ 	if (ret)
 -- 
 2.39.5
 
