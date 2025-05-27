@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-147477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10EDAC57D2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E012AC546B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBFD816651E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:37:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 687064A2A88
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AFD27F16D;
-	Tue, 27 May 2025 17:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB64127A900;
+	Tue, 27 May 2025 17:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZffztVR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="te2kLm9L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7499627CCF0;
-	Tue, 27 May 2025 17:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A63627E7EA;
+	Tue, 27 May 2025 17:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367461; cv=none; b=TjETJiof6+/lYFxuy5hZ3WQAggQlFe26GfsdaT/GNNX/ug5GuwfK/KoniMZP3pCW06We+8W4mfldKhRP9hUwEuhXDIaFe/c+EuAJk9iYtUNSbl/AF2hml5c3hkaPfBXoiUilPoKbUZSmhxgcqKQ6Ci3+58Qp7C+2o8pIIHyTM4U=
+	t=1748365205; cv=none; b=SyDnzO8sxnYjBlGDfLjMxwPXPX4loiQr+8DCn7M6zbLldIgyhKdpwAsofYyd5KYPeikolX5iTulJ/TXzaUU1X2dIaF3GFYNTFr3GfkaGWjvfbzfb9Ov4u6jPu1ZMk/+PNEZ9piadJ5zMTqmDlCZfJDdgQ4lAIAbjI7LaYWMktUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367461; c=relaxed/simple;
-	bh=GHqaqdbCPPbR7T1tTeCG/r9Ec4yRqRa3Sik2Mk894eI=;
+	s=arc-20240116; t=1748365205; c=relaxed/simple;
+	bh=/kAR8eaAgoG7fcK9IcClDHthiCUrqzv42GlIzQTt0dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yyk9anpgEMRvPitpxszJhlGJRgR4eMjApIWwrIH3+hFYGaUrT6cdmX497Nsc396mYw8IxW/Z1aX08Gcp8YAV626ScmA5NX2nWBf8Vs3xSpaxLEwfN5Ex3fgJsnNTxc0w1CNu7iPWHAkwZcWrrwdtzbM4cKnkteTbzepifTUXD7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZffztVR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD48CC4CEE9;
-	Tue, 27 May 2025 17:37:40 +0000 (UTC)
+	 MIME-Version; b=bGh5e4wG3vdY2bIcV0ceMzD8vn9kJalxXMdNuiokziN021kjY0987G9ugOSeRaIxIox7gGNGJqGitdrIRE6z0rawXXUxT/qs2C3V0piyPiK4yinIEj+s8XA6KvDCdwsTSZrYoRgtmpLxOpP2vrmP5RQM//NLJy+Ovl0YuWOxfXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=te2kLm9L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCBEC4CEE9;
+	Tue, 27 May 2025 17:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367461;
-	bh=GHqaqdbCPPbR7T1tTeCG/r9Ec4yRqRa3Sik2Mk894eI=;
+	s=korg; t=1748365205;
+	bh=/kAR8eaAgoG7fcK9IcClDHthiCUrqzv42GlIzQTt0dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZffztVR10EUseTbDCnVYbwSC/NhJD1gmLOfl/qvYrLJNWLp6Ruu3A4FNpHWhI6259
-	 7kd7qq/H1oKTFKZZW5lvRdcjVfVkb+Y7Ef+k/8pKauJTP4LeXnNzqzgUftpwa7HP0Y
-	 rvpIn37J143mF0xP3ie9TITb2BTU41a5vOFnZkQQ=
+	b=te2kLm9LMIUBWSHGaFKk1L1oB+7ldMQCJv77L50CMX+iTeSnYgZcaDsFanj7GrRFw
+	 KtTJx0MXoLoFCPDSG3Q+PFkrMK+awkTKTFModFHK8RG6ell5jrYEmgy2Ry+FJX+9Ts
+	 9CV+pHDD/raBLZFW+/q7vVGD/dw/pC0lGlgjc9vQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 396/783] wifi: rtw89: fw: propagate error code from rtw89_h2c_tx()
+Subject: [PATCH 6.12 300/626] loop: check in LO_FLAGS_DIRECT_IO in loop_default_blocksize
 Date: Tue, 27 May 2025 18:23:13 +0200
-Message-ID: <20250527162529.219226472@linuxfoundation.org>
+Message-ID: <20250527162457.217532747@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 56e1acaa0f80620b8e2c3410db35b4b975782b0a ]
+[ Upstream commit f6f9e32fe1e454ae8ac0190b2c2bd6074914beec ]
 
-The error code should be propagated to callers during downloading firmware
-header and body. Remove unnecessary assignment of -1.
+We can't go below the minimum direct I/O size no matter if direct I/O is
+enabled by passing in an O_DIRECT file descriptor or due to the explicit
+flag.  Now that LO_FLAGS_DIRECT_IO is set earlier after assigning a
+backing file, loop_default_blocksize can check it instead of the
+O_DIRECT flag to handle both conditions.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250217064308.43559-4-pkshih@realtek.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250131120120.1315125-4-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/block/loop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 2f3869c700696..4727eeb55b486 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1322,7 +1322,6 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
- 	ret = rtw89_h2c_tx(rtwdev, skb, false);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to send h2c\n");
--		ret = -1;
- 		goto fail;
- 	}
- 
-@@ -1409,7 +1408,6 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
- 		ret = rtw89_h2c_tx(rtwdev, skb, true);
- 		if (ret) {
- 			rtw89_err(rtwdev, "failed to send h2c\n");
--			ret = -1;
- 			goto fail;
- 		}
- 
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 6bd44ec2c9b1a..fa9c77b8f4d23 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -916,7 +916,7 @@ static unsigned int loop_default_blocksize(struct loop_device *lo,
+ 		struct block_device *backing_bdev)
+ {
+ 	/* In case of direct I/O, match underlying block size */
+-	if ((lo->lo_backing_file->f_flags & O_DIRECT) && backing_bdev)
++	if ((lo->lo_flags & LO_FLAGS_DIRECT_IO) && backing_bdev)
+ 		return bdev_logical_block_size(backing_bdev);
+ 	return SECTOR_SIZE;
+ }
 -- 
 2.39.5
 
