@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-146725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DE1AC54CA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E072DAC57B4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38C143BFD66
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:58:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F5E1BC139E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097ED27FD4C;
-	Tue, 27 May 2025 16:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AF227FD53;
+	Tue, 27 May 2025 17:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeC+oZfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uw45nxMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9472CCC0;
-	Tue, 27 May 2025 16:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F48527CCF0;
+	Tue, 27 May 2025 17:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365115; cv=none; b=pwXjXB6T3SYJ5ibxPCSr0WRS9y+rb++PNsmFiWlMuQ2E0PPrbZ1x1GmNvAxCbjB9lvV2GBfIa7seTbXgvraWUbvx7YWYNurmPRbVtCN0YXLkIPTGvtlwTYvqcZyhAmwv3p3KKDNmZA82etn3ppvmGivxuqlaHI6WtwSkfTpowyo=
+	t=1748367380; cv=none; b=fwwES/54QRYIjvS++OOHrxA0E4UsE/WxGt0ltM0JoIdwwqNYGZtxO+wuA4C9JO6NgWHAMavvAKAx+a1Lr2burKF5WhXPZwejd+NIFqbueEE/vKi6eWgMqTJj0qsxl/wLof/wM9NM8FvP6pQ6YNsgqWBrsjGPaomATO4S9+U6hDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365115; c=relaxed/simple;
-	bh=OfA6+xcv58SYw5ZO1cLX6//yh8xVDi4DXqHnUGvOg5k=;
+	s=arc-20240116; t=1748367380; c=relaxed/simple;
+	bh=AMwIDlj9i/5e43FbK/Md/ITSEBXfgmO5VylEuxuvNU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EYxL02nUOjXZ2JTExt4RJ5LjXzXaS8bM/e0CfLvBjY3I/kpZlUloJ/LbwXAfnGOk2UVKGPXRvWtq+/LwzQ9PXehQX76aAiy9cN08emAYOAUPYxdQzt7FwSdZ5RvF6xVGamJ8pur4Xab2YdRHRwfh56X/VttzsV9E3Oyk+h9fwkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeC+oZfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28442C4CEE9;
-	Tue, 27 May 2025 16:58:34 +0000 (UTC)
+	 MIME-Version; b=mEVQ/bATO2rfQ7nuTf6AuGaFyiRCV4AoehLDnxyEW/VOnF8Gt0qXw4Y+JrsokLHUtRsXdlWjuINFKL+/GYMeS5KT290uJVu3qwifhDNSKZyDApz3Wwk8cJMv09mC3qn9UIO2E6wjbj8pW9bm2Xm5GnYlGYEuBDXtRV9aH8X/1O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uw45nxMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602EEC4CEE9;
+	Tue, 27 May 2025 17:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365115;
-	bh=OfA6+xcv58SYw5ZO1cLX6//yh8xVDi4DXqHnUGvOg5k=;
+	s=korg; t=1748367376;
+	bh=AMwIDlj9i/5e43FbK/Md/ITSEBXfgmO5VylEuxuvNU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jeC+oZfjHQg3V72GNOc4JproPwx5lzDb+kYDYrfiDCfwH8voOtSJCVYAB4Rea1MWi
-	 08Zj7wrLmddbGA3HtxrYHVidOBcX8y8vZFEF9KklSOYunYoeNjRMpWaRhwC39XSGbk
-	 XOlvPuawSzrgRAwRvL3FV2R2LO3E+FcqbStXTtnU=
+	b=uw45nxMPBJSOs0bGteeg9frfC/ltCRr4hq9RiRbVE67BI7o2eht/2kUDtoh2C/xAM
+	 8+ackw1nRjM+/zFYpG5op6XrPa5BZPK9SD0rx6XzzSv2QiBXQPFJE+T1SpCgR684cf
+	 w0Uiz3zuLv4NXQLLNYHYT1cV/AeChSNNe7NXTg6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 271/626] drm/xe/vf: Retry sending MMIO request to GUC on timeout error
+Subject: [PATCH 6.14 367/783] net: stmmac: Correct usage of maximum queue number macros
 Date: Tue, 27 May 2025 18:22:44 +0200
-Message-ID: <20250527162456.033464703@linuxfoundation.org>
+Message-ID: <20250527162528.028736914@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit ba757a65d2a28d46a8ccf50538f4f05036983f1b ]
+[ Upstream commit 352bc4513ec3907db71cb5674fb93a76fc341ca9 ]
 
-Add support to allow retrying the sending of MMIO requests
-from the VF to the GUC in the event of an error. During the
-suspend/resume process, VFs begin resuming only after the PF has
-resumed. Although the PF resumes, the GUC reset and provisioning
-occur later in a separate worker process.
+The maximum numbers of each Rx and Tx queues are defined by
+MTL_MAX_RX_QUEUES and MTL_MAX_TX_QUEUES respectively.
 
-When there are a large number of VFs, some may attempt to resume
-before the PF has completed its provisioning. Therefore, if a
-MMIO request from a VF fails during this period, we will retry
-sending the request up to GUC_RESET_VF_STATE_RETRY_MAX times,
-which is set to a maximum of 10 attempts.
+There are some places where Rx and Tx are used in reverse. There is no
+issue when the Tx and Rx macros have the same value, but should correct
+usage of macros for maximum queue number to keep consistency and prevent
+unexpected mistakes.
 
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Reviewed-by: Piotr Piorkowski <piotr.piorkowski@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250224102807.11065-3-satyanarayana.k.v.p@intel.com
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Huacai Chen <chenhuacai@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://patch.msgid.link/20250221051818.4163678-1-hayashi.kunihiko@socionext.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_sriov_vf.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/common.h | 4 ++--
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h | 7 +++----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-index f982d6f9f218d..7ddbfeaf494ac 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-@@ -46,12 +46,19 @@ static int guc_action_vf_reset(struct xe_guc *guc)
- 	return ret > 0 ? -EPROTO : ret;
- }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index e25db747a81a5..c660eb933f24b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -101,8 +101,8 @@ struct stmmac_rxq_stats {
+ /* Updates on each CPU protected by not allowing nested irqs. */
+ struct stmmac_pcpu_stats {
+ 	struct u64_stats_sync syncp;
+-	u64_stats_t rx_normal_irq_n[MTL_MAX_TX_QUEUES];
+-	u64_stats_t tx_normal_irq_n[MTL_MAX_RX_QUEUES];
++	u64_stats_t rx_normal_irq_n[MTL_MAX_RX_QUEUES];
++	u64_stats_t tx_normal_irq_n[MTL_MAX_TX_QUEUES];
+ };
  
-+#define GUC_RESET_VF_STATE_RETRY_MAX	10
- static int vf_reset_guc_state(struct xe_gt *gt)
- {
-+	unsigned int retry = GUC_RESET_VF_STATE_RETRY_MAX;
- 	struct xe_guc *guc = &gt->uc.guc;
- 	int err;
+ /* Extra statistic and debug information exposed by ethtool */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index f05cae103d836..dae279ee2c280 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -257,7 +257,7 @@ struct stmmac_priv {
+ 	/* Frequently used values are kept adjacent for cache effect */
+ 	u32 tx_coal_frames[MTL_MAX_TX_QUEUES];
+ 	u32 tx_coal_timer[MTL_MAX_TX_QUEUES];
+-	u32 rx_coal_frames[MTL_MAX_TX_QUEUES];
++	u32 rx_coal_frames[MTL_MAX_RX_QUEUES];
  
--	err = guc_action_vf_reset(guc);
-+	do {
-+		err = guc_action_vf_reset(guc);
-+		if (!err || err != -ETIMEDOUT)
-+			break;
-+	} while (--retry);
-+
- 	if (unlikely(err))
- 		xe_gt_sriov_err(gt, "Failed to reset GuC state (%pe)\n", ERR_PTR(err));
- 	return err;
+ 	int hwts_tx_en;
+ 	bool tx_path_in_lpi_mode;
+@@ -265,8 +265,7 @@ struct stmmac_priv {
+ 	int sph;
+ 	int sph_cap;
+ 	u32 sarc_type;
+-
+-	u32 rx_riwt[MTL_MAX_TX_QUEUES];
++	u32 rx_riwt[MTL_MAX_RX_QUEUES];
+ 	int hwts_rx_en;
+ 
+ 	void __iomem *ioaddr;
+@@ -343,7 +342,7 @@ struct stmmac_priv {
+ 	char int_name_sfty[IFNAMSIZ + 10];
+ 	char int_name_sfty_ce[IFNAMSIZ + 10];
+ 	char int_name_sfty_ue[IFNAMSIZ + 10];
+-	char int_name_rx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 14];
++	char int_name_rx_irq[MTL_MAX_RX_QUEUES][IFNAMSIZ + 14];
+ 	char int_name_tx_irq[MTL_MAX_TX_QUEUES][IFNAMSIZ + 18];
+ 
+ #ifdef CONFIG_DEBUG_FS
 -- 
 2.39.5
 
