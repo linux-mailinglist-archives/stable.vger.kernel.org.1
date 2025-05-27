@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B3CAC537D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36463AC56D3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DAF7188D06B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08EEE4A658F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CB627F737;
-	Tue, 27 May 2025 16:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFB627FB02;
+	Tue, 27 May 2025 17:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lg9vfr4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHEhVFuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FB22CCC0;
-	Tue, 27 May 2025 16:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B591E89C;
+	Tue, 27 May 2025 17:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364469; cv=none; b=h1o6o4OGzmKlsx3fof1tQr0UGxnj2hFt0OhAHPx19RlEx1q5SHNIyXpHvxsv+xrG+z8ADtxtMDd/9YQ5QkFviwxE+AVOwtPPflw8wMggjJS4fuyO2P4/bHNa/e6JIi3CVUYqtMCyLBnlfpvFYH8G54itlKqkomb5auDsRQFt8CY=
+	t=1748366726; cv=none; b=JGuc+H0G4oCt8818CgT1oqEcHjH6mTl/GSdgTh30+QLRnC+4zH5xhutq5xVm7/7r71mSNto0bXFniuPhy9Zc145JdXb/vVpnddPUb2IGaIcQhiLh2gP1sWH5FuyVUODtRJ2j6TphcVDPmg+hrQt8gmDjAAPa3P7zJVyNwvfFLOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364469; c=relaxed/simple;
-	bh=CPT3Ilg1JJP6y8ELQb6y6t8vmiDcnG2HLpblhRbsoaE=;
+	s=arc-20240116; t=1748366726; c=relaxed/simple;
+	bh=lxdIAmgwt0ooDai284weOREyGbPIjEwx9rzN+J1OHD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QuFR5EbKCE8D5a2WQocsBiYaQEtJO/5ASUFxoVbbMI5UO0NKwwfltPWEr0F9ifw1rYxIB5o0OC2wdEaAAJsb7j16gu9NFfMRyuUvs0d+sM/RITOHECoiN0Id4Z+Fc5NZcSkgRy3Ys/5aYVhg4br/1nuZZzdVARu4ME2buUEPJhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lg9vfr4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14414C4CEE9;
-	Tue, 27 May 2025 16:47:48 +0000 (UTC)
+	 MIME-Version; b=J6cyRhewB+0MA26z/GiZfK2ZKO4CnT/iZ1e/nlinWl8BVtzuz0eUKaLnKuIUKf9vkMuLVoFnfjRiP/TZErXupkqeLdkoFci+OrWjErLBSAWenKizkd9vABujIuy2FDsDPkzR4yt/eoEOTJIyK5/slG7nRLztEDy8Ws6mrTUy408=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHEhVFuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871C0C4CEE9;
+	Tue, 27 May 2025 17:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364469;
-	bh=CPT3Ilg1JJP6y8ELQb6y6t8vmiDcnG2HLpblhRbsoaE=;
+	s=korg; t=1748366725;
+	bh=lxdIAmgwt0ooDai284weOREyGbPIjEwx9rzN+J1OHD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lg9vfr4EtCnnm8ybdZyKUyBdIrhJZWIFLRZ0Z0ICyFZ+KWjrsbdoIBiAMy6tnzr5k
-	 Wcv6g3fkjREiuOLDmVyLCNuWVaCqDg/aQPw23qTc0Y/GC5B3wRnvt2UhEtzFJLHWJI
-	 7j4qN2Jud+vDo1ma3En3S0vxvqgvUnWeTfSQUezE=
+	b=ZHEhVFuogFwB1Wy7TKPs+eRQzXKkKnZRdY0eOQU412QVhm3+liD5LV/+ncixEFZdJ
+	 2bqXQXVWcoEftLNAdFvpCB1+llY1dOIpllzFksqzXXytQ3oEgTPSJ5HyJd29/zcfBH
+	 LJosbGWZgfsGZ4c+mmLns946LtTKK2Fx4VtJg2T8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zsolt Kajtar <soci@c64.rulez.org>,
-	Helge Deller <deller@gmx.de>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/626] fbcon: Use correct erase colour for clearing in fbcon
+Subject: [PATCH 6.14 162/783] bpftool: Using the right format specifiers
 Date: Tue, 27 May 2025 18:19:19 +0200
-Message-ID: <20250527162447.733476131@linuxfoundation.org>
+Message-ID: <20250527162519.765795333@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,244 +62,351 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zsolt Kajtar <soci@c64.rulez.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 892c788d73fe4a94337ed092cb998c49fa8ecaf4 ]
+[ Upstream commit 3775be3417cc3243b0df0492bd308559dcf0560b ]
 
-The erase colour calculation for fbcon clearing should use get_color instead
-of attr_col_ec, like everything else. The latter is similar but is not correct.
-For example it's missing the depth dependent remapping and doesn't care about
-blanking.
+Fixed some formatting specifiers errors, such as using %d for int and %u
+for unsigned int, as well as other byte-length types.
 
-The problem can be reproduced by setting up the background colour to grey
-(vt.color=0x70) and having an fbcon console set to 2bpp (4 shades of gray).
-Now the background attribute should be 1 (dark gray) on the console.
+Perform type cast using the type derived from the data type itself, for
+example, if it's originally an int, it will be cast to unsigned int if
+forced to unsigned.
 
-If the screen is scrolled when pressing enter in a shell prompt at the bottom
-line then the new line is cleared using colour 7 instead of 1. That's not
-something fillrect likes (at 2bbp it expect 0-3) so the result is interesting.
-
-This patch switches to get_color with vc_video_erase_char to determine the
-erase colour from attr_col_ec. That makes the latter function redundant as
-no other users were left.
-
-Use correct erase colour for clearing in fbcon
-
-Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250311112809.81901-3-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/bitblit.c   |  5 ++--
- drivers/video/fbdev/core/fbcon.c     | 10 +++++---
- drivers/video/fbdev/core/fbcon.h     | 38 +---------------------------
- drivers/video/fbdev/core/fbcon_ccw.c |  5 ++--
- drivers/video/fbdev/core/fbcon_cw.c  |  5 ++--
- drivers/video/fbdev/core/fbcon_ud.c  |  5 ++--
- drivers/video/fbdev/core/tileblit.c  |  8 +++---
- 7 files changed, 18 insertions(+), 58 deletions(-)
+ kernel/bpf/disasm.c                |  4 ++--
+ tools/bpf/bpftool/btf.c            | 14 +++++++-------
+ tools/bpf/bpftool/btf_dumper.c     |  2 +-
+ tools/bpf/bpftool/cgroup.c         |  2 +-
+ tools/bpf/bpftool/common.c         |  4 ++--
+ tools/bpf/bpftool/jit_disasm.c     |  3 ++-
+ tools/bpf/bpftool/map_perf_ring.c  |  6 +++---
+ tools/bpf/bpftool/net.c            |  4 ++--
+ tools/bpf/bpftool/netlink_dumper.c |  6 +++---
+ tools/bpf/bpftool/prog.c           | 12 ++++++------
+ tools/bpf/bpftool/tracelog.c       |  2 +-
+ tools/bpf/bpftool/xlated_dumper.c  |  6 +++---
+ 12 files changed, 33 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
-index 3ff1b2a8659e8..f9475c14f7339 100644
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -59,12 +59,11 @@ static void bit_bmove(struct vc_data *vc, struct fb_info *info, int sy,
- }
+diff --git a/kernel/bpf/disasm.c b/kernel/bpf/disasm.c
+index 309c4aa1b026a..c235acbd65095 100644
+--- a/kernel/bpf/disasm.c
++++ b/kernel/bpf/disasm.c
+@@ -202,7 +202,7 @@ void print_bpf_insn(const struct bpf_insn_cbs *cbs,
+ 				insn->dst_reg, class == BPF_ALU ? 'w' : 'r',
+ 				insn->dst_reg);
+ 		} else if (is_addr_space_cast(insn)) {
+-			verbose(cbs->private_data, "(%02x) r%d = addr_space_cast(r%d, %d, %d)\n",
++			verbose(cbs->private_data, "(%02x) r%d = addr_space_cast(r%d, %u, %u)\n",
+ 				insn->code, insn->dst_reg,
+ 				insn->src_reg, ((u32)insn->imm) >> 16, (u16)insn->imm);
+ 		} else if (is_mov_percpu_addr(insn)) {
+@@ -369,7 +369,7 @@ void print_bpf_insn(const struct bpf_insn_cbs *cbs,
+ 				insn->code, class == BPF_JMP32 ? 'w' : 'r',
+ 				insn->dst_reg,
+ 				bpf_jmp_string[BPF_OP(insn->code) >> 4],
+-				insn->imm, insn->off);
++				(u32)insn->imm, insn->off);
+ 		}
+ 	} else {
+ 		verbose(cbs->private_data, "(%02x) %s\n",
+diff --git a/tools/bpf/bpftool/btf.c b/tools/bpf/bpftool/btf.c
+index 2636655ac1808..6b14cbfa58aa2 100644
+--- a/tools/bpf/bpftool/btf.c
++++ b/tools/bpf/bpftool/btf.c
+@@ -253,7 +253,7 @@ static int dump_btf_type(const struct btf *btf, __u32 id,
+ 				if (btf_kflag(t))
+ 					printf("\n\t'%s' val=%d", name, v->val);
+ 				else
+-					printf("\n\t'%s' val=%u", name, v->val);
++					printf("\n\t'%s' val=%u", name, (__u32)v->val);
+ 			}
+ 		}
+ 		if (json_output)
+@@ -1022,7 +1022,7 @@ static int do_dump(int argc, char **argv)
+ 			for (i = 0; i < root_type_cnt; i++) {
+ 				if (root_type_ids[i] == root_id) {
+ 					err = -EINVAL;
+-					p_err("duplicate root_id %d supplied", root_id);
++					p_err("duplicate root_id %u supplied", root_id);
+ 					goto done;
+ 				}
+ 			}
+@@ -1132,7 +1132,7 @@ build_btf_type_table(struct hashmap *tab, enum bpf_obj_type type,
+ 			break;
+ 		default:
+ 			err = -1;
+-			p_err("unexpected object type: %d", type);
++			p_err("unexpected object type: %u", type);
+ 			goto err_free;
+ 		}
+ 		if (err) {
+@@ -1155,7 +1155,7 @@ build_btf_type_table(struct hashmap *tab, enum bpf_obj_type type,
+ 			break;
+ 		default:
+ 			err = -1;
+-			p_err("unexpected object type: %d", type);
++			p_err("unexpected object type: %u", type);
+ 			goto err_free;
+ 		}
+ 		if (fd < 0) {
+@@ -1188,7 +1188,7 @@ build_btf_type_table(struct hashmap *tab, enum bpf_obj_type type,
+ 			break;
+ 		default:
+ 			err = -1;
+-			p_err("unexpected object type: %d", type);
++			p_err("unexpected object type: %u", type);
+ 			goto err_free;
+ 		}
+ 		if (!btf_id)
+@@ -1254,12 +1254,12 @@ show_btf_plain(struct bpf_btf_info *info, int fd,
  
- static void bit_clear(struct vc_data *vc, struct fb_info *info, int sy,
--		      int sx, int height, int width)
-+		      int sx, int height, int width, int fg, int bg)
- {
--	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
- 	struct fb_fillrect region;
- 
--	region.color = attr_bgcol_ec(bgshift, vc, info);
-+	region.color = bg;
- 	region.dx = sx * vc->vc_font.width;
- 	region.dy = sy * vc->vc_font.height;
- 	region.width = width * vc->vc_font.width;
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index e8b4e8c119b5c..07d127110ca4c 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -1258,7 +1258,7 @@ static void __fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
- {
- 	struct fb_info *info = fbcon_info_from_console(vc->vc_num);
- 	struct fbcon_ops *ops = info->fbcon_par;
--
-+	int fg, bg;
- 	struct fbcon_display *p = &fb_display[vc->vc_num];
- 	u_int y_break;
- 
-@@ -1279,16 +1279,18 @@ static void __fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
- 		fbcon_clear_margins(vc, 0);
+ 	n = 0;
+ 	hashmap__for_each_key_entry(btf_prog_table, entry, info->id) {
+-		printf("%s%lu", n++ == 0 ? "  prog_ids " : ",", entry->value);
++		printf("%s%lu", n++ == 0 ? "  prog_ids " : ",", (unsigned long)entry->value);
  	}
  
-+	fg = get_color(vc, info, vc->vc_video_erase_char, 1);
-+	bg = get_color(vc, info, vc->vc_video_erase_char, 0);
- 	/* Split blits that cross physical y_wrap boundary */
+ 	n = 0;
+ 	hashmap__for_each_key_entry(btf_map_table, entry, info->id) {
+-		printf("%s%lu", n++ == 0 ? "  map_ids " : ",", entry->value);
++		printf("%s%lu", n++ == 0 ? "  map_ids " : ",", (unsigned long)entry->value);
+ 	}
  
- 	y_break = p->vrows - p->yscroll;
- 	if (sy < y_break && sy + height - 1 >= y_break) {
- 		u_int b = y_break - sy;
--		ops->clear(vc, info, real_y(p, sy), sx, b, width);
-+		ops->clear(vc, info, real_y(p, sy), sx, b, width, fg, bg);
- 		ops->clear(vc, info, real_y(p, sy + b), sx, height - b,
--				 width);
-+				 width, fg, bg);
- 	} else
--		ops->clear(vc, info, real_y(p, sy), sx, height, width);
-+		ops->clear(vc, info, real_y(p, sy), sx, height, width, fg, bg);
+ 	emit_obj_refs_plain(refs_table, info->id, "\n\tpids ");
+diff --git a/tools/bpf/bpftool/btf_dumper.c b/tools/bpf/bpftool/btf_dumper.c
+index 527fe867a8fbd..4e896d8a2416e 100644
+--- a/tools/bpf/bpftool/btf_dumper.c
++++ b/tools/bpf/bpftool/btf_dumper.c
+@@ -653,7 +653,7 @@ static int __btf_dumper_type_only(const struct btf *btf, __u32 type_id,
+ 	case BTF_KIND_ARRAY:
+ 		array = (struct btf_array *)(t + 1);
+ 		BTF_PRINT_TYPE(array->type);
+-		BTF_PRINT_ARG("[%d]", array->nelems);
++		BTF_PRINT_ARG("[%u]", array->nelems);
+ 		break;
+ 	case BTF_KIND_PTR:
+ 		BTF_PRINT_TYPE(t->type);
+diff --git a/tools/bpf/bpftool/cgroup.c b/tools/bpf/bpftool/cgroup.c
+index 9af426d432993..93b139bfb9880 100644
+--- a/tools/bpf/bpftool/cgroup.c
++++ b/tools/bpf/bpftool/cgroup.c
+@@ -191,7 +191,7 @@ static int show_bpf_prog(int id, enum bpf_attach_type attach_type,
+ 		if (attach_btf_name)
+ 			printf(" %-15s", attach_btf_name);
+ 		else if (info.attach_btf_id)
+-			printf(" attach_btf_obj_id=%d attach_btf_id=%d",
++			printf(" attach_btf_obj_id=%u attach_btf_id=%u",
+ 			       info.attach_btf_obj_id, info.attach_btf_id);
+ 		printf("\n");
+ 	}
+diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
+index 9b75639434b81..b921231d602e4 100644
+--- a/tools/bpf/bpftool/common.c
++++ b/tools/bpf/bpftool/common.c
+@@ -713,7 +713,7 @@ ifindex_to_arch(__u32 ifindex, __u64 ns_dev, __u64 ns_ino, const char **opt)
+ 	int vendor_id;
+ 
+ 	if (!ifindex_to_name_ns(ifindex, ns_dev, ns_ino, devname)) {
+-		p_err("Can't get net device name for ifindex %d: %s", ifindex,
++		p_err("Can't get net device name for ifindex %u: %s", ifindex,
+ 		      strerror(errno));
+ 		return NULL;
+ 	}
+@@ -738,7 +738,7 @@ ifindex_to_arch(__u32 ifindex, __u64 ns_dev, __u64 ns_ino, const char **opt)
+ 	/* No NFP support in LLVM, we have no valid triple to return. */
+ 	default:
+ 		p_err("Can't get arch name for device vendor id 0x%04x",
+-		      vendor_id);
++		      (unsigned int)vendor_id);
+ 		return NULL;
+ 	}
  }
- 
- static void fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
-diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
-index df70ea5ec5b37..4d97e6d8a16a2 100644
---- a/drivers/video/fbdev/core/fbcon.h
-+++ b/drivers/video/fbdev/core/fbcon.h
-@@ -55,7 +55,7 @@ struct fbcon_ops {
- 	void (*bmove)(struct vc_data *vc, struct fb_info *info, int sy,
- 		      int sx, int dy, int dx, int height, int width);
- 	void (*clear)(struct vc_data *vc, struct fb_info *info, int sy,
--		      int sx, int height, int width);
-+		      int sx, int height, int width, int fb, int bg);
- 	void (*putcs)(struct vc_data *vc, struct fb_info *info,
- 		      const unsigned short *s, int count, int yy, int xx,
- 		      int fg, int bg);
-@@ -116,42 +116,6 @@ static inline int mono_col(const struct fb_info *info)
- 	return (~(0xfff << max_len)) & 0xff;
- }
- 
--static inline int attr_col_ec(int shift, struct vc_data *vc,
--			      struct fb_info *info, int is_fg)
--{
--	int is_mono01;
--	int col;
--	int fg;
--	int bg;
--
--	if (!vc)
--		return 0;
--
--	if (vc->vc_can_do_color)
--		return is_fg ? attr_fgcol(shift,vc->vc_video_erase_char)
--			: attr_bgcol(shift,vc->vc_video_erase_char);
--
--	if (!info)
--		return 0;
--
--	col = mono_col(info);
--	is_mono01 = info->fix.visual == FB_VISUAL_MONO01;
--
--	if (attr_reverse(vc->vc_video_erase_char)) {
--		fg = is_mono01 ? col : 0;
--		bg = is_mono01 ? 0 : col;
--	}
--	else {
--		fg = is_mono01 ? 0 : col;
--		bg = is_mono01 ? col : 0;
--	}
--
--	return is_fg ? fg : bg;
--}
--
--#define attr_bgcol_ec(bgshift, vc, info) attr_col_ec(bgshift, vc, info, 0)
--#define attr_fgcol_ec(fgshift, vc, info) attr_col_ec(fgshift, vc, info, 1)
--
-     /*
-      *  Scroll Method
-      */
-diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
-index f9b794ff7d396..89ef4ba7e8672 100644
---- a/drivers/video/fbdev/core/fbcon_ccw.c
-+++ b/drivers/video/fbdev/core/fbcon_ccw.c
-@@ -78,14 +78,13 @@ static void ccw_bmove(struct vc_data *vc, struct fb_info *info, int sy,
- }
- 
- static void ccw_clear(struct vc_data *vc, struct fb_info *info, int sy,
--		     int sx, int height, int width)
-+		     int sx, int height, int width, int fg, int bg)
+diff --git a/tools/bpf/bpftool/jit_disasm.c b/tools/bpf/bpftool/jit_disasm.c
+index c032d2c6ab6d5..8895b4e1f6903 100644
+--- a/tools/bpf/bpftool/jit_disasm.c
++++ b/tools/bpf/bpftool/jit_disasm.c
+@@ -343,7 +343,8 @@ int disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
  {
- 	struct fbcon_ops *ops = info->fbcon_par;
- 	struct fb_fillrect region;
--	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
- 	u32 vyres = GETVYRES(ops->p, info);
+ 	const struct bpf_line_info *linfo = NULL;
+ 	unsigned int nr_skip = 0;
+-	int count, i, pc = 0;
++	int count, i;
++	unsigned int pc = 0;
+ 	disasm_ctx_t ctx;
  
--	region.color = attr_bgcol_ec(bgshift,vc,info);
-+	region.color = bg;
- 	region.dx = sy * vc->vc_font.height;
- 	region.dy = vyres - ((sx + width) * vc->vc_font.width);
- 	region.height = width * vc->vc_font.width;
-diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
-index 903f6fc174e14..b9dac7940fb77 100644
---- a/drivers/video/fbdev/core/fbcon_cw.c
-+++ b/drivers/video/fbdev/core/fbcon_cw.c
-@@ -63,14 +63,13 @@ static void cw_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ 	if (!len)
+diff --git a/tools/bpf/bpftool/map_perf_ring.c b/tools/bpf/bpftool/map_perf_ring.c
+index 21d7d447e1f3b..552b4ca40c27c 100644
+--- a/tools/bpf/bpftool/map_perf_ring.c
++++ b/tools/bpf/bpftool/map_perf_ring.c
+@@ -91,15 +91,15 @@ print_bpf_output(void *private_data, int cpu, struct perf_event_header *event)
+ 		jsonw_end_object(json_wtr);
+ 	} else {
+ 		if (e->header.type == PERF_RECORD_SAMPLE) {
+-			printf("== @%lld.%09lld CPU: %d index: %d =====\n",
++			printf("== @%llu.%09llu CPU: %d index: %d =====\n",
+ 			       e->time / 1000000000ULL, e->time % 1000000000ULL,
+ 			       cpu, idx);
+ 			fprint_hex(stdout, e->data, e->size, " ");
+ 			printf("\n");
+ 		} else if (e->header.type == PERF_RECORD_LOST) {
+-			printf("lost %lld events\n", lost->lost);
++			printf("lost %llu events\n", lost->lost);
+ 		} else {
+-			printf("unknown event type=%d size=%d\n",
++			printf("unknown event type=%u size=%u\n",
+ 			       e->header.type, e->header.size);
+ 		}
+ 	}
+diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
+index d2242d9f84411..64f958f437b01 100644
+--- a/tools/bpf/bpftool/net.c
++++ b/tools/bpf/bpftool/net.c
+@@ -476,7 +476,7 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
+ 	for (i = 0; i < optq.count; i++) {
+ 		NET_START_OBJECT;
+ 		NET_DUMP_STR("devname", "%s", dev->devname);
+-		NET_DUMP_UINT("ifindex", "(%u)", dev->ifindex);
++		NET_DUMP_UINT("ifindex", "(%u)", (unsigned int)dev->ifindex);
+ 		NET_DUMP_STR("kind", " %s", attach_loc_strings[loc]);
+ 		ret = __show_dev_tc_bpf_name(prog_ids[i], prog_name,
+ 					     sizeof(prog_name));
+@@ -831,7 +831,7 @@ static void show_link_netfilter(void)
+ 		if (err) {
+ 			if (errno == ENOENT)
+ 				break;
+-			p_err("can't get next link: %s (id %d)", strerror(errno), id);
++			p_err("can't get next link: %s (id %u)", strerror(errno), id);
+ 			break;
+ 		}
+ 
+diff --git a/tools/bpf/bpftool/netlink_dumper.c b/tools/bpf/bpftool/netlink_dumper.c
+index 5f65140b003b2..0a3c7e96c797a 100644
+--- a/tools/bpf/bpftool/netlink_dumper.c
++++ b/tools/bpf/bpftool/netlink_dumper.c
+@@ -45,7 +45,7 @@ static int do_xdp_dump_one(struct nlattr *attr, unsigned int ifindex,
+ 	NET_START_OBJECT;
+ 	if (name)
+ 		NET_DUMP_STR("devname", "%s", name);
+-	NET_DUMP_UINT("ifindex", "(%d)", ifindex);
++	NET_DUMP_UINT("ifindex", "(%u)", ifindex);
+ 
+ 	if (mode == XDP_ATTACHED_MULTI) {
+ 		if (json_output) {
+@@ -74,7 +74,7 @@ int do_xdp_dump(struct ifinfomsg *ifinfo, struct nlattr **tb)
+ 	if (!tb[IFLA_XDP])
+ 		return 0;
+ 
+-	return do_xdp_dump_one(tb[IFLA_XDP], ifinfo->ifi_index,
++	return do_xdp_dump_one(tb[IFLA_XDP], (unsigned int)ifinfo->ifi_index,
+ 			       libbpf_nla_getattr_str(tb[IFLA_IFNAME]));
  }
  
- static void cw_clear(struct vc_data *vc, struct fb_info *info, int sy,
--		     int sx, int height, int width)
-+		     int sx, int height, int width, int fg, int bg)
- {
- 	struct fbcon_ops *ops = info->fbcon_par;
- 	struct fb_fillrect region;
--	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
- 	u32 vxres = GETVXRES(ops->p, info);
- 
--	region.color = attr_bgcol_ec(bgshift,vc,info);
-+	region.color = bg;
- 	region.dx = vxres - ((sy + height) * vc->vc_font.height);
- 	region.dy = sx *  vc->vc_font.width;
- 	region.height = width * vc->vc_font.width;
-diff --git a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
-index 594331936fd3c..0af7913a2abdc 100644
---- a/drivers/video/fbdev/core/fbcon_ud.c
-+++ b/drivers/video/fbdev/core/fbcon_ud.c
-@@ -64,15 +64,14 @@ static void ud_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+@@ -168,7 +168,7 @@ int do_filter_dump(struct tcmsg *info, struct nlattr **tb, const char *kind,
+ 		NET_START_OBJECT;
+ 		if (devname[0] != '\0')
+ 			NET_DUMP_STR("devname", "%s", devname);
+-		NET_DUMP_UINT("ifindex", "(%u)", ifindex);
++		NET_DUMP_UINT("ifindex", "(%u)", (unsigned int)ifindex);
+ 		NET_DUMP_STR("kind", " %s", kind);
+ 		ret = do_bpf_filter_dump(tb[TCA_OPTIONS]);
+ 		NET_END_OBJECT_FINAL;
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 52ffb74ae4e89..f010295350be5 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -521,10 +521,10 @@ static void print_prog_header_plain(struct bpf_prog_info *info, int fd)
+ 	print_dev_plain(info->ifindex, info->netns_dev, info->netns_ino);
+ 	printf("%s", info->gpl_compatible ? "  gpl" : "");
+ 	if (info->run_time_ns)
+-		printf(" run_time_ns %lld run_cnt %lld",
++		printf(" run_time_ns %llu run_cnt %llu",
+ 		       info->run_time_ns, info->run_cnt);
+ 	if (info->recursion_misses)
+-		printf(" recursion_misses %lld", info->recursion_misses);
++		printf(" recursion_misses %llu", info->recursion_misses);
+ 	printf("\n");
  }
  
- static void ud_clear(struct vc_data *vc, struct fb_info *info, int sy,
--		     int sx, int height, int width)
-+		     int sx, int height, int width, int fg, int bg)
- {
- 	struct fbcon_ops *ops = info->fbcon_par;
- 	struct fb_fillrect region;
--	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
- 	u32 vyres = GETVYRES(ops->p, info);
- 	u32 vxres = GETVXRES(ops->p, info);
+@@ -569,7 +569,7 @@ static void print_prog_plain(struct bpf_prog_info *info, int fd, bool orphaned)
+ 	}
  
--	region.color = attr_bgcol_ec(bgshift,vc,info);
-+	region.color = bg;
- 	region.dy = vyres - ((sy + height) * vc->vc_font.height);
- 	region.dx = vxres - ((sx + width) *  vc->vc_font.width);
- 	region.width = width * vc->vc_font.width;
-diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
-index eff7ec4da1671..45b0828fad1cf 100644
---- a/drivers/video/fbdev/core/tileblit.c
-+++ b/drivers/video/fbdev/core/tileblit.c
-@@ -32,16 +32,14 @@ static void tile_bmove(struct vc_data *vc, struct fb_info *info, int sy,
- }
+ 	if (info->btf_id)
+-		printf("\n\tbtf_id %d", info->btf_id);
++		printf("\n\tbtf_id %u", info->btf_id);
  
- static void tile_clear(struct vc_data *vc, struct fb_info *info, int sy,
--		       int sx, int height, int width)
-+		       int sx, int height, int width, int fg, int bg)
- {
- 	struct fb_tilerect rect;
--	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
--	int fgshift = (vc->vc_hi_font_mask) ? 9 : 8;
+ 	emit_obj_refs_plain(refs_table, info->id, "\n\tpids ");
  
- 	rect.index = vc->vc_video_erase_char &
- 		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
--	rect.fg = attr_fgcol_ec(fgshift, vc, info);
--	rect.bg = attr_bgcol_ec(bgshift, vc, info);
-+	rect.fg = fg;
-+	rect.bg = bg;
- 	rect.sx = sx;
- 	rect.sy = sy;
- 	rect.width = width;
+@@ -1164,7 +1164,7 @@ static int get_run_data(const char *fname, void **data_ptr, unsigned int *size)
+ 		}
+ 		if (nb_read > buf_size - block_size) {
+ 			if (buf_size == UINT32_MAX) {
+-				p_err("data_in/ctx_in is too long (max: %d)",
++				p_err("data_in/ctx_in is too long (max: %u)",
+ 				      UINT32_MAX);
+ 				goto err_free;
+ 			}
+@@ -2252,7 +2252,7 @@ static char *profile_target_name(int tgt_fd)
+ 
+ 	t = btf__type_by_id(btf, func_info.type_id);
+ 	if (!t) {
+-		p_err("btf %d doesn't have type %d",
++		p_err("btf %u doesn't have type %u",
+ 		      info.btf_id, func_info.type_id);
+ 		goto out;
+ 	}
+@@ -2330,7 +2330,7 @@ static int profile_open_perf_events(struct profiler_bpf *obj)
+ 			continue;
+ 		for (cpu = 0; cpu < obj->rodata->num_cpu; cpu++) {
+ 			if (profile_open_perf_event(m, cpu, map_fd)) {
+-				p_err("failed to create event %s on cpu %d",
++				p_err("failed to create event %s on cpu %u",
+ 				      metrics[m].name, cpu);
+ 				return -1;
+ 			}
+diff --git a/tools/bpf/bpftool/tracelog.c b/tools/bpf/bpftool/tracelog.c
+index bf1f022127972..31d806e3bdaaa 100644
+--- a/tools/bpf/bpftool/tracelog.c
++++ b/tools/bpf/bpftool/tracelog.c
+@@ -78,7 +78,7 @@ static bool get_tracefs_pipe(char *mnt)
+ 		return false;
+ 
+ 	/* Allow room for NULL terminating byte and pipe file name */
+-	snprintf(format, sizeof(format), "%%*s %%%zds %%99s %%*s %%*d %%*d\\n",
++	snprintf(format, sizeof(format), "%%*s %%%zus %%99s %%*s %%*d %%*d\\n",
+ 		 PATH_MAX - strlen(pipe_name) - 1);
+ 	while (fscanf(fp, format, mnt, type) == 2)
+ 		if (strcmp(type, fstype) == 0) {
+diff --git a/tools/bpf/bpftool/xlated_dumper.c b/tools/bpf/bpftool/xlated_dumper.c
+index d0094345fb2bc..5e7cb8b36fef2 100644
+--- a/tools/bpf/bpftool/xlated_dumper.c
++++ b/tools/bpf/bpftool/xlated_dumper.c
+@@ -199,13 +199,13 @@ static const char *print_imm(void *private_data,
+ 
+ 	if (insn->src_reg == BPF_PSEUDO_MAP_FD)
+ 		snprintf(dd->scratch_buff, sizeof(dd->scratch_buff),
+-			 "map[id:%u]", insn->imm);
++			 "map[id:%d]", insn->imm);
+ 	else if (insn->src_reg == BPF_PSEUDO_MAP_VALUE)
+ 		snprintf(dd->scratch_buff, sizeof(dd->scratch_buff),
+-			 "map[id:%u][0]+%u", insn->imm, (insn + 1)->imm);
++			 "map[id:%d][0]+%d", insn->imm, (insn + 1)->imm);
+ 	else if (insn->src_reg == BPF_PSEUDO_MAP_IDX_VALUE)
+ 		snprintf(dd->scratch_buff, sizeof(dd->scratch_buff),
+-			 "map[idx:%u]+%u", insn->imm, (insn + 1)->imm);
++			 "map[idx:%d]+%d", insn->imm, (insn + 1)->imm);
+ 	else if (insn->src_reg == BPF_PSEUDO_FUNC)
+ 		snprintf(dd->scratch_buff, sizeof(dd->scratch_buff),
+ 			 "subprog[%+d]", insn->imm);
 -- 
 2.39.5
 
