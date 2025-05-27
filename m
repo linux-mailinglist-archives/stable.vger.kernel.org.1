@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3605AC5543
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8141AC582D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C43083B69A4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42E663A3A81
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B3927CB04;
-	Tue, 27 May 2025 17:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B9227D786;
+	Tue, 27 May 2025 17:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1m2/ooi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgZdXQgU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F90E1F4CB1;
-	Tue, 27 May 2025 17:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF2942A9B;
+	Tue, 27 May 2025 17:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365434; cv=none; b=HeNDdSYbC0hv5zzuTZCDpETsrpGhB7cVLfkTlez9xiwJJ/b/cG9bj5fsfBU+WhwhI+W5BZokCfQhRbZ4Iifsu7IYdbe320sRTkOvN687g//ZwChlpJprikqhdZSh2RjRfi7hDdoVLusjMj0vBZW/OPjq6j2uMDA9UzzE5qHYa24=
+	t=1748367694; cv=none; b=jjRJX3IAkqY1wakM8Cd9czAqk9HgUmUfIkjhDRFbrHgvECwCaL/7x3uklBxw6nxA96ZuQYER8XcAlB+wrnbB0DRUX41DfynYLd0NLeBqyKX6K4AM/og/UlDOZ5tkik2jObazQAu8BPrJRPBe+PuFUZeX8Q8XDV7PhvKfj6TcCYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365434; c=relaxed/simple;
-	bh=i4jm1kPpLrgXwx4fbqVQ8KW8uDtMTcPXlxcp23i8log=;
+	s=arc-20240116; t=1748367694; c=relaxed/simple;
+	bh=bX4twi7QHLBDpihEDWciEMnahoeMGPTf+fqTaXhnS6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZIxe5gvaPC9HwC4Iy0L0PWJfaBk8ecQJrydYI2jEuf1OjNzeDtCs4Jb+IB2V0pqMzaENNNxvg/x4XhhqMtWnqxZ2TXaflXAUjBlFwh/t+mDkdz0p/S2sDbTtgB2j5st01Gexb1jMk56Se9LiJTDoYmRz8rs+FZcrLMprwUzGYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1m2/ooi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3833AC4CEE9;
-	Tue, 27 May 2025 17:03:53 +0000 (UTC)
+	 MIME-Version; b=oJUdHuQMynDyI0W8lx+ydV2uz9w3lF721VgPAt+xipUNs93Ui04gGmT9tHsPRg3zj+P0Z1bTgD6mbFh+jQV7Pzvp4tVDt8b8o+sqMA31lvPPW+mYSe40MtkKxJyCdBEzjHXbtWa0mYXwVdOQQKGcKBw6RCYPCgKpT6SdiFi5akA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgZdXQgU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A4AC4CEE9;
+	Tue, 27 May 2025 17:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365433;
-	bh=i4jm1kPpLrgXwx4fbqVQ8KW8uDtMTcPXlxcp23i8log=;
+	s=korg; t=1748367694;
+	bh=bX4twi7QHLBDpihEDWciEMnahoeMGPTf+fqTaXhnS6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1m2/ooij3WtbLrudCYEl2Xcxsz1MY1LAkocvoT4vPsZHHF0ul/qPrhSsWE++Gn9U
-	 EUf4jgR5gs28hd/ACOtLSbOCXcXfyKtuNQsSeKlX2J3bIwmVFQdQP//maFmh5ci3M9
-	 51anZgPg/UHmdPuW0lMBMZXD6M1d4Pwxqvx/magI=
+	b=HgZdXQgU9DjkAt7K2n8CIlK6K36UdKwXAD9Mhi7XlD19N9MFGzxZ/OCkzsEODCWim
+	 rTy2hlQSO5fyoWF1bY6hhiYtwX2gGPTfwDB3jWMYWNgZMdFM0HDbymQpohUwGhiQoz
+	 vYB7k4bSyjAHA6F42cbU/K17XHVkDkIYCK1M4b/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Imre Deak <imre.deak@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 373/626] clk: qcom: clk-alpha-pll: Do not use random stack value for recalc rate
+Subject: [PATCH 6.14 469/783] drm/xe/display: Remove hpd cancel work sync from runtime pm path
 Date: Tue, 27 May 2025 18:24:26 +0200
-Message-ID: <20250527162500.178169400@linuxfoundation.org>
+Message-ID: <20250527162532.232127963@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,144 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-[ Upstream commit 7a243e1b814a02ab40793026ef64223155d86395 ]
+[ Upstream commit 1ed591582b7b894d2f7e7ab5cef2e9b0b6fef12b ]
 
-If regmap_read() fails, random stack value was used in calculating new
-frequency in recalc_rate() callbacks.  Such failure is really not
-expected as these are all MMIO reads, however code should be here
-correct and bail out.  This also avoids possible warning on
-uninitialized value.
+This function will synchronously cancel and wait for many display
+work queue items, which might try to take the runtime pm reference
+causing a bad deadlock. So, remove it from the runtime_pm suspend patch.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250212-b4-clk-qcom-clean-v3-1-499f37444f5d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250212192447.402715-1-rodrigo.vivi@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/xe/display/xe_display.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-index 10e276dabff93..e76ecc4663511 100644
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -670,14 +670,19 @@ clk_alpha_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 alpha_width = pll_alpha_width(pll);
+diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+index b3921dbc52ff6..b735e30953cee 100644
+--- a/drivers/gpu/drm/xe/display/xe_display.c
++++ b/drivers/gpu/drm/xe/display/xe_display.c
+@@ -346,7 +346,8 @@ static void __xe_display_pm_suspend(struct xe_device *xe, bool runtime)
  
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
+ 	xe_display_flush_cleanup_work(xe);
  
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
- 	if (ctl & PLL_ALPHA_EN) {
--		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low);
-+		if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low))
-+			return 0;
- 		if (alpha_width > 32) {
--			regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
--				    &high);
-+			if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
-+					&high))
-+				return 0;
- 			a = (u64)high << 32 | low;
- 		} else {
- 			a = low & GENMASK(alpha_width - 1, 0);
-@@ -903,8 +908,11 @@ alpha_pll_huayra_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, alpha = 0, ctl, alpha_m, alpha_n;
+-	intel_hpd_cancel_work(xe);
++	if (!runtime)
++		intel_hpd_cancel_work(xe);
  
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
- 
- 	if (ctl & PLL_ALPHA_EN) {
- 		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &alpha);
-@@ -1098,8 +1106,11 @@ clk_trion_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, frac, alpha_width = pll_alpha_width(pll);
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
- }
-@@ -1157,7 +1168,8 @@ clk_alpha_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll_postdiv *pll = to_clk_alpha_pll_postdiv(hw);
- 	u32 ctl;
- 
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
- 
- 	ctl >>= PLL_POST_DIV_SHIFT;
- 	ctl &= PLL_POST_DIV_MASK(pll);
-@@ -1373,8 +1385,11 @@ static unsigned long alpha_pll_fabia_recalc_rate(struct clk_hw *hw,
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, frac, alpha_width = pll_alpha_width(pll);
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
- }
-@@ -1524,7 +1539,8 @@ clk_trion_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct regmap *regmap = pll->clkr.regmap;
- 	u32 i, div = 1, val;
- 
--	regmap_read(regmap, PLL_USER_CTL(pll), &val);
-+	if (regmap_read(regmap, PLL_USER_CTL(pll), &val))
-+		return 0;
- 
- 	val >>= pll->post_div_shift;
- 	val &= PLL_POST_DIV_MASK(pll);
-@@ -2451,9 +2467,12 @@ static unsigned long alpha_pll_lucid_evo_recalc_rate(struct clk_hw *hw,
- 	struct regmap *regmap = pll->clkr.regmap;
- 	u32 l, frac;
- 
--	regmap_read(regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(regmap, PLL_L_VAL(pll), &l))
-+		return 0;
- 	l &= LUCID_EVO_PLL_L_VAL_MASK;
--	regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac);
-+
-+	if (regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, pll_alpha_width(pll));
- }
-@@ -2528,7 +2547,8 @@ static unsigned long clk_rivian_evo_pll_recalc_rate(struct clk_hw *hw,
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l;
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
- 
- 	return parent_rate * l;
- }
+ 	if (!runtime && has_display(xe)) {
+ 		intel_display_driver_suspend_access(display);
 -- 
 2.39.5
 
