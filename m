@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A791DAC5899
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6D8AC5531
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF37B3B0EE7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3B747A33FF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7D227C149;
-	Tue, 27 May 2025 17:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED282798F8;
+	Tue, 27 May 2025 17:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXeU0H6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1b59qxi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1081FB3;
-	Tue, 27 May 2025 17:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD94139579;
+	Tue, 27 May 2025 17:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368003; cv=none; b=Rc2QI+C/Ok9FZLSpVPQrFBP1zVJTVrGGcW/PuWLK/kLOoJ+qK6eTV4MPTKXkwPjkTn/47OnDx8ffX22SqMiiRd+wxj+rtWFhvzKBrT+Ph5km7Yyr19dAaqbRCjehjRB+frL9XXPfqO1nEdwiBsV0fVnCJQkCAITuBD9+BAYb9l4=
+	t=1748365734; cv=none; b=dPCi2KQle5QNQkw+595r8eFFj+57hXnAupbcj6VBIlS/Glwd5NUn1IazK/SCnhIp4vZJEzIxqytmQiacoWVUvCwmhRrgcNCImysiiC9xxvlTLTW48VJ2rgEJ8IUYjitIBHM3ToIFqECbrDesa9z/f7ioXHtxHDai0EW+MXBx9VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368003; c=relaxed/simple;
-	bh=9Mx+IcKdXqbLFHdPXAvLICXGA1Ug/tDhHU7AjjCkgTM=;
+	s=arc-20240116; t=1748365734; c=relaxed/simple;
+	bh=aspSdoeBJVDpCWOQ9Gn0vQ7LVxSH4eLDTzL1TgkUfLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R83ZlkRvdCtgK2lWRBCql+zTvtVKfz+FvqVYYC43bzFYi3Ujx6TNIG8inXh9KftpDwXvpjidRvKMcnZ+SJ0UshmlKWZg6LSJpG6HT++1/HdrvfgHH3uupX6nCQFlk1bsb84ZoyAFULtFSIAjKXEGGrALAFKXTZ8jzYg19ICUhLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXeU0H6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8939C4CEE9;
-	Tue, 27 May 2025 17:46:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I+1JzdJvWRLAVBdFyzr6wYt83RQflaLv64gWQsdRveXG2WjR85wOlAq3rcTiSnurUr+nP0HHXiYyZV7hrXayfKD+G4vAZcU4hp9Z2rf08x58qVvWOhIRtGumZFYUnXHqY46UEoVgx4L2lVT6M2OY8G0vS9lCmEd2vTX92FNr0N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1b59qxi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA876C4CEE9;
+	Tue, 27 May 2025 17:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368003;
-	bh=9Mx+IcKdXqbLFHdPXAvLICXGA1Ug/tDhHU7AjjCkgTM=;
+	s=korg; t=1748365734;
+	bh=aspSdoeBJVDpCWOQ9Gn0vQ7LVxSH4eLDTzL1TgkUfLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXeU0H6zMH5AeEFG4n1EQLXMwnN8YyvgVOcXN/ML6ICTaD2EXmbk18trYVwBlUE1Z
-	 H7IQfCjy46WtipPpVta3af63TmB9Z6oyT0iGz5xDDl8Ox+Pm7bpNzLuBWU9GyIxjHu
-	 tkBuXguHU72NyHrjMn25z4wzhLX/KgdjlQTBtuH4=
+	b=V1b59qxiZjZCbbbhuC/nem22q6zqRVS6sLbkFLqOyUyE/BsOTrik2fMeGSofYTPbo
+	 IPs69F+0IIsYwUS3PGpJSKC87BD4t0sbbEAzgtSOmWEYMhbo2ZII0tLmBvjDXlPucO
+	 IW6RBGu6yVWYoLua15B5RM6n/yYLKKnuvGnXheH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 567/783] bridge: mdb: Allow replace of a host-joined group
+Subject: [PATCH 6.12 471/626] irqchip/riscv-aplic: Add support for hart indexes
 Date: Tue, 27 May 2025 18:26:04 +0200
-Message-ID: <20250527162536.232364347@linuxfoundation.org>
+Message-ID: <20250527162504.131631501@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
 
-[ Upstream commit d9e9f6d7b7d0c520bb87f19d2cbc57aeeb2091d5 ]
+[ Upstream commit b93afe8a3ac53ae52296d65acfaa9c5f582a48cc ]
 
-Attempts to replace an MDB group membership of the host itself are
-currently bounced:
+RISC-V APLIC specification defines "hart index" in:
 
- # ip link add name br up type bridge vlan_filtering 1
- # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
- # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
- Error: bridge: Group is already joined by host.
+  https://github.com/riscv/riscv-aia
 
-A similar operation done on a member port would succeed. Ignore the check
-for replacement of host group memberships as well.
+Within a given interrupt domain, each of the domain’s harts has a unique
+index number in the range 0 to 2^14 − 1 (= 16,383). The index number a
+domain associates with a hart may or may not have any relationship to the
+unique hart identifier (“hart ID”) that the RISC-V Privileged Architecture
+assigns to the hart. Two different interrupt domains may employ entirely
+different index numbers for the same set of harts.
 
-The bit of code that this enables is br_multicast_host_join(), which, for
-already-joined groups only refreshes the MC group expiration timer, which
-is desirable; and a userspace notification, also desirable.
+Further, this document says in "4.5 Memory-mapped control region for an
+interrupt domain":
 
-Change a selftest that exercises this code path from expecting a rejection
-to expecting a pass. The rest of MDB selftests pass without modification.
+The array of IDC structures may include some for potential hart index
+numbers that are not actual hart index numbers in the domain. For example,
+the first IDC structure is always for hart index 0, but 0 is not
+necessarily a valid index number for any hart in the domain.
 
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/e5c5188b9787ae806609e7ca3aa2a0a501b9b5c4.1738685648.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Support arbitrary hart indices specified in an optional APLIC property
+"riscv,hart-indexes" which is specified as an array of u32 elements, one
+per interrupt target. If this property is not specified, fallback to use
+logical hart indices within the domain.
+
+Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/all/20250129091637.1667279-3-vladimir.kondratiev@mobileye.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_mdb.c                                  | 2 +-
- tools/testing/selftests/net/forwarding/bridge_mdb.sh | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-riscv-aplic-direct.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
-index 1a52a0bca086d..7e1ad229e1330 100644
---- a/net/bridge/br_mdb.c
-+++ b/net/bridge/br_mdb.c
-@@ -1040,7 +1040,7 @@ static int br_mdb_add_group(const struct br_mdb_config *cfg,
+diff --git a/drivers/irqchip/irq-riscv-aplic-direct.c b/drivers/irqchip/irq-riscv-aplic-direct.c
+index 7cd6b646774b9..205ad61d15e49 100644
+--- a/drivers/irqchip/irq-riscv-aplic-direct.c
++++ b/drivers/irqchip/irq-riscv-aplic-direct.c
+@@ -31,7 +31,7 @@ struct aplic_direct {
+ };
  
- 	/* host join */
- 	if (!port) {
--		if (mp->host_joined) {
-+		if (mp->host_joined && !(cfg->nlflags & NLM_F_REPLACE)) {
- 			NL_SET_ERR_MSG_MOD(extack, "Group is already joined by host");
- 			return -EEXIST;
- 		}
-diff --git a/tools/testing/selftests/net/forwarding/bridge_mdb.sh b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-index d9d587454d207..8c1597ebc2d38 100755
---- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-@@ -149,7 +149,7 @@ cfg_test_host_common()
- 	check_err $? "Failed to add $name host entry"
+ struct aplic_idc {
+-	unsigned int		hart_index;
++	u32			hart_index;
+ 	void __iomem		*regs;
+ 	struct aplic_direct	*direct;
+ };
+@@ -219,6 +219,20 @@ static int aplic_direct_parse_parent_hwirq(struct device *dev, u32 index,
+ 	return 0;
+ }
  
- 	bridge mdb replace dev br0 port br0 grp $grp $state vid 10 &> /dev/null
--	check_fail $? "Managed to replace $name host entry"
-+	check_err $? "Failed to replace $name host entry"
++static int aplic_direct_get_hart_index(struct device *dev, u32 logical_index,
++				       u32 *hart_index)
++{
++	const char *prop_hart_index = "riscv,hart-indexes";
++	struct device_node *np = to_of_node(dev->fwnode);
++
++	if (!np || !of_property_present(np, prop_hart_index)) {
++		*hart_index = logical_index;
++		return 0;
++	}
++
++	return of_property_read_u32_index(np, prop_hart_index, logical_index, hart_index);
++}
++
+ int aplic_direct_setup(struct device *dev, void __iomem *regs)
+ {
+ 	int i, j, rc, cpu, current_cpu, setup_count = 0;
+@@ -265,8 +279,12 @@ int aplic_direct_setup(struct device *dev, void __iomem *regs)
+ 		cpumask_set_cpu(cpu, &direct->lmask);
  
- 	bridge mdb del dev br0 port br0 grp $grp $state vid 10
- 	bridge mdb get dev br0 grp $grp vid 10 &> /dev/null
+ 		idc = per_cpu_ptr(&aplic_idcs, cpu);
+-		idc->hart_index = i;
+-		idc->regs = priv->regs + APLIC_IDC_BASE + i * APLIC_IDC_SIZE;
++		rc = aplic_direct_get_hart_index(dev, i, &idc->hart_index);
++		if (rc) {
++			dev_warn(dev, "hart index not found for IDC%d\n", i);
++			continue;
++		}
++		idc->regs = priv->regs + APLIC_IDC_BASE + idc->hart_index * APLIC_IDC_SIZE;
+ 		idc->direct = direct;
+ 
+ 		aplic_idc_set_delivery(idc, true);
 -- 
 2.39.5
 
