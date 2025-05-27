@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-146747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F97AC54E4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:05:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A21DEAC57CF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E37C8A2E54
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C843BA956
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077C027FD49;
-	Tue, 27 May 2025 16:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADC928002F;
+	Tue, 27 May 2025 17:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIqjSxae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrV4G4fx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7409194A67;
-	Tue, 27 May 2025 16:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7700F24C07D;
+	Tue, 27 May 2025 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365183; cv=none; b=PzPZ8d8cgAbsylqWfF6504Rm+DSSu0AkBpb1STH7OHzPPQfw9S8HmgvlVlS2yBC5lOI/pdCToJeTnEnd0Xr3p1mvWLji1QlvJItkozU5rmrw4R0RUgX2of0eKLq3IR23vGE1lXNOz5utqpSqK08HNeac9cASd/04e3tCT6zHymk=
+	t=1748367443; cv=none; b=m8QuMQ+7upJeUTEwzzZ5pqhrF1RTLfRNv30FxP8MeQPgjg+j5OieQPzHYD4XApxcFrUHvI8Bk+SlfCvq65C8aFt4UAl1O1aG9saq0Ll7Flp4XZx1YOhx+3l9sMHpMTFbi1YQFfhV041rDbRkTWqNQlfWnIma6dNACX0AmrjsbKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365183; c=relaxed/simple;
-	bh=XqNb6cOhkudhMqGfOwZcv8yP3XPojJEzuFtlLcej5do=;
+	s=arc-20240116; t=1748367443; c=relaxed/simple;
+	bh=rpV6EPyZJ3XMtvK1C21yPppn5ns2786/bnkA5z4GRAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QO5us3hPRz1LJ0ijVJj9h24g4QfRyIqm/zfwsjQwz9OIBrCs1ZYtE8AD3tfV47q4zNEduEkeckXW3Cvf0Edi3uB685uY/SLEPQwj+u2h/WOcp4iv4lrxXrV6Fz+fFegQgwvAoYhSzDNlmmy3eaYFKXRQo/gvYpkqZ3rnbDnZ0YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIqjSxae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DE8C4CEE9;
-	Tue, 27 May 2025 16:59:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PasvWVqdZZRoPaL7pq+j9CcGbVnpLQlFi8MtTEY2Cu8SsvGM8A+Tn3Qk45i3TtS16T+j9C6uI5ElYEcN3CHgwf6mO31f5RalShFCSSOOWLE0MmQsbq1Ji2VWcss7ztGOfii0iG+mAAIaVykXQnsYZOvSVVYhY1rHuWY4Yq/FnuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrV4G4fx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851A3C4CEE9;
+	Tue, 27 May 2025 17:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365183;
-	bh=XqNb6cOhkudhMqGfOwZcv8yP3XPojJEzuFtlLcej5do=;
+	s=korg; t=1748367442;
+	bh=rpV6EPyZJ3XMtvK1C21yPppn5ns2786/bnkA5z4GRAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIqjSxaeyxHhpFyddl50hlqtjwIMmbde9bBh2dPNdFgLu7bcw1RP+eWLI2taC3pnW
-	 PddbdK30EFOUOkd5uBP6gyBURFnNH0oAchRR9NQrbR7n0vzG2uHOMu4kJM1wvjHb5R
-	 5um8krbDZAMcxdn7PFBZEr5CWYmN1cGGONHu1Lzg=
+	b=wrV4G4fxyekK2f/0vi9+XqYYP6d40Am0Nak2rpGCmMa2GB5BlHWjuvs5nYk18Fyzj
+	 Qq+2eHo5zbwXlE+cyWp2uwSs95O4H8UyCPhV7X73xts3Ix6MIUDDrXt/UinTeZuNbl
+	 e5pmEAtzAc05rEZR2ToMsCwcWbjMHjfwzdsK3UOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Shkolnyy <kshk@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Mrinmay Sarkar <quic_msarkar@quicinc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 294/626] vdpa/mlx5: Fix mlx5_vdpa_get_config() endianness on big-endian machines
+Subject: [PATCH 6.14 390/783] PCI: epf-mhi: Update device ID for SA8775P
 Date: Tue, 27 May 2025 18:23:07 +0200
-Message-ID: <20250527162456.979815490@linuxfoundation.org>
+Message-ID: <20250527162528.976133965@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
+From: Mrinmay Sarkar <quic_msarkar@quicinc.com>
 
-[ Upstream commit 439252e167ac45a5d46f573aac1da7d8f3e051ad ]
+[ Upstream commit 4f13dd9e2b1d2b317bb36704f8a7bd1d3017f7a2 ]
 
-mlx5_vdpa_dev_add() doesn’t initialize mvdev->actual_features. It’s
-initialized later by mlx5_vdpa_set_driver_features(). However,
-mlx5_vdpa_get_config() depends on the VIRTIO_F_VERSION_1 flag in
-actual_features, to return data with correct endianness. When it’s called
-before mlx5_vdpa_set_driver_features(), the data are incorrectly returned
-as big-endian on big-endian machines, while QEMU then interprets them as
-little-endian.
+Update device ID for the Qcom SA8775P SoC.
 
-The fix is to initialize this VIRTIO_F_VERSION_1 as early as possible,
-especially considering that mlx5_vdpa_dev_add() insists on this flag to
-always be set anyway.
-
-Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Message-Id: <20250204173127.166673-1-kshk@linux.ibm.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+Link: https://lore.kernel.org/r/20241205065422.2515086-3-quic_msarkar@quicinc.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/mlx5/net/mlx5_vnet.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/endpoint/functions/pci-epf-mhi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index 5f581e71e2010..76aedac37a788 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -3884,6 +3884,9 @@ static int mlx5_vdpa_dev_add(struct vdpa_mgmt_dev *v_mdev, const char *name,
- 	ndev->mvdev.max_vqs = max_vqs;
- 	mvdev = &ndev->mvdev;
- 	mvdev->mdev = mdev;
-+	/* cpu_to_mlx5vdpa16() below depends on this flag */
-+	mvdev->actual_features =
-+			(device_features & BIT_ULL(VIRTIO_F_VERSION_1));
+diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
+index 54286a40bdfbf..6643a88c7a0ce 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
++++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
+@@ -125,7 +125,7 @@ static const struct pci_epf_mhi_ep_info sm8450_info = {
  
- 	ndev->vqs = kcalloc(max_vqs, sizeof(*ndev->vqs), GFP_KERNEL);
- 	ndev->event_cbs = kcalloc(max_vqs + 1, sizeof(*ndev->event_cbs), GFP_KERNEL);
+ static struct pci_epf_header sa8775p_header = {
+ 	.vendorid = PCI_VENDOR_ID_QCOM,
+-	.deviceid = 0x0306,               /* FIXME: Update deviceid for sa8775p EP */
++	.deviceid = 0x0116,
+ 	.baseclass_code = PCI_CLASS_OTHERS,
+ 	.interrupt_pin = PCI_INTERRUPT_INTA,
+ };
 -- 
 2.39.5
 
