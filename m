@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7513AAC580C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63C1AC54C8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DDE37AAA1E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BEB016C60A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594D6280037;
-	Tue, 27 May 2025 17:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91D9271476;
+	Tue, 27 May 2025 17:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igCZY6Q3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU3IGbwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D8825A627;
-	Tue, 27 May 2025 17:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835971D432D;
+	Tue, 27 May 2025 17:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367614; cv=none; b=H3d4G0ZRjb9tTX4gWOliyziPT6llF44iTza0J18P+Rijo9S7ynl81CHT2yb/Xxv8z02cZ19gGtjYquIrqcLi2i61FTKLIExjbTfZyWvYbVRG/wWe5VSrC7MnVD/qH9Uvwad02oSDzFN2n9FwrO+6ESR14DBlZu0/x2Rpx8GS0s4=
+	t=1748365430; cv=none; b=BA/mP7kEhIkjBI9rn231cwjoh6oXxpePTgiR0UK8Yh+fn4xVgIZiStke6vUuMJTH9Nu+he74rCswSQnWdXZ2ovnK4Ma2c6JiLJ4L0AJz1KqW0Az9FXFM8NSy2y4BGtUiHGzfukYrq+Ma79Qnv/yQlzfqkMkq6PFFqDEB+XJ+mtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367614; c=relaxed/simple;
-	bh=BIOcGsGWD9y0JQulbAAM4IaxzlBzA9LHYdVuKfSsOA0=;
+	s=arc-20240116; t=1748365430; c=relaxed/simple;
+	bh=XH29Mh0cQzi9+ehVfPVTMEf+zWtr0PRBXg7kBoeT6Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAb5JmXsSz75jq4vMKwYlEPjQRB1pODPV62idRaFJRtpFJXoZcRd/XwZyz9ctcMyZYe3yaohFiVhjN8a9OKxSgaL5UWaXLeFXN0Ihhi1C3taTmshoZ+iNAJKgL0BKOw/sVT+2U/ayfYGQO6Is5g3KJkBMaLYNRM0HGsDJYLfRxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igCZY6Q3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8F6C4CEE9;
-	Tue, 27 May 2025 17:40:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FhtzgxqsHl7EBRdxKoIMyJRjVURjfmeEyOwJNrONOT33HqXTUQDjW+p5QVl4ZKZk7Vr8dfAOc5TM3GeTOjJa/8UoYeeyCsHzJHJH5131pG4w4s4OOjcZaNwmTdq+OkhGEWKbHT4uFBj2gLAzlSSb/6H30p77Txf1LmPsgehHKGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU3IGbwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E9BC4CEE9;
+	Tue, 27 May 2025 17:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367613;
-	bh=BIOcGsGWD9y0JQulbAAM4IaxzlBzA9LHYdVuKfSsOA0=;
+	s=korg; t=1748365430;
+	bh=XH29Mh0cQzi9+ehVfPVTMEf+zWtr0PRBXg7kBoeT6Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igCZY6Q3WYB45cuGtPTcQ3mHLrs8ysD3PcbTRD75pUhAlZII0n8xaW7OS4/EDZj5z
-	 BvblbqHBNfQWo3Yld5j3lduRDyp50wlgyoEde2ZlymIEm1Ksv3xodvCuyQKezuoVxj
-	 vgZMzgDlYU3qJzBrVNt8PaQrZYJvawQn87h2QZXo=
+	b=AU3IGbwH/r03xd8HA+GlC9B9XPcD6yTa91f+cG7msdPmdksL4+v9pZUASd8Kytbhn
+	 X1+1uq/MyzX65Kb6/DJAdZ1I8WVtmY3EL+MlzCumWhGk4Gq3UJ5E8yRUzbvmqVsvQM
+	 /V2iTw+xjJibcx0lbZA6DW/ddKueKxOl6hWpqrBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Xiaochun Lee <lixc17@lenovo.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 442/783] ASoC: tas2764: Power up/down amp on mute ops
+Subject: [PATCH 6.12 346/626] PCI: Fix old_size lower bound in calculate_iosize() too
 Date: Tue, 27 May 2025 18:23:59 +0200
-Message-ID: <20250527162531.138599540@linuxfoundation.org>
+Message-ID: <20250527162459.082452365@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,112 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 1c3b5f37409682184669457a5bdf761268eafbe5 ]
+[ Upstream commit ff61f380de5652e723168341480cc7adf1dd6213 ]
 
-The ASoC convention is that clocks are removed after codec mute, and
-power up/down is more about top level power management. For these chips,
-the "mute" state still expects a TDM clock, and yanking the clock in
-this state will trigger clock errors. So, do the full
-shutdown<->mute<->active transition on the mute operation, so the amp is
-in software shutdown by the time the clocks are removed.
+Commit 903534fa7d30 ("PCI: Fix resource double counting on remove &
+rescan") fixed double counting of mem resources because of old_size being
+applied too early.
 
-This fixes TDM clock errors when streams are stopped.
+Fix a similar counting bug on the io resource side.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-1-dbab892a69b5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241216175632.4175-6-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Xiaochun Lee <lixc17@lenovo.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 51 ++++++++++++++++----------------------
- 1 file changed, 21 insertions(+), 30 deletions(-)
+ drivers/pci/setup-bus.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 31f94c8cf2844..39a7d39536fe6 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -180,33 +180,6 @@ static SOC_ENUM_SINGLE_DECL(
- static const struct snd_kcontrol_new tas2764_asi1_mux =
- 	SOC_DAPM_ENUM("ASI1 Source", tas2764_ASI1_src_enum);
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index f16c7ce3bf3fc..1eceabef9e84d 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -814,11 +814,9 @@ static resource_size_t calculate_iosize(resource_size_t size,
+ 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
+ #endif
+ 	size = size + size1;
+-	if (size < old_size)
+-		size = old_size;
  
--static int tas2764_dac_event(struct snd_soc_dapm_widget *w,
--			     struct snd_kcontrol *kcontrol, int event)
--{
--	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
--	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
--	int ret;
--
--	switch (event) {
--	case SND_SOC_DAPM_POST_PMU:
--		tas2764->dac_powered = true;
--		ret = tas2764_update_pwr_ctrl(tas2764);
--		break;
--	case SND_SOC_DAPM_PRE_PMD:
--		tas2764->dac_powered = false;
--		ret = tas2764_update_pwr_ctrl(tas2764);
--		break;
--	default:
--		dev_err(tas2764->dev, "Unsupported event\n");
--		return -EINVAL;
--	}
--
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
- static const struct snd_kcontrol_new isense_switch =
- 	SOC_DAPM_SINGLE("Switch", TAS2764_PWR_CTRL, TAS2764_ISENSE_POWER_EN, 1, 1);
- static const struct snd_kcontrol_new vsense_switch =
-@@ -219,8 +192,7 @@ static const struct snd_soc_dapm_widget tas2764_dapm_widgets[] = {
- 			    1, &isense_switch),
- 	SND_SOC_DAPM_SWITCH("VSENSE", TAS2764_PWR_CTRL, TAS2764_VSENSE_POWER_EN,
- 			    1, &vsense_switch),
--	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2764_dac_event,
--			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
-+	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_OUTPUT("OUT"),
- 	SND_SOC_DAPM_SIGGEN("VMON"),
- 	SND_SOC_DAPM_SIGGEN("IMON")
-@@ -241,9 +213,28 @@ static int tas2764_mute(struct snd_soc_dai *dai, int mute, int direction)
- {
- 	struct tas2764_priv *tas2764 =
- 			snd_soc_component_get_drvdata(dai->component);
-+	int ret;
-+
-+	if (!mute) {
-+		tas2764->dac_powered = true;
-+		ret = tas2764_update_pwr_ctrl(tas2764);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	tas2764->unmuted = !mute;
--	return tas2764_update_pwr_ctrl(tas2764);
-+	ret = tas2764_update_pwr_ctrl(tas2764);
-+	if (ret)
-+		return ret;
-+
-+	if (mute) {
-+		tas2764->dac_powered = false;
-+		ret = tas2764_update_pwr_ctrl(tas2764);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
+-	size = ALIGN(max(size, add_size) + children_add_size, align);
+-	return size;
++	size = max(size, add_size) + children_add_size;
++	return ALIGN(max(size, old_size), align);
  }
  
- static int tas2764_set_bitwidth(struct tas2764_priv *tas2764, int bitwidth)
+ static resource_size_t calculate_memsize(resource_size_t size,
 -- 
 2.39.5
 
