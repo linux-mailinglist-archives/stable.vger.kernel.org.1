@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-147516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939E9AC57FE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A93E9AC551B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450484C0110
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E4923A97C2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCEC27F16D;
-	Tue, 27 May 2025 17:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8721D88D7;
+	Tue, 27 May 2025 17:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAw0KXit"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V21Xc2Nz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B78086347;
-	Tue, 27 May 2025 17:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FF278F32;
+	Tue, 27 May 2025 17:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367582; cv=none; b=iJdL0Qxwe+CLpmUKT+yBTvw/+N77FTIPOg1OULNjEL76ZX9kWD0HreCfjIEl0GERE+7NN7HYWHQaaXR7WZWzPJUuq4RhFFiHpVGqeJT9l5sVdgTJa5RQfMzk8e2QB/Bu9DFJlgW9N+3wVyrQdrNzjaFwu5pmElsRp2F+IJXW/iU=
+	t=1748365319; cv=none; b=EyiMy0Cue3hKl3g2sr6euyeVSrDk71KMFyWszYEi9RPYGfvSmELSIBC6zK6KrxB1/pYIT7wwAJ69PF82yQUUARwxorCghKeFQdoBmmZ4SYb5c62qhEXzNjW6GEdEalNdPEtWW1w7jcqLt2H2Qvyk613DbkHzUrWa/ak9ffFPHDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367582; c=relaxed/simple;
-	bh=H+dE/llipfgAZoe5Ie+5vbpMk/M5X7Bx+TVYV8dueLM=;
+	s=arc-20240116; t=1748365319; c=relaxed/simple;
+	bh=6UhD6hZMoxuBN7m7cBaJdbkGapOf8YDMmhQ6pOPABvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+64Qy/uN0dMd8jkkZe1oNYnNj8bn7mG+KjDNhJB2RnFSp50mIBgGEi/5eW1KM9lLjEdO7oaFvynBBsd7wyqDP3jNBvIsBxCVGuX45HthK1YpHlr3UVrjQcI4xFXkDUtKA2UE0bx4YpAzELkxWvcniP2lJp89u5x4QA3RJG3AGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAw0KXit; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEFAC4CEE9;
-	Tue, 27 May 2025 17:39:41 +0000 (UTC)
+	 MIME-Version; b=iYaktTGAh8P3lLgWFtHUxIUd+GnZqvbd6FKf2b2SgkHLVQdxZ7o6jU32I4mp6n1ociE4jKUsSxjHAlh1ULUu/oWj+VEzXdyWtJp0SGUhlNFrwnwipSD4OtaUmTAeARwI96hxpqoAiRbPdGIlQQInlOUuB3eFhmxJ1/P5co9DIP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V21Xc2Nz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D0BC4CEE9;
+	Tue, 27 May 2025 17:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367582;
-	bh=H+dE/llipfgAZoe5Ie+5vbpMk/M5X7Bx+TVYV8dueLM=;
+	s=korg; t=1748365319;
+	bh=6UhD6hZMoxuBN7m7cBaJdbkGapOf8YDMmhQ6pOPABvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAw0KXitWUlivrAnDAO0lnRu+cdPlCjDFqakwsUBUPA45gh/EpSw9zFe7MvmKl7y2
-	 rGqSqYTcRQyOO/e+uk1uFLufMzgu5zHXj8+wJ/wIx42jzb9FnoPBSWsAmbGbIGpzzK
-	 mYi0qZ0849eCAEyg7SFtt5YeYsj+lUIikpbD+774=
+	b=V21Xc2Nze9sigw+IsTGMJRxVEM4/3K7LFDFXAq6WWZlHLy0oQTG5w6q96kFhmzCr7
+	 XdXOszxtHhLQbhsOXtl4A22UMxPzxuk9fCGDhXQX4fUUOX2w+0OC9e38knNfFd+BlU
+	 CuT1PIDuj7V8z2TrLT2brYFSDDECiP/M2Y15L0qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Leo Zeng <Leo.Zeng@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 433/783] net/mlx5: Apply rate-limiting to high temperature warning
+Subject: [PATCH 6.12 337/626] Revert "drm/amd/display: Request HW cursor on DCN3.2 with SubVP"
 Date: Tue, 27 May 2025 18:23:50 +0200
-Message-ID: <20250527162530.759070902@linuxfoundation.org>
+Message-ID: <20250527162458.714111468@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +65,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Leo Zeng <Leo.Zeng@amd.com>
 
-[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
+[ Upstream commit 8ae6dfc0b61b170cf13832d4cfe2a0c744e621a7 ]
 
-Wrap the high temperature warning in a temperature event with
-a call to net_ratelimit() to prevent flooding the kernel log
-with repeated warning messages when temperature exceeds the
-threshold multiple times within a short duration.
+This reverts commit 13437c91606c9232c747475e202fe3827cd53264.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reason to revert: idle power regression found in testing.
+
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Leo Zeng <Leo.Zeng@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index cd8d107f7d9e3..fc6e56305cbbc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -169,9 +169,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
- 
--	mlx5_core_warn(events->dev,
--		       "High temperature on sensors with bit set %llx %llx",
--		       value_msb, value_lsb);
-+	if (net_ratelimit())
-+		mlx5_core_warn(events->dev,
-+			       "High temperature on sensors with bit set %llx %llx",
-+			       value_msb, value_lsb);
- 
- 	return NOTIFY_OK;
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index 56dda686e2992..6f490d8d7038c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -626,7 +626,6 @@ static bool dcn32_assign_subvp_pipe(struct dc *dc,
+ 		 * - Not TMZ surface
+ 		 */
+ 		if (pipe->plane_state && !pipe->top_pipe && !pipe->prev_odm_pipe && !dcn32_is_center_timing(pipe) &&
+-				!pipe->stream->hw_cursor_req &&
+ 				!(pipe->stream->timing.pix_clk_100hz / 10000 > DCN3_2_MAX_SUBVP_PIXEL_RATE_MHZ) &&
+ 				(!dcn32_is_psr_capable(pipe) || (context->stream_count == 1 && dc->caps.dmub_caps.subvp_psr)) &&
+ 				dc_state_get_pipe_subvp_type(context, pipe) == SUBVP_NONE &&
 -- 
 2.39.5
 
