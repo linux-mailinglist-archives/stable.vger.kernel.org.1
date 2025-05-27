@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-146774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30219AC547F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C29AC580F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0018F4A2CBD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:01:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38C0A4C0273
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9F923ED75;
-	Tue, 27 May 2025 17:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5241D1DC998;
+	Tue, 27 May 2025 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjgVrXc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZ/CwA3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78386154C15;
-	Tue, 27 May 2025 17:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFEB42A9B;
+	Tue, 27 May 2025 17:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365266; cv=none; b=Rz/lyQx+BndfPWOuXauozZ4E1Ywfs/7wIPjKN1acm/W/DgWAPe10TSxS94xOS1t7+6Wm4OyRDCOs2gOuDYOOsbqiTXGyV5Pz6w7adg/o49fo/5PVt/j8t2wXdKZ86QDVzeKnh2csynQnattz7z/x3gKRggfLwp/VGKUEtXlS8kk=
+	t=1748367627; cv=none; b=JD/AQiK5Yy1OLUvXBGWn6qyFFwjS1mp21YgGeTmy4aWzgEqEsdpyWXUTtAkk2EVeHpUpG5sFrU/V3hmEsmrfWdwbgG+DU9hK7IGj6sWR+vwJpOH5GW+99RuSrKJLN5Vc8Z7HA6DJSMyu75YEtF8uT/e8laI+W4h5pW61tbrrCwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365266; c=relaxed/simple;
-	bh=JcSQScUB9W4/43h8bDvP7q1q5gqK2KS+sjhqgJdylTA=;
+	s=arc-20240116; t=1748367627; c=relaxed/simple;
+	bh=d5PN463wYmTk71twqrtXzfUCwEts+n8bpQH1wkQu3Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEAOWWI+efzi0DWooVoq+ORuuchMAGqtIv8VdxcX3j2BzuSqu05uEVA8YBQiUYg8LdmXZJcJBjdM5ilTQNlaEB6sv7RvIoBSfIT97mrNTIPu5QU8LeF4io6oX/lYMoDGwhs6mBBK1lDB0M9+LAIdh1TmyXZdezGIOgIaWLFwMlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjgVrXc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AD2C4CEE9;
-	Tue, 27 May 2025 17:01:05 +0000 (UTC)
+	 MIME-Version; b=RqAAVgekN83/jthRCwpAjBF9GIu3BXSLMJwkEET7J7pa+sGXGNnERYtacrdpcq+pSpfJu4K+O3GO6M+jhhNHhL6lcnNjdw5bwRmOHt4YCVV6w7ZuF0vqahLI8sutYZXwPDWHMcCPUl1BHhqxK6rzEINLu0ybzUEvbE9mxmB2/RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZ/CwA3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD18C4CEE9;
+	Tue, 27 May 2025 17:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365266;
-	bh=JcSQScUB9W4/43h8bDvP7q1q5gqK2KS+sjhqgJdylTA=;
+	s=korg; t=1748367626;
+	bh=d5PN463wYmTk71twqrtXzfUCwEts+n8bpQH1wkQu3Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WjgVrXc70GKMu4bIX91VNMyxBUohN8ODbxapnv04zaY4y5pv5PRShC2zB7pfwy9ng
-	 hNxLV7QVusTOdbXz2loKYBMDnj73bPXikuz9RQco32d7DTn6YDFkpalMeV54POZ54z
-	 UbGfDw9N2bTf3CFsWjlxSRRxav7Ob/PAAQvbGgNg=
+	b=zZ/CwA3i3IJI7nYKkaLX6ODZ+NGt5vZ00X2xyfW/54I8btO8HVU/UoP4NLE0VNtPA
+	 XW9DtgbyTgrL8v8ae+mmLP2L1aM189KvWKFpP6IIxhuI9/4HP03vDBimQaA+ptFFQo
+	 v55g6CiAgn/JJgrpCahHEBCKcvARkMV5ea/VSwjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 321/626] wifi: rtw89: fw: propagate error code from rtw89_h2c_tx()
-Date: Tue, 27 May 2025 18:23:34 +0200
-Message-ID: <20250527162458.073289274@linuxfoundation.org>
+Subject: [PATCH 6.14 418/783] pmdomain: imx: gpcv2: use proper helper for property detection
+Date: Tue, 27 May 2025 18:23:35 +0200
+Message-ID: <20250527162530.123538415@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit 56e1acaa0f80620b8e2c3410db35b4b975782b0a ]
+[ Upstream commit 6568cb40e73163fa25e2779f7234b169b2e1a32e ]
 
-The error code should be propagated to callers during downloading firmware
-header and body. Remove unnecessary assignment of -1.
+Starting with commit c141ecc3cecd7 ("of: Warn when of_property_read_bool()
+is used on non-boolean properties"), probing the gpcv2 device on i.MX8M
+SoCs leads to warnings when LOCKDEP is enabled.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250217064308.43559-4-pkshih@realtek.com
+Fix this by checking property presence with of_property_present as
+intended.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/20250218-gpcv2-of-property-present-v1-1-3bb1a9789654@pengutronix.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/pmdomain/imx/gpcv2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 620e076d1b597..9d26502a2885a 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -1234,7 +1234,6 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
- 	ret = rtw89_h2c_tx(rtwdev, skb, false);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to send h2c\n");
--		ret = -1;
- 		goto fail;
+diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
+index 958d34d4821b1..105fcaf13a34c 100644
+--- a/drivers/pmdomain/imx/gpcv2.c
++++ b/drivers/pmdomain/imx/gpcv2.c
+@@ -1361,7 +1361,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
  	}
  
-@@ -1311,7 +1310,6 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
- 		ret = rtw89_h2c_tx(rtwdev, skb, true);
- 		if (ret) {
- 			rtw89_err(rtwdev, "failed to send h2c\n");
--			ret = -1;
- 			goto fail;
- 		}
+ 	if (IS_ENABLED(CONFIG_LOCKDEP) &&
+-	    of_property_read_bool(domain->dev->of_node, "power-domains"))
++	    of_property_present(domain->dev->of_node, "power-domains"))
+ 		lockdep_set_subclass(&domain->genpd.mlock, 1);
  
+ 	ret = of_genpd_add_provider_simple(domain->dev->of_node,
 -- 
 2.39.5
 
