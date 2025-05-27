@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE08AC5755
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:31:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B804FAC547D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 238627A5F7B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F19C3A54CE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC5927CCF0;
-	Tue, 27 May 2025 17:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDFA28002F;
+	Tue, 27 May 2025 16:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHJTWcZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5GARyzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0F72110E;
-	Tue, 27 May 2025 17:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AAC27FD63;
+	Tue, 27 May 2025 16:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367105; cv=none; b=Wxw47JDVjHdKJinFbjlG87BF5P0k29RDZKP7NfVnbVdNiGSVHSk1T8ox9eM2uKG/kaDm2P760PkseiajOqZ4BSov0PihkKnZh9hz/ochYmDUbRqVQ+wEMAWU4DuRs/2ktat/bYfOorvGoJC+5u8V71ehfjz4FE9BMH0JA3oDfOM=
+	t=1748364932; cv=none; b=K2u5gbRNWUKo1vf9f8VXxVo/dKJs4etE9wEPZA/Ds2KNN6c4Pb3iu8t3flZQlItrW3nWsGtG6hrgLYnqOn9qfrAeJHWPxoaRz4ewsW1nYbR+UO5OE/F2Pq4UgmaV1tMVyOKMvkrzzqmgNEe4AavpnvzvBUGMMn3+819Hp8PLUwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367105; c=relaxed/simple;
-	bh=qFcFZORoL76IAb1eorXlfOAp+XriqhAdNYF4YCZqPNQ=;
+	s=arc-20240116; t=1748364932; c=relaxed/simple;
+	bh=d5ZXn9vvUxChhdQNKBSo0zKrNDeVpOUmLROWbqKyaMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Azaq+ljmEP1N+XVAIV+tV0I/PbscEmgck90KehD+Xb974FLxaAaOYz3J5q77CVYiFhPCLII4y39KGRR8c+/a/SpJI+DmxP10EoplE1Soy3QqQukFhbTGyor816Lbnxf+ioutpzNcbZ/LTxqBhlPNpOBKL/q9o/1/BbwjSeW2d4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHJTWcZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AC9C4CEE9;
-	Tue, 27 May 2025 17:31:43 +0000 (UTC)
+	 MIME-Version; b=MwpPPEptIuniOxsS4BS9HgJbaLE3G8u98cSFvtCB7+sBfTitAFW7DUcdalr42hSatHf9erag+e60ADEaKkNwCetstZYSTuVhpWNupkxFPlwJ6NzAt4tLsAqs2MYBvS+tislRygqB0C944USeYXAxCsxXCfuqsw2s067SCxidNoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5GARyzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98D1C4CEE9;
+	Tue, 27 May 2025 16:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367103;
-	bh=qFcFZORoL76IAb1eorXlfOAp+XriqhAdNYF4YCZqPNQ=;
+	s=korg; t=1748364932;
+	bh=d5ZXn9vvUxChhdQNKBSo0zKrNDeVpOUmLROWbqKyaMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zHJTWcZanSCu+CoqqZc4U8DHMASJ6TKWFPNBQZVtGZ+ZOoe+156/BZzjI2e0IAeti
-	 KgIPJPShkuHzKr/BUHeXltQkNbmZpxt95okRL7KIu1GTKHcRLvBk15BVpbrZkK5qIb
-	 LlsuncS6XEPLFd6Gir1KjnykM1YlcvsQK509RFqc=
+	b=V5GARyzGDfUsBdfLVCZw9PBtpueDhfaoFC3JQ5kMMVFXBw/xl2kxoM9E43EH45KSH
+	 O/U9ZU3QzhZBqBIvyivE7k/BSsk4ZVgJnMw8YJho9ha8kGLpdGgR6FZgnscOegA+5L
+	 JEDA9z8WWQHaeOMAh0TsIxtjH1cNNrqsdeDaH1jU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 278/783] drm/xe: Disambiguate GMDID-based IP names
+Subject: [PATCH 6.12 182/626] iommu: Keep dev->iommu state consistent
 Date: Tue, 27 May 2025 18:21:15 +0200
-Message-ID: <20250527162524.404030750@linuxfoundation.org>
+Message-ID: <20250527162452.405162989@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo Sousa <gustavo.sousa@intel.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 0695c746f55c875f4cf20bab92533a800a0fe4d6 ]
+[ Upstream commit 3832862eb9c4dfa0e80b2522bfaedbc8a43de97d ]
 
-The name of an IP is a function of its version. As such, given an IP
-version, it should be clear to identify the name of that IP release.
+At the moment, if of_iommu_configure() allocates dev->iommu itself via
+iommu_fwspec_init(), then suffers a DT parsing failure, it cleans up the
+fwspec but leaves the empty dev_iommu hanging around. So far this is
+benign (if a tiny bit wasteful), but we'd like to be able to reason
+about dev->iommu having a consistent and unambiguous lifecycle. Thus
+make sure that the of_iommu cleanup undoes precisely whatever it did.
 
-With the current code, we keep that mapping clear for pre-GMDID IPs, but
-ambiguous for GMDID-based ones. That causes two types of inconveniences:
-
- 1. The end user, who might not have all the necessary mapping at hand,
-    might be confused when seeing different possible IP names in the
-    dmesg log.
-
- 2. It makes a developer who is not familiar with the "IP version" to
-    "Release name" need to resort to looking at the specs to understand
-    see what version maps to what. While the specs should be the
-    authority on the mapping, we should make our lives easier by
-    reflecting that mapping in the source code.
-
-Thus, since the IP name is tied to the version, let's  remove the
-ambiguity by using a "name" field in struct gmdid_map instead of
-accumulating names in the descriptor instances.
-
-This does result in the code having IP name being defined in
-different structs (gmdid_map, xe_graphics_desc, xe_media_desc), but that
-will be resolved in upcoming changes.
-
-A side-effect of this change is that media_xe2 exactly matches
-media_xelpmp now, so we just re-use the latter.
-
-v2:
-  - Drop media_xe2 and re-use media_xelpmp. (Matt)
-
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250221-xe-unify-ip-descriptors-v2-2-5bc0c6d0c13f@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/d219663a3f23001f23d520a883ac622d70b4e642.1740753261.git.robin.murphy@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pci.c       | 36 +++++++++++--------------------
- drivers/gpu/drm/xe/xe_pci_types.h |  1 +
- 2 files changed, 14 insertions(+), 23 deletions(-)
+ drivers/iommu/iommu-priv.h | 2 ++
+ drivers/iommu/iommu.c      | 2 +-
+ drivers/iommu/of_iommu.c   | 6 +++++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
-index 39be74848e447..9b8813a518d72 100644
---- a/drivers/gpu/drm/xe/xe_pci.c
-+++ b/drivers/gpu/drm/xe/xe_pci.c
-@@ -150,7 +150,6 @@ static const struct xe_graphics_desc graphics_xehpc = {
- };
+diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
+index de5b54eaa8bf1..a5913c0b02a0a 100644
+--- a/drivers/iommu/iommu-priv.h
++++ b/drivers/iommu/iommu-priv.h
+@@ -17,6 +17,8 @@ static inline const struct iommu_ops *dev_iommu_ops(struct device *dev)
+ 	return dev->iommu->iommu_dev->ops;
+ }
  
- static const struct xe_graphics_desc graphics_xelpg = {
--	.name = "Xe_LPG",
- 	.hw_engine_mask =
- 		BIT(XE_HW_ENGINE_RCS0) | BIT(XE_HW_ENGINE_BCS0) |
- 		BIT(XE_HW_ENGINE_CCS0),
-@@ -174,8 +173,6 @@ static const struct xe_graphics_desc graphics_xelpg = {
- 		GENMASK(XE_HW_ENGINE_CCS3, XE_HW_ENGINE_CCS0)
++void dev_iommu_free(struct device *dev);
++
+ const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
  
- static const struct xe_graphics_desc graphics_xe2 = {
--	.name = "Xe2_LPG / Xe2_HPG / Xe3_LPG",
--
- 	XE2_GFX_FEATURES,
- };
+ static inline const struct iommu_ops *iommu_fwspec_ops(struct iommu_fwspec *fwspec)
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index cac3dce111689..879009adef407 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -347,7 +347,7 @@ static struct dev_iommu *dev_iommu_get(struct device *dev)
+ 	return param;
+ }
  
-@@ -200,15 +197,6 @@ static const struct xe_media_desc media_xehpm = {
- };
+-static void dev_iommu_free(struct device *dev)
++void dev_iommu_free(struct device *dev)
+ {
+ 	struct dev_iommu *param = dev->iommu;
  
- static const struct xe_media_desc media_xelpmp = {
--	.name = "Xe_LPM+",
--	.hw_engine_mask =
--		GENMASK(XE_HW_ENGINE_VCS7, XE_HW_ENGINE_VCS0) |
--		GENMASK(XE_HW_ENGINE_VECS3, XE_HW_ENGINE_VECS0) |
--		BIT(XE_HW_ENGINE_GSCCS0)
--};
--
--static const struct xe_media_desc media_xe2 = {
--	.name = "Xe2_LPM / Xe2_HPM / Xe3_LPM",
- 	.hw_engine_mask =
- 		GENMASK(XE_HW_ENGINE_VCS7, XE_HW_ENGINE_VCS0) |
- 		GENMASK(XE_HW_ENGINE_VECS3, XE_HW_ENGINE_VECS0) |
-@@ -357,21 +345,21 @@ __diag_pop();
+diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+index e7a6a1611d193..e3fcab925a547 100644
+--- a/drivers/iommu/of_iommu.c
++++ b/drivers/iommu/of_iommu.c
+@@ -118,6 +118,7 @@ static void of_pci_check_device_ats(struct device *dev, struct device_node *np)
+ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		       const u32 *id)
+ {
++	bool dev_iommu_present;
+ 	int err;
  
- /* Map of GMD_ID values to graphics IP */
- static const struct gmdid_map graphics_ip_map[] = {
--	{ 1270, &graphics_xelpg },
--	{ 1271, &graphics_xelpg },
--	{ 1274, &graphics_xelpg },	/* Xe_LPG+ */
--	{ 2001, &graphics_xe2 },
--	{ 2004, &graphics_xe2 },
--	{ 3000, &graphics_xe2 },
--	{ 3001, &graphics_xe2 },
-+	{ 1270, "Xe_LPG", &graphics_xelpg },
-+	{ 1271, "Xe_LPG", &graphics_xelpg },
-+	{ 1274, "Xe_LPG+", &graphics_xelpg },
-+	{ 2001, "Xe2_HPG", &graphics_xe2 },
-+	{ 2004, "Xe2_LPG", &graphics_xe2 },
-+	{ 3000, "Xe3_LPG", &graphics_xe2 },
-+	{ 3001, "Xe3_LPG", &graphics_xe2 },
- };
+ 	if (!master_np)
+@@ -129,6 +130,7 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		mutex_unlock(&iommu_probe_device_lock);
+ 		return 0;
+ 	}
++	dev_iommu_present = dev->iommu;
  
- /* Map of GMD_ID values to media IP */
- static const struct gmdid_map media_ip_map[] = {
--	{ 1300, &media_xelpmp },
--	{ 1301, &media_xe2 },
--	{ 2000, &media_xe2 },
--	{ 3000, &media_xe2 },
-+	{ 1300, "Xe_LPM+", &media_xelpmp },
-+	{ 1301, "Xe2_HPM", &media_xelpmp },
-+	{ 2000, "Xe2_LPM", &media_xelpmp },
-+	{ 3000, "Xe3_LPM", &media_xelpmp },
- };
+ 	/*
+ 	 * We don't currently walk up the tree looking for a parent IOMMU.
+@@ -149,8 +151,10 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		err = of_iommu_configure_device(master_np, dev, id);
+ 	}
  
- /*
-@@ -566,6 +554,7 @@ static void handle_gmdid(struct xe_device *xe,
- 	for (int i = 0; i < ARRAY_SIZE(graphics_ip_map); i++) {
- 		if (ver == graphics_ip_map[i].ver) {
- 			xe->info.graphics_verx100 = ver;
-+			xe->info.graphics_name = graphics_ip_map[i].name;
- 			*graphics = graphics_ip_map[i].ip;
+-	if (err)
++	if (err && dev_iommu_present)
+ 		iommu_fwspec_free(dev);
++	else if (err && dev->iommu)
++		dev_iommu_free(dev);
+ 	mutex_unlock(&iommu_probe_device_lock);
  
- 			break;
-@@ -586,6 +575,7 @@ static void handle_gmdid(struct xe_device *xe,
- 	for (int i = 0; i < ARRAY_SIZE(media_ip_map); i++) {
- 		if (ver == media_ip_map[i].ver) {
- 			xe->info.media_verx100 = ver;
-+			xe->info.media_name = media_ip_map[i].name;
- 			*media = media_ip_map[i].ip;
- 
- 			break;
-diff --git a/drivers/gpu/drm/xe/xe_pci_types.h b/drivers/gpu/drm/xe/xe_pci_types.h
-index 79b0f80376a4d..665b4447b2ebc 100644
---- a/drivers/gpu/drm/xe/xe_pci_types.h
-+++ b/drivers/gpu/drm/xe/xe_pci_types.h
-@@ -44,6 +44,7 @@ struct xe_media_desc {
- 
- struct gmdid_map {
- 	unsigned int ver;
-+	const char *name;
- 	const void *ip;
- };
- 
+ 	if (!err && dev->bus)
 -- 
 2.39.5
 
