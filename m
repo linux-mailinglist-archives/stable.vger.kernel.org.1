@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-147413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE21AC578E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D72AAC54AE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA931BC0DCD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 718A63B2469
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A775D27BF79;
-	Tue, 27 May 2025 17:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26B227F4CB;
+	Tue, 27 May 2025 16:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PF0Q1Ze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qu8BNbba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CAB3C01;
-	Tue, 27 May 2025 17:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF2327FB0C;
+	Tue, 27 May 2025 16:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367265; cv=none; b=S8MkQs/6KDhrhJ5eLfo1c2x7PYSrgBK82c4dsnsMOBQSinWfAMhis5wY1441vIoa+BGQglYAHWt4Xh2S+6lJk2UDW3KwJRpvQsV4k39rnqgVxWyv82NggZuSTGAyvtkjrVpv/m7X9pMVX+5bPn2o9VulxuYgLmENLQmJoRWcg0w=
+	t=1748365040; cv=none; b=P3jCwMgKL8lqllrZ1P0JB5C4LP6bvonMWTBoDsXQxTIWkFFzku7zviukJJzNH8V62JBBMtbcO0LkBXn5cODFFK+DXB5D9fWho5YY6jTculuKkoeMMNBWZxZNrZ2OK4r5/gFu3rWnslYy4rtUBf3XLnqRY6LUW7vzFYJAfNNpKqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367265; c=relaxed/simple;
-	bh=40dR7tJz35nZ1r5th11eMljlZJNfNNHZgdzKqofJTg4=;
+	s=arc-20240116; t=1748365040; c=relaxed/simple;
+	bh=TxdzJy1f8iXig5ocz9VNNcyWCKODRHMj1+E/dfhM+T8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Shgu49fdhk3FmcyfaX6QrF+rtm7pLfc2Z2VgFEaycTEIIp0u3/TWNAaG5I22l/tYlsnHU1j8kBu2ciUFoS1VxwYNMICF75gIwlqd4Q8UOR8+HKOUJPgS1j8/jZY+cHDHB/Vq+hinHhi+kTuW0Fp+JC1uSiZj7DeXG3tiyIA9zko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PF0Q1Ze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6747C4CEE9;
-	Tue, 27 May 2025 17:34:24 +0000 (UTC)
+	 MIME-Version; b=dXWHw/NKTElBNYmgJRIfrgcw6rMn8b/qFGcQ0kL8yXiz5ZSPw9FrY/vEoOZMpVLvjIff0dGeuEGrQe4sOuH6j7vMvMJUZKaHYnYdMuiqbaGaOUP5090VVS/qtpj2vxqSw6ep688NvlT51e9JO+exP/nkcTOSRF82bevt9AdWNh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qu8BNbba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2C7C4CEEB;
+	Tue, 27 May 2025 16:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367265;
-	bh=40dR7tJz35nZ1r5th11eMljlZJNfNNHZgdzKqofJTg4=;
+	s=korg; t=1748365040;
+	bh=TxdzJy1f8iXig5ocz9VNNcyWCKODRHMj1+E/dfhM+T8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PF0Q1Zee6ysKt7KKJBM8PQu1ZfdMeQOhtMfjqZ47nq6pA2UdxaXqzSXGjFv3z1f8
-	 21/pV/vb7lFZKQ1VEsf4gtPcXw420K0tGZM8pAiC1RFyLQLuNDA8Rs4zbkuNEKgcRh
-	 mOg3cUG2w1PdIr2XyBbOiny01nRKplgxQfDGhPqo=
+	b=qu8BNbbaKFYwpI1zKxQ6JLHtrc70WjehfCwRBGXMqrRLMz46UN5QmX5mshXfRbRzD
+	 G48xfHoJfZcDHSb4M+CTSfuDgFq2Uha74u79lEOS3pYp6GxrgpdlAEhrOdZPAHow2O
+	 /6aoOqL18JLMTsWu85VzoAd+Z3GjknvtRwdEQqS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 314/783] PM: sleep: Suppress sleeping parent warning in special case
+Subject: [PATCH 6.12 218/626] ieee802154: ca8210: Use proper setters and getters for bitwise types
 Date: Tue, 27 May 2025 18:21:51 +0200
-Message-ID: <20250527162525.856920959@linuxfoundation.org>
+Message-ID: <20250527162453.874289310@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e8195f0630f1c4c2465074fe81b5fda19efd3148 ]
+[ Upstream commit 169b2262205836a5d1213ff44dca2962276bece1 ]
 
-Currently, if power.no_callbacks is set, device_prepare() will also set
-power.direct_complete for the device.  If power.direct_complete is set
-in device_resume(), the clearing of power.is_prepared will be skipped
-and if new children appear under the device at that point, a warning
-will be printed.
+Sparse complains that the driver doesn't respect the bitwise types:
 
-After commit (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to
-is_prepared), power.is_prepared is generally cleared in device_resume()
-before invoking the resume callback for the device which allows that
-callback to add new children without triggering the warning, but this
-does not happen for devices with power.direct_complete set.
+drivers/net/ieee802154/ca8210.c:1796:27: warning: incorrect type in assignment (different base types)
+drivers/net/ieee802154/ca8210.c:1796:27:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
+drivers/net/ieee802154/ca8210.c:1796:27:    got unsigned short [usertype]
+drivers/net/ieee802154/ca8210.c:1801:25: warning: incorrect type in assignment (different base types)
+drivers/net/ieee802154/ca8210.c:1801:25:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
+drivers/net/ieee802154/ca8210.c:1801:25:    got unsigned short [usertype]
+drivers/net/ieee802154/ca8210.c:1928:28: warning: incorrect type in argument 3 (different base types)
+drivers/net/ieee802154/ca8210.c:1928:28:    expected unsigned short [usertype] dst_pan_id
+drivers/net/ieee802154/ca8210.c:1928:28:    got restricted __le16 [addressable] [usertype] pan_id
 
-This problem is visible in USB where usb_set_interface() can be called
-before device_complete() clears power.is_prepared for interface devices
-and since ep devices are added then, the warning is printed:
+Use proper setters and getters for bitwise types.
 
- usb 1-1: reset high-speed USB device number 3 using ci_hdrc
-  ep_81: PM: parent 1-1:1.1 should not be sleeping
- PM: resume devices took 0.936 seconds
+Note, in accordance with [1] the protocol is little endian.
 
-Since it is legitimate to add the ep devices at that point, the
-warning above is not particularly useful, so get rid of it by
-clearing power.is_prepared in device_resume() for devices with
-power.direct_complete set if they have no PM callbacks, in which
-case they need not actually resume for the new children to work.
-
-Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20250224070049.3338646-1-xu.yang_2@nxp.com
-[ rjw: New subject, changelog edits, rephrased new code comment ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://www.cascoda.com/wp-content/uploads/2018/11/CA-8210_datasheet_0418.pdf [1]
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250305105656.2133487-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ieee802154/ca8210.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 23be2d1b04079..37fe251b4c591 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -933,6 +933,13 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
- 		goto Complete;
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index 753215ebc67c7..a036910f60828 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -1446,8 +1446,7 @@ static u8 mcps_data_request(
+ 	command.pdata.data_req.src_addr_mode = src_addr_mode;
+ 	command.pdata.data_req.dst.mode = dst_address_mode;
+ 	if (dst_address_mode != MAC_MODE_NO_ADDR) {
+-		command.pdata.data_req.dst.pan_id[0] = LS_BYTE(dst_pan_id);
+-		command.pdata.data_req.dst.pan_id[1] = MS_BYTE(dst_pan_id);
++		put_unaligned_le16(dst_pan_id, command.pdata.data_req.dst.pan_id);
+ 		if (dst_address_mode == MAC_MODE_SHORT_ADDR) {
+ 			command.pdata.data_req.dst.address[0] = LS_BYTE(
+ 				dst_addr->short_address
+@@ -1795,12 +1794,12 @@ static int ca8210_skb_rx(
+ 	}
+ 	hdr.source.mode = data_ind[0];
+ 	dev_dbg(&priv->spi->dev, "srcAddrMode: %#03x\n", hdr.source.mode);
+-	hdr.source.pan_id = *(u16 *)&data_ind[1];
++	hdr.source.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[1]));
+ 	dev_dbg(&priv->spi->dev, "srcPanId: %#06x\n", hdr.source.pan_id);
+ 	memcpy(&hdr.source.extended_addr, &data_ind[3], 8);
+ 	hdr.dest.mode = data_ind[11];
+ 	dev_dbg(&priv->spi->dev, "dstAddrMode: %#03x\n", hdr.dest.mode);
+-	hdr.dest.pan_id = *(u16 *)&data_ind[12];
++	hdr.dest.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[12]));
+ 	dev_dbg(&priv->spi->dev, "dstPanId: %#06x\n", hdr.dest.pan_id);
+ 	memcpy(&hdr.dest.extended_addr, &data_ind[14], 8);
  
- 	if (dev->power.direct_complete) {
-+		/*
-+		 * Allow new children to be added under the device after this
-+		 * point if it has no PM callbacks.
-+		 */
-+		if (dev->power.no_pm_callbacks)
-+			dev->power.is_prepared = false;
-+
- 		/* Match the pm_runtime_disable() in device_suspend(). */
- 		pm_runtime_enable(dev);
- 		goto Complete;
+@@ -1927,7 +1926,7 @@ static int ca8210_skb_tx(
+ 	status =  mcps_data_request(
+ 		header.source.mode,
+ 		header.dest.mode,
+-		header.dest.pan_id,
++		le16_to_cpu(header.dest.pan_id),
+ 		(union macaddr *)&header.dest.extended_addr,
+ 		skb->len - mac_len,
+ 		&skb->data[mac_len],
 -- 
 2.39.5
 
