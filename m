@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36463AC56D3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40D3AC5383
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08EEE4A658F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6411B8A1959
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFB627FB02;
-	Tue, 27 May 2025 17:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B803F27BF7C;
+	Tue, 27 May 2025 16:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHEhVFuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdfY1XC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B591E89C;
-	Tue, 27 May 2025 17:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0512CCC0;
+	Tue, 27 May 2025 16:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366726; cv=none; b=JGuc+H0G4oCt8818CgT1oqEcHjH6mTl/GSdgTh30+QLRnC+4zH5xhutq5xVm7/7r71mSNto0bXFniuPhy9Zc145JdXb/vVpnddPUb2IGaIcQhiLh2gP1sWH5FuyVUODtRJ2j6TphcVDPmg+hrQt8gmDjAAPa3P7zJVyNwvfFLOw=
+	t=1748364472; cv=none; b=h9Qofd/64CeXbF2Zk3jEGGO8/ecel+gKm50WSn/qITk0wG5xuoecKfraVVcnzREx3kXlg/RS01DpAC2g/k892cckvqh4DxGn5RLf3H7TgtSBRBHLOelYIVFcGy8qEdejvTn5tnC0yrKomwrkPhQTi1jNon1p+Gt+WkLFRw5x8uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366726; c=relaxed/simple;
-	bh=lxdIAmgwt0ooDai284weOREyGbPIjEwx9rzN+J1OHD8=;
+	s=arc-20240116; t=1748364472; c=relaxed/simple;
+	bh=hmx9r0T8dE+QE53nZ+PSgPq0uYQmj+1X8YXbi8d99Ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6cyRhewB+0MA26z/GiZfK2ZKO4CnT/iZ1e/nlinWl8BVtzuz0eUKaLnKuIUKf9vkMuLVoFnfjRiP/TZErXupkqeLdkoFci+OrWjErLBSAWenKizkd9vABujIuy2FDsDPkzR4yt/eoEOTJIyK5/slG7nRLztEDy8Ws6mrTUy408=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHEhVFuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871C0C4CEE9;
-	Tue, 27 May 2025 17:25:25 +0000 (UTC)
+	 MIME-Version; b=g83+wI50ltSljHXy07w/1qU1NyQZALKhlquS0Ovf55BQXhd1xJ9AoInD0OH3/MILhMqB9YYH5wT7S32opD1RHSHKmpAfS4chUafwN1O8ibI80VmJbcytnN9dwQljy4vGSHcKg+q+RDpvq03h5GBasdrn89mXN6L5iDCnJY5o0PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdfY1XC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F030FC4CEE9;
+	Tue, 27 May 2025 16:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366725;
-	bh=lxdIAmgwt0ooDai284weOREyGbPIjEwx9rzN+J1OHD8=;
+	s=korg; t=1748364472;
+	bh=hmx9r0T8dE+QE53nZ+PSgPq0uYQmj+1X8YXbi8d99Ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHEhVFuogFwB1Wy7TKPs+eRQzXKkKnZRdY0eOQU412QVhm3+liD5LV/+ncixEFZdJ
-	 2bqXQXVWcoEftLNAdFvpCB1+llY1dOIpllzFksqzXXytQ3oEgTPSJ5HyJd29/zcfBH
-	 LJosbGWZgfsGZ4c+mmLns946LtTKK2Fx4VtJg2T8=
+	b=RdfY1XC8ytNkebgPIVIPVEPZ6tgdjL0ou91OTUsV3/s4CBAVo281W/+Zr6vtMD02C
+	 GDL7w73mLBd8U6buWjhYNCvsAkSbEMTVloevs95NfdYJoiZr9MAIYT+lCzHqtvvsAS
+	 tSSTcPArKEwtSt8PhbnrzZlho18UTyBwxOZArTU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 162/783] bpftool: Using the right format specifiers
-Date: Tue, 27 May 2025 18:19:19 +0200
-Message-ID: <20250527162519.765795333@linuxfoundation.org>
+Subject: [PATCH 6.12 067/626] fbdev: core: tileblit: Implement missing margin clearing for tileblit
+Date: Tue, 27 May 2025 18:19:20 +0200
+Message-ID: <20250527162447.771508048@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,351 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Zsolt Kajtar <soci@c64.rulez.org>
 
-[ Upstream commit 3775be3417cc3243b0df0492bd308559dcf0560b ]
+[ Upstream commit 76d3ca89981354e1f85a3e0ad9ac4217d351cc72 ]
 
-Fixed some formatting specifiers errors, such as using %d for int and %u
-for unsigned int, as well as other byte-length types.
+I was wondering why there's garbage at the bottom of the screen when
+tile blitting is used with an odd mode like 1080, 600 or 200. Sure there's
+only space for half a tile but the same area is clean when the buffer
+is bitmap.
 
-Perform type cast using the type derived from the data type itself, for
-example, if it's originally an int, it will be cast to unsigned int if
-forced to unsigned.
+Then later I found that it's supposed to be cleaned but that's not
+implemented. So I took what's in bitblit and adapted it for tileblit.
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250311112809.81901-3-jiayuan.chen@linux.dev
+This implementation was tested for both the horizontal and vertical case,
+and now does the same as what's done for bitmap buffers.
+
+If anyone is interested to reproduce the problem then I could bet that'd
+be on a S3 or Ark. Just set up a mode with an odd line count and make
+sure that the virtual size covers the complete tile at the bottom. E.g.
+for 600 lines that's 608 virtual lines for a 16 tall tile. Then the
+bottom area should be cleaned.
+
+For the right side it's more difficult as there the drivers won't let an
+odd size happen, unless the code is modified. But once it reports back a
+few pixel columns short then fbcon won't use the last column. With the
+patch that column is now clean.
+
+Btw. the virtual size should be rounded up by the driver for both axes
+(not only the horizontal) so that it's dividable by the tile size.
+That's a driver bug but correcting it is not in scope for this patch.
+
+Implement missing margin clearing for tileblit
+
+Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/disasm.c                |  4 ++--
- tools/bpf/bpftool/btf.c            | 14 +++++++-------
- tools/bpf/bpftool/btf_dumper.c     |  2 +-
- tools/bpf/bpftool/cgroup.c         |  2 +-
- tools/bpf/bpftool/common.c         |  4 ++--
- tools/bpf/bpftool/jit_disasm.c     |  3 ++-
- tools/bpf/bpftool/map_perf_ring.c  |  6 +++---
- tools/bpf/bpftool/net.c            |  4 ++--
- tools/bpf/bpftool/netlink_dumper.c |  6 +++---
- tools/bpf/bpftool/prog.c           | 12 ++++++------
- tools/bpf/bpftool/tracelog.c       |  2 +-
- tools/bpf/bpftool/xlated_dumper.c  |  6 +++---
- 12 files changed, 33 insertions(+), 32 deletions(-)
+ drivers/video/fbdev/core/tileblit.c | 37 ++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/disasm.c b/kernel/bpf/disasm.c
-index 309c4aa1b026a..c235acbd65095 100644
---- a/kernel/bpf/disasm.c
-+++ b/kernel/bpf/disasm.c
-@@ -202,7 +202,7 @@ void print_bpf_insn(const struct bpf_insn_cbs *cbs,
- 				insn->dst_reg, class == BPF_ALU ? 'w' : 'r',
- 				insn->dst_reg);
- 		} else if (is_addr_space_cast(insn)) {
--			verbose(cbs->private_data, "(%02x) r%d = addr_space_cast(r%d, %d, %d)\n",
-+			verbose(cbs->private_data, "(%02x) r%d = addr_space_cast(r%d, %u, %u)\n",
- 				insn->code, insn->dst_reg,
- 				insn->src_reg, ((u32)insn->imm) >> 16, (u16)insn->imm);
- 		} else if (is_mov_percpu_addr(insn)) {
-@@ -369,7 +369,7 @@ void print_bpf_insn(const struct bpf_insn_cbs *cbs,
- 				insn->code, class == BPF_JMP32 ? 'w' : 'r',
- 				insn->dst_reg,
- 				bpf_jmp_string[BPF_OP(insn->code) >> 4],
--				insn->imm, insn->off);
-+				(u32)insn->imm, insn->off);
- 		}
- 	} else {
- 		verbose(cbs->private_data, "(%02x) %s\n",
-diff --git a/tools/bpf/bpftool/btf.c b/tools/bpf/bpftool/btf.c
-index 2636655ac1808..6b14cbfa58aa2 100644
---- a/tools/bpf/bpftool/btf.c
-+++ b/tools/bpf/bpftool/btf.c
-@@ -253,7 +253,7 @@ static int dump_btf_type(const struct btf *btf, __u32 id,
- 				if (btf_kflag(t))
- 					printf("\n\t'%s' val=%d", name, v->val);
- 				else
--					printf("\n\t'%s' val=%u", name, v->val);
-+					printf("\n\t'%s' val=%u", name, (__u32)v->val);
- 			}
- 		}
- 		if (json_output)
-@@ -1022,7 +1022,7 @@ static int do_dump(int argc, char **argv)
- 			for (i = 0; i < root_type_cnt; i++) {
- 				if (root_type_ids[i] == root_id) {
- 					err = -EINVAL;
--					p_err("duplicate root_id %d supplied", root_id);
-+					p_err("duplicate root_id %u supplied", root_id);
- 					goto done;
- 				}
- 			}
-@@ -1132,7 +1132,7 @@ build_btf_type_table(struct hashmap *tab, enum bpf_obj_type type,
- 			break;
- 		default:
- 			err = -1;
--			p_err("unexpected object type: %d", type);
-+			p_err("unexpected object type: %u", type);
- 			goto err_free;
- 		}
- 		if (err) {
-@@ -1155,7 +1155,7 @@ build_btf_type_table(struct hashmap *tab, enum bpf_obj_type type,
- 			break;
- 		default:
- 			err = -1;
--			p_err("unexpected object type: %d", type);
-+			p_err("unexpected object type: %u", type);
- 			goto err_free;
- 		}
- 		if (fd < 0) {
-@@ -1188,7 +1188,7 @@ build_btf_type_table(struct hashmap *tab, enum bpf_obj_type type,
- 			break;
- 		default:
- 			err = -1;
--			p_err("unexpected object type: %d", type);
-+			p_err("unexpected object type: %u", type);
- 			goto err_free;
- 		}
- 		if (!btf_id)
-@@ -1254,12 +1254,12 @@ show_btf_plain(struct bpf_btf_info *info, int fd,
- 
- 	n = 0;
- 	hashmap__for_each_key_entry(btf_prog_table, entry, info->id) {
--		printf("%s%lu", n++ == 0 ? "  prog_ids " : ",", entry->value);
-+		printf("%s%lu", n++ == 0 ? "  prog_ids " : ",", (unsigned long)entry->value);
- 	}
- 
- 	n = 0;
- 	hashmap__for_each_key_entry(btf_map_table, entry, info->id) {
--		printf("%s%lu", n++ == 0 ? "  map_ids " : ",", entry->value);
-+		printf("%s%lu", n++ == 0 ? "  map_ids " : ",", (unsigned long)entry->value);
- 	}
- 
- 	emit_obj_refs_plain(refs_table, info->id, "\n\tpids ");
-diff --git a/tools/bpf/bpftool/btf_dumper.c b/tools/bpf/bpftool/btf_dumper.c
-index 527fe867a8fbd..4e896d8a2416e 100644
---- a/tools/bpf/bpftool/btf_dumper.c
-+++ b/tools/bpf/bpftool/btf_dumper.c
-@@ -653,7 +653,7 @@ static int __btf_dumper_type_only(const struct btf *btf, __u32 type_id,
- 	case BTF_KIND_ARRAY:
- 		array = (struct btf_array *)(t + 1);
- 		BTF_PRINT_TYPE(array->type);
--		BTF_PRINT_ARG("[%d]", array->nelems);
-+		BTF_PRINT_ARG("[%u]", array->nelems);
- 		break;
- 	case BTF_KIND_PTR:
- 		BTF_PRINT_TYPE(t->type);
-diff --git a/tools/bpf/bpftool/cgroup.c b/tools/bpf/bpftool/cgroup.c
-index 9af426d432993..93b139bfb9880 100644
---- a/tools/bpf/bpftool/cgroup.c
-+++ b/tools/bpf/bpftool/cgroup.c
-@@ -191,7 +191,7 @@ static int show_bpf_prog(int id, enum bpf_attach_type attach_type,
- 		if (attach_btf_name)
- 			printf(" %-15s", attach_btf_name);
- 		else if (info.attach_btf_id)
--			printf(" attach_btf_obj_id=%d attach_btf_id=%d",
-+			printf(" attach_btf_obj_id=%u attach_btf_id=%u",
- 			       info.attach_btf_obj_id, info.attach_btf_id);
- 		printf("\n");
- 	}
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index 9b75639434b81..b921231d602e4 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -713,7 +713,7 @@ ifindex_to_arch(__u32 ifindex, __u64 ns_dev, __u64 ns_ino, const char **opt)
- 	int vendor_id;
- 
- 	if (!ifindex_to_name_ns(ifindex, ns_dev, ns_ino, devname)) {
--		p_err("Can't get net device name for ifindex %d: %s", ifindex,
-+		p_err("Can't get net device name for ifindex %u: %s", ifindex,
- 		      strerror(errno));
- 		return NULL;
- 	}
-@@ -738,7 +738,7 @@ ifindex_to_arch(__u32 ifindex, __u64 ns_dev, __u64 ns_ino, const char **opt)
- 	/* No NFP support in LLVM, we have no valid triple to return. */
- 	default:
- 		p_err("Can't get arch name for device vendor id 0x%04x",
--		      vendor_id);
-+		      (unsigned int)vendor_id);
- 		return NULL;
- 	}
- }
-diff --git a/tools/bpf/bpftool/jit_disasm.c b/tools/bpf/bpftool/jit_disasm.c
-index c032d2c6ab6d5..8895b4e1f6903 100644
---- a/tools/bpf/bpftool/jit_disasm.c
-+++ b/tools/bpf/bpftool/jit_disasm.c
-@@ -343,7 +343,8 @@ int disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
+diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
+index 45b0828fad1cf..d342b90c42b7f 100644
+--- a/drivers/video/fbdev/core/tileblit.c
++++ b/drivers/video/fbdev/core/tileblit.c
+@@ -74,7 +74,42 @@ static void tile_putcs(struct vc_data *vc, struct fb_info *info,
+ static void tile_clear_margins(struct vc_data *vc, struct fb_info *info,
+ 			       int color, int bottom_only)
  {
- 	const struct bpf_line_info *linfo = NULL;
- 	unsigned int nr_skip = 0;
--	int count, i, pc = 0;
-+	int count, i;
-+	unsigned int pc = 0;
- 	disasm_ctx_t ctx;
- 
- 	if (!len)
-diff --git a/tools/bpf/bpftool/map_perf_ring.c b/tools/bpf/bpftool/map_perf_ring.c
-index 21d7d447e1f3b..552b4ca40c27c 100644
---- a/tools/bpf/bpftool/map_perf_ring.c
-+++ b/tools/bpf/bpftool/map_perf_ring.c
-@@ -91,15 +91,15 @@ print_bpf_output(void *private_data, int cpu, struct perf_event_header *event)
- 		jsonw_end_object(json_wtr);
- 	} else {
- 		if (e->header.type == PERF_RECORD_SAMPLE) {
--			printf("== @%lld.%09lld CPU: %d index: %d =====\n",
-+			printf("== @%llu.%09llu CPU: %d index: %d =====\n",
- 			       e->time / 1000000000ULL, e->time % 1000000000ULL,
- 			       cpu, idx);
- 			fprint_hex(stdout, e->data, e->size, " ");
- 			printf("\n");
- 		} else if (e->header.type == PERF_RECORD_LOST) {
--			printf("lost %lld events\n", lost->lost);
-+			printf("lost %llu events\n", lost->lost);
- 		} else {
--			printf("unknown event type=%d size=%d\n",
-+			printf("unknown event type=%u size=%u\n",
- 			       e->header.type, e->header.size);
- 		}
- 	}
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index d2242d9f84411..64f958f437b01 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -476,7 +476,7 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
- 	for (i = 0; i < optq.count; i++) {
- 		NET_START_OBJECT;
- 		NET_DUMP_STR("devname", "%s", dev->devname);
--		NET_DUMP_UINT("ifindex", "(%u)", dev->ifindex);
-+		NET_DUMP_UINT("ifindex", "(%u)", (unsigned int)dev->ifindex);
- 		NET_DUMP_STR("kind", " %s", attach_loc_strings[loc]);
- 		ret = __show_dev_tc_bpf_name(prog_ids[i], prog_name,
- 					     sizeof(prog_name));
-@@ -831,7 +831,7 @@ static void show_link_netfilter(void)
- 		if (err) {
- 			if (errno == ENOENT)
- 				break;
--			p_err("can't get next link: %s (id %d)", strerror(errno), id);
-+			p_err("can't get next link: %s (id %u)", strerror(errno), id);
- 			break;
- 		}
- 
-diff --git a/tools/bpf/bpftool/netlink_dumper.c b/tools/bpf/bpftool/netlink_dumper.c
-index 5f65140b003b2..0a3c7e96c797a 100644
---- a/tools/bpf/bpftool/netlink_dumper.c
-+++ b/tools/bpf/bpftool/netlink_dumper.c
-@@ -45,7 +45,7 @@ static int do_xdp_dump_one(struct nlattr *attr, unsigned int ifindex,
- 	NET_START_OBJECT;
- 	if (name)
- 		NET_DUMP_STR("devname", "%s", name);
--	NET_DUMP_UINT("ifindex", "(%d)", ifindex);
-+	NET_DUMP_UINT("ifindex", "(%u)", ifindex);
- 
- 	if (mode == XDP_ATTACHED_MULTI) {
- 		if (json_output) {
-@@ -74,7 +74,7 @@ int do_xdp_dump(struct ifinfomsg *ifinfo, struct nlattr **tb)
- 	if (!tb[IFLA_XDP])
- 		return 0;
- 
--	return do_xdp_dump_one(tb[IFLA_XDP], ifinfo->ifi_index,
-+	return do_xdp_dump_one(tb[IFLA_XDP], (unsigned int)ifinfo->ifi_index,
- 			       libbpf_nla_getattr_str(tb[IFLA_IFNAME]));
+-	return;
++	unsigned int cw = vc->vc_font.width;
++	unsigned int ch = vc->vc_font.height;
++	unsigned int rw = info->var.xres - (vc->vc_cols*cw);
++	unsigned int bh = info->var.yres - (vc->vc_rows*ch);
++	unsigned int rs = info->var.xres - rw;
++	unsigned int bs = info->var.yres - bh;
++	unsigned int vwt = info->var.xres_virtual / cw;
++	unsigned int vht = info->var.yres_virtual / ch;
++	struct fb_tilerect rect;
++
++	rect.index = vc->vc_video_erase_char &
++		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
++	rect.fg = color;
++	rect.bg = color;
++
++	if ((int) rw > 0 && !bottom_only) {
++		rect.sx = (info->var.xoffset + rs + cw - 1) / cw;
++		rect.sy = 0;
++		rect.width = (rw + cw - 1) / cw;
++		rect.height = vht;
++		if (rect.width + rect.sx > vwt)
++			rect.width = vwt - rect.sx;
++		if (rect.sx < vwt)
++			info->tileops->fb_tilefill(info, &rect);
++	}
++
++	if ((int) bh > 0) {
++		rect.sx = info->var.xoffset / cw;
++		rect.sy = (info->var.yoffset + bs) / ch;
++		rect.width = rs / cw;
++		rect.height = (bh + ch - 1) / ch;
++		if (rect.height + rect.sy > vht)
++			rect.height = vht - rect.sy;
++		if (rect.sy < vht)
++			info->tileops->fb_tilefill(info, &rect);
++	}
  }
  
-@@ -168,7 +168,7 @@ int do_filter_dump(struct tcmsg *info, struct nlattr **tb, const char *kind,
- 		NET_START_OBJECT;
- 		if (devname[0] != '\0')
- 			NET_DUMP_STR("devname", "%s", devname);
--		NET_DUMP_UINT("ifindex", "(%u)", ifindex);
-+		NET_DUMP_UINT("ifindex", "(%u)", (unsigned int)ifindex);
- 		NET_DUMP_STR("kind", " %s", kind);
- 		ret = do_bpf_filter_dump(tb[TCA_OPTIONS]);
- 		NET_END_OBJECT_FINAL;
-diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-index 52ffb74ae4e89..f010295350be5 100644
---- a/tools/bpf/bpftool/prog.c
-+++ b/tools/bpf/bpftool/prog.c
-@@ -521,10 +521,10 @@ static void print_prog_header_plain(struct bpf_prog_info *info, int fd)
- 	print_dev_plain(info->ifindex, info->netns_dev, info->netns_ino);
- 	printf("%s", info->gpl_compatible ? "  gpl" : "");
- 	if (info->run_time_ns)
--		printf(" run_time_ns %lld run_cnt %lld",
-+		printf(" run_time_ns %llu run_cnt %llu",
- 		       info->run_time_ns, info->run_cnt);
- 	if (info->recursion_misses)
--		printf(" recursion_misses %lld", info->recursion_misses);
-+		printf(" recursion_misses %llu", info->recursion_misses);
- 	printf("\n");
- }
- 
-@@ -569,7 +569,7 @@ static void print_prog_plain(struct bpf_prog_info *info, int fd, bool orphaned)
- 	}
- 
- 	if (info->btf_id)
--		printf("\n\tbtf_id %d", info->btf_id);
-+		printf("\n\tbtf_id %u", info->btf_id);
- 
- 	emit_obj_refs_plain(refs_table, info->id, "\n\tpids ");
- 
-@@ -1164,7 +1164,7 @@ static int get_run_data(const char *fname, void **data_ptr, unsigned int *size)
- 		}
- 		if (nb_read > buf_size - block_size) {
- 			if (buf_size == UINT32_MAX) {
--				p_err("data_in/ctx_in is too long (max: %d)",
-+				p_err("data_in/ctx_in is too long (max: %u)",
- 				      UINT32_MAX);
- 				goto err_free;
- 			}
-@@ -2252,7 +2252,7 @@ static char *profile_target_name(int tgt_fd)
- 
- 	t = btf__type_by_id(btf, func_info.type_id);
- 	if (!t) {
--		p_err("btf %d doesn't have type %d",
-+		p_err("btf %u doesn't have type %u",
- 		      info.btf_id, func_info.type_id);
- 		goto out;
- 	}
-@@ -2330,7 +2330,7 @@ static int profile_open_perf_events(struct profiler_bpf *obj)
- 			continue;
- 		for (cpu = 0; cpu < obj->rodata->num_cpu; cpu++) {
- 			if (profile_open_perf_event(m, cpu, map_fd)) {
--				p_err("failed to create event %s on cpu %d",
-+				p_err("failed to create event %s on cpu %u",
- 				      metrics[m].name, cpu);
- 				return -1;
- 			}
-diff --git a/tools/bpf/bpftool/tracelog.c b/tools/bpf/bpftool/tracelog.c
-index bf1f022127972..31d806e3bdaaa 100644
---- a/tools/bpf/bpftool/tracelog.c
-+++ b/tools/bpf/bpftool/tracelog.c
-@@ -78,7 +78,7 @@ static bool get_tracefs_pipe(char *mnt)
- 		return false;
- 
- 	/* Allow room for NULL terminating byte and pipe file name */
--	snprintf(format, sizeof(format), "%%*s %%%zds %%99s %%*s %%*d %%*d\\n",
-+	snprintf(format, sizeof(format), "%%*s %%%zus %%99s %%*s %%*d %%*d\\n",
- 		 PATH_MAX - strlen(pipe_name) - 1);
- 	while (fscanf(fp, format, mnt, type) == 2)
- 		if (strcmp(type, fstype) == 0) {
-diff --git a/tools/bpf/bpftool/xlated_dumper.c b/tools/bpf/bpftool/xlated_dumper.c
-index d0094345fb2bc..5e7cb8b36fef2 100644
---- a/tools/bpf/bpftool/xlated_dumper.c
-+++ b/tools/bpf/bpftool/xlated_dumper.c
-@@ -199,13 +199,13 @@ static const char *print_imm(void *private_data,
- 
- 	if (insn->src_reg == BPF_PSEUDO_MAP_FD)
- 		snprintf(dd->scratch_buff, sizeof(dd->scratch_buff),
--			 "map[id:%u]", insn->imm);
-+			 "map[id:%d]", insn->imm);
- 	else if (insn->src_reg == BPF_PSEUDO_MAP_VALUE)
- 		snprintf(dd->scratch_buff, sizeof(dd->scratch_buff),
--			 "map[id:%u][0]+%u", insn->imm, (insn + 1)->imm);
-+			 "map[id:%d][0]+%d", insn->imm, (insn + 1)->imm);
- 	else if (insn->src_reg == BPF_PSEUDO_MAP_IDX_VALUE)
- 		snprintf(dd->scratch_buff, sizeof(dd->scratch_buff),
--			 "map[idx:%u]+%u", insn->imm, (insn + 1)->imm);
-+			 "map[idx:%d]+%d", insn->imm, (insn + 1)->imm);
- 	else if (insn->src_reg == BPF_PSEUDO_FUNC)
- 		snprintf(dd->scratch_buff, sizeof(dd->scratch_buff),
- 			 "subprog[%+d]", insn->imm);
+ static void tile_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
 -- 
 2.39.5
 
