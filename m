@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-146604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F06AC53D6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC88FAC53BA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C04B24A20D3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:52:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82BA97A99BF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F96B27FB0C;
-	Tue, 27 May 2025 16:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFDE276057;
+	Tue, 27 May 2025 16:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/D6TChr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tf8ExFxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE51C276057;
-	Tue, 27 May 2025 16:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DC0194A45;
+	Tue, 27 May 2025 16:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364741; cv=none; b=Q5ZOIOIp1JNWaA4vahTOW5uTkG36PGtzQZMemaBuXReFOlDSLS5dRISsgwEHgI66xPiBxwL5w7M357p2WIgXB8mt5B/4eJho18JjBHXMVEgj2pExx68YWC2lDo5Eh63ef83ggLdLKRXda1jTt1Gn4U99/wGR+FnKwZv+aPsShO4=
+	t=1748364635; cv=none; b=cYx8KYhCko1qHSP1+wEt9Izy5tx9UYE5klzNVdn16NmtbbrqWCAQSswY7+IoMQl1phmTD/ZqqWBtbGiemCDI19ADdqP3CYEhvxrogH7s+jO/xEsEU7R/YGDiQTh6oQFgdJg5NUVURTGi6+9rMt9Qln8qP5n6Y9JTamHWPPCjc6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364741; c=relaxed/simple;
-	bh=Xm222L8UyWkhu/MtAKjCiI5cUJRuPLTpU9Tz9tVcgyw=;
+	s=arc-20240116; t=1748364635; c=relaxed/simple;
+	bh=TNTlFeKM2vq5PxrEU8qDKwcyqzU7wknDK2BeysJmQmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLjeRsj6waQIkaVMcZETevm2FRD2mrTd6G0P64gzdu1bgItpgVEIgnNB9hveW3RmZEKc3njfVlqt5ptqwJrD47e+SrXCM5MlhlHYQXz1T3ziwJnMnswrvW5jjQv3truKPqNmFq2XV65tv/TNw+eaSuPjVduv6IrgG5vvZVj+2AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/D6TChr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1A4C4CEE9;
-	Tue, 27 May 2025 16:52:20 +0000 (UTC)
+	 MIME-Version; b=e7+SfTFQU3yat9NZsabwQHCZtbVoKs5ltdJxl2c2LfoaCueM1Gvts4lVRxA6mq7FPgmU34JIcK+v9VmbDyFFdV15V8orC2JfQnAs2RzjLKOZqImO1EZVSWIC5tnaSWaBNL1RYpZ8+OKq4xy5E3GpeavWvrArVCtUEoC7dGlBdws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tf8ExFxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D586C4CEE9;
+	Tue, 27 May 2025 16:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364740;
-	bh=Xm222L8UyWkhu/MtAKjCiI5cUJRuPLTpU9Tz9tVcgyw=;
+	s=korg; t=1748364635;
+	bh=TNTlFeKM2vq5PxrEU8qDKwcyqzU7wknDK2BeysJmQmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/D6TChrZaYlwxaD9YIaGJxC7eYxw2F40P+eeTlQBOng8mJ8udMeCfQsLG7O0Ls7d
-	 Z5siJmQpYyp8T4NthpKBEfT4szUBXbEveVrfyOMriWdU0Ib3H3RQ4fnGCHCp8Le6RO
-	 qqRKtDjzuWsQPQd1w6wpk1VQatkADVX9eCCNA99k=
+	b=tf8ExFxBb5hGv8m+IeuTqf7nI7F76gsdYDpc1J0VYXlap6xfk3/cDnEEt1Stw1M0/
+	 wibP4NoD/OXifS/6HJzjZZJIYNFKCL9/iY3r+RXcz8QFkgEsiG8khHoA05Ta6iEESp
+	 OMmAhlnR9QQ6ZcH3dkOFnc00Z4As6YwtApNj9bQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sohil Mehta <sohil.mehta@intel.com>,
+	Philip Redkin <me@rarity.fan>,
 	Ingo Molnar <mingo@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rik van Riel <riel@surriel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/626] x86/microcode: Update the Intel processor flag scan check
-Date: Tue, 27 May 2025 18:20:03 +0200
-Message-ID: <20250527162449.509012793@linuxfoundation.org>
+Subject: [PATCH 6.12 111/626] x86/mm: Check return value from memblock_phys_alloc_range()
+Date: Tue, 27 May 2025 18:20:04 +0200
+Message-ID: <20250527162449.546737011@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -67,57 +69,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sohil Mehta <sohil.mehta@intel.com>
+From: Philip Redkin <me@rarity.fan>
 
-[ Upstream commit 7e6b0a2e4152f4046af95eeb46f8b4f9b2a7398d ]
+[ Upstream commit 631ca8909fd5c62b9fda9edda93924311a78a9c4 ]
 
-The Family model check to read the processor flag MSR is misleading and
-potentially incorrect. It doesn't consider Family while comparing the
-model number. The original check did have a Family number but it got
-lost/moved during refactoring.
+At least with CONFIG_PHYSICAL_START=0x100000, if there is < 4 MiB of
+contiguous free memory available at this point, the kernel will crash
+and burn because memblock_phys_alloc_range() returns 0 on failure,
+which leads memblock_phys_free() to throw the first 4 MiB of physical
+memory to the wolves.
 
-intel_collect_cpu_info() is called through multiple paths such as early
-initialization, CPU hotplug as well as IFS image load. Some of these
-flows would be error prone due to the ambiguous check.
+At a minimum it should fail gracefully with a meaningful diagnostic,
+but in fact everything seems to work fine without the weird reserve
+allocation.
 
-Correct the processor flag scan check to use a Family number and update
-it to a VFM based one to make it more readable.
-
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Philip Redkin <me@rarity.fan>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250219184133.816753-4-sohil.mehta@intel.com
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/94b3e98f-96a7-3560-1f76-349eb95ccf7f@rarity.fan
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/intel-family.h   | 1 +
- arch/x86/kernel/cpu/microcode/intel.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/mm/init.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 62d8b9448dc5c..c6198fbcc1d77 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -46,6 +46,7 @@
- #define INTEL_ANY			IFM(X86_FAMILY_ANY, X86_MODEL_ANY)
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 101725c149c42..9cbc1e6057d3c 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -645,8 +645,13 @@ static void __init memory_map_top_down(unsigned long map_start,
+ 	 */
+ 	addr = memblock_phys_alloc_range(PMD_SIZE, PMD_SIZE, map_start,
+ 					 map_end);
+-	memblock_phys_free(addr, PMD_SIZE);
+-	real_end = addr + PMD_SIZE;
++	if (!addr) {
++		pr_warn("Failed to release memory for alloc_low_pages()");
++		real_end = max(map_start, ALIGN_DOWN(map_end, PMD_SIZE));
++	} else {
++		memblock_phys_free(addr, PMD_SIZE);
++		real_end = addr + PMD_SIZE;
++	}
  
- #define INTEL_PENTIUM_PRO		IFM(6, 0x01)
-+#define INTEL_PENTIUM_III_DESCHUTES	IFM(6, 0x05)
- 
- #define INTEL_CORE_YONAH		IFM(6, 0x0E)
- 
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index df5650eb3f088..362cc71bbc866 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -74,7 +74,7 @@ void intel_collect_cpu_info(struct cpu_signature *sig)
- 	sig->pf = 0;
- 	sig->rev = intel_get_microcode_revision();
- 
--	if (x86_model(sig->sig) >= 5 || x86_family(sig->sig) > 6) {
-+	if (IFM(x86_family(sig->sig), x86_model(sig->sig)) >= INTEL_PENTIUM_III_DESCHUTES) {
- 		unsigned int val[2];
- 
- 		/* get processor flags from MSR 0x17 */
+ 	/* step_size need to be small so pgt_buf from BRK could cover it */
+ 	step_size = PMD_SIZE;
 -- 
 2.39.5
 
