@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-146871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87680AC54FC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E846AC550D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51B4B4A3553
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B861BA57E5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA8727A115;
-	Tue, 27 May 2025 17:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEC8276057;
+	Tue, 27 May 2025 17:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZAH4Dgh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gosb9tr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B74B2110E;
-	Tue, 27 May 2025 17:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182792110E;
+	Tue, 27 May 2025 17:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365565; cv=none; b=bWS4quZ+u6cesPYQ/aHi/8wIyfITYfaV9EVNHG6jXoASFA/xH31G09yFoQYkGoSrVt46FkBJybInN8kDWtjFAy/yKlZs+AknHJhSXv+YwrI8+28kvwetULjO3uAXZ+Xfc1RY+f3LR0aOpojPB9KujQcJkSSTtj/mGSLdrZ9c/Fo=
+	t=1748365599; cv=none; b=eILVE5JNickqr6Amdsfow5gnmjf4+w1is7npoMDKj+X0S1BStFt4pESmeIzk32QPwd5JQUNZNULn+ByJ3bpkKvEjoE8SnvxzuSEKUSTUtJFpX6zw332clDEDqkMJdZ7O2SNDu0bPceXTmRCYGiDTTHruuF/58zKMPgyyfxns5qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365565; c=relaxed/simple;
-	bh=WaAF+63tcBVjKW+tllGXYdZJ1fE/gX2KI7zfXCcGa0E=;
+	s=arc-20240116; t=1748365599; c=relaxed/simple;
+	bh=TOv3kPrI9gAX5vKmWPiBWaWR9dambjY9kpDUx9RFoHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CHPw/yxP2/S+INbqjjl7y+uDf0qWMPFJWnQr3qYb9ktKXwEQNLPYJGQcIUz5I4wqWVCaXDXiQPzlBXWBcxGGL7Kbxmb68RhPmUvf6EjMmH73Utds+SIitrmd5MuSvcxd0GDiKWe8KXhEjcIhEMMueRg7UZUYbIIsaSV7u+TcEuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZAH4Dgh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD64BC4CEE9;
-	Tue, 27 May 2025 17:06:04 +0000 (UTC)
+	 MIME-Version; b=kjyjG9NblNi6giM2KGJybBr1YQk2VAnRU4vsoj8LLfJovtHODJtrjJ4lyjYIUWdoUbPNk80BrYor/zuUJ3+Fn1QY22Y9cXxOB2dReS1EB1AphYd4BbyfRKAboyf14ogBC1QfaPLHc6PJyb4922EY+a5CJbDTpjBVWSPpWxTo3nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gosb9tr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F712C4CEE9;
+	Tue, 27 May 2025 17:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365565;
-	bh=WaAF+63tcBVjKW+tllGXYdZJ1fE/gX2KI7zfXCcGa0E=;
+	s=korg; t=1748365599;
+	bh=TOv3kPrI9gAX5vKmWPiBWaWR9dambjY9kpDUx9RFoHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZAH4DghtmSQ75SkrGR1WmFzY9ppf26Ylv9nf66rxyp/FPp+pkKaXuJau4FRYJXch
-	 07+UaxuxDGCV3y5UoR9QKRw3J59PcH23hmGmO/njgNAYB56/wBx+0/Gxw8mDiGIYhW
-	 /dcYfqyRTRpRbHigtIJFZqSsXSk/fiqh3ATohCAk=
+	b=Gosb9tr3zYWjPu/wylfNSiPAvNbc+C6FhfleuUf63FJc9Lv/+hP4i98PxUm5jB3/w
+	 iqPt+czyOubFzZHcULaqNv6EMdQhZn9YG90N/jnir9oGweVgFHWkJgTNIZE/KGtky5
+	 TTxhMKLP07Xq7nszcFD+1uhHiifZ/3KGB99DmDPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 410/626] drm/v3d: Add clock handling
-Date: Tue, 27 May 2025 18:25:03 +0200
-Message-ID: <20250527162501.666753311@linuxfoundation.org>
+Subject: [PATCH 6.12 411/626] xfrm: prevent high SEQ input in non-ESN mode
+Date: Tue, 27 May 2025 18:25:04 +0200
+Message-ID: <20250527162501.706981125@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -60,110 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 4dd40b5f9c3d89b67af0dbe059cf4a51aac6bf06 ]
+[ Upstream commit e3aa43a50a6455831e3c32dabc7ece38d9cd9d05 ]
 
-Since the initial commit 57692c94dcbe ("drm/v3d: Introduce a new DRM driver
-for Broadcom V3D V3.x+") the struct v3d_dev reserved a pointer for
-an optional V3D clock. But there wasn't any code, which fetched it.
-So add the missing clock handling before accessing any V3D registers.
+In non-ESN mode, the SEQ numbers are limited to 32 bits and seq_hi/oseq_hi
+are not used. So make sure that user gets proper error message, in case
+such assignment occurred.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250201125046.33030-1-wahrenst@gmx.net
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_drv.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ net/xfrm/xfrm_user.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
-index d7ff1f5fa481f..7c17108da7d2d 100644
---- a/drivers/gpu/drm/v3d/v3d_drv.c
-+++ b/drivers/gpu/drm/v3d/v3d_drv.c
-@@ -286,11 +286,21 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	v3d->clk = devm_clk_get_optional(dev, NULL);
-+	if (IS_ERR(v3d->clk))
-+		return dev_err_probe(dev, PTR_ERR(v3d->clk), "Failed to get V3D clock\n");
-+
-+	ret = clk_prepare_enable(v3d->clk);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Couldn't enable the V3D clock\n");
-+		return ret;
-+	}
-+
- 	mmu_debug = V3D_READ(V3D_MMU_DEBUG_INFO);
- 	mask = DMA_BIT_MASK(30 + V3D_GET_FIELD(mmu_debug, V3D_MMU_PA_WIDTH));
- 	ret = dma_set_mask_and_coherent(dev, mask);
- 	if (ret)
--		return ret;
-+		goto clk_disable;
- 
- 	v3d->va_width = 30 + V3D_GET_FIELD(mmu_debug, V3D_MMU_VA_WIDTH);
- 
-@@ -310,28 +320,29 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(v3d->reset);
- 
- 		if (ret == -EPROBE_DEFER)
--			return ret;
-+			goto clk_disable;
- 
- 		v3d->reset = NULL;
- 		ret = map_regs(v3d, &v3d->bridge_regs, "bridge");
- 		if (ret) {
- 			dev_err(dev,
- 				"Failed to get reset control or bridge regs\n");
--			return ret;
-+			goto clk_disable;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 87013623773a2..da2a1c00ca8a6 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -178,6 +178,12 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
+ 				       "Replay seq and seq_hi should be 0 for output SA");
+ 			return -EINVAL;
  		}
++		if (rs->oseq_hi && !(p->flags & XFRM_STATE_ESN)) {
++			NL_SET_ERR_MSG(
++				extack,
++				"Replay oseq_hi should be 0 in non-ESN mode for output SA");
++			return -EINVAL;
++		}
+ 		if (rs->bmp_len) {
+ 			NL_SET_ERR_MSG(extack, "Replay bmp_len should 0 for output SA");
+ 			return -EINVAL;
+@@ -190,6 +196,12 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
+ 				       "Replay oseq and oseq_hi should be 0 for input SA");
+ 			return -EINVAL;
+ 		}
++		if (rs->seq_hi && !(p->flags & XFRM_STATE_ESN)) {
++			NL_SET_ERR_MSG(
++				extack,
++				"Replay seq_hi should be 0 in non-ESN mode for input SA");
++			return -EINVAL;
++		}
  	}
  
- 	if (v3d->ver < 41) {
- 		ret = map_regs(v3d, &v3d->gca_regs, "gca");
- 		if (ret)
--			return ret;
-+			goto clk_disable;
- 	}
- 
- 	v3d->mmu_scratch = dma_alloc_wc(dev, 4096, &v3d->mmu_scratch_paddr,
- 					GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO);
- 	if (!v3d->mmu_scratch) {
- 		dev_err(dev, "Failed to allocate MMU scratch page\n");
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto clk_disable;
- 	}
- 
- 	ret = v3d_gem_init(drm);
-@@ -360,6 +371,8 @@ static int v3d_platform_drm_probe(struct platform_device *pdev)
- 	v3d_gem_destroy(drm);
- dma_free:
- 	dma_free_wc(dev, 4096, v3d->mmu_scratch, v3d->mmu_scratch_paddr);
-+clk_disable:
-+	clk_disable_unprepare(v3d->clk);
- 	return ret;
- }
- 
-@@ -377,6 +390,8 @@ static void v3d_platform_drm_remove(struct platform_device *pdev)
- 
- 	dma_free_wc(v3d->drm.dev, 4096, v3d->mmu_scratch,
- 		    v3d->mmu_scratch_paddr);
-+
-+	clk_disable_unprepare(v3d->clk);
- }
- 
- static struct platform_driver v3d_platform_driver = {
+ 	return 0;
 -- 
 2.39.5
 
