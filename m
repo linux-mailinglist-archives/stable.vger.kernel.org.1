@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-147656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46781AC5896
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092D3AC554A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA6C97B0C4B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD1E84A3BC3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414F625C6EC;
-	Tue, 27 May 2025 17:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B20F27E1CA;
+	Tue, 27 May 2025 17:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHpK6tQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpi1OYHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24E07263B;
-	Tue, 27 May 2025 17:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A0C139579;
+	Tue, 27 May 2025 17:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368021; cv=none; b=noLFfpHS/qdIF0KDjEa4Ya2cuoOugBwMgn6NhisH5ASBtevzMbbmoLNHMglzWclWuPJnDgqTlzYVemRTp8plTUv8SEje0IxFcjhbhqB7ttoyJ41V/UpCJ+w0D1wq+c2RyUXilrW92zbR1o2SjiwlQ34icBjCJsFt589QAL5n0aY=
+	t=1748365805; cv=none; b=fiBuD96aQbOqm/cLcaOOu8C8Zj35aLWcNDJgWqVtE68cHz6Tn+78RmI7EvSkGY2lh7iDhemVyhrRCY1LKJj09EUJy3BVV7p7k+nLu6Ga3p6N9vP0y/pRmma8vL7BgYIgNkw4w+EZ7qKpcVGt4jbKpGD5wcfd18FXTClQ5V1AaZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368021; c=relaxed/simple;
-	bh=N5h2+Hv6w90arEs38g7G0QB+51CfxNLLeN+luvCDsEA=;
+	s=arc-20240116; t=1748365805; c=relaxed/simple;
+	bh=rf4o+f9TM28Y60cONZn/gOK5S7FrjBuEeRtXTxvMi9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPH11tDzFlmkBHta3UabRw/FxmlaroZZSTcjX6rLYgG1GgdAhKClQ9ab56CiIfcIdK7esKQo+WrqobVNemyVOG1+okAWjwJLZZl8bFzQgy9R70kupwHFgfGNB0x6AVv5hi/zlbdi7fOps4pnE+1yyPmp86quAWfD0XRiHsgEI9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHpK6tQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA42C4CEE9;
-	Tue, 27 May 2025 17:47:00 +0000 (UTC)
+	 MIME-Version; b=qsiv1hNp3SMLMSH2dsR3HYGPjtC5xCCjDT3qQO7su+3g8X05xTODh1qDgpdXQFgmEr9eusPJd/iNLTdEl9bKOw2Ah3FclyYXI/T8r2m1ebceNj91nH00IzQH10ilJT/W70icb1bbG7RGs77VAzUE5935mdY3mHSeSLeh+yyKKmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpi1OYHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF71C4CEE9;
+	Tue, 27 May 2025 17:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368020;
-	bh=N5h2+Hv6w90arEs38g7G0QB+51CfxNLLeN+luvCDsEA=;
+	s=korg; t=1748365805;
+	bh=rf4o+f9TM28Y60cONZn/gOK5S7FrjBuEeRtXTxvMi9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHpK6tQ3u72Lcid1MXd3ewoEidrUZCKzHzfdpMMtG9ZvFUT8xCIdkg5t30PQmQwTx
-	 W4zbA/ERNP+a+G/T5j0Pz7r+0N6KYnurvLVR9RJ/+9w6iGx0v23N4lV6lF2Bw1m+ry
-	 PRULx0TjXit0V3Vy3Oj7ob7f1hr3T9BNI9sstja4=
+	b=fpi1OYHwrfYFFbdfvqoGZYFvI2ybEbHkpshG4Zfe53cvhfUzqUCUEakFLxnLlQwzD
+	 HQJFMLRpii20W0XDEpzspskhmew3+2lVytwomtess3ZZl8xK1W7CQIKIPPWwo1C2lN
+	 J+0VJLObnhdQ6Kdsn+97/qjUPDzYYnWafv7wSzH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 572/783] rcu: fix header guard for rcu_all_qs()
-Date: Tue, 27 May 2025 18:26:09 +0200
-Message-ID: <20250527162536.444266703@linuxfoundation.org>
+Subject: [PATCH 6.12 477/626] bpftool: Fix readlink usage in get_fd_type
+Date: Tue, 27 May 2025 18:26:10 +0200
+Message-ID: <20250527162504.371952968@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankur Arora <ankur.a.arora@oracle.com>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit ad6b5b73ff565e88aca7a7d1286788d80c97ba71 ]
+[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
 
-rcu_all_qs() is defined for !CONFIG_PREEMPT_RCU but the declaration
-is conditioned on CONFIG_PREEMPTION.
+The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
+bytes and *does not* append null-terminator to buf. With respect to
+that, fix two pieces in get_fd_type:
 
-With CONFIG_PREEMPT_LAZY, CONFIG_PREEMPTION=y does not imply
-CONFIG_PREEMPT_RCU=y.
+1. Change the truncation check to contain sizeof(buf) rather than
+   sizeof(path).
+2. Append null-terminator to buf.
 
-Decouple the two.
+Reported by Coverity.
 
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcutree.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/bpf/bpftool/common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
-index 27d86d9127817..aad586f15ed0c 100644
---- a/include/linux/rcutree.h
-+++ b/include/linux/rcutree.h
-@@ -103,7 +103,7 @@ extern int rcu_scheduler_active;
- void rcu_end_inkernel_boot(void);
- bool rcu_inkernel_boot_has_ended(void);
- bool rcu_is_watching(void);
--#ifndef CONFIG_PREEMPTION
-+#ifndef CONFIG_PREEMPT_RCU
- void rcu_all_qs(void);
- #endif
+diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
+index 9b75639434b81..0a764426d9358 100644
+--- a/tools/bpf/bpftool/common.c
++++ b/tools/bpf/bpftool/common.c
+@@ -461,10 +461,11 @@ int get_fd_type(int fd)
+ 		p_err("can't read link type: %s", strerror(errno));
+ 		return -1;
+ 	}
+-	if (n == sizeof(path)) {
++	if (n == sizeof(buf)) {
+ 		p_err("can't read link type: path too long!");
+ 		return -1;
+ 	}
++	buf[n] = '\0';
  
+ 	if (strstr(buf, "bpf-map"))
+ 		return BPF_OBJ_MAP;
 -- 
 2.39.5
 
