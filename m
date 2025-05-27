@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-147126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0B7AC5640
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 675AEAC5647
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE741BA6F23
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:19:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E7791BA7130
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAEFA271464;
-	Tue, 27 May 2025 17:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01E5279782;
+	Tue, 27 May 2025 17:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EM3ltQAd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFjCbvwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649C91E89C;
-	Tue, 27 May 2025 17:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7776E1E89C;
+	Tue, 27 May 2025 17:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366369; cv=none; b=ukwtxIsbDek6eEh9QFs5xt329s1dSW3pQeqJjNryE5iaNMVbpumRwPJVJvSfeDlP81wfngtiQngsXcKVr36UKiCQFI3NMf54+Oi+VoAb2FgS8JvrYm/dGj7Q1BkOL1sIvWqVykTSMI8sfAtz+HZXWNWO9+w8aF/xjPcpuzsbV34=
+	t=1748366383; cv=none; b=QTznXiEY7OoI5ORXwT6GVB+korisJR9wXsg25yKRGj/pjJKDcVYYz7ZjsdPH+J8Ayw9HOoYHVQU08C8fij8RJqt6pva5RFKARJa/+Eqcre1aLamhhqa/2ygOM48Z8VBl/wsHujnoj1vw7yJjUsDBZoh/CJ38vy/Vm6jQhA1s4GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366369; c=relaxed/simple;
-	bh=sOpoP25dLohZ8TVZLdr2WdkVjyd7HUjhN1QyMZaY5DI=;
+	s=arc-20240116; t=1748366383; c=relaxed/simple;
+	bh=63xhmFP5ZsAH+ToPLiR1Pm83yzbrEyishYWo9HEOVxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwfTVU2m0I+u7MVfEnMJd9g4nwXIhlx7HXR2ckhduXBtQ6/Vlcth+Mdb50W1wO2R3YUwfxjdoZSmJwzw88R54FEqcpnpG6NqlUefGUM/7UJJOJiimrmgX6W7CbBZzqXh/i43GlEyw7Sh++vy+v/f20M5pHyBlDzmtipRBUSYwcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EM3ltQAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD38C4CEE9;
-	Tue, 27 May 2025 17:19:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZuTzh0X+sKCrZZO3A3tDT1gWB5GYDC34ovEDn7lrhUjXzy/DiT6jcSOa864931LWo3OdfFcu9dajD5p5Jme0tAZSalbCJF9Ww6b/5RxslFVwq19QJoPZTtojlxrQgh/k1pg1eikIl1rvFBfHqDlRfOU4vww/IxhLcNxXZfN1Rgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFjCbvwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578B4C4CEE9;
+	Tue, 27 May 2025 17:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366369;
-	bh=sOpoP25dLohZ8TVZLdr2WdkVjyd7HUjhN1QyMZaY5DI=;
+	s=korg; t=1748366382;
+	bh=63xhmFP5ZsAH+ToPLiR1Pm83yzbrEyishYWo9HEOVxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EM3ltQAdZK8yxHoWKYqjuOz1MB4SrFF44zR3EbUl4cizjlg/BxZoqHciywjfAkKLX
-	 N4AcKEf9hGvJyBUZvNkET8DDBRGBgm00DlZt3dPoULgP4rGydJ0iXk3Ryp0dE6FPaV
-	 3/yciksO8gqMv9m5pmqcYpqr/NTCASTDiTQ5C3WQ=
+	b=KFjCbvwcRcepV87PIuxolwGEdy1Y874rmMUIF7VVqBejSef6MkdUafzfHUY6WKby9
+	 F35ygXdUnagC3ksiSuFIYPBZ2Luo8tLuybe6cshM3F5B4S1StmMkoZtXHNl3VX5ypl
+	 1mXkcBxVXR5iU3TiewqkQwqXh9ihPSNgKSiN+dTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+efe683d57990864b8c8e@syzkaller.appspotmail.com,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Christoph Hellwig <hch@infradead.org>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 018/783] virtio_ring: Fix data race by tagging event_triggered as racy for KCSAN
-Date: Tue, 27 May 2025 18:16:55 +0200
-Message-ID: <20250527162513.801148917@linuxfoundation.org>
+Subject: [PATCH 6.14 019/783] dma/mapping.c: dev_dbg support for dma_addressing_limited
+Date: Tue, 27 May 2025 18:16:56 +0200
+Message-ID: <20250527162513.854258833@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -62,74 +72,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Balbir Singh <balbirs@nvidia.com>
 
-[ Upstream commit 2e2f925fe737576df2373931c95e1a2b66efdfef ]
+[ Upstream commit 2042c352e21d19eaf5f9e22fb6afce72293ef28c ]
 
-syzbot reports a data-race when accessing the event_triggered, here is the
-simplified stack when the issue occurred:
+In the debug and resolution of an issue involving forced use of bounce
+buffers, 7170130e4c72 ("x86/mm/init: Handle the special case of device
+private pages in add_pages(), to not increase max_pfn and trigger
+dma_addressing_limited() bounce buffers"). It would have been easier
+to debug the issue if dma_addressing_limited() had debug information
+about the device not being able to address all of memory and thus forcing
+all accesses through a bounce buffer. Please see[2]
 
-==================================================================
-BUG: KCSAN: data-race in virtqueue_disable_cb / virtqueue_enable_cb_delayed
+Implement dev_dbg to debug the potential use of bounce buffers
+when we hit the condition. When swiotlb is used,
+dma_addressing_limited() is used to determine the size of maximum dma
+buffer size in dma_direct_max_mapping_size(). The debug prints could be
+triggered in that check as well (when enabled).
 
-write to 0xffff8881025bc452 of 1 bytes by task 3288 on cpu 0:
- virtqueue_enable_cb_delayed+0x42/0x3c0 drivers/virtio/virtio_ring.c:2653
- start_xmit+0x230/0x1310 drivers/net/virtio_net.c:3264
- __netdev_start_xmit include/linux/netdevice.h:5151 [inline]
- netdev_start_xmit include/linux/netdevice.h:5160 [inline]
- xmit_one net/core/dev.c:3800 [inline]
+Link: https://lore.kernel.org/lkml/20250401000752.249348-1-balbirs@nvidia.com/ [1]
+Link: https://lore.kernel.org/lkml/20250310112206.4168-1-spasswolf@web.de/ [2]
 
-read to 0xffff8881025bc452 of 1 bytes by interrupt on cpu 1:
- virtqueue_disable_cb_split drivers/virtio/virtio_ring.c:880 [inline]
- virtqueue_disable_cb+0x92/0x180 drivers/virtio/virtio_ring.c:2566
- skb_xmit_done+0x5f/0x140 drivers/net/virtio_net.c:777
- vring_interrupt+0x161/0x190 drivers/virtio/virtio_ring.c:2715
- __handle_irq_event_percpu+0x95/0x490 kernel/irq/handle.c:158
- handle_irq_event_percpu kernel/irq/handle.c:193 [inline]
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Bert Karwatzki <spasswolf@web.de>
+Cc: Christoph Hellwig <hch@infradead.org>
 
-value changed: 0x01 -> 0x00
-==================================================================
-
-When the data race occurs, the function virtqueue_enable_cb_delayed() sets
-event_triggered to false, and virtqueue_disable_cb_split/packed() reads it
-as false due to the race condition. Since event_triggered is an unreliable
-hint used for optimization, this should only cause the driver temporarily
-suggest that the device not send an interrupt notification when the event
-index is used.
-
-Fix this KCSAN reported data-race issue by explicitly tagging the access as
-data_racy.
-
-Reported-by: syzbot+efe683d57990864b8c8e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67c7761a.050a0220.15b4b9.0018.GAE@google.com/
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Message-Id: <20250312130412.3516307-1-quic_zhonhan@quicinc.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20250414113752.3298276-1-balbirs@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_ring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/dma/mapping.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index fdd2d2b07b5a2..b784aab668670 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -2650,7 +2650,7 @@ bool virtqueue_enable_cb_delayed(struct virtqueue *_vq)
- 	struct vring_virtqueue *vq = to_vvq(_vq);
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index cda127027e48a..67da08fa67237 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -918,7 +918,7 @@ EXPORT_SYMBOL(dma_set_coherent_mask);
+  * the system, else %false.  Lack of addressing bits is the prime reason for
+  * bounce buffering, but might not be the only one.
+  */
+-bool dma_addressing_limited(struct device *dev)
++static bool __dma_addressing_limited(struct device *dev)
+ {
+ 	const struct dma_map_ops *ops = get_dma_ops(dev);
  
- 	if (vq->event_triggered)
--		vq->event_triggered = false;
-+		data_race(vq->event_triggered = false);
+@@ -930,6 +930,15 @@ bool dma_addressing_limited(struct device *dev)
+ 		return false;
+ 	return !dma_direct_all_ram_mapped(dev);
+ }
++
++bool dma_addressing_limited(struct device *dev)
++{
++	if (!__dma_addressing_limited(dev))
++		return false;
++
++	dev_dbg(dev, "device is DMA addressing limited\n");
++	return true;
++}
+ EXPORT_SYMBOL_GPL(dma_addressing_limited);
  
- 	return vq->packed_ring ? virtqueue_enable_cb_delayed_packed(_vq) :
- 				 virtqueue_enable_cb_delayed_split(_vq);
+ size_t dma_max_mapping_size(struct device *dev)
 -- 
 2.39.5
 
