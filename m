@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1A6AC53D3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7F6AC5723
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C93153A4E53
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 576001886E27
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE77276057;
-	Tue, 27 May 2025 16:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7061327FB34;
+	Tue, 27 May 2025 17:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuX/GoLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ0wu3Ls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C73C19E7F9;
-	Tue, 27 May 2025 16:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9231CEAC2;
+	Tue, 27 May 2025 17:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364700; cv=none; b=nv6Z0uZ/6edt6qz9fp25HoaVZctNNoGBGNDeL+MRFHULHvj9XnOpbDqv7E5ayp2YrmJnY100OXbw1sX3utTit/EGnWKiQFgP0/xrnSmlW8bZ0hzx1NYULvj/8oLin8cI7rp2zchk7xRVuNuvUUHWg1oyXQ4w1Yu0x/Q6cXE4/as=
+	t=1748366966; cv=none; b=CY5q0c0y8ckDSBPuhCcsxu5fap6I6Hw9/lqBlX9BexTtWFQdmyxrgV4xMpNPtTFjUXhLosxBGbxxA7DTcd73g5oKi9DQMXRiFuBvMKH8w6BPAlhdvC5exwF2+5F7jpIbdgeLfYGu2jYCpzwizwo2560d1IyVqJC9S2DXgRbPHIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364700; c=relaxed/simple;
-	bh=Xt2w5lttwsqP4l7r0XgELTwn1MJGZFaiJIJQErXh0Mc=;
+	s=arc-20240116; t=1748366966; c=relaxed/simple;
+	bh=ob8XM+v2QrukV/gVDvsBbUi1pBOAZcP/tTzhT6DZFfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAZZHgt8FOrTU+uWzZ1cl2JRM3U+W6WwsAezdpHf2kK0o6+mzqGqPWxFpWgEJzOKYUWk5dFz5aWL35J/OEByVjH88PdK327tGD3L1TsIRKKFtwQydVVqLGUmQCbt5BIHzTa0DnYocktarNmVAsqgACrGVOfWNeHwGM3LZRJ8zhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuX/GoLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E67EC4CEE9;
-	Tue, 27 May 2025 16:51:39 +0000 (UTC)
+	 MIME-Version; b=Z08aqGaXawQHwtZ7wobA83O0KhrhVCKeNxj6KmsaRUuRgUdWxbtARjgr5zjCONAh2SChHd6cjQyAX7AbHPrlrcbjAvLM5/LCXWKSOfgWnkAeUVNzrBDJtpS401FYo3FYC0nUKT1RdKlK5PtjzqsEZiXtaCGoYyGNp2yY9Ac4xns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ0wu3Ls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3761C4CEE9;
+	Tue, 27 May 2025 17:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364699;
-	bh=Xt2w5lttwsqP4l7r0XgELTwn1MJGZFaiJIJQErXh0Mc=;
+	s=korg; t=1748366966;
+	bh=ob8XM+v2QrukV/gVDvsBbUi1pBOAZcP/tTzhT6DZFfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WuX/GoLHqHJb+i9YA/8Nbj6+Y3GtRlxiGxA139zhCHiMZO7v2efkdsZp/7Lh+oK79
-	 n75iuiwyv9rYBfWLI0dh4kj8yxiqp+JQYmHoc9ypr4vOaPJNUYnC8qqkRScwa5CXdb
-	 ok7m9FFtymsXd3xAaYmQvbyR2USbrpZnsOaeMpgA=
+	b=sZ0wu3Ls4fMPWcDuqazAQQI63vrCnzg/+GdkYPrUZ9xxj4zknmt+Kc+vHicWQ9Tcc
+	 kiFmCtDIJV7SWVGTxZEfXfozeGXUlTWqGJMNkFpnag4TYisZSb9sVbiT0tbQb9ZQWm
+	 qoN7TuoKu2FkHge3aFHv2vttDvyqR9GqAbnZPghg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 138/626] bpf: Return prog btf_id without capable check
+Subject: [PATCH 6.14 234/783] auxdisplay: charlcd: Partially revert "Move hwidth and bwidth to struct hd44780_common"
 Date: Tue, 27 May 2025 18:20:31 +0200
-Message-ID: <20250527162450.641777909@linuxfoundation.org>
+Message-ID: <20250527162522.654086033@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mykyta Yatsenko <yatsenko@meta.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 07651ccda9ff10a8ca427670cdd06ce2c8e4269c ]
+[ Upstream commit 09965a142078080fe7807bab0f6f1890cb5987a4 ]
 
-Return prog's btf_id from bpf_prog_get_info_by_fd regardless of capable
-check. This patch enables scenario, when freplace program, running
-from user namespace, requires to query target prog's btf.
+Commit 2545c1c948a6 ("auxdisplay: Move hwidth and bwidth to struct
+hd44780_common") makes charlcd_alloc() argument-less effectively dropping
+the single allocation for the struct charlcd_priv object along with
+the driver specific one. Restore that behaviour here.
 
-Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20250317174039.161275-3-mykyta.yatsenko5@gmail.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/auxdisplay/charlcd.c | 5 +++--
+ drivers/auxdisplay/charlcd.h | 5 +++--
+ drivers/auxdisplay/hd44780.c | 2 +-
+ drivers/auxdisplay/lcd2s.c   | 2 +-
+ drivers/auxdisplay/panel.c   | 2 +-
+ 5 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 977c084577565..fc048d3c0e69f 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -4606,6 +4606,8 @@ static int bpf_prog_get_info_by_fd(struct file *file,
- 	info.recursion_misses = stats.misses;
+diff --git a/drivers/auxdisplay/charlcd.c b/drivers/auxdisplay/charlcd.c
+index 19b619376d48b..09020bb8ad15f 100644
+--- a/drivers/auxdisplay/charlcd.c
++++ b/drivers/auxdisplay/charlcd.c
+@@ -595,18 +595,19 @@ static int charlcd_init(struct charlcd *lcd)
+ 	return 0;
+ }
  
- 	info.verified_insns = prog->aux->verified_insns;
-+	if (prog->aux->btf)
-+		info.btf_id = btf_obj_id(prog->aux->btf);
+-struct charlcd *charlcd_alloc(void)
++struct charlcd *charlcd_alloc(unsigned int drvdata_size)
+ {
+ 	struct charlcd_priv *priv;
+ 	struct charlcd *lcd;
  
- 	if (!bpf_capable()) {
- 		info.jited_prog_len = 0;
-@@ -4752,8 +4754,6 @@ static int bpf_prog_get_info_by_fd(struct file *file,
- 		}
- 	}
+-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	priv = kzalloc(sizeof(*priv) + drvdata_size, GFP_KERNEL);
+ 	if (!priv)
+ 		return NULL;
  
--	if (prog->aux->btf)
--		info.btf_id = btf_obj_id(prog->aux->btf);
- 	info.attach_btf_id = prog->aux->attach_btf_id;
- 	if (attach_btf)
- 		info.attach_btf_obj_id = btf_obj_id(attach_btf);
+ 	priv->esc_seq.len = -1;
+ 
+ 	lcd = &priv->lcd;
++	lcd->drvdata = priv->drvdata;
+ 
+ 	return lcd;
+ }
+diff --git a/drivers/auxdisplay/charlcd.h b/drivers/auxdisplay/charlcd.h
+index 4d4287209d04c..d10b89740bcae 100644
+--- a/drivers/auxdisplay/charlcd.h
++++ b/drivers/auxdisplay/charlcd.h
+@@ -51,7 +51,7 @@ struct charlcd {
+ 		unsigned long y;
+ 	} addr;
+ 
+-	void *drvdata;
++	void *drvdata;			/* Set by charlcd_alloc() */
+ };
+ 
+ /**
+@@ -95,7 +95,8 @@ struct charlcd_ops {
+ };
+ 
+ void charlcd_backlight(struct charlcd *lcd, enum charlcd_onoff on);
+-struct charlcd *charlcd_alloc(void);
++
++struct charlcd *charlcd_alloc(unsigned int drvdata_size);
+ void charlcd_free(struct charlcd *lcd);
+ 
+ int charlcd_register(struct charlcd *lcd);
+diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
+index 9d0ae9c02e9ba..1d67fe3243412 100644
+--- a/drivers/auxdisplay/hd44780.c
++++ b/drivers/auxdisplay/hd44780.c
+@@ -226,7 +226,7 @@ static int hd44780_probe(struct platform_device *pdev)
+ 	if (!hdc)
+ 		return -ENOMEM;
+ 
+-	lcd = charlcd_alloc();
++	lcd = charlcd_alloc(0);
+ 	if (!lcd)
+ 		goto fail1;
+ 
+diff --git a/drivers/auxdisplay/lcd2s.c b/drivers/auxdisplay/lcd2s.c
+index a28daa4ffbf75..c71ebb925971b 100644
+--- a/drivers/auxdisplay/lcd2s.c
++++ b/drivers/auxdisplay/lcd2s.c
+@@ -307,7 +307,7 @@ static int lcd2s_i2c_probe(struct i2c_client *i2c)
+ 	if (err < 0)
+ 		return err;
+ 
+-	lcd = charlcd_alloc();
++	lcd = charlcd_alloc(0);
+ 	if (!lcd)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/auxdisplay/panel.c b/drivers/auxdisplay/panel.c
+index 6dc8798d01f98..4da142692d55f 100644
+--- a/drivers/auxdisplay/panel.c
++++ b/drivers/auxdisplay/panel.c
+@@ -835,7 +835,7 @@ static void lcd_init(void)
+ 	if (!hdc)
+ 		return;
+ 
+-	charlcd = charlcd_alloc();
++	charlcd = charlcd_alloc(0);
+ 	if (!charlcd) {
+ 		kfree(hdc);
+ 		return;
 -- 
 2.39.5
 
