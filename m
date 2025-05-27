@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-147506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C2AAC57F4
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B25CAAC5489
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFEEB1BC14FC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4422C1BA4FBA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DBB1A3159;
-	Tue, 27 May 2025 17:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17D023ED75;
+	Tue, 27 May 2025 17:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPU+0oc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpAuf8Wv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DDF280012;
-	Tue, 27 May 2025 17:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE465154C15;
+	Tue, 27 May 2025 17:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367551; cv=none; b=Oh2GkkTkGoUEMEz63rdHbVMd+XRVIlcydqkKYg5DOnLrYM7f4NDymOL7ODQu9ZM53fPgssczpjdia2YRmaSNMIRc+/qLsd3g5tihpw1tq9/gLDFIu/JPeZ3YgBM06oPn+kXMsXxi0W8nz+yfAk5hQwfi6kLjlHGCSTffzT00gK8=
+	t=1748365288; cv=none; b=mw4uR2zAV/nxKc+nbTiE5/nENh2ldFyA52HePBVKnWUTjrznOsxY18ap2nMfc1xDMgEO4jv9c/23TIyCydnajYWWcQPwb/Cp5VrsEqUP9nv1jjE0LIZHouZL2cnHqt5JnKnvPO+WgevpyPRQNiqxtR+tP9TFHeX3lJeerIV9EC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367551; c=relaxed/simple;
-	bh=6LkWA0VrzGAOlC9C8QUtnOBKddMXidAzGbQKWPOKm4Q=;
+	s=arc-20240116; t=1748365288; c=relaxed/simple;
+	bh=BIzMJ43MQsxD6mgHsJJk4kYJ1eteGKSLYE7nN4gzWVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Imxmb/A8kPkRPBn+8VP99eY+3HQehTBVaEBXUdrDXDfjig6DEZBF5jkaIqAKTODJG8qJBSJemlNgWUPlvxwmmZk9qAUO8Jhhw9LK1YatJJhkHeiFLUpw1WhAIKi9Mn38p4959UfYdKmeQoM3w3YAAQUL05DLys0a+WzzAwgSi6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPU+0oc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4829FC4CEE9;
-	Tue, 27 May 2025 17:39:11 +0000 (UTC)
+	 MIME-Version; b=p9h6GdQ3P6bEHXJTN6mHdCX65K/KcziuqvyqCwoy9kPd/AqtevTvtT06IppR9mnFpvi1Ky+T+cg0dbD2g7beSN/p2enhciCJZgx+8dqJc64Oz53PybZDeMjA8p8Y3Ud0d5M0wk22YcXHUcy9qat6LszfBvWD6sqi0Gd2GyFwHa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpAuf8Wv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C78DC4CEE9;
+	Tue, 27 May 2025 17:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367551;
-	bh=6LkWA0VrzGAOlC9C8QUtnOBKddMXidAzGbQKWPOKm4Q=;
+	s=korg; t=1748365288;
+	bh=BIzMJ43MQsxD6mgHsJJk4kYJ1eteGKSLYE7nN4gzWVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPU+0oc0kjrr31pJaQNHgwhtbrZKYbPuWL9/2TYV5s7Mm8ADpj2VpKDlspf1dBO5E
-	 jlWc1g0XkEx6npvQBZhiFtQe7XntXumsi/r4OO+KBGsBP6zBKuSobPKzIkA5FpauNH
-	 Dg5DAdVeDl+rsRgXNtM5p/I/CmRUsSBiMTBBmO3Y=
+	b=rpAuf8WvpNTWmeWUDA1Yb91KcVuVsZO3uOmy6xBotrgIUGF+GG1+uyOfbWD4V/uaG
+	 jod2UueiOYq7CP9bIEo4VfH9p5xSD1h/tO7+tZ+OAdVrlwzDz8J0Otk7oHM4iuIMBn
+	 s6UoxTBXNGlbUUDx+uUjVxaTpm3URyjOMjRorOUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaofei Tan <tanxiaofei@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 424/783] ACPI: HED: Always initialize before evged
+Subject: [PATCH 6.12 328/626] i3c: master: svc: Flush FIFO before sending Dynamic Address Assignment(DAA)
 Date: Tue, 27 May 2025 18:23:41 +0200
-Message-ID: <20250527162530.391981530@linuxfoundation.org>
+Message-ID: <20250527162458.357404072@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaofei Tan <tanxiaofei@huawei.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
+[ Upstream commit a892ee4cf22a50e1d6988d0464a9a421f3e5db2f ]
 
-When the HED driver is built-in, it initializes after evged because they
-both are at the same initcall level, so the initialization ordering
-depends on the Makefile order.  However, this prevents RAS records
-coming in between the evged driver initialization and the HED driver
-initialization from being handled.
+Ensure the FIFO is empty before issuing the DAA command to prevent
+incorrect command data from being sent. Align with other data transfers,
+such as svc_i3c_master_start_xfer_locked(), which flushes the FIFO before
+sending a command.
 
-If the number of such RAS records is above the APEI HEST error source
-number, the HEST resources may be exhausted, and that may affect
-subsequent RAS error reporting.
-
-To fix this issue, change the initcall level of HED to subsys_initcall
-and prevent the driver from being built as a module by changing ACPI_HED
-in Kconfig from "tristate" to "bool".
-
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20250129162250.3629189-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/Kconfig | 2 +-
- drivers/acpi/hed.c   | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index d81b55f5068c4..7f10aa38269d2 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -452,7 +452,7 @@ config ACPI_SBS
- 	  the modules will be called sbs and sbshc.
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 6ffe022dbb5b4..62913feae45dd 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -860,6 +860,8 @@ static int svc_i3c_master_do_daa_locked(struct svc_i3c_master *master,
+ 	u32 reg;
+ 	int ret, i;
  
- config ACPI_HED
--	tristate "Hardware Error Device"
-+	bool "Hardware Error Device"
- 	help
- 	  This driver supports the Hardware Error Device (PNP0C33),
- 	  which is used to report some hardware errors notified via
-diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
-index 7652515a6be1e..3499f86c411e3 100644
---- a/drivers/acpi/hed.c
-+++ b/drivers/acpi/hed.c
-@@ -80,7 +80,12 @@ static struct acpi_driver acpi_hed_driver = {
- 		.remove = acpi_hed_remove,
- 	},
- };
--module_acpi_driver(acpi_hed_driver);
++	svc_i3c_master_flush_fifo(master);
 +
-+static int __init acpi_hed_driver_init(void)
-+{
-+	return acpi_bus_register_driver(&acpi_hed_driver);
-+}
-+subsys_initcall(acpi_hed_driver_init);
- 
- MODULE_AUTHOR("Huang Ying");
- MODULE_DESCRIPTION("ACPI Hardware Error Device Driver");
+ 	while (true) {
+ 		/* SVC_I3C_MCTRL_REQUEST_PROC_DAA have two mode, ENTER DAA or PROCESS DAA.
+ 		 *
 -- 
 2.39.5
 
