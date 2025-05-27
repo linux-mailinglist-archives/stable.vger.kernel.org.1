@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142B0AC538C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830A7AC56B8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBDB8189B7A5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:48:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9FB67A109F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1237D27D784;
-	Tue, 27 May 2025 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FFD8194A45;
+	Tue, 27 May 2025 17:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfnqRmLZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4S1brGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29CD1EA91;
-	Tue, 27 May 2025 16:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB511E89C;
+	Tue, 27 May 2025 17:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364506; cv=none; b=RTr1ecc3RvY1Ko0gwaEOxOVkrwXRyxkg+j9egviUG+jbjnkiBx2fhSE0RYIMfjesukbhsFrsu9nUOOOssWW70uWP7dLwwqtNfLQZpPXfPQ4G6TU2M473gATFwJPa/A5UAExYR98KjFZulsf1LQaDWOqyoKdLtooTrPdO4q2G83s=
+	t=1748366677; cv=none; b=urtds9P8Aga5b6PDgkx4N2HPfvtvZkICBkGxQQ+w7XkO2itS/onDD3gHUkn1eqDAbBeyTKrD9GI5d9BjUdt5U3IWYIn06kCKVVgsqsfZL6LzHeeNJzxt22Qdh9eV7gnORrVBgpAnRI67eHrdqTk9FGQz88zYYCKYo47Tk7ic8iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364506; c=relaxed/simple;
-	bh=UqYX39vKF4DkWPoFifD4AwNaPV4Ja2n64apBDO43hrA=;
+	s=arc-20240116; t=1748366677; c=relaxed/simple;
+	bh=R7Y61dYlnjyg/4owqPtChL/LQsBfY80V94zZPxQJvbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dYN9oeRNdZlf+M8kcILRsHcWVlyQRsNtd2Dm8kaKlb25oEGvpaWHww5GZBQYBGzRUIar2BK4Zuf3o9hjghD934Avlm6BA6cOni9KDocQhzIGoJ4TfVQ5G9ztNMnp/2MD3qC1Y3wAWtkccjw2eZ3UZfqyUKGH9+d0DlRL3cV8nVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfnqRmLZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE3FC4CEEB;
-	Tue, 27 May 2025 16:48:26 +0000 (UTC)
+	 MIME-Version; b=hP81Gl3QFd2qAGbTavLHhNiKvzyW5hxRp16YgeyQGnX6j7TgUCNxPTjLLo6ZT9v5sIQV/3lgjummKsFMRjpTyt7Vz9xKCMc2C4oCYikUKT1uEo2pc6mOwO584RahDtW919v8p1dCLR9A0RAdM3VSA3V3Ra28SfyJeC1z9Zv6BNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4S1brGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97AFC4CEE9;
+	Tue, 27 May 2025 17:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364506;
-	bh=UqYX39vKF4DkWPoFifD4AwNaPV4Ja2n64apBDO43hrA=;
+	s=korg; t=1748366677;
+	bh=R7Y61dYlnjyg/4owqPtChL/LQsBfY80V94zZPxQJvbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfnqRmLZHYD2UwSxMxHvKfD39xwNkJcq5VLDH0T/gbjYyTebH9k+f/OJatq91AUE9
-	 4+B1ehHNPgZhc+ZR1GOk/4hRmpE5QNR9vG7r0KtG7Lps2W4n4CqqwUCSiwW1B5xs3b
-	 +3Q8SCOs1xhsZos+ZexH8GH7bTU4JZXpC6ODvcHI=
+	b=S4S1brGTp87S5OLB+/1sWlkbR5h48x1o1AUZ1lWfdIIIwH0SYta8x0oe8SnpjcZvz
+	 PjpWCcBfS0yJv6mKS/xayp9mkMQm9QG+JUZi9ctcEFyTE92SXBL+FxBh34etZygoYy
+	 4i2bEyUJ7E8OehT2RN/hA0Z5yqKiARhKfpgnx7JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/626] cifs: Fix querying and creating MF symlinks over SMB1
+Subject: [PATCH 6.14 144/783] drm/amdgpu: adjust drm_firmware_drivers_only() handling
 Date: Tue, 27 May 2025 18:19:01 +0200
-Message-ID: <20250527162447.015864138@linuxfoundation.org>
+Message-ID: <20250527162519.022052107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 4236ac9fe5b8b42756070d4abfb76fed718e87c2 ]
+[ Upstream commit e00e5c223878a60e391e5422d173c3382d378f87 ]
 
-Old SMB1 servers without CAP_NT_SMBS do not support CIFS_open() function
-and instead SMBLegacyOpen() needs to be used. This logic is already handled
-in cifs_open_file() function, which is server->ops->open callback function.
+Move to probe so we can check the PCI device type and
+only apply the drm_firmware_drivers_only() check for
+PCI DISPLAY classes.  Also add a module parameter to
+override the nomodeset kernel parameter as a workaround
+for platforms that have this hardcoded on their kernel
+command lines.
 
-So for querying and creating MF symlinks use open callback function instead
-of CIFS_open() function directly.
-
-This change fixes querying and creating new MF symlinks on Windows 98.
-Currently cifs_query_mf_symlink() is not able to detect MF symlink and
-cifs_create_mf_symlink() is failing with EIO error.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/link.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/smb/client/link.c b/fs/smb/client/link.c
-index 47ddeb7fa1116..aa45ef6ae99a6 100644
---- a/fs/smb/client/link.c
-+++ b/fs/smb/client/link.c
-@@ -257,7 +257,7 @@ cifs_query_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
- 	struct cifs_open_parms oparms;
- 	struct cifs_io_parms io_parms = {0};
- 	int buf_type = CIFS_NO_BUFFER;
--	FILE_ALL_INFO file_info;
-+	struct cifs_open_info_data query_data;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index bb8ab25ea76ad..e4ce33e69a48b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -173,6 +173,7 @@ uint amdgpu_sdma_phase_quantum = 32;
+ char *amdgpu_disable_cu;
+ char *amdgpu_virtual_display;
+ bool enforce_isolation;
++int amdgpu_modeset = -1;
  
- 	oparms = (struct cifs_open_parms) {
- 		.tcon = tcon,
-@@ -269,11 +269,11 @@ cifs_query_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
- 		.fid = &fid,
- 	};
+ /* Specifies the default granularity for SVM, used in buffer
+  * migration and restoration of backing memory when handling
+@@ -1033,6 +1034,13 @@ module_param_named(user_partt_mode, amdgpu_user_partt_mode, uint, 0444);
+ module_param(enforce_isolation, bool, 0444);
+ MODULE_PARM_DESC(enforce_isolation, "enforce process isolation between graphics and compute . enforce_isolation = on");
  
--	rc = CIFS_open(xid, &oparms, &oplock, &file_info);
-+	rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, &query_data);
- 	if (rc)
- 		return rc;
++/**
++ * DOC: modeset (int)
++ * Override nomodeset (1 = override, -1 = auto). The default is -1 (auto).
++ */
++MODULE_PARM_DESC(modeset, "Override nomodeset (1 = enable, -1 = auto)");
++module_param_named(modeset, amdgpu_modeset, int, 0444);
++
+ /**
+  * DOC: seamless (int)
+  * Seamless boot will keep the image on the screen during the boot process.
+@@ -2244,6 +2252,12 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
+ 	int ret, retry = 0, i;
+ 	bool supports_atomic = false;
  
--	if (file_info.EndOfFile != cpu_to_le64(CIFS_MF_SYMLINK_FILE_SIZE)) {
-+	if (query_data.fi.EndOfFile != cpu_to_le64(CIFS_MF_SYMLINK_FILE_SIZE)) {
- 		rc = -ENOENT;
- 		/* it's not a symlink */
- 		goto out;
-@@ -312,7 +312,7 @@ cifs_create_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
- 		.fid = &fid,
- 	};
- 
--	rc = CIFS_open(xid, &oparms, &oplock, NULL);
-+	rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, NULL);
- 	if (rc)
- 		return rc;
- 
++	if ((pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA ||
++	    (pdev->class >> 8) == PCI_CLASS_DISPLAY_OTHER) {
++		if (drm_firmware_drivers_only() && amdgpu_modeset == -1)
++			return -EINVAL;
++	}
++
+ 	/* skip devices which are owned by radeon */
+ 	for (i = 0; i < ARRAY_SIZE(amdgpu_unsupported_pciidlist); i++) {
+ 		if (amdgpu_unsupported_pciidlist[i] == pdev->device)
 -- 
 2.39.5
 
