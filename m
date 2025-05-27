@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-147013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B9DAC55FC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA860AC58F7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D22E3B07D1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAE014C1366
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E117E27FD64;
-	Tue, 27 May 2025 17:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5215F27FD76;
+	Tue, 27 May 2025 17:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2QQ8aSi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1pPiGyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D70027CCF0;
-	Tue, 27 May 2025 17:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA4B2566;
+	Tue, 27 May 2025 17:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366003; cv=none; b=cKYqVbIWuY1HH8T7wYFZ+InqQUbiaeTx+MdzgNDJc5itIWLTqugxk/lBRFsdrm6qTLw3XZ16FOPzTVWUG4t+k65W4LDF0ibMry6ZzzjrPVSKC6PzhZqQefmKt/AvcM66AinK4rneOJeMd0Z0vfjiTqe6zBvNEPQ7U5CIrd5G7TE=
+	t=1748368280; cv=none; b=OvBc0sl07MDjx2lTstYGRr4neWUz8nM1zKqJp09LHzDmcL8bTQufJ1b1bvSPcWH5higXOB8eF7JajVSKJniKfftUnnCWaa5Tke1tyYCpctx2JqRTs2ETeOYwEFFg1VQdRGpojIY/4GYDpM0dSPpOlmvcw4UBTXr6H71TmHzZ3OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366003; c=relaxed/simple;
-	bh=OpAJbaK8CE1ULwAs9j5mW4HX+dRn+YQHzqwzRzARw/Y=;
+	s=arc-20240116; t=1748368280; c=relaxed/simple;
+	bh=YnprLaPpD/igTPhnRfBMFugtTNPtW4NAl/ceYN/1cfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrVfw9gOCNx6ui2FsOXwhtwH6a/AAxvsfADBSiazDz59yNumkFnZeqhQWy5NIYKhNaolfoVZe+Z6P1ndAIyB8BENO4sURlsQYyRJuqyO8BNn+9ySE1IMjh8B7zZn5qsEiQuQG5xBxQyENd2HSNDvRicIOJuvfnx9rm0IZNhHaow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2QQ8aSi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D3AC4CEE9;
-	Tue, 27 May 2025 17:13:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wja1p8GvS7quPxcxYQFxqXqMaS5dmxOJgKaov2QKBf3V8jfJY1u1I9QT0vH3wAzQ9JsnKUrlzgYz6NAwIVf38pxj8DmlAOA8fN9/w1QhCLIy8XHoKdnNdetxsyY5+V2vggGuB+tBgBxamRGoxKT4/wXFSnfAHdhauiowGpsnMLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1pPiGyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749B1C4CEE9;
+	Tue, 27 May 2025 17:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366003;
-	bh=OpAJbaK8CE1ULwAs9j5mW4HX+dRn+YQHzqwzRzARw/Y=;
+	s=korg; t=1748368279;
+	bh=YnprLaPpD/igTPhnRfBMFugtTNPtW4NAl/ceYN/1cfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2QQ8aSi/Zl40j7MHImpGDIRIEMHiI8ni7DsLzs7AdIzcsvI8419nU5H4MdVvdz1t
-	 xEbT6/ADvLqmy5zuIcMoFMHnOzjFbZVVjDuO8OdeD+OFyhI8RRcFJnFQ67ACaooAts
-	 aIXJvQqImbouthoA5sADH+uXfEUxBYv98DeroTF0=
+	b=x1pPiGyuVJyLrSzCFynj6tD78dnrRdNaAcKZziGDRFfDbzeLZz1mPn7xxpIFPhgr/
+	 FAdeoLVaxIlLSX7vXuLFa+0lqS0M5IQojvOmgRDFCdqnHUItcf/gYf/Wkb/vcpMaZE
+	 QJA2Ysma4tw6l0eugQrMx++v1pRimsp7Qf0CO4Tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Sunil Khatri <sunil.khatri@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 560/626] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
-Date: Tue, 27 May 2025 18:27:33 +0200
-Message-ID: <20250527162507.721371527@linuxfoundation.org>
+Subject: [PATCH 6.14 657/783] drm/ttm: fix the warning for hit_low and evict_low
+Date: Tue, 27 May 2025 18:27:34 +0200
+Message-ID: <20250527162539.883543013@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Sunil Khatri <sunil.khatri@amd.com>
 
-[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
+[ Upstream commit 76047483fe94414edf409dc498498abf346e22f1 ]
 
-While the MDIO address of the internal PHY on Allwinner sun8i chips is
-generally 1, of_mdio_parse_addr is used to cleanly parse the address
-from the device-tree instead of hardcoding it.
+fix the below warning messages:
+ttm/ttm_bo.c:1098: warning: Function parameter or struct member 'hit_low' not described in 'ttm_bo_swapout_walk'
+ttm/ttm_bo.c:1098: warning: Function parameter or struct member 'evict_low' not described in 'ttm_bo_swapout_walk'
 
-A commit reworking the code ditched the parsed value and hardcoded the
-value 1 instead, which didn't really break anything but is more fragile
-and not future-proof.
-
-Restore the initial behavior using the parsed address returned from the
-helper.
-
-Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+Reviewed-by: Maarten Lankhorst <dev@lankhorst.se>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250423042442.762108-1-sunil.khatri@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/ttm/ttm_bo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 4a0ae92b3055c..ce8367b63823a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -964,7 +964,7 @@ static int sun8i_dwmac_set_syscon(struct device *dev,
- 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
- 		 * address. No need to mask it again.
- 		 */
--		reg |= 1 << H3_EPHY_ADDR_SHIFT;
-+		reg |= ret << H3_EPHY_ADDR_SHIFT;
- 	} else {
- 		/* For SoCs without internal PHY the PHY selection bit should be
- 		 * set to 0 (external PHY).
+diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+index ea5e498588573..72c675191a022 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -1092,7 +1092,8 @@ struct ttm_bo_swapout_walk {
+ 	struct ttm_lru_walk walk;
+ 	/** @gfp_flags: The gfp flags to use for ttm_tt_swapout() */
+ 	gfp_t gfp_flags;
+-
++	/** @hit_low: Whether we should attempt to swap BO's with low watermark threshold */
++	/** @evict_low: If we cannot swap a bo when @try_low is false (first pass) */
+ 	bool hit_low, evict_low;
+ };
+ 
 -- 
 2.39.5
 
