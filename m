@@ -1,63 +1,76 @@
-Return-Path: <stable+bounces-147887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8FDDAC5C6E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 23:49:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1522BAC5CCE
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 00:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EBDA1BA829B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 21:49:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0315A4A32C0
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 22:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CC82046A9;
-	Tue, 27 May 2025 21:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D252163B2;
+	Tue, 27 May 2025 22:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="1+mSH25C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmmbvuLt"
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C21FB3;
-	Tue, 27 May 2025 21:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561B41FBE8C
+	for <stable@vger.kernel.org>; Tue, 27 May 2025 22:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748382567; cv=none; b=GzZ5nSMgrTsHfeKUR2Fnve/xBEY0agsqBnW8yJ7GsXYHMB4AGD/Xbv1mB7f77p+H81PRU/BmAaX/TuXZpsoF/ihqJyW2A22TkmbPEPyp/gtVL8kf/DYqCgc/wCU7xPCBUnNIe2MvsQv8SIVEa7W1kw/oAyRIoVg/P6DF7leYDJA=
+	t=1748384081; cv=none; b=dFqCAY39CTMcGak81avM6S9fIdDtFyJ9V+Oh3JEHuBSwy+Yo6YOWlShFE3vgKBaU/ylkP6AVyg5S2+wOFjosIJ8gDO5JJK4l3WFakO6OWCK/4zluaOvkDmQXRlZXDXUTdl2e3+O6s0OiS44JLIkl08zQdPJHwLcsF6JGT1uZQRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748382567; c=relaxed/simple;
-	bh=EwxLqY0fmQF8S71l6h2LmkmacJKXMfgvRPHVrm43FNI=;
+	s=arc-20240116; t=1748384081; c=relaxed/simple;
+	bh=9udHDpAYAvxKPviZiivuKs3/emxHMcNVOQEErxHRjS0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aBRaXKHidlMzq9YO3eLNj9qzZIuUusTVGhkSIGM1FDkvC0TqaIOKSDlH8dkB3mNldYpNitbpS9BCMSi8EhXrNSrIX2pZAH4rB+NguBu+lY2v8bv4GCdZFy89cKvzwXKsEQAl/OTX64m+EI8EbXCZ97d48rgcUp+Zgl2bifH7MYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=1+mSH25C; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4b6R9W3Pf1zltP0Y;
-	Tue, 27 May 2025 21:49:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1748382557; x=1750974558; bh=UpKlm3hQbRz5j81cotOA5nkr
-	nv7yQdeoB3GE/vZ8Ly0=; b=1+mSH25Cb2DETpV9eBhkvrxfW79KY5bQQPJ0gGwO
-	dnEh3etPYHBu/ZoBJQEI/YTYpBpgMIlHsDKficD6C8FLxYRu4HnD0AxDmKofd7nV
-	aLCnQN4NVhEkg32GojsFxbjuT2UPgp9Zrzrh6AZ8mm6mSIy23xPtfw0EK+pg3uH2
-	mzOwXcpur0rIcFAefy5+bEieZSrxNHod0GpM7BifUjVmFV+AUCmIqCPWErD2a+yz
-	l406BY3xk7AKbt6LVh5P83PWV1r0Tck8WnXffEMRPq8C+f0QGEcQvKHi9CJ1AO82
-	pffryKcFjEK62xxvGffS70KQVuSCXQJVIbFfTZuuGqY9hw==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id PsAgq2f88O37; Tue, 27 May 2025 21:49:17 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4b6R9P42k2zlvBYd;
-	Tue, 27 May 2025 21:49:12 +0000 (UTC)
-Message-ID: <df240ef1-d794-45af-a3cf-cdec06731103@acm.org>
-Date: Tue, 27 May 2025 14:49:11 -0700
+	 In-Reply-To:Content-Type; b=g7rNvDBQWQFsWKbRmjxIoKPSyLkBLNJ/8P3K/jBKleCbwbus+5gxAcJMOCSAwTb9tw7KmT6tm/FHr5I5cKePo9BJEIu5DTt9+hWSu4jshspK/yj56VlSEUMtKcoYTfLFVwl3CGEeiNFReu8KxRZsLnXg/kluah7Z3ja29Lwd6Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmmbvuLt; arc=none smtp.client-ip=209.85.166.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3dc978d5265so14397435ab.0
+        for <stable@vger.kernel.org>; Tue, 27 May 2025 15:14:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1748384078; x=1748988878; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lFjcs9eaUw90jHcgEZEicT+OU2FTsE9C+Uzz54aKOIs=;
+        b=TmmbvuLtdXl7o4JRVz2LZ/G2bp64Vclb/7DjFeYJvzFH3QXo0H4dEfEhE6Y4fnExFV
+         Wj0FGZk9MzlBL+I1oyf+qw+GXXsCH7sWvJvaaJy5Wa45ugwbulEJ/D3b/RqwTRxcDmhA
+         +vLqzEtkniBdcboC7IiKmslBbHLLYPAWROTpQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748384078; x=1748988878;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lFjcs9eaUw90jHcgEZEicT+OU2FTsE9C+Uzz54aKOIs=;
+        b=mECi+OYUpmQm2vgVp3aXyUjS07C2otfOVd55DGlCZ5esaOpAVqsmwWm+GTqH4XMHWo
+         OnHWtYNVY54QEXXYdAwygSmqiiGCFNg7AU1fhfQJFegoTSej95Gz7hn021ipIE3z8Xh1
+         wYhEwp40oBgu3f/IpWm7E/yOThC2pooLDextXNcA76cMcy6hnxw7aRxOp3VBnmbkwsWH
+         J7i+27UtqFu4rdosjK/ldmciH9JF6uneMQ8zybSUJEEbR56qBJM08hixafIAkR0EnAb2
+         l+cBfidCTxY7I16hKM1Tw+UbxXYPzLNOLvCdnDRdGEUEbfWLSgOyh9NSaq5tUu1gwQAK
+         t0kw==
+X-Forwarded-Encrypted: i=1; AJvYcCUscZIOlWC22s/mjldgwrWgEIZs7M0M1hiv/k1UiRBJiejY7ZwsbQGpGOA+xpFcm6b5LEPKz88=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxoh6O4LzmB9gz1/JNq3S0DZqOloUv2VOLEzpCl9aPz8kVy1HOp
+	CNfClY04PIWN/0uThoPhxBTpV41V6ZfLs9PnCVB4BE/C6z4aNiAm3NbVVZZcvdPeb70=
+X-Gm-Gg: ASbGnctYMNZfvJRfYzoKXAsxPlSsmmrRDHydrvVY0i0iFtArdldkB0mETKA54FWtZ+y
+	w5Ww7FUNx9oB2kIcP5tuCDGNNkXbF7I0HpKi/sKeG2qk7XF/APOty2CbqmoHIRPik8Eb+sOS0y1
+	65bVTk4mFVPpFnUKpnvNebwoqm2/uTnvmfn5ebAbsSqHDtZOFXFv4W+ax7nju+J8JR0P2geFAQq
+	PILmJqPryLXv4P3tKXfFe5M7FENzfhVg2PUfnTzNM8hvRS4Z0tetNNCkcNzBIANrkx2/dgO7Xcl
+	4qlhCTbeHxYBLhk5ZVGTm4z7WrDKMywkg+slm6j7moWiRh7wdu77t4VNnFLrvMw5i67UHGZK
+X-Google-Smtp-Source: AGHT+IE7r/xzWEX6isdmF1z1Xc3VKhaKMmnxHU3LTROHn0/Zm9/kosE8qJWqlOrrf4zs/FMpG2JziA==
+X-Received: by 2002:a05:6e02:1488:b0:3dc:8746:962b with SMTP id e9e14a558f8ab-3dc9b6e58d3mr143356275ab.15.1748384078310;
+        Tue, 27 May 2025 15:14:38 -0700 (PDT)
+Received: from [192.168.1.14] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3dd89b833a5sm635645ab.23.2025.05.27.15.14.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 May 2025 15:14:37 -0700 (PDT)
+Message-ID: <94de490a-3cf3-44f1-aab3-32309725725f@linuxfoundation.org>
+Date: Tue, 27 May 2025 16:14:36 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,55 +78,46 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: Fix a deadlock related freezing zoned storage
- devices
-To: Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- Yu Kuai <yukuai1@huaweicloud.com>, Ming Lei <ming.lei@redhat.com>,
- stable@vger.kernel.org
-References: <20250522171405.3239141-1-bvanassche@acm.org>
- <b1ea4120-e16a-47c8-b10c-ff6c9d5feb69@kernel.dk>
- <3cd139d0-5fe0-4ce1-b7a7-36da4fad6eff@kernel.org>
- <20250523082048.GA15587@lst.de>
+Subject: Re: [PATCH 6.14 000/783] 6.14.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250523082048.GA15587@lst.de>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 5/23/25 1:20 AM, Christoph Hellwig wrote:
-> Something like this completely untested patch:
+On 5/27/25 10:16, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.9 release.
+> There are 783 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> diff --git a/block/blk-zoned.c b/block/blk-zoned.c
-> index 8f15d1aa6eb8..6841af8a989c 100644
-> --- a/block/blk-zoned.c
-> +++ b/block/blk-zoned.c
-> @@ -1306,16 +1306,18 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
->   	spin_unlock_irqrestore(&zwplug->lock, flags);
->   
->   	bdev = bio->bi_bdev;
-> -	submit_bio_noacct_nocheck(bio);
-> -
->   	/*
->   	 * blk-mq devices will reuse the extra reference on the request queue
->   	 * usage counter we took when the BIO was plugged, but the submission
->   	 * path for BIO-based devices will not do that. So drop this extra
->   	 * reference here.
->   	 */
-> -	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO))
-> +	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO)) {
-> +		bdev->bd_disk->fops->submit_bio(bio);
->   		blk_queue_exit(bdev->bd_disk->queue);
-> +	} else {
-> +		blk_mq_submit_bio(bio);
-> +	}
->   
->   put_zwplug:
->   	/* Drop the reference we took in disk_zone_wplug_schedule_bio_work(). */
+> Responses should be made by Thu, 29 May 2025 16:22:51 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-This patch works fine on my test setup.
+Compiled and booted on my test system. No dmesg regressions.
 
-Thanks,
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Bart.
+thanks,
+-- Shuah
 
