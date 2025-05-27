@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-146986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6CE2AC5597
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D14AC58D6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E45B27AF33C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 925198A81C8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96C727FD64;
-	Tue, 27 May 2025 17:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E282227FB10;
+	Tue, 27 May 2025 17:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvo2pMcB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSTTwAXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945F32110E;
-	Tue, 27 May 2025 17:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F46242A9B;
+	Tue, 27 May 2025 17:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365920; cv=none; b=fioRE8z/AtXfwa0UjAWj1lGTLot71yEPnwj5TtH0H37HO3J72IgvdF2gk7tnxFDLdMLipRjNUi6KEnaAGjggopU88Vst4wnqmNdQ0ciDxH4UNGYyPKvhPVr7EefkbTEc3RyRZtP5wCTk4WFFMljKwiaGUmgzLwZzEO/JRO0piFE=
+	t=1748368193; cv=none; b=GmERvM6s4Gshmp6QT2j8Ywh7FDoCpO4uMD6lkLOlB6SBrJ5RqmZ5h44u1dKoMqoWdL3ScD7TtndEHEmRLYCdNsrGe5RiZcqFsStkm40ruxhgpy55x85qevy84LVIUH23ZYR/9JIPd9Lh8D5iUqHJaIVGq6KMzpLpewPZoa3gOCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365920; c=relaxed/simple;
-	bh=f5N3Ntd4Rw41ygKgZm3vKQk17svRiIFOmyCjAboS2nE=;
+	s=arc-20240116; t=1748368193; c=relaxed/simple;
+	bh=3aqME75OYdLee/RXvBm4y71JOCgWSibRcotNbfx1NcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1DHHqTAcny23lhCnB+XBda5OiFsRc2Fz1EUToewfd7zw5gioD/N4G/RNxPdjPYhsOexS0r1RtKlP5JJwdfTu82QYdq8doqfCJMrbpRKh2Cj1iMjQCN3IXKbMHTXZqbinhcAe11cGSrvNnt7YO/emE4hiIsPKFLcgnonCNBlYWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvo2pMcB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BF2C4CEE9;
-	Tue, 27 May 2025 17:11:59 +0000 (UTC)
+	 MIME-Version; b=PsCcTg+NPCAK/QWdf+2VeFIxY3pOSrdadClyeuJdpvbcz3ndG9D4T9INCu8CQprd1/XN+YkRIJ8bsoCO4/4SAaam8FJz0cKh7e4jTYQK2Noesh/NKq52ZMvFyPSWGBywkiyLazdN3h6mC45pI9H/ggLYi860WOzveDTGcZsIZ0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSTTwAXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286D9C4CEE9;
+	Tue, 27 May 2025 17:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365920;
-	bh=f5N3Ntd4Rw41ygKgZm3vKQk17svRiIFOmyCjAboS2nE=;
+	s=korg; t=1748368193;
+	bh=3aqME75OYdLee/RXvBm4y71JOCgWSibRcotNbfx1NcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvo2pMcBgnWgGZ791YLoI+FwPgjg39e+HGT3JVdxNR96w6HAJkr+jUrqgt+498myy
-	 LIcjVcO531vfH022KQlp+3XW9Uq871TWSrEkOkHSVxptnGQgaxXZFDkeN2mqnPrxpU
-	 hBqytRfTL4vbJnyDze8WmaP+ugG0bClNd3h6isT0=
+	b=WSTTwAXB5GIx7jeExz1y/Ht/5SigDY5zsNkzmHGHTku4afFewcp007eOJwSm4ElDf
+	 AKME2BcGozLT3LhjqP9G0v6VTm/5pJqX7kQRPncu87LLKoOldEFKLd70ezGqvuduIr
+	 KCdl2rpSJKI30tFZZzzAL06ktbz20X4ijOu/bRPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Austin Zheng <Austin.Zheng@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 532/626] drm/amd/display: Call FP Protect Before Mode Programming/Mode Support
+Subject: [PATCH 6.14 628/783] drm/panel-edp: Add Starry 116KHD024006
 Date: Tue, 27 May 2025 18:27:05 +0200
-Message-ID: <20250527162506.608854881@linuxfoundation.org>
+Message-ID: <20250527162538.722856220@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Austin Zheng <Austin.Zheng@amd.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit eba692ca3abca258b3214a6e4126afefad1822f0 ]
+[ Upstream commit 749b5b279e5636cdcef51e15d67b77162cca6caa ]
 
-[Why]
-Memory allocation occurs within dml21_validate() for adding phantom planes.
-May cause kernel to be tainted due to usage of FP Start.
+We have a few reports of sc7180-trogdor-pompom devices that have a
+panel in them that IDs as STA 0x0004 and has the following raw EDID:
 
-[How]
-Move FP start from dml21_validate to before mode programming/mode support.
-Calculations requiring floating point are all done within mode programming
-or mode support.
+  00 ff ff ff ff ff ff 00  4e 81 04 00 00 00 00 00
+  10 20 01 04 a5 1a 0e 78  0a dc dd 96 5b 5b 91 28
+  1f 52 54 00 00 00 01 01  01 01 01 01 01 01 01 01
+  01 01 01 01 01 01 8e 1c  56 a0 50 00 1e 30 28 20
+  55 00 00 90 10 00 00 18  00 00 00 00 00 00 00 00
+  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 fe
+  00 31 31 36 4b 48 44 30  32 34 30 30 36 0a 00 e6
 
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fe3250f10819b411808ab9ae1d824c5fc9b59170)
+We've been unable to locate a datasheet for this panel and our partner
+has not been responsive, but all Starry eDP datasheets that we can
+find agree on the same timing (delay_100_500_e200) so it should be
+safe to use that here instead of the super conservative timings. We'll
+still go a little extra conservative and allow `hpd_absent` of 200
+instead of 100 because that won't add any real-world delay in most
+cases.
+
+We'll associate the string from the EDID ("116KHD024006") with this
+panel. Given that the ID is the suspicious value of 0x0004 it seems
+likely that Starry doesn't always update their IDs but the string will
+still work to differentiate if we ever need to in the future.
+
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250109142853.1.Ibcc3009933fd19507cc9c713ad0c99c7a9e4fe17@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-edp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-index e3e4f40bd4123..dcbe327209d5d 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-@@ -221,7 +221,9 @@ static bool dml21_mode_check_and_programming(const struct dc *in_dc, struct dc_s
- 	if (!result)
- 		return false;
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index f8511fe5fb0d6..b0315d3ba00a5 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1993,6 +1993,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x154c, &delay_200_500_p2e100, "LQ116M1JW10"),
+ 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x1593, &delay_200_500_p2e100, "LQ134N1"),
  
-+	DC_FP_START();
- 	result = dml2_build_mode_programming(mode_programming);
-+	DC_FP_END();
- 	if (!result)
- 		return false;
++	EDP_PANEL_ENTRY('S', 'T', 'A', 0x0004, &delay_200_500_e200, "116KHD024006"),
+ 	EDP_PANEL_ENTRY('S', 'T', 'A', 0x0100, &delay_100_500_e200, "2081116HHD028001-51D"),
  
-@@ -271,7 +273,9 @@ static bool dml21_check_mode_support(const struct dc *in_dc, struct dc_state *co
- 	mode_support->dml2_instance = dml_init->dml2_instance;
- 	dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
- 	dml_ctx->v21.mode_programming.dml2_instance->scratch.build_mode_programming_locals.mode_programming_params.programming = dml_ctx->v21.mode_programming.programming;
-+	DC_FP_START();
- 	is_supported = dml2_check_mode_supported(mode_support);
-+	DC_FP_END();
- 	if (!is_supported)
- 		return false;
- 
-@@ -282,16 +286,12 @@ bool dml21_validate(const struct dc *in_dc, struct dc_state *context, struct dml
- {
- 	bool out = false;
- 
--	DC_FP_START();
--
- 	/* Use dml_validate_only for fast_validate path */
- 	if (fast_validate)
- 		out = dml21_check_mode_support(in_dc, context, dml_ctx);
- 	else
- 		out = dml21_mode_check_and_programming(in_dc, context, dml_ctx);
- 
--	DC_FP_END();
--
- 	return out;
- }
- 
+ 	{ /* sentinal */ }
 -- 
 2.39.5
 
