@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-146848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B81CAC555B
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:10:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EEEAC5840
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7DE98A274D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:04:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7061BC1CA8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F4526868E;
-	Tue, 27 May 2025 17:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A180D25A627;
+	Tue, 27 May 2025 17:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiFH9BrZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcV/EO6a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A242110E;
-	Tue, 27 May 2025 17:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1E11D63EF;
+	Tue, 27 May 2025 17:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365495; cv=none; b=u8WXsK0L/diiMp/su1M8YJyHhuFyjraSvoBqxB5KRUMLtAcJfHkFCXG8G9FaYM+pNQyYQ2Z4b4yij5CjrNE5FrbTxTCK+CkKwjXtrb90DIwY2q2SEqVtLxPgnvAMa4Q4gBEfgDceRAtqKmhBuGnsuxJPeWMcRPvOwlIG2fQYeLU=
+	t=1748367760; cv=none; b=drDOoRepv/VXEUoV+Xx5+IIrCTy1sXf91MDCW4yiNYU4Itm1557g1qUGSnj2ppp89tohiEKfXXQGNz0jjbOTTC75bsJHNFZjIcHJHUx7/urDrCieDI24w2lGJQ3liOOPdhXr1q//46lf5veYqIGlSceDM/10vHImxhCz/P3Fgf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365495; c=relaxed/simple;
-	bh=7IUgqDO5eJy1e2J9fqYdsxr5lWPJsj3DaF4/7GS5v40=;
+	s=arc-20240116; t=1748367760; c=relaxed/simple;
+	bh=FMvdGFhbs0xA9Y7tBViElKXxDrADWxUijAVUTWKdcoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rn4lPpeqHNc+myWtS5AJDlAjqWCVsts6el7+wxSlZD7SeDdShvwjSAcPWsRjaCvanACR2iil4yQYnJFxQC3/frNp/319OAFVlktSuThcSsS/mR72cNIf9pKRzo+neSATrDWJXaI+7mWdSpNDN2iom4wcHCzMibS6KPT5oyPbpIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiFH9BrZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BDCC4CEE9;
-	Tue, 27 May 2025 17:04:54 +0000 (UTC)
+	 MIME-Version; b=RYaWXuMYidWbWYamZrkxLxXZUaAHniY2+epyr6espifAhKNcxuFGdE81UEnvXO++gZModL7bkBHfbh/i7NLFRN+bQ4vyl7mwhEEov5FIsPqZyrtO74MGBiPNz4qabPfAqAKvnigLEnu6aoAyScR8DnttOIQ1WoGWBdGP7P0wzOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcV/EO6a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C013EC4CEE9;
+	Tue, 27 May 2025 17:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365495;
-	bh=7IUgqDO5eJy1e2J9fqYdsxr5lWPJsj3DaF4/7GS5v40=;
+	s=korg; t=1748367760;
+	bh=FMvdGFhbs0xA9Y7tBViElKXxDrADWxUijAVUTWKdcoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiFH9BrZhsjmug5rCifla1j8O2pdN3LbGWd7HHVDNZEXCiAjQ9Ju5OsRUvZeP+caB
-	 PMJkwNZX5ciXuYAaC77BIaTDJEBw3AyC2DAI55HeNmwI/HrE/rOZ3fhFbNz0JOKQTe
-	 FsSSyaEqm5iogIHftvbhOXD7znHZrh5+Gk3C1/tc=
+	b=lcV/EO6apyCpWxi33cCPJHK2Um/bj7gaqUqBqLjfN48MIXA4WshZrCNhUpNC12NJj
+	 uVi7tk+E/3xifEo1yLyWSwXc8IjFCmsEabPYB2smuKUN2ez5nafi2sB9687tvIMx4y
+	 6BKp6IglCbBEyGV0epxxfMiexJz+SxdMKkFzCWaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Brandon Syu <Brandon.Syu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 395/626] Revert "drm/amd/display: Exit idle optimizations before attempt to access PHY"
+Subject: [PATCH 6.14 491/783] drm/amd/display: Update CR AUX RD interval interpretation
 Date: Tue, 27 May 2025 18:24:48 +0200
-Message-ID: <20250527162501.073310609@linuxfoundation.org>
+Message-ID: <20250527162533.124522530@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brandon Syu <Brandon.Syu@amd.com>
+From: George Shen <george.shen@amd.com>
 
-[ Upstream commit be704e5ef4bd66dee9bb3f876964327e3a247d31 ]
+[ Upstream commit 6a7fde433231c18164c117592d3e18ced648ad58 ]
 
-This reverts commit de612738e9771bd66aeb20044486c457c512f684.
+[Why]
+DP spec updated to have the CR AUX RD interval match the EQ AUX RD
+interval interpretation of DPCD 0000Eh/0220Eh for 8b/10b non-LTTPR mode
+and LTTPR transparent mode cases.
 
-Reason to revert: screen flashes or gray screen appeared half of the
-screen after resume from S4/S5.
+[How]
+Update interpretation of DPCD 0000Eh/0220Eh for CR AUX RD interval
+during 8b/10b link training.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Brandon Syu <Brandon.Syu@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Michael Strauss <michael.strauss@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 5 -----
- 1 file changed, 5 deletions(-)
+ .../display/dc/link/protocols/link_dp_training_8b_10b.c    | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index 59457ca24e1dc..ccdc9d4101863 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -1888,7 +1888,6 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
- 	bool can_apply_edp_fast_boot = false;
- 	bool can_apply_seamless_boot = false;
- 	bool keep_edp_vdd_on = false;
--	struct dc_bios *dcb = dc->ctx->dc_bios;
- 	DC_LOGGER_INIT();
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
+index 3bdce32a85e3c..ae95ec48e5721 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
+@@ -36,7 +36,8 @@
+ 	link->ctx->logger
  
- 
-@@ -1965,8 +1964,6 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
- 			hws->funcs.edp_backlight_control(edp_link_with_sink, false);
- 		}
- 		/*resume from S3, no vbios posting, no need to power down again*/
--		if (dcb && dcb->funcs && !dcb->funcs->is_accelerated_mode(dcb))
--			clk_mgr_exit_optimized_pwr_state(dc, dc->clk_mgr);
- 
- 		power_down_all_hw_blocks(dc);
- 
-@@ -1979,8 +1976,6 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
- 		disable_vga_and_power_gate_all_controllers(dc);
- 		if (edp_link_with_sink && !keep_edp_vdd_on)
- 			dc->hwss.edp_power_control(edp_link_with_sink, false);
--		if (dcb && dcb->funcs && !dcb->funcs->is_accelerated_mode(dcb))
--			clk_mgr_optimize_pwr_state(dc, dc->clk_mgr);
+ static int32_t get_cr_training_aux_rd_interval(struct dc_link *link,
+-		const struct dc_link_settings *link_settings)
++		const struct dc_link_settings *link_settings,
++		enum lttpr_mode lttpr_mode)
+ {
+ 	union training_aux_rd_interval training_rd_interval;
+ 	uint32_t wait_in_micro_secs = 100;
+@@ -49,6 +50,8 @@ static int32_t get_cr_training_aux_rd_interval(struct dc_link *link,
+ 				DP_TRAINING_AUX_RD_INTERVAL,
+ 				(uint8_t *)&training_rd_interval,
+ 				sizeof(training_rd_interval));
++		if (lttpr_mode != LTTPR_MODE_NON_TRANSPARENT)
++			wait_in_micro_secs = 400;
+ 		if (training_rd_interval.bits.TRAINIG_AUX_RD_INTERVAL)
+ 			wait_in_micro_secs = training_rd_interval.bits.TRAINIG_AUX_RD_INTERVAL * 4000;
  	}
- 	bios_set_scratch_acc_mode_change(dc->ctx->dc_bios, 1);
+@@ -110,7 +113,6 @@ void decide_8b_10b_training_settings(
+ 	 */
+ 	lt_settings->link_settings.link_spread = link->dp_ss_off ?
+ 			LINK_SPREAD_DISABLED : LINK_SPREAD_05_DOWNSPREAD_30KHZ;
+-	lt_settings->cr_pattern_time = get_cr_training_aux_rd_interval(link, link_setting);
+ 	lt_settings->eq_pattern_time = get_eq_training_aux_rd_interval(link, link_setting);
+ 	lt_settings->pattern_for_cr = decide_cr_training_pattern(link_setting);
+ 	lt_settings->pattern_for_eq = decide_eq_training_pattern(link, link_setting);
+@@ -119,6 +121,7 @@ void decide_8b_10b_training_settings(
+ 	lt_settings->disallow_per_lane_settings = true;
+ 	lt_settings->always_match_dpcd_with_hw_lane_settings = true;
+ 	lt_settings->lttpr_mode = dp_decide_8b_10b_lttpr_mode(link);
++	lt_settings->cr_pattern_time = get_cr_training_aux_rd_interval(link, link_setting, lt_settings->lttpr_mode);
+ 	dp_hw_to_dpcd_lane_settings(lt_settings, lt_settings->hw_lane_settings, lt_settings->dpcd_lane_settings);
  }
+ 
 -- 
 2.39.5
 
