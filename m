@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49866AC57B2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A723BAC5493
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D1644A7AB8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:36:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B7107B0A75
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA8E27FD6F;
-	Tue, 27 May 2025 17:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D0B27CB04;
+	Tue, 27 May 2025 16:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/NGscIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmTTrWod"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3A02110E;
-	Tue, 27 May 2025 17:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757F7194A67;
+	Tue, 27 May 2025 16:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367374; cv=none; b=qzthnVro2HRtUP9M1WV7RDdC1z3BpBV5yy++sWBakdqw/ptWTEoDqn7MgAtBir3TNreE/MG1qtxRL2mW3wM05u1HpJIIECwBNi0dgfiFUqBWaDpo0qBinsRSBZn8PqKn/RIdb6z8MgVrWTNFzpr6HEJYEScQLsYELyoD95D7Ti0=
+	t=1748365112; cv=none; b=Q0fwLtSYRdAA5AqaDKuzAzoksbVwLzbYVCvvG/9KwpVtOnRkfc4rZGcIWJtlONpv/DeoAafmz2f0Ze7NZ1i8MkBCjGUWVmjd3WDwhnAKwET5f1z198SiozDFnCqLiErjtWtY7yvBwIwQZEU8Tu2Lf5nZK0PAT1lR6At6W32OmNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367374; c=relaxed/simple;
-	bh=2zqz0os9C+R3q0e71jY7X/akPCT0h59JzpMpoIjapJg=;
+	s=arc-20240116; t=1748365112; c=relaxed/simple;
+	bh=Yqet11QIXK3u1KVGGmR/i9iHyHHdQe5imCAPfrbL6WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYXNJdUDjGZM10PZ0pygLo/cWYcFCE9qRxTFTb9dcIQgllnKtpLqUecFxyzWVI21Ah83yDZIJM67E+ORCcl+E9CPG1WUwkNAHJNiVTgUKahPGYLAJO6VnWa9tFV19/LeMDoCwVp/oyLfPGYASX+AAjd8usOHPVCXMOzbGBRgT+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/NGscIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378B1C4CEE9;
-	Tue, 27 May 2025 17:36:13 +0000 (UTC)
+	 MIME-Version; b=WCORvAC5fO/25YlWp9+ENR3Jpa8FtpJpzt+lh9yuMXO+mbhH41y94X2/nN61SN3o6L14aQJrLnbowbBvD1e1UDyyZavSzKRt7T3gUdDesDKXd1XpEEo/pKmLoyCT0LlyRQKfwFoddhzXisHFuJaB/XK7Z6fIa0f/NU7SugLwkZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmTTrWod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E12C4CEF1;
+	Tue, 27 May 2025 16:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367373;
-	bh=2zqz0os9C+R3q0e71jY7X/akPCT0h59JzpMpoIjapJg=;
+	s=korg; t=1748365112;
+	bh=Yqet11QIXK3u1KVGGmR/i9iHyHHdQe5imCAPfrbL6WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/NGscIR4XitTXZOiAnU9wlE9m7Z7cEeJiB91sish5h2ekbUsaY1CmOselRhYwDAU
-	 InvVtY0Ie/PhrigGlCP5CqOTwyY6ycFRTOeO3PfR9tWETrxuSLPWaCaJ82fqAtJvwv
-	 vnMNDUDHFKblU4fepBOLc4LNYvfrSZ/OsZYWZO2A=
+	b=lmTTrWod6ZQ/ozspt8zL54GSja8i/U02EZ3lGUVy1Eieyml6A7Sd31nZfBxetM7MX
+	 n3JQVAQKQZXU5JzSO99Qcq0XWZzjOAR0l4T2IlvVk8IGLANqqvTe3yWjmasNt96h5l
+	 ja90zD7ApNhYLYlxg4BTBcCBuVCwU+rXvPMCZOJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 366/783] loop: check in LO_FLAGS_DIRECT_IO in loop_default_blocksize
+Subject: [PATCH 6.12 270/626] firmware: arm_ffa: Set dma_mask for ffa devices
 Date: Tue, 27 May 2025 18:22:43 +0200
-Message-ID: <20250527162527.985211800@linuxfoundation.org>
+Message-ID: <20250527162455.992918850@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit f6f9e32fe1e454ae8ac0190b2c2bd6074914beec ]
+[ Upstream commit cc0aac7ca17e0ea3ca84b552fc79f3e86fd07f53 ]
 
-We can't go below the minimum direct I/O size no matter if direct I/O is
-enabled by passing in an O_DIRECT file descriptor or due to the explicit
-flag.  Now that LO_FLAGS_DIRECT_IO is set earlier after assigning a
-backing file, loop_default_blocksize can check it instead of the
-O_DIRECT flag to handle both conditions.
+Set dma_mask for FFA devices, otherwise DMA allocation using the device pointer
+lead to following warning:
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250131120120.1315125-4-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+WARNING: CPU: 1 PID: 1 at kernel/dma/mapping.c:597 dma_alloc_attrs+0xe0/0x124
+
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <e3dd8042ac680bd74b6580c25df855d092079c18.1737107520.git.viresh.kumar@linaro.org>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/bus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 1e5ef09cdde68..f68f86e9cb716 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -920,7 +920,7 @@ static unsigned int loop_default_blocksize(struct loop_device *lo,
- 		struct block_device *backing_bdev)
- {
- 	/* In case of direct I/O, match underlying block size */
--	if ((lo->lo_backing_file->f_flags & O_DIRECT) && backing_bdev)
-+	if ((lo->lo_flags & LO_FLAGS_DIRECT_IO) && backing_bdev)
- 		return bdev_logical_block_size(backing_bdev);
- 	return SECTOR_SIZE;
- }
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index dfda5ffc14db7..dea3eb741d95d 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -212,6 +212,7 @@ ffa_device_register(const struct ffa_partition_info *part_info,
+ 	dev = &ffa_dev->dev;
+ 	dev->bus = &ffa_bus_type;
+ 	dev->release = ffa_release_device;
++	dev->dma_mask = &dev->coherent_dma_mask;
+ 	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
+ 
+ 	ffa_dev->id = id;
 -- 
 2.39.5
 
