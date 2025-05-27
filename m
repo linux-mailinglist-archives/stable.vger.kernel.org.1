@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB64AC56CE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E029AC5379
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 607121BA8132
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E90CD7A7E65
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD4E27FD6F;
-	Tue, 27 May 2025 17:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3EB2CCC0;
+	Tue, 27 May 2025 16:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGszR3ku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqYKYLDu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F9527FD68;
-	Tue, 27 May 2025 17:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B14C27A929;
+	Tue, 27 May 2025 16:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366732; cv=none; b=swB94uJ9U0vlQEBPonL2NKcm60N4A3OpUoq/B3KITHTyDm6pE9wk30kZDMKKC+h2eeDhYjQISVUarv61Ha5VAa844jt11vFfDcxardQxrahpR4izLcZhhZ9qrTNBTsV1C6Ohbvb0Q5d/v0KZCfudPfIk+GpXg4IRDolC02S5Vgw=
+	t=1748364475; cv=none; b=eMCm4yyB/Wc7MP1D4TeRfxZYXlLOr9ws82K52x/kUYeKBz0Ar8P8lVIZngRz2cstBm8+55sb4qm9WmQJIFxro1RVLuwKwFuAakYE+n9FCn6yBK07GB07Kc0TtaI1f7e8InzKn7VYL9NKfxBJkYpULNYgEcbIr/QqXR1HhPvnOcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366732; c=relaxed/simple;
-	bh=M/rsY8BDvn1DJZ0DAJOhSChXltb/tw63yl8I5rjYVXM=;
+	s=arc-20240116; t=1748364475; c=relaxed/simple;
+	bh=/aplVIve/B32xpYyhA0GkBsd3FND1RxphGU/UYBxgjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHtf+LT57mB5HZj9Zn0yuVKfsajv4IvKsFrGDye3JFVvphau8l9hp6o9yRFdatv+UXFvRItPA3StUAYGjg8G9fXjawVvSXe2l65R3++o1UiNhCurOQSUoau09wPinkVdgxKOpPKyoVv1VT9q7WGuwT4RKt1MA+DTX3IxkjbiDII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGszR3ku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8D5C4CEEB;
-	Tue, 27 May 2025 17:25:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LXhnwGqyi/e2GAeTLztpI1YlM3NBnRYUKQCoErQbe9zcOXZ0p03c0iqETMUZkDX0cKEyKULW0GFVPR28MPZFl5z1ArUKUbVX0ZceHgWcC2xF3gHBcpIu15VB3L3ogZbXC/MbG7RhRNZKHQAKGSa2NycgqdrTmEhiNbUsgv8/GwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqYKYLDu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28823C4CEE9;
+	Tue, 27 May 2025 16:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366732;
-	bh=M/rsY8BDvn1DJZ0DAJOhSChXltb/tw63yl8I5rjYVXM=;
+	s=korg; t=1748364475;
+	bh=/aplVIve/B32xpYyhA0GkBsd3FND1RxphGU/UYBxgjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vGszR3ku7gx6+wvRMHpc5Dm+gwO4RHSoHfDdnUOJ3ysAP5IugE7/D1qkySyo1MmsF
-	 EMj4TJqRuMUleGSELdeBMUMkkunWzjOljahMmAYjiiUia02YOq7/GqBv5g8ufMWQo6
-	 xDics1r628UpOsh2wu/cd180L/JLsvw+H2NxHp/I=
+	b=nqYKYLDuq9nvZuQ8c3Pn57tGwe4sXNVAYJbx4Xc7qabhb5W1eiQ54/mnK94vmz5ig
+	 yEYVWd+PClsb6PaKY9efXxTTsaJt7sNwjqo9NkMi22R73XH8w1Kf8SU5KMvoRmUpiH
+	 hlt3t2YcUF7r03Co73LKvHQ4HaYYpOHTdgO0zf4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 164/783] PCI: dwc: Use resource start as ioremap() input in dw_pcie_pme_turn_off()
+Subject: [PATCH 6.12 068/626] cifs: Set default Netbios RFC1001 server name to hostname in UNC
 Date: Tue, 27 May 2025 18:19:21 +0200
-Message-ID: <20250527162519.846074088@linuxfoundation.org>
+Message-ID: <20250527162447.815351285@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 8f4a489b370e6612700aa16b9e4373b2d85d7503 ]
+[ Upstream commit be786e509c1af9b2dcf25c3d601f05c8c251f482 ]
 
-The msg_res region translates writes into PCIe Message TLPs. Previously we
-mapped this region using atu.cpu_addr, the input address programmed into
-the ATU.
+Windows SMB servers (including SMB2+) which are working over RFC1001
+require that Netbios server name specified in RFC1001 Session Request
+packet is same as the UNC host name. Netbios server name can be already
+specified manually via -o servern= option.
 
-"cpu_addr" is a misnomer because when a bus fabric translates addresses
-between the CPU and the ATU, the ATU input address is different from the
-CPU address.  A future patch will rename "cpu_addr" and correct the value
-to be the ATU input address instead of the CPU physical address.
+With this change the RFC1001 server name is set automatically by extracting
+the hostname from the mount source.
 
-Map the msg_res region before writing to it using the msg_res resource
-start, a CPU physical address.
-
-Link: https://lore.kernel.org/r/20250315201548.858189-2-helgaas@kernel.org
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/fs_context.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index ffaded8f2df7b..ae3fd2a5dbf85 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -908,7 +908,7 @@ static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
- 	if (ret)
- 		return ret;
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index b015a4f997cb6..8b70d92f48458 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1058,6 +1058,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 	int i, opt;
+ 	bool is_smb3 = !strcmp(fc->fs_type->name, "smb3");
+ 	bool skip_parsing = false;
++	char *hostname;
  
--	mem = ioremap(atu.cpu_addr, pci->region_align);
-+	mem = ioremap(pci->pp.msg_res->start, pci->region_align);
- 	if (!mem)
- 		return -ENOMEM;
+ 	cifs_dbg(FYI, "CIFS: parsing cifs mount option '%s'\n", param->key);
  
+@@ -1390,6 +1391,16 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 			cifs_errorf(fc, "OOM when copying UNC string\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		hostname = extract_hostname(ctx->UNC);
++		if (IS_ERR(hostname)) {
++			cifs_errorf(fc, "Cannot extract hostname from UNC string\n");
++			goto cifs_parse_mount_err;
++		}
++		/* last byte, type, is 0x20 for servr type */
++		memset(ctx->target_rfc1001_name, 0x20, RFC1001_NAME_LEN_WITH_NULL);
++		for (i = 0; i < RFC1001_NAME_LEN && hostname[i] != 0; i++)
++			ctx->target_rfc1001_name[i] = toupper(hostname[i]);
++		kfree(hostname);
+ 		break;
+ 	case Opt_user:
+ 		kfree(ctx->username);
 -- 
 2.39.5
 
