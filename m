@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93B1AC54C6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBB9AC5827
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC8216B6FE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3380A7AC238
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74AE25A323;
-	Tue, 27 May 2025 17:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD72127FD4C;
+	Tue, 27 May 2025 17:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pt7nRVVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w9jbPmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7401B1D88D7;
-	Tue, 27 May 2025 17:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8992942A9B;
+	Tue, 27 May 2025 17:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365423; cv=none; b=rxePO7A8x2uLMvGaO+/GLlfRNQ0Jsc6pXTVEva9Wc67+nxxhJqYzQtazW5Op35ux89PKw2paozL9N4QRA+uoU4dOAtr8Ruvw3PmxrLsWumwvbe1ZwNDocatjTRCKHFjb7DqTl0RboOw8cb7nIe6SViQG+r3Ay1NQMwWSHIswzv0=
+	t=1748367688; cv=none; b=aEvsLejabnQlyAs5hWZpFXJG5y3KC5yhmdQn2z82lQ3Z3Pg2QEeE8Jw2nk5R6BZOvHetj4JyTEnnFgELegj3wF4V/knf0n10y2k2j40eLIhjxr6EHS3m+wZMR0wXmmAac+wuEpBVl36BDj8xloqktzn4CjtUABueLulunGwEYw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365423; c=relaxed/simple;
-	bh=THP89GMFmovmXKZVKwPQU3yaIaJMOeAUFJ7sO2+2bCM=;
+	s=arc-20240116; t=1748367688; c=relaxed/simple;
+	bh=Wf1ivofZf9ygiTqTgoXKuBZXaecm0eGn1+KKov3wV5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qi9aGmgafP7jfmDpk3bhhpF0HNG4VXrWslk2hefOiafIamR70RfZWhAd5DH+pxFmy689cPjdL6gOL1XXSZIOiFHYMUbQLkBQckGDPf1JNLIWnAX8tR9Xz1Itk4CoamaHwLsXmH3h7rykpQ9BEC+4Mbzu0pU3wcdRcAIi5CCy3QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pt7nRVVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A27C4CEEB;
-	Tue, 27 May 2025 17:03:40 +0000 (UTC)
+	 MIME-Version; b=stSHbpkLNUF3EtAk2x/j0MYew8ftl0Iw5GEINyVknGDkV1QIip8bm5b8DQVmiadMc0+zl64x2TuXkeUMMUBVGyS1kkT5flCPVJgNWajyhbtn+ay0409qJ58ILpVBpY7c2wsQB+4MYO+ap0yQzaJo+gNcBbyqqg6iZu2r5xA+LO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w9jbPmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045B5C4CEE9;
+	Tue, 27 May 2025 17:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365421;
-	bh=THP89GMFmovmXKZVKwPQU3yaIaJMOeAUFJ7sO2+2bCM=;
+	s=korg; t=1748367688;
+	bh=Wf1ivofZf9ygiTqTgoXKuBZXaecm0eGn1+KKov3wV5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pt7nRVVkkvjOgpKa1cqxLx6v4Rt+Men95w9FQ2KG3mxoVliv5bKYrbRxr5QtxRepk
-	 2SKRuvMck73HZndHkQEE8y3oVrAcnC1dOHJEFzJbdcsQwq6AvWZpcbjRt2cULA4VKu
-	 WmnLzJ9kSYzUjVnp2J4ChjOytXdxIWVhADETx25U=
+	b=0w9jbPmNU+9cN/yGzyRnjAkK0MUG5e2BC/sPECGvqTqhj105VwbZtg1j3C49p899+
+	 ZO7kV87TTn6oZ4PKg6cfFy4e9Gff1+VzZ2lpj3C5CBYkpp8vO450R1MMXG79P2SZhH
+	 6DM/7VmgzwqiBwcpva8c1KUD303AoxwrLIdAAD5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francois Dugast <francois.dugast@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 370/626] drm/xe: Stop ignoring errors from xe_ttm_stolen_mgr_init()
-Date: Tue, 27 May 2025 18:24:23 +0200
-Message-ID: <20250527162500.061093200@linuxfoundation.org>
+Subject: [PATCH 6.14 467/783] serial: sh-sci: Update the suspend/resume support
+Date: Tue, 27 May 2025 18:24:24 +0200
+Message-ID: <20250527162532.154831005@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +62,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit ff57025c358603555f1e0ae0d50282a460433594 ]
+[ Upstream commit 22a6984c5b5df8eab864d7f3e8b94d5a554d31ab ]
 
-Make sure to differentiate normal behavior, e.g. there's no stolen, from
-allocation errors or failure to initialize lower layers.
+The Renesas RZ/G3S supports a power saving mode where power to most of the
+SoC components is turned off. When returning from this power saving mode,
+SoC components need to be re-configured.
 
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213192909.996148-5-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+The SCIFs on the Renesas RZ/G3S need to be re-configured as well when
+returning from this power saving mode. The sh-sci code already configures
+the SCIF clocks, power domain and registers by calling uart_resume_port()
+in sci_resume(). On suspend path the SCIF UART ports are suspended
+accordingly (by calling uart_suspend_port() in sci_suspend()). The only
+missing setting is the reset signal. For this assert/de-assert the reset
+signal on driver suspend/resume.
+
+In case the no_console_suspend is specified by the user, the registers need
+to be saved on suspend path and restore on resume path. To do this the
+sci_console_save()/sci_console_restore() functions were added. There is no
+need to cache/restore the status or FIFO registers. Only the control
+registers. The registers that will be saved/restored on suspend/resume are
+specified by the struct sci_suspend_regs data structure.
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250207113313.545432-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c         |  4 +++-
- drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c | 17 +++++++++--------
- drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h |  2 +-
- 3 files changed, 13 insertions(+), 10 deletions(-)
+ drivers/tty/serial/sh-sci.c | 71 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index bb85208cf1a94..5c37bed3c948f 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -694,7 +694,9 @@ int xe_device_probe(struct xe_device *xe)
- 	}
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 41f987632bce8..e0ead0147bfe0 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -104,6 +104,15 @@ struct plat_sci_reg {
+ 	u8 offset, size;
+ };
  
- 	/* Allocate and map stolen after potential VRAM resize */
--	xe_ttm_stolen_mgr_init(xe);
-+	err = xe_ttm_stolen_mgr_init(xe);
-+	if (err)
-+		return err;
- 
- 	/*
- 	 * Now that GT is initialized (TTM in particular),
-diff --git a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
-index f7113cf6109d5..ef84fa757b26f 100644
---- a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
-+++ b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
-@@ -201,17 +201,16 @@ static u64 detect_stolen(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
- #endif
- }
- 
--void xe_ttm_stolen_mgr_init(struct xe_device *xe)
-+int xe_ttm_stolen_mgr_init(struct xe_device *xe)
- {
--	struct xe_ttm_stolen_mgr *mgr = drmm_kzalloc(&xe->drm, sizeof(*mgr), GFP_KERNEL);
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
-+	struct xe_ttm_stolen_mgr *mgr;
- 	u64 stolen_size, io_size;
- 	int err;
- 
--	if (!mgr) {
--		drm_dbg_kms(&xe->drm, "Stolen mgr init failed\n");
--		return;
--	}
-+	mgr = drmm_kzalloc(&xe->drm, sizeof(*mgr), GFP_KERNEL);
-+	if (!mgr)
-+		return -ENOMEM;
- 
- 	if (IS_SRIOV_VF(xe))
- 		stolen_size = 0;
-@@ -224,7 +223,7 @@ void xe_ttm_stolen_mgr_init(struct xe_device *xe)
- 
- 	if (!stolen_size) {
- 		drm_dbg_kms(&xe->drm, "No stolen memory support\n");
--		return;
-+		return 0;
- 	}
- 
- 	/*
-@@ -240,7 +239,7 @@ void xe_ttm_stolen_mgr_init(struct xe_device *xe)
- 				     io_size, PAGE_SIZE);
- 	if (err) {
- 		drm_dbg_kms(&xe->drm, "Stolen mgr init failed: %i\n", err);
--		return;
-+		return err;
- 	}
- 
- 	drm_dbg_kms(&xe->drm, "Initialized stolen memory support with %llu bytes\n",
-@@ -248,6 +247,8 @@ void xe_ttm_stolen_mgr_init(struct xe_device *xe)
- 
- 	if (io_size)
- 		mgr->mapping = devm_ioremap_wc(&pdev->dev, mgr->io_base, io_size);
++struct sci_suspend_regs {
++	u16 scsmr;
++	u16 scscr;
++	u16 scfcr;
++	u16 scsptr;
++	u8 scbrr;
++	u8 semr;
++};
 +
-+	return 0;
+ struct sci_port_params {
+ 	const struct plat_sci_reg regs[SCIx_NR_REGS];
+ 	unsigned int fifosize;
+@@ -134,6 +143,8 @@ struct sci_port {
+ 	struct dma_chan			*chan_tx;
+ 	struct dma_chan			*chan_rx;
+ 
++	struct reset_control		*rstc;
++
+ #ifdef CONFIG_SERIAL_SH_SCI_DMA
+ 	struct dma_chan			*chan_tx_saved;
+ 	struct dma_chan			*chan_rx_saved;
+@@ -153,6 +164,7 @@ struct sci_port {
+ 	int				rx_trigger;
+ 	struct timer_list		rx_fifo_timer;
+ 	int				rx_fifo_timeout;
++	struct sci_suspend_regs		suspend_regs;
+ 	u16				hscif_tot;
+ 
+ 	bool has_rtscts;
+@@ -3374,6 +3386,7 @@ static struct plat_sci_port *sci_parse_dt(struct platform_device *pdev,
+ 	}
+ 
+ 	sp = &sci_ports[id];
++	sp->rstc = rstc;
+ 	*dev_id = id;
+ 
+ 	p->type = SCI_OF_TYPE(data);
+@@ -3546,13 +3559,57 @@ static int sci_probe(struct platform_device *dev)
+ 	return 0;
  }
  
- u64 xe_ttm_stolen_io_offset(struct xe_bo *bo, u32 offset)
-diff --git a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h
-index 1777245ff8101..8e877d1e839bd 100644
---- a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h
-+++ b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h
-@@ -12,7 +12,7 @@ struct ttm_resource;
- struct xe_bo;
- struct xe_device;
++static void sci_console_save(struct sci_port *s)
++{
++	struct sci_suspend_regs *regs = &s->suspend_regs;
++	struct uart_port *port = &s->port;
++
++	if (sci_getreg(port, SCSMR)->size)
++		regs->scsmr = sci_serial_in(port, SCSMR);
++	if (sci_getreg(port, SCSCR)->size)
++		regs->scscr = sci_serial_in(port, SCSCR);
++	if (sci_getreg(port, SCFCR)->size)
++		regs->scfcr = sci_serial_in(port, SCFCR);
++	if (sci_getreg(port, SCSPTR)->size)
++		regs->scsptr = sci_serial_in(port, SCSPTR);
++	if (sci_getreg(port, SCBRR)->size)
++		regs->scbrr = sci_serial_in(port, SCBRR);
++	if (sci_getreg(port, SEMR)->size)
++		regs->semr = sci_serial_in(port, SEMR);
++}
++
++static void sci_console_restore(struct sci_port *s)
++{
++	struct sci_suspend_regs *regs = &s->suspend_regs;
++	struct uart_port *port = &s->port;
++
++	if (sci_getreg(port, SCSMR)->size)
++		sci_serial_out(port, SCSMR, regs->scsmr);
++	if (sci_getreg(port, SCSCR)->size)
++		sci_serial_out(port, SCSCR, regs->scscr);
++	if (sci_getreg(port, SCFCR)->size)
++		sci_serial_out(port, SCFCR, regs->scfcr);
++	if (sci_getreg(port, SCSPTR)->size)
++		sci_serial_out(port, SCSPTR, regs->scsptr);
++	if (sci_getreg(port, SCBRR)->size)
++		sci_serial_out(port, SCBRR, regs->scbrr);
++	if (sci_getreg(port, SEMR)->size)
++		sci_serial_out(port, SEMR, regs->semr);
++}
++
+ static __maybe_unused int sci_suspend(struct device *dev)
+ {
+ 	struct sci_port *sport = dev_get_drvdata(dev);
  
--void xe_ttm_stolen_mgr_init(struct xe_device *xe);
-+int xe_ttm_stolen_mgr_init(struct xe_device *xe);
- int xe_ttm_stolen_io_mem_reserve(struct xe_device *xe, struct ttm_resource *mem);
- bool xe_ttm_stolen_cpu_access_needs_ggtt(struct xe_device *xe);
- u64 xe_ttm_stolen_io_offset(struct xe_bo *bo, u32 offset);
+-	if (sport)
++	if (sport) {
+ 		uart_suspend_port(&sci_uart_driver, &sport->port);
+ 
++		if (!console_suspend_enabled && uart_console(&sport->port))
++			sci_console_save(sport);
++		else
++			return reset_control_assert(sport->rstc);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -3560,8 +3617,18 @@ static __maybe_unused int sci_resume(struct device *dev)
+ {
+ 	struct sci_port *sport = dev_get_drvdata(dev);
+ 
+-	if (sport)
++	if (sport) {
++		if (!console_suspend_enabled && uart_console(&sport->port)) {
++			sci_console_restore(sport);
++		} else {
++			int ret = reset_control_deassert(sport->rstc);
++
++			if (ret)
++				return ret;
++		}
++
+ 		uart_resume_port(&sci_uart_driver, &sport->port);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
