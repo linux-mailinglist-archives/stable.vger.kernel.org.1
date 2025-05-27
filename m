@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-147069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B494AC560C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101C0AC55D3
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4BAB4A47D7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46CB61BA6977
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9017D271464;
-	Tue, 27 May 2025 17:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6448A2798E6;
+	Tue, 27 May 2025 17:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weh0sbsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzwKN49T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E675182D7;
-	Tue, 27 May 2025 17:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FB925DAE1;
+	Tue, 27 May 2025 17:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366188; cv=none; b=SFSGVLqgwdPVXXfkZM+tL8rl9zo6WwigCbZBVlTeBi0myawxiykDPqocn8egOw7gEZeX0NSqxrWDFzjBARqkM4AgzqmCf4wh9gaAeJYBHWBzIVELimXO0uTR/kxuxFQgbcFgnnyjTZJFniPseh/LFSmLS3GPR7KsP+kS0Yb6qho=
+	t=1748366078; cv=none; b=gmEQAkdVUIfp81DSx2obUR4KLr5u+Se+dyPjaRYJaR7zeiad2qqGaG/GYU//4AAKecLFJ7CFu4eETby3h/0kWsmcj4bN+RHk6stmiiszm2t28N4tZLnwS9wN1yOzZLaF+H2ir8vDcrFv/Lza5YJbbizxz72tejiqukW6PH1xUh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366188; c=relaxed/simple;
-	bh=4UbnXvZ8IQCHGynFW6bE70DRttAtOdtIfomIAcLrxXU=;
+	s=arc-20240116; t=1748366078; c=relaxed/simple;
+	bh=h4v8k4XLsvylQuAMZHyCaEfsP7s0q2HOztKeWRs1iwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYaJPSYYgy7xYk9nzSSxbIzTUkuFEhRmsVnm4LRJXUOB1B7faG0b+P/fbuX2Ld3D/XlSJ19iz1unM2Sf2x4YGyTrdaP52b19tn9AkySaAAivzf99G3N0+IShHUfjC5IWhZ0pNqJn4mKsRXvNVgQj8mU7ScbeOVGE6uXDDzY36gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weh0sbsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97B3C4CEE9;
-	Tue, 27 May 2025 17:16:27 +0000 (UTC)
+	 MIME-Version; b=WFh7wCPg1PxN0jYMNMGMV2RHbFFq8NHetTzuvbo35aslxzGTuTo09qG/pX6cdayU7WntxCFDhS7NTGRxjnzCHS/qlPZqtNUmbVxs5rhRttgqoahydEDVX5DeBQ4v6dA3g92HsZUKs/qfkKLLAPVE7Njy8tPUD5f18M2C6jcqSkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzwKN49T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A9EC4CEE9;
+	Tue, 27 May 2025 17:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366188;
-	bh=4UbnXvZ8IQCHGynFW6bE70DRttAtOdtIfomIAcLrxXU=;
+	s=korg; t=1748366078;
+	bh=h4v8k4XLsvylQuAMZHyCaEfsP7s0q2HOztKeWRs1iwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=weh0sbsRo+KfuUE+m7Eac0fdealq+2kigLDQb3rS7hF/vyZ5GF+LD3pkq72XJPiUo
-	 jaZoW0d0YeQnQOpbiU9L1VOUNKh52ZWPOwdON0MtdMHgrVJiSpvHgXDWbYNwerG3cM
-	 C+gLBMF5gTp/XQ4rMeZQNjq0b1yn6PL1eJdIl7sY=
+	b=tzwKN49TX7zA4P6Ozho9L4aSCRYHQIehX+aKnsdrPobMIprR5nHxKcJIDdu0cMO8T
+	 wY5AbT6qh2e5NgiPYPyusBIsXoP8gOnF9XjhmnxBM2O7POD53RSJf2pz36PEGUPZGN
+	 JbaL86t7S/dYmMSA/ac7uCkndLVJ80IaFJtpKKFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
 	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 575/626] ASoC: SOF: ipc4-control: Use SOF_CTRL_CMD_BINARY as numid for bytes_ext
-Date: Tue, 27 May 2025 18:27:48 +0200
-Message-ID: <20250527162508.337916429@linuxfoundation.org>
+Subject: [PATCH 6.12 576/626] ASoC: SOF: Intel: hda-bus: Use PIO mode on ACE2+ platforms
+Date: Tue, 27 May 2025 18:27:49 +0200
+Message-ID: <20250527162508.377046029@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
 References: <20250527162445.028718347@linuxfoundation.org>
@@ -70,63 +69,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 4d14b1069e9e672dbe1adab52594076da6f4a62d upstream.
+commit 4e7010826e96702d7fad13dbe85de4e94052f833 upstream.
 
-The header.numid is set to scontrol->comp_id in bytes_ext_get and it is
-ignored during bytes_ext_put.
-The use of comp_id is not quite great as it is kernel internal
-identification number.
+Keep using the PIO mode for commands on ACE2+ platforms, similarly how
+the legacy stack is configured.
 
-Set the header.numid to SOF_CTRL_CMD_BINARY during get and validate the
-numid during put to provide consistent and compatible identification
-number as IPC3.
-
-For IPC4 existing tooling also ignored the numid but with the use of
-SOF_CTRL_CMD_BINARY the different handling of the blobs can be dropped,
-providing better user experience.
-
-Reported-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
-Closes: https://github.com/thesofproject/linux/issues/5282
-Fixes: a062c8899fed ("ASoC: SOF: ipc4-control: Add support for bytes control get and put")
-Cc: stable@vger.kernel.org
+Fixes: 05cf17f1bf6d ("ASoC: SOF: Intel: hda-bus: Use PIO mode for Lunar Lake")
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
 Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://patch.msgid.link/20250509085633.14930-1-peter.ujfalusi@linux.intel.com
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250509081308.13784-1-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc4-control.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ sound/soc/sof/intel/hda-bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/sof/ipc4-control.c
-+++ b/sound/soc/sof/ipc4-control.c
-@@ -531,6 +531,14 @@ static int sof_ipc4_bytes_ext_put(struct
- 		return -EINVAL;
- 	}
+diff --git a/sound/soc/sof/intel/hda-bus.c b/sound/soc/sof/intel/hda-bus.c
+index b1be03011d7e..6492e1cefbfb 100644
+--- a/sound/soc/sof/intel/hda-bus.c
++++ b/sound/soc/sof/intel/hda-bus.c
+@@ -76,7 +76,7 @@ void sof_hda_bus_init(struct snd_sof_dev *sdev, struct device *dev)
  
-+	/* Check header id */
-+	if (header.numid != SOF_CTRL_CMD_BINARY) {
-+		dev_err_ratelimited(scomp->dev,
-+				    "Incorrect numid for bytes put %d\n",
-+				    header.numid);
-+		return -EINVAL;
-+	}
-+
- 	/* Verify the ABI header first */
- 	if (copy_from_user(&abi_hdr, tlvd->tlv, sizeof(abi_hdr)))
- 		return -EFAULT;
-@@ -613,7 +621,8 @@ static int _sof_ipc4_bytes_ext_get(struc
- 	if (data_size > size)
- 		return -ENOSPC;
+ 	snd_hdac_ext_bus_init(bus, dev, &bus_core_ops, sof_hda_ext_ops);
  
--	header.numid = scontrol->comp_id;
-+	/* Set header id and length */
-+	header.numid = SOF_CTRL_CMD_BINARY;
- 	header.length = data_size;
- 
- 	if (copy_to_user(tlvd, &header, sizeof(struct snd_ctl_tlv)))
+-	if (chip && chip->hw_ip_version == SOF_INTEL_ACE_2_0)
++	if (chip && chip->hw_ip_version >= SOF_INTEL_ACE_2_0)
+ 		bus->use_pio_for_commands = true;
+ #else
+ 	snd_hdac_ext_bus_init(bus, dev, NULL, NULL);
+-- 
+2.49.0
+
 
 
 
