@@ -1,68 +1,66 @@
-Return-Path: <stable+bounces-147718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D81EAC58E0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:50:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66AD3AC559D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF29F4C0F2F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:50:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 548A67AFB7F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A4227FB10;
-	Tue, 27 May 2025 17:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25D228030E;
+	Tue, 27 May 2025 17:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oA1eoczi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KObcG44K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7B527A131;
-	Tue, 27 May 2025 17:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC042798E6;
+	Tue, 27 May 2025 17:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368216; cv=none; b=W5Hj/vmoY7DwlzRWe+MqrJYGG3JliRRHrh3LRk6c8CN1NeSRKpnTv29BKNlHakUv9etixQO1xUGZq+q1jt7olg8aF3W82pRuxX0xt0KqFM818/qUpiqQ36d7gI+iN+sjr329XR1s5kGphFtG6SQeVpyu0xoEqNS86iFvGbTfA50=
+	t=1748365948; cv=none; b=WFTy+q/3Cf+qsrPqmrIumB8kkITRfoKVaxqy89fuy0DkJnHEglSoiDWVC3JOpEpS0MitY/sILJy3TZDqkakR82zFXa9WpaNfO41WQh4NKKg2fGR53lIDM35IjXqh4MhzC9CNBSC8biIAnffobpxzq32nFfagLQhDtcjeAAHptC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368216; c=relaxed/simple;
-	bh=6k1840xhtmmJ8vLPO0yw7rK4g00Rdii3B/tCX0s61uQ=;
+	s=arc-20240116; t=1748365948; c=relaxed/simple;
+	bh=zUv9unDr/csTW4Hl9SKuvhO5S+8g/QxqdJ5xeIZVfVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MJW6IlUg1gQ13IjVQN2l1+qUBznzfmiB7+73HDah8J4NVVe/3vEtPG0KbR/OoTilEEohXT105k0UhytaOxhc/rHO4Ip7ioY5aJSt6L+cOnsP5qbNmDnfbz65Cgn1jhVAxzhdOUg3VEIBT5clOjS3gA6fb4T+bxPEpeXcCTL29pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oA1eoczi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF8EC4CEE9;
-	Tue, 27 May 2025 17:50:15 +0000 (UTC)
+	 MIME-Version; b=nKLWrHDgCaVWzwMlAfwWLZZztiHfyn1bI5hU8Ic34H2q3NhSl5VrBhXD5K+SXagQ/GZKG0J1U+vLhg7fiknMK+Zwd04XG5HjFfHrMPZ5Oa9yGN3+BYFEEg24hfAWGu1sXYCalHbG5D4M+/7r0jtmEACzVntZHT2AgAyvZY0cLGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KObcG44K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C93CC4CEE9;
+	Tue, 27 May 2025 17:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368215;
-	bh=6k1840xhtmmJ8vLPO0yw7rK4g00Rdii3B/tCX0s61uQ=;
+	s=korg; t=1748365947;
+	bh=zUv9unDr/csTW4Hl9SKuvhO5S+8g/QxqdJ5xeIZVfVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oA1eoczihpBc3v4Lr7pUxBADdlxQFxVVnaU6ARl7j/zWpnYxdZthfRhR5QR5ftvOB
-	 lSbo+L6wl071hagFiue1mUaHv5iKTWuH1OOGctIUMDuOr/m74JplkF3fQ6QMOt88sh
-	 /+p2s8uh4qniKO/Y1aWmPEgWYfUg4yNMoY0Y3C9g=
+	b=KObcG44Kwes0rMu9m9WUbBXnJ59iopn8LTHdlfL2lY40yA8gTS6V3AozLuDciqiLk
+	 EaPrF9xJLtPkSRg+lHfynvVDV2sed9r0yNXyReSmMWqFSHA34UxsHxVDFv8GVyADr+
+	 VGz0jCcs7NPD06PLfFkfQPGDs5KusW5nvHA/uWB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Andy Yan <andyshrk@163.com>,
-	Anusha Srivatsa <asrivats@redhat.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Rik van Riel <riel@surriel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 635/783] drm/gem: Internally test import_attach for imported objects
-Date: Tue, 27 May 2025 18:27:12 +0200
-Message-ID: <20250527162539.004348171@linuxfoundation.org>
+Subject: [PATCH 6.12 540/626] kernel/fork: only call untrack_pfn_clear() on VMAs duplicated for fork()
+Date: Tue, 27 May 2025 18:27:13 +0200
+Message-ID: <20250527162506.927604804@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,68 +70,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 8260731ccad0451207b45844bb66eb161a209218 ]
+[ Upstream commit e9f180d7cfde23b9f8eebd60272465176373ab2c ]
 
-Test struct drm_gem_object.import_attach to detect imported objects.
+Not intuitive, but vm_area_dup() located in kernel/fork.c is not only used
+for duplicating VMAs during fork(), but also for duplicating VMAs when
+splitting VMAs or when mremap()'ing them.
 
-During object clenanup, the dma_buf field might be NULL. Testing it in
-an object's free callback then incorrectly does a cleanup as for native
-objects. Happens for calls to drm_mode_destroy_dumb_ioctl() that
-clears the dma_buf field in drm_gem_object_exported_dma_buf_free().
+VM_PFNMAP mappings can at least get ordinarily mremap()'ed (no change in
+size) and apparently also shrunk during mremap(), which implies
+duplicating the VMA in __split_vma() first.
 
-v3:
-- only test for import_attach (Boris)
-v2:
-- use import_attach.dmabuf instead of dma_buf (Christian)
+In case of ordinary mremap() (no change in size), we first duplicate the
+VMA in copy_vma_and_data()->copy_vma() to then call untrack_pfn_clear() on
+the old VMA: we effectively move the VM_PAT reservation.  So the
+untrack_pfn_clear() call on the new VMA duplicating is wrong in that
+context.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b57aa47d39e9 ("drm/gem: Test for imported GEM buffers with helper")
-Reported-by: Andy Yan <andyshrk@163.com>
-Closes: https://lore.kernel.org/dri-devel/38d09d34.4354.196379aa560.Coremail.andyshrk@163.com/
-Tested-by: Andy Yan <andyshrk@163.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-media@vger.kernel.org
-Cc: linaro-mm-sig@lists.linaro.org
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://lore.kernel.org/r/20250416065820.26076-1-tzimmermann@suse.de
+Splitting of VMAs seems problematic, because we don't duplicate/adjust the
+reservation when splitting the VMA.  Instead, in memtype_erase() -- called
+during zapping/munmap -- we shrink a reservation in case only the end
+address matches: Assume we split a VMA into A and B, both would share a
+reservation until B is unmapped.
+
+So when unmapping B, the reservation would be updated to cover only A.
+When unmapping A, we would properly remove the now-shrunk reservation.
+That scenario describes the mremap() shrinking (old_size > new_size),
+where we split + unmap B, and the untrack_pfn_clear() on the new VMA when
+is wrong.
+
+What if we manage to split a VM_PFNMAP VMA into A and B and unmap A first?
+It would be broken because we would never free the reservation.  Likely,
+there are ways to trigger such a VMA split outside of mremap().
+
+Affecting other VMA duplication was not intended, vm_area_dup() being used
+outside of kernel/fork.c was an oversight.  So let's fix that for; how to
+handle VMA splits better should be investigated separately.
+
+With a simple reproducer that uses mprotect() to split such a VMA I can
+trigger
+
+x86/PAT: pat_mremap:26448 freeing invalid memtype [mem 0x00000000-0x00000fff]
+
+Link: https://lkml.kernel.org/r/20250422144942.2871395-1-david@redhat.com
+Fixes: dc84bc2aba85 ("x86/mm/pat: Fix VM_PAT handling when fork() fails in copy_page_range()")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_gem.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/fork.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
-index 2bf893eabb4b2..bcd54020d6ba5 100644
---- a/include/drm/drm_gem.h
-+++ b/include/drm/drm_gem.h
-@@ -585,8 +585,7 @@ static inline bool drm_gem_object_is_shared_for_memory_stats(struct drm_gem_obje
-  */
- static inline bool drm_gem_is_imported(const struct drm_gem_object *obj)
- {
--	/* The dma-buf's priv field points to the original GEM object. */
--	return obj->dma_buf && (obj->dma_buf->priv != obj);
-+	return !!obj->import_attach;
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 12decadff468f..97c9afe3efc38 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -505,10 +505,6 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
+ 	vma_numab_state_init(new);
+ 	dup_anon_vma_name(orig, new);
+ 
+-	/* track_pfn_copy() will later take care of copying internal state. */
+-	if (unlikely(new->vm_flags & VM_PFNMAP))
+-		untrack_pfn_clear(new);
+-
+ 	return new;
  }
  
- #ifdef CONFIG_LOCKDEP
+@@ -699,6 +695,11 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		tmp = vm_area_dup(mpnt);
+ 		if (!tmp)
+ 			goto fail_nomem;
++
++		/* track_pfn_copy() will later take care of copying internal state. */
++		if (unlikely(tmp->vm_flags & VM_PFNMAP))
++			untrack_pfn_clear(tmp);
++
+ 		retval = vma_dup_policy(mpnt, tmp);
+ 		if (retval)
+ 			goto fail_nomem_policy;
 -- 
 2.39.5
 
