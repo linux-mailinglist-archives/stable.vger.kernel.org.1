@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8779FAC5835
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1FEAC54B7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 032577AF9E0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:41:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CACCC7A31FF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F03527FD6F;
-	Tue, 27 May 2025 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C3626868E;
+	Tue, 27 May 2025 17:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIXN4L+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuUelqj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3FE42A9B;
-	Tue, 27 May 2025 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DA61A3159;
+	Tue, 27 May 2025 17:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367735; cv=none; b=uQSAKis6t7FjCvDB9KeP9hBiOex77Q2kXzKOxj0HBz5YyPozgGveUcwDzeol5qNGCxV7357g4y6H8jvK2uG/x5rSoM0+/P/WStApMBTNxcVGOmLJWowz5/HOWCbdf68zbRR2KbOf8jUmB6TdhNAR67trDtWH3O1kanwXvDMN8F4=
+	t=1748365374; cv=none; b=riV4zVStXqHYkscuGYIaz+/HFnDov/E3A0w6lm5UuByfNv8rrKNARo55u84/2+Bni9qjlWOfdUuLL9A1XS68vK/5UpvIhFcqsovOVtlZy2UD5gH/5/9cwzZ5LqPPvERtlNJ6aEXSz14N7y1y/dwU7psy6KBgMt5V8sBt0s5a+Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367735; c=relaxed/simple;
-	bh=MMawq7c+fsINb3YRTTGMqqQ4wRNqMvr6VMyJlSuGFv4=;
+	s=arc-20240116; t=1748365374; c=relaxed/simple;
+	bh=7Ww4K2pkaaSpumhTISl2Ubs6b3ZoQpKi/RlBmV97ugY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPDT67OYnPYHGFp0Qi+lKHYVyeTOfYPIoak1WSVEmMkviI3Hsc8KsirQeVoObZ9pOcDTGoZeorkuXQ8u5h3pdDZjhGfD/Px8u1daTAp+Nxem0kW2tEIogYHRbJJJlicz8uG42gL15AS+AQlkZrqZFatWSucPhbKGbY8JvtgmfLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIXN4L+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99A1C4CEE9;
-	Tue, 27 May 2025 17:42:14 +0000 (UTC)
+	 MIME-Version; b=KWUrxk4JX2bTGTR/hj26EW7iBmwGQHCC5JR6RFbPaJ/fv3q9H1ddrxyZdvJFsDq5ueGnA6C5nVXgprNCA8zlCm0HPU/3MEEisgBbraNR9G8pJHD3f6xCf4unrLym2uMOaFZDVP7Vp4lxBg65CfySkbWflihhHeN8z4CFhxTmxok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuUelqj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99916C4CEE9;
+	Tue, 27 May 2025 17:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367735;
-	bh=MMawq7c+fsINb3YRTTGMqqQ4wRNqMvr6VMyJlSuGFv4=;
+	s=korg; t=1748365374;
+	bh=7Ww4K2pkaaSpumhTISl2Ubs6b3ZoQpKi/RlBmV97ugY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIXN4L+6cH0QfdHtlTLvP3LkM3EmtX0lBXBkXGsqe7GJxYKJTPZDlkfcNyzAloW2g
-	 yJadXexFdzaJyB6aYveLowcE32pFyUbGqg78JlpAUMX27EJtBSv7n65S+nAINDwdWF
-	 3PQF3sSNqhlkJjC2PwrNeBVJCzmE1ULuK3Vc8BVQ=
+	b=TuUelqj7p/7cPmmSYZ665aeahYOazTUx6kyuwyZ/G5Uzsw+IVMp+RF7FGnNB4sLru
+	 KNCedTkQdbs8GWkGx4qjHA9cDi8vfq7eG5a15u3ENQkzvjglk92PnIgkoEWVHbV/PR
+	 w7FFwNlbBgndGpj9vfd24SMuUwNBUO91WUonSLxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 452/783] media: stm32: csi: add missing pm_runtime_put on error
+Subject: [PATCH 6.12 356/626] firmware: arm_ffa: Handle the presence of host partition in the partition info
 Date: Tue, 27 May 2025 18:24:09 +0200
-Message-ID: <20250527162531.533775265@linuxfoundation.org>
+Message-ID: <20250527162459.481118645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit f7cd9c94959e7a5b8c4eca33e20bd6ba1b048a64 ]
+[ Upstream commit 2f622a8b0722d332a2a149794a3add47bc9bdcf3 ]
 
-Within the stm32_csi_start function, pm_runtime_put should
-be called upon error following pm_runtime_get_sync.
-Rework the function error handling by putting a label in
-order to have common error handling for all calls requiring
-pm_runtime_put.
+Currently it is assumed that the firmware doesn't present the host
+partition in the list of partitions presented as part of the response
+to PARTITION_INFO_GET from the firmware. However, there are few
+platforms that prefer to present the same in the list of partitions.
+It is not manadatory but not restricted as well.
 
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+So handle the same by making sure to check the presence of the host
+VM ID in the XArray partition information maintained/managed in the
+driver before attempting to add it.
+
+Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <20250217-ffa_updates-v3-7-bd1d9de615e7@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/st/stm32/stm32-csi.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/platform/st/stm32/stm32-csi.c b/drivers/media/platform/st/stm32/stm32-csi.c
-index a4f8db608cedd..0c776e4a7ce83 100644
---- a/drivers/media/platform/st/stm32/stm32-csi.c
-+++ b/drivers/media/platform/st/stm32/stm32-csi.c
-@@ -499,21 +499,19 @@ static int stm32_csi_start(struct stm32_csi_dev *csidev,
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 8dc8654f9f4b2..47751b2c057ae 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1449,6 +1449,10 @@ static int ffa_setup_partitions(void)
  
- 	ret = pm_runtime_get_sync(csidev->dev);
- 	if (ret < 0)
--		return ret;
-+		goto error_put;
+ 	kfree(pbuf);
  
- 	/* Retrieve CSI2PHY clock rate to compute CCFR value */
- 	phy_clk_frate = clk_get_rate(csidev->clks[STM32_CSI_CLK_CSI2PHY].clk);
- 	if (!phy_clk_frate) {
--		pm_runtime_put(csidev->dev);
- 		dev_err(csidev->dev, "CSI2PHY clock rate invalid (0)\n");
--		return ret;
-+		ret = -EINVAL;
-+		goto error_put;
- 	}
- 
- 	ret = stm32_csi_setup_lane_merger(csidev);
--	if (ret) {
--		pm_runtime_put(csidev->dev);
--		return ret;
--	}
-+	if (ret)
-+		goto error_put;
- 
- 	/* Enable the CSI */
- 	writel_relaxed(STM32_CSI_CR_CSIEN, csidev->base + STM32_CSI_CR);
-@@ -569,6 +567,10 @@ static int stm32_csi_start(struct stm32_csi_dev *csidev,
- 	writel_relaxed(0, csidev->base + STM32_CSI_PMCR);
- 
- 	return ret;
++	/* Check if the host is already added as part of partition info */
++	if (xa_load(&drv_info->partition_info, drv_info->vm_id))
++		return 0;
 +
-+error_put:
-+	pm_runtime_put(csidev->dev);
-+	return ret;
- }
- 
- static void stm32_csi_stop(struct stm32_csi_dev *csidev)
+ 	/* Allocate for the host */
+ 	info = kzalloc(sizeof(*info), GFP_KERNEL);
+ 	if (!info) {
 -- 
 2.39.5
 
