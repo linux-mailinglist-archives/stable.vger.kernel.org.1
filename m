@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3144CAC581D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807CBAC54B9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68B998A68A6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F19587A3AB5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40AF27FD49;
-	Tue, 27 May 2025 17:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B9A86347;
+	Tue, 27 May 2025 17:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQTEsBHj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3EXcbHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB631CAA7B;
-	Tue, 27 May 2025 17:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B737D280034;
+	Tue, 27 May 2025 17:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367649; cv=none; b=NrzAVYQy3bcjZv8jhI5sP4doq5ebo1nyGz1+pLhg36ZjvSuwbufd90VheyXQCW179hrQ6llQr331RcHry0DwV56g578n34VP88Ux89bkobvvhM+r2Han4TByVZPsv3C8nIDoshlU8oDhMvtx6uffvSLVYWWYDw5XpKkqvReq9xE=
+	t=1748365383; cv=none; b=d9D9QcZWJ2ARK/elrTE0Vmuh9SmNS2Fgf0WsaZJO0aMZnl41WJYww3vjTPk20Jhx2+gG6pkmFtxg9a1/X6kGOSdNjSRcAWQ4dZ7LVB0NNtvhB9B9Pzgrdsuje7vnq7v9N7CTEyKsNt32dQ7ozyU5XzvdOj5rZvniYeBI+sb6L7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367649; c=relaxed/simple;
-	bh=DXYLHcGmkjc1DreMAoj5ATZ+/GoSJwtTbzIbyloXEb0=;
+	s=arc-20240116; t=1748365383; c=relaxed/simple;
+	bh=YZtIhGFa5a5yMeuIqR6zk9KF3FzLfRB7eOV4XzfELjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ll9bmhAfe5sCycPnACRs4QnI6+1b8KPa+b3JUbsm7UZ+53cXi+t1Gw/G6P3qZQh8GYETMNpx59i9PbmJNXhXGzd7YEczw/Gbno60zGdgqTHQRFnMYp6EDPsCQw3k9hmETm/i0NfyRKOhgYVOj/+oj/fzg3hDnVYZYIa3x+4Q2K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQTEsBHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1108C4CEE9;
-	Tue, 27 May 2025 17:40:48 +0000 (UTC)
+	 MIME-Version; b=BqzLbt7848bJB8Dzv1wiSBp0iPO536JC7tnzZ2C7heq4rYq3joUJnLT9KqvSUmd6fJ9khUaKCgaY/4yKZ8xZEVW3wnh9sJhG9wWbm6hfr9I4pDFFMJW1D8OmnskOFpno5ylzUAcXRWWSEvY3IItoo9M7ACa9lHzfqgR6GCLEm+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3EXcbHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255B9C4AF09;
+	Tue, 27 May 2025 17:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367649;
-	bh=DXYLHcGmkjc1DreMAoj5ATZ+/GoSJwtTbzIbyloXEb0=;
+	s=korg; t=1748365383;
+	bh=YZtIhGFa5a5yMeuIqR6zk9KF3FzLfRB7eOV4XzfELjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQTEsBHj0lcdx6jiApfNSqtPLRlnYKGeHnexCIGgSIewtpEuWN/8nyOaItxNoEAiy
-	 1pFc8sfiYLIe2q7mi8/gKzOuOxrcbCT48EKJCcJY6rRzpFe7Ydhi48N2vLvtr7Ibvz
-	 WuMEtY6w1cW6fWbqRE4nMshqYZLhmJ83Kc7KwEws=
+	b=Q3EXcbHJNt3olkD8M1USv4iZ7O0EJSagjE0oe138ym3uR6o/cF23Tir+TGEf8IIVY
+	 IAymZunU3ijp3HtdwP7OYIOnc4oL6KHjQpvd0txWUpzf5sR9ylyaDb18yKr+2iNUkT
+	 IJllg0UPPIQQJyEahcmXY2s8uhyJUXFasmYVZ1l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 455/783] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
+Subject: [PATCH 6.12 359/626] ASoC: tas2764: Add reg defaults for TAS2764_INT_CLK_CFG
 Date: Tue, 27 May 2025 18:24:12 +0200
-Message-ID: <20250527162531.651958960@linuxfoundation.org>
+Message-ID: <20250527162459.600931473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
+[ Upstream commit d64c4c3d1c578f98d70db1c5e2535b47adce9d07 ]
 
-GCC can see that the value range for "order" is capped, but this leads
-it to consider that it might be negative, leading to a false positive
-warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
-
-../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
-  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
-      |                                    ~~~~~~~~~~~^~~
-  'mlx4_alloc_db_from_pgdir': events 1-2
-  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                     |                         |                                                   |                     |                         (2) out of array bounds here
-      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
-                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
-../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
-  664 |         unsigned long          *bits[2];
-      |                                 ^~~~
-
-Switch the argument to unsigned int, which removes the compiler needing
-to consider negative values.
-
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-4-dbab892a69b5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
- include/linux/mlx4/device.h                | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/tas2764.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-index b330020dc0d67..f2bded847e61d 100644
---- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
- }
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 58315eab492a1..bc0a73fc7ab41 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -634,6 +634,7 @@ static const struct reg_default tas2764_reg_defaults[] = {
+ 	{ TAS2764_TDM_CFG2, 0x0a },
+ 	{ TAS2764_TDM_CFG3, 0x10 },
+ 	{ TAS2764_TDM_CFG5, 0x42 },
++	{ TAS2764_INT_CLK_CFG, 0x19 },
+ };
  
- static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
--				    struct mlx4_db *db, int order)
-+				    struct mlx4_db *db, unsigned int order)
- {
--	int o;
-+	unsigned int o;
- 	int i;
- 
- 	for (o = order; o <= 1; ++o) {
-@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
- 	return 0;
- }
- 
--int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
-+int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
- {
- 	struct mlx4_priv *priv = mlx4_priv(dev);
- 	struct mlx4_db_pgdir *pgdir;
-diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
-index 27f42f713c891..86f0f2a25a3d6 100644
---- a/include/linux/mlx4/device.h
-+++ b/include/linux/mlx4/device.h
-@@ -1135,7 +1135,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
- int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
- 		       struct mlx4_buf *buf);
- 
--int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
-+int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
- void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
- 
- int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
+ static const struct regmap_range_cfg tas2764_regmap_ranges[] = {
 -- 
 2.39.5
 
