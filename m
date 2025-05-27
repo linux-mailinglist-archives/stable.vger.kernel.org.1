@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-147238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10A4AC56CB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7DEAC537A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 065FA4A42B8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D6F13A9389
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A4F27D784;
-	Tue, 27 May 2025 17:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAAD27FB0C;
+	Tue, 27 May 2025 16:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2L6+nu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXX2sUR8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C721E89C;
-	Tue, 27 May 2025 17:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A793727A926;
+	Tue, 27 May 2025 16:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366714; cv=none; b=Eoohwxr9cnnUrCDp6ILIUjhiBa/OXMiK1I2OnTBB/JTjzjD9DcX0qWzvANoGXwLrVcWd70U1KPpundmPa1Fgjwmv/DElg5uHzB4x5t6zTa4tEHxbo9svJwyj52DOCC01IDjRU/B6VDIubGEsoC4bkiIqP9a6JDsGDUKfrZFTr5I=
+	t=1748364455; cv=none; b=EOyEenhhhr3omVMZDi86ieFst58cIKrXshdd3XKwOfGAAgWAtsykQ/tI/QKjdqGhrZjatfKHgb/Aw39AACXGFrTlIl51xq+QC/22YkVT9fyToSsEvZysUCpGJkvWdZLmEp3oMsG4IxqDetlHyjTaQg6jBspJP3gkscnWoRJQMsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366714; c=relaxed/simple;
-	bh=YA8/uZcUDvXbi29JE14W9dqn9IRhRZeEDS/Lxvvq030=;
+	s=arc-20240116; t=1748364455; c=relaxed/simple;
+	bh=gXXm2XM9gCH8Ljv19Igmk0a9adYUuYJyPX9bUMwbRw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sz3ysUjtG0KtFTAP7r55MfIA/cLkmN4KPSyvkqOlaUZjHFwY/QuQLi6ObTnoPbDvDcmzOOMqe7DxBYRA3D4J3nNJsmCq2s3N3TZU94bALlcib4QBWpM9g9QDTyVC86fnFeu92xAar5cQSWW/nbrzyL9p9DCcdE5ajytjnc9Ft4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2L6+nu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867A0C4CEE9;
-	Tue, 27 May 2025 17:25:13 +0000 (UTC)
+	 MIME-Version; b=gGdqSAc6JQ8zrrggDEmUrBR3WTqYZ8TUoYFdIO0shtkNU2j+/Toq/JfeO7TFMHY0eO3HlP8uhQLsLCXJleGFbbRunM+mrb4jXOID/ysp55NWFfKH7kDLjXQeN40NOm518wUsFmUN4F/yKjjNnfrFU+qbFeGVFHRoHI4PqafphAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXX2sUR8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30400C4CEE9;
+	Tue, 27 May 2025 16:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366714;
-	bh=YA8/uZcUDvXbi29JE14W9dqn9IRhRZeEDS/Lxvvq030=;
+	s=korg; t=1748364455;
+	bh=gXXm2XM9gCH8Ljv19Igmk0a9adYUuYJyPX9bUMwbRw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2L6+nu+wVTYQMLcJ+0DUAJTA8OhkbnbuzEh0+V7WFFgjcaaZdINDisO6R1vJVNEd
-	 /h3a88KiG5krBJY2zt+peuBtMbCe4S9KkgSSBuZNxhRBTPwGTy8p79nl0HNzVqL5L8
-	 +HPcs1t3PSmSOycgikcHcgSXquXTNfGKxwpwm4Nw=
+	b=pXX2sUR808xph1mquZlMrEjDXBDWS+65r4Gay4GCN1dB5VWgSDIS63vDskZrRyRiM
+	 5503E4jyX0oqhLfap0FrXIvW3pJASgZSvQ+YeVFSD0axn14mU3BCcopbnl3VTTe6qQ
+	 wQ4sKda9eCZ+JN8LZGmUinFFkLPVZOTR7BAN1k+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Huisong Li <lihuisong@huawei.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 158/783] hypfs_create_cpu_files(): add missing check for hypfs_mkdir() failure
+Subject: [PATCH 6.12 062/626] mailbox: pcc: Use acpi_os_ioremap() instead of ioremap()
 Date: Tue, 27 May 2025 18:19:15 +0200
-Message-ID: <20250527162519.605953769@linuxfoundation.org>
+Message-ID: <20250527162447.578876037@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,33 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 00cdfdcfa0806202aea56b02cedbf87ef1e75df8 ]
+[ Upstream commit d181acea5b864e91f38f5771b8961215ce5017ae ]
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+The Platform Communication Channel (PCC) mailbox driver currently uses
+ioremap() to map channel shared memory regions. However it is preferred
+to use acpi_os_ioremap(), which is mapping function specific to EFI/ACPI
+defined memory regions. It ensures that the correct memory attributes
+are applied when mapping ACPI-provided regions.
+
+While at it, also add checks for handling any errors with the mapping.
+
+Acked-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Adam Young <admiyo@os.amperecomputing.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/hypfs/hypfs_diag_fs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mailbox/pcc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/hypfs/hypfs_diag_fs.c b/arch/s390/hypfs/hypfs_diag_fs.c
-index 00a6d370a2803..280266a74f378 100644
---- a/arch/s390/hypfs/hypfs_diag_fs.c
-+++ b/arch/s390/hypfs/hypfs_diag_fs.c
-@@ -208,6 +208,8 @@ static int hypfs_create_cpu_files(struct dentry *cpus_dir, void *cpu_info)
- 	snprintf(buffer, TMP_SIZE, "%d", cpu_info__cpu_addr(diag204_get_info_type(),
- 							    cpu_info));
- 	cpu_dir = hypfs_mkdir(cpus_dir, buffer);
-+	if (IS_ERR(cpu_dir))
-+		return PTR_ERR(cpu_dir);
- 	rc = hypfs_create_u64(cpu_dir, "mgmtime",
- 			      cpu_info__acc_time(diag204_get_info_type(), cpu_info) -
- 			      cpu_info__lp_time(diag204_get_info_type(), cpu_info));
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index f8215a8f656a4..49254d99a8ad6 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -419,8 +419,12 @@ int pcc_mbox_ioremap(struct mbox_chan *chan)
+ 		return -1;
+ 	pchan_info = chan->con_priv;
+ 	pcc_mbox_chan = &pchan_info->chan;
+-	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
+-				       pcc_mbox_chan->shmem_size);
++
++	pcc_mbox_chan->shmem = acpi_os_ioremap(pcc_mbox_chan->shmem_base_addr,
++					       pcc_mbox_chan->shmem_size);
++	if (!pcc_mbox_chan->shmem)
++		return -ENXIO;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
 -- 
 2.39.5
 
