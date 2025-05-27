@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-147229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01BDBAC56BE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E54B4AC534E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F6461BA7CB9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B39F61BA37E9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8913127FB0C;
-	Tue, 27 May 2025 17:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B78C27CB04;
+	Tue, 27 May 2025 16:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2Fp8Kxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfK6QYSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DC3194A45;
-	Tue, 27 May 2025 17:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003A227FD78;
+	Tue, 27 May 2025 16:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366686; cv=none; b=PD2QAX/RLOquJSZfrhMvrVze9U+XSmd0cIUyPb6bTgs56qpch4lqon++sOcOfDvAKjkjBSiSlRxCfEESrdWRRMPzrQ6gPHTd+0SErj8HPQTMl26JkQuC7HVsVDjDN1cXGnkdMksZn1ZNHPoRk0fEfs7EegS7aSqFQfTvY5Nxy34=
+	t=1748364333; cv=none; b=OcGFTBAzZ7Wnz4sIeQ7D92kvh/LeBaTh8SzR73JWuEDckc58igwUP2wlrQJotGu79ifD01vonKrTtzTsHSqx9yGiPaQS+pIx77CowE2QFlLq/92in50hYlTAoyCZEu5DfKAQU3YRYEhx+zMTsFWm1By9fe5hOe6/w+5/g56m9Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366686; c=relaxed/simple;
-	bh=fe+XGCGfZig6PAuVI7uMuK7dR8ipsAhJYr/VamWHqSY=;
+	s=arc-20240116; t=1748364333; c=relaxed/simple;
+	bh=nyte0waYwMIABKrPE3G5DBR/sZ1p9OOkXCrkua85oYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5kgLHBJ2bIIlzdt6egIZVa3f9SMyMObmZoe9GgfYxI5/9gv0/NkFyx6MF2d7FoaARnGPGGU/Ljr+sFp3Q/EOzFM/N9cQe8FWyKMPkumeFmTiT0yoDkVbCyD47oqdwmDoJaAL9zcHbkP5j7iaQXJUH2djLvuGrK9UkDMw2CMFHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2Fp8Kxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD694C4CEE9;
-	Tue, 27 May 2025 17:24:45 +0000 (UTC)
+	 MIME-Version; b=BuDTPEO8QKeE2SjVKIUX/lf9lDICAty0Ill4gM/yemNnwyRulW0RmaqlxvPJw/ZECUgYkTtxpBqat2KMhbJRUbk4PB4yfMk0V3ahxv9Mtgk1Sz/wEmhIWA4YGUiaG4vwdAzOFOsh9r1UQgBc1YWi016bEs7DZ988aNgT219syt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfK6QYSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1010AC4CEE9;
+	Tue, 27 May 2025 16:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366686;
-	bh=fe+XGCGfZig6PAuVI7uMuK7dR8ipsAhJYr/VamWHqSY=;
+	s=korg; t=1748364330;
+	bh=nyte0waYwMIABKrPE3G5DBR/sZ1p9OOkXCrkua85oYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2Fp8KxlT6h3Et36wX9PeOLauQVXpzasBKxa1oFJYYUirykmRUL6P53fde5Qcx94M
-	 TxfcZDginbCPcKyCddBMOoe00h9NN2paJjsrJxTYCSY97KHOf5Yb1CJoQZCOgxyQM4
-	 mKGYZ1G/jSaN5bfcSUlGMciBYXHNiI+lJcc4nHCU=
+	b=yfK6QYSIOVRibmrd1BGk7E8anUjhuww3s+e4cEwTpQY1lpav0kwUHXYAXn+0akTtb
+	 1c20OMHWoo46Ibh5oR7pkbroedQ+rBBvizlnod+KaWkczFqjM5PloejUaF1TGMXYsx
+	 yTcnX7PY/IcKCfzW/+2NbCjUQVgasTHR8vIlsQJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 118/783] wifi: mt76: scan: set vif offchannel link for scanning/roc
+Subject: [PATCH 6.12 022/626] mei: vsc: Use struct vsc_tp_packet as vsc-tp tx_buf and rx_buf type
 Date: Tue, 27 May 2025 18:18:35 +0200
-Message-ID: <20250527162517.954809610@linuxfoundation.org>
+Message-ID: <20250527162445.974586347@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 3ba20af886d1f604dceeb4d4c8ff872e2c4e885e ]
+[ Upstream commit f88c0c72ffb014e5eba676ee337c4eb3b1d6a119 ]
 
-The driver needs to know what vif link to use
+vsc_tp.tx_buf and vsc_tp.rx_buf point to a struct vsc_tp_packet, use
+the correct type instead of "void *" and use sizeof(*ptr) when allocating
+memory for these buffers.
 
-Link: https://patch.msgid.link/20250311103646.43346-4-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250318141203.94342-3-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/channel.c | 3 +++
- drivers/net/wireless/mediatek/mt76/mt76.h    | 2 ++
- 2 files changed, 5 insertions(+)
+ drivers/misc/mei/vsc-tp.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
-index 6a35c6ebd823e..e7b839e742903 100644
---- a/drivers/net/wireless/mediatek/mt76/channel.c
-+++ b/drivers/net/wireless/mediatek/mt76/channel.c
-@@ -293,6 +293,7 @@ struct mt76_vif_link *mt76_get_vif_phy_link(struct mt76_phy *phy,
- 		kfree(mlink);
- 		return ERR_PTR(ret);
- 	}
-+	rcu_assign_pointer(mvif->offchannel_link, mlink);
+diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
+index eb51fbe8d92fb..ad7c7f1573191 100644
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -71,8 +71,8 @@ struct vsc_tp {
+ 	u32 seq;
  
- 	return mlink;
- }
-@@ -301,10 +302,12 @@ void mt76_put_vif_phy_link(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 			   struct mt76_vif_link *mlink)
+ 	/* command buffer */
+-	void *tx_buf;
+-	void *rx_buf;
++	struct vsc_tp_packet *tx_buf;
++	struct vsc_tp_packet *rx_buf;
+ 
+ 	atomic_t assert_cnt;
+ 	wait_queue_head_t xfer_wait;
+@@ -164,7 +164,7 @@ static int vsc_tp_xfer_helper(struct vsc_tp *tp, struct vsc_tp_packet *pkt,
  {
- 	struct mt76_dev *dev = phy->dev;
-+	struct mt76_vif_data *mvif = mlink->mvif;
+ 	int ret, offset = 0, cpy_len, src_len, dst_len = sizeof(struct vsc_tp_packet_hdr);
+ 	int next_xfer_len = VSC_TP_PACKET_SIZE(pkt) + VSC_TP_XFER_TIMEOUT_BYTES;
+-	u8 *src, *crc_src, *rx_buf = tp->rx_buf;
++	u8 *src, *crc_src, *rx_buf = (u8 *)tp->rx_buf;
+ 	int count_down = VSC_TP_MAX_XFER_COUNT;
+ 	u32 recv_crc = 0, crc = ~0;
+ 	struct vsc_tp_packet_hdr ack;
+@@ -324,7 +324,7 @@ int vsc_tp_rom_xfer(struct vsc_tp *tp, const void *obuf, void *ibuf, size_t len)
+ 	guard(mutex)(&tp->mutex);
  
- 	if (IS_ERR_OR_NULL(mlink) || !mlink->offchannel)
- 		return;
+ 	/* rom xfer is big endian */
+-	cpu_to_be32_array(tp->tx_buf, obuf, words);
++	cpu_to_be32_array((u32 *)tp->tx_buf, obuf, words);
  
-+	rcu_assign_pointer(mvif->offchannel_link, NULL);
- 	dev->drv->vif_link_remove(phy, vif, &vif->bss_conf, mlink);
- 	kfree(mlink);
+ 	ret = read_poll_timeout(gpiod_get_value_cansleep, ret,
+ 				!ret, VSC_TP_ROM_XFER_POLL_DELAY_US,
+@@ -340,7 +340,7 @@ int vsc_tp_rom_xfer(struct vsc_tp *tp, const void *obuf, void *ibuf, size_t len)
+ 		return ret;
+ 
+ 	if (ibuf)
+-		be32_to_cpu_array(ibuf, tp->rx_buf, words);
++		be32_to_cpu_array(ibuf, (u32 *)tp->rx_buf, words);
+ 
+ 	return ret;
  }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 8714418f3906c..e4ecd9cde36dc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -351,6 +351,7 @@ struct mt76_wcid {
- 	u8 hw_key_idx;
- 	u8 hw_key_idx2;
+@@ -496,11 +496,11 @@ static int vsc_tp_probe(struct spi_device *spi)
+ 	if (!tp)
+ 		return -ENOMEM;
  
-+	u8 offchannel:1;
- 	u8 sta:1;
- 	u8 sta_disabled:1;
- 	u8 amsdu:1;
-@@ -788,6 +789,7 @@ struct mt76_vif_link {
+-	tp->tx_buf = devm_kzalloc(dev, VSC_TP_MAX_XFER_SIZE, GFP_KERNEL);
++	tp->tx_buf = devm_kzalloc(dev, sizeof(*tp->tx_buf), GFP_KERNEL);
+ 	if (!tp->tx_buf)
+ 		return -ENOMEM;
  
- struct mt76_vif_data {
- 	struct mt76_vif_link __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
-+	struct mt76_vif_link __rcu *offchannel_link;
+-	tp->rx_buf = devm_kzalloc(dev, VSC_TP_MAX_XFER_SIZE, GFP_KERNEL);
++	tp->rx_buf = devm_kzalloc(dev, sizeof(*tp->rx_buf), GFP_KERNEL);
+ 	if (!tp->rx_buf)
+ 		return -ENOMEM;
  
- 	struct mt76_phy *roc_phy;
- 	u16 valid_links;
 -- 
 2.39.5
 
