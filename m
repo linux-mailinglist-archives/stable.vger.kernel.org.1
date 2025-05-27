@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98EB3AC58A6
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:47:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D9EAC55A8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B7AD1BC2895
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:47:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6506E3AF8FD
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C678427FB10;
-	Tue, 27 May 2025 17:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D78527E1CA;
+	Tue, 27 May 2025 17:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y57pd7iX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iu3/Xp6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729B127BF8D;
-	Tue, 27 May 2025 17:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A45A139579;
+	Tue, 27 May 2025 17:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368053; cv=none; b=FHaji54HiZkUXmDKISWswivqMdhAa6fk3tob5bX01omcbDxpfy7Fza6jcJnfYOba7pG2hmbUT1oV5AFjP12o9Xu/ZNKPWqMuqDSDYsUazk+dE6Jlc4LMCgJs4oY1ZPCd2U9Fqil8Gk5ZdAqyw4njE7S8F2p29B+EffY/RvgfQAQ=
+	t=1748365788; cv=none; b=FHe/WP/pLZqn4j15FXU8tqyLioXCrBpYHDxolab1uGIY4jc0sNMJjhQmvCIEKqdaUDwz7zn5vMj6i81/ZYLCBtwiR9ayoJwHWw3SDJGJgHQXBz8sQ1bEQ8+Ulo7jTwFQFz7C60YUZaVbzZhvil/E+fZgM0P4NFmcU8VFffLp1j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368053; c=relaxed/simple;
-	bh=FrelKAJXtWm9ArAA8cRCGHk14MtbSAq0EqwuuKHJA5U=;
+	s=arc-20240116; t=1748365788; c=relaxed/simple;
+	bh=lw91kxNA8l3x9AEmbALhxIwMwXg+bpDBgqJCo4Hfm+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0F2NbP4aeTXswHJ0/YxgCGrg+LhlSNYTeTbeHu87taaNfnPLm3dgK42fOldZ3GyuXADyu2Y9d7w2OuFv2IwWAEBxxpAqgr0jTM9ok0yugqNNIinpRikjArzjSud4yCRe7xaBA6VlFd4ca7TQX4l4x7pISC6gEnZpJWtEH6UKi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y57pd7iX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1ECBC4CEE9;
-	Tue, 27 May 2025 17:47:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mad3J3sgKxDTd+tWwi+MzSt3t49IWirj532FgD7/ExlkAfQk7oqT62meaOJsWJuRqrU0xpZRbgBNV3sUOeqJ9lk4uRniWHkgVb4wjOpdT6zLrmr5H38bFDSCql0ToXlMv7ipeLKLzTOPcMUIKmniRGS8tlJsyAmM4bPYwvfy3L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iu3/Xp6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B79C4CEE9;
+	Tue, 27 May 2025 17:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368053;
-	bh=FrelKAJXtWm9ArAA8cRCGHk14MtbSAq0EqwuuKHJA5U=;
+	s=korg; t=1748365786;
+	bh=lw91kxNA8l3x9AEmbALhxIwMwXg+bpDBgqJCo4Hfm+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y57pd7iXS+5WdD/j7z90zZOtupF2vNGOXYpL4iyvsA4Gi1iUoTqW0fYgjrX3PdJ0B
-	 RZCUbBxEzrnYT0eKMReCHyQBugeCvBXwa5zip5rRI2sROD98qHSBqRwuw82AQ5gU6b
-	 1Oojy4K/YEtE0iQir7IzZbTbKC1xkCmcIYzNrwL8=
+	b=Iu3/Xp6suGKoZM3pq9JqBbWRKCtPQb2VRdAvWdbzvvGxnGRFEXmtcwSm2nc5mXPSM
+	 yjqgplUla+AiS/+nWPHDYQRbkrPlKGJYtWAFaUHVDs0dPto7EmpDKyGz5MzheH6yNo
+	 Zy+hdQyqLLYE3RxaY1a2gYNxFO80G6mPh46PJmPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naman Trivedi <naman.trivedimanojbhai@amd.com>,
-	Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 584/783] arm64: zynqmp: add clock-output-names property in clock nodes
-Date: Tue, 27 May 2025 18:26:21 +0200
-Message-ID: <20250527162536.927132715@linuxfoundation.org>
+Subject: [PATCH 6.12 489/626] drm/xe/pf: Reset GuC VF config when unprovisioning critical resource
+Date: Tue, 27 May 2025 18:26:22 +0200
+Message-ID: <20250527162504.850614174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Trivedi <naman.trivedimanojbhai@amd.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit 385a59e7f7fb3438466a0712cc14672c708bbd57 ]
+[ Upstream commit 33f17e2cbd930a2a00eb007d9b241b6db010a880 ]
 
-Add clock-output-names property to clock nodes, so that the resulting
-clock name do not change when clock node name is changed.
-Also, replace underscores with hyphens in the clock node names as per
-dt-schema rule.
+GuC firmware counts received VF configuration KLVs and may start
+validation of the complete VF config even if some resources where
+unprovisioned in the meantime, leading to unexpected errors like:
 
-Signed-off-by: Naman Trivedi <naman.trivedimanojbhai@amd.com>
-Acked-by: Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>
-Link: https://lore.kernel.org/r/20241122095712.1166883-1-naman.trivedimanojbhai@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+ $ echo 1 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/contexts_quota
+ $ echo 0 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/contexts_quota
+ $ echo 1 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/doorbells_quota
+ $ echo 0 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/doorbells_quota
+ $ echo 1 | sudo tee /sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/ggtt_quota
+ tee: '/sys/kernel/debug/dri/0000:00:02.0/gt0/vf1/ggtt_quota': Input/output error
+
+To mitigate this problem trigger explicit VF config reset after
+unprovisioning any of the critical resources (GGTT, context or
+doorbell IDs) that GuC is monitoring.
+
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Michał Winiarski <michal.winiarski@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250129195947.764-3-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c | 37 +++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
-index 60d1b1acf9a03..385fed8a852af 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
-@@ -10,39 +10,44 @@
+diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
+index c9ed996b9cb0c..786f0dba41437 100644
+--- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
++++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_config.c
+@@ -323,6 +323,26 @@ static int pf_push_full_vf_config(struct xe_gt *gt, unsigned int vfid)
+ 	return err;
+ }
  
- #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
- / {
--	pss_ref_clk: pss_ref_clk {
-+	pss_ref_clk: pss-ref-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <33333333>;
-+		clock-output-names = "pss_ref_clk";
- 	};
++static int pf_push_vf_cfg(struct xe_gt *gt, unsigned int vfid, bool reset)
++{
++	int err = 0;
++
++	xe_gt_assert(gt, vfid);
++	lockdep_assert_held(xe_gt_sriov_pf_master_mutex(gt));
++
++	if (reset)
++		err = pf_send_vf_cfg_reset(gt, vfid);
++	if (!err)
++		err = pf_push_full_vf_config(gt, vfid);
++
++	return err;
++}
++
++static int pf_refresh_vf_cfg(struct xe_gt *gt, unsigned int vfid)
++{
++	return pf_push_vf_cfg(gt, vfid, true);
++}
++
+ static u64 pf_get_ggtt_alignment(struct xe_gt *gt)
+ {
+ 	struct xe_device *xe = gt_to_xe(gt);
+@@ -419,6 +439,10 @@ static int pf_provision_vf_ggtt(struct xe_gt *gt, unsigned int vfid, u64 size)
+ 			return err;
  
--	video_clk: video_clk {
-+	video_clk: video-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <27000000>;
-+		clock-output-names = "video_clk";
- 	};
+ 		pf_release_vf_config_ggtt(gt, config);
++
++		err = pf_refresh_vf_cfg(gt, vfid);
++		if (unlikely(err))
++			return err;
+ 	}
+ 	xe_gt_assert(gt, !xe_ggtt_node_allocated(config->ggtt_region));
  
--	pss_alt_ref_clk: pss_alt_ref_clk {
-+	pss_alt_ref_clk: pss-alt-ref-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <0>;
-+		clock-output-names = "pss_alt_ref_clk";
- 	};
+@@ -744,6 +768,10 @@ static int pf_provision_vf_ctxs(struct xe_gt *gt, unsigned int vfid, u32 num_ctx
+ 			return ret;
  
--	gt_crx_ref_clk: gt_crx_ref_clk {
-+	gt_crx_ref_clk: gt-crx-ref-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <108000000>;
-+		clock-output-names = "gt_crx_ref_clk";
- 	};
+ 		pf_release_config_ctxs(gt, config);
++
++		ret = pf_refresh_vf_cfg(gt, vfid);
++		if (unlikely(ret))
++			return ret;
+ 	}
  
--	aux_ref_clk: aux_ref_clk {
-+	aux_ref_clk: aux-ref-clk {
- 		bootph-all;
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
- 		clock-frequency = <27000000>;
-+		clock-output-names = "aux_ref_clk";
- 	};
- };
+ 	if (!num_ctxs)
+@@ -1041,6 +1069,10 @@ static int pf_provision_vf_dbs(struct xe_gt *gt, unsigned int vfid, u32 num_dbs)
+ 			return ret;
  
+ 		pf_release_config_dbs(gt, config);
++
++		ret = pf_refresh_vf_cfg(gt, vfid);
++		if (unlikely(ret))
++			return ret;
+ 	}
+ 
+ 	if (!num_dbs)
+@@ -2003,10 +2035,7 @@ int xe_gt_sriov_pf_config_push(struct xe_gt *gt, unsigned int vfid, bool refresh
+ 	xe_gt_assert(gt, vfid);
+ 
+ 	mutex_lock(xe_gt_sriov_pf_master_mutex(gt));
+-	if (refresh)
+-		err = pf_send_vf_cfg_reset(gt, vfid);
+-	if (!err)
+-		err = pf_push_full_vf_config(gt, vfid);
++	err = pf_push_vf_cfg(gt, vfid, refresh);
+ 	mutex_unlock(xe_gt_sriov_pf_master_mutex(gt));
+ 
+ 	if (unlikely(err)) {
 -- 
 2.39.5
 
