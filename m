@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-146801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE54AC54B0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:03:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD1CAC57FC
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:39:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1899D188E088
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F265170D5B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973BA1D88D7;
-	Tue, 27 May 2025 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AE5280322;
+	Tue, 27 May 2025 17:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4xEYfNm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWSP4DAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B05154C15;
-	Tue, 27 May 2025 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308EA280328;
+	Tue, 27 May 2025 17:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365349; cv=none; b=JUmd06HFwwfBHlNSF4QtKuAqOsC0iUR1roPvOj3YAJ57Lv3HXZ6gpDFFbR6Oco8LF80gQfRmK1uwY5Kgnc90Cop93aDzKJ5ONDJyTIaoEMOsz+l/h6wJ4socNb1JrxFeexhszqI4ucvLvsB6ajucxj+rTCat7Mj5bwskultW6yI=
+	t=1748367573; cv=none; b=uR5W60bPisEp9UJVG8c0nz7jOziE976zc+CxQiOYumeU6NTCRvmzAEEspWY9BfEJJ2b8vjva7T73bHMLKxpOcopHsMoOSlcOL8dBLj8knTWvLSsXfjU1O5M+rSwhGPPn9REpu8iblxUXm259scHILs9zB1eVPhlB0ALBhG5/ly0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365349; c=relaxed/simple;
-	bh=5rZ4Sa17zaw5w8dH6eSV90sNGpMkW/NMvAtWfPNfAtM=;
+	s=arc-20240116; t=1748367573; c=relaxed/simple;
+	bh=AeBYvtK24mvnLOtWolV9stNFBZLNFnOugQbY9zERPpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Swsn9tDrLie6ZSmNtsmNPZ0R5fSBmw0w0oxsxaStVqjp/oGPbAwZk1CyXw1iWGIccxD4yTQobyWAP+V26Pp5AA1zxYW0jhC0L6Jfk9n2hvSgVUuj+CW5CJyuVLCNJMrrpw/gmjx73geTCVWACMet+FPENelym/wyEL52gi3yo94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4xEYfNm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55A4C4CEE9;
-	Tue, 27 May 2025 17:02:28 +0000 (UTC)
+	 MIME-Version; b=RVy20YsvMd1xx4348sj3Wv2fwrMXL8GqxjoqfGHRPbxOhkPAp1Tt3rdIIS2bjNonbmtD7BdN1QJhZRfrJidUxeGMZiXpmVUsD3wK5vg1ghG5/J8yyJRS+h8Z/hVb6/4aQsmIe1/QJcIhELIzTi52KorzyaYtgC5XiGPsxRKM80k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWSP4DAc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921A1C4CEE9;
+	Tue, 27 May 2025 17:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365349;
-	bh=5rZ4Sa17zaw5w8dH6eSV90sNGpMkW/NMvAtWfPNfAtM=;
+	s=korg; t=1748367573;
+	bh=AeBYvtK24mvnLOtWolV9stNFBZLNFnOugQbY9zERPpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4xEYfNmVPgU8qxBhF5nuCRPRmocQJeh3KlV4C7e/rEMAvtbD2kgY9yqLXrhBP04c
-	 CDdbuAo7zww+lziBLLzMDWEtASqzx49ahfLNyGi/tcul6jJaMSZOfZi3bF93DxKN1r
-	 fA+CuwUl8FljOl8FQbN/eqD1der9XMHGMDpvj5OI=
+	b=SWSP4DAcPZsjlP9JRsqcsDCFYFXcyeOhiRnIQ3gAlkn/ltaiqERzQS2GfToR8R+/6
+	 AkXFR5+J8qciiCnN4iNenW1Tybl/+zot+dOffG778oDTcvNZTsyr2wTdUMMj9Fg9vr
+	 RTt++7VE0liU17jc7H+zaGWxlIrdnV497rWvSXJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 317/626] scsi: mpt3sas: Send a diag reset if target reset fails
+Subject: [PATCH 6.14 413/783] drm/amd/display: Read LTTPR ALPM caps during link cap retrieval
 Date: Tue, 27 May 2025 18:23:30 +0200
-Message-ID: <20250527162457.909146772@linuxfoundation.org>
+Message-ID: <20250527162529.919032327@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
+From: George Shen <george.shen@amd.com>
 
-[ Upstream commit 5612d6d51ed2634a033c95de2edec7449409cbb9 ]
+[ Upstream commit de84d580126eb2214937df755cfec5ef0901479e ]
 
-When an IOCTL times out and driver issues a target reset, if firmware
-fails the task management elevate the recovery by issuing a diag reset to
-controller.
+[Why]
+The latest DP spec requires the DP TX to read DPCD F0000h through F0009h
+when detecting LTTPR capabilities for the first time.
 
-Signed-off-by: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
-Link: https://lore.kernel.org/r/1739410016-27503-5-git-send-email-shivasharan.srikanteshwara@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[How]
+Update LTTPR cap retrieval to read up to F0009h (two more bytes than the
+previous F0007h), and store the LTTPR ALPM capabilities.
+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_ctl.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_dp_types.h         | 12 ++++++++++++
+ .../display/dc/link/protocols/link_dp_capability.c   |  6 +++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-index 87784c96249a7..47faa27bc3559 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-@@ -679,6 +679,7 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
- 	size_t data_in_sz = 0;
- 	long ret;
- 	u16 device_handle = MPT3SAS_INVALID_DEVICE_HANDLE;
-+	int tm_ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+index cc005da75ce4c..8bb628ab78554 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+@@ -959,6 +959,14 @@ union dp_128b_132b_supported_lttpr_link_rates {
+ 	uint8_t raw;
+ };
  
- 	issue_reset = 0;
- 
-@@ -1120,18 +1121,25 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
- 			if (pcie_device && (!ioc->tm_custom_handling) &&
- 			    (!(mpt3sas_scsih_is_pcie_scsi_device(
- 			    pcie_device->device_info))))
--				mpt3sas_scsih_issue_locked_tm(ioc,
-+				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
- 				  le16_to_cpu(mpi_request->FunctionDependent1),
- 				  0, 0, 0,
- 				  MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
- 				  0, pcie_device->reset_timeout,
- 			MPI26_SCSITASKMGMT_MSGFLAGS_PROTOCOL_LVL_RST_PCIE);
- 			else
--				mpt3sas_scsih_issue_locked_tm(ioc,
-+				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
- 				  le16_to_cpu(mpi_request->FunctionDependent1),
- 				  0, 0, 0,
- 				  MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
- 				  0, 30, MPI2_SCSITASKMGMT_MSGFLAGS_LINK_RESET);
++union dp_alpm_lttpr_cap {
++	struct {
++		uint8_t AUX_LESS_ALPM_SUPPORTED	:1;
++		uint8_t RESERVED				:7;
++	} bits;
++	uint8_t raw;
++};
 +
-+			if (tm_ret != SUCCESS) {
-+				ioc_info(ioc,
-+					 "target reset failed, issue hard reset: handle (0x%04x)\n",
-+					 le16_to_cpu(mpi_request->FunctionDependent1));
-+				mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
-+			}
- 		} else
- 			mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
- 	}
+ union dp_sink_video_fallback_formats {
+ 	struct {
+ 		uint8_t dp_1024x768_60Hz_24bpp_support	:1;
+@@ -1118,6 +1126,7 @@ struct dc_lttpr_caps {
+ 	uint8_t max_ext_timeout;
+ 	union dp_main_link_channel_coding_lttpr_cap main_link_channel_coding;
+ 	union dp_128b_132b_supported_lttpr_link_rates supported_128b_132b_rates;
++	union dp_alpm_lttpr_cap alpm;
+ 	uint8_t aux_rd_interval[MAX_REPEATER_CNT - 1];
+ 	uint8_t lttpr_ieee_oui[3];
+ 	uint8_t lttpr_device_id[6];
+@@ -1372,6 +1381,9 @@ struct dp_trace {
+ #ifndef DPCD_MAX_UNCOMPRESSED_PIXEL_RATE_CAP
+ #define DPCD_MAX_UNCOMPRESSED_PIXEL_RATE_CAP    0x221c
+ #endif
++#ifndef DP_LTTPR_ALPM_CAPABILITIES
++#define DP_LTTPR_ALPM_CAPABILITIES              0xF0009
++#endif
+ #ifndef DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE
+ #define DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE	0x50
+ #endif
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index 28843e9882d39..64e4ae379e346 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -1502,7 +1502,7 @@ static bool dpcd_read_sink_ext_caps(struct dc_link *link)
+ 
+ enum dc_status dp_retrieve_lttpr_cap(struct dc_link *link)
+ {
+-	uint8_t lttpr_dpcd_data[8] = {0};
++	uint8_t lttpr_dpcd_data[10] = {0};
+ 	enum dc_status status;
+ 	bool is_lttpr_present;
+ 
+@@ -1552,6 +1552,10 @@ enum dc_status dp_retrieve_lttpr_cap(struct dc_link *link)
+ 			lttpr_dpcd_data[DP_PHY_REPEATER_128B132B_RATES -
+ 							DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV];
+ 
++	link->dpcd_caps.lttpr_caps.alpm.raw =
++			lttpr_dpcd_data[DP_LTTPR_ALPM_CAPABILITIES -
++							DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV];
++
+ 	/* If this chip cap is set, at least one retimer must exist in the chain
+ 	 * Override count to 1 if we receive a known bad count (0 or an invalid value) */
+ 	if (((link->chip_caps & AMD_EXT_DISPLAY_PATH_CAPS__EXT_CHIP_MASK) == AMD_EXT_DISPLAY_PATH_CAPS__DP_FIXED_VS_EN) &&
 -- 
 2.39.5
 
