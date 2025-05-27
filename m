@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF40AC5577
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:11:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769A1AC5862
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35BF78A4157
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:06:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC43D7A4961
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0750727A446;
-	Tue, 27 May 2025 17:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C74727A900;
+	Tue, 27 May 2025 17:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rexUgLb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMrbmRNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F802110E;
-	Tue, 27 May 2025 17:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0A31D63EF;
+	Tue, 27 May 2025 17:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365586; cv=none; b=JXzLHdV4NcsL9heMiZuQkEIkiAjwJdP5rH1kG7F9TQ8EvpOMtfRT4OjQ2E7xwnCZdLCTEdZ4QUgrHXbMtdpzBxqMThxuo4Iasgf0xJIb2tlIMBTa8jK4oHyvha/SINsMui/8tWJ2d4pnI2J/4RaYInEOFjfHqakoQkiYFvS1yu0=
+	t=1748367860; cv=none; b=VlBlr5nXSM9z1ufC5qIAyqZ/pSeH7ChWBU4PlnT3ZiToO2Us4HU1XCbH4I3E+cSRyMAWqJB59hXxRf+tgdxOYhdeZZqaDr4NJKZVpLiGt/BSqEUIVdjm0hhfLSZM+aYvOC45rejmrTnPZRNCQ+Zvbkg740Yf7lt5vE8yOpH3RzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365586; c=relaxed/simple;
-	bh=IcaaOzq8ossENrURKUhSDNGWLjKW9C0e1+teGwkzxjA=;
+	s=arc-20240116; t=1748367860; c=relaxed/simple;
+	bh=UGhgClPjKSIxLRB0Eq2XPP8PbdO2wEWIfCjaoY+Vjn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTMtesV4wK+EPiDiyyE+gOOXGjdSj2ZxXSMjkh7ETp/a1ezP1h/2VxqCfHGxFStRAp/CR2XJ7lXLsuumBsoceGXj5fSByr+S54tky5JFlBN9RUcfFw7LRkpzLJmGS0rAfTigB0isbB60q7Qssjsc+wEKjZWAarF+Dd+4HfhYZBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rexUgLb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40108C4CEE9;
-	Tue, 27 May 2025 17:06:26 +0000 (UTC)
+	 MIME-Version; b=cz4FA8ZAOifHaVTC9YJioWcahUBfMPibEfPtmMJ2oxfCeEuzb4m6q21S1sjN6glY3jiGaQpmzGpuaTQShk+lLZR7E+GUNe/CJrxU2lSlv2UMIitPvgl1qU1/AuW94ziaaS1y3uESrqdsHrrA3H0CZE74tmktXzF3v2M5Rrn7zOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMrbmRNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D744C4CEE9;
+	Tue, 27 May 2025 17:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365586;
-	bh=IcaaOzq8ossENrURKUhSDNGWLjKW9C0e1+teGwkzxjA=;
+	s=korg; t=1748367855;
+	bh=UGhgClPjKSIxLRB0Eq2XPP8PbdO2wEWIfCjaoY+Vjn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rexUgLb1lw+QcaoJi7bMeHUPYnMJvgWzZyyb4EnsdbJJP8SCzd8Py8NocLyVzxXT8
-	 2qMVfLRDY4KKwE+bq8igHEjGQhqOe23bJuPvyUKqxyKjjG5ch5elHVwSG/SPEaHtBQ
-	 XRrsHmcpPkjlFlmJihZgI1JMdJS+Z1UdU9MJww7Y=
+	b=HMrbmRNgGJj7iEaiJ5FiTnMvDa9Zn7Q85cGhaic6IVHaYMmo6fyLeujycO/mZpgnd
+	 vv7+AMrFPeSjJrTYIKpvh5Scl9yztHNjltnf1c0erN8Zzn62Azphz2SY89AyAWlkaX
+	 3TB/beoEDSC44NDhyefCm1eGv9WAkRkjyCmw3Fj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	David Lechner <dlechner@baylibre.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 425/626] iio: adc: ad7944: dont use storagebits for sizing
+Subject: [PATCH 6.14 521/783] wifi: mac80211: dont unconditionally call drv_mgd_complete_tx()
 Date: Tue, 27 May 2025 18:25:18 +0200
-Message-ID: <20250527162502.276696606@linuxfoundation.org>
+Message-ID: <20250527162534.367738840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 503d20ed8cf7c7b40ec0bd94f53c490c1d91c31b ]
+[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
 
-Replace use of storagebits with realbits for determining the number of
-bytes needed for SPI transfers.
+We might not have called drv_mgd_prepare_tx(), so only call
+drv_mgd_complete_tx() under the same conditions.
 
-When adding SPI offload support, storagebits will always be 32 rather
-than 16 for 16-bit 16-bit chips so we can no longer rely on storagebits
-being the correct size expected by the SPI framework (it always uses
-4 bytes for > 16-bit xfers and 2 bytes for > 8-bit xfers). Instead,
-derive the correct size from realbits since it will always be correct
-even when SPI offloading is used.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-vy: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250207-dlech-mainline-spi-engine-offload-2-v8-10-e48a489be48c@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7944.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-index 0f36138a71445..58a25792cec37 100644
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -98,6 +98,9 @@ struct ad7944_chip_info {
- 	const struct iio_chan_spec channels[2];
- };
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f92cbbc32a9e5..3bd1c4eeae52f 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3832,7 +3832,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	if (tx)
+ 		ieee80211_flush_queues(local, sdata, false);
  
-+/* get number of bytes for SPI xfer */
-+#define AD7944_SPI_BYTES(scan_type) ((scan_type).realbits > 16 ? 4 : 2)
-+
- /*
-  * AD7944_DEFINE_CHIP_INFO - Define a chip info structure for a specific chip
-  * @_name: The name of the chip
-@@ -164,7 +167,7 @@ static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *
+-	drv_mgd_complete_tx(sdata->local, sdata, &info);
++	if (tx || frame_buf)
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
  
- 	/* Then we can read the data during the acquisition phase */
- 	xfers[2].rx_buf = &adc->sample.raw;
--	xfers[2].len = BITS_TO_BYTES(chan->scan_type.storagebits);
-+	xfers[2].len = AD7944_SPI_BYTES(chan->scan_type);
- 	xfers[2].bits_per_word = chan->scan_type.realbits;
- 
- 	spi_message_init_with_transfers(&adc->msg, xfers, 3);
-@@ -193,7 +196,7 @@ static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc
- 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
- 
- 	xfers[1].rx_buf = &adc->sample.raw;
--	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits);
-+	xfers[1].len = AD7944_SPI_BYTES(chan->scan_type);
- 	xfers[1].bits_per_word = chan->scan_type.realbits;
- 
- 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
-@@ -228,7 +231,7 @@ static int ad7944_chain_mode_init_msg(struct device *dev, struct ad7944_adc *adc
- 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
- 
- 	xfers[1].rx_buf = adc->chain_mode_buf;
--	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits) * n_chain_dev;
-+	xfers[1].len = AD7944_SPI_BYTES(chan->scan_type) * n_chain_dev;
- 	xfers[1].bits_per_word = chan->scan_type.realbits;
- 
- 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
-@@ -274,12 +277,12 @@ static int ad7944_single_conversion(struct ad7944_adc *adc,
- 		return ret;
- 
- 	if (adc->spi_mode == AD7944_SPI_MODE_CHAIN) {
--		if (chan->scan_type.storagebits > 16)
-+		if (chan->scan_type.realbits > 16)
- 			*val = ((u32 *)adc->chain_mode_buf)[chan->scan_index];
- 		else
- 			*val = ((u16 *)adc->chain_mode_buf)[chan->scan_index];
- 	} else {
--		if (chan->scan_type.storagebits > 16)
-+		if (chan->scan_type.realbits > 16)
- 			*val = adc->sample.raw.u32;
- 		else
- 			*val = adc->sample.raw.u16;
-@@ -409,8 +412,7 @@ static int ad7944_chain_mode_alloc(struct device *dev,
- 	/* 1 word for each voltage channel + aligned u64 for timestamp */
- 
- 	chain_mode_buf_size = ALIGN(n_chain_dev *
--		BITS_TO_BYTES(chan[0].scan_type.storagebits), sizeof(u64))
--		+ sizeof(u64);
-+		AD7944_SPI_BYTES(chan[0].scan_type), sizeof(u64)) + sizeof(u64);
- 	buf = devm_kzalloc(dev, chain_mode_buf_size, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
+ 	/* clear AP addr only after building the needed mgmt frames */
+ 	eth_zero_addr(sdata->deflink.u.mgd.bssid);
 -- 
 2.39.5
 
