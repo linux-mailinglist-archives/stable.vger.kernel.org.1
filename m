@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544FCAC5692
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:23:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BCFAC536F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DE9B3B40F5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:22:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 901D118939D1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C00C27F728;
-	Tue, 27 May 2025 17:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DE02CCC0;
+	Tue, 27 May 2025 16:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLmrGgwp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ef/cECF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1D3185E7F;
-	Tue, 27 May 2025 17:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63710241679;
+	Tue, 27 May 2025 16:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366553; cv=none; b=feQzSr0ep0hgI9N46mmdq09pm4FMtHvcPH/q82gArCHBgIgSZiNHTluqDs7Oqzw3++7X5wvAV7JNu/CVZBjiWxyc/2n3kqQtEha5Pk54473v4aU5X7YPVOEOwRTYXsRaB7W3AGNs12k9nbTOSGV44vz33Kgr2cOgOEmEPfv+wRM=
+	t=1748364422; cv=none; b=C1Rp3UJsTtrKhvTy+kByDEgGJ8rSlmVTtfGP3srvhcn5ypErA/W2hJrgaqyDSPiA50Rcs2AWyqZtSyjdnETxGhJYu4SsdeiCNSV2+Zhv2NK2IH16Gz0WNqfyMOOu6+suCEQAFpuuFKu4gW8iqYDT6ybdTYPQjzXfezdGtetTf+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366553; c=relaxed/simple;
-	bh=hu9AIQqrONGpK404PKNQkRur1hpT5DvDDmnNAQ7IskQ=;
+	s=arc-20240116; t=1748364422; c=relaxed/simple;
+	bh=u+D4J3IdpXDGcHzvMvaW/aWGMrsgIVacNzbV3DpEZnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KyRrI0Q7HAAKqUE3UnX9drB7W+RDUFu69UqbfbntDq+4LQK/ggF10WAiW+nVious1xi49EFUpvUoez6E5ZvIHgZ6MNEBuh2squhe3CfJvXeb7GkOdfgrQt/l8orICTpq4RLk9TEO1ZVTVmqM4OhR5TfNLVCdC+5Qr4j3gNFZfX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLmrGgwp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB2DC4CEE9;
-	Tue, 27 May 2025 17:22:32 +0000 (UTC)
+	 MIME-Version; b=D3neyTla1kcPyvu6To4mv0wUjaexkfLpiYudTl9mHfkqzbDLzZIESQVbQXjC4EIAuDZWfyrbfSTuV/TEnLpoVY4FEH4PxjY0DKn9Ma8Hj47d7pkSbAuwPhWZdWuzg3rZ4RSKwP8y2FkvF+ALMHmRKapLMl3duqiy/lWZCmsc6Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ef/cECF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41AAC4CEE9;
+	Tue, 27 May 2025 16:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366553;
-	bh=hu9AIQqrONGpK404PKNQkRur1hpT5DvDDmnNAQ7IskQ=;
+	s=korg; t=1748364422;
+	bh=u+D4J3IdpXDGcHzvMvaW/aWGMrsgIVacNzbV3DpEZnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLmrGgwpjXOT3cAubL5MHNWmWsoTei+tVL7vad/sYDa9zUtZ4s9zw+VRvlxl/VvyT
-	 6fiebdt2qEOdgFbBQlYq4uWz2aOUwmZaXyxDPeqNkJMil5zlInqvmi4ApZ/H4o+vBf
-	 /y9lkd/4f+y32eAIbrdMEfO5TjwlriVTj3AT+Kww=
+	b=2Ef/cECF9XLEThequKLgWSvW+U3Ofy/3JDUJsg9n6HmIs9nd3oE+NcPNv1Gh7qlV+
+	 2S8VUfTld5vGF7+0YJE4wyFKlPdZMK3iheg8Ibyc/2LQWK3yrbvhlcY7yKpHtDOp1J
+	 ZSyOal+9wpJi3VniwEL35FoKw1FB313dsLtUoLxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 105/783] xen/pci: Do not register devices with segments >= 0x10000
-Date: Tue, 27 May 2025 18:18:22 +0200
-Message-ID: <20250527162517.418996246@linuxfoundation.org>
+Subject: [PATCH 6.12 010/626] cpufreq: Add SM8650 to cpufreq-dt-platdev blocklist
+Date: Tue, 27 May 2025 18:18:23 +0200
+Message-ID: <20250527162445.476985562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit 5ccf1b8ae76ddf348e02a0d1564ff9baf8b6c415 ]
+[ Upstream commit fc5414a4774e14e51a93499a6adfdc45f2de82e0 ]
 
-The current hypercall interface for doing PCI device operations always uses
-a segment field that has a 16 bit width.  However on Linux there are buses
-like VMD that hook up devices into the PCI hierarchy at segment >= 0x10000,
-after the maximum possible segment enumerated in ACPI.
+SM8650 have already been supported by qcom-cpufreq-hw driver, but
+never been added to cpufreq-dt-platdev. This makes noise
 
-Attempting to register or manage those devices with Xen would result in
-errors at best, or overlaps with existing devices living on the truncated
-equivalent segment values.  Note also that the VMD segment numbers are
-arbitrarily assigned by the OS, and hence there would need to be some
-negotiation between Xen and the OS to agree on how to enumerate VMD
-segments and devices behind them.
+[    0.388525] cpufreq-dt cpufreq-dt: failed register driver: -17
+[    0.388537] cpufreq-dt cpufreq-dt: probe with driver cpufreq-dt failed with error -17
 
-Skip notifying Xen about those devices.  Given how VMD bridges can
-multiplex interrupts on behalf of devices behind them there's no need for
-Xen to be aware of such devices for them to be usable by Linux.
+So adding it to the cpufreq-dt-platdev driver's blocklist to fix it.
 
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250219092059.90850-2-roger.pau@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/pci.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/cpufreq/cpufreq-dt-platdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/xen/pci.c b/drivers/xen/pci.c
-index 416f231809cb6..bfe07adb3e3a6 100644
---- a/drivers/xen/pci.c
-+++ b/drivers/xen/pci.c
-@@ -43,6 +43,18 @@ static int xen_add_device(struct device *dev)
- 		pci_mcfg_reserved = true;
- 	}
- #endif
-+
-+	if (pci_domain_nr(pci_dev->bus) >> 16) {
-+		/*
-+		 * The hypercall interface is limited to 16bit PCI segment
-+		 * values, do not attempt to register devices with Xen in
-+		 * segments greater or equal than 0x10000.
-+		 */
-+		dev_info(dev,
-+			 "not registering with Xen: invalid PCI segment\n");
-+		return 0;
-+	}
-+
- 	if (pci_seg_supported) {
- 		DEFINE_RAW_FLEX(struct physdev_pci_device_add, add, optarr, 1);
+diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
+index 78ad3221fe077..67bac12d4d55b 100644
+--- a/drivers/cpufreq/cpufreq-dt-platdev.c
++++ b/drivers/cpufreq/cpufreq-dt-platdev.c
+@@ -172,6 +172,7 @@ static const struct of_device_id blocklist[] __initconst = {
+ 	{ .compatible = "qcom,sm8350", },
+ 	{ .compatible = "qcom,sm8450", },
+ 	{ .compatible = "qcom,sm8550", },
++	{ .compatible = "qcom,sm8650", },
  
-@@ -149,6 +161,16 @@ static int xen_remove_device(struct device *dev)
- 	int r;
- 	struct pci_dev *pci_dev = to_pci_dev(dev);
- 
-+	if (pci_domain_nr(pci_dev->bus) >> 16) {
-+		/*
-+		 * The hypercall interface is limited to 16bit PCI segment
-+		 * values.
-+		 */
-+		dev_info(dev,
-+			 "not unregistering with Xen: invalid PCI segment\n");
-+		return 0;
-+	}
-+
- 	if (pci_seg_supported) {
- 		struct physdev_pci_device device = {
- 			.seg = pci_domain_nr(pci_dev->bus),
-@@ -182,6 +204,16 @@ int xen_reset_device(const struct pci_dev *dev)
- 		.flags = PCI_DEVICE_RESET_FLR,
- 	};
- 
-+	if (pci_domain_nr(dev->bus) >> 16) {
-+		/*
-+		 * The hypercall interface is limited to 16bit PCI segment
-+		 * values.
-+		 */
-+		dev_info(&dev->dev,
-+			 "unable to notify Xen of device reset: invalid PCI segment\n");
-+		return 0;
-+	}
-+
- 	return HYPERVISOR_physdev_op(PHYSDEVOP_pci_device_reset, &device);
- }
- EXPORT_SYMBOL_GPL(xen_reset_device);
+ 	{ .compatible = "st,stih407", },
+ 	{ .compatible = "st,stih410", },
 -- 
 2.39.5
 
