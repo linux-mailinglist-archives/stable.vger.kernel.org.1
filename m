@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27BB8AC5873
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:45:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367E7AC551F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B93461BC23EE
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:45:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4349174DE7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273CC1E25E3;
-	Tue, 27 May 2025 17:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DAC27D776;
+	Tue, 27 May 2025 17:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bk1ZchIF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JikoKLr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D903D7263B;
-	Tue, 27 May 2025 17:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DCB13A244;
+	Tue, 27 May 2025 17:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367911; cv=none; b=iH1nkm4G8QP+g/X2sgo90TIAMQeHBHNTDkhEGjJVKYqQr7yrRV+fl1VJ1IdyJFjQdXnrajn0MERTDYp2apyqmJjx+R7zxgQz+sJ4JwC5yFIQzLPHEarsWIMRfAng/PH4I7rUjMFW/QxJOwpbKcwDDCcvKY5rMoCebIpCL+KyPLo=
+	t=1748365668; cv=none; b=U1iG4/bGiubRZ0vgZBrdna6DZZYQDP4ghCzgXv1JqfHXp9oFBSVJ+qQWTnnvnhNDzmfyI8oGSvAhNOZ6dOcFMBWA4/446l+Nn02U+9L7JJggY3y/RPbbaZfKy+H9HPBoqF7jl1S2c/NZ9tRPdXHow+vaiulETXIBjnkbSyP6xao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367911; c=relaxed/simple;
-	bh=z/+oevAIL7130CIWqD0kMJjbgfAjgobRXgUv8ICJuI4=;
+	s=arc-20240116; t=1748365668; c=relaxed/simple;
+	bh=FOdL/iIAiksU2mpbUKyGLhxW0LLW008WEj+imrZmzf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qi/GU7Ax5eMFNIg2/5L7LBoCgputwfssQKzPuWNPjuGDjBt7/qlKgiuBfYKRoKBzfmTSv4wTyq54wvRDXk7uPBkL4n0FVXWsStihT5hEHkEUcrb/jYWoRCRg4CV+pg7fvxoUDinJdkmVEF4j3evjsJ+hFpFFbiHxoAK6F5qEr+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bk1ZchIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C5FC4CEE9;
-	Tue, 27 May 2025 17:45:11 +0000 (UTC)
+	 MIME-Version; b=TysqYWtTZB9o8RsUleiKI/Uc142vegPlkZmqJ3BUcFQ6L7Q9xSwUrtr81AGyocqcyML2O1EohcK4BATbzNWs4AkYbQWou/PkJMvc7L94GfhSyJ8moTZf8KvFHR+u/v7/ScZINX/J0V/vCBZJwT5aEcA7U3kJ4VoX3aTgRWy2k3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JikoKLr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B939C4CEE9;
+	Tue, 27 May 2025 17:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367911;
-	bh=z/+oevAIL7130CIWqD0kMJjbgfAjgobRXgUv8ICJuI4=;
+	s=korg; t=1748365668;
+	bh=FOdL/iIAiksU2mpbUKyGLhxW0LLW008WEj+imrZmzf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bk1ZchIF/hI96BSENxD23el0Dff5QJJ6Rfx5I1z1mQmKj16yj2cXjL18uM3hv2HKl
-	 VXGadPDVGA9mA64XjorzyGJLRi/aeu77hnXrFrXvIAlcc9GZUbuM88F4O6Usxah5hf
-	 oseWdQpQwxhwPMRW0+1r8xx93podiSxw8ndw/XlE=
+	b=JikoKLr+S8pi4L4/bP9LgBq5RbDpiOgualn72lYienWq4GoIr3YiP/CeMnAhNLk7D
+	 qTcumEEj20oaKTePG46MKntknEiLpz3SJKN/lcPjHLYOU6oMLf/VcWD/SFjfyFDKyE
+	 Ztp3OvizKlJ9nyffNeEA7rFMQxP9BKl230IOg3pU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 538/783] ext4: remove writable userspace mappings before truncating page cache
-Date: Tue, 27 May 2025 18:25:35 +0200
-Message-ID: <20250527162535.071527765@linuxfoundation.org>
+Subject: [PATCH 6.12 443/626] drm/rockchip: vop2: Improve display modes handling on RK3588 HDMI0
+Date: Tue, 27 May 2025 18:25:36 +0200
+Message-ID: <20250527162503.000454389@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,187 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 17207d0bb209e8b40f27d7f3f96e82a78af0bf2c ]
+[ Upstream commit 2c1268e7aad0819f38e56134bbc2095fd95fde1b ]
 
-When zeroing a range of folios on the filesystem which block size is
-less than the page size, the file's mapped blocks within one page will
-be marked as unwritten, we should remove writable userspace mappings to
-ensure that ext4_page_mkwrite() can be called during subsequent write
-access to these partial folios. Otherwise, data written by subsequent
-mmap writes may not be saved to disk.
+The RK3588 specific implementation is currently quite limited in terms
+of handling the full range of display modes supported by the connected
+screens, e.g. 2560x1440@75Hz, 2048x1152@60Hz, 1024x768@60Hz are just a
+few of them.
 
- $mkfs.ext4 -b 1024 /dev/vdb
- $mount /dev/vdb /mnt
- $xfs_io -t -f -c "pwrite -S 0x58 0 4096" -c "mmap -rw 0 4096" \
-               -c "mwrite -S 0x5a 2048 2048" -c "fzero 2048 2048" \
-               -c "mwrite -S 0x59 2048 2048" -c "close" /mnt/foo
+Additionally, it doesn't cope well with non-integer refresh rates like
+59.94, 29.97, 23.98, etc.
 
- $od -Ax -t x1z /mnt/foo
- 000000 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58
- *
- 000800 59 59 59 59 59 59 59 59 59 59 59 59 59 59 59 59
- *
- 001000
+Make use of HDMI0 PHY PLL as a more accurate DCLK source to handle
+all display modes up to 4K@60Hz.
 
- $umount /mnt && mount /dev/vdb /mnt
- $od -Ax -t x1z /mnt/foo
- 000000 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58
- *
- 000800 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- *
- 001000
-
-Fix this by introducing ext4_truncate_page_cache_block_range() to remove
-writable userspace mappings when truncating a partial folio range.
-Additionally, move the journal data mode-specific handlers and
-truncate_pagecache_range() into this function, allowing it to serve as a
-common helper that correctly manages the page cache in preparation for
-block range manipulations.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20241220011637.1157197-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Tested-by: FUKAUMI Naoki <naoki@radxa.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250204-vop2-hdmi0-disp-modes-v3-3-d71c6a196e58@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h    |  2 ++
- fs/ext4/extents.c | 19 ++++----------
- fs/ext4/inode.c   | 63 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 70 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 34 ++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index d4d285d999311..4f81983b79186 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -3011,6 +3011,8 @@ extern int ext4_inode_attach_jinode(struct inode *inode);
- extern int ext4_can_truncate(struct inode *inode);
- extern int ext4_truncate(struct inode *);
- extern int ext4_break_layouts(struct inode *);
-+extern int ext4_truncate_page_cache_block_range(struct inode *inode,
-+						loff_t start, loff_t end);
- extern int ext4_punch_hole(struct file *file, loff_t offset, loff_t length);
- extern void ext4_set_inode_flags(struct inode *, bool init);
- extern int ext4_alloc_da_blocks(struct inode *inode);
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index a07a98a4b97a5..8dc6b4271b15d 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4667,22 +4667,13 @@ static long ext4_zero_range(struct file *file, loff_t offset,
- 			goto out_mutex;
- 		}
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index 2aab2a0956788..5d7df4c3b08c4 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -157,6 +157,7 @@ struct vop2_video_port {
+ 	struct drm_crtc crtc;
+ 	struct vop2 *vop2;
+ 	struct clk *dclk;
++	struct clk *dclk_src;
+ 	unsigned int id;
+ 	const struct vop2_video_port_data *data;
  
--		/*
--		 * For journalled data we need to write (and checkpoint) pages
--		 * before discarding page cache to avoid inconsitent data on
--		 * disk in case of crash before zeroing trans is committed.
--		 */
--		if (ext4_should_journal_data(inode)) {
--			ret = filemap_write_and_wait_range(mapping, start,
--							   end - 1);
--			if (ret) {
--				filemap_invalidate_unlock(mapping);
--				goto out_mutex;
--			}
-+		/* Now release the pages and zero block aligned part of pages */
-+		ret = ext4_truncate_page_cache_block_range(inode, start, end);
-+		if (ret) {
-+			filemap_invalidate_unlock(mapping);
-+			goto out_mutex;
- 		}
+@@ -211,6 +212,7 @@ struct vop2 {
+ 	struct clk *hclk;
+ 	struct clk *aclk;
+ 	struct clk *pclk;
++	struct clk *pll_hdmiphy0;
  
--		/* Now release the pages and zero block aligned part of pages */
--		truncate_pagecache_range(inode, start, end - 1);
- 		inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+ 	/* optional internal rgb encoder */
+ 	struct rockchip_rgb *rgb;
+@@ -219,6 +221,8 @@ struct vop2 {
+ 	struct vop2_win win[];
+ };
  
- 		ret = ext4_alloc_file_blocks(file, lblk, max_blocks, new_size,
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 377fec39b24be..44780bb537f95 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -31,6 +31,7 @@
- #include <linux/writeback.h>
- #include <linux/pagevec.h>
- #include <linux/mpage.h>
-+#include <linux/rmap.h>
- #include <linux/namei.h>
- #include <linux/uio.h>
- #include <linux/bio.h>
-@@ -3903,6 +3904,68 @@ int ext4_update_disksize_before_punch(struct inode *inode, loff_t offset,
- 	return ret;
- }
++#define VOP2_MAX_DCLK_RATE		600000000
++
+ #define vop2_output_if_is_hdmi(x)	((x) == ROCKCHIP_VOP2_EP_HDMI0 || \
+ 					 (x) == ROCKCHIP_VOP2_EP_HDMI1)
  
-+static inline void ext4_truncate_folio(struct inode *inode,
-+				       loff_t start, loff_t end)
-+{
-+	unsigned long blocksize = i_blocksize(inode);
-+	struct folio *folio;
+@@ -1051,6 +1055,9 @@ static void vop2_crtc_atomic_disable(struct drm_crtc *crtc,
+ 
+ 	vop2_crtc_disable_irq(vp, VP_INT_DSP_HOLD_VALID);
+ 
++	if (vp->dclk_src)
++		clk_set_parent(vp->dclk, vp->dclk_src);
 +
-+	/* Nothing to be done if no complete block needs to be truncated. */
-+	if (round_up(start, blocksize) >= round_down(end, blocksize))
-+		return;
-+
-+	folio = filemap_lock_folio(inode->i_mapping, start >> PAGE_SHIFT);
-+	if (IS_ERR(folio))
-+		return;
-+
-+	if (folio_mkclean(folio))
-+		folio_mark_dirty(folio);
-+	folio_unlock(folio);
-+	folio_put(folio);
-+}
-+
-+int ext4_truncate_page_cache_block_range(struct inode *inode,
-+					 loff_t start, loff_t end)
-+{
-+	unsigned long blocksize = i_blocksize(inode);
-+	int ret;
-+
+ 	clk_disable_unprepare(vp->dclk);
+ 
+ 	vop2->enable_count--;
+@@ -2071,6 +2078,27 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc,
+ 
+ 	vop2_vp_write(vp, RK3568_VP_MIPI_CTRL, 0);
+ 
 +	/*
-+	 * For journalled data we need to write (and checkpoint) pages
-+	 * before discarding page cache to avoid inconsitent data on disk
-+	 * in case of crash before freeing or unwritten converting trans
-+	 * is committed.
++	 * Switch to HDMI PHY PLL as DCLK source for display modes up
++	 * to 4K@60Hz, if available, otherwise keep using the system CRU.
 +	 */
-+	if (ext4_should_journal_data(inode)) {
-+		ret = filemap_write_and_wait_range(inode->i_mapping, start,
-+						   end - 1);
-+		if (ret)
-+			return ret;
-+		goto truncate_pagecache;
++	if (vop2->pll_hdmiphy0 && clock <= VOP2_MAX_DCLK_RATE) {
++		drm_for_each_encoder_mask(encoder, crtc->dev, crtc_state->encoder_mask) {
++			struct rockchip_encoder *rkencoder = to_rockchip_encoder(encoder);
++
++			if (rkencoder->crtc_endpoint_id == ROCKCHIP_VOP2_EP_HDMI0) {
++				if (!vp->dclk_src)
++					vp->dclk_src = clk_get_parent(vp->dclk);
++
++				ret = clk_set_parent(vp->dclk, vop2->pll_hdmiphy0);
++				if (ret < 0)
++					drm_warn(vop2->drm,
++						 "Could not switch to HDMI0 PHY PLL: %d\n", ret);
++				break;
++			}
++		}
 +	}
 +
-+	/*
-+	 * If the block size is less than the page size, the file's mapped
-+	 * blocks within one page could be freed or converted to unwritten.
-+	 * So it's necessary to remove writable userspace mappings, and then
-+	 * ext4_page_mkwrite() can be called during subsequent write access
-+	 * to these partial folios.
-+	 */
-+	if (!IS_ALIGNED(start | end, PAGE_SIZE) &&
-+	    blocksize < PAGE_SIZE && start < inode->i_size) {
-+		loff_t page_boundary = round_up(start, PAGE_SIZE);
-+
-+		ext4_truncate_folio(inode, start, min(page_boundary, end));
-+		if (end > page_boundary)
-+			ext4_truncate_folio(inode,
-+					    round_down(end, PAGE_SIZE), end);
+ 	clk_set_rate(vp->dclk, clock);
+ 
+ 	vop2_post_config(crtc);
+@@ -3242,6 +3270,12 @@ static int vop2_bind(struct device *dev, struct device *master, void *data)
+ 		return PTR_ERR(vop2->pclk);
+ 	}
+ 
++	vop2->pll_hdmiphy0 = devm_clk_get_optional(vop2->dev, "pll_hdmiphy0");
++	if (IS_ERR(vop2->pll_hdmiphy0)) {
++		drm_err(vop2->drm, "failed to get pll_hdmiphy0\n");
++		return PTR_ERR(vop2->pll_hdmiphy0);
 +	}
 +
-+truncate_pagecache:
-+	truncate_pagecache_range(inode, start, end - 1);
-+	return 0;
-+}
-+
- static void ext4_wait_dax_page(struct inode *inode)
- {
- 	filemap_invalidate_unlock(inode->i_mapping);
+ 	vop2->irq = platform_get_irq(pdev, 0);
+ 	if (vop2->irq < 0) {
+ 		drm_err(vop2->drm, "cannot find irq for vop2\n");
 -- 
 2.39.5
 
