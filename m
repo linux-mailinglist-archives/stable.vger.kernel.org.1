@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-146521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E029AC5379
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:48:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F932AC56D1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E90CD7A7E65
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:46:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F8B11BA82A4
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3EB2CCC0;
-	Tue, 27 May 2025 16:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9740927D776;
+	Tue, 27 May 2025 17:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqYKYLDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5I3XVyR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B14C27A929;
-	Tue, 27 May 2025 16:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547A2280008;
+	Tue, 27 May 2025 17:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364475; cv=none; b=eMCm4yyB/Wc7MP1D4TeRfxZYXlLOr9ws82K52x/kUYeKBz0Ar8P8lVIZngRz2cstBm8+55sb4qm9WmQJIFxro1RVLuwKwFuAakYE+n9FCn6yBK07GB07Kc0TtaI1f7e8InzKn7VYL9NKfxBJkYpULNYgEcbIr/QqXR1HhPvnOcw=
+	t=1748366735; cv=none; b=YYtuI45qf75lo77FKoDtMf2Z+qjrtp8Lleq2fDujifHe2piRw1uOhxEKgXgNga0J0ZK0zFrgvCCntorqBepMFw+A4/2BNlZx09T4DbPPUQmtlThMZt5qDGnXmX3zuytcHKEYk8njfufBnn9CzShDgJznz64mKXpEI8qYOMwPgRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364475; c=relaxed/simple;
-	bh=/aplVIve/B32xpYyhA0GkBsd3FND1RxphGU/UYBxgjo=;
+	s=arc-20240116; t=1748366735; c=relaxed/simple;
+	bh=caIJNPn6xTwiNvwH7FK4L0p5wl+oYPWZZ0fLO8A38GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LXhnwGqyi/e2GAeTLztpI1YlM3NBnRYUKQCoErQbe9zcOXZ0p03c0iqETMUZkDX0cKEyKULW0GFVPR28MPZFl5z1ArUKUbVX0ZceHgWcC2xF3gHBcpIu15VB3L3ogZbXC/MbG7RhRNZKHQAKGSa2NycgqdrTmEhiNbUsgv8/GwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqYKYLDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28823C4CEE9;
-	Tue, 27 May 2025 16:47:55 +0000 (UTC)
+	 MIME-Version; b=LtdGN6CqXLuIPGhVcjQRMzT9Z/1JFwQvY47UmQewPzORGSxPVRCH5yBmUAdGI9K8FC2pNy1CWnrTGHY2rTDDdERf6t8Fp/U5tWBwYK6CKSQZy14up7RHjKMiXlllJl8u8ffff7qHhpuooUcVvEsQ66uKNHTpoTvXiUyTMSdxopk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5I3XVyR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6912C4CEEB;
+	Tue, 27 May 2025 17:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364475;
-	bh=/aplVIve/B32xpYyhA0GkBsd3FND1RxphGU/UYBxgjo=;
+	s=korg; t=1748366735;
+	bh=caIJNPn6xTwiNvwH7FK4L0p5wl+oYPWZZ0fLO8A38GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqYKYLDuq9nvZuQ8c3Pn57tGwe4sXNVAYJbx4Xc7qabhb5W1eiQ54/mnK94vmz5ig
-	 yEYVWd+PClsb6PaKY9efXxTTsaJt7sNwjqo9NkMi22R73XH8w1Kf8SU5KMvoRmUpiH
-	 hlt3t2YcUF7r03Co73LKvHQ4HaYYpOHTdgO0zf4o=
+	b=I5I3XVyRDsnllkaT8RIJeXhPUKojr8Y77RIJgmkVEw6NUZGqOxQ7pcW+sB4oztof0
+	 qjPoEW53HARmlqgiBdckPU3bZJq1e5wRRw8+mLit4EHXrjOnT40EjP406RWsy/uMMr
+	 6Ds4KbElJINmdcTVoFNtL1Ti3PxdZk3lkDCavI3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/626] cifs: Set default Netbios RFC1001 server name to hostname in UNC
-Date: Tue, 27 May 2025 18:19:21 +0200
-Message-ID: <20250527162447.815351285@linuxfoundation.org>
+Subject: [PATCH 6.14 165/783] jbd2: do not try to recover wiped journal
+Date: Tue, 27 May 2025 18:19:22 +0200
+Message-ID: <20250527162519.887089995@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit be786e509c1af9b2dcf25c3d601f05c8c251f482 ]
+[ Upstream commit a662f3c03b754e1f97a2781fa242e95bdb139798 ]
 
-Windows SMB servers (including SMB2+) which are working over RFC1001
-require that Netbios server name specified in RFC1001 Session Request
-packet is same as the UNC host name. Netbios server name can be already
-specified manually via -o servern= option.
+If a journal is wiped, we will set journal->j_tail to 0. However if
+'write' argument is not set (as it happens for read-only device or for
+ocfs2), the on-disk superblock is not updated accordingly and thus
+jbd2_journal_recover() cat try to recover the wiped journal. Fix the
+check in jbd2_journal_recover() to use journal->j_tail for checking
+empty journal instead.
 
-With this change the RFC1001 server name is set automatically by extracting
-the hostname from the mount source.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250206094657.20865-4-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/jbd2/recovery.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index b015a4f997cb6..8b70d92f48458 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1058,6 +1058,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 	int i, opt;
- 	bool is_smb3 = !strcmp(fc->fs_type->name, "smb3");
- 	bool skip_parsing = false;
-+	char *hostname;
+diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
+index 9192be7c19d83..23502f1a67c1e 100644
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -287,19 +287,20 @@ static int fc_do_one_pass(journal_t *journal,
+ int jbd2_journal_recover(journal_t *journal)
+ {
+ 	int			err, err2;
+-	journal_superblock_t *	sb;
+-
+ 	struct recovery_info	info;
  
- 	cifs_dbg(FYI, "CIFS: parsing cifs mount option '%s'\n", param->key);
+ 	memset(&info, 0, sizeof(info));
+-	sb = journal->j_superblock;
  
-@@ -1390,6 +1391,16 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 			cifs_errorf(fc, "OOM when copying UNC string\n");
- 			goto cifs_parse_mount_err;
- 		}
-+		hostname = extract_hostname(ctx->UNC);
-+		if (IS_ERR(hostname)) {
-+			cifs_errorf(fc, "Cannot extract hostname from UNC string\n");
-+			goto cifs_parse_mount_err;
-+		}
-+		/* last byte, type, is 0x20 for servr type */
-+		memset(ctx->target_rfc1001_name, 0x20, RFC1001_NAME_LEN_WITH_NULL);
-+		for (i = 0; i < RFC1001_NAME_LEN && hostname[i] != 0; i++)
-+			ctx->target_rfc1001_name[i] = toupper(hostname[i]);
-+		kfree(hostname);
- 		break;
- 	case Opt_user:
- 		kfree(ctx->username);
+ 	/*
+ 	 * The journal superblock's s_start field (the current log head)
+ 	 * is always zero if, and only if, the journal was cleanly
+-	 * unmounted.
++	 * unmounted. We use its in-memory version j_tail here because
++	 * jbd2_journal_wipe() could have updated it without updating journal
++	 * superblock.
+ 	 */
+-	if (!sb->s_start) {
++	if (!journal->j_tail) {
++		journal_superblock_t *sb = journal->j_superblock;
++
+ 		jbd2_debug(1, "No recovery required, last transaction %d, head block %u\n",
+ 			  be32_to_cpu(sb->s_sequence), be32_to_cpu(sb->s_head));
+ 		journal->j_transaction_sequence = be32_to_cpu(sb->s_sequence) + 1;
 -- 
 2.39.5
 
