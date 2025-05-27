@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-147332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BFFAC5736
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8377AAC53BE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04B51883DED
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C23C67AC6BF
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4198D27FB02;
-	Tue, 27 May 2025 17:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1883D27D766;
+	Tue, 27 May 2025 16:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avbkIlZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQRiObJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F4525A627;
-	Tue, 27 May 2025 17:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92F1194A45;
+	Tue, 27 May 2025 16:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367015; cv=none; b=XBrdRIZ0NaPk2k5vQ9OPit5UqxGCeB6HUr3Uqx0AeMaaquodD0gKeVjP1SUmkIbCVLWFAGhMmcabQOfxDN9TRiUq5MlxbrjM6vnyeD/J9RmZ2QW/ZwXSl3WJLEr4qtc5amsqm5qOAoWj2gxN0a8Lq+2TF7hHaC/0/KRmAQ+CpZ0=
+	t=1748364654; cv=none; b=RTrHR92jyZt/i5uk3hWVYe0Ffy1AWQmFktvDVKE6UrA+d6PPg10jIZn8Sf5HZ6xx0ZWw4L4p7x+B0AgetN7uL/koLwPsIrhxkzgP3AXwza6dTOs9GcTbn4jjb5UD/pmVyGolkEFeeuDQLU9Ttv7CfAWF7KOCkXIwbnT35jqgfz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367015; c=relaxed/simple;
-	bh=w6Dr/vKjgmaMsnL9ESLVYzlX0cB3yF66lhvoWL/Sqk8=;
+	s=arc-20240116; t=1748364654; c=relaxed/simple;
+	bh=YUtYVDkS6Oc70dkXUoV9H7gBCHjD5OZ0NQymkRgLDCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtDlUDzUbX8JI+bHb+wWrdSpJXrEo0/sVTULlL15zaJ41wrucM8XS8Tlt9TvKUTft+wNVpDR6/9WXUHMFez+tqQvSjWjKVAhXg4Bh6h/HHnHKCq3TS2EeE1f2a3HSKyaJSUL4pEE5n73oAJlUZ0yPL75ishmXLeclJvAh1+Wjwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avbkIlZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9BCC4CEE9;
-	Tue, 27 May 2025 17:30:14 +0000 (UTC)
+	 MIME-Version; b=IJb9StR3yKUMwIl8GVJp+wijkrNcaNyZkaF+9o1ot2GEnBrs0ijTib2PDk0epIaQbM59DDDNf/iHK+Z6hFhDh4YqD9eY85Bre/1vDcTbaykrA0Pwyw4wlFL+JmeVVd7mKNsLJ1tilCRohWIoT1V1sHUmxFbZFYrNhrejYqIyBB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQRiObJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF81C4CEE9;
+	Tue, 27 May 2025 16:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367014;
-	bh=w6Dr/vKjgmaMsnL9ESLVYzlX0cB3yF66lhvoWL/Sqk8=;
+	s=korg; t=1748364654;
+	bh=YUtYVDkS6Oc70dkXUoV9H7gBCHjD5OZ0NQymkRgLDCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avbkIlZyxDW+GIxVw2lqtFpZIVGl4HRh0/DciCXcL0I1doZWpGF8Zpgmn5Ua3HTmX
-	 i8l3eOIdZGH579d29UIvkFgYibgZaQwtLnMdfR1bJjLxl7vYp3MAfvctj57M0Buh6Z
-	 O8lYhDDn/5fR4p0lZu60zxdo+Gq3soUAXPSR4sWk=
+	b=xQRiObJ+/oTNVBrHif+xo0roSeVTzjhxDIFk6ngqxg+cSzqKUzndX98mvFnQrJ2N1
+	 iXUdE4sYlho6AbO8w5Q1FPtqZVKpWL9vaC0ewyWdhVg+xR+fW1CFOMCGN9RnihR4+Z
+	 BwVYmK77A8jiqxKDI1DVJ7G6kDelFToy31N+QSaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 220/783] wifi: iwlwifi: fix the ECKV UEFI variable name
-Date: Tue, 27 May 2025 18:20:17 +0200
-Message-ID: <20250527162522.081947274@linuxfoundation.org>
+Subject: [PATCH 6.12 125/626] s390/tlb: Use mm_has_pgste() instead of mm_alloc_pgste()
+Date: Tue, 27 May 2025 18:20:18 +0200
+Message-ID: <20250527162450.108375264@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 3ea2970b0578011ab8402ad0cff39712255f63df ]
+[ Upstream commit 9291ea091b29bb3e37c4b3416c7c1e49e472c7d5 ]
 
-This UEFI variable name was badly named. Fix its name and also use the
-right GUID to find it: we need to use the BT_WIFI (a.k.a. Common) GUID.
+An mm has pgstes only after s390_enable_sie() has been called, while
+mm_alloc_pgste() may be always true (e.g. via sysctl setting).
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308231426.78c998d0fa71.I2bc9d72c1dc2c4d7028f0265634a940c2fadbbb5@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Limit the calls to gmap_unlink() in pte_free_tlb() to those cases
+where there might be something to unlink.
+
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 8 +++++---
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h | 4 ++--
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ arch/s390/include/asm/tlb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-index 434eed4130b90..91bcff499311d 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright(c) 2021-2024 Intel Corporation
-+ * Copyright(c) 2021-2025 Intel Corporation
-  */
- 
- #include "iwl-drv.h"
-@@ -678,8 +678,10 @@ int iwl_uefi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
- 	struct uefi_cnv_var_eckv *data;
- 	int ret = 0;
- 
--	data = iwl_uefi_get_verified_variable(fwrt->trans, IWL_UEFI_ECKV_NAME,
--					      "ECKV", sizeof(*data), NULL);
-+	data = iwl_uefi_get_verified_variable_guid(fwrt->trans,
-+						   &IWL_EFI_WIFI_BT_GUID,
-+						   IWL_UEFI_ECKV_NAME,
-+						   "ECKV", sizeof(*data), NULL);
- 	if (IS_ERR(data))
- 		return -EINVAL;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-index 0c8943a8bd011..eb3c05417da37 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-- * Copyright(c) 2021-2024 Intel Corporation
-+ * Copyright(c) 2021-2025 Intel Corporation
-  */
- #ifndef __iwl_fw_uefi__
- #define __iwl_fw_uefi__
-@@ -19,7 +19,7 @@
- #define IWL_UEFI_WTAS_NAME		L"UefiCnvWlanWTAS"
- #define IWL_UEFI_SPLC_NAME		L"UefiCnvWlanSPLC"
- #define IWL_UEFI_WRDD_NAME		L"UefiCnvWlanWRDD"
--#define IWL_UEFI_ECKV_NAME		L"UefiCnvWlanECKV"
-+#define IWL_UEFI_ECKV_NAME		L"UefiCnvCommonECKV"
- #define IWL_UEFI_DSM_NAME		L"UefiCnvWlanGeneralCfg"
- #define IWL_UEFI_WBEM_NAME		L"UefiCnvWlanWBEM"
- #define IWL_UEFI_PUNCTURING_NAME	L"UefiCnvWlanPuncturing"
+diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
+index e95b2c8081eb8..793afe236df07 100644
+--- a/arch/s390/include/asm/tlb.h
++++ b/arch/s390/include/asm/tlb.h
+@@ -85,7 +85,7 @@ static inline void pte_free_tlb(struct mmu_gather *tlb, pgtable_t pte,
+ 	tlb->mm->context.flush_mm = 1;
+ 	tlb->freed_tables = 1;
+ 	tlb->cleared_pmds = 1;
+-	if (mm_alloc_pgste(tlb->mm))
++	if (mm_has_pgste(tlb->mm))
+ 		gmap_unlink(tlb->mm, (unsigned long *)pte, address);
+ 	tlb_remove_ptdesc(tlb, pte);
+ }
 -- 
 2.39.5
 
