@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-147446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC18AC57B0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01985AC54D8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B7258A6500
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2548F8A1F7E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A4227FD4C;
-	Tue, 27 May 2025 17:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14D327FB0C;
+	Tue, 27 May 2025 16:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edmmHKgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H10p7Kv1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23D327FB02;
-	Tue, 27 May 2025 17:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8B0194A67;
+	Tue, 27 May 2025 16:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367367; cv=none; b=i+Ob7Xr38IobDWeGLDHiY8P1bKbDHfdH1lIeBHgACf76SB9Y3EHMNsEk9q0gd/9krUYVJouwV7dr8EoAVHwOZYkURybQjBwkbrPNYK2wrGDb7h294bOTqieP2j1FXyWSouLxnjceonoMbApV9dqH5smx3ZppcaM03uIdyl7RfQg=
+	t=1748365146; cv=none; b=ggduwnbIsiNsjDarC8lL6/7w/6xFjaD5MBP7COAfTzh7PCu5uEYl/qsh1yIjax7l+GHGYsFG0/MT9QJ0iRADa+pMUSPHGfR083chd5NkMdLRBcUKqMVEc9b1ckxVm91jc9sAFK+cE9FnJX+ALrdmv7Ma0yyRG/113uzXN6LkTyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367367; c=relaxed/simple;
-	bh=CReOoEFnJcsfw7naDgPpSChff0YR6JV9soEL03+SIBs=;
+	s=arc-20240116; t=1748365146; c=relaxed/simple;
+	bh=p0TG0WjJD1NN7lweds6J9FDVGjFC1Hvyugb31wwy5jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+xKJkRZVvojGs/yi6/Ri/4Zx8c3Ivssyugnh2ZIkhSVfIVEyUKP3coR/AGJ6UhLgzb1+Tq9w3fS2OuHzR4nfXiXYJJew0TX/KHXDO8qEfL5Gsi40XqTReaNUYP3VUZqwQm4T2ZEitD/AVg5gnEX+pjVIcJFECAqeksnt1ectQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edmmHKgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF2DC4CEE9;
-	Tue, 27 May 2025 17:36:07 +0000 (UTC)
+	 MIME-Version; b=E1729Jqpig8jgpw0vsMt9ha7SU00FJoRGJvHdHiAU8BnxkIFIWcYX1oei1vONTbMNppb6pPe46Zs712sxvbAxuAqJWfOtsObS+v3DuUtoqGL/D96TlkFG8vi5Sq+iujZRDXJf0oOaQBlfjj0iPV3ieFJ/ppF8nAMLirIORkjgDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H10p7Kv1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16333C4CEE9;
+	Tue, 27 May 2025 16:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367367;
-	bh=CReOoEFnJcsfw7naDgPpSChff0YR6JV9soEL03+SIBs=;
+	s=korg; t=1748365146;
+	bh=p0TG0WjJD1NN7lweds6J9FDVGjFC1Hvyugb31wwy5jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edmmHKgkCffFX6zUNcaO8cRvj6sWz47fbXHMjVDQcZREOk+UBBOWhllwlxPM711k1
-	 E669q9EzszfPIMjq1/7NuZ6uhl68EIa3ptrSTjGwgyykuG/5uHXTOGnpGTBAS0eUph
-	 0fp44DjDsyA0koapQfSj/7Lh6JUHQ51qG4YqZYPo=
+	b=H10p7Kv1an5ODEXZU0pqxHX3zURea3HzukAwIXV+E4O/NUho1oCeZUmEXn1d7Y4Oh
+	 nqbdxGhmUHGGQdsejtDL9DEc650Zr/7UDO1xZhyKUEtbFeLphUfAs11GjXmN5v7PVs
+	 G42/UcrwXu2Af0ONwoXgSzBrDIWuZhnHQN7KJ6mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amery Hung <amery.hung@bytedance.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Joel Granados <joel.granados@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 347/783] bpf: Search and add kfuncs in struct_ops prologue and epilogue
+Subject: [PATCH 6.12 251/626] scsi: logging: Fix scsi_logging_level bounds
 Date: Tue, 27 May 2025 18:22:24 +0200
-Message-ID: <20250527162527.195105139@linuxfoundation.org>
+Message-ID: <20250527162455.208841662@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amery Hung <amery.hung@bytedance.com>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-[ Upstream commit d519594ee2445d7cd1ad51f4db4cee58f8213400 ]
+[ Upstream commit 2cef5b4472c602e6c5a119aca869d9d4050586f3 ]
 
-Currently, add_kfunc_call() is only invoked once before the main
-verification loop. Therefore, the verifier could not find the
-bpf_kfunc_btf_tab of a new kfunc call which is not seen in user defined
-struct_ops operators but introduced in gen_prologue or gen_epilogue
-during do_misc_fixup(). Fix this by searching kfuncs in the patching
-instruction buffer and add them to prog->aux->kfunc_tab.
+Bound scsi_logging_level sysctl writings between SYSCTL_ZERO and
+SYSCTL_INT_MAX.
 
-Signed-off-by: Amery Hung <amery.hung@bytedance.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20250225233545.285481-1-ameryhung@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+The proc_handler has thus been updated to proc_dointvec_minmax.
+
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Link: https://lore.kernel.org/r/20250224095826.16458-5-nicolas.bouchinet@clip-os.org
+Reviewed-by: Joel Granados <joel.granados@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_sysctl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index db95b76f5c139..e2801472c0ae4 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3206,6 +3206,21 @@ bpf_jit_find_kfunc_model(const struct bpf_prog *prog,
- 	return res ? &res->func_model : NULL;
- }
+diff --git a/drivers/scsi/scsi_sysctl.c b/drivers/scsi/scsi_sysctl.c
+index 093774d775346..daa160459c9b3 100644
+--- a/drivers/scsi/scsi_sysctl.c
++++ b/drivers/scsi/scsi_sysctl.c
+@@ -17,7 +17,9 @@ static struct ctl_table scsi_table[] = {
+ 	  .data		= &scsi_logging_level,
+ 	  .maxlen	= sizeof(scsi_logging_level),
+ 	  .mode		= 0644,
+-	  .proc_handler	= proc_dointvec },
++	  .proc_handler	= proc_dointvec_minmax,
++	  .extra1	= SYSCTL_ZERO,
++	  .extra2	= SYSCTL_INT_MAX },
+ };
  
-+static int add_kfunc_in_insns(struct bpf_verifier_env *env,
-+			      struct bpf_insn *insn, int cnt)
-+{
-+	int i, ret;
-+
-+	for (i = 0; i < cnt; i++, insn++) {
-+		if (bpf_pseudo_kfunc_call(insn)) {
-+			ret = add_kfunc_call(env, insn->imm, insn->off);
-+			if (ret < 0)
-+				return ret;
-+		}
-+	}
-+	return 0;
-+}
-+
- static int add_subprog_and_kfunc(struct bpf_verifier_env *env)
- {
- 	struct bpf_subprog_info *subprog = env->subprog_info;
-@@ -20334,7 +20349,7 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
- {
- 	struct bpf_subprog_info *subprogs = env->subprog_info;
- 	const struct bpf_verifier_ops *ops = env->ops;
--	int i, cnt, size, ctx_field_size, delta = 0, epilogue_cnt = 0;
-+	int i, cnt, size, ctx_field_size, ret, delta = 0, epilogue_cnt = 0;
- 	const int insn_cnt = env->prog->len;
- 	struct bpf_insn *epilogue_buf = env->epilogue_buf;
- 	struct bpf_insn *insn_buf = env->insn_buf;
-@@ -20363,6 +20378,10 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
- 				return -ENOMEM;
- 			env->prog = new_prog;
- 			delta += cnt - 1;
-+
-+			ret = add_kfunc_in_insns(env, epilogue_buf, epilogue_cnt - 1);
-+			if (ret < 0)
-+				return ret;
- 		}
- 	}
- 
-@@ -20383,6 +20402,10 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
- 
- 			env->prog = new_prog;
- 			delta += cnt - 1;
-+
-+			ret = add_kfunc_in_insns(env, insn_buf, cnt - 1);
-+			if (ret < 0)
-+				return ret;
- 		}
- 	}
- 
+ static struct ctl_table_header *scsi_table_header;
 -- 
 2.39.5
 
