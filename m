@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-146647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E465AAC5433
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:57:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4233EAC5763
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:32:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54B7E3A5FD0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:54:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E75121BC0BF9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BF427FD5D;
-	Tue, 27 May 2025 16:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B686327FB2A;
+	Tue, 27 May 2025 17:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZutOZKMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwvIRRJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED20194A67;
-	Tue, 27 May 2025 16:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7295027FB38;
+	Tue, 27 May 2025 17:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364876; cv=none; b=LieI5ss5XoQtjfbv9kzXAvVea1Q+GWVLUlyLU/RckJw9EQo1D+fjrcmgHHMDsmnQyEdVHN5oAKqFmVHHysWiGrESzKdrD4O53Ba6s9AVafHRlxKkseimtKnXyXWGIOOKHB0UzSIGs23KrkS2/0vXMKcYuyvmCViRpQEGElVihHs=
+	t=1748367141; cv=none; b=jn8FAFsBQKEYjxDTDJej5EXwICF20jO2vwE+wYv8Rt6Bz2ZwOH5yVRDRA6iK8iN/+WbYaYw9wZXbURdPB3gSIp0x7oMEHruxUb5pd0KP/dWUXrSquAbQ2DHrBD7CtafBjovtdf01/KxQxDDmRxt9AtnY8pc0lbvmdDoMBbQv5n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364876; c=relaxed/simple;
-	bh=DEfYdoVSlPdYbK0tcQiIBdlOmytOR6zyeJz7HlK3I8c=;
+	s=arc-20240116; t=1748367141; c=relaxed/simple;
+	bh=wtqnwu62zlbkQmiGYgSAnASnPpT0dkAcSO5XYgMPVmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfJq2zNonZLh1hTPkCt2QG2h5cz2GbnjxIB8qU0r+DBGXBwfTcTPS4gnZOgoHk1B8KD8IftVo+1usCQ+v3HjMDCLGyd8w4aYBwXwXAb0wq/jTGIsmJtznZjGo9PCeIA8xjDf5ho8pv7clYnb0vr+oftFoiwgxo9Lb5q/MtL8eKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZutOZKMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F147C4CEE9;
-	Tue, 27 May 2025 16:54:35 +0000 (UTC)
+	 MIME-Version; b=L5JZ90LdWzrUIjqDwuxZt/wqgAcNXRigCijA2XXJJGyCUsbhtr3PXD0sv499enfbV3lw6LKKfAxZ+SfhckVKNMvyqm9HEUy+vZ6WZb5eX4gZeqPB/XGh/3xXL41hD7QTGID3D3pkd5gKo5bYuiO+TlS/Zz8VrkRgIAdtaE+Tzro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwvIRRJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6933C4CEE9;
+	Tue, 27 May 2025 17:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364876;
-	bh=DEfYdoVSlPdYbK0tcQiIBdlOmytOR6zyeJz7HlK3I8c=;
+	s=korg; t=1748367141;
+	bh=wtqnwu62zlbkQmiGYgSAnASnPpT0dkAcSO5XYgMPVmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZutOZKMhBgrgrH4HPz1pRbTbx8RL7h2o1NH8aTW/6f6vzZ27RaFexIuk9ybwbeZFx
-	 KfVXTfLs4nTufMvgUBuECvj1nJkjoY+a+jVeGNt+aGOItBkDtDlo4goQRu6klkmVtG
-	 r9kh1Pu981/aBFyGv69pFYteWI/GmaaCyyIFrdzs=
+	b=NwvIRRJjHJOHitrKuPIW3xqV8/wOkolGgRbAjkFdpedKjrhAgu/P7y5Mkxgan1sZF
+	 xerPfSHVC8aNXprZHMah0cfYnV67N9rsvkHcZPKcC+TJZlu96ipX4O+9Ui7kS7QXvn
+	 mVyzWp4IMNdqXLAKNvbkBTXUrlIV7Efl8Vg+7Hkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cruise Hung <cruise.hung@amd.com>,
-	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
-	Peichen Huang <PeiChen.Huang@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/626] drm/amd/display: not abort link train when bw is low
-Date: Tue, 27 May 2025 18:21:28 +0200
-Message-ID: <20250527162452.940925749@linuxfoundation.org>
+Subject: [PATCH 6.14 292/783] drm/msm/dpu: Set possible clones for all encoders
+Date: Tue, 27 May 2025 18:21:29 +0200
+Message-ID: <20250527162524.975843627@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,51 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peichen Huang <PeiChen.Huang@amd.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit 8a21da2842bb22b2b80e5902d0438030d729bfd3 ]
+[ Upstream commit e8cd8224a30798b65e05b26de284e1702b22ba5e ]
 
-[WHY]
-DP tunneling should not abort link train even bandwidth become
-too low after downgrade. Otherwise, it would fail compliance test.
+Set writeback encoders as possible clones for DSI encoders and vice
+versa.
 
-[HOW}
-Do link train with downgrade settings even bandwidth is not enough
-
-Reviewed-by: Cruise Hung <cruise.hung@amd.com>
-Reviewed-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
-Signed-off-by: Peichen Huang <PeiChen.Huang@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/637498/
+Link: https://lore.kernel.org/r/20250214-concurrent-wb-v6-14-a44c293cf422@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/link/protocols/link_dp_training.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 32 +++++++++++++++++++++
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h |  2 ++
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c     |  7 +++--
+ 3 files changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-index 27b881f947e8b..9385a32a471b8 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
-@@ -1769,13 +1769,10 @@ bool perform_link_training_with_retries(
- 			is_link_bw_min = ((cur_link_settings.link_rate <= LINK_RATE_LOW) &&
- 				(cur_link_settings.lane_count <= LANE_COUNT_ONE));
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 7b56da24711e4..eca9c7d4ec6f5 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -2539,6 +2539,38 @@ static int dpu_encoder_virt_add_phys_encs(
+ 	return 0;
+ }
  
--			if (is_link_bw_low) {
-+			if (is_link_bw_low)
- 				DC_LOG_WARNING(
- 					"%s: Link(%d) bandwidth too low after fallback req_bw(%d) > link_bw(%d)\n",
- 					__func__, link->link_index, req_bw, link_bw);
--
--				return false;
--			}
- 		}
++/**
++ * dpu_encoder_get_clones - Calculate the possible_clones for DPU encoder
++ * @drm_enc:        DRM encoder pointer
++ * Returns:         possible_clones mask
++ */
++uint32_t dpu_encoder_get_clones(struct drm_encoder *drm_enc)
++{
++	struct drm_encoder *curr;
++	int type = drm_enc->encoder_type;
++	uint32_t clone_mask = drm_encoder_mask(drm_enc);
++
++	/*
++	 * Set writeback as possible clones of real-time DSI encoders and vice
++	 * versa
++	 *
++	 * Writeback encoders can't be clones of each other and DSI
++	 * encoders can't be clones of each other.
++	 *
++	 * TODO: Add DP encoders as valid possible clones for writeback encoders
++	 * (and vice versa) once concurrent writeback has been validated for DP
++	 */
++	drm_for_each_encoder(curr, drm_enc->dev) {
++		if ((type == DRM_MODE_ENCODER_VIRTUAL &&
++		    curr->encoder_type == DRM_MODE_ENCODER_DSI) ||
++		    (type == DRM_MODE_ENCODER_DSI &&
++		    curr->encoder_type == DRM_MODE_ENCODER_VIRTUAL))
++			clone_mask |= drm_encoder_mask(curr);
++	}
++
++	return clone_mask;
++}
++
+ static int dpu_encoder_setup_display(struct dpu_encoder_virt *dpu_enc,
+ 				 struct dpu_kms *dpu_kms,
+ 				 struct msm_display_info *disp_info)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h
+index da133ee4701a3..751be231ee7b1 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h
+@@ -60,6 +60,8 @@ enum dpu_intf_mode dpu_encoder_get_intf_mode(struct drm_encoder *encoder);
  
- 		msleep(delay_between_attempts);
+ void dpu_encoder_virt_runtime_resume(struct drm_encoder *encoder);
+ 
++uint32_t dpu_encoder_get_clones(struct drm_encoder *drm_enc);
++
+ struct drm_encoder *dpu_encoder_init(struct drm_device *dev,
+ 		int drm_enc_mode,
+ 		struct msm_display_info *disp_info);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+index 8741dc6fc8ddc..b8f4ebba8ac28 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+@@ -2,7 +2,7 @@
+ /*
+  * Copyright (C) 2013 Red Hat
+  * Copyright (c) 2014-2018, The Linux Foundation. All rights reserved.
+- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  *
+  * Author: Rob Clark <robdclark@gmail.com>
+  */
+@@ -834,8 +834,11 @@ static int _dpu_kms_drm_obj_init(struct dpu_kms *dpu_kms)
+ 		return ret;
+ 
+ 	num_encoders = 0;
+-	drm_for_each_encoder(encoder, dev)
++	drm_for_each_encoder(encoder, dev) {
+ 		num_encoders++;
++		if (catalog->cwb_count > 0)
++			encoder->possible_clones = dpu_encoder_get_clones(encoder);
++	}
+ 
+ 	max_crtc_count = min(catalog->mixer_count, num_encoders);
+ 
 -- 
 2.39.5
 
