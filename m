@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-146636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87848AC53FB
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E53CDAC5752
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 499F01BA43F0
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:54:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82581BC0A4A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D35B27D766;
-	Tue, 27 May 2025 16:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6AF27CCF0;
+	Tue, 27 May 2025 17:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npTN8TrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqpzNHJ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAC92CCC0;
-	Tue, 27 May 2025 16:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7B31AF0BB;
+	Tue, 27 May 2025 17:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364842; cv=none; b=e/94sCU4j0wXwIeHS6EOXHp+Q0xsBoD7S89bkcupTerbhoy8TOTV7hi6NMlzzcst24wI9Lh9tmETB+Zzq9jus7LIoW9ugH0xw4DC4IdmSEjqWeuAlWgU9S5BUxYFSmPdX34PdyWJCsYnWUX88BnLYmZjKHSDdn48vF/mYtH7KL0=
+	t=1748367099; cv=none; b=kDeZUm2NvCBZBXZo7oLklJnXMF4v1CYOawnCV8Wpkthf+79hwcNamSwEowNo0iiITQlbtxmJ9NTyZHJWE1Kg102wX43oZj2u6aM+B+iRLeOu1QFNHg7djnKT4F0TcreZGrh8qD/JVIyHjfoHoN/qU5HYZSgBc4Q78/L42BLXvOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364842; c=relaxed/simple;
-	bh=dCP24PPn9CDN/IGkYrL9HSgjHFmm2Z+R9vbEEKGzsD0=;
+	s=arc-20240116; t=1748367099; c=relaxed/simple;
+	bh=XsZ5GRy8hIiV8FkoQQOVm/xg2zvO0iSfEt+dTeien+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LeU3Zhd2VpBEjFlrxwJIXg5648vkzGR3WqnX/v7GwRs+CKHfiqCt5fme7i/ohjWVj8broTyU5bv1LmE2x7x40DnqV5+8ywoD74ZODcD3NXn+HAIaY0aX/sqs8Ahsy9eI8V2SDHiY+ZJQ49d5W3dhEnO0Oh+sdgOXXUhqpHIigFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npTN8TrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF43C4CEE9;
-	Tue, 27 May 2025 16:54:01 +0000 (UTC)
+	 MIME-Version; b=ffIzmC7dA/dvxbu0GZ0U2AVcxqtqFBTC+jiYjhpwvkj8NKEnp+4ha8NZBQzpH0DepfEYAKNz2ARhs/NvzfX8Ug8X0PnfoX7WkY7UTNZgp3RsyR0w7labqDTih+lIAeeCkwg4bhPRYTT2aQRyehs3N9x7Eic6XNzExU00DswId9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqpzNHJ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F21C4CEE9;
+	Tue, 27 May 2025 17:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364842;
-	bh=dCP24PPn9CDN/IGkYrL9HSgjHFmm2Z+R9vbEEKGzsD0=;
+	s=korg; t=1748367098;
+	bh=XsZ5GRy8hIiV8FkoQQOVm/xg2zvO0iSfEt+dTeien+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npTN8TrBjWWEaw6qy1WNTdTznRr/Qasl7v1dJ/MkHfOAIeB9igLLOw2sbONccS+fh
-	 Pkqekm8rhQLxWJ5Buhq8ZcQnTI6whB+XMupKp4lcTmiw6PBt5pnu+w135P6cujovHF
-	 C3fZCpErrAuvaV+EnjaoW8dMB7DuO15C47R/EXYQ=
+	b=XqpzNHJ/j0+Lvj/t0YHE9dR+OULE233B8bMNaMKpWeVd7qQJffyoesqwJhQSQtBkW
+	 riMHbqxTp2/VwV/D0xBZNjwL3LUUaUaJEJ3ypeRKCmcmfdt1BDoW9+jCONYkIx74rY
+	 HsN5jeUVhAXljnhlqYZBmFFJ06qEl8tNJLrlckds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Sven Schwermer <sven@svenschwermer.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/626] dm: restrict dm device size to 2^63-512 bytes
-Date: Tue, 27 May 2025 18:20:46 +0200
-Message-ID: <20250527162451.241256247@linuxfoundation.org>
+Subject: [PATCH 6.14 250/783] crypto: mxs-dcp - Only set OTP_KEY bit for OTP key
+Date: Tue, 27 May 2025 18:20:47 +0200
+Message-ID: <20250527162523.286092790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Sven Schwermer <sven@svenschwermer.de>
 
-[ Upstream commit 45fc728515c14f53f6205789de5bfd72a95af3b8 ]
+[ Upstream commit caa9dbb76ff52ec848a57245062aaeaa07740adc ]
 
-The devices with size >= 2^63 bytes can't be used reliably by userspace
-because the type off_t is a signed 64-bit integer.
+While MXS_DCP_CONTROL0_OTP_KEY is set, the CRYPTO_KEY (DCP_PAES_KEY_OTP)
+is used even if the UNIQUE_KEY (DCP_PAES_KEY_UNIQUE) is selected. This
+is not clearly documented, but this implementation is consistent with
+NXP's downstream kernel fork and optee_os.
 
-Therefore, we limit the maximum size of a device mapper device to
-2^63-512 bytes.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sven Schwermer <sven@svenschwermer.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/mxs-dcp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index 3dc5bc3d29d64..883f01e78324f 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -698,6 +698,10 @@ int dm_table_add_target(struct dm_table *t, const char *type,
- 		DMERR("%s: zero-length target", dm_device_name(t->md));
- 		return -EINVAL;
- 	}
-+	if (start + len < start || start + len > LLONG_MAX >> SECTOR_SHIFT) {
-+		DMERR("%s: too large device", dm_device_name(t->md));
-+		return -EINVAL;
-+	}
+diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
+index d94a26c3541a0..133ebc9982362 100644
+--- a/drivers/crypto/mxs-dcp.c
++++ b/drivers/crypto/mxs-dcp.c
+@@ -265,12 +265,12 @@ static int mxs_dcp_run_aes(struct dcp_async_ctx *actx,
+ 		    MXS_DCP_CONTROL0_INTERRUPT |
+ 		    MXS_DCP_CONTROL0_ENABLE_CIPHER;
  
- 	ti->type = dm_get_target_type(type);
- 	if (!ti->type) {
+-	if (key_referenced)
+-		/* Set OTP key bit to select the key via KEY_SELECT. */
+-		desc->control0 |= MXS_DCP_CONTROL0_OTP_KEY;
+-	else
++	if (!key_referenced)
+ 		/* Payload contains the key. */
+ 		desc->control0 |= MXS_DCP_CONTROL0_PAYLOAD_KEY;
++	else if (actx->key[0] == DCP_PAES_KEY_OTP)
++		/* Set OTP key bit to select the key via KEY_SELECT. */
++		desc->control0 |= MXS_DCP_CONTROL0_OTP_KEY;
+ 
+ 	if (rctx->enc)
+ 		desc->control0 |= MXS_DCP_CONTROL0_CIPHER_ENCRYPT;
 -- 
 2.39.5
 
