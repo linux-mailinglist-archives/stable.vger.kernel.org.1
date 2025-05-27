@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-147292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00655AC5716
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDBDAC53D9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323338A02B3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:28:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D4077AF479
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80311DB34C;
-	Tue, 27 May 2025 17:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518EE276057;
+	Tue, 27 May 2025 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doYddyA4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLPBXTt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649C1280023;
-	Tue, 27 May 2025 17:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104D027FD73;
+	Tue, 27 May 2025 16:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366892; cv=none; b=EuTlvwpJQkVwGg8ECOgH3M++JLyWRquEbE2rSeFGXxycyQ9p2V6yKBnrHMOBuC1XO8cAfPD8S/T3NaBPR3cxMncXQj2CkAp4Rvv6NkxkIJ91hpVgOIKyWf6/aSqcn7phDUxwVmwB9YG7WyNj8br6meOOWcMPbFUOPbLXX76tVYc=
+	t=1748364722; cv=none; b=mAD0U7lENi9h5R6EGvXDCb3u2czjv2My/xJUIzFDju6IaWBbuwtS+KBh1PuC7sK54kTkPQyQBlkPG9wS6ceK23sm3qcXROKHRFoGkwlhYhWKIc7MPwhwLZaEi9qonq/moboB4o8O3y/xnDIGWBW22csf6OPfmCQr2lkLCJNCjFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366892; c=relaxed/simple;
-	bh=K7R4nH+lbDFDLOeOCeSLyvgsUOFjFjGH3SvdwC6QDK4=;
+	s=arc-20240116; t=1748364722; c=relaxed/simple;
+	bh=Kqx93USXi1jT3JEg8wbi+0XTKMz7H4N4A9rL5Mw4YA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OFVTykzqayM0c9hFEEsh92rOmwsZ+WLOO1AjA0ayN/zmPYs4f8o28iO3ocGHhrrcdP8DLiY2vsOM6pRi/mNah/shFRU9QZ0imGJrzpFVPDgzuG7HwmuPBQwUPuFVybEYnZ4n0sC/tTAKh6cjMY3pDkedXe68l+iMqXzyM1Atwd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doYddyA4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA05C4CEE9;
-	Tue, 27 May 2025 17:28:11 +0000 (UTC)
+	 MIME-Version; b=Qy8zV1iDDWDplp3cyzPt9Fcyx8G7ZSsdfgBtWx54t//ZTSqTG5nnvqwBCxyBl2INtuBI9ZOJ3mugvHGYn/nEKKedPX/bHDwwxIjxLudIyfx8whnzDPQwO+B00CirMfClxYWGMs2jMGt4UM0tkGoiU2MWf9vz9PESIe5stzGv9W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLPBXTt4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311CAC4CEED;
+	Tue, 27 May 2025 16:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366892;
-	bh=K7R4nH+lbDFDLOeOCeSLyvgsUOFjFjGH3SvdwC6QDK4=;
+	s=korg; t=1748364721;
+	bh=Kqx93USXi1jT3JEg8wbi+0XTKMz7H4N4A9rL5Mw4YA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doYddyA4+jEuQMdzo1rKbLCuJu4UBZ631ek7CKQjaa6V0DfAJYL3iS0p67i7jWzjd
-	 b4/0CpiYiDrHk4WcGzwjJirMPT7Um3Q/rrg/fdBuBKjuoM4HYOyHybg2LkxXI2zV61
-	 JqHgd4gWM1xtf+kOLVwDAP+BfohSne5cz2Djcz44=
+	b=NLPBXTt4K/qRQUyKkcO8S5K2P+Y7ccYBG2+y0qRatfxH2xBRbTSh/lm61m4gX2vQg
+	 z6XO0mVtzJA9MIlshT0+Ec2oiUa9XCF4RC5+UTNTqHvU0C29+8FqhjLGbuG84WTam8
+	 9X62MnjMTol0nK0N2/zj44271PJljX7ZTG0I8dsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Roeschley <kyle.roeschley@ni.com>,
-	Brad Mouring <brad.mouring@ni.com>,
-	Erick Shepherd <erick.shepherd@ni.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 210/783] mmc: sdhci: Disable SD card clock before changing parameters
+Subject: [PATCH 6.12 114/626] btrfs: make btrfs_discard_workfn() block_group ref explicit
 Date: Tue, 27 May 2025 18:20:07 +0200
-Message-ID: <20250527162521.687823743@linuxfoundation.org>
+Message-ID: <20250527162449.666566351@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Shepherd <erick.shepherd@ni.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc ]
+[ Upstream commit 895c6721d310c036dcfebb5ab845822229fa35eb ]
 
-Per the SD Host Controller Simplified Specification v4.20 §3.2.3, change
-the SD card clock parameters only after first disabling the external card
-clock. Doing this fixes a spurious clock pulse on Baytrail and Apollo Lake
-SD controllers which otherwise breaks voltage switching with a specific
-Swissbit SD card.
+Currently, the async discard machinery owns a ref to the block_group
+when the block_group is queued on a discard list. However, to handle
+races with discard cancellation and the discard workfn, we have a
+specific logic to detect that the block_group is *currently* running in
+the workfn, to protect the workfn's usage amidst cancellation.
 
-Signed-off-by: Kyle Roeschley <kyle.roeschley@ni.com>
-Signed-off-by: Brad Mouring <brad.mouring@ni.com>
-Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250211214645.469279-1-erick.shepherd@ni.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+As far as I can tell, this doesn't have any overt bugs (though
+finish_discard_pass() and remove_from_discard_list() racing can have a
+surprising outcome for the caller of remove_from_discard_list() in that
+it is again added at the end).
+
+But it is needlessly complicated to rely on locking and the nullity of
+discard_ctl->block_group. Simplify this significantly by just taking a
+refcount while we are in the workfn and unconditionally drop it in both
+the remove and workfn paths, regardless of if they race.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/btrfs/discard.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index f4a7733a8ad22..5f91b44891f9b 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2065,10 +2065,15 @@ void sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
+diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
+index e9cdc1759dada..de23c4b3515e5 100644
+--- a/fs/btrfs/discard.c
++++ b/fs/btrfs/discard.c
+@@ -168,13 +168,7 @@ static bool remove_from_discard_list(struct btrfs_discard_ctl *discard_ctl,
+ 	block_group->discard_eligible_time = 0;
+ 	queued = !list_empty(&block_group->discard_list);
+ 	list_del_init(&block_group->discard_list);
+-	/*
+-	 * If the block group is currently running in the discard workfn, we
+-	 * don't want to deref it, since it's still being used by the workfn.
+-	 * The workfn will notice this case and deref the block group when it is
+-	 * finished.
+-	 */
+-	if (queued && !running)
++	if (queued)
+ 		btrfs_put_block_group(block_group);
  
- 	host->mmc->actual_clock = 0;
+ 	spin_unlock(&discard_ctl->lock);
+@@ -273,9 +267,10 @@ static struct btrfs_block_group *peek_discard_list(
+ 			block_group->discard_cursor = block_group->start;
+ 			block_group->discard_state = BTRFS_DISCARD_EXTENTS;
+ 		}
+-		discard_ctl->block_group = block_group;
+ 	}
+ 	if (block_group) {
++		btrfs_get_block_group(block_group);
++		discard_ctl->block_group = block_group;
+ 		*discard_state = block_group->discard_state;
+ 		*discard_index = block_group->discard_index;
+ 	}
+@@ -506,9 +501,20 @@ static void btrfs_discard_workfn(struct work_struct *work)
  
--	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-+	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+	if (clk & SDHCI_CLOCK_CARD_EN)
-+		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
-+			SDHCI_CLOCK_CONTROL);
- 
--	if (clock == 0)
-+	if (clock == 0) {
-+		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+ 	block_group = peek_discard_list(discard_ctl, &discard_state,
+ 					&discard_index, now);
+-	if (!block_group || !btrfs_run_discard_work(discard_ctl))
++	if (!block_group)
  		return;
++	if (!btrfs_run_discard_work(discard_ctl)) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
++		return;
 +	}
- 
- 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
- 	sdhci_enable_clk(host, clk);
+ 	if (now < block_group->discard_eligible_time) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
+ 		btrfs_discard_schedule_work(discard_ctl, false);
+ 		return;
+ 	}
+@@ -560,15 +566,7 @@ static void btrfs_discard_workfn(struct work_struct *work)
+ 	spin_lock(&discard_ctl->lock);
+ 	discard_ctl->prev_discard = trimmed;
+ 	discard_ctl->prev_discard_time = now;
+-	/*
+-	 * If the block group was removed from the discard list while it was
+-	 * running in this workfn, then we didn't deref it, since this function
+-	 * still owned that reference. But we set the discard_ctl->block_group
+-	 * back to NULL, so we can use that condition to know that now we need
+-	 * to deref the block_group.
+-	 */
+-	if (discard_ctl->block_group == NULL)
+-		btrfs_put_block_group(block_group);
++	btrfs_put_block_group(block_group);
+ 	discard_ctl->block_group = NULL;
+ 	__btrfs_discard_schedule_work(discard_ctl, now, false);
+ 	spin_unlock(&discard_ctl->lock);
 -- 
 2.39.5
 
