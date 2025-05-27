@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2BFAC5883
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D26EAC5528
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0012F1BC2197
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D524A28E6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9442227A131;
-	Tue, 27 May 2025 17:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80B627C854;
+	Tue, 27 May 2025 17:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vd+iedZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPymaPSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF321FB3;
-	Tue, 27 May 2025 17:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7361E70831;
+	Tue, 27 May 2025 17:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367958; cv=none; b=knuLaOi8GY1ZWUNME4QXojQSS2SbuEQGwwVUzkZdTgEDGCpCwO8FBXSOCyF75msGiMAlZckgTOzfjuJx08XXGGHEJ/n9mVLMLhg/E9EpY5kfWxJCvQdu+ONknWtXuj+EgbHhg077NmPnCWnGuNKnKD2l31zbTc3s7W6xJ4I/D9s=
+	t=1748365690; cv=none; b=oxs931nIk2m1j2Rw8tLdSm3g+KWTEh3SPWWZMMIrMa7JhRdHkQLZ7/0ZPzly1fv6fY/qsBV23czF+AuXelqlmK9kXJ2A6+he6FFCYzdUhRdfamfejFP8rfzZwOA4owv3XHU6OJFfVSRIT2IWGaz9kk8Tn7YKbPw84QXSRtoUrYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367958; c=relaxed/simple;
-	bh=Ukd3+8aRRhS8NDW279GGksvSzxgUBXbFxJj/sqIvoBk=;
+	s=arc-20240116; t=1748365690; c=relaxed/simple;
+	bh=lLI0Xz18CC+SP4anwFedn07T+G/jrf693OM2SuHnaQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rP6LIkbQjeytHuUlIqguxtlA47nfWf2UA9FaQoxlpb7w70KcKEs3BFuLTTJH1K3/Or1Mc70OT6qkRA5Q+idJDmHlrdpbMzRDMtiakJeTySHO4kLTCp62HNIJ/f/K/etPjsij4fJbu43BRxyggV9H4RdTMZmmUryfMn1VznrIlpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vd+iedZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB289C4CEE9;
-	Tue, 27 May 2025 17:45:57 +0000 (UTC)
+	 MIME-Version; b=dK3ncKEekCUJsIutZWICB1i5IXyCH2uAECLlkF/nex+fIc1eMUCknHsirENWAFha2LxjV+LXdUuu5nHs2Hq+xKquWBFtwxwBUjnIOBZoRYbTu7I5GKzpraQIIx09wp1KIdgsWQxzkTnzBYtpY6yS4BzO7IcmJTsYUKITf27NeXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPymaPSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6847C4CEE9;
+	Tue, 27 May 2025 17:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367958;
-	bh=Ukd3+8aRRhS8NDW279GGksvSzxgUBXbFxJj/sqIvoBk=;
+	s=korg; t=1748365690;
+	bh=lLI0Xz18CC+SP4anwFedn07T+G/jrf693OM2SuHnaQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vd+iedZybTawFvSK+i6Qlm6i8gO5neKgb2hO+ahShZuQP3apqZm0uv0Jsfs6jsPrK
-	 98zMPYHwlmcc3IT+9BChE67BmhY4mI1zqznjbOU0VJfHj1gluF7FUuyjfhohEP177d
-	 t1+6/1wQcgi0hUAvLqFpALSLsh8A9f+veOJVgl2k=
+	b=wPymaPSqAfcMSn17QAFdU8PzHlV+YLC4rk4up6hr8c3xD7Fu5k7PUeH/TzGUa72RA
+	 FqCe+9JLwl4ZGCYLoBh58dJVd3vp7PTex0bfw+wFG7Aoi0FOd/bC3dZJlNDgW7r/96
+	 3dACsVJweUD1nlFV9Kp38ihh1XjTDdiKAQ+cf2EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 554/783] drm/xe: Fix PVC RPe and RPa information
+Subject: [PATCH 6.12 458/626] perf: Avoid the read if the count is already updated
 Date: Tue, 27 May 2025 18:25:51 +0200
-Message-ID: <20250527162535.708369627@linuxfoundation.org>
+Message-ID: <20250527162503.602445634@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-[ Upstream commit 8a734b9359cfa1bdb805f5ca23e20bd99dd18a0a ]
+[ Upstream commit 8ce939a0fa194939cc1f92dbd8bc1a7806e7d40a ]
 
-A simple lazy buggy copy and paste of the PVC comment has brought
-the attention to the incorrect masks of the PVC register for RPa
-and RPe. So, let's fix them all.
+The event may have been updated in the PMU-specific implementation,
+e.g., Intel PEBS counters snapshotting. The common code should not
+read and overwrite the value.
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250109195219.658557-1-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+The PERF_SAMPLE_READ in the data->sample_type can be used to detect
+whether the PMU-specific value is available. If yes, avoid the
+pmu->read() in the common code. Add a new flag, skip_read, to track the
+case.
+
+Factor out a perf_pmu_read() to clean up the code.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250121152303.3128733-3-kan.liang@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_pc.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ include/linux/perf_event.h  |  8 +++++++-
+ kernel/events/core.c        | 33 ++++++++++++++++-----------------
+ kernel/events/ring_buffer.c |  1 +
+ 3 files changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
-index f382f5d53ca8b..2276d85926fcb 100644
---- a/drivers/gpu/drm/xe/xe_guc_pc.c
-+++ b/drivers/gpu/drm/xe/xe_guc_pc.c
-@@ -371,16 +371,17 @@ static void tgl_update_rpa_value(struct xe_guc_pc *pc)
- 	u32 reg;
- 
- 	/*
--	 * For PVC we still need to use fused RP1 as the approximation for RPe
--	 * For other platforms than PVC we get the resolved RPe directly from
-+	 * For PVC we still need to use fused RP0 as the approximation for RPa
-+	 * For other platforms than PVC we get the resolved RPa directly from
- 	 * PCODE at a different register
- 	 */
--	if (xe->info.platform == XE_PVC)
-+	if (xe->info.platform == XE_PVC) {
- 		reg = xe_mmio_read32(&gt->mmio, PVC_RP_STATE_CAP);
--	else
-+		pc->rpa_freq = REG_FIELD_GET(RP0_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+	} else {
- 		reg = xe_mmio_read32(&gt->mmio, FREQ_INFO_REC);
--
--	pc->rpa_freq = REG_FIELD_GET(RPA_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+		pc->rpa_freq = REG_FIELD_GET(RPA_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+	}
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 0997077bcc52a..ce64b4b937f06 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1063,7 +1063,13 @@ struct perf_output_handle {
+ 	struct perf_buffer		*rb;
+ 	unsigned long			wakeup;
+ 	unsigned long			size;
+-	u64				aux_flags;
++	union {
++		u64			flags;		/* perf_output*() */
++		u64			aux_flags;	/* perf_aux_output*() */
++		struct {
++			u64		skip_read : 1;
++		};
++	};
+ 	union {
+ 		void			*addr;
+ 		unsigned long		head;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 19dde12f23b83..285a4548450bd 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1195,6 +1195,12 @@ static void perf_assert_pmu_disabled(struct pmu *pmu)
+ 	WARN_ON_ONCE(*this_cpu_ptr(pmu->pmu_disable_count) == 0);
  }
  
- static void tgl_update_rpe_value(struct xe_guc_pc *pc)
-@@ -394,12 +395,13 @@ static void tgl_update_rpe_value(struct xe_guc_pc *pc)
- 	 * For other platforms than PVC we get the resolved RPe directly from
- 	 * PCODE at a different register
++static inline void perf_pmu_read(struct perf_event *event)
++{
++	if (event->state == PERF_EVENT_STATE_ACTIVE)
++		event->pmu->read(event);
++}
++
+ static void get_ctx(struct perf_event_context *ctx)
+ {
+ 	refcount_inc(&ctx->refcount);
+@@ -3482,8 +3488,7 @@ static void __perf_event_sync_stat(struct perf_event *event,
+ 	 * we know the event must be on the current CPU, therefore we
+ 	 * don't need to use it.
  	 */
--	if (xe->info.platform == XE_PVC)
-+	if (xe->info.platform == XE_PVC) {
- 		reg = xe_mmio_read32(&gt->mmio, PVC_RP_STATE_CAP);
--	else
-+		pc->rpe_freq = REG_FIELD_GET(RP1_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+	} else {
- 		reg = xe_mmio_read32(&gt->mmio, FREQ_INFO_REC);
--
--	pc->rpe_freq = REG_FIELD_GET(RPE_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+		pc->rpe_freq = REG_FIELD_GET(RPE_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+	}
- }
+-	if (event->state == PERF_EVENT_STATE_ACTIVE)
+-		event->pmu->read(event);
++	perf_pmu_read(event);
  
- static void pc_update_rp_values(struct xe_guc_pc *pc)
+ 	perf_event_update_time(event);
+ 
+@@ -4634,15 +4639,8 @@ static void __perf_event_read(void *info)
+ 
+ 	pmu->read(event);
+ 
+-	for_each_sibling_event(sub, event) {
+-		if (sub->state == PERF_EVENT_STATE_ACTIVE) {
+-			/*
+-			 * Use sibling's PMU rather than @event's since
+-			 * sibling could be on different (eg: software) PMU.
+-			 */
+-			sub->pmu->read(sub);
+-		}
+-	}
++	for_each_sibling_event(sub, event)
++		perf_pmu_read(sub);
+ 
+ 	data->ret = pmu->commit_txn(pmu);
+ 
+@@ -7408,9 +7406,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ 	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
+ 		values[n++] = running;
+ 
+-	if ((leader != event) &&
+-	    (leader->state == PERF_EVENT_STATE_ACTIVE))
+-		leader->pmu->read(leader);
++	if ((leader != event) && !handle->skip_read)
++		perf_pmu_read(leader);
+ 
+ 	values[n++] = perf_event_count(leader, self);
+ 	if (read_format & PERF_FORMAT_ID)
+@@ -7423,9 +7420,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ 	for_each_sibling_event(sub, leader) {
+ 		n = 0;
+ 
+-		if ((sub != event) &&
+-		    (sub->state == PERF_EVENT_STATE_ACTIVE))
+-			sub->pmu->read(sub);
++		if ((sub != event) && !handle->skip_read)
++			perf_pmu_read(sub);
+ 
+ 		values[n++] = perf_event_count(sub, self);
+ 		if (read_format & PERF_FORMAT_ID)
+@@ -7484,6 +7480,9 @@ void perf_output_sample(struct perf_output_handle *handle,
+ {
+ 	u64 sample_type = data->type;
+ 
++	if (data->sample_flags & PERF_SAMPLE_READ)
++		handle->skip_read = 1;
++
+ 	perf_output_put(handle, *header);
+ 
+ 	if (sample_type & PERF_SAMPLE_IDENTIFIER)
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index bbfa22c0a1597..6ecbbc57cdfde 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -185,6 +185,7 @@ __perf_output_begin(struct perf_output_handle *handle,
+ 
+ 	handle->rb    = rb;
+ 	handle->event = event;
++	handle->flags = 0;
+ 
+ 	have_lost = local_read(&rb->lost);
+ 	if (unlikely(have_lost)) {
 -- 
 2.39.5
 
