@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-147325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25BEAC5730
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D27AC5732
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 082283ACBB2
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E64AD3A327A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D8227F4CB;
-	Tue, 27 May 2025 17:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6288277808;
+	Tue, 27 May 2025 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCAslPC1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flyMfuQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7974E27A935;
-	Tue, 27 May 2025 17:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7415F19CD07;
+	Tue, 27 May 2025 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366993; cv=none; b=u5nIxWNF79jNHNXwthfdK2XSt7VxCVJ7DmtNDvlYe13VRu+R1xiEiSxcA8/VWyaY5/ODnHMLj3vqGMP0igUCm9HXQdyybbp5swIxxgySTCWznofAWujeqR69X7l1yDx3Cf4HAYt4zHgMGdhOHcVinuW8VNaBX9SdMiRG7IVcsmY=
+	t=1748366999; cv=none; b=fCaMa3EoWggexmdw4wMr6Ohj1ewRXqVFXCoHioIGobDTdkU4LT+HnPbMaCxpKi8VVsqsIcBSkYvqDC2izrpmcrpI5w9yac+T6kZ/mTsLRcTXWmSBaCViVzgFa8eTBC+bYxGOmMTA2NwTT/ot5O9HNZ1PSE/PcwUk5pdgnQIkJhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366993; c=relaxed/simple;
-	bh=wAScx7CVPSmiVeNL0EXwHR6RlihjTOxTqaOEVhei0AE=;
+	s=arc-20240116; t=1748366999; c=relaxed/simple;
+	bh=UwGLYJDkmMH21MD7kQJQtUIafV8neAt6UnTLogqa+tI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNwtzIPCAQeT13vr7wsX/I/EgLschgwcDc/Kv4MPW5p1ysofEpxE46pVxw+sOMS1mSqftA3wjHom1Qgl0fftg7IWm4WgVis0KhoPOGOZsRqmno4jhFh2gIM6XGV4ZYFgIFO2YHfrYuI9sWohtgf68D4YwY9LgVPeYey+0mBy1is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCAslPC1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0602DC4CEE9;
-	Tue, 27 May 2025 17:29:52 +0000 (UTC)
+	 MIME-Version; b=rOHghA/W0ufqqPwipTPrdZaaEmt9JDjSvRpsWkxVvhduLPJ817vVBu50tAuXwUjAeefujEtz3kbq9p/UrkzaZBSquaOWMycSiNBpdLibQSurZZDhPH3Swavk2ugxNvGVX7ezwvUaOesKG5ltdXofhP5xRivgCD6a9SmR5JEne78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flyMfuQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65E4C4CEE9;
+	Tue, 27 May 2025 17:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366993;
-	bh=wAScx7CVPSmiVeNL0EXwHR6RlihjTOxTqaOEVhei0AE=;
+	s=korg; t=1748366999;
+	bh=UwGLYJDkmMH21MD7kQJQtUIafV8neAt6UnTLogqa+tI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WCAslPC1TGhNFrOV7y8Tg7jR/1YXYWL1Y0KHOeIv9goD6p/Bcwt4ufST89IWFDy9o
-	 fYEnmFKupst09GDZI/Kartyp9Shvw9rdx6Qql1szHtsGU7hJ2ZFhI63zBiwhaPtwyX
-	 eVWBuJ4b/x4PZNyR1w3OE8P1HkC3zdItgDVJ1/rw=
+	b=flyMfuQPfJIKVPx7cuhdY6iFT93IQ6Fxd13EgV9eysyIt5RqEy4AjHRXsZtSwtaNB
+	 KEIF1MNWlSCw6Y4JK9+rw4SfSOF6mG9hdKCKwDGhXEg7Dry2okC11CLaTpRbQx6ymh
+	 XI0eEsvx/Wl1XSqJDGTrpGpaJ6Vf6eHfgkQ6s+DU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Kyunghwan Seo <khwan.seo@samsung.com>,
+	Sangwook Shin <sw617.shin@samsung.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 243/783] cpufreq: tegra186: Share policy per cluster
-Date: Tue, 27 May 2025 18:20:40 +0200
-Message-ID: <20250527162523.005285225@linuxfoundation.org>
+Subject: [PATCH 6.14 244/783] watchdog: s3c2410_wdt: Fix PMU register bits for ExynosAutoV920 SoC
+Date: Tue, 27 May 2025 18:20:41 +0200
+Message-ID: <20250527162523.046453412@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -68,45 +69,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aaron Kling <luceoscutum@gmail.com>
+From: Kyunghwan Seo <khwan.seo@samsung.com>
 
-[ Upstream commit be4ae8c19492cd6d5de61ccb34ffb3f5ede5eec8 ]
+[ Upstream commit 480ee8a260e6f87cbcdaff77ac2cbf6dc03f0f4f ]
 
-This functionally brings tegra186 in line with tegra210 and tegra194,
-sharing a cpufreq policy between all cores in a cluster.
+Fix the PMU register bits for the ExynosAutoV920 SoC.
+This SoC has different bit information compared to its previous
+version, ExynosAutoV9, and we have made the necessary adjustments.
 
-Reviewed-by: Sumit Gupta <sumitg@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+rst_stat_bit:
+    - ExynosAutoV920 cl0 : 0
+    - ExynosAutoV920 cl1 : 1
+
+cnt_en_bit:
+    - ExynosAutoV920 cl0 : 8
+    - ExynosAutoV920 cl1 : 8
+
+Signed-off-by: Kyunghwan Seo <khwan.seo@samsung.com>
+Signed-off-by: Sangwook Shin <sw617.shin@samsung.com>
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250213004104.3881711-1-sw617.shin@samsung.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/tegra186-cpufreq.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/watchdog/s3c2410_wdt.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
-index c7761eb99f3cc..92aa50f016660 100644
---- a/drivers/cpufreq/tegra186-cpufreq.c
-+++ b/drivers/cpufreq/tegra186-cpufreq.c
-@@ -73,11 +73,18 @@ static int tegra186_cpufreq_init(struct cpufreq_policy *policy)
- {
- 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
- 	unsigned int cluster = data->cpus[policy->cpu].bpmp_cluster_id;
-+	u32 cpu;
+diff --git a/drivers/watchdog/s3c2410_wdt.c b/drivers/watchdog/s3c2410_wdt.c
+index 30450e99e5e9d..bdd81d8074b24 100644
+--- a/drivers/watchdog/s3c2410_wdt.c
++++ b/drivers/watchdog/s3c2410_wdt.c
+@@ -72,6 +72,8 @@
+ #define EXYNOS850_CLUSTER1_WDTRESET_BIT		23
+ #define EXYNOSAUTOV9_CLUSTER0_WDTRESET_BIT	25
+ #define EXYNOSAUTOV9_CLUSTER1_WDTRESET_BIT	24
++#define EXYNOSAUTOV920_CLUSTER0_WDTRESET_BIT	0
++#define EXYNOSAUTOV920_CLUSTER1_WDTRESET_BIT	1
  
- 	policy->freq_table = data->clusters[cluster].table;
- 	policy->cpuinfo.transition_latency = 300 * 1000;
- 	policy->driver_data = NULL;
- 
-+	/* set same policy for all cpus in a cluster */
-+	for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
-+		if (data->cpus[cpu].bpmp_cluster_id == cluster)
-+			cpumask_set_cpu(cpu, policy->cpus);
-+	}
-+
- 	return 0;
- }
- 
+ #define GS_CLUSTER0_NONCPU_OUT			0x1220
+ #define GS_CLUSTER1_NONCPU_OUT			0x1420
+@@ -312,9 +314,9 @@ static const struct s3c2410_wdt_variant drv_data_exynosautov920_cl0 = {
+ 	.mask_bit = 2,
+ 	.mask_reset_inv = true,
+ 	.rst_stat_reg = EXYNOS5_RST_STAT_REG_OFFSET,
+-	.rst_stat_bit = EXYNOSAUTOV9_CLUSTER0_WDTRESET_BIT,
++	.rst_stat_bit = EXYNOSAUTOV920_CLUSTER0_WDTRESET_BIT,
+ 	.cnt_en_reg = EXYNOSAUTOV920_CLUSTER0_NONCPU_OUT,
+-	.cnt_en_bit = 7,
++	.cnt_en_bit = 8,
+ 	.quirks = QUIRK_HAS_WTCLRINT_REG | QUIRK_HAS_PMU_MASK_RESET |
+ 		  QUIRK_HAS_PMU_RST_STAT | QUIRK_HAS_PMU_CNT_EN |
+ 		  QUIRK_HAS_DBGACK_BIT,
+@@ -325,9 +327,9 @@ static const struct s3c2410_wdt_variant drv_data_exynosautov920_cl1 = {
+ 	.mask_bit = 2,
+ 	.mask_reset_inv = true,
+ 	.rst_stat_reg = EXYNOS5_RST_STAT_REG_OFFSET,
+-	.rst_stat_bit = EXYNOSAUTOV9_CLUSTER1_WDTRESET_BIT,
++	.rst_stat_bit = EXYNOSAUTOV920_CLUSTER1_WDTRESET_BIT,
+ 	.cnt_en_reg = EXYNOSAUTOV920_CLUSTER1_NONCPU_OUT,
+-	.cnt_en_bit = 7,
++	.cnt_en_bit = 8,
+ 	.quirks = QUIRK_HAS_WTCLRINT_REG | QUIRK_HAS_PMU_MASK_RESET |
+ 		  QUIRK_HAS_PMU_RST_STAT | QUIRK_HAS_PMU_CNT_EN |
+ 		  QUIRK_HAS_DBGACK_BIT,
 -- 
 2.39.5
 
