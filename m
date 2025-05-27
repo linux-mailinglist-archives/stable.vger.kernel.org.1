@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2F5AC553E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C37F9AC581F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 429473B213D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96B38A6693
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA2B23ED75;
-	Tue, 27 May 2025 17:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CFA27D786;
+	Tue, 27 May 2025 17:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfEpVRT2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjfdRFTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3874286347;
-	Tue, 27 May 2025 17:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E8C42A9B;
+	Tue, 27 May 2025 17:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365399; cv=none; b=tNxTSOVP7ty737nSxkhwMFJxStg8LXIqUbbDEkGiBZkIQZ/Em0v1rL4NryOmpl6bauwTXkSC9h2aWGFw00mG/ly6W3wGkxY7QHVreIEl5A1f8IOACSD/V5065BDum5GONSTdfoE4R21GWJCHH0LOATW644Ug6S77rXPu+4SqADc=
+	t=1748367661; cv=none; b=SEd3FiBVYmSgfL/kpk0IYQjosnwR3+WgsbI6kCLJ8fU9cxb+hq4QOauS11Bb/wzRWDhe70biHF+PRw09dEejGncdVCn/BGx1Z7+t+H14Vicc5KqLKPRhCJo5UBUehdQsVbljgQDVlDIfuUwH4SajhFOJVPNpdjRw4fjmdXJ++6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365399; c=relaxed/simple;
-	bh=0W4pliY+4nwm3oujlGtE0iz1C190bPdtA+PQ6hstgfc=;
+	s=arc-20240116; t=1748367661; c=relaxed/simple;
+	bh=s6nUcxdD5ove/9iFwCXN+WpXgENS6ZEupdVk8gRHeEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=at7+IYaAgF6qJ3Rk2y2Rh1a0txm/xj2/iXtrPrDMcN1vattG+uRrlr2xnP6ezT2M1LxzRPH7t5czuOJYaSOvOewqOFIoRiFWq/C6r1c00X65kx1KzKyTKXjXgWpunPiObVWONL8esbdCKXh8M6L7BUNJJZ++5kMLebf8qUL35S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfEpVRT2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCA8C4CEE9;
-	Tue, 27 May 2025 17:03:18 +0000 (UTC)
+	 MIME-Version; b=adPTxTqmcbJ+vygPSB0JfFZjrOdpZvTG24+6V+2uKw+jIfYSn66LzY87lvM737po+QuJzLD4FmArNSnw4VV++P1CqbzSNgYWVc9BitU0y6YetG0wJpbb5dov+2Qu0BasCMeaBIuxSeUPoTYNpC5bUwqDyHD7geiXjJ3KrDRu8MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjfdRFTT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A774FC4CEE9;
+	Tue, 27 May 2025 17:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365399;
-	bh=0W4pliY+4nwm3oujlGtE0iz1C190bPdtA+PQ6hstgfc=;
+	s=korg; t=1748367661;
+	bh=s6nUcxdD5ove/9iFwCXN+WpXgENS6ZEupdVk8gRHeEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfEpVRT2zxto0KyCtQSTek/kTHknez2MdlUge/1fAMa7EOf4XlV0cEhf2kUNDD6qy
-	 0JulGrynTSqFMNC9g12rCG07zw7J65uDalRfxBZAItsmR+V/KFaTCZVIKvNzz54vEc
-	 TOl9z0nRNP9QFpHOAtlQ/t1PlPIt2lwuEzdR4aKE=
+	b=yjfdRFTTjy6OOb5+QGezaWacbftgKOM1CMwpJwG+iv9xOYtgSjHB8tOjki2rZieRE
+	 5C8Ot1OVFmFgfbrnvQU5FXo6CZoWh2eeXCdz6ukUtsnpeX9NApyWyJfy6ufCEE9481
+	 jmHyw5CzqaHGpgg6auezXWDIaGjmdFv63BW3i1Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valentin Caron <valentin.caron@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 363/626] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
+Subject: [PATCH 6.14 459/783] accel/amdxdna: Refactor hardware context destroy routine
 Date: Tue, 27 May 2025 18:24:16 +0200
-Message-ID: <20250527162459.760530937@linuxfoundation.org>
+Message-ID: <20250527162531.821290120@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Caron <valentin.caron@foss.st.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
+[ Upstream commit 4fd6ca90fc7f509977585d39885f21b2911123f3 ]
 
-Cross case in pinctrl framework make impossible to an hogged pin and
-another, not hogged, used within the same device-tree node. For example
-with this simplified device-tree :
+It is required by firmware to wait up to 2 seconds for pending commands
+before sending the destroy hardware context command. After 2 seconds
+wait, if there are still pending commands, driver needs to cancel them.
 
-  &pinctrl {
-    pinctrl_pin_1: pinctrl-pin-1 {
-      pins = "dummy-pinctrl-pin";
-    };
-  };
+So the context destroy steps need to be:
+  1. Stop drm scheduler. (drm_sched_entity_destroy)
+  2. Wait up to 2 seconds for pending commands.
+  3. Destroy hardware context and cancel the rest pending requests.
+  4. Wait all jobs associated with the hwctx are freed.
+  5. Free job resources.
 
-  &rtc {
-    pinctrl-names = "default"
-    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
-
-    rtc_pin_1: rtc-pin-1 {
-      pins = "dummy-rtc-pin";
-    };
-  };
-
-"pinctrl_pin_1" configuration is never set. This produces this path in
-the code:
-
-  really_probe()
-    pinctrl_bind_pins()
-    | devm_pinctrl_get()
-    |   pinctrl_get()
-    |     create_pinctrl()
-    |       pinctrl_dt_to_map()
-    |         // Hog pin create an abort for all pins of the node
-    |         ret = dt_to_map_one_config()
-    |         | /* Do not defer probing of hogs (circular loop) */
-    |         | if (np_pctldev == p->dev->of_node)
-    |         |   return -ENODEV;
-    |         if (ret)
-    |           goto err
-    |
-    call_driver_probe()
-      stm32_rtc_probe()
-        pinctrl_enable()
-          pinctrl_claim_hogs()
-            create_pinctrl()
-              for_each_maps(maps_node, i, map)
-                // Not hog pin is skipped
-                if (pctldev && strcmp(dev_name(pctldev->dev),
-                                      map->ctrl_dev_name))
-                  continue;
-
-At the first call of create_pinctrl() the hogged pin produces an abort to
-avoid a defer of hogged pins. All other pin configurations are trashed.
-
-At the second call, create_pinctrl is now called with pctldev parameter to
-get hogs, but in this context only hogs are set. And other pins are
-skipped.
-
-To handle this, do not produce an abort in the first call of
-create_pinctrl(). Classic pin configuration will be set in
-pinctrl_bind_pins() context. And the hogged pin configuration will be set
-in pinctrl_claim_hogs() context.
-
-Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
-Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250124173536.148676-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/accel/amdxdna/aie2_ctx.c    | 29 ++++++++++++++++-------------
+ drivers/accel/amdxdna/amdxdna_ctx.c |  2 ++
+ drivers/accel/amdxdna/amdxdna_ctx.h |  3 +++
+ 3 files changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index 6a94ecd6a8dea..0b7f74beb6a6a 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
- 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
- 		if (pctldev)
- 			break;
--		/* Do not defer probing of hogs (circular loop) */
-+		/*
-+		 * Do not defer probing of hogs (circular loop)
-+		 *
-+		 * Return 1 to let the caller catch the case.
-+		 */
- 		if (np_pctldev == p->dev->of_node) {
- 			of_node_put(np_pctldev);
--			return -ENODEV;
-+			return 1;
- 		}
- 	}
- 	of_node_put(np_pctldev);
-@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 			ret = dt_to_map_one_config(p, pctldev, statename,
- 						   np_config);
- 			of_node_put(np_config);
-+			if (ret == 1)
-+				continue;
- 			if (ret < 0)
- 				goto err;
- 		}
+diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
+index 5f43db02b2404..92c768b0c9a03 100644
+--- a/drivers/accel/amdxdna/aie2_ctx.c
++++ b/drivers/accel/amdxdna/aie2_ctx.c
+@@ -34,6 +34,8 @@ static void aie2_job_release(struct kref *ref)
+ 
+ 	job = container_of(ref, struct amdxdna_sched_job, refcnt);
+ 	amdxdna_sched_job_cleanup(job);
++	atomic64_inc(&job->hwctx->job_free_cnt);
++	wake_up(&job->hwctx->priv->job_free_wq);
+ 	if (job->out_fence)
+ 		dma_fence_put(job->out_fence);
+ 	kfree(job);
+@@ -134,7 +136,8 @@ static void aie2_hwctx_wait_for_idle(struct amdxdna_hwctx *hwctx)
+ 	if (!fence)
+ 		return;
+ 
+-	dma_fence_wait(fence, false);
++	/* Wait up to 2 seconds for fw to finish all pending requests */
++	dma_fence_wait_timeout(fence, false, msecs_to_jiffies(2000));
+ 	dma_fence_put(fence);
+ }
+ 
+@@ -616,6 +619,7 @@ int aie2_hwctx_init(struct amdxdna_hwctx *hwctx)
+ 	hwctx->status = HWCTX_STAT_INIT;
+ 	ndev = xdna->dev_handle;
+ 	ndev->hwctx_num++;
++	init_waitqueue_head(&priv->job_free_wq);
+ 
+ 	XDNA_DBG(xdna, "hwctx %s init completed", hwctx->name);
+ 
+@@ -652,25 +656,23 @@ void aie2_hwctx_fini(struct amdxdna_hwctx *hwctx)
+ 	xdna = hwctx->client->xdna;
+ 	ndev = xdna->dev_handle;
+ 	ndev->hwctx_num--;
+-	drm_sched_wqueue_stop(&hwctx->priv->sched);
+ 
+-	/* Now, scheduler will not send command to device. */
++	XDNA_DBG(xdna, "%s sequence number %lld", hwctx->name, hwctx->priv->seq);
++	drm_sched_entity_destroy(&hwctx->priv->entity);
++
++	aie2_hwctx_wait_for_idle(hwctx);
++
++	/* Request fw to destroy hwctx and cancel the rest pending requests */
+ 	aie2_release_resource(hwctx);
+ 
+-	/*
+-	 * All submitted commands are aborted.
+-	 * Restart scheduler queues to cleanup jobs. The amdxdna_sched_job_run()
+-	 * will return NODEV if it is called.
+-	 */
+-	drm_sched_wqueue_start(&hwctx->priv->sched);
++	/* Wait for all submitted jobs to be completed or canceled */
++	wait_event(hwctx->priv->job_free_wq,
++		   atomic64_read(&hwctx->job_submit_cnt) ==
++		   atomic64_read(&hwctx->job_free_cnt));
+ 
+-	aie2_hwctx_wait_for_idle(hwctx);
+-	drm_sched_entity_destroy(&hwctx->priv->entity);
+ 	drm_sched_fini(&hwctx->priv->sched);
+ 	aie2_ctx_syncobj_destroy(hwctx);
+ 
+-	XDNA_DBG(xdna, "%s sequence number %lld", hwctx->name, hwctx->priv->seq);
+-
+ 	for (idx = 0; idx < ARRAY_SIZE(hwctx->priv->cmd_buf); idx++)
+ 		drm_gem_object_put(to_gobj(hwctx->priv->cmd_buf[idx]));
+ 	amdxdna_gem_unpin(hwctx->priv->heap);
+@@ -879,6 +881,7 @@ int aie2_cmd_submit(struct amdxdna_hwctx *hwctx, struct amdxdna_sched_job *job,
+ 	drm_gem_unlock_reservations(job->bos, job->bo_cnt, &acquire_ctx);
+ 
+ 	aie2_job_put(job);
++	atomic64_inc(&hwctx->job_submit_cnt);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/accel/amdxdna/amdxdna_ctx.c b/drivers/accel/amdxdna/amdxdna_ctx.c
+index d11b1c83d9c3b..43442b9e273b3 100644
+--- a/drivers/accel/amdxdna/amdxdna_ctx.c
++++ b/drivers/accel/amdxdna/amdxdna_ctx.c
+@@ -220,6 +220,8 @@ int amdxdna_drm_create_hwctx_ioctl(struct drm_device *dev, void *data, struct dr
+ 	args->syncobj_handle = hwctx->syncobj_hdl;
+ 	mutex_unlock(&xdna->dev_lock);
+ 
++	atomic64_set(&hwctx->job_submit_cnt, 0);
++	atomic64_set(&hwctx->job_free_cnt, 0);
+ 	XDNA_DBG(xdna, "PID %d create HW context %d, ret %d", client->pid, args->handle, ret);
+ 	drm_dev_exit(idx);
+ 	return 0;
+diff --git a/drivers/accel/amdxdna/amdxdna_ctx.h b/drivers/accel/amdxdna/amdxdna_ctx.h
+index 80b0304193ec3..f0a4a8586d858 100644
+--- a/drivers/accel/amdxdna/amdxdna_ctx.h
++++ b/drivers/accel/amdxdna/amdxdna_ctx.h
+@@ -87,6 +87,9 @@ struct amdxdna_hwctx {
+ 	struct amdxdna_qos_info		     qos;
+ 	struct amdxdna_hwctx_param_config_cu *cus;
+ 	u32				syncobj_hdl;
++
++	atomic64_t			job_submit_cnt;
++	atomic64_t			job_free_cnt ____cacheline_aligned_in_smp;
+ };
+ 
+ #define drm_job_to_xdna_job(j) \
 -- 
 2.39.5
 
