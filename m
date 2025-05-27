@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-146687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77850AC549A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D29F7AC578D
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D14373AD43A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9C314A5FA9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E7327FD5A;
-	Tue, 27 May 2025 16:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C23C27BF79;
+	Tue, 27 May 2025 17:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlTLWnmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AitipF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635AB27FD4C;
-	Tue, 27 May 2025 16:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381903C01;
+	Tue, 27 May 2025 17:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364998; cv=none; b=RlsLtS5+BZb2vFts2qerpVzNk8ben2CAdzu/+lOx2Y+U0b7PzWHMr50ZCWfQKulGg9DTVi4aqdhp/GaoRyXaCUM2wWRXvzyzdW4AxK0mKkJ6J8jjGl3JlWXSGw7r5MmHzS7legSt5hWXGZUcHbNKmcvPEJD7d0prZKsa4iVIN5g=
+	t=1748367262; cv=none; b=JeX01tKGuZAWUvARNKa4Cjfv0/LY2/GOQrlu+qNe/7SAYym3Dkv9p8MFhFLbJiTIhk1cJXr52QsQ8ONV7wO1/pE6HlfOZtBcLnuPPf2Vd66NrQMvVeSRE+6tRg9WvSTsFMh/jgRUfz/FJBEnyh0+8ncHiTnJal+rlIY1BOZI/nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364998; c=relaxed/simple;
-	bh=LIblJ/lWotF/1j08xFCJ2iykPTxR1/IQ8Y5F9deyytY=;
+	s=arc-20240116; t=1748367262; c=relaxed/simple;
+	bh=PRxy5GIOcArI28fxoXlgYJ1ChwgxkZU7M+wN09+GJgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BB5dSyXfzlZtc7F9yoTHD6INPM5GaZ6iHRNd98diLUPlQucYinDeBfkr2gItoJou04Zo3mUI2Iz3zTI7EpcdU9K/8RTE72rlSn8HU8oOHSrm0Ea+0J+6jZoKz8DsOXtYqJK3ZhXGfeKN+YHy4jV+jfsHzzEM4PKIvaegDhKxKDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlTLWnmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632BFC4CEE9;
-	Tue, 27 May 2025 16:56:37 +0000 (UTC)
+	 MIME-Version; b=mqzQFApSM6hdPJtlmN7zx8tqMNnhmReB5iQE/M0SV6LqF00HteMFRMht1n3uh0R6Jo9tdfVuOvpVbvqX1VRo9AIpmTfrG9SYiXksVJceXKc3JgBoo+hYFV83vd+ULlZZiF9D7v6VYXvThkDstAQnrfsEllNGlfvlw7UfcAP9PNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AitipF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC296C4CEE9;
+	Tue, 27 May 2025 17:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364997;
-	bh=LIblJ/lWotF/1j08xFCJ2iykPTxR1/IQ8Y5F9deyytY=;
+	s=korg; t=1748367262;
+	bh=PRxy5GIOcArI28fxoXlgYJ1ChwgxkZU7M+wN09+GJgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GlTLWnmzc3llvNGYY5/N4WT5yfWHrpJ7kh30zQgjB/rZaOv92Ywit1Bn0rpTwX6PH
-	 FgPTeceWbtR85Y4gm56eSrzHrRFf4PiUmVGhiy7oDgfePXPwOy4I1hFSjgxQ2xg9Ez
-	 1IvdWXwhJ98Rx+0M09C0X8Twaryo5ybeGT7OlUDM=
+	b=2AitipF/xR361l1e+K16BNTaqgKC0FpiuhJ1kOyo0rcut/x7bwvRfeZqo4k6GyQgE
+	 y9EjeN+oGlHME+YJGyjveNVlfwdFBwS2gHYx6rlQwr7Wx7J+3YiMtwRPNCV89IpkUJ
+	 nG57ubm31YyZBRhli0FhbBHnI10NOSZE2BUpEFJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Kevin Krakauer <krakauer@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 234/626] drm/amd/display: Skip checking FRL_MODE bit for PCON BW determination
-Date: Tue, 27 May 2025 18:22:07 +0200
-Message-ID: <20250527162454.524624413@linuxfoundation.org>
+Subject: [PATCH 6.14 331/783] selftests/net: have `gro.sh -t` return a correct exit code
+Date: Tue, 27 May 2025 18:22:08 +0200
+Message-ID: <20250527162526.536979302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Kevin Krakauer <krakauer@google.com>
 
-[ Upstream commit 0584bbcf0c53c133081100e4f4c9fe41e598d045 ]
+[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
 
-[Why/How]
-Certain PCON will clear the FRL_MODE bit despite supporting the link BW
-indicated in the other bits.
+Modify gro.sh to return a useful exit code when the -t flag is used. It
+formerly returned 0 no matter what.
 
-Thus, skip checking the FRL_MODE bit when interpreting the
-hdmi_encoded_link_bw struct.
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Tested: Ran `gro.sh -t large` and verified that test failures return 1.
+Signed-off-by: Kevin Krakauer <krakauer@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/link/protocols/link_dp_capability.c    | 30 +++++++++----------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ tools/testing/selftests/net/gro.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-index 885e749cdc6e9..23e650e39910e 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -250,21 +250,21 @@ static uint32_t intersect_frl_link_bw_support(
- {
- 	uint32_t supported_bw_in_kbps = max_supported_frl_bw_in_kbps;
- 
--	// HDMI_ENCODED_LINK_BW bits are only valid if HDMI Link Configuration bit is 1 (FRL mode)
--	if (hdmi_encoded_link_bw.bits.FRL_MODE) {
--		if (hdmi_encoded_link_bw.bits.BW_48Gbps)
--			supported_bw_in_kbps = 48000000;
--		else if (hdmi_encoded_link_bw.bits.BW_40Gbps)
--			supported_bw_in_kbps = 40000000;
--		else if (hdmi_encoded_link_bw.bits.BW_32Gbps)
--			supported_bw_in_kbps = 32000000;
--		else if (hdmi_encoded_link_bw.bits.BW_24Gbps)
--			supported_bw_in_kbps = 24000000;
--		else if (hdmi_encoded_link_bw.bits.BW_18Gbps)
--			supported_bw_in_kbps = 18000000;
--		else if (hdmi_encoded_link_bw.bits.BW_9Gbps)
--			supported_bw_in_kbps = 9000000;
--	}
-+	/* Skip checking FRL_MODE bit, as certain PCON will clear
-+	 * it despite supporting the link BW indicated in the other bits.
-+	 */
-+	if (hdmi_encoded_link_bw.bits.BW_48Gbps)
-+		supported_bw_in_kbps = 48000000;
-+	else if (hdmi_encoded_link_bw.bits.BW_40Gbps)
-+		supported_bw_in_kbps = 40000000;
-+	else if (hdmi_encoded_link_bw.bits.BW_32Gbps)
-+		supported_bw_in_kbps = 32000000;
-+	else if (hdmi_encoded_link_bw.bits.BW_24Gbps)
-+		supported_bw_in_kbps = 24000000;
-+	else if (hdmi_encoded_link_bw.bits.BW_18Gbps)
-+		supported_bw_in_kbps = 18000000;
-+	else if (hdmi_encoded_link_bw.bits.BW_9Gbps)
-+		supported_bw_in_kbps = 9000000;
- 
- 	return supported_bw_in_kbps;
- }
+diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
+index 02c21ff4ca81f..aabd6e5480b8e 100755
+--- a/tools/testing/selftests/net/gro.sh
++++ b/tools/testing/selftests/net/gro.sh
+@@ -100,5 +100,6 @@ trap cleanup EXIT
+ if [[ "${test}" == "all" ]]; then
+   run_all_tests
+ else
+-  run_test "${proto}" "${test}"
++  exit_code=$(run_test "${proto}" "${test}")
++  exit $exit_code
+ fi;
 -- 
 2.39.5
 
