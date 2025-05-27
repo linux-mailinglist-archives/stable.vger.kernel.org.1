@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C252AC5747
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:31:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0701AC53E8
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 947B73BC47C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 777F51780CE
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CB127D784;
-	Tue, 27 May 2025 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2582CCC0;
+	Tue, 27 May 2025 16:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq46hX0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkkW/2CV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCFE1AF0BB;
-	Tue, 27 May 2025 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D063727E1CA;
+	Tue, 27 May 2025 16:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367061; cv=none; b=tAYpvlgZWzkSv2Ngge2hsl2j+GjRYmpyNn0ZifZOK9rGo33qhuXFeAZNGfP23FTDIccZaFdy9a0HPdlN7zICdgmJNtQT3VLKSDJbrwnbGfG+QRgnq4nvwALVBfuWHcYArheQAndUF1UwRQCVHXc0Ow3zO4+JvmrnQ7tyWIn8Qp0=
+	t=1748364801; cv=none; b=PwmQ1KoJ14chpUNsVNeXUrcvxnjPpAdRJytFLfyFhAIk/1k4vw+/UA2cbXAcqf9N4mhSsxXkryTIVokKW2hs2n96EIh3c/6PYn53xniAV2w0DpEV8QhmhDg8gimcWF4BGAZAaB3lEjmH6zvsQLE5miXaKM8Uv6bO9x+bZGiqkko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367061; c=relaxed/simple;
-	bh=+kMhcF4b2cwY1jtaLQh3dpTI6sb3XdXG4YexuAlJEQY=;
+	s=arc-20240116; t=1748364801; c=relaxed/simple;
+	bh=SG3GK2A+Ufej3W5jB9Xs7hfpg7K8UIVT0ccwBfBFIzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AMP80bb5q0yBHs8Fhlz6EfZIKVRf9o8Fu6ymwzibxKov8ZHr2si07N7FOoliCs0UEyvfv0QY94qCEOqIIXEj814Q91vCGcEDLlYjTnyXthtcnL+s2tHqvl0JdzD9ywaoUHL9kaQ0dPFlgD74Ek0XLoZCOSGYjBp78Q1G5Z8tkiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq46hX0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861A1C4CEE9;
-	Tue, 27 May 2025 17:31:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KQr/TfvcR577BF4QHzanU8+QkbpTBzKEA+JgyUtFJOqdItF05VeGDvwDCM5o3Jqi5ygERL52ZAmRngIAd41OKYrpliz8Ohphg9xZ0LuDlfv4NGupcyWiNIDy2dqekusmNWccg5BAnEotw6gLrL9nhRer8uBWHy9qlwAIumSrrG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkkW/2CV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA780C4CEEB;
+	Tue, 27 May 2025 16:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367060;
-	bh=+kMhcF4b2cwY1jtaLQh3dpTI6sb3XdXG4YexuAlJEQY=;
+	s=korg; t=1748364801;
+	bh=SG3GK2A+Ufej3W5jB9Xs7hfpg7K8UIVT0ccwBfBFIzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xq46hX0rz+LXbQe264kOrebYykdV25J9i+Xs/iZyXRmCE51hLMArOwRB82K8zmggt
-	 tOM2HvUSZ7m7Cq4pAMTJS31ReqAyCQHNPfP8dcHVt+JruZ21Oqa/wXytIW//bzogYY
-	 Fe7xjUfGABMJHS4y0CMO3lwUXxWdUJw1S7mDupug=
+	b=KkkW/2CV0+GnDYN+X8r1JNEY1As6pr2EKguxZBIV8nTev11txEkp6BYaUtpL7r2Hg
+	 2ZLjobeZaZIZpRtQMPNlR6iklzIGp2I1MnjkcGcpqoBQVli+MSMhlggRMPlSj4WdMc
+	 mCmwJB7punYB64WPUHlXii7/KRgaHsv6b3SvXoBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 266/783] soc: samsung: include linux/array_size.h where needed
+Subject: [PATCH 6.12 170/626] timer_list: Dont use %pK through printk()
 Date: Tue, 27 May 2025 18:21:03 +0200
-Message-ID: <20250527162523.925535129@linuxfoundation.org>
+Message-ID: <20250527162451.928591177@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,123 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 4c57930f68d90e0d52c396d058cfa9ed8447a6c4 ]
+[ Upstream commit a52067c24ccf6ee4c85acffa0f155e9714f9adce ]
 
-This does not necessarily get included through asm/io.h:
+This reverts commit f590308536db ("timer debug: Hide kernel addresses via
+%pK in /proc/timer_list")
 
-drivers/soc/samsung/exynos3250-pmu.c:120:18: error: use of undeclared identifier 'ARRAY_SIZE'
-  120 |         for (i = 0; i < ARRAY_SIZE(exynos3250_list_feed); i++) {
-      |                         ^
-drivers/soc/samsung/exynos5250-pmu.c:162:18: error: use of undeclared identifier 'ARRAY_SIZE'
-  162 |         for (i = 0; i < ARRAY_SIZE(exynos5_list_both_cnt_feed); i++) {
-      |                         ^
+The timer list helper SEQ_printf() uses either the real seq_printf() for
+procfs output or vprintk() to print to the kernel log, when invoked from
+SysRq-q. It uses %pK for printing pointers.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250305211446.43772-1-arnd@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In the past %pK was prefered over %p as it would not leak raw pointer
+values into the kernel log. Since commit ad67b74d2469 ("printk: hash
+addresses printed with %p") the regular %p has been improved to avoid this
+issue.
+
+Furthermore, restricted pointers ("%pK") were never meant to be used
+through printk(). They can still unintentionally leak raw pointers or
+acquire sleeping looks in atomic contexts.
+
+Switch to the regular pointer formatting which is safer, easier to reason
+about and sufficient here.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Link: https://lore.kernel.org/all/20250311-restricted-pointers-timer-v1-1-6626b91e54ab@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/samsung/exynos-asv.c     | 1 +
- drivers/soc/samsung/exynos-chipid.c  | 1 +
- drivers/soc/samsung/exynos-pmu.c     | 1 +
- drivers/soc/samsung/exynos-usi.c     | 1 +
- drivers/soc/samsung/exynos3250-pmu.c | 1 +
- drivers/soc/samsung/exynos5250-pmu.c | 1 +
- drivers/soc/samsung/exynos5420-pmu.c | 1 +
- 7 files changed, 7 insertions(+)
+ kernel/time/timer_list.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
-index 97006cc3b9461..8e681f5195264 100644
---- a/drivers/soc/samsung/exynos-asv.c
-+++ b/drivers/soc/samsung/exynos-asv.c
-@@ -9,6 +9,7 @@
-  * Samsung Exynos SoC Adaptive Supply Voltage support
-  */
+diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
+index 1c311c46da507..cfbb46cc4e761 100644
+--- a/kernel/time/timer_list.c
++++ b/kernel/time/timer_list.c
+@@ -46,7 +46,7 @@ static void
+ print_timer(struct seq_file *m, struct hrtimer *taddr, struct hrtimer *timer,
+ 	    int idx, u64 now)
+ {
+-	SEQ_printf(m, " #%d: <%pK>, %ps", idx, taddr, timer->function);
++	SEQ_printf(m, " #%d: <%p>, %ps", idx, taddr, timer->function);
+ 	SEQ_printf(m, ", S:%02x", timer->state);
+ 	SEQ_printf(m, "\n");
+ 	SEQ_printf(m, " # expires at %Lu-%Lu nsecs [in %Ld to %Ld nsecs]\n",
+@@ -98,7 +98,7 @@ print_active_timers(struct seq_file *m, struct hrtimer_clock_base *base,
+ static void
+ print_base(struct seq_file *m, struct hrtimer_clock_base *base, u64 now)
+ {
+-	SEQ_printf(m, "  .base:       %pK\n", base);
++	SEQ_printf(m, "  .base:       %p\n", base);
+ 	SEQ_printf(m, "  .index:      %d\n", base->index);
  
-+#include <linux/array_size.h>
- #include <linux/cpu.h>
- #include <linux/device.h>
- #include <linux/energy_model.h>
-diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
-index 95294462ff211..99c5f9c80101b 100644
---- a/drivers/soc/samsung/exynos-chipid.c
-+++ b/drivers/soc/samsung/exynos-chipid.c
-@@ -12,6 +12,7 @@
-  * Samsung Exynos SoC Adaptive Supply Voltage and Chip ID support
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/mfd/syscon.h>
-diff --git a/drivers/soc/samsung/exynos-pmu.c b/drivers/soc/samsung/exynos-pmu.c
-index dd5256e5aae1a..c40313886a012 100644
---- a/drivers/soc/samsung/exynos-pmu.c
-+++ b/drivers/soc/samsung/exynos-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos - CPU PMU(Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/arm-smccc.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-diff --git a/drivers/soc/samsung/exynos-usi.c b/drivers/soc/samsung/exynos-usi.c
-index 114352695ac2b..5a93a68dba87f 100644
---- a/drivers/soc/samsung/exynos-usi.c
-+++ b/drivers/soc/samsung/exynos-usi.c
-@@ -6,6 +6,7 @@
-  * Samsung Exynos USI driver (Universal Serial Interface).
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/clk.h>
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
-diff --git a/drivers/soc/samsung/exynos3250-pmu.c b/drivers/soc/samsung/exynos3250-pmu.c
-index 30f230ed1769c..4bad12a995422 100644
---- a/drivers/soc/samsung/exynos3250-pmu.c
-+++ b/drivers/soc/samsung/exynos3250-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos3250 - CPU PMU (Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
- 
-diff --git a/drivers/soc/samsung/exynos5250-pmu.c b/drivers/soc/samsung/exynos5250-pmu.c
-index 7a2d50be6b4ac..2ae5c3e1b07a3 100644
---- a/drivers/soc/samsung/exynos5250-pmu.c
-+++ b/drivers/soc/samsung/exynos5250-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos5250 - CPU PMU (Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
- 
-diff --git a/drivers/soc/samsung/exynos5420-pmu.c b/drivers/soc/samsung/exynos5420-pmu.c
-index 6fedcd78cb451..58a2209795f78 100644
---- a/drivers/soc/samsung/exynos5420-pmu.c
-+++ b/drivers/soc/samsung/exynos5420-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos5420 - CPU PMU (Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/pm.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
+ 	SEQ_printf(m, "  .resolution: %u nsecs\n", hrtimer_resolution);
 -- 
 2.39.5
 
