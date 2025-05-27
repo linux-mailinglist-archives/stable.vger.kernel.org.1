@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-147515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672C1AC5807
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:40:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCE1AC549E
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AC763B5E7E
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:39:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C503188AC20
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1CA280012;
-	Tue, 27 May 2025 17:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A80C1A3159;
+	Tue, 27 May 2025 17:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIyeIghx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBgzpyzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB1127F16D;
-	Tue, 27 May 2025 17:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285E778F32;
+	Tue, 27 May 2025 17:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367579; cv=none; b=C4EHy7SFoeqqN9UHgqcvvqimWUhfCybzjmnHw8/akWP9pz1wCOfHRYKYO0451J+4WtX6T1Md/1SWcnIxg57vNWCHvr8gOGrVFvBsA1Gk7A+wB/S8Ch7kMK6NUsXUqgRn7Htp/krai7tLS2eLQnw2R+Gq40Bi0eX6BmKXaMnkko8=
+	t=1748365316; cv=none; b=RrDXVtD2YMj3AOGbf8Ljn8n+hUljPDxyd5K2pePyzlE6FCwqITB6FQiN0sVTIDvg3MbCrr+ta8cBCl1FAKaStBLDeAzOICqRRfbSarHPecgIyWIkCoZhS1I4EdqYrlDyCl05bsRftXyNxY95qNb9nMEoql5th9C3h+8D1cwypqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367579; c=relaxed/simple;
-	bh=NQXCATAKY8HFzcsgt/1s2zfoD5q+4RJIVwoTgFeKNtI=;
+	s=arc-20240116; t=1748365316; c=relaxed/simple;
+	bh=+wQ6Opj6oJvZJ1txc+AD8H0PlhCCr7RiZn0ynRKafxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AklwKo44fZGS6CnjzEaztHO4em+M4lrPvrjH6M89G1AwbPM5Zadyz3k4LTLDdsr7QNXXJ21E+Alc/OCtPmS9JehI35J2Z/GFdH5zea5j3lFGEVMY0xeAiElsw7shI/RhsgH6XQ7GwBOrVXiuq5IVSWn4RpsTGQ1XBoe/iZMjul8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIyeIghx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EE6C4CEE9;
-	Tue, 27 May 2025 17:39:39 +0000 (UTC)
+	 MIME-Version; b=PDBTAwXwpOy+ckrHVEUShCZBV32VXNTl+VXYll6Pw5kJOb8xMcmD3tne1VXuJ7kcfz+Oknnoqj/o3/sBr9YkVcFJHVZkXgk2a2Ivp8B2mSZ7lWe+6cZ4LWisEVAdGuIya7qEXoZFK1Twwso8nqXIUFw32e3fmFvLEvDFTwVY9/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBgzpyzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31C2C4CEE9;
+	Tue, 27 May 2025 17:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367579;
-	bh=NQXCATAKY8HFzcsgt/1s2zfoD5q+4RJIVwoTgFeKNtI=;
+	s=korg; t=1748365316;
+	bh=+wQ6Opj6oJvZJ1txc+AD8H0PlhCCr7RiZn0ynRKafxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MIyeIghx/xkdwxK8RO2/imQchyZ2sTKiDOYzYEi6wG13eF3ePsnqHmcN8gyuGdmay
-	 aGB1EbMju7xLQxkrnn2ujXmmBmvmCsH1O29gEVy/tknYhemhLqh4x8yVZKK7cDUDfa
-	 UHJ+aR3xQfMRBGwXytrAx0tDFN8uu4GDSZhve9dc=
+	b=EBgzpyzhZqGs24WKjx1nqll7cImueeYiWCxLLi1Jjc0aYL1Y/6CrhtICOVf28Pf5J
+	 EW/TJnKiZaUklRwWJNDfcsRW3fThBQWv8sv5FTRf5+bAIutLmRAnJK8vWT3z9E0j6H
+	 tZgZriaZX2dkTO/C89Ydc5Z98BqBDeHUCNH7TJG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 432/783] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
+Subject: [PATCH 6.12 336/626] drm/amd/display: Read LTTPR ALPM caps during link cap retrieval
 Date: Tue, 27 May 2025 18:23:49 +0200
-Message-ID: <20250527162530.717139540@linuxfoundation.org>
+Message-ID: <20250527162458.675766324@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: George Shen <george.shen@amd.com>
 
-[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
+[ Upstream commit de84d580126eb2214937df755cfec5ef0901479e ]
 
-In the sensor_count field of the MTEWE register, bits 1-62 are
-supported only for unmanaged switches, not for NICs, and bit 63
-is reserved for internal use.
+[Why]
+The latest DP spec requires the DP TX to read DPCD F0000h through F0009h
+when detecting LTTPR capabilities for the first time.
 
-To prevent confusing output that may include set bits that are
-not relevant to NIC sensors, we update the bitmask to retain only
-the first bit, which corresponds to the sensor ASIC.
+[How]
+Update LTTPR cap retrieval to read up to F0009h (two more bytes than the
+previous F0007h), and store the LTTPR ALPM capabilities.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dc_dp_types.h         | 12 ++++++++++++
+ .../display/dc/link/protocols/link_dp_capability.c   |  6 +++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index d91ea53eb394d..cd8d107f7d9e3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -163,6 +163,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	u64 value_msb;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+index 41bd95e9177a4..223c3d55544b2 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+@@ -959,6 +959,14 @@ union dp_128b_132b_supported_lttpr_link_rates {
+ 	uint8_t raw;
+ };
  
- 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
-+	/* bit 1-63 are not supported for NICs,
-+	 * hence read only bit 0 (asic) from lsb.
-+	 */
-+	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
++union dp_alpm_lttpr_cap {
++	struct {
++		uint8_t AUX_LESS_ALPM_SUPPORTED	:1;
++		uint8_t RESERVED				:7;
++	} bits;
++	uint8_t raw;
++};
++
+ union dp_sink_video_fallback_formats {
+ 	struct {
+ 		uint8_t dp_1024x768_60Hz_24bpp_support	:1;
+@@ -1103,6 +1111,7 @@ struct dc_lttpr_caps {
+ 	uint8_t max_ext_timeout;
+ 	union dp_main_link_channel_coding_lttpr_cap main_link_channel_coding;
+ 	union dp_128b_132b_supported_lttpr_link_rates supported_128b_132b_rates;
++	union dp_alpm_lttpr_cap alpm;
+ 	uint8_t aux_rd_interval[MAX_REPEATER_CNT - 1];
+ };
  
- 	mlx5_core_warn(events->dev,
+@@ -1352,6 +1361,9 @@ struct dp_trace {
+ #ifndef DPCD_MAX_UNCOMPRESSED_PIXEL_RATE_CAP
+ #define DPCD_MAX_UNCOMPRESSED_PIXEL_RATE_CAP    0x221c
+ #endif
++#ifndef DP_LTTPR_ALPM_CAPABILITIES
++#define DP_LTTPR_ALPM_CAPABILITIES              0xF0009
++#endif
+ #ifndef DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE
+ #define DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE	0x50
+ #endif
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index d9a1e1a599674..842636c7922b4 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -1495,7 +1495,7 @@ static bool dpcd_read_sink_ext_caps(struct dc_link *link)
+ 
+ enum dc_status dp_retrieve_lttpr_cap(struct dc_link *link)
+ {
+-	uint8_t lttpr_dpcd_data[8] = {0};
++	uint8_t lttpr_dpcd_data[10] = {0};
+ 	enum dc_status status;
+ 	bool is_lttpr_present;
+ 
+@@ -1545,6 +1545,10 @@ enum dc_status dp_retrieve_lttpr_cap(struct dc_link *link)
+ 			lttpr_dpcd_data[DP_PHY_REPEATER_128B132B_RATES -
+ 							DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV];
+ 
++	link->dpcd_caps.lttpr_caps.alpm.raw =
++			lttpr_dpcd_data[DP_LTTPR_ALPM_CAPABILITIES -
++							DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV];
++
+ 	/* If this chip cap is set, at least one retimer must exist in the chain
+ 	 * Override count to 1 if we receive a known bad count (0 or an invalid value) */
+ 	if ((link->chip_caps & EXT_DISPLAY_PATH_CAPS__DP_FIXED_VS_EN) &&
 -- 
 2.39.5
 
