@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-147541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37F9AC581F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:41:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4321AC553F
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96B38A6693
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E3D3B2573
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CFA27D786;
-	Tue, 27 May 2025 17:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D3C1D432D;
+	Tue, 27 May 2025 17:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjfdRFTT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oj6cSST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E8C42A9B;
-	Tue, 27 May 2025 17:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8011DC998;
+	Tue, 27 May 2025 17:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367661; cv=none; b=SEd3FiBVYmSgfL/kpk0IYQjosnwR3+WgsbI6kCLJ8fU9cxb+hq4QOauS11Bb/wzRWDhe70biHF+PRw09dEejGncdVCn/BGx1Z7+t+H14Vicc5KqLKPRhCJo5UBUehdQsVbljgQDVlDIfuUwH4SajhFOJVPNpdjRw4fjmdXJ++6s=
+	t=1748365402; cv=none; b=Q95yF99uhQj+fzsseev/i3oku5l3HKNgsTV0uJOGgPlMqtMocE8XoyQDy/Yk16MU4RzOvXnXsqBHp4i1zmcXKDxMD80eHrJgag0ieIdRQfvWTwzpT1EwL8+AYER93qriNDaPqT48yqRI7aV3oS50cZoRrBg6uDPCgoP1CGaZiOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367661; c=relaxed/simple;
-	bh=s6nUcxdD5ove/9iFwCXN+WpXgENS6ZEupdVk8gRHeEg=;
+	s=arc-20240116; t=1748365402; c=relaxed/simple;
+	bh=3isGyo10J9G82TbPIK7QYHnHXNd+plgh3eBXoeX07k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=adPTxTqmcbJ+vygPSB0JfFZjrOdpZvTG24+6V+2uKw+jIfYSn66LzY87lvM737po+QuJzLD4FmArNSnw4VV++P1CqbzSNgYWVc9BitU0y6YetG0wJpbb5dov+2Qu0BasCMeaBIuxSeUPoTYNpC5bUwqDyHD7geiXjJ3KrDRu8MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjfdRFTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A774FC4CEE9;
-	Tue, 27 May 2025 17:41:00 +0000 (UTC)
+	 MIME-Version; b=nt8j23h7epX8PpiSECSx50VyuHlgRgtcsPcn9oo618oJDoeqQF+VtFzYp0zexICZw5svRaqNVr40Yaet3t1h2y7EWnrvM0AVmaYXvYQEpaNLV7ZGqHm59vPQdhDZPNA8KjQ6k4OjQbF7OtbHvFF1PZ+F/je90XurA4cG3TbyD8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oj6cSST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB0FC4CEE9;
+	Tue, 27 May 2025 17:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367661;
-	bh=s6nUcxdD5ove/9iFwCXN+WpXgENS6ZEupdVk8gRHeEg=;
+	s=korg; t=1748365402;
+	bh=3isGyo10J9G82TbPIK7QYHnHXNd+plgh3eBXoeX07k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjfdRFTTjy6OOb5+QGezaWacbftgKOM1CMwpJwG+iv9xOYtgSjHB8tOjki2rZieRE
-	 5C8Ot1OVFmFgfbrnvQU5FXo6CZoWh2eeXCdz6ukUtsnpeX9NApyWyJfy6ufCEE9481
-	 jmHyw5CzqaHGpgg6auezXWDIaGjmdFv63BW3i1Hg=
+	b=0oj6cSST5ky3wTWV392I8qpJ7tGxD8Ie7kurqWUZ428pLrHJtSZ8uO3yp1DD3yh8+
+	 RYGYos6vTx9OXxjDhrdEB3PfBD2YaELijjCACL+PHVwiQacG3DMKpRBRx2HCfCXKAy
+	 so4pwOzOXUlXxwC1UbIRAMMzvqKW9neNPMBvyN9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 459/783] accel/amdxdna: Refactor hardware context destroy routine
-Date: Tue, 27 May 2025 18:24:16 +0200
-Message-ID: <20250527162531.821290120@linuxfoundation.org>
+Subject: [PATCH 6.12 364/626] smack: recognize ipv4 CIPSO w/o categories
+Date: Tue, 27 May 2025 18:24:17 +0200
+Message-ID: <20250527162459.801276578@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,138 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 4fd6ca90fc7f509977585d39885f21b2911123f3 ]
+[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
 
-It is required by firmware to wait up to 2 seconds for pending commands
-before sending the destroy hardware context command. After 2 seconds
-wait, if there are still pending commands, driver needs to cancel them.
+If SMACK label has CIPSO representation w/o categories, e.g.:
 
-So the context destroy steps need to be:
-  1. Stop drm scheduler. (drm_sched_entity_destroy)
-  2. Wait up to 2 seconds for pending commands.
-  3. Destroy hardware context and cancel the rest pending requests.
-  4. Wait all jobs associated with the hwctx are freed.
-  5. Free job resources.
+| # cat /smack/cipso2
+| foo  10
+| @ 250/2
+| ...
 
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250124173536.148676-1-lizhi.hou@amd.com
+then SMACK does not recognize such CIPSO in input ipv4 packets
+and substitues '*' label instead. Audit records may look like
+
+| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
+|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
+
+This happens in two steps:
+
+1) security/smack/smackfs.c`smk_set_cipso
+   does not clear NETLBL_SECATTR_MLS_CAT
+   from (struct smack_known *)skp->smk_netlabel.flags
+   on assigning CIPSO w/o categories:
+
+| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
+| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
+
+2) security/smack/smack_lsm.c`smack_from_secattr
+   can not match skp->smk_netlabel with input packet's
+   struct netlbl_lsm_secattr *sap
+   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
+   but skp->smk_netlabel.flags have (what is incorrect):
+
+| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
+| 	if ((skp->smk_netlabel.flags &
+| 		 NETLBL_SECATTR_MLS_CAT) == 0)
+| 		found = 1;
+| 	break;
+| }
+
+This commit sets/clears NETLBL_SECATTR_MLS_CAT in
+skp->smk_netlabel.flags according to the presense of CIPSO categories.
+The update of smk_netlabel is not atomic, so input packets processing
+still may be incorrect during short time while update proceeds.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_ctx.c    | 29 ++++++++++++++++-------------
- drivers/accel/amdxdna/amdxdna_ctx.c |  2 ++
- drivers/accel/amdxdna/amdxdna_ctx.h |  3 +++
- 3 files changed, 21 insertions(+), 13 deletions(-)
+ security/smack/smackfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index 5f43db02b2404..92c768b0c9a03 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -34,6 +34,8 @@ static void aie2_job_release(struct kref *ref)
- 
- 	job = container_of(ref, struct amdxdna_sched_job, refcnt);
- 	amdxdna_sched_job_cleanup(job);
-+	atomic64_inc(&job->hwctx->job_free_cnt);
-+	wake_up(&job->hwctx->priv->job_free_wq);
- 	if (job->out_fence)
- 		dma_fence_put(job->out_fence);
- 	kfree(job);
-@@ -134,7 +136,8 @@ static void aie2_hwctx_wait_for_idle(struct amdxdna_hwctx *hwctx)
- 	if (!fence)
- 		return;
- 
--	dma_fence_wait(fence, false);
-+	/* Wait up to 2 seconds for fw to finish all pending requests */
-+	dma_fence_wait_timeout(fence, false, msecs_to_jiffies(2000));
- 	dma_fence_put(fence);
- }
- 
-@@ -616,6 +619,7 @@ int aie2_hwctx_init(struct amdxdna_hwctx *hwctx)
- 	hwctx->status = HWCTX_STAT_INIT;
- 	ndev = xdna->dev_handle;
- 	ndev->hwctx_num++;
-+	init_waitqueue_head(&priv->job_free_wq);
- 
- 	XDNA_DBG(xdna, "hwctx %s init completed", hwctx->name);
- 
-@@ -652,25 +656,23 @@ void aie2_hwctx_fini(struct amdxdna_hwctx *hwctx)
- 	xdna = hwctx->client->xdna;
- 	ndev = xdna->dev_handle;
- 	ndev->hwctx_num--;
--	drm_sched_wqueue_stop(&hwctx->priv->sched);
- 
--	/* Now, scheduler will not send command to device. */
-+	XDNA_DBG(xdna, "%s sequence number %lld", hwctx->name, hwctx->priv->seq);
-+	drm_sched_entity_destroy(&hwctx->priv->entity);
-+
-+	aie2_hwctx_wait_for_idle(hwctx);
-+
-+	/* Request fw to destroy hwctx and cancel the rest pending requests */
- 	aie2_release_resource(hwctx);
- 
--	/*
--	 * All submitted commands are aborted.
--	 * Restart scheduler queues to cleanup jobs. The amdxdna_sched_job_run()
--	 * will return NODEV if it is called.
--	 */
--	drm_sched_wqueue_start(&hwctx->priv->sched);
-+	/* Wait for all submitted jobs to be completed or canceled */
-+	wait_event(hwctx->priv->job_free_wq,
-+		   atomic64_read(&hwctx->job_submit_cnt) ==
-+		   atomic64_read(&hwctx->job_free_cnt));
- 
--	aie2_hwctx_wait_for_idle(hwctx);
--	drm_sched_entity_destroy(&hwctx->priv->entity);
- 	drm_sched_fini(&hwctx->priv->sched);
- 	aie2_ctx_syncobj_destroy(hwctx);
- 
--	XDNA_DBG(xdna, "%s sequence number %lld", hwctx->name, hwctx->priv->seq);
--
- 	for (idx = 0; idx < ARRAY_SIZE(hwctx->priv->cmd_buf); idx++)
- 		drm_gem_object_put(to_gobj(hwctx->priv->cmd_buf[idx]));
- 	amdxdna_gem_unpin(hwctx->priv->heap);
-@@ -879,6 +881,7 @@ int aie2_cmd_submit(struct amdxdna_hwctx *hwctx, struct amdxdna_sched_job *job,
- 	drm_gem_unlock_reservations(job->bos, job->bo_cnt, &acquire_ctx);
- 
- 	aie2_job_put(job);
-+	atomic64_inc(&hwctx->job_submit_cnt);
- 
- 	return 0;
- 
-diff --git a/drivers/accel/amdxdna/amdxdna_ctx.c b/drivers/accel/amdxdna/amdxdna_ctx.c
-index d11b1c83d9c3b..43442b9e273b3 100644
---- a/drivers/accel/amdxdna/amdxdna_ctx.c
-+++ b/drivers/accel/amdxdna/amdxdna_ctx.c
-@@ -220,6 +220,8 @@ int amdxdna_drm_create_hwctx_ioctl(struct drm_device *dev, void *data, struct dr
- 	args->syncobj_handle = hwctx->syncobj_hdl;
- 	mutex_unlock(&xdna->dev_lock);
- 
-+	atomic64_set(&hwctx->job_submit_cnt, 0);
-+	atomic64_set(&hwctx->job_free_cnt, 0);
- 	XDNA_DBG(xdna, "PID %d create HW context %d, ret %d", client->pid, args->handle, ret);
- 	drm_dev_exit(idx);
- 	return 0;
-diff --git a/drivers/accel/amdxdna/amdxdna_ctx.h b/drivers/accel/amdxdna/amdxdna_ctx.h
-index 80b0304193ec3..f0a4a8586d858 100644
---- a/drivers/accel/amdxdna/amdxdna_ctx.h
-+++ b/drivers/accel/amdxdna/amdxdna_ctx.h
-@@ -87,6 +87,9 @@ struct amdxdna_hwctx {
- 	struct amdxdna_qos_info		     qos;
- 	struct amdxdna_hwctx_param_config_cu *cus;
- 	u32				syncobj_hdl;
-+
-+	atomic64_t			job_submit_cnt;
-+	atomic64_t			job_free_cnt ____cacheline_aligned_in_smp;
- };
- 
- #define drm_job_to_xdna_job(j) \
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index 5dd1e164f9b13..d27e8b916bfb9 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -933,6 +933,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
+ 	if (rc >= 0) {
+ 		old_cat = skp->smk_netlabel.attr.mls.cat;
+ 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
++		if (ncats.attr.mls.cat)
++			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
++		else
++			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
+ 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
+ 		synchronize_rcu();
+ 		netlbl_catmap_free(old_cat);
 -- 
 2.39.5
 
