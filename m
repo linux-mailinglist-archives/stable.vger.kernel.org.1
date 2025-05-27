@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-147079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DCCAC5615
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:17:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D3EAC5941
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB90516F327
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:17:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DFBE9E089C
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0D727F4CB;
-	Tue, 27 May 2025 17:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8E328032B;
+	Tue, 27 May 2025 17:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNg+bJxU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6bzjoW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594811E89C;
-	Tue, 27 May 2025 17:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC11C280314;
+	Tue, 27 May 2025 17:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366220; cv=none; b=dWkzfBI8q/mj/ukPUO0KVDg6DHwwW5rdUaHwAEBKMJRDLDJMfOWJuswmNEOingIanmq9qCqg8RivJK6NIIBzlZdssxpC+vEw61L+Vo6k+CFmAsQmIK+tu77PotbDDnHjxP8K7AjJJtiiZJj++X+G0qss1bw3Ea0jYEJwFoxGRPQ=
+	t=1748368484; cv=none; b=UOi2kgoV/SRQ6951WklSboTX+hkLKzI476/sUj61AI3eZHw+queqr5w9NlVESkzsfRNzvA0L/SyAoadQWSuY1igy46bf8vD/t7atL6zMweo+BVIrXHFFxM+JSMlhBoqtwvtcp9xgwAz8yGnAvlgsRRIqnBL0NCEwTXU0lIt9e8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366220; c=relaxed/simple;
-	bh=rXR+j7SzkBphvPCQmVf0AQbUzKSDcaE0HgfxPMuKOsI=;
+	s=arc-20240116; t=1748368484; c=relaxed/simple;
+	bh=BPxz0Emg38iV5iYwCHElLoUhUO3vFOX9grSUqaYxoRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nOfM+hjqDIoR5aSkgI1xwq4tQ1LEjfGXbqP89wgyWbOsGs6NNgqySmR5zrYKxxJDPM7zxPasySHYKTwe+hhgh+9uBZvRKumLNbnGpXdxnwd9m7Su7iHB/fUnfwvTSTLjb5ImhIB858UW3OhT8MAPhMqnhPCrrfkB7wRbzWv7K10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNg+bJxU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D13EC4CEEB;
-	Tue, 27 May 2025 17:16:59 +0000 (UTC)
+	 MIME-Version; b=nB+unkifhIJkp5yLUciOS5O1lweaox4KJGOfxNSrCGOpVZJZqMHPlBxKoNlv9ddihielPA6XCjySWTDiKkKopX/439w9/BdtGl/RZjn5cILbZZ1UanVxKX7bNfHXeFraFWkF50w8Dn06vuuMqhcKhtuJfB1u31pIaGqA7FwkCMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6bzjoW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445A0C4CEEB;
+	Tue, 27 May 2025 17:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366220;
-	bh=rXR+j7SzkBphvPCQmVf0AQbUzKSDcaE0HgfxPMuKOsI=;
+	s=korg; t=1748368484;
+	bh=BPxz0Emg38iV5iYwCHElLoUhUO3vFOX9grSUqaYxoRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNg+bJxUOAt/PcwQYa/noEn0OWxych4EvIChVQ67RktpCrXiU09rgXyZgKCMj61/B
-	 yB7URlKSEYR/BqFJNXFZ0BkmIDjn55P+414KAhI5N8sX02Ml1CKg1L5TajXRO9is+A
-	 z5PoTN4te78iJMdKFp+qNmsBU8Hy9AhV69ZeEIvI=
+	b=c6bzjoW6MV0XfYB5Faj8hpEryYd9rwl8lHMyVfJFe2KkIwrj/0LYarM70EQsJTDlz
+	 +tMVTDR3y9o4f66547v1j5OKNnPQdIf8zKaPC/c14TOoYtVsF84GbsSAouI2BRmp0g
+	 lp2DB87j86SZ7eTZWK0u5z65/DpHLm8y9mTEC1Jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Andy Yan <andyshrk@163.com>,
-	Anusha Srivatsa <asrivats@redhat.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: [PATCH 6.12 626/626] drm/gem: Internally test import_attach for imported objects
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.14 722/783] crypto: algif_hash - fix double free in hash_accept
 Date: Tue, 27 May 2025 18:28:39 +0200
-Message-ID: <20250527162510.435633025@linuxfoundation.org>
+Message-ID: <20250527162542.512690367@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,66 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-commit 8260731ccad0451207b45844bb66eb161a209218 upstream.
+commit b2df03ed4052e97126267e8c13ad4204ea6ba9b6 upstream.
 
-Test struct drm_gem_object.import_attach to detect imported objects.
+If accept(2) is called on socket type algif_hash with
+MSG_MORE flag set and crypto_ahash_import fails,
+sk2 is freed. However, it is also freed in af_alg_release,
+leading to slab-use-after-free error.
 
-During object clenanup, the dma_buf field might be NULL. Testing it in
-an object's free callback then incorrectly does a cleanup as for native
-objects. Happens for calls to drm_mode_destroy_dumb_ioctl() that
-clears the dma_buf field in drm_gem_object_exported_dma_buf_free().
-
-v3:
-- only test for import_attach (Boris)
-v2:
-- use import_attach.dmabuf instead of dma_buf (Christian)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b57aa47d39e9 ("drm/gem: Test for imported GEM buffers with helper")
-Reported-by: Andy Yan <andyshrk@163.com>
-Closes: https://lore.kernel.org/dri-devel/38d09d34.4354.196379aa560.Coremail.andyshrk@163.com/
-Tested-by: Andy Yan <andyshrk@163.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-media@vger.kernel.org
-Cc: linaro-mm-sig@lists.linaro.org
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://lore.kernel.org/r/20250416065820.26076-1-tzimmermann@suse.de
+Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/drm_gem.h |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ crypto/algif_hash.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/include/drm/drm_gem.h
-+++ b/include/drm/drm_gem.h
-@@ -580,8 +580,7 @@ static inline bool drm_gem_object_is_sha
-  */
- static inline bool drm_gem_is_imported(const struct drm_gem_object *obj)
- {
--	/* The dma-buf's priv field points to the original GEM object. */
--	return obj->dma_buf && (obj->dma_buf->priv != obj);
-+	return !!obj->import_attach;
- }
+--- a/crypto/algif_hash.c
++++ b/crypto/algif_hash.c
+@@ -265,10 +265,6 @@ static int hash_accept(struct socket *so
+ 		goto out_free_state;
  
- #ifdef CONFIG_LOCKDEP
+ 	err = crypto_ahash_import(&ctx2->req, state);
+-	if (err) {
+-		sock_orphan(sk2);
+-		sock_put(sk2);
+-	}
+ 
+ out_free_state:
+ 	kfree_sensitive(state);
 
 
 
