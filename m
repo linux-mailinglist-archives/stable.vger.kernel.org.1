@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248C0AC559F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6EEAC58D1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:49:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05E3A17655D
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 788E88A7FD5
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BA528469A;
-	Tue, 27 May 2025 17:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1858427D786;
+	Tue, 27 May 2025 17:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5GP6PHd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXtqug3b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E57284678;
-	Tue, 27 May 2025 17:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16D642A9B;
+	Tue, 27 May 2025 17:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365905; cv=none; b=FgAisK+gokOq+epjVJqy7ib5LF8M8O508pOBgbgCeWWBafMyTeanXb6gb/8mm4g9EO6pDiukYf3JJQY+QpTElYZ6Th0puXmQhoi8y6J1EOvrQNC2sxRuikuYGQVLHBJ4JTi5KhpFxrHZ/W38nKGp4MtcW44mYRk5Fh7m22LZMdo=
+	t=1748368178; cv=none; b=S8EgAO7842ZU28Y994OVOgs4Tjhz9l4+YQjnBr2QNYgo6AlRK8c4sxaQfiM2E80J2PGUhzeTTPje2A43OgBcj8xf3NVn/RY6t58jbQthZmqDhbSHrTvIS5V8Cy7E+9KqHEE9VM8GRmMA1+UqJ3C/V48C0L96GCBKcu8QPxofP8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365905; c=relaxed/simple;
-	bh=siucmIS8t1hKkmVIgc0hJX6OkehQkCHOZrouSqUrAS4=;
+	s=arc-20240116; t=1748368178; c=relaxed/simple;
+	bh=36xij8rUCA/m+OGl+0dE8r6hDfmYUO0RF2feWvliaKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNnpmozD0fWfIiW6JE+1odzoWSXgjSdqTdDbLS9CwB88n2nyLQo8mzcrE0raBEjFfgkSQgeBkBWDuUhyCmFZGDSLG2rz5Mo7ZgJP7le1lzYc8nJ8VPS5FfzEz31OYdez7G2XUerHdPu+DL5UsTWw9rNo4PFdNWYvKAy4h74h2ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5GP6PHd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC92C4CEE9;
-	Tue, 27 May 2025 17:11:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=decq4ambmWjm1VuZfBp1sKq8Vg5xbKOxWM7rMlZXBB5a3XSPoQnAv6cDMavqRfzaiksdrb+mpxokALlSFvJxoym1rE1mLgNfM7x/IrZZm2XnojaCBwxh5bqvG4dJ+CEhaEWW3Wl7JqL/vdjzV2O7ODOG5bbm8VHJ736MVxQW5bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXtqug3b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDD1C4CEEA;
+	Tue, 27 May 2025 17:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365905;
-	bh=siucmIS8t1hKkmVIgc0hJX6OkehQkCHOZrouSqUrAS4=;
+	s=korg; t=1748368178;
+	bh=36xij8rUCA/m+OGl+0dE8r6hDfmYUO0RF2feWvliaKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5GP6PHddUdxaJNakrPA6fAUmBKweCgHttZezXD5W3mTnNpAlK3m+JKQiLMwew5jI
-	 xr4buzDaKLDseXVOLBD/ScBxe9l2TI4T2Y/5TCaDG3KujWTNX0pTrvt/h4UztvTbCk
-	 8pZQyZnAG8LVC4POORwPkKe9+1U+WHSqU7IWELKs=
+	b=WXtqug3bKx7rQs/M1+lyOJXo3HJqUseqw+9Ey2dOMPRDJr63bS65cPh8KQ3XnPYpe
+	 aao1AtUyToc+WKahexcPhKuG/4yqW7enY+1CQvcve81TZIkgsFiJdo5HkNIv1r5GD4
+	 A5v6Dlpu6jwt8AkeA5jggiOw4XGbuwZSuQGagx+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Oak Zeng <oak.zeng@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 528/626] block: only update request sector if needed
+Subject: [PATCH 6.14 624/783] drm/xe: Reject BO eviction if BO is bound to current VM
 Date: Tue, 27 May 2025 18:27:01 +0200
-Message-ID: <20250527162506.445380390@linuxfoundation.org>
+Message-ID: <20250527162538.562523676@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Oak Zeng <oak.zeng@intel.com>
 
-[ Upstream commit db492e24f9b05547ba12b4783f09c9d943cf42fe ]
+[ Upstream commit 0af944f0e3082ff517958b1cea76fb9b8cb379dd ]
 
-In case of a ZONE APPEND write, regardless of native ZONE APPEND or the
-emulation layer in the zone write plugging code, the sector the data got
-written to by the device needs to be updated in the bio.
+This is a follow up fix for
+https://patchwork.freedesktop.org/patch/msgid/20241203021929.1919730-1-oak.zeng@intel.com
+The overall goal is to fail vm_bind when there is memory pressure. See more
+details in the commit message of above patch. Abbove patch fixes the issue
+when user pass in a vm_id parameter during gem_create. If user doesn't pass
+in a vm_id during gem_create, above patch doesn't help.
 
-At the moment, this is done for every native ZONE APPEND write and every
-request that is flagged with 'BIO_ZONE_WRITE_PLUGGING'. But thus
-superfluously updates the sector for regular writes to a zoned block
-device.
+This patch further reject BO eviction (which could be triggered by bo validation)
+if BO is bound to the current VM. vm_bind could fail due to the eviction failure.
+The BO to VM reverse mapping structure is used to determine whether BO is bound
+to VM.
 
-Check if a bio is a native ZONE APPEND write or if the bio is flagged as
-'BIO_EMULATES_ZONE_APPEND', meaning the block layer's zone write plugging
-code handles the ZONE APPEND and translates it into a regular write and
-back. Only if one of these two criterion is met, update the sector in the
-bio upon completion.
+v2:
+Move vm_bo definition from function scope to if(evict) clause (Thomas)
+Further constraint the condition by adding ctx->resv (Thomas)
+Add a short comment describe the change.
 
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/dea089581cb6b777c1cd1500b38ac0b61df4b2d1.1746530748.git.jth@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Suggested-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Oak Zeng <oak.zeng@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250110210137.3181576-1-oak.zeng@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_bo.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/block/blk.h b/block/blk.h
-index 1426f9c281973..e91012247ff29 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -482,7 +482,8 @@ static inline void blk_zone_update_request_bio(struct request *rq,
- 	 * the original BIO sector so that blk_zone_write_plug_bio_endio() can
- 	 * lookup the zone write plug.
- 	 */
--	if (req_op(rq) == REQ_OP_ZONE_APPEND || bio_zone_write_plugging(bio))
-+	if (req_op(rq) == REQ_OP_ZONE_APPEND ||
-+	    bio_flagged(bio, BIO_EMULATES_ZONE_APPEND))
- 		bio->bi_iter.bi_sector = rq->__sector;
- }
- void blk_zone_write_plug_bio_endio(struct bio *bio);
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index d1eb87cb178bd..2070aa12059ce 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -713,6 +713,21 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
+ 		goto out;
+ 	}
+ 
++	/* Reject BO eviction if BO is bound to current VM. */
++	if (evict && ctx->resv) {
++		struct drm_gpuvm_bo *vm_bo;
++
++		drm_gem_for_each_gpuvm_bo(vm_bo, &bo->ttm.base) {
++			struct xe_vm *vm = gpuvm_to_vm(vm_bo->vm);
++
++			if (xe_vm_resv(vm) == ctx->resv &&
++			    xe_vm_in_preempt_fence_mode(vm)) {
++				ret = -EBUSY;
++				goto out;
++			}
++		}
++	}
++
+ 	/*
+ 	 * Failed multi-hop where the old_mem is still marked as
+ 	 * TTM_PL_FLAG_TEMPORARY, should just be a dummy move.
 -- 
 2.39.5
 
