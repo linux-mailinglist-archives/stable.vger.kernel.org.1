@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-146827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63C1AC54C8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:04:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73D4AC583B
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BEB016C60A
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:03:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E00B1BC1F6A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91D9271476;
-	Tue, 27 May 2025 17:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7799280036;
+	Tue, 27 May 2025 17:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU3IGbwH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qt4z9DfI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835971D432D;
-	Tue, 27 May 2025 17:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FA5280023;
+	Tue, 27 May 2025 17:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365430; cv=none; b=BA/mP7kEhIkjBI9rn231cwjoh6oXxpePTgiR0UK8Yh+fn4xVgIZiStke6vUuMJTH9Nu+he74rCswSQnWdXZ2ovnK4Ma2c6JiLJ4L0AJz1KqW0Az9FXFM8NSy2y4BGtUiHGzfukYrq+Ma79Qnv/yQlzfqkMkq6PFFqDEB+XJ+mtI=
+	t=1748367738; cv=none; b=iz8Rr2oluObYeyj50X/WQejb9DYa3m5wQJNFZZiYSuWEhnCqnAGIq2MuVBaa2i3LV5UJd6cvHO4lBZMIozAEI973FcejZ73ii0hnCFU688RSv0E95ntgt4GZzfIs5RTKIkpcuNd1zKuj04+pNjKe9tgvtHR0qXTwYFOEIX9QyKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365430; c=relaxed/simple;
-	bh=XH29Mh0cQzi9+ehVfPVTMEf+zWtr0PRBXg7kBoeT6Uo=;
+	s=arc-20240116; t=1748367738; c=relaxed/simple;
+	bh=MbQR/bnPOCjkL81rKCdbZoE1ODNopmRXKduzouAFSFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FhtzgxqsHl7EBRdxKoIMyJRjVURjfmeEyOwJNrONOT33HqXTUQDjW+p5QVl4ZKZk7Vr8dfAOc5TM3GeTOjJa/8UoYeeyCsHzJHJH5131pG4w4s4OOjcZaNwmTdq+OkhGEWKbHT4uFBj2gLAzlSSb/6H30p77Txf1LmPsgehHKGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU3IGbwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E9BC4CEE9;
-	Tue, 27 May 2025 17:03:49 +0000 (UTC)
+	 MIME-Version; b=AszZAeYgVl0zLO3sl1yCtZU8I6F22+hAQp++dQuncHS15eG9A/VUJRgrVaRZpk3k71/JUWEILfI56YnSDX9FoF6WHsX2sIapO1omvFiQ5+/DDIY9M8Twxs8h1wm+2dd23o2DTVI39gcniH8RzFSKaSybirJE0j05DeA7EZdZUUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qt4z9DfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C0CC4CEE9;
+	Tue, 27 May 2025 17:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365430;
-	bh=XH29Mh0cQzi9+ehVfPVTMEf+zWtr0PRBXg7kBoeT6Uo=;
+	s=korg; t=1748367738;
+	bh=MbQR/bnPOCjkL81rKCdbZoE1ODNopmRXKduzouAFSFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AU3IGbwH/r03xd8HA+GlC9B9XPcD6yTa91f+cG7msdPmdksL4+v9pZUASd8Kytbhn
-	 X1+1uq/MyzX65Kb6/DJAdZ1I8WVtmY3EL+MlzCumWhGk4Gq3UJ5E8yRUzbvmqVsvQM
-	 /V2iTw+xjJibcx0lbZA6DW/ddKueKxOl6hWpqrBw=
+	b=qt4z9DfI5Guy/8bvuycLNBYfhKtC67T3/KlJRun10TtDxKGRxGHG511jhShACrHt3
+	 ffaYmp3nhNJzVFNw7I9qvx9X5ViYSCxwNyi8GB1BdMu7S3BF/sw7bDpirqoFuWUeRr
+	 yaaGaTUD3lN4yJm1L/b1ZFrcl6StIvOXixOOXJis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Xiaochun Lee <lixc17@lenovo.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 346/626] PCI: Fix old_size lower bound in calculate_iosize() too
-Date: Tue, 27 May 2025 18:23:59 +0200
-Message-ID: <20250527162459.082452365@linuxfoundation.org>
+Subject: [PATCH 6.14 443/783] ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()
+Date: Tue, 27 May 2025 18:24:00 +0200
+Message-ID: <20250527162531.177926704@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit ff61f380de5652e723168341480cc7adf1dd6213 ]
+[ Upstream commit 7f1186a8d738661b941b298fd6d1d5725ed71428 ]
 
-Commit 903534fa7d30 ("PCI: Fix resource double counting on remove &
-rescan") fixed double counting of mem resources because of old_size being
-applied too early.
+snd_soc_dai_set_tdm_slot() calls .xlate_tdm_slot_mask() or
+snd_soc_xlate_tdm_slot_mask(), but didn't check its return value.
+Let's check it.
 
-Fix a similar counting bug on the io resource side.
+This patch might break existing driver. In such case, let's makes
+each func to void instead of int.
 
-Link: https://lore.kernel.org/r/20241216175632.4175-6-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Xiaochun Lee <lixc17@lenovo.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87o6z7yk61.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/soc/soc-dai.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index f16c7ce3bf3fc..1eceabef9e84d 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -814,11 +814,9 @@ static resource_size_t calculate_iosize(resource_size_t size,
- 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
- #endif
- 	size = size + size1;
--	if (size < old_size)
--		size = old_size;
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index ca0308f6d41c1..dc7283ee4dfb0 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -275,10 +275,11 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
  
--	size = ALIGN(max(size, add_size) + children_add_size, align);
--	return size;
-+	size = max(size, add_size) + children_add_size;
-+	return ALIGN(max(size, old_size), align);
+ 	if (dai->driver->ops &&
+ 	    dai->driver->ops->xlate_tdm_slot_mask)
+-		dai->driver->ops->xlate_tdm_slot_mask(slots,
+-						      &tx_mask, &rx_mask);
++		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
+ 	else
+-		snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++	if (ret)
++		goto err;
+ 
+ 	for_each_pcm_streams(stream)
+ 		snd_soc_dai_tdm_mask_set(dai, stream, *tdm_mask[stream]);
+@@ -287,6 +288,7 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+ 	    dai->driver->ops->set_tdm_slot)
+ 		ret = dai->driver->ops->set_tdm_slot(dai, tx_mask, rx_mask,
+ 						      slots, slot_width);
++err:
+ 	return soc_dai_ret(dai, ret);
  }
- 
- static resource_size_t calculate_memsize(resource_size_t size,
+ EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_slot);
 -- 
 2.39.5
 
