@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-147462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2920AC57BC
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:37:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8892FAC5485
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 422427A91D8
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73EBB7AFBC1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C7C27F178;
-	Tue, 27 May 2025 17:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A5C27FD53;
+	Tue, 27 May 2025 16:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLFDqvX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bD72M8xG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F433C01;
-	Tue, 27 May 2025 17:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FA527FB0C;
+	Tue, 27 May 2025 16:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367415; cv=none; b=HteCtcgJ3PhMFmeYEdffnTxzlFhO8N7/PziX4nsqjRilipZiC3DFznqrK0PHTyNxkcckusY3JbKXVSKFE+Antt+5ZUoN+4XOYpv52r56aTwo06xjK8yhCPUPROQgRgOu4qpVxcVfWSE5GJu/oDW6OOzrnqRG72NWhB/dPp/Bkko=
+	t=1748365059; cv=none; b=OesbqYlsilBH0MN1bK7pd3l9uZQfEIVRYkBhvG0nl1ynyNJH6+n6qe07UZlicWVT1jpfmF537iugbe+3wuXnKZ2Xt6Xvn3Ur3KM3TU0m/34WTafoobtIwnUGd2bYy0LF0LTxP923K3JNJO1Cg/pdwRiTXfJF5BqZlq//GFhjK2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367415; c=relaxed/simple;
-	bh=XngBFkuFcbEuR6VzCCGXapcH0Su/yqEJ4ThVYIWOFTs=;
+	s=arc-20240116; t=1748365059; c=relaxed/simple;
+	bh=CgDpiqTdUXq3QLwOKmyeN1KoU+CrWGAwNJ1IyKWaUxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUdEBlCFwY8wKLkHBfQmlhipGTf8Sl6Q9LqhXGnnu0euQtNZ9bx9abDCUDC6ClrD2rzyYihilN/oZuA7PTF3a01dYe6do2aGkvPE3J8+DUD6fj+7nnljcRNtceSF4F6KC8MuO/fcwgOnvAT5TGKtw2JZML6yVKeeZ8lgeULfQLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLFDqvX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4986FC4CEE9;
-	Tue, 27 May 2025 17:36:55 +0000 (UTC)
+	 MIME-Version; b=S+uMrBWrwsbFyVc7PuFtM2WY6mTUgJfhA43trk9f4iSOlKcVkgbFa5nYSmpnNz+Xd5r8UcuOS4htjpPmRvLKsejKoXvKbwkTcC+AUKleSioiBQH+cit190RWbIPwBUYDRGzHH+fq7NNF03Ajj8XFzD0cwI8Vv82IFbxM8T8PbGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bD72M8xG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C2BC4CEE9;
+	Tue, 27 May 2025 16:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367415;
-	bh=XngBFkuFcbEuR6VzCCGXapcH0Su/yqEJ4ThVYIWOFTs=;
+	s=korg; t=1748365059;
+	bh=CgDpiqTdUXq3QLwOKmyeN1KoU+CrWGAwNJ1IyKWaUxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLFDqvX36HoDIxPMrsRUKGRujzWW50j0V6tD/3LDYsLGU/uLxtK6ul+ZcEgYNq0EW
-	 aFNHbiVT+nbCO8dkeO6PM3L90cKa7BVTWlWPgsQa9vXlWfni3JNNnf0zNLGSAb+jdH
-	 SUK9h3/v126utMwrYfvf+F1NPIp3xx9ki3VTLlW0=
+	b=bD72M8xG8TKEvmh2NKTijAQUQCG9j483feVRMCMh4t3Q7LLRYAFvYgnxehSf4RB+V
+	 hMB/5zdGLn3hJAjkTeZ8mZdCVOImd1JBBdEQVQCpMA1Ietn03qZb0mOq5o2JDIAORr
+	 wlMLVZpgOuvYR4/GiwzOpvNP89vez3ORjxztsfWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samson Tam <samson.tam@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 350/783] drm/amd/display: handle max_downscale_src_width fail check
-Date: Tue, 27 May 2025 18:22:27 +0200
-Message-ID: <20250527162527.320742207@linuxfoundation.org>
+Subject: [PATCH 6.12 255/626] ublk: complete command synchronously on error
+Date: Tue, 27 May 2025 18:22:28 +0200
+Message-ID: <20250527162455.374814795@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit 02a940da2ccc0cc0299811379580852b405a0ea2 ]
+[ Upstream commit 603f9be21c1894e462416e3324962d6c9c2b95f8 ]
 
-[WHY]
-If max_downscale_src_width check fails, we exit early from TAP calculation and left a NULL
-value to the scaling data structure to cause the zero divide in the DML validation.
+In case of an error, ublk's ->uring_cmd() functions currently return
+-EIOCBQUEUED and immediately call io_uring_cmd_done(). -EIOCBQUEUED and
+io_uring_cmd_done() are intended for asynchronous completions. For
+synchronous completions, the ->uring_cmd() function can just return the
+negative return code directly. This skips io_uring_cmd_del_cancelable(),
+and deferring the completion to task work. So return the error code
+directly from __ublk_ch_uring_cmd() and ublk_ctrl_uring_cmd().
 
-[HOW]
-Call set default TAP calculation before early exit in get_optimal_number_of_taps due to
-max downscale limit exceed.
+Update ublk_ch_uring_cmd_cb(), which currently ignores the return value
+from __ublk_ch_uring_cmd(), to call io_uring_cmd_done() for synchronous
+completions.
 
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/20250225212456.2902549-1-csander@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c | 11 ++++++-----
+ drivers/block/ublk_drv.c | 11 ++++++-----
  1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-index 40acebd13e46d..abf439e743f23 100644
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-@@ -425,11 +425,6 @@ bool dpp3_get_optimal_number_of_taps(
- 	int min_taps_y, min_taps_c;
- 	enum lb_memory_config lb_config;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 5ec5d580ef506..a01a547c562f3 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1881,10 +1881,9 @@ static int __ublk_ch_uring_cmd(struct io_uring_cmd *cmd,
+ 	return -EIOCBQUEUED;
  
--	if (scl_data->viewport.width > scl_data->h_active &&
--		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
--		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
--		return false;
--
- 	/*
- 	 * Set default taps if none are provided
- 	 * From programming guide: taps = min{ ceil(2*H_RATIO,1), 8} for downscaling
-@@ -467,6 +462,12 @@ bool dpp3_get_optimal_number_of_taps(
- 	else
- 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
+  out:
+-	io_uring_cmd_done(cmd, ret, 0, issue_flags);
+ 	pr_devel("%s: complete: cmd op %d, tag %d ret %x io_flags %x\n",
+ 			__func__, cmd_op, tag, ret, io->flags);
+-	return -EIOCBQUEUED;
++	return ret;
+ }
  
-+	// Avoid null data in the scl data with this early return, proceed non-adaptive calcualtion first
-+	if (scl_data->viewport.width > scl_data->h_active &&
-+		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
-+		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
-+		return false;
+ static inline struct request *__ublk_check_and_get_req(struct ublk_device *ub,
+@@ -1940,7 +1939,10 @@ static inline int ublk_ch_uring_cmd_local(struct io_uring_cmd *cmd,
+ static void ublk_ch_uring_cmd_cb(struct io_uring_cmd *cmd,
+ 		unsigned int issue_flags)
+ {
+-	ublk_ch_uring_cmd_local(cmd, issue_flags);
++	int ret = ublk_ch_uring_cmd_local(cmd, issue_flags);
 +
- 	/*Ensure we can support the requested number of vtaps*/
- 	min_taps_y = dc_fixpt_ceil(scl_data->ratios.vert);
- 	min_taps_c = dc_fixpt_ceil(scl_data->ratios.vert_c);
++	if (ret != -EIOCBQUEUED)
++		io_uring_cmd_done(cmd, ret, 0, issue_flags);
+ }
+ 
+ static int ublk_ch_uring_cmd(struct io_uring_cmd *cmd, unsigned int issue_flags)
+@@ -3065,10 +3067,9 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
+ 	if (ub)
+ 		ublk_put_device(ub);
+  out:
+-	io_uring_cmd_done(cmd, ret, 0, issue_flags);
+ 	pr_devel("%s: cmd done ret %d cmd_op %x, dev id %d qid %d\n",
+ 			__func__, ret, cmd->cmd_op, header->dev_id, header->queue_id);
+-	return -EIOCBQUEUED;
++	return ret;
+ }
+ 
+ static const struct file_operations ublk_ctl_fops = {
 -- 
 2.39.5
 
