@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-146602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F08AC53D5
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:52:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEA0AC573A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2584A20D3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69DA93B23F7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B1D27FB0C;
-	Tue, 27 May 2025 16:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0402127FB02;
+	Tue, 27 May 2025 17:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CACdPcV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMT0Ke7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC5B27FD4C;
-	Tue, 27 May 2025 16:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52372566;
+	Tue, 27 May 2025 17:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364734; cv=none; b=ZiOOKgaXlvmz7GWYYU8ZrxHXVRjVLklhg7pnXBmIZgKq/eVAqf47sr/VKoXFLEcfoPoyMslWmgp13SMQhIW2abHVjkAAuBIL86EBWzyVBIJogNModbMyNH7ryEbFKoT4f11PLKBieVrh9lo18r5J4FQ/w73X4W8/5IjIP/+6Bsw=
+	t=1748367027; cv=none; b=Gag3fm/z0qZ/nhxnfqPyKG9JleBHz899GuwpwzcayxuX088IMFwzDW/I9Fi7DqgTGkEUD1m/PgDAb/XmQp5Ursvk4rECs0VTodoBL2XntYo9XqM/XgCQu7yQ6km8K+8WpUJo7kBrPxUthL7DEpGLUwpZEuwdQAEEfRFTWii5cAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364734; c=relaxed/simple;
-	bh=p45DmdHmDWKhYVOS2Ifj89waf3GKiR/aXJfjFm1nTj0=;
+	s=arc-20240116; t=1748367027; c=relaxed/simple;
+	bh=ZByjT47l3bI9TCepItSSzkAj3HSM61uUSmJYB5Onqaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkrzmFm6GGzvS1DKbe1/5j8wvJb+j1EVRRAXnh4tHFyEbBgol9Slif5hXONmbe8zKtpYDDaa4A9LrvwxyeAjbVkZOBOpyJt029nez2usia3T90eruvdkkxaRXW65FnXb/Ywc4aHVejrteiJG3Bbcjimrkh2ibxXBhqX1qwoSvBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CACdPcV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3467C4CEEB;
-	Tue, 27 May 2025 16:52:13 +0000 (UTC)
+	 MIME-Version; b=BveYxYJS/W/roFezZIyMB4FIkJZR107ItfQL+GGxtM1HM8cs+V9qanxpXn5hbHV/CzYZEdmgQxFibiYDp5GYWG4R521eBOEljUpkiFor+vQ2idh313BZeUrI2rxrqbGZ+GBpykTxykBTsOgga4dX2mHJb2k5ImcXBLD59wS9vnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMT0Ke7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19409C4CEE9;
+	Tue, 27 May 2025 17:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364734;
-	bh=p45DmdHmDWKhYVOS2Ifj89waf3GKiR/aXJfjFm1nTj0=;
+	s=korg; t=1748367027;
+	bh=ZByjT47l3bI9TCepItSSzkAj3HSM61uUSmJYB5Onqaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CACdPcV3oJpoDBgVF6mX3I5AifJCFk72ie2nkUyW/5L8/kEKzrKwxWiMH2IWVraQh
-	 58sSsloqBBrsbh8Eqo/vMZ/b+Po8qsTRUNEwWh+dmHH7BA3d19ftyDPqPsQdhAynT1
-	 msU5Xycm8GsYuNB8/ZDDJjkXytQ3ZMophnFlTcnM=
+	b=GMT0Ke7GPb0c/Wikb22RxDy8YaOjrJOv1jRJJoJQ5ZjquqofNR4qeAjabfFLO1cc2
+	 LsXY2+MiMXrDxBjgbmoSmUPU0mkRf+o1qGmuEA3FNlW+5nU7mEuIlOVdxTILtes6mw
+	 TiRDW8+2SLlpig1A5A6CC5NqvhRrr2U5pyfa9M9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/626] btrfs: get zone unusable bytes while holding lock at btrfs_reclaim_bgs_work()
+Subject: [PATCH 6.14 214/783] iommu: Keep dev->iommu state consistent
 Date: Tue, 27 May 2025 18:20:11 +0200
-Message-ID: <20250527162449.827421764@linuxfoundation.org>
+Message-ID: <20250527162521.845616866@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 1283b8c125a83bf7a7dbe90c33d3472b6d7bf612 ]
+[ Upstream commit 3832862eb9c4dfa0e80b2522bfaedbc8a43de97d ]
 
-At btrfs_reclaim_bgs_work(), we are grabbing a block group's zone unusable
-bytes while not under the protection of the block group's spinlock, so
-this can trigger race reports from KCSAN (or similar tools) since that
-field is typically updated while holding the lock, such as at
-__btrfs_add_free_space_zoned() for example.
+At the moment, if of_iommu_configure() allocates dev->iommu itself via
+iommu_fwspec_init(), then suffers a DT parsing failure, it cleans up the
+fwspec but leaves the empty dev_iommu hanging around. So far this is
+benign (if a tiny bit wasteful), but we'd like to be able to reason
+about dev->iommu having a consistent and unambiguous lifecycle. Thus
+make sure that the of_iommu cleanup undoes precisely whatever it did.
 
-Fix this by grabbing the zone unusable bytes while we are still in the
-critical section holding the block group's spinlock, which is right above
-where we are currently grabbing it.
-
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/d219663a3f23001f23d520a883ac622d70b4e642.1740753261.git.robin.murphy@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/iommu/iommu-priv.h | 2 ++
+ drivers/iommu/iommu.c      | 2 +-
+ drivers/iommu/of_iommu.c   | 6 +++++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 4423d8b716a58..aa8656c8b7e7e 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1891,6 +1891,17 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 			up_write(&space_info->groups_sem);
- 			goto next;
- 		}
-+
-+		/*
-+		 * Cache the zone_unusable value before turning the block group
-+		 * to read only. As soon as the block group is read only it's
-+		 * zone_unusable value gets moved to the block group's read-only
-+		 * bytes and isn't available for calculations anymore. We also
-+		 * cache it before unlocking the block group, to prevent races
-+		 * (reports from KCSAN and such tools) with tasks updating it.
-+		 */
-+		zone_unusable = bg->zone_unusable;
-+
- 		spin_unlock(&bg->lock);
- 		spin_unlock(&space_info->lock);
+diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
+index de5b54eaa8bf1..a5913c0b02a0a 100644
+--- a/drivers/iommu/iommu-priv.h
++++ b/drivers/iommu/iommu-priv.h
+@@ -17,6 +17,8 @@ static inline const struct iommu_ops *dev_iommu_ops(struct device *dev)
+ 	return dev->iommu->iommu_dev->ops;
+ }
  
-@@ -1907,13 +1918,6 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 			goto next;
- 		}
++void dev_iommu_free(struct device *dev);
++
+ const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
  
--		/*
--		 * Cache the zone_unusable value before turning the block group
--		 * to read only. As soon as the blog group is read only it's
--		 * zone_unusable value gets moved to the block group's read-only
--		 * bytes and isn't available for calculations anymore.
--		 */
--		zone_unusable = bg->zone_unusable;
- 		ret = inc_block_group_ro(bg, 0);
- 		up_write(&space_info->groups_sem);
- 		if (ret < 0)
+ static inline const struct iommu_ops *iommu_fwspec_ops(struct iommu_fwspec *fwspec)
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 1efe7cddb4fe3..3a2804a98203b 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -352,7 +352,7 @@ static struct dev_iommu *dev_iommu_get(struct device *dev)
+ 	return param;
+ }
+ 
+-static void dev_iommu_free(struct device *dev)
++void dev_iommu_free(struct device *dev)
+ {
+ 	struct dev_iommu *param = dev->iommu;
+ 
+diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+index 97987cd78da93..e10a68b5ffde1 100644
+--- a/drivers/iommu/of_iommu.c
++++ b/drivers/iommu/of_iommu.c
+@@ -116,6 +116,7 @@ static void of_pci_check_device_ats(struct device *dev, struct device_node *np)
+ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		       const u32 *id)
+ {
++	bool dev_iommu_present;
+ 	int err;
+ 
+ 	if (!master_np)
+@@ -127,6 +128,7 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		mutex_unlock(&iommu_probe_device_lock);
+ 		return 0;
+ 	}
++	dev_iommu_present = dev->iommu;
+ 
+ 	/*
+ 	 * We don't currently walk up the tree looking for a parent IOMMU.
+@@ -147,8 +149,10 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		err = of_iommu_configure_device(master_np, dev, id);
+ 	}
+ 
+-	if (err)
++	if (err && dev_iommu_present)
+ 		iommu_fwspec_free(dev);
++	else if (err && dev->iommu)
++		dev_iommu_free(dev);
+ 	mutex_unlock(&iommu_probe_device_lock);
+ 
+ 	if (!err && dev->bus)
 -- 
 2.39.5
 
