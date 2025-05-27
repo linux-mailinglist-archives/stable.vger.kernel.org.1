@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-147324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23857AC572C
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:29:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C08AC53ED
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E71D617C7C3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:29:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C1557AFADB
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E82927D784;
-	Tue, 27 May 2025 17:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23B927F4CB;
+	Tue, 27 May 2025 16:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdajuQOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cc+wUP0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C90419CD07;
-	Tue, 27 May 2025 17:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14A7194A67;
+	Tue, 27 May 2025 16:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748366990; cv=none; b=O6RjELiUpZnpPMp/NZw1VKrsH9of+Y2IJeRWWx/vWCHVuwGPMmPQ+3huNKIUqY5p/YXwqWEVEr+NY0i3oM6iFnjcQRg3u17f0g8sAjlazuGaAQW7XOjl2WVBoM9BmRSJaV3bLV4DsZMJByOUjvjRZq/SKHhDBWbdNMcp6Wjg9I4=
+	t=1748364778; cv=none; b=mplPsdw1kkwn2XWTIo8G3B6HGWC5848gWMMAUZ2At5VMUqnjaVU7T3Axmg55BJX9MoHJd3xfUNaYQWvPSe21v6efvPd1lS0LqTE/3N51Y/SsEChgo9708RFM67TO/shtIc7/2d9yyISyXj9EfUJO7d1ho3OURCd/fxFa81/4tJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748366990; c=relaxed/simple;
-	bh=ccZq1US7TlAODulag60VfWd4fDgMeX5sQkTUPzSVkNs=;
+	s=arc-20240116; t=1748364778; c=relaxed/simple;
+	bh=lZWlg0Yjee68k37ThbAaSxXNs0KGxWdhqTc2PUgI3Z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXBDv5q0tDx7RgHFhc/M+xeDYw8MHsXfRi1wyypm5pJUaxRR0HJpbR7yp7FfBABbrqjtMYdAfEfxGtSyu0gFiyYrEqKqaqKJgzaD6hQzV51nUC656cPvE6rmIMNPJdrZotklPfXo7ssApm6tUvf4B54BmqWXCISjolLX0LOCt38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdajuQOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8CAC4CEE9;
-	Tue, 27 May 2025 17:29:49 +0000 (UTC)
+	 MIME-Version; b=sjsXUwt+HlEGvMJZLwjuKHC77VhMYpcyERFbi/BSfg6xygS+5xxzr0jYxpgixSy8XtKUYNuN3sseb18zGQcCjDeRQezQkFchQo891YVxsFkR9JblW7sr2M52KXTV7olOJQ4ospURtsCYXZMxBadGSsvHKQdgzlubU7TriSWbVGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cc+wUP0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D249C4CEE9;
+	Tue, 27 May 2025 16:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748366990;
-	bh=ccZq1US7TlAODulag60VfWd4fDgMeX5sQkTUPzSVkNs=;
+	s=korg; t=1748364778;
+	bh=lZWlg0Yjee68k37ThbAaSxXNs0KGxWdhqTc2PUgI3Z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdajuQOnHwOuS1h/7XiZQSzTFcP6VYWONAlPE9Io1QlNVX6QEI2pHJl93TfOsmKLq
-	 O4qebuizFE/lI9nN1U7iQMPIsUa/Uyjj6iRbL5pah0E22tx2QYokR6D9/kJrrNw4aV
-	 1wI6LIaWQqBZZkucgqv2xl8+SlO/hqCMOhMHNZD8=
+	b=Cc+wUP0UPwStCGz5RtMM2TwAZ2xn+WAgye+f8o79YTRRb9BjcRjA54bKB+VmTvxGF
+	 18XZbJKBSe5sc2CJapFWYD27l3Vydi1Dfrvwm31LWhcRytRKwfm/hZWz1+b+Kvm3u4
+	 ODYHiDzEkhEkPEqg2K0Hu/4snQbqTFPUeIQtElJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Sergio Perez Gonzalez <sperezglz@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 242/783] fs/pipe: Limit the slots in pipe_resize_ring()
+Subject: [PATCH 6.12 146/626] spi: spi-mux: Fix coverity issue, unchecked return value
 Date: Tue, 27 May 2025 18:20:39 +0200
-Message-ID: <20250527162522.966049668@linuxfoundation.org>
+Message-ID: <20250527162450.962830925@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Sergio Perez Gonzalez <sperezglz@gmail.com>
 
-[ Upstream commit cf3d0c54b21c4a351d4f94cf188e9715dbd1ef5b ]
+[ Upstream commit 5a5fc308418aca275a898d638bc38c093d101855 ]
 
-Limit the number of slots in pipe_resize_ring() to the maximum value
-representable by pipe->{head,tail}. Values beyond the max limit can
-lead to incorrect pipe occupancy related calculations where the pipe
-will never appear full.
+The return value of spi_setup() is not captured within
+spi_mux_select() and it is assumed to be always success.
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Link: https://lore.kernel.org/r/20250307052919.34542-2-kprateek.nayak@amd.com
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+CID: 1638374
+
+Signed-off-by: Sergio Perez Gonzalez <sperezglz@gmail.com>
+Link: https://patch.msgid.link/20250316054651.13242-1-sperezglz@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pipe.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-mux.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/pipe.c b/fs/pipe.c
-index 4d0799e4e7196..88e81f84e3eaf 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -1271,6 +1271,10 @@ int pipe_resize_ring(struct pipe_inode_info *pipe, unsigned int nr_slots)
- 	struct pipe_buffer *bufs;
- 	unsigned int head, tail, mask, n;
+diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
+index c02c4204442f5..0eb35c4e3987e 100644
+--- a/drivers/spi/spi-mux.c
++++ b/drivers/spi/spi-mux.c
+@@ -68,9 +68,7 @@ static int spi_mux_select(struct spi_device *spi)
  
-+	/* nr_slots larger than limits of pipe->{head,tail} */
-+	if (unlikely(nr_slots > (pipe_index_t)-1u))
-+		return -EINVAL;
-+
- 	bufs = kcalloc(nr_slots, sizeof(*bufs),
- 		       GFP_KERNEL_ACCOUNT | __GFP_NOWARN);
- 	if (unlikely(!bufs))
+ 	priv->current_cs = spi_get_chipselect(spi, 0);
+ 
+-	spi_setup(priv->spi);
+-
+-	return 0;
++	return spi_setup(priv->spi);
+ }
+ 
+ static int spi_mux_setup(struct spi_device *spi)
 -- 
 2.39.5
 
