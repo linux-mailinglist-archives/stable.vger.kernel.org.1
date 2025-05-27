@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-147785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F42AC5929
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:53:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8386BAC55E9
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E03E17A0F72
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:52:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D54B1BA6A87
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E36B27FD64;
-	Tue, 27 May 2025 17:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7931DB34C;
+	Tue, 27 May 2025 17:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCXO5B+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMp3Sk5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F4C2566;
-	Tue, 27 May 2025 17:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3F41E89C;
+	Tue, 27 May 2025 17:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368422; cv=none; b=tR1KPSzlcrbHbbYORoPTzpVfQcKwqYfCl58onw7mPbO7u0cVQKcBbgV5brJu6F9ux/8UWUeagdAkam/iYfgbragQi66sbAAaAtiwOkVvyzEqWKnIYJqCJV0C5ijdJAJHg/EjlBZeeD6VkZEjlwYdojxHCRsOQcuxA5Xd/BRGwCY=
+	t=1748366151; cv=none; b=P3W0h/Xroh2C+s9Ak4Wk+LH2Bnrzm26vjKg4IGzpWzFoQPxdL0koP7cT0/oeGe2eLh9avrfpy8zkSopUVa8P+ZAf9kvvvIBo9ipcK6Ewd8VMKZT6310YFFmfxmrOAHGNAa+fXFZEUuQ+eDocSTrqqg1UAH+WXIWy+5I2ZXNfwIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368422; c=relaxed/simple;
-	bh=0XVHz7p9bZM7C99/Ga2T85VDrY6arYUSooqeGkogYns=;
+	s=arc-20240116; t=1748366151; c=relaxed/simple;
+	bh=kPlehD9WECxDw4R9kSM5dVey+lavUajjmZa5tMxLf3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEd+gugOBa98jNw+rGKyH0vVkrLZ0SeJEyDd6+YiSDRjkAfnK2+pQ1uWtu5rFtovPYyXmC5aDErCGwqGqSR933NXgTmuqH/sd/NiWEVeOz3y+GJZbyZWCKsQpkFpdRPgTgRbcCov40FSXTU6N8eCpdmSP0LhvAArW/UYC2HPCeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCXO5B+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94966C4CEE9;
-	Tue, 27 May 2025 17:53:41 +0000 (UTC)
+	 MIME-Version; b=RrLdsE8PyloxGpaN0Xdszx64tr4ukHilXiMiwOQuWasH6GpU+Zc+UO1fA8akBZsEYaQ+5SFAyNabMygS1YQAKgsf+m4bRKFzE+P42cIYpAZJ/ITH1C9FF/tB4HtJ7fjn58BdkApJ57E/C9tI5lWxQ/idJBePUyq+mgw2KZaYo+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMp3Sk5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9060BC4CEE9;
+	Tue, 27 May 2025 17:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368422;
-	bh=0XVHz7p9bZM7C99/Ga2T85VDrY6arYUSooqeGkogYns=;
+	s=korg; t=1748366151;
+	bh=kPlehD9WECxDw4R9kSM5dVey+lavUajjmZa5tMxLf3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCXO5B+QYWnAmlVffQVhZBgoFNiewxRpn7zb1oFj1qYGlVd6Bmpk+Dm0ymMModO6H
-	 86drkwaemAvzY2ouffwALmY0QdGtNzbbHAT1NipyCIf5g61ZMUTWl1IZKPUN8dLK+b
-	 4+TZ9Zy3cE2No690ECTl6tsWTLCEe8iIMGN7WKLM=
+	b=ZMp3Sk5Oy2h1WFN3YB/d1CA69Ftzi1rhnXFUFNdtGGZCegBPFgGp2O2JBnR6t/K1W
+	 SG9JlV3XEIucbY8sT2hrEX/gXgKhFo6MOzqy8vRYJ1OvilBhoRANvBl1H8jzL2duAn
+	 SboSX1Dx250ghODYcl+6/yiv9RNpIb9p7KeZCWJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 701/783] bridge: netfilter: Fix forwarding of fragmented packets
-Date: Tue, 27 May 2025 18:28:18 +0200
-Message-ID: <20250527162541.667890662@linuxfoundation.org>
+Subject: [PATCH 6.12 606/626] Revert "arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection"
+Date: Tue, 27 May 2025 18:28:19 +0200
+Message-ID: <20250527162509.617443012@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +62,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-[ Upstream commit 91b6dbced0ef1d680afdd69b14fc83d50ebafaf3 ]
+[ Upstream commit 573f99c7585f597630f14596550c79e73ffaeef4 ]
 
-When netfilter defrag hooks are loaded (due to the presence of conntrack
-rules, for example), fragmented packets entering the bridge will be
-defragged by the bridge's pre-routing hook (br_nf_pre_routing() ->
-ipv4_conntrack_defrag()).
+This reverts commit 531fdbeedeb89bd32018a35c6e137765c9cc9e97.
 
-Later on, in the bridge's post-routing hook, the defragged packet will
-be fragmented again. If the size of the largest fragment is larger than
-what the kernel has determined as the destination MTU (using
-ip_skb_dst_mtu()), the defragged packet will be dropped.
+Hardware that uses I2C wasn't designed with high speeds in mind, so
+communication with PMIC via RSB can intermittently fail. Go back to I2C
+as higher speed and efficiency isn't worth the trouble.
 
-Before commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
-ip_dst_mtu_maybe_forward"), ip_skb_dst_mtu() would return dst_mtu() as
-the destination MTU. Assuming the dst entry attached to the packet is
-the bridge's fake rtable one, this would simply be the bridge's MTU (see
-fake_mtu()).
-
-However, after above mentioned commit, ip_skb_dst_mtu() ends up
-returning the route's MTU stored in the dst entry's metrics. Ideally, in
-case the dst entry is the bridge's fake rtable one, this should be the
-bridge's MTU as the bridge takes care of updating this metric when its
-MTU changes (see br_change_mtu()).
-
-Unfortunately, the last operation is a no-op given the metrics attached
-to the fake rtable entry are marked as read-only. Therefore,
-ip_skb_dst_mtu() ends up returning 1500 (the initial MTU value) and
-defragged packets are dropped during fragmentation when dealing with
-large fragments and high MTU (e.g., 9k).
-
-Fix by moving the fake rtable entry's metrics to be per-bridge (in a
-similar fashion to the fake rtable entry itself) and marking them as
-writable, thereby allowing MTU changes to be reflected.
-
-Fixes: 62fa8a846d7d ("net: Implement read-only protection and COW'ing of metrics.")
-Fixes: 33eb9873a283 ("bridge: initialize fake_rtable metrics")
-Reported-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
-Closes: https://lore.kernel.org/netdev/PH0PR10MB4504888284FF4CBA648197D0ACB82@PH0PR10MB4504.namprd10.prod.outlook.com/
-Tested-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250515084848.727706-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 531fdbeedeb8 ("arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection")
+Link: https://github.com/LibreELEC/LibreELEC.tv/issues/7731
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20250413135848.67283-1-jernej.skrabec@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_nf_core.c | 7 ++-----
- net/bridge/br_private.h | 1 +
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ .../dts/allwinner/sun50i-h6-beelink-gs1.dts   | 38 +++++++++----------
+ .../dts/allwinner/sun50i-h6-orangepi-3.dts    | 14 +++----
+ .../dts/allwinner/sun50i-h6-orangepi.dtsi     | 22 +++++------
+ 3 files changed, 37 insertions(+), 37 deletions(-)
 
-diff --git a/net/bridge/br_nf_core.c b/net/bridge/br_nf_core.c
-index 98aea5485aaef..a8c67035e23c0 100644
---- a/net/bridge/br_nf_core.c
-+++ b/net/bridge/br_nf_core.c
-@@ -65,17 +65,14 @@ static struct dst_ops fake_dst_ops = {
-  * ipt_REJECT needs it.  Future netfilter modules might
-  * require us to fill additional fields.
-  */
--static const u32 br_dst_default_metrics[RTAX_MAX] = {
--	[RTAX_MTU - 1] = 1500,
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+index 3be1e8c2fdb9c..1012103df25f7 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+@@ -151,28 +151,12 @@
+ 	vcc-pg-supply = <&reg_aldo1>;
+ };
+ 
+-&r_ir {
+-	linux,rc-map-name = "rc-beelink-gs1";
+-	status = "okay";
 -};
 -
- void br_netfilter_rtable_init(struct net_bridge *br)
- {
- 	struct rtable *rt = &br->fake_rtable;
+-&r_pio {
+-	/*
+-	 * FIXME: We can't add that supply for now since it would
+-	 * create a circular dependency between pinctrl, the regulator
+-	 * and the RSB Bus.
+-	 *
+-	 * vcc-pl-supply = <&reg_aldo1>;
+-	 */
+-	vcc-pm-supply = <&reg_aldo1>;
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
  
- 	rcuref_init(&rt->dst.__rcuref, 1);
- 	rt->dst.dev = br->dev;
--	dst_init_metrics(&rt->dst, br_dst_default_metrics, true);
-+	dst_init_metrics(&rt->dst, br->metrics, false);
-+	dst_metric_set(&rt->dst, RTAX_MTU, br->dev->mtu);
- 	rt->dst.flags	= DST_NOXFRM | DST_FAKE_RTABLE;
- 	rt->dst.ops = &fake_dst_ops;
- }
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index d5b3c5936a79e..4715a8d6dc326 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -505,6 +505,7 @@ struct net_bridge {
- 		struct rtable		fake_rtable;
- 		struct rt6_info		fake_rt6_info;
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -290,6 +274,22 @@
  	};
-+	u32				metrics[RTAX_MAX];
- #endif
- 	u16				group_fwd_mask;
- 	u16				group_fwd_mask_required;
+ };
+ 
++&r_ir {
++	linux,rc-map-name = "rc-beelink-gs1";
++	status = "okay";
++};
++
++&r_pio {
++	/*
++	 * PL0 and PL1 are used for PMIC I2C
++	 * don't enable the pl-supply else
++	 * it will fail at boot
++	 *
++	 * vcc-pl-supply = <&reg_aldo1>;
++	 */
++	vcc-pm-supply = <&reg_aldo1>;
++};
++
+ &spdif {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spdif_tx_pin>;
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
+index 6c3bfe3d09d9a..14cc99b216224 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
+@@ -175,16 +175,12 @@
+ 	vcc-pg-supply = <&reg_vcc_wifi_io>;
+ };
+ 
+-&r_ir {
+-	status = "okay";
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -295,6 +291,10 @@
+ 	};
+ };
+ 
++&r_ir {
++	status = "okay";
++};
++
+ &rtc {
+ 	clocks = <&ext_osc32k>;
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+index 13b07141c3344..bab0f63dcc5be 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+@@ -112,20 +112,12 @@
+ 	vcc-pg-supply = <&reg_aldo1>;
+ };
+ 
+-&r_ir {
+-	status = "okay";
+-};
+-
+-&r_pio {
+-	vcc-pm-supply = <&reg_bldo3>;
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -240,6 +232,14 @@
+ 	};
+ };
+ 
++&r_ir {
++	status = "okay";
++};
++
++&r_pio {
++	vcc-pm-supply = <&reg_bldo3>;
++};
++
+ &rtc {
+ 	clocks = <&ext_osc32k>;
+ };
 -- 
 2.39.5
 
