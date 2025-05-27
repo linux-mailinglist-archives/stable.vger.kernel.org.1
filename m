@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-147712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0979CAC58D7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:50:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47039AC55A6
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9949B8A822F
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:49:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 316C516C145
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0233D28001E;
-	Tue, 27 May 2025 17:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F5427FD69;
+	Tue, 27 May 2025 17:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txhV02YR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SltJQeXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C0B42A9B;
-	Tue, 27 May 2025 17:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A158C27A463;
+	Tue, 27 May 2025 17:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368196; cv=none; b=TktbXJAIPQrNs9kJxLY1XRYZNNREZzUZ7mTuAy3nuNeyjf4DqBlWyW6/hXfljgA4ERJ7kkCiR5EWj9iWActw24wRMrRAik9dTSbNzt8clBF4q/CxukCqd42+0yc13uf8EbU2O4jwLHXnz/rsik77OdyB6JXLCVMa2DHRGFP50NA=
+	t=1748365923; cv=none; b=vEL1FZ7RA+tklUlMw7pZm09MVca5r28Kl3XUviuOz6MSgkMVMuJE1P+KxqKIa4wV5CWEDcOBXQgjSYSm1mNU41Uio8W9HPOnASu7SdaogBOiHxYMC+a63f3bIvE8Ri2ExhkmX2BmL/POmqdtirbMy/GvaNcFMSfc6VSkeoFx+4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368196; c=relaxed/simple;
-	bh=E5f0YhWKkF2CPFp3YyLKDoPTqQBUq+DdvG8ONSyMgKc=;
+	s=arc-20240116; t=1748365923; c=relaxed/simple;
+	bh=JnazW+JgV4I97HqQH6GrPqDMrosqs688EnPr4mvaVic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM15xtvfG34PP2b+uijZVWGHbR/OOe0DHKwp6ChZH1gC/NjLdwfAf2gywe5EREk6vzj+7knpE9eBvIPHlhlCiG/1ju7Meih+nTHdVeFXLyG+e7CRMmKNOILz/c6IgOxrjFd+8FrNIEu4VLyulPUMBwNGk51uFYdmqOO9WzE1+H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txhV02YR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3697FC4CEE9;
-	Tue, 27 May 2025 17:49:56 +0000 (UTC)
+	 MIME-Version; b=jsojBdzMmaYhv4KWH49VHUg+W7xft7N5PN73WqnwGIrqjAKbRjqVwx2wf98+y8M3LGQN+TpYe9mupUkUiNC1Rueh6LdYQ+S+rW3EhWsOdmmUJLPAXl05iO75FN4bwJ2VbmAdBgPRIdYgaemL+C4xlU7ngggJgX83sBCKy+m+3/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SltJQeXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B05DC4CEE9;
+	Tue, 27 May 2025 17:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368196;
-	bh=E5f0YhWKkF2CPFp3YyLKDoPTqQBUq+DdvG8ONSyMgKc=;
+	s=korg; t=1748365923;
+	bh=JnazW+JgV4I97HqQH6GrPqDMrosqs688EnPr4mvaVic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=txhV02YR6nWBHVPfgHJ063mktIIJutYZE1vkQZBqQwIaQnKNW6xTBI8u739pUVG8S
-	 a1uduWOj//8fOcLb4wmVsD/tqb6l+oizMuOSRRst2HF2Jb7MfHgdBfVTNM/k97ivPA
-	 PDaDVb3e1Rp2CSOQ2omcM38nJk6DK5+WA6tYysJo=
+	b=SltJQeXHeajc3ljPt7l8J34pS3gEyEw8jIwkCY5WNTDjBdOkXmxZyQayyIoZhNvXF
+	 IghGt2ykiI8VXaeCAujHaeieG0Grd2w5Cx7uEODxSpQFm7YOPOUKiI/ySR9xcNP8tw
+	 Que4AwMjKhOisCoXy7/L+7iEronv/5xROxFs2IfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 629/783] drm: Add valid clones check
+Subject: [PATCH 6.12 533/626] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
 Date: Tue, 27 May 2025 18:27:06 +0200
-Message-ID: <20250527162538.761635378@linuxfoundation.org>
+Message-ID: <20250527162506.654150529@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+... or we risk stealing final mntput from sync umount - raising mnt_count
+after umount(2) has verified that victim is not busy, but before it
+has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
+that it's safe to quietly undo mnt_count increment and leaves dropping
+the reference to caller, where it'll be a full-blown mntput().
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Check under mount_lock is needed; leaving the current one done before
+taking that makes no sense - it's nowhere near common enough to bother
+with.
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ fs/namespace.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 32902f77f00dd..40e4e1b6c9110 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -574,6 +574,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
- 
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
-+
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -745,6 +769,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
- 	}
- 
- 	/*
+diff --git a/fs/namespace.c b/fs/namespace.c
+index c3c1e8c644f2e..c1ac585e41e36 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -750,12 +750,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 	smp_mb();		// see mntput_no_expire() and do_umount()
+ 	if (likely(!read_seqretry(&mount_lock, seq)))
+ 		return 0;
+-	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+-		mnt_add_count(mnt, -1);
+-		return 1;
+-	}
+ 	lock_mount_hash();
+-	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
++	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
+ 		mnt_add_count(mnt, -1);
+ 		unlock_mount_hash();
+ 		return 1;
 -- 
 2.39.5
 
