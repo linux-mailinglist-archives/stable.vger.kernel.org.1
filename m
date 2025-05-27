@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-146566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26828AC53B9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:50:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E34E2AC56E1
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9CB08A1BA1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:50:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976CF1BA8234
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D9C27FD4C;
-	Tue, 27 May 2025 16:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26C9280023;
+	Tue, 27 May 2025 17:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkSiON2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9NLB9xx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B66027CB04;
-	Tue, 27 May 2025 16:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7B327FD68;
+	Tue, 27 May 2025 17:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748364620; cv=none; b=iyVpmEotC+B8AFmBBhncePz0BizpKNjk7/4xXFG4ko9cyMysVvGIfD6uDUx2/5DacAlj9J9fEHE81UncDcYzTPqHBoeUUrdgDllLKkXBk3PB58w5g+NLcuQZE7OcdqXiI6cLzSX1/5iWy/eBtftqMQX/En70BX5FbR9duxPK5Sk=
+	t=1748366796; cv=none; b=YzrGFj3Rur85J6hyv2GhZibbrDiGY2Q/O9+5q50dgzM+RuFMitnVFMj2rkXuSt3Hg2zcQPQ7GDt/P3AQia2SwPLGDCU1jsihOjOufWcThvalyRgTxRhxI1YloXPzkte3882ZcDuEpEppqVnA1GQzQHMEjV0O5k7WEYtetACrlQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748364620; c=relaxed/simple;
-	bh=iihuf5P2rX0vrhdXVwHIK9yWdnyaeZeWSF2xUi1xoGI=;
+	s=arc-20240116; t=1748366796; c=relaxed/simple;
+	bh=FpN9qdv0H+4XgSXsBBTNf9PGeCq6QAWnwCSSzLrBKOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ft2NICWOUhz/3yeEy+Hu0D2JwyqLuvYPv5W20/1V4SseCUcoPD0jvMeZI/460CNKT8BX0/SCGTdbYtGm1drn7p0dk8+fjzpM+3d3TnywMBuK/VpV1VvgcXzXd1SBROVojLfESNOsUEihSlNwGkgDmC9dAY6JlbnmtzxquQVbRS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkSiON2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E7FC4CEEB;
-	Tue, 27 May 2025 16:50:18 +0000 (UTC)
+	 MIME-Version; b=ptGLHHlhBM69YrJfccB63g5TfTgjCpwkWNth98yzDwPi6nmx1ptCeW78lZ0JaN7ZHVXkwiVOALcBCld7+CqlrHD5m1XvqqB+3r0YU2OZsaM+Gj805kBGP05Wid6AVgvanywyqSKnw3PI8lE+872L/T5QZ1yQdHRqNDXSnT0jw8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9NLB9xx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBF3C4CEE9;
+	Tue, 27 May 2025 17:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748364619;
-	bh=iihuf5P2rX0vrhdXVwHIK9yWdnyaeZeWSF2xUi1xoGI=;
+	s=korg; t=1748366796;
+	bh=FpN9qdv0H+4XgSXsBBTNf9PGeCq6QAWnwCSSzLrBKOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkSiON2/3rTk4VdsyysBLRoi4s0p5VFOgqS/mPvtBKK3ocmsXR3HpV/8Z/NCctZ/f
-	 xAOQpCpEAZPkM6MucAgDmPbTnUJ+gBn3BdehOAL5HmftVQNFAHm3WC4xX+4d7SMG1r
-	 PvcaiIKKDkj4375cJOL5os2pD7bINb0CZPGapBr4=
+	b=M9NLB9xxLxiPKapdVC0Ty6d+hp8CFhTzw+ZOjgRPCjAx20141MLHKFcuEoeG5e70n
+	 A83La4JjlmhI8znWSZ2qrMggt1gzyNXDamkDjlaFprm0AVrw7fofg9/z4jt0v0n52e
+	 60795LeqH5zEVKvN5gwysjX9jNfe9xDXrFzqa8J0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Tsai <pedro.tsai@mediatek.com>,
-	Felix Freimann <felix.freimann@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/626] Bluetooth: btmtksdio: Prevent enabling interrupts after IRQ handler removal
+Subject: [PATCH 6.14 178/783] kconfig: do not clear SYMBOL_VALID when reading include/config/auto.conf
 Date: Tue, 27 May 2025 18:19:35 +0200
-Message-ID: <20250527162448.381455778@linuxfoundation.org>
+Message-ID: <20250527162520.407550995@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 6ac4233afb9a389a7629b7f812395d1d1eca5a83 ]
+[ Upstream commit 226ac19c217f24f0927d0a73cf9ee613971a188d ]
 
-Ensure interrupts are not re-enabled when the IRQ handler has already been
-removed. This prevents unexpected IRQ handler execution due to stale or
-unhandled interrupts.
+When conf_read_simple() is called with S_DEF_AUTO, it is meant to read
+previous symbol values from include/config/auto.conf to determine which
+include/config/* files should be touched.
 
-Modify btmtksdio_txrx_work to check if bdev->func->irq_handler exists
-before calling sdio_writel to enable interrupts.
+This process should not modify the current symbol status in any way.
+However, conf_touch_deps() currently invalidates all symbol values and
+recalculates them, which is totally unneeded.
 
-Co-developed-by: Pedro Tsai <pedro.tsai@mediatek.com>
-Signed-off-by: Pedro Tsai <pedro.tsai@mediatek.com>
-Co-developed-by: Felix Freimann <felix.freimann@mediatek.com>
-Signed-off-by: Felix Freimann <felix.freimann@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtksdio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/kconfig/confdata.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/bluetooth/btmtksdio.c b/drivers/bluetooth/btmtksdio.c
-index 11d33cd7b08fc..d4ea1ff07b3e7 100644
---- a/drivers/bluetooth/btmtksdio.c
-+++ b/drivers/bluetooth/btmtksdio.c
-@@ -610,7 +610,8 @@ static void btmtksdio_txrx_work(struct work_struct *work)
- 	} while (int_status || time_is_before_jiffies(txrx_timeout));
+diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
+index 3b55e7a4131d9..ac95661a1c9dd 100644
+--- a/scripts/kconfig/confdata.c
++++ b/scripts/kconfig/confdata.c
+@@ -385,7 +385,7 @@ int conf_read_simple(const char *name, int def)
  
- 	/* Enable interrupt */
--	sdio_writel(bdev->func, C_INT_EN_SET, MTK_REG_CHLPCR, NULL);
-+	if (bdev->func->irq_handler)
-+		sdio_writel(bdev->func, C_INT_EN_SET, MTK_REG_CHLPCR, NULL);
+ 	def_flags = SYMBOL_DEF << def;
+ 	for_all_symbols(sym) {
+-		sym->flags &= ~(def_flags|SYMBOL_VALID);
++		sym->flags &= ~def_flags;
+ 		switch (sym->type) {
+ 		case S_INT:
+ 		case S_HEX:
+@@ -398,7 +398,11 @@ int conf_read_simple(const char *name, int def)
+ 		}
+ 	}
  
- 	sdio_release_host(bdev->func);
+-	expr_invalidate_all();
++	if (def == S_DEF_USER) {
++		for_all_symbols(sym)
++			sym->flags &= ~SYMBOL_VALID;
++		expr_invalidate_all();
++	}
  
+ 	while (getline_stripped(&line, &line_asize, in) != -1) {
+ 		struct menu *choice;
+@@ -464,6 +468,9 @@ int conf_read_simple(const char *name, int def)
+ 		if (conf_set_sym_val(sym, def, def_flags, val))
+ 			continue;
+ 
++		if (def != S_DEF_USER)
++			continue;
++
+ 		/*
+ 		 * If this is a choice member, give it the highest priority.
+ 		 * If conflicting CONFIG options are given from an input file,
+@@ -967,10 +974,8 @@ static int conf_touch_deps(void)
+ 	depfile_path[depfile_prefix_len] = 0;
+ 
+ 	conf_read_simple(name, S_DEF_AUTO);
+-	sym_calc_value(modules_sym);
+ 
+ 	for_all_symbols(sym) {
+-		sym_calc_value(sym);
+ 		if (sym_is_choice(sym))
+ 			continue;
+ 		if (sym->flags & SYMBOL_WRITE) {
+@@ -1084,12 +1089,12 @@ int conf_write_autoconf(int overwrite)
+ 	if (ret)
+ 		return -1;
+ 
+-	if (conf_touch_deps())
+-		return 1;
+-
+ 	for_all_symbols(sym)
+ 		sym_calc_value(sym);
+ 
++	if (conf_touch_deps())
++		return 1;
++
+ 	ret = __conf_write_autoconf(conf_get_autoheader_name(),
+ 				    print_symbol_for_c,
+ 				    &comment_style_c);
 -- 
 2.39.5
 
