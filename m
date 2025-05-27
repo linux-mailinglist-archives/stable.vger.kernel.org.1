@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-147489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460E4AC57E1
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:38:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAB7AC5506
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA8CC1BC14EA
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:38:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5D58A4B77
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2412F27CB35;
-	Tue, 27 May 2025 17:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B571A3159;
+	Tue, 27 May 2025 17:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9UkS66V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dbgni0+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A6227E7CF;
-	Tue, 27 May 2025 17:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4968154C15;
+	Tue, 27 May 2025 17:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367495; cv=none; b=mBiIZUOFxZxfRiwDR8rpGxJSYOu8R1M82DI89rdo9u/Lf58wujkEHpkRc5PcL/E3ibbPiiZmC554gtw7eQwP0tkOi7t2/Qe+0zyGHOb478mCC79a12ZZLdsGmzQUlSgkxmEDPqHH8oI6j1qaEBxlwIGLqRfsfFTXsEpkEN+UvTo=
+	t=1748365259; cv=none; b=IOhhIrLOvDvuVkIrCTI3zXc6eW3R6ft6g4JUSjvdqL84G7MgSNUVsdb0BOwMBeMOd6fs8+gP3gcEcRLlXyWCHhy6ib/cKDRrZDaY2rMjiPqrfVMeGhiDwp0d82NH8x/0gbSJxlQsjlKNiTECmIsZgcJUg3BqlPwqLV1dHFrxYaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367495; c=relaxed/simple;
-	bh=T9JYsD9vo0W9rZKQZQ3BYkCztc9eth+3VCmltINL+x8=;
+	s=arc-20240116; t=1748365259; c=relaxed/simple;
+	bh=kSWd1rIZZZcplucKQ1nvnGPTN61UUjV/N9lgFoZeHDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0e0kULY/ixr4VGbTVGLMRiZG1eooJ/2ZO2HKa+U3pFot6DkILjVHBF330CSLDJ9+6qOtuj4pYAOTzxOvC8sB8PnMFHmWesWMGA6W/S3iyEFv0xUTowDGok+/1rB+/KQmOOm2llkm6lkc4FvOr2CH9d/W8i+UoBB8sdApkXkaog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9UkS66V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E18BC4CEE9;
-	Tue, 27 May 2025 17:38:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fiVKWNPno4ZzPMx0HHJhNY51dyEun3k0besx3210QDpVEh9ysCFOofM+bIJ/2tDnYpk+n+JIiSxoai77iRBnU7/stLkE2sayz6Z7aRCyFj+CPun1nVwC4GLA3jcuw7ROi5LoV5Y1pEqoGVDoUbHMUwVrzbPfvZHGBkZ2RujbyB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dbgni0+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBCFC4CEE9;
+	Tue, 27 May 2025 17:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367495;
-	bh=T9JYsD9vo0W9rZKQZQ3BYkCztc9eth+3VCmltINL+x8=;
+	s=korg; t=1748365259;
+	bh=kSWd1rIZZZcplucKQ1nvnGPTN61UUjV/N9lgFoZeHDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9UkS66V53A3I4nxIukixslgD49EtPke7Tz7Y/ZX5te7pPgR6YlkZQGEi0jnWzbgc
-	 z+ynALV0sujnnuo5yZ0dUvMrSf5YU45XAOrHnXAOp9T/QqwLV5BrFQT0dTlcvgCuQP
-	 oPzRmnw4lDOOOQ5n4N1laZXxJaSQ4uEL9kt6CVxo=
+	b=Dbgni0+YjMY2a4fHk8JezDNr7STPpoWJTOxai3nuqSJgHGrJVc5H508Bh+hdMv/VI
+	 9HSnFe/qF4mlgb/IajiQPw4PWPyQ57oMlSPA8GAKvkM4xpfyyRTaYlh3MnlAM6eTM1
+	 wTRKE/dNC1whzyMsUIvZQF+a/9OVeOrcUgF++Bco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eddie James <eajames@linux.ibm.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	James Zhu <James.Zhu@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 406/783] eeprom: ee1004: Check chip before probing
-Date: Tue, 27 May 2025 18:23:23 +0200
-Message-ID: <20250527162529.637985277@linuxfoundation.org>
+Subject: [PATCH 6.12 311/626] drm/amdgpu: remove all KFD fences from the BO on release
+Date: Tue, 27 May 2025 18:23:24 +0200
+Message-ID: <20250527162457.672329183@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +62,181 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eddie James <eajames@linux.ibm.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit d9406677428e9234ea62bb2d2f5e996d1b777760 ]
+[ Upstream commit cb0de06d1b0afb2d0c600ad748069f5ce27730ec ]
 
-Like other eeprom drivers, check if the device is really there and
-functional before probing.
+Remove all KFD BOs from the private dma_resv object.
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218220959.721698-1-eajames@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This prevents the KFD from being evict unecessarily when an exported BO
+is released.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: James Zhu <James.Zhu@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-and-tested-by: James Zhu <James.Zhu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/eeprom/ee1004.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  5 +-
+ .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 52 ++++++++-----------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_object.c    | 38 ++++++++------
+ 3 files changed, 47 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/misc/eeprom/ee1004.c b/drivers/misc/eeprom/ee1004.c
-index 89224d4af4a20..e13f9fdd9d7b1 100644
---- a/drivers/misc/eeprom/ee1004.c
-+++ b/drivers/misc/eeprom/ee1004.c
-@@ -304,6 +304,10 @@ static int ee1004_probe(struct i2c_client *client)
- 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_READ_BYTE_DATA))
- 		return -EPFNOSUPPORT;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+index f9d1194484423..581fe1a48f376 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+@@ -192,7 +192,7 @@ int kfd_debugfs_kfd_mem_limits(struct seq_file *m, void *data);
+ #if IS_ENABLED(CONFIG_HSA_AMD)
+ bool amdkfd_fence_check_mm(struct dma_fence *f, struct mm_struct *mm);
+ struct amdgpu_amdkfd_fence *to_amdgpu_amdkfd_fence(struct dma_fence *f);
+-int amdgpu_amdkfd_remove_fence_on_pt_pd_bos(struct amdgpu_bo *bo);
++void amdgpu_amdkfd_remove_all_eviction_fences(struct amdgpu_bo *bo);
+ int amdgpu_amdkfd_evict_userptr(struct mmu_interval_notifier *mni,
+ 				unsigned long cur_seq, struct kgd_mem *mem);
+ int amdgpu_amdkfd_bo_validate_and_fence(struct amdgpu_bo *bo,
+@@ -212,9 +212,8 @@ struct amdgpu_amdkfd_fence *to_amdgpu_amdkfd_fence(struct dma_fence *f)
+ }
  
-+	err = i2c_smbus_read_byte(client);
-+	if (err < 0)
-+		return -ENODEV;
+ static inline
+-int amdgpu_amdkfd_remove_fence_on_pt_pd_bos(struct amdgpu_bo *bo)
++void amdgpu_amdkfd_remove_all_eviction_fences(struct amdgpu_bo *bo)
+ {
+-	return 0;
+ }
+ 
+ static inline
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index fa572ba7f9fc1..1465b3adacb0a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -370,40 +370,32 @@ static int amdgpu_amdkfd_remove_eviction_fence(struct amdgpu_bo *bo,
+ 	return 0;
+ }
+ 
+-int amdgpu_amdkfd_remove_fence_on_pt_pd_bos(struct amdgpu_bo *bo)
++/**
++ * amdgpu_amdkfd_remove_all_eviction_fences - Remove all eviction fences
++ * @bo: the BO where to remove the evictions fences from.
++ *
++ * This functions should only be used on release when all references to the BO
++ * are already dropped. We remove the eviction fence from the private copy of
++ * the dma_resv object here since that is what is used during release to
++ * determine of the BO is idle or not.
++ */
++void amdgpu_amdkfd_remove_all_eviction_fences(struct amdgpu_bo *bo)
+ {
+-	struct amdgpu_bo *root = bo;
+-	struct amdgpu_vm_bo_base *vm_bo;
+-	struct amdgpu_vm *vm;
+-	struct amdkfd_process_info *info;
+-	struct amdgpu_amdkfd_fence *ef;
+-	int ret;
+-
+-	/* we can always get vm_bo from root PD bo.*/
+-	while (root->parent)
+-		root = root->parent;
++	struct dma_resv *resv = &bo->tbo.base._resv;
++	struct dma_fence *fence, *stub;
++	struct dma_resv_iter cursor;
+ 
+-	vm_bo = root->vm_bo;
+-	if (!vm_bo)
+-		return 0;
++	dma_resv_assert_held(resv);
+ 
+-	vm = vm_bo->vm;
+-	if (!vm)
+-		return 0;
+-
+-	info = vm->process_info;
+-	if (!info || !info->eviction_fence)
+-		return 0;
+-
+-	ef = container_of(dma_fence_get(&info->eviction_fence->base),
+-			struct amdgpu_amdkfd_fence, base);
+-
+-	BUG_ON(!dma_resv_trylock(bo->tbo.base.resv));
+-	ret = amdgpu_amdkfd_remove_eviction_fence(bo, ef);
+-	dma_resv_unlock(bo->tbo.base.resv);
++	stub = dma_fence_get_stub();
++	dma_resv_for_each_fence(&cursor, resv, DMA_RESV_USAGE_BOOKKEEP, fence) {
++		if (!to_amdgpu_amdkfd_fence(fence))
++			continue;
+ 
+-	dma_fence_put(&ef->base);
+-	return ret;
++		dma_resv_replace_fences(resv, fence->context, stub,
++					DMA_RESV_USAGE_BOOKKEEP);
++	}
++	dma_fence_put(stub);
+ }
+ 
+ static int amdgpu_amdkfd_bo_validate(struct amdgpu_bo *bo, uint32_t domain,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+index 4c4bdc4f51b29..fc588ef598c09 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+@@ -1246,28 +1246,36 @@ void amdgpu_bo_release_notify(struct ttm_buffer_object *bo)
+ 	if (abo->kfd_bo)
+ 		amdgpu_amdkfd_release_notify(abo);
+ 
+-	/* We only remove the fence if the resv has individualized. */
+-	WARN_ON_ONCE(bo->type == ttm_bo_type_kernel
+-			&& bo->base.resv != &bo->base._resv);
+-	if (bo->base.resv == &bo->base._resv)
+-		amdgpu_amdkfd_remove_fence_on_pt_pd_bos(abo);
++	/*
++	 * We lock the private dma_resv object here and since the BO is about to
++	 * be released nobody else should have a pointer to it.
++	 * So when this locking here fails something is wrong with the reference
++	 * counting.
++	 */
++	if (WARN_ON_ONCE(!dma_resv_trylock(&bo->base._resv)))
++		return;
 +
- 	mutex_lock(&ee1004_bus_lock);
++	amdgpu_amdkfd_remove_all_eviction_fences(abo);
  
- 	err = ee1004_init_bus_data(client);
+ 	if (!bo->resource || bo->resource->mem_type != TTM_PL_VRAM ||
+ 	    !(abo->flags & AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE) ||
+ 	    adev->in_suspend || drm_dev_is_unplugged(adev_to_drm(adev)))
+-		return;
++		goto out;
+ 
+-	if (WARN_ON_ONCE(!dma_resv_trylock(bo->base.resv)))
+-		return;
++	r = dma_resv_reserve_fences(&bo->base._resv, 1);
++	if (r)
++		goto out;
+ 
+-	r = amdgpu_fill_buffer(abo, 0, bo->base.resv, &fence, true);
+-	if (!WARN_ON(r)) {
+-		amdgpu_vram_mgr_set_cleared(bo->resource);
+-		amdgpu_bo_fence(abo, fence, false);
+-		dma_fence_put(fence);
+-	}
++	r = amdgpu_fill_buffer(abo, 0, &bo->base._resv, &fence, true);
++	if (WARN_ON(r))
++		goto out;
++
++	amdgpu_vram_mgr_set_cleared(bo->resource);
++	dma_resv_add_fence(&bo->base._resv, fence, DMA_RESV_USAGE_KERNEL);
++	dma_fence_put(fence);
+ 
+-	dma_resv_unlock(bo->base.resv);
++out:
++	dma_resv_unlock(&bo->base._resv);
+ }
+ 
+ /**
 -- 
 2.39.5
 
