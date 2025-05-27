@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-146913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CC7AC5591
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:13:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 711F4AC5885
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 318E38A45C3
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:07:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F42C1BC25FA
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CDE27CCF0;
-	Tue, 27 May 2025 17:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5EC193077;
+	Tue, 27 May 2025 17:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Okt6yJzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CK8rGNaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EBC70831;
-	Tue, 27 May 2025 17:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7847A1FB3;
+	Tue, 27 May 2025 17:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748365696; cv=none; b=GNJjqg3/dwqPLYmdC7rhDRsw+mmthL4cIJVPALYDVp285YsrPDRNoPey+BdhnpO5+JAjC42ouEd/uWl8Z4MSa3whRj/p4oRK+W+E+OnZB6jJ6Uk2qTToZ+2UVuhAy4NqQwrO7puZcb2NZIiVHql1I00FC7rmbT53jza1cHNrCOg=
+	t=1748367966; cv=none; b=jGF/pPb5iGjYVBKrGvP5U4U9xLBUan8xWdDsjoH3BPrYeoLuvIClds+0IHf+7rz2k22Xpm4XtZuzzDwSWyY8W5Kza1fn4Ty4DgT2vec4oX592NgdpeXzQ349zbxyPd6wCQDWG6hZvzSmpPP0PQi9aosaX0wk1ao1kLi+8SCGwJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748365696; c=relaxed/simple;
-	bh=5cxAnxt5UFRwcttP1ondzIKINAZmHE2KgEQVFh7fK6w=;
+	s=arc-20240116; t=1748367966; c=relaxed/simple;
+	bh=0R77FmWWHDTQteaXR8434lXF3r3JWtHtwYXI0tDMj1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ng5gKHrf5GTwRR6647+tmDW9JPHw3azeFmU6Y9zdZdVIqZyTFSXxyXUgU+HKC8Rc1kX8VptCNYeJP9BV7O2mufpHgQuoVQ0Nr0U9pnTafwgAeIIhLEv0PD3DYJSIt5o5W5kUtJXR9zoLs9RCbfgSps60jTzCOwfDNFuKOwCv02o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Okt6yJzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E35C4CEE9;
-	Tue, 27 May 2025 17:08:15 +0000 (UTC)
+	 MIME-Version; b=D8EkOliCVeoEGkUi/o9G2KOIQ5ecjdU4Z2jRExpDaRGwg/V8gElvQB10TSd9TKQtuhDQGm+/Cl+Dq2yvTWMS8DtfKvcXVmgvT2jxxTc9dqOvXyKSEBalRxc5Em5oIKSVWfize7TcU2bL11AOIvjGcTpGAlGCp1ZOoCjHceUigVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CK8rGNaj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD89C4CEE9;
+	Tue, 27 May 2025 17:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748365696;
-	bh=5cxAnxt5UFRwcttP1ondzIKINAZmHE2KgEQVFh7fK6w=;
+	s=korg; t=1748367966;
+	bh=0R77FmWWHDTQteaXR8434lXF3r3JWtHtwYXI0tDMj1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Okt6yJzb7v99zBCggBb/9Q9Bel8JWlyeO6lGs1Uq0Cc1iLxbDA44k57BZs7KMXZJ2
-	 tps/jyQCTgNzwCRQCauqYKjZhy3Ja8w1ifcSyeXgg6vg6Gr5j22HMA1EGgRPla5U/k
-	 TMUzrjPBHWr6fBh06mb77CSU+MSRmbdkcSewIW0Q=
+	b=CK8rGNaj/bPvAE4SANM82pcdFMJKNkUXs/NlzIqP36XaG1RF4VbmAEmrkKzd3vs1D
+	 OKVX+IzWLcUp1wWHDU5XByzi3O4J9Ab7bVPKtnFnIs8wIEpSMQajJfPDoTD6r3r+vk
+	 Cti4uRCo3ZLl/pkUU12DPvpR0Jx2elQMTSesG7b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+	Depeng Shao <quic_depengs@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 460/626] drm/xe/relay: Dont use GFP_KERNEL for new transactions
+Subject: [PATCH 6.14 556/783] media: qcom: camss: csid: Only add TPG v4l2 ctrl if TPG hardware is available
 Date: Tue, 27 May 2025 18:25:53 +0200
-Message-ID: <20250527162503.684741332@linuxfoundation.org>
+Message-ID: <20250527162535.788274631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
-References: <20250527162445.028718347@linuxfoundation.org>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Depeng Shao <quic_depengs@quicinc.com>
 
-[ Upstream commit 78d5d1e20d1de9422f013338a0f2311448588ba7 ]
+[ Upstream commit 2f1361f862a68063f37362f1beb400e78e289581 ]
 
-VFs use a relay transaction during the resume/reset flow and use
-of the GFP_KERNEL flag may conflict with the reclaim:
+There is no CSID TPG on some SoCs, so the v4l2 ctrl in CSID driver
+shouldn't be registered. Checking the supported TPG modes to indicate
+if the TPG hardware exists or not and only registering v4l2 ctrl for
+CSID only when the TPG hardware is present.
 
-     -> #0 (fs_reclaim){+.+.}-{0:0}:
- [ ]        __lock_acquire+0x1874/0x2bc0
- [ ]        lock_acquire+0xd2/0x310
- [ ]        fs_reclaim_acquire+0xc5/0x100
- [ ]        mempool_alloc_noprof+0x5c/0x1b0
- [ ]        __relay_get_transaction+0xdc/0xa10 [xe]
- [ ]        relay_send_to+0x251/0xe50 [xe]
- [ ]        xe_guc_relay_send_to_pf+0x79/0x3a0 [xe]
- [ ]        xe_gt_sriov_vf_connect+0x90/0x4d0 [xe]
- [ ]        xe_uc_init_hw+0x157/0x3b0 [xe]
- [ ]        do_gt_restart+0x1ae/0x650 [xe]
- [ ]        xe_gt_resume+0xb6/0x120 [xe]
- [ ]        xe_pm_runtime_resume+0x15b/0x370 [xe]
- [ ]        xe_pci_runtime_resume+0x73/0x90 [xe]
- [ ]        pci_pm_runtime_resume+0xa0/0x100
- [ ]        __rpm_callback+0x4d/0x170
- [ ]        rpm_callback+0x64/0x70
- [ ]        rpm_resume+0x594/0x790
- [ ]        __pm_runtime_resume+0x4e/0x90
- [ ]        xe_pm_runtime_get_ioctl+0x9c/0x160 [xe]
-
-Since we have a preallocated pool of relay transactions, which
-should cover all our normal relay use cases, we may use the
-GFP_NOWAIT flag when allocating new outgoing transactions.
-
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Tested-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250131153713.808-1-michal.wajdeczko@intel.com
+Signed-off-by: Depeng Shao <quic_depengs@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_relay.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../media/platform/qcom/camss/camss-csid.c    | 60 +++++++++++--------
+ 1 file changed, 35 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_relay.c b/drivers/gpu/drm/xe/xe_guc_relay.c
-index ade6162dc2598..0e5b43e1518ea 100644
---- a/drivers/gpu/drm/xe/xe_guc_relay.c
-+++ b/drivers/gpu/drm/xe/xe_guc_relay.c
-@@ -224,7 +224,7 @@ __relay_get_transaction(struct xe_guc_relay *relay, bool incoming, u32 remote, u
- 	 * with CTB lock held which is marked as used in the reclaim path.
- 	 * Btw, that's one of the reason why we use mempool here!
- 	 */
--	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_KERNEL);
-+	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_NOWAIT);
- 	if (!txn)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
+index 858db5d4ca75c..e51f2ed3f0315 100644
+--- a/drivers/media/platform/qcom/camss/camss-csid.c
++++ b/drivers/media/platform/qcom/camss/camss-csid.c
+@@ -683,11 +683,13 @@ static int csid_set_stream(struct v4l2_subdev *sd, int enable)
+ 	int ret;
  
+ 	if (enable) {
+-		ret = v4l2_ctrl_handler_setup(&csid->ctrls);
+-		if (ret < 0) {
+-			dev_err(csid->camss->dev,
+-				"could not sync v4l2 controls: %d\n", ret);
+-			return ret;
++		if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED) {
++			ret = v4l2_ctrl_handler_setup(&csid->ctrls);
++			if (ret < 0) {
++				dev_err(csid->camss->dev,
++					"could not sync v4l2 controls: %d\n", ret);
++				return ret;
++			}
+ 		}
+ 
+ 		if (!csid->testgen.enabled &&
+@@ -761,7 +763,8 @@ static void csid_try_format(struct csid_device *csid,
+ 		break;
+ 
+ 	case MSM_CSID_PAD_SRC:
+-		if (csid->testgen_mode->cur.val == 0) {
++		if (csid->testgen.nmodes == CSID_PAYLOAD_MODE_DISABLED ||
++		    csid->testgen_mode->cur.val == 0) {
+ 			/* Test generator is disabled, */
+ 			/* keep pad formats in sync */
+ 			u32 code = fmt->code;
+@@ -811,7 +814,8 @@ static int csid_enum_mbus_code(struct v4l2_subdev *sd,
+ 
+ 		code->code = csid->res->formats->formats[code->index].code;
+ 	} else {
+-		if (csid->testgen_mode->cur.val == 0) {
++		if (csid->testgen.nmodes == CSID_PAYLOAD_MODE_DISABLED ||
++		    csid->testgen_mode->cur.val == 0) {
+ 			struct v4l2_mbus_framefmt *sink_fmt;
+ 
+ 			sink_fmt = __csid_get_format(csid, sd_state,
+@@ -1190,7 +1194,8 @@ static int csid_link_setup(struct media_entity *entity,
+ 
+ 		/* If test generator is enabled */
+ 		/* do not allow a link from CSIPHY to CSID */
+-		if (csid->testgen_mode->cur.val != 0)
++		if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED &&
++		    csid->testgen_mode->cur.val != 0)
+ 			return -EBUSY;
+ 
+ 		sd = media_entity_to_v4l2_subdev(remote->entity);
+@@ -1283,24 +1288,27 @@ int msm_csid_register_entity(struct csid_device *csid,
+ 		 MSM_CSID_NAME, csid->id);
+ 	v4l2_set_subdevdata(sd, csid);
+ 
+-	ret = v4l2_ctrl_handler_init(&csid->ctrls, 1);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to init ctrl handler: %d\n", ret);
+-		return ret;
+-	}
++	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED) {
++		ret = v4l2_ctrl_handler_init(&csid->ctrls, 1);
++		if (ret < 0) {
++			dev_err(dev, "Failed to init ctrl handler: %d\n", ret);
++			return ret;
++		}
+ 
+-	csid->testgen_mode = v4l2_ctrl_new_std_menu_items(&csid->ctrls,
+-				&csid_ctrl_ops, V4L2_CID_TEST_PATTERN,
+-				csid->testgen.nmodes, 0, 0,
+-				csid->testgen.modes);
++		csid->testgen_mode =
++			v4l2_ctrl_new_std_menu_items(&csid->ctrls,
++						     &csid_ctrl_ops, V4L2_CID_TEST_PATTERN,
++						     csid->testgen.nmodes, 0, 0,
++						     csid->testgen.modes);
+ 
+-	if (csid->ctrls.error) {
+-		dev_err(dev, "Failed to init ctrl: %d\n", csid->ctrls.error);
+-		ret = csid->ctrls.error;
+-		goto free_ctrl;
+-	}
++		if (csid->ctrls.error) {
++			dev_err(dev, "Failed to init ctrl: %d\n", csid->ctrls.error);
++			ret = csid->ctrls.error;
++			goto free_ctrl;
++		}
+ 
+-	csid->subdev.ctrl_handler = &csid->ctrls;
++		csid->subdev.ctrl_handler = &csid->ctrls;
++	}
+ 
+ 	ret = csid_init_formats(sd, NULL);
+ 	if (ret < 0) {
+@@ -1331,7 +1339,8 @@ int msm_csid_register_entity(struct csid_device *csid,
+ media_cleanup:
+ 	media_entity_cleanup(&sd->entity);
+ free_ctrl:
+-	v4l2_ctrl_handler_free(&csid->ctrls);
++	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED)
++		v4l2_ctrl_handler_free(&csid->ctrls);
+ 
+ 	return ret;
+ }
+@@ -1344,7 +1353,8 @@ void msm_csid_unregister_entity(struct csid_device *csid)
+ {
+ 	v4l2_device_unregister_subdev(&csid->subdev);
+ 	media_entity_cleanup(&csid->subdev.entity);
+-	v4l2_ctrl_handler_free(&csid->ctrls);
++	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED)
++		v4l2_ctrl_handler_free(&csid->ctrls);
+ }
+ 
+ inline bool csid_is_lite(struct csid_device *csid)
 -- 
 2.39.5
 
