@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-147438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B19BAC57A7
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:35:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438CFAC548A
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 19:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B5A4A7885
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:35:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22C647B08E2
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 16:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB1E27BF79;
-	Tue, 27 May 2025 17:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDDC27FD4C;
+	Tue, 27 May 2025 16:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfE18Cfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtMA6IZ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871F63C01;
-	Tue, 27 May 2025 17:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724B92CCC0;
+	Tue, 27 May 2025 16:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748367341; cv=none; b=poi7hqpx7XHSzi2zD7UtLes8yfSYKl04vxxQnFMPvah5qeLO061Q8s1994KiBVpKihryMnMWTUx7OTqwbb2Z6BDJaLw5QqHf+xvHI/B429UhUwGDHOhhObIE9cjPPrAvirZ00P5d3EcvNYetm0+TB+3rF14DofOXW/4QYDpx/dE=
+	t=1748365079; cv=none; b=FM7HHKSZJGG9dTa1Gsx+O7k4M84Tq8pmq5KCUVfvLEGDXBt6vUU0Xg3IgcyrSTQ2ebkhuTQcyN0OKAKJTabnJdh1Jvwr5q0wnAOSXcMQc/Ys8WI7S0P3HJNIQsJspJ522lSSXUgzq8BmVzb+8KrXqTqCwawbB8abLKVCke4dbuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748367341; c=relaxed/simple;
-	bh=KVlHYJBxtDbhsyt7Mj1sy/AD2rMQTfrqaNqNjmKz1wo=;
+	s=arc-20240116; t=1748365079; c=relaxed/simple;
+	bh=3yWcjHP1htS77OjXIygx/DPFN+p1XigvO4DmSoTc5YM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a8s0sOY9gGlrz0Gmcmrek4aMwv+265JHbFQ5FViK/vvz8v3qLabPbKczIlJ1gIcgUZIXnTWGXCYDYoTC7R4Uw6icphgPnV22fTrNUC8SS6oFPZSLPNEdszzuVjjrBLSoBejlld+Vd1vW4zqX282Hk+zkqeTU7uQvreIKed2TbRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfE18Cfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06432C4CEE9;
-	Tue, 27 May 2025 17:35:40 +0000 (UTC)
+	 MIME-Version; b=jDf+wBAiMvr/j9TTtMYhRDSD0+jmdZm/xNvqS0x01vJBKvVvnz6KfBLwG5TgiM9ls2E9Qk95QicL+f61oWRVW1W3KbyaVdkGD7r5kxMMP+3QbMTQjMeLM60tPboSc/eeV3dcKL5SM4Dv5QGMUSjiuGOJGISpi3L+YJW1XtqseJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtMA6IZ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF81BC4CEE9;
+	Tue, 27 May 2025 16:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748367341;
-	bh=KVlHYJBxtDbhsyt7Mj1sy/AD2rMQTfrqaNqNjmKz1wo=;
+	s=korg; t=1748365079;
+	bh=3yWcjHP1htS77OjXIygx/DPFN+p1XigvO4DmSoTc5YM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DfE18Cfh9Dg4eixqxmSs2hBMAo5jxrsMpxVyi3Sa/ZkxalDclJn5qJjNu9xMu1cST
-	 b+U02r3MQvXe4tMWZ5S7SrGV2QbiCPZuwN+DjXANmVCo1vkac32iXsZ+DhYjl5W8Vb
-	 4A0/iR2PK84lTmVClSnT7Oc0WNcWlI5K3UaF/8lA=
+	b=HtMA6IZ8mlhRNqEaj4r3W5krFtbgHJqOjeONC4upVEWBdn6+FWDQof2sBkisSyYM4
+	 xm+zpnGVvfTLTC1k9VK8QRvpqNF6Xmeen2RSHsip299AlVZFnpii4jpZLxY/RbPV7c
+	 Xb8nykOgJqhVvu6CG0hK9J/B11Q3L9KD8sK40Jdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Li Bin <bin.li@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Ryan Wanner <Ryan.Wanner@microchip.com>,
+	Durai Manickam KR <durai.manickamkr@microchip.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 357/783] ASoC: mediatek: mt8188: Add reference for dmic clocks
+Subject: [PATCH 6.12 261/626] ARM: at91: pm: fix at91_suspend_finish for ZQ calibration
 Date: Tue, 27 May 2025 18:22:34 +0200
-Message-ID: <20250527162527.617086139@linuxfoundation.org>
+Message-ID: <20250527162455.615103509@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+In-Reply-To: <20250527162445.028718347@linuxfoundation.org>
+References: <20250527162445.028718347@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Li Bin <bin.li@microchip.com>
 
-[ Upstream commit bf1800073f4d55f08191b034c86b95881e99b6fd ]
+[ Upstream commit bc4722c3598d0e2c2dbf9609a3d3198993093e2b ]
 
-Add the names for the dmic clocks, aud_afe_dmic* and aud_dmic_hires*, so
-they can be acquired and enabled by the platform driver.
+For sama7g5 and sama7d65 backup mode, we encountered a "ZQ calibrate error"
+during recalibrating the impedance in BootStrap.
+We found that the impedance value saved in at91_suspend_finish() before
+the DDR entered self-refresh mode did not match the resistor values. The
+ZDATA field in the DDR3PHY_ZQ0CR0 register uses a modified gray code to
+select the different impedance setting.
+But these gray code are incorrect, a workaournd from design team fixed the
+bug in the calibration logic. The ZDATA contains four independent impedance
+elements, but the algorithm combined the four elements into one. The elements
+were fixed using properly shifted offsets.
 
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20250225-genio700-dmic-v2-2-3076f5b50ef7@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Li Bin <bin.li@microchip.com>
+[nicolas.ferre@microchip.com: fix indentation and combine 2 patches]
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Tested-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Tested-by: Durai Manickam KR <durai.manickamkr@microchip.com>
+Tested-by: Andrei Simion <andrei.simion@microchip.com>
+Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Link: https://lore.kernel.org/r/28b33f9bcd0ca60ceba032969fe054d38f2b9577.1740671156.git.Ryan.Wanner@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-afe-clk.c | 8 ++++++++
- sound/soc/mediatek/mt8188/mt8188-afe-clk.h | 8 ++++++++
- 2 files changed, 16 insertions(+)
+ arch/arm/mach-at91/pm.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-clk.c b/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-index e69c1bb2cb239..7f411b8577823 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-@@ -58,7 +58,15 @@ static const char *aud_clks[MT8188_CLK_NUM] = {
- 	[MT8188_CLK_AUD_ADC] = "aud_adc",
- 	[MT8188_CLK_AUD_DAC_HIRES] = "aud_dac_hires",
- 	[MT8188_CLK_AUD_A1SYS_HP] = "aud_a1sys_hp",
-+	[MT8188_CLK_AUD_AFE_DMIC1] = "aud_afe_dmic1",
-+	[MT8188_CLK_AUD_AFE_DMIC2] = "aud_afe_dmic2",
-+	[MT8188_CLK_AUD_AFE_DMIC3] = "aud_afe_dmic3",
-+	[MT8188_CLK_AUD_AFE_DMIC4] = "aud_afe_dmic4",
- 	[MT8188_CLK_AUD_ADC_HIRES] = "aud_adc_hires",
-+	[MT8188_CLK_AUD_DMIC_HIRES1] = "aud_dmic_hires1",
-+	[MT8188_CLK_AUD_DMIC_HIRES2] = "aud_dmic_hires2",
-+	[MT8188_CLK_AUD_DMIC_HIRES3] = "aud_dmic_hires3",
-+	[MT8188_CLK_AUD_DMIC_HIRES4] = "aud_dmic_hires4",
- 	[MT8188_CLK_AUD_I2SIN] = "aud_i2sin",
- 	[MT8188_CLK_AUD_TDM_IN] = "aud_tdm_in",
- 	[MT8188_CLK_AUD_I2S_OUT] = "aud_i2s_out",
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-clk.h b/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-index ec53c171c170a..c6c78d684f3ee 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-@@ -54,7 +54,15 @@ enum {
- 	MT8188_CLK_AUD_ADC,
- 	MT8188_CLK_AUD_DAC_HIRES,
- 	MT8188_CLK_AUD_A1SYS_HP,
-+	MT8188_CLK_AUD_AFE_DMIC1,
-+	MT8188_CLK_AUD_AFE_DMIC2,
-+	MT8188_CLK_AUD_AFE_DMIC3,
-+	MT8188_CLK_AUD_AFE_DMIC4,
- 	MT8188_CLK_AUD_ADC_HIRES,
-+	MT8188_CLK_AUD_DMIC_HIRES1,
-+	MT8188_CLK_AUD_DMIC_HIRES2,
-+	MT8188_CLK_AUD_DMIC_HIRES3,
-+	MT8188_CLK_AUD_DMIC_HIRES4,
- 	MT8188_CLK_AUD_I2SIN,
- 	MT8188_CLK_AUD_TDM_IN,
- 	MT8188_CLK_AUD_I2S_OUT,
+diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
+index 05a1547642b60..6c3e6aa22606f 100644
+--- a/arch/arm/mach-at91/pm.c
++++ b/arch/arm/mach-at91/pm.c
+@@ -545,11 +545,12 @@ extern u32 at91_pm_suspend_in_sram_sz;
+ 
+ static int at91_suspend_finish(unsigned long val)
+ {
+-	unsigned char modified_gray_code[] = {
+-		0x00, 0x01, 0x02, 0x03, 0x06, 0x07, 0x04, 0x05, 0x0c, 0x0d,
+-		0x0e, 0x0f, 0x0a, 0x0b, 0x08, 0x09, 0x18, 0x19, 0x1a, 0x1b,
+-		0x1e, 0x1f, 0x1c, 0x1d, 0x14, 0x15, 0x16, 0x17, 0x12, 0x13,
+-		0x10, 0x11,
++	/* SYNOPSYS workaround to fix a bug in the calibration logic */
++	unsigned char modified_fix_code[] = {
++		0x00, 0x01, 0x01, 0x06, 0x07, 0x0c, 0x06, 0x07, 0x0b, 0x18,
++		0x0a, 0x0b, 0x0c, 0x0d, 0x0d, 0x0a, 0x13, 0x13, 0x12, 0x13,
++		0x14, 0x15, 0x15, 0x12, 0x18, 0x19, 0x19, 0x1e, 0x1f, 0x14,
++		0x1e, 0x1f,
+ 	};
+ 	unsigned int tmp, index;
+ 	int i;
+@@ -560,25 +561,25 @@ static int at91_suspend_finish(unsigned long val)
+ 		 * restore the ZQ0SR0 with the value saved here. But the
+ 		 * calibration is buggy and restoring some values from ZQ0SR0
+ 		 * is forbidden and risky thus we need to provide processed
+-		 * values for these (modified gray code values).
++		 * values for these.
+ 		 */
+ 		tmp = readl(soc_pm.data.ramc_phy + DDR3PHY_ZQ0SR0);
+ 
+ 		/* Store pull-down output impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PDO_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] = modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] = modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDO_OFF;
+ 
+ 		/* Store pull-up output impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PUO_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PUO_OFF;
+ 
+ 		/* Store pull-down on-die termination impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PDODT_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDODT_OFF;
+ 
+ 		/* Store pull-up on-die termination impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SRO_PUODT_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SRO_PUODT_OFF;
+ 
+ 		/*
+ 		 * The 1st 8 words of memory might get corrupted in the process
 -- 
 2.39.5
 
