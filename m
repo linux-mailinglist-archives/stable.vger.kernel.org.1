@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-147874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA751AC59A9
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 20:00:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3081AC59A7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 20:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F431BC4AFD
-	for <lists+stable@lfdr.de>; Tue, 27 May 2025 18:00:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0E854C1CE7
+	for <lists+stable@lfdr.de>; Tue, 27 May 2025 17:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D7D28751B;
-	Tue, 27 May 2025 17:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3E1284663;
+	Tue, 27 May 2025 17:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDPFFYpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1MpJCVA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE24E280333;
-	Tue, 27 May 2025 17:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A9A283FE8;
+	Tue, 27 May 2025 17:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748368704; cv=none; b=bTZTzZCJzOTj9rPNCssHl6bA6gZIMSwx4yZYwkxhOTA3gwr3ok+A8apPSthbI3HhsD6IyeUJoHJfzvEMufNId1kjUD4jlZ3k/rmofxcHtwo6mIbX7ODgufE6mIc3Qd1CtJoLIgJNYYFuj3gwmbhIwRvEdKidYVIEDfsk3Qv+ETI=
+	t=1748368667; cv=none; b=pwTYPuZiVtGYLpsftET6oEkxcPOx0rSD+EAWi+bU1qR0PsPAb3PL4/e1BUhr+PNxMDTP2qjUgIPFWH95OA5dQFVfhJIOfH8vKCJVTltXqWzJDdV9R5UfJowGh4nNMBrqlZ0rf3fzVVA0etzWu6Tt95j8oRZaiGOLa41BAJG4fp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748368704; c=relaxed/simple;
-	bh=yJvES4Ky6tsUx/bcUoIJHWiCHZypTuKP1TMPYa1kTio=;
+	s=arc-20240116; t=1748368667; c=relaxed/simple;
+	bh=+uRXz2qKyt5QSrFD2lTfhkdflisW2w3w1AuFJ2q7mOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khaMECn73mtjNyVJkFlo5SUwXbqdvjd1jI52bT2395jRyxzUIXMYMFUnMSXfEniKCv80D0L9h7+C8PTPNzniQZjtQblloWPDSHwGb1wZW0tlgxRSF9LxnKMHQtToQU57TdEB4jtzvRh9ebEEoa05byajWddqa7aOOCl/4oeubhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDPFFYpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F53C4CEE9;
-	Tue, 27 May 2025 17:58:23 +0000 (UTC)
+	 MIME-Version; b=QRsm6zM8VFnEhAuj0HfLjMAKv9oaIh99/lD6igjgN8Qi6eiJJ4eLoxPKYP5y7g6Bzad+4rS+tvSwD120QT15KKvoRQjHwvD/BKuFC+NW5g828wOVlvqz8MmZz3jKVm4ZmIU72FhVPJsOId+/AfkwFYaT/K35d1ZKPlpmxWF8pkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1MpJCVA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB02AC4CEED;
+	Tue, 27 May 2025 17:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748368703;
-	bh=yJvES4Ky6tsUx/bcUoIJHWiCHZypTuKP1TMPYa1kTio=;
+	s=korg; t=1748368667;
+	bh=+uRXz2qKyt5QSrFD2lTfhkdflisW2w3w1AuFJ2q7mOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDPFFYpOB2/qFqhPqO5JuzN2klZb8aD1n0Y8vF9TlvqA84XPU9wQpi12YKjdqh90b
-	 HucE1PxG3H45zdnNp9KEe/ZUlJWey/FbtuX6ajj6EBx6/OjBspsh0r49Z6QcGweDOY
-	 orGOVYx3rRXo1LOKq/Ppeg/PxS8QTR/V4N6VQ5Lw=
+	b=r1MpJCVAEYxJAHylC4DE29aidmxEZJy8GOO76X8MIXfxMHCYdqkpGusQFNKGquv0f
+	 YPUSdbaaBC9aOJ//mRwUj3xd9T/j1KXH9IN5Akk+7Vaka1QuHm2sUvveReoWxQv8N6
+	 SRU6UIf44VQDqccIBLv7y7EWQLB9DhIF054e2cdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xulin Sun <xulin.sun@windriver.com>,
+	Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>,
 	Larisa Grigore <larisa.grigore@nxp.com>,
 	James Clark <james.clark@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 772/783] spi: spi-fsl-dspi: restrict register range for regmap access
-Date: Tue, 27 May 2025 18:29:29 +0200
-Message-ID: <20250527162544.570581555@linuxfoundation.org>
+Subject: [PATCH 6.14 773/783] spi: spi-fsl-dspi: Halt the module after a new message transfer
+Date: Tue, 27 May 2025 18:29:30 +0200
+Message-ID: <20250527162544.611321772@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 References: <20250527162513.035720581@linuxfoundation.org>
@@ -68,92 +68,106 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
 
-[ Upstream commit 283ae0c65e9c592f4a1ba4f31917f5e766da7f31 ]
+[ Upstream commit 8a30a6d35a11ff5ccdede7d6740765685385a917 ]
 
-DSPI registers are NOT continuous, some registers are reserved and
-accessing them from userspace will trigger external abort, add regmap
-register access table to avoid below abort.
+The XSPI mode implementation in this driver still uses the EOQ flag to
+signal the last word in a transmission and deassert the PCS signal.
+However, at speeds lower than ~200kHZ, the PCS signal seems to remain
+asserted even when SR[EOQF] = 1 indicates the end of a transmission.
+This is a problem for target devices which require the deassertation of
+the PCS signal between transfers.
 
-  For example on S32G:
+Hence, this commit 'forces' the deassertation of the PCS by stopping the
+module through MCR[HALT] after completing a new transfer. According to
+the reference manual, the module stops or transitions from the Running
+state to the Stopped state after the current frame, when any one of the
+following conditions exist:
+- The value of SR[EOQF] = 1.
+- The chip is in Debug mode and the value of MCR[FRZ] = 1.
+- The value of MCR[HALT] = 1.
 
-  # cat /sys/kernel/debug/regmap/401d8000.spi/registers
+This shouldn't be done if the last transfer in the message has cs_change
+set.
 
-  Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
-  ...
-  Call trace:
-  regmap_mmio_read32le+0x24/0x48
-  regmap_mmio_read+0x48/0x70
-  _regmap_bus_reg_read+0x38/0x48
-  _regmap_read+0x68/0x1b0
-  regmap_read+0x50/0x78
-  regmap_read_debugfs+0x120/0x338
-
-Fixes: 1acbdeb92c87 ("spi/fsl-dspi: Convert to use regmap and add big-endian support")
-Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
-Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
+Fixes: ea93ed4c181b ("spi: spi-fsl-dspi: Use EOQ for last word in buffer even for XSPI mode")
+Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
 Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
 Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-1-bea884630cfb@linaro.org
+Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-2-bea884630cfb@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 067c954cb6ea0..effb460d436da 100644
+index effb460d436da..1fa96e8189cfa 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0+
- //
- // Copyright 2013 Freescale Semiconductor, Inc.
--// Copyright 2020 NXP
-+// Copyright 2020-2025 NXP
- //
- // Freescale DSPI driver
- // This file contains a driver for the Freescale DSPI
-@@ -1167,6 +1167,20 @@ static int dspi_resume(struct device *dev)
+@@ -62,6 +62,7 @@
+ #define SPI_SR_TFIWF			BIT(18)
+ #define SPI_SR_RFDF			BIT(17)
+ #define SPI_SR_CMDFFF			BIT(16)
++#define SPI_SR_TXRXS			BIT(30)
+ #define SPI_SR_CLEAR			(SPI_SR_TCFQF | \
+ 					SPI_SR_TFUF | SPI_SR_TFFF | \
+ 					SPI_SR_CMDTCF | SPI_SR_SPEF | \
+@@ -921,9 +922,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 	struct spi_transfer *transfer;
+ 	bool cs = false;
+ 	int status = 0;
++	u32 val = 0;
++	bool cs_change = false;
  
- static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
+ 	message->actual_length = 0;
  
-+static const struct regmap_range dspi_yes_ranges[] = {
-+	regmap_reg_range(SPI_MCR, SPI_MCR),
-+	regmap_reg_range(SPI_TCR, SPI_CTAR(3)),
-+	regmap_reg_range(SPI_SR, SPI_TXFR3),
-+	regmap_reg_range(SPI_RXFR0, SPI_RXFR3),
-+	regmap_reg_range(SPI_CTARE(0), SPI_CTARE(3)),
-+	regmap_reg_range(SPI_SREX, SPI_SREX),
-+};
++	/* Put DSPI in running mode if halted. */
++	regmap_read(dspi->regmap, SPI_MCR, &val);
++	if (val & SPI_MCR_HALT) {
++		regmap_update_bits(dspi->regmap, SPI_MCR, SPI_MCR_HALT, 0);
++		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
++		       !(val & SPI_SR_TXRXS))
++			;
++	}
 +
-+static const struct regmap_access_table dspi_access_table = {
-+	.yes_ranges	= dspi_yes_ranges,
-+	.n_yes_ranges	= ARRAY_SIZE(dspi_yes_ranges),
-+};
-+
- static const struct regmap_range dspi_volatile_ranges[] = {
- 	regmap_reg_range(SPI_MCR, SPI_TCR),
- 	regmap_reg_range(SPI_SR, SPI_SR),
-@@ -1184,6 +1198,8 @@ static const struct regmap_config dspi_regmap_config = {
- 	.reg_stride	= 4,
- 	.max_register	= 0x88,
- 	.volatile_table	= &dspi_volatile_table,
-+	.rd_table	= &dspi_access_table,
-+	.wr_table	= &dspi_access_table,
- };
+ 	list_for_each_entry(transfer, &message->transfers, transfer_list) {
+ 		dspi->cur_transfer = transfer;
+ 		dspi->cur_msg = message;
+@@ -953,6 +965,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 				dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
+ 		}
  
- static const struct regmap_range dspi_xspi_volatile_ranges[] = {
-@@ -1205,6 +1221,8 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
- 		.reg_stride	= 4,
- 		.max_register	= 0x13c,
- 		.volatile_table	= &dspi_xspi_volatile_table,
-+		.rd_table	= &dspi_access_table,
-+		.wr_table	= &dspi_access_table,
- 	},
- 	{
- 		.name		= "pushr",
++		cs_change = transfer->cs_change;
+ 		dspi->tx = transfer->tx_buf;
+ 		dspi->rx = transfer->rx_buf;
+ 		dspi->len = transfer->len;
+@@ -988,6 +1001,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 			dspi_deassert_cs(spi, &cs);
+ 	}
+ 
++	if (status || !cs_change) {
++		/* Put DSPI in stop mode */
++		regmap_update_bits(dspi->regmap, SPI_MCR,
++				   SPI_MCR_HALT, SPI_MCR_HALT);
++		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
++		       val & SPI_SR_TXRXS)
++			;
++	}
++
+ 	message->status = status;
+ 	spi_finalize_current_message(ctlr);
+ 
+@@ -1245,6 +1267,8 @@ static int dspi_init(struct fsl_dspi *dspi)
+ 	if (!spi_controller_is_target(dspi->ctlr))
+ 		mcr |= SPI_MCR_HOST;
+ 
++	mcr |= SPI_MCR_HALT;
++
+ 	regmap_write(dspi->regmap, SPI_MCR, mcr);
+ 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+ 
 -- 
 2.39.5
 
