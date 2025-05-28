@@ -1,89 +1,102 @@
-Return-Path: <stable+bounces-147933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035F0AC65ED
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 11:26:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A3CAC65F2
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 11:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B897A4E398C
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 09:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5AFD1BC5849
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 09:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B1C27587D;
-	Wed, 28 May 2025 09:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546082777EA;
+	Wed, 28 May 2025 09:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="YFZGDc13"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n+W2arJC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PLgbUBee";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n+W2arJC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PLgbUBee"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103731EB193
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 09:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6D85A79B
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 09:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748424386; cv=none; b=gX5SV6JXYdOIDLRxx+dc1Ua1Gj86Exte8rFXXlYCh8C10JZ4NBbjf1h5EN/UH7B09Fkw/A+WU3MtA/9YSU6cGvPRdqSoJoEjnnmpAJByO2EXh+OE4g+Jclzf/7zq2EgULpXlM/Y3JdIzzfF7qEaMVH7Fv180ZUto96Bb/xZ+ewI=
+	t=1748424474; cv=none; b=JUY+O8SLDbpXFgYFtrpv1DcaiHHHjTzPx+x0GKFLTGpV+b6tlS+baYv2al2Caf3iRtwmjzmUxHBmkHNZBrT0P64vUNQRbaxPulXxwuYNt/6Zm4MeF/b8ZwCrX1qVF1oFwIL2Z5qXKL//rC/P8BImxlL5Vd4O7gLJOGUO1pTFJUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748424386; c=relaxed/simple;
-	bh=2GqKd8OIT4AyaxTl7E8tLCXOr67mFaXp3w6UujYp49Q=;
+	s=arc-20240116; t=1748424474; c=relaxed/simple;
+	bh=QA8Tu+x5uJNtSj2hb1PFx7cIXbvT0/ULNV68F0rxeTs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aSmmzEiySn+27aHEJKXZYkXnXgjAl9dkJ/i6F/ZETsOqE+7iBmjPhRKdPaoHxKsrYS+djXAQGGDoeMzEN0JS+AO1MOa+MbFgEzgTKWGE4TFSLbZudxP5hFIc+ckVXC5TIvAJCNrFb6hjaOYsStsrM3ahcItPc4ezpdbMv2tSTfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=YFZGDc13; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-acbb85ce788so856887766b.3
-        for <stable@vger.kernel.org>; Wed, 28 May 2025 02:26:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1748424383; x=1749029183; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d65lf9hRZUyJOHWiiUqWASEii91lhlBo8USW5MV7cnM=;
-        b=YFZGDc13oIg/YNsBIj7KzknK0jxUQO632x/ZBmuszBBwf4MbHH4+wkxK3NP6aVZDqE
-         c6tVB6btcnAKmfNqhemEtZq1w62xNyGKu32HnH39sP3f6byhp6CkMuAgjUfMCcGcYTYS
-         w3w9a4Nt+DW+NUoYl7FGdeRSdspyiaGZfeUxk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748424383; x=1749029183;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d65lf9hRZUyJOHWiiUqWASEii91lhlBo8USW5MV7cnM=;
-        b=cvU3vE4cdikn8SqbTghYYnCPI9OYbNyNZpykF/6tMP20g+iP1MXTnZzitnTF10jY35
-         1ZNtCX3GlPqnejWvkmComLsTA30f3CZ/n46NzEtksT6PQYGbvP52/YuDoVsgUTRStTBJ
-         ILD3x/xWVE0/w7mte/rWQVzv/dtgOtGRyOXEtEWbl2sI61iVbx+L4CMAl1JLy879bdfx
-         859ToYaMMiIHY/eq9AAex6u2nyjh8fej20+p05SJ1CcasyZ/sZ2xKsMjhvZPFF3aLL2I
-         pUwheTMZM4/IGF+THaeNIpuBH4zTAa4PUK0Naq3ToMKJjIosn7Fx975sZs/msVTmBHde
-         uxQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRPINv/oPHmQKazwNwuKYjVPDhGVSID7jHnVBbiR+8lRtUbUcsK5Bbqx/+YDyBCOvFxxzU/No=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3V7gjuGh9UTDkX5lrkztgOkbPJePUf/v4coGB5MI9fMkvmv5A
-	9l+z8PXBwpkA2F9EarLPIiiLTYCPJGhWLex5TF9xVLOlQfU+cFrapLrivR/QkmyFqGM=
-X-Gm-Gg: ASbGnctsSciCc0wuxpTE4xOvWgU78OYvB5ypAJ/zCBeRhxG8zj/+gAOB33XlKKeMJsM
-	0+oJWMPaSY3T/1DRNVzxwaaRQTB86P3u84mWaCvjIItALZJReePf9xKAOP0MYMvJLu0ShxlWmHZ
-	jYSwV6OvFzVlb5Vy5QEP3LqAocT7EEk2Hgndx7FVkZkzLxU9AMbD8lP3QSGHvm45OxlWbt5mFUE
-	PoeB7ebtGIZHjotjPuA3hdgi5ToDQabFwiT1Aw5eEclykG6CU+2P6KQRkkp+Ua/tk0Y1G+OsVU8
-	kzAhD/UubxSsD8yAXGpwz2LvrJ1bNfCdcA6yXzjw8c6uA6lGWv41T/dqBc4BzCvh5nZu9SsG2g=
-	=
-X-Google-Smtp-Source: AGHT+IEePMLFnQYEO4JCakhnU3NsJmB8ND9y2kTKvj7yd61KID345YtB5KSXRXhvfvsFSdBX4kG2PQ==
-X-Received: by 2002:a17:907:72c1:b0:ad5:2260:e018 with SMTP id a640c23a62f3a-ad85b2b5dd5mr1432202866b.44.1748424383156;
-        Wed, 28 May 2025 02:26:23 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad8a1a13c90sm75897366b.77.2025.05.28.02.26.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 02:26:22 -0700 (PDT)
-Date: Wed, 28 May 2025 11:26:20 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: DRI Development <dri-devel@lists.freedesktop.org>
-Cc: intel-xe@lists.freedesktop.org, Simona Vetter <simona.vetter@ffwll.ch>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	stable@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Simona Vetter <simona.vetter@intel.com>
-Subject: Re: [PATCH 1/8] drm/gem: Fix race in drm_gem_handle_create_tail()
-Message-ID: <aDbWvNUaXCCvvQkc@phenom.ffwll.local>
-References: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
- <20250528091307.1894940-2-simona.vetter@ffwll.ch>
+	 Content-Type:Content-Disposition:In-Reply-To; b=atTwheflpXPl40RpSm2rTUT3TJAmfIKYvy0+b8k8VbW0S/YUsLgxBb1+s+HAekseHhCh4UB9y441DDmAp/+PPCOJWh/w98VWEprwyIeVA21GFRqo/13687ikK48a96K1AUNSTmFGFlLsVMfMCgTAT23u+XHtQPX7eymjCJ1YrJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n+W2arJC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PLgbUBee; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n+W2arJC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PLgbUBee; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3959221BFC;
+	Wed, 28 May 2025 09:27:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1748424470; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B4mwwW9r0OHxt1yikCbUfXebtF5UgdxJ9FNgvzHDIfE=;
+	b=n+W2arJC9K4LnK8d5fiG8AWGKKHDpg2CEWV2F7309g7HyeUKZS8KPrbC70sqLPwSwr2jZu
+	F94CF4I9wfrIvAUic+im00Q29l49NvTK33VFQksiJuk+WfP27KHDdJ6S4RM/oqIiAOrbdE
+	9KMGpN56EZlNIg3Quv9Zdg4WW5/vXSk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1748424470;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B4mwwW9r0OHxt1yikCbUfXebtF5UgdxJ9FNgvzHDIfE=;
+	b=PLgbUBeeeE9X8XNwWP958G8cg9vwCEdd90usoWLBmPLRdkns9WWz6AyA7Mdc+WIgALZnUr
+	f75JSjED5VJg2YAg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1748424470; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B4mwwW9r0OHxt1yikCbUfXebtF5UgdxJ9FNgvzHDIfE=;
+	b=n+W2arJC9K4LnK8d5fiG8AWGKKHDpg2CEWV2F7309g7HyeUKZS8KPrbC70sqLPwSwr2jZu
+	F94CF4I9wfrIvAUic+im00Q29l49NvTK33VFQksiJuk+WfP27KHDdJ6S4RM/oqIiAOrbdE
+	9KMGpN56EZlNIg3Quv9Zdg4WW5/vXSk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1748424470;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B4mwwW9r0OHxt1yikCbUfXebtF5UgdxJ9FNgvzHDIfE=;
+	b=PLgbUBeeeE9X8XNwWP958G8cg9vwCEdd90usoWLBmPLRdkns9WWz6AyA7Mdc+WIgALZnUr
+	f75JSjED5VJg2YAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8073C136E3;
+	Wed, 28 May 2025 09:27:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id BQmlHBXXNmgyawAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 28 May 2025 09:27:49 +0000
+Date: Wed, 28 May 2025 11:27:46 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Gavin Guo <gavinguo@igalia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+	akpm@linux-foundation.org, mike.kravetz@oracle.com,
+	kernel-dev@igalia.com, stable@vger.kernel.org,
+	Hugh Dickins <hughd@google.com>, Florent Revest <revest@google.com>,
+	Gavin Shan <gshan@redhat.com>, David Hildenbrand <david@redhat.com>,
+	Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH v3] mm/hugetlb: fix a deadlock with pagecache_folio and
+ hugetlb_fault_mutex_table
+Message-ID: <aDbXEnqnpDnAx4Mw@localhost.localdomain>
+References: <20250528023326.3499204-1-gavinguo@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,163 +105,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250528091307.1894940-2-simona.vetter@ffwll.ch>
-X-Operating-System: Linux phenom 6.12.25-amd64 
+In-Reply-To: <20250528023326.3499204-1-gavinguo@igalia.com>
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
 
-On Wed, May 28, 2025 at 11:12:59AM +0200, Simona Vetter wrote:
-> Object creation is a careful dance where we must guarantee that the
-> object is fully constructed before it is visible to other threads, and
-> GEM buffer objects are no difference.
+On Wed, May 28, 2025 at 10:33:26AM +0800, Gavin Guo wrote:
+> There is ABBA dead locking scenario happening between hugetlb_fault()
+> and hugetlb_wp() on the pagecache folio's lock and hugetlb global mutex,
+> which is reproducible with syzkaller [1]. As below stack traces reveal,
+> process-1 tries to take the hugetlb global mutex (A3), but with the
+> pagecache folio's lock hold. Process-2 took the hugetlb global mutex but
+> tries to take the pagecache folio's lock.
 > 
-> Final publishing happens by calling drm_gem_handle_create(). After
-> that the only allowed thing to do is call drm_gem_object_put() because
-> a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
-> (which is trivial since we have a linear allocator) can already tear
-> down the object again.
+> Process-1                               Process-2
+> =========                               =========
+> hugetlb_fault
+>    mutex_lock                  (A1)
+>    filemap_lock_hugetlb_folio  (B1)
+>    hugetlb_wp
+>      alloc_hugetlb_folio       #error
+>        mutex_unlock            (A2)
+>                                         hugetlb_fault
+>                                           mutex_lock                  (A4)
+>                                           filemap_lock_hugetlb_folio  (B4)
+>        unmap_ref_private
+>        mutex_lock              (A3)
 > 
-> Luckily most drivers get this right, the very few exceptions I've
-> pinged the relevant maintainers for. Unfortunately we also need
-> drm_gem_handle_create() when creating additional handles for an
-> already existing object (e.g. GETFB ioctl or the various bo import
-> ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
-> the only exported function to stop these issues from happening.
+> Fix it by releasing the pagecache folio's lock at (A2) of process-1 so
+> that pagecache folio's lock is available to process-2 at (B4), to avoid
+> the deadlock. In process-1, a new variable is added to track if the
+> pagecache folio's lock has been released by its child function
+> hugetlb_wp() to avoid double releases on the lock in hugetlb_fault().
+> The similar changes are applied to hugetlb_no_page().
 > 
-> Now unfortunately the implementation of drm_gem_handle_create() isn't
-> living up to standards: It does correctly finishe object
-> initialization at the global level, and hence is safe against a
-> concurrent tear down. But it also sets up the file-private aspects of
-> the handle, and that part goes wrong: We fully register the object in
-> the drm_file.object_idr before calling drm_vma_node_allow() or
-> obj->funcs->open, which opens up races against concurrent removal of
-> that handle in drm_gem_handle_delete().
-> 
-> Fix this with the usual two-stage approach of first reserving the
-> handle id, and then only registering the object after we've completed
-> the file-private setup.
-> 
-> Jacek reported this with a testcase of concurrently calling GEM_CLOSE
-> on a freshly-created object (which also destroys the object), but it
-> should be possible to hit this with just additional handles created
-> through import or GETFB without completed destroying the underlying
-> object with the concurrent GEM_CLOSE ioctl calls.
-> 
-> Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
-> Release driver references to handle before making it available
-> again"), which means a cool 9 years have passed until someone noticed
-> that we need to make this symmetry or there's still gaps left :-/
-> Without the 2-stage close approach we'd still have a race, therefore
-> that's an integral part of this bugfix.
-> 
-> More importantly, this means we can have NULL pointers behind
-> allocated id in our drm_file.object_idr. We need to check for that
-> now:
-> 
-> - drm_gem_handle_delete() checks for ERR_OR_NULL already
-> 
-> - drm_gem.c:object_lookup() also chekcs for NULL
-> 
-> - drm_gem_release() should never be called if there's another thread
->   still existing that could call into an IOCTL that creates a new
->   handle, so cannot race. For paranoia I added a NULL check to
->   drm_gem_object_release_handle() though.
-> 
-> - most drivers (etnaviv, i915, msm) are find because they use
->   idr_find, which maps both ENOENT and NULL to NULL.
-> 
-> - vmgfx is already broken vmw_debugfs_gem_info_show() because NULL
->   pointers might exist due to drm_gem_handle_delete(). This needs a
->   separate patch. This is because idr_for_each_entry terminates on the
->   first NULL entry and so might not iterate over everything.
-> 
-> - similar for amd in amdgpu_debugfs_gem_info_show() and
->   amdgpu_gem_force_release(). The latter is really questionable though
->   since it's a best effort hack and there's no way to close all the
->   races. Needs separate patches.
-> 
-> - xe is really broken because it not uses idr_for_each_entry() but
->   also drops the drm_file.table_lock, which can wreak the idr iterator
->   state if you're unlucky enough. Maybe another reason to look into
->   the drm fdinfo memory stats instead of hand-rolling too much.
-> 
-> - drm_show_memory_stats() is also broken since it uses
->   idr_for_each_entry. But since that's a preexisting bug I'll follow
->   up with a separate patch.
+> Link: https://drive.google.com/file/d/1DVRnIW-vSayU5J1re9Ct_br3jJQU6Vpb/view?usp=drive_link [1]
+> Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
+> Cc: <stable@vger.kernel.org>
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: Florent Revest <revest@google.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+... 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 6a3cf7935c14..560b9b35262a 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6137,7 +6137,8 @@ static void unmap_ref_private(struct mm_struct *mm, struct vm_area_struct *vma,
+>   * Keep the pte_same checks anyway to make transition from the mutex easier.
+>   */
+>  static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
+> -		       struct vm_fault *vmf)
+> +		       struct vm_fault *vmf,
+> +		       bool *pagecache_folio_locked)
+>  {
+>  	struct vm_area_struct *vma = vmf->vma;
+>  	struct mm_struct *mm = vma->vm_mm;
+> @@ -6234,6 +6235,18 @@ static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
+>  			u32 hash;
+>  
+>  			folio_put(old_folio);
+> +			/*
+> +			 * The pagecache_folio has to be unlocked to avoid
+> +			 * deadlock and we won't re-lock it in hugetlb_wp(). The
+> +			 * pagecache_folio could be truncated after being
+> +			 * unlocked. So its state should not be reliable
+> +			 * subsequently.
+> +			 */
+> +			if (pagecache_folio) {
+> +				folio_unlock(pagecache_folio);
+> +				if (pagecache_folio_locked)
+> +					*pagecache_folio_locked = false;
+> +			}
 
-I've already reworded the commit message locally since I now think
-idr_for_each_entry is entirely fine.
--Sima
+I am having a problem with this patch as I think it keeps carrying on an
+assumption that it is not true.
 
-> 
-> Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> Cc: stable@vger.kernel.org
-> Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-> Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-> ---
->  drivers/gpu/drm/drm_gem.c | 10 +++++++++-
->  include/drm/drm_file.h    |  3 +++
->  2 files changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-> index 1e659d2660f7..e4e20dda47b1 100644
-> --- a/drivers/gpu/drm/drm_gem.c
-> +++ b/drivers/gpu/drm/drm_gem.c
-> @@ -279,6 +279,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
->  	struct drm_file *file_priv = data;
->  	struct drm_gem_object *obj = ptr;
->  
-> +	if (WARN_ON(!data))
-> +		return 0;
-> +
->  	if (obj->funcs->close)
->  		obj->funcs->close(obj, file_priv);
->  
-> @@ -399,7 +402,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
->  	idr_preload(GFP_KERNEL);
->  	spin_lock(&file_priv->table_lock);
->  
-> -	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
-> +	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
->  
->  	spin_unlock(&file_priv->table_lock);
->  	idr_preload_end();
-> @@ -420,6 +423,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
->  			goto err_revoke;
->  	}
->  
-> +	/* mirrors drm_gem_handle_delete to avoid races */
-> +	spin_lock(&file_priv->table_lock);
-> +	obj = idr_replace(&file_priv->object_idr, obj, handle);
-> +	WARN_ON(obj != NULL);
-> +	spin_unlock(&file_priv->table_lock);
->  	*handlep = handle;
->  	return 0;
->  
-> diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
-> index 5c3b2aa3e69d..d344d41e6cfe 100644
-> --- a/include/drm/drm_file.h
-> +++ b/include/drm/drm_file.h
-> @@ -300,6 +300,9 @@ struct drm_file {
->  	 *
->  	 * Mapping of mm object handles to object pointers. Used by the GEM
->  	 * subsystem. Protected by @table_lock.
-> +	 *
-> +	 * Note that allocated entries might be NULL as a transient state when
-> +	 * creating or deleting a handle.
->  	 */
->  	struct idr object_idr;
->  
-> -- 
-> 2.49.0
-> 
+I was discussing this matter yesterday with Peter Xu (CCed now), who has also some
+experience in this field.
+
+Exactly against what pagecache_folio's lock protects us when
+pagecache_folio != old_folio?
+
+There are two cases here:
+
+1) pagecache_folio = old_folio  (original page in the pagecache)
+2) pagecache_folio != old_folio (original page has already been mapped
+                                 privately and CoWed, old_folio contains
+				 the new folio)
+
+For case 1), we need to hold the lock because we are copying old_folio
+to the new one in hugetlb_wp(). That is clear.
+
+But for case 2), unless I am missing something, we do not really need the
+pagecache_folio's lock at all, do we? (only old_folio's one)
+The only reason pagecache_folio gets looked up in the pagecache is to check
+whether the current task has mapped and faulted in the file privately, which
+means that a reservation has been consumed (a new folio was allocated).
+That is what the whole dance about "old_folio != pagecache_folio &&
+HPAGE_RESV_OWNER" in hugetlb_wp() is about.
+
+And the original mapping cannot really go away either from under us, as
+remove_inode_hugepages() needs to take the mutex in order to evict it,
+which would be the only reason counters like resv_huge_pages (adjusted in
+remove_inode_hugepages()->hugetlb_unreserve_pages()) would
+interfere with alloc_hugetlb_folio() from hugetlb_wp().
+
+So, again, unless I am missing something there is no need for the
+pagecache_folio lock when pagecache_folio != old_folio, let alone the
+need to hold it throughout hugetlb_wp().
+I think we could just look up the cache, and unlock it right away.
+
+So, the current situation (previous to this patch) is already misleading
+for case 2).
+
+And comments like:
+
+ /*
+  * The pagecache_folio has to be unlocked to avoid
+  * deadlock and we won't re-lock it in hugetlb_wp(). The
+  * pagecache_folio could be truncated after being
+  * unlocked. So its state should not be reliable
+  * subsequently.
+  */
+
+Keep carrying on the assumption that we need the lock.
+
+Now, if the above is true, I would much rather see this reworked (I have
+some ideas I discussed with Peter yesterday), than keep it as is.
+
+Let me also CC David who tends to have a good overview in this.
 
 -- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Oscar Salvador
+SUSE Labs
 
