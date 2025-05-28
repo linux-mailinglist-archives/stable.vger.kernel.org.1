@@ -1,189 +1,167 @@
-Return-Path: <stable+bounces-147902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86452AC5E93
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 02:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C28DAC5FA0
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 04:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13E3C3A8FAA
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 00:55:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF0C1A2312E
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 02:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CAD14F104;
-	Wed, 28 May 2025 00:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A841F1501;
+	Wed, 28 May 2025 02:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cHx0eK8N"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TtOvO5v8"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD27A1862;
-	Wed, 28 May 2025 00:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD2E1EE032
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 02:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748393735; cv=none; b=csbKzvyouYSlnSI2SAWML2cBKoFAhLlECp69W2DjbpCVJ5qnAy1y5uEpX91tCx2SdCNrolvbw0/2u9blyzcwE1BN6jWhRBrlG4e0BFLtoBhXtOIBJ5Eh6CUz2oOquAIEfWFzMe1L5Od2ZY/0AhpRU+q+cgIUH4lu3XJ5vgBYM+o=
+	t=1748399488; cv=none; b=Aluuy6t3VqcDQHmUJVZH+9rdMJkKYBqZtHuWmc5ClO6EVPMGD79ZeddyOlV5Y655N/jIjvxo8zvu/qD0Tdm1zzwgn+k7P8yFu3OlVSAY21WJkynRzU9xj4ehlPaYJvSt8+EU3X2Ldjbx7pu2z33zl9tl2Yd+LL9BypNfSemXTTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748393735; c=relaxed/simple;
-	bh=xhMTQgkewqj4hAWzEuXm8wFwVJIuDz5U3oNtAMSo+AE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O0uf+8Lp7e47s9Wl+WugnmvPBDXWFQLEEP3HungWQ6TuYW0sBUFBWrnJzB5R2+itaabsbafKGpablGsK6b3RQQd6fzstWaViobgdYJgppPp33Kn9bEMMhRF2RBwLSeRryAF5cZmpKjkSfN3m2TQ9xC9FzzjDItRc2RpBDK8MWyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cHx0eK8N; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748393734; x=1779929734;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xhMTQgkewqj4hAWzEuXm8wFwVJIuDz5U3oNtAMSo+AE=;
-  b=cHx0eK8N5zeUzszNn4mBmwHO8ApYUKC/3cCjxdUGHKQuSW91/CeEnIum
-   m/8tCTG3HQ58+uUGStqkRUGf3OXQr9DaYubaA6En7vbzr6O0aOuQcXNS7
-   vYbA8i5MgNN9FPGv2vryUky6DyChT1w2XsnXX3ALniQvzHmHoHEBCPl8u
-   OOxRXjFmC5OZn+980uuMRNostGYWa7PxPHHsl4yVFVebyzhHPo/WkSgUf
-   hmYBybzbu0i+a+Cn/g/mqFEO0JgCmOLwIda/ywnJj/Nw1RSzS6kZ3EBBG
-   jCL6KhCLLmpHz5HNGmT9CFYfaTy2hPFfppKth+x+l7JIsyF8NN95JYUtM
-   g==;
-X-CSE-ConnectionGUID: q8xo7aRqTaOVEbfYNTrcdg==
-X-CSE-MsgGUID: /apA/Ik1R8mpS5OVLp8L8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50330214"
-X-IronPort-AV: E=Sophos;i="6.15,319,1739865600"; 
-   d="scan'208";a="50330214"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2025 17:55:33 -0700
-X-CSE-ConnectionGUID: udApDBw6R16xWsCUAFlsCw==
-X-CSE-MsgGUID: vU6BaKi5SQWbhuClCMpeGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,319,1739865600"; 
-   d="scan'208";a="143021978"
-Received: from bethpric-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.29])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2025 17:55:32 -0700
-Date: Tue, 27 May 2025 17:55:20 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Richard Narron <richard@aaazen.com>
-Cc: Guenter Roeck <linux@roeck-us.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linux stable <stable@vger.kernel.org>,
-	Linux kernel <linux-kernel@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH 5.15 00/59] 5.15.184-rc1 review
-Message-ID: <20250528005520.dpip4qe45zvsn7vw@desk>
-References: <20250520125753.836407405@linuxfoundation.org>
- <0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net>
- <67f03e41-245e-202-f0df-687cc4d9a915@aaazen.com>
+	s=arc-20240116; t=1748399488; c=relaxed/simple;
+	bh=/HzPKugMmaCRrhBJ4YFkeZUX/9qBlQMp0yGEzMrprqI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=twAnYQimnraMdS1SeY1kj/R/cUonz0rs2VzAS4D7ld3FszCTc5PAZuhn17WHjkMdyw6/wjwJ2QJ9qG8KoP29ZETl/1bAJBhjrKmbriCEyJBe7bJX9aeuHyJhG0fqhuOnix/NDT68dVC71RPj3G3LC5zkcmkhzPGhum4E7EIvJAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TtOvO5v8; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2343ea60430so35201065ad.3
+        for <stable@vger.kernel.org>; Tue, 27 May 2025 19:31:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748399483; x=1749004283; darn=vger.kernel.org;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BQRgW2zDMDyRpGcNs2f/hIRhslp675QORwh/naIQme4=;
+        b=TtOvO5v8XKmaO+o/YTUpcwQPtoqN2dyq2dO9J6x8fsXr8azbIRrfIBP2GiDDrXp9r0
+         k/Lhm5ibKeRtHzkboUeRk+el23rSQcBBWWlwrEmvMzsUfGCbRksUpQZUBfVToeyudNnq
+         1w5CZoEa+JakijWe/RUOyaKaj0/0jJtkKiSUEXLM3JW7E7rn4zX7X2yJQHDA311CGyxc
+         k5Vod8L53TdBYJnHy12roaMiRDoMRpOtGvTGuVBK49mQqS3UMDVJhTcoHcPXUPcSuQaw
+         qPmlQSv2o0Z9GywslycIWK/MQlqP4klNwiFmJIi81l/yjWDBn3peZRwgJ9mZ9GKeP3Gz
+         LbBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748399483; x=1749004283;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BQRgW2zDMDyRpGcNs2f/hIRhslp675QORwh/naIQme4=;
+        b=XZzxMxghCZUO1CUM9h3qC1Q3zbMeR7c4v1hlAxtE5gkosm3hyfmVUUu5XqJgTJmMmZ
+         NzIQmupxCCuRBed++iaN3CYuyBHWNh9bTjfNguGOeAI7KzrYiM2n553ao5v/NKA1hL3F
+         x8px5faCq8l2ztCHBajLIw0vqS/cUIEno23SG2b6gzsINkntP8W+s82N61xjvaycsjEo
+         ocAvWnOcrmApU+TZ0hBFBRp0/ajmxACx99Zkw/f7DtBI0N0nTQ/mIKO3f6D2Gg15uiHl
+         wVaRSnFFBW3Va7y3Jno+5+uykO2JRhzgUmu5dLwj+BkUWwwJ9Ye8gEYoVQYc5Qpqgd6o
+         YTOw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8wArwBt/TV/tGa4OMuO2NlhfgDIP9tCxSiTAz2+N4F4UbxvBAuSlBzBHRo1EDcvkQcbpHQ/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsOGMfF3JMycrRl5LpWn7CP7KTPgw7a55R7OR28o6Sb2PQucia
+	dxyxn+TAgxS2jN5nVNut6SCZWw8lCoV2u+kaFDi0xPUUO3GSfWFIMpp+aidS2FcWng==
+X-Gm-Gg: ASbGnctn60YWqMVGWkpo7xRtJWwZUeo+RNUPwG9rPBV8e8o6b1939cXPnAl7cOf6zrE
+	TLridUie+7cccVDjmuRwls31vWJNGkG3JGou9lp7zL1oHHysai8dXGQUImajMazmlVFQs8l5hrh
+	c1SY35GgsU259r/8OzztnHAqQ3aliAvk9Bxnh117W2TPHyjLwYvM1BD+9jNAqSxuA8yP3IDGflh
+	twQNtTMXLNMXVpQ0GyzDDX7AB4jvP+Un0HHKDEslS0U0hVGIB67qXZN3c+01aGI81XtNmVjmaQ9
+	t4xBWZqo1EjPv9uu9sN0kux/b0nJDWo+t6aeoS0qPy0uL0HFqGVEpaoVyMl4BjCK+F2RGcTu8Ez
+	L1Y/bvEFF2PLKvE42CB10125nNrAq034QdqZPbvJ3asqmVrDT
+X-Google-Smtp-Source: AGHT+IE52Y2joor7wjefGN/rIOi1GNEnRj6y0peHvF6A3p0ZaVNxrYsUFOHwWucOb5D5xtlgH28nxQ==
+X-Received: by 2002:a17:903:41cc:b0:22e:b215:1b6 with SMTP id d9443c01a7336-23414fc0524mr198873785ad.28.1748399483313;
+        Tue, 27 May 2025 19:31:23 -0700 (PDT)
+Received: from ynaffit-andsys.c.googlers.com (163.192.16.34.bc.googleusercontent.com. [34.16.192.163])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-234d2fe204asm1343745ad.80.2025.05.27.19.31.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 May 2025 19:31:22 -0700 (PDT)
+From: Tiffany Yang <ynaffit@google.com>
+To: "'Carlos Llamas' via kernel-team" <kernel-team@android.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,  Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?=
+ <arve@android.com>,  Todd
+ Kjos <tkjos@android.com>,  Martijn Coenen <maco@android.com>,  Joel
+ Fernandes <joel@joelfernandes.org>,  Christian Brauner
+ <brauner@kernel.org>,  Carlos Llamas <cmllamas@google.com>,  Suren
+ Baghdasaryan <surenb@google.com>,  Li Li <dualli@google.com>,
+  stable@vger.kernel.org,
+  syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com,  "open
+ list:ANDROID DRIVERS" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] binder: fix yet another UAF in binder_devices
+In-Reply-To: <20250524220758.915028-1-cmllamas@google.com> (via kernel-team's
+	message of "Sat, 24 May 2025 22:07:58 +0000")
+References: <20250524220758.915028-1-cmllamas@google.com>
+User-Agent: mu4e 1.12.8; emacs 30.1
+Date: Wed, 28 May 2025 02:31:21 +0000
+Message-ID: <dbx8o6vdihza.fsf@ynaffit-andsys.c.googlers.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67f03e41-245e-202-f0df-687cc4d9a915@aaazen.com>
+Content-Type: text/plain
 
-On Tue, May 27, 2025 at 12:31:47PM -0700, Richard Narron wrote:
-> On Fri, 23 May 2025, Guenter Roeck wrote:
-> 
-> > On 5/20/25 06:49, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 5.15.184 release.
-> > > There are 59 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> >
-> > Build reference: v5.15.184
-> > Compiler version: x86_64-linux-gcc (GCC) 12.4.0
-> > Assembler version: GNU assembler (GNU Binutils) 2.40
-> >
-> > Configuration file workarounds:
-> >     "s/CONFIG_FRAME_WARN=.*/CONFIG_FRAME_WARN=0/"
-> >
-> > Building i386:defconfig ... passed
-> > Building i386:allyesconfig ... failed
-> > --------------
-> > Error log:
-> > x86_64-linux-ld: arch/x86/kernel/static_call.o: in function
-> > `__static_call_transform':
-> > static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
-> > make[1]: [Makefile:1234: vmlinux] Error 1 (ignored)
-> > --------------
-> > Building i386:allmodconfig ... failed
-> > --------------
-> > Error log:
-> > x86_64-linux-ld: arch/x86/kernel/static_call.o: in function
-> > `__static_call_transform':
-> > static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
-> > make[1]: [Makefile:1234: vmlinux] Error 1 (ignored)
-> > --------------
-> >
-> > In v5.15.y, cpu_wants_rethunk_at is only built if CONFIG_STACK_VALIDATION=y,
-> > but that is not supported for i386 builds. The dummy function in
-> > arch/x86/include/asm/alternative.h doesn't take that dependency into account.
-> >
-> 
-> I found this bug too using the Slackware 15.0 32-bit kernel
-> configuration.
-> 
-> Here is a simple work around patch, but there may be a better solution...
-> 
-> --- arch/x86/kernel/static_call.c.orig	2025-05-22 05:08:28.000000000 -0700
-> +++ arch/x86/kernel/static_call.c	2025-05-27 10:25:27.630496538 -0700
-> @@ -81,9 +81,12 @@
->  		break;
-> 
->  	case RET:
-> +
-> +#ifdef CONFIG_64BIT
->  		if (cpu_wants_rethunk_at(insn))
->  			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
->  		else
-> +#endif
->  			code = &retinsn;
->  		break;
-> 
+"'Carlos Llamas' via kernel-team" <kernel-team@android.com> writes:
 
-Another option is to define the empty function when CONFIG_STACK_VALIDATION=n as below:
+> Commit e77aff5528a18 ("binderfs: fix use-after-free in binder_devices")
+> addressed a use-after-free where devices could be released without first
+> being removed from the binder_devices list. However, there is a similar
+> path in binder_free_proc() that was missed:
+>
+>   ==================================================================
+>   BUG: KASAN: slab-use-after-free in binder_remove_device+0xd4/0x100
+>   Write of size 8 at addr ffff0000c773b900 by task umount/467
+>   CPU: 12 UID: 0 PID: 467 Comm: umount Not tainted 6.15.0-rc7-00138-g57483a362741 #9 PREEMPT
+>   Hardware name: linux,dummy-virt (DT)
+>   Call trace:
+>    binder_remove_device+0xd4/0x100
+>    binderfs_evict_inode+0x230/0x2f0
+>    evict+0x25c/0x5dc
+>    iput+0x304/0x480
+>    dentry_unlink_inode+0x208/0x46c
+>    __dentry_kill+0x154/0x530
+>    [...]
+>
+>   Allocated by task 463:
+>    __kmalloc_cache_noprof+0x13c/0x324
+>    binderfs_binder_device_create.isra.0+0x138/0xa60
+>    binder_ctl_ioctl+0x1ac/0x230
+>   [...]
+>
+>   Freed by task 215:
+>    kfree+0x184/0x31c
+>    binder_proc_dec_tmpref+0x33c/0x4ac
+>    binder_deferred_func+0xc10/0x1108
+>    process_one_work+0x520/0xba4
+>   [...]
+>   ==================================================================
+>
+> Call binder_remove_device() within binder_free_proc() to ensure the
+> device is removed from the binder_devices list before being kfreed.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 12d909cac1e1 ("binderfs: add new binder devices to binder_devices")
+> Reported-by: syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=4af454407ec393de51d6
+> Tested-by: syzbot+4af454407ec393de51d6@syzkaller.appspotmail.com
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> ---
+>  drivers/android/binder.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+> index 682bbe4ad550..c463ca4a8fff 100644
+> --- a/drivers/android/binder.c
+> +++ b/drivers/android/binder.c
+> @@ -5241,6 +5241,7 @@ static void binder_free_proc(struct binder_proc *proc)
+>  			__func__, proc->outstanding_txns);
+>  	device = container_of(proc->context, struct binder_device, context);
+>  	if (refcount_dec_and_test(&device->ref)) {
+> +		binder_remove_device(device);
+>  		kfree(proc->context->name);
+>  		kfree(device);
+>  	}
 
---- 8< ---
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: [PATCH] x86/its: Fix undefined reference to cpu_wants_rethunk_at()
+Reviewed-by: Tiffany Yang <ynaffit@google.com>
 
-Below error was reported in 32-bit kernel build:
-
-  static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
-  make[1]: [Makefile:1234: vmlinux] Error
-
-This is because the definition of cpu_wants_rethunk_at() depends on
-CONFIG_STACK_VALIDATION which is only enabled in 64-bit mode.
-
-Define the empty function when CONFIG_STACK_VALIDATION=n, rethunk mitigation
-is anyways not supported without it.
-
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/stable/0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net/
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- arch/x86/include/asm/alternative.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-index 1797f80c10de..a5f704dbb4a1 100644
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -98,7 +98,7 @@ static inline u8 *its_static_thunk(int reg)
- }
- #endif
- 
--#ifdef CONFIG_RETHUNK
-+#if defined(CONFIG_RETHUNK) && defined(CONFIG_STACK_VALIDATION)
- extern bool cpu_wants_rethunk(void);
- extern bool cpu_wants_rethunk_at(void *addr);
- #else
 -- 
-2.34.1
-
+Tiffany Y. Yang
 
