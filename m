@@ -1,103 +1,393 @@
-Return-Path: <stable+bounces-147991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB63AC6F68
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:31:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B89EAC6FF5
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C74F3A180D
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:31:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20F0178D06
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF701FA859;
-	Wed, 28 May 2025 17:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEB828DB7F;
+	Wed, 28 May 2025 17:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hT8UkacD"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FTAptVQL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2072.outbound.protection.outlook.com [40.107.212.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236F01EA91;
-	Wed, 28 May 2025 17:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748453487; cv=none; b=FwBgsXntm8uznF7+HBC7/fi6dtP+NJXvGJtM6GXnXpwOn/vWkMnHPNi0dL5HtaEpxUQGRF1xJykgWRub/4eaJ2M4p6djX6w1N7WPFQKGssh2ukmc1g38cWX7wXftzcRbBwDuHbQS/JCoTlU7sRR09fOm2oyOmgdydsLCJrwLk1s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748453487; c=relaxed/simple;
-	bh=/Th+Pz8Nrw7iBiRuBIiL0T1wvKZ7+6gYKRu1TAAFNoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VmCNQHmDrRwoiXf5WoU1jPex/nYwk5o7no7O4rGX+sLzaRqMUnbiYFAfnRK5SxqkKSykKcWKUp657YK1+ikTAF6GmsVBQEt2BOoKlLlpEmNF8SmpZykYFYg7pOK0mjyg1k3NQlfpdRmGgV1RQpR12dxvoWOQ4HsGRIYjXPjppIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hT8UkacD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631D5C4CEE3;
-	Wed, 28 May 2025 17:31:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748453486;
-	bh=/Th+Pz8Nrw7iBiRuBIiL0T1wvKZ7+6gYKRu1TAAFNoE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hT8UkacD3Qpuag/oApBDUAZISWgJCi1/ayoMAYg9bwAphNxHDqvY7VaDfvZ6v8juJ
-	 bI87hNUvwrpnbNfW01jxO9eQkYo40g/cpBI8x4laFS0r0q5uGX23hz22J46snnJMI7
-	 FwJJrxP3Snu66iNheffkHsj/Txha+IChG2fIFFQNZVpqniPugt0xqghu0bZYUspSfY
-	 xlnZIH1fJ4DxbLir3Bs4rnZm3YBwvnuzbhKrLergznFx5jpoVH6fanp+8mkUbVoyxo
-	 ZTn8c4s6xGLGVz1HzMNsMNF4EVpNSVFxXhfjhGf7Q2qDvDs5KIFx5hxME6UYYuXqev
-	 guSZ/lDLbdaCQ==
-Date: Wed, 28 May 2025 20:31:19 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org, xin@zytor.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 3/3] x86/alternative: make kernel ITS thunks read-only
-Message-ID: <aDdIZ9vBQ3JQoIN5@kernel.org>
-References: <20250528123557.12847-1-jgross@suse.com>
- <20250528123557.12847-4-jgross@suse.com>
- <20250528131052.GZ39944@noisy.programming.kicks-ass.net>
- <044f0048-95bb-4822-978e-a23528f3891f@suse.com>
- <20250528132231.GB39944@noisy.programming.kicks-ass.net>
- <7c8bf4f5-29a0-4147-b31a-5e420b11468e@suse.com>
- <20250528155821.GD39944@noisy.programming.kicks-ass.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C53A1B6D06
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 17:50:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748454660; cv=fail; b=Ko0KwAzvJSmoI7GBbmYKUT4BDsXEAXmUkAN8Y5n3mXXHWplQ2jEjp+9fAMq1bBsb7dlH4qLlZiM8oNyJmz3GPiwM+ygThP2Z0qelYeMUIYPxCwlxEjByHmwDDEP69V6BWqhCtrT5xvVhHogUwHXR53j1srDLX1afTEWqbEecsMs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748454660; c=relaxed/simple;
+	bh=7+LkfrYHwFRyau7OeiM1yWAu0byote0BAlnjZnxVZYU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=KC4Egor6D4dzVstttEl1Xvd09IuEMfdJeOjNIQp6v0kQwfQynGaN+pzOaIL3ABkoo0d0XnD8GPhP/JK68bUXvWE+IJNoywEFuVVTBnG3sxzdQ4ZZcLaWRcz+mdXddv+UMyYajVd7RbAlpauHwjhwQH3rbjdMXTC/JzinUCS3GgA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FTAptVQL; arc=fail smtp.client-ip=40.107.212.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FV21wbuiGXQGEKlWR4PY9JqcW4ckgwEq0f89Fi261ZWEYvatwLhAkE8gzN8p+FYBDEiNdNrA5XQBysqx1v7oagX/l8Ohc8uKTT7KVhepfu65Yj6fGzr2gCP/iCOYoF8SRPYeJBG6EjqUXdepNRhlpudHKW75Ll6LFS4w6FHqvqx4K6Ca/EC2daJfeohFHXJfKKCnBm6q1kmP0NVtPeZtdciRNGYa/8onEK+r2m/tpb8l6YcuAcYcHmOWo0f7ezwdHWYTxknENtRKELggTZnE5qU5iOM8+mG+Iqd3lnO4IJyy9jecFh9kZvrPPCmYv1xaNB3mDqSA6Zys0M+ttnpueA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VfzyGlIZ3hSCViDHKXrPJyLAEwxTx98hYvSFrX+DqYc=;
+ b=EMLLf5jc5pKeLNs+85nJF8bQP2plRRcR0nvl2TOJLS/oiR4RUPLQFe5oT9J+cPM68JxVm2dyyCVbFpxNJ/Pq0wOZPgrVPc8WD6wc6ZEsK9ZDwdxXU0QRBsePzRdc6cvmxPL4TaTyf8sakGyS10uGmg/rlGTvT4P744YrWEmmqcH1tKqBmKXeGWxX8EjphOve96hNqDYxF3batX0XyzaKeLn3pO83K1Vouu3e1qeIVBb8O6G4JI/RH1LoYsdb+hhpDU1I1XvxPSBXSbe4rw9KX6/w0Ag3uCe3i6P2uTp+odPWfa7E6XHmuXGr3RXw13/FuDdms/dJAS7hQw+Q4yT+3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VfzyGlIZ3hSCViDHKXrPJyLAEwxTx98hYvSFrX+DqYc=;
+ b=FTAptVQLAX5kjLYemNFIygVJIGR96hn+2+nj012HRJhWTQDeAhC2S719J5qoCO87p2494MtDGRt7UFmNdVejmci42jIznTxd0P2V+SqPrcN1xPgsDUcnVy5NTK+OkWKS/COP2ozSMAGq0Zn0IMecC7ZCWuWA2TCiGqbOtQK2oI8=
+Received: from SA1PR02CA0013.namprd02.prod.outlook.com (2603:10b6:806:2cf::11)
+ by IA0PR12MB8746.namprd12.prod.outlook.com (2603:10b6:208:490::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Wed, 28 May
+ 2025 17:50:52 +0000
+Received: from SN1PEPF000252A2.namprd05.prod.outlook.com
+ (2603:10b6:806:2cf:cafe::67) by SA1PR02CA0013.outlook.office365.com
+ (2603:10b6:806:2cf::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.19 via Frontend Transport; Wed,
+ 28 May 2025 17:50:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF000252A2.mail.protection.outlook.com (10.167.242.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8769.18 via Frontend Transport; Wed, 28 May 2025 17:50:51 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 28 May
+ 2025 12:50:51 -0500
+Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Wed, 28 May 2025 12:50:50 -0500
+Message-ID: <26b8a17e-500d-d89d-de9f-c17108a6831d@amd.com>
+Date: Wed, 28 May 2025 10:50:50 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250528155821.GD39944@noisy.programming.kicks-ass.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] accel/ivpu: Use dma_resv_lock() instead of a custom mutex
+Content-Language: en-US
+To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	<dri-devel@lists.freedesktop.org>
+CC: <jeff.hugo@oss.qualcomm.com>, <stable@vger.kernel.org>
+References: <20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
+In-Reply-To: <20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB04.amd.com: lizhi.hou@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000252A2:EE_|IA0PR12MB8746:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17dfe04c-9fe1-48d4-7567-08dd9e102fde
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cHdKMmpNOWRoaytvUjQyNWE0UnNrSHpDK3h1UTZhcERTbTM2bTFuRnVkTEU1?=
+ =?utf-8?B?cVVOZ2tCVDZuQXM5a3lJTStqdDdKTkUxSTk5RmFWWHZUWlZrQ1JJalFTQzF4?=
+ =?utf-8?B?TFFiN1JYS1NVaDFiZWw4b2tzVnB2Z1k2eW9jTVhDVlYvMzBuTlNhaXJ6YlF0?=
+ =?utf-8?B?R1FudXpUWEpvNVZNcFd6QmNabDlaVE94ckswUDE3aEFsbmdDSUswbzZhZHl2?=
+ =?utf-8?B?cmYrSW9MYlBhenZkVXovM3duR2xKMjdvRGk0OXhyM1RFVVB2WXA0MzcyNHdp?=
+ =?utf-8?B?NlJrSy9IQnpBZzA2dGhXUVhVSll3T2w2NUVEaThCZWlaQVltaUJEeXpQZTBk?=
+ =?utf-8?B?M2RyazFybkRLc0Y2WXVrZk1BcCsrUWpDWGg1ajQ0alZnMU5Da0JnQ1ZiRmt6?=
+ =?utf-8?B?cDQ2dkkrWTBSZmVMYnFtQW50cjQrNEtxU2ZxaW40d0JiTGFYUXYydmdDZllM?=
+ =?utf-8?B?Q3g4R0xGQjU4R1JZVDB4ZEZwR1dWc3pJOWt4NzNKVXlQTG1Pb2VEUWJTM0Jk?=
+ =?utf-8?B?c0M5Ky9nbEFRWGpXdnhPdmhiT243VVQwVGVSVEFGTWxEeVh2YUhlakhic05k?=
+ =?utf-8?B?SFJZMmM4bVhESHR2anNWOEN1ZE9qSStaTVR2MXdKUm1Ra2dpUGFCSDdZZzJp?=
+ =?utf-8?B?WUgvUjNTdVkzWktjeEtIRnR2Skl4V1JZSGNVdktGRGJ1QmM5OUpEM095WmhD?=
+ =?utf-8?B?R3UzWXV2QldTVjltVVVJdEhVYUFEYWV0S0RXdlhnYnZWcmxqazdtYWFpSVMy?=
+ =?utf-8?B?ZHNSQ1R5TktFbnN6K04wYksvTmVSdFhHM0NTa0Jid0YrK0RhUVlPbmtjTUFm?=
+ =?utf-8?B?dFhRUi9LMElEcytzNGFpODd1WDBxNnhyRm5wM0IwZndHbCtEWlh5dE1hRk1t?=
+ =?utf-8?B?OFViN09vQ0N0anYwT1RCeDFjUUVYL3ZQc1pyOG8zdXlZZzVwMkNDSHVTeTA5?=
+ =?utf-8?B?TXFWaUVSeDA0WUxCdUFkRnZ4K0NiWjczMXNDby9Lc1p6ekQrWkJuUEhxYnpW?=
+ =?utf-8?B?eEtEbXZ0eTZCZDNlZnBLN2RzR1lzNFg5NkU2UnJURGs5d05yZmIwWHUraHYy?=
+ =?utf-8?B?ZEtUNVlFd3N2d1R3MmQwZGVKenN1bFhKS3FyMG0yWHo5VHVNamFqU3RJOEdV?=
+ =?utf-8?B?cnlJOW9pLzBOL0RKenR1M0lFQk5ZR1N5VUR1TkVUQzM3QzFqdWppN3JETHhl?=
+ =?utf-8?B?cHZiOWVqeGhvN1lseG5hMjZpamVHMTZEa2Qyd1M1RFlmUkpBM2FCUFFlcjBT?=
+ =?utf-8?B?a0l6Rjl2R1JVbWM0cGFhTmx6dHp1WDI4MWFiS210Ni9PRVM5NHdKb0d6Nita?=
+ =?utf-8?B?UEdTbFJtZnNoVFY2eXBmenU2OE5iZ3luUElCd1Uvc2tia3BTV0xHOVBzcGg3?=
+ =?utf-8?B?SUJVWmRDODNVb1JKY3d6TXBHakxzTzNKOXQzMzB5YlgyRHRkRzV4cGt5SzRK?=
+ =?utf-8?B?RXBHU3hRY3VUem1mUVQ5bWdQTkFrVWRsOWQzWWNJRjZWdGRyR1dpenNNd3lh?=
+ =?utf-8?B?UEZEeXBFNHZvRmhEVFlwNDNSY2orQXZGVGRPUFdIRkhQZ3FYQmFRTjY5SW9n?=
+ =?utf-8?B?M1d3ZXd2MGZVQVNXKzhSNnNFdWZWSVltNGtGbU1HUFZFVGY3K1EwWXg2R0x0?=
+ =?utf-8?B?YVEwRnp4Q25yNjhpZDVUV0lDVFpyQXg4VnQvQi9EWktSdzAweDZMY1l6YTM0?=
+ =?utf-8?B?ZTV4K1FoOUgyK2lYUGMxTUxDZjJMVE9WUnQzUWFDVU5peHY1a0lDUjR3M1Fx?=
+ =?utf-8?B?bW9LY0FsVG5sc25Ja2lnTDRBOGRiVVZ4UUFaaXJDSHQyaGUrZkh2Z0Q5QWpo?=
+ =?utf-8?B?dXBlMitnb09BLzQ4a2hiMmZia1JmZlgrcEJpck9xSEFKV0ZTM3NkWkh4SWRu?=
+ =?utf-8?B?RmpxWDUwc0VsYTFLVmxIVldHQUl5N1lGZEpFRHZvbU5JS2hieUJYS21ieDRU?=
+ =?utf-8?B?QkVnQm1RNk1IL1M4Z3ExbEdvYjJDUjhCdTJMaUozQnhWMDJRUHRPaFYvd3E1?=
+ =?utf-8?B?M3d0VjcvRWVmcWlkbTV5L0M4TDFCY1E3ejE5MlIzVFdISXZsOTBJL2FkaGd5?=
+ =?utf-8?Q?D/lVYR?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 17:50:51.5526
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17dfe04c-9fe1-48d4-7567-08dd9e102fde
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000252A2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8746
 
-On Wed, May 28, 2025 at 05:58:21PM +0200, Peter Zijlstra wrote:
-> On Wed, May 28, 2025 at 03:30:33PM +0200, Jürgen Groß wrote:
-> 
-> > Have a look at its_fini_mod().
-> 
-> Oh, that's what you mean. But this still isn't very nice, you now have
-> restore_rox() without make_temp_rw(), which was the intended usage
-> pattern.
-> 
-> Bah, I hate how execmem works different for !PSE, Mike, you see a sane
-> way to fix this?
 
-The least ugly thing I could think of is to replace the current pattern of
+On 5/28/25 08:43, Jacek Lawrynowicz wrote:
+> This fixes a potential race conditions in:
+>   - ivpu_bo_unbind_locked() where we modified the shmem->sgt without
+>     holding the dma_resv_lock().
+>   - ivpu_bo_print_info() where we read the shmem->pages without
+>     holding the dma_resv_lock().
+>
+> Using dma_resv_lock() also protects against future syncronisation
+> issues that may arise when accessing drm_gem_shmem_object or
+> drm_gem_object members.
+>
+> Fixes: 42328003ecb6 ("accel/ivpu: Refactor BO creation functions")
+> Cc: <stable@vger.kernel.org> # v6.9+
+> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> ---
+>   drivers/accel/ivpu/ivpu_gem.c | 63 +++++++++++++++++++----------------
+>   drivers/accel/ivpu/ivpu_gem.h |  1 -
+>   2 files changed, 34 insertions(+), 30 deletions(-)
+>
+> diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
+> index c193a80241f5f..5908268ca45e9 100644
+> --- a/drivers/accel/ivpu/ivpu_gem.c
+> +++ b/drivers/accel/ivpu/ivpu_gem.c
+> @@ -33,6 +33,16 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
+>   		 (bool)bo->base.base.import_attach);
+>   }
+>   
+> +static inline int ivpu_bo_lock(struct ivpu_bo *bo)
+> +{
+> +	return dma_resv_lock(bo->base.base.resv, NULL);
+> +}
+> +
+> +static inline void ivpu_bo_unlock(struct ivpu_bo *bo)
+> +{
+> +	dma_resv_unlock(bo->base.base.resv);
+> +}
+> +
+>   /*
+>    * ivpu_bo_pin() - pin the backing physical pages and map them to VPU.
+>    *
+> @@ -43,22 +53,22 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
+>   int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
+>   {
+>   	struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
+> +	struct sg_table *sgt;
+>   	int ret = 0;
+>   
+> -	mutex_lock(&bo->lock);
+> -
+>   	ivpu_dbg_bo(vdev, bo, "pin");
+> -	drm_WARN_ON(&vdev->drm, !bo->ctx);
+>   
+> -	if (!bo->mmu_mapped) {
+> -		struct sg_table *sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
+> +	sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
+> +	if (IS_ERR(sgt)) {
+> +		ret = PTR_ERR(sgt);
+> +		ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
+> +		return ret;
+> +	}
+>   
+> -		if (IS_ERR(sgt)) {
+> -			ret = PTR_ERR(sgt);
+> -			ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
+> -			goto unlock;
+> -		}
+> +	ivpu_bo_lock(bo);
+>   
+> +	if (!bo->mmu_mapped) {
+> +		drm_WARN_ON(&vdev->drm, !bo->ctx);
+>   		ret = ivpu_mmu_context_map_sgt(vdev, bo->ctx, bo->vpu_addr, sgt,
+>   					       ivpu_bo_is_snooped(bo));
+>   		if (ret) {
+> @@ -69,7 +79,7 @@ int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
+>   	}
+>   
+>   unlock:
+> -	mutex_unlock(&bo->lock);
+> +	ivpu_bo_unlock(bo);
+>   
+>   	return ret;
+>   }
+> @@ -84,7 +94,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
+>   	if (!drm_dev_enter(&vdev->drm, &idx))
+>   		return -ENODEV;
+>   
+> -	mutex_lock(&bo->lock);
+> +	ivpu_bo_lock(bo);
+>   
+>   	ret = ivpu_mmu_context_insert_node(ctx, range, ivpu_bo_size(bo), &bo->mm_node);
+>   	if (!ret) {
+> @@ -94,7 +104,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
+>   		ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
+>   	}
+>   
+> -	mutex_unlock(&bo->lock);
+> +	ivpu_bo_unlock(bo);
+>   
+>   	drm_dev_exit(idx);
+>   
+> @@ -105,7 +115,7 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
+>   {
+>   	struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
+>   
+> -	lockdep_assert(lockdep_is_held(&bo->lock) || !kref_read(&bo->base.base.refcount));
+> +	lockdep_assert(dma_resv_held(bo->base.base.resv) || !kref_read(&bo->base.base.refcount));
+>   
+>   	if (bo->mmu_mapped) {
+>   		drm_WARN_ON(&vdev->drm, !bo->ctx);
+> @@ -123,14 +133,12 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
+>   	if (bo->base.base.import_attach)
+>   		return;
+>   
+> -	dma_resv_lock(bo->base.base.resv, NULL);
+>   	if (bo->base.sgt) {
+>   		dma_unmap_sgtable(vdev->drm.dev, bo->base.sgt, DMA_BIDIRECTIONAL, 0);
+>   		sg_free_table(bo->base.sgt);
+>   		kfree(bo->base.sgt);
+>   		bo->base.sgt = NULL;
 
-	execmem_alloc()
-	exemem_make_temp_rw()
-	/* update */
-	execmem_restore_rox()
+Maybe not directly modify sgt but use drm_gem_shmem_purge()?
 
-with
+Will it potentially memleak without calling drm_gem_shmem_put_pages()? 
+(if the bo is mmap, vmap etc)
 
-	execmem_alloc_rw()
-	/* update */
-	execmem_protect()
 
-but I still haven't got to try it.
+Thanks,
 
--- 
-Sincerely yours,
-Mike.
+Lizhi
+
+>   	}
+> -	dma_resv_unlock(bo->base.base.resv);
+>   }
+>   
+>   void ivpu_bo_unbind_all_bos_from_context(struct ivpu_device *vdev, struct ivpu_mmu_context *ctx)
+> @@ -142,12 +150,12 @@ void ivpu_bo_unbind_all_bos_from_context(struct ivpu_device *vdev, struct ivpu_m
+>   
+>   	mutex_lock(&vdev->bo_list_lock);
+>   	list_for_each_entry(bo, &vdev->bo_list, bo_list_node) {
+> -		mutex_lock(&bo->lock);
+> +		ivpu_bo_lock(bo);
+>   		if (bo->ctx == ctx) {
+>   			ivpu_dbg_bo(vdev, bo, "unbind");
+>   			ivpu_bo_unbind_locked(bo);
+>   		}
+> -		mutex_unlock(&bo->lock);
+> +		ivpu_bo_unlock(bo);
+>   	}
+>   	mutex_unlock(&vdev->bo_list_lock);
+>   }
+> @@ -167,7 +175,6 @@ struct drm_gem_object *ivpu_gem_create_object(struct drm_device *dev, size_t siz
+>   	bo->base.pages_mark_dirty_on_put = true; /* VPU can dirty a BO anytime */
+>   
+>   	INIT_LIST_HEAD(&bo->bo_list_node);
+> -	mutex_init(&bo->lock);
+>   
+>   	return &bo->base.base;
+>   }
+> @@ -286,8 +293,6 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
+>   	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
+>   	drm_WARN_ON(&vdev->drm, bo->ctx);
+>   
+> -	mutex_destroy(&bo->lock);
+> -
+>   	drm_WARN_ON(obj->dev, bo->base.pages_use_count > 1);
+>   	drm_gem_shmem_free(&bo->base);
+>   }
+> @@ -370,9 +375,9 @@ ivpu_bo_create(struct ivpu_device *vdev, struct ivpu_mmu_context *ctx,
+>   		goto err_put;
+>   
+>   	if (flags & DRM_IVPU_BO_MAPPABLE) {
+> -		dma_resv_lock(bo->base.base.resv, NULL);
+> +		ivpu_bo_lock(bo);
+>   		ret = drm_gem_shmem_vmap(&bo->base, &map);
+> -		dma_resv_unlock(bo->base.base.resv);
+> +		ivpu_bo_unlock(bo);
+>   
+>   		if (ret)
+>   			goto err_put;
+> @@ -395,9 +400,9 @@ void ivpu_bo_free(struct ivpu_bo *bo)
+>   	struct iosys_map map = IOSYS_MAP_INIT_VADDR(bo->base.vaddr);
+>   
+>   	if (bo->flags & DRM_IVPU_BO_MAPPABLE) {
+> -		dma_resv_lock(bo->base.base.resv, NULL);
+> +		ivpu_bo_lock(bo);
+>   		drm_gem_shmem_vunmap(&bo->base, &map);
+> -		dma_resv_unlock(bo->base.base.resv);
+> +		ivpu_bo_unlock(bo);
+>   	}
+>   
+>   	drm_gem_object_put(&bo->base.base);
+> @@ -416,12 +421,12 @@ int ivpu_bo_info_ioctl(struct drm_device *dev, void *data, struct drm_file *file
+>   
+>   	bo = to_ivpu_bo(obj);
+>   
+> -	mutex_lock(&bo->lock);
+> +	ivpu_bo_lock(bo);
+>   	args->flags = bo->flags;
+>   	args->mmap_offset = drm_vma_node_offset_addr(&obj->vma_node);
+>   	args->vpu_addr = bo->vpu_addr;
+>   	args->size = obj->size;
+> -	mutex_unlock(&bo->lock);
+> +	ivpu_bo_unlock(bo);
+>   
+>   	drm_gem_object_put(obj);
+>   	return ret;
+> @@ -458,7 +463,7 @@ int ivpu_bo_wait_ioctl(struct drm_device *dev, void *data, struct drm_file *file
+>   
+>   static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
+>   {
+> -	mutex_lock(&bo->lock);
+> +	ivpu_bo_lock(bo);
+>   
+>   	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
+>   		   bo, bo->ctx_id, bo->vpu_addr, bo->base.base.size,
+> @@ -475,7 +480,7 @@ static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
+>   
+>   	drm_printf(p, "\n");
+>   
+> -	mutex_unlock(&bo->lock);
+> +	ivpu_bo_unlock(bo);
+>   }
+>   
+>   void ivpu_bo_list(struct drm_device *dev, struct drm_printer *p)
+> diff --git a/drivers/accel/ivpu/ivpu_gem.h b/drivers/accel/ivpu/ivpu_gem.h
+> index 0c93118c85bd3..aa8ff14f7aae1 100644
+> --- a/drivers/accel/ivpu/ivpu_gem.h
+> +++ b/drivers/accel/ivpu/ivpu_gem.h
+> @@ -17,7 +17,6 @@ struct ivpu_bo {
+>   	struct list_head bo_list_node;
+>   	struct drm_mm_node mm_node;
+>   
+> -	struct mutex lock; /* Protects: ctx, mmu_mapped, vpu_addr */
+>   	u64 vpu_addr;
+>   	u32 flags;
+>   	u32 job_status; /* Valid only for command buffer */
 
