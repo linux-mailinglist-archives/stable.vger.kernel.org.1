@@ -1,179 +1,105 @@
-Return-Path: <stable+bounces-147954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72B1AC696D
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 14:36:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A67BDAC698E
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 14:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2742A4E47A4
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 12:36:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1235116BBFB
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 12:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986CA2857F0;
-	Wed, 28 May 2025 12:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0F1283FEF;
+	Wed, 28 May 2025 12:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="s1EnRGDG";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="s1EnRGDG"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="nYKmG6hr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD36B28688F
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 12:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BF91F419B
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 12:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748435781; cv=none; b=NS/+VcH6nOGkv++LwQPMAxIpb88cj59vNkIDfAejWBIGoQlRMqOvOsoSpNp777RqPSV1oZ1iUHXsoGRULzBVEGlfuNN1IqieMP+PgRJ/usZYqe6RibhBswjcJuUhWVp4vz734Zmw5GyFw1jRVqjdFIeIdldk5JfeGhdgJ05UbKU=
+	t=1748435962; cv=none; b=Y4z++y51yuti+zjDCVwxQNX4/oX4hsnm0TXhEMAjbc8bLJQHgEEtQ7r99THmnTiX4IwmsH9rbSR7r+kVkWCVQNWq+MqSrHg44aZIDhEJuyOyuh5Pazb5BkHTqHiXfrDB8rVcuAl9KYRXUVweoRlbFVW+GxuDF7KXFmZraIWFkUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748435781; c=relaxed/simple;
-	bh=DDn3bDzacoLdEbYTtaefGSuDRRRTSSmIS3JDSnPZlR4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPuo0uSvGIsuiYOvvPhvOQoYy53cKO1+XmdmGREQEuTBsaopzTJws+KoUB5qcIjhPNM8tIDSGWMovMatFXki16wWoyDVXoOu0ZONI81Sd2XPl6ap9yxcG231W3/CXwJtM3yvSwhIaoHXsi47fmnwY/GywCsswAsjvICY7Ik/yH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=s1EnRGDG; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=s1EnRGDG; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	s=arc-20240116; t=1748435962; c=relaxed/simple;
+	bh=918KPrz8nSGOfnhmrz+GK4lj18hbC6lx6czPDDZhrSM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=INyG0Leapto5UjFLsSfPKvnsVGbyTbZvYmWT98KfgsN9llTznoYCnWiWqdEsZN6rJMMTMGRh7ecgdgo+qS7BJX0geDeChw0rkJoUcj2uOnDe+zOq29z4azPAGARM+nbC313bNxFpTPi47Rs/dTxBudqNo9bVGcqgUDhnqQa7vp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=nYKmG6hr; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D45411F8B9;
-	Wed, 28 May 2025 12:36:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1748435777; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4b6pwL1xdKz9tMS;
+	Wed, 28 May 2025 14:39:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1748435954;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=j/hGv7jZb/4TX+WGvVm1B9o6zeX04OtGYX/XldpPRP0=;
-	b=s1EnRGDGGug3fifeX50rJKby6jd0HYMtDaLrLLcOoQ4BvOcApT9NX1c2yaGdzf89038Izn
-	hcgH8XJEmPHXri2HhA8O9wk+RmjLAaIdo5pP4CUmaQmymrc2fNSnaRc8v3QDI54kfQkUvD
-	lyLg+5Avc/Ziv1sawOO/u6Dbx4myZPI=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1748435777; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j/hGv7jZb/4TX+WGvVm1B9o6zeX04OtGYX/XldpPRP0=;
-	b=s1EnRGDGGug3fifeX50rJKby6jd0HYMtDaLrLLcOoQ4BvOcApT9NX1c2yaGdzf89038Izn
-	hcgH8XJEmPHXri2HhA8O9wk+RmjLAaIdo5pP4CUmaQmymrc2fNSnaRc8v3QDI54kfQkUvD
-	lyLg+5Avc/Ziv1sawOO/u6Dbx4myZPI=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 85331136E0;
-	Wed, 28 May 2025 12:36:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BDIbH0EDN2ipKQAAD6G6ig
-	(envelope-from <jgross@suse.com>); Wed, 28 May 2025 12:36:17 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Cc: xin@zytor.com,
-	Juergen Gross <jgross@suse.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/3] x86/alternative: make kernel ITS thunks read-only
-Date: Wed, 28 May 2025 14:35:57 +0200
-Message-ID: <20250528123557.12847-4-jgross@suse.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250528123557.12847-1-jgross@suse.com>
-References: <20250528123557.12847-1-jgross@suse.com>
+	bh=RGlF2J+LXP6mDAjw+NjT5XOIIldRczFgSNzdB+eCv10=;
+	b=nYKmG6hre7dyxRWF/cr8UrkQxoeBGWBzUiJ0wiCmXoGWFWOHcWqYxeAF+feIeCOTGktG4b
+	rOLM2K/qJMwBMt9GaQcehHErtPVX49+SRAQiZWbZMQMwYin+ZdbVZSyrcWcVBcH3a3E2J7
+	VsemUzKFrx2fEv8Ib1y01OQ2w+6hgAZHsXb7lFy9X+lE9IUgzKzf4Huvj99hxpON0EArWH
+	iQaA4pagPJFuXYBRvQkI9G0hN3rBqpsDGJlH0zI1iNj4Be8qSMWbgPitkN9XdVet9IInwx
+	S0BcWuL1HSDXnvVzujUn925at631VLH7vpuD/7lTLZqX40x0nlPXABwko6BHSg==
+Message-ID: <6cd32fcf-233d-454b-be3d-aabb870b8b4a@mailbox.org>
+Date: Wed, 28 May 2025 14:39:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH 2/2] drm/amdgpu: Dirty cleared blocks on allocation
+To: "Paneer Selvam, Arunpravin" <arunpravin.paneerselvam@amd.com>,
+ Natalie Vock <natalie.vock@gmx.de>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ stable@vger.kernel.org
+References: <20250527194353.8023-1-natalie.vock@gmx.de>
+ <20250527194353.8023-3-natalie.vock@gmx.de>
+ <89652580-5763-4f1e-abf5-d340119543f3@amd.com>
+ <dbbdcada-32ae-4457-af87-1f98362461f1@gmx.de>
+ <da44526e-f2b6-4486-8ede-24647869576f@amd.com>
+From: =?UTF-8?Q?Michel_D=C3=A4nzer?= <michel.daenzer@mailbox.org>
+Content-Language: en-CA
+In-Reply-To: <da44526e-f2b6-4486-8ede-24647869576f@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.com:mid];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -6.80
+X-MBO-RS-META: i9i1rih46o4e89puh5pgwzy6nrsf7iwp
+X-MBO-RS-ID: 1d7103a300313c1ac30
 
-When allocating memory pages for kernel ITS thunks, make them read-only
-after having written the last thunk.
+On 2025-05-28 14:14, Paneer Selvam, Arunpravin wrote:
+> On 5/28/2025 2:59 PM, Natalie Vock wrote:
+>> On 5/28/25 09:07, Christian König wrote:
+>>>
+>>> But the problem rather seems to be that we sometimes don't clear the buffers on release for some reason, but still set it as cleared.
+>>
+>> Yes precisely - "some reason" being the aforementioned clear flags. We do always call amdgpu_clear_buffer on release, but that function will perform the same checks as the clear on allocation does - that means, if a block is marked clear then it will skip emitting any actual clears.
+> 
+> On buffer release [https://elixir.bootlin.com/linux/v6.15/source/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c#L1318], we call amdgpu_fill_buffer() and not amdgpu_clear_buffer() (in amdgpu_bo_release_notify() function), so the buffers are expected to be cleared without fail.
+> 
+> When the user space doesn't set the AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE flag and having only AMDGPU_GEM_CREATE_VRAM_CLEARED, we don't call this amdgpu_fill_buffer() and amdgpu_vram_mgr_set_cleared(), and that's kind of makes sense.
+> I think the problem here is, when we don't clear the buffer during BO release, but the flag remains as cleared and that's why these blocks are skipped during clear on allocation (in amdgpu_bo_create() function).
+> 
+> Therefore, if the release path clear is skipped for any reasons (for example, in case of AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE not set), we should set all buffer to dirty. Somehow, that is missed.
+BTW, I asked this before, but didn't get an answer:
 
-This will be needed when X86_FEATURE_PSE isn't available, as the thunk
-memory will have PAGE_KERNEL_EXEC protection, which is including the
-write permission.
+Now that VRAM is always cleared before handing it out to user space, does AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE really need to do anything anymore? How can user space access the contents of a destroyed BO?
 
-Cc: <stable@vger.kernel.org>
-Fixes: 5185e7f9f3bd ("x86/module: enable ROX caches for module text on 64 bit")
-Signed-off-by: Juergen Gross <jgross@suse.com>
----
- arch/x86/kernel/alternative.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index ecfe7b497cad..bd974a0ac88a 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -217,6 +217,15 @@ static void *its_alloc(void)
- 	return no_free_ptr(page);
- }
- 
-+static void its_set_kernel_ro(void *addr)
-+{
-+#ifdef CONFIG_MODULES
-+	if (its_mod)
-+		return;
-+#endif
-+	execmem_restore_rox(addr, PAGE_SIZE);
-+}
-+
- static void *its_allocate_thunk(int reg)
- {
- 	int size = 3 + (reg / 8);
-@@ -234,6 +243,8 @@ static void *its_allocate_thunk(int reg)
- #endif
- 
- 	if (!its_page || (its_offset + size - 1) >= PAGE_SIZE) {
-+		if (its_page)
-+			its_set_kernel_ro(its_page);
- 		its_page = its_alloc();
- 		if (!its_page) {
- 			pr_err("ITS page allocation failed\n");
-@@ -2338,6 +2349,11 @@ void __init alternative_instructions(void)
- 	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
- 	apply_returns(__return_sites, __return_sites_end);
- 
-+	/* Make potential last thunk page read-only. */
-+	if (its_page)
-+		its_set_kernel_ro(its_page);
-+	its_page = NULL;
-+
- 	/*
- 	 * Adjust all CALL instructions to point to func()-10, including
- 	 * those in .altinstr_replacement.
 -- 
-2.43.0
-
+Earthling Michel Dänzer       \        GNOME / Xwayland / Mesa developer
+https://redhat.com             \               Libre software enthusiast
 
