@@ -1,169 +1,193 @@
-Return-Path: <stable+bounces-147984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3265DAC6DF6
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 18:24:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C0BAC6E13
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 18:34:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01BD11BA5363
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:24:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEF504A7336
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E573828C851;
-	Wed, 28 May 2025 16:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60A3286403;
+	Wed, 28 May 2025 16:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FV/+li4T"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="L/aOoT7n"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2068.outbound.protection.outlook.com [40.107.93.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98EF17B418
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 16:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748449473; cv=none; b=Cd+fkQg+PL1B3pYkpJOhws0UNr48sB9eP9amLp5/jsljANBnooBpmJYCuciATv4XO9BhQEV+n9m4dy/25qJFcHbh8YpvAg/ZTP5GQA6q9I2uW9q3xQFQVEsP429CVPP5QbDCcaOo0nvBiwTG3igw++3T/OA9xYgRbtvfbn+MI3E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748449473; c=relaxed/simple;
-	bh=282JlZCXGeqP/PzRjpZh9RPcBxfOxdu51od+r+SojZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JoqxGuUiMiAs8LO6zUkhtgSoXi3+Lfgk6rjxkdOnaJkAc7LaORh+eZ8enE66S7fj5wgYbXXcacLa0P5k+qrGsBeUmDxzfXi11VbU9yii47V4T4lDtLtXccqoNz/nPQ7nOk0cPeHXwzO5p9xrfcqfNDivlj4otm4GLIKP1l4AQIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FV/+li4T; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748449470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H3WfoxKRVcW4Y+DnHDOZBJuxMROGpvocSlXq1ZkIg5E=;
-	b=FV/+li4TWgmTQ7xQVtbvh+PJAVGtxQuVooFV8o5yDejKOHFsaWEBTQQsoZ7/Owpw6TkIyl
-	tvLisBDEOTK0v1WqCWUcB2rryIeyVn8rqsVWySuFwyiRwAVJxIfll2P49/Fzb1c0fCZF+K
-	lwvaaml8QlT7zdbPGYeWk4tsvQW16h8=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-rOYrvr3mPCqwzfpYhTLZdQ-1; Wed, 28 May 2025 12:24:29 -0400
-X-MC-Unique: rOYrvr3mPCqwzfpYhTLZdQ-1
-X-Mimecast-MFC-AGG-ID: rOYrvr3mPCqwzfpYhTLZdQ_1748449469
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c5f3b8b1a1so754771785a.3
-        for <stable@vger.kernel.org>; Wed, 28 May 2025 09:24:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748449469; x=1749054269;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H3WfoxKRVcW4Y+DnHDOZBJuxMROGpvocSlXq1ZkIg5E=;
-        b=ElDKjy2fuPipIvq4w31wDo8JVrqouHv7hhrLCpvUmPzn3lvAAA5t2BVeFCGzfAovlt
-         SjSpHFf3WLYj8HHZiwGTm3puZxtaVHjMpIsQQty/Y+U7kWktcp+kr8gKfsIk6GGCiqV0
-         pjivhNi44otuABvnKxLoZfFoiFDgA1Z462sO13M6AuPGZlgFkfaxJ+Na+Sy/SnIvVj5s
-         2TZ0/9mO3cTyh21KAFOoUjq8SuCWRie62HOpiF8iZyWl7BRJ0cb005IhSYm8SpFamXjP
-         ws+4cfUSLJUqCNFO/Afb2jiXWpH3p+mMOrmV8CBByC3vYCYcP/7Ldj5qxHeygAp6xT49
-         3Gkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWj+vEOgNIrvXpjKFRu158j2RJw8B8zfE7+0UoNfLJwVfSgzrF7QVinkYZBr73x1un6cxLoa2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1lXJb1ALEYfjRsmcJZO8T/C3Db6EU1sAtM81IwmdLIZz4x7r5
-	qBO68PolgINUNhkAeKnFsDCVjSLEvNgfRupudJQCLx6GQZKqfaRIivT0U+QH3VEC8rhmg2S3ahG
-	A7lL/cvEnDECsAII82prfifjZOjs3lCjLe4AlHk8Zl4bEvWMeQuOwla1ZhQ==
-X-Gm-Gg: ASbGncullMPFqB4wAwH1c5zw3nwSedTs7zdVfQaF/0nNnep/I8gZdhVqfq8DNS1VFqx
-	7oHAeIlN5nG8m5sdDWegsxVSm5eW6O1Vh9qT/ero5U5nqLCqjd/7619GabFCaDvCQpmwzX5u9UG
-	f5vlw9mSF4pkW0/a0G+Pmmg6qY9RzmoelodTmtpQstDLAMSx5jvSfUkXnzntEAR/Dv6Nv27rduD
-	ARBzn/p9Gf9jTUtmDDgad7KaFB2Q83xZxRgsfjUyhzA+9Bjgjs6ILn7KxfyduXFE0znIYHgVp8a
-	Jfs=
-X-Received: by 2002:a05:620a:8804:b0:7ca:f447:c676 with SMTP id af79cd13be357-7ceecc7b357mr2983878485a.43.1748449468982;
-        Wed, 28 May 2025 09:24:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHAnXf43b6H4MlK1EjDvv8V/BsoyuWSWPUUzmroPDps16PFlFqzdhDpePuXhUVM/nmAt1nS0Q==
-X-Received: by 2002:a05:620a:8804:b0:7ca:f447:c676 with SMTP id af79cd13be357-7ceecc7b357mr2983875185a.43.1748449468640;
-        Wed, 28 May 2025 09:24:28 -0700 (PDT)
-Received: from x1.local ([85.131.185.92])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cfc5d3a361sm87712085a.87.2025.05.28.09.24.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 09:24:28 -0700 (PDT)
-Date: Wed, 28 May 2025 12:24:24 -0400
-From: Peter Xu <peterx@redhat.com>
-To: James Houghton <jthoughton@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Gavin Guo <gavinguo@igalia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, muchun.song@linux.dev,
-	akpm@linux-foundation.org, mike.kravetz@oracle.com,
-	kernel-dev@igalia.com, stable@vger.kernel.org,
-	Hugh Dickins <hughd@google.com>, Florent Revest <revest@google.com>,
-	Gavin Shan <gshan@redhat.com>
-Subject: Re: [PATCH v3] mm/hugetlb: fix a deadlock with pagecache_folio and
- hugetlb_fault_mutex_table
-Message-ID: <aDc4uO_Vq-q7ks5h@x1.local>
-References: <20250528023326.3499204-1-gavinguo@igalia.com>
- <aDbXEnqnpDnAx4Mw@localhost.localdomain>
- <aDcl2YM5wX-MwzbM@x1.local>
- <629bb87e-c493-4069-866c-20e02c14ddcc@redhat.com>
- <aDcvplLNH0nGsLD1@localhost.localdomain>
- <CADrL8HXD0hX+5WvtZWKXAr0NvfvOJZhqL9PVBawYQuAyzhGgYg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042A579FE
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 16:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748450042; cv=fail; b=TDEM7O/nLK2Y8R1YjkIw2hhgN3hsRC3KujlYAZ4bZfgmtfxMpy0Ao8Sicsq5Cs3tRM7GoGZ+hFnnQnrk+Ctgk6I7BJHwlsbzGkqXGlXI2vBs6POkytYlz7ecbA/UUdF+nvUWgRZfiXVgBc6+caEWgltwDbCTHatq86o/vp1DZpY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748450042; c=relaxed/simple;
+	bh=lLAI1JnWYHkPNE0oKFGKIFlQattueAJrVlFXmqtf2wg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=p8gUiPa5vKX3hMT6BNvZtjG9Ny/2KxZso/Nts6SFX6eBMW4VNZHX6uNwBoJB/xtU17/pOWs2+xLBN3ii9IWxBYi/bi7/++izyC5OBhWAGWjlyoLhlMR69scYFDZb+J/IkMByQhvqMK+K2lY/UM8E7zyA9/wWxDbqzLKfIVe+AG8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=L/aOoT7n; arc=fail smtp.client-ip=40.107.93.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YpdrU848KtzS23AiPfOsCa+Nb5lUVChgNkKrp9eO3p/dEwGF6Q2bMeq1LW8g2kdZE04HrxErt1uHkOQIRTp9gINNYBZd7wHWIWFdAVhLrfpO4rnjh0r64TQ/Ka7AcSLQQ2eEK+dn/+jAZVEz23CEXWMLalWcPd1RC6/BAIpoSFDLUnPSfvnMIortiGG17Up5VIP3Kpn88g2Cm2WUGwGHuQMuTvH/yZCOEHkDHHdpEjVmc/fUcUVYu/tt7q2/X/8Q9oVEQTCRcmgj0JsI1WExqg7ZkaP5XAiwEVzUjOksbLeqdBJwlvsiol4A9lxLn/NMh9Oi61R3TcekbDRWmi28gQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O+MVmmMsiKOKk1GwFH8M8L3p/blHM4m/mfYKAnpVCAU=;
+ b=M4FKFZ4loNQXWoxJG65/sqL6waGXcLvhApb3o7kQk6L9FJbsQZZg6Ty9vicfZrW83mUkaHvYL7XAFGP/0q1OjIJhtg2bPPkviE4guT+nlIw8hprTqXinrdjByvQDmEruTseU+WC2LvL9JVLcZKG9+fp0nHRJB2Duas9ZeDVJvXkEXzxZpcUc9NRn9E8DOG/yXvy937VqZ+Jfxq4xzM/Teqj9xTULpRAnlnEEJkDV3H2e2xv6AAClci3U3mh1fc0CTZhMP3kPyUtuqYDtAwlLXAx3ugAt1uhvTrolLZ7ECRGdOSiIdY54HP0JgSIigmGaWE7sA+yEoeNyTXs1r1ooKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O+MVmmMsiKOKk1GwFH8M8L3p/blHM4m/mfYKAnpVCAU=;
+ b=L/aOoT7nXRRM9xKvBVeu1lSx7LjcmGGuBX0q32IEIUlSzk0SfYn5EIK4WKnR8Vyy6+fVbISIWSGurjDcnm5cNrra3ap8UVtVlGoY8GvbVssI2TZTLvclUz8nRI3GJbj5w/02mAe+Lis3I0QAL9o2m6orSQhELLW05LD9wr0RdL4=
+Received: from SJ0PR05CA0061.namprd05.prod.outlook.com (2603:10b6:a03:332::6)
+ by CH3PR12MB8910.namprd12.prod.outlook.com (2603:10b6:610:179::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Wed, 28 May
+ 2025 16:33:58 +0000
+Received: from CO1PEPF000044F4.namprd05.prod.outlook.com
+ (2603:10b6:a03:332:cafe::11) by SJ0PR05CA0061.outlook.office365.com
+ (2603:10b6:a03:332::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.19 via Frontend Transport; Wed,
+ 28 May 2025 16:33:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CO1PEPF000044F4.mail.protection.outlook.com (10.167.241.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8769.18 via Frontend Transport; Wed, 28 May 2025 16:33:58 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 28 May
+ 2025 11:33:57 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 28 May
+ 2025 11:33:57 -0500
+Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Wed, 28 May 2025 11:33:56 -0500
+Message-ID: <f2cc768c-3daa-3219-a0e4-703cee8abd78@amd.com>
+Date: Wed, 28 May 2025 09:33:56 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CADrL8HXD0hX+5WvtZWKXAr0NvfvOJZhqL9PVBawYQuAyzhGgYg@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] accel/ivpu: Fix warning in ivpu_gem_bo_free()
+Content-Language: en-US
+To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	<dri-devel@lists.freedesktop.org>
+CC: <jeff.hugo@oss.qualcomm.com>, <stable@vger.kernel.org>
+References: <20250528154225.500394-1-jacek.lawrynowicz@linux.intel.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
+In-Reply-To: <20250528154225.500394-1-jacek.lawrynowicz@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB05.amd.com: lizhi.hou@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F4:EE_|CH3PR12MB8910:EE_
+X-MS-Office365-Filtering-Correlation-Id: baf21262-e22c-47b1-e3ba-08dd9e057206
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ejdRVlhKa2NNUUFTNHZ6eml3d3BHdHJNTWF3WEp4NXZUNkJCTFVZdDFobUd5?=
+ =?utf-8?B?eE1QemxHUVRDY24yNENvSmVXcEZYQTBWcHhiNzZ2NW5penZQVVFPWDVjU29s?=
+ =?utf-8?B?eFhCRVQzWGp5M3lmL2lvMDVhdnA1SzU0ZGdhZ291U2VTVXBpTHpjQ2tPZEFH?=
+ =?utf-8?B?L21iU08xWWlVN0t2OGwwN0F2L091b2xMeWE4Z2t6STFwcjEwWlhjaXl3TnJs?=
+ =?utf-8?B?a0FWenFhVDQ4T3RXblVJTkFWVlBPSWhjRWtOTVFHOUVIUVpUTFFIN3diM21Z?=
+ =?utf-8?B?b0ZBMGlmbStVbWxnVFBGUmM0cnRaNjV4c092MWdGVlBRQ2REaFgzd0hvcC94?=
+ =?utf-8?B?REZpMm1KTWpFSGlBSVZHZzhwOHZXQVJCUUgxUnpsMWJRWEFQTXFHbjArQXRi?=
+ =?utf-8?B?djl1WXlKYnpkakY4SkdHWWcwQlpNSnBXYTY1Rk9aaGxxditHQUVySHdaUTYv?=
+ =?utf-8?B?SUgzVHFrSFhRNFpreWlRdkFKTnoza0k5K3VWc0hHZGVlUGQwTmtxRGtRWk5K?=
+ =?utf-8?B?bHo5MFdSZ1hGbnJZU3B3aXJyTWxMSU0yU1RzOW92TEpadXRkUzFod2M3VlNw?=
+ =?utf-8?B?Z0lVRm5SL01yTUVYa2hubTBiMFVIVkJMY1N1cTQ0Ui9TV2NjaTRkbXd6RzZS?=
+ =?utf-8?B?RjBZY2lLRm84eW5aQkRyZ1UxWkdJZWRTcmxtL2lrQmdXUGVFSHU2V1pONnRx?=
+ =?utf-8?B?blJJc3M5clJBTnlydU4vQjVmVEpNZ28wNG9xWXFNdU12SUpOZ2RmNWtXcTJs?=
+ =?utf-8?B?Yk9YelM3MXQ3OVFnZW5ZNWZ4YThWK1ZIdWM4MGROL1c0YU5OWWFadXdLUHF3?=
+ =?utf-8?B?WXFXUkczU3pLaHltU01NR1VXWFVIZC95WitwMVJKNC9aTHBsanlpNE10RWVP?=
+ =?utf-8?B?V2hMVGZiUER5eUs2OEJzd2FMZXlwMUs4ZjFqd084aDVkbGNWWXZmaTdnZ2xQ?=
+ =?utf-8?B?anFjSWdvUzZYUUp6UkFCekJ4cy9ZS21EUllIN2J6WldHZmt0cDNyODh3V1RP?=
+ =?utf-8?B?dUZTdnh3aXVnMnVBTjEwT1ZuZ2VHNmpNaHc2Vjh6alVZUXlrc3JnRDIyenpS?=
+ =?utf-8?B?cW1nUTFrK0MrZGE4bVRIQUQ3YUpkUDBYL2toa2Z1Y2dOcmM2NUp6czFCUWxF?=
+ =?utf-8?B?TWJUWVRqY3RhcUowSHpFSm5lS2JHY2k1QldPemtBZVpuY0tiUU5lVEVHL1Ex?=
+ =?utf-8?B?bFhIa2diZnVYNjFOMjJXR3dIZTFSL2tNL2IyeGFLVUdidmwzVXVjcGtORnJT?=
+ =?utf-8?B?QWhqNHIxcHlISlZTbU9ucmhhOTlUUURSdWxuQ05COW43SENLcm00K3VGNnhs?=
+ =?utf-8?B?Tm1XTEx5UTFBZFg2b2pMN3NJRkIycGpOWVk2UjZJTGJ1eWh1Snd3ckRnN2U1?=
+ =?utf-8?B?emswK0xiZ0N1dHpiK2VzVmhCaExvaEN6Z05zczh5eUFrcW5hSTc1Q3dVSU9a?=
+ =?utf-8?B?OUU3RDVObmlnNkRnL0pGZ3IvNHoybDlmejF1akZ2K1Jrc2xMSlZJaTFzcEly?=
+ =?utf-8?B?T0ZrWkZXYzhZR0h4RXd4TE1DMEMvSXRzelVCRG5KaEJlYkF6dlV6OVgxZ0FH?=
+ =?utf-8?B?SEhrS0pTVzNNemw1eEpiNlIvUE11d2xwL0xFS0NNN3hRRUo5cEhXWUFXUXd0?=
+ =?utf-8?B?Uk94RHdIaUtlVHJzbC9UY2VUNWk5R0tYckNaQldTNG95QWtuMjZZUWdpT3R0?=
+ =?utf-8?B?WDZpOTJRNWtzOFlCTnhIVWVMU1lnODVJRURIZ0FjNVV6VE1sRmtCY1Rabk5l?=
+ =?utf-8?B?UnlaZFJha2l5Smd2K1JleFUxZndjRHdmcHJqREZEL0dIYUpwSzNDMFdmWlM3?=
+ =?utf-8?B?WW81U0NnRmRraHJFSUJma2NBa3dxRjBJMENhcVN2bU9FOENER2hsOHFrdXA0?=
+ =?utf-8?B?S2xYa3J3UUl4WEZ0eWlZclRvRGJYKzlKMkNzYk03OStUaXVzLytOQzlSOG1U?=
+ =?utf-8?B?VWRISUduNWZMblRPTlJ3UUR4MlB3WkhEM3hadHBEOURDSmxkRno0UDJFbk5r?=
+ =?utf-8?B?QS9YaHc4M0R5d1dIRC8wbktFK1NtUytBNmJ6NzNkRnFaM084d2pnUzU4UmNm?=
+ =?utf-8?Q?C6KdSS?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 16:33:58.0094
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: baf21262-e22c-47b1-e3ba-08dd9e057206
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8910
 
-On Wed, May 28, 2025 at 12:14:28PM -0400, James Houghton wrote:
 
-[...]
+On 5/28/25 08:42, Jacek Lawrynowicz wrote:
+> Don't WARN if imported buffers are in use in ivpu_gem_bo_free() as they
+> can be indeed used in the original context/driver.
+>
+> Fixes: 647371a6609d ("accel/ivpu: Add GEM buffer object management")
+> Cc: <stable@vger.kernel.org> # v6.3
+> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> ---
+>   drivers/accel/ivpu/ivpu_gem.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
+> index 5908268ca45e9..0371a8b4a474f 100644
+> --- a/drivers/accel/ivpu/ivpu_gem.c
+> +++ b/drivers/accel/ivpu/ivpu_gem.c
+> @@ -285,7 +285,8 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
+>   	list_del(&bo->bo_list_node);
+>   	mutex_unlock(&vdev->bo_list_lock);
+>   
+> -	drm_WARN_ON(&vdev->drm, !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
+> +	drm_WARN_ON(&vdev->drm, !bo->base.base.import_attach &&
+> +		    !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
 
-> > > For 2) I am also not sure if we need need the pagecache folio locked; I
-> > > doubt it ... but this code is not the easiest to follow.
-> >
-> > I have been staring at that code and thinking about potential scenarios
-> > for a few days now, and I cannot convice myself that we need
-> > pagecache_folio's lock when pagecache_folio != old_folio because as a
-> > matter of fact I cannot think of anything it protects us against.
-> 
-> Hi Oscar,
-
-Hey, James,
-
-> 
-> Have you thought about the UFFDIO_CONTINUE case (hugetlb_mfill_atomic_pte())?
-> 
-> I'm slightly concerned that, if you aren't holding pagecache_folio's
-> lock, there might be issues where hugetlb_mfill_atomic_pte() proceeds
-> to map a hugetlb page that it is not supposed to. (For example, if the
-> fault handler does not generally hold pagecache_folio's lock,
-> hugetlb_mfill_atomic_pte() will see a page in the pagecache and map
-> it, even though it may not have been zeroed yet.)
-> 
-> I haven't had enough time to fully think through this case, but just
-> want to make sure it has been considered.
-
-AFAIU we're talking about two separate code paths.  IIUC you're talking
-about a fresh new hugetlb folio being allocated, but then that's what
-hugetlb_no_page() does.  Folio lock required there.
-
-Here IIUC Oscar's context is only in hugetlb_wp() where there's a niche use
-case to compare whether a VM_PRIVATE has already CoWed once from a
-pagecache, and whether we need the folio lock for the pagecache lookup.
-Aka, this one:
-
-	if ((flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) &&
-	    !(vma->vm_flags & VM_MAYSHARE) && !huge_pte_write(vmf.orig_pte)) {
-		if (vma_needs_reservation(h, vma, vmf.address) < 0) {
-			ret = VM_FAULT_OOM;
-			goto out_mutex;
-		}
-		/* Just decrements count, does not deallocate */
-		vma_end_reservation(h, vma, vmf.address);
-
-		pagecache_folio = filemap_lock_hugetlb_folio(h, mapping, <---
-							     vmf.pgoff);
-		if (IS_ERR(pagecache_folio))
-			pagecache_folio = NULL;
-	}
+Probably drm_gem_is_imported()?
 
 Thanks,
 
--- 
-Peter Xu
+Lizhi
 
+>   	drm_WARN_ON(&vdev->drm, ivpu_bo_size(bo) == 0);
+>   	drm_WARN_ON(&vdev->drm, bo->base.vaddr);
+>   
 
