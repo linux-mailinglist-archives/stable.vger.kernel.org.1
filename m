@@ -1,319 +1,148 @@
-Return-Path: <stable+bounces-148005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B323AC72CD
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 23:34:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF922AC7311
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 23:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E48C7A6454
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 21:33:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84A571C02C5A
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 21:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323191DF270;
-	Wed, 28 May 2025 21:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDAA221736;
+	Wed, 28 May 2025 21:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LddGgKyd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/TK6c2b5";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LmKz5+RU";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5cQ+DouM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZvKhmLl4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB801F1527
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 21:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F0619B3CB;
+	Wed, 28 May 2025 21:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748468060; cv=none; b=qXC0HdTIITmqd5CqDM9AnSWJa/KTBsWQ+0uvXmYQYYrqi4EZp2ErqATWKEnIy4xRu3nY1Pr0MsmqT+VW7xJjYJTC4Aq96dlFM0smrJvOIxiGUp26n4W1l1mWIgh4qOmsOUkzMTnttp8Vq6gM11IGxW/14dEpxq8me/9g22rT1cM=
+	t=1748469362; cv=none; b=YlDgux3PIxHdCB6V/vdgm6FvyHtwJofgxyKAOq2sBUrl94VwtCPVT1oZuC4mScHuiZ6muocsa0c3330VKL7+dc2rrilzQb4meVUS91Yzq4FnO6txk5Wqxl9ClR+3mv394I4BHfQZFwzrNZB6eZx7Km6ATfJzIMoDsSvOd3ukRzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748468060; c=relaxed/simple;
-	bh=XzwjS5Fpu7iUL+Pk3A5aKxwqsqkBVeIa4mYrswNDADA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CADB584U5q/c/XzvrNCUFRwKkNM416xq1WfmZDDI6/2v3MoHqa1AZyL+1e5K9cVfHDT+kLuU3irh2acezxa++cbmO7mI6LIWkzsS0/XWa6zlmfrZ2W/OuOV/SxSKCoHXJvM0bijFGj3qosGzXvIBmCz/NclzH79LGuRea1RyojU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LddGgKyd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/TK6c2b5; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LmKz5+RU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5cQ+DouM; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BB3C52116C;
-	Wed, 28 May 2025 21:34:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1748468056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zn5dDTOpfN67/OlDdxZPFl4vcSl3rIJLnpSo3fCnCZc=;
-	b=LddGgKydabcDjkgkjiRsNwHsRbjjffoLMKK9oY2XmEFKbs0Wfn3VyJUkY2YdJqUy7Pmu+m
-	+S6TtlCq0W7tpHQrlm7xpil/F/5UQPMPCtPaxhldpGPmLr85Xg2Bs/F/cuBzhyEgvldik8
-	8qSUSEqC1TWjmt9yhrl4EN2i6Cng3iA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1748468056;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zn5dDTOpfN67/OlDdxZPFl4vcSl3rIJLnpSo3fCnCZc=;
-	b=/TK6c2b5toZAlnPRukLl8xJl9eOOVPjeQxalhgsADmGO8L4nCoP+OZMkaYCfZfOp3Yp3Ru
-	IcZRM2qRQ6wC/4AQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LmKz5+RU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5cQ+DouM
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1748468055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zn5dDTOpfN67/OlDdxZPFl4vcSl3rIJLnpSo3fCnCZc=;
-	b=LmKz5+RU3Roi2VY/TI1FP70B7nHiLENRqHDTR5xw6N63UClfa0iPJgrYX6hxmw9MZeQVtW
-	sosiyniCDQFlCZ9cNKe9Ssjuv1NGQJFhsvAYjZnjpJTKk35QQOgrSj9oXpAEOEUV9rzWEL
-	MknOtrZ7aofUsO6ojrHycrwtBIjFmn0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1748468055;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zn5dDTOpfN67/OlDdxZPFl4vcSl3rIJLnpSo3fCnCZc=;
-	b=5cQ+DouMgAZWRywQPBt4Vt9W4cYvV9iv/sXoaKDQ99F9S6CZDZbevAYYE7r2kHVvAI+NKe
-	oUSbQzUMqCkhznAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B442136E3;
-	Wed, 28 May 2025 21:34:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3xyUO1aBN2hGQgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 28 May 2025 21:34:14 +0000
-Date: Wed, 28 May 2025 23:34:09 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: David Hildenbrand <david@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, Gavin Guo <gavinguo@igalia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	muchun.song@linux.dev, akpm@linux-foundation.org,
-	mike.kravetz@oracle.com, kernel-dev@igalia.com,
-	stable@vger.kernel.org, Hugh Dickins <hughd@google.com>,
-	Florent Revest <revest@google.com>, Gavin Shan <gshan@redhat.com>
-Subject: Re: [PATCH v3] mm/hugetlb: fix a deadlock with pagecache_folio and
- hugetlb_fault_mutex_table
-Message-ID: <aDeBUXCRLRZobHq0@localhost.localdomain>
-References: <20250528023326.3499204-1-gavinguo@igalia.com>
- <aDbXEnqnpDnAx4Mw@localhost.localdomain>
- <aDcl2YM5wX-MwzbM@x1.local>
- <629bb87e-c493-4069-866c-20e02c14ddcc@redhat.com>
- <aDcvplLNH0nGsLD1@localhost.localdomain>
- <4cc7e0bb-f247-419d-bf6f-07dc5e88c9c1@redhat.com>
- <04ecf2e3-651a-47c9-9f30-d31423e2c9d7@redhat.com>
+	s=arc-20240116; t=1748469362; c=relaxed/simple;
+	bh=uw3tEeeMk5Bc24CVW+ncU6a0qB2pCTBmCm7AtTlyOQk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Mvj1Z8tJKmaV5cVpGZinNRLq/F9tsb9YVZjJkRaNOLEGafrEcVAsI2bfT6H0KfjoCgLUI+uP5eY3pFy6gZO1XCvDzHJ6hUMe3wsWTchL3eiPxLLh+H30UC6etoZAffaoFgu6GCFrDI8zjNUJ0fv6bG1CbZ+wyksinN76SnROdfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZvKhmLl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78239C4CEE3;
+	Wed, 28 May 2025 21:56:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748469361;
+	bh=uw3tEeeMk5Bc24CVW+ncU6a0qB2pCTBmCm7AtTlyOQk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZvKhmLl4F9KukOIYGziMfksPaiQfS1yqltdMwGv9hJwiv3uXHIWEESsoEsF18ig3P
+	 XV+W8dPDVVqVTisVfGaQI3ko45r/TnNjkuvWBlKvIQl9vVlWmCxtUUvlGq1VKTVRaE
+	 bZWBV++O/66DP/uvi0I53pBis7I7LSO5EEhGQfErGKkxI1Z7OTnXHLLceveDCaZd23
+	 Mp+wWxrfsYso45j8CX9uJUHW2Tb3O6bSU7Cxaa/AVdjlMzR8bV14xah2JWGTu8/U50
+	 tCX7FFPaJWr0fdYh9Rg15B4fuuU/DebHBejGDAOyE/6MoO55egA0kjl6U2vqrFvnbT
+	 rOvvaylPk/aMA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.15 1/9] btrfs: exit after state insertion failure at btrfs_convert_extent_bit()
+Date: Wed, 28 May 2025 17:55:51 -0400
+Message-Id: <20250528215559.1983214-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <04ecf2e3-651a-47c9-9f30-d31423e2c9d7@redhat.com>
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: BB3C52116C
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -4.51
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 28, 2025 at 10:26:04PM +0200, David Hildenbrand wrote:
-> Digging a bit:
-> 
-> commit 56c9cfb13c9b6516017eea4e8cbe22ea02e07ee6
-> Author: Naoya Horiguchi <nao.horiguchi@gmail.com>
-> Date:   Fri Sep 10 13:23:04 2010 +0900
-> 
->     hugetlb, rmap: fix confusing page locking in hugetlb_cow()
->     The "if (!trylock_page)" block in the avoidcopy path of hugetlb_cow()
->     looks confusing and is buggy.  Originally this trylock_page() was
->     intended to make sure that old_page is locked even when old_page !=
->     pagecache_page, because then only pagecache_page is locked.
-> 
-> Added the comment
-> 
-> +       /*
-> +        * hugetlb_cow() requires page locks of pte_page(entry) and
-> +        * pagecache_page, so here we need take the former one
-> +        * when page != pagecache_page or !pagecache_page.
-> +        * Note that locking order is always pagecache_page -> page,
-> +        * so no worry about deadlock.
-> +        */
-> 
-> 
-> And
-> 
-> commit 0fe6e20b9c4c53b3e97096ee73a0857f60aad43f
-> Author: Naoya Horiguchi <nao.horiguchi@gmail.com>
-> Date:   Fri May 28 09:29:16 2010 +0900
-> 
->     hugetlb, rmap: add reverse mapping for hugepage
->     This patch adds reverse mapping feature for hugepage by introducing
->     mapcount for shared/private-mapped hugepage and anon_vma for
->     private-mapped hugepage.
->     While hugepage is not currently swappable, reverse mapping can be useful
->     for memory error handler.
->     Without this patch, memory error handler cannot identify processes
->     using the bad hugepage nor unmap it from them. That is:
->     - for shared hugepage:
->       we can collect processes using a hugepage through pagecache,
->       but can not unmap the hugepage because of the lack of mapcount.
->     - for privately mapped hugepage:
->       we can neither collect processes nor unmap the hugepage.
->     This patch solves these problems.
->     This patch include the bug fix given by commit 23be7468e8, so reverts it.
-> 
-> Added the real locking magic.
+From: Filipe Manana <fdmanana@suse.com>
 
-Yes, I have been checking "hugetlb, rmap: add reverse mapping for
-hugepage", which added locking the now-so-called 'old_folio' in case
-hugetlbfs_pagecache_page() didn't return anything.
+[ Upstream commit 3bf179e36da917c5d9bec71c714573ed1649b7c1 ]
 
-Because in hugetlb_wp, this was added:
+If insert_state() state failed it returns an error pointer and we call
+extent_io_tree_panic() which will trigger a BUG() call. However if
+CONFIG_BUG is disabled, which is an uncommon and exotic scenario, then
+we fallthrough and call cache_state() which will dereference the error
+pointer, resulting in an invalid memory access.
 
- @@ -2286,8 +2299,11 @@ static int hugetlb_cow(struct mm_struct *mm, struct vm_area_struct *vma,
-  retry_avoidcopy:
-         /* If no-one else is actually using this page, avoid the copy
-          * and just make the page writable */
- -       avoidcopy = (page_count(old_page) == 1);
- +       avoidcopy = (page_mapcount(old_page) == 1);
-         if (avoidcopy) {
- +               if (!trylock_page(old_page))
- +                       if (PageAnon(old_page))
- +                               page_move_anon_rmap(old_page, vma, address);
+So jump to the 'out' label after calling extent_io_tree_panic(), it also
+makes the code more clear besides dealing with the exotic scenario where
+CONFIG_BUG is disabled.
 
-So, as you mentioned, it was done to keep the rmap stable as I guess rmap test test the
-PageLock. 
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
+**YES** This commit should be backported to stable kernel trees.
+**Detailed Analysis:** **1. Bug Description and Impact:** The commit
+fixes a serious potential memory corruption bug in the btrfs filesystem.
+When `insert_state()` fails in `btrfs_convert_extent_bit()`, it returns
+an error pointer (ERR_PTR). The current code calls
+`extent_io_tree_panic()` which triggers `BUG()`, but if `CONFIG_BUG` is
+disabled, the code continues executing and calls
+`cache_state(inserted_state, cached_state)` with the error pointer,
+causing invalid memory access. **2. Code Changes Analysis:** The fix is
+minimal and surgical - just adding a single `goto out;` statement after
+the `extent_io_tree_panic()` call: ```c if (IS_ERR(inserted_state)) {
+ret = PTR_ERR(inserted_state); extent_io_tree_panic(tree, prealloc,
+"insert", ret); + goto out; // <-- The fix } ``` This ensures that when
+`CONFIG_BUG` is disabled, execution jumps to the cleanup code instead of
+continuing with an invalid pointer. **3. Comparison with Similar
+Commits:** This commit aligns with the pattern seen in "Similar Commit
+#2" (Status: YES), which also: - Removes reliance on `BUG_ON()` behavior
+- Provides graceful error handling - Has minimal risk - Fixes a
+potential crash/corruption scenario Similar to commit #3 and #5 (both
+Status: NO), this touches BUG() handling, but unlike those commits which
+make broader architectural changes to error handling patterns, this fix
+is much more contained. **4. Stable Tree Criteria Assessment:** ✅
+**Fixes important bug**: Prevents potential memory corruption/crashes ✅
+**Small and contained**: Single line addition ✅ **Minimal risk**: Only
+affects error path when insert_state() fails AND CONFIG_BUG is disabled
+✅ **No new features**: Pure bug fix ✅ **No architectural changes**:
+Preserves existing error handling, just prevents fallthrough ✅
+**Critical subsystem**: btrfs filesystem corruption prevention ✅ **Clear
+side effects**: No unintended consequences beyond fixing the bug **5.
+Risk Assessment:** - **Very Low Risk**: The change only affects an error
+condition that's already problematic - **Exotic scenario**: Only impacts
+systems with `CONFIG_BUG` disabled (uncommon but not impossible) - **No
+regression potential**: The change only prevents executing invalid code,
+doesn't change normal operation - **Well-contained**: Affects only one
+function in one file **6. Security Implications:** While `CONFIG_BUG`
+disabled is uncommon, this could potentially be exploited if an attacker
+can trigger the `insert_state()` failure condition, leading to memory
+corruption. The fix prevents this attack vector. This is a clear
+candidate for stable backporting - it fixes a real bug with minimal risk
+and follows the stable tree rules perfectly.
 
-> Not that much changed regarding locking until COW support was added in
-> 
-> commit 1e8f889b10d8d2223105719e36ce45688fedbd59
-> Author: David Gibson <david@gibson.dropbear.id.au>
-> Date:   Fri Jan 6 00:10:44 2006 -0800
-> 
->     [PATCH] Hugetlb: Copy on Write support
->     Implement copy-on-write support for hugetlb mappings so MAP_PRIVATE can be
->     supported.  This helps us to safely use hugetlb pages in many more
->     applications.  The patch makes the following changes.  If needed, I also have
->     it broken out according to the following paragraphs.
-> 
-> 
-> Confusing.
-> 
-> Locking the *old_folio* when calling hugetlb_wp() makes sense when it is
-> an anon folio because we might want to call folio_move_anon_rmap() to adjust the rmap root.
+ fs/btrfs/extent-io-tree.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Yes, this is clear.
-
-> Locking the pagecache folio when calling hugetlb_wp() if old_folio is an anon folio ...
-> does not make sense to me.
-
-I think this one is also clear.
-
-> Locking the pagecache folio when calling hugetlb_wp if old_folio is a pageache folio ...
-> also doesn't quite make sense for me.
-> Again, we don't take the lock for ordinary pages, so what's special about hugetlb for the last
-> case (reservations, I assume?).
-
-So, this case is when pagecache_folio == old_folio.
-
-I guess we are talking about resv_maps? But I think we cannot interfere there.
-For the reserves to be modified the page has to go away.
-
-Now, I have been checking this one too:
-
- commit 04f2cbe35699d22dbf428373682ead85ca1240f5
- Author: Mel Gorman <mel@csn.ul.ie>
- Date:   Wed Jul 23 21:27:25 2008 -0700
- 
-     hugetlb: guarantee that COW faults for a process that called mmap(MAP_PRIVATE) on hugetlbfs will succeed
-
-And I think it is interesting.
-That one added this chunk in hugetlb_fault():
-
- @@ -1126,8 +1283,15 @@ int hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
-         spin_lock(&mm->page_table_lock);
-         /* Check for a racing update before calling hugetlb_cow */
-         if (likely(pte_same(entry, huge_ptep_get(ptep))))
- -               if (write_access && !pte_write(entry))
- -                       ret = hugetlb_cow(mm, vma, address, ptep, entry);
- +               if (write_access && !pte_write(entry)) {
- +                       struct page *page;
- +                       page = hugetlbfs_pagecache_page(vma, address);
- +                       ret = hugetlb_cow(mm, vma, address, ptep, entry, page);
- +                       if (page) {
- +                               unlock_page(page);
- +                               put_page(page);
- +                       }
- +               }
-
-So, it finds and lock the page in the pagecache, and calls hugetlb_cow.
-
-hugetlb_fault() takes hugetlb_instantiation_mutex, and there is a
-comment saying:
-
-        /*
-         * Serialize hugepage allocation and instantiation, so that we don't
-         * get spurious allocation failures if two CPUs race to instantiate
-         * the same page in the page cache.
-         */
-        mutex_lock(&hugetlb_instantiation_mutex);
-
-But it does not say anything about truncation.
-Actually, checking the truncation code from back then,
-truncate_hugepages() (and none of its callers) take the hugetlb_instantiation_mutex,
-as it is done today (e.g: current remove_inode_hugepages() code).
-
-Back then, truncate_hugepages() relied only in lock_page():
-
- static void truncate_hugepages(struct inode *inode, loff_t lstart)
- {
-  ...
-  ...
-  lock_page(page);
-  truncate_huge_page(page);
-  unlock_page(page);
- }
-
-While today, remove_inode_hugepages() takes the mutex, and also the lock.
-And then zaps the page and does its thing with resv_maps.
-
-So I think that we should not even need the lock for hugetlb_wp
-when pagecache_folio == old_folio (pagecache), because the mutex
-already protects us from the page to go away, right (e.g: truncated)?
-Besides we hold a reference on that page since
-filemap_lock_hugetlb_folio() locks the page and increases its refcount.
-
-All in all, I am leaning towards not being needed, but it's getting late
-here..
-
-
+diff --git a/fs/btrfs/extent-io-tree.c b/fs/btrfs/extent-io-tree.c
+index 13de6af279e52..92cfde37b1d33 100644
+--- a/fs/btrfs/extent-io-tree.c
++++ b/fs/btrfs/extent-io-tree.c
+@@ -1456,6 +1456,7 @@ int convert_extent_bit(struct extent_io_tree *tree, u64 start, u64 end,
+ 		if (IS_ERR(inserted_state)) {
+ 			ret = PTR_ERR(inserted_state);
+ 			extent_io_tree_panic(tree, prealloc, "insert", ret);
++			goto out;
+ 		}
+ 		cache_state(inserted_state, cached_state);
+ 		if (inserted_state == prealloc)
 -- 
-Oscar Salvador
-SUSE Labs
+2.39.5
+
 
