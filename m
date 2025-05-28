@@ -1,200 +1,147 @@
-Return-Path: <stable+bounces-148042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B546EAC73F4
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 00:26:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31BCAC744B
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 01:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A441881733
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 22:27:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69C43A262F2
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 23:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7C1221FCD;
-	Wed, 28 May 2025 22:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F96221FA6;
+	Wed, 28 May 2025 23:07:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gZB1u7Fj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B66221F3C;
-	Wed, 28 May 2025 22:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C918A221F30;
+	Wed, 28 May 2025 23:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748471188; cv=none; b=QGaE3rwsn0EUmrkY5LmNJuQ96Ss2VP3Y6OQh3eReBipKq2GAlm054KHbFqI7OsdBCde+YPhWRKagxG08UE7JYK6gztDeCC7R0aw0LfHxlKe+T3TIzfzvC8an5l+ub1tF5RugFQAVmnFLICekd1zoVUJZmXRlskC/HvhBIxZfIfA=
+	t=1748473654; cv=none; b=gbPRC31Wr96tGmg3VuVe3n0XWBJACtBkznm5VNJ1LHGzNsNf1kCh847XOAsrK+Vw7beEUX99S85iVqAumMzJ0kwDFjbjHVXMGOvuVTc6kVfdwaK6XqRcfkr4kfAjPdKubF/AHwQsM1A/XXEzSfJ7IgWJhsIofTPMxTvpRRcYXKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748471188; c=relaxed/simple;
-	bh=YG6aWHkolcuSORnsgQ8gwBXuWncYIMPqoIwhUtVif6M=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=D/kwLuaWNZ+OSebEaXoDOiUWkhVdSDBS9eUS0jAKL9c0DSchIBN7+kn3XKm1Plwcuwn5VptcL30yA1OQNiLv75jpZ6xhTVTvhYXdi38Fz75SDozL95JJdgphm39T37+aQ9Je8Y6+4yLI+Dw1ebxFsBqpneuqsz/KgB+Nks/5SaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C14C4CEF4;
-	Wed, 28 May 2025 22:26:28 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98.2)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1uKPFB-0000000AoyW-34FL;
-	Wed, 28 May 2025 18:27:29 -0400
-Message-ID: <20250528222729.583313601@goodmis.org>
-User-Agent: quilt/0.68
-Date: Wed, 28 May 2025 18:27:06 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Vincent Donnefort <vdonnefort@google.com>
-Subject: [for-next][PATCH 02/10] ring-buffer: Do not trigger WARN_ON() due to a commit_overrun
-References: <20250528222704.623477429@goodmis.org>
+	s=arc-20240116; t=1748473654; c=relaxed/simple;
+	bh=ODONM4PY+4c5Dzs3yI8XdPUV3QwSyopJVRyDaSeokg8=;
+	h=Date:To:From:Subject:Message-Id; b=D3+57yIBpc5C5iv2pTEOZT22K4wIK1A4ql+T+5p+KcjkBY4F3JwZKYj61ELOKhawz7Zo85lS78VgTz7g2dYiMPpm46hbet8beyFuZ+VmVmJsMRcUUnnhr510C1IAtcsBc42e9sqPqLO6I9jzJOhAhjkqcJf+SEr7GiF3+lf3yJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gZB1u7Fj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F56C4CEE3;
+	Wed, 28 May 2025 23:07:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1748473654;
+	bh=ODONM4PY+4c5Dzs3yI8XdPUV3QwSyopJVRyDaSeokg8=;
+	h=Date:To:From:Subject:From;
+	b=gZB1u7Fjosh7TJIKR4YG/8CPDx+iexIPVDfa+qEemV4yQdgIEDMZuPfFeT14dGQvw
+	 WJWRGhl17VzGY1zGInBVCA63QamaYUNBqsSdB1l24okMuK0S0ycZT+vntdgOAsDt4x
+	 CHTacW6VdTw4kS6F2e++HV71lMf/pUi+nhL1O5QU=
+Date: Wed, 28 May 2025 16:07:33 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,yuzhao@google.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [alternative-merged] mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch removed from -mm tree
+Message-Id: <20250528230734.75F56C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 
-From: Steven Rostedt <rostedt@goodmis.org>
 
-When reading a memory mapped buffer the reader page is just swapped out
-with the last page written in the write buffer. If the reader page is the
-same as the commit buffer (the buffer that is currently being written to)
-it was assumed that it should never have missed events. If it does, it
-triggers a WARN_ON_ONCE().
+The quilt patch titled
+     Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
+has been removed from the -mm tree.  Its filename was
+     mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
 
-But there just happens to be one scenario where this can legitimately
-happen. That is on a commit_overrun. A commit overrun is when an interrupt
-preempts an event being written to the buffer and then the interrupt adds
-so many new events that it fills and wraps the buffer back to the commit.
-Any new events would then be dropped and be reported as "missed_events".
+This patch was dropped because an alternative patch was or shall be merged
 
-In this case, the next page to read is the commit buffer and after the
-swap of the reader page, the reader page will be the commit buffer, but
-this time there will be missed events and this triggers the following
-warning:
+------------------------------------------------------
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
+Date: Mon, 21 Apr 2025 09:36:20 +0800
 
- ------------[ cut here ]------------
- WARNING: CPU: 2 PID: 1127 at kernel/trace/ring_buffer.c:7357 ring_buffer_map_get_reader+0x49a/0x780
- Modules linked in: kvm_intel kvm irqbypass
- CPU: 2 UID: 0 PID: 1127 Comm: trace-cmd Not tainted 6.15.0-rc7-test-00004-g478bc2824b45-dirty #564 PREEMPT
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- RIP: 0010:ring_buffer_map_get_reader+0x49a/0x780
- Code: 00 00 00 48 89 fe 48 c1 ee 03 80 3c 2e 00 0f 85 ec 01 00 00 4d 3b a6 a8 00 00 00 0f 85 8a fd ff ff 48 85 c0 0f 84 55 fe ff ff <0f> 0b e9 4e fe ff ff be 08 00 00 00 4c 89 54 24 58 48 89 54 24 50
- RSP: 0018:ffff888121787dc0 EFLAGS: 00010002
- RAX: 00000000000006a2 RBX: ffff888100062800 RCX: ffffffff8190cb49
- RDX: ffff888126934c00 RSI: 1ffff11020200a15 RDI: ffff8881010050a8
- RBP: dffffc0000000000 R08: 0000000000000000 R09: ffffed1024d26982
- R10: ffff888126934c17 R11: ffff8881010050a8 R12: ffff888126934c00
- R13: ffff8881010050b8 R14: ffff888101005000 R15: ffff888126930008
- FS:  00007f95c8cd7540(0000) GS:ffff8882b576e000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f95c8de4dc0 CR3: 0000000128452002 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  ? __pfx_ring_buffer_map_get_reader+0x10/0x10
-  tracing_buffers_ioctl+0x283/0x370
-  __x64_sys_ioctl+0x134/0x190
-  do_syscall_64+0x79/0x1c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f95c8de48db
- Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
- RSP: 002b:00007ffe037ba110 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
- RAX: ffffffffffffffda RBX: 00007ffe037bb2b0 RCX: 00007f95c8de48db
- RDX: 0000000000000000 RSI: 0000000000005220 RDI: 0000000000000006
- RBP: 00007ffe037ba180 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
- R13: 00007ffe037bb6f8 R14: 00007f95c9065000 R15: 00005575c7492c90
-  </TASK>
- irq event stamp: 5080
- hardirqs last  enabled at (5079): [<ffffffff83e0adb0>] _raw_spin_unlock_irqrestore+0x50/0x70
- hardirqs last disabled at (5080): [<ffffffff83e0aa83>] _raw_spin_lock_irqsave+0x63/0x70
- softirqs last  enabled at (4182): [<ffffffff81516122>] handle_softirqs+0x552/0x710
- softirqs last disabled at (4159): [<ffffffff815163f7>] __irq_exit_rcu+0x107/0x210
- ---[ end trace 0000000000000000 ]---
+When calling alloc_contig_range() with __GFP_COMP and the order of
+requested pfn range is pageblock_order, less than MAX_ORDER, I triggered
+WARNING as follows:
 
-The above was triggered by running on a kernel with both lockdep and KASAN
-as well as kmemleak enabled and executing the following command:
+ PFN range: requested [2150105088, 2150105600), allocated [2150105088, 2150106112)
+ WARNING: CPU: 3 PID: 580 at mm/page_alloc.c:6877 alloc_contig_range+0x280/0x340
 
- # perf record -o perf-test.dat -a -- trace-cmd record --nosplice  -e all -p function hackbench 50
+alloc_contig_range() marks pageblocks of the requested pfn range to be
+isolated, migrate these pages if they are in use and will be freed to
+MIGRATE_ISOLATED freelist.
 
-With perf interjecting a lot of interrupts and trace-cmd enabling all
-events as well as function tracing, with lockdep, KASAN and kmemleak
-enabled, it could cause an interrupt preempting an event being written to
-add enough events to wrap the buffer. trace-cmd was modified to have
---nosplice use mmap instead of reading the buffer.
+Suppose two alloc_contig_range() calls at the same time and the requested
+pfn range are [0x80280000, 0x80280200) and [0x80280200, 0x80280400)
+respectively.  Suppose the two memory range are in use, then
+alloc_contig_range() will migrate and free these pages to MIGRATE_ISOLATED
+freelist.  __free_one_page() will merge MIGRATE_ISOLATE buddy to larger
+buddy, resulting in a MAX_ORDER buddy.  Finally, find_large_buddy() in
+alloc_contig_range() returns a MAX_ORDER buddy and results in WARNING.
 
-The way to differentiate this case from the normal case of there only
-being one page written to where the swap of the reader page received that
-one page (which is the commit page), check if the tail page is on the
-reader page. The difference between the commit page and the tail page is
-that the tail page is where new writes go to, and the commit page holds
-the first write that hasn't been committed yet. In the case of an
-interrupt preempting the write of an event and filling the buffer, it
-would move the tail page but not the commit page.
+To fix it, call free_contig_range() to free the excess pfn range.
 
-Have the warning only trigger if the tail page is also on the reader page,
-and also print out the number of events dropped by a commit overrun as
-that can not yet be safely added to the page so that the reader can see
-there were events dropped.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Link: https://lore.kernel.org/20250528121555.2066527e@gandalf.local.home
-Fixes: fe832be05a8ee ("ring-buffer: Have mmapped ring buffer keep track of missed events")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/r/20250421013620.459740-1-tujinjiang@huawei.com
+Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- kernel/trace/ring_buffer.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index ca1a8e706004..683aa57870fe 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -7285,8 +7285,8 @@ int ring_buffer_map_get_reader(struct trace_buffer *buffer, int cpu)
- 	/* Check if any events were dropped */
- 	missed_events = cpu_buffer->lost_events;
+ mm/page_alloc.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+--- a/mm/page_alloc.c~mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order
++++ a/mm/page_alloc.c
+@@ -6693,6 +6693,7 @@ int alloc_contig_range_noprof(unsigned l
+ 		.alloc_contig = true,
+ 	};
+ 	INIT_LIST_HEAD(&cc.migratepages);
++	bool is_range_aligned;
  
--	if (cpu_buffer->reader_page != cpu_buffer->commit_page) {
--		if (missed_events) {
-+	if (missed_events) {
-+		if (cpu_buffer->reader_page != cpu_buffer->commit_page) {
- 			struct buffer_data_page *bpage = reader->page;
- 			unsigned int commit;
- 			/*
-@@ -7307,13 +7307,23 @@ int ring_buffer_map_get_reader(struct trace_buffer *buffer, int cpu)
- 				local_add(RB_MISSED_STORED, &bpage->commit);
- 			}
- 			local_add(RB_MISSED_EVENTS, &bpage->commit);
-+		} else if (!WARN_ONCE(cpu_buffer->reader_page == cpu_buffer->tail_page,
-+				      "Reader on commit with %ld missed events",
-+				      missed_events)) {
-+			/*
-+			 * There shouldn't be any missed events if the tail_page
-+			 * is on the reader page. But if the tail page is not on the
-+			 * reader page and the commit_page is, that would mean that
-+			 * there's a commit_overrun (an interrupt preempted an
-+			 * addition of an event and then filled the buffer
-+			 * with new events). In this case it's not an
-+			 * error, but it should still be reported.
-+			 *
-+			 * TODO: Add missed events to the page for user space to know.
-+			 */
-+			pr_info("Ring buffer [%d] commit overrun lost %ld events at timestamp:%lld\n",
-+				cpu, missed_events, cpu_buffer->reader_page->page->time_stamp);
- 		}
--	} else {
--		/*
--		 * There really shouldn't be any missed events if the commit
--		 * is on the reader page.
--		 */
--		WARN_ON_ONCE(missed_events);
+ 	gfp_mask = current_gfp_context(gfp_mask);
+ 	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
+@@ -6781,7 +6782,14 @@ int alloc_contig_range_noprof(unsigned l
+ 		goto done;
  	}
  
- 	cpu_buffer->lost_events = 0;
--- 
-2.47.2
+-	if (!(gfp_mask & __GFP_COMP)) {
++	/*
++	 * With __GFP_COMP and the requested order < MAX_PAGE_ORDER,
++	 * isolated free pages can have higher order than the requested
++	 * one. Use split_free_pages() to free out of range pages.
++	 */
++	is_range_aligned = is_power_of_2(end - start);
++	if (!(gfp_mask & __GFP_COMP) ||
++		(is_range_aligned && ilog2(end - start) < MAX_PAGE_ORDER)) {
+ 		split_free_pages(cc.freepages, gfp_mask);
+ 
+ 		/* Free head and tail (if any) */
+@@ -6789,7 +6797,15 @@ int alloc_contig_range_noprof(unsigned l
+ 			free_contig_range(outer_start, start - outer_start);
+ 		if (end != outer_end)
+ 			free_contig_range(end, outer_end - end);
+-	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
++
++		outer_start = start;
++		outer_end = end;
++
++		if (!(gfp_mask & __GFP_COMP))
++			goto done;
++	}
++
++	if (start == outer_start && end == outer_end && is_range_aligned) {
+ 		struct page *head = pfn_to_page(start);
+ 		int order = ilog2(end - start);
+ 
+_
+
+Patches currently in -mm which might be from tujinjiang@huawei.com are
 
 
 
