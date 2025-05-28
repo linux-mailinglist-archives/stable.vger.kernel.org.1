@@ -1,153 +1,184 @@
-Return-Path: <stable+bounces-147966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDE2AC6B29
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:01:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62115AC6BAD
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C5601BC7702
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 14:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A82EB3A7292
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 14:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE79288531;
-	Wed, 28 May 2025 14:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RFSEQJLT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B3B288C80;
+	Wed, 28 May 2025 14:30:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB6228852C
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 14:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29765288C26
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 14:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748440826; cv=none; b=H+XEtPvtHqUW+Azw4lirYl+bTA6uOUWboU9v5YcdZmL+U+qzyq8pjcIYPMP8vVnS58M3g3JTWK0Goghcjdxtq3QsvpOszb7hljX6CAaPsgektxrYbJOmm+FkSLkF1jt2IGg0TBylLM9GrZ11xA7VRV+5O9L1a3hmhY30R7Eb3mw=
+	t=1748442608; cv=none; b=Xc/IJnuMNKdhZI7p/lsYnZVJBbaTIcJVsPxMotZFCwrarIQkDW5wAekGjBHe0XVEd/FURuMeK7E3vu3/eMTEFGTbtULdUySlWCXO3nisG+zpGNxVsZ5YopRE0jax50wFiMgZNa+E2nicJeem018CqcSPJITNwwvaETrdw7kehZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748440826; c=relaxed/simple;
-	bh=HqmXzcz1Fhb5aWwjj60lQbn31SSuMbIoGTI7rS/zLpk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=KNRCmvPFXk2sOcaNoLFc0wwhVyYjpFNSAK0XSgp8XWFOMhoI2fX7tmKSluOLRzygFQ3Urtj29N/x4z/DxV9mv+bP2EqnUqc5U4r9aBCHBOqW8Mkk6Gj3RPUyZt/xuhpnOoOkVr9f7At+eJ05riTKqwqfkk0izwzL4EFdCpNLxoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RFSEQJLT; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43cfe574976so36120625e9.1
-        for <stable@vger.kernel.org>; Wed, 28 May 2025 07:00:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748440823; x=1749045623; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uLCejufrq+qP3M9mNyL+ruMGCziYJYfpyzwNMPCLUy4=;
-        b=RFSEQJLTchsvDKMOoRbUNsmbJ6wUxuxW4ZORdFRMio+qgL96Xq2QoeIHjIl9FE9pqJ
-         ACzfpHfFpN7SDblZtnPfJ0dy7YmaG7haut4dAd6nZdtTf6zWOpagMkdkrjRE6F1Z6w91
-         Mmg0jsUZ07xy3h3aUWAVl8pEVkd2CgXTqZURm/x7bfEDaxbpy5Kc6N8gq+opZVA22dAC
-         TWsh/8h7vpZFzdkgKr1hQ5j3q66M8H9BE7l7c/FVMbZM0HnO7vL/MLisCCTkWYnm3783
-         tJtVy4ERTTcD5FDOv5TfrFbR7mSIRfEwBTDXdG+h7Nna0EeksZ0493/kbQ4bDCAE6JXs
-         w9yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748440823; x=1749045623;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=uLCejufrq+qP3M9mNyL+ruMGCziYJYfpyzwNMPCLUy4=;
-        b=A7wZcq0qi9FHGNXTBQVyzeG4N41aZfeq7eQJvQSZ7T4Y4BJu+BRmbgv4yuECFZWJxM
-         s2VO8BMZGJVWnz+NDm6paaP36gJn8eQZEzI2mNlSjmhwOF3Eg8+xIV9bIkdzGeulNqMF
-         qchpLBgecKYxe1jNmxDWREDXv12w+Woiauy43duZrXXJ+IaLfhtQasXW/MjTRCvnVs5B
-         6bEdiJPL72rlH7gQDa19B0M/cI4AdsK/3FCQGHPlvD5385MX+AD04v4MqQCan3838r0G
-         7xkv9p2d3KACn9pX+9bfV2O5K0uuxdyMlDbsEP/Zk7LvVQbDvs6qlUx+4jqAiRZi1Xuq
-         G1sA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGZtX7FNbfzcJOGblcaOgWgN8wc4pG3amNSF6ZuD8QKP9VtNro3k/mPGOtAqCo80m11za7+pQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhzS6MONoixZ2nhPkCFnUYXmLOVXKvIrEzMdwmtPlDsInLczEQ
-	Ilwoy5qeDD/x/qUasRhdqgOH/P3Th6K9cdDyJ80SKseZNmbg1CAjkWyuMBNgn1f8qGg=
-X-Gm-Gg: ASbGncvTJvSh9W5BAwOarKFKIPja61qEaiQtz6s5Lxp+MYbIgI/xARV+1pGPKYW0f2+
-	Zv48ZZnKnc4UYZ9xb8GYP6W6gqlfZnSZMDYb6RY7Snt83Omm2OiRc10sqWjV2bSJJJw/gFdhw11
-	QjUJ/rFT2jkHaiDwGfB2PC6+Jl9JoWBS3YE2wqzQ8hLU8ZQT1+AL6JGnHSAu2dKKMxwx8bddlZN
-	/5Ax0t9qZBVtdtOKkeXhLU6R5h0HgNwa/55oMVGCr545UwF4HDtlzRwImQvfbGd+rGCj639QjpL
-	ND511XpVtsDhPkaS48xwmxb1m3zTxgod60pzhkK4QTfhO6YuGu6rB4dbVeRbPWp6KPksCptiR60
-	aWg==
-X-Google-Smtp-Source: AGHT+IG4/Cne7nqOIsE/PY37ws2Wr1tDPTEMkErYoJ1bGl8pKJEeVcseVqH5nyS1AL3VO3u2TuUQQA==
-X-Received: by 2002:a05:600c:6386:b0:442:f4a3:b5f2 with SMTP id 5b1f17b1804b1-45072545b44mr22307925e9.6.1748440822669;
-        Wed, 28 May 2025 07:00:22 -0700 (PDT)
-Received: from localhost ([2a00:2381:fd67:101:6c39:59e6:b76d:825])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450064aeb6csm23449655e9.24.2025.05.28.07.00.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 May 2025 07:00:22 -0700 (PDT)
+	s=arc-20240116; t=1748442608; c=relaxed/simple;
+	bh=eEUga3dc4QDsx0L2tmtVqGOtbh6VhzEUx0zN1Axtmqw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FAn+4gzV+FQDDmCIZoLZW89TbNXI9vVGQVDyJz1e6WwL7a1mcCIEoREjqbkYPhbW5NyhPhn8cV5odgn4ahhRm6wo8aduE+p01pBdMLJoGz4XntYk9+f/2DHZaMeivbZa+UMK6ICb81BCAwhqF1NnnU9OofyelldBmzmNaZmC1bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dev-suse.. (unknown [39.144.108.37])
+	by APP-05 (Coremail) with SMTP id zQCowABXpRPKHTdoAIzaAA--.50534S2;
+	Wed, 28 May 2025 22:29:32 +0800 (CST)
+From: Jingwei Wang <wangjingwei@iscas.ac.cn>
+To: linux-riscv@lists.infradead.org
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Jesse Taube <jesse@rivosinc.com>,
+	Yixun Lan <dlan@gentoo.org>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Tsukasa OI <research_trasio@irq.a4lg.com>,
+	stable@vger.kernel.org,
+	Jingwei Wang <wangjingwei@iscas.ac.cn>
+Subject: [PATCH v3] riscv: hwprobe: Fix stale vDSO data for late-initialized keys at boot
+Date: Wed, 28 May 2025 22:28:19 +0800
+Message-ID: <20250528142855.1847510-1-wangjingwei@iscas.ac.cn>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 May 2025 15:00:21 +0100
-Message-Id: <DA7UJKPSD154.2FRUF06DRZO7K@linaro.org>
-From: "Alexey Klimov" <alexey.klimov@linaro.org>
-To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
-Cc: <robdclark@gmail.com>, <will@kernel.org>, <robin.murphy@arm.com>,
- <linux-arm-msm@vger.kernel.org>, <joro@8bytes.org>,
- <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
- <andersson@kernel.org>
-Subject: Re: [PATCH] iommu/arm-smmu-qcom: Add SM6115 MDSS compatible
-X-Mailer: aerc 0.20.0
-References: <20250528003118.214093-1-alexey.klimov@linaro.org>
- <ehriorde5zbfoo6b7rzemnzegnwqfdobzwyjra755ynk2me2g6@om6g57n26zbp>
-In-Reply-To: <ehriorde5zbfoo6b7rzemnzegnwqfdobzwyjra755ynk2me2g6@om6g57n26zbp>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABXpRPKHTdoAIzaAA--.50534S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXr1UXr4UAr47XFy8Gw48Zwb_yoWrAw4Upa
+	yDCrsaqFW5CF4xWa45K3s7uF10g3Z5Gr13GFyqk343ZrW2y343Ar92qrsrZr90yryv9a4F
+	9F4a9F4Sy347Ar7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUU0zuJUUUUU==
+X-CM-SenderInfo: pzdqwy5lqj4v3l6l2u1dvotugofq/
 
-On Wed May 28, 2025 at 9:52 AM BST, Dmitry Baryshkov wrote:
-> On Wed, May 28, 2025 at 01:31:18AM +0100, Alexey Klimov wrote:
->> Add the SM6115 MDSS compatible to clients compatible list, as it also
->> needs that workaround.
->> Without this workaround, for example, QRB4210 RB2 which is based on
->> SM4250/SM6115 generates a lot of smmu unhandled context faults during
->> boot:
->>=20
->> arm_smmu_context_fault: 116854 callbacks suppressed
->> arm-smmu c600000.iommu: Unhandled context fault: fsr=3D0x402,
->> iova=3D0x5c0ec600, fsynr=3D0x320021, cbfrsynra=3D0x420, cb=3D5
->> arm-smmu c600000.iommu: FSR    =3D 00000402 [Format=3D2 TF], SID=3D0x420
->> arm-smmu c600000.iommu: FSYNR0 =3D 00320021 [S1CBNDX=3D50 PNU PLVL=3D1]
->> arm-smmu c600000.iommu: Unhandled context fault: fsr=3D0x402,
->> iova=3D0x5c0d7800, fsynr=3D0x320021, cbfrsynra=3D0x420, cb=3D5
->> arm-smmu c600000.iommu: FSR    =3D 00000402 [Format=3D2 TF], SID=3D0x420
->>=20
->> and also leads to failed initialisation of lontium lt9611uxc driver
->> and gpu afterwards:
->
-> Nit: there is nothing failing the lt9611uxc on its own. binding all MDSS
-> components (triggered by lt9611uxc attaching to the DSI bus) produces
-> the failure.
+The riscv_hwprobe vDSO data is populated by init_hwprobe_vdso_data(),
+an arch_initcall_sync. However, underlying data for some keys, like
+RISCV_HWPROBE_KEY_MISALIGNED_VECTOR_PERF, is determined asynchronously.
 
-Oh, I didn't mean to express that something failed in lt9611uxc itself, I
-was just trying to list observed problems.
-Apart from hdmi bridge and gpu the failed component will be soundcard drive=
-r
-since it depends on lt9611uxc.. So, if you have rewording in mind feel free
-to suggest it.
+Specifically, the per_cpu(vector_misaligned_access, cpu) values are set
+by the vec_check_unaligned_access_speed_all_cpus kthread. This kthread
+is spawned by an earlier arch_initcall (check_unaligned_access_all_cpus)
+and may complete its benchmark *after* init_hwprobe_vdso_data() has
+already populated the vDSO with default/stale values.
 
-Or maybe something like this will look better:
-and also failed initialisation of lontium lt9611uxc, gpu and dpu is observe=
-d:
-  (kernel trace as in the original email)
+So, refresh the vDSO data for specified keys (e.g.,
+MISALIGNED_VECTOR_PERF) ensuring it reflects the final boot-time values.
 
-[..]
+Test by comparing vDSO and syscall results for affected keys
+(e.g., MISALIGNED_VECTOR_PERF), which now match their final
+boot-time values.
 
->
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->
-> I'd also propose:
->
-> Fixes: 3581b7062cec ("drm/msm/disp/dpu1: add support for display on SM611=
-5")
->
-> This way this is going to be fixed for all platforms using display on
-> SM6115.
+Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
+Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
+Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
+Cc: stable@vger.kernel.org
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Reviewed-by: Jesse Taube <jesse@rivosinc.com>
+Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
+---
+Changes in v3:
+	- Retained existing blank line.
 
-Yes. Thanks. Checkpatch suggested "Fixes" tag but it was unclear when it
-started to horribly fail during boot -- sometime around 6.14 or 6.15 cycle.
+Changes in v2:
+	- Addressed feedback from Yixun's regarding #ifdef CONFIG_MMU usage.
+	- Updated commit message to provide a high-level summary.
+	- Added Fixes tag for commit e7c9d66e313b.
 
-Best regards,
-Alexey
+v1: https://lore.kernel.org/linux-riscv/20250521052754.185231-1-wangjingwei@iscas.ac.cn/T/#u
+
+ arch/riscv/include/asm/hwprobe.h           |  6 ++++++
+ arch/riscv/kernel/sys_hwprobe.c            | 16 ++++++++++++++++
+ arch/riscv/kernel/unaligned_access_speed.c |  1 +
+ 3 files changed, 23 insertions(+)
+
+diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hwprobe.h
+index 1f690fea0e03de6a..58dc847d86c7f2b0 100644
+--- a/arch/riscv/include/asm/hwprobe.h
++++ b/arch/riscv/include/asm/hwprobe.h
+@@ -40,4 +40,10 @@ static inline bool riscv_hwprobe_pair_cmp(struct riscv_hwprobe *pair,
+ 	return pair->value == other_pair->value;
+ }
+ 
++#ifdef CONFIG_MMU
++void riscv_hwprobe_vdso_sync(__s64 sync_key);
++#else
++static inline void riscv_hwprobe_vdso_sync(__s64 sync_key) { };
++#endif /* CONFIG_MMU */
++
+ #endif
+diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
+index 249aec8594a92a80..2e3e612b7ac6fd57 100644
+--- a/arch/riscv/kernel/sys_hwprobe.c
++++ b/arch/riscv/kernel/sys_hwprobe.c
+@@ -17,6 +17,7 @@
+ #include <asm/vector.h>
+ #include <asm/vendor_extensions/thead_hwprobe.h>
+ #include <vdso/vsyscall.h>
++#include <vdso/datapage.h>
+ 
+ 
+ static void hwprobe_arch_id(struct riscv_hwprobe *pair,
+@@ -500,6 +501,21 @@ static int __init init_hwprobe_vdso_data(void)
+ 
+ arch_initcall_sync(init_hwprobe_vdso_data);
+ 
++void riscv_hwprobe_vdso_sync(__s64 sync_key)
++{
++	struct vdso_arch_data *avd = vdso_k_arch_data;
++	struct riscv_hwprobe pair;
++
++	pair.key = sync_key;
++	hwprobe_one_pair(&pair, cpu_online_mask);
++	/*
++	 * Update vDSO data for the given key.
++	 * Currently for non-ID key updates (e.g. MISALIGNED_VECTOR_PERF),
++	 * so 'homogeneous_cpus' is not re-evaluated here.
++	 */
++	avd->all_cpu_hwprobe_values[sync_key] = pair.value;
++}
++
+ #endif /* CONFIG_MMU */
+ 
+ SYSCALL_DEFINE5(riscv_hwprobe, struct riscv_hwprobe __user *, pairs,
+diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
+index 585d2dcf2dab1ccb..a2cdb396ff823720 100644
+--- a/arch/riscv/kernel/unaligned_access_speed.c
++++ b/arch/riscv/kernel/unaligned_access_speed.c
+@@ -375,6 +375,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
+ static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
+ {
+ 	schedule_on_each_cpu(check_vector_unaligned_access);
++	riscv_hwprobe_vdso_sync(RISCV_HWPROBE_KEY_MISALIGNED_VECTOR_PERF);
+ 
+ 	return 0;
+ }
+-- 
+2.49.0
+
 
