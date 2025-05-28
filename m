@@ -1,189 +1,198 @@
-Return-Path: <stable+bounces-147899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16E0AC5E30
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 02:27:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AE9AC5E4F
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 02:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D2CB1BA56D9
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 00:27:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36C867A7AF3
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 00:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0ED584D08;
-	Wed, 28 May 2025 00:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36E1519BF;
+	Wed, 28 May 2025 00:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="laWGAMmS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XJ6z+32s"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5364978F2F;
-	Wed, 28 May 2025 00:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5D8148838
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 00:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748392029; cv=none; b=A+oaUA4W1evp+ceIS0X1OmHzwUwDULf3mJ8zqX6hKVNSyZSP04LBS7llzoNoE/EvjZSBJ7Tjm2VocyYKvu3dC0R4N5nAjE1vaPvFQDz6E3xrqZGqwUa2dlWi298WVIdjEiVJKnXra7+0bDqTL08TMK0aVNSCdWp3HwjInb1raSo=
+	t=1748392286; cv=none; b=p+JcclNuqCdAmsvDPYsy/wbWGkgmkOPfyuRBSZ6UtMWo2OTrsWwA5w9eqtm9bba4Gm+Yn8SWYaKOE8Da2WLleFVebtQaCeSz5nU+esHM2iiUGvr1LlgKT0TqxMYYaXy5QkerjNcMn4vA0khDVSfsWOSvlZt7tcRX3oSyQxoZdQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748392029; c=relaxed/simple;
-	bh=WMRFYwqinFYAhPbBheQEoJV+jSEgOORYe30mfySiRlU=;
-	h=Date:To:From:Subject:Message-Id; b=eBEe70XaeBNS4N9x8H/C1d3csx2BqjF4UBk1BbCTDDpWbm+pe4P1SWw2Ka7bHsGRY/H4Ep7MTlqNVTOPLqNhhUoOgKbNtgLwgkk1NoGrW3izif1TtkU4SYLq2Bnlq2mIv76G2CB898l3szMEc4GWGVqUDdqMgDrRwLT6rqEsU6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=laWGAMmS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F77C4CEE9;
-	Wed, 28 May 2025 00:27:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1748392029;
-	bh=WMRFYwqinFYAhPbBheQEoJV+jSEgOORYe30mfySiRlU=;
-	h=Date:To:From:Subject:From;
-	b=laWGAMmSBZkf9nCQ4GQRQ/nZ8HW5lw1PiR51tdLQfPNpfi4v7Sx/2B753h1jq40jJ
-	 UnWnLNIVNz+R+S702U2OM7uryQ2zbmBIoyP7Dg0AaVnZYyl7EaVk0kJv5L492y6yXm
-	 FPh9xx0G/Tu8/xqiIUpQ1HAMdt5FvtwIWr9vc5/4=
-Date: Tue, 27 May 2025 17:27:08 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,viro@zeniv.linux.org.uk,tytso@mit.edu,stable@vger.kernel.org,jhubbard@nvidia.com,jack@suse.cz,djwong@kernel.org,david@redhat.com,david@fromorbit.com,dan.j.williams@intel.com,brauner@kernel.org,balbirs@nvidia.com,alison.schofield@intel.com,apopple@nvidia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fs-dax-fix-dont-skip-locked-entries-when-scanning-entries.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250528002708.F1F77C4CEE9@smtp.kernel.org>
+	s=arc-20240116; t=1748392286; c=relaxed/simple;
+	bh=UuFnSXXlBxca+WgwA6gh5QujHGrR6gMU9Nmu4VYu4/I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VFCMPGgKN7C7MPD0hiAjBVyPDAwQ4N2Vz7M6Z9il3RYgKowlDP8BpnN8Uq4Jge7wO8waRBl1K1Qpz5eSNbgulwDFHczJ66nXB92QQA/vNd0nalGWPbjlR4IdxUf8+gXDLuBOZd/Yfpzp/PQqHdCPgs+OHDfd6+x9c4sj/J/X/K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XJ6z+32s; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a4dba2c767so226282f8f.1
+        for <stable@vger.kernel.org>; Tue, 27 May 2025 17:31:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1748392281; x=1748997081; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gIINLTUaLnUoGc/shiZVTfzJewFDLRIL07KX6BIkMJo=;
+        b=XJ6z+32s2XocXc8Lk0oFrGqpzuJNzwv9FojpaaI/cJwZWFovWP2YGIW3FFzdRw8EQP
+         0KYv/ZJom6vJ9ee/6BmlZOFfAajxFcwJrjvY9rwgV+kxFBxR6OpJxRf6eI773zqG+JkR
+         I0dYLe/3m95p1CHmA8CXILNBIQRkTeMPN0Os4JAF/GVLHBemaEjassO17FEqlJsHEWYB
+         3rwKg6//iNh5kO5Q/5akhUkiSqI045lE8QmFlwOgQoDClY6ucFuXoQUNm7kuKJYCGkTE
+         tkU8yDCaXCtZcxTsdqPN40kZOVfnuBK081UNjIoBIGefi+U71o/j74kn4JkYIllbi3ON
+         LwDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748392281; x=1748997081;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gIINLTUaLnUoGc/shiZVTfzJewFDLRIL07KX6BIkMJo=;
+        b=Rc/0BsSrFoy7VM3ELmiqqg59GRDmzdhpKY3gaI17medIi45w2azz4KC8q8A9ab4dBT
+         gnQ/ko/tS/B5WUJTBUkmFVEWRdF2NMASbgHQQOUmjEpuZ8Ao1zTuY1L/nlHpxnV5eST+
+         BRKw4ivMJKR9snXbKwBYpT6ho+HZoobjuj5fP0i/C81raRbGxyNauueK0UIFnRD3pVZY
+         S13jV9o5QuD/RIrQemJy7swAzyAEuXF2e8kHyGenCjmTf8mPsCF1VIOMDuNX6ycYMNXm
+         lyGx8/0uD00g7wxMrK5tUgZV62N0NnajLdtXqCbo7Sdcw404ejcMDOqdYTcbHypP4JRs
+         WpfA==
+X-Forwarded-Encrypted: i=1; AJvYcCWHzWO6sSlwqccinSelSuAfVjbuM9Uf25abPvGfnIYKsgLY9hEz6jhgwmOIpyn9Vm9RCfvKQJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeCgjDXqMUqbJrA3HVmWb7RKS+QpvPNlLWR4N3iDByAim2fVPH
+	XirovFtENbyBtojrOqGxOF5r9zroVM1VQkY6J4k62Ap1FpNeTz9g9w+QxyEUPr5fcnc=
+X-Gm-Gg: ASbGnctLghxc7o4TAGbfUElHey3vkcWj5Ko+5s7TTpJPnBsPYn/s90F0WR/r14NwrZx
+	znCiya7SbNdvIDZIdU+nTTXUSR6Ucw4IeAfKUnnB5L1fRfjs4orzYxYiJ+xiYTp+qLBa5B6KHfy
+	teYR0IgRoW6w/OrIRRcoTuHH6roUxTroCe2sCRBE8E5k2XRqNojYKnVjJFwIaD4XCGisQvU+4OV
+	QrifdgQZjU5g9EGSIcsgvP7DK/eaQNRDavRMYZ2L7wgLj/UNBtEL10cL+d5ZgRHACmkUKTApsPX
+	6c+4B7bMR8fjdocgsem4ODxeJNGuz/miCYQtpUSKbB3Fooqwesvulr419l0=
+X-Google-Smtp-Source: AGHT+IFxSGQLHHLXajXUw+l8QvUa1GNINdp2fs5C70KSEXMnzFvKtHMrwh3iyD2kg9WD2MSpHAJ4sw==
+X-Received: by 2002:a05:6000:12ce:b0:3a4:e603:3d2 with SMTP id ffacd0b85a97d-3a4e60303f3mr1695166f8f.0.1748392281383;
+        Tue, 27 May 2025 17:31:21 -0700 (PDT)
+Received: from orion.home ([2a02:c7c:7213:c700:f024:90b8:5947:4156])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4e8bc3444sm431020f8f.64.2025.05.27.17.31.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 May 2025 17:31:20 -0700 (PDT)
+From: Alexey Klimov <alexey.klimov@linaro.org>
+To: robdclark@gmail.com,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	linux-arm-msm@vger.kernel.org
+Cc: joro@8bytes.org,
+	iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	andersson@kernel.org,
+	dmitry.baryshkov@oss.qualcomm.com
+Subject: [PATCH] iommu/arm-smmu-qcom: Add SM6115 MDSS compatible
+Date: Wed, 28 May 2025 01:31:18 +0100
+Message-ID: <20250528003118.214093-1-alexey.klimov@linaro.org>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+Add the SM6115 MDSS compatible to clients compatible list, as it also
+needs that workaround.
+Without this workaround, for example, QRB4210 RB2 which is based on
+SM4250/SM6115 generates a lot of smmu unhandled context faults during
+boot:
 
-The patch titled
-     Subject: fs/dax: fix "don't skip locked entries when scanning entries"
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fs-dax-fix-dont-skip-locked-entries-when-scanning-entries.patch
+arm_smmu_context_fault: 116854 callbacks suppressed
+arm-smmu c600000.iommu: Unhandled context fault: fsr=0x402,
+iova=0x5c0ec600, fsynr=0x320021, cbfrsynra=0x420, cb=5
+arm-smmu c600000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x420
+arm-smmu c600000.iommu: FSYNR0 = 00320021 [S1CBNDX=50 PNU PLVL=1]
+arm-smmu c600000.iommu: Unhandled context fault: fsr=0x402,
+iova=0x5c0d7800, fsynr=0x320021, cbfrsynra=0x420, cb=5
+arm-smmu c600000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x420
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-dax-fix-dont-skip-locked-entries-when-scanning-entries.patch
+and also leads to failed initialisation of lontium lt9611uxc driver
+and gpu afterwards:
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+ ------------[ cut here ]------------
+ !aspace
+ WARNING: CPU: 6 PID: 324 at drivers/gpu/drm/msm/msm_gem_vma.c:130 msm_gem_vma_init+0x150/0x18c [msm]
+ Modules linked in: ... (long list of modules)
+ CPU: 6 UID: 0 PID: 324 Comm: (udev-worker) Not tainted 6.15.0-03037-gaacc73ceeb8b #4 PREEMPT
+ Hardware name: Qualcomm Technologies, Inc. QRB4210 RB2 (DT)
+ pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : msm_gem_vma_init+0x150/0x18c [msm]
+ lr : msm_gem_vma_init+0x150/0x18c [msm]
+ sp : ffff80008144b280
+  		...
+ Call trace:
+  msm_gem_vma_init+0x150/0x18c [msm] (P)
+  get_vma_locked+0xc0/0x194 [msm]
+  msm_gem_get_and_pin_iova_range+0x4c/0xdc [msm]
+  msm_gem_kernel_new+0x48/0x160 [msm]
+  msm_gpu_init+0x34c/0x53c [msm]
+  adreno_gpu_init+0x1b0/0x2d8 [msm]
+  a6xx_gpu_init+0x1e8/0x9e0 [msm]
+  adreno_bind+0x2b8/0x348 [msm]
+  component_bind_all+0x100/0x230
+  msm_drm_bind+0x13c/0x3d0 [msm]
+  try_to_bring_up_aggregate_device+0x164/0x1d0
+  __component_add+0xa4/0x174
+  component_add+0x14/0x20
+  dsi_dev_attach+0x20/0x34 [msm]
+  dsi_host_attach+0x58/0x98 [msm]
+  devm_mipi_dsi_attach+0x34/0x90
+  lt9611uxc_attach_dsi.isra.0+0x94/0x124 [lontium_lt9611uxc]
+  lt9611uxc_probe+0x540/0x5fc [lontium_lt9611uxc]
+  i2c_device_probe+0x148/0x2a8
+  really_probe+0xbc/0x2c0
+  __driver_probe_device+0x78/0x120
+  driver_probe_device+0x3c/0x154
+  __driver_attach+0x90/0x1a0
+  bus_for_each_dev+0x68/0xb8
+  driver_attach+0x24/0x30
+  bus_add_driver+0xe4/0x208
+  driver_register+0x68/0x124
+  i2c_register_driver+0x48/0xcc
+  lt9611uxc_driver_init+0x20/0x1000 [lontium_lt9611uxc]
+  do_one_initcall+0x60/0x1d4
+  do_init_module+0x54/0x1fc
+  load_module+0x1748/0x1c8c
+  init_module_from_file+0x74/0xa0
+  __arm64_sys_finit_module+0x130/0x2f8
+  invoke_syscall+0x48/0x104
+  el0_svc_common.constprop.0+0xc0/0xe0
+  do_el0_svc+0x1c/0x28
+  el0_svc+0x2c/0x80
+  el0t_64_sync_handler+0x10c/0x138
+  el0t_64_sync+0x198/0x19c
+ ---[ end trace 0000000000000000 ]---
+ msm_dpu 5e01000.display-controller: [drm:msm_gpu_init [msm]] *ERROR* could not allocate memptrs: -22
+ msm_dpu 5e01000.display-controller: failed to load adreno gpu
+ platform a400000.remoteproc:glink-edge:apr:service@7:dais: Adding to iommu group 19
+ msm_dpu 5e01000.display-controller: failed to bind 5900000.gpu (ops a3xx_ops [msm]): -22
+ msm_dpu 5e01000.display-controller: adev bind failed: -22
+ lt9611uxc 0-002b: failed to attach dsi to host
+ lt9611uxc 0-002b: probe with driver lt9611uxc failed with error -22
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Alistair Popple <apopple@nvidia.com>
-Subject: fs/dax: fix "don't skip locked entries when scanning entries"
-Date: Fri, 23 May 2025 14:37:49 +1000
-
-Commit 6be3e21d25ca ("fs/dax: don't skip locked entries when scanning
-entries") introduced a new function, wait_entry_unlocked_exclusive(),
-which waits for the current entry to become unlocked without advancing the
-XArray iterator state.
-
-Waiting for the entry to become unlocked requires dropping the XArray
-lock.  This requires calling xas_pause() prior to dropping the lock which
-leaves the xas in a suitable state for the next iteration.  However this
-has the side-effect of advancing the xas state to the next index. 
-Normally this isn't an issue because xas_for_each() contains code to
-detect this state and thus avoid advancing the index a second time on the
-next loop iteration.
-
-However both callers of and wait_entry_unlocked_exclusive() itself
-subsequently use the xas state to reload the entry.  As xas_pause()
-updated the state to the next index this will cause the current entry
-which is being waited on to be skipped.  This caused the following warning
-to fire intermittently when running xftest generic/068 on an XFS
-filesystem with FS DAX enabled:
-
-[   35.067397] ------------[ cut here ]------------
-[   35.068229] WARNING: CPU: 21 PID: 1640 at mm/truncate.c:89 truncate_folio_batch_exceptionals+0xd8/0x1e0
-[   35.069717] Modules linked in: nd_pmem dax_pmem nd_btt nd_e820 libnvdimm
-[   35.071006] CPU: 21 UID: 0 PID: 1640 Comm: fstest Not tainted 6.15.0-rc7+ #77 PREEMPT(voluntary)
-[   35.072613] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/204
-[   35.074845] RIP: 0010:truncate_folio_batch_exceptionals+0xd8/0x1e0
-[   35.075962] Code: a1 00 00 00 f6 47 0d 20 0f 84 97 00 00 00 4c 63 e8 41 39 c4 7f 0b eb 61 49 83 c5 01 45 39 ec 7e 58 42 f68
-[   35.079522] RSP: 0018:ffffb04e426c7850 EFLAGS: 00010202
-[   35.080359] RAX: 0000000000000000 RBX: ffff9d21e3481908 RCX: ffffb04e426c77f4
-[   35.081477] RDX: ffffb04e426c79e8 RSI: ffffb04e426c79e0 RDI: ffff9d21e34816e8
-[   35.082590] RBP: ffffb04e426c79e0 R08: 0000000000000001 R09: 0000000000000003
-[   35.083733] R10: 0000000000000000 R11: 822b53c0f7a49868 R12: 000000000000001f
-[   35.084850] R13: 0000000000000000 R14: ffffb04e426c78e8 R15: fffffffffffffffe
-[   35.085953] FS:  00007f9134c87740(0000) GS:ffff9d22abba0000(0000) knlGS:0000000000000000
-[   35.087346] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   35.088244] CR2: 00007f9134c86000 CR3: 000000040afff000 CR4: 00000000000006f0
-[   35.089354] Call Trace:
-[   35.089749]  <TASK>
-[   35.090168]  truncate_inode_pages_range+0xfc/0x4d0
-[   35.091078]  truncate_pagecache+0x47/0x60
-[   35.091735]  xfs_setattr_size+0xc7/0x3e0
-[   35.092648]  xfs_vn_setattr+0x1ea/0x270
-[   35.093437]  notify_change+0x1f4/0x510
-[   35.094219]  ? do_truncate+0x97/0xe0
-[   35.094879]  do_truncate+0x97/0xe0
-[   35.095640]  path_openat+0xabd/0xca0
-[   35.096278]  do_filp_open+0xd7/0x190
-[   35.096860]  do_sys_openat2+0x8a/0xe0
-[   35.097459]  __x64_sys_openat+0x6d/0xa0
-[   35.098076]  do_syscall_64+0xbb/0x1d0
-[   35.098647]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   35.099444] RIP: 0033:0x7f9134d81fc1
-[   35.100033] Code: 75 57 89 f0 25 00 00 41 00 3d 00 00 41 00 74 49 80 3d 2a 26 0e 00 00 74 6d 89 da 48 89 ee bf 9c ff ff ff5
-[   35.102993] RSP: 002b:00007ffcd41e0d10 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
-[   35.104263] RAX: ffffffffffffffda RBX: 0000000000000242 RCX: 00007f9134d81fc1
-[   35.105452] RDX: 0000000000000242 RSI: 00007ffcd41e1200 RDI: 00000000ffffff9c
-[   35.106663] RBP: 00007ffcd41e1200 R08: 0000000000000000 R09: 0000000000000064
-[   35.107923] R10: 00000000000001a4 R11: 0000000000000202 R12: 0000000000000066
-[   35.109112] R13: 0000000000100000 R14: 0000000000100000 R15: 0000000000000400
-[   35.110357]  </TASK>
-[   35.110769] irq event stamp: 8415587
-[   35.111486] hardirqs last  enabled at (8415599): [<ffffffff8d74b562>] __up_console_sem+0x52/0x60
-[   35.113067] hardirqs last disabled at (8415610): [<ffffffff8d74b547>] __up_console_sem+0x37/0x60
-[   35.114575] softirqs last  enabled at (8415300): [<ffffffff8d6ac625>] handle_softirqs+0x315/0x3f0
-[   35.115933] softirqs last disabled at (8415291): [<ffffffff8d6ac811>] __irq_exit_rcu+0xa1/0xc0
-[   35.117316] ---[ end trace 0000000000000000 ]---
-
-Fix this by using xas_reset() instead, which is equivalent in
-implementation to xas_pause() but does not advance the XArray state.
-
-Link: https://lkml.kernel.org/r/20250523043749.1460780-1-apopple@nvidia.com
-Fixes: 6be3e21d25ca ("fs/dax: don't skip locked entries when scanning entries")
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Ted Ts'o <tytso@mit.edu>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
+Suggested-by: Bjorn Andersson <andersson@kernel.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
 ---
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- fs/dax.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/dax.c~fs-dax-fix-dont-skip-locked-entries-when-scanning-entries
-+++ a/fs/dax.c
-@@ -257,7 +257,7 @@ static void *wait_entry_unlocked_exclusi
- 		wq = dax_entry_waitqueue(xas, entry, &ewait.key);
- 		prepare_to_wait_exclusive(wq, &ewait.wait,
- 					TASK_UNINTERRUPTIBLE);
--		xas_pause(xas);
-+		xas_reset(xas);
- 		xas_unlock_irq(xas);
- 		schedule();
- 		finish_wait(wq, &ewait.wait);
-_
-
-Patches currently in -mm which might be from apopple@nvidia.com are
-
-fs-dax-fix-dont-skip-locked-entries-when-scanning-entries.patch
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 59d02687280e..c919babcea75 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -365,6 +365,7 @@ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
+ 	{ .compatible = "qcom,sdm670-mdss" },
+ 	{ .compatible = "qcom,sdm845-mdss" },
+ 	{ .compatible = "qcom,sdm845-mss-pil" },
++	{ .compatible = "qcom,sm6115-mdss" },
+ 	{ .compatible = "qcom,sm6350-mdss" },
+ 	{ .compatible = "qcom,sm6375-mdss" },
+ 	{ .compatible = "qcom,sm8150-mdss" },
+-- 
+2.47.2
 
 
