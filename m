@@ -1,160 +1,132 @@
-Return-Path: <stable+bounces-147981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C135CAC6DA7
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 18:15:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D2AAC6DB4
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 18:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 498581C0093D
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:15:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6304417EA38
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480DC2AD22;
-	Wed, 28 May 2025 16:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3B128C86C;
+	Wed, 28 May 2025 16:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SaW5KfKM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LYUs5Bhd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7449B28CF77
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 16:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAFD28D843
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 16:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748448907; cv=none; b=GrZzuzz4GtJVJcoR19JqIWfqPXB7n4ExPJiuKjV0RDy/UEKXtkKG35AQ/4CToyYQuFmYAwCzMFYl1fDadpwFpyc3bP+29Usqo1R6EJuIzzyrnpQLu+zdjNm/XJEzXlr8OhxpKoTC/R0RvNPHWkmIueU+e8ZYuM9BPAlQ71MHc2I=
+	t=1748449000; cv=none; b=hmlC8tTzYEenILsVfjXjELGUl0r6H+FE+WKJ09C2wS7VWEOINvjYrnVIpuaqSr3b/eiXq6f4NF5D6vn5k1HIzQcUvSRrksphyDwYbuFSyBId0aiO8e8emUwFBdLFg9I4uIT9gn+gTZYZrrZWRTN/qznMojLSIa7h+igL/ZDWgZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748448907; c=relaxed/simple;
-	bh=oftCGjGpACLgWjDfLsAyXAfYxlJ+xGu9uinKdgFYgsQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vf8r9dhYTrCeu4F8jtHsohq+7C1wPYjAxkMKJi//7Cnb61TF+0583fiPEgBotePwCdpm0/mXdhW6zqOUFOFt6MeTTJ1faJNGgLz6HUH0QTienRtptms1X2nc9N7hB+fGzO6nbO+KQir3CxHuoOXmSWhlRHlc3O74+rkeHyczYqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SaW5KfKM; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e7569ccf04cso3678068276.0
-        for <stable@vger.kernel.org>; Wed, 28 May 2025 09:15:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748448904; x=1749053704; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oftCGjGpACLgWjDfLsAyXAfYxlJ+xGu9uinKdgFYgsQ=;
-        b=SaW5KfKMU5iqNDyf1Ck5tVJ6aA4C2qc8B6kDtVSqWhRfO0yrI30RlNaU7XxBH6ImVH
-         ocqLYMS3DEHv0Uv8ewSNkaN8X5zCRtxe8yxHIrtwPNIlrRHWJsvHutujKcjXdYTHur6b
-         HeZhdwqF71RlsixpiKycpzY/7vaQpZ2rwW0Fp4KPSLAT96sJ8Au/IaQoTALo3SFbbDmh
-         tWvyCKXVCPBfWU6r+SPVpYdf7udeglG5hK4y8bhMTp5/ecyFDmJ+JtSDM8S6dplBuYSZ
-         B//JB5TJLZxRIIY7a6BjTfoj2xc0/BW/KpRoYyLfsQBiZsYhY/wemUY14wdhrGGTd/cj
-         R+Ug==
+	s=arc-20240116; t=1748449000; c=relaxed/simple;
+	bh=Z/yuNRvutEMonw93F9Xzr0/LAs06gPGkEly7k12Zexs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LN4OwLhakSwDFVigVw/uwKH+O9rZQXEhQMpAZ9nwBRr+6Lt9Xzes4yu6hso8Gus/stJSjku10996G92t/qJ++1rmcXwTmGFSX37Ie63yCpx3GcZZ5OYQSMtkxPlFQbX0W+rAXw0MiaPdKrP8j0TUHneIBvgyrCY9hjee3Nqq9ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LYUs5Bhd; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748448997;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2k2PY9MAHKt+UL2NC1MP+obMfgPvXhyJk5Kn5YL16Pc=;
+	b=LYUs5Bhd5uttkVpJLARuTyBTBhWl81escZMchCXLn4+BKxMTzq1ofQU+frNPVRTPKA+Cxi
+	XcDO95gGfJuW5c8mrQSgt8WgUv4hNPEQ5yxXkue7RyPMWqL0uuCzxrdwBLhBEQ734AGjym
+	eppktTyMfrEivxuSY+dI8rA/OrdGRH8=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-63-NvUVXB3lO5CDZs9Xmm7R9w-1; Wed, 28 May 2025 12:16:35 -0400
+X-MC-Unique: NvUVXB3lO5CDZs9Xmm7R9w-1
+X-Mimecast-MFC-AGG-ID: NvUVXB3lO5CDZs9Xmm7R9w_1748448995
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6f8d0bdd023so853926d6.1
+        for <stable@vger.kernel.org>; Wed, 28 May 2025 09:16:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748448904; x=1749053704;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oftCGjGpACLgWjDfLsAyXAfYxlJ+xGu9uinKdgFYgsQ=;
-        b=vy9yUasJRbeDaGcn1Zb+MoTHG3OrOkBFfbgWgRgBYrJOsCTSbXNCBTmvc6gtzLxZwS
-         SO5uByPbSrIlwyMfgXh0rYqYBTCi3JNqUUVAInazgS/ROGZR9HAjc9bW9h3rRZKgED+F
-         bOP+i0+ozYoPUULDlDL+pyiA9NQY7l+BNj4vvP8U1do5evWDM+HeL6Z9fFz7mOLPkItK
-         dB1C9wXydmvEnD6ZPs35qc8xoCLWAcSHipFT+budb/0m0g2CJ9CQY7NX0U7sw+6JWUyz
-         R77YQOzQwvB8W8rYqHXOY7w3BoukuinZwB/a+4jXRPhIXx7toUpZQGmyRqWttfdIWcY5
-         2zKw==
-X-Forwarded-Encrypted: i=1; AJvYcCX2DU+65QTnlF0kApC685q/p+V1aptRJ5rE3l6wIjcfItfxiWNY47XIRUTKFaC/empGkhDtk/c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9s7N90yh1V5LtpimtEl+ixG9O6D7PWoIwSn4TFr36cF/95L3I
-	r0A6WKqlkQdPgSmL4yX97iG1Fo5g5Ij1cCFVXVgExamxkKAKn4viotf9muGXjMvQrkYPg2JcMVQ
-	w1jashK7N8TQP7dpyFs9os/RJAjCkly5O5LxluV0L
-X-Gm-Gg: ASbGncsHe8d3MIBUMF/Q+wul92DjCV6Gdr06tiSGxIyZgke82d3d9PwYIixR0eTFPD2
-	JlXZNdLeiHWU6r5xfmMqITHYzzmQYNsX3+4EcqNJ3SyGhbAvlmC1Mqgmpq4zvdRz18rIyuhkSQ8
-	b/o52Mz5/M/z+/B0Zzl8g1ORxavHk3OOJ9VBuGORHtinxApj0qEMnmT1tEioAhJYa7Y8eodponr
-	yCCGg==
-X-Google-Smtp-Source: AGHT+IFwW0/MrySaPT+ucgIg1dChgPDCXdJtXWgrMY95UPokdViJg0CdZ9UXjyC8CVjk5twtVkLrVgdpew1P2vJKaig=
-X-Received: by 2002:a05:6902:1b8a:b0:e7d:c87a:6249 with SMTP id
- 3f1490d57ef6-e7dc87a6957mr7030815276.36.1748448903884; Wed, 28 May 2025
- 09:15:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748448995; x=1749053795;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2k2PY9MAHKt+UL2NC1MP+obMfgPvXhyJk5Kn5YL16Pc=;
+        b=FQEr2dOM7tCIBi6VXoVNjxNCUZJsLxVJvxaDQlcQ+xJUtG6es+9vYAgaKpmz1cAvtD
+         4BiiPSlpYEIHD9ZvJDUL6/3g8k4+Fnx4ro++BCWfaDCZeI7nASR2rTz4fhEkh0M2pZQ+
+         tkWliMIc//Ef7Rpwa0kBtD9b8+HNm0rpyYYZ2dTDu6Bc+7MTu3fR6HXUg0D32Sqifv3l
+         MWD/fFtyIklHm9UdorpPaaeVNcWryM7Snryk1FTCc5paLVTv5mJ3paN1FLjZTsMoWGNT
+         ZuPa9fc3IHxiYWMgvXGGKwnkur5XlXLB/vx1lyn7bgLAnvPGsc5Qrk1bK7wFdJfIckn8
+         Am4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXe0e6/dtCoUmetiR49urQcuiCAms8viWFDnItN17xgHVkZPI48hV2ZUc03Tz+TqURWk9sSHyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySfzPqVlSoCE4dkzDG3STHzj6rqb9sTDC4K4pLQicDV8kMjCBB
+	ckcwzC6wL97TuTLCKBfy8V8KRIUeYwLghKM5Tdl29jpvtMfSDBSksjx+ncHRsl35hHzFDnIxVcL
+	5xvq1Axz6xs53b4YI/IKdf9CaAL+/FCL003JizDCgqsZR+fCpZoNPufu4wg==
+X-Gm-Gg: ASbGncuRCk6G43ysy5JU0FuqNodWf6zItu7hYqNuIbF3H145JDqcJGrU2Iq1s3mDsgg
+	1SEKb3qfy0mDSzgLwAj5FyUN1oUxcwST8q0/B2UswOc+e1nkKg53GIsFsHGCKlygO8yCi0dphma
+	M3/pJF/vBtFyMZG76THmFcX69Fagh4rOp2bBrrw+cmyYo/sLKDqmX+uq7istKhDRxVlIXGyZpHq
+	FMdjs93hHZ9XRcLQEk/6k9KmwtlrRvJCxXdC5t+RwDDQnMzm0Uowqf/ITRaDis34p1fy7zwrrAM
+	0xM=
+X-Received: by 2002:a05:6214:224a:b0:6fa:bb44:fde5 with SMTP id 6a1803df08f44-6fabb4512fcmr72527236d6.17.1748448995307;
+        Wed, 28 May 2025 09:16:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENfqhaMY+uKyU1t2Uqx80D80R06TLTQ2+Ckhg9TBWJtJ9d2fj3zGpcfKCZJVlZCQeNfczAMw==
+X-Received: by 2002:a05:6214:224a:b0:6fa:bb44:fde5 with SMTP id 6a1803df08f44-6fabb4512fcmr72526776d6.17.1748448994766;
+        Wed, 28 May 2025 09:16:34 -0700 (PDT)
+Received: from x1.local ([85.131.185.92])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fac0bca20asm7994226d6.110.2025.05.28.09.16.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 09:16:34 -0700 (PDT)
+Date: Wed, 28 May 2025 12:16:31 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@redhat.com>, Gavin Guo <gavinguo@igalia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	muchun.song@linux.dev, akpm@linux-foundation.org,
+	mike.kravetz@oracle.com, kernel-dev@igalia.com,
+	stable@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+	Florent Revest <revest@google.com>, Gavin Shan <gshan@redhat.com>
+Subject: Re: [PATCH v3] mm/hugetlb: fix a deadlock with pagecache_folio and
+ hugetlb_fault_mutex_table
+Message-ID: <aDc23-d2fsQbdIKe@x1.local>
+References: <20250528023326.3499204-1-gavinguo@igalia.com>
+ <aDbXEnqnpDnAx4Mw@localhost.localdomain>
+ <aDcl2YM5wX-MwzbM@x1.local>
+ <629bb87e-c493-4069-866c-20e02c14ddcc@redhat.com>
+ <aDcvplLNH0nGsLD1@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250528023326.3499204-1-gavinguo@igalia.com> <aDbXEnqnpDnAx4Mw@localhost.localdomain>
- <aDcl2YM5wX-MwzbM@x1.local> <629bb87e-c493-4069-866c-20e02c14ddcc@redhat.com> <aDcvplLNH0nGsLD1@localhost.localdomain>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 In-Reply-To: <aDcvplLNH0nGsLD1@localhost.localdomain>
-From: James Houghton <jthoughton@google.com>
-Date: Wed, 28 May 2025 12:14:28 -0400
-X-Gm-Features: AX0GCFtQ3Y_TJAz9gxU-mydw8Rp4n4FQFwD-d7vMDgv4nmmNrG0P_Nb3Fcuv7Sk
-Message-ID: <CADrL8HXD0hX+5WvtZWKXAr0NvfvOJZhqL9PVBawYQuAyzhGgYg@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/hugetlb: fix a deadlock with pagecache_folio and hugetlb_fault_mutex_table
-To: Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>, Gavin Guo <gavinguo@igalia.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev, 
-	akpm@linux-foundation.org, mike.kravetz@oracle.com, kernel-dev@igalia.com, 
-	stable@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	Florent Revest <revest@google.com>, Gavin Shan <gshan@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 28, 2025 at 11:45=E2=80=AFAM Oscar Salvador <osalvador@suse.de>=
- wrote:
->
-> On Wed, May 28, 2025 at 05:09:26PM +0200, David Hildenbrand wrote:
-> > On 28.05.25 17:03, Peter Xu wrote:
-> > > So I'm not 100% sure we need the folio lock even for copy; IIUC a ref=
-count
-> > > would be enough?
-> >
-> > The introducing patches seem to talk about blocking concurrent migratio=
-n /
-> > rmap walks.
->
-> I thought the main reason was because PageLock protects us against writes=
-,
+On Wed, May 28, 2025 at 05:45:42PM +0200, Oscar Salvador wrote:
+> I thought the main reason was because PageLock protects us against writes,
 > so when copying (in case of copying the underlying file), we want the
 > file to be stable throughout the copy?
->
-> > Maybe also concurrent fallocate(PUNCH_HOLE) is a problem regarding
-> > reservations? Not sure ...
->
-> fallocate()->hugetlb_vmdelete_list() tries to grab the vma in write-mode,
-> and hugetlb_wp() grabs the lock in read-mode, so we should be covered?
->
-> Also, hugetlbfs_punch_hole()->remove_inode_hugepages() will try to grab t=
-he mutex.
->
-> The only fishy thing I see is hugetlbfs_zero_partial_page().
->
-> But that is for old_page, and as I said, I thought main reason was to
-> protect us against writes during the copy.
->
-> > For 2) I am also not sure if we need need the pagecache folio locked; I
-> > doubt it ... but this code is not the easiest to follow.
->
-> I have been staring at that code and thinking about potential scenarios
-> for a few days now, and I cannot convice myself that we need
-> pagecache_folio's lock when pagecache_folio !=3D old_folio because as a
-> matter of fact I cannot think of anything it protects us against.
 
-Hi Oscar,
+The folio can already been mapped writable in other VM_SHARED vmas.. which
+means the userspace is free to write whatever while kernel copying, right?
 
-Have you thought about the UFFDIO_CONTINUE case (hugetlb_mfill_atomic_pte()=
-)?
+IIUC there's no way to make sure the folio content is stable as long as it
+can be mapped, CoW should just happen and the result of the copied page is
+unpredictable if there're concurrent writes.
 
-I'm slightly concerned that, if you aren't holding pagecache_folio's
-lock, there might be issues where hugetlb_mfill_atomic_pte() proceeds
-to map a hugetlb page that it is not supposed to. (For example, if the
-fault handler does not generally hold pagecache_folio's lock,
-hugetlb_mfill_atomic_pte() will see a page in the pagecache and map
-it, even though it may not have been zeroed yet.)
+IMHO it's the userspace's job if it wants to make sure the folio (when
+triggering CoW) copies a stable piece of content.
 
-I haven't had enough time to fully think through this case, but just
-want to make sure it has been considered.
+That's also why I was thinking maybe we don't need the folio lock at all.
+We still will need a refcount though for the pagecache to make sure it
+wont' get freed concurrently.
 
-Thanks!
+Thanks,
 
-> I plan to rework this in a more sane way, or at least less offusctaed, an=
-d then
-> Galvin can fire his syzkaller to check whether we are good.
->
-> --
-> Oscar Salvador
-> SUSE Labs
->
+-- 
+Peter Xu
+
 
