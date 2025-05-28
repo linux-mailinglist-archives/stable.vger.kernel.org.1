@@ -1,141 +1,176 @@
-Return-Path: <stable+bounces-147962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53431AC6A41
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 15:22:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394C1AC6A66
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 15:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A09413B99F9
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 13:22:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B4ED3AD30B
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 13:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3002857D2;
-	Wed, 28 May 2025 13:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="olyCyipN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10951286D62;
+	Wed, 28 May 2025 13:29:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mail.enpas.org (zhong.enpas.org [46.38.239.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76FD2459EA;
-	Wed, 28 May 2025 13:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A94280A39;
+	Wed, 28 May 2025 13:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.38.239.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748438560; cv=none; b=LgbghBUxbifSN4X5xMBQyYwKNgYYq4a44CXiapqxdQcQvUlrbOQ/mt9K7kpRdhj5qmbagwSpSYv3E/NSgwEnHcJOYkVhV1obfsJTP1FOHvFMWnsBh6O4H0oDaiPomTOujFzlztyDwZ7PUZiGtNOTTLJOygx2Buu+FNRuw70tvQ0=
+	t=1748438940; cv=none; b=dqR38MerC2EQlbDiQfkqBB1AWivcbtcz3mHyCsK/HteNT3Kh1maM9aF1rUEY7cEzYG2Ps4ZOVFIRelWVqJF4BXDREAfl0AsQnJDlOonLZ2tuZ0vSxJTL30drXaKad5ouDjMxITNqMgPNet3LF9RhnqZZPyW6wjLjXTgqislJk40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748438560; c=relaxed/simple;
-	bh=4Pn5+IaraLwfB51pd3e88aEPpbE+Xpl78G5c8jBouU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bHylBcd0YOKReQAuRbqgKDc273u0stNHCMsGXm16lu1HMUkYiKiZuqQMOqyhcIhmkIjzmdielYlQmy+JbYQWBoCkoXe5uFIKd3znp1/d5YD5QvD1O6PyQkng5Q7ULFkV6i0LrtOU5PcvZNmvs0C6h+Djj7LNXVwaIQ0yozeropI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=olyCyipN; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=EKajYrvbUK7K9eBj0BAcVo9PVCzIMkEs/jt3hskWVO0=; b=olyCyipNVyN0DI1Kq+4tOKvnyO
-	GlVT+ibtDB4n4Emex6vrP2lhgZaTRQGDL1Yg+x+otaG+Pvcwrj/m+g+lI7G/FzyfvF5nTZBTXlDra
-	wWFwjz5etn3iUWbLyZLSxpmZ8CFOAAmCx7MDmXDeZjCh/DUGpvIkNEPaCOQd1zYqEuVnWCyydm7Wz
-	QemXA26cgxJF3RLRoKgR9q9FOAfdYsu/s9d3KmRAO4QjqPDCOnXx/Lts7JxoemlalYqJolw0QWsjp
-	EWm1gzPRGFO9wW/knkhvImSIuEYVRoMcwqF21JkBPZSEUuy2/31KZtVAyJ//4wxYh9IuJaUF1+jlM
-	/4ulWODw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKGjp-0000000Dfve-48jJ;
-	Wed, 28 May 2025 13:22:34 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 09B7F300263; Wed, 28 May 2025 15:22:32 +0200 (CEST)
-Date: Wed, 28 May 2025 15:22:31 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, xin@zytor.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 3/3] x86/alternative: make kernel ITS thunks read-only
-Message-ID: <20250528132231.GB39944@noisy.programming.kicks-ass.net>
-References: <20250528123557.12847-1-jgross@suse.com>
- <20250528123557.12847-4-jgross@suse.com>
- <20250528131052.GZ39944@noisy.programming.kicks-ass.net>
- <044f0048-95bb-4822-978e-a23528f3891f@suse.com>
+	s=arc-20240116; t=1748438940; c=relaxed/simple;
+	bh=JdfXJ/vInh7/MMrsz8IDuINMM9tubZrHEwzHj6RsruM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EP56GyP0JJ2wyLu1ZZyHDfD50TiKZ4L0ucViS/7otWreqPexBKns7PGB414EW4snE9b0B/8kjV+ZEwWWcyM9ixX/SDebPmduO6kaP+3G/oxiOLZG4O5mMfyXcDKf2Ndz44l3611ixuwteNCIxGqJisuet19VbM5cIHHVqv+FmiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enpas.org; spf=pass smtp.mailfrom=enpas.org; arc=none smtp.client-ip=46.38.239.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enpas.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enpas.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by mail.enpas.org (Postfix) with ESMTPSA id 7F57110392E;
+	Wed, 28 May 2025 13:28:47 +0000 (UTC)
+From: Max Staudt <max@enpas.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Cc: Johan Hovold <johan@kernel.org>,
+	linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Max Staudt <max@enpas.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] tty: Register device *after* creating the cdev for a tty
+Date: Wed, 28 May 2025 22:28:15 +0900
+Message-Id: <20250528132816.11433-1-max@enpas.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <044f0048-95bb-4822-978e-a23528f3891f@suse.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 28, 2025 at 03:19:24PM +0200, J=FCrgen Gro=DF wrote:
-> On 28.05.25 15:10, Peter Zijlstra wrote:
-> > On Wed, May 28, 2025 at 02:35:57PM +0200, Juergen Gross wrote:
-> > > When allocating memory pages for kernel ITS thunks, make them read-on=
-ly
-> > > after having written the last thunk.
-> > >=20
-> > > This will be needed when X86_FEATURE_PSE isn't available, as the thunk
-> > > memory will have PAGE_KERNEL_EXEC protection, which is including the
-> > > write permission.
-> > >=20
-> > > Cc: <stable@vger.kernel.org>
-> > > Fixes: 5185e7f9f3bd ("x86/module: enable ROX caches for module text o=
-n 64 bit")
-> > > Signed-off-by: Juergen Gross <jgross@suse.com>
-> > > ---
-> > >   arch/x86/kernel/alternative.c | 16 ++++++++++++++++
-> > >   1 file changed, 16 insertions(+)
-> > >=20
-> > > diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternat=
-ive.c
-> > > index ecfe7b497cad..bd974a0ac88a 100644
-> > > --- a/arch/x86/kernel/alternative.c
-> > > +++ b/arch/x86/kernel/alternative.c
-> > > @@ -217,6 +217,15 @@ static void *its_alloc(void)
-> > >   	return no_free_ptr(page);
-> > >   }
-> > > +static void its_set_kernel_ro(void *addr)
-> > > +{
-> > > +#ifdef CONFIG_MODULES
-> > > +	if (its_mod)
-> > > +		return;
-> > > +#endif
-> > > +	execmem_restore_rox(addr, PAGE_SIZE);
-> > > +}
-> > > +
-> > >   static void *its_allocate_thunk(int reg)
-> > >   {
-> > >   	int size =3D 3 + (reg / 8);
-> > > @@ -234,6 +243,8 @@ static void *its_allocate_thunk(int reg)
-> > >   #endif
-> > >   	if (!its_page || (its_offset + size - 1) >=3D PAGE_SIZE) {
-> > > +		if (its_page)
-> > > +			its_set_kernel_ro(its_page);
-> > >   		its_page =3D its_alloc();
-> > >   		if (!its_page) {
-> > >   			pr_err("ITS page allocation failed\n");
-> > > @@ -2338,6 +2349,11 @@ void __init alternative_instructions(void)
-> > >   	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
-> > >   	apply_returns(__return_sites, __return_sites_end);
-> > > +	/* Make potential last thunk page read-only. */
-> > > +	if (its_page)
-> > > +		its_set_kernel_ro(its_page);
-> > > +	its_page =3D NULL;
-> > > +
-> > >   	/*
-> > >   	 * Adjust all CALL instructions to point to func()-10, including
-> > >   	 * those in .altinstr_replacement.
-> >=20
-> > No, this is all sorts of wrong. Execmem API should ensure this.
->=20
-> You are aware that this patch is basically mirroring the work which is
-> already done for modules in alternative.c?
+This change makes the tty device file available only after the tty's
+backing character device is ready.
 
-I am having trouble parsing that -- where does alternative.c do this to
-modules?
+Since 6a7e6f78c235975cc14d4e141fa088afffe7062c, the class device is
+registered before the cdev is created, and userspace may pick it up,
+yet open() will fail because the backing cdev doesn't exist yet.
+Userspace is racing the bottom half of tty_register_device_attr() here,
+specifically the call to tty_cdev_add().
+
+dev_set_uevent_suppress() was used to work around this, but this fails
+on embedded systems that rely on bare devtmpfs rather than udev.
+On such systems, the device file is created as part of device_add(),
+and userspace can pick it up via inotify, irrespective of uevent
+suppression.
+
+So let's undo the existing patch, and create the cdev first, and only
+afterwards register the class device in the kernel's device tree.
+
+However, this restores the original race of the cdev existing before the
+class device is registered, and an attempt to tty_[k]open() the chardev
+between these two steps will lead to tty->dev being assigned NULL by
+alloc_tty_struct().
+
+This will be addressed in a second patch.
+
+Fixes: 6a7e6f78c235 ("tty: close race between device register and open")
+Signed-off-by: Max Staudt <max@enpas.org>
+Cc: <stable@vger.kernel.org>
+---
+ drivers/tty/tty_io.c | 54 +++++++++++++++++++++++++-------------------
+ 1 file changed, 31 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index ca9b7d7bad2b..e922b84524d2 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -3245,6 +3245,7 @@ struct device *tty_register_device_attr(struct tty_driver *driver,
+ 	struct ktermios *tp;
+ 	struct device *dev;
+ 	int retval;
++	bool cdev_added = false;
+ 
+ 	if (index >= driver->num) {
+ 		pr_err("%s: Attempt to register invalid tty line number (%d)\n",
+@@ -3257,24 +3258,6 @@ struct device *tty_register_device_attr(struct tty_driver *driver,
+ 	else
+ 		tty_line_name(driver, index, name);
+ 
+-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (!dev)
+-		return ERR_PTR(-ENOMEM);
+-
+-	dev->devt = devt;
+-	dev->class = &tty_class;
+-	dev->parent = device;
+-	dev->release = tty_device_create_release;
+-	dev_set_name(dev, "%s", name);
+-	dev->groups = attr_grp;
+-	dev_set_drvdata(dev, drvdata);
+-
+-	dev_set_uevent_suppress(dev, 1);
+-
+-	retval = device_register(dev);
+-	if (retval)
+-		goto err_put;
+-
+ 	if (!(driver->flags & TTY_DRIVER_DYNAMIC_ALLOC)) {
+ 		/*
+ 		 * Free any saved termios data so that the termios state is
+@@ -3288,19 +3271,44 @@ struct device *tty_register_device_attr(struct tty_driver *driver,
+ 
+ 		retval = tty_cdev_add(driver, devt, index, 1);
+ 		if (retval)
+-			goto err_del;
++			return ERR_PTR(retval);
++
++		cdev_added = true;
++	}
++
++	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
++	if (!dev) {
++		retval = -ENOMEM;
++		goto err_del_cdev;
+ 	}
+ 
+-	dev_set_uevent_suppress(dev, 0);
+-	kobject_uevent(&dev->kobj, KOBJ_ADD);
++	dev->devt = devt;
++	dev->class = &tty_class;
++	dev->parent = device;
++	dev->release = tty_device_create_release;
++	dev_set_name(dev, "%s", name);
++	dev->groups = attr_grp;
++	dev_set_drvdata(dev, drvdata);
++
++	retval = device_register(dev);
++	if (retval)
++		goto err_put;
+ 
+ 	return dev;
+ 
+-err_del:
+-	device_del(dev);
+ err_put:
++	/*
++	 * device_register() calls device_add(), after which
++	 * we must use put_device() instead of kfree().
++	 */
+ 	put_device(dev);
+ 
++err_del_cdev:
++	if (cdev_added) {
++		cdev_del(driver->cdevs[index]);
++		driver->cdevs[index] = NULL;
++	}
++
+ 	return ERR_PTR(retval);
+ }
+ EXPORT_SYMBOL_GPL(tty_register_device_attr);
+-- 
+2.39.5
+
 
