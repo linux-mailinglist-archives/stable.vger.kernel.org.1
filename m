@@ -1,393 +1,147 @@
-Return-Path: <stable+bounces-147992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B89EAC6FF5
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:51:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56EB8AC702D
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20F0178D06
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:51:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 303911BC3D36
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEB828DB7F;
-	Wed, 28 May 2025 17:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9067A1B6D06;
+	Wed, 28 May 2025 17:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FTAptVQL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h664fmxM"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2072.outbound.protection.outlook.com [40.107.212.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C53A1B6D06
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 17:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748454660; cv=fail; b=Ko0KwAzvJSmoI7GBbmYKUT4BDsXEAXmUkAN8Y5n3mXXHWplQ2jEjp+9fAMq1bBsb7dlH4qLlZiM8oNyJmz3GPiwM+ygThP2Z0qelYeMUIYPxCwlxEjByHmwDDEP69V6BWqhCtrT5xvVhHogUwHXR53j1srDLX1afTEWqbEecsMs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748454660; c=relaxed/simple;
-	bh=7+LkfrYHwFRyau7OeiM1yWAu0byote0BAlnjZnxVZYU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=KC4Egor6D4dzVstttEl1Xvd09IuEMfdJeOjNIQp6v0kQwfQynGaN+pzOaIL3ABkoo0d0XnD8GPhP/JK68bUXvWE+IJNoywEFuVVTBnG3sxzdQ4ZZcLaWRcz+mdXddv+UMyYajVd7RbAlpauHwjhwQH3rbjdMXTC/JzinUCS3GgA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FTAptVQL; arc=fail smtp.client-ip=40.107.212.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FV21wbuiGXQGEKlWR4PY9JqcW4ckgwEq0f89Fi261ZWEYvatwLhAkE8gzN8p+FYBDEiNdNrA5XQBysqx1v7oagX/l8Ohc8uKTT7KVhepfu65Yj6fGzr2gCP/iCOYoF8SRPYeJBG6EjqUXdepNRhlpudHKW75Ll6LFS4w6FHqvqx4K6Ca/EC2daJfeohFHXJfKKCnBm6q1kmP0NVtPeZtdciRNGYa/8onEK+r2m/tpb8l6YcuAcYcHmOWo0f7ezwdHWYTxknENtRKELggTZnE5qU5iOM8+mG+Iqd3lnO4IJyy9jecFh9kZvrPPCmYv1xaNB3mDqSA6Zys0M+ttnpueA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VfzyGlIZ3hSCViDHKXrPJyLAEwxTx98hYvSFrX+DqYc=;
- b=EMLLf5jc5pKeLNs+85nJF8bQP2plRRcR0nvl2TOJLS/oiR4RUPLQFe5oT9J+cPM68JxVm2dyyCVbFpxNJ/Pq0wOZPgrVPc8WD6wc6ZEsK9ZDwdxXU0QRBsePzRdc6cvmxPL4TaTyf8sakGyS10uGmg/rlGTvT4P744YrWEmmqcH1tKqBmKXeGWxX8EjphOve96hNqDYxF3batX0XyzaKeLn3pO83K1Vouu3e1qeIVBb8O6G4JI/RH1LoYsdb+hhpDU1I1XvxPSBXSbe4rw9KX6/w0Ag3uCe3i6P2uTp+odPWfa7E6XHmuXGr3RXw13/FuDdms/dJAS7hQw+Q4yT+3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VfzyGlIZ3hSCViDHKXrPJyLAEwxTx98hYvSFrX+DqYc=;
- b=FTAptVQLAX5kjLYemNFIygVJIGR96hn+2+nj012HRJhWTQDeAhC2S719J5qoCO87p2494MtDGRt7UFmNdVejmci42jIznTxd0P2V+SqPrcN1xPgsDUcnVy5NTK+OkWKS/COP2ozSMAGq0Zn0IMecC7ZCWuWA2TCiGqbOtQK2oI8=
-Received: from SA1PR02CA0013.namprd02.prod.outlook.com (2603:10b6:806:2cf::11)
- by IA0PR12MB8746.namprd12.prod.outlook.com (2603:10b6:208:490::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Wed, 28 May
- 2025 17:50:52 +0000
-Received: from SN1PEPF000252A2.namprd05.prod.outlook.com
- (2603:10b6:806:2cf:cafe::67) by SA1PR02CA0013.outlook.office365.com
- (2603:10b6:806:2cf::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.19 via Frontend Transport; Wed,
- 28 May 2025 17:50:52 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF000252A2.mail.protection.outlook.com (10.167.242.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8769.18 via Frontend Transport; Wed, 28 May 2025 17:50:51 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 28 May
- 2025 12:50:51 -0500
-Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 28 May 2025 12:50:50 -0500
-Message-ID: <26b8a17e-500d-d89d-de9f-c17108a6831d@amd.com>
-Date: Wed, 28 May 2025 10:50:50 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B289628DB7F
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 17:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748454754; cv=none; b=IrRQr7RUbOrB5XvubEPZkle+R21OjQfReAuat5lokktc++iEGIiYDREg6w2IPP0dFbaoq/pGnUQJeX74BZImLB6lKG8Qj4UI5rMqs/1PpELn4GbFVTmwvuqIvLa4VQ+F1/VB5jIX09lXsdBp6vmfekycoDbecai8DpTmskW+feo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748454754; c=relaxed/simple;
+	bh=vWV6pFxU84IGZGUoXRovBE8SqKnsLvakTEWtNwoyHmM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kx4ZLYFjwTLCnOv7L53QT5w2pXqIj35t68EEdsiO9t5ZwiGWT6PNY2G48TeBMM4/HCQqTOem1SomeuUZHSEXdvxh1e/oEsH14L9fJPau8TmHD+Kr+0phiG8lyfRIqsiHJ46ceEqOi2SYcj4bsvTBOreVA2/aIm0eIr5e4VL2TVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h664fmxM; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30bf7d0c15eso403511fa.0
+        for <stable@vger.kernel.org>; Wed, 28 May 2025 10:52:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748454751; x=1749059551; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ppv3VDPBQkSzYVgwGTOT8u09rusvnRbmtGkE8XpfbQA=;
+        b=h664fmxML/rnN9PVJU6Mx+8YdHURscNotVbGAAVwKh72b63SVrpoPvyELITGYcRv6a
+         L1qyR8YvIppT8Mx9GY6wgPgCD+rIKVG9O17utqGMP29AHGKqG6oXFoe5sAKs9jTv5ja+
+         0HFgVTGKlUVSBV5bB4+X7oPLEu4yR6AAN53cj3BReMByRwruuXd8B4Ce2wj8KSFTeazu
+         O4Q6y7EzR7E/LQ5vWrbb1WuoFnirEfpM/EH/3N0j4Gdj0t3liwzht/HyrkKNSJXNMEgg
+         Cftp4d1Z7WX1xbzwm2+9R+yJGvsMenPiLvO0P/kBtOG9oKBAC8JdVfoa7rRExUlKzjB2
+         yiBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748454751; x=1749059551;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ppv3VDPBQkSzYVgwGTOT8u09rusvnRbmtGkE8XpfbQA=;
+        b=jf8w4c0iL/pJl6XQahC6Bu7YhU0kkgJW7PBNoBuJNI6AqZ41WYMsILbdezoWhPLRfE
+         WDqO3k4K+GvF67xGB8RLoCYsQv7uwXJlnnvLkf6QP4a3sblMbDwC1MvUqty3ML6cZ8It
+         yOaSak3MYO2/7RJf+vMYGAeU62JmqpIl3AXig22cmp4nObpAZllbs4/Bm3EcGPXQ2xq6
+         +O7Sjp4s5DNMRawW2EBAA0Hs7C6B67n9DetGLbzrD3DV6W1trSp3i+CfArzYWDpuwnxe
+         IyJscx8zsd6lkbCPmyLzFTgQlGv+4e/1paCBgbUfJruhmIFA2J/MrKZPdztWzayXOq1d
+         GRbA==
+X-Gm-Message-State: AOJu0Yx5thAGMfo7XCRjAH9ERgG5r8LjH3nvF+nuo/i+3Ptpbnm+DPct
+	ncBiwDuPF9yp0k1tG6x0jCbbuU3XTvzplBG6VRsStvbtu7forh9DDPPO8Zj6BuT2jbgURKupEm1
+	lT83ZWBCnbDn6+yncNGh4TXIo6a+5oxsV
+X-Gm-Gg: ASbGncvJwRag4rAb/pulNp6vyvwj9tmtaVeJf+62VYCr8zdsrF/OUMYZmJLDiO7ldM0
+	geBSYSWKjTTfQPasw1o3esWYqOYsWSuFynZG4tMAQDM2CnlwDYi3p4PQwceiitSxDWFwgaciO6r
+	lrVWkB9lp2RDFLnOOMgXo8STJY594G2SRQ9O36IS76b6vnYG4=
+X-Google-Smtp-Source: AGHT+IG5KLdfR+fEOhbik8NTuMW2Ep+S2YOtM3aD25vx0ZaGUqb9CFH02FVAX/Xop5uw6u7nS5/j+BbuqTJo+yqRm44=
+X-Received: by 2002:a05:651c:242:b0:32a:81a2:8aa3 with SMTP id
+ 38308e7fff4ca-32a81a298bbmr3089821fa.23.1748454750453; Wed, 28 May 2025
+ 10:52:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] accel/ivpu: Use dma_resv_lock() instead of a custom mutex
-Content-Language: en-US
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	<dri-devel@lists.freedesktop.org>
-CC: <jeff.hugo@oss.qualcomm.com>, <stable@vger.kernel.org>
-References: <20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com>
-From: Lizhi Hou <lizhi.hou@amd.com>
-In-Reply-To: <20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB04.amd.com: lizhi.hou@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000252A2:EE_|IA0PR12MB8746:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17dfe04c-9fe1-48d4-7567-08dd9e102fde
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cHdKMmpNOWRoaytvUjQyNWE0UnNrSHpDK3h1UTZhcERTbTM2bTFuRnVkTEU1?=
- =?utf-8?B?cVVOZ2tCVDZuQXM5a3lJTStqdDdKTkUxSTk5RmFWWHZUWlZrQ1JJalFTQzF4?=
- =?utf-8?B?TFFiN1JYS1NVaDFiZWw4b2tzVnB2Z1k2eW9jTVhDVlYvMzBuTlNhaXJ6YlF0?=
- =?utf-8?B?R1FudXpUWEpvNVZNcFd6QmNabDlaVE94ckswUDE3aEFsbmdDSUswbzZhZHl2?=
- =?utf-8?B?cmYrSW9MYlBhenZkVXovM3duR2xKMjdvRGk0OXhyM1RFVVB2WXA0MzcyNHdp?=
- =?utf-8?B?NlJrSy9IQnpBZzA2dGhXUVhVSll3T2w2NUVEaThCZWlaQVltaUJEeXpQZTBk?=
- =?utf-8?B?M2RyazFybkRLc0Y2WXVrZk1BcCsrUWpDWGg1ajQ0alZnMU5Da0JnQ1ZiRmt6?=
- =?utf-8?B?cDQ2dkkrWTBSZmVMYnFtQW50cjQrNEtxU2ZxaW40d0JiTGFYUXYydmdDZllM?=
- =?utf-8?B?Q3g4R0xGQjU4R1JZVDB4ZEZwR1dWc3pJOWt4NzNKVXlQTG1Pb2VEUWJTM0Jk?=
- =?utf-8?B?c0M5Ky9nbEFRWGpXdnhPdmhiT243VVQwVGVSVEFGTWxEeVh2YUhlakhic05k?=
- =?utf-8?B?SFJZMmM4bVhESHR2anNWOEN1ZE9qSStaTVR2MXdKUm1Ra2dpUGFCSDdZZzJp?=
- =?utf-8?B?WUgvUjNTdVkzWktjeEtIRnR2Skl4V1JZSGNVdktGRGJ1QmM5OUpEM095WmhD?=
- =?utf-8?B?R3UzWXV2QldTVjltVVVJdEhVYUFEYWV0S0RXdlhnYnZWcmxqazdtYWFpSVMy?=
- =?utf-8?B?ZHNSQ1R5TktFbnN6K04wYksvTmVSdFhHM0NTa0Jid0YrK0RhUVlPbmtjTUFm?=
- =?utf-8?B?dFhRUi9LMElEcytzNGFpODd1WDBxNnhyRm5wM0IwZndHbCtEWlh5dE1hRk1t?=
- =?utf-8?B?OFViN09vQ0N0anYwT1RCeDFjUUVYL3ZQc1pyOG8zdXlZZzVwMkNDSHVTeTA5?=
- =?utf-8?B?TXFWaUVSeDA0WUxCdUFkRnZ4K0NiWjczMXNDby9Lc1p6ekQrWkJuUEhxYnpW?=
- =?utf-8?B?eEtEbXZ0eTZCZDNlZnBLN2RzR1lzNFg5NkU2UnJURGs5d05yZmIwWHUraHYy?=
- =?utf-8?B?ZEtUNVlFd3N2d1R3MmQwZGVKenN1bFhKS3FyMG0yWHo5VHVNamFqU3RJOEdV?=
- =?utf-8?B?cnlJOW9pLzBOL0RKenR1M0lFQk5ZR1N5VUR1TkVUQzM3QzFqdWppN3JETHhl?=
- =?utf-8?B?cHZiOWVqeGhvN1lseG5hMjZpamVHMTZEa2Qyd1M1RFlmUkpBM2FCUFFlcjBT?=
- =?utf-8?B?a0l6Rjl2R1JVbWM0cGFhTmx6dHp1WDI4MWFiS210Ni9PRVM5NHdKb0d6Nita?=
- =?utf-8?B?UEdTbFJtZnNoVFY2eXBmenU2OE5iZ3luUElCd1Uvc2tia3BTV0xHOVBzcGg3?=
- =?utf-8?B?SUJVWmRDODNVb1JKY3d6TXBHakxzTzNKOXQzMzB5YlgyRHRkRzV4cGt5SzRK?=
- =?utf-8?B?RXBHU3hRY3VUem1mUVQ5bWdQTkFrVWRsOWQzWWNJRjZWdGRyR1dpenNNd3lh?=
- =?utf-8?B?UEZEeXBFNHZvRmhEVFlwNDNSY2orQXZGVGRPUFdIRkhQZ3FYQmFRTjY5SW9n?=
- =?utf-8?B?M1d3ZXd2MGZVQVNXKzhSNnNFdWZWSVltNGtGbU1HUFZFVGY3K1EwWXg2R0x0?=
- =?utf-8?B?YVEwRnp4Q25yNjhpZDVUV0lDVFpyQXg4VnQvQi9EWktSdzAweDZMY1l6YTM0?=
- =?utf-8?B?ZTV4K1FoOUgyK2lYUGMxTUxDZjJMVE9WUnQzUWFDVU5peHY1a0lDUjR3M1Fx?=
- =?utf-8?B?bW9LY0FsVG5sc25Ja2lnTDRBOGRiVVZ4UUFaaXJDSHQyaGUrZkh2Z0Q5QWpo?=
- =?utf-8?B?dXBlMitnb09BLzQ4a2hiMmZia1JmZlgrcEJpck9xSEFKV0ZTM3NkWkh4SWRu?=
- =?utf-8?B?RmpxWDUwc0VsYTFLVmxIVldHQUl5N1lGZEpFRHZvbU5JS2hieUJYS21ieDRU?=
- =?utf-8?B?QkVnQm1RNk1IL1M4Z3ExbEdvYjJDUjhCdTJMaUozQnhWMDJRUHRPaFYvd3E1?=
- =?utf-8?B?M3d0VjcvRWVmcWlkbTV5L0M4TDFCY1E3ejE5MlIzVFdISXZsOTBJL2FkaGd5?=
- =?utf-8?Q?D/lVYR?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 17:50:51.5526
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17dfe04c-9fe1-48d4-7567-08dd9e102fde
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000252A2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8746
+References: <20250527162513.035720581@linuxfoundation.org> <20250527162530.470565771@linuxfoundation.org>
+In-Reply-To: <20250527162530.470565771@linuxfoundation.org>
+From: Brian Gerst <brgerst@gmail.com>
+Date: Wed, 28 May 2025 13:52:16 -0400
+X-Gm-Features: AX0GCFusT9QM7HoblA1N2WamyQAgGgwUNJQRzcqUgne__EWwKhBrhNsGvTNbRNY
+Message-ID: <CAMzpN2hwSXUybfvcas2X5213V=Ow+nqGqqurC_tjfCdb44aFfg@mail.gmail.com>
+Subject: Re: [PATCH 6.14 426/783] x86/boot: Disable stack protector for early
+ boot code
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Ingo Molnar <mingo@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 5/28/25 08:43, Jacek Lawrynowicz wrote:
-> This fixes a potential race conditions in:
->   - ivpu_bo_unbind_locked() where we modified the shmem->sgt without
->     holding the dma_resv_lock().
->   - ivpu_bo_print_info() where we read the shmem->pages without
->     holding the dma_resv_lock().
+On Tue, May 27, 2025 at 1:39=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Using dma_resv_lock() also protects against future syncronisation
-> issues that may arise when accessing drm_gem_shmem_object or
-> drm_gem_object members.
+> 6.14-stable review patch.  If anyone has any objections, please let me kn=
+ow.
 >
-> Fixes: 42328003ecb6 ("accel/ivpu: Refactor BO creation functions")
-> Cc: <stable@vger.kernel.org> # v6.9+
-> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> ------------------
+>
+> From: Brian Gerst <brgerst@gmail.com>
+>
+> [ Upstream commit a9a76b38aaf577887103e3ebb41d70e6aa5a4b19 ]
+>
+> On 64-bit, this will prevent crashes when the canary access is changed
+> from %gs:40 to %gs:__stack_chk_guard(%rip).  RIP-relative addresses from
+> the identity-mapped early boot code will target the wrong address with
+> zero-based percpu.  KASLR could then shift that address to an unmapped
+> page causing a crash on boot.
+>
+> This early boot code runs well before user-space is active and does not
+> need stack protector enabled.
+>
+> Signed-off-by: Brian Gerst <brgerst@gmail.com>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Link: https://lore.kernel.org/r/20250123190747.745588-4-brgerst@gmail.com
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->   drivers/accel/ivpu/ivpu_gem.c | 63 +++++++++++++++++++----------------
->   drivers/accel/ivpu/ivpu_gem.h |  1 -
->   2 files changed, 34 insertions(+), 30 deletions(-)
+>  arch/x86/kernel/Makefile | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-> index c193a80241f5f..5908268ca45e9 100644
-> --- a/drivers/accel/ivpu/ivpu_gem.c
-> +++ b/drivers/accel/ivpu/ivpu_gem.c
-> @@ -33,6 +33,16 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
->   		 (bool)bo->base.base.import_attach);
->   }
->   
-> +static inline int ivpu_bo_lock(struct ivpu_bo *bo)
-> +{
-> +	return dma_resv_lock(bo->base.base.resv, NULL);
-> +}
-> +
-> +static inline void ivpu_bo_unlock(struct ivpu_bo *bo)
-> +{
-> +	dma_resv_unlock(bo->base.base.resv);
-> +}
-> +
->   /*
->    * ivpu_bo_pin() - pin the backing physical pages and map them to VPU.
->    *
-> @@ -43,22 +53,22 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
->   int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
->   {
->   	struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
-> +	struct sg_table *sgt;
->   	int ret = 0;
->   
-> -	mutex_lock(&bo->lock);
-> -
->   	ivpu_dbg_bo(vdev, bo, "pin");
-> -	drm_WARN_ON(&vdev->drm, !bo->ctx);
->   
-> -	if (!bo->mmu_mapped) {
-> -		struct sg_table *sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
-> +	sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
-> +	if (IS_ERR(sgt)) {
-> +		ret = PTR_ERR(sgt);
-> +		ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
-> +		return ret;
-> +	}
->   
-> -		if (IS_ERR(sgt)) {
-> -			ret = PTR_ERR(sgt);
-> -			ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
-> -			goto unlock;
-> -		}
-> +	ivpu_bo_lock(bo);
->   
-> +	if (!bo->mmu_mapped) {
-> +		drm_WARN_ON(&vdev->drm, !bo->ctx);
->   		ret = ivpu_mmu_context_map_sgt(vdev, bo->ctx, bo->vpu_addr, sgt,
->   					       ivpu_bo_is_snooped(bo));
->   		if (ret) {
-> @@ -69,7 +79,7 @@ int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
->   	}
->   
->   unlock:
-> -	mutex_unlock(&bo->lock);
-> +	ivpu_bo_unlock(bo);
->   
->   	return ret;
->   }
-> @@ -84,7 +94,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
->   	if (!drm_dev_enter(&vdev->drm, &idx))
->   		return -ENODEV;
->   
-> -	mutex_lock(&bo->lock);
-> +	ivpu_bo_lock(bo);
->   
->   	ret = ivpu_mmu_context_insert_node(ctx, range, ivpu_bo_size(bo), &bo->mm_node);
->   	if (!ret) {
-> @@ -94,7 +104,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
->   		ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
->   	}
->   
-> -	mutex_unlock(&bo->lock);
-> +	ivpu_bo_unlock(bo);
->   
->   	drm_dev_exit(idx);
->   
-> @@ -105,7 +115,7 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
->   {
->   	struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
->   
-> -	lockdep_assert(lockdep_is_held(&bo->lock) || !kref_read(&bo->base.base.refcount));
-> +	lockdep_assert(dma_resv_held(bo->base.base.resv) || !kref_read(&bo->base.base.refcount));
->   
->   	if (bo->mmu_mapped) {
->   		drm_WARN_ON(&vdev->drm, !bo->ctx);
-> @@ -123,14 +133,12 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
->   	if (bo->base.base.import_attach)
->   		return;
->   
-> -	dma_resv_lock(bo->base.base.resv, NULL);
->   	if (bo->base.sgt) {
->   		dma_unmap_sgtable(vdev->drm.dev, bo->base.sgt, DMA_BIDIRECTIONAL, 0);
->   		sg_free_table(bo->base.sgt);
->   		kfree(bo->base.sgt);
->   		bo->base.sgt = NULL;
+> diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+> index b43eb7e384eba..84cfa179802c3 100644
+> --- a/arch/x86/kernel/Makefile
+> +++ b/arch/x86/kernel/Makefile
+> @@ -44,6 +44,8 @@ KCOV_INSTRUMENT_unwind_orc.o                          :=
+=3D n
+>  KCOV_INSTRUMENT_unwind_frame.o                         :=3D n
+>  KCOV_INSTRUMENT_unwind_guess.o                         :=3D n
+>
+> +CFLAGS_head32.o :=3D -fno-stack-protector
+> +CFLAGS_head64.o :=3D -fno-stack-protector
+>  CFLAGS_irq.o :=3D -I $(src)/../include/asm/trace
+>
+>  obj-y                  +=3D head_$(BITS).o
+> --
+> 2.39.5
+>
+>
+>
 
-Maybe not directly modify sgt but use drm_gem_shmem_purge()?
-
-Will it potentially memleak without calling drm_gem_shmem_put_pages()? 
-(if the bo is mmap, vmap etc)
+This doesn't need to be backported.  It's harmless, but not necessary
+without the rest of the stack protector changes.
 
 
-Thanks,
-
-Lizhi
-
->   	}
-> -	dma_resv_unlock(bo->base.base.resv);
->   }
->   
->   void ivpu_bo_unbind_all_bos_from_context(struct ivpu_device *vdev, struct ivpu_mmu_context *ctx)
-> @@ -142,12 +150,12 @@ void ivpu_bo_unbind_all_bos_from_context(struct ivpu_device *vdev, struct ivpu_m
->   
->   	mutex_lock(&vdev->bo_list_lock);
->   	list_for_each_entry(bo, &vdev->bo_list, bo_list_node) {
-> -		mutex_lock(&bo->lock);
-> +		ivpu_bo_lock(bo);
->   		if (bo->ctx == ctx) {
->   			ivpu_dbg_bo(vdev, bo, "unbind");
->   			ivpu_bo_unbind_locked(bo);
->   		}
-> -		mutex_unlock(&bo->lock);
-> +		ivpu_bo_unlock(bo);
->   	}
->   	mutex_unlock(&vdev->bo_list_lock);
->   }
-> @@ -167,7 +175,6 @@ struct drm_gem_object *ivpu_gem_create_object(struct drm_device *dev, size_t siz
->   	bo->base.pages_mark_dirty_on_put = true; /* VPU can dirty a BO anytime */
->   
->   	INIT_LIST_HEAD(&bo->bo_list_node);
-> -	mutex_init(&bo->lock);
->   
->   	return &bo->base.base;
->   }
-> @@ -286,8 +293,6 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
->   	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
->   	drm_WARN_ON(&vdev->drm, bo->ctx);
->   
-> -	mutex_destroy(&bo->lock);
-> -
->   	drm_WARN_ON(obj->dev, bo->base.pages_use_count > 1);
->   	drm_gem_shmem_free(&bo->base);
->   }
-> @@ -370,9 +375,9 @@ ivpu_bo_create(struct ivpu_device *vdev, struct ivpu_mmu_context *ctx,
->   		goto err_put;
->   
->   	if (flags & DRM_IVPU_BO_MAPPABLE) {
-> -		dma_resv_lock(bo->base.base.resv, NULL);
-> +		ivpu_bo_lock(bo);
->   		ret = drm_gem_shmem_vmap(&bo->base, &map);
-> -		dma_resv_unlock(bo->base.base.resv);
-> +		ivpu_bo_unlock(bo);
->   
->   		if (ret)
->   			goto err_put;
-> @@ -395,9 +400,9 @@ void ivpu_bo_free(struct ivpu_bo *bo)
->   	struct iosys_map map = IOSYS_MAP_INIT_VADDR(bo->base.vaddr);
->   
->   	if (bo->flags & DRM_IVPU_BO_MAPPABLE) {
-> -		dma_resv_lock(bo->base.base.resv, NULL);
-> +		ivpu_bo_lock(bo);
->   		drm_gem_shmem_vunmap(&bo->base, &map);
-> -		dma_resv_unlock(bo->base.base.resv);
-> +		ivpu_bo_unlock(bo);
->   	}
->   
->   	drm_gem_object_put(&bo->base.base);
-> @@ -416,12 +421,12 @@ int ivpu_bo_info_ioctl(struct drm_device *dev, void *data, struct drm_file *file
->   
->   	bo = to_ivpu_bo(obj);
->   
-> -	mutex_lock(&bo->lock);
-> +	ivpu_bo_lock(bo);
->   	args->flags = bo->flags;
->   	args->mmap_offset = drm_vma_node_offset_addr(&obj->vma_node);
->   	args->vpu_addr = bo->vpu_addr;
->   	args->size = obj->size;
-> -	mutex_unlock(&bo->lock);
-> +	ivpu_bo_unlock(bo);
->   
->   	drm_gem_object_put(obj);
->   	return ret;
-> @@ -458,7 +463,7 @@ int ivpu_bo_wait_ioctl(struct drm_device *dev, void *data, struct drm_file *file
->   
->   static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
->   {
-> -	mutex_lock(&bo->lock);
-> +	ivpu_bo_lock(bo);
->   
->   	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
->   		   bo, bo->ctx_id, bo->vpu_addr, bo->base.base.size,
-> @@ -475,7 +480,7 @@ static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
->   
->   	drm_printf(p, "\n");
->   
-> -	mutex_unlock(&bo->lock);
-> +	ivpu_bo_unlock(bo);
->   }
->   
->   void ivpu_bo_list(struct drm_device *dev, struct drm_printer *p)
-> diff --git a/drivers/accel/ivpu/ivpu_gem.h b/drivers/accel/ivpu/ivpu_gem.h
-> index 0c93118c85bd3..aa8ff14f7aae1 100644
-> --- a/drivers/accel/ivpu/ivpu_gem.h
-> +++ b/drivers/accel/ivpu/ivpu_gem.h
-> @@ -17,7 +17,6 @@ struct ivpu_bo {
->   	struct list_head bo_list_node;
->   	struct drm_mm_node mm_node;
->   
-> -	struct mutex lock; /* Protects: ctx, mmu_mapped, vpu_addr */
->   	u64 vpu_addr;
->   	u32 flags;
->   	u32 job_status; /* Valid only for command buffer */
+Brian Gerst
 
