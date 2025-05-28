@@ -1,145 +1,182 @@
-Return-Path: <stable+bounces-147998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3D6AC7185
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 21:27:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C17AC71A7
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 21:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9B0D163D1E
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:27:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC65EA27E48
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E0F21D3D9;
-	Wed, 28 May 2025 19:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A76221F35;
+	Wed, 28 May 2025 19:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="IvBe73y3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S/9e29Q/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D55721CC47;
-	Wed, 28 May 2025 19:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8CA2222A1
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 19:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748460452; cv=none; b=bjT907LDwnvjcpPUp9/sEx85vFyTkdS0EcQOrOFoYd4DuAb0Z1HZFNcuqFBh5A7BiSnG+Fub2ZAmOLeMqkLFfr5u2M2WWTxgZal9uHF3cbEkUPnXXpDJYc+07FdQqL/rAmZ+bfyEbs6YYQ6C/SFuZflHmz2t1Nw1W5NTXj82n5w=
+	t=1748461477; cv=none; b=ZITuvImpqyMvh9JB8SfV8dHgjxEZdJTDA9vrNwKXPgFy+5j/hsQOZuZdCU27IiUFbfEpeLvf0Soo018mbOTuTTGn62+oU3JNcEjvdL0M5rC4yFAYQckeXNwOz6dFeJa+wzjRcSTwlffdP7foQrYAiqcsi88AMm/Y+Zz22bI+5Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748460452; c=relaxed/simple;
-	bh=a961YRNnSO8xEEQjmE/kukEuP4H3dhHAVCGU7GMX4s0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D7gerlO/3UH57A+arjmMZODcNg1gnhpz3DewNCA0N+kNnr04RTpFzNYa3ea6hDz4IS9garbz6/EvzGLgDLJajTITRT8yR4Hrne2UjoMf7sdeiJiaIhrxLyB99sBuEksyEC7Q1NR6YHA3I/csY14tyKGyRdCIu36ZWrzgGsomssc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=IvBe73y3; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fedora.intra.ispras.ru (unknown [10.10.165.4])
-	by mail.ispras.ru (Postfix) with ESMTPSA id BB05D552F529;
-	Wed, 28 May 2025 19:27:21 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru BB05D552F529
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1748460441;
-	bh=BEK94JMRaUzZgTwrnHfaduJF4K/hbb6wOIgbXm6+ms0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IvBe73y3OdsWLVmYMMLB8hzBGkZ4LCVKHc0IWk7qsVTmAwxuNf4+n5jM4YoJ0zWcb
-	 TBUu+6OZUU2zAKNvyAKjErW01UiaVEYEmi3ndw3PB8uupl4Ps3wVttqCCetkgcNZwl
-	 VD+TsqGBP44NvXJi/lo9lcoTcRoaLeLXMo7g0vwA=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Axel Forsman <axfo@kvaser.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	linux-can@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+	s=arc-20240116; t=1748461477; c=relaxed/simple;
+	bh=xZUOsMsyjcZ1qewKlqP/KKWUHO3l+hPWlf0MlhF4mH8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HZw/jwdsirPduKwEp97cDa3ZlqmCUonH4uEL6MHhop4BFszYv6TQ/mX8uazYWmTGd3bI1NcEGtR/7SZ+L3ymHFpezlMhV0SXeuo5HK1kdsNfWs9IZpgostwMtcB4rGHouXHbtLqqeyIuN9BUS/WiH91pApZiXDZEsaucuXCOYs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S/9e29Q/; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a4e749d7b2so34941f8f.0
+        for <stable@vger.kernel.org>; Wed, 28 May 2025 12:44:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1748461473; x=1749066273; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MrefH7AMNRY3M6Eds2DAfAOBM+dHe6KTACIdZZtLeZg=;
+        b=S/9e29Q/6fSKBwMw+alBjJOdyaCc0ai0p8HtGAit3//Wo1jKlSQIcBAKAzy5hctG9X
+         qBTvrKXiaKi0qL5i64S+S/MtU9S4tY4NUeEGcwTd9guDODUMmqFktDevv3ZOktj5vjPo
+         pRATjDgDHcnXFZ1XxnvDamqePrQg6gvCtGoR4UfRz57ZmJY9uworDyXoswZjtkKxlv2G
+         4TdhMDbYdG/gdRDhTATlhuVyG5icMTNr/tzJDJguGJvQqt2a7iPMyt+QRvq/FxnxaLa9
+         OsSgkiLz1Jg24dvYFoxLOdxIxs63oura9AcKo1lN+xOcyMmcV1fg1p3ZofyNEGLZeJeD
+         2bsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748461473; x=1749066273;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MrefH7AMNRY3M6Eds2DAfAOBM+dHe6KTACIdZZtLeZg=;
+        b=OI1RquVuNs0so93C37p8btPUd4FuHm+Ffe5W8ij9yyeMAx077OGByQjNnUOju/dk8f
+         QoIXJmqjgiTidirvdaH3WW+fysQuFuOL0l6kBtZlZFGeSkkzFKfC/2ftQNAyOQeG+/Me
+         FJz6rBewLfUuaE4Fdudsax1jisyoZlc2WNR3UCBkc9sxPGQBHzykkDfPpsD+Q0i1e9nr
+         PsE8dN13WbY0PiBBqzTtQT1dMrbwkOFcBq9BQovnDzZjDBhkrg/rnaMNSB/gS87h9msJ
+         zJcUKJkG9X2nNKElLAgTGOvSiPcJ2YeT1HyMyvcuDq2uU6FXKXfI9X58gHuoXKlEn4RQ
+         5B3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUeRJ6BQYedFgwpZ4PZWWA8n7lbHj5bA7OYz3ZpeK1G7ExDUafpWN0lD+fmXc04aOnRFrr1TB8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM98jCsVMs+Tvz1ftUvyB4i5tisslmLkQZTNFo7ncsQ0h5YQza
+	xc5SwvM1OS7nyOTyeYVCZyIWxttrM3Sviq1W3yi2o+Dqxa7/MYXZ7VSjSbI8Q2wsd9Q6Hqi8Mb+
+	O66bn
+X-Gm-Gg: ASbGncvmp83axSQXhTm8C7IqKRgU3WzdkD+pvRXR0V8dVXwkoyHN+t3rTxLr/h4gvMI
+	xKP1jpYyPCL+uM4XQjrUTZ8ttfI4EhUY7M4fBKmefmM3ZtnZONp1FvQFjEkku97Ib15At0RUqYQ
+	wCdG8uE7a2b3YHIhGlnMvFn/Uu5B6BWMteyxDHrjrfZ/B03aK/XRFf/j0kzkwFIwjclQXCET/jt
+	mpN/bR9ft9sFncmZP7M+U+Z2inFeaICHD+erDSqUolCou97FkKcUz75k4efsKC3c2aZu2fqNq9H
+	3jhYBRE2n8Ek/fVa2ZkaueM7BPrVfn8qU0HvpthoA87uQ0O9hbhAbiity02XQg==
+X-Google-Smtp-Source: AGHT+IGvxvb7++yzRa5veyRGs3Zx8MyIdj7JiaUbu6/iQeE+/SATCIw2rNK1UiqXpTlixKSR25x1LQ==
+X-Received: by 2002:a05:6000:420f:b0:3a3:6ab0:8863 with SMTP id ffacd0b85a97d-3a4e889eb28mr1188805f8f.16.1748461473317;
+        Wed, 28 May 2025 12:44:33 -0700 (PDT)
+Received: from kuoka.. ([178.197.223.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450cfbf498bsm456825e9.1.2025.05.28.12.44.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 12:44:32 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Fenglin Wu <quic_fenglinw@quicinc.com>,
+	linux-leds@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] can: kvaser_pciefd: refine error prone echo_skb_max handling logic
-Date: Wed, 28 May 2025 22:27:12 +0300
-Message-ID: <20250528192713.63894-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.49.0
+Subject: [PATCH] leds: flash: leds-qcom-flash: Fix registry access after re-bind
+Date: Wed, 28 May 2025 21:44:26 +0200
+Message-ID: <20250528194425.567172-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2830; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject; bh=xZUOsMsyjcZ1qewKlqP/KKWUHO3l+hPWlf0MlhF4mH8=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoN2eaz7n8pPjPnbi145qnYfYgaQHvOCqX2u977
+ 76YTVyTGoKJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaDdnmgAKCRDBN2bmhouD
+ 1/MTD/4v9AfAXDInQwz5wRgjEGH1dJLIxSqTY/BFyhTxRZ8A9tu/zhi5vjHtGelpAM3NLeWt5t/
+ vMq5UiUIfLBHQnl8/PBDCSiTijAkVetgZ/aCAG+fGBp/IKzFH5jvoDJdJzDye0Pm/3Pz1rl+xOb
+ cgGISxdSSkZh7cIBW2U+YDqziYH+lAonOWY0lYDyTUJgnpqEidnGpHtFJeA7OjxsuiQm/oW50Us
+ 2cz73IsdmpfkRgw7qzKQGuDGHuWXTiDEwHS/hxbgpPBx/yi9WFV5TVaXLPe4JF9iZFdrCnnzmlt
+ 7zoEojhXgciN9jQd4WoPTGymAgoVZFZNmG5rH+7dO3gUBdgv0f+ejNKidALCZd4zpwlkNn1Eg54
+ jjPnues6VZx3d8JESDR/qZFSejWaa+Bj/mv7cF6W32J1NsJzA1oyzB1POjS+sFkztfEsbYVvrvk
+ vM4rLrcezJZ3fyWgfDOELRj7urSMSTuWwt8cCy5abaA/JRIgEzr5dws/0zJdo3810WlQ/PJj7Ab
+ AWwrPL/hMc6hlUxg5kJXoIarXEyx8dmpr3BU5+Xg7ztAnajdSO1kQ0xoz8s6iCUv24fjvWnd1Gn
+ E1TS9Ax4vfI8nlV1iF6LxhcPaNfp8jagm5kpT8F7VfOkxGl9VmN1infFYcP+/1L6dnpygYtmRu2 MHcVDn/sNj3FEDw==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
 
-echo_skb_max should define the supported upper limit of echo_skb[]
-allocated inside the netdevice's priv. The corresponding size value
-provided by this driver to alloc_candev() is KVASER_PCIEFD_CAN_TX_MAX_COUNT
-which is 17.
+Driver in probe() updates each of 'reg_field' with 'reg_base':
 
-But later echo_skb_max is rounded up to the nearest power of two (for the
-max case, that would be 32) and the tx/ack indices calculated further
-during tx/rx may exceed the upper array boundary. Kasan reported this for
-the ack case inside kvaser_pciefd_handle_ack_packet(), though the xmit
-function has actually caught the same thing earlier.
+	for (i = 0; i < REG_MAX_COUNT; i++)
+		regs[i].reg += reg_base;
 
- BUG: KASAN: slab-out-of-bounds in kvaser_pciefd_handle_ack_packet+0x2d7/0x92a drivers/net/can/kvaser_pciefd.c:1528
- Read of size 8 at addr ffff888105e4f078 by task swapper/4/0
+'reg_field' array (under variable 'regs' above) is statically allocated,
+this each re-bind would add another 'reg_base' leading to bogus
+register addresses.  Constify the local 'reg_field' array and duplicate
+it in probe to solve this.
 
- CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Not tainted 6.15.0 #12 PREEMPT(voluntary)
- Call Trace:
-  <IRQ>
- dump_stack_lvl lib/dump_stack.c:122
- print_report mm/kasan/report.c:521
- kasan_report mm/kasan/report.c:634
- kvaser_pciefd_handle_ack_packet drivers/net/can/kvaser_pciefd.c:1528
- kvaser_pciefd_read_packet drivers/net/can/kvaser_pciefd.c:1605
- kvaser_pciefd_read_buffer drivers/net/can/kvaser_pciefd.c:1656
- kvaser_pciefd_receive_irq drivers/net/can/kvaser_pciefd.c:1684
- kvaser_pciefd_irq_handler drivers/net/can/kvaser_pciefd.c:1733
- __handle_irq_event_percpu kernel/irq/handle.c:158
- handle_irq_event kernel/irq/handle.c:210
- handle_edge_irq kernel/irq/chip.c:833
- __common_interrupt arch/x86/kernel/irq.c:296
- common_interrupt arch/x86/kernel/irq.c:286
-  </IRQ>
+Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Tx max count definitely matters for kvaser_pciefd_tx_avail(), but for seq
-numbers' generation that's not the case - we're free to calculate them as
-would be more convenient, not taking tx max count into account. The only
-downside is that the size of echo_skb[] should correspond to the max seq
-number (not tx max count), so in some situations a bit more memory would
-be consumed than could be.
-
-Thus make the size of the underlying echo_skb[] sufficient for the rounded
-max tx value.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 8256e0ca6010 ("can: kvaser_pciefd: Fix echo_skb race")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
 
-v2: fix the problem by rounding up the KVASER_PCIEFD_CAN_TX_MAX_COUNT
-    constant when allocating candev (Axel Forsman)
+This is a nice example why constifying static memory is useful.
+---
+ drivers/leds/flash/leds-qcom-flash.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
- drivers/net/can/kvaser_pciefd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index f6921368cd14..0071a51ce2c1 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -966,7 +966,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
- 		u32 status, tx_nr_packets_max;
+diff --git a/drivers/leds/flash/leds-qcom-flash.c b/drivers/leds/flash/leds-qcom-flash.c
+index b4c19be51c4d..b8a48c15d797 100644
+--- a/drivers/leds/flash/leds-qcom-flash.c
++++ b/drivers/leds/flash/leds-qcom-flash.c
+@@ -117,7 +117,7 @@ enum {
+ 	REG_MAX_COUNT,
+ };
  
- 		netdev = alloc_candev(sizeof(struct kvaser_pciefd_can),
--				      KVASER_PCIEFD_CAN_TX_MAX_COUNT);
-+				      roundup_pow_of_two(KVASER_PCIEFD_CAN_TX_MAX_COUNT));
- 		if (!netdev)
- 			return -ENOMEM;
+-static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
++static const struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
+ 	REG_FIELD(0x08, 0, 7),			/* status1	*/
+ 	REG_FIELD(0x09, 0, 7),                  /* status2	*/
+ 	REG_FIELD(0x0a, 0, 7),                  /* status3	*/
+@@ -132,7 +132,7 @@ static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
+ 	REG_FIELD(0x58, 0, 2),			/* therm_thrsh3 */
+ };
  
-@@ -995,7 +995,6 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
- 		can->tx_max_count = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
+-static struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
++static const struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
+ 	REG_FIELD(0x06, 0, 7),			/* status1	*/
+ 	REG_FIELD(0x07, 0, 6),			/* status2	*/
+ 	REG_FIELD(0x09, 0, 7),			/* status3	*/
+@@ -854,11 +854,17 @@ static int qcom_flash_led_probe(struct platform_device *pdev)
+ 	if (val == FLASH_SUBTYPE_3CH_PM8150_VAL || val == FLASH_SUBTYPE_3CH_PMI8998_VAL) {
+ 		flash_data->hw_type = QCOM_MVFLASH_3CH;
+ 		flash_data->max_channels = 3;
+-		regs = mvflash_3ch_regs;
++		regs = devm_kmemdup(dev, mvflash_3ch_regs, sizeof(mvflash_3ch_regs),
++				    GFP_KERNEL);
++		if (!regs)
++			return -ENOMEM;
+ 	} else if (val == FLASH_SUBTYPE_4CH_VAL) {
+ 		flash_data->hw_type = QCOM_MVFLASH_4CH;
+ 		flash_data->max_channels = 4;
+-		regs = mvflash_4ch_regs;
++		regs = devm_kmemdup(dev, mvflash_4ch_regs, sizeof(mvflash_3ch_regs),
++				    GFP_KERNEL);
++		if (!regs)
++			return -ENOMEM;
  
- 		can->can.clock.freq = pcie->freq;
--		can->can.echo_skb_max = roundup_pow_of_two(can->tx_max_count);
- 		spin_lock_init(&can->lock);
+ 		rc = regmap_read(regmap, reg_base + FLASH_REVISION_REG, &val);
+ 		if (rc < 0) {
+@@ -880,6 +886,7 @@ static int qcom_flash_led_probe(struct platform_device *pdev)
+ 		dev_err(dev, "Failed to allocate regmap field, rc=%d\n", rc);
+ 		return rc;
+ 	}
++	devm_kfree(dev, regs); /* devm_regmap_field_bulk_alloc() makes copies */
  
- 		can->can.bittiming_const = &kvaser_pciefd_bittiming_const;
+ 	platform_set_drvdata(pdev, flash_data);
+ 	mutex_init(&flash_data->lock);
 -- 
-2.49.0
+2.45.2
 
 
