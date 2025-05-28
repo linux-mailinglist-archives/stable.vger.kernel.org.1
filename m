@@ -1,252 +1,169 @@
-Return-Path: <stable+bounces-147983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABCBBAC6DCD
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 18:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3265DAC6DF6
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 18:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10B8E1C00EBB
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:18:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01BD11BA5363
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A4828C852;
-	Wed, 28 May 2025 16:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E573828C851;
+	Wed, 28 May 2025 16:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="V4UGRwzH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FV/+li4T"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9ED28C86C;
-	Wed, 28 May 2025 16:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98EF17B418
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 16:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748449040; cv=none; b=U2UZ/q0mNFxfbe08HCEzp1bgCNGUCTMIVSsNOwlndrpJNlgsF/CLLViARZCesEKqc8N/H3gAFOxoek96slh/c/pb9FOifl9CwJ8r28akHiTKmI1uRpxry5eHMLU+D/a2XnGvfSOM3djwhdYDRgK+2mhZp8AwwWJs3L+Vq7Ntizc=
+	t=1748449473; cv=none; b=Cd+fkQg+PL1B3pYkpJOhws0UNr48sB9eP9amLp5/jsljANBnooBpmJYCuciATv4XO9BhQEV+n9m4dy/25qJFcHbh8YpvAg/ZTP5GQA6q9I2uW9q3xQFQVEsP429CVPP5QbDCcaOo0nvBiwTG3igw++3T/OA9xYgRbtvfbn+MI3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748449040; c=relaxed/simple;
-	bh=yopJ+ym4D4c9GzOgtMMZbZiSB/BS+gRQB3VNJDJpKno=;
+	s=arc-20240116; t=1748449473; c=relaxed/simple;
+	bh=282JlZCXGeqP/PzRjpZh9RPcBxfOxdu51od+r+SojZM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YDWrPPzI1lDS4pTlaojI1SCE/8sq7sXlTLwBua/5W9mXG/VrDA24Nl+jVF99qp7DRGW1ycJEHkwsiR6+Hgk5+WrOwDfy6PzAxuueEk+hmZpP1+Itwd/7FxvYp46/uPeXlLuRLE6sEkebrSFwqvDd7TPMjT5Zh0VpTOk0R8/D0XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=V4UGRwzH; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=q860hmjFs3SsTHThmi8S1+4vy1FQNl3Npyj99yAH26Q=; b=V4UGRwzH7m7HaKgEiedURF+qIz
-	RHmseAiWu0Oh0YUeZOj4Xb6RfATorkFQSfzqwwNgNM/x3LONbWDsRqHZDH8xYz1mLVOj6l0wH3llt
-	3IOIS7r9bqEMLgXOMAYw1C7+vsGT35vsQ7lcQosxB9cey4VaU6g3TqyT/JE7vpcWuKbnYNxKJJd6m
-	EnNlJlcnEQpiVBNgIjdAAGuteyue3HXq9437Iy1NyxmTRDPv5ME2MzvOwW1SGR6KxsnGhJrGb9mqZ
-	usmGv9wsiUmW3gAqyWZ5N9c+NHfM+lYuqbmwF0ObnbtGRHGItMiy4meng6thvsxtdXFgLj1yOrNI9
-	O62f+jIA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uKJSq-0000000Dpsx-32zs;
-	Wed, 28 May 2025 16:17:12 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 376633005AF; Wed, 28 May 2025 18:17:12 +0200 (CEST)
-Date: Wed, 28 May 2025 18:17:12 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, xin@zytor.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org,
-	rppt@kernel.org
-Subject: Re: [PATCH 3/3] x86/alternative: make kernel ITS thunks read-only
-Message-ID: <20250528161712.GG31726@noisy.programming.kicks-ass.net>
-References: <20250528123557.12847-1-jgross@suse.com>
- <20250528123557.12847-4-jgross@suse.com>
- <20250528131052.GZ39944@noisy.programming.kicks-ass.net>
- <044f0048-95bb-4822-978e-a23528f3891f@suse.com>
- <20250528132231.GB39944@noisy.programming.kicks-ass.net>
- <7c8bf4f5-29a0-4147-b31a-5e420b11468e@suse.com>
- <20250528155821.GD39944@noisy.programming.kicks-ass.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JoqxGuUiMiAs8LO6zUkhtgSoXi3+Lfgk6rjxkdOnaJkAc7LaORh+eZ8enE66S7fj5wgYbXXcacLa0P5k+qrGsBeUmDxzfXi11VbU9yii47V4T4lDtLtXccqoNz/nPQ7nOk0cPeHXwzO5p9xrfcqfNDivlj4otm4GLIKP1l4AQIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FV/+li4T; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748449470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H3WfoxKRVcW4Y+DnHDOZBJuxMROGpvocSlXq1ZkIg5E=;
+	b=FV/+li4TWgmTQ7xQVtbvh+PJAVGtxQuVooFV8o5yDejKOHFsaWEBTQQsoZ7/Owpw6TkIyl
+	tvLisBDEOTK0v1WqCWUcB2rryIeyVn8rqsVWySuFwyiRwAVJxIfll2P49/Fzb1c0fCZF+K
+	lwvaaml8QlT7zdbPGYeWk4tsvQW16h8=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-294-rOYrvr3mPCqwzfpYhTLZdQ-1; Wed, 28 May 2025 12:24:29 -0400
+X-MC-Unique: rOYrvr3mPCqwzfpYhTLZdQ-1
+X-Mimecast-MFC-AGG-ID: rOYrvr3mPCqwzfpYhTLZdQ_1748449469
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c5f3b8b1a1so754771785a.3
+        for <stable@vger.kernel.org>; Wed, 28 May 2025 09:24:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748449469; x=1749054269;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H3WfoxKRVcW4Y+DnHDOZBJuxMROGpvocSlXq1ZkIg5E=;
+        b=ElDKjy2fuPipIvq4w31wDo8JVrqouHv7hhrLCpvUmPzn3lvAAA5t2BVeFCGzfAovlt
+         SjSpHFf3WLYj8HHZiwGTm3puZxtaVHjMpIsQQty/Y+U7kWktcp+kr8gKfsIk6GGCiqV0
+         pjivhNi44otuABvnKxLoZfFoiFDgA1Z462sO13M6AuPGZlgFkfaxJ+Na+Sy/SnIvVj5s
+         2TZ0/9mO3cTyh21KAFOoUjq8SuCWRie62HOpiF8iZyWl7BRJ0cb005IhSYm8SpFamXjP
+         ws+4cfUSLJUqCNFO/Afb2jiXWpH3p+mMOrmV8CBByC3vYCYcP/7Ldj5qxHeygAp6xT49
+         3Gkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWj+vEOgNIrvXpjKFRu158j2RJw8B8zfE7+0UoNfLJwVfSgzrF7QVinkYZBr73x1un6cxLoa2Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1lXJb1ALEYfjRsmcJZO8T/C3Db6EU1sAtM81IwmdLIZz4x7r5
+	qBO68PolgINUNhkAeKnFsDCVjSLEvNgfRupudJQCLx6GQZKqfaRIivT0U+QH3VEC8rhmg2S3ahG
+	A7lL/cvEnDECsAII82prfifjZOjs3lCjLe4AlHk8Zl4bEvWMeQuOwla1ZhQ==
+X-Gm-Gg: ASbGncullMPFqB4wAwH1c5zw3nwSedTs7zdVfQaF/0nNnep/I8gZdhVqfq8DNS1VFqx
+	7oHAeIlN5nG8m5sdDWegsxVSm5eW6O1Vh9qT/ero5U5nqLCqjd/7619GabFCaDvCQpmwzX5u9UG
+	f5vlw9mSF4pkW0/a0G+Pmmg6qY9RzmoelodTmtpQstDLAMSx5jvSfUkXnzntEAR/Dv6Nv27rduD
+	ARBzn/p9Gf9jTUtmDDgad7KaFB2Q83xZxRgsfjUyhzA+9Bjgjs6ILn7KxfyduXFE0znIYHgVp8a
+	Jfs=
+X-Received: by 2002:a05:620a:8804:b0:7ca:f447:c676 with SMTP id af79cd13be357-7ceecc7b357mr2983878485a.43.1748449468982;
+        Wed, 28 May 2025 09:24:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAnXf43b6H4MlK1EjDvv8V/BsoyuWSWPUUzmroPDps16PFlFqzdhDpePuXhUVM/nmAt1nS0Q==
+X-Received: by 2002:a05:620a:8804:b0:7ca:f447:c676 with SMTP id af79cd13be357-7ceecc7b357mr2983875185a.43.1748449468640;
+        Wed, 28 May 2025 09:24:28 -0700 (PDT)
+Received: from x1.local ([85.131.185.92])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cfc5d3a361sm87712085a.87.2025.05.28.09.24.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 09:24:28 -0700 (PDT)
+Date: Wed, 28 May 2025 12:24:24 -0400
+From: Peter Xu <peterx@redhat.com>
+To: James Houghton <jthoughton@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Gavin Guo <gavinguo@igalia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+	akpm@linux-foundation.org, mike.kravetz@oracle.com,
+	kernel-dev@igalia.com, stable@vger.kernel.org,
+	Hugh Dickins <hughd@google.com>, Florent Revest <revest@google.com>,
+	Gavin Shan <gshan@redhat.com>
+Subject: Re: [PATCH v3] mm/hugetlb: fix a deadlock with pagecache_folio and
+ hugetlb_fault_mutex_table
+Message-ID: <aDc4uO_Vq-q7ks5h@x1.local>
+References: <20250528023326.3499204-1-gavinguo@igalia.com>
+ <aDbXEnqnpDnAx4Mw@localhost.localdomain>
+ <aDcl2YM5wX-MwzbM@x1.local>
+ <629bb87e-c493-4069-866c-20e02c14ddcc@redhat.com>
+ <aDcvplLNH0nGsLD1@localhost.localdomain>
+ <CADrL8HXD0hX+5WvtZWKXAr0NvfvOJZhqL9PVBawYQuAyzhGgYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250528155821.GD39944@noisy.programming.kicks-ass.net>
+In-Reply-To: <CADrL8HXD0hX+5WvtZWKXAr0NvfvOJZhqL9PVBawYQuAyzhGgYg@mail.gmail.com>
 
-On Wed, May 28, 2025 at 05:58:21PM +0200, Peter Zijlstra wrote:
-> On Wed, May 28, 2025 at 03:30:33PM +0200, Jürgen Groß wrote:
-> 
-> > Have a look at its_fini_mod().
-> 
-> Oh, that's what you mean. But this still isn't very nice, you now have
-> restore_rox() without make_temp_rw(), which was the intended usage
-> pattern.
-> 
-> Bah, I hate how execmem works different for !PSE, Mike, you see a sane
-> way to fix this?
-> 
-> Anyway, if we have to do something like this, then I would prefer it
-> shaped something like so:
-> 
+On Wed, May 28, 2025 at 12:14:28PM -0400, James Houghton wrote:
 
-Missing file:
+[...]
 
-diff --git a/arch/x86/include/asm/module.h b/arch/x86/include/asm/module.h
-index e988bac0a4a1..3c2de4ce3b10 100644
---- a/arch/x86/include/asm/module.h
-+++ b/arch/x86/include/asm/module.h
-@@ -5,12 +5,20 @@
- #include <asm-generic/module.h>
- #include <asm/orc_types.h>
- 
-+struct its_array {
-+#ifdef CONFIG_MITIGATION_ITS
-+	void **pages;
-+	int num;
-+#endif
-+};
-+
- struct mod_arch_specific {
- #ifdef CONFIG_UNWINDER_ORC
- 	unsigned int num_orcs;
- 	int *orc_unwind_ip;
- 	struct orc_entry *orc_unwind;
- #endif
-+	struct its_array its_pages;
- };
- 
- #endif /* _ASM_X86_MODULE_H */
+> > > For 2) I am also not sure if we need need the pagecache folio locked; I
+> > > doubt it ... but this code is not the easiest to follow.
+> >
+> > I have been staring at that code and thinking about potential scenarios
+> > for a few days now, and I cannot convice myself that we need
+> > pagecache_folio's lock when pagecache_folio != old_folio because as a
+> > matter of fact I cannot think of anything it protects us against.
+> 
+> Hi Oscar,
 
-> ---
-> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> index ecfe7b497cad..33d4d139cb50 100644
-> --- a/arch/x86/kernel/alternative.c
-> +++ b/arch/x86/kernel/alternative.c
-> @@ -111,9 +111,8 @@ static bool cfi_paranoid __ro_after_init;
->  
->  #ifdef CONFIG_MITIGATION_ITS
->  
-> -#ifdef CONFIG_MODULES
->  static struct module *its_mod;
-> -#endif
-> +static struct its_array its_pages;
->  static void *its_page;
->  static unsigned int its_offset;
->  
-> @@ -151,68 +150,78 @@ static void *its_init_thunk(void *thunk, int reg)
->  	return thunk + offset;
->  }
->  
-> -#ifdef CONFIG_MODULES
->  void its_init_mod(struct module *mod)
->  {
->  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
->  		return;
->  
-> -	mutex_lock(&text_mutex);
-> -	its_mod = mod;
-> -	its_page = NULL;
-> +	if (mod) {
-> +		mutex_lock(&text_mutex);
-> +		its_mod = mod;
-> +		its_page = NULL;
-> +	}
->  }
->  
->  void its_fini_mod(struct module *mod)
->  {
-> +	struct its_array *pages = &its_pages;
-> +
->  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
->  		return;
->  
->  	WARN_ON_ONCE(its_mod != mod);
->  
-> -	its_mod = NULL;
-> -	its_page = NULL;
-> -	mutex_unlock(&text_mutex);
-> +	if (mod) {
-> +		pages = &mod->arch.its_pages;
-> +		its_mod = NULL;
-> +		its_page = NULL;
-> +		mutex_unlock(&text_mutex);
-> +	}
->  
-> -	for (int i = 0; i < mod->its_num_pages; i++) {
-> -		void *page = mod->its_page_array[i];
-> +	for (int i = 0; i < pages->num; i++) {
-> +		void *page = pages->pages[i];
->  		execmem_restore_rox(page, PAGE_SIZE);
->  	}
-> +
-> +	if (!mod)
-> +		kfree(pages->pages);
->  }
->  
->  void its_free_mod(struct module *mod)
->  {
-> +	struct its_array *pages = &its_pages;
-> +
->  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
->  		return;
->  
-> -	for (int i = 0; i < mod->its_num_pages; i++) {
-> -		void *page = mod->its_page_array[i];
-> +	if (mod)
-> +		pages = &mod->arch.its_pages;
-> +
-> +	for (int i = 0; i < pages->num; i++) {
-> +		void *page = pages->pages[i];
->  		execmem_free(page);
->  	}
-> -	kfree(mod->its_page_array);
-> +	kfree(pages->pages);
->  }
-> -#endif /* CONFIG_MODULES */
->  
->  static void *its_alloc(void)
->  {
-> -	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-> +	struct its_array *pages = &its_pages;
-> +	void *tmp;
->  
-> +	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
->  	if (!page)
->  		return NULL;
->  
-> -#ifdef CONFIG_MODULES
-> -	if (its_mod) {
-> -		void *tmp = krealloc(its_mod->its_page_array,
-> -				     (its_mod->its_num_pages+1) * sizeof(void *),
-> -				     GFP_KERNEL);
-> -		if (!tmp)
-> -			return NULL;
-> +	tmp = krealloc(pages->pages, (pages->num + 1) * sizeof(void *), GFP_KERNEL);
-> +	if (!tmp)
-> +		return NULL;
->  
-> -		its_mod->its_page_array = tmp;
-> -		its_mod->its_page_array[its_mod->its_num_pages++] = page;
-> +	pages->pages = tmp;
-> +	pages->pages[pages->num++] = page;
->  
-> +	if (its_mod)
->  		execmem_make_temp_rw(page, PAGE_SIZE);
-> -	}
-> -#endif /* CONFIG_MODULES */
->  
->  	return no_free_ptr(page);
->  }
-> @@ -2338,6 +2347,8 @@ void __init alternative_instructions(void)
->  	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
->  	apply_returns(__return_sites, __return_sites_end);
->  
-> +	its_fini_mod(NULL);
-> +
->  	/*
->  	 * Adjust all CALL instructions to point to func()-10, including
->  	 * those in .altinstr_replacement.
+Hey, James,
+
+> 
+> Have you thought about the UFFDIO_CONTINUE case (hugetlb_mfill_atomic_pte())?
+> 
+> I'm slightly concerned that, if you aren't holding pagecache_folio's
+> lock, there might be issues where hugetlb_mfill_atomic_pte() proceeds
+> to map a hugetlb page that it is not supposed to. (For example, if the
+> fault handler does not generally hold pagecache_folio's lock,
+> hugetlb_mfill_atomic_pte() will see a page in the pagecache and map
+> it, even though it may not have been zeroed yet.)
+> 
+> I haven't had enough time to fully think through this case, but just
+> want to make sure it has been considered.
+
+AFAIU we're talking about two separate code paths.  IIUC you're talking
+about a fresh new hugetlb folio being allocated, but then that's what
+hugetlb_no_page() does.  Folio lock required there.
+
+Here IIUC Oscar's context is only in hugetlb_wp() where there's a niche use
+case to compare whether a VM_PRIVATE has already CoWed once from a
+pagecache, and whether we need the folio lock for the pagecache lookup.
+Aka, this one:
+
+	if ((flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) &&
+	    !(vma->vm_flags & VM_MAYSHARE) && !huge_pte_write(vmf.orig_pte)) {
+		if (vma_needs_reservation(h, vma, vmf.address) < 0) {
+			ret = VM_FAULT_OOM;
+			goto out_mutex;
+		}
+		/* Just decrements count, does not deallocate */
+		vma_end_reservation(h, vma, vmf.address);
+
+		pagecache_folio = filemap_lock_hugetlb_folio(h, mapping, <---
+							     vmf.pgoff);
+		if (IS_ERR(pagecache_folio))
+			pagecache_folio = NULL;
+	}
+
+Thanks,
+
+-- 
+Peter Xu
+
 
