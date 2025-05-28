@@ -1,236 +1,141 @@
-Return-Path: <stable+bounces-147961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D9FAC6A36
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 15:20:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53431AC6A41
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 15:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FE847AE232
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 13:18:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A09413B99F9
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 13:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A9C283C92;
-	Wed, 28 May 2025 13:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3002857D2;
+	Wed, 28 May 2025 13:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QqOFRlTj"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="olyCyipN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E4C2777EA
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 13:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76FD2459EA;
+	Wed, 28 May 2025 13:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748438409; cv=none; b=t99gELxPoiNp5wkb7KVPzCq61iMirPDcr8j7iQWjP3cz66ONDYbBz3vRHgVaLzFe8D7ltgl0km2dd7a0p4uHWKZb6xpub1q3DvMVGmtWYRiCJPe71n2yuEMwjmBqXf5x96xAFqWyf5kA58p79hmaYSbwvSqPhLBxHaDONCX25eA=
+	t=1748438560; cv=none; b=LgbghBUxbifSN4X5xMBQyYwKNgYYq4a44CXiapqxdQcQvUlrbOQ/mt9K7kpRdhj5qmbagwSpSYv3E/NSgwEnHcJOYkVhV1obfsJTP1FOHvFMWnsBh6O4H0oDaiPomTOujFzlztyDwZ7PUZiGtNOTTLJOygx2Buu+FNRuw70tvQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748438409; c=relaxed/simple;
-	bh=K9bSH/lUb5q5/5UtzoLMGhadKkH4MgpR616bDH8+a5U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NERZrR7zIUScR98igJKGEK3ae4QmTeJ1wqtFhxwdtnp5E65Tm2KLeED6fEOTlQN0aE/zh2L1i2yqHsEQ37ftx8+GV//hzEiKhd/pGjh7kWqzlxGWAEA+G+YDDCHvb8yo083C8BVA3O03GnTKNBXibfxfeYW1CM4VKlkpGC/N3Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QqOFRlTj; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748438407; x=1779974407;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=K9bSH/lUb5q5/5UtzoLMGhadKkH4MgpR616bDH8+a5U=;
-  b=QqOFRlTj2+lndrGk5M36F27sl5+N28x5zVUI1YlHFZ+y+XrNZTzBz/w0
-   hMSMDqeFWyz3goe4WOKxUdXWkE3ld/zKxvur6FQafvkuvKs/9+K22pbe7
-   FpgaiTL1fGCXc9eNzC25lGu//07IguxFUVAc7c68P9ur6rlGZ+pQ6GfN6
-   HCutuyOC3w3HkD+UNir/kkDozjagg7wwhejNZiXNpf6qdwRnk5R9SsMXJ
-   sHAy1oFc7GyBqEv8oH6yQ8/oPKJOQ/b+GXz3S8VeBi7WjjggMTD9kkjKe
-   P05G+d1UywnJa+ciNEm9VlKNLaffIyWNmiNvzoI4xMGOd8XzN9VMyLRvd
-   A==;
-X-CSE-ConnectionGUID: kY1RXRA1RiW2ZQjD1OYWaA==
-X-CSE-MsgGUID: 7arT1oJjQoW7RHtPhKPQDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="61123213"
-X-IronPort-AV: E=Sophos;i="6.15,321,1739865600"; 
-   d="scan'208";a="61123213"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 06:20:07 -0700
-X-CSE-ConnectionGUID: uX1fC78eSE2it2HFc2umUg==
-X-CSE-MsgGUID: Rmr8z9gFS3CGGW2sMOEotQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,321,1739865600"; 
-   d="scan'208";a="143878506"
-Received: from jkubalek-mobl.ger.corp.intel.com (HELO [10.245.113.0]) ([10.245.113.0])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 06:20:05 -0700
-Message-ID: <63e6ce44-318d-4dce-8797-8e98578f89f9@linux.intel.com>
-Date: Wed, 28 May 2025 15:20:01 +0200
+	s=arc-20240116; t=1748438560; c=relaxed/simple;
+	bh=4Pn5+IaraLwfB51pd3e88aEPpbE+Xpl78G5c8jBouU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bHylBcd0YOKReQAuRbqgKDc273u0stNHCMsGXm16lu1HMUkYiKiZuqQMOqyhcIhmkIjzmdielYlQmy+JbYQWBoCkoXe5uFIKd3znp1/d5YD5QvD1O6PyQkng5Q7ULFkV6i0LrtOU5PcvZNmvs0C6h+Djj7LNXVwaIQ0yozeropI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=olyCyipN; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=EKajYrvbUK7K9eBj0BAcVo9PVCzIMkEs/jt3hskWVO0=; b=olyCyipNVyN0DI1Kq+4tOKvnyO
+	GlVT+ibtDB4n4Emex6vrP2lhgZaTRQGDL1Yg+x+otaG+Pvcwrj/m+g+lI7G/FzyfvF5nTZBTXlDra
+	wWFwjz5etn3iUWbLyZLSxpmZ8CFOAAmCx7MDmXDeZjCh/DUGpvIkNEPaCOQd1zYqEuVnWCyydm7Wz
+	QemXA26cgxJF3RLRoKgR9q9FOAfdYsu/s9d3KmRAO4QjqPDCOnXx/Lts7JxoemlalYqJolw0QWsjp
+	EWm1gzPRGFO9wW/knkhvImSIuEYVRoMcwqF21JkBPZSEUuy2/31KZtVAyJ//4wxYh9IuJaUF1+jlM
+	/4ulWODw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uKGjp-0000000Dfve-48jJ;
+	Wed, 28 May 2025 13:22:34 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 09B7F300263; Wed, 28 May 2025 15:22:32 +0200 (CEST)
+Date: Wed, 28 May 2025 15:22:31 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, xin@zytor.com,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 3/3] x86/alternative: make kernel ITS thunks read-only
+Message-ID: <20250528132231.GB39944@noisy.programming.kicks-ass.net>
+References: <20250528123557.12847-1-jgross@suse.com>
+ <20250528123557.12847-4-jgross@suse.com>
+ <20250528131052.GZ39944@noisy.programming.kicks-ass.net>
+ <044f0048-95bb-4822-978e-a23528f3891f@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] drm/gem: Fix race in drm_gem_handle_create_tail()
-To: Simona Vetter <simona.vetter@ffwll.ch>,
- DRI Development <dri-devel@lists.freedesktop.org>
-Cc: intel-xe@lists.freedesktop.org, stable@vger.kernel.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Simona Vetter <simona.vetter@intel.com>
-References: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
- <20250528091307.1894940-2-simona.vetter@ffwll.ch>
-Content-Language: en-US
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20250528091307.1894940-2-simona.vetter@ffwll.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <044f0048-95bb-4822-978e-a23528f3891f@suse.com>
 
-This fixes the race for me.
+On Wed, May 28, 2025 at 03:19:24PM +0200, J=FCrgen Gro=DF wrote:
+> On 28.05.25 15:10, Peter Zijlstra wrote:
+> > On Wed, May 28, 2025 at 02:35:57PM +0200, Juergen Gross wrote:
+> > > When allocating memory pages for kernel ITS thunks, make them read-on=
+ly
+> > > after having written the last thunk.
+> > >=20
+> > > This will be needed when X86_FEATURE_PSE isn't available, as the thunk
+> > > memory will have PAGE_KERNEL_EXEC protection, which is including the
+> > > write permission.
+> > >=20
+> > > Cc: <stable@vger.kernel.org>
+> > > Fixes: 5185e7f9f3bd ("x86/module: enable ROX caches for module text o=
+n 64 bit")
+> > > Signed-off-by: Juergen Gross <jgross@suse.com>
+> > > ---
+> > >   arch/x86/kernel/alternative.c | 16 ++++++++++++++++
+> > >   1 file changed, 16 insertions(+)
+> > >=20
+> > > diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternat=
+ive.c
+> > > index ecfe7b497cad..bd974a0ac88a 100644
+> > > --- a/arch/x86/kernel/alternative.c
+> > > +++ b/arch/x86/kernel/alternative.c
+> > > @@ -217,6 +217,15 @@ static void *its_alloc(void)
+> > >   	return no_free_ptr(page);
+> > >   }
+> > > +static void its_set_kernel_ro(void *addr)
+> > > +{
+> > > +#ifdef CONFIG_MODULES
+> > > +	if (its_mod)
+> > > +		return;
+> > > +#endif
+> > > +	execmem_restore_rox(addr, PAGE_SIZE);
+> > > +}
+> > > +
+> > >   static void *its_allocate_thunk(int reg)
+> > >   {
+> > >   	int size =3D 3 + (reg / 8);
+> > > @@ -234,6 +243,8 @@ static void *its_allocate_thunk(int reg)
+> > >   #endif
+> > >   	if (!its_page || (its_offset + size - 1) >=3D PAGE_SIZE) {
+> > > +		if (its_page)
+> > > +			its_set_kernel_ro(its_page);
+> > >   		its_page =3D its_alloc();
+> > >   		if (!its_page) {
+> > >   			pr_err("ITS page allocation failed\n");
+> > > @@ -2338,6 +2349,11 @@ void __init alternative_instructions(void)
+> > >   	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
+> > >   	apply_returns(__return_sites, __return_sites_end);
+> > > +	/* Make potential last thunk page read-only. */
+> > > +	if (its_page)
+> > > +		its_set_kernel_ro(its_page);
+> > > +	its_page =3D NULL;
+> > > +
+> > >   	/*
+> > >   	 * Adjust all CALL instructions to point to func()-10, including
+> > >   	 * those in .altinstr_replacement.
+> >=20
+> > No, this is all sorts of wrong. Execmem API should ensure this.
+>=20
+> You are aware that this patch is basically mirroring the work which is
+> already done for modules in alternative.c?
 
-Tested-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-
-On 5/28/2025 11:12 AM, Simona Vetter wrote:
-> Object creation is a careful dance where we must guarantee that the
-> object is fully constructed before it is visible to other threads, and
-> GEM buffer objects are no difference.
-> 
-> Final publishing happens by calling drm_gem_handle_create(). After
-> that the only allowed thing to do is call drm_gem_object_put() because
-> a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
-> (which is trivial since we have a linear allocator) can already tear
-> down the object again.
-> 
-> Luckily most drivers get this right, the very few exceptions I've
-> pinged the relevant maintainers for. Unfortunately we also need
-> drm_gem_handle_create() when creating additional handles for an
-> already existing object (e.g. GETFB ioctl or the various bo import
-> ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
-> the only exported function to stop these issues from happening.
-> 
-> Now unfortunately the implementation of drm_gem_handle_create() isn't
-> living up to standards: It does correctly finishe object
-> initialization at the global level, and hence is safe against a
-> concurrent tear down. But it also sets up the file-private aspects of
-> the handle, and that part goes wrong: We fully register the object in
-> the drm_file.object_idr before calling drm_vma_node_allow() or
-> obj->funcs->open, which opens up races against concurrent removal of
-> that handle in drm_gem_handle_delete().
-> 
-> Fix this with the usual two-stage approach of first reserving the
-> handle id, and then only registering the object after we've completed
-> the file-private setup.
-> 
-> Jacek reported this with a testcase of concurrently calling GEM_CLOSE
-> on a freshly-created object (which also destroys the object), but it
-> should be possible to hit this with just additional handles created
-> through import or GETFB without completed destroying the underlying
-> object with the concurrent GEM_CLOSE ioctl calls.
-> 
-> Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
-> Release driver references to handle before making it available
-> again"), which means a cool 9 years have passed until someone noticed
-> that we need to make this symmetry or there's still gaps left :-/
-> Without the 2-stage close approach we'd still have a race, therefore
-> that's an integral part of this bugfix.
-> 
-> More importantly, this means we can have NULL pointers behind
-> allocated id in our drm_file.object_idr. We need to check for that
-> now:
-> 
-> - drm_gem_handle_delete() checks for ERR_OR_NULL already
-> 
-> - drm_gem.c:object_lookup() also chekcs for NULL
-> 
-> - drm_gem_release() should never be called if there's another thread
->   still existing that could call into an IOCTL that creates a new
->   handle, so cannot race. For paranoia I added a NULL check to
->   drm_gem_object_release_handle() though.
-> 
-> - most drivers (etnaviv, i915, msm) are find because they use
->   idr_find, which maps both ENOENT and NULL to NULL.
-> 
-> - vmgfx is already broken vmw_debugfs_gem_info_show() because NULL
->   pointers might exist due to drm_gem_handle_delete(). This needs a
->   separate patch. This is because idr_for_each_entry terminates on the
->   first NULL entry and so might not iterate over everything.
-> 
-> - similar for amd in amdgpu_debugfs_gem_info_show() and
->   amdgpu_gem_force_release(). The latter is really questionable though
->   since it's a best effort hack and there's no way to close all the
->   races. Needs separate patches.
-> 
-> - xe is really broken because it not uses idr_for_each_entry() but
->   also drops the drm_file.table_lock, which can wreak the idr iterator
->   state if you're unlucky enough. Maybe another reason to look into
->   the drm fdinfo memory stats instead of hand-rolling too much.
-> 
-> - drm_show_memory_stats() is also broken since it uses
->   idr_for_each_entry. But since that's a preexisting bug I'll follow
->   up with a separate patch.
-> 
-> Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> Cc: stable@vger.kernel.org
-> Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-> Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-> ---
->  drivers/gpu/drm/drm_gem.c | 10 +++++++++-
->  include/drm/drm_file.h    |  3 +++
->  2 files changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-> index 1e659d2660f7..e4e20dda47b1 100644
-> --- a/drivers/gpu/drm/drm_gem.c
-> +++ b/drivers/gpu/drm/drm_gem.c
-> @@ -279,6 +279,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
->  	struct drm_file *file_priv = data;
->  	struct drm_gem_object *obj = ptr;
->  
-> +	if (WARN_ON(!data))
-> +		return 0;
-> +
->  	if (obj->funcs->close)
->  		obj->funcs->close(obj, file_priv);
->  
-> @@ -399,7 +402,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
->  	idr_preload(GFP_KERNEL);
->  	spin_lock(&file_priv->table_lock);
->  
-> -	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
-> +	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
->  
->  	spin_unlock(&file_priv->table_lock);
->  	idr_preload_end();
-> @@ -420,6 +423,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
->  			goto err_revoke;
->  	}
->  
-> +	/* mirrors drm_gem_handle_delete to avoid races */
-> +	spin_lock(&file_priv->table_lock);
-> +	obj = idr_replace(&file_priv->object_idr, obj, handle);
-> +	WARN_ON(obj != NULL);
-> +	spin_unlock(&file_priv->table_lock);
->  	*handlep = handle;
->  	return 0;
->  
-> diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
-> index 5c3b2aa3e69d..d344d41e6cfe 100644
-> --- a/include/drm/drm_file.h
-> +++ b/include/drm/drm_file.h
-> @@ -300,6 +300,9 @@ struct drm_file {
->  	 *
->  	 * Mapping of mm object handles to object pointers. Used by the GEM
->  	 * subsystem. Protected by @table_lock.
-> +	 *
-> +	 * Note that allocated entries might be NULL as a transient state when
-> +	 * creating or deleting a handle.
->  	 */
->  	struct idr object_idr;
->  
-
+I am having trouble parsing that -- where does alternative.c do this to
+modules?
 
