@@ -1,305 +1,183 @@
-Return-Path: <stable+bounces-147977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDE9AC6D1A
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:44:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AFDAC6D25
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F1543AC19E
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 15:43:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C75B11C0073F
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 15:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF8D2868BA;
-	Wed, 28 May 2025 15:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68EE28B7C1;
+	Wed, 28 May 2025 15:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KSWN8yDc"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cde8scR/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="refnbGjY";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bySGC134";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="4zAFPZZL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737F2C2D1
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 15:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016121E8323
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 15:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748447011; cv=none; b=WjbC/JRkajqDGfTDLosxAMfyw4sW9GouOozYJ6KWDjGacDb0o52jwliT0hhMSuSN2agx1FRikAlOb9N060YWiGbY+8B3MLQK+UjIT8EFQLe7jZ7nm5U9LqZLmrZ+uTiTDConsW5Rex4LZQOXj54wUjx/wYN9OoMqwFWDzzoz2Cg=
+	t=1748447157; cv=none; b=ZMxKFD7yGTHTA7shUGZ03Ewy1MzmwB5UbxSa+vNey/NmGTcRs6S3hKU1F1Cgwg9AdMBctfu7A1l7zbmK7Ch6hHIPxN4kf+ritnnQETl/eut8nmkoCtBd1bjbarR0izIQuk/QQrL5XlXaoAAMU3LgXOxWS3xgIfW6VT5SFMQVvXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748447011; c=relaxed/simple;
-	bh=lMdhBWmyG+BIB+Hqln8cDc+dIqqbg6EYjzu02ojwL7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JquylvKkMjkJeuVJS6KrOcHW6dI2/FmrHZGeJNH8s9Boh1xEShrDkr4OPSLtwVCv7bo6Qg2o4bwa0NiB2K9c39NWodC33+DmhLAg57RLRtrYI90UoyDrBLW8Hr1ZasIAU9Mr87CHWMzvOn6B04VWBPsArKoyPqJwUeeUDBbqw3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KSWN8yDc; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748447010; x=1779983010;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lMdhBWmyG+BIB+Hqln8cDc+dIqqbg6EYjzu02ojwL7I=;
-  b=KSWN8yDcCNjMpQexsJf93atCZ5w49ZnJAlvSF7E7akAK4mhlAMcDhEBN
-   J3V7yq8N2E2wzPxG43fP0lFTHt99h9GjSD1/Dx8acPe8NyOcIA42K1gcq
-   cyrhgfmavrDtRY1Kd+o885XETFKJdWHe0svKTM4q+c04ZqOcF7cp2gOWx
-   XCuOzVpzW1W2nEOwvybtdTAOdcqigtE4M2oNsopdP8SIjEiCJt8UtydZg
-   4vq+k5lQtz1slGA9PG0nIQoTJcwmxKawma1742xrb7wFPnJN3kDWLt1hw
-   CAlVFYgPqUgGII7lgRX+bLIWVNmIl6XJt5+qKiGxMn6sU76eFI/wkr32M
-   g==;
-X-CSE-ConnectionGUID: qXwx3E4iTBSj0vn7NDLTug==
-X-CSE-MsgGUID: glP/l4tvSyWdHDr2QUauRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="73011137"
-X-IronPort-AV: E=Sophos;i="6.15,321,1739865600"; 
-   d="scan'208";a="73011137"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 08:43:29 -0700
-X-CSE-ConnectionGUID: nVquKOM7RbmcKtmN11kaNw==
-X-CSE-MsgGUID: JFhAzIBWT6OPtli7B2wGfw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,321,1739865600"; 
-   d="scan'208";a="143195450"
-Received: from jlawryno.igk.intel.com ([10.91.220.59])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 08:43:27 -0700
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: jeff.hugo@oss.qualcomm.com,
-	lizhi.hou@amd.com,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] accel/ivpu: Use dma_resv_lock() instead of a custom mutex
-Date: Wed, 28 May 2025 17:43:25 +0200
-Message-ID: <20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com>
-X-Mailer: git-send-email 2.45.1
+	s=arc-20240116; t=1748447157; c=relaxed/simple;
+	bh=j19nRteXPJvYzv7WC5pci+ARTaE0cmwkYfp8eCoLENQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oV9jhVUwSN3GsXh8lnzf1skQOqERCnoeiZb6j4xaXVE4cAYbDmGsYVj2MFHQzmFZrYuXinJg0+vq4jc9fwYjaBeC5VugeCbKb/tbuWlykTulJP08/DqFBR/MaTSsePJLneJ+1zzUIJCsp5jPt+nzNTOMc0DQpRSFdhE4Q/udGAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cde8scR/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=refnbGjY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bySGC134; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=4zAFPZZL; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D4F821F79C;
+	Wed, 28 May 2025 15:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1748447154; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=90//cSFAovb3np1TlyFoHzplikprSinbUOdqaHViB8o=;
+	b=cde8scR/o0imOH1tMYP+EspNV1riDEv+jEb2YncHIjrFwzvbbxUxS3geTgrz30xiWKjnCm
+	03OkyE/MpmrC9bIrj9Cz0rZmsizfDCICVcACw5hGRT9QaDQF3QIoOhE/e9Mw85YriyTB85
+	BnHygwkDaf07MxXESwcgpHniu7wXCps=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1748447154;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=90//cSFAovb3np1TlyFoHzplikprSinbUOdqaHViB8o=;
+	b=refnbGjYp6nygWQaU2kMghJpFXkEjfCKcPn4auWX9beB95omPCsB69NHXVPHfBl7DnYvGD
+	ECszSfzxoK7J1qCQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bySGC134;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4zAFPZZL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1748447153; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=90//cSFAovb3np1TlyFoHzplikprSinbUOdqaHViB8o=;
+	b=bySGC1341VeoGLtrqpW1sa/fZV3bSUnihA+NwO4B+NY03PQ/D90Z38/MVoJgUvS/LGnAQt
+	9HTgOGGmczarDomWlaf7qOgoXn4dvKfZGgU7i4CrFrVkS2sag3uujOtX8R8qb8931SUqrr
+	WgAXMcHcBrQFxoEfXUWWfHsVlBvxFo8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1748447153;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=90//cSFAovb3np1TlyFoHzplikprSinbUOdqaHViB8o=;
+	b=4zAFPZZLIye49Ym7SvHCAr5z85yuCq+lzqo4WQ26ob313OeHfpBRys5whzANewy4kPsW04
+	qd7rmKAuFz00fZCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11224136E3;
+	Wed, 28 May 2025 15:45:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id znZRAbEvN2h8ZQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 28 May 2025 15:45:53 +0000
+Date: Wed, 28 May 2025 17:45:42 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: David Hildenbrand <david@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, Gavin Guo <gavinguo@igalia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	muchun.song@linux.dev, akpm@linux-foundation.org,
+	mike.kravetz@oracle.com, kernel-dev@igalia.com,
+	stable@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+	Florent Revest <revest@google.com>, Gavin Shan <gshan@redhat.com>
+Subject: Re: [PATCH v3] mm/hugetlb: fix a deadlock with pagecache_folio and
+ hugetlb_fault_mutex_table
+Message-ID: <aDcvplLNH0nGsLD1@localhost.localdomain>
+References: <20250528023326.3499204-1-gavinguo@igalia.com>
+ <aDbXEnqnpDnAx4Mw@localhost.localdomain>
+ <aDcl2YM5wX-MwzbM@x1.local>
+ <629bb87e-c493-4069-866c-20e02c14ddcc@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <629bb87e-c493-4069-866c-20e02c14ddcc@redhat.com>
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: D4F821F79C
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -4.51
 
-This fixes a potential race conditions in:
- - ivpu_bo_unbind_locked() where we modified the shmem->sgt without
-   holding the dma_resv_lock().
- - ivpu_bo_print_info() where we read the shmem->pages without
-   holding the dma_resv_lock().
+On Wed, May 28, 2025 at 05:09:26PM +0200, David Hildenbrand wrote:
+> On 28.05.25 17:03, Peter Xu wrote:
+> > So I'm not 100% sure we need the folio lock even for copy; IIUC a refcount
+> > would be enough?
+> 
+> The introducing patches seem to talk about blocking concurrent migration /
+> rmap walks.
 
-Using dma_resv_lock() also protects against future syncronisation
-issues that may arise when accessing drm_gem_shmem_object or
-drm_gem_object members.
+I thought the main reason was because PageLock protects us against writes,
+so when copying (in case of copying the underlying file), we want the
+file to be stable throughout the copy?
 
-Fixes: 42328003ecb6 ("accel/ivpu: Refactor BO creation functions")
-Cc: <stable@vger.kernel.org> # v6.9+
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
----
- drivers/accel/ivpu/ivpu_gem.c | 63 +++++++++++++++++++----------------
- drivers/accel/ivpu/ivpu_gem.h |  1 -
- 2 files changed, 34 insertions(+), 30 deletions(-)
+> Maybe also concurrent fallocate(PUNCH_HOLE) is a problem regarding
+> reservations? Not sure ...
 
-diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-index c193a80241f5f..5908268ca45e9 100644
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -33,6 +33,16 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
- 		 (bool)bo->base.base.import_attach);
- }
+fallocate()->hugetlb_vmdelete_list() tries to grab the vma in write-mode,
+and hugetlb_wp() grabs the lock in read-mode, so we should be covered?
+
+Also, hugetlbfs_punch_hole()->remove_inode_hugepages() will try to grab the mutex.
+
+The only fishy thing I see is hugetlbfs_zero_partial_page().
+
+But that is for old_page, and as I said, I thought main reason was to
+protect us against writes during the copy.
+
+> For 2) I am also not sure if we need need the pagecache folio locked; I
+> doubt it ... but this code is not the easiest to follow.
  
-+static inline int ivpu_bo_lock(struct ivpu_bo *bo)
-+{
-+	return dma_resv_lock(bo->base.base.resv, NULL);
-+}
-+
-+static inline void ivpu_bo_unlock(struct ivpu_bo *bo)
-+{
-+	dma_resv_unlock(bo->base.base.resv);
-+}
-+
- /*
-  * ivpu_bo_pin() - pin the backing physical pages and map them to VPU.
-  *
-@@ -43,22 +53,22 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
- int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
- {
- 	struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
-+	struct sg_table *sgt;
- 	int ret = 0;
- 
--	mutex_lock(&bo->lock);
--
- 	ivpu_dbg_bo(vdev, bo, "pin");
--	drm_WARN_ON(&vdev->drm, !bo->ctx);
- 
--	if (!bo->mmu_mapped) {
--		struct sg_table *sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
-+	sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
-+	if (IS_ERR(sgt)) {
-+		ret = PTR_ERR(sgt);
-+		ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
-+		return ret;
-+	}
- 
--		if (IS_ERR(sgt)) {
--			ret = PTR_ERR(sgt);
--			ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
--			goto unlock;
--		}
-+	ivpu_bo_lock(bo);
- 
-+	if (!bo->mmu_mapped) {
-+		drm_WARN_ON(&vdev->drm, !bo->ctx);
- 		ret = ivpu_mmu_context_map_sgt(vdev, bo->ctx, bo->vpu_addr, sgt,
- 					       ivpu_bo_is_snooped(bo));
- 		if (ret) {
-@@ -69,7 +79,7 @@ int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
- 	}
- 
- unlock:
--	mutex_unlock(&bo->lock);
-+	ivpu_bo_unlock(bo);
- 
- 	return ret;
- }
-@@ -84,7 +94,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
- 	if (!drm_dev_enter(&vdev->drm, &idx))
- 		return -ENODEV;
- 
--	mutex_lock(&bo->lock);
-+	ivpu_bo_lock(bo);
- 
- 	ret = ivpu_mmu_context_insert_node(ctx, range, ivpu_bo_size(bo), &bo->mm_node);
- 	if (!ret) {
-@@ -94,7 +104,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
- 		ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
- 	}
- 
--	mutex_unlock(&bo->lock);
-+	ivpu_bo_unlock(bo);
- 
- 	drm_dev_exit(idx);
- 
-@@ -105,7 +115,7 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
- {
- 	struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
- 
--	lockdep_assert(lockdep_is_held(&bo->lock) || !kref_read(&bo->base.base.refcount));
-+	lockdep_assert(dma_resv_held(bo->base.base.resv) || !kref_read(&bo->base.base.refcount));
- 
- 	if (bo->mmu_mapped) {
- 		drm_WARN_ON(&vdev->drm, !bo->ctx);
-@@ -123,14 +133,12 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
- 	if (bo->base.base.import_attach)
- 		return;
- 
--	dma_resv_lock(bo->base.base.resv, NULL);
- 	if (bo->base.sgt) {
- 		dma_unmap_sgtable(vdev->drm.dev, bo->base.sgt, DMA_BIDIRECTIONAL, 0);
- 		sg_free_table(bo->base.sgt);
- 		kfree(bo->base.sgt);
- 		bo->base.sgt = NULL;
- 	}
--	dma_resv_unlock(bo->base.base.resv);
- }
- 
- void ivpu_bo_unbind_all_bos_from_context(struct ivpu_device *vdev, struct ivpu_mmu_context *ctx)
-@@ -142,12 +150,12 @@ void ivpu_bo_unbind_all_bos_from_context(struct ivpu_device *vdev, struct ivpu_m
- 
- 	mutex_lock(&vdev->bo_list_lock);
- 	list_for_each_entry(bo, &vdev->bo_list, bo_list_node) {
--		mutex_lock(&bo->lock);
-+		ivpu_bo_lock(bo);
- 		if (bo->ctx == ctx) {
- 			ivpu_dbg_bo(vdev, bo, "unbind");
- 			ivpu_bo_unbind_locked(bo);
- 		}
--		mutex_unlock(&bo->lock);
-+		ivpu_bo_unlock(bo);
- 	}
- 	mutex_unlock(&vdev->bo_list_lock);
- }
-@@ -167,7 +175,6 @@ struct drm_gem_object *ivpu_gem_create_object(struct drm_device *dev, size_t siz
- 	bo->base.pages_mark_dirty_on_put = true; /* VPU can dirty a BO anytime */
- 
- 	INIT_LIST_HEAD(&bo->bo_list_node);
--	mutex_init(&bo->lock);
- 
- 	return &bo->base.base;
- }
-@@ -286,8 +293,6 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
- 	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
- 	drm_WARN_ON(&vdev->drm, bo->ctx);
- 
--	mutex_destroy(&bo->lock);
--
- 	drm_WARN_ON(obj->dev, bo->base.pages_use_count > 1);
- 	drm_gem_shmem_free(&bo->base);
- }
-@@ -370,9 +375,9 @@ ivpu_bo_create(struct ivpu_device *vdev, struct ivpu_mmu_context *ctx,
- 		goto err_put;
- 
- 	if (flags & DRM_IVPU_BO_MAPPABLE) {
--		dma_resv_lock(bo->base.base.resv, NULL);
-+		ivpu_bo_lock(bo);
- 		ret = drm_gem_shmem_vmap(&bo->base, &map);
--		dma_resv_unlock(bo->base.base.resv);
-+		ivpu_bo_unlock(bo);
- 
- 		if (ret)
- 			goto err_put;
-@@ -395,9 +400,9 @@ void ivpu_bo_free(struct ivpu_bo *bo)
- 	struct iosys_map map = IOSYS_MAP_INIT_VADDR(bo->base.vaddr);
- 
- 	if (bo->flags & DRM_IVPU_BO_MAPPABLE) {
--		dma_resv_lock(bo->base.base.resv, NULL);
-+		ivpu_bo_lock(bo);
- 		drm_gem_shmem_vunmap(&bo->base, &map);
--		dma_resv_unlock(bo->base.base.resv);
-+		ivpu_bo_unlock(bo);
- 	}
- 
- 	drm_gem_object_put(&bo->base.base);
-@@ -416,12 +421,12 @@ int ivpu_bo_info_ioctl(struct drm_device *dev, void *data, struct drm_file *file
- 
- 	bo = to_ivpu_bo(obj);
- 
--	mutex_lock(&bo->lock);
-+	ivpu_bo_lock(bo);
- 	args->flags = bo->flags;
- 	args->mmap_offset = drm_vma_node_offset_addr(&obj->vma_node);
- 	args->vpu_addr = bo->vpu_addr;
- 	args->size = obj->size;
--	mutex_unlock(&bo->lock);
-+	ivpu_bo_unlock(bo);
- 
- 	drm_gem_object_put(obj);
- 	return ret;
-@@ -458,7 +463,7 @@ int ivpu_bo_wait_ioctl(struct drm_device *dev, void *data, struct drm_file *file
- 
- static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
- {
--	mutex_lock(&bo->lock);
-+	ivpu_bo_lock(bo);
- 
- 	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
- 		   bo, bo->ctx_id, bo->vpu_addr, bo->base.base.size,
-@@ -475,7 +480,7 @@ static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
- 
- 	drm_printf(p, "\n");
- 
--	mutex_unlock(&bo->lock);
-+	ivpu_bo_unlock(bo);
- }
- 
- void ivpu_bo_list(struct drm_device *dev, struct drm_printer *p)
-diff --git a/drivers/accel/ivpu/ivpu_gem.h b/drivers/accel/ivpu/ivpu_gem.h
-index 0c93118c85bd3..aa8ff14f7aae1 100644
---- a/drivers/accel/ivpu/ivpu_gem.h
-+++ b/drivers/accel/ivpu/ivpu_gem.h
-@@ -17,7 +17,6 @@ struct ivpu_bo {
- 	struct list_head bo_list_node;
- 	struct drm_mm_node mm_node;
- 
--	struct mutex lock; /* Protects: ctx, mmu_mapped, vpu_addr */
- 	u64 vpu_addr;
- 	u32 flags;
- 	u32 job_status; /* Valid only for command buffer */
+I have been staring at that code and thinking about potential scenarios
+for a few days now, and I cannot convice myself that we need
+pagecache_folio's lock when pagecache_folio != old_folio because as a
+matter of fact I cannot think of anything it protects us against.
+
+I plan to rework this in a more sane way, or at least less offusctaed, and then
+Galvin can fire his syzkaller to check whether we are good.
+
 -- 
-2.45.1
-
+Oscar Salvador
+SUSE Labs
 
