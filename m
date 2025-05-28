@@ -1,115 +1,120 @@
-Return-Path: <stable+bounces-147996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDAACAC713E
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 21:00:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE90AC7140
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 21:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADF9B16B39E
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:00:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A2A0171B2A
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFE218A6A5;
-	Wed, 28 May 2025 19:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB8D218851;
+	Wed, 28 May 2025 19:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="M/GEbG/Z"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="V+waCASj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C5C8F77;
-	Wed, 28 May 2025 19:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B021D1F463E
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 19:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748458816; cv=none; b=Ax72uFsszW9EKirGAJXYXXTMhG7Wl6Gwde9zoQEudkkcXvFIcN9VGlupj0TQ4VJLjKrJAkwSH3Igr5XAHUX7ka4ytF8XiJnbE2JyY3Wiyinkp+ZgK/bUjuOi9RceF5rncdqVkZ5oHWbeLXEWeGNnchzQfuMMfyJ/jhrN6UjW5M8=
+	t=1748458862; cv=none; b=m7DCd237Rl54+BZ+vnqsBmZvcB8+AYhbeu1PiEfjbpPOXX6KEE92jNiST0oee5KP9J2K/obVR0+V4YbbpquICkCIJ+6F2/0pheUxiKutRfLQUDB38Tl+P7rJQYtVr8lq2S+5ublGgdGRAbxBSlAWTXPxDuKzUTD+dhdVpmzKpxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748458816; c=relaxed/simple;
-	bh=UaKMHRZBd7AWy004H7nm4vmB+jEJR1s+RN6zOGZ1qEc=;
+	s=arc-20240116; t=1748458862; c=relaxed/simple;
+	bh=99lZxN5vhS9pT7XjyafkDptBxd868nvYUBqPecl/XbA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qT0UXKwjsK9byw5hB4BbUBwqGR9yfIFzLK0Jb+zcuZwMmO16in4Pxlo8dHURBI9dlC4LMPO+5SF8wmubPRlcUc2ZmC9p4gnPlFf+bVaK9PAGfLdfUjcFq92Ezw4CxGQKaHrzIvTXKLEXVn0Z/y5jU8jSYKNZ4Ueszf109j9hWaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=M/GEbG/Z; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.4])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 07FE8552F529;
-	Wed, 28 May 2025 19:00:07 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 07FE8552F529
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1748458807;
-	bh=jBnZvA0dX2DgUTk97L2hMnnZI0PaWLfEus3H8uNv01Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M/GEbG/Zu5rVfNsh68P188EVPtscKIPjHaR5BbZA/2WBrp3xNVuEVAK6uUS2YY9mk
-	 ynxQQkypRJL4VmTsmV6EKarqeTB8pPzjy1GaKFxaSEfyx17+IqhBJ0/nPrTjtLguuv
-	 a9OPMGk0z0nUcmcqlRJCJEMpmQCps0Yzshh7DJWM=
-Date: Wed, 28 May 2025 22:00:06 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Axel Forsman <axfo@kvaser.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, 
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Jimmy Assarsson <extja@kvaser.com>, linux-can@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH] can: kvaser_pciefd: refine error prone echo_skb_max
- handling logic
-Message-ID: <pjk5hmqqbhhbx3zq2hqc5soqrbb4ymcwicpugj7u7xs4wk3lfk@jfz4kqhagz3x>
-References: <20250528091038.4264-1-pchelkin@ispras.ru>
- <87wma1nf7c.fsf@kvaser.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dHJ8P6gO6WCjLSaVp+GiJQywU+UIcJk1Dt2Ebkm+7fJOMM6g+fy1LBlmCZIjwn+gkqihN3DxcYdM9azjL6Pe+5AD1MnnyH697QaySvA8GVRaoFKrsWsW2wu25N26lbcg4/TC6tQOJchBDZTJcW34RXjJjfUCuMLr+YbIh4bBKGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=V+waCASj; arc=none smtp.client-ip=209.85.166.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-3dc8265b9b5so943785ab.1
+        for <stable@vger.kernel.org>; Wed, 28 May 2025 12:01:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1748458860; x=1749063660; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E6uMWV3+sb1xZHl//TOe7Sv20/rDXHWApZwSoImEOEg=;
+        b=V+waCASjWLzl/GEBRfbNUVhOL83uvHoAfOinIr53OEXjAYzr2pQeLXf2+XrXKHX8Kj
+         ZJXlbd2MpPmud9yls9r+AMhVwhkHNjzhJa0DOb5Vw9Tp6JfeYiNg0m3fw7eH/oUIEZpq
+         inUBEBw/u9CV/hRPrSVx+038rHT1SfDgKqCrY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748458860; x=1749063660;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E6uMWV3+sb1xZHl//TOe7Sv20/rDXHWApZwSoImEOEg=;
+        b=V6V4aTaLL3ReG5PPTXujJOOBqU9ydEhY/iONPPfAnlkA3xoZhlJ/BuxPomdILwTTjq
+         lcFbI7BR7F5h8Vu448mq1ne0LwU6rGEEeizI1T1If1eIIeLXGjiIzCOim0V7ofSBYh5j
+         DxmrdsW3YQdNcBuDsJfNpJ4zRT6pUbdd0gLO3oQJnuDdg0SFAh89Q6Hytt3WPZHl9TdG
+         Lng4NeTTsbLlgml8ytVZ7ADheS5mEcVWL4vJ6Y9Up5/3KEBGpFL0pjEtv6BoX9ZS6OG9
+         JM3w0OvMRTsNj0XV1dDcFOptK9JDr4WLwtr5/+uvqeq1pUAkaRiYIJSQzUhbTXTGGXxm
+         LPTw==
+X-Gm-Message-State: AOJu0YzzXxuiOkyNpGVDd4lqOrCIqb2gd+GJwkvRUD9NatsrYN3PYb3x
+	p87w3OScdlg4QIN6oH7K+bc8UigRWS69iog0ebFo1ixihUQboYFrIEudM+15nA8joA==
+X-Gm-Gg: ASbGncvDChOMuFCZk3bPAYMXFNwZ3X1BR98aEufx5zt+QQ1EVXJmAvwhSluf9HIxeTQ
+	QaqZ0OemBWYEXZWICEyrvJsbkwgYL3zhlFXCoRbG0PrP09f6pNr+iAwxkRjn+eyX9oKpyBkFj5o
+	hzQOtccfKGobHEbqZ/8/ryB5lqe0KPD/v9/tCQM7RLoUZa10QsEMzamYYjGpd9S9wNaT5SDXs1u
+	IqDA7il8G/3+pqxCNtLia83ejQCA1j7Ixqxa/zfu6CFWH6ev0fcYr+Nd/p8eBRU0oirYY8yOzg6
+	mzL07cFV6XXb90Dmg7PcKFY6TCn132Pt5aYVE3QNmQks+zCkGfwFQwAb3YeYD6js2WYi4ucHOnM
+	/KIg=
+X-Google-Smtp-Source: AGHT+IGO2PTzIAqkK41ccV62UVml+KrtjC/CCurWR884MEq1rueZvDmtfrOp5qmDL+URey90IDvSbQ==
+X-Received: by 2002:a05:6e02:1786:b0:3dc:8423:543e with SMTP id e9e14a558f8ab-3dd8b044b9bmr36739375ab.17.1748458859626;
+        Wed, 28 May 2025 12:00:59 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([72.42.103.70])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4fdbd58790asm341459173.95.2025.05.28.12.00.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 12:00:59 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Wed, 28 May 2025 13:00:57 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.14 000/783] 6.14.9-rc1 review
+Message-ID: <aDddaQGen1YUVCYz@fedora64.linuxtx.org>
+References: <20250527162513.035720581@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87wma1nf7c.fsf@kvaser.com>
+In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
 
-On Wed, 28. May 13:32, Axel Forsman wrote:
-> Thanks for finding and fixing this bug.
+On Tue, May 27, 2025 at 06:16:37PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.9 release.
+> There are 783 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Fedor Pchelkin <pchelkin@ispras.ru> writes:
+> Responses should be made by Thu, 29 May 2025 16:22:51 +0000.
+> Anything received after that time might be too late.
 > 
-> > Actually the trick with rounding up allows to calculate seq numbers
-> > efficiently, avoiding a more consuming 'mod' operation used in the
-> > current patch.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> and the diffstat can be found below.
 > 
-> Indeed, that was the intention.
+> thanks,
 > 
-> > So another approach to fix the problem would be to precompute the rounded
-> > up value of echo_skb_max and pass it to alloc_candev() making the size of
-> > the underlying echo_skb[] sufficient.
-> 
-> I believe that is preferable---if memory usage is a concern
-> KVASER_PCIEFD_CAN_TX_MAX_COUNT could be lowered by one.
-> Something like the following:
-> 
-> diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-> index f6921368cd14..0071a51ce2c1 100644
-> --- a/drivers/net/can/kvaser_pciefd.c
-> +++ b/drivers/net/can/kvaser_pciefd.c
-> @@ -966,7 +966,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
->                 u32 status, tx_nr_packets_max;
-> 
->                 netdev = alloc_candev(sizeof(struct kvaser_pciefd_can),
-> -                                     KVASER_PCIEFD_CAN_TX_MAX_COUNT);
-> +                                     roundup_pow_of_two(KVASER_PCIEFD_CAN_TX_MAX_COUNT));
->                 if (!netdev)
->                         return -ENOMEM;
-> 
-> @@ -995,7 +995,6 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
->                 can->tx_max_count = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
-> 
->                 can->can.clock.freq = pcie->freq;
-> -               can->can.echo_skb_max = roundup_pow_of_two(can->tx_max_count);
->                 spin_lock_init(&can->lock);
-> 
->                 can->can.bittiming_const = &kvaser_pciefd_bittiming_const;
+> greg k-h
 
-Got it, thanks for review!
+Tested rc1 minus the broken "s390/crash: Use note name macros" patch against
+the Fedora build system (aarch64, ppc64le, s390x, x86_64), and boot tested
+x86_64. No regressions noted.
 
-Setting KVASER_PCIEFD_CAN_TX_MAX_COUNT - value representing something like
-the count of pending tx frames - to 17 (not even a multiple of 2) is quite
-strange to me. This was probably done due to some hardware or protocol
-specs though I've failed to find any evidence available in public access.
-
-Will send v2 soon.
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
