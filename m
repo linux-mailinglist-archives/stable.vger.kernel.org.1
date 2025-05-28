@@ -1,185 +1,228 @@
-Return-Path: <stable+bounces-147988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB57CAC6EFB
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E47BAC6F44
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEBD1A27AFC
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:14:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C8193B9092
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0681B28E580;
-	Wed, 28 May 2025 17:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71ADC28CF7F;
+	Wed, 28 May 2025 17:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UdOfyCZi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kQGDWWY4"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2043.outbound.protection.outlook.com [40.107.236.43])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9179528E564
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 17:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748452484; cv=fail; b=qnNPlYrZ7N55sEdb3tW1yWc212P+lrC4xmwGktJVCDiWIcVJ5p2G0nYVPDUnqxqV3g3AoDqNFaAd3K+BmctVz2gER9F/mapqib2W3sIU2QrD8P8vVDRwgrY16fMYZcP8RSvz/MJZexgz0jASYI3p4seI0GDxS+7rB99XrL2PiPU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748452484; c=relaxed/simple;
-	bh=cdygddD4lCUj6ypzfg8Pu+P7jfhRkLm3GJkvVQZZ2pE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=FRnfVv1pSuo3IxdkOs9rE2nmytbZBQcTkgPlTTsUGv4CfZxP5aZJ+vIzjJ543JTZLVAVYZ4qdEnI6doRyG2TeGZgNz2nwonCKXjFFCDxAvnmbdVb9APWqmqY+9fK4XBFKBsAtVeVYoh11dslXxNK8kvzAlnMTnifNnMXpleGxkA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UdOfyCZi; arc=fail smtp.client-ip=40.107.236.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n4TLbUD0btHLJDLhy5AebRYbBo/mrMOvJ2Lse9i4F1/2Hv3fxIdGiWpwVt48oO6K7DEONxdLHYHZef6AVIQ5PFTizUn8OhzJO/s/GJ3Tz5CmjJTEalt+rPiaGMadww+WwHuAKdsdkA3vUf51EkPxGjcpkcZ4gkpofHEjh2oPFzCoo33goTQpAQZVoQB+/LYtAmWzwb34TA3ZRPUr+lyLIBCb3CY8uD42ms2K1EZSEV1+YkS03szjIMnfm7BuR47+e5A+pNU8jqicfoTkK5j1O/Ie4wjt3OY0208Jf29M47YCb15TixQzCrGPfzQR92nCai8ezhNHnA9PU1v/y028mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Di3WOrSotwS3Sy6s72Rqruqx/6x5kx7rNsLhoITwi6A=;
- b=j3GFbBOPwmCOutoTtm2/eSWEKian6hZFVDZSRoWnMNWY7+TEenbgaz7x7+cEsosQ1TDogfhZIdi5G1WhHOYDdIVeUu7ipHkkSPT8HKd8msMn5Pq71fjFhsvGACuiW/6GRIOlBmhFZrc+5i9GhoGOEl/laPma5gS13/DUcEGVk0mDvZyeE7akWnHoP8FxTxIeR7L1W6IaDp8yvN+vcdvaWWNfbfQkRjRBFcaclXp1qB9oA+p6L4lNjBbOPGhCRpMXHSe/ds6ghGsfhKMg+dJCHp+rLCFhOgvANcyLEKWwkdV1e3R3PLOkOP2Da4BplhgqfAS5mZ28PFN72mmVQSA2zA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Di3WOrSotwS3Sy6s72Rqruqx/6x5kx7rNsLhoITwi6A=;
- b=UdOfyCZiEccvGWoVnAVv3TSZIkk6RLTlCSFzqsoCVYzGXGUv9Qzm0+8jHLp1IU2BlLZ/jBEgQst3sFb63iLZbMeDYmmIEWsb6pLYgnLDrGOACP/TLJcFdJvPa4qpF2dDvdwSMz9y1FJEafgyANDC/w+m/j4tRpxTCLjPB0rhVd0=
-Received: from PH8PR07CA0046.namprd07.prod.outlook.com (2603:10b6:510:2cf::24)
- by DS4PR12MB9611.namprd12.prod.outlook.com (2603:10b6:8:277::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Wed, 28 May
- 2025 17:14:39 +0000
-Received: from CY4PEPF0000FCC4.namprd03.prod.outlook.com
- (2603:10b6:510:2cf:cafe::69) by PH8PR07CA0046.outlook.office365.com
- (2603:10b6:510:2cf::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.19 via Frontend Transport; Wed,
- 28 May 2025 17:14:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000FCC4.mail.protection.outlook.com (10.167.242.106) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8769.18 via Frontend Transport; Wed, 28 May 2025 17:14:38 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 28 May
- 2025 12:14:37 -0500
-Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 28 May 2025 12:14:37 -0500
-Message-ID: <7c0b8692-f367-e4d4-14ef-71e226f0814d@amd.com>
-Date: Wed, 28 May 2025 10:14:37 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DBC28C5CD;
+	Wed, 28 May 2025 17:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748453083; cv=none; b=AiC2w+JIRfSTpMyztlQ3vI5WShqQoYODoPAOrgDTXyn75hnOO85XLWbrsEJNKUdk9ucScikHIs6leCc6umrh47SVOV4+pm6SI5o6+WzQg/rkIbPmawVP0oxkb4o4v1mLmUpMQlc/GNzrH6KswPkEeuC8IHktLtfcwbgb0hjTN6U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748453083; c=relaxed/simple;
+	bh=xl+HiA5fKcIkxj9tC9RYJv/z6ok1+kvXmKS4mrZe1yQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K/7b5z233U5Tt592hNx5y2EulxNz59FeMLVtQRCDEKx8ssBNU5FLhRwB0KXV8T6U4uPy+DoCnHB03dT/BTa5kN2wYML9xRLDqgS53GwSY6LaN5ijPGr3FAiuk2+Yk6AB969rNOPYpWVmNI19CIlt6IW2WePd1K2I8KJ/w6b52Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kQGDWWY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07719C4CEED;
+	Wed, 28 May 2025 17:24:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748453082;
+	bh=xl+HiA5fKcIkxj9tC9RYJv/z6ok1+kvXmKS4mrZe1yQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kQGDWWY4RxXpI1BJNG3aGyloC7hTGfN72V52PM8GHltRqJcyj3kH2JlCT0ocipFXM
+	 gYawpFMlZwcpPMnN2awtU+odn01+CYDC/TfVacqWqvDrGeImfGEMd1a2VcAtkkTr+1
+	 PWgxHD4JUWE2Ngzsu7yeipX2hr90I81H3Kxf5jnLyO5UmkrpGdltIXqJvGITFz8pKu
+	 rloqohx8uszXcdHIYJR4F8QXX6bLRVBblNBgPuT7F57aNecC0agUmrlqHG3f45J9xw
+	 4Pd1F1nDW4QSDPngOLDYzHTpNcfsaTxvwbikvscuRi4lsYDhmCrbaghoIKE5vr8NFj
+	 L2jYeoGheanBw==
+Date: Wed, 28 May 2025 20:24:35 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org, xin@zytor.com,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 3/3] x86/alternative: make kernel ITS thunks read-only
+Message-ID: <aDdG09zhIddI6Wty@kernel.org>
+References: <20250528123557.12847-1-jgross@suse.com>
+ <20250528123557.12847-4-jgross@suse.com>
+ <20250528131052.GZ39944@noisy.programming.kicks-ass.net>
+ <044f0048-95bb-4822-978e-a23528f3891f@suse.com>
+ <20250528132231.GB39944@noisy.programming.kicks-ass.net>
+ <7c8bf4f5-29a0-4147-b31a-5e420b11468e@suse.com>
+ <20250528155821.GD39944@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2] accel/ivpu: Fix warning in ivpu_gem_bo_free()
-Content-Language: en-US
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	<dri-devel@lists.freedesktop.org>
-CC: <jeff.hugo@oss.qualcomm.com>, <stable@vger.kernel.org>
-References: <20250528171220.513225-1-jacek.lawrynowicz@linux.intel.com>
-From: Lizhi Hou <lizhi.hou@amd.com>
-In-Reply-To: <20250528171220.513225-1-jacek.lawrynowicz@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB04.amd.com: lizhi.hou@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC4:EE_|DS4PR12MB9611:EE_
-X-MS-Office365-Filtering-Correlation-Id: b772f6b3-163c-4195-5c96-08dd9e0b2078
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OHpqMUdPVitYUTE3Zm5HcDk2Q2p0cEdLbEs2TGMxd3J0TXRRV1pCN1hXcWFy?=
- =?utf-8?B?WE5OUXpvamRabXhuNk5WNWZ5MTlBQXR0VGg4ejNaeUlPZ3h3MzRoT2kvS2Ir?=
- =?utf-8?B?TFY1dTcxMjVoYlNwVFFQMThwZ0VFdFV3ejNsMVhHUXNHaVdWYkozY256dGQ3?=
- =?utf-8?B?VUoxS1MzYkRub1hQMHczMzdiRFd4b2VGQ0Y4ZUxxbFd2amJwYSsrWS9zWEpt?=
- =?utf-8?B?UnAxRzdRZ21kV1psNmI3SU9nT1I5MzluV1Jzb0RDN3dqbnRIV3pUaE9KcXM2?=
- =?utf-8?B?clRpYXVWWklkdXRWNFluQUxlQndBR1JFc0RQNUNCclFOQUlEa2U1Z2FHK3Y2?=
- =?utf-8?B?djJGMUFXZkVhaGo5MGFXSG8yb0l1cGRYNkpmd0xZOTJRL2JvSE1XZzQ2TmIx?=
- =?utf-8?B?dUVlUlV2Lyt5N1dUM09NYzRMYmRBNmkzSzB6cWdPNTRlb3ZkQVZFZTJ0S0RD?=
- =?utf-8?B?WGhIREtrUkhTaXA4UFprWkxvdnEzSTNLT1Y1ekgzQ1JzNk5FRElDcVBsQXJv?=
- =?utf-8?B?WmZOQXR1NHQvUXR2SWs2enJzalRYZUxENlczNGJqMGo5K0dtUWdLUCs4b2kx?=
- =?utf-8?B?VDc4WVV1bUw4ZzUralJSTGJvb1NnVjZ2YTRoaVpFeFBoRlZKVlZ3ZjF6aVpC?=
- =?utf-8?B?cXRQMHhNQktXMlpQOVFhOVlPVGhQSEF0VW80dTh1a2xQNklvcmFJVHRGWVpa?=
- =?utf-8?B?dXlmZ1ZTZzNtSGw1T2QrZjlLQmxkazg3eW9PM0hIblNQWlFPK1Bac1B0bTc2?=
- =?utf-8?B?ZDVNYWFGSUQrSG1ZQ3pIazViWENodkt3eCtjL3BOSStCenBQSW1HWW9LU0Q3?=
- =?utf-8?B?N256eUIvMS9mNnlLOTF0NmZCY3R1TTN1bktOVmtIQkY3ZSt2V0h3eXV0Mkpw?=
- =?utf-8?B?OXpUOFZOQlU2bGFwRjlCV3RKWkkyWCthTkR6TkxLMyt6YjUwV1pRQjViS2gz?=
- =?utf-8?B?c3FUOTJaVmxjL3BqcURsM29QN3ZtMHpHOWpCQTc4cHRYR29zVzRvNG54Y25G?=
- =?utf-8?B?QWttWXl1ck81VkM2ZWJ2eGQvbWpoMlQ3QWNNOWxXcUU1T2pJWlczNU1LR1Na?=
- =?utf-8?B?Ukx6dUhkSU0yM2J6OWFrVW1YMzFaRVJlNDgzaUx0VzVsYUdLZ2xhR3ViUllO?=
- =?utf-8?B?WFZhV2NHQ254SFZTVjlVODNJWk1rM2FiM203UDBWWHFzRjU0Z0I4clpaZ1dM?=
- =?utf-8?B?OGdTRzdYSlRGTmR0clBUTWZtNDVveGY1bkhzK0p1VkJwYXdzWkRsRk1ya3BC?=
- =?utf-8?B?L1RNWWxlK2cyK083NjFUQjlFNXZMdlN4N28wbkhUQm1aWEhLbDJRK05CY0l4?=
- =?utf-8?B?L01uYmpaUWZ1Z1NydVJXYm5GbTNaV1VBeUY2clNXNVVWQmlOVE11cnZEQkhu?=
- =?utf-8?B?WnR2aytZdDdER3pmNDFsUkxydHBtY3hlWEE4NUlaVzRHRVBpb1lRdFVqUHNM?=
- =?utf-8?B?NjdXNHBVUjQveTVWR3lsUnhXWSthSzl0cFRyN0NPdU9FbHRlQ1JJcXJqMTZn?=
- =?utf-8?B?Rlp3TUlFZ3hMWnhjc1NOSFRIRjR1OXNvM3JBeG9PbGpLVndMOHFDbkpZWkJm?=
- =?utf-8?B?ZWdhMHkzbmdxTmM0b2M1Y0w1N1lQaGdvZlhjak9CNHg0N2ljYTd3bmlIY2NC?=
- =?utf-8?B?ZkhscmpEQVFURVRPeHlVTjE5UXRTUHFtSDEydmJwQ29ScTkzQkpuRnVSVkxD?=
- =?utf-8?B?VTJQOUVacXcyeWtOSTg0L25YNU1KQTMyQzZCTUxnMGJVMmlyM29KRm9MaE81?=
- =?utf-8?B?U3k5dXRqQmdBekxzUjRXK2EvdTlHd1l4Rm1SZFZQcnBmTVVvcllJU3d5UWRn?=
- =?utf-8?B?cFpmZjBHNmZ4QXZVM2s4VG5pOVpYVDlQSmVQRkhncUxZM3BzVW45L1lkd3lU?=
- =?utf-8?B?VWdMNnhtSVM5OHB6N3FCK0M0bFdrVVN1UDRqVENUOWoxZG9yd0ZZRzJhOUNn?=
- =?utf-8?B?Q1B5ZW56QUxFS0VBazFCanVNQnZYME9janpTaU1WM1NMOGFhUHI0UTU5QUE2?=
- =?utf-8?B?eUpCUVcwTHB3N2ZXT2NZWW5RcTgrbE5RNXZZaGFjeGpFemJXYXoyVjJnb3VE?=
- =?utf-8?Q?X0HuZx?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 17:14:38.2057
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b772f6b3-163c-4195-5c96-08dd9e0b2078
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCC4.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9611
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250528155821.GD39944@noisy.programming.kicks-ass.net>
 
+On Wed, May 28, 2025 at 05:58:21PM +0200, Peter Zijlstra wrote:
+> On Wed, May 28, 2025 at 03:30:33PM +0200, Jürgen Groß wrote:
+> 
+> > Have a look at its_fini_mod().
+> 
+> Oh, that's what you mean. But this still isn't very nice, you now have
+> restore_rox() without make_temp_rw(), which was the intended usage
+> pattern.
+> 
+> Bah, I hate how execmem works different for !PSE, Mike, you see a sane
+> way to fix this?
 
-On 5/28/25 10:12, Jacek Lawrynowicz wrote:
-> Don't WARN if imported buffers are in use in ivpu_gem_bo_free() as they
-> can be indeed used in the original context/driver.
->
-> Fixes: 647371a6609d ("accel/ivpu: Add GEM buffer object management")
-> Cc: stable@vger.kernel.org # v6.3
-> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Not really :(
+
+But just resetting permissions in the end like you did makes perfect sense
+to me. It's like STRICT_MODULE_RWX, somebody has to set the pages to ROX at
+some point and running execmem_restore_rox() on something that was already
+ROX won't cost much, set_memory will bail out early.
+
+> Anyway, if we have to do something like this, then I would prefer it
+> shaped something like so:
+> 
 > ---
-> v2: Use drm_gem_is_imported() to check if the buffer is imported.
-> ---
->   drivers/accel/ivpu/ivpu_gem.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-> index c193a80241f5f..5ff0bac739fc9 100644
-> --- a/drivers/accel/ivpu/ivpu_gem.c
-> +++ b/drivers/accel/ivpu/ivpu_gem.c
-> @@ -278,7 +278,8 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
->   	list_del(&bo->bo_list_node);
->   	mutex_unlock(&vdev->bo_list_lock);
->   
-> -	drm_WARN_ON(&vdev->drm, !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
-> +	drm_WARN_ON(&vdev->drm, !drm_gem_is_imported(&bo->base.base) &&
-> +		    !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
->   	drm_WARN_ON(&vdev->drm, ivpu_bo_size(bo) == 0);
->   	drm_WARN_ON(&vdev->drm, bo->base.vaddr);
->   
+> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+> index ecfe7b497cad..33d4d139cb50 100644
+> --- a/arch/x86/kernel/alternative.c
+> +++ b/arch/x86/kernel/alternative.c
+> @@ -111,9 +111,8 @@ static bool cfi_paranoid __ro_after_init;
+>  
+>  #ifdef CONFIG_MITIGATION_ITS
+>  
+> -#ifdef CONFIG_MODULES
+>  static struct module *its_mod;
+> -#endif
+> +static struct its_array its_pages;
+>  static void *its_page;
+>  static unsigned int its_offset;
+>  
+> @@ -151,68 +150,78 @@ static void *its_init_thunk(void *thunk, int reg)
+>  	return thunk + offset;
+>  }
+>  
+> -#ifdef CONFIG_MODULES
+>  void its_init_mod(struct module *mod)
+>  {
+>  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
+>  		return;
+>  
+> -	mutex_lock(&text_mutex);
+> -	its_mod = mod;
+> -	its_page = NULL;
+> +	if (mod) {
+> +		mutex_lock(&text_mutex);
+> +		its_mod = mod;
+> +		its_page = NULL;
+> +	}
+>  }
+>  
+>  void its_fini_mod(struct module *mod)
+>  {
+> +	struct its_array *pages = &its_pages;
+> +
+>  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
+>  		return;
+>  
+>  	WARN_ON_ONCE(its_mod != mod);
+>  
+> -	its_mod = NULL;
+> -	its_page = NULL;
+> -	mutex_unlock(&text_mutex);
+> +	if (mod) {
+> +		pages = &mod->arch.its_pages;
+> +		its_mod = NULL;
+> +		its_page = NULL;
+> +		mutex_unlock(&text_mutex);
+> +	}
+>  
+> -	for (int i = 0; i < mod->its_num_pages; i++) {
+> -		void *page = mod->its_page_array[i];
+> +	for (int i = 0; i < pages->num; i++) {
+> +		void *page = pages->pages[i];
+>  		execmem_restore_rox(page, PAGE_SIZE);
+>  	}
+> +
+> +	if (!mod)
+> +		kfree(pages->pages);
+>  }
+>  
+>  void its_free_mod(struct module *mod)
+>  {
+> +	struct its_array *pages = &its_pages;
+> +
+>  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
+>  		return;
+>  
+> -	for (int i = 0; i < mod->its_num_pages; i++) {
+> -		void *page = mod->its_page_array[i];
+> +	if (mod)
+> +		pages = &mod->arch.its_pages;
+> +
+> +	for (int i = 0; i < pages->num; i++) {
+> +		void *page = pages->pages[i];
+>  		execmem_free(page);
+>  	}
+> -	kfree(mod->its_page_array);
+> +	kfree(pages->pages);
+>  }
+> -#endif /* CONFIG_MODULES */
+>  
+>  static void *its_alloc(void)
+>  {
+> -	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
+> +	struct its_array *pages = &its_pages;
+> +	void *tmp;
+>  
+> +	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
+>  	if (!page)
+>  		return NULL;
+>  
+> -#ifdef CONFIG_MODULES
+> -	if (its_mod) {
+> -		void *tmp = krealloc(its_mod->its_page_array,
+> -				     (its_mod->its_num_pages+1) * sizeof(void *),
+> -				     GFP_KERNEL);
+> -		if (!tmp)
+> -			return NULL;
+> +	tmp = krealloc(pages->pages, (pages->num + 1) * sizeof(void *), GFP_KERNEL);
+> +	if (!tmp)
+> +		return NULL;
+>  
+> -		its_mod->its_page_array = tmp;
+> -		its_mod->its_page_array[its_mod->its_num_pages++] = page;
+> +	pages->pages = tmp;
+> +	pages->pages[pages->num++] = page;
+>  
+> +	if (its_mod)
+>  		execmem_make_temp_rw(page, PAGE_SIZE);
+> -	}
+> -#endif /* CONFIG_MODULES */
+>  
+>  	return no_free_ptr(page);
+>  }
+> @@ -2338,6 +2347,8 @@ void __init alternative_instructions(void)
+>  	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
+>  	apply_returns(__return_sites, __return_sites_end);
+>  
+> +	its_fini_mod(NULL);
+> +
+>  	/*
+>  	 * Adjust all CALL instructions to point to func()-10, including
+>  	 * those in .altinstr_replacement.
+
+-- 
+Sincerely yours,
+Mike.
 
