@@ -1,60 +1,92 @@
-Return-Path: <stable+bounces-147928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789BFAC654B
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 11:12:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0098AC656E
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 11:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA22D4E2C97
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 09:12:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06169188BDCF
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 09:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323172749C1;
-	Wed, 28 May 2025 09:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8909C276046;
+	Wed, 28 May 2025 09:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="dL1hm4/V"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="kEF+eOLg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A11627465B;
-	Wed, 28 May 2025 09:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5246F275844
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 09:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748423464; cv=none; b=NrSZk2hILB9j2JLGQ8jF15a2wYO1c3g7Y+Yp8jxFJla/PdTkw3IZBqDD67wWYq4mpBtJfyk7xVod9cOr7RQ12UxGZSpY8XQNkawbXz0L4bQzCZOYfxnE9FyOglCJgYqN1qlKYCf21X/binxLo1aX4UoOQPv2qD7/ALSbd++VdxU=
+	t=1748423603; cv=none; b=ozdDUg+BkdJ21DPdx5+Z+QOVJNzUyoRB3wZ9okLZao4xedn7W2Z79xgt9mPWyr456fCVhManqWzZUIIQ4S9Oekf07t+QEVi8lfIuQ93f0sXvLxYoYNnZybwtjP4qQCoNrbq2TgBf/id2Ac2JrUxoVbmSYbZUGoAvupSklLH/B3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748423464; c=relaxed/simple;
-	bh=E13b92T1iobjwwJFKEcVmyQPEeAWMQYjpYx5L+hZ37I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FDPuxWpcufQxTYZpkPCGUcq0MasjtS8ZLJ5wM5pN1xxDtfOgSFu/YLUhCHv7WqHDvJwP8T4S0gXfDBbdeF+ratuwtMqjI0q7AiEWPQ1eHzwpTHw/8aASbevIDXay/BoXjbe4n/y5kZkwVnaklSrzLGd2mu4gLNGCEn2lq1cstJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=dL1hm4/V; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fedora.. (unknown [5.228.116.177])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 65FD5552F541;
-	Wed, 28 May 2025 09:10:57 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 65FD5552F541
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1748423457;
-	bh=BV+bKfOBlaZWJv7Ls9aF2eYeY1S7uRK0NeDHUw8Em1A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dL1hm4/Vmsr4xI5AIjQnxz9JxA+rReEoR/HR6/Vl+L4tcnTfjMN8X4Cib5DCcZefP
-	 6QiD/2KKEdZEv4faBXly9GB45iU9H3EbeNvgnVsZx88waV4tVNlLEjW9GZmTI2iGnS
-	 QJbNupL6U9Ydcwpp5RCowdw9p0RsdlFdQitD9fnA=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Axel Forsman <axfo@kvaser.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	linux-can@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] can: kvaser_pciefd: refine error prone echo_skb_max handling logic
-Date: Wed, 28 May 2025 12:10:37 +0300
-Message-ID: <20250528091038.4264-1-pchelkin@ispras.ru>
+	s=arc-20240116; t=1748423603; c=relaxed/simple;
+	bh=PkosjLFXCMYV0+R/p0aF+qSSlXYgLL8DzrQ4Y2CQht0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JaCL6tU4FS1FA7eYT7fVt9q8W0QAvsSkq+BDwGE2Ekl/XWsph4nIVJ3HFth0AbPc1JfnypvWYMSCApaOZnz180gKgeI1ijZqhDQ8dBUc/QsIdnqMYrt7U/VJLD8YDz9+rIVnfpxN0BXJTJWLRPeuVg4UgHP1uX4WP7794ZFEdfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=kEF+eOLg; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-44a57d08bbfso32352345e9.2
+        for <stable@vger.kernel.org>; Wed, 28 May 2025 02:13:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1748423599; x=1749028399; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H9q66come6SeS35Z4+H4REbaGVF8j8A5bWLsS2teBos=;
+        b=kEF+eOLgjs4Eb0Vz6f0Jvb2p7WAhdsvobRJONHtX43ZrOEaE6DAZITtHSNSZd3ARG0
+         QfHl4JAstqwtFc1javvInxVJisNL4TcsVMVXyH95lCG+UdciwA7FNfMZGZ6skKJdqCZU
+         Asvc92FXxhZIajD2X6cDRhM+6pKfh0W0c1k2A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748423599; x=1749028399;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H9q66come6SeS35Z4+H4REbaGVF8j8A5bWLsS2teBos=;
+        b=txrc19+aIVhTwvB+XxVj6bWnyk4Ioi6ko17aMbd4unY97thRXLoyOsDMg8XQbYMqDN
+         106PaNTBCH4DCKok8j5vMLKVFp0l23sI7KlEMUmcKd9UWIFzLn1uW+Jdg0XK6mh5uPva
+         F2XMnhPgnUgee2PbewKpm+NCypABnZKPd8YHFkL0kYDfySZaAtPuGO/XmrYLdqseUmI3
+         LtNqVI9Aj4rHPuwE29+mWAdd9QYXY6kw2+wukmLU6SC+5C5EUXXpSI65dOHuZen5WhLN
+         VgTIJC6ZfatOxRHhzXtu0PnN3q8L9JJ14LP4+wSyL6xCNV6dFPv8/D69XYYN7AEmZLue
+         wYuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8MkvIZwmK63DugUqq4DBni+Vslj+//3Tq5gYbQTURhxQ0f2IMXsEGTTD56I15U4yPaFNMcZs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9FCTfdLE4zg2MOYZ/6d45zOKsFiUDBXLzMoiVKqar1YFNvRon
+	77XmZ634RXUZi1HQ7Y2565eQWbuXvwdlPNtz0cCq++ZwqiP8G/8gZ9poaEqrb+ksL0c=
+X-Gm-Gg: ASbGncvFP5OFvaggxaNNRNKcfz/4q6XwVKOglho+hDlAiArGa56t5JIlNJFd0W2II+8
+	aH6LGiJKePyPb5XFizSW3viunjDSIkgO3jhM/yRV1EuaCpMinxUN6HSi3Cs3dhQNIQSZKyhlF4/
+	V/iDDIPI+sgfUn9cMK+lqZtVGcV/3zQncjhguzYpXhhwETSz+wrY6h08k7s7rYTg1Sv5BWT57F1
+	7oEWdkFbizs9H6RrP0sUsl6PGnF5eXMmsEHy0O1hXvmFhIcSIPuahH+I6SsqRTl6d7nWq6XuzXI
+	i4xJoUNHFH88e6QPEDVMYAgI3Letq4hN26KZInI2odw7KHLLTvdwRzx0WjzYtvY=
+X-Google-Smtp-Source: AGHT+IHCdJjf/CaKt4eUMaaCGYd4N1EV7jgocpxCcj39hada3ZW2Jiep3JAak6Ekwh7yr4ee9sg8zg==
+X-Received: by 2002:a05:600c:630a:b0:43d:fa59:be39 with SMTP id 5b1f17b1804b1-44fd2eec75fmr20647115e9.33.1748423599246;
+        Wed, 28 May 2025 02:13:19 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4500e1d85b5sm14811715e9.32.2025.05.28.02.13.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 02:13:18 -0700 (PDT)
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: DRI Development <dri-devel@lists.freedesktop.org>
+Cc: intel-xe@lists.freedesktop.org,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	stable@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Simona Vetter <simona.vetter@intel.com>
+Subject: [PATCH 1/8] drm/gem: Fix race in drm_gem_handle_create_tail()
+Date: Wed, 28 May 2025 11:12:59 +0200
+Message-ID: <20250528091307.1894940-2-simona.vetter@ffwll.ch>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
+References: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,121 +95,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-echo_skb_max should define the supported upper limit of echo_skb[]
-allocated inside the netdevice's priv. The corresponding size value
-provided by this driver to alloc_candev() is KVASER_PCIEFD_CAN_TX_MAX_COUNT
-which is 17.
+Object creation is a careful dance where we must guarantee that the
+object is fully constructed before it is visible to other threads, and
+GEM buffer objects are no difference.
 
-But later echo_skb_max is rounded up to the nearest power of two (for the
-max case, that would be 32) and the tx/ack indices calculated further
-during tx/rx may exceed the upper array boundary. Kasan reported this for
-the ack case inside kvaser_pciefd_handle_ack_packet(), though the xmit
-function has actually caught the same thing earlier.
+Final publishing happens by calling drm_gem_handle_create(). After
+that the only allowed thing to do is call drm_gem_object_put() because
+a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
+(which is trivial since we have a linear allocator) can already tear
+down the object again.
 
- BUG: KASAN: slab-out-of-bounds in kvaser_pciefd_handle_ack_packet+0x2d7/0x92a drivers/net/can/kvaser_pciefd.c:1528
- Read of size 8 at addr ffff888105e4f078 by task swapper/4/0
+Luckily most drivers get this right, the very few exceptions I've
+pinged the relevant maintainers for. Unfortunately we also need
+drm_gem_handle_create() when creating additional handles for an
+already existing object (e.g. GETFB ioctl or the various bo import
+ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
+the only exported function to stop these issues from happening.
 
- CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Not tainted 6.15.0 #12 PREEMPT(voluntary)
- Call Trace:
-  <IRQ>
- dump_stack_lvl lib/dump_stack.c:122
- print_report mm/kasan/report.c:521
- kasan_report mm/kasan/report.c:634
- kvaser_pciefd_handle_ack_packet drivers/net/can/kvaser_pciefd.c:1528
- kvaser_pciefd_read_packet drivers/net/can/kvaser_pciefd.c:1605
- kvaser_pciefd_read_buffer drivers/net/can/kvaser_pciefd.c:1656
- kvaser_pciefd_receive_irq drivers/net/can/kvaser_pciefd.c:1684
- kvaser_pciefd_irq_handler drivers/net/can/kvaser_pciefd.c:1733
- __handle_irq_event_percpu kernel/irq/handle.c:158
- handle_irq_event kernel/irq/handle.c:210
- handle_edge_irq kernel/irq/chip.c:833
- __common_interrupt arch/x86/kernel/irq.c:296
- common_interrupt arch/x86/kernel/irq.c:286
-  </IRQ>
+Now unfortunately the implementation of drm_gem_handle_create() isn't
+living up to standards: It does correctly finishe object
+initialization at the global level, and hence is safe against a
+concurrent tear down. But it also sets up the file-private aspects of
+the handle, and that part goes wrong: We fully register the object in
+the drm_file.object_idr before calling drm_vma_node_allow() or
+obj->funcs->open, which opens up races against concurrent removal of
+that handle in drm_gem_handle_delete().
 
-Remove echo_skb_max rounding as this may increase it to unexpected values.
-In this sense restore echo_skb_max handling logic prior to commit
-8256e0ca6010 ("can: kvaser_pciefd: Fix echo_skb race").
+Fix this with the usual two-stage approach of first reserving the
+handle id, and then only registering the object after we've completed
+the file-private setup.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Jacek reported this with a testcase of concurrently calling GEM_CLOSE
+on a freshly-created object (which also destroys the object), but it
+should be possible to hit this with just additional handles created
+through import or GETFB without completed destroying the underlying
+object with the concurrent GEM_CLOSE ioctl calls.
 
-Fixes: 8256e0ca6010 ("can: kvaser_pciefd: Fix echo_skb race")
+Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
+Release driver references to handle before making it available
+again"), which means a cool 9 years have passed until someone noticed
+that we need to make this symmetry or there's still gaps left :-/
+Without the 2-stage close approach we'd still have a race, therefore
+that's an integral part of this bugfix.
+
+More importantly, this means we can have NULL pointers behind
+allocated id in our drm_file.object_idr. We need to check for that
+now:
+
+- drm_gem_handle_delete() checks for ERR_OR_NULL already
+
+- drm_gem.c:object_lookup() also chekcs for NULL
+
+- drm_gem_release() should never be called if there's another thread
+  still existing that could call into an IOCTL that creates a new
+  handle, so cannot race. For paranoia I added a NULL check to
+  drm_gem_object_release_handle() though.
+
+- most drivers (etnaviv, i915, msm) are find because they use
+  idr_find, which maps both ENOENT and NULL to NULL.
+
+- vmgfx is already broken vmw_debugfs_gem_info_show() because NULL
+  pointers might exist due to drm_gem_handle_delete(). This needs a
+  separate patch. This is because idr_for_each_entry terminates on the
+  first NULL entry and so might not iterate over everything.
+
+- similar for amd in amdgpu_debugfs_gem_info_show() and
+  amdgpu_gem_force_release(). The latter is really questionable though
+  since it's a best effort hack and there's no way to close all the
+  races. Needs separate patches.
+
+- xe is really broken because it not uses idr_for_each_entry() but
+  also drops the drm_file.table_lock, which can wreak the idr iterator
+  state if you're unlucky enough. Maybe another reason to look into
+  the drm fdinfo memory stats instead of hand-rolling too much.
+
+- drm_show_memory_stats() is also broken since it uses
+  idr_for_each_entry. But since that's a preexisting bug I'll follow
+  up with a separate patch.
+
+Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
 ---
+ drivers/gpu/drm/drm_gem.c | 10 +++++++++-
+ include/drm/drm_file.h    |  3 +++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-Actually the trick with rounding up allows to calculate seq numbers
-efficiently, avoiding a more consuming 'mod' operation used in the
-current patch.
-
-I see tx max size definitely matters only for kvaser_pciefd_tx_avail(),
-but for seq numbers' generation that's not the case - we're free to
-calculate them as would be more convenient, not taking tx max size into
-account. The only downside is that the size of echo_skb[] should
-correspond to the max seq number (not tx max number), so in some
-situations a bit more memory would be consumed than could be.
-
-So another approach to fix the problem would be to precompute the rounded
-up value of echo_skb_max and pass it to alloc_candev() making the size of
-the underlying echo_skb[] sufficient.
-
-If that looks more acceptable, I'll be glad to rework the patch in that
-direction.
-
- drivers/net/can/kvaser_pciefd.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index f6921368cd14..1ec4ab9510b6 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -411,7 +411,6 @@ struct kvaser_pciefd_can {
- 	void __iomem *reg_base;
- 	struct can_berr_counter bec;
- 	u8 cmd_seq;
--	u8 tx_max_count;
- 	u8 tx_idx;
- 	u8 ack_idx;
- 	int err_rep_cnt;
-@@ -760,7 +759,7 @@ static int kvaser_pciefd_stop(struct net_device *netdev)
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index 1e659d2660f7..e4e20dda47b1 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -279,6 +279,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
+ 	struct drm_file *file_priv = data;
+ 	struct drm_gem_object *obj = ptr;
  
- static unsigned int kvaser_pciefd_tx_avail(const struct kvaser_pciefd_can *can)
- {
--	return can->tx_max_count - (READ_ONCE(can->tx_idx) - READ_ONCE(can->ack_idx));
-+	return can->can.echo_skb_max - (READ_ONCE(can->tx_idx) - READ_ONCE(can->ack_idx));
- }
++	if (WARN_ON(!data))
++		return 0;
++
+ 	if (obj->funcs->close)
+ 		obj->funcs->close(obj, file_priv);
  
- static int kvaser_pciefd_prepare_tx_packet(struct kvaser_pciefd_tx_packet *p,
-@@ -810,7 +809,7 @@ static netdev_tx_t kvaser_pciefd_start_xmit(struct sk_buff *skb,
- {
- 	struct kvaser_pciefd_can *can = netdev_priv(netdev);
- 	struct kvaser_pciefd_tx_packet packet;
--	unsigned int seq = can->tx_idx & (can->can.echo_skb_max - 1);
-+	unsigned int seq = can->tx_idx % can->can.echo_skb_max;
- 	unsigned int frame_len;
- 	int nr_words;
+@@ -399,7 +402,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+ 	idr_preload(GFP_KERNEL);
+ 	spin_lock(&file_priv->table_lock);
  
-@@ -992,10 +991,9 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
- 		tx_nr_packets_max =
- 			FIELD_GET(KVASER_PCIEFD_KCAN_TX_NR_PACKETS_MAX_MASK,
- 				  ioread32(can->reg_base + KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG));
--		can->tx_max_count = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
-+		can->can.echo_skb_max = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
+-	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
++	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
  
- 		can->can.clock.freq = pcie->freq;
--		can->can.echo_skb_max = roundup_pow_of_two(can->tx_max_count);
- 		spin_lock_init(&can->lock);
+ 	spin_unlock(&file_priv->table_lock);
+ 	idr_preload_end();
+@@ -420,6 +423,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+ 			goto err_revoke;
+ 	}
  
- 		can->can.bittiming_const = &kvaser_pciefd_bittiming_const;
-@@ -1523,7 +1521,7 @@ static int kvaser_pciefd_handle_ack_packet(struct kvaser_pciefd *pcie,
- 		unsigned int len, frame_len = 0;
- 		struct sk_buff *skb;
++	/* mirrors drm_gem_handle_delete to avoid races */
++	spin_lock(&file_priv->table_lock);
++	obj = idr_replace(&file_priv->object_idr, obj, handle);
++	WARN_ON(obj != NULL);
++	spin_unlock(&file_priv->table_lock);
+ 	*handlep = handle;
+ 	return 0;
  
--		if (echo_idx != (can->ack_idx & (can->can.echo_skb_max - 1)))
-+		if (echo_idx != can->ack_idx % can->can.echo_skb_max)
- 			return 0;
- 		skb = can->can.echo_skb[echo_idx];
- 		if (!skb)
+diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
+index 5c3b2aa3e69d..d344d41e6cfe 100644
+--- a/include/drm/drm_file.h
++++ b/include/drm/drm_file.h
+@@ -300,6 +300,9 @@ struct drm_file {
+ 	 *
+ 	 * Mapping of mm object handles to object pointers. Used by the GEM
+ 	 * subsystem. Protected by @table_lock.
++	 *
++	 * Note that allocated entries might be NULL as a transient state when
++	 * creating or deleting a handle.
+ 	 */
+ 	struct idr object_idr;
+ 
 -- 
 2.49.0
 
