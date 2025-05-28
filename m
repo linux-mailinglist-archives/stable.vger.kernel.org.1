@@ -1,184 +1,206 @@
-Return-Path: <stable+bounces-147968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62115AC6BAD
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C39FAC6BA8
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 16:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A82EB3A7292
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 14:29:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D3803A7059
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 14:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B3B288C80;
-	Wed, 28 May 2025 14:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB9E28853E;
+	Wed, 28 May 2025 14:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iTZeEBk1"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29765288C26
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 14:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B2D82C60
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 14:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748442608; cv=none; b=Xc/IJnuMNKdhZI7p/lsYnZVJBbaTIcJVsPxMotZFCwrarIQkDW5wAekGjBHe0XVEd/FURuMeK7E3vu3/eMTEFGTbtULdUySlWCXO3nisG+zpGNxVsZ5YopRE0jax50wFiMgZNa+E2nicJeem018CqcSPJITNwwvaETrdw7kehZw=
+	t=1748442563; cv=none; b=LefajKBrbAYopFPYkQ7sbVlG0kQKWzUQw2lYLAskeutvB+Z6B8InxdV+27kdu2IpvhyL101dRFfQmPrwgo9de0ypGw/CTqtHM6Qy+ljuM2Ws9HBwoBrKa5fECaR7Ws8/j5Mw775+hv44QEbGUOZDZsYApvjGBV9lb64SeZTiab8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748442608; c=relaxed/simple;
-	bh=eEUga3dc4QDsx0L2tmtVqGOtbh6VhzEUx0zN1Axtmqw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FAn+4gzV+FQDDmCIZoLZW89TbNXI9vVGQVDyJz1e6WwL7a1mcCIEoREjqbkYPhbW5NyhPhn8cV5odgn4ahhRm6wo8aduE+p01pBdMLJoGz4XntYk9+f/2DHZaMeivbZa+UMK6ICb81BCAwhqF1NnnU9OofyelldBmzmNaZmC1bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dev-suse.. (unknown [39.144.108.37])
-	by APP-05 (Coremail) with SMTP id zQCowABXpRPKHTdoAIzaAA--.50534S2;
-	Wed, 28 May 2025 22:29:32 +0800 (CST)
-From: Jingwei Wang <wangjingwei@iscas.ac.cn>
-To: linux-riscv@lists.infradead.org
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Jesse Taube <jesse@rivosinc.com>,
-	Yixun Lan <dlan@gentoo.org>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Tsukasa OI <research_trasio@irq.a4lg.com>,
-	stable@vger.kernel.org,
-	Jingwei Wang <wangjingwei@iscas.ac.cn>
-Subject: [PATCH v3] riscv: hwprobe: Fix stale vDSO data for late-initialized keys at boot
-Date: Wed, 28 May 2025 22:28:19 +0800
-Message-ID: <20250528142855.1847510-1-wangjingwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1748442563; c=relaxed/simple;
+	bh=e0S/gTOMg//Eq1SFXZ62YBZvCb8TAry7mGzzJKE2JWI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E6ckjVpXa8ih/OE/9tZcSljLCQN2kG+/UYGlHDE6MALR3nSLwUcQlmAg29KgZ20z6lWNMA6jkriorDvghmX+CAUUhMATyngTiRaMcuce0a15zNuFcAJh3Liv/0IbOl/9DxHdBaYAErrvj0DxstcA0BQYIBTJByaevGgWBZ5kOFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iTZeEBk1; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748442562; x=1779978562;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=e0S/gTOMg//Eq1SFXZ62YBZvCb8TAry7mGzzJKE2JWI=;
+  b=iTZeEBk1YFRo5EpRPbns4501Mhp34m8kfUxZH7gg+o58LPmcvNYbVHKo
+   j9yqckFaiKfLGVTWjkiS4Yop134C6bQDDFDz0QeyRJ6/Duz7YDXX47rBL
+   NxXRwDhXWLBuOooeqbFHJTMZs8j8MBxpjpnzaBmZR8F8/DKrKsBwx3lJl
+   boUf+VmgcIaz7Oxnq25Z7cGtBIQi+w6AWh8ZVPoz3IkS0u5wcwfPTOi8Y
+   lVP5LcxziTWjFKkPRG/W/Y0QIH6sI/clUH0r9KTIZpQZYdZACtIhO1vXx
+   BchTR4Lfo9vcRTdJbmEMt/jvnVeNC0u6I9ZxkZnYQw+hZWqmW+xq+6XDQ
+   w==;
+X-CSE-ConnectionGUID: 3D4ZDEu5QPuTTMc0Q8deAg==
+X-CSE-MsgGUID: WVLv0dEGQHGmebiqsUd/+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="67886798"
+X-IronPort-AV: E=Sophos;i="6.15,321,1739865600"; 
+   d="scan'208";a="67886798"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 07:29:21 -0700
+X-CSE-ConnectionGUID: 1MKYeqnOQMKaoQYk/cyjwA==
+X-CSE-MsgGUID: uOZky1GESH+5WiIbLfl6gw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,321,1739865600"; 
+   d="scan'208";a="148116675"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO [10.245.245.144]) ([10.245.245.144])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 07:29:19 -0700
+Message-ID: <aabaf5db-92aa-4ec9-b0a8-6eb9694fa7c7@intel.com>
+Date: Wed, 28 May 2025 15:29:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] drm/xe/sched: stop re-submitting signalled jobs
+To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
+Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ "Brost, Matthew" <matthew.brost@intel.com>,
+ "Tseng, William" <william.tseng@intel.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250528113328.289392-2-matthew.auld@intel.com>
+ <SJ1PR11MB6204E84396E9C554AE7E80328167A@SJ1PR11MB6204.namprd11.prod.outlook.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <SJ1PR11MB6204E84396E9C554AE7E80328167A@SJ1PR11MB6204.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABXpRPKHTdoAIzaAA--.50534S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXr1UXr4UAr47XFy8Gw48Zwb_yoWrAw4Upa
-	yDCrsaqFW5CF4xWa45K3s7uF10g3Z5Gr13GFyqk343ZrW2y343Ar92qrsrZr90yryv9a4F
-	9F4a9F4Sy347Ar7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUU0zuJUUUUU==
-X-CM-SenderInfo: pzdqwy5lqj4v3l6l2u1dvotugofq/
 
-The riscv_hwprobe vDSO data is populated by init_hwprobe_vdso_data(),
-an arch_initcall_sync. However, underlying data for some keys, like
-RISCV_HWPROBE_KEY_MISALIGNED_VECTOR_PERF, is determined asynchronously.
+On 28/05/2025 14:06, Upadhyay, Tejas wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Intel-xe <intel-xe-bounces@lists.freedesktop.org> On Behalf Of
+>> Matthew Auld
+>> Sent: 28 May 2025 17:03
+>> To: intel-xe@lists.freedesktop.org
+>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>; Brost, Matthew
+>> <matthew.brost@intel.com>; Tseng, William <william.tseng@intel.com>;
+>> stable@vger.kernel.org
+>> Subject: [PATCH v3] drm/xe/sched: stop re-submitting signalled jobs
+>>
+>> Customer is reporting a really subtle issue where we get random DMAR faults,
+>> hangs and other nasties for kernel migration jobs when stressing stuff like
+>> s2idle/s3/s4. The explosions seems to happen somewhere after resuming the
+>> system with splats looking something like:
+>>
+>> PM: suspend exit
+>> rfkill: input handler disabled
+>> xe 0000:00:02.0: [drm] GT0: Engine reset: engine_class=bcs, logical_mask:
+>> 0x2, guc_id=0 xe 0000:00:02.0: [drm] GT0: Timedout job: seqno=24496,
+>> lrc_seqno=24496, guc_id=0, flags=0x13 in no process [-1] xe 0000:00:02.0:
+>> [drm] GT0: Kernel-submitted job timed out
+>>
+>> The likely cause appears to be a race between suspend cancelling the worker
+>> that processes the free_job()'s, such that we still have pending jobs to be
+>> freed after the cancel. Following from this, on resume the pending_list will
+>> now contain at least one already complete job, but it looks like we call
+>> drm_sched_resubmit_jobs(), which will then call
+>> run_job() on everything still on the pending_list. But if the job was already
+>> complete, then all the resources tied to the job, like the bb itself, any memory
+>> that is being accessed, the iommu mappings etc. might be long gone since
+>> those are usually tied to the fence signalling.
+>>
+>> This scenario can be seen in ftrace when running a slightly modified xe_pm
+>> (kernel was only modified to inject artificial latency into free_job to make the
+>> race easier to hit):
+>>
+>> xe_sched_job_run: dev=0000:00:02.0, fence=0xffff888276cc8540, seqno=0,
+>> lrc_seqno=0, gt=0, guc_id=0, batch_addr=0x000000146910 ...
+>> xe_exec_queue_stop:   dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=0,
+>> guc_state=0x0, flags=0x13
+>> xe_exec_queue_stop:   dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=1,
+>> guc_state=0x0, flags=0x4
+>> xe_exec_queue_stop:   dev=0000:00:02.0, 4:0x1, gt=1, width=1, guc_id=0,
+>> guc_state=0x0, flags=0x3
+>> xe_exec_queue_stop:   dev=0000:00:02.0, 1:0x1, gt=1, width=1, guc_id=1,
+>> guc_state=0x0, flags=0x3
+>> xe_exec_queue_stop:   dev=0000:00:02.0, 4:0x1, gt=1, width=1, guc_id=2,
+>> guc_state=0x0, flags=0x3
+>> xe_exec_queue_resubmit: dev=0000:00:02.0, 3:0x2, gt=0, width=1, guc_id=0,
+>> guc_state=0x0, flags=0x13
+>> xe_sched_job_run: dev=0000:00:02.0, fence=0xffff888276cc8540, seqno=0,
+>> lrc_seqno=0, gt=0, guc_id=0, batch_addr=0x000000146910 ...
+>> .....
+>> xe_exec_queue_memory_cat_error: dev=0000:00:02.0, 3:0x2, gt=0, width=1,
+>> guc_id=0, guc_state=0x3, flags=0x13
+>>
+>> So the job_run() is clearly triggered twice for the same job, even though the
+>> first must have already signalled to completion during suspend. We can also
+>> see a CAT error after the re-submit.
+>>
+>> To prevent this try to call xe_sched_stop() to forcefully remove anything on
+>> the pending_list that has already signalled, before we re-submit.
+>>
+>> v2:
+>>    - Make sure to re-arm the fence callbacks with sched_start().
+>> v3 (Matt B):
+>>    - Stop using drm_sched_resubmit_jobs(), which appears to be deprecated
+>>      and just open-code a simple loop such that we skip calling run_job()
+>>      and anything already signalled.
+>>
+>> Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4856
+>> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+>> Cc: William Tseng <william.tseng@intel.com>
+>> Cc: <stable@vger.kernel.org> # v6.8+
+>> ---
+>>   drivers/gpu/drm/xe/xe_gpu_scheduler.h | 10 +++++++++-
+>>   1 file changed, 9 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/xe/xe_gpu_scheduler.h
+>> b/drivers/gpu/drm/xe/xe_gpu_scheduler.h
+>> index c250ea773491..308061f0cf37 100644
+>> --- a/drivers/gpu/drm/xe/xe_gpu_scheduler.h
+>> +++ b/drivers/gpu/drm/xe/xe_gpu_scheduler.h
+>> @@ -51,7 +51,15 @@ static inline void xe_sched_tdr_queue_imm(struct
+>> xe_gpu_scheduler *sched)
+>>
+>>   static inline void xe_sched_resubmit_jobs(struct xe_gpu_scheduler *sched)  {
+>> -	drm_sched_resubmit_jobs(&sched->base);
+>> +	struct drm_sched_job *s_job;
+>> +
+>> +	list_for_each_entry(s_job, &sched->base.pending_list, list) {
+>> +		struct drm_sched_fence *s_fence = s_job->s_fence;
+>> +		struct dma_fence *hw_fence = s_fence->parent;
+>> +
+>> +		if (hw_fence && !dma_fence_is_signaled(hw_fence))
+>> +			sched->base.ops->run_job(s_job);
+>> +	}
+> 
+> While this change looks correct, what about those hanging contexts which is indicated to waiters by dma_fence_set_error(&s_fence->finished, -ECANCELED);!
 
-Specifically, the per_cpu(vector_misaligned_access, cpu) values are set
-by the vec_check_unaligned_access_speed_all_cpus kthread. This kthread
-is spawned by an earlier arch_initcall (check_unaligned_access_all_cpus)
-and may complete its benchmark *after* init_hwprobe_vdso_data() has
-already populated the vDSO with default/stale values.
+I think a hanging context will usually be banned, so we shouldn't reach 
+this point AFAICT. Can you share some more info on what your concern is 
+here? I don't think we would normally want to call run_job() again on 
+jobs from a hanging context. It looks like our run_job() will bail if 
+the hw fence is marked with an error.
 
-So, refresh the vDSO data for specified keys (e.g.,
-MISALIGNED_VECTOR_PERF) ensuring it reflects the final boot-time values.
-
-Test by comparing vDSO and syscall results for affected keys
-(e.g., MISALIGNED_VECTOR_PERF), which now match their final
-boot-time values.
-
-Reported-by: Tsukasa OI <research_trasio@irq.a4lg.com>
-Closes: https://lore.kernel.org/linux-riscv/760d637b-b13b-4518-b6bf-883d55d44e7f@irq.a4lg.com/
-Fixes: e7c9d66e313b ("RISC-V: Report vector unaligned access speed hwprobe")
-Cc: stable@vger.kernel.org
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
-Reviewed-by: Jesse Taube <jesse@rivosinc.com>
-Signed-off-by: Jingwei Wang <wangjingwei@iscas.ac.cn>
----
-Changes in v3:
-	- Retained existing blank line.
-
-Changes in v2:
-	- Addressed feedback from Yixun's regarding #ifdef CONFIG_MMU usage.
-	- Updated commit message to provide a high-level summary.
-	- Added Fixes tag for commit e7c9d66e313b.
-
-v1: https://lore.kernel.org/linux-riscv/20250521052754.185231-1-wangjingwei@iscas.ac.cn/T/#u
-
- arch/riscv/include/asm/hwprobe.h           |  6 ++++++
- arch/riscv/kernel/sys_hwprobe.c            | 16 ++++++++++++++++
- arch/riscv/kernel/unaligned_access_speed.c |  1 +
- 3 files changed, 23 insertions(+)
-
-diff --git a/arch/riscv/include/asm/hwprobe.h b/arch/riscv/include/asm/hwprobe.h
-index 1f690fea0e03de6a..58dc847d86c7f2b0 100644
---- a/arch/riscv/include/asm/hwprobe.h
-+++ b/arch/riscv/include/asm/hwprobe.h
-@@ -40,4 +40,10 @@ static inline bool riscv_hwprobe_pair_cmp(struct riscv_hwprobe *pair,
- 	return pair->value == other_pair->value;
- }
- 
-+#ifdef CONFIG_MMU
-+void riscv_hwprobe_vdso_sync(__s64 sync_key);
-+#else
-+static inline void riscv_hwprobe_vdso_sync(__s64 sync_key) { };
-+#endif /* CONFIG_MMU */
-+
- #endif
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index 249aec8594a92a80..2e3e612b7ac6fd57 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -17,6 +17,7 @@
- #include <asm/vector.h>
- #include <asm/vendor_extensions/thead_hwprobe.h>
- #include <vdso/vsyscall.h>
-+#include <vdso/datapage.h>
- 
- 
- static void hwprobe_arch_id(struct riscv_hwprobe *pair,
-@@ -500,6 +501,21 @@ static int __init init_hwprobe_vdso_data(void)
- 
- arch_initcall_sync(init_hwprobe_vdso_data);
- 
-+void riscv_hwprobe_vdso_sync(__s64 sync_key)
-+{
-+	struct vdso_arch_data *avd = vdso_k_arch_data;
-+	struct riscv_hwprobe pair;
-+
-+	pair.key = sync_key;
-+	hwprobe_one_pair(&pair, cpu_online_mask);
-+	/*
-+	 * Update vDSO data for the given key.
-+	 * Currently for non-ID key updates (e.g. MISALIGNED_VECTOR_PERF),
-+	 * so 'homogeneous_cpus' is not re-evaluated here.
-+	 */
-+	avd->all_cpu_hwprobe_values[sync_key] = pair.value;
-+}
-+
- #endif /* CONFIG_MMU */
- 
- SYSCALL_DEFINE5(riscv_hwprobe, struct riscv_hwprobe __user *, pairs,
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 585d2dcf2dab1ccb..a2cdb396ff823720 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -375,6 +375,7 @@ static void check_vector_unaligned_access(struct work_struct *work __always_unus
- static int __init vec_check_unaligned_access_speed_all_cpus(void *unused __always_unused)
- {
- 	schedule_on_each_cpu(check_vector_unaligned_access);
-+	riscv_hwprobe_vdso_sync(RISCV_HWPROBE_KEY_MISALIGNED_VECTOR_PERF);
- 
- 	return 0;
- }
--- 
-2.49.0
+> 
+> Tejas
+>>   }
+>>
+>>   static inline bool
+>> --
+>> 2.49.0
+> 
 
 
