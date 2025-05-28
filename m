@@ -1,261 +1,229 @@
-Return-Path: <stable+bounces-147934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A3CAC65F2
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 11:27:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C5DAC65FB
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 11:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5AFD1BC5849
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 09:28:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 580B04E111F
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 09:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546082777EA;
-	Wed, 28 May 2025 09:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22AD2777F3;
+	Wed, 28 May 2025 09:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n+W2arJC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PLgbUBee";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n+W2arJC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PLgbUBee"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b="lhzajvsV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6D85A79B
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 09:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D18275859
+	for <stable@vger.kernel.org>; Wed, 28 May 2025 09:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748424474; cv=none; b=JUY+O8SLDbpXFgYFtrpv1DcaiHHHjTzPx+x0GKFLTGpV+b6tlS+baYv2al2Caf3iRtwmjzmUxHBmkHNZBrT0P64vUNQRbaxPulXxwuYNt/6Zm4MeF/b8ZwCrX1qVF1oFwIL2Z5qXKL//rC/P8BImxlL5Vd4O7gLJOGUO1pTFJUU=
+	t=1748424567; cv=none; b=ghCvgGoFZagabBJjutAa1m9qWOtXFzGW7+ZBIiihGPI8Ebcl+00C24BhwBhNoTb6dKKag62KRlKqALZuZ45AEPElvPihV+Ksg3ORvEcp3kTtIGrcpDzFtbSWpmdMJvt5ujFNxQjx2r1olWTMXRPHHx4vVupKYFuSu1E7K0PtVY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748424474; c=relaxed/simple;
-	bh=QA8Tu+x5uJNtSj2hb1PFx7cIXbvT0/ULNV68F0rxeTs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=atTwheflpXPl40RpSm2rTUT3TJAmfIKYvy0+b8k8VbW0S/YUsLgxBb1+s+HAekseHhCh4UB9y441DDmAp/+PPCOJWh/w98VWEprwyIeVA21GFRqo/13687ikK48a96K1AUNSTmFGFlLsVMfMCgTAT23u+XHtQPX7eymjCJ1YrJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n+W2arJC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PLgbUBee; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n+W2arJC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PLgbUBee; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3959221BFC;
-	Wed, 28 May 2025 09:27:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1748424470; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B4mwwW9r0OHxt1yikCbUfXebtF5UgdxJ9FNgvzHDIfE=;
-	b=n+W2arJC9K4LnK8d5fiG8AWGKKHDpg2CEWV2F7309g7HyeUKZS8KPrbC70sqLPwSwr2jZu
-	F94CF4I9wfrIvAUic+im00Q29l49NvTK33VFQksiJuk+WfP27KHDdJ6S4RM/oqIiAOrbdE
-	9KMGpN56EZlNIg3Quv9Zdg4WW5/vXSk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1748424470;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B4mwwW9r0OHxt1yikCbUfXebtF5UgdxJ9FNgvzHDIfE=;
-	b=PLgbUBeeeE9X8XNwWP958G8cg9vwCEdd90usoWLBmPLRdkns9WWz6AyA7Mdc+WIgALZnUr
-	f75JSjED5VJg2YAg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1748424470; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B4mwwW9r0OHxt1yikCbUfXebtF5UgdxJ9FNgvzHDIfE=;
-	b=n+W2arJC9K4LnK8d5fiG8AWGKKHDpg2CEWV2F7309g7HyeUKZS8KPrbC70sqLPwSwr2jZu
-	F94CF4I9wfrIvAUic+im00Q29l49NvTK33VFQksiJuk+WfP27KHDdJ6S4RM/oqIiAOrbdE
-	9KMGpN56EZlNIg3Quv9Zdg4WW5/vXSk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1748424470;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B4mwwW9r0OHxt1yikCbUfXebtF5UgdxJ9FNgvzHDIfE=;
-	b=PLgbUBeeeE9X8XNwWP958G8cg9vwCEdd90usoWLBmPLRdkns9WWz6AyA7Mdc+WIgALZnUr
-	f75JSjED5VJg2YAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8073C136E3;
-	Wed, 28 May 2025 09:27:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BQmlHBXXNmgyawAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 28 May 2025 09:27:49 +0000
-Date: Wed, 28 May 2025 11:27:46 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Gavin Guo <gavinguo@igalia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev,
-	akpm@linux-foundation.org, mike.kravetz@oracle.com,
-	kernel-dev@igalia.com, stable@vger.kernel.org,
-	Hugh Dickins <hughd@google.com>, Florent Revest <revest@google.com>,
-	Gavin Shan <gshan@redhat.com>, David Hildenbrand <david@redhat.com>,
-	Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v3] mm/hugetlb: fix a deadlock with pagecache_folio and
- hugetlb_fault_mutex_table
-Message-ID: <aDbXEnqnpDnAx4Mw@localhost.localdomain>
-References: <20250528023326.3499204-1-gavinguo@igalia.com>
+	s=arc-20240116; t=1748424567; c=relaxed/simple;
+	bh=V8tD3lWZrHR3VAfwvvHmvGCFu0qIkVu+D9dVWog0RxA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FjORwlgYL/4J9iLQxV5O4IB8CJvSh4pTlCazpaAkeLDJHyqFBU2EHUNOdvxUkAo+BLPLV6LnV92Se8E6Fvr/l1AT9ETQFeo8KloCylA/v9eL+D2/dLtcabEF+Pk4widuK2ooUhViWP8qrmLgQVfeWsIHZiaZg9wYkLKjf9UjsaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b=lhzajvsV; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1748424548; x=1749029348; i=natalie.vock@gmx.de;
+	bh=wJj6cCWN4z+xlGO0PzShWjcwP9PbCdV1eX0zeAaaS4k=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=lhzajvsV/2bjM0tBLsKMSdK2FvSs8OxPah3gZeOiQe0KQOyxC9aqZ1K9bwO+zZIw
+	 4K8NDGUJCuBpAgNA7p/N02+5QGUxX1UOKn5yPZExFQrGnpCKBixu08gl9GgufpZNp
+	 SzQkzbeKtl/pnjrsL2bvFdYkISPuOFqhXyqQpQKambNRHCe6/DIRR11hhp5NkcAIE
+	 1j7rvXkxqf+UoYeGd8R9ko6bWto5OoXrU5qB2Y6DrbduX5afmr9nKz62wmhxfc930
+	 dEggb23ea3VU4da+rjbdXFlZ5gkgGRG062EcyXs+aTcTKqWgdrn1q6675TN1bj4LU
+	 gruG7mfIW+da7v+nSw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.3] ([109.91.201.165]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MS3mz-1uUuBE43Ux-00SyIf; Wed, 28
+ May 2025 11:29:08 +0200
+Message-ID: <dbbdcada-32ae-4457-af87-1f98362461f1@gmx.de>
+Date: Wed, 28 May 2025 11:29:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250528023326.3499204-1-gavinguo@igalia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] drm/amdgpu: Dirty cleared blocks on allocation
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+ stable@vger.kernel.org
+References: <20250527194353.8023-1-natalie.vock@gmx.de>
+ <20250527194353.8023-3-natalie.vock@gmx.de>
+ <89652580-5763-4f1e-abf5-d340119543f3@amd.com>
+Content-Language: en-US
+From: Natalie Vock <natalie.vock@gmx.de>
+In-Reply-To: <89652580-5763-4f1e-abf5-d340119543f3@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:2axK+lnGA1Fc2hNrp9g4dehd+SiCYBgai4Yw/yjkZ2uUpsKq5zb
+ Cpw3Zxx6FVLeRDMZWmf3ZKx31ePnxVYzCm+7VTgxmmSu+lIfz2YpjbcRdtZmBcvy+4vouyl
+ uhc/R3Brm10J6Sk618GICLheuLid8drjXMfgo98QRhN1H3MOvt90C+kADYs5t9MoiyDc2K7
+ N9lFBO30+zRmmnNASJPYA==
 X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
+UI-OutboundReport: notjunk:1;M01:P0:zugt5dwSbBI=;zTbmlpoMe2/WOz0ZouyeNwzChxg
+ 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
+ +C+0trX7n9Mka8HOmVwkpfQnYP7PNHCD3SnWXQ==
 
-On Wed, May 28, 2025 at 10:33:26AM +0800, Gavin Guo wrote:
-> There is ABBA dead locking scenario happening between hugetlb_fault()
-> and hugetlb_wp() on the pagecache folio's lock and hugetlb global mutex,
-> which is reproducible with syzkaller [1]. As below stack traces reveal,
-> process-1 tries to take the hugetlb global mutex (A3), but with the
-> pagecache folio's lock hold. Process-2 took the hugetlb global mutex but
-> tries to take the pagecache folio's lock.
-> 
-> Process-1                               Process-2
-> =========                               =========
-> hugetlb_fault
->    mutex_lock                  (A1)
->    filemap_lock_hugetlb_folio  (B1)
->    hugetlb_wp
->      alloc_hugetlb_folio       #error
->        mutex_unlock            (A2)
->                                         hugetlb_fault
->                                           mutex_lock                  (A4)
->                                           filemap_lock_hugetlb_folio  (B4)
->        unmap_ref_private
->        mutex_lock              (A3)
-> 
-> Fix it by releasing the pagecache folio's lock at (A2) of process-1 so
-> that pagecache folio's lock is available to process-2 at (B4), to avoid
-> the deadlock. In process-1, a new variable is added to track if the
-> pagecache folio's lock has been released by its child function
-> hugetlb_wp() to avoid double releases on the lock in hugetlb_fault().
-> The similar changes are applied to hugetlb_no_page().
-> 
-> Link: https://drive.google.com/file/d/1DVRnIW-vSayU5J1re9Ct_br3jJQU6Vpb/view?usp=drive_link [1]
-> Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
-> Cc: <stable@vger.kernel.org>
-> Cc: Hugh Dickins <hughd@google.com>
-> Cc: Florent Revest <revest@google.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-... 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 6a3cf7935c14..560b9b35262a 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6137,7 +6137,8 @@ static void unmap_ref_private(struct mm_struct *mm, struct vm_area_struct *vma,
->   * Keep the pte_same checks anyway to make transition from the mutex easier.
->   */
->  static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
-> -		       struct vm_fault *vmf)
-> +		       struct vm_fault *vmf,
-> +		       bool *pagecache_folio_locked)
->  {
->  	struct vm_area_struct *vma = vmf->vma;
->  	struct mm_struct *mm = vma->vm_mm;
-> @@ -6234,6 +6235,18 @@ static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
->  			u32 hash;
->  
->  			folio_put(old_folio);
-> +			/*
-> +			 * The pagecache_folio has to be unlocked to avoid
-> +			 * deadlock and we won't re-lock it in hugetlb_wp(). The
-> +			 * pagecache_folio could be truncated after being
-> +			 * unlocked. So its state should not be reliable
-> +			 * subsequently.
-> +			 */
-> +			if (pagecache_folio) {
-> +				folio_unlock(pagecache_folio);
-> +				if (pagecache_folio_locked)
-> +					*pagecache_folio_locked = false;
-> +			}
+Hi,
 
-I am having a problem with this patch as I think it keeps carrying on an
-assumption that it is not true.
+On 5/28/25 09:07, Christian K=C3=B6nig wrote:
+> On 5/27/25 21:43, Natalie Vock wrote:
+>> If we hand out cleared blocks to users, they are expected to write
+>> at least some non-zero values somewhere. If we keep the CLEAR bit set o=
+n
+>> the block, amdgpu_fill_buffer will assume there is nothing to do and
+>> incorrectly skip clearing the block. Ultimately, the (still dirty) bloc=
+k
+>> will be reused as if it were cleared, without any wiping of the memory
+>> contents.
+>>
+>> Most severely, this means that any buffer allocated with
+>> AMDGPU_GEM_CREATE_VRAM_CLEARED | AMDGPU_GEM_CREATE_WIPE_ON_RELEASE
+>> (which is the case for **all userspace buffers**) are neither
+>> guaranteed to contain cleared VRAM, nor are they being wiped on
+>> release, potentially leaking application memory to arbitrary other
+>> applications.
+>>
+>> Fixes: a68c7eaa7a8ff ("drm/amdgpu: Enable clear page functionality")
+>> Cc: stable@vger.kernel.org
+>>
+>> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
+>>
+>> Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
+>> ---
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu=
+/drm/amd/amdgpu/amdgpu_vram_mgr.c
+>> index 2d7f82e98df9..cecc67d0f0b8 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+>> @@ -591,6 +591,13 @@ static int amdgpu_vram_mgr_new(struct ttm_resource=
+_manager *man,
+>>   	list_for_each_entry(block, &vres->blocks, link) {
+>>   		unsigned long start;
+>>  =20
+>> +		/*
+>> +		 * Allocated blocks may be dirtied as soon as we return.
+>> +		 * Mark all blocks as dirty here, otherwise we might
+>> +		 * incorrectly assume the memory is still zeroed.
+>> +		 */
+>> +		drm_buddy_block_set_dirty(block);
+>=20
+> Exactly that makes no sense.
+>=20
+> We need the information if it's dirty or not later while clearing the bl=
+ocks. Otherwise we will clear all blocks and completely loose the advantag=
+e of the clear tracking.
 
-I was discussing this matter yesterday with Peter Xu (CCed now), who has also some
-experience in this field.
+Right, I missed that separate clear on allocation. I was put a bit=20
+off-track by assuming DRM_BUDDY_ALLOCATE_CLEARED would guarantee cleared=
+=20
+pages, when in reality it's more like a preference.
 
-Exactly against what pagecache_folio's lock protects us when
-pagecache_folio != old_folio?
+>=20
+> So we should set them dirty as soon as we are done with the clearing.
+>=20
+> But the problem rather seems to be that we sometimes don't clear the buf=
+fers on release for some reason, but still set it as cleared.
 
-There are two cases here:
+Yes precisely - "some reason" being the aforementioned clear flags. We=20
+do always call amdgpu_clear_buffer on release, but that function will=20
+perform the same checks as the clear on allocation does - that means, if=
+=20
+a block is marked clear then it will skip emitting any actual clears.
 
-1) pagecache_folio = old_folio  (original page in the pagecache)
-2) pagecache_folio != old_folio (original page has already been mapped
-                                 privately and CoWed, old_folio contains
-				 the new folio)
+If we don't mark the blocks as dirty after allocating, then the=20
+amdgpu_clear_buffer call on release will skip actually performing the=20
+clear like it did during allocation - this is obviously really broken.
 
-For case 1), we need to hold the lock because we are copying old_folio
-to the new one in hugetlb_wp(). That is clear.
+After calling amdgpu_clear_buffer, we call amdgpu_vram_mgr_set_cleared=20
+which causes the drm_buddy blocks to be marked as "cleared" when freed.=20
+This part is correct in itself, but obviously breaks if=20
+amdgpu_clear_buffer didn't actually clear the buffer. That's how the=20
+dirty blocks end up in the buddy allocator as cleared ones.
 
-But for case 2), unless I am missing something, we do not really need the
-pagecache_folio's lock at all, do we? (only old_folio's one)
-The only reason pagecache_folio gets looked up in the pagecache is to check
-whether the current task has mapped and faulted in the file privately, which
-means that a reservation has been consumed (a new folio was allocated).
-That is what the whole dance about "old_folio != pagecache_folio &&
-HPAGE_RESV_OWNER" in hugetlb_wp() is about.
+I'm testing a v2 that sets the dirty flags after the initial clear, I'll=
+=20
+send it once I confirmed it works.
 
-And the original mapping cannot really go away either from under us, as
-remove_inode_hugepages() needs to take the mutex in order to evict it,
-which would be the only reason counters like resv_huge_pages (adjusted in
-remove_inode_hugepages()->hugetlb_unreserve_pages()) would
-interfere with alloc_hugetlb_folio() from hugetlb_wp().
+Thanks,
+Natalie
 
-So, again, unless I am missing something there is no need for the
-pagecache_folio lock when pagecache_folio != old_folio, let alone the
-need to hold it throughout hugetlb_wp().
-I think we could just look up the cache, and unlock it right away.
+>=20
+> Regards,
+> Christian.
+>=20
+>=20
+>> +
+>>   		start =3D amdgpu_vram_mgr_block_start(block) +
+>>   			amdgpu_vram_mgr_block_size(block);
+>>   		start >>=3D PAGE_SHIFT;
+>=20
 
-So, the current situation (previous to this patch) is already misleading
-for case 2).
-
-And comments like:
-
- /*
-  * The pagecache_folio has to be unlocked to avoid
-  * deadlock and we won't re-lock it in hugetlb_wp(). The
-  * pagecache_folio could be truncated after being
-  * unlocked. So its state should not be reliable
-  * subsequently.
-  */
-
-Keep carrying on the assumption that we need the lock.
-
-Now, if the above is true, I would much rather see this reworked (I have
-some ideas I discussed with Peter yesterday), than keep it as is.
-
-Let me also CC David who tends to have a good overview in this.
-
--- 
-Oscar Salvador
-SUSE Labs
 
