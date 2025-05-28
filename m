@@ -1,120 +1,145 @@
-Return-Path: <stable+bounces-147997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE90AC7140
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 21:01:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3D6AC7185
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 21:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A2A0171B2A
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:01:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9B0D163D1E
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB8D218851;
-	Wed, 28 May 2025 19:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E0F21D3D9;
+	Wed, 28 May 2025 19:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="V+waCASj"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="IvBe73y3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B021D1F463E
-	for <stable@vger.kernel.org>; Wed, 28 May 2025 19:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D55721CC47;
+	Wed, 28 May 2025 19:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748458862; cv=none; b=m7DCd237Rl54+BZ+vnqsBmZvcB8+AYhbeu1PiEfjbpPOXX6KEE92jNiST0oee5KP9J2K/obVR0+V4YbbpquICkCIJ+6F2/0pheUxiKutRfLQUDB38Tl+P7rJQYtVr8lq2S+5ublGgdGRAbxBSlAWTXPxDuKzUTD+dhdVpmzKpxc=
+	t=1748460452; cv=none; b=bjT907LDwnvjcpPUp9/sEx85vFyTkdS0EcQOrOFoYd4DuAb0Z1HZFNcuqFBh5A7BiSnG+Fub2ZAmOLeMqkLFfr5u2M2WWTxgZal9uHF3cbEkUPnXXpDJYc+07FdQqL/rAmZ+bfyEbs6YYQ6C/SFuZflHmz2t1Nw1W5NTXj82n5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748458862; c=relaxed/simple;
-	bh=99lZxN5vhS9pT7XjyafkDptBxd868nvYUBqPecl/XbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dHJ8P6gO6WCjLSaVp+GiJQywU+UIcJk1Dt2Ebkm+7fJOMM6g+fy1LBlmCZIjwn+gkqihN3DxcYdM9azjL6Pe+5AD1MnnyH697QaySvA8GVRaoFKrsWsW2wu25N26lbcg4/TC6tQOJchBDZTJcW34RXjJjfUCuMLr+YbIh4bBKGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=V+waCASj; arc=none smtp.client-ip=209.85.166.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-3dc8265b9b5so943785ab.1
-        for <stable@vger.kernel.org>; Wed, 28 May 2025 12:01:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1748458860; x=1749063660; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E6uMWV3+sb1xZHl//TOe7Sv20/rDXHWApZwSoImEOEg=;
-        b=V+waCASjWLzl/GEBRfbNUVhOL83uvHoAfOinIr53OEXjAYzr2pQeLXf2+XrXKHX8Kj
-         ZJXlbd2MpPmud9yls9r+AMhVwhkHNjzhJa0DOb5Vw9Tp6JfeYiNg0m3fw7eH/oUIEZpq
-         inUBEBw/u9CV/hRPrSVx+038rHT1SfDgKqCrY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748458860; x=1749063660;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E6uMWV3+sb1xZHl//TOe7Sv20/rDXHWApZwSoImEOEg=;
-        b=V6V4aTaLL3ReG5PPTXujJOOBqU9ydEhY/iONPPfAnlkA3xoZhlJ/BuxPomdILwTTjq
-         lcFbI7BR7F5h8Vu448mq1ne0LwU6rGEEeizI1T1If1eIIeLXGjiIzCOim0V7ofSBYh5j
-         DxmrdsW3YQdNcBuDsJfNpJ4zRT6pUbdd0gLO3oQJnuDdg0SFAh89Q6Hytt3WPZHl9TdG
-         Lng4NeTTsbLlgml8ytVZ7ADheS5mEcVWL4vJ6Y9Up5/3KEBGpFL0pjEtv6BoX9ZS6OG9
-         JM3w0OvMRTsNj0XV1dDcFOptK9JDr4WLwtr5/+uvqeq1pUAkaRiYIJSQzUhbTXTGGXxm
-         LPTw==
-X-Gm-Message-State: AOJu0YzzXxuiOkyNpGVDd4lqOrCIqb2gd+GJwkvRUD9NatsrYN3PYb3x
-	p87w3OScdlg4QIN6oH7K+bc8UigRWS69iog0ebFo1ixihUQboYFrIEudM+15nA8joA==
-X-Gm-Gg: ASbGncvDChOMuFCZk3bPAYMXFNwZ3X1BR98aEufx5zt+QQ1EVXJmAvwhSluf9HIxeTQ
-	QaqZ0OemBWYEXZWICEyrvJsbkwgYL3zhlFXCoRbG0PrP09f6pNr+iAwxkRjn+eyX9oKpyBkFj5o
-	hzQOtccfKGobHEbqZ/8/ryB5lqe0KPD/v9/tCQM7RLoUZa10QsEMzamYYjGpd9S9wNaT5SDXs1u
-	IqDA7il8G/3+pqxCNtLia83ejQCA1j7Ixqxa/zfu6CFWH6ev0fcYr+Nd/p8eBRU0oirYY8yOzg6
-	mzL07cFV6XXb90Dmg7PcKFY6TCn132Pt5aYVE3QNmQks+zCkGfwFQwAb3YeYD6js2WYi4ucHOnM
-	/KIg=
-X-Google-Smtp-Source: AGHT+IGO2PTzIAqkK41ccV62UVml+KrtjC/CCurWR884MEq1rueZvDmtfrOp5qmDL+URey90IDvSbQ==
-X-Received: by 2002:a05:6e02:1786:b0:3dc:8423:543e with SMTP id e9e14a558f8ab-3dd8b044b9bmr36739375ab.17.1748458859626;
-        Wed, 28 May 2025 12:00:59 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([72.42.103.70])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4fdbd58790asm341459173.95.2025.05.28.12.00.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 12:00:59 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 28 May 2025 13:00:57 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.14 000/783] 6.14.9-rc1 review
-Message-ID: <aDddaQGen1YUVCYz@fedora64.linuxtx.org>
-References: <20250527162513.035720581@linuxfoundation.org>
+	s=arc-20240116; t=1748460452; c=relaxed/simple;
+	bh=a961YRNnSO8xEEQjmE/kukEuP4H3dhHAVCGU7GMX4s0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D7gerlO/3UH57A+arjmMZODcNg1gnhpz3DewNCA0N+kNnr04RTpFzNYa3ea6hDz4IS9garbz6/EvzGLgDLJajTITRT8yR4Hrne2UjoMf7sdeiJiaIhrxLyB99sBuEksyEC7Q1NR6YHA3I/csY14tyKGyRdCIu36ZWrzgGsomssc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=IvBe73y3; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fedora.intra.ispras.ru (unknown [10.10.165.4])
+	by mail.ispras.ru (Postfix) with ESMTPSA id BB05D552F529;
+	Wed, 28 May 2025 19:27:21 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru BB05D552F529
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1748460441;
+	bh=BEK94JMRaUzZgTwrnHfaduJF4K/hbb6wOIgbXm6+ms0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IvBe73y3OdsWLVmYMMLB8hzBGkZ4LCVKHc0IWk7qsVTmAwxuNf4+n5jM4YoJ0zWcb
+	 TBUu+6OZUU2zAKNvyAKjErW01UiaVEYEmi3ndw3PB8uupl4Ps3wVttqCCetkgcNZwl
+	 VD+TsqGBP44NvXJi/lo9lcoTcRoaLeLXMo7g0vwA=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Axel Forsman <axfo@kvaser.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	linux-can@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] can: kvaser_pciefd: refine error prone echo_skb_max handling logic
+Date: Wed, 28 May 2025 22:27:12 +0300
+Message-ID: <20250528192713.63894-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250527162513.035720581@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 27, 2025 at 06:16:37PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.14.9 release.
-> There are 783 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 29 May 2025 16:22:51 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.9-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+echo_skb_max should define the supported upper limit of echo_skb[]
+allocated inside the netdevice's priv. The corresponding size value
+provided by this driver to alloc_candev() is KVASER_PCIEFD_CAN_TX_MAX_COUNT
+which is 17.
 
-Tested rc1 minus the broken "s390/crash: Use note name macros" patch against
-the Fedora build system (aarch64, ppc64le, s390x, x86_64), and boot tested
-x86_64. No regressions noted.
+But later echo_skb_max is rounded up to the nearest power of two (for the
+max case, that would be 32) and the tx/ack indices calculated further
+during tx/rx may exceed the upper array boundary. Kasan reported this for
+the ack case inside kvaser_pciefd_handle_ack_packet(), though the xmit
+function has actually caught the same thing earlier.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+ BUG: KASAN: slab-out-of-bounds in kvaser_pciefd_handle_ack_packet+0x2d7/0x92a drivers/net/can/kvaser_pciefd.c:1528
+ Read of size 8 at addr ffff888105e4f078 by task swapper/4/0
+
+ CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Not tainted 6.15.0 #12 PREEMPT(voluntary)
+ Call Trace:
+  <IRQ>
+ dump_stack_lvl lib/dump_stack.c:122
+ print_report mm/kasan/report.c:521
+ kasan_report mm/kasan/report.c:634
+ kvaser_pciefd_handle_ack_packet drivers/net/can/kvaser_pciefd.c:1528
+ kvaser_pciefd_read_packet drivers/net/can/kvaser_pciefd.c:1605
+ kvaser_pciefd_read_buffer drivers/net/can/kvaser_pciefd.c:1656
+ kvaser_pciefd_receive_irq drivers/net/can/kvaser_pciefd.c:1684
+ kvaser_pciefd_irq_handler drivers/net/can/kvaser_pciefd.c:1733
+ __handle_irq_event_percpu kernel/irq/handle.c:158
+ handle_irq_event kernel/irq/handle.c:210
+ handle_edge_irq kernel/irq/chip.c:833
+ __common_interrupt arch/x86/kernel/irq.c:296
+ common_interrupt arch/x86/kernel/irq.c:286
+  </IRQ>
+
+Tx max count definitely matters for kvaser_pciefd_tx_avail(), but for seq
+numbers' generation that's not the case - we're free to calculate them as
+would be more convenient, not taking tx max count into account. The only
+downside is that the size of echo_skb[] should correspond to the max seq
+number (not tx max count), so in some situations a bit more memory would
+be consumed than could be.
+
+Thus make the size of the underlying echo_skb[] sufficient for the rounded
+max tx value.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 8256e0ca6010 ("can: kvaser_pciefd: Fix echo_skb race")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+
+v2: fix the problem by rounding up the KVASER_PCIEFD_CAN_TX_MAX_COUNT
+    constant when allocating candev (Axel Forsman)
+
+ drivers/net/can/kvaser_pciefd.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
+index f6921368cd14..0071a51ce2c1 100644
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -966,7 +966,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
+ 		u32 status, tx_nr_packets_max;
+ 
+ 		netdev = alloc_candev(sizeof(struct kvaser_pciefd_can),
+-				      KVASER_PCIEFD_CAN_TX_MAX_COUNT);
++				      roundup_pow_of_two(KVASER_PCIEFD_CAN_TX_MAX_COUNT));
+ 		if (!netdev)
+ 			return -ENOMEM;
+ 
+@@ -995,7 +995,6 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
+ 		can->tx_max_count = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
+ 
+ 		can->can.clock.freq = pcie->freq;
+-		can->can.echo_skb_max = roundup_pow_of_two(can->tx_max_count);
+ 		spin_lock_init(&can->lock);
+ 
+ 		can->can.bittiming_const = &kvaser_pciefd_bittiming_const;
+-- 
+2.49.0
+
 
