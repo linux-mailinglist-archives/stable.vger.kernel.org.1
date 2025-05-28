@@ -1,226 +1,110 @@
-Return-Path: <stable+bounces-147989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-147990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E47BAC6F44
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:27:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C004AC6F5B
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 19:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C8193B9092
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:24:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334539E5F55
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 17:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71ADC28CF7F;
-	Wed, 28 May 2025 17:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D539C28689D;
+	Wed, 28 May 2025 17:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kQGDWWY4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AerQ9T1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DBC28C5CD;
-	Wed, 28 May 2025 17:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EE44A1D;
+	Wed, 28 May 2025 17:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748453083; cv=none; b=AiC2w+JIRfSTpMyztlQ3vI5WShqQoYODoPAOrgDTXyn75hnOO85XLWbrsEJNKUdk9ucScikHIs6leCc6umrh47SVOV4+pm6SI5o6+WzQg/rkIbPmawVP0oxkb4o4v1mLmUpMQlc/GNzrH6KswPkEeuC8IHktLtfcwbgb0hjTN6U=
+	t=1748453247; cv=none; b=Nn/0SCIaOrU0XHlbqMpVXagvwq9cn2Rhk3jIZFoFYVwuXYo5G1Y5vx9q0HSJr0OuiMPcts9i5wPrLcRVWlgsN9b79jfAwoI4qpMjXrqEMRFqsNydtFTrldmp+E79MyxPGjYQTwSt5wqSrVIV+MTBcA993LG78biMV/9kKTceiwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748453083; c=relaxed/simple;
-	bh=xl+HiA5fKcIkxj9tC9RYJv/z6ok1+kvXmKS4mrZe1yQ=;
+	s=arc-20240116; t=1748453247; c=relaxed/simple;
+	bh=BvuHSqastd/tLDidor2pHbxYqt/EefP7zS28DYrkHP4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K/7b5z233U5Tt592hNx5y2EulxNz59FeMLVtQRCDEKx8ssBNU5FLhRwB0KXV8T6U4uPy+DoCnHB03dT/BTa5kN2wYML9xRLDqgS53GwSY6LaN5ijPGr3FAiuk2+Yk6AB969rNOPYpWVmNI19CIlt6IW2WePd1K2I8KJ/w6b52Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kQGDWWY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07719C4CEED;
-	Wed, 28 May 2025 17:24:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=M80xBlYHU/rt8/ElPIBSbOujqg8WgeGRUQefJs5timkVIBEq0eAd2c7k05sl+X33LwiMcQGUqPT/yUQ3j09SwGQIqwOQY5uwsmjrHKDd8VBdJKA/juCfUgaQkxFRXIYxg87Hq+WyuUouNE6MXI5o1PetnW7DH2WI1A+xSwiiJmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AerQ9T1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B6DC4CEE3;
+	Wed, 28 May 2025 17:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748453082;
-	bh=xl+HiA5fKcIkxj9tC9RYJv/z6ok1+kvXmKS4mrZe1yQ=;
+	s=k20201202; t=1748453247;
+	bh=BvuHSqastd/tLDidor2pHbxYqt/EefP7zS28DYrkHP4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kQGDWWY4RxXpI1BJNG3aGyloC7hTGfN72V52PM8GHltRqJcyj3kH2JlCT0ocipFXM
-	 gYawpFMlZwcpPMnN2awtU+odn01+CYDC/TfVacqWqvDrGeImfGEMd1a2VcAtkkTr+1
-	 PWgxHD4JUWE2Ngzsu7yeipX2hr90I81H3Kxf5jnLyO5UmkrpGdltIXqJvGITFz8pKu
-	 rloqohx8uszXcdHIYJR4F8QXX6bLRVBblNBgPuT7F57aNecC0agUmrlqHG3f45J9xw
-	 4Pd1F1nDW4QSDPngOLDYzHTpNcfsaTxvwbikvscuRi4lsYDhmCrbaghoIKE5vr8NFj
-	 L2jYeoGheanBw==
-Date: Wed, 28 May 2025 20:24:35 +0300
+	b=AerQ9T1ac0tlxfxcul8JTWvqk40fxhxUYpFoH+o4D07uPLYJYadzp7VPL/u9ikHAN
+	 +ihvq98iO93/HZ3oz71vrJLfgCt/Q9B6izW9boUlpn2PXFDF6b7KplO5psqaO5FuU+
+	 AkpqQCgrtAtHlONXpnG+rUuFXoxZpJhLg1yp5zgx7hROHWO+kgysaMQsU5muA0WFJG
+	 jV9MvBPQbxt6xsGRqN5LMe3v8HfqwwainaBC4mE/GNb6ZmemYd8OKXL6s8UvjUJQ51
+	 aD8rdhXv9XEA8sFOtOXv+xQ7K0XZTVVpUYnpZjwiLMwJRsHXcP75UDgGyy8h2uhshg
+	 MJ8fLFYcf3lWQ==
+Date: Wed, 28 May 2025 20:27:19 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org, xin@zytor.com,
+To: Juergen Gross <jgross@suse.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, xin@zytor.com,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 3/3] x86/alternative: make kernel ITS thunks read-only
-Message-ID: <aDdG09zhIddI6Wty@kernel.org>
+Subject: Re: [PATCH 1/3] x86/execmem: don't use PAGE_KERNEL protection for
+ code pages
+Message-ID: <aDdHdwf8REvdu5FF@kernel.org>
 References: <20250528123557.12847-1-jgross@suse.com>
- <20250528123557.12847-4-jgross@suse.com>
- <20250528131052.GZ39944@noisy.programming.kicks-ass.net>
- <044f0048-95bb-4822-978e-a23528f3891f@suse.com>
- <20250528132231.GB39944@noisy.programming.kicks-ass.net>
- <7c8bf4f5-29a0-4147-b31a-5e420b11468e@suse.com>
- <20250528155821.GD39944@noisy.programming.kicks-ass.net>
+ <20250528123557.12847-2-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250528155821.GD39944@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250528123557.12847-2-jgross@suse.com>
 
-On Wed, May 28, 2025 at 05:58:21PM +0200, Peter Zijlstra wrote:
-> On Wed, May 28, 2025 at 03:30:33PM +0200, Jürgen Groß wrote:
+On Wed, May 28, 2025 at 02:35:55PM +0200, Juergen Gross wrote:
+> In case X86_FEATURE_PSE isn't available (e.g. when running as a Xen
+> PV guest), execmem_arch_setup() will fall back to use PAGE_KERNEL
+> protection for the EXECMEM_MODULE_TEXT range.
 > 
-> > Have a look at its_fini_mod().
+> This will result in attempts to execute code with the NX bit set in
+> case of ITS mitigation being applied.
 > 
-> Oh, that's what you mean. But this still isn't very nice, you now have
-> restore_rox() without make_temp_rw(), which was the intended usage
-> pattern.
+> Avoid this problem by using PAGE_KERNEL_EXEC protection instead,
+> which will not set the NX bit.
 > 
-> Bah, I hate how execmem works different for !PSE, Mike, you see a sane
-> way to fix this?
-
-Not really :(
-
-But just resetting permissions in the end like you did makes perfect sense
-to me. It's like STRICT_MODULE_RWX, somebody has to set the pages to ROX at
-some point and running execmem_restore_rox() on something that was already
-ROX won't cost much, set_memory will bail out early.
-
-> Anyway, if we have to do something like this, then I would prefer it
-> shaped something like so:
-> 
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Xin Li <xin@zytor.com>
+> Fixes: 5185e7f9f3bd ("x86/module: enable ROX caches for module text on 64 bit")
+> Signed-off-by: Juergen Gross <jgross@suse.com>
 > ---
-> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> index ecfe7b497cad..33d4d139cb50 100644
-> --- a/arch/x86/kernel/alternative.c
-> +++ b/arch/x86/kernel/alternative.c
-> @@ -111,9 +111,8 @@ static bool cfi_paranoid __ro_after_init;
->  
->  #ifdef CONFIG_MITIGATION_ITS
->  
-> -#ifdef CONFIG_MODULES
->  static struct module *its_mod;
-> -#endif
-> +static struct its_array its_pages;
->  static void *its_page;
->  static unsigned int its_offset;
->  
-> @@ -151,68 +150,78 @@ static void *its_init_thunk(void *thunk, int reg)
->  	return thunk + offset;
->  }
->  
-> -#ifdef CONFIG_MODULES
->  void its_init_mod(struct module *mod)
->  {
->  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
->  		return;
->  
-> -	mutex_lock(&text_mutex);
-> -	its_mod = mod;
-> -	its_page = NULL;
-> +	if (mod) {
-> +		mutex_lock(&text_mutex);
-> +		its_mod = mod;
-> +		its_page = NULL;
-> +	}
->  }
->  
->  void its_fini_mod(struct module *mod)
->  {
-> +	struct its_array *pages = &its_pages;
-> +
->  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
->  		return;
->  
->  	WARN_ON_ONCE(its_mod != mod);
->  
-> -	its_mod = NULL;
-> -	its_page = NULL;
-> -	mutex_unlock(&text_mutex);
-> +	if (mod) {
-> +		pages = &mod->arch.its_pages;
-> +		its_mod = NULL;
-> +		its_page = NULL;
-> +		mutex_unlock(&text_mutex);
-> +	}
->  
-> -	for (int i = 0; i < mod->its_num_pages; i++) {
-> -		void *page = mod->its_page_array[i];
-> +	for (int i = 0; i < pages->num; i++) {
-> +		void *page = pages->pages[i];
->  		execmem_restore_rox(page, PAGE_SIZE);
+>  arch/x86/mm/init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+> index 7456df985d96..f5012ae31d8b 100644
+> --- a/arch/x86/mm/init.c
+> +++ b/arch/x86/mm/init.c
+> @@ -1089,7 +1089,7 @@ struct execmem_info __init *execmem_arch_setup(void)
+>  		pgprot = PAGE_KERNEL_ROX;
+>  		flags = EXECMEM_KASAN_SHADOW | EXECMEM_ROX_CACHE;
+>  	} else {
+> -		pgprot = PAGE_KERNEL;
+> +		pgprot = PAGE_KERNEL_EXEC;
+
+Please don't. Everything except ITS can work with PAGE_KENREL so the fix
+should be on ITS side. 
+
+>  		flags = EXECMEM_KASAN_SHADOW;
 >  	}
-> +
-> +	if (!mod)
-> +		kfree(pages->pages);
->  }
 >  
->  void its_free_mod(struct module *mod)
->  {
-> +	struct its_array *pages = &its_pages;
-> +
->  	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
->  		return;
->  
-> -	for (int i = 0; i < mod->its_num_pages; i++) {
-> -		void *page = mod->its_page_array[i];
-> +	if (mod)
-> +		pages = &mod->arch.its_pages;
-> +
-> +	for (int i = 0; i < pages->num; i++) {
-> +		void *page = pages->pages[i];
->  		execmem_free(page);
->  	}
-> -	kfree(mod->its_page_array);
-> +	kfree(pages->pages);
->  }
-> -#endif /* CONFIG_MODULES */
->  
->  static void *its_alloc(void)
->  {
-> -	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-> +	struct its_array *pages = &its_pages;
-> +	void *tmp;
->  
-> +	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
->  	if (!page)
->  		return NULL;
->  
-> -#ifdef CONFIG_MODULES
-> -	if (its_mod) {
-> -		void *tmp = krealloc(its_mod->its_page_array,
-> -				     (its_mod->its_num_pages+1) * sizeof(void *),
-> -				     GFP_KERNEL);
-> -		if (!tmp)
-> -			return NULL;
-> +	tmp = krealloc(pages->pages, (pages->num + 1) * sizeof(void *), GFP_KERNEL);
-> +	if (!tmp)
-> +		return NULL;
->  
-> -		its_mod->its_page_array = tmp;
-> -		its_mod->its_page_array[its_mod->its_num_pages++] = page;
-> +	pages->pages = tmp;
-> +	pages->pages[pages->num++] = page;
->  
-> +	if (its_mod)
->  		execmem_make_temp_rw(page, PAGE_SIZE);
-> -	}
-> -#endif /* CONFIG_MODULES */
->  
->  	return no_free_ptr(page);
->  }
-> @@ -2338,6 +2347,8 @@ void __init alternative_instructions(void)
->  	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
->  	apply_returns(__return_sites, __return_sites_end);
->  
-> +	its_fini_mod(NULL);
-> +
->  	/*
->  	 * Adjust all CALL instructions to point to func()-10, including
->  	 * those in .altinstr_replacement.
+> -- 
+> 2.43.0
+> 
 
 -- 
 Sincerely yours,
