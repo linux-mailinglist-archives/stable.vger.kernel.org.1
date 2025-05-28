@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-148041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B71BAC73F3
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 00:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B546EAC73F4
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 00:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5F5C1C03FCF
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 22:26:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A441881733
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 22:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB60221FA8;
-	Wed, 28 May 2025 22:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7C1221FCD;
+	Wed, 28 May 2025 22:26:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA837221F2F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B66221F3C;
 	Wed, 28 May 2025 22:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748471188; cv=none; b=aOMIk/UWDOGD4L6tjQKQtlCWgEF0llxZzsM/WrKQiWn5oEUkAEsLi8h/aVaPbLr9zQdKLssaBexrLWmzzsMjselruFqm3PfikrA+Asad6Y1nIC5/J6KTBr4WQIncnjpPXFodbYElAMePmJpQ1DU7kXEbyQnE+H7yVW8/Zwcxk0Q=
+	t=1748471188; cv=none; b=QGaE3rwsn0EUmrkY5LmNJuQ96Ss2VP3Y6OQh3eReBipKq2GAlm054KHbFqI7OsdBCde+YPhWRKagxG08UE7JYK6gztDeCC7R0aw0LfHxlKe+T3TIzfzvC8an5l+ub1tF5RugFQAVmnFLICekd1zoVUJZmXRlskC/HvhBIxZfIfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1748471188; c=relaxed/simple;
-	bh=Z1LoGT2fj+Am0RFD3ZLdN63XlcYp44zE9v6DWmXxakk=;
+	bh=YG6aWHkolcuSORnsgQ8gwBXuWncYIMPqoIwhUtVif6M=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=ntSU5EIO6oDWHJLDVir9ILYzFW+56UMfL4Wx0zj0EYSfxdimAC+6k+0FquJGHJi1TxclKkmO3lqfLMNPXK+xt/Q9+O71mBn9ffag2mq6aNTD6SmA7nYv059xHyP3KwWSI0/IVxBd/2muTyyH/yyFszPghM0Zj57ttG17P24txQ0=
+	 Content-Type; b=D/kwLuaWNZ+OSebEaXoDOiUWkhVdSDBS9eUS0jAKL9c0DSchIBN7+kn3XKm1Plwcuwn5VptcL30yA1OQNiLv75jpZ6xhTVTvhYXdi38Fz75SDozL95JJdgphm39T37+aQ9Je8Y6+4yLI+Dw1ebxFsBqpneuqsz/KgB+Nks/5SaA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A087C4CEED;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C14C4CEF4;
 	Wed, 28 May 2025 22:26:28 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.98.2)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1uKPFB-0000000Aoy2-2MJt;
+	id 1uKPFB-0000000AoyW-34FL;
 	Wed, 28 May 2025 18:27:29 -0400
-Message-ID: <20250528222729.410782764@goodmis.org>
+Message-ID: <20250528222729.583313601@goodmis.org>
 User-Agent: quilt/0.68
-Date: Wed, 28 May 2025 18:27:05 -0400
+Date: Wed, 28 May 2025 18:27:06 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -44,7 +44,7 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org,
  Vincent Donnefort <vdonnefort@google.com>
-Subject: [for-next][PATCH 01/10] ring-buffer: Move cpus_read_lock() outside of buffer->mutex
+Subject: [for-next][PATCH 02/10] ring-buffer: Do not trigger WARN_ON() due to a commit_overrun
 References: <20250528222704.623477429@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -56,238 +56,143 @@ Content-Type: text/plain; charset=UTF-8
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-Running a modified trace-cmd record --nosplice where it does a mmap of the
-ring buffer when '--nosplice' is set, caused the following lockdep splat:
+When reading a memory mapped buffer the reader page is just swapped out
+with the last page written in the write buffer. If the reader page is the
+same as the commit buffer (the buffer that is currently being written to)
+it was assumed that it should never have missed events. If it does, it
+triggers a WARN_ON_ONCE().
 
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.15.0-rc7-test-00002-gfb7d03d8a82f #551 Not tainted
- ------------------------------------------------------
- trace-cmd/1113 is trying to acquire lock:
- ffff888100062888 (&buffer->mutex){+.+.}-{4:4}, at: ring_buffer_map+0x11c/0xe70
+But there just happens to be one scenario where this can legitimately
+happen. That is on a commit_overrun. A commit overrun is when an interrupt
+preempts an event being written to the buffer and then the interrupt adds
+so many new events that it fills and wraps the buffer back to the commit.
+Any new events would then be dropped and be reported as "missed_events".
 
- but task is already holding lock:
- ffff888100a5f9f8 (&cpu_buffer->mapping_lock){+.+.}-{4:4}, at: ring_buffer_map+0xcf/0xe70
+In this case, the next page to read is the commit buffer and after the
+swap of the reader page, the reader page will be the commit buffer, but
+this time there will be missed events and this triggers the following
+warning:
 
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #5 (&cpu_buffer->mapping_lock){+.+.}-{4:4}:
-        __mutex_lock+0x192/0x18c0
-        ring_buffer_map+0xcf/0xe70
-        tracing_buffers_mmap+0x1c4/0x3b0
-        __mmap_region+0xd8d/0x1f70
-        do_mmap+0x9d7/0x1010
-        vm_mmap_pgoff+0x20b/0x390
-        ksys_mmap_pgoff+0x2e9/0x440
-        do_syscall_64+0x79/0x1c0
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #4 (&mm->mmap_lock){++++}-{4:4}:
-        __might_fault+0xa5/0x110
-        _copy_to_user+0x22/0x80
-        _perf_ioctl+0x61b/0x1b70
-        perf_ioctl+0x62/0x90
-        __x64_sys_ioctl+0x134/0x190
-        do_syscall_64+0x79/0x1c0
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #3 (&cpuctx_mutex){+.+.}-{4:4}:
-        __mutex_lock+0x192/0x18c0
-        perf_event_init_cpu+0x325/0x7c0
-        perf_event_init+0x52a/0x5b0
-        start_kernel+0x263/0x3e0
-        x86_64_start_reservations+0x24/0x30
-        x86_64_start_kernel+0x95/0xa0
-        common_startup_64+0x13e/0x141
-
- -> #2 (pmus_lock){+.+.}-{4:4}:
-        __mutex_lock+0x192/0x18c0
-        perf_event_init_cpu+0xb7/0x7c0
-        cpuhp_invoke_callback+0x2c0/0x1030
-        __cpuhp_invoke_callback_range+0xbf/0x1f0
-        _cpu_up+0x2e7/0x690
-        cpu_up+0x117/0x170
-        cpuhp_bringup_mask+0xd5/0x120
-        bringup_nonboot_cpus+0x13d/0x170
-        smp_init+0x2b/0xf0
-        kernel_init_freeable+0x441/0x6d0
-        kernel_init+0x1e/0x160
-        ret_from_fork+0x34/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #1 (cpu_hotplug_lock){++++}-{0:0}:
-        cpus_read_lock+0x2a/0xd0
-        ring_buffer_resize+0x610/0x14e0
-        __tracing_resize_ring_buffer.part.0+0x42/0x120
-        tracing_set_tracer+0x7bd/0xa80
-        tracing_set_trace_write+0x132/0x1e0
-        vfs_write+0x21c/0xe80
-        ksys_write+0xf9/0x1c0
-        do_syscall_64+0x79/0x1c0
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #0 (&buffer->mutex){+.+.}-{4:4}:
-        __lock_acquire+0x1405/0x2210
-        lock_acquire+0x174/0x310
-        __mutex_lock+0x192/0x18c0
-        ring_buffer_map+0x11c/0xe70
-        tracing_buffers_mmap+0x1c4/0x3b0
-        __mmap_region+0xd8d/0x1f70
-        do_mmap+0x9d7/0x1010
-        vm_mmap_pgoff+0x20b/0x390
-        ksys_mmap_pgoff+0x2e9/0x440
-        do_syscall_64+0x79/0x1c0
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- other info that might help us debug this:
-
- Chain exists of:
-   &buffer->mutex --> &mm->mmap_lock --> &cpu_buffer->mapping_lock
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&cpu_buffer->mapping_lock);
-                                lock(&mm->mmap_lock);
-                                lock(&cpu_buffer->mapping_lock);
-   lock(&buffer->mutex);
-
-  *** DEADLOCK ***
-
- 2 locks held by trace-cmd/1113:
-  #0: ffff888106b847e0 (&mm->mmap_lock){++++}-{4:4}, at: vm_mmap_pgoff+0x192/0x390
-  #1: ffff888100a5f9f8 (&cpu_buffer->mapping_lock){+.+.}-{4:4}, at: ring_buffer_map+0xcf/0xe70
-
- stack backtrace:
- CPU: 5 UID: 0 PID: 1113 Comm: trace-cmd Not tainted 6.15.0-rc7-test-00002-gfb7d03d8a82f #551 PREEMPT
+ ------------[ cut here ]------------
+ WARNING: CPU: 2 PID: 1127 at kernel/trace/ring_buffer.c:7357 ring_buffer_map_get_reader+0x49a/0x780
+ Modules linked in: kvm_intel kvm irqbypass
+ CPU: 2 UID: 0 PID: 1127 Comm: trace-cmd Not tainted 6.15.0-rc7-test-00004-g478bc2824b45-dirty #564 PREEMPT
  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+ RIP: 0010:ring_buffer_map_get_reader+0x49a/0x780
+ Code: 00 00 00 48 89 fe 48 c1 ee 03 80 3c 2e 00 0f 85 ec 01 00 00 4d 3b a6 a8 00 00 00 0f 85 8a fd ff ff 48 85 c0 0f 84 55 fe ff ff <0f> 0b e9 4e fe ff ff be 08 00 00 00 4c 89 54 24 58 48 89 54 24 50
+ RSP: 0018:ffff888121787dc0 EFLAGS: 00010002
+ RAX: 00000000000006a2 RBX: ffff888100062800 RCX: ffffffff8190cb49
+ RDX: ffff888126934c00 RSI: 1ffff11020200a15 RDI: ffff8881010050a8
+ RBP: dffffc0000000000 R08: 0000000000000000 R09: ffffed1024d26982
+ R10: ffff888126934c17 R11: ffff8881010050a8 R12: ffff888126934c00
+ R13: ffff8881010050b8 R14: ffff888101005000 R15: ffff888126930008
+ FS:  00007f95c8cd7540(0000) GS:ffff8882b576e000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f95c8de4dc0 CR3: 0000000128452002 CR4: 0000000000172ef0
  Call Trace:
   <TASK>
-  dump_stack_lvl+0x6e/0xa0
-  print_circular_bug.cold+0x178/0x1be
-  check_noncircular+0x146/0x160
-  __lock_acquire+0x1405/0x2210
-  lock_acquire+0x174/0x310
-  ? ring_buffer_map+0x11c/0xe70
-  ? ring_buffer_map+0x11c/0xe70
-  ? __mutex_lock+0x169/0x18c0
-  __mutex_lock+0x192/0x18c0
-  ? ring_buffer_map+0x11c/0xe70
-  ? ring_buffer_map+0x11c/0xe70
-  ? function_trace_call+0x296/0x370
-  ? __pfx___mutex_lock+0x10/0x10
-  ? __pfx_function_trace_call+0x10/0x10
-  ? __pfx___mutex_lock+0x10/0x10
-  ? _raw_spin_unlock+0x2d/0x50
-  ? ring_buffer_map+0x11c/0xe70
-  ? ring_buffer_map+0x11c/0xe70
-  ? __mutex_lock+0x5/0x18c0
-  ring_buffer_map+0x11c/0xe70
-  ? do_raw_spin_lock+0x12d/0x270
-  ? find_held_lock+0x2b/0x80
-  ? _raw_spin_unlock+0x2d/0x50
-  ? rcu_is_watching+0x15/0xb0
-  ? _raw_spin_unlock+0x2d/0x50
-  ? trace_preempt_on+0xd0/0x110
-  tracing_buffers_mmap+0x1c4/0x3b0
-  __mmap_region+0xd8d/0x1f70
-  ? ring_buffer_lock_reserve+0x99/0xff0
-  ? __pfx___mmap_region+0x10/0x10
-  ? ring_buffer_lock_reserve+0x99/0xff0
-  ? __pfx_ring_buffer_lock_reserve+0x10/0x10
-  ? __pfx_ring_buffer_lock_reserve+0x10/0x10
-  ? bpf_lsm_mmap_addr+0x4/0x10
-  ? security_mmap_addr+0x46/0xd0
-  ? lock_is_held_type+0xd9/0x130
-  do_mmap+0x9d7/0x1010
-  ? 0xffffffffc0370095
-  ? __pfx_do_mmap+0x10/0x10
-  vm_mmap_pgoff+0x20b/0x390
-  ? __pfx_vm_mmap_pgoff+0x10/0x10
-  ? 0xffffffffc0370095
-  ksys_mmap_pgoff+0x2e9/0x440
+  ? __pfx_ring_buffer_map_get_reader+0x10/0x10
+  tracing_buffers_ioctl+0x283/0x370
+  __x64_sys_ioctl+0x134/0x190
   do_syscall_64+0x79/0x1c0
   entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7fb0963a7de2
- Code: 00 00 00 0f 1f 44 00 00 41 f7 c1 ff 0f 00 00 75 27 55 89 cd 53 48 89 fb 48 85 ff 74 3b 41 89 ea 48 89 df b8 09 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 76 5b 5d c3 0f 1f 00 48 8b 05 e1 9f 0d 00 64
- RSP: 002b:00007ffdcc8fb878 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
- RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb0963a7de2
- RDX: 0000000000000001 RSI: 0000000000001000 RDI: 0000000000000000
- RBP: 0000000000000001 R08: 0000000000000006 R09: 0000000000000000
- R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
- R13: 00007ffdcc8fbe68 R14: 00007fb096628000 R15: 00005633e01a5c90
+ RIP: 0033:0x7f95c8de48db
+ Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
+ RSP: 002b:00007ffe037ba110 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+ RAX: ffffffffffffffda RBX: 00007ffe037bb2b0 RCX: 00007f95c8de48db
+ RDX: 0000000000000000 RSI: 0000000000005220 RDI: 0000000000000006
+ RBP: 00007ffe037ba180 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+ R13: 00007ffe037bb6f8 R14: 00007f95c9065000 R15: 00005575c7492c90
   </TASK>
+ irq event stamp: 5080
+ hardirqs last  enabled at (5079): [<ffffffff83e0adb0>] _raw_spin_unlock_irqrestore+0x50/0x70
+ hardirqs last disabled at (5080): [<ffffffff83e0aa83>] _raw_spin_lock_irqsave+0x63/0x70
+ softirqs last  enabled at (4182): [<ffffffff81516122>] handle_softirqs+0x552/0x710
+ softirqs last disabled at (4159): [<ffffffff815163f7>] __irq_exit_rcu+0x107/0x210
+ ---[ end trace 0000000000000000 ]---
 
-The issue is that cpus_read_lock() is taken within buffer->mutex. The
-memory mapped pages are taken with the mmap_lock held. The buffer->mutex
-is taken within the cpu_buffer->mapping_lock. There's quite a chain with
-all these locks, where the deadlock can be fixed by moving the
-cpus_read_lock() outside the taking of the buffer->mutex.
+The above was triggered by running on a kernel with both lockdep and KASAN
+as well as kmemleak enabled and executing the following command:
+
+ # perf record -o perf-test.dat -a -- trace-cmd record --nosplice  -e all -p function hackbench 50
+
+With perf interjecting a lot of interrupts and trace-cmd enabling all
+events as well as function tracing, with lockdep, KASAN and kmemleak
+enabled, it could cause an interrupt preempting an event being written to
+add enough events to wrap the buffer. trace-cmd was modified to have
+--nosplice use mmap instead of reading the buffer.
+
+The way to differentiate this case from the normal case of there only
+being one page written to where the swap of the reader page received that
+one page (which is the commit page), check if the tail page is on the
+reader page. The difference between the commit page and the tail page is
+that the tail page is where new writes go to, and the commit page holds
+the first write that hasn't been committed yet. In the case of an
+interrupt preempting the write of an event and filling the buffer, it
+would move the tail page but not the commit page.
+
+Have the warning only trigger if the tail page is also on the reader page,
+and also print out the number of events dropped by a commit overrun as
+that can not yet be safely added to the page so that the reader can see
+there were events dropped.
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Vincent Donnefort <vdonnefort@google.com>
-Link: https://lore.kernel.org/20250527105820.0f45d045@gandalf.local.home
-Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
+Link: https://lore.kernel.org/20250528121555.2066527e@gandalf.local.home
+Fixes: fe832be05a8ee ("ring-buffer: Have mmapped ring buffer keep track of missed events")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/ring_buffer.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ kernel/trace/ring_buffer.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 3f9bf562beea..ca1a8e706004 100644
+index ca1a8e706004..683aa57870fe 100644
 --- a/kernel/trace/ring_buffer.c
 +++ b/kernel/trace/ring_buffer.c
-@@ -2849,6 +2849,12 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 	if (nr_pages < 2)
- 		nr_pages = 2;
+@@ -7285,8 +7285,8 @@ int ring_buffer_map_get_reader(struct trace_buffer *buffer, int cpu)
+ 	/* Check if any events were dropped */
+ 	missed_events = cpu_buffer->lost_events;
  
-+	/*
-+	 * Keep CPUs from coming online while resizing to synchronize
-+	 * with new per CPU buffers being created.
-+	 */
-+	guard(cpus_read_lock)();
-+
- 	/* prevent another thread from changing buffer sizes */
- 	mutex_lock(&buffer->mutex);
- 	atomic_inc(&buffer->resizing);
-@@ -2893,7 +2899,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 			cond_resched();
+-	if (cpu_buffer->reader_page != cpu_buffer->commit_page) {
+-		if (missed_events) {
++	if (missed_events) {
++		if (cpu_buffer->reader_page != cpu_buffer->commit_page) {
+ 			struct buffer_data_page *bpage = reader->page;
+ 			unsigned int commit;
+ 			/*
+@@ -7307,13 +7307,23 @@ int ring_buffer_map_get_reader(struct trace_buffer *buffer, int cpu)
+ 				local_add(RB_MISSED_STORED, &bpage->commit);
+ 			}
+ 			local_add(RB_MISSED_EVENTS, &bpage->commit);
++		} else if (!WARN_ONCE(cpu_buffer->reader_page == cpu_buffer->tail_page,
++				      "Reader on commit with %ld missed events",
++				      missed_events)) {
++			/*
++			 * There shouldn't be any missed events if the tail_page
++			 * is on the reader page. But if the tail page is not on the
++			 * reader page and the commit_page is, that would mean that
++			 * there's a commit_overrun (an interrupt preempted an
++			 * addition of an event and then filled the buffer
++			 * with new events). In this case it's not an
++			 * error, but it should still be reported.
++			 *
++			 * TODO: Add missed events to the page for user space to know.
++			 */
++			pr_info("Ring buffer [%d] commit overrun lost %ld events at timestamp:%lld\n",
++				cpu, missed_events, cpu_buffer->reader_page->page->time_stamp);
  		}
- 
--		cpus_read_lock();
- 		/*
- 		 * Fire off all the required work handlers
- 		 * We can't schedule on offline CPUs, but it's not necessary
-@@ -2933,7 +2938,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 			cpu_buffer->nr_pages_to_update = 0;
- 		}
- 
--		cpus_read_unlock();
- 	} else {
- 		cpu_buffer = buffer->buffers[cpu_id];
- 
-@@ -2961,8 +2965,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 			goto out_err;
- 		}
- 
--		cpus_read_lock();
--
- 		/* Can't run something on an offline CPU. */
- 		if (!cpu_online(cpu_id))
- 			rb_update_pages(cpu_buffer);
-@@ -2981,7 +2983,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 		}
- 
- 		cpu_buffer->nr_pages_to_update = 0;
--		cpus_read_unlock();
+-	} else {
+-		/*
+-		 * There really shouldn't be any missed events if the commit
+-		 * is on the reader page.
+-		 */
+-		WARN_ON_ONCE(missed_events);
  	}
  
-  out:
+ 	cpu_buffer->lost_events = 0;
 -- 
 2.47.2
 
