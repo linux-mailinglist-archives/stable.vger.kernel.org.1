@@ -1,158 +1,295 @@
-Return-Path: <stable+bounces-148040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349A3AC7388
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 00:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B71BAC73F3
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 00:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6CC1C038AD
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 22:06:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5F5C1C03FCF
+	for <lists+stable@lfdr.de>; Wed, 28 May 2025 22:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4433823D2B5;
-	Wed, 28 May 2025 21:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vsqm8+T9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB60221FA8;
+	Wed, 28 May 2025 22:26:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6E1220F3A;
-	Wed, 28 May 2025 21:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA837221F2F;
+	Wed, 28 May 2025 22:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748469412; cv=none; b=JIlPwkt1wqOVSeQfdU1yVSF9QbA1g5dC6iCXD82pKOveT0K40LCDWfPAIgr7n1Cjn3Zf6YJfYkBQl8e17scwrO2jYx24Bjr4c74xRYbTqK29Pf6paec5/DhuiFet0S0esrJkZVRCu82Hb3tmuDNjyReBmhFXhBN5EVRnQ3zc6FI=
+	t=1748471188; cv=none; b=aOMIk/UWDOGD4L6tjQKQtlCWgEF0llxZzsM/WrKQiWn5oEUkAEsLi8h/aVaPbLr9zQdKLssaBexrLWmzzsMjselruFqm3PfikrA+Asad6Y1nIC5/J6KTBr4WQIncnjpPXFodbYElAMePmJpQ1DU7kXEbyQnE+H7yVW8/Zwcxk0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748469412; c=relaxed/simple;
-	bh=6kk1UuDHJndLmu4iy7P8ROiftYzDAghfNTtHlwXcPF0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=OESaeRU+s93RB9AaE5JHVkkvS2Y0bYlBuV/ZZl2SpW/05ziFsWQQ5VfpF1KEVIxmM8dfoHIrXrK2D2Oaw+oHE7365lpcH9EHWDnSc6pr41nxXtrowcInZIRv4MuD+H/XUshJ+oX9/e69fStt1iDjEvHNgvwdRSZV5XG5SoAi1+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vsqm8+T9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04073C4CEE7;
-	Wed, 28 May 2025 21:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748469411;
-	bh=6kk1UuDHJndLmu4iy7P8ROiftYzDAghfNTtHlwXcPF0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Vsqm8+T9FzN3fDAsOKHhfP9053du97kFAngc3z5uW1+UByAkjDHfqUlcjII6YW49H
-	 l3HhcgPQA/KJ3XTs9t4cGsEaKpmeyxOtlfE7888fE84SXpv2yKLehQQfCRAOQxAjly
-	 s9EKr6aUgsa3kYOyhrNK2XaEpEpKGCV/tJN1+HevSQ7cQk0OeaYJoMAXRFE8rbGI/h
-	 rq6cfLCBUpxQZjslXqw1ZxTTR4xNU1hsjLXYEw24XwLu01P4JFU2CCkqB/bBcKll2X
-	 Uxkc/pgBgpuOE4gv7nUYDyZYG9JO8mffmEZsnhhnnMmkuIuvJz+gxGvpnCkc2+9d/H
-	 LlJAaK4iqZJnA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4] fs/filesystems: Fix potential unsigned integer underflow in fs_name()
-Date: Wed, 28 May 2025 17:56:49 -0400
-Message-Id: <20250528215649.1984033-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1748471188; c=relaxed/simple;
+	bh=Z1LoGT2fj+Am0RFD3ZLdN63XlcYp44zE9v6DWmXxakk=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=ntSU5EIO6oDWHJLDVir9ILYzFW+56UMfL4Wx0zj0EYSfxdimAC+6k+0FquJGHJi1TxclKkmO3lqfLMNPXK+xt/Q9+O71mBn9ffag2mq6aNTD6SmA7nYv059xHyP3KwWSI0/IVxBd/2muTyyH/yyFszPghM0Zj57ttG17P24txQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A087C4CEED;
+	Wed, 28 May 2025 22:26:28 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98.2)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1uKPFB-0000000Aoy2-2MJt;
+	Wed, 28 May 2025 18:27:29 -0400
+Message-ID: <20250528222729.410782764@goodmis.org>
+User-Agent: quilt/0.68
+Date: Wed, 28 May 2025 18:27:05 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ Vincent Donnefort <vdonnefort@google.com>
+Subject: [for-next][PATCH 01/10] ring-buffer: Move cpus_read_lock() outside of buffer->mutex
+References: <20250528222704.623477429@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 1363c134ade81e425873b410566e957fecebb261 ]
+Running a modified trace-cmd record --nosplice where it does a mmap of the
+ring buffer when '--nosplice' is set, caused the following lockdep splat:
 
-fs_name() has @index as unsigned int, so there is underflow risk for
-operation '@index--'.
+ ======================================================
+ WARNING: possible circular locking dependency detected
+ 6.15.0-rc7-test-00002-gfb7d03d8a82f #551 Not tainted
+ ------------------------------------------------------
+ trace-cmd/1113 is trying to acquire lock:
+ ffff888100062888 (&buffer->mutex){+.+.}-{4:4}, at: ring_buffer_map+0x11c/0xe70
 
-Fix by breaking the for loop when '@index == 0' which is also more proper
-than '@index <= 0' for unsigned integer comparison.
+ but task is already holding lock:
+ ffff888100a5f9f8 (&cpu_buffer->mapping_lock){+.+.}-{4:4}, at: ring_buffer_map+0xcf/0xe70
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/20250410-fix_fs-v1-1-7c14ccc8ebaa@quicinc.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ which lock already depends on the new lock.
+
+ the existing dependency chain (in reverse order) is:
+
+ -> #5 (&cpu_buffer->mapping_lock){+.+.}-{4:4}:
+        __mutex_lock+0x192/0x18c0
+        ring_buffer_map+0xcf/0xe70
+        tracing_buffers_mmap+0x1c4/0x3b0
+        __mmap_region+0xd8d/0x1f70
+        do_mmap+0x9d7/0x1010
+        vm_mmap_pgoff+0x20b/0x390
+        ksys_mmap_pgoff+0x2e9/0x440
+        do_syscall_64+0x79/0x1c0
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ -> #4 (&mm->mmap_lock){++++}-{4:4}:
+        __might_fault+0xa5/0x110
+        _copy_to_user+0x22/0x80
+        _perf_ioctl+0x61b/0x1b70
+        perf_ioctl+0x62/0x90
+        __x64_sys_ioctl+0x134/0x190
+        do_syscall_64+0x79/0x1c0
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ -> #3 (&cpuctx_mutex){+.+.}-{4:4}:
+        __mutex_lock+0x192/0x18c0
+        perf_event_init_cpu+0x325/0x7c0
+        perf_event_init+0x52a/0x5b0
+        start_kernel+0x263/0x3e0
+        x86_64_start_reservations+0x24/0x30
+        x86_64_start_kernel+0x95/0xa0
+        common_startup_64+0x13e/0x141
+
+ -> #2 (pmus_lock){+.+.}-{4:4}:
+        __mutex_lock+0x192/0x18c0
+        perf_event_init_cpu+0xb7/0x7c0
+        cpuhp_invoke_callback+0x2c0/0x1030
+        __cpuhp_invoke_callback_range+0xbf/0x1f0
+        _cpu_up+0x2e7/0x690
+        cpu_up+0x117/0x170
+        cpuhp_bringup_mask+0xd5/0x120
+        bringup_nonboot_cpus+0x13d/0x170
+        smp_init+0x2b/0xf0
+        kernel_init_freeable+0x441/0x6d0
+        kernel_init+0x1e/0x160
+        ret_from_fork+0x34/0x70
+        ret_from_fork_asm+0x1a/0x30
+
+ -> #1 (cpu_hotplug_lock){++++}-{0:0}:
+        cpus_read_lock+0x2a/0xd0
+        ring_buffer_resize+0x610/0x14e0
+        __tracing_resize_ring_buffer.part.0+0x42/0x120
+        tracing_set_tracer+0x7bd/0xa80
+        tracing_set_trace_write+0x132/0x1e0
+        vfs_write+0x21c/0xe80
+        ksys_write+0xf9/0x1c0
+        do_syscall_64+0x79/0x1c0
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ -> #0 (&buffer->mutex){+.+.}-{4:4}:
+        __lock_acquire+0x1405/0x2210
+        lock_acquire+0x174/0x310
+        __mutex_lock+0x192/0x18c0
+        ring_buffer_map+0x11c/0xe70
+        tracing_buffers_mmap+0x1c4/0x3b0
+        __mmap_region+0xd8d/0x1f70
+        do_mmap+0x9d7/0x1010
+        vm_mmap_pgoff+0x20b/0x390
+        ksys_mmap_pgoff+0x2e9/0x440
+        do_syscall_64+0x79/0x1c0
+        entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ other info that might help us debug this:
+
+ Chain exists of:
+   &buffer->mutex --> &mm->mmap_lock --> &cpu_buffer->mapping_lock
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock(&cpu_buffer->mapping_lock);
+                                lock(&mm->mmap_lock);
+                                lock(&cpu_buffer->mapping_lock);
+   lock(&buffer->mutex);
+
+  *** DEADLOCK ***
+
+ 2 locks held by trace-cmd/1113:
+  #0: ffff888106b847e0 (&mm->mmap_lock){++++}-{4:4}, at: vm_mmap_pgoff+0x192/0x390
+  #1: ffff888100a5f9f8 (&cpu_buffer->mapping_lock){+.+.}-{4:4}, at: ring_buffer_map+0xcf/0xe70
+
+ stack backtrace:
+ CPU: 5 UID: 0 PID: 1113 Comm: trace-cmd Not tainted 6.15.0-rc7-test-00002-gfb7d03d8a82f #551 PREEMPT
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x6e/0xa0
+  print_circular_bug.cold+0x178/0x1be
+  check_noncircular+0x146/0x160
+  __lock_acquire+0x1405/0x2210
+  lock_acquire+0x174/0x310
+  ? ring_buffer_map+0x11c/0xe70
+  ? ring_buffer_map+0x11c/0xe70
+  ? __mutex_lock+0x169/0x18c0
+  __mutex_lock+0x192/0x18c0
+  ? ring_buffer_map+0x11c/0xe70
+  ? ring_buffer_map+0x11c/0xe70
+  ? function_trace_call+0x296/0x370
+  ? __pfx___mutex_lock+0x10/0x10
+  ? __pfx_function_trace_call+0x10/0x10
+  ? __pfx___mutex_lock+0x10/0x10
+  ? _raw_spin_unlock+0x2d/0x50
+  ? ring_buffer_map+0x11c/0xe70
+  ? ring_buffer_map+0x11c/0xe70
+  ? __mutex_lock+0x5/0x18c0
+  ring_buffer_map+0x11c/0xe70
+  ? do_raw_spin_lock+0x12d/0x270
+  ? find_held_lock+0x2b/0x80
+  ? _raw_spin_unlock+0x2d/0x50
+  ? rcu_is_watching+0x15/0xb0
+  ? _raw_spin_unlock+0x2d/0x50
+  ? trace_preempt_on+0xd0/0x110
+  tracing_buffers_mmap+0x1c4/0x3b0
+  __mmap_region+0xd8d/0x1f70
+  ? ring_buffer_lock_reserve+0x99/0xff0
+  ? __pfx___mmap_region+0x10/0x10
+  ? ring_buffer_lock_reserve+0x99/0xff0
+  ? __pfx_ring_buffer_lock_reserve+0x10/0x10
+  ? __pfx_ring_buffer_lock_reserve+0x10/0x10
+  ? bpf_lsm_mmap_addr+0x4/0x10
+  ? security_mmap_addr+0x46/0xd0
+  ? lock_is_held_type+0xd9/0x130
+  do_mmap+0x9d7/0x1010
+  ? 0xffffffffc0370095
+  ? __pfx_do_mmap+0x10/0x10
+  vm_mmap_pgoff+0x20b/0x390
+  ? __pfx_vm_mmap_pgoff+0x10/0x10
+  ? 0xffffffffc0370095
+  ksys_mmap_pgoff+0x2e9/0x440
+  do_syscall_64+0x79/0x1c0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7fb0963a7de2
+ Code: 00 00 00 0f 1f 44 00 00 41 f7 c1 ff 0f 00 00 75 27 55 89 cd 53 48 89 fb 48 85 ff 74 3b 41 89 ea 48 89 df b8 09 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 76 5b 5d c3 0f 1f 00 48 8b 05 e1 9f 0d 00 64
+ RSP: 002b:00007ffdcc8fb878 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
+ RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb0963a7de2
+ RDX: 0000000000000001 RSI: 0000000000001000 RDI: 0000000000000000
+ RBP: 0000000000000001 R08: 0000000000000006 R09: 0000000000000000
+ R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
+ R13: 00007ffdcc8fbe68 R14: 00007fb096628000 R15: 00005633e01a5c90
+  </TASK>
+
+The issue is that cpus_read_lock() is taken within buffer->mutex. The
+memory mapped pages are taken with the mmap_lock held. The buffer->mutex
+is taken within the cpu_buffer->mapping_lock. There's quite a chain with
+all these locks, where the deadlock can be fixed by moving the
+cpus_read_lock() outside the taking of the buffer->mutex.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Link: https://lore.kernel.org/20250527105820.0f45d045@gandalf.local.home
+Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
+ kernel/trace/ring_buffer.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-**YES** This commit should be backported to stable kernel trees.
-**Detailed Analysis:** **The Bug:** The `fs_name()` function at
-`fs/filesystems.c:156-174` has a critical unsigned integer underflow
-vulnerability. When the function receives `index=0` as a parameter, the
-loop `for (tmp = file_systems; tmp; tmp = tmp->next, index--)`
-decrements `index` from 0 to `UINT_MAX` (4294967295 on 32-bit systems),
-causing the condition `if (index <= 0 && try_module_get(tmp->owner))` to
-evaluate incorrectly. **The Fix:** The commit changes the logic from: -
-Old: `if (index <= 0 && try_module_get(tmp->owner))` - New: `if (index
-== 0) { if (try_module_get(tmp->owner)) res = 0; break; }` This prevents
-the unsigned integer from wrapping around and provides proper bounds
-checking. **Impact and Severity:** 1. **User-accessible vulnerability**:
-The `fs_name()` function is called through the `sysfs` system call
-(syscall #139) with option 2, making it directly accessible to userspace
-applications. 2. **Potential for exploitation**: An attacker could call
-`sysfs(2, 0, buffer)` to trigger the underflow, potentially causing: -
-Infinite loops in the filesystem list traversal - Unintended module
-reference acquisition - System instability or denial of service 3.
-**Core filesystem subsystem**: This affects the fundamental filesystem
-registration mechanism in the kernel. **Comparison with Similar
-Commits:** This follows the same pattern as the **accepted backport
-examples**: - **Similar to Commit #1 (ntfs3)**: Both fix integer
-overflow/underflow issues that could cause system instability -
-**Similar to Commit #3 (f2fs)**: Both prevent integer arithmetic issues
-in filesystem code - **Similar to Commit #5 (f2fs)**: Both add bounds
-checking to prevent corruption **Stable Tree Criteria:** ✅ **Fixes
-important bug**: Prevents potential system instability and undefined
-behavior ✅ **Small and contained**: Minimal code change, only affects
-one function ✅ **Clear side effects**: No architectural changes, just
-safer bounds checking ✅ **Low regression risk**: The fix makes the
-function more robust without changing expected behavior ✅ **Critical
-subsystem**: Filesystem management is fundamental to kernel operation
-**Conclusion:** This is a textbook example of a commit suitable for
-stable backporting: it fixes a clear bug with security implications in
-core kernel infrastructure, uses a minimal and safe approach, and has no
-risk of introducing regressions. The unsigned integer underflow could
-lead to system instability when triggered through the accessible `sysfs`
-syscall.
-
- fs/filesystems.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/fs/filesystems.c b/fs/filesystems.c
-index 5e1a190133738..148073e372acd 100644
---- a/fs/filesystems.c
-+++ b/fs/filesystems.c
-@@ -155,15 +155,19 @@ static int fs_index(const char __user * __name)
- static int fs_name(unsigned int index, char __user * buf)
- {
- 	struct file_system_type * tmp;
--	int len, res;
-+	int len, res = -EINVAL;
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 3f9bf562beea..ca1a8e706004 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2849,6 +2849,12 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 	if (nr_pages < 2)
+ 		nr_pages = 2;
  
- 	read_lock(&file_systems_lock);
--	for (tmp = file_systems; tmp; tmp = tmp->next, index--)
--		if (index <= 0 && try_module_get(tmp->owner))
-+	for (tmp = file_systems; tmp; tmp = tmp->next, index--) {
-+		if (index == 0) {
-+			if (try_module_get(tmp->owner))
-+				res = 0;
- 			break;
-+		}
-+	}
- 	read_unlock(&file_systems_lock);
--	if (!tmp)
--		return -EINVAL;
-+	if (res)
-+		return res;
++	/*
++	 * Keep CPUs from coming online while resizing to synchronize
++	 * with new per CPU buffers being created.
++	 */
++	guard(cpus_read_lock)();
++
+ 	/* prevent another thread from changing buffer sizes */
+ 	mutex_lock(&buffer->mutex);
+ 	atomic_inc(&buffer->resizing);
+@@ -2893,7 +2899,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 			cond_resched();
+ 		}
  
- 	/* OK, we got the reference, so we can safely block */
- 	len = strlen(tmp->name) + 1;
+-		cpus_read_lock();
+ 		/*
+ 		 * Fire off all the required work handlers
+ 		 * We can't schedule on offline CPUs, but it's not necessary
+@@ -2933,7 +2938,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 			cpu_buffer->nr_pages_to_update = 0;
+ 		}
+ 
+-		cpus_read_unlock();
+ 	} else {
+ 		cpu_buffer = buffer->buffers[cpu_id];
+ 
+@@ -2961,8 +2965,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 			goto out_err;
+ 		}
+ 
+-		cpus_read_lock();
+-
+ 		/* Can't run something on an offline CPU. */
+ 		if (!cpu_online(cpu_id))
+ 			rb_update_pages(cpu_buffer);
+@@ -2981,7 +2983,6 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 		}
+ 
+ 		cpu_buffer->nr_pages_to_update = 0;
+-		cpus_read_unlock();
+ 	}
+ 
+  out:
 -- 
-2.39.5
+2.47.2
+
 
 
