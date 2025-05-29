@@ -1,230 +1,123 @@
-Return-Path: <stable+bounces-148069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013ACAC7AE3
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 11:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37862AC7AC6
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 11:13:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D3953ACDD1
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 09:18:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 918203B11B1
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 09:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0942921C18D;
-	Thu, 29 May 2025 09:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="QL7eV3TH";
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ignFCIOH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1D421B9E1;
+	Thu, 29 May 2025 09:13:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18AB219A7D;
-	Thu, 29 May 2025 09:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17414219E93;
+	Thu, 29 May 2025 09:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748510325; cv=none; b=n5pdyOiig1OBHy9DhmrG5OTF1hi7kULLkreDht3wjkYH9cVmGz6TOXV/Pjl24BJKa/hrOfFnW+fax/rQWkCr/yMZi697DMmYHplHkjQHR49N37uJ+tvqvikJE8Fi5ug4caeZs8YIdHFws9Qay07ytrFLyjKnZd6uH2teUBtGElw=
+	t=1748510011; cv=none; b=ppxEjefzKyBNgYWVbByTwjNZGmdN+sup2D7vxJXfAS9NlANa7BDlpSdEk5Z3BokuQ2JtDhbHMdLZZPYoTQ7I1HmmLRvzzbDTcLdEbY6MXQvZyWp/YhWekJA/9G0RstN7l2XZ7Z2RBMGY06VlD5b9w6qgfk4C0gAJEShdg+0CGqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748510325; c=relaxed/simple;
-	bh=DfSbHPCa6MxWvF44YVVS/IEpR9XOyDybF+XGjvCxaIM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L84KohuvEgeSTe16xdSKK/+tsC+EQTvDoCoyrc1IlBT/L2vFatSX8RbgvlgRJKwSZEhSWGrgYkeOnh8o4vKZmyJDTdGPvTqRkmCKbzECHwYypcbW0g9j7Et95i7Ld7DieU3+HCppSEkP/y52HtNA8A3xT8P0QMmMJV1uLkqusNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=QL7eV3TH; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ignFCIOH; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Received: by mail.netfilter.org (Postfix, from userid 109)
-	id 20D6860753; Thu, 29 May 2025 11:11:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1748509913;
-	bh=1u9kumkznwUAxM5bTg9/ePa4WAoFSmRHyu7Y+ifICh0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QL7eV3THbVcXwti7cOdVqBmIv4dItxh5VwT6YCdCCd8thNcl5ebQEBKYaUEnRvnIr
-	 ltbR/+vy+P73/LYmVJ08PUgXgTdcD3wmq8W2hjHjD4RerglECnicYujFNKE+CZSiHt
-	 j9O42WLz7S3FAeAObzqXzQoPD+zQm5A6XDMzlLDky4aPvZRflUmS9UlhUkXAjAcwwW
-	 iKkxiPx4XlV0cDLXxpumxT6WBnauDwlMuij0O99jNAujzclKBraIOjiwCauWsx4qb9
-	 Wnek5eDlZs9wL3IlMYcew+nwFLzuWLGkz1+0KFc8QvH+H4R/PE1k+3Jg8DRHwG4p82
-	 dB4kz2ipebHvg==
-X-Spam-Level: 
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id B8AA160750;
-	Thu, 29 May 2025 11:11:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1748509910;
-	bh=1u9kumkznwUAxM5bTg9/ePa4WAoFSmRHyu7Y+ifICh0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ignFCIOHyzqf6GvJmnCSjH/7GVyjg/F3yhMzZtP8C4R1nEi2iZwPESU5mTHZbJ4Wv
-	 GA+uiOYZVAJQxO1zmgZpPsEaIJJryvw3q+A9XOHp7eDSKeMD8iaxhHKQyOvkqAYya+
-	 /MP0EyachY5wDD+9dqu/23/Lf1vETA/OI2Sc1xOcCZyBVyy8GPZXOiXNw2iG2i7zcb
-	 IInKc3kvwgFnZcAzDS2g/TGou6IOruBrS88EDdEl8EN+0D+oCJQoDV8PGGActUVmlv
-	 dRhnc0fZsoKZFh3Dzlcw1hBWI5RtJoVsV6fLvDYjV9VePgEBeMCo8mxWerTMOwLbCi
-	 rjbFHRldYA2VA==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH -stable,5.4 3/3] netfilter: nf_tables: do not defer rule destruction via call_rcu
-Date: Thu, 29 May 2025 11:11:44 +0200
-Message-Id: <20250529091144.118355-4-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20250529091144.118355-1-pablo@netfilter.org>
-References: <20250529091144.118355-1-pablo@netfilter.org>
+	s=arc-20240116; t=1748510011; c=relaxed/simple;
+	bh=MX+gSHM40F/PurHWrbr1LSM8m2nkB/OI3izyzIeGG5E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NhU1sSYeOoA771eYX6IoTrDdxdlsEk2GQj9tGEGiBZRG28rAqCCq6OZmpTIsTB8O3MLgIeNIzQQN34DA22tY2qs07RZnej77fxPzecyqiB6MfzgaHWnEza6QUWomrCzI7ulglXcGmZYmm9l5isdOBhOdjJ8cfnDXdYkfyI2fPh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDA95176A;
+	Thu, 29 May 2025 02:13:12 -0700 (PDT)
+Received: from [10.57.95.14] (unknown [10.57.95.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C3FD13F5A1;
+	Thu, 29 May 2025 02:13:27 -0700 (PDT)
+Message-ID: <9a9f18e7-db69-48f2-916f-4565cdb59821@arm.com>
+Date: Thu, 29 May 2025 10:13:26 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] arm64: Restrict pagetable teardown to avoid false
+ warning
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>, Dev Jain
+ <dev.jain@arm.com>, catalin.marinas@arm.com, will@kernel.org
+Cc: david@redhat.com, mark.rutland@arm.com, yang@os.amperecomputing.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ stable@vger.kernel.org
+References: <20250527082633.61073-1-dev.jain@arm.com>
+ <7b9a9ad4-7a7a-4e99-ba72-f5be0f609a21@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <7b9a9ad4-7a7a-4e99-ba72-f5be0f609a21@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Florian Westphal <fw@strlen.de>
+On 29/05/2025 10:02, Anshuman Khandual wrote:
+> 
+> 
+> On 5/27/25 13:56, Dev Jain wrote:
+>> Commit 9c006972c3fe removes the pxd_present() checks because the caller
+>> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller only
+>> checks pud_present(); pud_free_pmd_page() recurses on each pmd through
+>> pmd_free_pte_page(), wherein the pmd may be none. Thus it is possible to
+>> hit a warning in the latter, since pmd_none => !pmd_table(). Thus, add
+>> a pmd_present() check in pud_free_pmd_page().
+>>
+>> This problem was found by code inspection.
+>>
+>> Fixes: 9c006972c3fe (arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table())
+>> Cc: <stable@vger.kernel.org>
+>> Reported-by: Ryan Roberts <ryan.roberts@arm.com> 
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-commit b04df3da1b5c6f6dc7cdccc37941740c078c4043 upstream.
+LGTM!
 
-nf_tables_chain_destroy can sleep, it can't be used from call_rcu
-callbacks.
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
-Moreover, nf_tables_rule_release() is only safe for error unwinding,
-while transaction mutex is held and the to-be-desroyed rule was not
-exposed to either dataplane or dumps, as it deactives+frees without
-the required synchronize_rcu() in-between.
+>> ---
+>> This patch is based on 6.15-rc6.
+>>
+>> v2->v3:
+>>  - Use pmdp_get()
+>>
+>> v1->v2:
+>>  - Enforce check in caller
+>>
+>>  arch/arm64/mm/mmu.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index ea6695d53fb9..5a9bf291c649 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -1286,7 +1286,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
+>>  	next = addr;
+>>  	end = addr + PUD_SIZE;
+>>  	do {
+>> -		pmd_free_pte_page(pmdp, next);
+>> +		if (pmd_present(pmdp_get(pmdp)))
+> 
+> This code path is only called for the kernel mapping. Hence should
+> pmd_valid() be used instead of pmd_present() which also checks for
+> present invalid scenarios as well ? 
 
-nft_rule_expr_deactivate() callbacks will change ->use counters
-of other chains/sets, see e.g. nft_lookup .deactivate callback, these
-must be serialized via transaction mutex.
+I think a similar question came up in a previous round, where we concluded that
+it's better to be consistent with what vmalloc is already doing. So personally
+I'd leave it as pmd_present():
 
-Also add a few lockdep asserts to make this more explicit.
+	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+		return 0;
 
-Calling synchronize_rcu() isn't ideal, but fixing this without is hard
-and way more intrusive.  As-is, we can get:
-
-WARNING: .. net/netfilter/nf_tables_api.c:5515 nft_set_destroy+0x..
-Workqueue: events nf_tables_trans_destroy_work
-RIP: 0010:nft_set_destroy+0x3fe/0x5c0
-Call Trace:
- <TASK>
- nf_tables_trans_destroy_work+0x6b7/0xad0
- process_one_work+0x64a/0xce0
- worker_thread+0x613/0x10d0
-
-In case the synchronize_rcu becomes an issue, we can explore alternatives.
-
-One way would be to allocate nft_trans_rule objects + one nft_trans_chain
-object, deactivate the rules + the chain and then defer the freeing to the
-nft destroy workqueue.  We'd still need to keep the synchronize_rcu path as
-a fallback to handle -ENOMEM corner cases though.
-
-Reported-by: syzbot+b26935466701e56cfdc2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67478d92.050a0220.253251.0062.GAE@google.com/T/
-Fixes: c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- include/net/netfilter/nf_tables.h |  3 ---
- net/netfilter/nf_tables_api.c     | 31 ++++++++++++++-----------------
- 2 files changed, 14 insertions(+), 20 deletions(-)
-
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 566370938939..92551a765a44 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -899,7 +899,6 @@ struct nft_chain {
- 	u8				flags:6,
- 					genmask:2;
- 	char				*name;
--	struct rcu_head			rcu_head;
- 
- 	/* Only used during control plane commit phase: */
- 	struct nft_rule			**rules_next;
-@@ -1016,7 +1015,6 @@ static inline void nft_use_inc_restore(u32 *use)
-  *	@sets: sets in the table
-  *	@objects: stateful objects in the table
-  *	@flowtables: flow tables in the table
-- *	@net: netnamespace this table belongs to
-  *	@hgenerator: handle generator state
-  *	@handle: table handle
-  *	@use: number of chain references to this table
-@@ -1032,7 +1030,6 @@ struct nft_table {
- 	struct list_head		sets;
- 	struct list_head		objects;
- 	struct list_head		flowtables;
--	possible_net_t			net;
- 	u64				hgenerator;
- 	u64				handle;
- 	u32				use;
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 2d015fcf8d8d..9e20fb759cb8 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1109,7 +1109,6 @@ static int nf_tables_newtable(struct net *net, struct sock *nlsk,
- 	INIT_LIST_HEAD(&table->sets);
- 	INIT_LIST_HEAD(&table->objects);
- 	INIT_LIST_HEAD(&table->flowtables);
--	write_pnet(&table->net, net);
- 	table->family = family;
- 	table->flags = flags;
- 	table->handle = ++table_handle;
-@@ -2824,6 +2823,8 @@ static void nf_tables_rule_destroy(const struct nft_ctx *ctx,
- static void nf_tables_rule_release(const struct nft_ctx *ctx,
- 				   struct nft_rule *rule)
- {
-+	lockdep_commit_lock_is_held(ctx->net);
-+
- 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
- 	nf_tables_rule_destroy(ctx, rule);
- }
-@@ -4172,6 +4173,8 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
- 			      struct nft_set_binding *binding,
- 			      enum nft_trans_phase phase)
- {
-+	lockdep_commit_lock_is_held(ctx->net);
-+
- 	switch (phase) {
- 	case NFT_TRANS_PREPARE_ERROR:
- 		nft_set_trans_unbind(ctx, set);
-@@ -8228,19 +8231,6 @@ static void __nft_release_basechain_now(struct nft_ctx *ctx)
- 	nf_tables_chain_destroy(ctx->chain);
- }
- 
--static void nft_release_basechain_rcu(struct rcu_head *head)
--{
--	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
--	struct nft_ctx ctx = {
--		.family	= chain->table->family,
--		.chain	= chain,
--		.net	= read_pnet(&chain->table->net),
--	};
--
--	__nft_release_basechain_now(&ctx);
--	put_net(ctx.net);
--}
--
- int __nft_release_basechain(struct nft_ctx *ctx)
- {
- 	struct nft_rule *rule;
-@@ -8255,11 +8245,18 @@ int __nft_release_basechain(struct nft_ctx *ctx)
- 	nft_chain_del(ctx->chain);
- 	nft_use_dec(&ctx->table->use);
- 
--	if (maybe_get_net(ctx->net))
--		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
--	else
-+	if (!maybe_get_net(ctx->net)) {
- 		__nft_release_basechain_now(ctx);
-+		return 0;
-+	}
-+
-+	/* wait for ruleset dumps to complete.  Owning chain is no longer in
-+	 * lists, so new dumps can't find any of these rules anymore.
-+	 */
-+	synchronize_rcu();
- 
-+	__nft_release_basechain_now(ctx);
-+	put_net(ctx->net);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(__nft_release_basechain);
--- 
-2.30.2
+> 
+>> +			pmd_free_pte_page(pmdp, next);
+>>  	} while (pmdp++, next += PMD_SIZE, next != end);
+>>  
+>>  	pud_clear(pudp);
 
 
