@@ -1,120 +1,156 @@
-Return-Path: <stable+bounces-148107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1ABAAC8114
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 18:42:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C46F1AC813A
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 18:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0535D3AE05F
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 16:41:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85F1D4E3A71
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 16:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3AA722DA07;
-	Thu, 29 May 2025 16:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BF722DFB1;
+	Thu, 29 May 2025 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b="VT68uo7O"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Bw+fx9wm"
 X-Original-To: stable@vger.kernel.org
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A2119F10A;
-	Thu, 29 May 2025 16:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.67.55.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD28622D9E4
+	for <stable@vger.kernel.org>; Thu, 29 May 2025 16:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748536900; cv=none; b=lD6IJaNw7jehr1wHRCm/hyk/1ye0qVdMd6c0/9FuNNaXGZfLeZ5ob42dBJ93UfKJhyVsTqFAXYKcVXxNT6nv1tkn2oc04Z5C1nbZGrszY9iWqn1oZOZdFJqwshva5Bnhtp3zBfeFxLF94SG0ksE0ryBfDqrE5EDElwyiV/nny/g=
+	t=1748537635; cv=none; b=sG8iEn1bXF9SxR0vEuQJfb1TTEfUitqjI3jvU5/RspDRjvSpC5prk7vwDOorrVIhe9B8+9KLHmN6ewaJW2LKx9FGkEJkNuQlnGWBpBDMhzwivVMbq/uuCai2xWYPlRLOZNuAtBZzwXJ8yGG+HBM8m5+I2whFLKi1Ex4C1tae7k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748536900; c=relaxed/simple;
-	bh=XbHt1o9qz+QPaqIKZZnKujp7chpjrPOWYuczmhp3iVA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hH+fqRQSllL0CR30qqH39L1Y6d4DqubGoA2D2LpQDPpTnPgdFmH9L4XpawjTCtxWwWpbivZOluyXm06S5yNh7RvXpXoY45WBi4nLk9PNvXl2QbYahVk1Ze9dFj0Aqsr7L9vdaMzcX3v4IgUZoXYmXXcOhEfL/Momka4I3ILWH88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com; spf=pass smtp.mailfrom=surriel.com; dkim=pass (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b=VT68uo7O; arc=none smtp.client-ip=96.67.55.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=surriel.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=XbHt1o9qz+QPaqIKZZnKujp7chpjrPOWYuczmhp3iVA=; b=VT68uo7OxcpBG5Rb0DbofuRIFm
-	HAcqrM3YPY9m6JIVfoKOmbK9XFYTpD1IKdHKZUHCK98Qa6nbXHILfXVN9hQ6Vot1J3YRaQDX1JYCx
-	ze5P105NN+MAq1dlElyV4pplH6ap96s8g+gDeGj+vqxisJAKn6a9SNx8j996AygpEhLb6JjD/XYK5
-	sTWjmk+AHr02MHVvxdUebmFgAKrbI1J81cjZDgCzyuzNZ5Umr+bNib7cb89x8lO1brg9bTiKDOvJC
-	Xavkd0Fz7lnZjrZ3uMVNOry3gBL/yDR9vdiTo4msJEW/qOIQGwVftQNBhbv6gClKTxiHwo6CRsJBZ
-	Rt6VGBCQ==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1uKgDz-000000003XO-2Ja4;
-	Thu, 29 May 2025 12:35:23 -0400
-Message-ID: <aa5f8dbbb5865e7eeb64628beef24fe05d161855.camel@surriel.com>
-Subject: Re: [PATCH] x86/mm: Fix paging-structure cache flush on kernel
- table freeing
-From: Rik van Riel <riel@surriel.com>
-To: Jann Horn <jannh@google.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-  Andy Lutomirski	 <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Toshi Kani <toshi.kani@hpe.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Thu, 29 May 2025 12:35:23 -0400
-In-Reply-To: <20250528-x86-fix-vmap-pt-del-flush-v1-1-e250899ed160@google.com>
-References: 
-	<20250528-x86-fix-vmap-pt-del-flush-v1-1-e250899ed160@google.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1748537635; c=relaxed/simple;
+	bh=tXN/bUv5GGn68VfUhe3b6vC2z9pHKfDijFpQd04/NLw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qDICEEb8yn7qh7zxDW2rI717ibZTW02ekwDs/zlzq/vlSnob64RwnuUKMj7kLcW4eVDvg/JE7UtadlopoPeSgYLPH79fNSZVgOuYyP+3vxb5nd1Z+8A12J/QDdfOYMZFOb6w5FHWTgGrrqoaHZSZcfUmJnhWAQvYxSJqh7fDlmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Bw+fx9wm; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-735a9e65471so696052a34.1
+        for <stable@vger.kernel.org>; Thu, 29 May 2025 09:53:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748537632; x=1749142432; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PxRvSUzHeev+hBLLES5l8w1nd2OHwRLbMnpZSS6PLIU=;
+        b=Bw+fx9wmjb6Ymxt1d0h3TOj+qcW1ZmfSsWIZQ3eYpE9aiYlfDQa460FBWpejn33hm2
+         1d2jaA5brvHCOZ+LgWLhkArWqKfb2dgiVBMcDIVvhvSFz88XtlnvD0hiqLKkgtcxKssb
+         EGooA9wjJOdkkjWik1nCeu4U6BRSh7w1qzxDuAl8HxLF/aRrZkBhL4chD8BHf8FOQLpS
+         C619VC8JNQ7JEVM8V1FfC6DENiSPbnIM6H1QTaUx75tvLsP8Se6MwQ2uBT2u+xyxTugD
+         MR26xHhWn4wA+/1TpZdr8BWoFjJtYaPia464bbG385eJsAXNVmBUkpYxPH99wGkHzq+i
+         EIYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748537632; x=1749142432;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PxRvSUzHeev+hBLLES5l8w1nd2OHwRLbMnpZSS6PLIU=;
+        b=Sjr5+yHT2fl+tpeowj9s+mMqh9hzvkrFOuyG9z6zl0yufbi3p8tlXAYJtzgKseInzp
+         zIxDLJUrsIjpPKQdE1NLqCJ4DerG52CpL6wcgZHdFeq8mcDbpWCh+VUTgMY94rn05YFB
+         aAy7ngeKVxIzYLPKQTQn1RqygDccZ1C2/Q041uejIGox3yHCW1s17N1OSnEhUXh76RMq
+         uiKDGjMWXLxh03lG9NC+wGFA7JWj/2W2/SZg9dXsm/0n9r9sXl1sZMBqt02CUISzzeRD
+         6DrAFo+n6JEZNldV5W9C90gBt70dALFf9PBiy3xXgxize85XB2mJCs0eGfo6h1ajdpmi
+         l+lw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJkua3sp+T29rPuQdO1yfmMyeWHe3e4TMp7B800Z5Cm4wVznRmN4VkizMuOeEjnIbpHirc0rs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpJBM/ZvsBtqPREkkwPGCxV8ZNQIKZy1XrFtb+tJHA/KaKkTJx
+	C0nkv6juywu8/0+9yTj69+TMc9BLjrJukZxtA4PzSu7hjmjJ5rqlysn0zVxltV9DfTo=
+X-Gm-Gg: ASbGnctExekq6lrmXhiyewXR3LMzvdsyzr4eZ1CJ0PiC+s7XA72AHy6odSwbarrnZjs
+	uX43KSVDt774FTkjQNVaDkHgQ6e7ta9LC7nl+gDHcu+s6yNpxIUPqIze8TnOpYTS94Ym7tv+ohs
+	n8O248zV+y9JzVldgbv1tefdJzBIWAFrh+zn6fTvTGk5HXaeXUVh2EnzknTPDcsI8sJktQ4Ai0g
+	+ETws/uvTfWJrZmx16ggqAIRhZWsB7Up18OVHrBi3/t/TLikZsPsA/E8jNhtrRkmdAWR8Li857C
+	4mKGpWlVt3PO4r+djzJialEeLBlxXgBehJxEFhepU1qQFP5NYnP4loif
+X-Google-Smtp-Source: AGHT+IELS+hG7loPhc/Vw7Ryo09hGdzU1FX0Hl6otVIzbS6UeuyM3wrPyUK6DPm+l3cfGDB550/IyA==
+X-Received: by 2002:a05:6830:380c:b0:735:b0a3:e485 with SMTP id 46e09a7af769-73676b88f9bmr33364a34.25.1748537631732;
+        Thu, 29 May 2025 09:53:51 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:928b:5d5c:6cd9:1a4])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-735af82d2b8sm303265a34.3.2025.05.29.09.53.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 May 2025 09:53:51 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH v3 0/3] pwm: axi-pwmgen: add external clock
+Date: Thu, 29 May 2025 11:53:17 -0500
+Message-Id: <20250529-pwm-axi-pwmgen-add-external-clock-v3-0-5d8809a7da91@baylibre.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP2QOGgC/43NsQ6CMBDG8VchnT1zFGnAyfcwDuV6QCNQUghCC
+ O9uIQ7Gyenyv+H3rWJgb3kQ12gVnic7WNeFSE6RoFp3FYM1oYVEmWIap9C/WtCz3W/FHWhjgOe
+ RfacboMbREzBRl7IwZYZ5IYLTey7tfGzcH6FrO4zOL8fkFO/fjy7xD32KAUGRUQkRYkzZrdBLY
+ wvPZ3Kt2Acm+Y3Kf1AZUMwU65wVU4k/6LZtb/a6lqIqAQAA
+X-Change-ID: 20250515-pwm-axi-pwmgen-add-external-clock-0364fbdf809b
+To: Michael Hennerich <michael.hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Trevor Gamblin <tgamblin@baylibre.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>
+Cc: linux-pwm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1878; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=tXN/bUv5GGn68VfUhe3b6vC2z9pHKfDijFpQd04/NLw=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoOJEEKE70jzqKOf4Xnw34nS2599BQ3qJVqgLc8
+ FVzfuLopIGJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaDiRBAAKCRDCzCAB/wGP
+ wLTFB/wKIgZf+3k4itUkgrYwKeZTnNIMlCRpHzg5K6gqrKGJ6BNnZtZu0q11gI8LNqgUDcUvbaP
+ WSPXeHak/8nytkml8SseXHsNxdfFCTu6ZaEwvO6OXY5eu6kENPqr4eZdm7QPB9OAw1rAP7BSJyV
+ i3PKemCGTJzozdhKtaMjvZ+0msanPHtH2LPhQwjDhozULjD8of6iQr5r3Y76YWRj2qR5gh/1rid
+ R/sMBc2N8z/0BfPEzwv3kQ4ziRlxDYZ3GPH9gFt1e1adiZVe2c0knjDo3KeA9LpW7qdMtYjCv1H
+ yyFjiI3dKhv6Am6IKHhr+4QOzNe1E2eL9xPkwsiMZVzQY1Bb
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-On Wed, 2025-05-28 at 22:30 +0200, Jann Horn wrote:
->=20
-> Note that since I'm not touching invlpgb_kernel_range_flush() or
-> invlpgb_flush_addr_nosync() in this patch, the flush on PMD table
-> deletion
-> with INVLPGB might be a bit slow due to using PTE_STRIDE instead of
-> PMD_STRIDE. I don't think that matters.
->=20
-Agreed that this is probably fine.
+When we created the driver for the AXI PWMGEN IP block, we overlooked
+the fact that it can optionally be configured to use an external clock
+in addition to the AXI bus clock. This is easy to miss in testing
+because the bus clock is always on because it is driving other
+peripherals as well.
 
-The performance sensitive kernel flushes mostly seem
-to be small, related to static key toggling, etc
+Up to now, users were specifying the external clock if there was one and
+the AXI bus clock otherwise. But the proper way to do this is to would
+be to always specify the bus clock and only specify the external clock
+if the IP block has been configured to use it.
 
-> Cc: stable@vger.kernel.org
-> Fixes: 28ee90fe6048 ("x86/mm: implement free pmd/pte page
-> interfaces")
-> Signed-off-by: Jann Horn <jannh@google.com>
+To fix this, we add clock-names to the devicetree bindings and change
+clocks to allow 1 or 2 clocks.
 
-Reviewed-by: Rik van Riel <riel@surriel.com>
+---
+Changes in v3:
+- Fixed clock-names DT property restrictions (was failing dt_binding_check)
+- Added Cc: stable
+- Picked up trailers
+- Link to v2: https://lore.kernel.org/r/20250522-pwm-axi-pwmgen-add-external-clock-v2-0-086ea9e6ecf0@baylibre.com
 
---=20
-All Rights Reversed.
+Changes in v2:
+- Consider this a fix rather than a new feature.
+- Make clock-names required.
+- Simplify the logic in the pwm driver to avoid needing to test if
+  clock-names is present in old dtbs that used the broken binding.
+- Link to v1: https://lore.kernel.org/r/20250520-pwm-axi-pwmgen-add-external-clock-v1-0-6cd63cc001c8@baylibre.com
+
+---
+David Lechner (3):
+      dt-bindings: pwm: adi,axi-pwmgen: update documentation link
+      dt-bindings: pwm: adi,axi-pwmgen: fix clocks
+      pwm: axi-pwmgen: fix missing separate external clock
+
+ .../devicetree/bindings/pwm/adi,axi-pwmgen.yaml    | 15 +++++++++++---
+ drivers/pwm/pwm-axi-pwmgen.c                       | 23 +++++++++++++++++++---
+ 2 files changed, 32 insertions(+), 6 deletions(-)
+---
+base-commit: 484803582c77061b470ac64a634f25f89715be3f
+change-id: 20250515-pwm-axi-pwmgen-add-external-clock-0364fbdf809b
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
+
 
