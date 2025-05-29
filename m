@@ -1,134 +1,93 @@
-Return-Path: <stable+bounces-148085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65925AC7C47
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 12:53:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7FAAC7C50
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 13:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90CC4A22533
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 10:52:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 081201BA773E
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 11:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7467628E570;
-	Thu, 29 May 2025 10:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4C328E596;
+	Thu, 29 May 2025 10:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D3cr/Aiv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Luo8sLAM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B5E21C176;
-	Thu, 29 May 2025 10:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FE128E57F;
+	Thu, 29 May 2025 10:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748515918; cv=none; b=fuK+5atI4KYOIARMJYK1zLzPlIpqXkS5ymIK55IOJ69oCfp2h26zEk5Y+idm9SuWfPEa3+/YVzfzE/QF6+aB4o4OtNwdCSfjaZnBDYsVBe53RiV6/ORG5iHodQnj31DM/FZgZI6LP5kb0LlujPcNmSa6/o50H7LRxGYU6ZfbXpM=
+	t=1748516394; cv=none; b=EFfLSYYYlJnt8pk7z6dZU/WxOd/6Y3mMSDI4f4NJIOVw57jRUyV4qBxnGxB5xdF57t75dcC6hmVVyvqPoEkPgG4vzB468iP9ySJroo42ZNiPBlFN6QbErgW1EcektIuK6De1x41pKJAQ9nc01QJPbLGG083051EaPgQegMZFIxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748515918; c=relaxed/simple;
-	bh=CV3Segr+veKxtyhySTzj+LnOToA4J4nvptR6pD+VoRE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FIvHkrlUVtlEwpIDMy++O1SSfcJSsZ4qty8wjizKiQ8v4WvLG9bRN+4laPx/EAbqXWAxGavlCLkCnsvjiBwb3aFZZyIyZnDkkN33cF+XZiCXYEMXDDWMKgLjbDGezEAiBzdId+59AH+cpghhWFL7WM3XbJ9xEmiyRSl89OVrR48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D3cr/Aiv; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748515916; x=1780051916;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CV3Segr+veKxtyhySTzj+LnOToA4J4nvptR6pD+VoRE=;
-  b=D3cr/AivU2cmoclyZK+wicu9OkTmcjA4TklIepDvMGrboewZHH2/TIqM
-   eTiBUSIVbAr2cZpyK/JUjU3+2aArna7OFsfLr01AKK8JTNNHgy5YE6UWM
-   icejfI60AUeqNsOfoOjvrkAkYhKTJoKRWNtOLk7NAhk9VayIkvC61u1kW
-   nGFAdAcoeUssURXll9S2UlOGEIfAenjGVATFK5uSRnowtmYv00VavwnUG
-   RsrPNfNlfVbmWhAhhs17wajKyboTJmDnMmxk+ERSmnvfNTVferHL7HBzm
-   Ib817oW3EStgEzqil0UQQgS/Pqw1G7VbsdggOxB4sHGDRGAClILFzMyTU
-   A==;
-X-CSE-ConnectionGUID: guUTZH4gQ+2gY+ppBH7fww==
-X-CSE-MsgGUID: drkAJ/UESXKnUPi2k5uM6A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="38193296"
-X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
-   d="scan'208";a="38193296"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 03:51:55 -0700
-X-CSE-ConnectionGUID: zDBZD/qxTgOe40wSfVsqqw==
-X-CSE-MsgGUID: l4kaQccHQHq7ivgnE+yDOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
-   d="scan'208";a="180722481"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 29 May 2025 03:51:50 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id B8FE914B; Thu, 29 May 2025 13:51:48 +0300 (EEST)
-Date: Thu, 29 May 2025 13:51:48 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Vlastimil Babka <vbabka@suse.cz>, 
-	Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Hongyu Ning <hongyu.ning@linux.intel.com>, 
-	stable@vger.kernel.org, Christoph Hellwig <hch@lst.de>, Hannes Reinecke <hare@suse.de>, 
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>, Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH] mm: Fix vmstat after removing NR_BOUNCE
-Message-ID: <scchmajjawfmmoreihui4yyzuyutzf3evhmmx2j4f2lhu6r62n@ovaamezmqgun>
-References: <20250529103832.2937460-1-kirill.shutemov@linux.intel.com>
- <7ae9e9f9-80e7-4285-83f0-a0946d238243@suse.cz>
- <ow3adiccumedegsm4agxlvaiaq3ypeto42hxr4ln6v3zzluhyu@2cdoez7of6ic>
+	s=arc-20240116; t=1748516394; c=relaxed/simple;
+	bh=J9sLd/V0ChLauxiaem4hMIuzMoGYpxF/suHYrXZIaxA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kVinhBe7JaAEc+buEafbbkg+dPJviRCo8jGi/oqZecal32dIuQD3BGBwE5MNwFxDpFlSTRCTK0dbG6q2XeL62fRsOvmP5AqiGXfwxVsiFH2b9Xqd/8AOX/4ikRmWqsJmt7d8U9LEZRWqf3wLFxwTKkokKBeMDayT5avH8/VnVcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Luo8sLAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C452C4CEEB;
+	Thu, 29 May 2025 10:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748516394;
+	bh=J9sLd/V0ChLauxiaem4hMIuzMoGYpxF/suHYrXZIaxA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Luo8sLAMC4uZK6k/CAwCj71uq5Z8db4SQ05bLt4XWeFOrUhMWJ7K0VgjdVawI+c7Q
+	 KVpqlqce2ztpCKhQQmc7l0JxU8m9uVDS+MeO59QvT8M36WdSLi2r36HGJ2+8VwhdBW
+	 DsU+Sq5xcg3mczJW8PNfOhh/FZry/VlN1cbvyk4miTiBlqoE6iFxQa2Jo+rRRGBwnW
+	 PP56RFJRvDAl6VTYrpRVWxGV/XHRyPsppAQ6Y8H0E72JYIGNPCrTmeBL7n32cgjMEI
+	 9pvCHRmaU2EXXwE6gXbZDV12lLkGeoOGkFrAocOHZ0w8HDpdQ5iIpPrXtjdF4CODMQ
+	 g0RAfcfwhqBWw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D6F380664F;
+	Thu, 29 May 2025 11:00:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ow3adiccumedegsm4agxlvaiaq3ypeto42hxr4ln6v3zzluhyu@2cdoez7of6ic>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] can: kvaser_pciefd: refine error prone echo_skb_max
+ handling logic
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174851642800.3227009.2907405115218089296.git-patchwork-notify@kernel.org>
+Date: Thu, 29 May 2025 11:00:28 +0000
+References: <20250529075313.1101820-2-mkl@pengutronix.de>
+In-Reply-To: <20250529075313.1101820-2-mkl@pengutronix.de>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de, pchelkin@ispras.ru,
+ stable@vger.kernel.org
 
-On Thu, May 29, 2025 at 01:47:10PM +0300, Kirill A. Shutemov wrote:
-> On Thu, May 29, 2025 at 12:40:21PM +0200, Vlastimil Babka wrote:
-> > On 5/29/25 12:38, Kirill A. Shutemov wrote:
-> > > Hongyu noticed that the nr_unaccepted counter kept growing even in the
-> > > absence of unaccepted memory on the machine.
-> > > 
-> > > This happens due to a commit that removed NR_BOUNCE: it removed the
-> > > counter from the enum zone_stat_item, but left it in the vmstat_text
-> > > array.
-> > > 
-> > > As a result, all counters below nr_bounce in /proc/vmstat are
-> > > shifted by one line, causing the numa_hit counter to be labeled as
-> > > nr_unaccepted.
-> > > 
-> > > To fix this issue, remove nr_bounce from the vmstat_text array.
-> > > 
-> > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > Reported-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-> > > Fixes: 194df9f66db8 ("mm: remove NR_BOUNCE zone stat")
-> > > Cc: stable@vger.kernel.org
-> > > Cc: Christoph Hellwig <hch@lst.de>
-> > > Cc: Hannes Reinecke <hare@suse.de>
-> > > Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-> > > Cc: Jens Axboe <axboe@kernel.dk>
-> > 
-> > Is there a way to add a BUILD_BUG_ON to catch a future case like this one?
-> 
-> There's
-> 
-> 	BUILD_BUG_ON(ARRAY_SIZE(vmstat_text) < NR_VMSTAT_ITEMS);
-> 
-> in vmstat_start().
-> 
-> Making it strict != seems to do the trick for my config. But it requires
-> wider testing.
-> 
-> I can prepare a patch for that.
+Hello:
 
-There was a strict check before 9d7ea9a297e6 ("mm/vmstat: add helpers to
-get vmstat item names for each enum type"). Not sure if changing != to <
-was intentional.
+This patch was applied to netdev/net.git (main)
+by Marc Kleine-Budde <mkl@pengutronix.de>:
 
-Konstantin?
+On Thu, 29 May 2025 09:49:30 +0200 you wrote:
+> From: Fedor Pchelkin <pchelkin@ispras.ru>
+> 
+> echo_skb_max should define the supported upper limit of echo_skb[]
+> allocated inside the netdevice's priv. The corresponding size value
+> provided by this driver to alloc_candev() is KVASER_PCIEFD_CAN_TX_MAX_COUNT
+> which is 17.
+> 
+> [...]
 
+Here is the summary with links:
+  - [net] can: kvaser_pciefd: refine error prone echo_skb_max handling logic
+    https://git.kernel.org/netdev/net/c/54ec8b08216f
+
+You are awesome, thank you!
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
