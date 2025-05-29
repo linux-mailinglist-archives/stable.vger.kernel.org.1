@@ -1,162 +1,233 @@
-Return-Path: <stable+bounces-148060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9C7AC794B
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 08:59:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB79AC7962
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 09:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DB0F1C05E90
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 07:00:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC99A27A69
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 07:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5FB1891A9;
-	Thu, 29 May 2025 06:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76EB2561A3;
+	Thu, 29 May 2025 07:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eHuqxfgd"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RDMsCN4X"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA66B2550BB
-	for <stable@vger.kernel.org>; Thu, 29 May 2025 06:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17707EC4;
+	Thu, 29 May 2025 07:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748501990; cv=none; b=i8VPHrpwfgOfgOpRN4w6+r5YtPHbb4C2G6K3gQPNa5cbQv3yM76KH1ElM2lH3arwu44H8D/jVxKARH540PSQfZZrhtA16RS848dTGPWXvw8fjHI+0uCwPScl6SXmYSZiREx6bByccZRRUTQ99tOdABkXgtpF57pe+HzQWjVIL1I=
+	t=1748502232; cv=none; b=rySr6CKpO9BLTIA5wx7rIgyFgzTCkIny1mdgZaRaBxInrBXZpfnMLrFvNOdHanfwsEEfiAydUeLy2XF1mzLhmFzKivrPuDDjHJ+ud2XKhMSF7YL5iL2Vp/UF1sgO35SBriMTyQoN/p7vnAqOzttwTMaHHXGrJ6pCcrcHpd9jcTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748501990; c=relaxed/simple;
-	bh=lBw+BpHjnl9eKLYNjGEFN9NrPyx0ONMGK8N3+WGluVk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sShekbR9Ayv5190YVRfYPmKGGaj3HX6GpEs8oFO5fwwrYEc70Uk2f75iVoK11ypJvne/y8bYmG9ncbPc7QoCOpZhXiokjlTX+KN7PKAHOGDM76Jd/LIcEapkucd6HR+CW3Lxms42pkorW1rf4TbUbT1Bxtc/3EPbZ5izF3JSrPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eHuqxfgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F96C4CEEF
-	for <stable@vger.kernel.org>; Thu, 29 May 2025 06:59:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748501990;
-	bh=lBw+BpHjnl9eKLYNjGEFN9NrPyx0ONMGK8N3+WGluVk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eHuqxfgdEqJqpXK5uAtuuZzYCdpO+MiUQU15/qkIzMtNM6gjhSedFbxLOupB55wUK
-	 EU9ovPPmzBAh0H7y19FeHlULxa7DLdkn2GK6EZv6phY9ZVNejgzhLbXQdKlNHGSQjf
-	 +sjAh98LoUtyNv98FeeVz/Hhm2vNPIIAAAPRm8uPufjpyno4217+xJfqrCp9yq+F3b
-	 ljk3jfRM5z5+DDkcAmdTammckzZ3zWTv/7OlT6ngHzApP71CVBOUrdNm9xNPJqhetH
-	 25fVoEjh2yo1So1kGO4euhkNDfKJcXXk2OeGdLs0doM43Nlk7z0x6w3uonaHAmzqn2
-	 paD3CEPNGrzzA==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-551fe46934eso785584e87.1
-        for <stable@vger.kernel.org>; Wed, 28 May 2025 23:59:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUAWUy62HLy8Vmofffsy6SAhRaPCkvNl3Ie2wMr3x2n/ft4CpfJTg2ZN/xn0HPdVPIBxQmX/k4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywYvkQI0IJkLNYhDw3ysi5yvFU/n6GIH2u04fx8dfi5QyoNkHc
-	ADddUqtwlRC6T52fKQ75VypR4vA1meVLmxgqhs4nUBrI40DC3kWuvIyk35DSacY6qXvHGfbTNZm
-	mujJviDLRmwcXjaHur0xDChNXt5Zup5M=
-X-Google-Smtp-Source: AGHT+IFtABxJZwOan0QTOZgeMupEHtBFVj1ydEXgubx6vgjiv8RBttjqh/0nx6/RcegKjMLhZPL/RUPNV8+bYaeKfGE=
-X-Received: by 2002:a05:6512:b1c:b0:553:3201:8d23 with SMTP id
- 2adb3069b0e04-55335b11511mr763837e87.9.1748501988585; Wed, 28 May 2025
- 23:59:48 -0700 (PDT)
+	s=arc-20240116; t=1748502232; c=relaxed/simple;
+	bh=+xmkRlZ8AGIEZrZiWtJrfAL/ehTHBGAbW3sINC7us5c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=h6N1P8iRgMbshaxlMYR5KUM//2iRhGlbDPI7pN25kPYD3QnkzscBBPWCAET1e3ZSUVy+9cbztb3RSNnggiHoVPMzMe1tu5q8uFdTwO5unagkWWv1w8NvI/iTrUS3MvBStOlVoAlpAPVMyJuOnZCuKmtiwazdBdASTX0lLlRCDDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RDMsCN4X; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54T3U235030924;
+	Thu, 29 May 2025 07:03:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	yf1sra5ei+YWgbd0wCWc5vmWvo0kR8CErObKG5rUvKE=; b=RDMsCN4XP1TgRFRQ
+	vEOJwHkIOHYulO57bBZ2Je6coYZkV8nyC1ucokhXINdOFYQ5U56yoKT2jI0y57UT
+	62Z7/1LhhW+yLkPjV06jeO4wDiQjYpZNB/EOUBMgCuIx1T+crXHYOoJeBBB2M6YB
+	3bcm+SIo1wfS7qJHzlzoeaWN4UemsYXQjVja2XYeAGeLyPZQn3a2GhoOlJxWsqv0
+	sEPrMwchUdukyipzdTQWVL9ZhD34yEmRuC0eHLOiX53A2dDhUtBib8Z/OE4nNPBO
+	txvQraQ+A32OUmtewF1HBTZR5S4o0vC2KDTCxT/F0BGTOoOO33cNoqk0ITSHqIHG
+	TlN3aA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46whuf56kc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 May 2025 07:03:43 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54T73hDw007603
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 May 2025 07:03:43 GMT
+Received: from [10.133.33.94] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 29 May
+ 2025 00:03:40 -0700
+Message-ID: <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
+Date: Thu, 29 May 2025 15:03:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250527162513.035720581@linuxfoundation.org> <20250527162530.470565771@linuxfoundation.org>
- <CAMzpN2hwSXUybfvcas2X5213V=Ow+nqGqqurC_tjfCdb44aFfg@mail.gmail.com> <2025052945-squabble-romp-6304@gregkh>
-In-Reply-To: <2025052945-squabble-romp-6304@gregkh>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 29 May 2025 08:59:37 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFCQ=q3O043q_Ub8aABHf5E31QrqmqJ3iYCCeLkx37pwA@mail.gmail.com>
-X-Gm-Features: AX0GCFsvph-NrwnOGymvOK3gho7TjyEAvM7nMUD0lnIF9lZkKgbjrqNnXzYPFzE
-Message-ID: <CAMj1kXFCQ=q3O043q_Ub8aABHf5E31QrqmqJ3iYCCeLkx37pwA@mail.gmail.com>
-Subject: Re: [PATCH 6.14 426/783] x86/boot: Disable stack protector for early
- boot code
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Brian Gerst <brgerst@gmail.com>, stable@vger.kernel.org, patches@lists.linux.dev, 
-	Ingo Molnar <mingo@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 29 May 2025 at 08:34, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, May 28, 2025 at 01:52:16PM -0400, Brian Gerst wrote:
-> > On Tue, May 27, 2025 at 1:39=E2=80=AFPM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > 6.14-stable review patch.  If anyone has any objections, please let m=
-e know.
-> > >
-> > > ------------------
-> > >
-> > > From: Brian Gerst <brgerst@gmail.com>
-> > >
-> > > [ Upstream commit a9a76b38aaf577887103e3ebb41d70e6aa5a4b19 ]
-> > >
-> > > On 64-bit, this will prevent crashes when the canary access is change=
-d
-> > > from %gs:40 to %gs:__stack_chk_guard(%rip).  RIP-relative addresses f=
-rom
-> > > the identity-mapped early boot code will target the wrong address wit=
-h
-> > > zero-based percpu.  KASLR could then shift that address to an unmappe=
-d
-> > > page causing a crash on boot.
-> > >
-> > > This early boot code runs well before user-space is active and does n=
-ot
-> > > need stack protector enabled.
-> > >
-> > > Signed-off-by: Brian Gerst <brgerst@gmail.com>
-> > > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > > Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-> > > Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> > > Link: https://lore.kernel.org/r/20250123190747.745588-4-brgerst@gmail=
-.com
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > ---
-> > >  arch/x86/kernel/Makefile | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > >
-> > > diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-> > > index b43eb7e384eba..84cfa179802c3 100644
-> > > --- a/arch/x86/kernel/Makefile
-> > > +++ b/arch/x86/kernel/Makefile
-> > > @@ -44,6 +44,8 @@ KCOV_INSTRUMENT_unwind_orc.o                       =
-   :=3D n
-> > >  KCOV_INSTRUMENT_unwind_frame.o                         :=3D n
-> > >  KCOV_INSTRUMENT_unwind_guess.o                         :=3D n
-> > >
-> > > +CFLAGS_head32.o :=3D -fno-stack-protector
-> > > +CFLAGS_head64.o :=3D -fno-stack-protector
-> > >  CFLAGS_irq.o :=3D -I $(src)/../include/asm/trace
-> > >
-> > >  obj-y                  +=3D head_$(BITS).o
-> > > --
-> > > 2.39.5
-> > >
-> > >
-> > >
-> >
-> > This doesn't need to be backported.  It's harmless, but not necessary
-> > without the rest of the stack protector changes.
->
-> What specific changes?  I see stackprotector code in this, and the 6.12
-> tree, so what commit id does this "fix"?
->
-
-It does not fix anything. I already raised this with Sasha in response
-to one of his AUTOSEL spam bombs. [0]
-
-The first patch of the series in question bumped the minimum GCC
-version from 5.x to 8.1, so I am pretty sure it is out of scope for
--stable.
-
-Please stop backporting random shit via AUTOSEL. You keep saying that
-developers who don't care about -stable won't have to, but we are the
-ones having to make sense of the mess you have created when AUTOSEL
-picks one or two random changes out of a larger series. I don't think
-AUTOSEL should be used at all until we find a solution to that
-problem.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
+To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20250526114803.2122-1-johan+linaro@kernel.org>
+ <20250526114803.2122-2-johan+linaro@kernel.org>
+Content-Language: en-US
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+In-Reply-To: <20250526114803.2122-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=OslPyz/t c=1 sm=1 tr=0 ts=683806cf cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8
+ a=xt-FAz5EuN-mLoWhW44A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: ublGsjyCSGbR_kY6RSrO4PK_2uM8o_TU
+X-Proofpoint-GUID: ublGsjyCSGbR_kY6RSrO4PK_2uM8o_TU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDA2OCBTYWx0ZWRfX9l8N77fVGXBz
+ VWq+r+buWOo32kfkGPIGql0bJELp1LYd7adoiBZSCjoZZWoVpkGCykOwWt5Tk9+iH3Hn5q2v19A
+ 7kgCHx2YtE5ji0Rl6pe5O7vj7Y8bxGqWfzrXzx9MVCZwmwdhp7eEathghZCUquWMtT1zEzG1aEI
+ zp2+uMD9rb2FWKnF44DS6gJbtkZhsBX8S1I0PsRuogkl7tUXWrBhaTUSZG1iRsqqe+4HHBJd/YP
+ H5w+UV7QjDFFeNnCf3cgu9jQ4nJmXRVZoeBuh+K+gKeMsESiLujlMKBWMLg46xT2TT7dwBSmQcN
+ 8hrqsjodMFAOIGw8SLdT1vKXhxwl9nCySGoapWm75rzNe0kGtqGaZ7vaOODZFGmd6fJ1a75dzVY
+ YCee03X1FkH3OmFsnjsJ9ZGyFYIrzMAEaS8QmrgTqPp7cxkBSxDWTKpUrz8tVA63WeuSZG3u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-29_03,2025-05-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 mlxlogscore=896 adultscore=0 malwarescore=0
+ bulkscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0
+ spamscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505290068
 
 
-[0] https://lore.kernel.org/all/CAMj1kXF6=3Dt9NoH5Lsh4=3DRwhUTHtpBt9VmZr3bE=
-Vm6=3D1zGiOf2w@mail.gmail.com/T/#u
+
+On 5/26/2025 7:48 PM, Johan Hovold wrote:
+> Add the missing memory barriers to make sure that destination ring
+> descriptors are read after the head pointers to avoid using stale data
+> on weakly ordered architectures like aarch64.
+> 
+> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Cc: stable@vger.kernel.org	# 5.6
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>   drivers/net/wireless/ath/ath11k/dp_rx.c | 19 +++++++++++++++++++
+>   drivers/net/wireless/ath/ath11k/dp_tx.c |  3 +++
+>   2 files changed, 22 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> index ea2959305dec..dfe2d889c20f 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> @@ -3851,6 +3851,9 @@ int ath11k_dp_process_rx_err(struct ath11k_base *ab, struct napi_struct *napi,
+>   
+>   	ath11k_hal_srng_access_begin(ab, srng);
+>   
+> +	/* Make sure descriptor is read after the head pointer. */
+> +	dma_rmb();
+> +
+
+Thanks Johan, for continuing to follow up on this issue. I have some 
+different opinions.
+
+This change somewhat deviates from the fix approach described in 
+https://lore.kernel.org/all/20250321095219.19369-1-johan+linaro@kernel.org/. 
+In this case, the descriptor might be accessed before it is updated or 
+while it is still being updated. Therefore, a dma_rmb() should be added 
+after the call to ath11k_hal_srng_dst_get_next_entry() and before 
+accessing ath11k_hal_ce_dst_status_get_length(), to ensure that the DMA 
+has completed before reading the descriptor.
+
+However, in this patch, the memory barrier is used to protect the head 
+pointer (HP). I don't think a memory barrier is necessary for HP, 
+because even if an outdated HP is fetched, 
+ath11k_hal_srng_dst_get_next_entry() will return NULL and exit safely. 
+So, placing the memory barrier inside 
+ath11k_hal_srng_dst_get_next_entry() would be more appropriate.
+
+@@ -678,6 +678,8 @@ u32 *ath11k_hal_srng_dst_get_next_entry(struct 
+ath11k_base *ab,
+         if (srng->flags & HAL_SRNG_FLAGS_CACHED)
+                 ath11k_hal_srng_prefetch_desc(ab, srng);
+
++       dma_rmb();
++
+         return desc;
+  }
+
+
+>   	while (budget &&
+>   	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
+>   		struct hal_reo_dest_ring *reo_desc = (struct hal_reo_dest_ring *)desc;
+> @@ -4154,6 +4157,9 @@ int ath11k_dp_rx_process_wbm_err(struct ath11k_base *ab,
+>   
+>   	ath11k_hal_srng_access_begin(ab, srng);
+>   
+> +	/* Make sure descriptor is read after the head pointer. */
+> +	dma_rmb();
+> +
+>   	while (budget) {
+>   		rx_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng);
+>   		if (!rx_desc)
+> @@ -4280,6 +4286,9 @@ int ath11k_dp_process_rxdma_err(struct ath11k_base *ab, int mac_id, int budget)
+>   
+>   	ath11k_hal_srng_access_begin(ab, srng);
+>   
+> +	/* Make sure descriptor is read after the head pointer. */
+> +	dma_rmb();
+> +
+>   	while (quota-- &&
+>   	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
+>   		ath11k_hal_rx_reo_ent_paddr_get(ab, desc, &paddr, &desc_bank);
+> @@ -4353,6 +4362,9 @@ void ath11k_dp_process_reo_status(struct ath11k_base *ab)
+>   
+>   	ath11k_hal_srng_access_begin(ab, srng);
+>   
+> +	/* Make sure descriptor is read after the head pointer. */
+> +	dma_rmb();
+> +
+>   	while ((reo_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
+>   		tag = FIELD_GET(HAL_SRNG_TLV_HDR_TAG, *reo_desc);
+>   
+> @@ -5168,6 +5180,9 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
+>   	rx_bufs_used = 0;
+>   	rx_mon_stats = &pmon->rx_mon_stats;
+>   
+> +	/* Make sure descriptor is read after the head pointer. */
+> +	dma_rmb();
+> +
+>   	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
+>   		struct sk_buff *head_msdu, *tail_msdu;
+>   
+> @@ -5630,6 +5645,10 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
+>   	spin_lock_bh(&mon_dst_srng->lock);
+>   
+>   	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
+> +
+> +	/* Make sure descriptor is read after the head pointer. */
+> +	dma_rmb();
+> +
+>   	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
+>   		head_msdu = NULL;
+>   		tail_msdu = NULL;
+> diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
+> index 8522c67baabf..549d17d90503 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+> @@ -700,6 +700,9 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
+>   
+>   	ath11k_hal_srng_access_begin(ab, status_ring);
+>   
+> +	/* Make sure descriptor is read after the head pointer. */
+> +	dma_rmb();
+> +
+>   	while ((ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_head) !=
+>   		tx_ring->tx_status_tail) &&
+>   	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, status_ring))) {
+
 
