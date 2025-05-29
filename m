@@ -1,211 +1,112 @@
-Return-Path: <stable+bounces-148119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DC8AC8368
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 22:58:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BC2AC83C1
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 23:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B28AF1BA6202
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 20:58:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BE9C1669EE
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 21:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1D7293454;
-	Thu, 29 May 2025 20:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D885A29347F;
+	Thu, 29 May 2025 21:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="P0BsxZew"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OgW/oZdA"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A08B1DFE22
-	for <stable@vger.kernel.org>; Thu, 29 May 2025 20:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCC5227BAD
+	for <stable@vger.kernel.org>; Thu, 29 May 2025 21:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748552290; cv=none; b=axaMh9PpwOhk/yEb3jGd9df1lYl8+31HRw28BLuBEm9J8LBnuHWBM3YZ5mfy1WOLXWMV/LYAGhEu+ymFtV7+TX3pdh0I4R4cW+XUsaP5g9b6H9lQm+BWRjAWkIugJPpzen/j7Kd5no/HjgTlX2I+AvRvk1OQH+h9ErOLfe9Xnjk=
+	t=1748555862; cv=none; b=ifctOl4vNZizC1P4cMZ5DEOqsaSORx70HXtWRQHfpJupP1RKvR2AYfMcrTI35BK1A7Cd7sTsFiBw7tZ0ODSawgJ3Oi1rVZZMhM7eFGdrqj9cmL7YqBK/JT2Sl+g9ZjTTBfLRSRabqy5cSaWsHqAK8msmH340R5nAFHJ6xxqd1gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748552290; c=relaxed/simple;
-	bh=cNGjoABR1bfslYHlmOUEKVoCyx5dwzJss2jooYyNnhI=;
-	h=Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=E52u5y0hhfdE9P3DXzDyBjm1C7bvfIUMgkwow5fMd0ErYbrGThj11UhVm/3smNH6+8tCevxRKq50VGjEA8p79WrmbTd4Ohf3AKuuqF8T+yJX/Es4kYAnCNGmhRydJM9cT0hTmag/Zq/i0gKGfxKI+QPxm75znqVc30DAMB90r7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=P0BsxZew; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4b7dxL04k2z9t2F;
-	Thu, 29 May 2025 22:57:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1748552278;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/3rOIv8GSFEzZ051ulZIno+qG4sn6rmn7n3HO54VgMU=;
-	b=P0BsxZew0756ZiIEWgAQBWMBeMM+7IgPKRPuXr61P8cX8OQF3ZTC8IcwI/XO/tZhSo0hON
-	N8NXhk6e6QIqOM3L6YQopGmLZiD1tk9W4h7VxQdf9rKNEYXg4S+YLkAIizrPmc5d2K5kSj
-	REN/rx+WdLbmFHfEspM4OLL14nSSS2pM41ZiOycF8NV8nmjiOJjMexmYioybmyivYe+Ll+
-	R+E4wtS4PU/c06ECfr0fk/L7aORKRbDmEewIztcuKjKrxm/CDcnEiFG+qGp/U7n2SFGLSR
-	FDVBXOyNT3oKWE+4reuf2Rh280rRYw5IuvDWv7ogxc/abhB52NYMcEscPrZidw==
-Subject: Re: 6.12.30: black screen after waking up from hibernate; bisected
-To: "Limonciello, Mario" <Mario.Limonciello@amd.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <884d3e56-1052-0ca0-2740-f597ba7031c1@mailbox.org>
- <BL1PR12MB5144454EC2C17C206CC68992F767A@BL1PR12MB5144.namprd12.prod.outlook.com>
- <bcd38e08-d1c4-ee9b-e96e-ef369bfe280d@mailbox.org>
- <2d23038c-1dfd-678e-d0eb-2a474e84dd1f@mailbox.org>
- <a46d63fc-3012-4bfb-8e88-aa7acaee5c36@amd.com>
-From: Rainer Fiebig <jrf@mailbox.org>
-Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
- mQINBFohwNMBEADSyoSeizfx3D4yl2vTXfNamkLDCuXDN+7P5/UbB+Kj/d4RTbA/w0fqu3S3
- Kdc/mff99ypi59ryf8VAwd3XM19beUrDZVTU1/3VHn/gVYaI0/k7cnPpEaOgYseemBX5P2OV
- ZE/MjfQrdxs80ThMqFs2dV1eHnDyNiI3FRV8zZ5xPeOkwvXakAOcWQA7Jkxmdc3Zmc1s1q8p
- ZWz77UQ5RRMUFw7Z9l0W1UPhOwr/sBPMuKQvGdW+eui3xOpMKDYYgs7uN4Ftg4vsiMEo03i5
- qrK0mfueA73NADuVIf9cB2STDywF/tF1I27r+fWns1x9j/hKEPOAf4ACrNUdwQ9qzu7Nj9rz
- 2WU8sjneqiiED2nKdzV0gDnFkvXY9HCFZR2YUC2BZNvLiUJ1PROFDdNxmdbLZAKok17mPyOR
- MU0VQ61+PNjS8nsnAml8jnpzpcvLcQxR7ejRAV6w+Dc7JwnuQOiPS6M7x5FTk3QTPL+rvLFJ
- 09Nb3ooeIQ/OUQoeM7pW8ll8Tmu2qSAJJ+3O002ADRVU1Nrc9tM5Ry9ht5zjmsSnFcSe2GoJ
- Knu1hyXHDAvcq/IffOwzdeVstdhotBpf058jlhFlfnaqXcOaaHZrlHtrKOfQQZrxXMfcrvyv
- iE2yhO8lUpoDOVuC1EhSidLd/IkCyfPjfIEBjQsQts7lepDgpQARAQABtB9SYWluZXIgRmll
- YmlnIDxqcmZAbWFpbGJveC5vcmc+iQJWBBMBCABAAhsjBwsJCAcDAgEGFQgCCQoLBBYCAwEC
- HgECF4AWIQTrLHk+ME24YHaolcbw4fcmJYr49QUCYVlg+QUJGnvH3QAKCRDw4fcmJYr49Wta
- EADHXEnPxIsw5dM0Brphds0y12D0YGc2fBuTeyEDltuJIJNNLkzRw3wTOJ/muUHePlyWQigf
- cTieAP4UZmZkR+HtZdbasop+cIqjNrjeU1i+aiNaDf/j6JMKaXVtaXfTbwA0DFJ2olS7Ito/
- v7WPf5zJa7BnWFa5VbMQw2T68gOGpMuQky9se58ylQcpjBD2QVJiL5w36JTZpG84GfvQnFdl
- Fu9dh6/bYDUiTVYWbWCYNoDiEam3GEgsPxWMyb2R9nkBDEUKp9jDxu/iJl5nbX2+hoLDcD7v
- zM+sEeXLgwn5OyRxKiFYLAaNPUow+J8JG7NUWHVvuHtiu4ykNfoIghyxPENs5N/nndJt5KDq
- kWHlXhJOyC6eDCt/47Ylykau/bDlfrmgfoEoLt8X59sZaQAgkV0yjrPl4bEW61eGvcjracj5
- lsDP15MITm+OND3LLSg9Jxz8LOYs6enLxy7OmFIJF685XDhtDdvGSVCbdB4Ndhygw8HiDxnZ
- hh4ByX+N/v60g3IdoFXc7v8GIDMTtSukOwKlm44jENcFZBjjC518OH1ugLcbnR/f+vT9L7tO
- fDNahD1nrLNsOtZKkW1Ieztl7EEz8IUZzjMqXuEWSEZn0luE8j6FnuTr1JId8WL9AqM/vcVY
- /UN8v4d4bUvjQ2+k0U3aMsumw+Y5PUsiFfy+gLkCDQRaIcDTARAAwhbtQAUmZG/rkpR/6/xr
- 7jRqi5Z3M5LZNw4lW9k4nBpQDAP/rLVuREnz/upm314P9i5iN9g2wsbReZBJ9KiUxT39KD5p
- 99KZGIH0elgZy+nDnb3oQLbtAr8+ox1ThOyOEJ7iX378txc1JD9IWJuv6YLMlkXa4ZuuAMCq
- KUvCChEjcHhZ+Ecb8OX8GwIKUoklWhoHR7OcMqAkjdhA698FkWNkgIeqMiTN/hBJ9u010ZeB
- 82ibDAKSMetMRxflCwThrVrfrOr5+ZkJvoN5r+Jy1ulk8OOnDOjvqXoUcee5zdloZymeY3f7
- zebddvPmuiR0qXX0KYeSbhNF1GugLgbYeU2ev0nZ74F6vTwLUraRjKUzk0bq6SELlNMriS2x
- Wj7zDB2XtzUdTHPYSgFDKGYxRqiM7KJbheCL7gD1wxUGRf14yJISXmDX/fZhsFrZ/NF3UqxJ
- nLCz9lqyMCvT8prJjlAQu0zcFcrGAYVBNeJMAKlukMllRMgWdSLmJQiDC5JMaXoEeXdGpIv8
- LgH+yU3tkKjXvkjwGywcXuL28ZScap3iJj08B8HWHmlL5b3pCkZv1w87SSF+FarrWl4F4u4U
- j+u2r7/NEZVmJ0GpNHNwkYFQiX1Coky6+Ga1/gXUBP6grI9eZOMD+qtsJC1JVPY8VIsjq/47
- R1tBTKoiANQ/M+MAEQEAAYkCPAQYAQgAJgIbDBYhBOsseT4wTbhgdqiVxvDh9yYlivj1BQJh
- WuePBQkae8fdAAoJEPDh9yYlivj1GmsP/AwKF5WPyg3M1e7YPAYc3vsp2RQccnIjQ62MYxbz
- VWFs32GT0FyeIBzzT5aaVNyWzumNSyp51LC29AeqL/LXel9bUCzg3v0g5UutXAh9XYnWvgD6
- 12U4WlFUPmSVKz7B1kf9fwFfOUyRnT1Ayf91GDW9vTP2yWboXqelQdawa1Wl7G+C+unyuu3q
- OoPkNu65g6ZanO66ycXz6BDOlfCP7WPhcdyi85PuaJhXGbOysKS/m+tptS7XStqp+9Hvj1pj
- 3pajr5Nktufg3+QLQTj7iUowMnHdClY5d5c34gayzXHIZw9pSM4u4NStEGUTHk9JVRNd09A0
- J3PzCngz9isv6Cdi7dZH4ivjOqXnD3Wq6Dwmu2RaBciQx8fuM58o6VBQ2cQa00QRT96UPWph
- G5BEGryzI0IxAmQtNDwneJx+jscGmMWvm4PkTViBnRcJtlJVO0lR5tWjscVG4TgBIo1M5qmi
- t0GfVUkS4E8AhVNtPG1Z5vl7JkfX3irc4ld58j1STfhLuos5l4X+7lRncpbYCsuk9rz1Bjh8
- r/bUbqMkpj7m27JXi7cHIOtZ4up9O0O8WFdPpLRmy6GS67czo5dpV3CowY9LtZ0+0JmnUd59
- kutl2mu4Qd3cGFbZB4J8J3p+wtsx7bujP38lQvmqpyGTUtyoGO9nOL0X5Xi95CAqapnE
-Message-ID: <0788d607-a9e3-c546-598e-496b300717e0@mailbox.org>
-Date: Thu, 29 May 2025 22:57:57 +0200
+	s=arc-20240116; t=1748555862; c=relaxed/simple;
+	bh=hRhuj7xE1dBPPnx/EVxIJiotQ89zyqzhXVw7IFjGmE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pgNCEntm8ofefnvrNn2028H+9ae7k+fC6h4TIIj41D02xDIb3QBTpxilVryl/+TSAbYkNyl4Kxe6ajkAJnA5ltXriRX8e6QH+jP829qPgZFdMyNUM7wco9mDDsYMzfZwaeESFyYUsijr13iK7bcPzmxAwYnYQL6M4G4GAKk5+Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OgW/oZdA; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-22e09f57ed4so23063435ad.0
+        for <stable@vger.kernel.org>; Thu, 29 May 2025 14:57:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748555860; x=1749160660; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=x0GMs9CYxQo1qYKiYb5d9sx6J+FnaGgIltFASAatpr4=;
+        b=OgW/oZdA/xF2+Cb4BuA55NZzrwrK6k4JLlW2MWWnzF1mXkNAvepYevHr0romStjr2q
+         6woVmIbMNM7HGBkM6YoWo/IvBURljnA607Gypx4YnpsTFXoFsKfa0PB8IXVwVq47+iKF
+         Fdo6pUvTjYqonphBimS/78/ZN+uZzZj6i6DjpIOUj6W4sbGFU5GgdmBKJJ1n52rhZE8y
+         wNjnW2TgZnIfPC+1AcTAVZPRPgzHf842J77cMVIp2hoMDiZMRRYerzqWcE5F2GaUBz4M
+         ODfkoqDWDF4FynPqfTeC5Y11owartmSJ6oMaaHt5HWR0Ji76kBDWrvgjL1ipKeg0shuD
+         qOZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748555860; x=1749160660;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x0GMs9CYxQo1qYKiYb5d9sx6J+FnaGgIltFASAatpr4=;
+        b=XUqofOZ71tliVFdav7St2bukZZp8B9bAmPG0f/HGimtXkAB+HDZACbxbtYrIfEFuVj
+         AKn16pnUWRa1LXviIovWFlhnQEhqSdfFOJs7QH8aiYPg78LawOM/xuQOm2wwUCi8sNAR
+         UAQbkeEZCU3jJ5Wwwn9WV2feRkt2MiuwvdwsilVnu62yFVFHo/q0x59mwIG4cLXgKgFx
+         NEv8WJ0QTQtYvQXaTmxOD1AUq0R692/pt23pJcE/U5d0cxIji5WLltahwW7eaydULZXT
+         JzGq1zHyIo1Is4Ap/j8pfXDRY4R4fvSoYJDFG/K3NCJd5Ew7QoSxnxS9K8EyeepM0APd
+         7G3A==
+X-Gm-Message-State: AOJu0YznM2KkZg9D7iZASGqS1uOzRIFQX8OoXts9p+/yAmgFDgJwWxgh
+	sDYILXRjP10RV5DOAamZ/bN/zMKcI2sPSJ2v8/sIEsndqAKrQifUKLvn
+X-Gm-Gg: ASbGncs1xkasBXRfiCKGUXjrjDpgANj4E43x18rySJ1hzDMLeUURgXqyDeDTi1mZZ1V
+	lr2X3KwEt51Sz4D/CQTwbRZkOb1uZPUaX/nGgdOLJt3fN/ZaWLauMWYN5Pith6KwF5wOTVH4kQy
+	jzkOMd5OjxmxSfqrzXCuwT6643N+6KZDckxdEBCf/HKlI5UJ8KdkFEk5wFWfpiPdfA1NXz5ZZTm
+	9Xs3PTA2zYTKjXjmT5ghnupO2wZ9VO2SDCa9IQ6SifQdcwpuQ4nSbyuWDf1iU4eejdpZhFbY69R
+	c61XxJ6vAgeCF3+uRwudXqQgF64uLy5y9awMQFJGm2vHWgWYP8r/Im4JbTwOZmw=
+X-Google-Smtp-Source: AGHT+IFCgSmz/OIAP9QcUueti/TFiI+FoURwz75jbYsNGy7OOgBeFcGvWYnDLiQ58WZGcXzehIbEvw==
+X-Received: by 2002:a17:902:e803:b0:215:ba2b:cd55 with SMTP id d9443c01a7336-2352af0b270mr13215645ad.2.1748555860392;
+        Thu, 29 May 2025 14:57:40 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:4497:aae1:cfdf:dc31])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506d14c9asm16655905ad.231.2025.05.29.14.57.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 May 2025 14:57:40 -0700 (PDT)
+Date: Thu, 29 May 2025 14:57:37 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Hanno =?utf-8?B?QsO2Y2s=?= <hanno@hboeck.de>
+Subject: Re: [PATCH 6.14 750/783] Input: synaptics-rmi - fix crash with
+ unsupported versions of F34
+Message-ID: <mznd6ptvrkapnt2tra63bsavlzr6iuicd5o4re32vrtye5au6w@5q4b22g3oszc>
+References: <20250527162513.035720581@linuxfoundation.org>
+ <20250527162543.672934881@linuxfoundation.org>
+ <i7tnbh7l2blxussxcdgjuvcpkzet5w552dqu6vl5upus4xf74n@dva72me3bdia>
+ <2025052959-corrode-outback-6ecd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <a46d63fc-3012-4bfb-8e88-aa7acaee5c36@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: h7i57ygacxutfhpuagigrbwcjr9fctot
-X-MBO-RS-ID: 335c855bb62ae3ac48a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025052959-corrode-outback-6ecd@gregkh>
 
-Am 29.05.25 um 15:07 schrieb Limonciello, Mario:
-> On 5/29/25 6:02 AM, Rainer Fiebig wrote:
->> Am 29.05.25 um 09:17 schrieb Rainer Fiebig:
->>> Am 28.05.25 um 23:09 schrieb Deucher, Alexander:
->>>> [Public]
->>>>
->>>>> -----Original Message-----
->>>>> From: Rainer Fiebig <jrf@mailbox.org>
->>>>> Sent: Friday, May 23, 2025 3:54 PM
->>>>> To: stable@vger.kernel.org; Deucher, Alexander <Alexander.Deucher@amd.com>
->>>>> Subject: 6.12.30: black screen after waking up from hibernate; bisected
->>>>>
->>>>> With kernel 6.12.30 waking up from hibernate fails in a Ryzen 3 5600G system with
->>>>> the latest BIOS. At the end of the wake-up procedure the screen goes black instead
->>>>> of showing the log-in screen and the system becomes unresponsive.  A hard reset
->>>>> is necessary.
->>>>>
->>>>> Seeing messages like the following in the system log, I suspected an amdgpu
->>>>> problem:
->>>>>
->>>>> May 23 19:09:30 LUX kernel: [16885.524496] amdgpu 0000:30:00.0: [drm]
->>>>> *ERROR* flip_done timed out
->>>>> May 23 19:09:30 LUX kernel: [16885.524501] amdgpu 0000:30:00.0: [drm]
->>>>> *ERROR* [CRTC:73:crtc-0] commit wait timed out
->>>>>
->>>>> I don't know whether those messages and the problem are really related but I
->>>>> bisected in 'drivers/gpu/drm/amd' anyway and the result was:
->>>>>
->>>>>> git bisect bad
->>>>> 25e07c8403f4daad35cffc18d96e32a80a2a3222 is the first bad commit commit
->>>>> 25e07c8403f4daad35cffc18d96e32a80a2a3222 (HEAD)
->>>>> Author: Alex Deucher <alexander.deucher@amd.com>
->>>>> Date:   Thu May 1 13:46:46 2025 -0400
->>>>>
->>>>>      drm/amdgpu: fix pm notifier handling
->>>>>
->>>>>      commit 4aaffc85751da5722e858e4333e8cf0aa4b6c78f upstream.
->>>>>
->>>>>      Set the s3/s0ix and s4 flags in the pm notifier so that we can skip
->>>>>      the resource evictions properly in pm prepare based on whether
->>>>>      we are suspending or hibernating.  Drop the eviction as processes
->>>>>      are not frozen at this time, we we can end up getting stuck trying
->>>>>      to evict VRAM while applications continue to submit work which
->>>>>      causes the buffers to get pulled back into VRAM.
->>>>>
->>>>> HTH.  Thanks.
->>>>>
->>>>
->>>> Fixed in:
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7e7cb7a13c81073d38a10fa7b450d23712281ec4
->>>> and on it's way to stable.
->>> Great, thanks!  I had already reverted your commit in an experimental
->>> branch and that solved the problem - so either your commit was bad or
->>> something that it somehow depended on.
->>>
->>> The problem that now reverted commit 68bfdc8dc0a1a tried to solve is
->>> indeed irritating/confusing and hopefully you'll find an other way to
->>> solve it.  The whole procedure is suboptimal insofar as there is no
->>> feedback as to what is going on and whether the process has finally
->>> concluded and it is safe to switch off the box.
->>>
->>> My - perhaps naive - suggestion would be to provide at least some
->>> feedback by leaving the monitor _on_ until the image has been written to
->>> disk and the box can be switched off.
->> To clarify a bit what I mean: if possible, the display should stay "on"
->> _all the while_ from initiating hibernate until the image has been
->> written to disk and shutdown is complete, so that the user can tell from
->> the status of the monitor's power-LED whether it's safe to switch the
->> computer off.  Neither an "off-on, off-on..." nor an "off" during that
->> phase is helpful.
->>
->> Rainer
->>
+On Thu, May 29, 2025 at 08:35:17AM +0200, Greg Kroah-Hartman wrote:
+> On Tue, May 27, 2025 at 01:42:39PM -0700, Dmitry Torokhov wrote:
+> > Hi Greg,
+> > 
+> > On Tue, May 27, 2025 at 06:29:07PM +0200, Greg Kroah-Hartman wrote:
+> > > 6.14-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > Can you hold this for a bit? I might need to revert this.
 > 
-> Before the hibernate image is created the GPU is supposed to be put into 
-> a state that it will be when resuming from the hibernate image.
-> 
-> That is why all the IP blocks are reset before creating the hibernate 
-> image.  This will turn off displays because DCN is reset.
-I see, thanks for the info.
+> Now dropped from all stable queues.  Let us know when you want this
+> added back.
 
-Just built 6.12.31 and ran one hibernate/resume cycle and that was OK.
-Hibernating the system showed the old behaviour (the one before your
-"always off" patch): screen goes black, monitor stays "on" for a while,
-then goes "off", after a while "on" again with a black screen and the
-mouse-pointer visible.  The monitor then goes "off" which ususally marks
-the end of the procedure.  Sometimes there's more than one "off-on"
-cycle which can be rather confusing at first.  But one gets used to it.
+Thank you. It looks like it was a false alarm, but I'll wait a few more
+days just to make sure.
 
-Rainer
-
-> 
+-- 
+Dmitry
 
