@@ -1,147 +1,135 @@
-Return-Path: <stable+bounces-148043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31BCAC744B
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 01:07:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FF8AC74C1
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 02:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69C43A262F2
-	for <lists+stable@lfdr.de>; Wed, 28 May 2025 23:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2C4F5011ED
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 00:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F96221FA6;
-	Wed, 28 May 2025 23:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84EA10785;
+	Thu, 29 May 2025 00:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gZB1u7Fj"
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="DV50x740"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C918A221F30;
-	Wed, 28 May 2025 23:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3825228
+	for <stable@vger.kernel.org>; Thu, 29 May 2025 00:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748473654; cv=none; b=gbPRC31Wr96tGmg3VuVe3n0XWBJACtBkznm5VNJ1LHGzNsNf1kCh847XOAsrK+Vw7beEUX99S85iVqAumMzJ0kwDFjbjHVXMGOvuVTc6kVfdwaK6XqRcfkr4kfAjPdKubF/AHwQsM1A/XXEzSfJ7IgWJhsIofTPMxTvpRRcYXKE=
+	t=1748476905; cv=none; b=fehzdc49mOjolqK3T+WfmwFzS2sXtwgBlyXivx5S7XCX9OLXxh02/j5lDhpZ+LiZcn4gSl6WJe8kk/xF1k8yc6rRh/4ZH09hVNH1rkuW3srB/yrpy8SKxw4gQaGK73U8ngVJ+Y4tnhKor6BnY8iFn6YZrcb7BP/j1KAfOjtgqms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748473654; c=relaxed/simple;
-	bh=ODONM4PY+4c5Dzs3yI8XdPUV3QwSyopJVRyDaSeokg8=;
-	h=Date:To:From:Subject:Message-Id; b=D3+57yIBpc5C5iv2pTEOZT22K4wIK1A4ql+T+5p+KcjkBY4F3JwZKYj61ELOKhawz7Zo85lS78VgTz7g2dYiMPpm46hbet8beyFuZ+VmVmJsMRcUUnnhr510C1IAtcsBc42e9sqPqLO6I9jzJOhAhjkqcJf+SEr7GiF3+lf3yJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gZB1u7Fj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F56C4CEE3;
-	Wed, 28 May 2025 23:07:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1748473654;
-	bh=ODONM4PY+4c5Dzs3yI8XdPUV3QwSyopJVRyDaSeokg8=;
-	h=Date:To:From:Subject:From;
-	b=gZB1u7Fjosh7TJIKR4YG/8CPDx+iexIPVDfa+qEemV4yQdgIEDMZuPfFeT14dGQvw
-	 WJWRGhl17VzGY1zGInBVCA63QamaYUNBqsSdB1l24okMuK0S0ycZT+vntdgOAsDt4x
-	 CHTacW6VdTw4kS6F2e++HV71lMf/pUi+nhL1O5QU=
-Date: Wed, 28 May 2025 16:07:33 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,yuzhao@google.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [alternative-merged] mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch removed from -mm tree
-Message-Id: <20250528230734.75F56C4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1748476905; c=relaxed/simple;
+	bh=T3juE1hOUm6DFe5iT/pHd3UmRK7XfYewH+PUs5EwYN8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RKlHcPH+I7HP2uCBIeFdvfC9GA45sUeTB88NAmzclAEIV4YT0xhsM05yVzAL4ikaq9A8kge+FtqPJhVMX2lkcQoB/DaV+u1qS4L0/sQmW636arc9cqoCiMEmmrKkaumdPI/0cAWgBGsl0e5MhScwdZClTz9ibOUyuEIAG9Ug30Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=DV50x740; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-742caef5896so218036b3a.3
+        for <stable@vger.kernel.org>; Wed, 28 May 2025 17:01:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fastly.com; s=google; t=1748476903; x=1749081703; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HHrYl8KlTDJV9fZehVT6wNYFoGVLZmH/YM7SP1Otey4=;
+        b=DV50x740ZiLdVCWqwMXcv60Mn8RJ2GTIDm9RssFMLLKlsTVJ7qvZwzKSQvTUMFKcDm
+         pX9NFcvIoO6gQTqCB/XXC+I4YTZDJf2DJaP1h2NtUzIB009Rr8fxhRLWX0mbOhsFihZJ
+         Ipefk4NVQBOSKfNa6+g3fpZlkts8X2YOoSY5s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748476903; x=1749081703;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HHrYl8KlTDJV9fZehVT6wNYFoGVLZmH/YM7SP1Otey4=;
+        b=kaycKYmcm/qbSVWG0DoliHcclDKZmeMqm1dgwBf1/HUeLD2z7q+X0ng5PV5s6KHiHL
+         ieDb0NoPVu5nfFhEMjp/thyOM/8VX5FTF9rNYYeMXwpR0WFF566JbzmScLWkJbnysIB6
+         kMhrDCMC3hYJKpS8w3rImn5b80Z6k7vTP3JezP093nmQfaoowL69Cyn1BzwFxG2Op3yx
+         s8Ql2Y4H/i1cnioSZ5C5yEM6lPVvqufh9PXUMjfHNW2zm8FH3RTHX9B424NuzeZ85iKw
+         WrYYb2c78FNRnbStI5YACwHLR2NregdkIbI/sXbQrRwYi/fjftGY7/gg7HOycTiOK2kk
+         +uyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuwacDOSbD0SnuzogGenRTjLXX3YjLJ1qZcQta90YEucMm/IM9mp8iraZfbQs+EXuKaA2OfMs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8My693lcIR8RJ0jdszfHRitrTCKURQQUhNN5cwDTNMzPCJKNj
+	LppFcTITz76ornsvurjolVq51SB0sBYWqy7eWNiVsjsnoTZ/8UN2njWUM0XMMGsO4S8=
+X-Gm-Gg: ASbGncu0otHwlhinhPAfqqlLVIShyDnANXrNChUfVrmFHEhZ9i+aVrU57g9dXcoZu/5
+	jPQVfU+WYITggHJS4QXhXX7RR14piSAq4gApJnWiAMDgVi+o8nIOhyzt/i9n7a/qVLPGyoVWGsj
+	73PPdrY59mostXjwKQS3JaEgRhwCD9BQHYEVpSHlehoR+89II0oerI7uSR1vn/f2H4GqgP4NqVu
+	yCFqev1yEN4e3+44NThPQZJ5c8orrASlPc750UXjAcxy/P/XkjIc0+obxymVyCvgfoBVuYx9Mgz
+	yKL4lePDMyULj42yjGJXdomH3FO/o8CbkfWAz2mu5SXXlHkIRTU8uMas7qYDyk2eUVNsIkN6ksf
+	EqDUJou3IERPrIuCpVeECzUw=
+X-Google-Smtp-Source: AGHT+IGh6QFynq+YuUMFZqTG/73Ufan/2rkYRYNy6qC4rW91iir86PkvuJN/O02OksGF7UPuPg4WFQ==
+X-Received: by 2002:a05:6a00:1407:b0:742:a77b:8c3 with SMTP id d2e1a72fcca58-747b0c72ba6mr275550b3a.4.1748476901844;
+        Wed, 28 May 2025 17:01:41 -0700 (PDT)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747affafaebsm165546b3a.87.2025.05.28.17.01.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 17:01:41 -0700 (PDT)
+Date: Wed, 28 May 2025 17:01:38 -0700
+From: Joe Damato <jdamato@fastly.com>
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: niklas.soderlund@ragnatech.se, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, richardcochran@gmail.com, netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: ethernet: rtsn: Fix a null pointer dereference in
+ rtsn_probe()
+Message-ID: <aDej4pD_ZzB8ZQdP@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	niklas.soderlund@ragnatech.se, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, richardcochran@gmail.com, netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+References: <20250524075825.3589001-1-haoxiang_li2024@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250524075825.3589001-1-haoxiang_li2024@163.com>
 
+On Sat, May 24, 2025 at 03:58:25PM +0800, Haoxiang Li wrote:
+> Add check for the return value of rcar_gen4_ptp_alloc()
+> to prevent potential null pointer dereference.
 
-The quilt patch titled
-     Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
-has been removed from the -mm tree.  Its filename was
-     mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
+Was the null deref observed in the wild? Asking because I am
+wondering if this is clean up instead of a Fixes ?
 
-This patch was dropped because an alternative patch was or shall be merged
-
-------------------------------------------------------
-From: Jinjiang Tu <tujinjiang@huawei.com>
-Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
-Date: Mon, 21 Apr 2025 09:36:20 +0800
-
-When calling alloc_contig_range() with __GFP_COMP and the order of
-requested pfn range is pageblock_order, less than MAX_ORDER, I triggered
-WARNING as follows:
-
- PFN range: requested [2150105088, 2150105600), allocated [2150105088, 2150106112)
- WARNING: CPU: 3 PID: 580 at mm/page_alloc.c:6877 alloc_contig_range+0x280/0x340
-
-alloc_contig_range() marks pageblocks of the requested pfn range to be
-isolated, migrate these pages if they are in use and will be freed to
-MIGRATE_ISOLATED freelist.
-
-Suppose two alloc_contig_range() calls at the same time and the requested
-pfn range are [0x80280000, 0x80280200) and [0x80280200, 0x80280400)
-respectively.  Suppose the two memory range are in use, then
-alloc_contig_range() will migrate and free these pages to MIGRATE_ISOLATED
-freelist.  __free_one_page() will merge MIGRATE_ISOLATE buddy to larger
-buddy, resulting in a MAX_ORDER buddy.  Finally, find_large_buddy() in
-alloc_contig_range() returns a MAX_ORDER buddy and results in WARNING.
-
-To fix it, call free_contig_range() to free the excess pfn range.
-
-Link: https://lkml.kernel.org/r/20250421013620.459740-1-tujinjiang@huawei.com
-Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/page_alloc.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
-
---- a/mm/page_alloc.c~mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order
-+++ a/mm/page_alloc.c
-@@ -6693,6 +6693,7 @@ int alloc_contig_range_noprof(unsigned l
- 		.alloc_contig = true,
- 	};
- 	INIT_LIST_HEAD(&cc.migratepages);
-+	bool is_range_aligned;
- 
- 	gfp_mask = current_gfp_context(gfp_mask);
- 	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
-@@ -6781,7 +6782,14 @@ int alloc_contig_range_noprof(unsigned l
- 		goto done;
- 	}
- 
--	if (!(gfp_mask & __GFP_COMP)) {
-+	/*
-+	 * With __GFP_COMP and the requested order < MAX_PAGE_ORDER,
-+	 * isolated free pages can have higher order than the requested
-+	 * one. Use split_free_pages() to free out of range pages.
-+	 */
-+	is_range_aligned = is_power_of_2(end - start);
-+	if (!(gfp_mask & __GFP_COMP) ||
-+		(is_range_aligned && ilog2(end - start) < MAX_PAGE_ORDER)) {
- 		split_free_pages(cc.freepages, gfp_mask);
- 
- 		/* Free head and tail (if any) */
-@@ -6789,7 +6797,15 @@ int alloc_contig_range_noprof(unsigned l
- 			free_contig_range(outer_start, start - outer_start);
- 		if (end != outer_end)
- 			free_contig_range(end, outer_end - end);
--	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
-+
-+		outer_start = start;
-+		outer_end = end;
-+
-+		if (!(gfp_mask & __GFP_COMP))
-+			goto done;
-+	}
-+
-+	if (start == outer_start && end == outer_end && is_range_aligned) {
- 		struct page *head = pfn_to_page(start);
- 		int order = ilog2(end - start);
- 
-_
-
-Patches currently in -mm which might be from tujinjiang@huawei.com are
-
-
+> Fixes: b0d3969d2b4d ("net: ethernet: rtsn: Add support for Renesas Ethernet-TSN")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+>  drivers/net/ethernet/renesas/rtsn.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/renesas/rtsn.c b/drivers/net/ethernet/renesas/rtsn.c
+> index 6b3f7fca8d15..f5df3374d279 100644
+> --- a/drivers/net/ethernet/renesas/rtsn.c
+> +++ b/drivers/net/ethernet/renesas/rtsn.c
+> @@ -1260,6 +1260,10 @@ static int rtsn_probe(struct platform_device *pdev)
+>  	priv->pdev = pdev;
+>  	priv->ndev = ndev;
+>  	priv->ptp_priv = rcar_gen4_ptp_alloc(pdev);
+> +	if (!priv->ptp_priv) {
+> +		ret = -ENOMEM;
+> +		goto error_free;
+> +	}
+>  
+>  	spin_lock_init(&priv->lock);
+>  	platform_set_drvdata(pdev, priv);
+> -- 
+> 2.25.1
+> 
+> 
 
