@@ -1,106 +1,117 @@
-Return-Path: <stable+bounces-148066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B6DAC7A97
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 11:02:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B1DAC7AE0
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 11:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E63FF17256F
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 09:02:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5A811C01EE2
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 09:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B90E21B1AA;
-	Thu, 29 May 2025 09:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5F221C173;
+	Thu, 29 May 2025 09:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="VMvwbeFg";
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="mSTg/UYB"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4712192FB;
-	Thu, 29 May 2025 09:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C120A19E968;
+	Thu, 29 May 2025 09:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748509360; cv=none; b=u4CCie66OJvbytzcWFXiqNZtz1ymuVQlqG41+v0SAkslHkYZtK7c8OwNaOUskKcVXcHFYkvCJ+oMOCYnkt8cUjHXo+SvpPHgSNFNh+dUNTuiOdGr2lpx9EbbbD+CSdCVBLFbjmERX828G+oWG2WWU4Vet/+bDsGpi+fzNQCLenA=
+	t=1748510325; cv=none; b=bL2a+tpZz9QZnqH1Imshy0gwJp1hDCiWws8wYB5I6gSCK4jBFJwhzNEDKIx/niVFhAtaUIQJkwrEckZJexkNHdSaaMHzpmcgJW5pTwUvJC1S893HZ77Cv63/9j6kdnsmk+RbmqsegoTjP6oRDZXu+aBzY9JPUHTwHfjjJTFLwtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748509360; c=relaxed/simple;
-	bh=DXcA32gLvtkB+1oDhLo8ikwLTnpgTyUtZRvK1bpu+3g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MXyUKNiPDl5KXhzcnOGOk8lh3WwVjYsRYjNK5gsyCftXPglh30jkl1nHLT24ethki3JWlm5W1FUriK8Sdw2s/2feKCJruA17wa6L9O7NIfzExcyVcavRPMq/iqBZOllJKEjYCgB7PVxvBONE3zEtCFMyza/3ncIqx/IBMdfiv1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0632176A;
-	Thu, 29 May 2025 02:02:15 -0700 (PDT)
-Received: from [10.163.62.34] (unknown [10.163.62.34])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 024513F5A1;
-	Thu, 29 May 2025 02:02:25 -0700 (PDT)
-Message-ID: <7b9a9ad4-7a7a-4e99-ba72-f5be0f609a21@arm.com>
-Date: Thu, 29 May 2025 14:32:23 +0530
+	s=arc-20240116; t=1748510325; c=relaxed/simple;
+	bh=Bxi50n+i6fLfTEC4kfxjmy4Mu+WM6qkTH49bIrIqQyw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S+BrPvWvEk57ScvDipbuY97ylCZ18eEypJtQPWgN8qKFKPhEBynKulCMpVkyIe0tRK5q4ul/+4bj8SZdH8G4Y5YG3BwVmMhXo+Pp+wpcTXDOxWZYnsDibjx3fZkvrOcptUTX3Tazh8+22nG5R0MmG/q+8I8b42bCbGqT52E6ECg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=VMvwbeFg; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=mSTg/UYB; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Received: by mail.netfilter.org (Postfix, from userid 109)
+	id B25116074E; Thu, 29 May 2025 11:11:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1748509909;
+	bh=0KzakS5/h8R3g4Y1T3M4IPvVMv4pzN9nP3So+cg8GJU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VMvwbeFgIBw6xBaVo3v/nBQcBiuQuEOQ2NiQxUZi9fyHUkwtgKasvUZu6753U1GBg
+	 mQYXXM7R3w1mlkr9yANJ4ZCu17A4+v11gn5PYPQoA9ZmK9CUDROyQhGoXKDJL9yYuI
+	 NwqARQ9T6fy7aVEYeFN7iqCY1zD8uAx7vE0xt7PDT6FqOxjWXpCZgwtEFur5d7oJhY
+	 nbRmAUTvTNzlq6ms0F2tbac9guLuBlhd6Bh7v4k+jXkIVvJF4Q4ktXLeLA0XcUtt1u
+	 St//rRFvK86XaHVmV/pxgddXDPObHti8/YLIQgujQcgm6hV7E8Wqt+MnjQcshLq+ML
+	 /3ylmWumgD9IA==
+X-Spam-Level: 
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id CDC7760747;
+	Thu, 29 May 2025 11:11:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1748509908;
+	bh=0KzakS5/h8R3g4Y1T3M4IPvVMv4pzN9nP3So+cg8GJU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mSTg/UYBF0nRk0HF3a2rB1DWUh7LPBZhYwJoNiSu8gWrgiXIcmPgmfnsTI4HqF72V
+	 xpP50Jx5/FRl7b2k4QkZL3o/tHnIf73P5KbbxT8AZysQTTxyZ453UZ2HHDbXGKyjOc
+	 Fuyj2v4CjOj/I0AhW9xd/bpBmAUOvjtEYJSek2ECYEo7wW2T5RFm1Tb4YggkLfqQ3K
+	 +FsMLSRcIWoaOZBuc5/yRb7vB+GAbTN+y6yPRFsVG027ji3zNiaruQz8LWOcIGcMTk
+	 qpmoRkGCEVCcR9QY+D2sGcO13DvbF1o9DQ0qXgLqYa2709jj4nH/d0ycvhF41p434q
+	 xMZgt2tASUOUQ==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH -stable,5.4 0/3] Netfilter fixes for -stable
+Date: Thu, 29 May 2025 11:11:41 +0200
+Message-Id: <20250529091144.118355-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] arm64: Restrict pagetable teardown to avoid false
- warning
-To: Dev Jain <dev.jain@arm.com>, catalin.marinas@arm.com, will@kernel.org
-Cc: david@redhat.com, ryan.roberts@arm.com, mark.rutland@arm.com,
- yang@os.amperecomputing.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20250527082633.61073-1-dev.jain@arm.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20250527082633.61073-1-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Hi Greg, Sasha,
 
+This batch contains a backport fix for 5.4 -stable.
 
-On 5/27/25 13:56, Dev Jain wrote:
-> Commit 9c006972c3fe removes the pxd_present() checks because the caller
-> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller only
-> checks pud_present(); pud_free_pmd_page() recurses on each pmd through
-> pmd_free_pte_page(), wherein the pmd may be none. Thus it is possible to
-> hit a warning in the latter, since pmd_none => !pmd_table(). Thus, add
-> a pmd_present() check in pud_free_pmd_page().
-> 
-> This problem was found by code inspection.
-> 
-> Fixes: 9c006972c3fe (arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table())
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Ryan Roberts <ryan.roberts@arm.com> 
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
-> This patch is based on 6.15-rc6.
-> 
-> v2->v3:
->  - Use pmdp_get()
-> 
-> v1->v2:
->  - Enforce check in caller
-> 
->  arch/arm64/mm/mmu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index ea6695d53fb9..5a9bf291c649 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1286,7 +1286,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
->  	next = addr;
->  	end = addr + PUD_SIZE;
->  	do {
-> -		pmd_free_pte_page(pmdp, next);
-> +		if (pmd_present(pmdp_get(pmdp)))
+The following list shows the backported patches, I am using original commit
+IDs for reference:
 
-This code path is only called for the kernel mapping. Hence should
-pmd_valid() be used instead of pmd_present() which also checks for
-present invalid scenarios as well ? 
+1) 8965d42bcf54 ("netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx")
 
-> +			pmd_free_pte_page(pmdp, next);
->  	} while (pmdp++, next += PMD_SIZE, next != end);
->  
->  	pud_clear(pudp);
+   This is a stable dependency for the next patch.
+
+2) c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
+
+3) b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
+
+   This is a fix-for-fix for patch 2.
+
+These three patches are required to fix the netdevice release path for
+netdev family basechains.
+
+NOTE: -stable kernels >= 5.4 already provide these backport fixes.
+
+Please, apply,
+Thanks
+
+** BLURB HERE ***
+
+Florian Westphal (2):
+  netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
+  netfilter: nf_tables: do not defer rule destruction via call_rcu
+
+Pablo Neira Ayuso (1):
+  netfilter: nf_tables: wait for rcu grace period on net_device removal
+
+ net/netfilter/nf_tables_api.c | 51 ++++++++++++++++++++++++-----------
+ 1 file changed, 36 insertions(+), 15 deletions(-)
+
+-- 
+2.30.2
+
 
