@@ -1,186 +1,201 @@
-Return-Path: <stable+bounces-148110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646A8AC8146
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 18:54:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F98AC81C4
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 19:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 940F01BC82A8
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 16:54:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 391241BC51EE
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 17:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BF122FAE1;
-	Thu, 29 May 2025 16:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A6222D4EF;
+	Thu, 29 May 2025 17:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mB0TT5Fo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a3ybn94Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDC522DFAA
-	for <stable@vger.kernel.org>; Thu, 29 May 2025 16:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4AFB67F;
+	Thu, 29 May 2025 17:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748537637; cv=none; b=W8A/B1JvtGpNsswzPJtBe5vnCg899j3JJJXE9rI2OAbApkj24IQUdN1Vt9qIkgJVoMk8N/I7+SaDyhbpCPEqDgwn9N5ZIMrCu9zZHgL6mpdK0wk/YZrsrodFVPfW9lUEgNn061i8cn8u67hNRDPHpBzJaN5fTIRBdUq1Dvqj0q4=
+	t=1748540426; cv=none; b=qs6a0to/uAucMnAzL4HHfVLG9wsd+XsmMq3GuavK0zAKkQ+oV5TlzqhYduTBmZKvpToWCmN9pLZKKpjG/WRl5lBfYCEaroNJyCysw5o7TnedzkGaOY20uFPkcrr1WStooUs9pPkdTimOuUaOMoQWL2Id1C/Vbenw6vk3UeeQSVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748537637; c=relaxed/simple;
-	bh=G0kD6t6gDSKYtkY+t4W/ePId5jx6yl+y0aP7+XUduQI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DHpr44R8KkJC3nEec12MvabqWuD4GBjmjZXUKw7bj5rmhTTXoABUAWFshYpzmql9ffD9NAXgnz7+W2zPWVUkatTQtnAlgeulEguKRWGNmnvJJitJ6nwvr2RCB4b4UusEE3Whq5xbHCn7F9AtSfHSRDe8LjPFuyNkL8clznHwlC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mB0TT5Fo; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-72c173211feso327493a34.1
-        for <stable@vger.kernel.org>; Thu, 29 May 2025 09:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748537634; x=1749142434; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wMyKKLxTWveDTcXUPGUHmdDenKXOe0zbluJHu4U+D1M=;
-        b=mB0TT5Fo0rG5u60jfkFEsxnbQZJ1jtw4T2FOnTJuxw8ph1XdaUU9iIwETij8d1pMLx
-         5fEN63frQX2SEheZE5nmhYbD97p7Xzlh2NUMvZvwyOJU/rKeUQUD+tRi160Q2epz9rSN
-         QfxmJDCir9e7KYFUKZ+DE2heuvA+W9SzDs48LBsFZhF5tkea1wXxIwWJrVBHliHHe/KG
-         Qyuex7NBOJJ1rl93FmCC5UswkqFrzOcua13GGEQYOZm5USnpiflxtCPcQoLKPO+ycu0g
-         iCUWCopHuMNKierV78Yaih8wntPj7MCGGf5X7I92TT+/m2TMUVTgQEcOJUxtv6ZHAonZ
-         tNtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748537634; x=1749142434;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wMyKKLxTWveDTcXUPGUHmdDenKXOe0zbluJHu4U+D1M=;
-        b=GqlQlVDE6CExUXVeAMlKfQtNwiRQ7RBHFBFkU/odc22iclJA4JZ7zqb1N//UKbk035
-         +/nNSZzGr0ZCLoTO5JON7xWiM76A8ooGtYDnK+rkFEsDqH5WwmKskO2ikyCWLtiyn8bk
-         3hM7fvvx0qsLJzHhRyDVaULKFlT9DYnkCZz6wPodyK8uDfJxdYdyLexBUNqEbV6KG+QJ
-         zVNQSpo5mNLOh8r9w2o5CNo37ihKe8qN/jLGDevssf54cFNBpuLaZF+kjnpg4PtWdCOJ
-         dGOqcsZ1wqx5m3Y69lHPRtawJPkcRRCyGNZ86MzeD3hnj5hmnx/wRLMBeYEXalWRd7yY
-         5oNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW5H9eymXpXNLhJTBe4dqumAPlQ9GY4k4UZq88BccNRCWdE60pMMo2I/jRDEWuzbVffCKy5oaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynrFG5b43KqgfG/3micj+w4PaTNooxEAVCx/YTyl0wojgABzak
-	1s3QFLq2WtbKJF76p+8extu7Z/t6qO7Iss9rqJqPh+LhQN/iCOR6h3tWl7NBSnYB4FU=
-X-Gm-Gg: ASbGncuCBNP2jFyx/q9uarF9Uz9OeVuCN61JYaGphYCa7bOoUZnCwgP11nz0w5RVdtF
-	HhEtEURZ60xDmUG+9MuMdSNCpjkkrj7hGM/tvqYzySq6q8OpEW9tBJGnztiYm6danZX3FlDABwc
-	oq6b7bho6NYw6HwqGteZf7xkuu0zbNGum8HsFuaR2RERC+TtsGmq/XvInu1XhWMmjpLjzlkjW0b
-	Pa7HlNVbLfbsptAOYybaOh8wIqQLAep2w8vtAMzJLlBO+HUhqgoJrEXbKoz1HFDopQo84h6pMYt
-	FQ1wAHf4nY9QVn/S01+HvJMwmncK4zIIsygh8pzN+IJSjpMj+W9sfd5u
-X-Google-Smtp-Source: AGHT+IHAT8+DwouqDB8LUWALROg5xM20WF7/3pIXPjXzi8VCpH/aISqfkYA39EKnMSkf4x6zkSIVow==
-X-Received: by 2002:a05:6830:710e:b0:72b:8297:e988 with SMTP id 46e09a7af769-73670aa7913mr48655a34.25.1748537634261;
-        Thu, 29 May 2025 09:53:54 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:928b:5d5c:6cd9:1a4])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-735af82d2b8sm303265a34.3.2025.05.29.09.53.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 May 2025 09:53:53 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 29 May 2025 11:53:20 -0500
-Subject: [PATCH v3 3/3] pwm: axi-pwmgen: fix missing separate external
- clock
+	s=arc-20240116; t=1748540426; c=relaxed/simple;
+	bh=CTuAedKq0U54g+MH81XEGkmCLAnq8aSybpfDBpJIdQ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EN0+4jRZutimTPsv7Av5swjUI0AMGbxh/0Z02I2cfuy4kND+rq6Y9eN7f4ZzvamfKjFSgcOp/+bOLB/CIZ+8/QTTYI45GelCcZPTrs9bPhW3ud7BKT5XEZEwC9vwnYWCRKcjOLCLNNcZA9cIXpovfoYtRZ629ic2ilJu4fW5/mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a3ybn94Y; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748540424; x=1780076424;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CTuAedKq0U54g+MH81XEGkmCLAnq8aSybpfDBpJIdQ4=;
+  b=a3ybn94YriLPw0naUJlYW/EuPXmhAzMubVHvb57TCP/4i7YJJro2FDW/
+   kuLFn73hsn9Z4m01FznfObucT6hA95teb6ixGiWYuG57If8TOxM1Q9Go9
+   6zHwQtxKdjlynOifE3ppL+Hk8ARuKU5aA+pp4OkoJezQWz/Qi3TaFFWEj
+   fKDZ6+jXzTbMsNfeCsCdKDUhU3LMEiEfzlwSEDHeCAUpKxD3+EZwPbp7W
+   JWk+hLxJgeJIc3ZuDwOG8496UbZCp4UbVoWzDiyq4wHJS+qh8hSZNQ9WN
+   R8awft4+mepUmPU1SRwO8hANqDMgHHGBX+J5HgYo1as7ZVz8bjQVzrIiC
+   w==;
+X-CSE-ConnectionGUID: ipejCPvORiqXHvYEznl2sA==
+X-CSE-MsgGUID: UNtPL2HzQB2LTrbbKbgXGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="61963929"
+X-IronPort-AV: E=Sophos;i="6.16,193,1744095600"; 
+   d="scan'208";a="61963929"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 10:40:23 -0700
+X-CSE-ConnectionGUID: OvceDlaHQH6JgxsUOXFn1A==
+X-CSE-MsgGUID: 3iC4sBmBRcyPk8AEgUMAGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,193,1744095600"; 
+   d="scan'208";a="174628041"
+Received: from chandhni-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.31])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 10:40:23 -0700
+Date: Thu, 29 May 2025 10:40:17 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Richard Narron <richard@aaazen.com>
+Cc: Guenter Roeck <linux@roeck-us.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linux stable <stable@vger.kernel.org>,
+	Linux kernel <linux-kernel@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH 5.15 00/59] 5.15.184-rc1 review
+Message-ID: <20250529174017.lwctaondsbg7tk37@desk>
+References: <20250520125753.836407405@linuxfoundation.org>
+ <0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net>
+ <67f03e41-245e-202-f0df-687cc4d9a915@aaazen.com>
+ <20250528005520.dpip4qe45zvsn7vw@desk>
+ <b8a9acaf-3d3e-7931-23ce-d61ee77b4e10@aaazen.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250529-pwm-axi-pwmgen-add-external-clock-v3-3-5d8809a7da91@baylibre.com>
-References: <20250529-pwm-axi-pwmgen-add-external-clock-v3-0-5d8809a7da91@baylibre.com>
-In-Reply-To: <20250529-pwm-axi-pwmgen-add-external-clock-v3-0-5d8809a7da91@baylibre.com>
-To: Michael Hennerich <michael.hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Trevor Gamblin <tgamblin@baylibre.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>
-Cc: linux-pwm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2911; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=G0kD6t6gDSKYtkY+t4W/ePId5jx6yl+y0aP7+XUduQI=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoOJEY1kyh8roAlPaq6uaIScxVfXPoyDYddPKpg
- Dt/ZTke2xGJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaDiRGAAKCRDCzCAB/wGP
- wG9hB/9TR5yVVciLQpqx3iN4eP5P/uW9aXvfZm5egzkqiZwr3TqAWhUl704M7SiRuzvbZpMeGNy
- JVDSWKluM/YPVafExyt1yD3RyDJ9277XQV1loRkv2GfVwwyKExJyPPpwDXarsQPQBYSNpkxh5F6
- 0T0infueBJ74Pt0MAKZJIxowVq5632XSJ0a8WYZyo2BzQhBAGpuzEYWWERmZQnC4pFkaQPvsy7U
- dSjhc26qTJyV7Ol29XwWErgErKum8a1M++sVJ1krYCpyWTiRvNthsFx+a4uZh1RebhYDtV00jkt
- 4VtWfTFx+JLTOLROyK0+NhyEaq1HdvNWFQdMkEekMOzzNZux
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b8a9acaf-3d3e-7931-23ce-d61ee77b4e10@aaazen.com>
 
-Add proper support for external clock to the AXI PWM generator driver.
+On Wed, May 28, 2025 at 09:49:40PM -0700, Richard Narron wrote:
+> On Tue, 27 May 2025, Pawan Gupta wrote:
+> 
+> > On Tue, May 27, 2025 at 12:31:47PM -0700, Richard Narron wrote:
+> > > On Fri, 23 May 2025, Guenter Roeck wrote:
+> > >
+> > > > On 5/20/25 06:49, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 5.15.184 release.
+> > > > > There are 59 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > > >
+> > > > > Responses should be made by Thu, 22 May 2025 12:57:37 +0000.
+> > > > > Anything received after that time might be too late.
+> > > > >
+> > > >
+> > > > Build reference: v5.15.184
+> > > > Compiler version: x86_64-linux-gcc (GCC) 12.4.0
+> > > > Assembler version: GNU assembler (GNU Binutils) 2.40
+> > > >
+> > > > Configuration file workarounds:
+> > > >     "s/CONFIG_FRAME_WARN=.*/CONFIG_FRAME_WARN=0/"
+> > > >
+> > > > Building i386:defconfig ... passed
+> > > > Building i386:allyesconfig ... failed
+> > > > --------------
+> > > > Error log:
+> > > > x86_64-linux-ld: arch/x86/kernel/static_call.o: in function
+> > > > `__static_call_transform':
+> > > > static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
+> > > > make[1]: [Makefile:1234: vmlinux] Error 1 (ignored)
+> > > > --------------
+> > > > Building i386:allmodconfig ... failed
+> > > > --------------
+> > > > Error log:
+> > > > x86_64-linux-ld: arch/x86/kernel/static_call.o: in function
+> > > > `__static_call_transform':
+> > > > static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
+> > > > make[1]: [Makefile:1234: vmlinux] Error 1 (ignored)
+> > > > --------------
+> > > >
+> > > > In v5.15.y, cpu_wants_rethunk_at is only built if CONFIG_STACK_VALIDATION=y,
+> > > > but that is not supported for i386 builds. The dummy function in
+> > > > arch/x86/include/asm/alternative.h doesn't take that dependency into account.
+> > > >
+> > >
+> > > I found this bug too using the Slackware 15.0 32-bit kernel
+> > > configuration.
+> > >
+> > > Here is a simple work around patch, but there may be a better solution...
+> > >
+> > > --- arch/x86/kernel/static_call.c.orig	2025-05-22 05:08:28.000000000 -0700
+> > > +++ arch/x86/kernel/static_call.c	2025-05-27 10:25:27.630496538 -0700
+> > > @@ -81,9 +81,12 @@
+> > >  		break;
+> > >
+> > >  	case RET:
+> > > +
+> > > +#ifdef CONFIG_64BIT
+> > >  		if (cpu_wants_rethunk_at(insn))
+> > >  			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
+> > >  		else
+> > > +#endif
+> > >  			code = &retinsn;
+> > >  		break;
+> > >
+> >
+> > Another option is to define the empty function when CONFIG_STACK_VALIDATION=n as below:
+> >
+> > --- 8< ---
+> > From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> > Subject: [PATCH] x86/its: Fix undefined reference to cpu_wants_rethunk_at()
+> >
+> > Below error was reported in 32-bit kernel build:
+> >
+> >   static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
+> >   make[1]: [Makefile:1234: vmlinux] Error
+> >
+> > This is because the definition of cpu_wants_rethunk_at() depends on
+> > CONFIG_STACK_VALIDATION which is only enabled in 64-bit mode.
+> >
+> > Define the empty function when CONFIG_STACK_VALIDATION=n, rethunk mitigation
+> > is anyways not supported without it.
+> >
+> > Reported-by: Guenter Roeck <linux@roeck-us.net>
+> > Link: https://lore.kernel.org/stable/0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net/
+> > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> > ---
+> >  arch/x86/include/asm/alternative.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
+> > index 1797f80c10de..a5f704dbb4a1 100644
+> > --- a/arch/x86/include/asm/alternative.h
+> > +++ b/arch/x86/include/asm/alternative.h
+> > @@ -98,7 +98,7 @@ static inline u8 *its_static_thunk(int reg)
+> >  }
+> >  #endif
+> >
+> > -#ifdef CONFIG_RETHUNK
+> > +#if defined(CONFIG_RETHUNK) && defined(CONFIG_STACK_VALIDATION)
+> >  extern bool cpu_wants_rethunk(void);
+> >  extern bool cpu_wants_rethunk_at(void *addr);
+> >  #else
+> > --
+> > 2.34.1
+> >
+> 
+> Thanks for looking at this Pawan.
+> 
+> Your new patch works fine on both Slackware 15.0 32-bit and 64-bit
+> systems.
 
-In most cases, the HDL for this IP block is compiled with the default
-ASYNC_CLK_EN=1. With this option, there is a separate external clock
-that drives the PWM output separate from the peripheral clock. So the
-driver should be enabling the "axi" clock to power the peripheral and
-the "ext" clock to drive the PWM output.
-
-When ASYNC_CLK_EN=0, the "axi" clock is also used to drive the PWM
-output and there is no "ext" clock.
-
-Previously, if there was a separate external clock, users had to specify
-only the external clock and (incorrectly) omit the AXI clock in order
-to get the correct operating frequency for the PWM output.
-
-The devicetree bindings are updated to fix this shortcoming and this
-patch changes the driver to match the new bindings. To preserve
-compatibility with any existing dtbs that specify only one clock, we
-don't require the clock name on the first clock.
-
-Cc: stable@vger.kernel.org
-Fixes: 41814fe5c782 ("pwm: Add driver for AXI PWM generator")
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/pwm/pwm-axi-pwmgen.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/pwm/pwm-axi-pwmgen.c b/drivers/pwm/pwm-axi-pwmgen.c
-index 4337c8f5acf055fc87dc134f2a70b99b0cb5ede6..60dcd354237316bced2d951b7f0b116c8291bb0d 100644
---- a/drivers/pwm/pwm-axi-pwmgen.c
-+++ b/drivers/pwm/pwm-axi-pwmgen.c
-@@ -257,7 +257,7 @@ static int axi_pwmgen_probe(struct platform_device *pdev)
- 	struct regmap *regmap;
- 	struct pwm_chip *chip;
- 	struct axi_pwmgen_ddata *ddata;
--	struct clk *clk;
-+	struct clk *axi_clk, *clk;
- 	void __iomem *io_base;
- 	int ret;
- 
-@@ -280,9 +280,26 @@ static int axi_pwmgen_probe(struct platform_device *pdev)
- 	ddata = pwmchip_get_drvdata(chip);
- 	ddata->regmap = regmap;
- 
--	clk = devm_clk_get_enabled(dev, NULL);
-+	/*
-+	 * Using NULL here instead of "axi" for backwards compatibility. There
-+	 * are some dtbs that don't give clock-names and have the "ext" clock
-+	 * as the one and only clock (due to mistake in the original bindings).
-+	 */
-+	axi_clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(axi_clk))
-+		return dev_err_probe(dev, PTR_ERR(axi_clk), "failed to get axi clock\n");
-+
-+	clk = devm_clk_get_optional_enabled(dev, "ext");
- 	if (IS_ERR(clk))
--		return dev_err_probe(dev, PTR_ERR(clk), "failed to get clock\n");
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to get ext clock\n");
-+
-+	/*
-+	 * If there is no "ext" clock, it means the HDL was compiled with
-+	 * ASYNC_CLK_EN=0. In this case, the AXI clock is also used for the
-+	 * PWM output clock.
-+	 */
-+	if (!clk)
-+		clk = axi_clk;
- 
- 	ret = devm_clk_rate_exclusive_get(dev, clk);
- 	if (ret)
-
--- 
-2.43.0
-
+Thank you for verifying the patch.
 
