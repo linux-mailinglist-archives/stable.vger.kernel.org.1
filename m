@@ -1,187 +1,97 @@
-Return-Path: <stable+bounces-148087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAC1AC7C54
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 13:02:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CEEAC7D46
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 13:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58B123B0168
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 11:02:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFEDC1BA1466
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 11:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE42A21579F;
-	Thu, 29 May 2025 11:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8C82749F3;
+	Thu, 29 May 2025 11:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="hOI9IoP7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyCRAU/E"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBE814E2F2
-	for <stable@vger.kernel.org>; Thu, 29 May 2025 11:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1CE1F7075
+	for <stable@vger.kernel.org>; Thu, 29 May 2025 11:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748516552; cv=none; b=E3L24XKitea9XjpdLZd3wpUvMij9ozzQVRTQ0HQxsZaCy9A13tML41PTcL0tQxR8hSe5NhjLkAKBRbeg/YVDyCrn5jEB+37T98yNFvM7XYonA+xo45IBjqpmH9j2Hz5bbWEUIJuy2nfckSi2XrMuxcdP3ZJcHEdNZAreivbVPNM=
+	t=1748518758; cv=none; b=pcRk7PKEkkai0l0Nr2euhk/f5A6Z9mtT+cZ7uJHdDOD9H1kQ6xD2LVk9N43qyULONQTt2IjSW0aHiGNfVcNXJrj/dT0SWH7FhHgvKzbfiVgUxRJeENr9fjxvFarHYSm5yVe3LLBT5q/cqKZkgKUkK3ulB5SDsxxvjr2lGfxdB10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748516552; c=relaxed/simple;
-	bh=AyXOW2WwGM0Ei6sJWgFbTwePPMP/pJnMKzXMBmwhM/Q=;
-	h=Subject:From:To:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=S2v2p5ipsusXtTAM2ZLxU2fdQU2lI89B00REJ4OBD1tLZFkn5TIEMmfObrDWwTSGxKyVecK16CdQr18xHm+tZLmpbuBc4kMinUzVBvLC7p3ujjQijJdVbn5/rQwaaqb+fWbbEC+1ylRHi8a6nw0JN59XlSQl02c9EbWGaXBGCFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=hOI9IoP7; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4b7Nk20CNRz9v0B;
-	Thu, 29 May 2025 13:02:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1748516538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GgpaHnXF1RHnmQRBTbNu5BVxJo3ipyf4jfOTldEr5ME=;
-	b=hOI9IoP7YOZJv8kau6GOTCkO2/S8YeTugIk9NWlIfQ0jlmpAVSHPllyl5YdIzXZQh5ezfS
-	EpFJz33llAe6LrkoUNyXNhHVOuadpyqypv+4xeks027ZIw29Wv7ikohebUNiNsh0NHSGHP
-	Afm0wL7kjMKsCPzTLNyi6019mPowiCxbvm5wk6XrAtVwkOzDWEc4ALoZ+haKDhxioNpfqf
-	4z9yDS9vR1fEGKY8Cqn9XiWw9+isTD8X7cZvDoxm9vrQjXSncokW+Uz5Wq9lCRbjZqjcEf
-	ya50IU66M7C9PS4oML2HC3IAK6QmQDwMHGGkpWXsamk5avf7fVP487RGO1NgSg==
-Subject: Re: 6.12.30: black screen after waking up from hibernate; bisected
-From: Rainer Fiebig <jrf@mailbox.org>
-To: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>, mario.limonciello@amd.com
-References: <884d3e56-1052-0ca0-2740-f597ba7031c1@mailbox.org>
- <BL1PR12MB5144454EC2C17C206CC68992F767A@BL1PR12MB5144.namprd12.prod.outlook.com>
- <bcd38e08-d1c4-ee9b-e96e-ef369bfe280d@mailbox.org>
-Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <2d23038c-1dfd-678e-d0eb-2a474e84dd1f@mailbox.org>
-Date: Thu, 29 May 2025 13:02:13 +0200
+	s=arc-20240116; t=1748518758; c=relaxed/simple;
+	bh=2R1BhhiAHINoDPG5WaOcIHYwHSWWcMxdfpQJFlY36bs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PxREACOyn+82W5DtHcBx8rxRk48WGCukpJVqpCAAJsMFA/t3z3V0ClMgLX9F7w4F1Owu0dEk2odA7riz8JrK9hcZpdyDG5wjE5FYqZj0Elf0CLQkceCiXY+9IwFcZ9xr3MwNx0KIfKqsCcLTojzFD1SXYG/sAiTRU65mAb3ui5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyCRAU/E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1D6C4CEEB;
+	Thu, 29 May 2025 11:39:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748518757;
+	bh=2R1BhhiAHINoDPG5WaOcIHYwHSWWcMxdfpQJFlY36bs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vyCRAU/Ey7JlfmwgtIdkxOSMCSuL3P44hSIz21UD7d3LhvhPuRqBemBOzJmIhlwkq
+	 JtoETrtr31f13Ty3/aRzRVIr4sBDD3Ldev+OXu+tGKUJK59tHmraREwsIXWXIwPr4T
+	 vezxDfEtv19um4R9vdhJyVSY1EvL81kxQvdJ9GSE=
+Date: Thu, 29 May 2025 13:39:14 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: wndgwang4 <guangming.wang@windriver.com>
+Cc: stable@vger.kernel.org, Zi Yan <ziy@nvidia.com>,
+	Zach O'Keefe <zokeefe@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.1.y] selftests/vm: fix split huge page tests
+Message-ID: <2025052957-recolor-upward-a8a3@gregkh>
+References: <20250528085440.818430-1-guangming.wang@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <bcd38e08-d1c4-ee9b-e96e-ef369bfe280d@mailbox.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 3228a072a80dc8795b4
-X-MBO-RS-META: baebnenmnxert9ox84fyt4w3yfxz4tfq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250528085440.818430-1-guangming.wang@windriver.com>
 
-Am 29.05.25 um 09:17 schrieb Rainer Fiebig:
-> Am 28.05.25 um 23:09 schrieb Deucher, Alexander:
->> [Public]
->>
->>> -----Original Message-----
->>> From: Rainer Fiebig <jrf@mailbox.org>
->>> Sent: Friday, May 23, 2025 3:54 PM
->>> To: stable@vger.kernel.org; Deucher, Alexander <Alexander.Deucher@amd.com>
->>> Subject: 6.12.30: black screen after waking up from hibernate; bisected
->>>
->>> With kernel 6.12.30 waking up from hibernate fails in a Ryzen 3 5600G system with
->>> the latest BIOS. At the end of the wake-up procedure the screen goes black instead
->>> of showing the log-in screen and the system becomes unresponsive.  A hard reset
->>> is necessary.
->>>
->>> Seeing messages like the following in the system log, I suspected an amdgpu
->>> problem:
->>>
->>> May 23 19:09:30 LUX kernel: [16885.524496] amdgpu 0000:30:00.0: [drm]
->>> *ERROR* flip_done timed out
->>> May 23 19:09:30 LUX kernel: [16885.524501] amdgpu 0000:30:00.0: [drm]
->>> *ERROR* [CRTC:73:crtc-0] commit wait timed out
->>>
->>> I don't know whether those messages and the problem are really related but I
->>> bisected in 'drivers/gpu/drm/amd' anyway and the result was:
->>>
->>>> git bisect bad
->>> 25e07c8403f4daad35cffc18d96e32a80a2a3222 is the first bad commit commit
->>> 25e07c8403f4daad35cffc18d96e32a80a2a3222 (HEAD)
->>> Author: Alex Deucher <alexander.deucher@amd.com>
->>> Date:   Thu May 1 13:46:46 2025 -0400
->>>
->>>     drm/amdgpu: fix pm notifier handling
->>>
->>>     commit 4aaffc85751da5722e858e4333e8cf0aa4b6c78f upstream.
->>>
->>>     Set the s3/s0ix and s4 flags in the pm notifier so that we can skip
->>>     the resource evictions properly in pm prepare based on whether
->>>     we are suspending or hibernating.  Drop the eviction as processes
->>>     are not frozen at this time, we we can end up getting stuck trying
->>>     to evict VRAM while applications continue to submit work which
->>>     causes the buffers to get pulled back into VRAM.
->>>
->>> HTH.  Thanks.
->>>
->>
->> Fixed in:
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7e7cb7a13c81073d38a10fa7b450d23712281ec4
->> and on it's way to stable.
-> Great, thanks!  I had already reverted your commit in an experimental
-> branch and that solved the problem - so either your commit was bad or
-> something that it somehow depended on.
+On Wed, May 28, 2025 at 04:54:40PM +0800, wndgwang4 wrote:
+> From: Zi Yan <ziy@nvidia.com>
 > 
-> The problem that now reverted commit 68bfdc8dc0a1a tried to solve is
-> indeed irritating/confusing and hopefully you'll find an other way to
-> solve it.  The whole procedure is suboptimal insofar as there is no
-> feedback as to what is going on and whether the process has finally
-> concluded and it is safe to switch off the box.
+> [ upstream commit dd63bd7df41a8f9393a2e3ff9157a441c08eb996  ]
 > 
-> My - perhaps naive - suggestion would be to provide at least some
-> feedback by leaving the monitor _on_ until the image has been written to
-> disk and the box can be switched off.
-To clarify a bit what I mean: if possible, the display should stay "on"
-_all the while_ from initiating hibernate until the image has been
-written to disk and shutdown is complete, so that the user can tell from
-the status of the monitor's power-LED whether it's safe to switch the
-computer off.  Neither an "off-on, off-on..." nor an "off" during that
-phase is helpful.
+> Fix two inputs to check_anon_huge() and one if condition, so the tests
+> work as expected.
+> 
+> Steps to reproduce the issue.
+> make headers
+> make -C tools/testing/selftests/vm
+> 
+> Before patching:test fails with a non-zero exit code
+> ~/linux$ sudo tools/testing/selftests/vm/split_huge_page_test | echo 0
+> 2
+> ~/linux$ sudo tools/testing/selftests/vm/split_huge_page_test
+> No THP is allocated
+> 
+> After patching:
+> ~/linux$ sudo tools/testing/selftests/vm/split_huge_page_test | echo 0
+> 0
+> ~/linux$ sudo tools/testing/selftests/vm/split_huge_page_test
+> Split huge pages successful
+> ...
+> 
+> Link: https://lkml.kernel.org/r/20230306160907.16804-1-zi.yan@sent.com
+> Fixes: c07c343cda8e ("selftests/vm: dedup THP helpers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Zach O'Keefe <zokeefe@google.com>
+> Tested-by: Zach O'Keefe <zokeefe@google.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: wndgwang4 <guangming.wang@windriver.com>
 
-Rainer
-
+We need a real name for a signed-off-by line, you all know this :(
 
