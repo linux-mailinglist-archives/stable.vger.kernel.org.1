@@ -1,233 +1,179 @@
-Return-Path: <stable+bounces-148061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB79AC7962
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 09:03:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3094DAC7980
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 09:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC99A27A69
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 07:03:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD6BF1C20F37
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 07:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76EB2561A3;
-	Thu, 29 May 2025 07:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28617215767;
+	Thu, 29 May 2025 07:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RDMsCN4X"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="BXaeWNAz"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17707EC4;
-	Thu, 29 May 2025 07:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8522520A5DD
+	for <stable@vger.kernel.org>; Thu, 29 May 2025 07:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748502232; cv=none; b=rySr6CKpO9BLTIA5wx7rIgyFgzTCkIny1mdgZaRaBxInrBXZpfnMLrFvNOdHanfwsEEfiAydUeLy2XF1mzLhmFzKivrPuDDjHJ+ud2XKhMSF7YL5iL2Vp/UF1sgO35SBriMTyQoN/p7vnAqOzttwTMaHHXGrJ6pCcrcHpd9jcTM=
+	t=1748503085; cv=none; b=eIkDwDadpa94c/buZdAS8wCpi/bCUKVhzYV32/omyobQcP+2gKGJmg0ikCjs0kGZZ0tgFe6CK6LUoVIYJ3zugH6F8Irjd3wxZItqFMTqggB1WZDi1uWpOE9qou1rhMsli7SEPeM9hq1Ve3BALg+CuqGB+Lx8oWqrcP95XTwsj1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748502232; c=relaxed/simple;
-	bh=+xmkRlZ8AGIEZrZiWtJrfAL/ehTHBGAbW3sINC7us5c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=h6N1P8iRgMbshaxlMYR5KUM//2iRhGlbDPI7pN25kPYD3QnkzscBBPWCAET1e3ZSUVy+9cbztb3RSNnggiHoVPMzMe1tu5q8uFdTwO5unagkWWv1w8NvI/iTrUS3MvBStOlVoAlpAPVMyJuOnZCuKmtiwazdBdASTX0lLlRCDDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RDMsCN4X; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54T3U235030924;
-	Thu, 29 May 2025 07:03:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	yf1sra5ei+YWgbd0wCWc5vmWvo0kR8CErObKG5rUvKE=; b=RDMsCN4XP1TgRFRQ
-	vEOJwHkIOHYulO57bBZ2Je6coYZkV8nyC1ucokhXINdOFYQ5U56yoKT2jI0y57UT
-	62Z7/1LhhW+yLkPjV06jeO4wDiQjYpZNB/EOUBMgCuIx1T+crXHYOoJeBBB2M6YB
-	3bcm+SIo1wfS7qJHzlzoeaWN4UemsYXQjVja2XYeAGeLyPZQn3a2GhoOlJxWsqv0
-	sEPrMwchUdukyipzdTQWVL9ZhD34yEmRuC0eHLOiX53A2dDhUtBib8Z/OE4nNPBO
-	txvQraQ+A32OUmtewF1HBTZR5S4o0vC2KDTCxT/F0BGTOoOO33cNoqk0ITSHqIHG
-	TlN3aA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46whuf56kc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 May 2025 07:03:43 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 54T73hDw007603
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 May 2025 07:03:43 GMT
-Received: from [10.133.33.94] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 29 May
- 2025 00:03:40 -0700
-Message-ID: <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
-Date: Thu, 29 May 2025 15:03:38 +0800
+	s=arc-20240116; t=1748503085; c=relaxed/simple;
+	bh=bKlPyDaMNNw0FtpRrLqaNJw4qH2xJfsS9nFyo8/9gis=;
+	h=Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=LufdvSUwuApaPU5zsWvKZi+F+K/MApKgQv7zjtvDLRyMNxVFDL+kpVLQZ2ZavV7/kCbvCne1v3FeaTEKPt3EO+1XspSXvxllYBndOiHxkS8e+eaLnnCi0zQ9i/cN8YeFa+lKgYe6Pl4IEfwMAyy6smWyAGEvlKONYdNW39SmCKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=BXaeWNAz; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4b7HlC1kGhz9spD;
+	Thu, 29 May 2025 09:17:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1748503079;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5TNI63yEtX2h9eGBl1LACOywrxOG+85gIbeFkxWFF40=;
+	b=BXaeWNAz4I2WenjXHlCANJPwbDAwqbz25woBFF4VOoOyMZ60jOhwFNjHvr9sotF0T3CmfR
+	4Rw+J34I47QROwpW6PbR+OrsaOZtaK6WPcoOcQBp0deVM07zYiUPjJzmfgyzC8REiUivPp
+	yDqLn90JKTBQHMi8VpaUFvlTRiSriodrdsc4K88lao3thwZ6ObaEMfZFH8ZzuZw99UkYsj
+	tiOdGZXOraZWZprAD1rq5FZraIKMqsZmUQT8cdWNYY86Duu4omACfaH1ssLdDA5/Axi5UR
+	xqjdEU5bHtdr25irO4HJDRzOlFp/mmbeEetOaor5T45Q26BsvFXKsbaatrK74Q==
+Subject: Re: 6.12.30: black screen after waking up from hibernate; bisected
+To: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <884d3e56-1052-0ca0-2740-f597ba7031c1@mailbox.org>
+ <BL1PR12MB5144454EC2C17C206CC68992F767A@BL1PR12MB5144.namprd12.prod.outlook.com>
+From: Rainer Fiebig <jrf@mailbox.org>
+Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <bcd38e08-d1c4-ee9b-e96e-ef369bfe280d@mailbox.org>
+Date: Thu, 29 May 2025 09:17:55 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
-To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20250526114803.2122-1-johan+linaro@kernel.org>
- <20250526114803.2122-2-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
-In-Reply-To: <20250526114803.2122-2-johan+linaro@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+In-Reply-To: <BL1PR12MB5144454EC2C17C206CC68992F767A@BL1PR12MB5144.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=OslPyz/t c=1 sm=1 tr=0 ts=683806cf cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8
- a=xt-FAz5EuN-mLoWhW44A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: ublGsjyCSGbR_kY6RSrO4PK_2uM8o_TU
-X-Proofpoint-GUID: ublGsjyCSGbR_kY6RSrO4PK_2uM8o_TU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI5MDA2OCBTYWx0ZWRfX9l8N77fVGXBz
- VWq+r+buWOo32kfkGPIGql0bJELp1LYd7adoiBZSCjoZZWoVpkGCykOwWt5Tk9+iH3Hn5q2v19A
- 7kgCHx2YtE5ji0Rl6pe5O7vj7Y8bxGqWfzrXzx9MVCZwmwdhp7eEathghZCUquWMtT1zEzG1aEI
- zp2+uMD9rb2FWKnF44DS6gJbtkZhsBX8S1I0PsRuogkl7tUXWrBhaTUSZG1iRsqqe+4HHBJd/YP
- H5w+UV7QjDFFeNnCf3cgu9jQ4nJmXRVZoeBuh+K+gKeMsESiLujlMKBWMLg46xT2TT7dwBSmQcN
- 8hrqsjodMFAOIGw8SLdT1vKXhxwl9nCySGoapWm75rzNe0kGtqGaZ7vaOODZFGmd6fJ1a75dzVY
- YCee03X1FkH3OmFsnjsJ9ZGyFYIrzMAEaS8QmrgTqPp7cxkBSxDWTKpUrz8tVA63WeuSZG3u
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-29_03,2025-05-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 mlxlogscore=896 adultscore=0 malwarescore=0
- bulkscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0
- spamscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505290068
+X-MBO-RS-META: o6gi7zpbzju7j5yy6p3mudzgdhtjs6pu
+X-MBO-RS-ID: a6c7dc61da242270b76
 
-
-
-On 5/26/2025 7:48 PM, Johan Hovold wrote:
-> Add the missing memory barriers to make sure that destination ring
-> descriptors are read after the head pointers to avoid using stale data
-> on weakly ordered architectures like aarch64.
+Am 28.05.25 um 23:09 schrieb Deucher, Alexander:
+> [Public]
 > 
-> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+>> -----Original Message-----
+>> From: Rainer Fiebig <jrf@mailbox.org>
+>> Sent: Friday, May 23, 2025 3:54 PM
+>> To: stable@vger.kernel.org; Deucher, Alexander <Alexander.Deucher@amd.com>
+>> Subject: 6.12.30: black screen after waking up from hibernate; bisected
+>>
+>> With kernel 6.12.30 waking up from hibernate fails in a Ryzen 3 5600G system with
+>> the latest BIOS. At the end of the wake-up procedure the screen goes black instead
+>> of showing the log-in screen and the system becomes unresponsive.  A hard reset
+>> is necessary.
+>>
+>> Seeing messages like the following in the system log, I suspected an amdgpu
+>> problem:
+>>
+>> May 23 19:09:30 LUX kernel: [16885.524496] amdgpu 0000:30:00.0: [drm]
+>> *ERROR* flip_done timed out
+>> May 23 19:09:30 LUX kernel: [16885.524501] amdgpu 0000:30:00.0: [drm]
+>> *ERROR* [CRTC:73:crtc-0] commit wait timed out
+>>
+>> I don't know whether those messages and the problem are really related but I
+>> bisected in 'drivers/gpu/drm/amd' anyway and the result was:
+>>
+>>> git bisect bad
+>> 25e07c8403f4daad35cffc18d96e32a80a2a3222 is the first bad commit commit
+>> 25e07c8403f4daad35cffc18d96e32a80a2a3222 (HEAD)
+>> Author: Alex Deucher <alexander.deucher@amd.com>
+>> Date:   Thu May 1 13:46:46 2025 -0400
+>>
+>>     drm/amdgpu: fix pm notifier handling
+>>
+>>     commit 4aaffc85751da5722e858e4333e8cf0aa4b6c78f upstream.
+>>
+>>     Set the s3/s0ix and s4 flags in the pm notifier so that we can skip
+>>     the resource evictions properly in pm prepare based on whether
+>>     we are suspending or hibernating.  Drop the eviction as processes
+>>     are not frozen at this time, we we can end up getting stuck trying
+>>     to evict VRAM while applications continue to submit work which
+>>     causes the buffers to get pulled back into VRAM.
+>>
+>> HTH.  Thanks.
+>>
 > 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Cc: stable@vger.kernel.org	# 5.6
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->   drivers/net/wireless/ath/ath11k/dp_rx.c | 19 +++++++++++++++++++
->   drivers/net/wireless/ath/ath11k/dp_tx.c |  3 +++
->   2 files changed, 22 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> index ea2959305dec..dfe2d889c20f 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> @@ -3851,6 +3851,9 @@ int ath11k_dp_process_rx_err(struct ath11k_base *ab, struct napi_struct *napi,
->   
->   	ath11k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
+> Fixed in:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7e7cb7a13c81073d38a10fa7b450d23712281ec4
+> and on it's way to stable.
+Great, thanks!  I had already reverted your commit in an experimental
+branch and that solved the problem - so either your commit was bad or
+something that it somehow depended on.
 
-Thanks Johan, for continuing to follow up on this issue. I have some 
-different opinions.
+The problem that now reverted commit 68bfdc8dc0a1a tried to solve is
+indeed irritating/confusing and hopefully you'll find an other way to
+solve it.  The whole procedure is suboptimal insofar as there is no
+feedback as to what is going on and whether the process has finally
+concluded and it is safe to switch off the box.
 
-This change somewhat deviates from the fix approach described in 
-https://lore.kernel.org/all/20250321095219.19369-1-johan+linaro@kernel.org/. 
-In this case, the descriptor might be accessed before it is updated or 
-while it is still being updated. Therefore, a dma_rmb() should be added 
-after the call to ath11k_hal_srng_dst_get_next_entry() and before 
-accessing ath11k_hal_ce_dst_status_get_length(), to ensure that the DMA 
-has completed before reading the descriptor.
+My - perhaps naive - suggestion would be to provide at least some
+feedback by leaving the monitor _on_ until the image has been written to
+disk and the box can be switched off.
 
-However, in this patch, the memory barrier is used to protect the head 
-pointer (HP). I don't think a memory barrier is necessary for HP, 
-because even if an outdated HP is fetched, 
-ath11k_hal_srng_dst_get_next_entry() will return NULL and exit safely. 
-So, placing the memory barrier inside 
-ath11k_hal_srng_dst_get_next_entry() would be more appropriate.
-
-@@ -678,6 +678,8 @@ u32 *ath11k_hal_srng_dst_get_next_entry(struct 
-ath11k_base *ab,
-         if (srng->flags & HAL_SRNG_FLAGS_CACHED)
-                 ath11k_hal_srng_prefetch_desc(ab, srng);
-
-+       dma_rmb();
-+
-         return desc;
-  }
-
-
->   	while (budget &&
->   	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
->   		struct hal_reo_dest_ring *reo_desc = (struct hal_reo_dest_ring *)desc;
-> @@ -4154,6 +4157,9 @@ int ath11k_dp_rx_process_wbm_err(struct ath11k_base *ab,
->   
->   	ath11k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while (budget) {
->   		rx_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng);
->   		if (!rx_desc)
-> @@ -4280,6 +4286,9 @@ int ath11k_dp_process_rxdma_err(struct ath11k_base *ab, int mac_id, int budget)
->   
->   	ath11k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while (quota-- &&
->   	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
->   		ath11k_hal_rx_reo_ent_paddr_get(ab, desc, &paddr, &desc_bank);
-> @@ -4353,6 +4362,9 @@ void ath11k_dp_process_reo_status(struct ath11k_base *ab)
->   
->   	ath11k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while ((reo_desc = ath11k_hal_srng_dst_get_next_entry(ab, srng))) {
->   		tag = FIELD_GET(HAL_SRNG_TLV_HDR_TAG, *reo_desc);
->   
-> @@ -5168,6 +5180,9 @@ static void ath11k_dp_rx_mon_dest_process(struct ath11k *ar, int mac_id,
->   	rx_bufs_used = 0;
->   	rx_mon_stats = &pmon->rx_mon_stats;
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
->   		struct sk_buff *head_msdu, *tail_msdu;
->   
-> @@ -5630,6 +5645,10 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
->   	spin_lock_bh(&mon_dst_srng->lock);
->   
->   	ath11k_hal_srng_access_begin(ar->ab, mon_dst_srng);
-> +
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while ((ring_entry = ath11k_hal_srng_dst_peek(ar->ab, mon_dst_srng))) {
->   		head_msdu = NULL;
->   		tail_msdu = NULL;
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-> index 8522c67baabf..549d17d90503 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-> @@ -700,6 +700,9 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
->   
->   	ath11k_hal_srng_access_begin(ab, status_ring);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while ((ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_head) !=
->   		tx_ring->tx_status_tail) &&
->   	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, status_ring))) {
+Rainer
 
 
