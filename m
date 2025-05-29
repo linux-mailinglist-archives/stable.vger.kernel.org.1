@@ -1,101 +1,211 @@
-Return-Path: <stable+bounces-148118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CBBAC8341
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 22:29:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DC8AC8368
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 22:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405D91BA730B
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 20:29:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B28AF1BA6202
+	for <lists+stable@lfdr.de>; Thu, 29 May 2025 20:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFF529208E;
-	Thu, 29 May 2025 20:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1D7293454;
+	Thu, 29 May 2025 20:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="jwc4lhal"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="P0BsxZew"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174AB218AB3;
-	Thu, 29 May 2025 20:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A08B1DFE22
+	for <stable@vger.kernel.org>; Thu, 29 May 2025 20:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748550575; cv=none; b=U5T2Kj0plLstiMlY0vqQy1WYsBQx8w+uf5jYVEA6IqRhUEqhHEZSvYkzBulO2p0uvupwaoptodchAc/j/l+bB0lg+/8gnyUZSzPbpOwLKXzYtyf0+Uo0ep9p/9bO09vrErbkcvJq1tAFsdE0kzXavr9PzRRn6udb2unz228P8YI=
+	t=1748552290; cv=none; b=axaMh9PpwOhk/yEb3jGd9df1lYl8+31HRw28BLuBEm9J8LBnuHWBM3YZ5mfy1WOLXWMV/LYAGhEu+ymFtV7+TX3pdh0I4R4cW+XUsaP5g9b6H9lQm+BWRjAWkIugJPpzen/j7Kd5no/HjgTlX2I+AvRvk1OQH+h9ErOLfe9Xnjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748550575; c=relaxed/simple;
-	bh=rAjeOMdG5cObUVQQ8/MeFIE1ckwj7tXKoE6KJ1ho04I=;
-	h=From:To:Cc:Date:Message-Id:MIME-Version:Subject; b=GlmcTEoAaCH0DuzJASWKvBfa7ODsjIAwYFq0v7GhzZY9K+uV2GUBXGwzxy+zQg135+wW6o8GMaq/oFwLQd8+iSjolFq2pVVHPyvqbuK4bhWtrc+Y01w+twyf1ETiF7yrIegyu6mCXqBtvkMTPqDpC0cBzQHtT8+h0G1KcKQNexc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=jwc4lhal; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
-	:From:subject:date:message-id:reply-to;
-	bh=cGpOZ37oUywAFbdjZoqBpZeSJcqvhzQfs0Mw1L7sNtY=; b=jwc4lhalKA1PucheGSK6IdvnH9
-	BO0fCmGjazfCtxLwSLiaMAr5uE9lFzdNBerD/UV66J0zyG9hxrgSixLjan9YyWWQajQQpvZ8Vq9iX
-	7GXtlIH/6Hsiy4IC+M5wKX4ePjFtuUtsTjwB0xWq1BZB+B6fbYKyrDNzunZSHcJcv8rE=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:43532 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1uKjsY-0004fF-5V; Thu, 29 May 2025 16:29:30 -0400
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Cc: hugo@hugovil.com,
-	stable@vger.kernel.org,
-	Elena Popa <elena.popa@nxp.com>,
-	linux-rtc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Date: Thu, 29 May 2025 16:29:22 -0400
-Message-Id: <20250529202923.1552560-1-hugo@hugovil.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1748552290; c=relaxed/simple;
+	bh=cNGjoABR1bfslYHlmOUEKVoCyx5dwzJss2jooYyNnhI=;
+	h=Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=E52u5y0hhfdE9P3DXzDyBjm1C7bvfIUMgkwow5fMd0ErYbrGThj11UhVm/3smNH6+8tCevxRKq50VGjEA8p79WrmbTd4Ohf3AKuuqF8T+yJX/Es4kYAnCNGmhRydJM9cT0hTmag/Zq/i0gKGfxKI+QPxm75znqVc30DAMB90r7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=P0BsxZew; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4b7dxL04k2z9t2F;
+	Thu, 29 May 2025 22:57:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1748552278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=/3rOIv8GSFEzZ051ulZIno+qG4sn6rmn7n3HO54VgMU=;
+	b=P0BsxZew0756ZiIEWgAQBWMBeMM+7IgPKRPuXr61P8cX8OQF3ZTC8IcwI/XO/tZhSo0hON
+	N8NXhk6e6QIqOM3L6YQopGmLZiD1tk9W4h7VxQdf9rKNEYXg4S+YLkAIizrPmc5d2K5kSj
+	REN/rx+WdLbmFHfEspM4OLL14nSSS2pM41ZiOycF8NV8nmjiOJjMexmYioybmyivYe+Ll+
+	R+E4wtS4PU/c06ECfr0fk/L7aORKRbDmEewIztcuKjKrxm/CDcnEiFG+qGp/U7n2SFGLSR
+	FDVBXOyNT3oKWE+4reuf2Rh280rRYw5IuvDWv7ogxc/abhB52NYMcEscPrZidw==
+Subject: Re: 6.12.30: black screen after waking up from hibernate; bisected
+To: "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <884d3e56-1052-0ca0-2740-f597ba7031c1@mailbox.org>
+ <BL1PR12MB5144454EC2C17C206CC68992F767A@BL1PR12MB5144.namprd12.prod.outlook.com>
+ <bcd38e08-d1c4-ee9b-e96e-ef369bfe280d@mailbox.org>
+ <2d23038c-1dfd-678e-d0eb-2a474e84dd1f@mailbox.org>
+ <a46d63fc-3012-4bfb-8e88-aa7acaee5c36@amd.com>
+From: Rainer Fiebig <jrf@mailbox.org>
+Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <0788d607-a9e3-c546-598e-496b300717e0@mailbox.org>
+Date: Thu, 29 May 2025 22:57:57 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 184.161.19.61
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-Subject: [PATCH] rtc: pcf2127: add missing semicolon after statement
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+In-Reply-To: <a46d63fc-3012-4bfb-8e88-aa7acaee5c36@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: h7i57ygacxutfhpuagigrbwcjr9fctot
+X-MBO-RS-ID: 335c855bb62ae3ac48a
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Am 29.05.25 um 15:07 schrieb Limonciello, Mario:
+> On 5/29/25 6:02 AM, Rainer Fiebig wrote:
+>> Am 29.05.25 um 09:17 schrieb Rainer Fiebig:
+>>> Am 28.05.25 um 23:09 schrieb Deucher, Alexander:
+>>>> [Public]
+>>>>
+>>>>> -----Original Message-----
+>>>>> From: Rainer Fiebig <jrf@mailbox.org>
+>>>>> Sent: Friday, May 23, 2025 3:54 PM
+>>>>> To: stable@vger.kernel.org; Deucher, Alexander <Alexander.Deucher@amd.com>
+>>>>> Subject: 6.12.30: black screen after waking up from hibernate; bisected
+>>>>>
+>>>>> With kernel 6.12.30 waking up from hibernate fails in a Ryzen 3 5600G system with
+>>>>> the latest BIOS. At the end of the wake-up procedure the screen goes black instead
+>>>>> of showing the log-in screen and the system becomes unresponsive.  A hard reset
+>>>>> is necessary.
+>>>>>
+>>>>> Seeing messages like the following in the system log, I suspected an amdgpu
+>>>>> problem:
+>>>>>
+>>>>> May 23 19:09:30 LUX kernel: [16885.524496] amdgpu 0000:30:00.0: [drm]
+>>>>> *ERROR* flip_done timed out
+>>>>> May 23 19:09:30 LUX kernel: [16885.524501] amdgpu 0000:30:00.0: [drm]
+>>>>> *ERROR* [CRTC:73:crtc-0] commit wait timed out
+>>>>>
+>>>>> I don't know whether those messages and the problem are really related but I
+>>>>> bisected in 'drivers/gpu/drm/amd' anyway and the result was:
+>>>>>
+>>>>>> git bisect bad
+>>>>> 25e07c8403f4daad35cffc18d96e32a80a2a3222 is the first bad commit commit
+>>>>> 25e07c8403f4daad35cffc18d96e32a80a2a3222 (HEAD)
+>>>>> Author: Alex Deucher <alexander.deucher@amd.com>
+>>>>> Date:   Thu May 1 13:46:46 2025 -0400
+>>>>>
+>>>>>      drm/amdgpu: fix pm notifier handling
+>>>>>
+>>>>>      commit 4aaffc85751da5722e858e4333e8cf0aa4b6c78f upstream.
+>>>>>
+>>>>>      Set the s3/s0ix and s4 flags in the pm notifier so that we can skip
+>>>>>      the resource evictions properly in pm prepare based on whether
+>>>>>      we are suspending or hibernating.  Drop the eviction as processes
+>>>>>      are not frozen at this time, we we can end up getting stuck trying
+>>>>>      to evict VRAM while applications continue to submit work which
+>>>>>      causes the buffers to get pulled back into VRAM.
+>>>>>
+>>>>> HTH.  Thanks.
+>>>>>
+>>>>
+>>>> Fixed in:
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=7e7cb7a13c81073d38a10fa7b450d23712281ec4
+>>>> and on it's way to stable.
+>>> Great, thanks!  I had already reverted your commit in an experimental
+>>> branch and that solved the problem - so either your commit was bad or
+>>> something that it somehow depended on.
+>>>
+>>> The problem that now reverted commit 68bfdc8dc0a1a tried to solve is
+>>> indeed irritating/confusing and hopefully you'll find an other way to
+>>> solve it.  The whole procedure is suboptimal insofar as there is no
+>>> feedback as to what is going on and whether the process has finally
+>>> concluded and it is safe to switch off the box.
+>>>
+>>> My - perhaps naive - suggestion would be to provide at least some
+>>> feedback by leaving the monitor _on_ until the image has been written to
+>>> disk and the box can be switched off.
+>> To clarify a bit what I mean: if possible, the display should stay "on"
+>> _all the while_ from initiating hibernate until the image has been
+>> written to disk and shutdown is complete, so that the user can tell from
+>> the status of the monitor's power-LED whether it's safe to switch the
+>> computer off.  Neither an "off-on, off-on..." nor an "off" during that
+>> phase is helpful.
+>>
+>> Rainer
+>>
+> 
+> Before the hibernate image is created the GPU is supposed to be put into 
+> a state that it will be when resuming from the hibernate image.
+> 
+> That is why all the IP blocks are reset before creating the hibernate 
+> image.  This will turn off displays because DCN is reset.
+I see, thanks for the info.
 
-Replace comma with semicolon at the end of the statement when setting
-config.max_register.
+Just built 6.12.31 and ran one hibernate/resume cycle and that was OK.
+Hibernating the system showed the old behaviour (the one before your
+"always off" patch): screen goes black, monitor stays "on" for a while,
+then goes "off", after a while "on" again with a black screen and the
+mouse-pointer visible.  The monitor then goes "off" which ususally marks
+the end of the procedure.  Sometimes there's more than one "off-on"
+cycle which can be rather confusing at first.  But one gets used to it.
 
-Fixes: fd28ceb4603f ("rtc: pcf2127: add variant-specific configuration structure")
-Cc: stable@vger.kernel.org
-Cc: Elena Popa <elena.popa@nxp.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
----
- drivers/rtc/rtc-pcf2127.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Rainer
 
-diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
-index 31c7dca8f469..2bfebe3eba0c 100644
---- a/drivers/rtc/rtc-pcf2127.c
-+++ b/drivers/rtc/rtc-pcf2127.c
-@@ -1538,7 +1538,7 @@ static int pcf2127_spi_probe(struct spi_device *spi)
- 		variant = &pcf21xx_cfg[type];
- 	}
- 
--	config.max_register = variant->max_register,
-+	config.max_register = variant->max_register;
- 
- 	regmap = devm_regmap_init_spi(spi, &config);
- 	if (IS_ERR(regmap)) {
-
-base-commit: c7622a4e44d9d008e0e5edcc46c71854c50cf4a8
--- 
-2.39.5
-
+> 
 
