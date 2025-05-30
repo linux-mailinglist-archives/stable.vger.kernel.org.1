@@ -1,179 +1,142 @@
-Return-Path: <stable+bounces-148322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E530BAC95D0
-	for <lists+stable@lfdr.de>; Fri, 30 May 2025 20:51:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35E0AC95F0
+	for <lists+stable@lfdr.de>; Fri, 30 May 2025 21:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23DDAA26C4D
-	for <lists+stable@lfdr.de>; Fri, 30 May 2025 18:51:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB3414A5D6E
+	for <lists+stable@lfdr.de>; Fri, 30 May 2025 19:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2278F25228E;
-	Fri, 30 May 2025 18:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44BD278751;
+	Fri, 30 May 2025 19:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WI+8oGVE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="M06mhSDs"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E918189513
-	for <stable@vger.kernel.org>; Fri, 30 May 2025 18:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B6A27781E
+	for <stable@vger.kernel.org>; Fri, 30 May 2025 19:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748631083; cv=none; b=dY3G3K3UgGzAScjQqiON8DF9ksULl5DsqmRN6eoNEyMZzljSsMASTsmSNQs4TFY+j2qjVgIfbH9IEU9g9nW7ze9N+zcHuXGpo35z3eAqGPHxNwvp2FYs+f+zVftwv17xHH611/gxb9LmKw4cc8F54YjGW7rw46rOrKRxDCMgLA8=
+	t=1748632182; cv=none; b=fzflIZi8HgKWLQO4qz/6MW9c6o2fkeUBm46ZMh50EYZMUlxQKponVmn9dCVGNZ6Y/zJqwcMXoRYI9PY47+fTi8B/sxyexPVz2i6LA9FyvP5oSx66b6LjnlwPvNrPv0300fp7cBTizMc9H1vnZZYzRAOwJBogj7e4nds9ztBz+Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748631083; c=relaxed/simple;
-	bh=eVV9xeVeiv2yXILMXk2UmpohCzZ0JzvHyAW4iBGaRic=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PCs5Aj1Fiwp4NW+gtHckeKdW2vyleCTxoJThRIHRwWeP4FV8CMF5htIWGXfZ9EKRR6RBlFs/DSEvufBjU/d7/QgnvDqgdFOZbkrWnN0j0GyQmr3rYP9yKJLwV1ZZ2iGCr1fzwJlFO7j7GyGZUWQKpzx7wqkNTsfOKqmg0oZ+hk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WI+8oGVE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748631078;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YJzGuOEyCD92yoey5UJsZHsZc4atn6WQPDIRCxciOwU=;
-	b=WI+8oGVE0Huc1UWq8k+SsL70W0axn6rFBZHqlrnca+W6tP8T+6qyWtG6bP2TBMQeCC6D1a
-	DDIgWljYWyfdNQJjNkiUiA8zda9bipfTI2rpQwSFlj0Mh8QWOm2tt3orjxae9Kh+/NQlDH
-	aLzVfrzUwiV2p81mDjlW2sT308H/2D0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-NgCk06kyOiicY7k0BuQa3w-1; Fri, 30 May 2025 14:51:17 -0400
-X-MC-Unique: NgCk06kyOiicY7k0BuQa3w-1
-X-Mimecast-MFC-AGG-ID: NgCk06kyOiicY7k0BuQa3w_1748631076
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4eec544c6so1071210f8f.0
-        for <stable@vger.kernel.org>; Fri, 30 May 2025 11:51:17 -0700 (PDT)
+	s=arc-20240116; t=1748632182; c=relaxed/simple;
+	bh=mmKuVFxj8oqDXK1GzynYJ/mE/RkhpPA1TeCN5uhdhNs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=t61FhP+UDBtW0NGAl+AqpIjQgCanOrALx53Z3ioQ0jDVWNGPW07udS8q+PjhUC539+r+PbnboPRQtDcxMNLKeO8p66flalmlQdShztLJ/CiCFaAKtoAx0bu/VLr/42ruWAJHH0yvrQIxn3Y+F+SN8AqlZ1+5NQpq/A4LI85eFbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=M06mhSDs; arc=none smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-4067bab37a1so798036b6e.1
+        for <stable@vger.kernel.org>; Fri, 30 May 2025 12:09:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748632178; x=1749236978; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FKywJqFiyg7r14emOGTrcjfC7+0Rn2Ebhf4hG1BR+LI=;
+        b=M06mhSDs1u6Wk4AtDncjwKAN4ycLMJxoiehKzD6mW0rSwplXdoAAs206daNahwAEEj
+         1t618zdrAzk4dXPnRCK1nX6HvABI/aM2DMIsFH5IKKppFrERMg1xMDhoDZfaSm5WgHJZ
+         PnAQ9VZ5KIKaj/5lqvJ8+yGNYMazHH18LnWr4FXYjHol98RiF2wVWEGzA+F3WdXd6FSW
+         vosPw6gqVNGSYBIOPbWM0SfMSg62Rrh0sewxl3DHWVCtKl462+NNksQpOfoAii4hdXKK
+         hkwh3AgASls9rNaV64qHlWXy9H76iN/5XZsCTm5zQJF0gOpvk/ISGc8RSnF5BvT1N2T9
+         Naew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748631076; x=1749235876;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YJzGuOEyCD92yoey5UJsZHsZc4atn6WQPDIRCxciOwU=;
-        b=KAJ8Bsm9+Fws3KSm6SrxADvjbWxzn5noA8CxZgo3NLumIuNmBCjXzV15tchJOFezPP
-         J+cemErRSY5i6Sfdlmn6RHLvmLNy+x+G4McIAarRZXcYt5v7IaEQo0QImwGcjYK1BjYk
-         1lNeudlyq1oSzwQBVplAih5kKLn8v5qmwSzOLaN9x3jpB1d/0I/Koa/MeFxRA+ajLr7v
-         1GUH48U6vgDYC0xsIan5xri3X0nwoNtODKpIs5h082iWTjc6ibC83xEqAyUhL7Jv9zHw
-         RV3EwtJ4X5OVo6zGS9mZjxw2GdswW6qCbulj9ddXtI+HZmzXECF4m5ey+g81fxGQVt//
-         Dgjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXY9E/1UAbLQQcehow4e4Ym8Irqcut+VFmpzR1NAePErF0WP8h4ZTIEn+7VboHCrjbH53wtUI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4hFcJjf5mFNrSh0HtfVIyzQjc1xVpEWqMFXPL0VKKZx8RIcGz
-	GFOm307zCcCDUOZSL4HOBuh3OAPZpyrXhOBANkgz4nDg6LS44Ufl516SJncIRP6R0b1MbONFb6o
-	AIQYWK3h0aaEKMrbGyaBML8nbY3Wy49LR6ipzs05AYjqtKxeTNB80mV/Ugw==
-X-Gm-Gg: ASbGncvco9otF215UnoSzB9+EyfLyln5YiCOjUqw2KhDnfYYtds/GfzTBVxeH022s33
-	WbNpv4SjVUZUsphUOfWt0G0Wv1H4X6cGIE62jgFe6JJsAhNBgnwDCwNjaAItTGv3FM6iEuigPwr
-	PhwU5GEFlkazVV3O+RxyTQwGmf6ToiPYH0LDTlW79+6jZOsjyeIv21FA+wVHRWMhPFH6PCkX1wu
-	p0rLNMZ00/mlgaZg1aWqSNaR9LxiLGcag7zGMmFBu0A3T2vBgib3Nbyyn5OWLhByKJrW782KrO7
-	n5cJMtZvKpo4FERLX5QFa1hIJ31hEjticvMjPb7BJzC53AgpXkLfBIGZun/u6Nm3h3Dek+xg1Ga
-	Z+DSgevicTFILv1tvsOZXUtasgDRHUfXfA6AlrtA=
-X-Received: by 2002:a05:6000:18ab:b0:3a4:ea40:4d3f with SMTP id ffacd0b85a97d-3a4f7aafa70mr4212776f8f.53.1748631076242;
-        Fri, 30 May 2025 11:51:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXz9jboLNudDIoWr1Y0bfqfhAVm5ux5WqC9fB4zaCC4yD21pmClOISusCFn1KSYiqhpVoOfg==
-X-Received: by 2002:a05:6000:18ab:b0:3a4:ea40:4d3f with SMTP id ffacd0b85a97d-3a4f7aafa70mr4212755f8f.53.1748631075852;
-        Fri, 30 May 2025 11:51:15 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f03:5b00:f549:a879:b2d3:73ee? (p200300d82f035b00f549a879b2d373ee.dip0.t-ipconnect.de. [2003:d8:2f03:5b00:f549:a879:b2d3:73ee])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe5b8besm5586306f8f.16.2025.05.30.11.51.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 May 2025 11:51:15 -0700 (PDT)
-Message-ID: <962c6be7-e37a-4990-8952-bf8b17f6467d@redhat.com>
-Date: Fri, 30 May 2025 20:51:14 +0200
+        d=1e100.net; s=20230601; t=1748632178; x=1749236978;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FKywJqFiyg7r14emOGTrcjfC7+0Rn2Ebhf4hG1BR+LI=;
+        b=eqdaSM9fljYqmiP+Ic5+1+Sg+UsYvbUB4Tg0Cn9+X/woZ4Eh3DpQKGjdYlRrs+BwiU
+         fbc+UB90wdDmH3FOvM/OrJAMSVePAYHaUjJiuD8+/Npfi2/b01ZwkSrZOVtbMDZrk6gB
+         jzuFl5rZ6bmkS1axkd29mPhYYHFhrkSmyu52SVIgaZLiw8PULQFuAfhLGwk9asrx9H/e
+         7QUZdMRQ3iqstkgxJGSQMwj+ZzGedN3KAoIac3CFNSINboOunoONo/l3fHUuLZ++3OCV
+         Cc3oUrWbAtMAR/zUWbf6q/MtOQjMrpXvN6DujtCHJwNkt3tEFSwcyWgL5st2E6Za4/3U
+         0tSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvUUEazEHYeNnoZr+4xVrhX6Op1DCcDlVUKj0aV9ss+McbuQW+BpbhJ1NeCDb/P5rmm3QZLsY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSp+Z/RKAqJv3IdA+4thzuD+gcwQWIaCoDv2YRCdojoxxZiheo
+	pFIwJJDufzbb7E3rAYSzdunPyXmw7eXIO6Pt+FuY4SM1el2GH8bRJbYyGsJrk8yf/80=
+X-Gm-Gg: ASbGncutHt172VDdMwfxufOfjONlZu8VhryFl2SIbFcjQZUSLqLLyDpqtkSly1LVY9f
+	cEfmcbbu5+vtXwgfjZswQQCGd6b+G8Gvog+j6EybuRRhwZs3eYrC6MzmYpSwxg/FM/Eak/KeVXY
+	tf4UihVHUygfWAWolw0vJwhFDcBOiWv0f4fKEdBsdSFL1qmTjG+EDMS5u6/01lz7NNIBzuzKoHA
+	IRDQfDyWRLU6YNU7qjNipxAvL9yTMaKQlIFqlzLOvgIRjYrVqUS7+43WLfj67pFLEEaoXF8sh1a
+	BAGPA2SXsR0VpedTy2mzEHztCHy4lILJVgMHKCHqGSNuSFYra81YhnC1Gg==
+X-Google-Smtp-Source: AGHT+IG2eOOSL4CmrMiEEHmGHU6etf8ecnV/PntypowdZ73FJy+NqJszGddVLgOSimMPTDEpqX0ZMQ==
+X-Received: by 2002:a05:6808:2e45:b0:406:59f3:7389 with SMTP id 5614622812f47-40679674013mr2897329b6e.7.1748632178153;
+        Fri, 30 May 2025 12:09:38 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:29cb:b1cd:c8f4:2777])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-40678ce830fsm487852b6e.31.2025.05.30.12.09.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 May 2025 12:09:37 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 30 May 2025 14:09:29 -0500
+Subject: [PATCH] iio: adc: adi-axi-adc: fix ad7606_bus_reg_read()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] mm: Fix uprobe pte be overwritten when expanding
- vma
-To: Pu Lehui <pulehui@huaweicloud.com>, mhiramat@kernel.org, oleg@redhat.com,
- peterz@infradead.org, akpm@linux-foundation.org, Liam.Howlett@oracle.com,
- lorenzo.stoakes@oracle.com, vbabka@suse.cz, jannh@google.com,
- pfalcato@suse.de
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- pulehui@huawei.com
-References: <20250529155650.4017699-1-pulehui@huaweicloud.com>
- <20250529155650.4017699-2-pulehui@huaweicloud.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250529155650.4017699-2-pulehui@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v1-1-ce8f7cb4d663@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAGgCOmgC/x2NwQqDQBBDf0Xm3IHpymrpr5QiO+6ouWjZpUUQ/
+ 72Dh5A8CMlB1Qqs0rM5qNgPFdvqcL81NC5pnY2RnSlIiBJbYWDjlEcXOO248oTdve+kG/Rbh2K
+ zK2WegqpGabM+lHzxU8yr19vrfZ5/X1JdtX0AAAA=
+X-Change-ID: 20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-f2bbb503db8b
+To: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Angelo Dureghello <adureghello@baylibre.com>, 
+ Guillaume Stols <gstols@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1226; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=mmKuVFxj8oqDXK1GzynYJ/mE/RkhpPA1TeCN5uhdhNs=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoOgJq82QL1VEg0ESXWFXdFQRxKkobZRI4WmDxS
+ 9bg005lQqSJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaDoCagAKCRDCzCAB/wGP
+ wNtHB/4+wOAZwxHF6O8cFex05SJkEQ5yszuH2MFbRbYJYjEoSUEQNVWlW7h7gCEoL5rcZbN4oAR
+ 5SU+nGOwVbg3EENkYXEcIaPMpN7Q3rSs1Ml/sNJhgv/OSL7PeMfmDKPZ6FD+tp8ZdkBa3zFXh+t
+ ejbjrepIm/nDIa50mbMBuwr3Mgtj+bapx0hFCZRumu9AZy04swCIMoIJ6BiAQWPaukqj0ZKejjf
+ bG2zOvNp/qSkXHnRVaaThgX/LQGkdIQDx7zLyzz/5YXNGOkWRJRj8Wx5LimnNyT66z7Z/N1n4Z2
+ GXORO5nt2YpWth/6QkJxrOmfsMAcPuxDCpnTv6x625yeyBiW
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
->   
->   	if (vp->remove) {
-> @@ -1823,6 +1829,14 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
->   		faulted_in_anon_vma = false;
->   	}
->   
-> +	/*
-> +	 * If the VMA we are copying might contain a uprobe PTE, ensure
-> +	 * that we do not establish one upon merge. Otherwise, when mremap()
-> +	 * moves page tables, it will orphan the newly created PTE.
-> +	 */
-> +	if (vma->vm_file)
-> +		vmg.skip_vma_uprobe = true;
-> +
+Mask the value read before returning it. The value read over the
+parallel bus via the AXI ADC IP block contains both the address and
+the data, but callers expect val to only contain the data.
 
-Assuming we extend the VMA on the way (not merge), would we handle that 
-properly?
+Cc: stable@vger.kernel.org
+Fixes: 79c47485e438 ("iio: adc: adi-axi-adc: add support for AD7606 register writing")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/iio/adc/adi-axi-adc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Or is that not possible on this code path or already broken either way?
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index cf942c043457ccea49207c3900153ee371b3774f..d4759a98b4062bc25ea088e3868806e82db03e8d 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -457,6 +457,9 @@ static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
+ 	axi_adc_raw_write(back, addr);
+ 	axi_adc_raw_read(back, val);
+ 
++	/* Register value is 8 bits. Remove address bits. */
++	*val &= 0xFF;
++
+ 	/* Write 0x0 on the bus to get back to ADC mode */
+ 	axi_adc_raw_write(back, 0);
+ 
 
+---
+base-commit: 7cdfbc0113d087348b8e65dd79276d0f57b89a10
+change-id: 20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-f2bbb503db8b
+
+Best regards,
 -- 
-Cheers,
-
-David / dhildenb
+David Lechner <dlechner@baylibre.com>
 
 
