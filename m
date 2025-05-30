@@ -1,112 +1,230 @@
-Return-Path: <stable+bounces-148120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BC2AC83C1
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 23:57:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3867BAC85AE
+	for <lists+stable@lfdr.de>; Fri, 30 May 2025 02:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BE9C1669EE
-	for <lists+stable@lfdr.de>; Thu, 29 May 2025 21:57:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F22391BC0314
+	for <lists+stable@lfdr.de>; Fri, 30 May 2025 00:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D885A29347F;
-	Thu, 29 May 2025 21:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OgW/oZdA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0C88F40;
+	Fri, 30 May 2025 00:32:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCC5227BAD
-	for <stable@vger.kernel.org>; Thu, 29 May 2025 21:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBE0A59
+	for <stable@vger.kernel.org>; Fri, 30 May 2025 00:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748555862; cv=none; b=ifctOl4vNZizC1P4cMZ5DEOqsaSORx70HXtWRQHfpJupP1RKvR2AYfMcrTI35BK1A7Cd7sTsFiBw7tZ0ODSawgJ3Oi1rVZZMhM7eFGdrqj9cmL7YqBK/JT2Sl+g9ZjTTBfLRSRabqy5cSaWsHqAK8msmH340R5nAFHJ6xxqd1gI=
+	t=1748565131; cv=none; b=ifl4w+UHSqi3DsJ89HB9jQeCrLkC+cGkBwMh8fHBa7h/shAD0zVY9KvWPLPp8D1UWROpi+8x/Ulq6h+smZHYeIMxthQ0vTgQ1gKrdxnlTYdOISZDBnA83L3cmXel7pgZzMdLAKsIfLZAOFkOnph+fKmyYcF/TjoTOIk0fIcGN28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748555862; c=relaxed/simple;
-	bh=hRhuj7xE1dBPPnx/EVxIJiotQ89zyqzhXVw7IFjGmE8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pgNCEntm8ofefnvrNn2028H+9ae7k+fC6h4TIIj41D02xDIb3QBTpxilVryl/+TSAbYkNyl4Kxe6ajkAJnA5ltXriRX8e6QH+jP829qPgZFdMyNUM7wco9mDDsYMzfZwaeESFyYUsijr13iK7bcPzmxAwYnYQL6M4G4GAKk5+Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OgW/oZdA; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-22e09f57ed4so23063435ad.0
-        for <stable@vger.kernel.org>; Thu, 29 May 2025 14:57:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748555860; x=1749160660; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x0GMs9CYxQo1qYKiYb5d9sx6J+FnaGgIltFASAatpr4=;
-        b=OgW/oZdA/xF2+Cb4BuA55NZzrwrK6k4JLlW2MWWnzF1mXkNAvepYevHr0romStjr2q
-         6woVmIbMNM7HGBkM6YoWo/IvBURljnA607Gypx4YnpsTFXoFsKfa0PB8IXVwVq47+iKF
-         Fdo6pUvTjYqonphBimS/78/ZN+uZzZj6i6DjpIOUj6W4sbGFU5GgdmBKJJ1n52rhZE8y
-         wNjnW2TgZnIfPC+1AcTAVZPRPgzHf842J77cMVIp2hoMDiZMRRYerzqWcE5F2GaUBz4M
-         ODfkoqDWDF4FynPqfTeC5Y11owartmSJ6oMaaHt5HWR0Ji76kBDWrvgjL1ipKeg0shuD
-         qOZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748555860; x=1749160660;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x0GMs9CYxQo1qYKiYb5d9sx6J+FnaGgIltFASAatpr4=;
-        b=XUqofOZ71tliVFdav7St2bukZZp8B9bAmPG0f/HGimtXkAB+HDZACbxbtYrIfEFuVj
-         AKn16pnUWRa1LXviIovWFlhnQEhqSdfFOJs7QH8aiYPg78LawOM/xuQOm2wwUCi8sNAR
-         UAQbkeEZCU3jJ5Wwwn9WV2feRkt2MiuwvdwsilVnu62yFVFHo/q0x59mwIG4cLXgKgFx
-         NEv8WJ0QTQtYvQXaTmxOD1AUq0R692/pt23pJcE/U5d0cxIji5WLltahwW7eaydULZXT
-         JzGq1zHyIo1Is4Ap/j8pfXDRY4R4fvSoYJDFG/K3NCJd5Ew7QoSxnxS9K8EyeepM0APd
-         7G3A==
-X-Gm-Message-State: AOJu0YznM2KkZg9D7iZASGqS1uOzRIFQX8OoXts9p+/yAmgFDgJwWxgh
-	sDYILXRjP10RV5DOAamZ/bN/zMKcI2sPSJ2v8/sIEsndqAKrQifUKLvn
-X-Gm-Gg: ASbGncs1xkasBXRfiCKGUXjrjDpgANj4E43x18rySJ1hzDMLeUURgXqyDeDTi1mZZ1V
-	lr2X3KwEt51Sz4D/CQTwbRZkOb1uZPUaX/nGgdOLJt3fN/ZaWLauMWYN5Pith6KwF5wOTVH4kQy
-	jzkOMd5OjxmxSfqrzXCuwT6643N+6KZDckxdEBCf/HKlI5UJ8KdkFEk5wFWfpiPdfA1NXz5ZZTm
-	9Xs3PTA2zYTKjXjmT5ghnupO2wZ9VO2SDCa9IQ6SifQdcwpuQ4nSbyuWDf1iU4eejdpZhFbY69R
-	c61XxJ6vAgeCF3+uRwudXqQgF64uLy5y9awMQFJGm2vHWgWYP8r/Im4JbTwOZmw=
-X-Google-Smtp-Source: AGHT+IFCgSmz/OIAP9QcUueti/TFiI+FoURwz75jbYsNGy7OOgBeFcGvWYnDLiQ58WZGcXzehIbEvw==
-X-Received: by 2002:a17:902:e803:b0:215:ba2b:cd55 with SMTP id d9443c01a7336-2352af0b270mr13215645ad.2.1748555860392;
-        Thu, 29 May 2025 14:57:40 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:4497:aae1:cfdf:dc31])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506d14c9asm16655905ad.231.2025.05.29.14.57.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 May 2025 14:57:40 -0700 (PDT)
-Date: Thu, 29 May 2025 14:57:37 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Hanno =?utf-8?B?QsO2Y2s=?= <hanno@hboeck.de>
-Subject: Re: [PATCH 6.14 750/783] Input: synaptics-rmi - fix crash with
- unsupported versions of F34
-Message-ID: <mznd6ptvrkapnt2tra63bsavlzr6iuicd5o4re32vrtye5au6w@5q4b22g3oszc>
-References: <20250527162513.035720581@linuxfoundation.org>
- <20250527162543.672934881@linuxfoundation.org>
- <i7tnbh7l2blxussxcdgjuvcpkzet5w552dqu6vl5upus4xf74n@dva72me3bdia>
- <2025052959-corrode-outback-6ecd@gregkh>
+	s=arc-20240116; t=1748565131; c=relaxed/simple;
+	bh=NPpXkTe+rePrLIIqntwJXJVUQ57FNyDFKHri/bxOyqA=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=unnnVXAH1t4ZMFeKkFNcY3AcIzi+v0k9dN80BEQbV4TMUuOhkMSkawTJdeLbO+PSItF4d6UQ+J3QFdbSZxRJNVilJFeHqzMZYX2arzWL2qGcL8jbatjrQSVDOWxOVKTFg/rHUrBAIQ+W/VTdx7FegO2nZ5fyamOSgOfswLuFpwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4b7kg91fDhz1f1nm
+	for <stable@vger.kernel.org>; Fri, 30 May 2025 08:31:01 +0800 (CST)
+Received: from kwepemg500010.china.huawei.com (unknown [7.202.181.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 50B821402C4
+	for <stable@vger.kernel.org>; Fri, 30 May 2025 08:32:05 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by kwepemg500010.china.huawei.com
+ (7.202.181.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 30 May
+ 2025 08:32:04 +0800
+From: Wang Zhaolong <wangzhaolong1@huawei.com>
+To: <stable@vger.kernel.org>
+Subject: [PATCH 1/2] smb: client: Fix use-after-free in cifs_fill_dirent
+Date: Fri, 30 May 2025 08:32:03 +0800
+Message-ID: <20250530003204.607177-1-wangzhaolong1@huawei.com>
+X-Mailer: git-send-email 2.34.3
+In-Reply-To: <2025052432-deafening-parted-13e0@gregkh>
+References: <2025052432-deafening-parted-13e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025052959-corrode-outback-6ecd@gregkh>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemg500010.china.huawei.com (7.202.181.71)
 
-On Thu, May 29, 2025 at 08:35:17AM +0200, Greg Kroah-Hartman wrote:
-> On Tue, May 27, 2025 at 01:42:39PM -0700, Dmitry Torokhov wrote:
-> > Hi Greg,
-> > 
-> > On Tue, May 27, 2025 at 06:29:07PM +0200, Greg Kroah-Hartman wrote:
-> > > 6.14-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > Can you hold this for a bit? I might need to revert this.
-> 
-> Now dropped from all stable queues.  Let us know when you want this
-> added back.
+There is a race condition in the readdir concurrency process, which may
+access the rsp buffer after it has been released, triggering the
+following KASAN warning.
 
-Thank you. It looks like it was a false alarm, but I'll wait a few more
-days just to make sure.
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in cifs_fill_dirent+0xb03/0xb60 [cifs]
+ Read of size 4 at addr ffff8880099b819c by task a.out/342975
 
+ CPU: 2 UID: 0 PID: 342975 Comm: a.out Not tainted 6.15.0-rc6+ #240 PREEMPT(full)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x53/0x70
+  print_report+0xce/0x640
+  kasan_report+0xb8/0xf0
+  cifs_fill_dirent+0xb03/0xb60 [cifs]
+  cifs_readdir+0x12cb/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f996f64b9f9
+ Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89
+ f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+ f0 ff ff  0d f7 c3 0c 00 f7 d8 64 89 8
+ RSP: 002b:00007f996f53de78 EFLAGS: 00000207 ORIG_RAX: 000000000000004e
+ RAX: ffffffffffffffda RBX: 00007f996f53ecdc RCX: 00007f996f64b9f9
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+ RBP: 00007f996f53dea0 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000207 R12: ffffffffffffff88
+ R13: 0000000000000000 R14: 00007ffc8cd9a500 R15: 00007f996f51e000
+  </TASK>
+
+ Allocated by task 408:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  __kasan_slab_alloc+0x6e/0x70
+  kmem_cache_alloc_noprof+0x117/0x3d0
+  mempool_alloc_noprof+0xf2/0x2c0
+  cifs_buf_get+0x36/0x80 [cifs]
+  allocate_buffers+0x1d2/0x330 [cifs]
+  cifs_demultiplex_thread+0x22b/0x2690 [cifs]
+  kthread+0x394/0x720
+  ret_from_fork+0x34/0x70
+  ret_from_fork_asm+0x1a/0x30
+
+ Freed by task 342979:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  kasan_save_free_info+0x3b/0x60
+  __kasan_slab_free+0x37/0x50
+  kmem_cache_free+0x2b8/0x500
+  cifs_buf_release+0x3c/0x70 [cifs]
+  cifs_readdir+0x1c97/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents64+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ The buggy address belongs to the object at ffff8880099b8000
+  which belongs to the cache cifs_request of size 16588
+ The buggy address is located 412 bytes inside of
+  freed 16588-byte region [ffff8880099b8000, ffff8880099bc0cc)
+
+ The buggy address belongs to the physical page:
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x99b8
+ head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+ anon flags: 0x80000000000040(head|node=0|zone=1)
+ page_type: f5(slab)
+ raw: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ raw: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ head: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000003 ffffea0000266e01 00000000ffffffff 00000000ffffffff
+ head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffff8880099b8080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ >ffff8880099b8180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                             ^
+  ffff8880099b8200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ==================================================================
+
+POC is available in the link [1].
+
+The problem triggering process is as follows:
+
+Process 1                       Process 2
+-----------------------------------------------------------------
+cifs_readdir
+  /* file->private_data == NULL */
+  initiate_cifs_search
+    cifsFile = kzalloc(sizeof(struct cifsFileInfo), GFP_KERNEL);
+    smb2_query_dir_first ->query_dir_first()
+      SMB2_query_directory
+        SMB2_query_directory_init
+        cifs_send_recv
+        smb2_parse_query_directory
+          srch_inf->ntwrk_buf_start = (char *)rsp;
+          srch_inf->srch_entries_start = (char *)rsp + ...
+          srch_inf->last_entry = (char *)rsp + ...
+          srch_inf->smallBuf = true;
+  find_cifs_entry
+    /* if (cfile->srch_inf.ntwrk_buf_start) */
+    cifs_small_buf_release(cfile->srch_inf // free
+
+                        cifs_readdir  ->iterate_shared()
+                          /* file->private_data != NULL */
+                          find_cifs_entry
+                            /* in while (...) loop */
+                            smb2_query_dir_next  ->query_dir_next()
+                              SMB2_query_directory
+                                SMB2_query_directory_init
+                                cifs_send_recv
+                                  compound_send_recv
+                                    smb_send_rqst
+                                    __smb_send_rqst
+                                      rc = -ERESTARTSYS;
+                                      /* if (fatal_signal_pending()) */
+                                      goto out;
+                                      return rc
+                            /* if (cfile->srch_inf.last_entry) */
+                            cifs_save_resume_key()
+                              cifs_fill_dirent // UAF
+                            /* if (rc) */
+                            return -ENOENT;
+
+Fix this by ensuring the return code is checked before using pointers
+from the srch_inf.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220131 [1]
+Fixes: a364bc0b37f1 ("[CIFS] fix saving of resume key before CIFSFindNext")
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+(cherry picked from commit a7a8fe56e932a36f43e031b398aef92341bf5ea0)
+---
+ fs/cifs/readdir.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/fs/cifs/readdir.c b/fs/cifs/readdir.c
+index 1929e80c09ee..de6077ab7cd6 100644
+--- a/fs/cifs/readdir.c
++++ b/fs/cifs/readdir.c
+@@ -783,15 +783,15 @@ find_cifs_entry(const unsigned int xid, struct cifs_tcon *tcon, loff_t pos,
+ 	       (rc == 0) && !cfile->srch_inf.endOfSearch) {
+ 		cifs_dbg(FYI, "calling findnext2\n");
+ 		rc = server->ops->query_dir_next(xid, tcon, &cfile->fid,
+ 						 search_flags,
+ 						 &cfile->srch_inf);
++		if (rc)
++			return -ENOENT;
+ 		/* FindFirst/Next set last_entry to NULL on malformed reply */
+ 		if (cfile->srch_inf.last_entry)
+ 			cifs_save_resume_key(cfile->srch_inf.last_entry, cfile);
+-		if (rc)
+-			return -ENOENT;
+ 	}
+ 	if (index_to_find < cfile->srch_inf.index_of_last_entry) {
+ 		/* we found the buffer that contains the entry */
+ 		/* scan and find it */
+ 		int i;
 -- 
-Dmitry
+2.34.3
+
 
