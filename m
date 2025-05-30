@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-148234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BB4AC8EA5
-	for <lists+stable@lfdr.de>; Fri, 30 May 2025 14:54:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D866BAC8EA9
+	for <lists+stable@lfdr.de>; Fri, 30 May 2025 14:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2DD16E5FA
-	for <lists+stable@lfdr.de>; Fri, 30 May 2025 12:53:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACEFD4E660B
+	for <lists+stable@lfdr.de>; Fri, 30 May 2025 12:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C2125D201;
-	Fri, 30 May 2025 12:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9B225D548;
+	Fri, 30 May 2025 12:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QeFrcp91"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tq9l8qgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA28525D1F3;
-	Fri, 30 May 2025 12:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C41A25D529;
+	Fri, 30 May 2025 12:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748608833; cv=none; b=ktgmnGPTWNEQtwTfjF2JxWhR1ZvRHvrTFpLiBsXQgLCoJny5zPHn+QEr0tzGVvkwo3tepFNjuyzbC0iBsxt0gfe1e8hnbTwvMN6QZx0huaDrXqlKJ6UBho+qt4kb3RwjJKXXk7u5MlJ4bnZd51kcVIMKDa56lAfqtR1xzplF8pA=
+	t=1748608834; cv=none; b=ac9hd+thJJ5pFHKXbPpVHMKaWElurqJdWtfHGJ+IPYZNPY2L0ULhzGuOHWhxuB0e3hc85Wug3LoKvUmwgNKkoqrnGLH5Mt1wsQO6vYMlWeMVFlQZ62hBoOmvE3YXtwzNjNb42vqDgWNYR1hiX92NqDG7Avo1uL6AnIoEWHH7Un0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748608833; c=relaxed/simple;
-	bh=0mNPQpbwT1Pfw1ec0QHifRguoEQrfpMBmf9+3fPz8uc=;
+	s=arc-20240116; t=1748608834; c=relaxed/simple;
+	bh=VgZEeLw7T3s1uP6nCWXg5iGGMgiOW5UUpkRsubmHo3s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ArMD1f4ZqfRuKgBtKs43xKnR392hBtQBtwiIzKRaJncxcF7kb8Br8Gw0F5Ve/2o2+FYFLZe9sgjf+vK3oA9obwuwQ8OoczOBD2pWIoceTShdU0GlJ4ZlI7bYcADbSAf/eRbZHo/wJMhIH8mtVGjg0Tj6RBpXrcCtSHLF085kId0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QeFrcp91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4C0C4CEE9;
-	Fri, 30 May 2025 12:40:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NEJg/PXsRVWGq4S3AhBJGbHUnqPTWiz58ElqXdaMBpEuiFxGA6e/FN3i4lxZySk0h1OEDQ7Oj+eO5IIgrhdB59QJX/S40mNB4TW5/vyqjjU2ndDBWy+B33zbY/XVkOlYLuk3yUQjBPxRyXRvWTePkFMyVbUucJniHIUMeJz03p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tq9l8qgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFC4C4CEEA;
+	Fri, 30 May 2025 12:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748608832;
-	bh=0mNPQpbwT1Pfw1ec0QHifRguoEQrfpMBmf9+3fPz8uc=;
+	s=k20201202; t=1748608834;
+	bh=VgZEeLw7T3s1uP6nCWXg5iGGMgiOW5UUpkRsubmHo3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QeFrcp91ktgQwM7MoIMAGZXrISmhgQpQN/W8MnFTh60R4mtIOjQubS7resyzDH51x
-	 vxNrsI0Qj3pv69tAHjb8W0sKbIhiqfk8PNkEu3Jddqa7btgsstmG+0xzTcLNbb12//
-	 Q3P1+adO+Ik4LDzK4iG+W0Q+ouWhpfiEutJv5lZr8BwYD2uxSUmcdI/hfMLzcqD3my
-	 rQSy0HjLdATY4AgYWuLNw9hUu6fjw89pZG3SBasMp5fZBjNDlcCi8OErsBRnk30obV
-	 qbLPu8rih30xfOmAWfkKK7e7Sf04muBSYPMvHIugBzNSf2lfB2vpq5xVepIYbSTwh2
-	 YgTOzoxLFQTLQ==
+	b=Tq9l8qgbrMHosGY4caRhKF3W/Bgd7Zo4y0sGJ+Hm8ZvlCIhIK/xCf3dLLHmygoNcS
+	 8Z1p1dJkw+QBcjhaWV3O7xhCSDHJS92tEre6EY8yIiQwcZcyD/lpdyQYbWZTtKubvf
+	 mMuNY8IRwbGGahP+HcLXw9+IP7NzNBuq8qppyyKd2DVuAhu8jlT0Fu3PvAMFqkxofs
+	 AG4yUuisBpw1gj/TNYnH7+iopwHF76huAIhBsmKsRvpKuI/AwJ4UYujFwN1Lkj0AlK
+	 StW8y7o7ykCANmP5Clo7slr1Zib3R+bgEjD6JQqJEEVLYTTYQ6Yz6mBfCDFy/5/JNT
+	 RcmLlsErXiopA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Jerry Lv <Jerry.Lv@axis.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
+	sre@kernel.org,
+	linux-pm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 15/26] ALSA: hda: cs35l41: Fix swapped l/r audio channels for Acer Helios laptops
-Date: Fri, 30 May 2025 08:40:01 -0400
-Message-Id: <20250530124012.2575409-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 16/26] power: supply: bq27xxx: Retrieve again when busy
+Date: Fri, 30 May 2025 08:40:02 -0400
+Message-Id: <20250530124012.2575409-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530124012.2575409-1-sashal@kernel.org>
 References: <20250530124012.2575409-1-sashal@kernel.org>
@@ -63,98 +63,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.31
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Jerry Lv <Jerry.Lv@axis.com>
 
-[ Upstream commit e43a93c41982e82c1b703dd7fa9c1d965260fbb3 ]
+[ Upstream commit f16d9fb6cf03fdbdefa41a8b32ba1e57afb7ae3d ]
 
-Fixes audio channel assignment from ACPI using configuration table.
+Multiple applications may access the battery gauge at the same time, so
+the gauge may be busy and EBUSY will be returned. The driver will set a
+flag to record the EBUSY state, and this flag will be kept until the next
+periodic update. When this flag is set, bq27xxx_battery_get_property()
+will just return ENODEV until the flag is updated.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250515162848.405055-3-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Even if the gauge was busy during the last accessing attempt, returning
+ENODEV is not ideal, and can cause confusion in the applications layer.
+
+Instead, retry accessing the I2C to update the flag is as expected, for
+the gauge typically recovers from busy state within a few milliseconds.
+If still failed to access the gauge, the real error code would be returned
+instead of ENODEV (as suggested by Pali Rohár).
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Jerry Lv <Jerry.Lv@axis.com>
+Link: https://lore.kernel.org/r/20250415-foo-fix-v2-1-5b45a395e4cc@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees.
-**Extensive Analysis:** **1. Nature of the Fix:** The commit fixes
-swapped left/right audio channels for Acer Helios laptops by adding
-three new entries to the `cs35l41_config_table[]`: - `{ "10251826", 2,
-EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 }` -
-`{ "1025182C", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0,
--1, -1, 0, 0, 0 }` - `{ "10251844", 2, EXTERNAL, { CS35L41_LEFT,
-CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 }` The corresponding model
-table entries are also added to enable these configurations. **2.
-Comparison with Historical Similar Commits:** This commit is **very
-similar to Similar Commit #1 (Status: YES)** which also fixed swapped
-l/r audio channels for Lenovo ThinkBook laptops. Both commits: - Fix the
-same fundamental issue: swapped audio channels - Make identical types of
-changes: correcting channel assignment in configuration tables - Are
-small, contained fixes affecting only audio configuration data - Target
-specific laptop models with broken audio channel mapping The primary
-difference is that Similar Commit #1 modified existing entries by
-swapping `CS35L41_LEFT` and `CS35L41_RIGHT`, while this commit adds new
-entries with correct channel assignments. **3. Why This Qualifies for
-Backporting:** **✅ Fixes Important User-Affecting Bug:** Swapped audio
-channels are a significant usability issue that directly impacts users'
-audio experience on affected Acer Helios laptops. **✅ Small and
-Contained Change:** The fix only adds static configuration data - three
-new entries in a lookup table. No algorithmic changes or complex logic
-modifications. **✅ Minimal Risk of Regression:** Adding new entries to a
-device-specific configuration table cannot break existing functionality
-for other devices. The changes only affect the three specific Acer
-laptop models. **✅ No Architectural Changes:** This is purely data-
-driven configuration, not structural code changes. **✅ Specific Hardware
-Support:** The SSID values (10251826, 1025182C, 10251844) are vendor-
-specific identifiers for Acer devices (1025 = Acer vendor ID), ensuring
-the fix only applies to the intended hardware. **4. Code Analysis
-Verification:** From examining the current kernel tree at
-`/home/sasha/linux/sound/pci/hda/cs35l41_hda_property.c`, I confirmed
-that: - The file exists and contains the same structure as the commit -
-No "1025" entries currently exist in the configuration table - The
-pattern matches exactly with other vendor entries (HP: 103C, ASUS: 1043,
-Lenovo: 17AA) **5. Risk Assessment:** - **Regression Risk: MINIMAL** -
-Adding device-specific entries cannot affect other hardware - **Side
-Effects: NONE** - Changes are isolated to specific Acer laptop models -
-**Complexity: LOW** - Simple data table additions with no logic changes
-**Conclusion:** This commit perfectly fits the stable tree criteria:
-it's an important hardware-specific bug fix that affects users, with
-minimal risk and no architectural changes. The historical precedent
-(Similar Commit #1 with identical nature receiving YES status) strongly
-supports backporting this fix.
+**YES** This commit should be backported to stable kernel trees. ##
+Detailed Analysis: ### 1. **User-Visible Bug Fix** ✅ The commit fixes a
+clear user-visible issue where multiple applications accessing the
+battery gauge simultaneously receive confusing `-ENODEV` errors instead
+of actual battery data or proper error codes. This directly impacts
+battery monitoring applications and system power management tools. ###
+2. **Code Changes Analysis** **bq27xxx_battery.c change:** ```c -return
+-ENODEV; +return di->cache.flags; ``` This single-line change stops
+masking real error codes with generic `-ENODEV`, allowing applications
+to see the actual error (like `-EBUSY`) and handle it appropriately.
+**bq27xxx_battery_i2c.c changes:** - Adds retry logic with up to 3
+attempts when encountering `-EBUSY` - Uses standard `usleep_range(10000,
+11000)` for 10ms delays - Implements proper loop structure with explicit
+break conditions ### 3. **Small and Contained** ✅ The changes are
+minimal and focused: - No architectural modifications - No changes to
+driver interfaces or APIs - Limited to error handling improvement within
+the same subsystem ### 4. **Low Regression Risk** ✅ - Uses established
+kernel patterns (`usleep_range`, retry counters) - No timing changes to
+critical paths - Battery gauges typically recover from busy state within
+milliseconds - Maintains backward compatibility ### 5. **Historical
+Precedent** ✅ Analysis of similar bq27xxx commits shows consistent
+backporting: - "Fix race condition" (Similar Commit #4): **YES** -
+Similar I2C access improvement - "After charger plug in/out wait 0.5s"
+(Similar Commit #5): **YES** - Similar stability fix - "make status more
+robust" (Similar Commit #2): **YES** - Similar robustness improvement
+### 6. **Follows Kernel Conventions** ✅ - Standard I2C retry mechanisms
+are common in the kernel - Proper error code propagation instead of
+masking - Code reviewed by subsystem maintainer (Pali Rohár) - Uses
+kernel-standard delay functions ### 7. **System Impact** **Improves
+stability** by: - Preventing userspace confusion from misleading error
+codes - Gracefully handling concurrent access scenarios - Better error
+reporting for debugging - No negative side effects identified ### 8.
+**Risk Assessment** **Very Low Risk:** - No memory management changes -
+No locking mechanism modifications - Standard retry pattern with bounded
+attempts - Preserves all existing functionality This commit represents
+an ideal stable backport candidate: it fixes a real user-visible bug
+with minimal, well-understood code changes that follow established
+kernel patterns and have strong historical precedent for backporting in
+this driver subsystem.
 
- sound/pci/hda/cs35l41_hda_property.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/power/supply/bq27xxx_battery.c     |  2 +-
+ drivers/power/supply/bq27xxx_battery_i2c.c | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/cs35l41_hda_property.c b/sound/pci/hda/cs35l41_hda_property.c
-index 61d2314834e7b..d8249d997c2a0 100644
---- a/sound/pci/hda/cs35l41_hda_property.c
-+++ b/sound/pci/hda/cs35l41_hda_property.c
-@@ -31,6 +31,9 @@ struct cs35l41_config {
- };
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index 1a20c775489c7..871f03d160c53 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -2062,7 +2062,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
+ 	mutex_unlock(&di->lock);
  
- static const struct cs35l41_config cs35l41_config_table[] = {
-+	{ "10251826", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
-+	{ "1025182C", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
-+	{ "10251844", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
- 	{ "10280B27", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
- 	{ "10280B28", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
- 	{ "10280BEB", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, -1, 0, 0, 0, 0 },
-@@ -452,6 +455,9 @@ struct cs35l41_prop_model {
- static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
- 	{ "CLSA0100", NULL, lenovo_legion_no_acpi },
- 	{ "CLSA0101", NULL, lenovo_legion_no_acpi },
-+	{ "CSC3551", "10251826", generic_dsd_config },
-+	{ "CSC3551", "1025182C", generic_dsd_config },
-+	{ "CSC3551", "10251844", generic_dsd_config },
- 	{ "CSC3551", "10280B27", generic_dsd_config },
- 	{ "CSC3551", "10280B28", generic_dsd_config },
- 	{ "CSC3551", "10280BEB", generic_dsd_config },
+ 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
+-		return -ENODEV;
++		return di->cache.flags;
+ 
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_STATUS:
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index ba0d22d904295..868e95f0887e1 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -6,6 +6,7 @@
+  *	Andrew F. Davis <afd@ti.com>
+  */
+ 
++#include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+@@ -31,6 +32,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	struct i2c_msg msg[2];
+ 	u8 data[2];
+ 	int ret;
++	int retry = 0;
+ 
+ 	if (!client->adapter)
+ 		return -ENODEV;
+@@ -47,7 +49,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	else
+ 		msg[1].len = 2;
+ 
+-	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++	do {
++		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++		if (ret == -EBUSY && ++retry < 3) {
++			/* sleep 10 milliseconds when busy */
++			usleep_range(10000, 11000);
++			continue;
++		}
++		break;
++	} while (1);
++
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.39.5
 
