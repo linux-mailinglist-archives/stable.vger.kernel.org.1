@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-148354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889DFAC9BAF
-	for <lists+stable@lfdr.de>; Sat, 31 May 2025 18:19:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48099AC9BCD
+	for <lists+stable@lfdr.de>; Sat, 31 May 2025 18:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41B50189BDC6
-	for <lists+stable@lfdr.de>; Sat, 31 May 2025 16:19:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 569AA9E2EA3
+	for <lists+stable@lfdr.de>; Sat, 31 May 2025 16:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BDF186E40;
-	Sat, 31 May 2025 16:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E214918D643;
+	Sat, 31 May 2025 16:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+CRmwRm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+ygO6e4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F02117A31D;
-	Sat, 31 May 2025 16:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD1014A0A8;
+	Sat, 31 May 2025 16:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748708324; cv=none; b=DSwXZWzekZb2ISc88T7+esSANWodto0QUkXF4bcpGpVTXVOQ49vdBhw02/+FvuacqTzk1eOUz7VnjA3drSMCEnJQFrG1wxiPyeNtj+jpe2khPmqNlNcDHpGmn81ejld41dxLyvCivMFJENYFOXuftnZepnU8zVqTVibs8jfDoP0=
+	t=1748710390; cv=none; b=QVdTOSYvfIb62rpcyXK4MV0wH85fpmgqE2vJo5zUnXSLurgE43zaJ6btj5fLVL7trLR4nx/BANUbKMwffisDG6BSvyPQn5b/5739Z1d5AI3X/6tKoqTpMSsdvr0F5Zd2ltfcRnOvfuCjowob/UB23CuMu6EjHt+xN6VIMX8q7Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748708324; c=relaxed/simple;
-	bh=6XW6rvHYYe6NmPi1aP+xp49GhLfblEpiI49g8P2fQCo=;
+	s=arc-20240116; t=1748710390; c=relaxed/simple;
+	bh=ki2fiF5byquHZpQLnvRzyCUzg28bY60LyC64A4xgFis=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dbc01hiSYuyMcEuDYY3PmblwFW6dzogW42UMgxtlNIxRUa22qLNcRy/THk6cZDr9KY6RNBU0LXnseXwPVbyQxVUQCwOILZLhQG0PqneUToLKVhBHUZ1FfXKjPlWmubwHSdVlvUK6K1eLD9veDT45X/S7rTCPE+T5qCJJ/y8YNwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+CRmwRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D69C4CEE3;
-	Sat, 31 May 2025 16:18:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eyFs97czN2jr03vJdRg4A388Lysm0OKTt7uhnetXScI04mDQF1yCCbucrjBifq5WLWYzlhvpR39mXyhUUMily3UqOosdJlaU3QTm23mQf/qgYFduIWvND7na+AEDTttLwHcvD5uOcaH3F3AfRz5Azek4SHWrbdQbS0ua6z6Fkj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+ygO6e4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8399C4CEEF;
+	Sat, 31 May 2025 16:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748708324;
-	bh=6XW6rvHYYe6NmPi1aP+xp49GhLfblEpiI49g8P2fQCo=;
+	s=k20201202; t=1748710390;
+	bh=ki2fiF5byquHZpQLnvRzyCUzg28bY60LyC64A4xgFis=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W+CRmwRmFU8uaIsjGDgRT3CVvlci4orRZbUsCVLLv/nq+AVeNNNXsXNA32r+/UoLr
-	 leYRBoJYCcVYBNrUO2eQ/u5nNwemPFAOtf12IdRAZZqFAtdFg2oHc5juFotn7OZUXI
-	 7rSwyC8ui515g9fTbBUmsKJKK954HwLPS6qVp8ebF7gJIqXU2AbDrFkUkNnp/BZOYk
-	 K3FsuRC88S+mQuzUID9CbeclTTtz9PV0okK+Z0jOJYJPzcLeFYK8UHxb3UazFy5MLl
-	 27Mt8gc1pcU6dOjPM8sQwY9+PK8k2HfCM7+2T6ugxAnPpRaU9igsmcgNwYflAcm8mD
-	 9AFu3YnX7iWEA==
-Date: Sat, 31 May 2025 17:18:37 +0100
+	b=I+ygO6e4pt7WlsySCqfKWdadJCI7zFjT5gt5SuuT6sfllHDtZFadQlvrkLcnjM6+f
+	 o3tPpbp5i7CG7k1rs/BQlMYhfI/fngWWCNy5BDM7lnzZRz9gdqIhpONnqurqfyd5WN
+	 a6kWhONV4Ys0E7G4eyytnNyWle5188imJI7JVsxnMx7A6LzoxaL8CoCIPis+D+XSX7
+	 1g4+fof/T1VhZwvKvQ7dl5DNfcYVnrbxzLxnYJ8dkUCpbcl6IgmiofrbKhTSd0uY12
+	 9E4grHFbTNGKYhinirLwMqQJMbPQnZHHItstwSqn+juRzlm01ZR11y9B1wbYYOS6wk
+	 dhrmQxQ60/Pew==
+Date: Sat, 31 May 2025 17:53:02 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Angelo Dureghello
- <adureghello@baylibre.com>, Guillaume Stols <gstols@baylibre.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: adi-axi-adc: fix ad7606_bus_reg_read()
-Message-ID: <20250531171837.1490051a@jic23-huawei>
-In-Reply-To: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v2-1-ad2dfc0694ce@baylibre.com>
-References: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v2-1-ad2dfc0694ce@baylibre.com>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: fxls8962af: Fix use after free in
+ fxls8962af_fifo_flush
+Message-ID: <20250531175302.05b2da17@jic23-huawei>
+In-Reply-To: <20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com>
+References: <20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,63 +63,75 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 30 May 2025 16:50:14 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Sat, 24 May 2025 12:34:09 +0200
+Sean Nyekjaer <sean@geanix.com> wrote:
 
-> Mask the value read before returning it. The value read over the
-> parallel bus via the AXI ADC IP block contains both the address and
-> the data, but callers expect val to only contain the data.
+> fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
+> iio_for_each_active_channel()) without making sure the indio_dev
+> stays in buffer mode.
+> There is a race if indio_dev exits buffer mode in the middle of the
+> interrupt that flushes the fifo. Fix this by calling
+> iio_device_claim_buffer_mode() to ensure indio_dev can't exit buffer
+> mode during the flush.
 > 
-> axi_adc_raw_write() takes a u32 parameter, so addr was the wrong type.
-> This wasn't causing any issues but is corrected anyway since we are
-> touching the same line to add a new variable.
+> Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
+> [...]
+> _find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
+> fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
+> fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
+> irq_thread_fn from irq_thread+0x110/0x1f4
+> irq_thread from kthread+0xe0/0xfc
+> kthread from ret_from_fork+0x14/0x2c
 > 
+> Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
 > Cc: stable@vger.kernel.org
-> Fixes: 79c47485e438 ("iio: adc: adi-axi-adc: add support for AD7606 register writing")
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-I've applied this to my temporary fixes-togreg-for-6.16 branch for now.
-That will get rebased on rc1 once available.  As such I'm fine adding
-tags or indeed dropping it again if others have feedback!
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+
+That's nasty and a case I'd never thought about.  Most of the
+races around disabling end up with an extra sample or two which then gets
+dropped because there are no buffers enabled. 
+
+We need to consider the active scan mask as part of the buffer state.
+So effectively taking mlock if we enter this code will delay the state
+transition (and change of active_scan_mask until after this interrupt is done).
+
+If David's synchronize_irq() is enough maybe that's a lighter weight path?
 
 Jonathan
 
+
+
 > ---
-> Changes in v2:
-> - Use ADI_AXI_REG_VALUE_MASK instead of hard-coding 0xFF.
-> - Introduce local variable and use FIELD_PREP() instead of modifying val.
-> - Link to v1: https://lore.kernel.org/r/20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v1-1-ce8f7cb4d663@baylibre.com
-> ---
->  drivers/iio/adc/adi-axi-adc.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  drivers/iio/accel/fxls8962af-core.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index cf942c043457ccea49207c3900153ee371b3774f..fc745297bcb82cf2cf7f30c7fcf9bba2d861a48c 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -445,7 +445,7 @@ static int axi_adc_raw_read(struct iio_backend *back, u32 *val)
->  static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
->  {
->  	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-> -	int addr;
-> +	u32 addr, reg_val;
+> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+> index 6d23da3e7aa22c61f2d9348bb91d70cc5719a732..7db83ebeea823173d79bf8ff484add16f575edfc 100644
+> --- a/drivers/iio/accel/fxls8962af-core.c
+> +++ b/drivers/iio/accel/fxls8962af-core.c
+> @@ -973,6 +973,9 @@ static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
+>  	if (ret)
+>  		return ret;
 >  
->  	guard(mutex)(&st->lock);
->  
-> @@ -455,7 +455,9 @@ static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
->  	 */
->  	addr = FIELD_PREP(ADI_AXI_REG_ADDRESS_MASK, reg) | ADI_AXI_REG_READ_BIT;
->  	axi_adc_raw_write(back, addr);
-> -	axi_adc_raw_read(back, val);
-> +	axi_adc_raw_read(back, &reg_val);
+> +	if (iio_device_claim_buffer_mode(indio_dev) < 0)
+> +		return 0;
 > +
-> +	*val = FIELD_GET(ADI_AXI_REG_VALUE_MASK, reg_val);
+>  	/* Demux hw FIFO into kfifo. */
+>  	for (i = 0; i < count; i++) {
+>  		int j, bit;
+> @@ -989,6 +992,8 @@ static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
+>  		tstamp += sample_period;
+>  	}
 >  
->  	/* Write 0x0 on the bus to get back to ADC mode */
->  	axi_adc_raw_write(back, 0);
+> +	iio_device_release_buffer_mode(indio_dev);
+> +
+>  	return count;
+>  }
+>  
 > 
 > ---
-> base-commit: 7cdfbc0113d087348b8e65dd79276d0f57b89a10
-> change-id: 20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-f2bbb503db8b
+> base-commit: 5c3fcb36c92443a9a037683626a2e43d8825f783
+> change-id: 20250524-fxlsrace-f4d20e29fb29
 > 
 > Best regards,
 
