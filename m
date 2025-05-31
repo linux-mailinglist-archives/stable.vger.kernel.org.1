@@ -1,110 +1,125 @@
-Return-Path: <stable+bounces-148353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F56AC9B6F
-	for <lists+stable@lfdr.de>; Sat, 31 May 2025 17:08:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889DFAC9BAF
+	for <lists+stable@lfdr.de>; Sat, 31 May 2025 18:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8F5B9E4235
-	for <lists+stable@lfdr.de>; Sat, 31 May 2025 15:08:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41B50189BDC6
+	for <lists+stable@lfdr.de>; Sat, 31 May 2025 16:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828DE23D2A5;
-	Sat, 31 May 2025 15:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BDF186E40;
+	Sat, 31 May 2025 16:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A20P97Hv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+CRmwRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A3523D298;
-	Sat, 31 May 2025 15:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F02117A31D;
+	Sat, 31 May 2025 16:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748704108; cv=none; b=V4yw5lBn4JCX07QW2yTaQVEPiOgISmrZY4ucUttUSHx941LDfqxmPp4NprMgQT7tjrS4j7CfJYa5hLNJ4p4bE+MfHFXtQbHU2EnphI6ThLbGPz5d7xjyPEBOdR5w9BsbfcCdOpy5sC88D3iqtnooGeEK8Tdq/vpgjxlZa6NmOXw=
+	t=1748708324; cv=none; b=DSwXZWzekZb2ISc88T7+esSANWodto0QUkXF4bcpGpVTXVOQ49vdBhw02/+FvuacqTzk1eOUz7VnjA3drSMCEnJQFrG1wxiPyeNtj+jpe2khPmqNlNcDHpGmn81ejld41dxLyvCivMFJENYFOXuftnZepnU8zVqTVibs8jfDoP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748704108; c=relaxed/simple;
-	bh=ziBZwwqyZQT5qEjnp8U1zRRFZPCFs+iLXjzMT4hxT2o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDtdnJoTHoCdtmQhUoOSaU3Mu96T6jIbbNvZT6x75TtvbLVjJ+RRyleJHXW52+3ZwxOUexUfmPrUAprFT2fkd3Vx/NxyNX5+dU0EmW6Mlim0JVPriLDMp8FDLD72bwfG7P0pSBxJ4apAn7nhTIvUjVxES4nfjhFwy7ScVVnji00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A20P97Hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4180C4CEE3;
-	Sat, 31 May 2025 15:08:26 +0000 (UTC)
+	s=arc-20240116; t=1748708324; c=relaxed/simple;
+	bh=6XW6rvHYYe6NmPi1aP+xp49GhLfblEpiI49g8P2fQCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dbc01hiSYuyMcEuDYY3PmblwFW6dzogW42UMgxtlNIxRUa22qLNcRy/THk6cZDr9KY6RNBU0LXnseXwPVbyQxVUQCwOILZLhQG0PqneUToLKVhBHUZ1FfXKjPlWmubwHSdVlvUK6K1eLD9veDT45X/S7rTCPE+T5qCJJ/y8YNwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+CRmwRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D69C4CEE3;
+	Sat, 31 May 2025 16:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748704108;
-	bh=ziBZwwqyZQT5qEjnp8U1zRRFZPCFs+iLXjzMT4hxT2o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A20P97HvewqwS6oSqh1AcgsBzKx4B/EI0jILDNiaqyscvlIrQcdps2VY6+znKtluv
-	 TKFoHkxWKzewnqvyi+sLZlLWSHyORl4Jr6NZb4PJ35wL648PcSTrG3ceb7loopObab
-	 JuUAerlnQWiKPRbwvOmZsjCY8EkPZlQNomallrFT25c2EirMjthJLin6JxN7glvKWM
-	 9skXpJhz0J0/jbHFXI31e2cozi2yQNDhs+iO+vgK8hLyzBjzeWfnptVQPpn4U9abc8
-	 wMVdmmw2lvOnsVxaiHiBGVQXKFwn/3bacmSqHmzEvAEzWx1hu+AVAV5rqZMXT7sHur
-	 jw4mNJ21c+rsA==
-From: deller@kernel.org
-To: linux-kernel@vger.kernel.org,
-	apparmor@lists.ubuntu.com,
-	John Johansen <john.johansen@canonical.com>,
-	linux-security-module@vger.kernel.org
-Cc: Helge Deller <deller@gmx.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] apparmor: Fix 8-byte alignment for initial dfa blob streams
-Date: Sat, 31 May 2025 17:08:21 +0200
-Message-ID: <20250531150822.135803-2-deller@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250531150822.135803-1-deller@kernel.org>
-References: <20250531150822.135803-1-deller@kernel.org>
+	s=k20201202; t=1748708324;
+	bh=6XW6rvHYYe6NmPi1aP+xp49GhLfblEpiI49g8P2fQCo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=W+CRmwRmFU8uaIsjGDgRT3CVvlci4orRZbUsCVLLv/nq+AVeNNNXsXNA32r+/UoLr
+	 leYRBoJYCcVYBNrUO2eQ/u5nNwemPFAOtf12IdRAZZqFAtdFg2oHc5juFotn7OZUXI
+	 7rSwyC8ui515g9fTbBUmsKJKK954HwLPS6qVp8ebF7gJIqXU2AbDrFkUkNnp/BZOYk
+	 K3FsuRC88S+mQuzUID9CbeclTTtz9PV0okK+Z0jOJYJPzcLeFYK8UHxb3UazFy5MLl
+	 27Mt8gc1pcU6dOjPM8sQwY9+PK8k2HfCM7+2T6ugxAnPpRaU9igsmcgNwYflAcm8mD
+	 9AFu3YnX7iWEA==
+Date: Sat, 31 May 2025 17:18:37 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Angelo Dureghello
+ <adureghello@baylibre.com>, Guillaume Stols <gstols@baylibre.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: adi-axi-adc: fix ad7606_bus_reg_read()
+Message-ID: <20250531171837.1490051a@jic23-huawei>
+In-Reply-To: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v2-1-ad2dfc0694ce@baylibre.com>
+References: <20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v2-1-ad2dfc0694ce@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Helge Deller <deller@gmx.de>
+On Fri, 30 May 2025 16:50:14 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-The dfa blob stream for the aa_dfa_unpack() function is expected to be aligned
-on a 8 byte boundary.
+> Mask the value read before returning it. The value read over the
+> parallel bus via the AXI ADC IP block contains both the address and
+> the data, but callers expect val to only contain the data.
+> 
+> axi_adc_raw_write() takes a u32 parameter, so addr was the wrong type.
+> This wasn't causing any issues but is corrected anyway since we are
+> touching the same line to add a new variable.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 79c47485e438 ("iio: adc: adi-axi-adc: add support for AD7606 register writing")
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+I've applied this to my temporary fixes-togreg-for-6.16 branch for now.
+That will get rebased on rc1 once available.  As such I'm fine adding
+tags or indeed dropping it again if others have feedback!
 
-The static nulldfa_src[] and stacksplitdfa_src[] arrays store the inital
-apparmor dfa blob streams, but since they are declared as an array-of-chars
-the compiler and linker will only ensure a "char" (1-byte) alignment.
+Jonathan
 
-Add an __aligned(8) annotation to the arrays to tell the linker to always
-align them on a 8-byte boundary. This avoids runtime warnings at startup on
-alignment-sensitive platforms like parisc such as:
-
- Kernel: unaligned access to 0x7f2a584a in aa_dfa_unpack+0x124/0x788 (iir 0xca0109f)
- Kernel: unaligned access to 0x7f2a584e in aa_dfa_unpack+0x210/0x788 (iir 0xca8109c)
- Kernel: unaligned access to 0x7f2a586a in aa_dfa_unpack+0x278/0x788 (iir 0xcb01090)
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
----
- security/apparmor/lsm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 9b6c2f157f83..531bde29cccb 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -2149,12 +2149,12 @@ static int __init apparmor_nf_ip_init(void)
- __initcall(apparmor_nf_ip_init);
- #endif
- 
--static char nulldfa_src[] = {
-+static char nulldfa_src[] __aligned(8) = {
- 	#include "nulldfa.in"
- };
- static struct aa_dfa *nulldfa;
- 
--static char stacksplitdfa_src[] = {
-+static char stacksplitdfa_src[] __aligned(8) = {
- 	#include "stacksplitdfa.in"
- };
- struct aa_dfa *stacksplitdfa;
--- 
-2.47.0
+> ---
+> Changes in v2:
+> - Use ADI_AXI_REG_VALUE_MASK instead of hard-coding 0xFF.
+> - Introduce local variable and use FIELD_PREP() instead of modifying val.
+> - Link to v1: https://lore.kernel.org/r/20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-v1-1-ce8f7cb4d663@baylibre.com
+> ---
+>  drivers/iio/adc/adi-axi-adc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index cf942c043457ccea49207c3900153ee371b3774f..fc745297bcb82cf2cf7f30c7fcf9bba2d861a48c 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -445,7 +445,7 @@ static int axi_adc_raw_read(struct iio_backend *back, u32 *val)
+>  static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
+>  {
+>  	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+> -	int addr;
+> +	u32 addr, reg_val;
+>  
+>  	guard(mutex)(&st->lock);
+>  
+> @@ -455,7 +455,9 @@ static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
+>  	 */
+>  	addr = FIELD_PREP(ADI_AXI_REG_ADDRESS_MASK, reg) | ADI_AXI_REG_READ_BIT;
+>  	axi_adc_raw_write(back, addr);
+> -	axi_adc_raw_read(back, val);
+> +	axi_adc_raw_read(back, &reg_val);
+> +
+> +	*val = FIELD_GET(ADI_AXI_REG_VALUE_MASK, reg_val);
+>  
+>  	/* Write 0x0 on the bus to get back to ADC mode */
+>  	axi_adc_raw_write(back, 0);
+> 
+> ---
+> base-commit: 7cdfbc0113d087348b8e65dd79276d0f57b89a10
+> change-id: 20250530-iio-adc-adi-axi-adc-fix-ad7606_bus_reg_read-f2bbb503db8b
+> 
+> Best regards,
 
 
