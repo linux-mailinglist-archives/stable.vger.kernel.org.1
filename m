@@ -1,105 +1,105 @@
-Return-Path: <stable+bounces-148343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B350AC999B
-	for <lists+stable@lfdr.de>; Sat, 31 May 2025 08:36:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E83AAC99A1
+	for <lists+stable@lfdr.de>; Sat, 31 May 2025 08:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 379697AF96C
-	for <lists+stable@lfdr.de>; Sat, 31 May 2025 06:34:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E9A74A489E
+	for <lists+stable@lfdr.de>; Sat, 31 May 2025 06:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5057EAD0;
-	Sat, 31 May 2025 06:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036AA22D78F;
+	Sat, 31 May 2025 06:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bYMFUwwz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P6rMuGVa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E500619F10A;
-	Sat, 31 May 2025 06:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5871B81D3;
+	Sat, 31 May 2025 06:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748673368; cv=none; b=ls6vCi6LNGbM+EqBeIc/xtkGMPSw5ahwcoqvEvrbu6fCvvycka4ikhYY5CrEOUhjYHCm5QK2w9o3LisZq1LirEBPKhyE0qWRXAV3Vfvwy5MBJ5sK0lebM42YoJMq3+Yv+kSr6+f5uyhjBtWbIleIYpucYmoM+qr3O5SLst8kTRI=
+	t=1748673393; cv=none; b=IoU7IGsK/nVuXK6G5Os1pKzflNevaecFGDRJKq7B1xjmtB0GrbFs8G1Xq71HJtgHejYqZwl3B1+TjbmhiHimCnaMSgm5aQJE89P7qJZLMZecbtLSaii01yvH7U4iiOPX9flN+8yN0r11iPL646aBXfX/Ldwv5RhgUOa+s3WLmmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748673368; c=relaxed/simple;
-	bh=YXwmW+GZn5Xltkq0Z7L3gYqPS8LV1nBKKs0Ek1z/X/k=;
+	s=arc-20240116; t=1748673393; c=relaxed/simple;
+	bh=D0vQoDuXadB7RpcZ57c1POsumZtMttNpfLvTO80/zGw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B3JKrGqVFG/BZiQq1rYPwl9oj2Yuv/lne0q+D3/PlQYK5H+k3cLNrEBZSrfsr+zXvYu28I5tnualfB9LrNPgIR0n3lfvCaX0B36HChybluu3BEbnw43kciLbdQFO9ozzaHESUDVBkqYRYJ7W2MlWoRuVtZOjopWQwkrt5bSlsKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bYMFUwwz; arc=none smtp.client-ip=209.85.221.179
+	 To:Cc:Content-Type; b=QnmbNPgNjyCKgSRKUutChPn7c5R/dsbrMl0vnwgRMLNUukMeAAfhb+UQ7MIwCN+GLLSrR9j3hedUiBTinFsyxIR4HQJygTav1NiPyhGmP74WIY090OGjVJae8yQnxOWl/n8xT0sl7ywP5gyvXpFS3iTeaOyKLF/WGF1VVatpxX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P6rMuGVa; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-530807a8691so567609e0c.0;
-        Fri, 30 May 2025 23:36:06 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-32a63ff3bdfso21838191fa.3;
+        Fri, 30 May 2025 23:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748673366; x=1749278166; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748673390; x=1749278190; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qxAnNwf04k1daTyHuUhp/+U0tlJ5knXJTN7hN8ijbm4=;
-        b=bYMFUwwzfmHYOOv/dL1UknTx9JG3VD0DXl6xnYN2mE0aWBEqPu/At4KCkRI6JMzbPH
-         bcExQyjg45hBpbIEGKs3OHWsjngILVHqGvAYX/xwDSty3NBvMMYKb8/QaIwdZr5iiXXF
-         5vV4JkSSml3qsfH8JfQOQUdSjGbyG4oxZDnTeIt/WAs0xxC1j0kCnZFwrd2dbAtFngo3
-         PAjI/0uKR2PI6XU5luxq1Ps5D7sb0697i1IZHeGMNqfvO4OCMSm2X0q3uHmTkFyGfqrW
-         Hcmhhwp8CJGmxXCxwzabc8niaRnyfQ56j58srvyGFbrwOsdHyEJbWjKKo9doFrQx0/0f
-         uJUw==
+        bh=y/BmoDNXQwduqlIZzmWZXOyqj/fMIT70s0zMx8YqFyY=;
+        b=P6rMuGVaDWea+4Tm+jpCU6tv1ychy+WQYguOIya+AW3DRd63Up6veNOtu7XHJVZJ1o
+         JWvJepbsexUEwyHEUlIDRTBtLi+Hyf7W+rWrab8l9B5atIOzmCpq+hXrdJx2f9Uj498q
+         amE/ytOva1k7RysSx0JFG7oOFzTStaUHF3M7HargrnwU+Bsa3TcQXCLxJvNizyA0S6uw
+         GOhltAfswh2HYWZpXwXek6G9Sp6hMiM1mgRRQfWAp+qwOgqUVpSoRvvJevgCv8rqJnYf
+         uEnTUpcYsZ5JLBjz+SCq61UYW0vkpboiKSqE+JxBO0fK1Q/kfbFVDa/74F2CmGOnzf//
+         Y1Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748673366; x=1749278166;
+        d=1e100.net; s=20230601; t=1748673390; x=1749278190;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qxAnNwf04k1daTyHuUhp/+U0tlJ5knXJTN7hN8ijbm4=;
-        b=g9I358XMBMrXWB0JIHOTusd/gIB9ldmc/ndWLXiipHHwwLn6jVQIP1jN4lYJW45pTU
-         Dya1tUXncXLEbyZgs2otbVvV2M+ClvJ+XAGC9KF+ZH4amRWKsgOMmtU/UTlqRrfksPRW
-         tFG49UYHnQ/9boOu0k241ybRkSD0Kk4QcfAr6wWWU44uVwe7gdGzk7oa1+tc3u2ge8yx
-         KIHt7b2yH5vus3YuoYwlMU7upbWgrcLwIDObUb2V2KPTQfJN9XMaSjGclO2xUfLu63sR
-         B5GUL4hKVEVYP+/ZJcepBlnrRhFSJZ4PYHXlp7t1O55InPoctg90t0qFrUPk7jYZ4+OB
-         ZW+g==
-X-Forwarded-Encrypted: i=1; AJvYcCU50m0D6/g8CoFlU69SvEJjqWs5xVccnRT7/sEJc2w+QDsBudJvELNtdEGV4AKVQwmx3LVvBaZK2GrhI0U=@vger.kernel.org, AJvYcCXg2elqT43UkRma6kFZIhe6xmsBNhr8rZRfPl0v/ZspofgtQ1WkyEJ1yUBS5hre1APLHGN6MkiE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfGHpKUj64TgGTNdv+AEdMw0qbs9K4t/lN4aWYBNxi3ZOuk5EY
-	A6IbjO/UE2HvQZLCuJhHwmptPIq/zaVl91LsV01aQsTdSoObvwtMAg7n0RLw6AALghDByGuhGXU
-	v+gFdGV9W7gg2ZRtxlh7AdOfXuf0lf/U=
-X-Gm-Gg: ASbGncuyyYooIgCeJ7gzQo2X/JLUY9Tma4lbg/wb0isdEhPa3Y3ky7+GrOmM3HeJTkU
-	SNPWxzRKMPmp9dJAL/nEShJ808lwpLJvcdkc1rcH8bMF6KKyhXOKLy5ehBpwM+RZKxKV6/9Vojs
-	2Qz3QLR2lWeGtH3zX3Vnz3+hBBcQG5sU9Pmg==
-X-Google-Smtp-Source: AGHT+IFoFH9kRyoo67Aj4j7sLe/VRhCJ+NyYgJ+kdpibA364NNkrfUx+kDIf2nV6F+Nf9J3DCvPMTi+MJfD/icdKAsE=
-X-Received: by 2002:a05:6102:6d2:b0:4df:8259:eaa with SMTP id
- ada2fe7eead31-4e701bae8a0mr364647137.5.1748673365645; Fri, 30 May 2025
- 23:36:05 -0700 (PDT)
+        bh=y/BmoDNXQwduqlIZzmWZXOyqj/fMIT70s0zMx8YqFyY=;
+        b=l0gQI6EtIS7W8BHO7facDQ7jYAI5QfwJq6DECyprrHzXjKM0fBWd2Xf4rWxyFN1i5s
+         2hgLzt21eoxapuVF5tEdkWRYPZg/sqYoCcFXx+SXLY3KbGzn5OfKMVlGUPP1tFg4tTAM
+         4gG5xYdHrv0jNvT7xH+EC4wLQSP8Rz/5ujsOzR7RPQZaUMrP0XhszYDKHP9Ws4OZ66YI
+         JO5Ws9MUOw0q3EmMxmf20KmGBywsrQffgGZVUX9EQ9EMtyQj5YSHSS7+X+jJokPp9UHG
+         EivRR2Bj80x7axyMb1KVjohmSv1a7YeKl81qeii2rZqfEKGSUBAhsseu0C01sXI/dX4v
+         Pjyg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4lsLrMglygiu8kcAe39FZ1GbIjea1vLMbLayLuogDslARYAgaTCrYoKQ3IBBVlcpvf/EFzdNhf5N3N0Y=@vger.kernel.org, AJvYcCX7UhQ5EGnbKRxhgUANDJRlpJvzYImmOMiszun25iyNg7t9Gwb+JscDS8DWx6l1bnILyHNrwO36@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZhC1zsX2kKvqyFKReMmEN5Gz2vBUmXH8bEFysPoKNChNlnwS8
+	aoa6bcNUmerfZNQ6LoJnXl1rtThVMxaDqOuC9mo0xUEQXX/VtT51j4jDWSoFYPdi8AKQzHtp6bD
+	d30NRu39W8dbAXNhNc6MZkz9MxlohUbfEEjTfHUrPBQ==
+X-Gm-Gg: ASbGncv9DBwWEm7FyELFGTuDt4y5McI6njDtsAbMjFfVbZxASlgwJ5/oGzEJXni8spq
+	usR6LY6r4COY3+W52O5GMl9kHKmwF1T7NOe74HCMwgaMVyLWwMXu09LQw6hEUhwb/KZjSrVdxny
+	VFvsSb0P7RUD2i0MZsp2py6yOpq1AJx0Nt
+X-Google-Smtp-Source: AGHT+IGS+8zInVTEalAvw6lUhSsBpRvCGIuCKi3iQOkea3Fr6ApWHCsNgurueZz8XEZYCyJZmcr/XV8pjyvmWe80Gvg=
+X-Received: by 2002:a05:651c:3617:b0:30b:d562:c154 with SMTP id
+ 38308e7fff4ca-32a9ea3bb47mr3546451fa.19.1748673389221; Fri, 30 May 2025
+ 23:36:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250530201710.81365-1-ryncsn@gmail.com> <CA+EESO4-L5sOTgsTE1txby9f3a3_W49tSnkufzVnJhnR809zRQ@mail.gmail.com>
- <CAGsJ_4wkY8UcyU3LnNc1a55AvjYsVjBiST=Dy07UiaH8MU5-yg@mail.gmail.com> <CAMgjq7CFhboj1qDjdzwb2_vWKpzSzY5d0s-kWmE2ZYDDJ4s-JQ@mail.gmail.com>
-In-Reply-To: <CAMgjq7CFhboj1qDjdzwb2_vWKpzSzY5d0s-kWmE2ZYDDJ4s-JQ@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Sat, 31 May 2025 18:35:54 +1200
-X-Gm-Features: AX0GCFsKja1UXSjAtb35_iM4kGOhGAzatuZyI2XERD_MsOjTIh0b4SoyXztRzgA
-Message-ID: <CAGsJ_4yJhJBo16XhiC-nUzSheyX-V3-nFE+tAi=8Y560K8eT=A@mail.gmail.com>
+References: <20250530201710.81365-1-ryncsn@gmail.com> <CAGsJ_4wBMxQSeoTwpKoWwEGRAr=iohbYf64aYyJ55t0Z11FkwA@mail.gmail.com>
+ <CAGsJ_4wM8Tph0Mbc-1Y9xNjgMPL7gqEjp=ArBuv3cJijHVXe6w@mail.gmail.com> <CA+EESO7Gck6YpjPTMSzDGcmRXjci=zG3i8F+LTt=u2Krbp_cRg@mail.gmail.com>
+In-Reply-To: <CA+EESO7Gck6YpjPTMSzDGcmRXjci=zG3i8F+LTt=u2Krbp_cRg@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 31 May 2025 14:36:11 +0800
+X-Gm-Features: AX0GCFshAi5xaCYNNOadtBW6k_pLyhFYFBRbCnnGh9C67-Jw3R-U6Uz_6qQb9PM
+Message-ID: <CAMgjq7D10Pw6miYZvN-2stOw04iho1Z-HTb4Udo0L_1kaMgKWg@mail.gmail.com>
 Subject: Re: [PATCH] mm: userfaultfd: fix race of userfaultfd_move and swap cache
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>, linux-mm@kvack.org, 
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Barry Song <21cnbao@gmail.com>, linux-mm@kvack.org, 
 	Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
 	Suren Baghdasaryan <surenb@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
 	David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 31, 2025 at 6:25=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+On Sat, May 31, 2025 at 2:10=E2=80=AFPM Lokesh Gidra <lokeshgidra@google.co=
+m> wrote:
 >
-> On Sat, May 31, 2025 at 11:39=E2=80=AFAM Barry Song <21cnbao@gmail.com> w=
-rote:
+> On Fri, May 30, 2025 at 9:42=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
+ote:
 > >
-> > On Sat, May 31, 2025 at 11:40=E2=80=AFAM Lokesh Gidra <lokeshgidra@goog=
-le.com> wrote:
+> > On Sat, May 31, 2025 at 4:04=E2=80=AFPM Barry Song <21cnbao@gmail.com> =
+wrote:
 > > >
-> > > On Fri, May 30, 2025 at 1:17=E2=80=AFPM Kairui Song <ryncsn@gmail.com=
+> > > On Sat, May 31, 2025 at 8:17=E2=80=AFAM Kairui Song <ryncsn@gmail.com=
 > wrote:
 > > > >
 > > > > From: Kairui Song <kasong@tencent.com>
@@ -173,15 +173,6 @@ te
 > > > > deliberately constructed reproducer and increased time window, it c=
 an be
 > > > > reproduced [1].
-> > >
-> > > Thanks for catching and fixing this. Just to clarify a few things
-> > > about your reproducer:
-> > > 1. Is it necessary for the 'race' mapping to be MAP_SHARED, or
-> > > MAP_PRIVATE will work as well?
-> > > 2. You mentioned that the 'current dir is on a block device'. Are you
-> > > indicating that if we are using zram for swap then it doesn't
-> > > reproduce?
-> > >
 > > > >
 > > > > It's also possible that folio (A) is swapped in, and swapped out ag=
 ain
@@ -221,7 +212,6 @@ Czi+EJt+2_K97TPGoSt=3D9+JwP7Q@mail.gmail.com/ [1]
 > > > >  #include <linux/hugetlb.h>
 > > > >  #include <linux/shmem_fs.h>
 > > > > +#include <linux/delay.h>
-> > > I guess you mistakenly left it from your reproducer code :)
 > > > >  #include <asm/tlbflush.h>
 > > > >  #include <asm/tlb.h>
 > > > >  #include "internal.h"
@@ -253,30 +243,68 @@ _addr);
 entry),
 > > > > +                                             swap_cache_index(entr=
 y));
+> > > > +               if (!IS_ERR_OR_NULL(src_folio)) {
+> > > > +                       double_pt_unlock(dst_ptl, src_ptl);
+> > > > +                       folio_put(src_folio);
+> > > > +                       return -EAGAIN;
+> > > > +               }
+> > > >         }
 > > >
-> > > Given the non-trivial overhead of filemap_get_folio(), do you think i=
-t
-> > > will work if filemap_get_filio() was only once after locking src_ptl?
-> > > Please correct me if my assumption about the overhead is wrong.
+> > > step 1: src pte points to a swap entry without swapcache
+> > > step 2: we call move_swap_pte()
+> > > step 3: someone swap-in src_pte by swap_readhead() and make src_pte's=
+ swap entry
+> > > have swapcache again - for non-sync/non-zRAM swap device;
+> > > step 4: move_swap_pte() gets ptl, move src_pte to dst_pte and *clear*=
+ src_pte;
+> > > step 5: do_swap_page() for src_pte holds the ptl and found pte has
+> > > been cleared in
+> > >             step 4; pte_same() returns false;
+> > > step 6: do_swap_page() won't map src_pte to the new swapcache got fro=
+m step 3;
+> > >             if the swapcache folio is dropped, it seems everything is=
+ fine.
+> > >
+> > > So the real issue is that do_swap_page() doesn=E2=80=99t drop the new=
+ swapcache
+> > > even when pte_same() returns false? That means the dst_pte swap-in
+> > > can still hit the swap cache entry brought in by the src_pte's swap-i=
+n?
 > >
-> > not quite sure as we have a folio_lock(src_folio) before move_swap_pte(=
-).
-> > can we safely folio_move_anon_rmap + src_folio->index while not holding
-> > folio lock?
+> > It seems also possible for the sync zRAM device.
+> >
+> >  step 1: src pte points to a swap entry S without swapcache
+> >  step 2: we call move_swap_pte()
+> >  step 3: someone swap-in src_pte by sync path, no swapcache; swap slot
+> > S is freed.
+> >              -- for zRAM;
+> >  step 4: someone swap-out src_pte, get the exactly same swap slot S as =
+step 1,
+> >              adds folio to swapcache due to swapout;
+> >  step 5: move_swap_pte() gets ptl and finds page tables are stable
+> > since swap-out
+> >              happens to have the same swap slot as step1;
+> >  step 6: we clear src_pte, move src_pte to dst_pte; but miss to move th=
+e folio.
+> >
+> > Yep, we really need to re-check pte for swapcache after holding PTL.
+> >
+> Any idea what is the overhead of filemap_get_folio()? In particular,
+> when no folio exists for the given entry, how costly is it?
 >
-> I think no, we can't even make sure the folio is still in the swap
-> cache, so it can be a freed folio that does not belong to any VMA
-> while not holding the folio lock.
+> Given how rare it is, unless filemap_get_folio() is cheap for 'no
+> folio' case, if there is no way to avoid calling it after holding PTL,
+> then we should do it only once at that point. If a folio is returned,
+> then like in the pte_present() case, we attempt folio_trylock() with
+> PTL held, otherwise do the retry dance.
 
-Right, but will the following be sufficient, given that we don=E2=80=99t re=
-ally
-care about the folio=E2=80=94only whether there=E2=80=99s new cache?
+Yeah I think filemap_get_folio is cheap, each swap cache space is at
+most 64M big, so it just walks at most three xa_nodes and returns, not
+involving any synchronization or write.
 
-if (READ_ONCE(si->swap_map[offset]) & SWAP_HAS_CACHE) {
-             double_pt_unlock(dst_ptl, src_ptl);
-             return -EAGAIN;
-}
+The swap cache lookup will be even cheaper in the future to be just
+checking one plain array element.
 
-Thanks
-Barry
+I can try to fix this with the folio_trylock inside the PTL lock
+approach, maybe the code will be cleaner that way.
 
