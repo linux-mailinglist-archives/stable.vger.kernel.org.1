@@ -1,63 +1,72 @@
-Return-Path: <stable+bounces-148382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F442ACA18F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 01:28:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7A2ACA19A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 01:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FB1518939ED
-	for <lists+stable@lfdr.de>; Sun,  1 Jun 2025 23:28:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3942F3B484F
+	for <lists+stable@lfdr.de>; Sun,  1 Jun 2025 23:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9753925D524;
-	Sun,  1 Jun 2025 23:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267EF25DAF9;
+	Sun,  1 Jun 2025 23:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqP3d35E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TcbVy5OL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE5F2571BC;
-	Sun,  1 Jun 2025 23:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44FF258CDF;
+	Sun,  1 Jun 2025 23:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748820321; cv=none; b=lw12VUrTu8XpOLVgbrfrqd2rd1a0YmLIjyuM5q9OjPfXelNb+k6ZWCZMzGeLseW8XCbKLy2bXyIJuBBVi3jMHUBVMtLsjiitpf/K3ncJUV7vL5d32v/HOFKwQV1SDumiQcA2oRjO2ZH63OpGFT+jKCJNMYkC+X/xIBPUNbCEb7w=
+	t=1748820324; cv=none; b=D7MIMTgMdmJWEj+cbq/owJcgNBVvFyQkjXm2D4sNwgeDKEEHB6Sd4ZIyfymhJ5NKemT8frliaAE+74Stt+kuZskV/yO8icAfgIVFG34z/QgQ9JFWvCJn5FH/Z140JpntQ8utauhj4nmzN0a9bD4N2LtNx/YvWdwbcmnHgDsW550=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748820321; c=relaxed/simple;
-	bh=Wx9moxBJg0u9iJwD2G9mfpY65uiQWo92GZwGPbDeGAQ=;
+	s=arc-20240116; t=1748820324; c=relaxed/simple;
+	bh=P4Zd3p3LKhfy5AS+Eq3Yw96Ok2iEUmG+zgb5jzPB74w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GAGraxTm0UOvZWC3Hpc6fOSHS+Op7s2dJmeCdjkS568/1r8GcabnDSTALbFXTbtQDz0dUboY5jZJW0dRkBIfl5yGm+gHYOaOnGjINNFJz9zHtJHl/JtH8zMLT4j++ecpFme0+xM+2fDE0cMrVnijxOxPu89inp6htBx9ELwzXoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqP3d35E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07B6C4CEF1;
-	Sun,  1 Jun 2025 23:25:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nAFyQQ6lIyHwI15s7W0MonlKazmNHZeY4phcwI94VZD6ffjLwkgS/LFoCC9W/YNg1/lPCr81vMPm1Vv9eTCHAMakZ0ZD6pwQEIlf2cjJKcFdBPjFhhJjpflSGtNSG92kRtfMv6B6bbYgZ7i/olpHsWVr7ofj2yIztEB3qiNzQzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TcbVy5OL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769EFC4CEF1;
+	Sun,  1 Jun 2025 23:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748820321;
-	bh=Wx9moxBJg0u9iJwD2G9mfpY65uiQWo92GZwGPbDeGAQ=;
+	s=k20201202; t=1748820324;
+	bh=P4Zd3p3LKhfy5AS+Eq3Yw96Ok2iEUmG+zgb5jzPB74w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqP3d35E32nK0UtRxCoRI0OmpCHtNWEa+VKOcVO+MGlWtplk/FVQzOlErRyeSqkcc
-	 SoX0bLwm8dvq3QyBRCQ+9fN3qzJTK2nHwXQNCFMXM7wpE0hj7yXnxE7/VV0iN3xQqt
-	 wBM8b4DXfnciubO46RPAU3A/0GSpLQTXl76m0FK0dVvFnvQ3dwr0Pc8E1dGp5SNLKp
-	 IElmeLGuGY/lx5lMGvvxQh5kc8rAZBw66hOg5e/VTXREjad1w4K/NdD6U8mt1am/LT
-	 RQymsCq9hSirlAm/Knto13luUxe7MXnJVwx8SoZNWQDPzeCMvveGvrvr248m7WFpBB
-	 /9mq9sHsnETNw==
+	b=TcbVy5OLrqPDznql5qVH9iKSAbTsEV2v+LiZ/M6Xh+Nid2odKgSmyDmONA4xVDp6r
+	 EhZ9GyY7kzNdbzYf2jwk8gY2fSivyAD2vn1wG9AX/cuwahMDsP5e2jcLQMRIvEwBne
+	 zZzTE+/LPjO17PA8I0Iuutkc3mS7UBfLR1go3SrJJP6YnYOKElgMJeZxANasTaXMWu
+	 vDvDKZCNM1juWMtjP5ZnUjDsjEQM6YUPR1o9CMuV3sGKw6l+g5gl8HoPWmu8niDgtf
+	 lL5egzPLqWVALRAZLnPPshTPeV+sNS39ZQWAqZjYqtAQX96yCLbA89jSI8rF8B5Nbu
+	 dNLbkIjkKis5g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>,
+Cc: Ayushi Makhija <quic_amakhija@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
+	andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
 	maarten.lankhorst@linux.intel.com,
 	mripard@kernel.org,
 	tzimmermann@suse.de,
 	airlied@gmail.com,
 	simona@ffwll.ch,
+	lumag@kernel.org,
+	dianders@chromium.org,
+	wenst@chromium.org,
+	treapking@chromium.org,
+	xji@analogixsemi.com,
+	robh@kernel.org,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.15 017/110] drm/panthor: Don't update MMU_INT_MASK in panthor_mmu_irq_handler()
-Date: Sun,  1 Jun 2025 19:22:59 -0400
-Message-Id: <20250601232435.3507697-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.15 018/110] drm/bridge: anx7625: change the gpiod_set_value API
+Date: Sun,  1 Jun 2025 19:23:00 -0400
+Message-Id: <20250601232435.3507697-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250601232435.3507697-1-sashal@kernel.org>
 References: <20250601232435.3507697-1-sashal@kernel.org>
@@ -73,82 +82,107 @@ X-stable-base: Linux 6.15
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Ayushi Makhija <quic_amakhija@quicinc.com>
 
-[ Upstream commit 6c4a3fa26799785c1873aacabcfd9b2d27e8dc97 ]
+[ Upstream commit 50935044e58e563cdcfd556d62f27bc8744dd64e ]
 
-Interrupts are automatically unmasked in
-panthor_mmu_irq_threaded_handler() when the handler returns. Unmasking
-prematurely might generate spurious interrupts if the IRQ line is
-shared.
+Use gpiod_set_value_cansleep() instead of gpiod_set_value()
+to fix the below call trace in the boot log:
 
-Changes in v2:
-- New patch
+[    5.690534] Call trace:
+[    5.690536]  gpiod_set_value+0x40/0xa4
+[    5.690540]  anx7625_runtime_pm_resume+0xa0/0x324 [anx7625]
+[    5.690545]  __rpm_callback+0x48/0x1d8
+[    5.690549]  rpm_callback+0x6c/0x78
 
-Changes in v3:
-- Add R-bs
+Certain GPIO controllers require access via message-based buses
+such as I2C or SPI, which may cause the GPIOs to enter a sleep
+state. Therefore, use the gpiod_set_value_cansleep().
 
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250404080933.2912674-6-boris.brezillon@collabora.com
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Ayushi Makhija <quic_amakhija@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250505094245.2660750-7-quic_amakhija@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees for the
-following reasons: ## Analysis of the Bug Fix **Code Change Analysis:**
-The commit removes a single line from `panthor_mmu_irq_handler()`: ```c
-- gpu_write(ptdev, MMU_INT_MASK, new_int_mask); ``` This line was
-prematurely unmasking MMU interrupts within the interrupt handler
-itself. **Technical Issue:** 1. **Interrupt Handling Architecture**: The
-panthor driver uses a two-stage interrupt handling approach via the
-`PANTHOR_IRQ_HANDLER` macro: - **Hardware IRQ handler**: Masks
-interrupts (`gpu_write(ptdev, MMU_INT_MASK, 0)`) and wakes the threaded
-handler - **Threaded handler**: Processes interrupts and automatically
-re-enables them at the end (`gpu_write(ptdev, MMU_INT_MASK,
-pirq->mask)`) 2. **The Bug**: The `panthor_mmu_irq_handler()` function
-was prematurely unmasking interrupts in the middle of processing, which
-could cause: - **Spurious interrupts** if the IRQ line is shared with
-other devices - **Race conditions** where new interrupts arrive before
-the handler completes - **Interrupt storms** in edge cases ## Backport
-Criteria Assessment **✅ Fixes a bug that affects users:** - Could cause
-spurious interrupts on shared IRQ lines - Potential for interrupt storms
-affecting system stability **✅ Small and contained fix:** - Single line
-removal - No architectural changes - Minimal risk of regression **✅
-Clear side effects analysis:** - The fix aligns with the designed
-interrupt handling pattern - No negative side effects expected since
-automatic re-enabling happens at the proper time **✅ Critical
-subsystem:** - GPU MMU interrupt handling is critical for memory
-management - Affects system stability when GPU is in use **✅ Driver
-maturity:** - Panthor driver was introduced in v6.10 (relatively recent)
-- This is a bug in the core interrupt handling logic ## Comparison with
-Historical Commits This fix follows the same pattern as **Similar Commit
-#1** (drm/panthor: Fix ordering in _irq_suspend()) which was also marked
-as backport-worthy. Both commits fix interrupt handling ordering issues
-in the panthor driver. Unlike the panfrost commits (Similar Commits
-#2-5), which involved more complex architectural changes to interrupt
-handling, this panthor fix is a simple correction to align with the
-existing interrupt handling framework. ## Recommendation This commit
-should be backported because it fixes a clear bug in interrupt handling
-that could lead to system instability, the fix is minimal and safe, and
-it corrects the implementation to match the intended design pattern used
-throughout the panthor driver.
+**YES** This commit should be backported to stable kernel trees.
+**Detailed Analysis:** **1. Bug Fix Nature:** The commit fixes a real
+runtime issue that produces call traces in the boot log. The commit
+message clearly shows a call trace stack: ``` [ 5.690534] Call trace: [
+5.690536] gpiod_set_value+0x40/0xa4 [ 5.690540]
+anx7625_runtime_pm_resume+0xa0/0x324 [anx7625] ``` This indicates users
+are experiencing actual crashes or warnings when using this driver with
+certain GPIO controllers. **2. Small, Contained Fix:** The code changes
+are minimal and surgical - only 4 lines changed, replacing
+`gpiod_set_value()` with `gpiod_set_value_cansleep()` in the
+`anx7625_power_on()` and `anx7625_power_standby()` functions: - Line
+1260: `gpiod_set_value(ctx->pdata.gpio_p_on, 1)` →
+`gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 1)` - Line 1263:
+`gpiod_set_value(ctx->pdata.gpio_reset, 1)` →
+`gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 1)` - Line 1283:
+`gpiod_set_value(ctx->pdata.gpio_reset, 0)` →
+`gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 0)` - Line 1285:
+`gpiod_set_value(ctx->pdata.gpio_p_on, 0)` →
+`gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 0)` **3. Well-
+Established Pattern:** Looking at the similar commits provided as
+reference, this exact type of GPIO API fix is common and consistently
+handles the same underlying issue. All 5 similar commits (marked as "NO"
+for backport) show the same pattern of switching from
+`gpiod_set_value()` to `gpiod_set_value_cansleep()` to handle GPIO
+controllers on message-based buses (I2C/SPI). **4. Technical
+Correctness:** The fix is technically sound. These functions are called
+during power management operations (`anx7625_power_on()` and
+`anx7625_power_standby()`) where sleeping is acceptable and expected.
+The `_cansleep` variant is the correct API when GPIO controllers might
+be accessed via slow buses like I2C or SPI. **5. Low Risk:** The change
+has minimal risk of regression. The `gpiod_set_value_cansleep()`
+function provides the same functionality as `gpiod_set_value()` but
+allows sleeping, making it safe to use in contexts where the original
+was used incorrectly. **6. Critical Subsystem Impact:** This affects the
+DRM bridge subsystem and display functionality. Users with anx7625
+bridge chips connected to I2C GPIO expanders would experience boot-time
+call traces, which is a user-visible issue that should be fixed in
+stable kernels. **7. Real Hardware Impact:** The commit specifically
+mentions "Certain GPIO controllers require access via message-based
+buses such as I2C or SPI" - this is a real hardware configuration that
+users deploy, not an edge case. This commit meets all the criteria for
+stable backporting: it fixes a user-visible bug, has minimal risk, is
+contained to a single driver, and follows an established pattern for
+this type of GPIO API fix.
 
- drivers/gpu/drm/panthor/panthor_mmu.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index 12a02e28f50fd..8192f1de599a9 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -1713,7 +1713,6 @@ static void panthor_mmu_irq_handler(struct panthor_device *ptdev, u32 status)
- 		 * re-enabled.
- 		 */
- 		ptdev->mmu->irq.mask = new_int_mask;
--		gpu_write(ptdev, MMU_INT_MASK, new_int_mask);
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 99ef3f27ae429..95d5a4e265788 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -1257,10 +1257,10 @@ static void anx7625_power_on(struct anx7625_data *ctx)
+ 	usleep_range(11000, 12000);
  
- 		if (ptdev->mmu->as.slots[as].vm)
- 			ptdev->mmu->as.slots[as].vm->unhandled_fault = true;
+ 	/* Power on pin enable */
+-	gpiod_set_value(ctx->pdata.gpio_p_on, 1);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 1);
+ 	usleep_range(10000, 11000);
+ 	/* Power reset pin enable */
+-	gpiod_set_value(ctx->pdata.gpio_reset, 1);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 1);
+ 	usleep_range(10000, 11000);
+ 
+ 	DRM_DEV_DEBUG_DRIVER(dev, "power on !\n");
+@@ -1280,9 +1280,9 @@ static void anx7625_power_standby(struct anx7625_data *ctx)
+ 		return;
+ 	}
+ 
+-	gpiod_set_value(ctx->pdata.gpio_reset, 0);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 0);
+ 	usleep_range(1000, 1100);
+-	gpiod_set_value(ctx->pdata.gpio_p_on, 0);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 0);
+ 	usleep_range(1000, 1100);
+ 
+ 	ret = regulator_bulk_disable(ARRAY_SIZE(ctx->pdata.supplies),
 -- 
 2.39.5
 
