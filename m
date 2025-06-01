@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-148550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D504ACA464
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 02:08:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F98DACA46B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 02:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDFF9188B3E0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 00:05:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E28218848CD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 00:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD4B2951D3;
-	Sun,  1 Jun 2025 23:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B125729552B;
+	Sun,  1 Jun 2025 23:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IwnJHRGG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8S6lMFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200C926659A;
-	Sun,  1 Jun 2025 23:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6762E29551D;
+	Sun,  1 Jun 2025 23:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748820786; cv=none; b=rEeGDLk5hi48iRrNpDsslseSuVp/CGCrM90B9lH7G6ck8vRNEnzu2OzL/y4t+JHcnydMhOpPfP5700WsXZ6razoPiAc/loYy6T+1Y2nAOcker0l7fNbU8eQNuSSuXZVPbW2JwZM5jsUu0fzcuuiTbA466YXIvRTJdTzu+CQ4ubU=
+	t=1748820789; cv=none; b=rPjDckhaVq/+lTQ9DfLm7olxrRKPuQcbZy1c9ExZns0E5xd4yxVeU0bTq7zMg9QJJOoqbPPn/eudmkJD5SU4OcCbBXNRxQCqUeSPVCavBZXr3oEuluSXUzRC2XQBDLh3xWIozxteHGLCVvz/KAABjny+sPbnQijpKU9C72WyJ9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748820786; c=relaxed/simple;
-	bh=XNSap6QhciLGyaZDQYljtuYcLNgbj5uBczJcxzAWWYI=;
+	s=arc-20240116; t=1748820789; c=relaxed/simple;
+	bh=8Tp3AU6og9BHvtwofmSrID3yJJnOozXAX6ODrCrL0/A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u1e64JxDz5KtxmOU1e3WDTc8z7RiznNXda58scsJtODx/+wjb6PzVBwV20MosZw2qEe9dIAro06AHmzdP5cONK4YYPQwChE6yEBDTmRipmfdkHhe77K9LEqpyAK9BrN+u5kR9jq5kTIhO7ws6KjSKwJNoDEGIsu4Yz8boGS1JFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IwnJHRGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC60C4CEF1;
-	Sun,  1 Jun 2025 23:33:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tx4vBw8TcoQy9dQX2AM+DViET4fC8N80cOXynzNkWA43DVUNsSlqMu9vVwLvMVsIXynFmmBwwU5dCAOwVS58mkNvk7/J7gOqSPH5x6iMsHa9VqUnY51CkqMVy2f0uSKqZDKtun1g78WU2ZzIWVgaJenEjr1eKWyag3hl8V04Gps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8S6lMFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C32CC4CEF4;
+	Sun,  1 Jun 2025 23:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748820785;
-	bh=XNSap6QhciLGyaZDQYljtuYcLNgbj5uBczJcxzAWWYI=;
+	s=k20201202; t=1748820788;
+	bh=8Tp3AU6og9BHvtwofmSrID3yJJnOozXAX6ODrCrL0/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwnJHRGG4T/nDp0VQxOH7o1a+Gtct9U1/XolW8SiOkEhcEd8/ef5d/g+QB84rZc+C
-	 Uptssy8PHEK20WjM8weohxgjY+4Zk96Lq06Ss+v6ShvqIeKFZ+NEUl2q1By8EKMK80
-	 QUuBZuCEE4fk61M9gChTrQsad/Kx3Z457S0vgBwbGEglKMVyxAiaiMDu7lvFBacDpW
-	 1ap+3Ss1+EwLBPqNLy92jjV20IX/y3VgJgLwvlYjlp3TuOHwG6HZJQzgcocdoryByt
-	 HhoVv1Ua3tZpkLvWXusT5qR8WzrISgCXJES8r8Q/NVKHTz8oK64GiNuf5/FjviN1/T
-	 zmpp/vhURFV8Q==
+	b=d8S6lMFarp7Lhf4Ughx2Ce92RDeq5lQUJVe3eZN85RGq5hx/lZsR6vNK8c9omnwIi
+	 AQAhk+ZmwN8lg7s8RHDmSDQ9+o4/b985JBMZ1GXU0diuF0WxHx3ENR71jvwPbqjuTS
+	 HGRnrYGLYrCC4ScSPc4DSh8F/3qcNO+HKSBF0sFxBTO0tc9m106R1J/n62Pm4GrH/U
+	 nLHOWE2lkHvlzX6wKqa9TiEdO0NFcW/Fz+RqpribYpqKoGmhgYvh3jm8NU8/V8vqGy
+	 aKpIAIP7r3QZUCfJ3ESuey9GioazHQX3pDRsY3URWkpn2N7+nN8RG7qD0apaPWURO8
+	 8+lUElieQv6HQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
+Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org,
+	kees@kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 074/102] Make 'cc-option' work correctly for the -Wno-xyzzy pattern
-Date: Sun,  1 Jun 2025 19:29:06 -0400
-Message-Id: <20250601232937.3510379-74-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 076/102] selftests: harness: Mark functions without prototypes static
+Date: Sun,  1 Jun 2025 19:29:08 -0400
+Message-Id: <20250601232937.3510379-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250601232937.3510379-1-sashal@kernel.org>
 References: <20250601232937.3510379-1-sashal@kernel.org>
@@ -72,112 +71,101 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.9
 Content-Transfer-Encoding: 8bit
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 550ccb178de2f379f5e1a1833dd6f4bdafef4b68 ]
+[ Upstream commit c2bcc8e9577a35f9cf4707f8bb0b58bce30991aa ]
 
-This is the follow-up to commit a79be02bba5c ("Fix mis-uses of
-'cc-option' for warning disablement") where I mentioned that the best
-fix would be to just make 'cc-option' a bit smarter, and work for all
-compiler options, including the '-Wno-xyzzy' pattern that it used to
-accept unknown options for.
+With -Wmissing-prototypes the compiler will warn about non-static
+functions which don't have a prototype defined.
+As they are not used from a different compilation unit they don't need to
+be defined globally.
 
-It turns out that fixing cc-option is pretty straightforward: just
-rewrite any '-Wno-xyzzy' option pattern to use '-Wxyzzy' instead for
-testing.
+Avoid the issue by marking the functions static.
 
-That makes the whole artificial distinction between 'cc-option' and
-'cc-disable-warning' go away, and we can happily forget about the odd
-build rule that you have to treat compiler options that disable warnings
-specially.
-
-The 'cc-disable-warning' helper remains as a backwards compatibility
-syntax for now, but is implemented in terms of the new and improved
-cc-option.
-
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250505-nolibc-kselftest-harness-v4-4-ee4dd5257135@linutronix.de
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-I can see an example of the problem on line 48: `-Wno-sign-compare` is
-being added directly instead of using `cc-disable-warning`. Now let me
-analyze the specific changes in the commit to understand what the fix
-does. Based on my analysis of the commit "Make 'cc-option' work
-correctly for the -Wno-xyzzy pattern", here is my assessment: **YES**
-This commit should be backported to stable kernel trees. Here's my
-detailed analysis: ## Analysis of the Code Changes The commit makes a
-crucial fix to the `cc-option` and `cc-disable-warning` functions in
-`scripts/Makefile.compiler`. The key changes are: 1. **In `__cc-option`
-function (line 45)**: Changed from: ```makefile $(1) -Werror $(2) $(3)
--c -x c /dev/null -o "$$TMP",$(3),$(4) ``` to: ```makefile $(1) -Werror
-$(2) $(3:-Wno-%=-W%) -c -x c /dev/null -o "$$TMP",$(3),$(4) ``` 2. **In
-`cc-disable-warning` function (line 60)**: Simplified from: ```makefile
-cc-disable-warning = $(if $(call cc-option,-W$(strip $1)),-Wno-$(strip
-$1)) ``` to: ```makefile cc-disable-warning = $(call cc-
-option,-Wno-$(strip $1)) ``` ## Why This Should Be Backported ### 1.
-**Fixes a Fundamental Build System Bug** The bug is that GCC silently
-accepts unknown `-Wno-*` options and only warns about them when there
-are other warnings in the source. This means `cc-option` would
-incorrectly return "supported" for unsupported warning disable flags,
-leading to build warnings that shouldn't exist. ### 2. **Improves Build
-System Reliability** The fix ensures that build-time compiler feature
-detection works correctly across all supported compiler versions,
-preventing spurious warnings that could confuse developers and automated
-build systems. ### 3. **Minimal Risk of Regression** - The change is
-contained to the build system macros - It makes the behavior more
-correct rather than changing functionality - The fix is elegant: it
-transforms `-Wno-xyzzy` to `-Wxyzzy` for testing, then uses the original
-form if supported - No actual kernel code is affected, only the build
-logic ### 4. **Affects Critical Infrastructure Code** From my
-examination of the kernel repository, `cc-disable-warning` and `cc-
-option` are used extensively throughout the kernel build system. The fix
-ensures these fundamental macros work correctly across all architectures
-and configurations. ### 5. **Follows Stable Tree Criteria** -
-**Important bug fix**: Yes, fixes incorrect compiler option detection -
-**Minimal risk**: Yes, only changes build macros, no functional code
-changes - **Contained scope**: Yes, limited to
-`scripts/Makefile.compiler` - **No architectural changes**: Correct,
-just fixes existing functionality ### 6. **Historical Precedent**
-Looking at the similar commits provided, commits that fix build system
-issues and compiler option handling (like the similar commits marked
-"NO" but for different reasons) are generally good candidates when they
-fix fundamental problems rather than just optimization cleanups. The
-commit addresses a real problem where the build system could accept
-invalid compiler options, leading to confusing warnings. This type of
-fundamental correctness fix is exactly what stable trees are meant to
-include.
+**YES** This commit should be backported to stable kernel trees.
+**Rationale:** 1. **Legitimate Build Fix**: The commit addresses a real
+compiler warning issue (`-Wmissing-prototypes`) that affects build
+cleanliness and code quality. Modern build systems increasingly use
+stricter warning flags, making this fix valuable for stable trees. 2.
+**Zero Functional Risk**: The changes are purely cosmetic from a runtime
+perspective. Adding `static` to functions that were already internal has
+no impact on functionality, memory layout, or behavior - it only affects
+compiler symbol visibility and warnings. 3. **Minimal and Contained**:
+The diff is extremely small (4 function signatures with `static` added)
+and isolated to the kselftest harness framework. There are no complex
+logic changes or cross-subsystem impacts. 4. **Testing Infrastructure
+Improvement**: While the kselftest framework isn't critical runtime
+code, it's important for kernel testing and validation. Improving build
+compliance in testing infrastructure benefits stable kernel maintenance.
+5. **Standard Practice**: Compiler warning fixes of this nature (adding
+missing `static` keywords) are routinely backported to stable trees as
+they represent good coding practices without functional risk. 6.
+**Different from Similar Commits**: Unlike the referenced similar
+commits (all marked "NO") which involved feature additions, API changes,
+or structural modifications, this commit is purely a build compliance
+fix with no behavioral changes. The commit meets all stable tree
+criteria: it fixes an issue (compiler warnings), has minimal risk (no
+functional changes), and improves code quality without introducing new
+features or architectural changes. Tools like `kselftest_harness.h:241`,
+`kselftest_harness.h:290`, `kselftest_harness.h:970`, and
+`kselftest_harness.h:1188` are the specific locations where these low-
+risk improvements are made.
 
- scripts/Makefile.compiler | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kselftest_harness.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index 75356d2acc0b5..47ab407f73ec2 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -43,7 +43,7 @@ as-instr = $(call try-run,\
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
- __cc-option = $(call try-run,\
--	$(1) -Werror $(2) $(3) -c -x c /dev/null -o "$$TMP",$(3),$(4))
-+	$(1) -Werror $(2) $(3:-Wno-%=-W%) -c -x c /dev/null -o "$$TMP",$(3),$(4))
+diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+index 666c9fde76da9..7c337b4fa054d 100644
+--- a/tools/testing/selftests/kselftest_harness.h
++++ b/tools/testing/selftests/kselftest_harness.h
+@@ -258,7 +258,7 @@
+  * A bare "return;" statement may be used to return early.
+  */
+ #define FIXTURE_SETUP(fixture_name) \
+-	void fixture_name##_setup( \
++	static void fixture_name##_setup( \
+ 		struct __test_metadata __attribute__((unused)) *_metadata, \
+ 		FIXTURE_DATA(fixture_name) __attribute__((unused)) *self, \
+ 		const FIXTURE_VARIANT(fixture_name) \
+@@ -307,7 +307,7 @@
+ 	__FIXTURE_TEARDOWN(fixture_name)
  
- # cc-option
- # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
-@@ -57,7 +57,7 @@ cc-option-yn = $(if $(call cc-option,$1),y,n)
+ #define __FIXTURE_TEARDOWN(fixture_name) \
+-	void fixture_name##_teardown( \
++	static void fixture_name##_teardown( \
+ 		struct __test_metadata __attribute__((unused)) *_metadata, \
+ 		FIXTURE_DATA(fixture_name) __attribute__((unused)) *self, \
+ 		const FIXTURE_VARIANT(fixture_name) \
+@@ -987,7 +987,7 @@ static void __timeout_handler(int sig, siginfo_t *info, void *ucontext)
+ 	kill(-(t->pid), SIGKILL);
+ }
  
- # cc-disable-warning
- # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
--cc-disable-warning = $(if $(call cc-option,-W$(strip $1)),-Wno-$(strip $1))
-+cc-disable-warning = $(call cc-option,-Wno-$(strip $1))
+-void __wait_for_test(struct __test_metadata *t)
++static void __wait_for_test(struct __test_metadata *t)
+ {
+ 	struct sigaction action = {
+ 		.sa_sigaction = __timeout_handler,
+@@ -1205,9 +1205,9 @@ static bool test_enabled(int argc, char **argv,
+ 	return !has_positive;
+ }
  
- # gcc-min-version
- # Usage: cflags-$(call gcc-min-version, 70100) += -foo
+-void __run_test(struct __fixture_metadata *f,
+-		struct __fixture_variant_metadata *variant,
+-		struct __test_metadata *t)
++static void __run_test(struct __fixture_metadata *f,
++		       struct __fixture_variant_metadata *variant,
++		       struct __test_metadata *t)
+ {
+ 	struct __test_xfail *xfail;
+ 	char test_name[1024];
 -- 
 2.39.5
 
