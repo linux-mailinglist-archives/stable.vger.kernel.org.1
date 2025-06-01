@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-148816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCA5ACA729
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 03:07:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1DBACA710
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 03:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE2F51885675
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 01:05:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FC1717C262
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 01:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E5F32BD21;
-	Sun,  1 Jun 2025 23:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7902571BF;
+	Sun,  1 Jun 2025 23:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tu5SzdPp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ea8HJUM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5795732BD18;
-	Sun,  1 Jun 2025 23:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E897632C5DC;
+	Sun,  1 Jun 2025 23:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748821397; cv=none; b=O8dh6hqmnthX9Bll78U5k0Ku+bZPZyDD7CLWZ5BbGTBT3t04vjSILIBLznQs9JOo90ZycgJZGPZv6xIp6Z5cspuheuon72QFOY2baYN2PbABq724ajkqeUruSzPeBTUMM2vFIMPkr5ZLMv7D6oT60jyhbLsNYX62aFe76m3SHh4=
+	t=1748821402; cv=none; b=JWzDf/LsMWXf7bmLzNnt14lRwVHxHBHkbh4OIfo8399n8Pbl9ho+ZiWRNAhqzSyevmRafO2WVrvCXAlLnhue14kTvRWObj1t8pt1z4NLZd/+rmkMeK52w59Rj42ZnKkzqo3gBk7yHO3051xsAs9fgN2JlNhsrfwsrpV0XXyG4IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748821397; c=relaxed/simple;
-	bh=cH5HsFOoMBk0XQmUmhORLHnRSswQ4L6RVz78cuOimz0=;
+	s=arc-20240116; t=1748821402; c=relaxed/simple;
+	bh=1MZ+X5WlJMw1Dufeg/ufxOzndkDSWkemW2qQfJ049j4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ArGjSdCk+FM7ZCSnx1wddtagrztp2p9dAILQUqzSC4eGHAEa6IvL4OHi7+GUx+p5XjI9/4R5+bg3YnO8Qx2AoSSDZCSt31fP4F9a4+JJkVx2CdDoTw7mdAGno7CrDkaldWJKN035sS/wQJoX3+IMx/LIz4xC4T1CqAUo65PRQu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tu5SzdPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD6EC4CEE7;
-	Sun,  1 Jun 2025 23:43:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u2R7NI+t5oEtS2J9Y/09MXGd+lYInwNZYR8ICoFzDuq7Olk73w60hhSyMSuhpim3e6vRibFXLKWUNkphVujCVjAQGzEDkWbSuGAVLfpaUubrvOHOaRO3CLJ/xLzZyAmupmshTKG/0DZwmfXKoVq1L87cj80YH2zg+te6RHl0NwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ea8HJUM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC2AC4CEE7;
+	Sun,  1 Jun 2025 23:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748821397;
-	bh=cH5HsFOoMBk0XQmUmhORLHnRSswQ4L6RVz78cuOimz0=;
+	s=k20201202; t=1748821400;
+	bh=1MZ+X5WlJMw1Dufeg/ufxOzndkDSWkemW2qQfJ049j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tu5SzdPpjqgPlPmvXTH4xqkukg37Qm5O4pRW0cHEGkbrIut2F//NQtfjJxwRESqYz
-	 dDyFt4e0a2BWQhWbtVva2UB0hLB6iaM2Fdepv9jRkidbSpRbnuKs6fOwtzZvqPjuhu
-	 asA6frUXl1qUb7uzm1S+C0wBTSeCrLFINs6zCHGFYaCpcNWSuBIAUTwbfww/Z9Wepc
-	 z9UEwoMmEI5e/7Bqyf9JckorPdQvq1A7fhmtCKIJw/su31beQjt1l8hgfmSRHnAsYg
-	 8VDi6sXKm+e/XVRl8LuLTfOOsrURyNTQ62lLTe1ORCnxwEYBQyl7q8Y2Ivouu1de0u
-	 NlQ/nflsObuxQ==
+	b=ea8HJUM6PYdfoffb3FtU3U0Q4IokGeELImSzDZGogYlzndCdM2/9XVqQ5LBRfpdlh
+	 XyZDhKFsouwmkqXODY7162/BruZGOwAI5e+dXvw2AmcH7r6hRpFWog/jR+CdnpsUR8
+	 lx0m8ZNoG/6rVq6wTLuN/jJE0Vz4iRMDBStvn1kyYU5GTCAA9jZjRxnT3AwucIo4PH
+	 7PHKmEKNjDfTRAvDDNAPZqBxM0CgCAnyu5tpzo7MRkEZn+a5e3t68CaO+DOp1ip3KJ
+	 btv5kwiSdrxutpjW9uTaRyCnGUehaB99ReM8swdfet2/lRQwplh2+WG7sVYKNcRUWf
+	 qgb2uQHy0sCvA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunil.khatri@amd.com,
+	boyuan.zhang@amd.com,
+	lijo.lazar@amd.com,
+	Prike.Liang@amd.com,
+	kevinyang.wang@amd.com,
+	mario.limonciello@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 23/43] ext4: prevent stale extent cache entries caused by concurrent get es_cache
-Date: Sun,  1 Jun 2025 19:42:03 -0400
-Message-Id: <20250601234224.3517599-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 24/43] drm/amdgpu/gfx8: fix CSIB handling
+Date: Sun,  1 Jun 2025 19:42:04 -0400
+Message-Id: <20250601234224.3517599-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250601234224.3517599-1-sashal@kernel.org>
 References: <20250601234224.3517599-1-sashal@kernel.org>
@@ -65,128 +74,72 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.184
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f22a0ef2231a7d8374bb021eb86404d0e9de5a02 ]
+[ Upstream commit c8b8d7a4f1c5cdfbd61d75302fb3e3cdefb1a7ab ]
 
-The EXT4_IOC_GET_ES_CACHE and EXT4_IOC_PRECACHE_EXTENTS currently
-invokes ext4_ext_precache() to preload the extent cache without holding
-the inode's i_rwsem. This can result in stale extent cache entries when
-competing with operations such as ext4_collapse_range() which calls
-ext4_ext_remove_space() or ext4_ext_shift_extents().
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-The problem arises when ext4_ext_remove_space() temporarily releases
-i_data_sem due to insufficient journal credits. During this interval, a
-concurrent EXT4_IOC_GET_ES_CACHE or EXT4_IOC_PRECACHE_EXTENTS may cache
-extent entries that are about to be deleted. As a result, these cached
-entries become stale and inconsistent with the actual extents.
-
-Loading the extents cache without holding the inode's i_rwsem or the
-mapping's invalidate_lock is not permitted besides during the writeback.
-Fix this by holding the i_rwsem during EXT4_IOC_GET_ES_CACHE and
-EXT4_IOC_PRECACHE_EXTENTS.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250423085257.122685-6-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-Based on my comprehensive analysis of this commit and comparison with
-the historical similar commits, here is my assessment: **YES** This
-commit should be backported to stable kernel trees for the following
-reasons: ## Analysis Summary ### **Type of Bug Fix** This commit
-addresses a **race condition** that can lead to **stale extent cache
-entries** in the ext4 filesystem. The race occurs between: 1.
-`EXT4_IOC_GET_ES_CACHE` and `EXT4_IOC_PRECACHE_EXTENTS` operations 2.
-Concurrent `ext4_collapse_range()` operations that call
-`ext4_ext_remove_space()` or `ext4_ext_shift_extents()` ### **Technical
-Details of the Race** The problem stems from the fact that
-`ext4_ext_remove_space()` temporarily releases `i_data_sem` when journal
-credits are insufficient. During this critical window: - The extent
-precaching operations (`ext4_ext_precache()`) can cache extent entries -
-These cached entries are about to be deleted by the ongoing
-collapse/shift operation - Result: **stale, inconsistent extent cache
-entries** ### **Code Changes Analysis** The fix is **minimal and
-surgical**: **In `fs/ext4/extents.c` (ext4_get_es_cache function):**
-```c if (fieinfo->fi_flags & FIEMAP_FLAG_CACHE) { +
-inode_lock_shared(inode); error = ext4_ext_precache(inode); +
-inode_unlock_shared(inode); if (error) return error; ``` **In
-`fs/ext4/ioctl.c` (EXT4_IOC_PRECACHE_EXTENTS case):** ```c case
-EXT4_IOC_PRECACHE_EXTENTS: - return ext4_ext_precache(inode); +{ + int
-ret; + + inode_lock_shared(inode); + ret = ext4_ext_precache(inode); +
-inode_unlock_shared(inode); + return ret; +} ``` ### **Why This
-Qualifies for Backporting** 1. **Important Bug Fix**: Stale extent cache
-entries can lead to filesystem inconsistencies and potential data
-corruption scenarios. 2. **Minimal Risk**: The changes are extremely
-small and contained: - Only adds proper locking around existing
-operations - Uses shared locking (`inode_lock_shared`) which allows
-concurrent readers - No algorithmic changes or new features 3. **Follows
-Established Patterns**: Similar commits in the repository (marked with
-"Backport Status: YES") show this pattern: - Similar commit #2: "ext4:
-fix data races when using cached status extents" - also deals with
-extent cache consistency - Similar commit #3: "ext4: convert to
-exclusive lock while inserting delalloc extents" - addresses similar
-race conditions with proper locking - Similar commit #4: "ext4: do not
-polute the extents cache while shifting extents" - prevents extent cache
-corruption during shift operations 4. **Clear Impact**: The commit
-message explicitly states this prevents "stale extent cache entries"
-which can cause inconsistency with actual extents. 5. **Contained to
-Subsystem**: Changes are limited to ext4 extent management and don't
-affect other kernel subsystems. 6. **Stable Backport Indicators**: - No
-"Cc: stable@" tag is present, but the nature of the fix (race condition
-leading to corruption) makes it a good candidate - The fix follows
-ext4's established locking protocol requirements - Multiple similar
-extent cache race condition fixes have been backported ### **Risk
-Assessment** - **Very Low Regression Risk**: Only adds locking
-protection, doesn't change functional behavior - **Well-understood
-Fix**: The locking pattern matches established ext4 conventions -
-**Limited Scope**: Only affects two specific ioctl code paths This
-commit represents exactly the type of fix that stable trees are meant
-for: a small, safe fix for a real bug that can cause filesystem
-corruption without introducing new functionality or architectural
-changes.
+**YES** This commit should be backported to stable kernel trees.
+**Extensive Analysis:** **1. Critical Bug Nature:** The code changes fix
+a serious logic error in the CSIB (Clear State Indirect Buffer) handling
+for AMD GFX8 hardware. The bug occurs in `gfx_v8_0_get_csb_buffer()`
+where there's an early `return` statement in the `else` branch at line
+1252: ```c if (sect->id == SECT_CONTEXT) { // Handle SECT_CONTEXT
+sections... } else { return; // BUG: Early exit prevents rest of buffer
+setup! } ``` **2. Impact and Severity:** This bug has significant
+functional impact because: - The function is responsible for setting up
+the Clear State Buffer, which is critical for GPU state initialization -
+When encountering any section that isn't `SECT_CONTEXT` (such as
+`SECT_CLEAR`, `SECT_CTRLCONST`, or `SECT_NONE` as defined in
+`clearstate_defs.h`), the function exits early - This prevents the
+essential final buffer setup steps from executing: - PA_SC_RASTER_CONFIG
+register setup (lines 1257-1261) - PACKET3_PREAMBLE_END_CLEAR_STATE
+packet (lines 1263-1264) - PACKET3_CLEAR_STATE packet (lines 1266-1267)
+**3. Real-World Consequences:** An incomplete CSB buffer can lead to: -
+GPU initialization failures - Rendering corruption - System instability
+- Potential hangs during graphics operations **4. Code Quality
+Assessment:** - **Small and contained:** The fix removes only 2 lines of
+problematic code - **No architectural changes:** Pure bug fix with no
+design modifications - **Clear intent:** The commit message explicitly
+states the problem and solution - **Low regression risk:** Removing an
+early return cannot introduce new failures **5. Comparison with
+Historical Examples:** This commit aligns perfectly with the "Backport
+Status: YES" example (#4) which also fixed a critical handling issue in
+AMD GPU code. Like that commit, this: - Fixes a clear functional bug -
+Has immediate user impact - Is small and low-risk - Affects critical GPU
+subsystem functionality **6. Stable Tree Compliance:** ✓ Fixes important
+user-affecting bug ✓ Small, contained change ✓ No new features
+introduced ✓ Critical hardware subsystem affected ✓ Clear regression
+prevention The fix ensures that all necessary GPU state initialization
+packets are properly written to the buffer, which is essential for
+correct hardware operation on GFX8 hardware generations.
 
- fs/ext4/extents.c | 2 ++
- fs/ext4/ioctl.c   | 8 +++++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index b9bbe4dbedf4f..4c55789d1a558 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5045,7 +5045,9 @@ int ext4_get_es_cache(struct inode *inode, struct fiemap_extent_info *fieinfo,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+index e0302c23e9a7e..4f54b0cf51336 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+@@ -1277,8 +1277,6 @@ static void gfx_v8_0_get_csb_buffer(struct amdgpu_device *adev,
+ 						PACKET3_SET_CONTEXT_REG_START);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
  	}
- 
- 	if (fieinfo->fi_flags & FIEMAP_FLAG_CACHE) {
-+		inode_lock_shared(inode);
- 		error = ext4_ext_precache(inode);
-+		inode_unlock_shared(inode);
- 		if (error)
- 			return error;
- 		fieinfo->fi_flags &= ~FIEMAP_FLAG_CACHE;
-diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
-index 18002b0a908ce..bd90b454c6213 100644
---- a/fs/ext4/ioctl.c
-+++ b/fs/ext4/ioctl.c
-@@ -1130,8 +1130,14 @@ static long __ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 		return 0;
- 	}
- 	case EXT4_IOC_PRECACHE_EXTENTS:
--		return ext4_ext_precache(inode);
-+	{
-+		int ret;
- 
-+		inode_lock_shared(inode);
-+		ret = ext4_ext_precache(inode);
-+		inode_unlock_shared(inode);
-+		return ret;
-+	}
- 	case FS_IOC_SET_ENCRYPTION_POLICY:
- 		if (!ext4_has_feature_encrypt(sb))
- 			return -EOPNOTSUPP;
 -- 
 2.39.5
 
