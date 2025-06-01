@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-148358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2C3AC9CE9
-	for <lists+stable@lfdr.de>; Sat, 31 May 2025 23:34:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E460CAC9DD4
+	for <lists+stable@lfdr.de>; Sun,  1 Jun 2025 07:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8818A9E2218
-	for <lists+stable@lfdr.de>; Sat, 31 May 2025 21:34:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086971897EFA
+	for <lists+stable@lfdr.de>; Sun,  1 Jun 2025 05:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948991AA1E4;
-	Sat, 31 May 2025 21:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2155B176AA1;
+	Sun,  1 Jun 2025 05:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="J5YS2DTG"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1ha4fx0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C23190664;
-	Sat, 31 May 2025 21:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F401607B4;
+	Sun,  1 Jun 2025 05:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748727280; cv=none; b=qcpQnA70mlgj5Ch30I/6j08vX2aKFOpuXumLynbS9F2HEaxrCF0y75aLNYnmfCE24ClBPanSu3044VUTQcXneykzz6K1RWHcdI9ZwBN5AW3zKsziUB7g6IAA8lDntMm9i92GK53Na26Hx4u+UX4pt3bw+WNQxzNCMN01Lyx+FT0=
+	t=1748756852; cv=none; b=QuYFRWqy4X6zXa7IWeVfsb4ryqauB1twNLEyHJseRpDFCAe2j+uBlzxkey27Oimefny9ATVbns5tx1hKw6DGKRVUdyoqssz12vIFyvzUQ1jOSHjFMXS2KsI3yONEQ/Mlnk2NWkVhJRJNSShyo7ro9/1fzLX0YXJIRUoG1ehiGrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748727280; c=relaxed/simple;
-	bh=FX6BuvzMZaRCRM9Z3Qx4oYX+1JZOgVKu0hU9xpEORek=;
-	h=Date:To:From:Subject:Message-Id; b=OG+i+GrpNjufR+ab4mYwYUiEeok9qmF80rqlp711XAv2HUx3SbfBQiEjn75B0l1HiYb3I25tHhxWSP7rHA5kfe4jyo7MhdrOmcQKdRHfAlAWaC0hTHu0HpOLxCxafSs839XhUBJ5aEWtn6Ju6TYRCjuynYTOlqGvhnCvhSG7gTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=J5YS2DTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70171C4CEE3;
-	Sat, 31 May 2025 21:34:39 +0000 (UTC)
+	s=arc-20240116; t=1748756852; c=relaxed/simple;
+	bh=N9vu4Ix9GexY4yJZ+Cw5v16fCb8jpZgVDaoON0PPO5g=;
+	h=Date:To:From:Subject:Message-Id; b=KeHvgoN3zhyWUgHdUGm3MpeRMUoP3rI9ZPdMLQwuuXoZJSz6bd8dxxQXIaXGx+5cKePm+s5Kj3eddHqprM//b9P9/cqn2A0x924bOYj54Tbj/5oXv9Ifx2zBKhlM1dTCHlFaXxH0G0tdltiEa5OM4xvOhWdfzzlqlBOmW8vxhhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1ha4fx0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0EAC4CEED;
+	Sun,  1 Jun 2025 05:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1748727279;
-	bh=FX6BuvzMZaRCRM9Z3Qx4oYX+1JZOgVKu0hU9xpEORek=;
+	s=korg; t=1748756852;
+	bh=N9vu4Ix9GexY4yJZ+Cw5v16fCb8jpZgVDaoON0PPO5g=;
 	h=Date:To:From:Subject:From;
-	b=J5YS2DTGtykds3oHzEvIdGIWR8X/W/lDsxLjqLXD6D4/IffInikuYWszXFIPEPqSt
-	 GVpMohbYp/YvKQeVbEHkdf/CDlBvx01oK7uRaom3ZhD66ICzbMBAW/kGokowwwK8kD
-	 /pVLzn4PkLOzDo6Epu95UC0mSZ/3Vr57IVbpCE7A=
-Date: Sat, 31 May 2025 14:34:38 -0700
-To: mm-commits@vger.kernel.org,yang@os.amperecomputing.com,willy@infradead.org,svens@linux.ibm.com,stable@vger.kernel.org,pbonzini@redhat.com,osalvador@suse.de,lkp@intel.com,Liam.Howlett@oracle.com,jthoughton@google.com,imbrenda@linux.ibm.com,Ignacio.MorenoGonzalez@kuka.com,hca@linux.ibm.com,gor@linux.ibm.com,frankja@linux.ibm.com,david@redhat.com,borntraeger@linux.ibm.com,agordeev@linux.ibm.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+	b=1ha4fx0/VDPxv09f/D4RA6tqnZIuUmZ67orJoVpH05VwVVaD1D4FAvIH4816wo+BV
+	 kyFZVPYHyEtbUdNmufZleO3pi81Ta/CaIz0pO1KbMgdJhj+nKzZ+jKgobkOTFZSmx8
+	 Mgac6EJ7jM47o4VvnaS9dkyssfhuizaHVsZeH9pE=
+Date: Sat, 31 May 2025 22:47:32 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,fengwei.yin@intel.com,dev.jain@arm.com,david@redhat.com,bharata@amd.com,baolin.wang@linux.alibaba.com,shivankg@amd.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kvm-s390-rename-prot_none-to-prot_type_dummy.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250531213439.70171C4CEE3@smtp.kernel.org>
+Subject: [merged mm-stable] mm-khugepaged-fix-race-with-folio-split-free-using-temporary-reference.patch removed from -mm tree
+Message-Id: <20250601054732.AA0EAC4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,118 +49,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The patch titled
-     Subject: KVM: s390: rename PROT_NONE to PROT_TYPE_DUMMY
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kvm-s390-rename-prot_none-to-prot_type_dummy.patch
+The quilt patch titled
+     Subject: mm/khugepaged: fix race with folio split/free using temporary reference
+has been removed from the -mm tree.  Its filename was
+     mm-khugepaged-fix-race-with-folio-split-free-using-temporary-reference.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kvm-s390-rename-prot_none-to-prot_type_dummy.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: KVM: s390: rename PROT_NONE to PROT_TYPE_DUMMY
-Date: Mon, 19 May 2025 15:56:57 +0100
+From: Shivank Garg <shivankg@amd.com>
+Subject: mm/khugepaged: fix race with folio split/free using temporary reference
+Date: Mon, 26 May 2025 18:28:18 +0000
 
-The enum type prot_type declared in arch/s390/kvm/gaccess.c declares an
-unfortunate identifier within it - PROT_NONE.
+hpage_collapse_scan_file() calls is_refcount_suitable(), which in turn
+calls folio_mapcount().  folio_mapcount() checks folio_test_large() before
+proceeding to folio_large_mapcount(), but there is a race window where the
+folio may get split/freed between these checks, triggering:
 
-This clashes with the protection bit define from the uapi for mmap()
-declared in include/uapi/asm-generic/mman-common.h, which is indeed what
-those casually reading this code would assume this to refer to.
+  VM_WARN_ON_FOLIO(!folio_test_large(folio), folio)
 
-This means that any changes which subsequently alter headers in any way
-which results in the uapi header being imported here will cause build
-errors.
+Take a temporary reference to the folio in hpage_collapse_scan_file(). 
+This stabilizes the folio during refcount check and prevents incorrect
+large folio detection due to concurrent split/free.  Use helper
+folio_expected_ref_count() + 1 to compare with folio_ref_count() instead
+of using is_refcount_suitable().
 
-Resolve the issue by renaming PROT_NONE to PROT_TYPE_DUMMY.
-
-Link: https://lkml.kernel.org/r/20250519145657.178365-1-lorenzo.stoakes@oracle.com
-Fixes: b3cefd6bf16e ("KVM: s390: Pass initialized arg even if unused")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Suggested-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505140943.IgHDa9s7-lkp@intel.com/
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Acked-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
-Acked-by: Yang Shi <yang@os.amperecomputing.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Link: https://lkml.kernel.org/r/20250526182818.37978-1-shivankg@amd.com
+Fixes: 05c5323b2a34 ("mm: track mapcount of large folios in single value")
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+Reported-by: syzbot+2b99589e33edbe9475ca@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6828470d.a70a0220.38f255.000c.GAE@google.com
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Bharata B Rao <bharata@amd.com>
+Cc: Fengwei Yin <fengwei.yin@intel.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mariano Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>
 Cc: <stable@vger.kernel.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Janosch Frank <frankja@linux.ibm.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/s390/kvm/gaccess.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/khugepaged.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/arch/s390/kvm/gaccess.c~kvm-s390-rename-prot_none-to-prot_type_dummy
-+++ a/arch/s390/kvm/gaccess.c
-@@ -318,7 +318,7 @@ enum prot_type {
- 	PROT_TYPE_DAT  = 3,
- 	PROT_TYPE_IEP  = 4,
- 	/* Dummy value for passing an initialized value when code != PGM_PROTECTION */
--	PROT_NONE,
-+	PROT_TYPE_DUMMY,
- };
- 
- static int trans_exc_ending(struct kvm_vcpu *vcpu, int code, unsigned long gva, u8 ar,
-@@ -334,7 +334,7 @@ static int trans_exc_ending(struct kvm_v
- 	switch (code) {
- 	case PGM_PROTECTION:
- 		switch (prot) {
--		case PROT_NONE:
-+		case PROT_TYPE_DUMMY:
- 			/* We should never get here, acts like termination */
- 			WARN_ON_ONCE(1);
- 			break;
-@@ -804,7 +804,7 @@ static int guest_range_to_gpas(struct kv
- 			gpa = kvm_s390_real_to_abs(vcpu, ga);
- 			if (!kvm_is_gpa_in_memslot(vcpu->kvm, gpa)) {
- 				rc = PGM_ADDRESSING;
--				prot = PROT_NONE;
-+				prot = PROT_TYPE_DUMMY;
- 			}
+--- a/mm/khugepaged.c~mm-khugepaged-fix-race-with-folio-split-free-using-temporary-reference
++++ a/mm/khugepaged.c
+@@ -2293,6 +2293,17 @@ static int hpage_collapse_scan_file(stru
+ 			continue;
  		}
- 		if (rc)
-@@ -962,7 +962,7 @@ int access_guest_with_key(struct kvm_vcp
- 		if (rc == PGM_PROTECTION)
- 			prot = PROT_TYPE_KEYC;
- 		else
--			prot = PROT_NONE;
-+			prot = PROT_TYPE_DUMMY;
- 		rc = trans_exc_ending(vcpu, rc, ga, ar, mode, prot, terminate);
- 	}
- out_unlock:
+ 
++		if (!folio_try_get(folio)) {
++			xas_reset(&xas);
++			continue;
++		}
++
++		if (unlikely(folio != xas_reload(&xas))) {
++			folio_put(folio);
++			xas_reset(&xas);
++			continue;
++		}
++
+ 		if (folio_order(folio) == HPAGE_PMD_ORDER &&
+ 		    folio->index == start) {
+ 			/* Maybe PMD-mapped */
+@@ -2303,23 +2314,27 @@ static int hpage_collapse_scan_file(stru
+ 			 * it's safe to skip LRU and refcount checks before
+ 			 * returning.
+ 			 */
++			folio_put(folio);
+ 			break;
+ 		}
+ 
+ 		node = folio_nid(folio);
+ 		if (hpage_collapse_scan_abort(node, cc)) {
+ 			result = SCAN_SCAN_ABORT;
++			folio_put(folio);
+ 			break;
+ 		}
+ 		cc->node_load[node]++;
+ 
+ 		if (!folio_test_lru(folio)) {
+ 			result = SCAN_PAGE_LRU;
++			folio_put(folio);
+ 			break;
+ 		}
+ 
+-		if (!is_refcount_suitable(folio)) {
++		if (folio_expected_ref_count(folio) + 1 != folio_ref_count(folio)) {
+ 			result = SCAN_PAGE_COUNT;
++			folio_put(folio);
+ 			break;
+ 		}
+ 
+@@ -2331,6 +2346,7 @@ static int hpage_collapse_scan_file(stru
+ 		 */
+ 
+ 		present += folio_nr_pages(folio);
++		folio_put(folio);
+ 
+ 		if (need_resched()) {
+ 			xas_pause(&xas);
 _
 
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+Patches currently in -mm which might be from shivankg@amd.com are
 
-kvm-s390-rename-prot_none-to-prot_type_dummy.patch
-tools-testing-vma-add-missing-function-stub.patch
 
 
