@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-148818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFEAACA72D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 03:08:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FCA5ACA729
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 03:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C829401290
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 01:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE2F51885675
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 01:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EF932BD3B;
-	Sun,  1 Jun 2025 23:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E5F32BD21;
+	Sun,  1 Jun 2025 23:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I2aa3lns"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tu5SzdPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B64E32BD2B;
-	Sun,  1 Jun 2025 23:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5795732BD18;
+	Sun,  1 Jun 2025 23:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748821398; cv=none; b=bwI/ngqmao4JEh7Ut3rTI5FLXwI48HcCdtzIqF+X9YSluBoHpfd2I6kre6rRzflK1U6KkBGx2H9Xppeye0GtgY51aZ6SxOE/LC1/u5+I6ReugmCKYrp5sZS2AVP5u3Bg6MwtetDbV//XjlNnjtorHyhfg6YarJnHmNJVenpqNxA=
+	t=1748821397; cv=none; b=O8dh6hqmnthX9Bll78U5k0Ku+bZPZyDD7CLWZ5BbGTBT3t04vjSILIBLznQs9JOo90ZycgJZGPZv6xIp6Z5cspuheuon72QFOY2baYN2PbABq724ajkqeUruSzPeBTUMM2vFIMPkr5ZLMv7D6oT60jyhbLsNYX62aFe76m3SHh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748821398; c=relaxed/simple;
-	bh=DVpmgn1fVhk+NvNjaEsBDEx87MbROwhQqa9gsg6cy5U=;
+	s=arc-20240116; t=1748821397; c=relaxed/simple;
+	bh=cH5HsFOoMBk0XQmUmhORLHnRSswQ4L6RVz78cuOimz0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bAuXtTM+M71iLPlMMFFIiLGeSoBR2ptSPQjJc1VA3UoJThKAKuppNniOSc39/qwfvewt6ZhHIUd6tjij+tIQtRB1IeZsWsNtXyq08k290EtU/LxdzFrJGn/MaBuhjc5kAP+pJvjqPNL7nAtZp47qIP2+fdiXUShrMX3sPD8N2ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I2aa3lns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFFEC4CEF2;
-	Sun,  1 Jun 2025 23:43:14 +0000 (UTC)
+	 MIME-Version; b=ArGjSdCk+FM7ZCSnx1wddtagrztp2p9dAILQUqzSC4eGHAEa6IvL4OHi7+GUx+p5XjI9/4R5+bg3YnO8Qx2AoSSDZCSt31fP4F9a4+JJkVx2CdDoTw7mdAGno7CrDkaldWJKN035sS/wQJoX3+IMx/LIz4xC4T1CqAUo65PRQu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tu5SzdPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD6EC4CEE7;
+	Sun,  1 Jun 2025 23:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748821395;
-	bh=DVpmgn1fVhk+NvNjaEsBDEx87MbROwhQqa9gsg6cy5U=;
+	s=k20201202; t=1748821397;
+	bh=cH5HsFOoMBk0XQmUmhORLHnRSswQ4L6RVz78cuOimz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2aa3lnsTItkwFpkLxqqImL3ZDId1yX1oa95huv66Blcl8332X3Cc7R2iiWCWjm3j
-	 rCV1QEGiffSbj5k/rW+iZ/iOkLLmjm/njU+TqIVoLag0k/HUT9I1BDMS/DjysMJRHV
-	 rdP6JWVlCYdk/xCPC6/06CVoVorSmf/U5Jz1u5YergMeuCtoS1A84K+STD9JfDdhLX
-	 zjMkZBRLL1UFQpQz6rcnlDJAV3+mVrB5HO7SGpi/ti/ZirHWmYZ3X8JSlOGKyjx0lV
-	 iQ+vlUUAP5K7GB19BfYb7dVOHRQUFrf7LbMwr1FESAHQ2mE00HV0CW4abtEYVmVbN9
-	 7yPwzo1VJIsrA==
+	b=Tu5SzdPpjqgPlPmvXTH4xqkukg37Qm5O4pRW0cHEGkbrIut2F//NQtfjJxwRESqYz
+	 dDyFt4e0a2BWQhWbtVva2UB0hLB6iaM2Fdepv9jRkidbSpRbnuKs6fOwtzZvqPjuhu
+	 asA6frUXl1qUb7uzm1S+C0wBTSeCrLFINs6zCHGFYaCpcNWSuBIAUTwbfww/Z9Wepc
+	 z9UEwoMmEI5e/7Bqyf9JckorPdQvq1A7fhmtCKIJw/su31beQjt1l8hgfmSRHnAsYg
+	 8VDi6sXKm+e/XVRl8LuLTfOOsrURyNTQ62lLTe1ORCnxwEYBQyl7q8Y2Ivouu1de0u
+	 NlQ/nflsObuxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Long Li <leo.lilong@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+Cc: Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	jlayton@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 22/43] sunrpc: fix race in cache cleanup causing stale nextcheck time
-Date: Sun,  1 Jun 2025 19:42:02 -0400
-Message-Id: <20250601234224.3517599-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 23/43] ext4: prevent stale extent cache entries caused by concurrent get es_cache
+Date: Sun,  1 Jun 2025 19:42:03 -0400
+Message-Id: <20250601234224.3517599-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250601234224.3517599-1-sashal@kernel.org>
 References: <20250601234224.3517599-1-sashal@kernel.org>
@@ -72,136 +65,128 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.184
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Long Li <leo.lilong@huawei.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 2298abcbe11e9b553d03c0f1d084da786f7eff88 ]
+[ Upstream commit f22a0ef2231a7d8374bb021eb86404d0e9de5a02 ]
 
-When cache cleanup runs concurrently with cache entry removal, a race
-condition can occur that leads to incorrect nextcheck times. This can
-delay cache cleanup for the cache_detail by up to 1800 seconds:
+The EXT4_IOC_GET_ES_CACHE and EXT4_IOC_PRECACHE_EXTENTS currently
+invokes ext4_ext_precache() to preload the extent cache without holding
+the inode's i_rwsem. This can result in stale extent cache entries when
+competing with operations such as ext4_collapse_range() which calls
+ext4_ext_remove_space() or ext4_ext_shift_extents().
 
-1. cache_clean() sets nextcheck to current time plus 1800 seconds
-2. While scanning a non-empty bucket, concurrent cache entry removal can
-   empty that bucket
-3. cache_clean() finds no cache entries in the now-empty bucket to update
-   the nextcheck time
-4. This maybe delays the next scan of the cache_detail by up to 1800
-   seconds even when it should be scanned earlier based on remaining
-   entries
+The problem arises when ext4_ext_remove_space() temporarily releases
+i_data_sem due to insufficient journal credits. During this interval, a
+concurrent EXT4_IOC_GET_ES_CACHE or EXT4_IOC_PRECACHE_EXTENTS may cache
+extent entries that are about to be deleted. As a result, these cached
+entries become stale and inconsistent with the actual extents.
 
-Fix this by moving the hash_lock acquisition earlier in cache_clean().
-This ensures bucket emptiness checks and nextcheck updates happen
-atomically, preventing the race between cleanup and entry removal.
+Loading the extents cache without holding the inode's i_rwsem or the
+mapping's invalidate_lock is not permitted besides during the writeback.
+Fix this by holding the i_rwsem during EXT4_IOC_GET_ES_CACHE and
+EXT4_IOC_PRECACHE_EXTENTS.
 
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250423085257.122685-6-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-Now let me analyze this commit in detail based on what I've learned:
-**ANALYSIS:** **YES** - This commit should be backported to stable
-kernel trees. ## Detailed Analysis: ### 1. **Bug Impact Assessment**
-This commit fixes a **race condition** that can cause cache cleanup
-delays of up to **1800 seconds (30 minutes)**. This is a significant
-performance regression that affects the SUNRPC cache subsystem's ability
-to clean expired entries in a timely manner. ### 2. **Root Cause
-Analysis** The race condition occurs in the `cache_clean()` function
-between these steps: - **Line 461**: `current_detail->nextcheck =
-seconds_since_boot()+30*60;` (sets nextcheck to current time + 1800
-seconds) - **Lines 466-469**: The code searches for non-empty buckets
-**without holding hash_lock** - **Lines 479-496**: The code then
-acquires `hash_lock` and processes entries, updating nextcheck based on
-entry expiry times **The race window**: Between lines 466-469 and 479,
-concurrent cache operations (like `sunrpc_cache_unhash()`) can remove
-entries from buckets, making them empty. When `cache_clean()` later
-acquires the hash_lock, it finds empty buckets and cannot update the
-nextcheck time appropriately. ### 3. **Code Change Analysis** The fix is
-**minimal and surgical**: ```c // BEFORE: hash_lock acquired late (line
-479) if (current_detail && current_index < current_detail->hash_size) {
-// ... variable declarations ... spin_lock(&current_detail->hash_lock);
-// TOO LATE! // AFTER: hash_lock acquired early (before bucket search)
-spin_lock(&current_detail->hash_lock); while (current_index <
-current_detail->hash_size &&
-hlist_empty(&current_detail->hash_table[current_index]))
-current_index++; ``` This ensures that: 1. **Atomicity**: Bucket
-emptiness checks and nextcheck updates happen atomically 2. **Race
-prevention**: No concurrent entry removal can happen during bucket
-scanning 3. **Correctness**: nextcheck times are updated based on the
-actual state of buckets at scan time ### 4. **Risk Assessment** **Low
-Risk**: - **Scope**: Changes only affect the locking order in
-`cache_clean()` - **Backwards compatibility**: No API changes - **Side
-effects**: Minimal - just holds the lock slightly longer, which is safe
-- **Testing**: The change preserves existing logic while fixing the race
-### 5. **Stable Tree Criteria Compliance** ✅ **Fixes important bug**:
-30-minute cache cleanup delays significantly impact performance ✅
-**Small and contained**: Only 12 lines changed in a single function ✅
-**No architectural changes**: Just reorders lock acquisition ✅ **Minimal
-regression risk**: The change is conservative and preserves existing
-behavior ✅ **Clear side effects**: Only improves correctness, no
-negative impacts ### 6. **Comparison with Similar Commits** Looking at
-the historical examples: - **Similar to Commit #3 (YES)**: Fixes a race
-condition with minimal code changes and clear correctness improvement -
-**Unlike Commits #1,#2,#4,#5 (NO)**: Those were either reverted,
-cosmetic, or changed behavior significantly ### 7. **Critical System
-Impact** SUNRPC cache is used by: - **NFS client/server operations** -
-**RPC authentication caching** - **Various network filesystem
-operations** A 30-minute delay in cache cleanup can cause: - Memory
-bloat from stale entries - Performance degradation - Potential service
-disruptions **Conclusion**: This is a clear bug fix with minimal risk
-that addresses a significant performance issue in a critical kernel
-subsystem. It meets all criteria for stable tree backporting.
+Based on my comprehensive analysis of this commit and comparison with
+the historical similar commits, here is my assessment: **YES** This
+commit should be backported to stable kernel trees for the following
+reasons: ## Analysis Summary ### **Type of Bug Fix** This commit
+addresses a **race condition** that can lead to **stale extent cache
+entries** in the ext4 filesystem. The race occurs between: 1.
+`EXT4_IOC_GET_ES_CACHE` and `EXT4_IOC_PRECACHE_EXTENTS` operations 2.
+Concurrent `ext4_collapse_range()` operations that call
+`ext4_ext_remove_space()` or `ext4_ext_shift_extents()` ### **Technical
+Details of the Race** The problem stems from the fact that
+`ext4_ext_remove_space()` temporarily releases `i_data_sem` when journal
+credits are insufficient. During this critical window: - The extent
+precaching operations (`ext4_ext_precache()`) can cache extent entries -
+These cached entries are about to be deleted by the ongoing
+collapse/shift operation - Result: **stale, inconsistent extent cache
+entries** ### **Code Changes Analysis** The fix is **minimal and
+surgical**: **In `fs/ext4/extents.c` (ext4_get_es_cache function):**
+```c if (fieinfo->fi_flags & FIEMAP_FLAG_CACHE) { +
+inode_lock_shared(inode); error = ext4_ext_precache(inode); +
+inode_unlock_shared(inode); if (error) return error; ``` **In
+`fs/ext4/ioctl.c` (EXT4_IOC_PRECACHE_EXTENTS case):** ```c case
+EXT4_IOC_PRECACHE_EXTENTS: - return ext4_ext_precache(inode); +{ + int
+ret; + + inode_lock_shared(inode); + ret = ext4_ext_precache(inode); +
+inode_unlock_shared(inode); + return ret; +} ``` ### **Why This
+Qualifies for Backporting** 1. **Important Bug Fix**: Stale extent cache
+entries can lead to filesystem inconsistencies and potential data
+corruption scenarios. 2. **Minimal Risk**: The changes are extremely
+small and contained: - Only adds proper locking around existing
+operations - Uses shared locking (`inode_lock_shared`) which allows
+concurrent readers - No algorithmic changes or new features 3. **Follows
+Established Patterns**: Similar commits in the repository (marked with
+"Backport Status: YES") show this pattern: - Similar commit #2: "ext4:
+fix data races when using cached status extents" - also deals with
+extent cache consistency - Similar commit #3: "ext4: convert to
+exclusive lock while inserting delalloc extents" - addresses similar
+race conditions with proper locking - Similar commit #4: "ext4: do not
+polute the extents cache while shifting extents" - prevents extent cache
+corruption during shift operations 4. **Clear Impact**: The commit
+message explicitly states this prevents "stale extent cache entries"
+which can cause inconsistency with actual extents. 5. **Contained to
+Subsystem**: Changes are limited to ext4 extent management and don't
+affect other kernel subsystems. 6. **Stable Backport Indicators**: - No
+"Cc: stable@" tag is present, but the nature of the fix (race condition
+leading to corruption) makes it a good candidate - The fix follows
+ext4's established locking protocol requirements - Multiple similar
+extent cache race condition fixes have been backported ### **Risk
+Assessment** - **Very Low Regression Risk**: Only adds locking
+protection, doesn't change functional behavior - **Well-understood
+Fix**: The locking pattern matches established ext4 conventions -
+**Limited Scope**: Only affects two specific ioctl code paths This
+commit represents exactly the type of fix that stable trees are meant
+for: a small, safe fix for a real bug that can cause filesystem
+corruption without introducing new functionality or architectural
+changes.
 
- net/sunrpc/cache.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ fs/ext4/extents.c | 2 ++
+ fs/ext4/ioctl.c   | 8 +++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index e8448e9e03d59..715f7d080f7a2 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -451,24 +451,21 @@ static int cache_clean(void)
- 		}
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index b9bbe4dbedf4f..4c55789d1a558 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5045,7 +5045,9 @@ int ext4_get_es_cache(struct inode *inode, struct fiemap_extent_info *fieinfo,
  	}
  
-+	spin_lock(&current_detail->hash_lock);
-+
- 	/* find a non-empty bucket in the table */
--	while (current_detail &&
--	       current_index < current_detail->hash_size &&
-+	while (current_index < current_detail->hash_size &&
- 	       hlist_empty(&current_detail->hash_table[current_index]))
- 		current_index++;
+ 	if (fieinfo->fi_flags & FIEMAP_FLAG_CACHE) {
++		inode_lock_shared(inode);
+ 		error = ext4_ext_precache(inode);
++		inode_unlock_shared(inode);
+ 		if (error)
+ 			return error;
+ 		fieinfo->fi_flags &= ~FIEMAP_FLAG_CACHE;
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 18002b0a908ce..bd90b454c6213 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -1130,8 +1130,14 @@ static long __ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		return 0;
+ 	}
+ 	case EXT4_IOC_PRECACHE_EXTENTS:
+-		return ext4_ext_precache(inode);
++	{
++		int ret;
  
- 	/* find a cleanable entry in the bucket and clean it, or set to next bucket */
--
--	if (current_detail && current_index < current_detail->hash_size) {
-+	if (current_index < current_detail->hash_size) {
- 		struct cache_head *ch = NULL;
- 		struct cache_detail *d;
- 		struct hlist_head *head;
- 		struct hlist_node *tmp;
- 
--		spin_lock(&current_detail->hash_lock);
--
- 		/* Ok, now to clean this strand */
--
- 		head = &current_detail->hash_table[current_index];
- 		hlist_for_each_entry_safe(ch, tmp, head, cache_list) {
- 			if (current_detail->nextcheck > ch->expiry_time)
-@@ -489,8 +486,10 @@ static int cache_clean(void)
- 		spin_unlock(&cache_list_lock);
- 		if (ch)
- 			sunrpc_end_cache_remove_entry(ch, d);
--	} else
-+	} else {
-+		spin_unlock(&current_detail->hash_lock);
- 		spin_unlock(&cache_list_lock);
++		inode_lock_shared(inode);
++		ret = ext4_ext_precache(inode);
++		inode_unlock_shared(inode);
++		return ret;
 +	}
- 
- 	return rv;
- }
+ 	case FS_IOC_SET_ENCRYPTION_POLICY:
+ 		if (!ext4_has_feature_encrypt(sb))
+ 			return -EOPNOTSUPP;
 -- 
 2.39.5
 
