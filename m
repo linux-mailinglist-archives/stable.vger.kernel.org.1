@@ -1,93 +1,92 @@
-Return-Path: <stable+bounces-148363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D93ACA05E
-	for <lists+stable@lfdr.de>; Sun,  1 Jun 2025 22:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C88ACA0A3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 00:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E6A3B44C1
-	for <lists+stable@lfdr.de>; Sun,  1 Jun 2025 20:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2E33B3693
+	for <lists+stable@lfdr.de>; Sun,  1 Jun 2025 22:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123FA86352;
-	Sun,  1 Jun 2025 20:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22920239E97;
+	Sun,  1 Jun 2025 22:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IExSQy9R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aEKq18TA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457962DCC0D;
-	Sun,  1 Jun 2025 20:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477B25674E;
+	Sun,  1 Jun 2025 22:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748808090; cv=none; b=K3fjB60Mw4tSPOFhfjtbb98iSENq7TKgvlHkA7j1KjyJuI2NhBINd1PGgiS2KxVXcSNRuPCeGJseDPUadhznMyXyT+20eASGV3kK/TcWe6OryOdiogEn6BEWI0SSzqPL0TWWRM6pMYRftX6G88hiHG7fhzW7kq5mDVMqTYllMUo=
+	t=1748817776; cv=none; b=GJOlLd4A78TiE5+rbTNMnpXtx3iH5hfDXhsfEC4txvwabLi5mdli1OrovMNj5TTRqZo4Im0/+/pvw2KEc3yFRCDhhHk3oWQT8q84Fm1M6JyCkUfIpqBxwZQAwoe0dV9difsdnG80iEs7cO4fKlKNEb4iTfvM65H5a96+IBwseVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748808090; c=relaxed/simple;
-	bh=aGGRaZnwPd8HwcgEfLfpENVgB57XKiU5poyxraHVk7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YaJO4CuNRpgjmnoZPC8ZQaXL8TYr21i90ma+Omo8mDiD8zSRshHr2pLIDjzEZfhWuMXz2LNhB4XubsAdjEnhpmobFUOhk3+TnoTuoPbOor5rc2GE/sgz+Cy7uuAEaFZsAznlfT80Ml1NG7RJ5aKW8YDqD5fFr6bOyJpP6GWEzVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IExSQy9R; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1748817776; c=relaxed/simple;
+	bh=OwtEGgMBw3KRAYa6XNqI7gOVNBLirULiL2OhVC2WxcQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kc3HyUaAB2DHHHp7TI12SJTwldysE7UBAvQ8thwNJMR0DA2MaVwSDrBz7ryxot1MWmpYp12ADn5qJDOUpEHB/QOi3us3KD2IppW2QUq0DbSUFdfhha2mvyk9tcgqchKzpTiJI67MO7juLMuWj1UsY7RaAogG2xt94iOYj0Dksg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aEKq18TA; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-311ef4fb549so3114606a91.2;
-        Sun, 01 Jun 2025 13:01:28 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-450ce671a08so23471445e9.3;
+        Sun, 01 Jun 2025 15:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748808088; x=1749412888; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j5wfQviA8yPzjds+RQSjBciKS/dDPs2tg7uDFAy3E5U=;
-        b=IExSQy9RaGWdEjEuusf8TUYGPIhQmvQ8MiXUoxxGNFUXajVzIXff+qDbZinShvCYny
-         PcmfH+6jbKQged80f/6GIS1OsYTRiGISzWghTR9F+pWSbrwE2DmSbKdbv0/RFRQv8iPz
-         Tbn/epQI1SAhD3OdCSUX7stwiNeHBCVXUkraqqJGAKNhH6mMIMC2Lw2/3k3IT2UcG1og
-         XGDX7qHJoDZkz3y1FmQV6lCaZIYjsx15UGtM7oEK5EdE/feDYHw6E3FT7sPAnBcUNT2k
-         v1hkzkYixXDX9k3A5/E7Ls3qaFkjrolT8d5ZffWNN21j8FOWsWx/HidpeKr8/FZZe+qT
-         /xeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748808088; x=1749412888;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1748817773; x=1749422573; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j5wfQviA8yPzjds+RQSjBciKS/dDPs2tg7uDFAy3E5U=;
-        b=FI/qd9+57TelUU2n+fu+zynWLpGjT/t83674Ke5T4+Zt+20ElH0v/w2z0s2MJHGrK0
-         leLbJr6foBhtxFnD2BdAhrFZ8IuusAKGDcWvzzMdiWtLVPYxxDTSUYmTHXYqUg2jIQ9G
-         5Kfu1LF+HI5OpzwaW0/huOSkKRPkUBRFkWUTCVrGbABOgmLKVwR8nKJ+ybgXw/NY2aXA
-         iIQSSQqRTOg9/2g9l7IA1U8meN+exGcxS8m3FNxmx2oKaSxCGsfNybpc0o6FcbZesydW
-         4flqYQ35V3uBowrguAG0fXxylFFwC7s+FsZN6xWJF5P15V9+bT5i+2hm87Ch9oClGp7C
-         4mMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUz8lV69kW+lkZtaIaPRcTBQorGGjlo8/NjnntMiosvrGkSzz/rYzEMwYXUwtmq94V9TvFfwDy9f0aTxFc=@vger.kernel.org, AJvYcCWnIGuDYN0xA6mFXpl6+8yLkhlh4815/L7JcnNlAZ4HyxD/LNbgNefEr0NoJzEzSjZ8Hw+CBvwk@vger.kernel.org
-X-Gm-Message-State: AOJu0YynAg+Z0BPZG6xx9w7IN6kLZ4wSThiufpGBNXplkzyVz1chHc+v
-	jPqzRdwQ9emgpXVnCdf94r8kI0ZgevhkDVbE4DXbMvRduvwSHx8Vo/ah
-X-Gm-Gg: ASbGncsaN4xnoUltQVaBybrZfo36N72uzmSdE71r7z16QxiCrwB5J/YH5a7aqttrujr
-	W1wg1fb9tTFH8o44fbp059QGMCsMDqbjVtIjEaCFvGjjMtoCtuHqAFgh4huWkFnFWHLlAn+QcBr
-	HXOv970zu8a4kUjdtGUtZoppjWDjxiA2t8KRDeuBeHUqarQYVHzYO9baqGeYriWvZbT66vYp0g9
-	QQRVdGboNZBCecZ6NG82ookjcMaqAG79QWFNle1EMyr6JeRXKByUxy1hNEdkqqP8dPGqpQUVmFC
-	Np0EAZdbL/B6ISGgoXrmytmBtKNEhFjpSnwfqQnQWQFD5ikwTo3/Ng7+Bpalpj1Xqb25RAhgzwH
-	bnjRxQrQ=
-X-Google-Smtp-Source: AGHT+IG4Lc9FhigZUgWldD7scIQD8VLnkGzOxYeQGikRL6B9oYrq4ZvfIN3ryGecjR7FAVoLjo/5vA==
-X-Received: by 2002:a17:90a:e7cd:b0:2f8:34df:5652 with SMTP id 98e67ed59e1d1-312417369b3mr15855412a91.21.1748808088316;
-        Sun, 01 Jun 2025 13:01:28 -0700 (PDT)
-Received: from KASONG-MC4.tencent.com ([106.37.120.101])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3124e30b832sm4356137a91.33.2025.06.01.13.01.24
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 01 Jun 2025 13:01:27 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <21cnbao@gmail.com>,
-	Peter Xu <peterx@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>
-Subject: [PATCH v2] mm: userfaultfd: fix race of userfaultfd_move and swap cache
-Date: Mon,  2 Jun 2025 04:01:08 +0800
-Message-ID: <20250601200108.23186-1-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.49.0
-Reply-To: Kairui Song <kasong@tencent.com>
+        bh=KLnY+e4DmR9UwbO0AVGv5r5TxRv2i22KZH8nci/gU7o=;
+        b=aEKq18TAzyPub6qfwym43G5QttPEPIeytj8p+mH81pxOvJKRzPOWCEZHW/i6wQSBS4
+         k7u1KKWT9LuXWGL9Jnd3EYNkUP60avBtJILFNEOhWaLCeboq5vo7IdVspTQbhd8w1iT6
+         jhnsZQBTM0WjuIONw0U66oKgWvT4ev3omWC+Fnv7ACu5pSodqHpdoE8Q9g1KSy7Ucdey
+         kTrSRNQH/F3iuGGt+uN1wF35nTcB457JtgD1izaxikNB5MUTJ+vlhVJr3IHADC3K7xkS
+         bxvuLPCG2JbrOOhf/A9N79sHv9AbdnzvW2m9jLhIcG8HWe4T1XIrmgKmBHVh7rtGxqwJ
+         V4JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748817773; x=1749422573;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KLnY+e4DmR9UwbO0AVGv5r5TxRv2i22KZH8nci/gU7o=;
+        b=IUScN9kFz0l0t+C1r/Bz2Pe/vbsVoKCvB0MmZeUQz+ocLeKu8Tnr5jPGtETwkup82s
+         X5971LhVidDfLcQDxcwlvaLxa7TyMNZ3PDrhmECy9x1XHe7nlXuNXzhc/r++4d8U8yEc
+         NoaBU58CXjZsejB++ELVhEPl4jvzlk5nt6mt7KG2BYVWxZdrCDIHJ2G8oMYqJXZvaH/g
+         sg1yL7W2L0O/g4g9Wdf536wX4GhkGDyPwDhAfsVc32+ZQz0MnifAq2NkAaymFXPFL1af
+         07ty2K8rHaPoGBiNguevKEqshqJFXK4H3BqJ5U6FeREerX50mquGxCKQ1lgFOvzq+tNX
+         4UbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUH3ujZbGpSdOrLTfsAaTHXhQ5DJfUGl2gf4JRfm1UUEuoa+Xrwc0eLyQEHa+SgnqLhUnJG16s22cg=@vger.kernel.org, AJvYcCVJbVA4NhaGle0Jbqmgb9gPbqVnWvRJrC+l6XrPhfiMDxun1oNFM4ZA+Boh37lfytplCP8lzIIU@vger.kernel.org, AJvYcCVYzRbKqii3jaRaLDMuvGVQ7c8+PJII+aaCVDdnl9hCY/cxJXaTUJcZhevMR9D1f6gN/lmrbLx4GyxImyFGDg==@vger.kernel.org, AJvYcCXQ35P5RJzz0tnE7Loaj8eHjrswGep7WIzpp5IWM2RiKog9wvWf2E2hFqg8zokMUqqNPJjEnvfrjy/zbcKd@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPP7WyHxd5ZmNmg+nUTpQPiLTvDjAjRNc1X7owduKb3TFztw7g
+	zp+6KaR3nXuEvrhkV/RlYbz3o4SBnW9ZQbse+OScrz9LhwKlaXbuLdNJQaB22w==
+X-Gm-Gg: ASbGncsL0XDyQnMMsSu1cV85DR2IjxDzLsFG9gRCNtu6ZwlNvblSB5exYMl95JgvIn5
+	9FitGFnRTrenJ+91vI/H7yEeC+K7CPJL9S3TLHsxgTTWePQRtKLyGFaS+IAJ2Z/l6gUUI1zFdkU
+	nnXOUKokjR7CJuOg8iXvRDPX1NuqwaHhQz/VTxCzWGqndZSzZuMkW9yoVIGlhP37E1uVMUdDjG4
+	bIWftM+gHmYZNa4zxFoHxfyKSNAs4wh8QrjlPhhyg6LaWY9xgszccu1cg8oj9O+jLb6kF5CXcX4
+	hUVccBS2J1G0LL9gojMh89th77hiIB1kCy2bWpD3ZaEph4enaS1x
+X-Google-Smtp-Source: AGHT+IHxEKNQmFH5Esn7+vrvKFhdlzvPKzJzwz+54lO3XiTb8Qi5En7rA6ezLo4Cpju1T9Y1p/Pn6Q==
+X-Received: by 2002:a05:600c:a53:b0:43d:fa59:cc8f with SMTP id 5b1f17b1804b1-4511ee1103fmr45441295e9.33.1748817773483;
+        Sun, 01 Jun 2025 15:42:53 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:4518:757b:6751:290f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe74165sm12916554f8f.53.2025.06.01.15.42.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Jun 2025 15:42:52 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: Sinan Kaya <okaya@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Qasim Ijaz <qasdev00@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] dmaengine: qcom_hidma: fix memory leak on probe failure
+Date: Sun,  1 Jun 2025 23:42:30 +0100
+Message-Id: <20250601224231.24317-2-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250601224231.24317-1-qasdev00@gmail.com>
+References: <20250601224231.24317-1-qasdev00@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,149 +95,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kairui Song <kasong@tencent.com>
+hidma_ll_init() is invoked to create and initialise a struct hidma_lldev
+object during hidma probe. During this a FIFO buffer is allocated, but
+if some failure occurs after (like hidma_ll_setup failure) we should
+clean up the FIFO.
 
-On seeing a swap entry PTE, userfaultfd_move does a lockless swap cache
-lookup, and try to move the found folio to the faulting vma when.
-Currently, it relies on the PTE value check to ensure the moved folio
-still belongs to the src swap entry, which turns out is not reliable.
-
-While working and reviewing the swap table series with Barry, following
-existing race is observed and reproduced [1]:
-
-( move_pages_pte is moving src_pte to dst_pte, where src_pte is a
- swap entry PTE holding swap entry S1, and S1 isn't in the swap cache.)
-
-CPU1                               CPU2
-userfaultfd_move
-  move_pages_pte()
-    entry = pte_to_swp_entry(orig_src_pte);
-    // Here it got entry = S1
-    ... < Somehow interrupted> ...
-                                   <swapin src_pte, alloc and use folio A>
-                                   // folio A is just a new allocated folio
-                                   // and get installed into src_pte
-                                   <frees swap entry S1>
-                                   // src_pte now points to folio A, S1
-                                   // has swap count == 0, it can be freed
-                                   // by folio_swap_swap or swap
-                                   // allocator's reclaim.
-                                   <try to swap out another folio B>
-                                   // folio B is a folio in another VMA.
-                                   <put folio B to swap cache using S1 >
-                                   // S1 is freed, folio B could use it
-                                   // for swap out with no problem.
-                                   ...
-    folio = filemap_get_folio(S1)
-    // Got folio B here !!!
-    ... < Somehow interrupted again> ...
-                                   <swapin folio B and free S1>
-                                   // Now S1 is free to be used again.
-                                   <swapout src_pte & folio A using S1>
-				   // Now src_pte is a swap entry pte
-				   // holding S1 again.
-    folio_trylock(folio)
-    move_swap_pte
-      double_pt_lock
-      is_pte_pages_stable
-      // Check passed because src_pte == S1
-      folio_move_anon_rmap(...)
-      // Moved invalid folio B here !!!
-
-The race window is very short and requires multiple collisions of
-multiple rare events, so it's very unlikely to happen, but with a
-deliberately constructed reproducer and increased time window, it can be
-reproduced [1].
-
-It's also possible that folio (A) is swapped in, and swapped out again
-after the filemap_get_folio lookup, in such case folio (A) may stay in
-swap cache so it needs to be moved too. In this case we should also try
-again so kernel won't miss a folio move.
-
-Fix this by checking if the folio is the valid swap cache folio after
-acquiring the folio lock, and checking the swap cache again after
-acquiring the src_pte lock.
-
-SWP_SYNCRHONIZE_IO path does make the problem more complex, but so far
-we don't need to worry about that since folios only might get exposed to
-swap cache in the swap out path, and it's covered in this patch too by
-checking the swap cache again after acquiring src_pte lock.
-
-Testing with a simple C program to allocate and move several GB of memory
-did not show any observable performance change.
-
-Cc: <stable@vger.kernel.org>
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Closes: https://lore.kernel.org/linux-mm/CAMgjq7B1K=6OOrK2OUZ0-tqCzi+EJt+2_K97TPGoSt=9+JwP7Q@mail.gmail.com/ [1]
-Signed-off-by: Kairui Song <kasong@tencent.com>
-
+Fixes: d1615ca2e085 ("dmaengine: qcom_hidma: implement lower level hardware interface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 ---
+ drivers/dma/qcom/hidma_ll.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-V1: https://lore.kernel.org/linux-mm/20250530201710.81365-1-ryncsn@gmail.com/
-Changes:
-- Check swap_map instead of doing a filemap lookup after acquiring the
-  PTE lock to minimize critical section overhead [ Barry Song, Lokesh Gidra ]
-
- mm/userfaultfd.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index bc473ad21202..a74ede04996c 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1084,8 +1084,11 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
- 			 pte_t orig_dst_pte, pte_t orig_src_pte,
- 			 pmd_t *dst_pmd, pmd_t dst_pmdval,
- 			 spinlock_t *dst_ptl, spinlock_t *src_ptl,
--			 struct folio *src_folio)
-+			 struct folio *src_folio,
-+			 struct swap_info_struct *si)
- {
-+	swp_entry_t entry;
-+
- 	double_pt_lock(dst_ptl, src_ptl);
+diff --git a/drivers/dma/qcom/hidma_ll.c b/drivers/dma/qcom/hidma_ll.c
+index 53244e0e34a3..fee448499777 100644
+--- a/drivers/dma/qcom/hidma_ll.c
++++ b/drivers/dma/qcom/hidma_ll.c
+@@ -788,8 +788,10 @@ struct hidma_lldev *hidma_ll_init(struct device *dev, u32 nr_tres,
+ 		return NULL;
  
- 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
-@@ -1102,6 +1105,16 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
- 	if (src_folio) {
- 		folio_move_anon_rmap(src_folio, dst_vma);
- 		src_folio->index = linear_page_index(dst_vma, dst_addr);
-+	} else {
-+		/*
-+		 * Check if the swap entry is cached after acquiring the src_pte
-+		 * lock. Or we might miss a new loaded swap cache folio.
-+		 */
-+		entry = pte_to_swp_entry(orig_src_pte);
-+		if (si->swap_map[swp_offset(entry)] & SWAP_HAS_CACHE) {
-+			double_pt_unlock(dst_ptl, src_ptl);
-+			return -EAGAIN;
-+		}
- 	}
+ 	rc = hidma_ll_setup(lldev);
+-	if (rc)
++	if (rc) {
++		kfifo_free(&lldev->handoff_fifo);
+ 		return NULL;
++	}
  
- 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
-@@ -1409,10 +1422,20 @@ static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
- 				folio_lock(src_folio);
- 				goto retry;
- 			}
-+			/*
-+			 * Check if the folio still belongs to the target swap entry after
-+			 * acquiring the lock. Folio can be freed in the swap cache while
-+			 * not locked.
-+			 */
-+			if (unlikely(!folio_test_swapcache(folio) ||
-+				     entry.val != folio->swap.val)) {
-+				err = -EAGAIN;
-+				goto out;
-+			}
- 		}
- 		err = move_swap_pte(mm, dst_vma, dst_addr, src_addr, dst_pte, src_pte,
- 				orig_dst_pte, orig_src_pte, dst_pmd, dst_pmdval,
--				dst_ptl, src_ptl, src_folio);
-+				dst_ptl, src_ptl, src_folio, si);
- 	}
- 
- out:
+ 	spin_lock_init(&lldev->lock);
+ 	tasklet_setup(&lldev->task, hidma_ll_tre_complete);
 -- 
-2.49.0
+2.39.5
 
 
