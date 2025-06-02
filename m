@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F3EACB7E8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD493ACB47F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 987384C4E4F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 684CD18920AB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BEA22D780;
-	Mon,  2 Jun 2025 15:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6814E230BE3;
+	Mon,  2 Jun 2025 14:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFwxwFha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+p+x1tc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A5B22A808;
-	Mon,  2 Jun 2025 15:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257DA226CFB;
+	Mon,  2 Jun 2025 14:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877299; cv=none; b=lvFJxUo4tCT5CYdIZQjHIqrujGd+pP9YdoMQRlqmpSyINkoFlg1VowfLL/vUS2pyhVR3fCfIJ1/ERk2liqZODeei1cMsWELCQEO3swDjbhHoEw5LDzqFShjee9+c9Zt8n6DkBpmNuvenG0zNPOjE+vLlCE4OjV5RkzQGhUoZssU=
+	t=1748875016; cv=none; b=goEiC1XjLAZ6FVE6N+h8H/RZpd3y/TCs8DX9Oc7UvILyPDy1pbXPeMfDp2ABqUVgFfOSKLGqbGzMW9LgJvQhgucB3VFUgHUgxUlp+QVoB2n+Uk0C4aWVq2cvCawUid6nBO43eZN9mMMtwpdewsU5/YN3H5Z3fbJQVAGNLYuZ134=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877299; c=relaxed/simple;
-	bh=eKBMNlLk2GhqeK4T+JkVtprvbiqTAj4s0LknRFo7+S8=;
+	s=arc-20240116; t=1748875016; c=relaxed/simple;
+	bh=R2wdLxGPtkz3cfInEHzYwOT7uNpnLzaCTfbE2VUSzPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TG+3kivvKe9T9LNj4rn4yLfKBmCGWY6MLxgw3uZW79gjv/2jsipwa8dwsPAamwVztdsVt3ObrQWUTlMqeKwcg6A/NKxQVCrjSY/x7MZ4vc17UEFhvNA5vbaB7TGhpfziSz2LkWOpqpKkDlxR4+07LhT5Q3Xa2dW75pZiFCejEwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFwxwFha; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802B8C4CEEB;
-	Mon,  2 Jun 2025 15:14:58 +0000 (UTC)
+	 MIME-Version; b=trh2zNdpaO7zbZCs6ueLeEZe8WVn1GhQYEP9Ww1hWGpXTA0q05UCUncB8aMG4LrOraJVx2kpTaTLHQ9WdJr3hckp+j31WiEk27cjKa66OyCrKPeoghZ0vz9V1N11B0XoGIwLT1qnOGVS6RnAGXP8YNg6foN4HUx+YxcIh89KKz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+p+x1tc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A980FC4CEF2;
+	Mon,  2 Jun 2025 14:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877298;
-	bh=eKBMNlLk2GhqeK4T+JkVtprvbiqTAj4s0LknRFo7+S8=;
+	s=korg; t=1748875016;
+	bh=R2wdLxGPtkz3cfInEHzYwOT7uNpnLzaCTfbE2VUSzPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFwxwFha/pyscc12b8ALQIEOJpqD4if+gCkF7/NwwYYuJHlHi8PrMqLvnDGVi28r9
-	 9cyGHApAFSi2glJp+brg4avPt2VRtLO8yT0kaW6LAkZKANnmaudFU7IvAr4+5+r4+8
-	 IL0VOn2CicD3NQn7sIbFTZVV/lKgjO51wCgLRPKI=
+	b=X+p+x1tcMiod8Ew9JTbQtJrAl83A6o2AtpgNTMjOEt0m0mA6IN5xOuENqM5bQz1iy
+	 VgOd8V2WLuFbFCdGARfUJ3dZdQqUuJhwbnN/rywxLGO/ST7d+M9Qx8Z31rk7SJEzmi
+	 Sva04TuBQSyWf91YC6rLnz7+I/gJhRVoQPzzKRm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 233/325] dmaengine: idxd: Fix allowing write() from different address spaces
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Oliver Hartkopp <socketcan@hartkopp.net>
+Subject: [PATCH 5.4 176/204] can: bcm: add locking for bcm_op runtime updates
 Date: Mon,  2 Jun 2025 15:48:29 +0200
-Message-ID: <20250602134329.251132440@linuxfoundation.org>
+Message-ID: <20250602134302.565492651@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 8dfa57aabff625bf445548257f7711ef294cd30e ]
+commit c2aba69d0c36a496ab4f2e81e9c2b271f2693fd7 upstream.
 
-Check if the process submitting the descriptor belongs to the same
-address space as the one that opened the file, reject otherwise.
+The CAN broadcast manager (CAN BCM) can send a sequence of CAN frames via
+hrtimer. The content and also the length of the sequence can be changed
+resp reduced at runtime where the 'currframe' counter is then set to zero.
 
-Fixes: 6827738dc684 ("dmaengine: idxd: add a write() method for applications to submit work")
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20250421170337.3008875-1-dave.jiang@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Although this appeared to be a safe operation the updates of 'currframe'
+can be triggered from user space and hrtimer context in bcm_can_tx().
+Anderson Nascimento created a proof of concept that triggered a KASAN
+slab-out-of-bounds read access which can be prevented with a spin_lock_bh.
+
+At the rework of bcm_can_tx() the 'count' variable has been moved into
+the protected section as this variable can be modified from both contexts
+too.
+
+Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250519125027.11900-1-socketcan@hartkopp.net
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/cdev.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/can/bcm.c |   66 +++++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 45 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index c7aa47f01df02..186f005bfa8fd 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -240,6 +240,9 @@ static int idxd_cdev_mmap(struct file *filp, struct vm_area_struct *vma)
- 	if (!idxd->user_submission_safe && !capable(CAP_SYS_RAWIO))
- 		return -EPERM;
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -58,6 +58,7 @@
+ #include <linux/can/skb.h>
+ #include <linux/can/bcm.h>
+ #include <linux/slab.h>
++#include <linux/spinlock.h>
+ #include <net/sock.h>
+ #include <net/net_namespace.h>
  
-+	if (current->mm != ctx->mm)
-+		return -EPERM;
+@@ -122,6 +123,7 @@ struct bcm_op {
+ 	struct canfd_frame last_sframe;
+ 	struct sock *sk;
+ 	struct net_device *rx_reg_dev;
++	spinlock_t bcm_tx_lock; /* protect currframe/count in runtime updates */
+ };
+ 
+ struct bcm_sock {
+@@ -275,13 +277,18 @@ static void bcm_can_tx(struct bcm_op *op
+ {
+ 	struct sk_buff *skb;
+ 	struct net_device *dev;
+-	struct canfd_frame *cf = op->frames + op->cfsiz * op->currframe;
++	struct canfd_frame *cf;
+ 	int err;
+ 
+ 	/* no target device? => exit */
+ 	if (!op->ifindex)
+ 		return;
+ 
++	/* read currframe under lock protection */
++	spin_lock_bh(&op->bcm_tx_lock);
++	cf = op->frames + op->cfsiz * op->currframe;
++	spin_unlock_bh(&op->bcm_tx_lock);
 +
- 	rc = check_vma(wq, vma, __func__);
- 	if (rc < 0)
- 		return rc;
-@@ -306,6 +309,9 @@ static ssize_t idxd_cdev_write(struct file *filp, const char __user *buf, size_t
- 	ssize_t written = 0;
- 	int i;
- 
-+	if (current->mm != ctx->mm)
-+		return -EPERM;
+ 	dev = dev_get_by_index(sock_net(op->sk), op->ifindex);
+ 	if (!dev) {
+ 		/* RFC: should this bcm_op remove itself here? */
+@@ -302,6 +309,10 @@ static void bcm_can_tx(struct bcm_op *op
+ 	skb->dev = dev;
+ 	can_skb_set_owner(skb, op->sk);
+ 	err = can_send(skb, 1);
 +
- 	for (i = 0; i < len/sizeof(struct dsa_hw_desc); i++) {
- 		int rc = idxd_submit_user_descriptor(ctx, udesc + i);
- 
-@@ -326,6 +332,9 @@ static __poll_t idxd_cdev_poll(struct file *filp,
- 	struct idxd_device *idxd = wq->idxd;
- 	__poll_t out = 0;
- 
-+	if (current->mm != ctx->mm)
-+		return -EPERM;
++	/* update currframe and count under lock protection */
++	spin_lock_bh(&op->bcm_tx_lock);
 +
- 	poll_wait(filp, &wq->err_queue, wait);
- 	spin_lock(&idxd->dev_lock);
- 	if (idxd->sw_err.valid)
--- 
-2.39.5
-
+ 	if (!err)
+ 		op->frames_abs++;
+ 
+@@ -310,6 +321,11 @@ static void bcm_can_tx(struct bcm_op *op
+ 	/* reached last frame? */
+ 	if (op->currframe >= op->nframes)
+ 		op->currframe = 0;
++
++	if (op->count > 0)
++		op->count--;
++
++	spin_unlock_bh(&op->bcm_tx_lock);
+ out:
+ 	dev_put(dev);
+ }
+@@ -406,7 +422,7 @@ static enum hrtimer_restart bcm_tx_timeo
+ 	struct bcm_msg_head msg_head;
+ 
+ 	if (op->kt_ival1 && (op->count > 0)) {
+-		op->count--;
++		bcm_can_tx(op);
+ 		if (!op->count && (op->flags & TX_COUNTEVT)) {
+ 
+ 			/* create notification to user */
+@@ -421,7 +437,6 @@ static enum hrtimer_restart bcm_tx_timeo
+ 
+ 			bcm_send_to_user(op, &msg_head, NULL, 0);
+ 		}
+-		bcm_can_tx(op);
+ 
+ 	} else if (op->kt_ival2) {
+ 		bcm_can_tx(op);
+@@ -911,6 +926,27 @@ static int bcm_tx_setup(struct bcm_msg_h
+ 		}
+ 		op->flags = msg_head->flags;
+ 
++		/* only lock for unlikely count/nframes/currframe changes */
++		if (op->nframes != msg_head->nframes ||
++		    op->flags & TX_RESET_MULTI_IDX ||
++		    op->flags & SETTIMER) {
++
++			spin_lock_bh(&op->bcm_tx_lock);
++
++			if (op->nframes != msg_head->nframes ||
++			    op->flags & TX_RESET_MULTI_IDX) {
++				/* potentially update changed nframes */
++				op->nframes = msg_head->nframes;
++				/* restart multiple frame transmission */
++				op->currframe = 0;
++			}
++
++			if (op->flags & SETTIMER)
++				op->count = msg_head->count;
++
++			spin_unlock_bh(&op->bcm_tx_lock);
++		}
++
+ 	} else {
+ 		/* insert new BCM operation for the given can_id */
+ 
+@@ -918,9 +954,14 @@ static int bcm_tx_setup(struct bcm_msg_h
+ 		if (!op)
+ 			return -ENOMEM;
+ 
++		spin_lock_init(&op->bcm_tx_lock);
+ 		op->can_id = msg_head->can_id;
+ 		op->cfsiz = CFSIZ(msg_head->flags);
+ 		op->flags = msg_head->flags;
++		op->nframes = msg_head->nframes;
++
++		if (op->flags & SETTIMER)
++			op->count = msg_head->count;
+ 
+ 		/* create array for CAN frames and copy the data */
+ 		if (msg_head->nframes > 1) {
+@@ -979,22 +1020,8 @@ static int bcm_tx_setup(struct bcm_msg_h
+ 
+ 	} /* if ((op = bcm_find_op(&bo->tx_ops, msg_head->can_id, ifindex))) */
+ 
+-	if (op->nframes != msg_head->nframes) {
+-		op->nframes   = msg_head->nframes;
+-		/* start multiple frame transmission with index 0 */
+-		op->currframe = 0;
+-	}
+-
+-	/* check flags */
+-
+-	if (op->flags & TX_RESET_MULTI_IDX) {
+-		/* start multiple frame transmission with index 0 */
+-		op->currframe = 0;
+-	}
+-
+ 	if (op->flags & SETTIMER) {
+ 		/* set timer values */
+-		op->count = msg_head->count;
+ 		op->ival1 = msg_head->ival1;
+ 		op->ival2 = msg_head->ival2;
+ 		op->kt_ival1 = bcm_timeval_to_ktime(msg_head->ival1);
+@@ -1011,11 +1038,8 @@ static int bcm_tx_setup(struct bcm_msg_h
+ 		op->flags |= TX_ANNOUNCE;
+ 	}
+ 
+-	if (op->flags & TX_ANNOUNCE) {
++	if (op->flags & TX_ANNOUNCE)
+ 		bcm_can_tx(op);
+-		if (op->count)
+-			op->count--;
+-	}
+ 
+ 	if (op->flags & STARTTIMER)
+ 		bcm_tx_start_timer(op);
 
 
 
