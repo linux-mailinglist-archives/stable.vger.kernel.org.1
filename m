@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95302ACB5F5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CE7ACB78A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 425D31886DE5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C797E164874
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A322224AFC;
-	Mon,  2 Jun 2025 14:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393EE22D9EB;
+	Mon,  2 Jun 2025 15:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vacRtxAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2aakXVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C392248BE;
-	Mon,  2 Jun 2025 14:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93F922D795;
+	Mon,  2 Jun 2025 15:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875723; cv=none; b=VcT5e9F1IkgbTi/iufO9rVxgkjKcLm63OEnw+zKpTBrSCJn8u9vgNv2kRIyh00soKQsEZYh2CVr+kamjlpiSftKalwBAHFkokMsDaKu1rxtxH1BtCy6PONPXDECk1iBC93/XUZeDJMpGEbr0/7GZrZFV7WdkHSUojQY02905ugQ=
+	t=1748877294; cv=none; b=gPYtDMKhcgYmeWNiHBQILIN0MmKBDudYsuMGn0DB7wX5BKR+QqlnTsOApZaplztmKwn4y7PqlRVArSBRjdw9FVSpXVPXuYo+fTefJUC0c3uNCfSEg+R8niTjVstNE3QKRBVYXk05cK8M5pRiD9m9XQwxH90ucHsSRRvPAcR/Rm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875723; c=relaxed/simple;
-	bh=gl0r2aOHk7vmJVVMYpraoxM6bKkuNZ1xI7hQvlbBrDM=;
+	s=arc-20240116; t=1748877294; c=relaxed/simple;
+	bh=eqp6bGq1HCLu2rTTk8Y0qr+2m5BOptoH8vKOduRa9Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbGQpFtVU515WvQunZnKZROcpIqIvVS8D8eb76s1Pzg8t70C5Xn7ceMArsT6RckcdMTD+OO2d5a5vyjSBOQf5ni3MfqMl983R+0b9ZXDIQZ073SKuTVVD+AsI0Vx0afQvUN3X7THEy1aC+DPAoUsqnDTA2PVdbH1Wi1IzjR3IW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vacRtxAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9118C4CEEB;
-	Mon,  2 Jun 2025 14:48:41 +0000 (UTC)
+	 MIME-Version; b=Ip2GcWuyhsbScUrZo2dw5lJZhz0Uau7QPHFuMhxwfrmGEoO17xczkL91u8DddCDsDGPO4VKThMAIEsz4epq8pPMFBKvdhKaEU3F5sRf03HR0O7bqg2HHoBfsGyXpoHJJIehftodntxWAvdMXUeYfjNbHTV6sRt1inu9b09PtknA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2aakXVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED06FC4CEEB;
+	Mon,  2 Jun 2025 15:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875722;
-	bh=gl0r2aOHk7vmJVVMYpraoxM6bKkuNZ1xI7hQvlbBrDM=;
+	s=korg; t=1748877292;
+	bh=eqp6bGq1HCLu2rTTk8Y0qr+2m5BOptoH8vKOduRa9Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vacRtxABeP8URe41ZFBFVhsh23ZsprdqCFjgXHHC5VBSS0Z5oObxXFd5mr8yTnquy
-	 2lBeXDqZFrgb4D0Pd+UyzLCsndfJDcuwhkTXW0hUS3Fj5ZBX+vyyXaf4iXvkts8qAL
-	 Z1G8Av5QxUgXq3sLwmepWO9OcP+XY2plCCu8rOD8=
+	b=U2aakXVPdwldxAcldWfsCmzlvh56X6S1m+25sEIaT5CnCWEvQu5wzI2w4mU3Yh2cA
+	 twq8OX+lETaCRWNWrmW65Ljmw8WuUBFXefrJJlnvDc+/le+F6iCGdqCFNYjQiJiqXd
+	 zBbSvI1B5DX4nVdEy86nWt2T1UQFKWY5Q5eW5iEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Tony Zhu <tony.zhu@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 222/270] perf/amd/ibs: Fix perf_ibs_op.cnt_mask for CurCnt
+Subject: [PATCH 6.1 231/325] dmaengine: idxd: add per DSA wq workqueue for processing cr faults
 Date: Mon,  2 Jun 2025 15:48:27 +0200
-Message-ID: <20250602134316.253785488@linuxfoundation.org>
+Message-ID: <20250602134329.168547077@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Bangoria <ravi.bangoria@amd.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit 46dcf85566170d4528b842bf83ffc350d71771fa ]
+[ Upstream commit 2f30decd2f23a376d2ed73dfe4c601421edf501a ]
 
-IBS Op uses two counters: MaxCnt and CurCnt. MaxCnt is programmed with
-the desired sample period. IBS hw generates sample when CurCnt reaches
-to MaxCnt. The size of these counter used to be 20 bits but later they
-were extended to 27 bits. The 7 bit extension is indicated by CPUID
-Fn8000_001B_EAX[6 / OpCntExt].
+Add a workqueue for user submitted completion record fault processing.
+The workqueue creation and destruction lifetime will be tied to the user
+sub-driver since it will only be used when the wq is a user type.
 
-perf_ibs->cnt_mask variable contains bit masks for MaxCnt and CurCnt.
-But IBS driver does not set upper 7 bits of CurCnt in cnt_mask even
-when OpCntExt CPUID bit is set. Fix this.
-
-IBS driver uses cnt_mask[CurCnt] bits only while disabling an event.
-Fortunately, CurCnt bits are not read from MSR while re-enabling the
-event, instead MaxCnt is programmed with desired period and CurCnt is
-set to 0. Hence, we did not see any issues so far.
-
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/r/20250115054438.1021-5-ravi.bangoria@amd.com
+Tested-by: Tony Zhu <tony.zhu@intel.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Co-developed-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Link: https://lore.kernel.org/r/20230407203143.2189681-7-fenghua.yu@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 8dfa57aabff6 ("dmaengine: idxd: Fix allowing write() from different address spaces")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/amd/ibs.c         | 3 ++-
- arch/x86/include/asm/perf_event.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/dma/idxd/cdev.c | 11 +++++++++++
+ drivers/dma/idxd/idxd.h |  1 +
+ 2 files changed, 12 insertions(+)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index 354d52e17ef55..8525b7960787c 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -808,7 +808,8 @@ static __init int perf_event_ibs_init(void)
- 	if (ibs_caps & IBS_CAPS_OPCNTEXT) {
- 		perf_ibs_op.max_period  |= IBS_OP_MAX_CNT_EXT_MASK;
- 		perf_ibs_op.config_mask	|= IBS_OP_MAX_CNT_EXT_MASK;
--		perf_ibs_op.cnt_mask    |= IBS_OP_MAX_CNT_EXT_MASK;
-+		perf_ibs_op.cnt_mask    |= (IBS_OP_MAX_CNT_EXT_MASK |
-+					    IBS_OP_CUR_CNT_EXT_MASK);
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 9f8adb7013eba..e2a89873c6e1a 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -408,6 +408,13 @@ static int idxd_user_drv_probe(struct idxd_dev *idxd_dev)
  	}
  
- 	ret = perf_ibs_pmu_init(&perf_ibs_op, "ibs_op");
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index a4e4bbb7795d3..63fc0f50cd38c 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -402,6 +402,7 @@ struct pebs_xmm {
-  */
- #define IBS_OP_CUR_CNT		(0xFFF80ULL<<32)
- #define IBS_OP_CUR_CNT_RAND	(0x0007FULL<<32)
-+#define IBS_OP_CUR_CNT_EXT_MASK	(0x7FULL<<52)
- #define IBS_OP_CNT_CTL		(1ULL<<19)
- #define IBS_OP_VAL		(1ULL<<18)
- #define IBS_OP_ENABLE		(1ULL<<17)
+ 	mutex_lock(&wq->wq_lock);
++
++	wq->wq = create_workqueue(dev_name(wq_confdev(wq)));
++	if (!wq->wq) {
++		rc = -ENOMEM;
++		goto wq_err;
++	}
++
+ 	wq->type = IDXD_WQT_USER;
+ 	rc = drv_enable_wq(wq);
+ 	if (rc < 0)
+@@ -426,7 +433,9 @@ static int idxd_user_drv_probe(struct idxd_dev *idxd_dev)
+ err_cdev:
+ 	drv_disable_wq(wq);
+ err:
++	destroy_workqueue(wq->wq);
+ 	wq->type = IDXD_WQT_NONE;
++wq_err:
+ 	mutex_unlock(&wq->wq_lock);
+ 	return rc;
+ }
+@@ -439,6 +448,8 @@ static void idxd_user_drv_remove(struct idxd_dev *idxd_dev)
+ 	idxd_wq_del_cdev(wq);
+ 	drv_disable_wq(wq);
+ 	wq->type = IDXD_WQT_NONE;
++	destroy_workqueue(wq->wq);
++	wq->wq = NULL;
+ 	mutex_unlock(&wq->wq_lock);
+ }
+ 
+diff --git a/drivers/dma/idxd/idxd.h b/drivers/dma/idxd/idxd.h
+index 14c6ef987fede..5dbb67ff1c0cb 100644
+--- a/drivers/dma/idxd/idxd.h
++++ b/drivers/dma/idxd/idxd.h
+@@ -185,6 +185,7 @@ struct idxd_wq {
+ 	struct idxd_dev idxd_dev;
+ 	struct idxd_cdev *idxd_cdev;
+ 	struct wait_queue_head err_queue;
++	struct workqueue_struct *wq;
+ 	struct idxd_device *idxd;
+ 	int id;
+ 	struct idxd_irq_entry ie;
 -- 
 2.39.5
 
