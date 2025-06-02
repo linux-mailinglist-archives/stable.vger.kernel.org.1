@@ -1,96 +1,124 @@
-Return-Path: <stable+bounces-150625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9238EACBB45
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 20:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 352A4ACBBF3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 21:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BCC2175938
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 18:51:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F119A170327
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 19:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2153622423F;
-	Mon,  2 Jun 2025 18:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8C413BC35;
+	Mon,  2 Jun 2025 19:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="r++w5tCr";
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ZaPzs+b1"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="FxoRIPnj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E1C2C3259;
-	Mon,  2 Jun 2025 18:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E481117B402;
+	Mon,  2 Jun 2025 19:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748890308; cv=none; b=B+adnH40ut+xZdo86W0HveGSpJY4IgKExoyUubdGEL3tsfZGKlxmJSYdXackXH7TQii0i6QYP7i+XBjLslyJ52RYPAJtw3VHkRIdBKCnQ1feqPElpOuJQjwTDiHTsVYkEf7niuZqMXQTyNExIp+hqn/qJ5Y2JvlhaCJTyaDdj3U=
+	t=1748893900; cv=none; b=sbK10P9sCf5w3RK1RY6rKXpR6HpuHBqXZn5vJmIDZsoEn9JI2ANz5IJ1snDjwS17rc0Qv2GGA8d/MxJ/h/TqUh/2AHpupdvKbYXG507U7skCgpnHgrcBjmSOnqQxrsA7+wWUCxMcVSh9YyPtAUJ3mTzjKcZy9Qbyxe382YwMGis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748890308; c=relaxed/simple;
-	bh=USPYj4wNHP10EUrCkd1PRZjBIkNjkOZO1VvwhdupL3o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FcUobQkWGEnUrKsWopb5UhUnvN8Z2ZaIt1NgSrDwL77tpv8I7saIKShAjR+MGZGXMY1VMiRXf8sTHoM6XPwxo/oMc5jdzhBO2n5zidzgX1z6ZAeukTV21RtUwyYDKrHF8PtI5bj+YE2c8bhirz9bn9RlVJ1j9WGGj1IvUD4LZrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=r++w5tCr; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ZaPzs+b1; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Received: by mail.netfilter.org (Postfix, from userid 109)
-	id 8FE4E6027C; Mon,  2 Jun 2025 20:51:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1748890295;
-	bh=+ulpBVanxH0UrfdRT7Z3xXqskJvgwq1PMNuyqv3rFKk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r++w5tCrsyC0a80yYeyNnl4Dx8phB/eRfPP9a1kSDpRH+kLwwzcO7FSzpaVGFH6vC
-	 LTMF6s5GOgeb/sgvIsXbVDG8cjixtTqT+1/IJe1Pd6ZOL7/7DBY0PgBWgkSOZ4Pu5T
-	 dpEVch+kG65cX9vDO36tzwhuDNIVxmt/0xFwgIsfkb4zxcu//cWH/e5uQQZA9DtI05
-	 MbLDGdS279SwiROHvRnGY4urvEeSse35q6BYEYCAcr2rwGyvK7YZiWXJy6cCaoQo/z
-	 W8HDY0vTqQ1yaVka1HwL/0K1y+1BV8ICVxxqrql/99uoLjQKCxwelUnrVET5L14yuq
-	 /dKxUDp1pbsUQ==
-X-Spam-Level: 
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id F1D1360272;
-	Mon,  2 Jun 2025 20:51:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1748890294;
-	bh=+ulpBVanxH0UrfdRT7Z3xXqskJvgwq1PMNuyqv3rFKk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZaPzs+b1QqA6jKxcE5hzFNLorLXEaKddHhLmTvcQSiujTLXN4W2ztpX9P359Ka3fy
-	 vWLzGubn5+k9iU7buJVVP38Z0ljXqxYsXh/NX0KYj8lXAwPN+4dz4TnQzVHa5T0zD6
-	 gfaorUrQH3z8DsV/VlCIykpHu0JaQnPDCX0fCAOtyT5qLa9SM7V3B0caExeXNij3Ej
-	 TKh4Wkn/CSnElqsvmjWTp4PSgw14jUhc/tCgch7JeQDZ0ERgM8IY5JOmx3oaEdyFbG
-	 jzFK/985KidZ1GsaXGkt2v4oJK7SLTdHXxRwaDp/JqSfBJXv4wfe1dIe+rESk6sFhx
-	 xM97SkuqqCvNg==
-Date: Mon, 2 Jun 2025 20:51:31 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Denis Arefev <arefev@swemel.ru>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Fernando Fernandez Mancera <ffmancera@riseup.net>,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH 5.10] netfilter: nft_socket: fix sk refcount leaks
-Message-ID: <aD3ymi8DguYXw7ri@calendula>
-References: <20250602123948.40610-1-arefev@swemel.ru>
+	s=arc-20240116; t=1748893900; c=relaxed/simple;
+	bh=PDxgwHxZ2fv1zHkhlESn3ZqpBz71BeATIeQYdGAevYM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t37NY2+i2ucpg8dOP0nCbTvu3USCnT/83bFXQjevj1PJ8yMLORSTiIpi/DqJWQdAfnxMJj0jfdqgVq0o0VbTGwLiIPAvKzMKwAi/y5W3jIZ5o7RHcetDIsk1n4J5LsppP06ZxWcHJclzSMYCsQ1wgTN8ZuNwT3T57hEfPKBjLvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=FxoRIPnj; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a5123c1533so310451f8f.2;
+        Mon, 02 Jun 2025 12:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1748893897; x=1749498697; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FdQH+gYaWiAPPdu29kvcsCjEWq2JnvTRRl0+eDrbZLg=;
+        b=FxoRIPnjxmj5Cu8bQrYH7M0D/FetOW4RGvSeB3tV+UTNLMJrjwbo1ifa6aK3iZgEzq
+         SHUut2DySh2Ojv3Mw3zdUAI/PD7V1CcQfbsczTDlf2Tz3xnHCHimrpR27pr32m3Oh0ZX
+         cTfPZUuxnWAFXvYcERxTfjdNbIca18/0WvuJxMmFqwxD5D56aZVurMgQZNaNSGoxJ6rq
+         R53/1pD8mNlrVRdwUVmz8txnWSbe1P/haTpr++JpUFp2+OxQggziJoza0lDRAJU8micI
+         4AMDmJlsc4cvaARTTHCH+UuxVMHvL+cJyMReVpMFMNKCjZwHN0gWSUwsWVq3bYoqm4fj
+         4i/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748893897; x=1749498697;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FdQH+gYaWiAPPdu29kvcsCjEWq2JnvTRRl0+eDrbZLg=;
+        b=uoLi+42SXfUEQGeeSnpc53cCSVDxtYpZGOex6b4hnWL38wWX1cNkbuEiPUhEwOy6ba
+         YF+PZC2AhDwi3BeZsh87NQEsIMvOKtCppTwMpQwP5nyqObRXz7l6H7qAkC8wci5ZmhbE
+         WOL+SbzkTEa7ukJQikljXBOqvs77MrwFneH/oExRRDlemUjsq7movIcWsth5HwYPILyf
+         +WBTjnkPwG8FYzvH4LDHG7w3gE8s6DbuqCHB856+CNeWZP7yQNN077Eb6UWM+Xlv7v9K
+         jVglKAaR4qh+TQc7wtmqeRBYFR5Leg7PJoaqSzE0HNvIM7B4fgRneqBzFC75Euzv/wEw
+         8oWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWTpzMa20tBC//3E6LlVihSi6pSD/VGuQNWRBBeai/+sDCcX27/VCaiaYHipWyRdsMHokPyhVC9@vger.kernel.org, AJvYcCXs7T6ifBVKCHedhlqSUaCHmXr07nQSCthMYiDn4FzPDcQOXrFGCL+tTHlBXmoKVpbIv75sl2reEmCBXoE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhwlO7rJeSof6CimqpOo0oDjjeKO7y6blCO/G5JpvkpNZXSlRa
+	bg8fTpB78l4ItkeRwMpC3HQX7d5zQaepys75/XIG9aXmqQM+ia5FG64=
+X-Gm-Gg: ASbGncsDyX4O4CLTa7dfRZa76O3bP0dxWvKa7MjV6uHFnnSN7O3qPCPotQWeTUTOXhI
+	AP09qnxwKBBTBRje6tovNC46tXCnpWgWOPFPIw3C8jRYu4nxE+ZpNIMMGgP4cCVxEXJfrY9FB2R
+	F+HU5de67Dyc0sg5KxMb/yJfrknlat3tLUkuF4+CgkCc8J5AND6O1QKuAA6CIWBmZfG/x0PCKeP
+	l7QR3bG0LX4y9guDTht4FfNrZsi7sxW8LYjMCAiwodw68kDvzBm9knTcMf56Aq8nqMA+Uo2Jfv4
+	jUB80S52RZHgnJkdIJG4zx40zCwo9THzQJlynJ1AY6vm2ZFKI0xvT8HeJgimIORKqL9tUcaxLEj
+	4MVlETX/8lPzOuznJ5I5qmQue8KEd1t9dUUhgdg==
+X-Google-Smtp-Source: AGHT+IEMS/aWQ1Ihl6wDJsvQbfZi5zg23IDKIRWgu57p786dbUitQSIW7l0HnT+yNLwD9jcz02z9ZQ==
+X-Received: by 2002:a5d:5f88:0:b0:3a3:7bbc:d959 with SMTP id ffacd0b85a97d-3a4f89a89f7mr10855462f8f.18.1748893896920;
+        Mon, 02 Jun 2025 12:51:36 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057d53.dip0.t-ipconnect.de. [91.5.125.83])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4f00971fasm15693615f8f.77.2025.06.02.12.51.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jun 2025 12:51:35 -0700 (PDT)
+Message-ID: <b86b9c0f-0a3f-46cd-8f09-a30ba7f2fc67@googlemail.com>
+Date: Mon, 2 Jun 2025 21:51:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250602123948.40610-1-arefev@swemel.ru>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.15 00/49] 6.15.1-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250602134237.940995114@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 02, 2025 at 03:39:47PM +0300, Denis Arefev wrote:
-> From: Florian Westphal <fw@strlen.de>             
-> 
-> commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c upstream.
-> 
-> We must put 'sk' reference before returning.
+Am 02.06.2025 um 15:46 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.15.1 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-I have a backport for 5.4 in the queue, I will take care of this.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Thanks.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
