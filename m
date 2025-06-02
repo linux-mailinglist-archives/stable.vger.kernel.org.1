@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C959ACB735
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45370ACB47A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF8B41C2313D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1638B9E69CC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE1A235070;
-	Mon,  2 Jun 2025 15:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CB8229B21;
+	Mon,  2 Jun 2025 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OISQ6AYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va5X4fbF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FF9235050;
-	Mon,  2 Jun 2025 15:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1048229B18;
+	Mon,  2 Jun 2025 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876761; cv=none; b=dnZvvoqUrvViNiIENtz8tugR2c9vQRASJjFwqJY5TqkJIJUIjnIcKpRsgf/6/YFlTMvox3mDIY72iVABtwElBoawLJac25j5srd47JUCwAv1G2si6Ae1QET1jB4mACAAi/F8DNU0Y5iJ5uFdXzf8cLzaY7RVQScr3GGFZC22vkI=
+	t=1748875190; cv=none; b=WqYj1K50i5jmMnJRD6UrkQ0ysAoKpQY+v2Da7azB5vMNh2F6Qfe51cpjU1NaK3KgMCuRioZP+GL6wzCg6LxxtE7EwxE7TJjEthJ3tDPXdWAyOyjhKbLk7kZDejOQjusY56UBiWS3UZo5YZqHJ8a/qB7OIZoXx0Vkn5ZpHUi7k30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876761; c=relaxed/simple;
-	bh=mxym2FzIPCTFfmXoOAie2B1kfGb3olVHHMojrmuxGoY=;
+	s=arc-20240116; t=1748875190; c=relaxed/simple;
+	bh=ScRBQD0FuN+KdxINNlK9XmUrNHeh9lZdXz2oywGyhBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDJhYogu5SkhK5Pw5+h75ddKuP9Dne/38sCu3U3sEgkSV4q8OII0heSyIFnEo7aRsB9rXVOwSKI+vu9yczGhn0VqJD/53IpNpxFN5N3LWr20/2KY5tPEg4gujB2BUYbo5TfgzGL6js1PvJzccxTdIbJ3hveZVT3iLIjm0a3LklY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OISQ6AYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB760C4CEEE;
-	Mon,  2 Jun 2025 15:06:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TPCjSopqkzLnICSBe3m0r2OIylr0myick80TibVIhnlAgn5r1jmGPcz+xSZUZ8rmumI0uffRd4SL2lkCn2akiGOHgk0HZeKiAJVShZ8lYXtTl/GfTAUbPKRfMcisaZalHz3FZWBHIAulASQJXU6vnBuGy5VrUxgGbtrfpQkQJpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Va5X4fbF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F89C4CEEB;
+	Mon,  2 Jun 2025 14:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876761;
-	bh=mxym2FzIPCTFfmXoOAie2B1kfGb3olVHHMojrmuxGoY=;
+	s=korg; t=1748875190;
+	bh=ScRBQD0FuN+KdxINNlK9XmUrNHeh9lZdXz2oywGyhBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OISQ6AYhrjywyQCLzlWm7Kpw0T0yFIMf7vROcmjnbmwgbFr6a5026FvQl6AM8voRV
-	 t8BoNFn1KvdcVmm+sH1/0KgSk6Wxt6LTLkKjI2wKgwzX3I6ylVCPDf+RjM37AbjG0l
-	 Z1ODVuUCC2Li72REKEVPBtCp1RJF2lSarSPlQIVg=
+	b=Va5X4fbFd7+udK4b+gulxJup9KhFiUSdiqniTBwtwtFF6zi26VD0/HUwIVx2hRrsU
+	 2YxB0Oyu3/2FVCWpYX1YnJJwqIluHvhiLvocORi7omNiUvPJA1ul3CBbRIxTvEmPy/
+	 QNFvfjQ3qEvARZVtmdoW0Qvs9d4FsGfYJq1m8jXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/325] vfio/pci: Handle INTx IRQ_NOTCONNECTED
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 056/270] staging: iio: adc: ad7816: Correct conditional logic for store mode
 Date: Mon,  2 Jun 2025 15:45:41 +0200
-Message-ID: <20250602134322.417035593@linuxfoundation.org>
+Message-ID: <20250602134309.485494585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-[ Upstream commit 860be250fc32de9cb24154bf21b4e36f40925707 ]
+commit 2e922956277187655ed9bedf7b5c28906e51708f upstream.
 
-Some systems report INTx as not routed by setting pdev->irq to
-IRQ_NOTCONNECTED, resulting in a -ENOTCONN error when trying to
-setup eventfd signaling.  Include this in the set of conditions
-for which the PIN register is virtualized to zero.
+The mode setting logic in ad7816_store_mode was reversed due to
+incorrect handling of the strcmp return value. strcmp returns 0 on
+match, so the `if (strcmp(buf, "full"))` block executed when the
+input was not "full".
 
-Additionally consolidate vfio_pci_get_irq_count() to use this
-virtualized value in reporting INTx support via ioctl and sanity
-checking ioctl paths since pdev->irq is re-used when the device
-is in MSI mode.
+This resulted in "full" setting the mode to AD7816_PD (power-down) and
+other inputs setting it to AD7816_FULL.
 
-The combination of these results in both the config space of the
-device and the ioctl interface behaving as if the device does not
-support INTx.
+Fix this by checking it against 0 to correctly check for "full" and
+"power-down", mapping them to AD7816_FULL and AD7816_PD respectively.
 
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20250311230623.1264283-1-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Acked-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://lore.kernel.org/stable/20250414152920.467505-1-gshahrouzi%40gmail.com
+Link: https://patch.msgid.link/20250414154050.469482-1-gshahrouzi@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/vfio_pci_config.c |  3 ++-
- drivers/vfio/pci/vfio_pci_core.c   | 10 +---------
- drivers/vfio/pci/vfio_pci_intrs.c  |  2 +-
- 3 files changed, 4 insertions(+), 11 deletions(-)
+ drivers/staging/iio/adc/ad7816.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 7902e1ec0fef2..105243d83b2dc 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -1806,7 +1806,8 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
- 					cpu_to_le16(PCI_COMMAND_MEMORY);
- 	}
+--- a/drivers/staging/iio/adc/ad7816.c
++++ b/drivers/staging/iio/adc/ad7816.c
+@@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
  
--	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx)
-+	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx ||
-+	    vdev->pdev->irq == IRQ_NOTCONNECTED)
- 		vconfig[PCI_INTERRUPT_PIN] = 0;
- 
- 	ret = vfio_cap_init(vdev);
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index f357fd157e1ed..aa362b434413a 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -719,15 +719,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_finish_enable);
- static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_type)
- {
- 	if (irq_type == VFIO_PCI_INTX_IRQ_INDEX) {
--		u8 pin;
--
--		if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) ||
--		    vdev->nointx || vdev->pdev->is_virtfn)
--			return 0;
--
--		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
--
--		return pin ? 1 : 0;
-+		return vdev->vconfig[PCI_INTERRUPT_PIN] ? 1 : 0;
- 	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
- 		u8 pos;
- 		u16 flags;
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 5cbcde32ff79e..64d78944efa53 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -207,7 +207,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
- 	if (!is_irq_none(vdev))
- 		return -EINVAL;
- 
--	if (!pdev->irq)
-+	if (!pdev->irq || pdev->irq == IRQ_NOTCONNECTED)
- 		return -ENODEV;
- 
- 	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
--- 
-2.39.5
-
+-	if (strcmp(buf, "full")) {
++	if (strcmp(buf, "full") == 0) {
+ 		gpiod_set_value(chip->rdwr_pin, 1);
+ 		chip->mode = AD7816_FULL;
+ 	} else {
 
 
 
