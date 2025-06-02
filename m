@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BD8ACB28B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13ECACB4AD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C833A5EFA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172494A577B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5771522DF85;
-	Mon,  2 Jun 2025 14:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC5822A801;
+	Mon,  2 Jun 2025 14:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7L+lanv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGS2ivVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1223F221FBF;
-	Mon,  2 Jun 2025 14:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DE317BBF;
+	Mon,  2 Jun 2025 14:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873803; cv=none; b=Wo18DYFmtXdRE+Ha8M8O2lsVPkJ57GRFtkhvhbyoiPhLrcESQVanbcI8yGyaee9d6KqEzRk4g6xai91CCGbqtEAr1v9fdwUKTHtgIH2fMF+K/muOW0l0dlcIkaOMxlrJcOCuf+R9251WcXK8JGZ8GM1U2nAUBO3d/Rxp/rlf7OQ=
+	t=1748875222; cv=none; b=eLFfWFzUR29iUihzaGVKBwlrM52vMUwaveqGIU9sIZcPYAcf+vLEGVh4pke3hQD4QKd86BZgsTiyYZyhe00cEmsImHnkfOxIZZ1OyXGBZlL1F/GK9nC0GY0b3xNluPWsYM37tBv76FCzJ6hDg9FMrF/VbiAGE2tpOZWwMaJPIWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873803; c=relaxed/simple;
-	bh=uVvHOG3tLgzoE9MSccsrE46H1ORyO7oeyyhjOkxBQBQ=;
+	s=arc-20240116; t=1748875222; c=relaxed/simple;
+	bh=APWU9fXaElOJa7b1mSuwIVdt6T1tJy35mn8AYP4RJh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZmUJxtsYVeTfEuzfrg5beYEcHGo2oflabGldhp8q9yhYaSntMQ2UIPNdF99JibyHDY+GZobgDAegSH0Yc+E3NE5uHecPrC0kKHwgTNfbzbCNzw47TwDK8l83ek1rBhsfIb61qF2wJtlFmaJ6H8670aaKQSRjzIK8dXFfRq0AHCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7L+lanv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95432C4CEF0;
-	Mon,  2 Jun 2025 14:16:42 +0000 (UTC)
+	 MIME-Version; b=b1TRivizYIWhV84CpbMGYcmVi+Pt/hyXlSgNrqVwWC/XyVESEy179pwjOnTdg2+HtokwzS+Jmo0FJAJVDBJjJZluyKNTkVD6DKpkRDT865rl+z5XMaLGGesbNQZBjmBTsywAB74kBA8wfT7cBfuPsmS2yQJutBFs2X6pOJiaxnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGS2ivVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F833C4CEF4;
+	Mon,  2 Jun 2025 14:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873802;
-	bh=uVvHOG3tLgzoE9MSccsrE46H1ORyO7oeyyhjOkxBQBQ=;
+	s=korg; t=1748875221;
+	bh=APWU9fXaElOJa7b1mSuwIVdt6T1tJy35mn8AYP4RJh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7L+lanv9+aw4tgClLxHv6GgY9QujY4UCbOTmlxN83JqU96LF+vLR4Z8UHyb2RV6g
-	 M/fiH3Y+jWEY2IQMNKJM5rE+cd0+oq0yZg6G7OZVsxlOzqQ/iIX7QtynPc/tWTLnqQ
-	 Bnc4Nl79TLtSfu0Mh4WPkubf4gPXnEDRHL3vTNt4=
+	b=eGS2ivVjOsVx4eZtKc8F0BZ+rT56CnvpazJ7wfpM1CwMWYLdLov5BPEn43MNCYpM1
+	 2Z311a27LQFNsy6OecbF+Z2pplz/A2oI7z5USLgzML12HF5MKwEPkkWUIxDx6ZfJBl
+	 kQqwPTVACItryxJLE5MVpjl0r/VZ9/A2UDbrAvjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 257/444] wifi: mac80211: dont unconditionally call drv_mgd_complete_tx()
+Subject: [PATCH 5.10 036/270] irqchip/gic-v2m: Mark a few functions __init
 Date: Mon,  2 Jun 2025 15:45:21 +0200
-Message-ID: <20250602134351.359704430@linuxfoundation.org>
+Message-ID: <20250602134308.669477104@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
+[ Upstream commit d51a15af37ce8cf59e73de51dcdce3c9f4944974 ]
 
-We might not have called drv_mgd_prepare_tx(), so only call
-drv_mgd_complete_tx() under the same conditions.
+They are all part of the init sequence.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20221121140048.534395323@linutronix.de
+Stable-dep-of: 3318dc299b07 ("irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v2m.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 42e2c84ed2484..37163d84104fa 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2959,7 +2959,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	if (tx)
- 		ieee80211_flush_queues(local, sdata, false);
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index 6a7551fd91a05..0b57ac48e18b6 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -263,7 +263,7 @@ static struct msi_domain_info gicv2m_pmsi_domain_info = {
+ 	.chip	= &gicv2m_pmsi_irq_chip,
+ };
  
--	drv_mgd_complete_tx(sdata->local, sdata, &info);
-+	if (tx || frame_buf)
-+		drv_mgd_complete_tx(sdata->local, sdata, &info);
+-static void gicv2m_teardown(void)
++static void __init gicv2m_teardown(void)
+ {
+ 	struct v2m_data *v2m, *tmp;
  
- 	/* clear AP addr only after building the needed mgmt frames */
- 	eth_zero_addr(sdata->deflink.u.mgd.bssid);
+@@ -278,7 +278,7 @@ static void gicv2m_teardown(void)
+ 	}
+ }
+ 
+-static int gicv2m_allocate_domains(struct irq_domain *parent)
++static __init int gicv2m_allocate_domains(struct irq_domain *parent)
+ {
+ 	struct irq_domain *inner_domain, *pci_domain, *plat_domain;
+ 	struct v2m_data *v2m;
+@@ -408,7 +408,7 @@ static int __init gicv2m_init_one(struct fwnode_handle *fwnode,
+ 	return ret;
+ }
+ 
+-static const struct of_device_id gicv2m_device_id[] = {
++static __initconst struct of_device_id gicv2m_device_id[] = {
+ 	{	.compatible	= "arm,gic-v2m-frame",	},
+ 	{},
+ };
+@@ -458,7 +458,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
+ #ifdef CONFIG_ACPI
+ static int acpi_num_msi;
+ 
+-static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
++static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
+ {
+ 	struct v2m_data *data;
+ 
+@@ -473,7 +473,7 @@ static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
+ 	return data->fwnode;
+ }
+ 
+-static bool acpi_check_amazon_graviton_quirks(void)
++static __init bool acpi_check_amazon_graviton_quirks(void)
+ {
+ 	static struct acpi_table_madt *madt;
+ 	acpi_status status;
 -- 
 2.39.5
 
