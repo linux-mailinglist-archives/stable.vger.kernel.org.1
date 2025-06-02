@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A095ACB891
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:43:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDE9ACB40D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F15794526E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9345B4A4FD4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3281922A4DB;
-	Mon,  2 Jun 2025 15:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9AD22F74F;
+	Mon,  2 Jun 2025 14:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6TiTDsE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1EaYoHG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E424A2288F4;
-	Mon,  2 Jun 2025 15:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB03815CD55;
+	Mon,  2 Jun 2025 14:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877206; cv=none; b=bMqh1Dv9cTkkITvT0u1h2tilGUcUHdOaF/xxoV7p6OTlH0ifJQfeU6qAEro2nVHla2+YJQ1Vd/IjHlGSOiC5j9gXW331JdJcxqOnWfQE98d9Z2ZTyb9bqoAGO+uMJOs2Y0Af7Jo4S7RTTtldlQaG4SI6kyB3c2QH58Ap5TSmhO4=
+	t=1748874922; cv=none; b=hnOZvG3R1TZWcXQp5CbkJ7rxDOxnNYatMlXS7qSDIfSNhC8LvpTjr7PlcO5Ds2pPYuXgTwIRcd1b/ij4NlBI60NxrWEVDQCqBPDT2hat/3bRIO6HXX2V9OoNfIM+26ZStPQ+XH8YVpYxCMyVe2uTM+tq7aJJIoidihSs/KKgTsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877206; c=relaxed/simple;
-	bh=74hgtF2o6LSbFAR90cBHxR3UFc1nLS7p6Up0oejcsVQ=;
+	s=arc-20240116; t=1748874922; c=relaxed/simple;
+	bh=DwwR0VdQ4IMBjxMZsYKByUCMsdLUnzUlUHkeKUY3Szw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEj+TD5vZkFc72mxFojGBCHQJZdG+N0n3W7JIB6UDuQnNbm2QxbqK+Nwim5UNmXTiV3c2cj9pUA006J10YLJ9tcGqEpN4cWilZNKQwRaRwvZOE4+TQwrxl70GPOVmk4u+xpnYwtmP3fbgLGCtS5rdRSQMIqkwSZRFbmXcgMTsz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6TiTDsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632E9C4CEEB;
-	Mon,  2 Jun 2025 15:13:25 +0000 (UTC)
+	 MIME-Version; b=Z/5BXzavuc6oOuQ2Q3T0ZkGFVRRA1URC/0hFrLRlbJ72Kn8Y/1IjiGFn1LkNNR3OSsdg6Bv5YxqN+8a3OGBRB/dhHuMtOa7aTpPTYAINd+kxnD43jrBeUGXszSVGvzswkcwG0JgAnA5GYgNcFGBIJBEhucAxge/ABKM1P6gdLIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1EaYoHG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27807C4CEEB;
+	Mon,  2 Jun 2025 14:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877205;
-	bh=74hgtF2o6LSbFAR90cBHxR3UFc1nLS7p6Up0oejcsVQ=;
+	s=korg; t=1748874922;
+	bh=DwwR0VdQ4IMBjxMZsYKByUCMsdLUnzUlUHkeKUY3Szw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6TiTDsENct+GrHKlvv8ZISQ8hlpBtHLTlvWwdAnh16zUWp9cGspaIqYmw/OXb6Ol
-	 SgEjixe7NWNR3H9kkDGj1e1jZ/NAiU6SuDPOPvt/g4mgTH1uTacsQ/4lnZ3Ozok4LN
-	 WZvIgbz+S78vwVqMkAoLr+AdRVANL9/TdPQNoT48=
+	b=w1EaYoHG5KWkEVGm8GAWHRaycOAOfwYseYIOL9sMsuDq6q0aJIi+UuRU7rZoYv7OO
+	 d/7EoTpJKtcAN2pv6SHeoCsl3RSSsay1a0vPdb6QOASkAqI0b5m5nJ28nyeCs/IfRV
+	 6NliX/qZB994T0qXX/yNe0q/N9FAJSlaY8heZUA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 203/325] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
+Subject: [PATCH 5.4 146/204] smack: recognize ipv4 CIPSO w/o categories
 Date: Mon,  2 Jun 2025 15:47:59 +0200
-Message-ID: <20250602134328.042991931@linuxfoundation.org>
+Message-ID: <20250602134301.390198408@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
+[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
 
-After a port swap between separate fabrics, there may be multiple nodes in
-the vport's fc_nodes list with the same fabric well known address.
-Duplication is temporary and eventually resolves itself after dev_loss_tmo
-expires, but nameserver queries may still occur before dev_loss_tmo.  This
-possibly results in returning stale fabric ndlp objects.  Fix by adding an
-nlp_state check to ensure the ndlp search routine returns the correct newer
-allocated ndlp fabric object.
+If SMACK label has CIPSO representation w/o categories, e.g.:
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+| # cat /smack/cipso2
+| foo  10
+| @ 250/2
+| ...
+
+then SMACK does not recognize such CIPSO in input ipv4 packets
+and substitues '*' label instead. Audit records may look like
+
+| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
+|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
+
+This happens in two steps:
+
+1) security/smack/smackfs.c`smk_set_cipso
+   does not clear NETLBL_SECATTR_MLS_CAT
+   from (struct smack_known *)skp->smk_netlabel.flags
+   on assigning CIPSO w/o categories:
+
+| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
+| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
+
+2) security/smack/smack_lsm.c`smack_from_secattr
+   can not match skp->smk_netlabel with input packet's
+   struct netlbl_lsm_secattr *sap
+   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
+   but skp->smk_netlabel.flags have (what is incorrect):
+
+| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
+| 	if ((skp->smk_netlabel.flags &
+| 		 NETLBL_SECATTR_MLS_CAT) == 0)
+| 		found = 1;
+| 	break;
+| }
+
+This commit sets/clears NETLBL_SECATTR_MLS_CAT in
+skp->smk_netlabel.flags according to the presense of CIPSO categories.
+The update of smk_netlabel is not atomic, so input packets processing
+still may be incorrect during short time while update proceeds.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ security/smack/smackfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 57be02f8d5c18..b04112c77fcd1 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5619,6 +5619,7 @@ static struct lpfc_nodelist *
- __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- {
- 	struct lpfc_nodelist *ndlp;
-+	struct lpfc_nodelist *np = NULL;
- 	uint32_t data1;
- 
- 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
-@@ -5633,14 +5634,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- 					 ndlp, ndlp->nlp_DID,
- 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
- 					 ndlp->active_rrqs_xri_bitmap);
--			return ndlp;
-+
-+			/* Check for new or potentially stale node */
-+			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
-+				return ndlp;
-+			np = ndlp;
- 		}
- 	}
- 
--	/* FIND node did <did> NOT FOUND */
--	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
--			 "0932 FIND node did x%x NOT FOUND.\n", did);
--	return NULL;
-+	if (!np)
-+		/* FIND node did <did> NOT FOUND */
-+		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
-+				 "0932 FIND node did x%x NOT FOUND.\n", did);
-+
-+	return np;
- }
- 
- struct lpfc_nodelist *
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index ddb0a292802ef..526598b40b13c 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -921,6 +921,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
+ 	if (rc >= 0) {
+ 		old_cat = skp->smk_netlabel.attr.mls.cat;
+ 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
++		if (ncats.attr.mls.cat)
++			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
++		else
++			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
+ 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
+ 		synchronize_rcu();
+ 		netlbl_catmap_free(old_cat);
 -- 
 2.39.5
 
