@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E39ACB643
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4592ACB5CD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0E2C4C35BC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C034BA235D5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97426223338;
-	Mon,  2 Jun 2025 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FD522A819;
+	Mon,  2 Jun 2025 14:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBVGKjbE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDJpFcFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B62518DF89;
-	Mon,  2 Jun 2025 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DA322A7F1;
+	Mon,  2 Jun 2025 14:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876413; cv=none; b=HGhMjfXGFf5Frkyrx69GZPlrNX5U9ob3ls8MPHpGVxbQ5ivT31JSqd3GQ+dNcEtGoMbSGWcZvecd2am+2JV7/OdVpxe4sYoAylIScNDo3EBW0AwucHAi/WWgUOr9fj8rOK8LpkvfasbUBufik9sahVh0zqrOTQWiKHZSPXVV4iY=
+	t=1748875853; cv=none; b=NR0QsLcRYBRG5cKGhlA+HVuU5KoN/pRczrENpJYLfR4/fIZ4uwyhPkHFUS55uMwUzeJ3OSc67Zy/ofhm772AtZBRh/rilTcnSZ83j74gth4QOzwKWcBfK3JzIdl1NQ5zTnD+9cqaJkB37ZFeSAalL0d8bkMZ8+68vPcbQqIuqMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876413; c=relaxed/simple;
-	bh=W/hAHOJTPWllvlMJ/AIcYoQRbhTiPe2X5Lll5GWbu6Y=;
+	s=arc-20240116; t=1748875853; c=relaxed/simple;
+	bh=Y+MQ63rIJ+Fw2Flpb2vxLe6M2i9iPIj+VYA2kYIW7DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCkyYWjd3/rq6CKTdz3K5BvfgzuZ9K+6CeUnBTX7Kb1FKAMiudwMwnhWvXHaaxN6usvthVh+Yz64oOXztyR7+o3so6dIW31z2yt9JQ9oIvMuc71ATvbnie11RsYbUw+6B2H2Uelq9Wt1csl3yIMmjs1MUvp6BPnsH9a3nuD6D7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBVGKjbE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E94C4CEEB;
-	Mon,  2 Jun 2025 15:00:11 +0000 (UTC)
+	 MIME-Version; b=XH2w0JEAYOlYutsZOBRd4YIdzZ/j6FMzJHIDjU01OWscCLn7mqGwt0RJ+jYvJ7/BvJ1XgtZhyBQSf63FpX3CdukYdVY0kJPFRVdHMNItePaygf1/9trE96pp+f2hFORU9ribwUaEsl2lKUA+tCHd18S52j3157rCx64zuznMDCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDJpFcFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA240C4CEEB;
+	Mon,  2 Jun 2025 14:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876413;
-	bh=W/hAHOJTPWllvlMJ/AIcYoQRbhTiPe2X5Lll5GWbu6Y=;
+	s=korg; t=1748875853;
+	bh=Y+MQ63rIJ+Fw2Flpb2vxLe6M2i9iPIj+VYA2kYIW7DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBVGKjbEnGqu8+Ncl1Yx/vwOAfbGHEBlCbjoHYgmI4nqLl+Mi5bx/Wyw0vKcz2k12
-	 oabYoBbXK8QhrG1BexhotUkqBKNK7oTmwB7aZfgX4D7CVs69LvfJKnNBDQSs+a9weo
-	 D4JRMSznHfLqDYEKAH+QfV2QjwbRuc8JCM7jGvTA=
+	b=uDJpFcFNlvsfu6F44we8nZr183rxnTy3HgxYqUMQiEpJPpP1THz+h3SK8uygMuoGm
+	 +SwEauXxS7jVHDXoVvDpZuWPzB8cEMuDGb+ZrcjlXjPMGdya6e5tN6SMZ/9fdic+Be
+	 lZ908ot07gsoCaYsUvLUGaGkUFetj1tu/M0poB0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/207] octeontx2-af: Set LMT_ENA bit for APR table entries
-Date: Mon,  2 Jun 2025 15:49:01 +0200
-Message-ID: <20250602134305.364782226@linuxfoundation.org>
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 257/270] coredump: fix error handling for replace_fd()
+Date: Mon,  2 Jun 2025 15:49:02 +0200
+Message-ID: <20250602134317.842297154@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 0eefa27b493306928d88af6368193b134c98fd64 ]
+commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
 
-This patch enables the LMT line for a PF/VF by setting the
-LMT_ENA bit in the APR_LMT_MAP_ENTRY_S structure.
+The replace_fd() helper returns the file descriptor number on success
+and a negative error code on failure. The current error handling in
+umh_pipe_setup() only works because the file descriptor that is replaced
+is zero but that's pretty volatile. Explicitly check for a negative
+error code.
 
-Additionally, it simplifies the logic for calculating the
-LMTST table index by consistently using the maximum
-number of hw supported VFs (i.e., 256).
-
-Fixes: 873a1e3d207a ("octeontx2-af: cn10k: Setting up lmtst map table").
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250521060834.19780-2-gakula@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ fs/coredump.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-index 25713287a288f..39870e419ccb0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-@@ -15,13 +15,17 @@
- #define LMT_TBL_OP_WRITE	1
- #define LMT_MAP_TABLE_SIZE	(128 * 1024)
- #define LMT_MAPTBL_ENTRY_SIZE	16
-+#define LMT_MAX_VFS		256
-+
-+#define LMT_MAP_ENTRY_ENA      BIT_ULL(20)
-+#define LMT_MAP_ENTRY_LINES    GENMASK_ULL(18, 16)
- 
- /* Function to perform operations (read/write) on lmtst map table */
- static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
- 			       int lmt_tbl_op)
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -564,7 +564,9 @@ static int umh_pipe_setup(struct subproc
  {
- 	void __iomem *lmt_map_base;
--	u64 tbl_base;
-+	u64 tbl_base, cfg;
+ 	struct file *files[2];
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+-	int err = create_pipe_files(files, 0);
++	int err;
++
++	err = create_pipe_files(files, 0);
+ 	if (err)
+ 		return err;
  
- 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
+@@ -572,10 +574,13 @@ static int umh_pipe_setup(struct subproc
  
-@@ -35,6 +39,13 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
- 		*val = readq(lmt_map_base + index);
- 	} else {
- 		writeq((*val), (lmt_map_base + index));
+ 	err = replace_fd(0, files[0], 0);
+ 	fput(files[0]);
++	if (err < 0)
++		return err;
 +
-+		cfg = FIELD_PREP(LMT_MAP_ENTRY_ENA, 0x1);
-+		/* 2048 LMTLINES */
-+		cfg |= FIELD_PREP(LMT_MAP_ENTRY_LINES, 0x6);
-+
-+		writeq(cfg, (lmt_map_base + (index + 8)));
-+
- 		/* Flushing the AP interceptor cache to make APR_LMT_MAP_ENTRY_S
- 		 * changes effective. Write 1 for flush and read is being used as a
- 		 * barrier and sets up a data dependency. Write to 0 after a write
-@@ -52,7 +63,7 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
- #define LMT_MAP_TBL_W1_OFF  8
- static u32 rvu_get_lmtst_tbl_index(struct rvu *rvu, u16 pcifunc)
- {
--	return ((rvu_get_pf(pcifunc) * rvu->hw->total_vfs) +
-+	return ((rvu_get_pf(pcifunc) * LMT_MAX_VFS) +
- 		(pcifunc & RVU_PFVF_FUNC_MASK)) * LMT_MAPTBL_ENTRY_SIZE;
+ 	/* and disallow core files too */
+ 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
+ 
+-	return err;
++	return 0;
  }
  
--- 
-2.39.5
-
+ void do_coredump(const kernel_siginfo_t *siginfo)
 
 
 
