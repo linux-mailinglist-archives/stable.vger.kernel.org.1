@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-149820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7307EACB4C0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAA9ACB298
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE904A5777
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 420C24A1899
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB60226D16;
-	Mon,  2 Jun 2025 14:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B631923ED76;
+	Mon,  2 Jun 2025 14:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3dRg1m7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIg2V6Bd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7A2221FC9;
-	Mon,  2 Jun 2025 14:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9D523ED75;
+	Mon,  2 Jun 2025 14:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875143; cv=none; b=KRFknKAawNRkMiUTyxwwVL0wAKXUd8xn05DeHoUUsyUYTMcDFy2tt1JaTcRH46rTJeqU8U0rcUbuVUihuqZ9tkgZMbZVnVu3cwkpfg1B75IJmOzUiFpRopprB8kapSKwZuOwomSHi07QUu4D88ME6RALhm52vqNyhioB0uygJnc=
+	t=1748873820; cv=none; b=BFs0+OwvzaJOVyMr3tuvTOGrwMgv4SW0Avvm2oor4iQCPstP8XpVwppGQb5Kfs3XtcYSdPZC1mqxLceWjwGliYK/nTySnWw7lv5zrODezn/UsgrztRJ7kbmt7SDMSnaiyYAvZICHdqQvvP6jbbdRVlSn/N1CbcJzmKf3tCQEH6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875143; c=relaxed/simple;
-	bh=dk76xtzYaAQ4V0Xkh1Zn1MH0HKEzaQN/4YzZwbgUYfU=;
+	s=arc-20240116; t=1748873820; c=relaxed/simple;
+	bh=3xSUgPtSKRvjUy6eBSR6JGbp/UycxjCs232zMSeAyXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEx43COdNmoXg8f6Aga1GMqLtOFrt3KnD+hylhny1p6mlF4i7SZocmwWPs3x2PtOGn7K3Vg9XI3y1Umit4e3FANco3j9m/7D6cdPX2hQ+S9GIRNYk9zaqICaVeEb5uLXU2WifaWsEv4sslLwpTcaqC3zN2xGijVaQ2PjT517jbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3dRg1m7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56F8C4CEEB;
-	Mon,  2 Jun 2025 14:39:02 +0000 (UTC)
+	 MIME-Version; b=d/QbIBLLtMMUmgWLZtcICyY9NOUYYTwsFuuDdkq8xoirC1XR8ex276jFeMstJWjbhegfIzu8FJcwAbXfHMnfi34joDhUCtawlacHOzGI/IaCByG3k7KCsn61My46iST+mu4mmq6P36Pcoc8tA0oDu3wR9bY36Qtf5b878P6wAvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIg2V6Bd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C989C4CEEE;
+	Mon,  2 Jun 2025 14:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875143;
-	bh=dk76xtzYaAQ4V0Xkh1Zn1MH0HKEzaQN/4YzZwbgUYfU=;
+	s=korg; t=1748873820;
+	bh=3xSUgPtSKRvjUy6eBSR6JGbp/UycxjCs232zMSeAyXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3dRg1m7yN+RQ9M1fxUaDFeKEwZL7SJGlKaQQY3CHtUAAtYgr0bPlmbdQOCz5g4R5
-	 1Zkc0nb96Lou51b8LBWrvQvgARpAxB86gGPTinu5tmG2LLhcC4gPPjHeo1NIfkltKG
-	 GQzadXxP2doscuN7TAuVm+bF4kz858XIB4myr2kQ=
+	b=sIg2V6BdMcBopTaFV3M4ViqZLEWhLDY/rPv928Wcx9FBPKxiBCXdKeVxHPbN8EIqC
+	 oCB8tOEF6cQw5seUNbEYqLr0jr+0mqW2jTO0vKcjaTnli0c/IUouyx8Kh/c/H0SvDJ
+	 qAoO+LLXvwhQ8KD7gKpHrVJY2MJTTHYvOpSau4DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 042/270] can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 263/444] r8152: add vendor/device ID pair for Dell Alienware AW1022z
 Date: Mon,  2 Jun 2025 15:45:27 +0200
-Message-ID: <20250602134308.906795452@linuxfoundation.org>
+Message-ID: <20250602134351.606054655@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-commit 84f5eb833f53ae192baed4cfb8d9eaab43481fc9 upstream.
+[ Upstream commit 848b09d53d923b4caee5491f57a5c5b22d81febc ]
 
-If a driver is removed, the driver framework invokes the driver's
-remove callback. A CAN driver's remove function calls
-unregister_candev(), which calls net_device_ops::ndo_stop further down
-in the call stack for interfaces which are in the "up" state.
+The Dell AW1022z is an RTL8156B based 2.5G Ethernet controller.
 
-With the mcp251xfd driver the removal of the module causes the
-following warning:
+Add the vendor and product ID values to the driver. This makes Ethernet
+work with the adapter.
 
-| WARNING: CPU: 0 PID: 352 at net/core/dev.c:7342 __netif_napi_del_locked+0xc8/0xd8
-
-as can_rx_offload_del() deletes the NAPI, while it is still active,
-because the interface is still up.
-
-To fix the warning, first unregister the network interface, which
-calls net_device_ops::ndo_stop, which disables the NAPI, and then call
-can_rx_offload_del().
-
-Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250502-can-rx-offload-del-v1-1-59a9b131589d@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Link: https://patch.msgid.link/20250206224033.980115-1-olek2@wp.pl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/r8152.c   | 1 +
+ include/linux/usb/r8152.h | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -2889,8 +2889,8 @@ static int mcp251xfd_remove(struct spi_d
- 	struct mcp251xfd_priv *priv = spi_get_drvdata(spi);
- 	struct net_device *ndev = priv->ndev;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index bbcefcc7ef8f0..1e85cfe524e87 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10032,6 +10032,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
+ 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
+ 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
++	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
+ 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
+ 	{}
+ };
+diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
+index 33a4c146dc19c..2ca60828f28bb 100644
+--- a/include/linux/usb/r8152.h
++++ b/include/linux/usb/r8152.h
+@@ -30,6 +30,7 @@
+ #define VENDOR_ID_NVIDIA		0x0955
+ #define VENDOR_ID_TPLINK		0x2357
+ #define VENDOR_ID_DLINK			0x2001
++#define VENDOR_ID_DELL			0x413c
+ #define VENDOR_ID_ASUS			0x0b05
  
--	can_rx_offload_del(&priv->offload);
- 	mcp251xfd_unregister(priv);
-+	can_rx_offload_del(&priv->offload);
- 	spi->max_speed_hz = priv->spi_max_speed_hz_orig;
- 	free_candev(ndev);
- 
+ #if IS_REACHABLE(CONFIG_USB_RTL8152)
+-- 
+2.39.5
+
 
 
 
