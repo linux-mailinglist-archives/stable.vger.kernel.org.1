@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-150523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF09ACB8D7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBFBACB6A4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBD3F1C25BA4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D29E18916A3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489ED230BCE;
-	Mon,  2 Jun 2025 15:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F48122B8B0;
+	Mon,  2 Jun 2025 15:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPsnmGik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjQtn5jN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F41224224;
-	Mon,  2 Jun 2025 15:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF922B59D;
+	Mon,  2 Jun 2025 15:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877389; cv=none; b=Watc8zGAgFOcNOUKhibpwaOsApnZanT3H843Ab5Byp3Gf+8sYpG7aknw8+HVGjc0I9qjIqbjsE7iUofPndIALMIynf/kOSyZfWROMtz27RcqMd+yr7M1QkgachlflM07mx/ZZOUMfrlh+asD/7H+uVWLQTAPPaUK+ME4/l03KRE=
+	t=1748876400; cv=none; b=PCeNyum9tfafXOHfqcVLd3OUxJHCBCrN+TIal3CRUtmCiLZZP/DhHAUgkPPq/4j8ie0TspsQqcZjv9zeeo497zxor1fQpXCRde3MOX2DkaAe2kupYIc5xTgzPAijVkssAk7Q0iT6w3Bg0TRiwlZeb+8uyxXQ8xrwZlQGH16I3vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877389; c=relaxed/simple;
-	bh=moIp7wOLUdd9rtNpz/i8lVlkwo9LIlxNwCPjPJd+9CM=;
+	s=arc-20240116; t=1748876400; c=relaxed/simple;
+	bh=plaDdiL46Uw0E5D0FQL23qUrybTWNirw4/iBog/YZnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bp1CHWApGRVVhdrvfxrFPmmkZ4vX6noKNfwTsSBMcgslaDziNqU+K/pHEWVzySfSsC3RgxIkXlc/Df/dPj1ZaCgEuAIVJPUvALL6zJW3F+MYczHj5iAAxBHDeFYqMb08j9uGsXzU9ZTHm6ds/wOQ586/BwoPHw+mtFreQvQNTjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPsnmGik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BCDC4CEF2;
-	Mon,  2 Jun 2025 15:16:28 +0000 (UTC)
+	 MIME-Version; b=Sv/wDAm5HtwC4Cl1XastdFa9sZQZQgeYTU+hEGcyAgMqScr3pSo74QzP/hr66SJgpkJndFET5v5fRkd0RAEZsHODnsrBgb5Dv7MiEEE3tjgiBpzLrrYiIb1K642ZKjydnRy+MDPBNZ+GnCeTnc1WD/ExasQAckx4YajkAIdPuBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjQtn5jN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9717C4CEEB;
+	Mon,  2 Jun 2025 14:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877388;
-	bh=moIp7wOLUdd9rtNpz/i8lVlkwo9LIlxNwCPjPJd+9CM=;
+	s=korg; t=1748876400;
+	bh=plaDdiL46Uw0E5D0FQL23qUrybTWNirw4/iBog/YZnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPsnmGik1lXounqTpjJCxkoZu8PnjV9XsRa8etulsv8stJi6aoYYbvo02WTjNpIbw
-	 jN8Ux4aGK6jMfPz0SXfatvNvdV+Mlz/ce/XIaK5hg/I9qgOpSyJ19j2qqyFpgaI0Fh
-	 JhEyiq6sPH2yF8skvBn4XMzCrdZgG/qQePNelKFU=
+	b=yjQtn5jNEmxNZAu09vgoXmGrD7VDLoYZFNfqlUrnPQYFzhTAS+FdN76cj1+NH0hgt
+	 OBLq4dP5DP6u3RAzhxOtGbPBc1hdNO6omRB/1+2Y4XxWf5qlOaWrQQRdQyiXHi8jTF
+	 exxD2YnRBv2woxNGTTcGxScXrkrste/E3NeaZxok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 262/325] Revert "drm/amd: Keep display off while going into S4"
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Corentin LABBE <clabbe.montjoie@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 166/207] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
 Date: Mon,  2 Jun 2025 15:48:58 +0200
-Message-ID: <20250602134330.420733077@linuxfoundation.org>
+Message-ID: <20250602134305.240618064@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-commit 7e7cb7a13c81073d38a10fa7b450d23712281ec4 upstream.
+[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
 
-commit 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
-attempted to keep displays off during the S4 sequence by not resuming
-display IP.  This however leads to hangs because DRM clients such as the
-console can try to access registers and cause a hang.
+While the MDIO address of the internal PHY on Allwinner sun8i chips is
+generally 1, of_mdio_parse_addr is used to cleanly parse the address
+from the device-tree instead of hardcoding it.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4155
-Fixes: 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250522141328.115095-1-mario.limonciello@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e485502c37b097b0bd773baa7e2741bf7bd2909a)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A commit reworking the code ditched the parsed value and hardcoded the
+value 1 instead, which didn't really break anything but is more fragile
+and not future-proof.
+
+Restore the initial behavior using the parsed address returned from the
+helper.
+
+Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2897,11 +2897,6 @@ static int dm_resume(void *handle)
- 
- 		return 0;
- 	}
--
--	/* leave display off for S4 sequence */
--	if (adev->in_s4)
--		return 0;
--
- 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
- 	dc_release_state(dm_state->context);
- 	dm_state->context = dc_create_state(dm->dc);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+index fda53b4b9406f..b2ec44f84ff5b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+@@ -957,7 +957,7 @@ static int sun8i_dwmac_set_syscon(struct device *dev,
+ 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
+ 		 * address. No need to mask it again.
+ 		 */
+-		reg |= 1 << H3_EPHY_ADDR_SHIFT;
++		reg |= ret << H3_EPHY_ADDR_SHIFT;
+ 	} else {
+ 		/* For SoCs without internal PHY the PHY selection bit should be
+ 		 * set to 0 (external PHY).
+-- 
+2.39.5
+
 
 
 
