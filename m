@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-150347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623B4ACB8A2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:43:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7F4ACB545
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327489420B5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 852CE194097F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E6F22A819;
-	Mon,  2 Jun 2025 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040ED22E004;
+	Mon,  2 Jun 2025 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awGizd1K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpdsovU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842B3225785;
-	Mon,  2 Jun 2025 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A71A4F12;
+	Mon,  2 Jun 2025 14:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876833; cv=none; b=sx6ZGZscFsfgL+gQGz5h+fGy1EN8A3CtOHnXFOdIPMMlCD1NVMGhzt00e3iCj8PIlLqn4OpvPPF1bj/yc8PrVOxJuFshYqyRGvvL+eTKzO7QFmeO4aFe7D13NfpIG/oqu7BxSW9yeYcv++u5x27Pfgws1g5sXQ3VWJ8kXk6WkLQ=
+	t=1748875269; cv=none; b=XO7DlFNygtXvmSUPgwbzTGu4qJkUmrO/inJbLBv2YuUkmOCeSgihKUWZ3wRaZwP1I/9nSQq3nhXovTNY7QnIEekKS1Et8bvWTNJYDuFo48BGaKUI+LS0TqFrFBYwpajM3zyrW3/4phrW+aXoQ6HN15YxcJt8gS0n6f8GugyF43c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876833; c=relaxed/simple;
-	bh=jeT9MJ7qDA83qy0PArQQ8IpMOB4r9fFqQJiRQYr/u3s=;
+	s=arc-20240116; t=1748875269; c=relaxed/simple;
+	bh=/2jllYUZYpX0HFftHPDNUeCFGDOUojMNIyzko05U+uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBCL5sC1xQUKD/DsGkwY7ETrsSMSqbvP9F2WzYq+CdBxlLJB7482o9u9Pd5IkPg5DEfMnkV4Um0q7myE6fAC9QLWiGpHlQs/p0IFX38rD1+TrlzQyGbI4/l95l/XTzWUyyHNWPersRElYJYB5rAckRBL/d7U609T7yft9W3YQQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awGizd1K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4D1C4CEEB;
-	Mon,  2 Jun 2025 15:07:12 +0000 (UTC)
+	 MIME-Version; b=ISoUMl+pv0S+7fqkqbWkPW0JSqHsXvNMcFuErF8Xqq7TqLEStjh6gygwQjWTyjg3I4fuiCgCj8WIPjcJ3nrGvT734GwLl/V+ddvttipg+J7JfRjaDFIP2RRMnn5tLPPrBx+Z6n+RPRTK9t+yz7xDTpqIdakmO+TJceLXwPOJ3bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpdsovU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40081C4CEEB;
+	Mon,  2 Jun 2025 14:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876833;
-	bh=jeT9MJ7qDA83qy0PArQQ8IpMOB4r9fFqQJiRQYr/u3s=;
+	s=korg; t=1748875269;
+	bh=/2jllYUZYpX0HFftHPDNUeCFGDOUojMNIyzko05U+uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=awGizd1KR1To1OkMvT2velogoOrzUWtdQRJuu1eGRO4UccGG16m80M3uB12F+lNud
-	 /I8Dt+po/+/2EnX01x6Z3hUkNCvNiGbwbGmgv8xoi28uMpkR30EkgR7okh6gy5Nev1
-	 SERwr5xz0coWLkM4GJpvHKZWqkKAWdf6YyFCj7ZU=
+	b=XpdsovU2hzXS72E9/+d1rwLRlEWl/sHC8bWY3dig6vUNOBKqO7P3Dz3nSFBBYs8OC
+	 0NmC+hq1hRpDBgh9p5aUJa7bsXGyMyT7M2B71OhS7jzjpC52G6NhWf5nCFqzSMgIZJ
+	 99sBBIUo3+pw485RCQVwIWMb/WZHxtILZGTK/xqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/325] gfs2: Check for empty queue in run_queue
-Date: Mon,  2 Jun 2025 15:46:05 +0200
-Message-ID: <20250602134323.401315524@linuxfoundation.org>
+Subject: [PATCH 5.10 081/270] nvme: unblock ctrl state transition for firmware update
+Date: Mon,  2 Jun 2025 15:46:06 +0200
+Message-ID: <20250602134310.485861574@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit d838605fea6eabae3746a276fd448f6719eb3926 ]
+[ Upstream commit 650415fca0a97472fdd79725e35152614d1aad76 ]
 
-In run_queue(), check if the queue of pending requests is empty instead
-of blindly assuming that it won't be.
+The original nvme subsystem design didn't have a CONNECTING state; the
+state machine allowed transitions from RESETTING to LIVE directly.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+With the introduction of nvme fabrics the CONNECTING state was
+introduce. Over time the nvme-pci started to use the CONNECTING state as
+well.
+
+Eventually, a bug fix for the nvme-fc started to depend that the only
+valid transition to LIVE was from CONNECTING. Though this change didn't
+update the firmware update handler which was still depending on
+RESETTING to LIVE transition.
+
+The simplest way to address it for the time being is to switch into
+CONNECTING state before going to LIVE state.
+
+Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Closes: https://lore.kernel.org/all/0134ea15-8d5f-41f7-9e9a-d7e6d82accaa@roeck-us.net
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/nvme/host/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 6ba8460f53318..428c1db295fa1 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -885,11 +885,12 @@ static void run_queue(struct gfs2_glock *gl, const int nonblock)
- __releases(&gl->gl_lockref.lock)
- __acquires(&gl->gl_lockref.lock)
- {
--	struct gfs2_holder *gh = NULL;
-+	struct gfs2_holder *gh;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index b19fba64beb09..cb9b38e142edd 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4429,7 +4429,8 @@ static void nvme_fw_act_work(struct work_struct *work)
+ 		msleep(100);
+ 	}
  
- 	if (test_and_set_bit(GLF_LOCK, &gl->gl_flags))
+-	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
++	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
++	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
  		return;
  
-+	/* While a demote is in progress, the GLF_LOCK flag must be set. */
- 	GLOCK_BUG_ON(gl, test_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags));
- 
- 	if (test_bit(GLF_DEMOTE, &gl->gl_flags) &&
-@@ -901,18 +902,22 @@ __acquires(&gl->gl_lockref.lock)
- 		set_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
- 		GLOCK_BUG_ON(gl, gl->gl_demote_state == LM_ST_EXCLUSIVE);
- 		gl->gl_target = gl->gl_demote_state;
-+		do_xmote(gl, NULL, gl->gl_target);
-+		return;
- 	} else {
- 		if (test_bit(GLF_DEMOTE, &gl->gl_flags))
- 			gfs2_demote_wake(gl);
- 		if (do_promote(gl) == 0)
- 			goto out_unlock;
- 		gh = find_first_waiter(gl);
-+		if (!gh)
-+			goto out_unlock;
- 		gl->gl_target = gh->gh_state;
- 		if (!(gh->gh_flags & (LM_FLAG_TRY | LM_FLAG_TRY_1CB)))
- 			do_error(gl, 0); /* Fail queued try locks */
-+		do_xmote(gl, gh, gl->gl_target);
-+		return;
- 	}
--	do_xmote(gl, gh, gl->gl_target);
--	return;
- 
- out_sched:
- 	clear_bit(GLF_LOCK, &gl->gl_flags);
+ 	nvme_start_queues(ctrl);
 -- 
 2.39.5
 
