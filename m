@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC980ACB265
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFC0ACB453
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 737941942347
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17274A1D6D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2790C226CF3;
-	Mon,  2 Jun 2025 14:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59A9221297;
+	Mon,  2 Jun 2025 14:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxsxUwga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HM+1eUS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F16226CF0;
-	Mon,  2 Jun 2025 14:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7096F1EA65;
+	Mon,  2 Jun 2025 14:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873714; cv=none; b=tKGG/drb3ehf5ccvDrz/jbUNN/liRfJ2Ev1or5VdSgMsYFyTlHsOmyK5JpaS7JR/YW9I1P3Q3JpEj+Lo6jK6PrNBoRH9BAOI2N9zAGMvUEQGJd7h7Do2scP8QBOPqPUhiL4p5MLdzpAeucHQ+foWJjZ1dpBEwHlZYnFJtlldr6s=
+	t=1748875108; cv=none; b=eIix4Tl0jB2ErAac3YHgxvidQ5ZPp3iqNYZhPKnxeBgreLk2Sfh/kvVZ5tr4l6v3+IgD+9Q+5GwdtIuduinG0a1ePtf6dN37yRM0VH73moYOWmyLxi840EMTeso0/ZcQg171IyU4LzAqnf5/nEKvPaeKQyfcge1z2B9RbLw9NUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873714; c=relaxed/simple;
-	bh=Nqyu0utJtAmxvUbwGcggL/R2KcQQjwArf6PlDJgPGSE=;
+	s=arc-20240116; t=1748875108; c=relaxed/simple;
+	bh=hel5Hedc3puN6SVk2t7UEI228QnH23B9xOi+16mAXc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmyFRt5oVqpMOKklkDU4YTFAyu4JJp5BZd9T86Il1ohDu3hqY+GyVfj0BTD18zBDKu+Y/4UWkGn5fTQhmKzkzvtfeEVdFogk1rc1xKyLRPyXs5x/VnHZMCWnkzJhgf9iedfoZP8RdFNC87YV6Q7m9u13A/Pwy7rmlkQsWTix6A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxsxUwga; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4209AC4CEEB;
-	Mon,  2 Jun 2025 14:15:14 +0000 (UTC)
+	 MIME-Version; b=eZepTGe8vUVu2w0Ro15Bbrwsv4ccGivYB0KKzqXyNAjZ5PnNCBfgDbvP/IZf8SKXvcET2591fgi/QdPE/p+UUX8PcdhWtDcYhU6a9PDDAKOOU3JIKwR2KneOdKY0/L/3n4dix21f7d155MGAP5966YQzSCMtCmyQt+OTzVhDqE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HM+1eUS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB25C4CEEB;
+	Mon,  2 Jun 2025 14:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873714;
-	bh=Nqyu0utJtAmxvUbwGcggL/R2KcQQjwArf6PlDJgPGSE=;
+	s=korg; t=1748875107;
+	bh=hel5Hedc3puN6SVk2t7UEI228QnH23B9xOi+16mAXc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxsxUwga3lV7JNUYpbTUBrG+qRgFeAj9VExBXPc/ZJ4puc4FekgwvSvIfC4UZXu7P
-	 DXf1g+leTF2Sj1y6mDvR8R3nbnbq2m5nsi9ZlLavbU/NBf+65n03pzDBZwv93Wjkmu
-	 SHOlbtEvgwSVJUYMVtyKz86lZUjFECUSLZULlRV0=
+	b=HM+1eUS1IZz8eQhfyiwX8n7FqaSCpjuD0pX7l3hKPnQ2B3EpMNO/xXfVDcJUiWM0D
+	 hJdVr+ZCdvep03f+iHZmRuJSXsT6+jiPRq1trRK974p8WA7RMlLDn78uuodEluq5NM
+	 mujiNyIO1J4R6pgGb5zPqqfrJt9NktkA02keJOpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/444] ASoC: tas2764: Power up/down amp on mute ops
+	Helge Deller <deller@gmx.de>,
+	John David Anglin <dave.anglin@bell.net>,
+	Camm Maguire <camm@maguirefamily.org>
+Subject: [PATCH 5.10 006/270] parisc: Fix double SIGFPE crash
 Date: Mon,  2 Jun 2025 15:44:51 +0200
-Message-ID: <20250602134350.129579856@linuxfoundation.org>
+Message-ID: <20250602134307.457665248@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 1c3b5f37409682184669457a5bdf761268eafbe5 ]
+commit de3629baf5a33af1919dec7136d643b0662e85ef upstream.
 
-The ASoC convention is that clocks are removed after codec mute, and
-power up/down is more about top level power management. For these chips,
-the "mute" state still expects a TDM clock, and yanking the clock in
-this state will trigger clock errors. So, do the full
-shutdown<->mute<->active transition on the mute operation, so the amp is
-in software shutdown by the time the clocks are removed.
+Camm noticed that on parisc a SIGFPE exception will crash an application with
+a second SIGFPE in the signal handler.  Dave analyzed it, and it happens
+because glibc uses a double-word floating-point store to atomically update
+function descriptors. As a result of lazy binding, we hit a floating-point
+store in fpe_func almost immediately.
 
-This fixes TDM clock errors when streams are stopped.
+When the T bit is set, an assist exception trap occurs when when the
+co-processor encounters *any* floating-point instruction except for a double
+store of register %fr0.  The latter cancels all pending traps.  Let's fix this
+by clearing the Trap (T) bit in the FP status register before returning to the
+signal handler in userspace.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-1-dbab892a69b5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue can be reproduced with this test program:
+
+root@parisc:~# cat fpe.c
+
+static void fpe_func(int sig, siginfo_t *i, void *v) {
+        sigset_t set;
+        sigemptyset(&set);
+        sigaddset(&set, SIGFPE);
+        sigprocmask(SIG_UNBLOCK, &set, NULL);
+        printf("GOT signal %d with si_code %ld\n", sig, i->si_code);
+}
+
+int main() {
+        struct sigaction action = {
+                .sa_sigaction = fpe_func,
+                .sa_flags = SA_RESTART|SA_SIGINFO };
+        sigaction(SIGFPE, &action, 0);
+        feenableexcept(FE_OVERFLOW);
+        return printf("%lf\n",1.7976931348623158E308*1.7976931348623158E308);
+}
+
+root@parisc:~# gcc fpe.c -lm
+root@parisc:~# ./a.out
+ Floating point exception
+
+root@parisc:~# strace -f ./a.out
+ execve("./a.out", ["./a.out"], 0xf9ac7034 /* 20 vars */) = 0
+ getrlimit(RLIMIT_STACK, {rlim_cur=8192*1024, rlim_max=RLIM_INFINITY}) = 0
+ ...
+ rt_sigaction(SIGFPE, {sa_handler=0x1110a, sa_mask=[], sa_flags=SA_RESTART|SA_SIGINFO}, NULL, 8) = 0
+ --- SIGFPE {si_signo=SIGFPE, si_code=FPE_FLTOVF, si_addr=0x1078f} ---
+ --- SIGFPE {si_signo=SIGFPE, si_code=FPE_FLTOVF, si_addr=0xf8f21237} ---
+ +++ killed by SIGFPE +++
+ Floating point exception
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Suggested-by: John David Anglin <dave.anglin@bell.net>
+Reported-by: Camm Maguire <camm@maguirefamily.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/tas2764.c | 51 ++++++++++++++++----------------------
- 1 file changed, 21 insertions(+), 30 deletions(-)
+ arch/parisc/math-emu/driver.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 3f622d629f77a..72d6356b89814 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -182,33 +182,6 @@ static SOC_ENUM_SINGLE_DECL(
- static const struct snd_kcontrol_new tas2764_asi1_mux =
- 	SOC_DAPM_ENUM("ASI1 Source", tas2764_ASI1_src_enum);
+--- a/arch/parisc/math-emu/driver.c
++++ b/arch/parisc/math-emu/driver.c
+@@ -103,9 +103,19 @@ handle_fpe(struct pt_regs *regs)
  
--static int tas2764_dac_event(struct snd_soc_dapm_widget *w,
--			     struct snd_kcontrol *kcontrol, int event)
--{
--	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
--	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
--	int ret;
--
--	switch (event) {
--	case SND_SOC_DAPM_POST_PMU:
--		tas2764->dac_powered = true;
--		ret = tas2764_update_pwr_ctrl(tas2764);
--		break;
--	case SND_SOC_DAPM_PRE_PMD:
--		tas2764->dac_powered = false;
--		ret = tas2764_update_pwr_ctrl(tas2764);
--		break;
--	default:
--		dev_err(tas2764->dev, "Unsupported event\n");
--		return -EINVAL;
--	}
--
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
- static const struct snd_kcontrol_new isense_switch =
- 	SOC_DAPM_SINGLE("Switch", TAS2764_PWR_CTRL, TAS2764_ISENSE_POWER_EN, 1, 1);
- static const struct snd_kcontrol_new vsense_switch =
-@@ -221,8 +194,7 @@ static const struct snd_soc_dapm_widget tas2764_dapm_widgets[] = {
- 			    1, &isense_switch),
- 	SND_SOC_DAPM_SWITCH("VSENSE", TAS2764_PWR_CTRL, TAS2764_VSENSE_POWER_EN,
- 			    1, &vsense_switch),
--	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2764_dac_event,
--			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
-+	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_OUTPUT("OUT"),
- 	SND_SOC_DAPM_SIGGEN("VMON"),
- 	SND_SOC_DAPM_SIGGEN("IMON")
-@@ -243,9 +215,28 @@ static int tas2764_mute(struct snd_soc_dai *dai, int mute, int direction)
- {
- 	struct tas2764_priv *tas2764 =
- 			snd_soc_component_get_drvdata(dai->component);
-+	int ret;
+ 	memcpy(regs->fr, frcopy, sizeof regs->fr);
+ 	if (signalcode != 0) {
+-	    force_sig_fault(signalcode >> 24, signalcode & 0xffffff,
+-			    (void __user *) regs->iaoq[0]);
+-	    return -1;
++		int sig = signalcode >> 24;
 +
-+	if (!mute) {
-+		tas2764->dac_powered = true;
-+		ret = tas2764_update_pwr_ctrl(tas2764);
-+		if (ret)
-+			return ret;
-+	}
++		if (sig == SIGFPE) {
++			/*
++			 * Clear floating point trap bit to avoid trapping
++			 * again on the first floating-point instruction in
++			 * the userspace signal handler.
++			 */
++			regs->fr[0] &= ~(1ULL << 38);
++		}
++		force_sig_fault(sig, signalcode & 0xffffff,
++				(void __user *) regs->iaoq[0]);
++		return -1;
+ 	}
  
- 	tas2764->unmuted = !mute;
--	return tas2764_update_pwr_ctrl(tas2764);
-+	ret = tas2764_update_pwr_ctrl(tas2764);
-+	if (ret)
-+		return ret;
-+
-+	if (mute) {
-+		tas2764->dac_powered = false;
-+		ret = tas2764_update_pwr_ctrl(tas2764);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
- }
- 
- static int tas2764_set_bitwidth(struct tas2764_priv *tas2764, int bitwidth)
--- 
-2.39.5
-
+ 	return signalcode ? -1 : 0;
 
 
 
