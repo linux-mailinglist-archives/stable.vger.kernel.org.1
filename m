@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C504ACB7CA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBFAACB26D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F5041C22D68
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BA1D1945B74
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2737F22A1EF;
-	Mon,  2 Jun 2025 15:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3D0224B10;
+	Mon,  2 Jun 2025 14:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrsY4wjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmypIN1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D634B227BA4;
-	Mon,  2 Jun 2025 15:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B437222561;
+	Mon,  2 Jun 2025 14:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876701; cv=none; b=GYMCDcqcw5wtN/WQrfKS435iXF8/CBRLJjWGukm4q4Sx95NvQI08QSngeu0YPPel30Jfszjgd2DAbR/TZlYSLrXxvl7XVj+Y+iNYwvKup0f2Q4fXxSR+kdzMyp0GK5+RMqAuMCbhXqG06empqjD1aAqJbqz0OWJuHLmOaZBujMg=
+	t=1748873682; cv=none; b=AlNnCdWC7Xjv4+6f37hVVciG+aaH3EJRU011TZlGR/nC0W4Ez6BbWKmReyfYd2eD8Ri2dvEsT8dvsBpZmo+ZFWI+e6kAMp0SjcluwFBQvQr2bQA47S6fr5ZVCWzO5n8Q+zG8POe+7YDCJ6yGKDFKcANqyGD9fXCuN1jXKLxDqwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876701; c=relaxed/simple;
-	bh=c1OVkmJpfoIZ83pGESb2mqOmfKDGdwO1YRQgqKtlsx0=;
+	s=arc-20240116; t=1748873682; c=relaxed/simple;
+	bh=nUhOAswYnFs6tENK49peOkI2FuSsNhRzhO9sH9DHD6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CB6xCIZuJfMbQOQtxtboQpt2CVeqnbilpCDLmSgSQ/ScslhiDqLh0Xhq0JILxR+NQ6vE5FxmE/FcpWjVkUk0J7tyBBJDcOVfw0lvGmjsfIfoM6bvhIjYiW0DRJjDskdJ4KMcvX9kqBenUWbtaugPyydOefpSzk8jd2ZSQJk8FJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrsY4wjU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AA7C4CEEB;
-	Mon,  2 Jun 2025 15:05:00 +0000 (UTC)
+	 MIME-Version; b=ZllQNf2xgkQ/NRtjU/ZT4TmEpXMHJVkRI/F1uSJ34Fs69+mD53neNyKeSmHA6zZ7/gem7dg+EHnS7GxMChAysjBXokjYW3Dqbs7UvB4H6MJus2VKx5n5USYeaZiiveuMpGd7X2arce35j+/6ms9j/MaYwX7luW7xeFsC0yXxYlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmypIN1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3947C4CEEB;
+	Mon,  2 Jun 2025 14:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876700;
-	bh=c1OVkmJpfoIZ83pGESb2mqOmfKDGdwO1YRQgqKtlsx0=;
+	s=korg; t=1748873682;
+	bh=nUhOAswYnFs6tENK49peOkI2FuSsNhRzhO9sH9DHD6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrsY4wjUEFLEgM4/rZI7BsDFwUama7WtTqeBy4iQMmQhaiK8nMwoixuu7uo4ES9hO
-	 No3CFpO372vZjJeilndi5eDkIxFDWU1lOwU+nSDGsC0FJKuc+v9uuKMlLPWXYFTrDc
-	 urANdVNLnwO1S7skhmWl3gv3fUWCwe/QP7VvRBu0=
+	b=LmypIN1ybnPqQQkeDCrJMpMhTNNtkfWGNSZ6PXCByiOikYjlbwLDZuoZF1BoNYvlW
+	 WigD/zipQBoMKD36SD8M1T6JFmBJi/pd2DzopBHfOBLa1ZCfkAvQC7nTXCzXNhv4Wu
+	 c+XYZ/tn316H30xZ2eCAlQsn0r8XEN/jzX1tJvQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Xiaofei Tan <tanxiaofei@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/325] phy: renesas: rcar-gen3-usb2: Move IRQ request in probe
+Subject: [PATCH 6.6 218/444] ACPI: HED: Always initialize before evged
 Date: Mon,  2 Jun 2025 15:44:42 +0200
-Message-ID: <20250602134319.990043249@linuxfoundation.org>
+Message-ID: <20250602134349.757218211@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,146 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Xiaofei Tan <tanxiaofei@huawei.com>
 
-[ Upstream commit de76809f60cc938d3580bbbd5b04b7d12af6ce3a ]
+[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
 
-Commit 08b0ad375ca6 ("phy: renesas: rcar-gen3-usb2: move IRQ registration
-to init") moved the IRQ request operation from probe to
-struct phy_ops::phy_init API to avoid triggering interrupts (which lead to
-register accesses) while the PHY clocks (enabled through runtime PM APIs)
-are not active. If this happens, it results in a synchronous abort.
+When the HED driver is built-in, it initializes after evged because they
+both are at the same initcall level, so the initialization ordering
+depends on the Makefile order.  However, this prevents RAS records
+coming in between the evged driver initialization and the HED driver
+initialization from being handled.
 
-One way to reproduce this issue is by enabling CONFIG_DEBUG_SHIRQ, which
-calls free_irq() on driver removal.
+If the number of such RAS records is above the APEI HEST error source
+number, the HEST resources may be exhausted, and that may affect
+subsequent RAS error reporting.
 
-Move the IRQ request and free operations back to probe, and take the
-runtime PM state into account in IRQ handler. This commit is preparatory
-for the subsequent fixes in this series.
+To fix this issue, change the initcall level of HED to subsys_initcall
+and prevent the driver from being built as a module by changing ACPI_HED
+in Kconfig from "tristate" to "bool".
 
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250507125032.565017-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 9ce71e85b29e ("phy: renesas: rcar-gen3-usb2: Assert PLL reset on PHY power off")
+Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 46 +++++++++++++-----------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+ drivers/acpi/Kconfig | 2 +-
+ drivers/acpi/hed.c   | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index d13083f60d897..69cc99c60f58d 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -122,7 +122,6 @@ struct rcar_gen3_chan {
- 	struct work_struct work;
- 	struct mutex lock;	/* protects rphys[...].powered */
- 	enum usb_dr_mode dr_mode;
--	int irq;
- 	u32 obint_enable_bits;
- 	bool extcon_host;
- 	bool is_otg_channel;
-@@ -427,16 +426,25 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
- {
- 	struct rcar_gen3_chan *ch = _ch;
- 	void __iomem *usb2_base = ch->base;
--	u32 status = readl(usb2_base + USB2_OBINTSTA);
-+	struct device *dev = ch->dev;
- 	irqreturn_t ret = IRQ_NONE;
-+	u32 status;
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index cee82b473dc50..648228831f5e8 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -438,7 +438,7 @@ config ACPI_SBS
+ 	  the modules will be called sbs and sbshc.
  
-+	pm_runtime_get_noresume(dev);
+ config ACPI_HED
+-	tristate "Hardware Error Device"
++	bool "Hardware Error Device"
+ 	help
+ 	  This driver supports the Hardware Error Device (PNP0C33),
+ 	  which is used to report some hardware errors notified via
+diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
+index 46c6f8c35b436..2e01eaa8d8cd5 100644
+--- a/drivers/acpi/hed.c
++++ b/drivers/acpi/hed.c
+@@ -80,7 +80,12 @@ static struct acpi_driver acpi_hed_driver = {
+ 		.remove = acpi_hed_remove,
+ 	},
+ };
+-module_acpi_driver(acpi_hed_driver);
 +
-+	if (pm_runtime_suspended(dev))
-+		goto rpm_put;
-+
-+	status = readl(usb2_base + USB2_OBINTSTA);
- 	if (status & ch->obint_enable_bits) {
--		dev_vdbg(ch->dev, "%s: %08x\n", __func__, status);
-+		dev_vdbg(dev, "%s: %08x\n", __func__, status);
- 		writel(ch->obint_enable_bits, usb2_base + USB2_OBINTSTA);
- 		rcar_gen3_device_recognition(ch);
- 		ret = IRQ_HANDLED;
- 	}
++static int __init acpi_hed_driver_init(void)
++{
++	return acpi_bus_register_driver(&acpi_hed_driver);
++}
++subsys_initcall(acpi_hed_driver_init);
  
-+rpm_put:
-+	pm_runtime_put_noidle(dev);
- 	return ret;
- }
- 
-@@ -446,17 +454,6 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
- 	struct rcar_gen3_chan *channel = rphy->ch;
- 	void __iomem *usb2_base = channel->base;
- 	u32 val;
--	int ret;
--
--	if (!rcar_gen3_is_any_rphy_initialized(channel) && channel->irq >= 0) {
--		INIT_WORK(&channel->work, rcar_gen3_phy_usb2_work);
--		ret = request_irq(channel->irq, rcar_gen3_phy_usb2_irq,
--				  IRQF_SHARED, dev_name(channel->dev), channel);
--		if (ret < 0) {
--			dev_err(channel->dev, "No irq handler (%d)\n", channel->irq);
--			return ret;
--		}
--	}
- 
- 	/* Initialize USB2 part */
- 	val = readl(usb2_base + USB2_INT_ENABLE);
-@@ -492,9 +489,6 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
- 		val &= ~USB2_INT_ENABLE_UCOM_INTEN;
- 	writel(val, usb2_base + USB2_INT_ENABLE);
- 
--	if (channel->irq >= 0 && !rcar_gen3_is_any_rphy_initialized(channel))
--		free_irq(channel->irq, channel);
--
- 	return 0;
- }
- 
-@@ -690,7 +684,7 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct rcar_gen3_chan *channel;
- 	struct phy_provider *provider;
--	int ret = 0, i;
-+	int ret = 0, i, irq;
- 
- 	if (!dev->of_node) {
- 		dev_err(dev, "This driver needs device tree\n");
-@@ -706,8 +700,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		return PTR_ERR(channel->base);
- 
- 	channel->obint_enable_bits = USB2_OBINT_BITS;
--	/* get irq number here and request_irq for OTG in phy_init */
--	channel->irq = platform_get_irq_optional(pdev, 0);
- 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
- 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
- 		channel->is_otg_channel = true;
-@@ -773,6 +765,20 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		channel->vbus = NULL;
- 	}
- 
-+	irq = platform_get_irq_optional(pdev, 0);
-+	if (irq < 0 && irq != -ENXIO) {
-+		ret = irq;
-+		goto error;
-+	} else if (irq > 0) {
-+		INIT_WORK(&channel->work, rcar_gen3_phy_usb2_work);
-+		ret = devm_request_irq(dev, irq, rcar_gen3_phy_usb2_irq,
-+				       IRQF_SHARED, dev_name(dev), channel);
-+		if (ret < 0) {
-+			dev_err(dev, "Failed to request irq (%d)\n", irq);
-+			goto error;
-+		}
-+	}
-+
- 	provider = devm_of_phy_provider_register(dev, rcar_gen3_phy_usb2_xlate);
- 	if (IS_ERR(provider)) {
- 		dev_err(dev, "Failed to register PHY provider\n");
+ MODULE_AUTHOR("Huang Ying");
+ MODULE_DESCRIPTION("ACPI Hardware Error Device Driver");
 -- 
 2.39.5
 
