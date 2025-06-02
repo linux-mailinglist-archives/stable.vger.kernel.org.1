@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE76FACB28A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FAA7ACB6BB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8181943A7C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4C56A40B1A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9913322DF96;
-	Mon,  2 Jun 2025 14:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05A822A4F1;
+	Mon,  2 Jun 2025 15:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oc6QS4W6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+Fr0BS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A0122DF87;
-	Mon,  2 Jun 2025 14:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5231C6FE9;
+	Mon,  2 Jun 2025 15:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873814; cv=none; b=msjbm2wUfkqvUo02TqPqoIDrYA01N6JqEtpyP9lO92J4hj+2DJBGPmY27dpsmLHYQeNwPQAjInddTwIm9gVWTFQEca/r0Rv5lS7qgbvVY63sqT3dwqJjxWvK2QBfoaflda3+HsXWFaFXW5U6ImIuC5HL2iNSVXFResvpPzV5VLI=
+	t=1748876710; cv=none; b=ByqCUdFQJQ0073otzTyco0hYJiLmi7Ew9lksOdrEyASNSmGz7+mQpP7rK5Z8b7Oh9dvhucyWRWOdfNKTsCaFpLjQHxmRoDZ5B7ne8UpNsX/z/2TVxNjFVTRp5x/+Hl3AQeMCiaDxafgtpzLeQgLxQ57Z3C75lP8e69fh9D2Qekk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873814; c=relaxed/simple;
-	bh=+8xCtVp0r+i/qYXwy/hx3vAJc3rpDh8+bCwp8C+AJy4=;
+	s=arc-20240116; t=1748876710; c=relaxed/simple;
+	bh=GIzz2P2rRwd1m4n4vqvZjJmqNYgxOSIJ5QJgWlPi13U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbvMD1UmBavVyCXYS4wd9Eizn7PwO40UtNuLnqqlnWCVrPXgb+fWlchwXFbxMHKYef35F3jpItniJhD0qkhuRLwd0qx9ZgHYUjEp+h1R4jH/KA60OVRXr6YModuTqtvwScakonHWGKqwXRoDaoXguXdKDnwh2JCSfDAmTc6MiMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oc6QS4W6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBADC4CEEB;
-	Mon,  2 Jun 2025 14:16:53 +0000 (UTC)
+	 MIME-Version; b=K8A5nWKGfnKjIz2jN5GtVrxk7arIOW9mOHu8R/bywfOjZbSTh/kFNZ4/+L0HL2iurzJinDOjJ/ZLHg5Pcezo8PgnpfZSavLHbIh81WtnIy1PuQijJArTbyMFtP6BSCUuCEf51HJYPxvcfX736OcJfY/XwSSZreV5ByAhEw4pX84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+Fr0BS7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F651C4CEEB;
+	Mon,  2 Jun 2025 15:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873814;
-	bh=+8xCtVp0r+i/qYXwy/hx3vAJc3rpDh8+bCwp8C+AJy4=;
+	s=korg; t=1748876710;
+	bh=GIzz2P2rRwd1m4n4vqvZjJmqNYgxOSIJ5QJgWlPi13U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oc6QS4W614njvX3DgpvSY8s0GX+Sux6qL27jV7lCUlkJwoIDuH1vSoFlI2WzHWRcG
-	 ExVVoewKrw74GxXwvG63616dNZ18y+Kh/wMFKyMkIRvAw2setu/4HCrIAtncwDtr/L
-	 HKtTxsyIlNj93CAYi9kvhuh6xgjZBgaLiUYpAvMA=
+	b=v+Fr0BS7DIIvgipM7UVqhoyq7kZbUFDgGpXv28qdUsblyozou+Bs7N9ByZQglYDkN
+	 JwyA99P2o2MdspN7WQjFHiUtehiFyLvYFlIZNRkSHcjLmFE6tD57rn3FIAL30QbJ3G
+	 M8lxu0VUmbUAEuUVJ0ZfnRFU1vqgiwWXUQEwXRlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Vitalii Mordan <mordan@ispras.ru>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 261/444] arch/powerpc/perf: Check the instruction type before creating sample with perf_mem_data_src
-Date: Mon,  2 Jun 2025 15:45:25 +0200
-Message-ID: <20250602134351.526971433@linuxfoundation.org>
+Subject: [PATCH 6.1 050/325] i2c: pxa: fix call balance of i2c->clk handling routines
+Date: Mon,  2 Jun 2025 15:45:26 +0200
+Message-ID: <20250602134321.798122485@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit 2ffb26afa64261139e608bf087a0c1fe24d76d4d ]
+[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
 
-perf mem report aborts as below sometimes (during some corner
-case) in powerpc:
+If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
+disabled in any path.
 
-   # ./perf mem report 1>out
-   *** stack smashing detected ***: terminated
-   Aborted (core dumped)
+Found by Linux Verification Center (linuxtesting.org) with Klever.
 
-The backtrace is as below:
-   __pthread_kill_implementation ()
-   raise ()
-   abort ()
-   __libc_message
-   __fortify_fail
-   __stack_chk_fail
-   hist_entry.lvl_snprintf
-   __sort__hpp_entry
-   __hist_entry__snprintf
-   hists.fprintf
-   cmd_report
-   cmd_mem
-
-Snippet of code which triggers the issue
-from tools/perf/util/sort.c
-
-   static int hist_entry__lvl_snprintf(struct hist_entry *he, char *bf,
-                                    size_t size, unsigned int width)
-   {
-        char out[64];
-
-        perf_mem__lvl_scnprintf(out, sizeof(out), he->mem_info);
-        return repsep_snprintf(bf, size, "%-*s", width, out);
-   }
-
-The value of "out" is filled from perf_mem_data_src value.
-Debugging this further showed that for some corner cases, the
-value of "data_src" was pointing to wrong value. This resulted
-in bigger size of string and causing stack check fail.
-
-The perf mem data source values are captured in the sample via
-isa207_get_mem_data_src function. The initial check is to fetch
-the type of sampled instruction. If the type of instruction is
-not valid (not a load/store instruction), the function returns.
-
-Since 'commit e16fd7f2cb1a ("perf: Use sample_flags for data_src")',
-data_src field is not initialized by the perf_sample_data_init()
-function. If the PMU driver doesn't set the data_src value to zero if
-type is not valid, this will result in uninitailised value for data_src.
-The uninitailised value of data_src resulted in stack check fail
-followed by abort for "perf mem report".
-
-When requesting for data source information in the sample, the
-instruction type is expected to be load or store instruction.
-In ISA v3.0, due to hardware limitation, there are corner cases
-where the instruction type other than load or store is observed.
-In ISA v3.0 and before values "0" and "7" are considered reserved.
-In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-Drop the sample if instruction type has reserved values for this
-field with a ISA version check. Initialize data_src to zero in
-isa207_get_mem_data_src if the instruction type is not load/store.
-
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250121131621.39054-1-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/core-book3s.c   | 20 ++++++++++++++++++++
- arch/powerpc/perf/isa207-common.c |  4 +++-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-pxa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 10b946e9c6e75..4bb84dc4393fc 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2229,6 +2229,10 @@ static struct pmu power_pmu = {
- #define PERF_SAMPLE_ADDR_TYPE  (PERF_SAMPLE_ADDR |		\
- 				PERF_SAMPLE_PHYS_ADDR |		\
- 				PERF_SAMPLE_DATA_PAGE_SIZE)
-+
-+#define SIER_TYPE_SHIFT	15
-+#define SIER_TYPE_MASK	(0x7ull << SIER_TYPE_SHIFT)
-+
- /*
-  * A counter has overflowed; update its count and record
-  * things if requested.  Note that interrupts are hard-disabled
-@@ -2297,6 +2301,22 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 	    is_kernel_addr(mfspr(SPRN_SIAR)))
- 		record = 0;
+diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
+index ade3f0ea59551..8263e017577de 100644
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -1508,7 +1508,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
+ 				i2c->adap.name);
+ 	}
  
-+	/*
-+	 * SIER[46-48] presents instruction type of the sampled instruction.
-+	 * In ISA v3.0 and before values "0" and "7" are considered reserved.
-+	 * In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-+	 * Drop the sample if "type" has reserved values for this field with a
-+	 * ISA version check.
-+	 */
-+	if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
-+			ppmu->get_mem_data_src) {
-+		val = (regs->dar & SIER_TYPE_MASK) >> SIER_TYPE_SHIFT;
-+		if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31))) {
-+			record = 0;
-+			atomic64_inc(&event->lost_samples);
-+		}
-+	}
-+
- 	/*
- 	 * Finally record data if requested.
- 	 */
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 56301b2bc8ae8..031a2b63c171d 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -321,8 +321,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
+-	clk_prepare_enable(i2c->clk);
++	ret = clk_prepare_enable(i2c->clk);
++	if (ret)
++		return dev_err_probe(&dev->dev, ret,
++				     "failed to enable clock\n");
  
- 	sier = mfspr(SPRN_SIER);
- 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
--	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31)))
-+	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
-+		dsrc->val = 0;
- 		return;
-+	}
- 
- 	idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
- 	sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
+ 	if (i2c->use_pio) {
+ 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
 -- 
 2.39.5
 
