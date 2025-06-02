@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15EFBACB2A9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEB8ACB56A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9183A940976
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C815D9E647B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72770222587;
-	Mon,  2 Jun 2025 14:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C20C227BB9;
+	Mon,  2 Jun 2025 14:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01tdIEpy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xv6EVQva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC81221FAA;
-	Mon,  2 Jun 2025 14:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE2621516E;
+	Mon,  2 Jun 2025 14:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873835; cv=none; b=Y0zrLm1uEDX1TpYoJx4Fz5ACgH8/pcmwUOUss3JtXpXaTDK3J8nmsFo8odg6Ttojpp2ZyH6PVuHPF4LtUV/2I75QAh5wXdhh0SwLzfQSEXHsBm1OdumqhFpTc+RLuhoDN+oGb8gM3nutjDQLj11n8KYa768FJEVnXYYr12xHB2g=
+	t=1748875156; cv=none; b=V0i3EVFZIIgtKbbGGbiZl+1CFAnIXxs3KpYOAsJpHoTb9DT2lY1CGrCNQjkpc1kEnVeM3aoPN6WDyMFW3OUiU19YAlUUXzxtzcurv5a+pgTSv+JxXzzCT98bltevyYRnoQ0gZ9g/rORhjlpjRPQLABcYsMYvfVfY+Gt7vyQkexk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873835; c=relaxed/simple;
-	bh=Y9vDklHa+s8mFb/uYLqprBi40Gp6TAIaRrk1WbSKRs8=;
+	s=arc-20240116; t=1748875156; c=relaxed/simple;
+	bh=uC1Okjq39dxwQRVzHEKSgKtZ3BFdycvWNNQXPVU9AUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lf7Ev+JAAQuWu+sM7EOpl9IWSjhBdL2sg0IOrz6ZpNscaczRqzhR2aI/hk05Rv/R9xnpTduAaNfE2doGlWPbmKYnX5QWFFaXJCgaMA9pQs1ZAa3PYfbkt3QQ4yDGSVDErm8GmLGdprYaKG9phz5RsW4CkSdERek2SXmssIquXYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01tdIEpy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78521C4CEEB;
-	Mon,  2 Jun 2025 14:17:14 +0000 (UTC)
+	 MIME-Version; b=kASkNWdbvxpyu4kfaULqObM9s6NhuepEJ/fOJCCEWYHjH4o93ET30H1c8kqgbf51/lPK4IuIG1Xii9SZj2xBmTWLDmJs1sfPRlGW1K2vPwU23zgoPY4m4ioYlMI45aLVebNesTnWIcsCPLPCN9LbfgSOpXmxz+TV8JxSJgqpvgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xv6EVQva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59770C4CEEB;
+	Mon,  2 Jun 2025 14:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873835;
-	bh=Y9vDklHa+s8mFb/uYLqprBi40Gp6TAIaRrk1WbSKRs8=;
+	s=korg; t=1748875155;
+	bh=uC1Okjq39dxwQRVzHEKSgKtZ3BFdycvWNNQXPVU9AUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01tdIEpysf/6bpqApX/ilTs8O7ZKidiNHqNtQAKy41ciAHiCt1sY13DAM/Gd+Is/A
-	 iLKm+qigsJ67C7xPuSd3J6/xOeIut+E2Q0ePcsDToCV58YnHrT3Sdiz+GttJmVtO5x
-	 xusUppLuCxWFczg6k/qvQQA4WU+J0qlb7EUBT63A=
+	b=Xv6EVQvaDt8NnqzGnMOWpW6wTmy0GBGTrSqAUw3bBb1sD8j6flDTWuDDraxc9sOlB
+	 eKDoRZKOMmWwfyJu4VW0fOPlvdqeEkq3tVetWlf0f2xYTlC1dVnt+6MqQisa+dZIU5
+	 YVpdsHpSuHGk1MbT4AuZxZ6qJgSTgaZS+IIT+kVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 267/444] ext4: remove writable userspace mappings before truncating page cache
+Subject: [PATCH 5.10 046/270] can: gw: fix RCU/BH usage in cgw_create_job()
 Date: Mon,  2 Jun 2025 15:45:31 +0200
-Message-ID: <20250602134351.794267197@linuxfoundation.org>
+Message-ID: <20250602134309.083958904@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,187 +63,368 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 17207d0bb209e8b40f27d7f3f96e82a78af0bf2c ]
+[ Upstream commit 511e64e13d8cc72853275832e3f372607466c18c ]
 
-When zeroing a range of folios on the filesystem which block size is
-less than the page size, the file's mapped blocks within one page will
-be marked as unwritten, we should remove writable userspace mappings to
-ensure that ext4_page_mkwrite() can be called during subsequent write
-access to these partial folios. Otherwise, data written by subsequent
-mmap writes may not be saved to disk.
+As reported by Sebastian Andrzej Siewior the use of local_bh_disable()
+is only feasible in uni processor systems to update the modification rules.
+The usual use-case to update the modification rules is to update the data
+of the modifications but not the modification types (AND/OR/XOR/SET) or
+the checksum functions itself.
 
- $mkfs.ext4 -b 1024 /dev/vdb
- $mount /dev/vdb /mnt
- $xfs_io -t -f -c "pwrite -S 0x58 0 4096" -c "mmap -rw 0 4096" \
-               -c "mwrite -S 0x5a 2048 2048" -c "fzero 2048 2048" \
-               -c "mwrite -S 0x59 2048 2048" -c "close" /mnt/foo
+To omit additional memory allocations to maintain fast modification
+switching times, the modification description space is doubled at gw-job
+creation time so that only the reference to the active modification
+description is changed under rcu protection.
 
- $od -Ax -t x1z /mnt/foo
- 000000 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58
- *
- 000800 59 59 59 59 59 59 59 59 59 59 59 59 59 59 59 59
- *
- 001000
+Rename cgw_job::mod to cf_mod and make it a RCU pointer. Allocate in
+cgw_create_job() and free it together with cgw_job in
+cgw_job_free_rcu(). Update all users to dereference cgw_job::cf_mod with
+a RCU accessor and if possible once.
 
- $umount /mnt && mount /dev/vdb /mnt
- $od -Ax -t x1z /mnt/foo
- 000000 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58
- *
- 000800 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- *
- 001000
+[bigeasy: Replace mod1/mod2 from the Oliver's original patch with dynamic
+allocation, use RCU annotation and accessor]
 
-Fix this by introducing ext4_truncate_page_cache_block_range() to remove
-writable userspace mappings when truncating a partial folio range.
-Additionally, move the journal data mode-specific handlers and
-truncate_pagecache_range() into this function, allowing it to serve as a
-common helper that correctly manages the page cache in preparation for
-block range manipulations.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20241220011637.1157197-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Closes: https://lore.kernel.org/linux-can/20231031112349.y0aLoBrz@linutronix.de/
+Fixes: dd895d7f21b2 ("can: cangw: introduce optional uid to reference created routing jobs")
+Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20250429070555.cs-7b_eZ@linutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h    |  2 ++
- fs/ext4/extents.c | 19 ++++----------
- fs/ext4/inode.c   | 63 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 70 insertions(+), 14 deletions(-)
+ net/can/gw.c | 149 +++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 90 insertions(+), 59 deletions(-)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index bf62c3dab4fa2..81fe87fcbfa06 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -2995,6 +2995,8 @@ extern int ext4_inode_attach_jinode(struct inode *inode);
- extern int ext4_can_truncate(struct inode *inode);
- extern int ext4_truncate(struct inode *);
- extern int ext4_break_layouts(struct inode *);
-+extern int ext4_truncate_page_cache_block_range(struct inode *inode,
-+						loff_t start, loff_t end);
- extern int ext4_punch_hole(struct file *file, loff_t offset, loff_t length);
- extern void ext4_set_inode_flags(struct inode *, bool init);
- extern int ext4_alloc_da_blocks(struct inode *inode);
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 32218ac7f50fe..39e3661a80c43 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4660,22 +4660,13 @@ static long ext4_zero_range(struct file *file, loff_t offset,
- 			goto out_mutex;
+diff --git a/net/can/gw.c b/net/can/gw.c
+index 59ce23996c6e0..59b9f3e579f73 100644
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -130,7 +130,7 @@ struct cgw_job {
+ 	u32 handled_frames;
+ 	u32 dropped_frames;
+ 	u32 deleted_frames;
+-	struct cf_mod mod;
++	struct cf_mod __rcu *cf_mod;
+ 	union {
+ 		/* CAN frame data source */
+ 		struct net_device *dev;
+@@ -397,6 +397,7 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 	struct cgw_job *gwj = (struct cgw_job *)data;
+ 	struct canfd_frame *cf;
+ 	struct sk_buff *nskb;
++	struct cf_mod *mod;
+ 	int modidx = 0;
+ 
+ 	/* process strictly Classic CAN or CAN FD frames */
+@@ -444,7 +445,8 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 	 * When there is at least one modification function activated,
+ 	 * we need to copy the skb as we want to modify skb->data.
+ 	 */
+-	if (gwj->mod.modfunc[0])
++	mod = rcu_dereference(gwj->cf_mod);
++	if (mod->modfunc[0])
+ 		nskb = skb_copy(skb, GFP_ATOMIC);
+ 	else
+ 		nskb = skb_clone(skb, GFP_ATOMIC);
+@@ -467,8 +469,8 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 	cf = (struct canfd_frame *)nskb->data;
+ 
+ 	/* perform preprocessed modification functions if there are any */
+-	while (modidx < MAX_MODFUNCTIONS && gwj->mod.modfunc[modidx])
+-		(*gwj->mod.modfunc[modidx++])(cf, &gwj->mod);
++	while (modidx < MAX_MODFUNCTIONS && mod->modfunc[modidx])
++		(*mod->modfunc[modidx++])(cf, mod);
+ 
+ 	/* Has the CAN frame been modified? */
+ 	if (modidx) {
+@@ -484,11 +486,11 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
  		}
  
--		/*
--		 * For journalled data we need to write (and checkpoint) pages
--		 * before discarding page cache to avoid inconsitent data on
--		 * disk in case of crash before zeroing trans is committed.
--		 */
--		if (ext4_should_journal_data(inode)) {
--			ret = filemap_write_and_wait_range(mapping, start,
--							   end - 1);
--			if (ret) {
--				filemap_invalidate_unlock(mapping);
--				goto out_mutex;
--			}
-+		/* Now release the pages and zero block aligned part of pages */
-+		ret = ext4_truncate_page_cache_block_range(inode, start, end);
-+		if (ret) {
-+			filemap_invalidate_unlock(mapping);
-+			goto out_mutex;
- 		}
+ 		/* check for checksum updates */
+-		if (gwj->mod.csumfunc.crc8)
+-			(*gwj->mod.csumfunc.crc8)(cf, &gwj->mod.csum.crc8);
++		if (mod->csumfunc.crc8)
++			(*mod->csumfunc.crc8)(cf, &mod->csum.crc8);
  
--		/* Now release the pages and zero block aligned part of pages */
--		truncate_pagecache_range(inode, start, end - 1);
- 		inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+-		if (gwj->mod.csumfunc.xor)
+-			(*gwj->mod.csumfunc.xor)(cf, &gwj->mod.csum.xor);
++		if (mod->csumfunc.xor)
++			(*mod->csumfunc.xor)(cf, &mod->csum.xor);
+ 	}
  
- 		ret = ext4_alloc_file_blocks(file, lblk, max_blocks, new_size,
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 456f686136fc5..86245e27be18d 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -31,6 +31,7 @@
- #include <linux/writeback.h>
- #include <linux/pagevec.h>
- #include <linux/mpage.h>
-+#include <linux/rmap.h>
- #include <linux/namei.h>
- #include <linux/uio.h>
- #include <linux/bio.h>
-@@ -3892,6 +3893,68 @@ int ext4_update_disksize_before_punch(struct inode *inode, loff_t offset,
- 	return ret;
+ 	/* clear the skb timestamp if not configured the other way */
+@@ -519,9 +521,20 @@ static void cgw_job_free_rcu(struct rcu_head *rcu_head)
+ {
+ 	struct cgw_job *gwj = container_of(rcu_head, struct cgw_job, rcu);
+ 
++	/* cgw_job::cf_mod is always accessed from the same cgw_job object within
++	 * the same RCU read section. Once cgw_job is scheduled for removal,
++	 * cf_mod can also be removed without mandating an additional grace period.
++	 */
++	kfree(rcu_access_pointer(gwj->cf_mod));
+ 	kmem_cache_free(cgw_cache, gwj);
  }
  
-+static inline void ext4_truncate_folio(struct inode *inode,
-+				       loff_t start, loff_t end)
++/* Return cgw_job::cf_mod with RTNL protected section */
++static struct cf_mod *cgw_job_cf_mod(struct cgw_job *gwj)
 +{
-+	unsigned long blocksize = i_blocksize(inode);
-+	struct folio *folio;
-+
-+	/* Nothing to be done if no complete block needs to be truncated. */
-+	if (round_up(start, blocksize) >= round_down(end, blocksize))
-+		return;
-+
-+	folio = filemap_lock_folio(inode->i_mapping, start >> PAGE_SHIFT);
-+	if (IS_ERR(folio))
-+		return;
-+
-+	if (folio_mkclean(folio))
-+		folio_mark_dirty(folio);
-+	folio_unlock(folio);
-+	folio_put(folio);
++	return rcu_dereference_protected(gwj->cf_mod, rtnl_is_locked());
 +}
 +
-+int ext4_truncate_page_cache_block_range(struct inode *inode,
-+					 loff_t start, loff_t end)
-+{
-+	unsigned long blocksize = i_blocksize(inode);
-+	int ret;
-+
-+	/*
-+	 * For journalled data we need to write (and checkpoint) pages
-+	 * before discarding page cache to avoid inconsitent data on disk
-+	 * in case of crash before freeing or unwritten converting trans
-+	 * is committed.
-+	 */
-+	if (ext4_should_journal_data(inode)) {
-+		ret = filemap_write_and_wait_range(inode->i_mapping, start,
-+						   end - 1);
-+		if (ret)
-+			return ret;
-+		goto truncate_pagecache;
-+	}
-+
-+	/*
-+	 * If the block size is less than the page size, the file's mapped
-+	 * blocks within one page could be freed or converted to unwritten.
-+	 * So it's necessary to remove writable userspace mappings, and then
-+	 * ext4_page_mkwrite() can be called during subsequent write access
-+	 * to these partial folios.
-+	 */
-+	if (!IS_ALIGNED(start | end, PAGE_SIZE) &&
-+	    blocksize < PAGE_SIZE && start < inode->i_size) {
-+		loff_t page_boundary = round_up(start, PAGE_SIZE);
-+
-+		ext4_truncate_folio(inode, start, min(page_boundary, end));
-+		if (end > page_boundary)
-+			ext4_truncate_folio(inode,
-+					    round_down(end, PAGE_SIZE), end);
-+	}
-+
-+truncate_pagecache:
-+	truncate_pagecache_range(inode, start, end - 1);
-+	return 0;
-+}
-+
- static void ext4_wait_dax_page(struct inode *inode)
+ static int cgw_notifier(struct notifier_block *nb,
+ 			unsigned long msg, void *ptr)
  {
- 	filemap_invalidate_unlock(inode->i_mapping);
+@@ -554,6 +567,7 @@ static int cgw_put_job(struct sk_buff *skb, struct cgw_job *gwj, int type,
+ {
+ 	struct rtcanmsg *rtcan;
+ 	struct nlmsghdr *nlh;
++	struct cf_mod *mod;
+ 
+ 	nlh = nlmsg_put(skb, pid, seq, type, sizeof(*rtcan), flags);
+ 	if (!nlh)
+@@ -588,82 +602,83 @@ static int cgw_put_job(struct sk_buff *skb, struct cgw_job *gwj, int type,
+ 			goto cancel;
+ 	}
+ 
++	mod = cgw_job_cf_mod(gwj);
+ 	if (gwj->flags & CGW_FLAGS_CAN_FD) {
+ 		struct cgw_fdframe_mod mb;
+ 
+-		if (gwj->mod.modtype.and) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.and, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.and;
++		if (mod->modtype.and) {
++			memcpy(&mb.cf, &mod->modframe.and, sizeof(mb.cf));
++			mb.modtype = mod->modtype.and;
+ 			if (nla_put(skb, CGW_FDMOD_AND, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.or) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.or, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.or;
++		if (mod->modtype.or) {
++			memcpy(&mb.cf, &mod->modframe.or, sizeof(mb.cf));
++			mb.modtype = mod->modtype.or;
+ 			if (nla_put(skb, CGW_FDMOD_OR, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.xor) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.xor, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.xor;
++		if (mod->modtype.xor) {
++			memcpy(&mb.cf, &mod->modframe.xor, sizeof(mb.cf));
++			mb.modtype = mod->modtype.xor;
+ 			if (nla_put(skb, CGW_FDMOD_XOR, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.set) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.set, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.set;
++		if (mod->modtype.set) {
++			memcpy(&mb.cf, &mod->modframe.set, sizeof(mb.cf));
++			mb.modtype = mod->modtype.set;
+ 			if (nla_put(skb, CGW_FDMOD_SET, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 	} else {
+ 		struct cgw_frame_mod mb;
+ 
+-		if (gwj->mod.modtype.and) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.and, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.and;
++		if (mod->modtype.and) {
++			memcpy(&mb.cf, &mod->modframe.and, sizeof(mb.cf));
++			mb.modtype = mod->modtype.and;
+ 			if (nla_put(skb, CGW_MOD_AND, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.or) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.or, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.or;
++		if (mod->modtype.or) {
++			memcpy(&mb.cf, &mod->modframe.or, sizeof(mb.cf));
++			mb.modtype = mod->modtype.or;
+ 			if (nla_put(skb, CGW_MOD_OR, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.xor) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.xor, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.xor;
++		if (mod->modtype.xor) {
++			memcpy(&mb.cf, &mod->modframe.xor, sizeof(mb.cf));
++			mb.modtype = mod->modtype.xor;
+ 			if (nla_put(skb, CGW_MOD_XOR, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.set) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.set, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.set;
++		if (mod->modtype.set) {
++			memcpy(&mb.cf, &mod->modframe.set, sizeof(mb.cf));
++			mb.modtype = mod->modtype.set;
+ 			if (nla_put(skb, CGW_MOD_SET, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 	}
+ 
+-	if (gwj->mod.uid) {
+-		if (nla_put_u32(skb, CGW_MOD_UID, gwj->mod.uid) < 0)
++	if (mod->uid) {
++		if (nla_put_u32(skb, CGW_MOD_UID, mod->uid) < 0)
+ 			goto cancel;
+ 	}
+ 
+-	if (gwj->mod.csumfunc.crc8) {
++	if (mod->csumfunc.crc8) {
+ 		if (nla_put(skb, CGW_CS_CRC8, CGW_CS_CRC8_LEN,
+-			    &gwj->mod.csum.crc8) < 0)
++			    &mod->csum.crc8) < 0)
+ 			goto cancel;
+ 	}
+ 
+-	if (gwj->mod.csumfunc.xor) {
++	if (mod->csumfunc.xor) {
+ 		if (nla_put(skb, CGW_CS_XOR, CGW_CS_XOR_LEN,
+-			    &gwj->mod.csum.xor) < 0)
++			    &mod->csum.xor) < 0)
+ 			goto cancel;
+ 	}
+ 
+@@ -997,7 +1012,7 @@ static int cgw_create_job(struct sk_buff *skb,  struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct rtcanmsg *r;
+ 	struct cgw_job *gwj;
+-	struct cf_mod mod;
++	struct cf_mod *mod;
+ 	struct can_can_gw ccgw;
+ 	u8 limhops = 0;
+ 	int err = 0;
+@@ -1016,37 +1031,48 @@ static int cgw_create_job(struct sk_buff *skb,  struct nlmsghdr *nlh,
+ 	if (r->gwtype != CGW_TYPE_CAN_CAN)
+ 		return -EINVAL;
+ 
+-	err = cgw_parse_attr(nlh, &mod, CGW_TYPE_CAN_CAN, &ccgw, &limhops);
++	mod = kmalloc(sizeof(*mod), GFP_KERNEL);
++	if (!mod)
++		return -ENOMEM;
++
++	err = cgw_parse_attr(nlh, mod, CGW_TYPE_CAN_CAN, &ccgw, &limhops);
+ 	if (err < 0)
+-		return err;
++		goto out_free_cf;
+ 
+-	if (mod.uid) {
++	if (mod->uid) {
+ 		ASSERT_RTNL();
+ 
+ 		/* check for updating an existing job with identical uid */
+ 		hlist_for_each_entry(gwj, &net->can.cgw_list, list) {
+-			if (gwj->mod.uid != mod.uid)
++			struct cf_mod *old_cf;
++
++			old_cf = cgw_job_cf_mod(gwj);
++			if (old_cf->uid != mod->uid)
+ 				continue;
+ 
+ 			/* interfaces & filters must be identical */
+-			if (memcmp(&gwj->ccgw, &ccgw, sizeof(ccgw)))
+-				return -EINVAL;
++			if (memcmp(&gwj->ccgw, &ccgw, sizeof(ccgw))) {
++				err = -EINVAL;
++				goto out_free_cf;
++			}
+ 
+-			/* update modifications with disabled softirq & quit */
+-			local_bh_disable();
+-			memcpy(&gwj->mod, &mod, sizeof(mod));
+-			local_bh_enable();
++			rcu_assign_pointer(gwj->cf_mod, mod);
++			kfree_rcu_mightsleep(old_cf);
+ 			return 0;
+ 		}
+ 	}
+ 
+ 	/* ifindex == 0 is not allowed for job creation */
+-	if (!ccgw.src_idx || !ccgw.dst_idx)
+-		return -ENODEV;
++	if (!ccgw.src_idx || !ccgw.dst_idx) {
++		err = -ENODEV;
++		goto out_free_cf;
++	}
+ 
+ 	gwj = kmem_cache_alloc(cgw_cache, GFP_KERNEL);
+-	if (!gwj)
+-		return -ENOMEM;
++	if (!gwj) {
++		err = -ENOMEM;
++		goto out_free_cf;
++	}
+ 
+ 	gwj->handled_frames = 0;
+ 	gwj->dropped_frames = 0;
+@@ -1056,7 +1082,7 @@ static int cgw_create_job(struct sk_buff *skb,  struct nlmsghdr *nlh,
+ 	gwj->limit_hops = limhops;
+ 
+ 	/* insert already parsed information */
+-	memcpy(&gwj->mod, &mod, sizeof(mod));
++	RCU_INIT_POINTER(gwj->cf_mod, mod);
+ 	memcpy(&gwj->ccgw, &ccgw, sizeof(ccgw));
+ 
+ 	err = -ENODEV;
+@@ -1083,9 +1109,11 @@ static int cgw_create_job(struct sk_buff *skb,  struct nlmsghdr *nlh,
+ 	if (!err)
+ 		hlist_add_head_rcu(&gwj->list, &net->can.cgw_list);
+ out:
+-	if (err)
++	if (err) {
+ 		kmem_cache_free(cgw_cache, gwj);
+-
++out_free_cf:
++		kfree(mod);
++	}
+ 	return err;
+ }
+ 
+@@ -1145,19 +1173,22 @@ static int cgw_remove_job(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 
+ 	/* remove only the first matching entry */
+ 	hlist_for_each_entry_safe(gwj, nx, &net->can.cgw_list, list) {
++		struct cf_mod *cf_mod;
++
+ 		if (gwj->flags != r->flags)
+ 			continue;
+ 
+ 		if (gwj->limit_hops != limhops)
+ 			continue;
+ 
++		cf_mod = cgw_job_cf_mod(gwj);
+ 		/* we have a match when uid is enabled and identical */
+-		if (gwj->mod.uid || mod.uid) {
+-			if (gwj->mod.uid != mod.uid)
++		if (cf_mod->uid || mod.uid) {
++			if (cf_mod->uid != mod.uid)
+ 				continue;
+ 		} else {
+ 			/* no uid => check for identical modifications */
+-			if (memcmp(&gwj->mod, &mod, sizeof(mod)))
++			if (memcmp(cf_mod, &mod, sizeof(mod)))
+ 				continue;
+ 		}
+ 
 -- 
 2.39.5
 
