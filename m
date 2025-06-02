@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3FAACB70B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21904ACB25F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219364C1A5E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A3AE16A134
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D76229B21;
-	Mon,  2 Jun 2025 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C3E2236F0;
+	Mon,  2 Jun 2025 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxTE2m41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JD+Vnt+k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F484227EBB;
-	Mon,  2 Jun 2025 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C1129D05;
+	Mon,  2 Jun 2025 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876669; cv=none; b=eSRAANch1zlbdb0e49lAEvrEARaWc0thV3z6TkaFktVdTElZgo+IEt080pCMJD5nFdtp1pO733FUGomkjWIBfsAtnEflCZD253cFT5VknzNMvZyIGhBksVkDnIX5ilUQI9CpNq7EhyEgRTFXsJ5H6yfuhKK+ghlmVV40GLkPqkU=
+	t=1748873693; cv=none; b=ppBpsmoErLruo7h7cct9JbX19JrkzkfpNXaTV/ZQ7aIHPab/jvQkTrW3BTltZyuFPdRozhAWBZI5QKPu2QFPpTK3YinFlHXv7cweoE5UPl0iJNRH4nfRzEU05m4Z9AGzfjYHKhMYjvi3+1LL4krRSpWvsogSbcejIAXmzwF0R0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876669; c=relaxed/simple;
-	bh=F43exw/KEgWdTph2C8NcveKrkRWoqzTQyhARJKdomJA=;
+	s=arc-20240116; t=1748873693; c=relaxed/simple;
+	bh=x4Vuq/7te+wuWO4OQr92QwsJlHFJpiGG83OVWTYcBoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1IjsbiBoZhhK9EHiWDNoS3f5Vgqy1hQBf/tu7Yj8MMv77PyGVVYVdOSSs5o2GaVqYQhI0x4ZEJ9dat2Ntg6Y4w9U/wTxQaQJBGYbwYtj1qP0nWAdY+cxfoQPjE7PMCl8xjGzG/iAD+LvzvOPBSoZlly4o/v5juI8v2Xo3nn6pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxTE2m41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C5DC4CEEB;
-	Mon,  2 Jun 2025 15:04:28 +0000 (UTC)
+	 MIME-Version; b=IBXu5w9Dw6yVzlgTfqLmcd5XnrF/agZrTzu2w2jgtWcvNO3xXeaXVDM3GicQ01DP6f8u/GGsPjaUUj2Ucgzf3T33Oy7wH7epRzEd6lVzL42XScPdwMZIKql/cF//JAVnGIwdUXW/krHFlKvhpLDT8LqxIc33X+/pt4x1gXufaps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JD+Vnt+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4EBC4CEEB;
+	Mon,  2 Jun 2025 14:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876669;
-	bh=F43exw/KEgWdTph2C8NcveKrkRWoqzTQyhARJKdomJA=;
+	s=korg; t=1748873693;
+	bh=x4Vuq/7te+wuWO4OQr92QwsJlHFJpiGG83OVWTYcBoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxTE2m414zOhG52YoGlutp4KaVHc63l5kxZn0lUdndoTDnqYUypfdC4MUPebZExGI
-	 E80Mw19mYMw0lmk3IKQvWl44SujHhZOFmbEvya5peTITyy3llK1YZYdNmSjhbDk6RE
-	 ZcttjSMNPigJhEjftddIbMbdsrjTu3N2x9n65Q7g=
+	b=JD+Vnt+kVX+c4Iy3zU97CzlYcMDjhuEo3sSa4qe7YsblKZhq5uL6/FdBzsOkEWUYx
+	 rQH/75mfE9oHLMOOVHFvQnEzNTDa71gDs6+H33XyDfPc9mxc7c0L2gStMSpfhrDslF
+	 CAPogDIag0yOBe4zOjlhdpOVansjWgEIj+8gVBBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/325] scsi: target: iscsi: Fix timeout on deleted connection
+Subject: [PATCH 6.6 221/444] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
 Date: Mon,  2 Jun 2025 15:44:45 +0200
-Message-ID: <20250602134320.117854343@linuxfoundation.org>
+Message-ID: <20250602134349.877138478@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit 7f533cc5ee4c4436cee51dc58e81dfd9c3384418 ]
+[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
 
-NOPIN response timer may expire on a deleted connection and crash with
-such logs:
+In the sensor_count field of the MTEWE register, bits 1-62 are
+supported only for unmanaged switches, not for NICs, and bit 63
+is reserved for internal use.
 
-Did not receive response to NOPIN on CID: 0, failing connection for I_T Nexus (null),i,0x00023d000125,iqn.2017-01.com.iscsi.target,t,0x3d
+To prevent confusing output that may include set bits that are
+not relevant to NIC sensors, we update the bitmask to retain only
+the first bit, which corresponds to the sensor ASIC.
 
-BUG: Kernel NULL pointer dereference on read at 0x00000000
-NIP  strlcpy+0x8/0xb0
-LR iscsit_fill_cxn_timeout_err_stats+0x5c/0xc0 [iscsi_target_mod]
-Call Trace:
- iscsit_handle_nopin_response_timeout+0xfc/0x120 [iscsi_target_mod]
- call_timer_fn+0x58/0x1f0
- run_timer_softirq+0x740/0x860
- __do_softirq+0x16c/0x420
- irq_exit+0x188/0x1c0
- timer_interrupt+0x184/0x410
-
-That is because nopin response timer may be re-started on nopin timer
-expiration.
-
-Stop nopin timer before stopping the nopin response timer to be sure
-that no one of them will be re-started.
-
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Link: https://lore.kernel.org/r/20241224101757.32300-1-d.bogdanov@yadro.com
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index 07e196b44b91d..04d40e76772b3 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4314,8 +4314,8 @@ int iscsit_close_connection(
- 	spin_unlock(&iscsit_global->ts_bitmap_lock);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 3ec892d51f57d..0f4763dab5d25 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -163,6 +163,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	u64 value_msb;
  
- 	iscsit_stop_timers_for_cmds(conn);
--	iscsit_stop_nopin_response_timer(conn);
- 	iscsit_stop_nopin_timer(conn);
-+	iscsit_stop_nopin_response_timer(conn);
+ 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
++	/* bit 1-63 are not supported for NICs,
++	 * hence read only bit 0 (asic) from lsb.
++	 */
++	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
  
- 	if (conn->conn_transport->iscsit_wait_conn)
- 		conn->conn_transport->iscsit_wait_conn(conn);
+ 	mlx5_core_warn(events->dev,
 -- 
 2.39.5
 
