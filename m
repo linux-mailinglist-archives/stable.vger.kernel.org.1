@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6AB6ACB10C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0886ACB764
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C03A33AB729
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60F09E61EE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31EB23E229;
-	Mon,  2 Jun 2025 14:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FA322FE18;
+	Mon,  2 Jun 2025 14:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCqX3wGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gs+jOw/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE17C23D2B4;
-	Mon,  2 Jun 2025 14:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC20229B2E;
+	Mon,  2 Jun 2025 14:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872998; cv=none; b=ANY8Dc6zDFYa6/n5wsgjhjKwKTZdYzyoSCLN2NgrfujZ/rc1klJiRlZgIsOUAAg0KalMF2g/iwfDhLivsTT/0GpDcHycwwvpol8W3CoEYWzJYHAXOj4BpR0Y+ZmV/9PKO44W8RSbC6vTKTu3Tno/Yn4MX04aPfgVYOkRnOXsa3M=
+	t=1748876186; cv=none; b=b1ziYvn3nrCvF8ysW/G9MVKAbeCmKN/yMHIJSpH/1YgcsGjVHk9bC8+r8NqFrYr4KD7i5IQEH3mOK/E08O0Dy5/5F3SE2GB1bBKXP68U8GIMUhLuZgLgfkuEf379UeIMfWB2+chuc8xdCUUtrYy/p99k5uSXgA29YNjtRYUk/Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872998; c=relaxed/simple;
-	bh=LN3t6F8brv6SGu4dXvG1xK12OSoQEIls2D+3ZC5e/aE=;
+	s=arc-20240116; t=1748876186; c=relaxed/simple;
+	bh=3tUYAkd/0evZdZz8CNagrQkAnfTno1I5yzvbsB0onNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVXfEfMRPtqk+V4iQigM7wqg9kllhibv5IjCBULd75rd9VWdpEsNUoHb/kh7i9Q2MArJ5sXaxbPCX9KuibqlzLUq9ZOiKB8t89Awuw1f4CEaJzCnKaARVCFfaCBngVfaFLQLD19Ef9f8i2VwGk55cSbilNHanZk6VWLZjQi6XMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCqX3wGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12807C4CEF2;
-	Mon,  2 Jun 2025 14:03:17 +0000 (UTC)
+	 MIME-Version; b=FeTXeXpzTuo3LeDlLZC5gZHiqJl6k0ELl0lf8sw14//td/fiRBNwtEoMNr+kTQlyzbTMlU+jcYINn4inu6yDqEttHOumndWWR8mXa/8UD4lOJ1ledWKk9RJncsnPkN+gKuypmSjKpeqStxAi7RRbk1mvgW/G4Sz5ol79ndz8tcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gs+jOw/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7625CC4CEEB;
+	Mon,  2 Jun 2025 14:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872998;
-	bh=LN3t6F8brv6SGu4dXvG1xK12OSoQEIls2D+3ZC5e/aE=;
+	s=korg; t=1748876185;
+	bh=3tUYAkd/0evZdZz8CNagrQkAnfTno1I5yzvbsB0onNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCqX3wGSdA86sMeeibkL97jkloac3iSeXe9PMDq2rJoD5ztSsX/A7Zg9OXLwvgBQz
-	 xlx5fCAKd/Jmxyhq858WU7ZYv2zeUEQ3RM3O32sQWFoSERMAWV8N6LpglalKwdUh5v
-	 Xle5pkK31uDdbSvgLljLCjQJldNwVlnGAULL+RA0=
+	b=gs+jOw/nzambCX46o+r09eVxaB/KTmEHgA51NgBWx6xxHlefIKhx9hHxpw+b5qzvX
+	 eNJFSTB0nAkbEUT9LrpummF9qW56hxJK4LXltBOqppmW+aG4QlRv6HnlvEGK1wQibv
+	 O0rSLuD0cdA2I/yapVoynLy+lQ7JfgByYov5XMEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 34/55] coredump: hand a pidfd to the usermode coredump helper
+	Bibo Mao <maobibo@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 099/207] MIPS: Use arch specific syscall name match function
 Date: Mon,  2 Jun 2025 15:47:51 +0200
-Message-ID: <20250602134239.623925542@linuxfoundation.org>
+Message-ID: <20250602134302.618608600@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,172 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit b5325b2a270fcaf7b2a9a0f23d422ca8a5a8bdea upstream.
+[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
 
-Give userspace a way to instruct the kernel to install a pidfd into the
-usermode helper process. This makes coredump handling a lot more
-reliable for userspace. In parallel with this commit we already have
-systemd adding support for this in [1].
+On MIPS system, most of the syscall function name begin with prefix
+sys_. Some syscalls are special such as clone/fork, function name of
+these begin with __sys_. Since scratch registers need be saved in
+stack when these system calls happens.
 
-We create a pidfs file for the coredumping process when we process the
-corename pattern. When the usermode helper process is forked we then
-install the pidfs file as file descriptor three into the usermode
-helpers file descriptor table so it's available to the exec'd program.
+With ftrace system call method, system call functions are declared with
+SYSCALL_DEFINEx, metadata of the system call symbol name begins with
+sys_. Here mips specific function arch_syscall_match_sym_name is used to
+compare function name between sys_call_table[] and metadata of syscall
+symbol.
 
-Since usermode helpers are either children of the system_unbound_wq
-workqueue or kthreadd we know that the file descriptor table is empty
-and can thus always use three as the file descriptor number.
-
-Note, that we'll install a pidfd for the thread-group leader even if a
-subthread is calling do_coredump(). We know that task linkage hasn't
-been removed due to delay_group_leader() and even if this @current isn't
-the actual thread-group leader we know that the thread-group leader
-cannot be reaped until @current has exited.
-
-[brauner: This is a backport for the v6.12 series. The upstream kernel
-has changed pidfs_alloc_file() to set O_RDWR implicitly instead of
-forcing callers to set it. Let's minimize the churn and just let the
-coredump umh handler raise O_RDWR.]
-
-Link: https://github.com/systemd/systemd/pull/37125 [1]
-Link: https://lore.kernel.org/20250414-work-coredump-v2-3-685bf231f828@kernel.org
-Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/coredump.c            |   56 +++++++++++++++++++++++++++++++++++++++++++----
- include/linux/coredump.h |    1 
- 2 files changed, 53 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -43,6 +43,8 @@
- #include <linux/timekeeping.h>
- #include <linux/sysctl.h>
- #include <linux/elf.h>
-+#include <linux/pidfs.h>
-+#include <uapi/linux/pidfd.h>
- 
- #include <linux/uaccess.h>
- #include <asm/mmu_context.h>
-@@ -60,6 +62,12 @@ static void free_vma_snapshot(struct cor
- #define CORE_FILE_NOTE_SIZE_DEFAULT (4*1024*1024)
- /* Define a reasonable max cap */
- #define CORE_FILE_NOTE_SIZE_MAX (16*1024*1024)
+diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+index db497a8167da2..e3212f44446fa 100644
+--- a/arch/mips/include/asm/ftrace.h
++++ b/arch/mips/include/asm/ftrace.h
+@@ -87,4 +87,20 @@ struct dyn_arch_ftrace {
+ #endif /*  CONFIG_DYNAMIC_FTRACE */
+ #endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_FUNCTION_TRACER */
++
++#ifdef CONFIG_FTRACE_SYSCALLS
++#ifndef __ASSEMBLY__
 +/*
-+ * File descriptor number for the pidfd for the thread-group leader of
-+ * the coredumping task installed into the usermode helper's file
-+ * descriptor table.
++ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
++ * for instance). We should also match the sys_ variant with those.
 + */
-+#define COREDUMP_PIDFD_NUMBER 3
- 
- static int core_uses_pid;
- static unsigned int core_pipe_limit;
-@@ -339,6 +347,27 @@ static int format_corename(struct core_n
- 			case 'C':
- 				err = cn_printf(cn, "%d", cprm->cpu);
- 				break;
-+			/* pidfd number */
-+			case 'F': {
-+				/*
-+				 * Installing a pidfd only makes sense if
-+				 * we actually spawn a usermode helper.
-+				 */
-+				if (!ispipe)
-+					break;
-+
-+				/*
-+				 * Note that we'll install a pidfd for the
-+				 * thread-group leader. We know that task
-+				 * linkage hasn't been removed yet and even if
-+				 * this @current isn't the actual thread-group
-+				 * leader we know that the thread-group leader
-+				 * cannot be reaped until @current has exited.
-+				 */
-+				cprm->pid = task_tgid(current);
-+				err = cn_printf(cn, "%d", COREDUMP_PIDFD_NUMBER);
-+				break;
-+			}
- 			default:
- 				break;
- 			}
-@@ -493,7 +522,7 @@ static void wait_for_dump_helpers(struct
- }
- 
- /*
-- * umh_pipe_setup
-+ * umh_coredump_setup
-  * helper function to customize the process used
-  * to collect the core in userspace.  Specifically
-  * it sets up a pipe and installs it as fd 0 (stdin)
-@@ -503,12 +532,31 @@ static void wait_for_dump_helpers(struct
-  * is a special value that we use to trap recursive
-  * core dumps
-  */
--static int umh_pipe_setup(struct subprocess_info *info, struct cred *new)
-+static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
- {
- 	struct file *files[2];
- 	struct coredump_params *cp = (struct coredump_params *)info->data;
- 	int err;
- 
-+	if (cp->pid) {
-+		struct file *pidfs_file __free(fput) = NULL;
-+
-+		pidfs_file = pidfs_alloc_file(cp->pid, O_RDWR);
-+		if (IS_ERR(pidfs_file))
-+			return PTR_ERR(pidfs_file);
-+
-+		/*
-+		 * Usermode helpers are childen of either
-+		 * system_unbound_wq or of kthreadd. So we know that
-+		 * we're starting off with a clean file descriptor
-+		 * table. So we should always be able to use
-+		 * COREDUMP_PIDFD_NUMBER as our file descriptor value.
-+		 */
-+		err = replace_fd(COREDUMP_PIDFD_NUMBER, pidfs_file, 0);
-+		if (err < 0)
-+			return err;
-+	}
-+
- 	err = create_pipe_files(files, 0);
- 	if (err)
- 		return err;
-@@ -598,7 +646,7 @@ void do_coredump(const kernel_siginfo_t
- 		}
- 
- 		if (cprm.limit == 1) {
--			/* See umh_pipe_setup() which sets RLIMIT_CORE = 1.
-+			/* See umh_coredump_setup() which sets RLIMIT_CORE = 1.
- 			 *
- 			 * Normally core limits are irrelevant to pipes, since
- 			 * we're not writing to the file system, but we use
-@@ -637,7 +685,7 @@ void do_coredump(const kernel_siginfo_t
- 		retval = -ENOMEM;
- 		sub_info = call_usermodehelper_setup(helper_argv[0],
- 						helper_argv, NULL, GFP_KERNEL,
--						umh_pipe_setup, NULL, &cprm);
-+						umh_coredump_setup, NULL, &cprm);
- 		if (sub_info)
- 			retval = call_usermodehelper_exec(sub_info,
- 							  UMH_WAIT_EXEC);
---- a/include/linux/coredump.h
-+++ b/include/linux/coredump.h
-@@ -28,6 +28,7 @@ struct coredump_params {
- 	int vma_count;
- 	size_t vma_data_size;
- 	struct core_vma_metadata *vma_meta;
-+	struct pid *pid;
- };
- 
- extern unsigned int core_file_note_size_limit;
++#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
++static inline bool arch_syscall_match_sym_name(const char *sym,
++					       const char *name)
++{
++	return !strcmp(sym, name) ||
++		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
++}
++#endif /* __ASSEMBLY__ */
++#endif /* CONFIG_FTRACE_SYSCALLS */
+ #endif /* _ASM_MIPS_FTRACE_H */
+-- 
+2.39.5
+
 
 
 
