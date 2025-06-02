@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688D6ACB624
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC33ACB514
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42B04C2C99
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4204A0533
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5988722FF37;
-	Mon,  2 Jun 2025 14:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD3D227B88;
+	Mon,  2 Jun 2025 14:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4Sdublm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRGIQHM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CFC22FE0A;
-	Mon,  2 Jun 2025 14:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BC31E3772;
+	Mon,  2 Jun 2025 14:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876156; cv=none; b=OlWcQNYGBxWrnu4I406gQduD3yDEsbVj5Z4D5GSBqo/ov7xuLvewF9tEbO7vQSC2RTQiO554I8Vmch9YdrmnYrMzAXJGpHubvVHcid7WyXBjNHqGx7YOON+9SJiJkrXTSoPPD1J8sL0AOeJ84HmBtDU0/ZwAN7Y2tORqORgqC4Q=
+	t=1748875474; cv=none; b=iDFvO08tEP9Ni7Dr0SX+xcA4lA2ONOK+vXn3SAYxEm4KdSiw1TTEA0oeln09o/96zuOFJgax6J0LTiLWpdLrrpsoPhSomFAicjH02PCY7nM1XBi2f8cUd+bflmhW81FMRmrdWTnsPsf/BIvt8GRPGRMaB+LFw1xlwTTSx+KGN1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876156; c=relaxed/simple;
-	bh=0HR1a8Jcn+uz3Cw3MJ7CKYODUulrilTiGnFNAYoKBgc=;
+	s=arc-20240116; t=1748875474; c=relaxed/simple;
+	bh=+PDqGsAoEVEP5sZbIm9iJwO4tTLnmRbxBPa5rS5UMsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ddOh5XKLB/CGU6gClIceP7yaRHznXQ9kJ1W1wMJKdvyL3r+NfIoYaPEW7rog+5AZWsYj6+I5S+Nt+1wzdqCmyn1JvxCaHIZ3Dmj17sdMQpkkvZQKLV2ho153SwmRGgs0e4DmGwldxQaNlEZSz2NIso/JezJhbzSOT1CZWQ8LIXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4Sdublm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D162C4CEF0;
-	Mon,  2 Jun 2025 14:55:54 +0000 (UTC)
+	 MIME-Version; b=bwnKVD5FyUwJqmWk6iw86U7WVLw64LyxXrcnzI5Ic3vkG1yDwtLHYSMjVpLw6Htf/tzRWzjdwmOQ1SP6k+3jeolcLLMCsO3f7E9lB22Fvr579ebqEzTV56sJnRXVYsJ+GfL1Fb577k9W3WE5jaqbC9kQigoW/rtpBRBKrTk8N0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRGIQHM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369A8C4CEEB;
+	Mon,  2 Jun 2025 14:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876155;
-	bh=0HR1a8Jcn+uz3Cw3MJ7CKYODUulrilTiGnFNAYoKBgc=;
+	s=korg; t=1748875473;
+	bh=+PDqGsAoEVEP5sZbIm9iJwO4tTLnmRbxBPa5rS5UMsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4SdublmqVJlmY9we3YOpjaaaH0Wrr3A6seetvEMNoND+d1cNB5xrBCwFQHdIot2z
-	 tLmBwq9Mg0KJnORDH8wajgtN8Wn7vGU4lcd55s+jxA46rSRXc8MnSroRKceG5pPkZI
-	 JZyU117vpQidpYk5xaKeyd7KQS7na8XTULvjTPFY=
+	b=oRGIQHM6I8sWeEIvvBd7qys450mrRtDeGXD0A7sd+2qOJHQGvv+5CHvkeptgNkQTS
+	 14l4NQpbpO4MzHMckawK5dBSlKLz0Y6fweD4yeWdnYna7MZ52UcR3hYYAvY9VleBAz
+	 eJvoqQZFkmKDpcwErwXrGln+eWu/lSsZzFFQjeyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/207] ASoC: qcom: sm8250: explicitly set format in sm8250_be_hw_params_fixup()
+Subject: [PATCH 5.10 145/270] rtc: rv3032: fix EERD location
 Date: Mon,  2 Jun 2025 15:47:10 +0200
-Message-ID: <20250602134301.023713068@linuxfoundation.org>
+Message-ID: <20250602134313.155889539@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit 89be3c15a58b2ccf31e969223c8ac93ca8932d81 ]
+[ Upstream commit b0f9cb4a0706b0356e84d67e48500b77b343debe ]
 
-Setting format to s16le is required for compressed playback on compatible
-soundcards.
+EERD is bit 2 in CTRL1
 
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20250228161430.373961-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250306214243.1167692-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/sm8250.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/rtc/rtc-rv3032.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
-index a38a741ace379..34a6349754fb0 100644
---- a/sound/soc/qcom/sm8250.c
-+++ b/sound/soc/qcom/sm8250.c
-@@ -7,6 +7,7 @@
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
- #include <sound/pcm.h>
-+#include <sound/pcm_params.h>
- #include <linux/soundwire/sdw.h>
- #include "qdsp6/q6afe.h"
- #include "common.h"
-@@ -27,9 +28,11 @@ static int sm8250_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
- 					SNDRV_PCM_HW_PARAM_RATE);
- 	struct snd_interval *channels = hw_param_interval(params,
- 					SNDRV_PCM_HW_PARAM_CHANNELS);
-+	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
+diff --git a/drivers/rtc/rtc-rv3032.c b/drivers/rtc/rtc-rv3032.c
+index 9e6166864bd73..acae15c34d128 100644
+--- a/drivers/rtc/rtc-rv3032.c
++++ b/drivers/rtc/rtc-rv3032.c
+@@ -69,7 +69,7 @@
+ #define RV3032_CLKOUT2_FD_MSK		GENMASK(6, 5)
+ #define RV3032_CLKOUT2_OS		BIT(7)
  
- 	rate->min = rate->max = 48000;
- 	channels->min = channels->max = 2;
-+	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
+-#define RV3032_CTRL1_EERD		BIT(3)
++#define RV3032_CTRL1_EERD		BIT(2)
+ #define RV3032_CTRL1_WADA		BIT(5)
  
- 	return 0;
- }
+ #define RV3032_CTRL2_STOP		BIT(0)
 -- 
 2.39.5
 
