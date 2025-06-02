@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D4CACB81B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F81ACB30E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72D391C240F1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E1B61941BA6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9311422258C;
-	Mon,  2 Jun 2025 15:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3EF23AE93;
+	Mon,  2 Jun 2025 14:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qHgOU0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iOPrAzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC51221F10;
-	Mon,  2 Jun 2025 15:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C0E1A01C6;
+	Mon,  2 Jun 2025 14:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877026; cv=none; b=q6eXNxbBvsJW6ZkaVCQzDZwUo7CIfSeSvLrVCMAYOCRk3qEdEpICF5Dk9a2pn2MDZea7k1jmLH6z0FiM7oZmSXgShBensh4NIB9U5+3I0a1QvGVKGTwIZQ3mBlHgRnm3s2Z9YROE9d7tNrXMqpSsd3mvICOBX4G4yU+QDKw2Uv8=
+	t=1748874112; cv=none; b=T5PQOBzHmuCQYM+86EvNde/FABBZASYapYkQgp7En+K+zU9xwwkg7Z9ZLhurNJ24pOluECyoNTF3k0Npik+8jG0KC8bPxYN0xL2KmY76zKPA8tDin8H/YJ3vXynCiQizvAvRI5rHoWEB2xivQnvpbzWdrRvpenehJUUaNLoq4EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877026; c=relaxed/simple;
-	bh=iYcXX8kZWKDt+JhJ6NNzF+GOp5h8uA54atkPdpAS/CM=;
+	s=arc-20240116; t=1748874112; c=relaxed/simple;
+	bh=vPfezUKTEFYhc1cQAyNjL3s8Sf35igCmhWoOSEj0lgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MS5Jiu5G/nnjuvfqtGwN8+9kSAle/lEye8C6DIBIusz+7fIL+Ph3m6kz3Ljp+/vIa9ixYmi1hoaTvR0WNAJt8rU0M1xD1awzHiH/R89tgpFJ9EUWL50LFdNGrdcKwyZ9+mKQOKYUyS2ypVWDCI7hryj9o5wJv+kdFyJ8Omed/j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qHgOU0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B218FC4CEEB;
-	Mon,  2 Jun 2025 15:10:25 +0000 (UTC)
+	 MIME-Version; b=cM+Ezv0aQEcOHv9QDr8UoFSZpEJpAvtJLrXGEEClANoukSP8Lmlqn0skCuziWmz3KC/vaHy0iAu9ETaLIzH1Hwu2AvsoZTUSgAJbZj6FM34Tg7BhV5bLPsYO+ainPyXZtGM6bXXtUQ27SnT1fGgDN5ab86COnp1pHCvS62VCLhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iOPrAzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEF1C4CEEB;
+	Mon,  2 Jun 2025 14:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877026;
-	bh=iYcXX8kZWKDt+JhJ6NNzF+GOp5h8uA54atkPdpAS/CM=;
+	s=korg; t=1748874112;
+	bh=vPfezUKTEFYhc1cQAyNjL3s8Sf35igCmhWoOSEj0lgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qHgOU0fZ5MileTkNelKVv1O0MPOOqVSJSbp3WFGeSz0CCufsCJiqWZ1qfo5zEroX
-	 m7/9qyFw24Ww+jcm5P+D9fFnX7PmmrokcXm+u9SWCjZosZO/HkqmeYWLZMQ4DQNW8c
-	 gRe8MllHCQ7iUCujyFzPlMLnDqC3F/0BQ1fmz1Nk=
+	b=2iOPrAzvCCLYskqbmn4uO9m4rxiLVczJlfZxFRwetuOpE1IeR92fvPl2jIDAuHX5C
+	 /sfIJ9bSl8N6yELk3L+UWkOSfLnJtKcfPe5KSVHplTmDSi8GpzuVAVGDNCCGaVv9pt
+	 1cWlvmexYgAWQtaX9VqZbRfpB6GRYvghDuVTe3Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/325] wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
+	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 361/444] ASoC: SOF: ipc4-control: Use SOF_CTRL_CMD_BINARY as numid for bytes_ext
 Date: Mon,  2 Jun 2025 15:47:05 +0200
-Message-ID: <20250602134325.868966569@linuxfoundation.org>
+Message-ID: <20250602134355.572735939@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 6be7544d19fcfcb729495e793bc6181f85bb8949 ]
+commit 4d14b1069e9e672dbe1adab52594076da6f4a62d upstream.
 
-Set the MCS maps and the highest rates according to the number of
-spatial streams the chip has. For RTL8814AU that is 3.
+The header.numid is set to scontrol->comp_id in bytes_ext_get and it is
+ignored during bytes_ext_put.
+The use of comp_id is not quite great as it is kernel internal
+identification number.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/e86aa009-b5bf-4b3a-8112-ea5e3cd49465@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set the header.numid to SOF_CTRL_CMD_BINARY during get and validate the
+numid during put to provide consistent and compatible identification
+number as IPC3.
+
+For IPC4 existing tooling also ignored the numid but with the use of
+SOF_CTRL_CMD_BINARY the different handling of the blobs can be dropped,
+providing better user experience.
+
+Reported-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
+Closes: https://github.com/thesofproject/linux/issues/5282
+Fixes: a062c8899fed ("ASoC: SOF: ipc4-control: Add support for bytes control get and put")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Link: https://patch.msgid.link/20250509085633.14930-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ sound/soc/sof/ipc4-control.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 7c390c2c608d8..8a47cfb358b16 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1552,8 +1552,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 			     struct ieee80211_sta_vht_cap *vht_cap)
- {
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
--	u16 mcs_map;
-+	u16 mcs_map = 0;
- 	__le16 highest;
-+	int i;
- 
- 	if (efuse->hw_cap.ptcl != EFUSE_HW_CAP_IGNORE &&
- 	    efuse->hw_cap.ptcl != EFUSE_HW_CAP_PTCL_VHT)
-@@ -1576,21 +1577,15 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 	if (rtw_chip_has_rx_ldpc(rtwdev))
- 		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
- 
--	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 8 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 10 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 12 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 14;
--	if (efuse->hw_cap.nss > 1) {
--		highest = cpu_to_le16(780);
--		mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
--	} else {
--		highest = cpu_to_le16(390);
--		mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << 2;
-+	for (i = 0; i < 8; i++) {
-+		if (i < efuse->hw_cap.nss)
-+			mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << (i * 2);
-+		else
-+			mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2);
+--- a/sound/soc/sof/ipc4-control.c
++++ b/sound/soc/sof/ipc4-control.c
+@@ -483,6 +483,14 @@ static int sof_ipc4_bytes_ext_put(struct
+ 		return -EINVAL;
  	}
  
-+	highest = cpu_to_le16(390 * efuse->hw_cap.nss);
++	/* Check header id */
++	if (header.numid != SOF_CTRL_CMD_BINARY) {
++		dev_err_ratelimited(scomp->dev,
++				    "Incorrect numid for bytes put %d\n",
++				    header.numid);
++		return -EINVAL;
++	}
 +
- 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.rx_highest = highest;
--- 
-2.39.5
-
+ 	/* Verify the ABI header first */
+ 	if (copy_from_user(&abi_hdr, tlvd->tlv, sizeof(abi_hdr)))
+ 		return -EFAULT;
+@@ -565,7 +573,8 @@ static int _sof_ipc4_bytes_ext_get(struc
+ 	if (data_size > size)
+ 		return -ENOSPC;
+ 
+-	header.numid = scontrol->comp_id;
++	/* Set header id and length */
++	header.numid = SOF_CTRL_CMD_BINARY;
+ 	header.length = data_size;
+ 
+ 	if (copy_to_user(tlvd, &header, sizeof(struct snd_ctl_tlv)))
 
 
 
