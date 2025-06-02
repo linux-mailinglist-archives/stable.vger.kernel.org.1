@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-150537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367B5ACB84F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:39:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F2BACB883
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C46172B3F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEC9C4037CE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87993225A3D;
-	Mon,  2 Jun 2025 15:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7911FCFE2;
+	Mon,  2 Jun 2025 15:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOx6NxF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4tekD4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F00225771;
-	Mon,  2 Jun 2025 15:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CF515CD55;
+	Mon,  2 Jun 2025 15:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877434; cv=none; b=gaXTguxiHhDy1IITwFTiCsxee/Dt8T2P1Tz7V3MAIErk7N12wGS0Xtp+p9zxLMV6N4Sa8Z9Rfr3t5qjswJfwR+0kvVUp+VaAwWWJ6limhR9V+IKfvJF0tQXTn6d5NTe7uyoUOGTVXOym/3l0EWE+XYogNGtwNWAEsyLh3JzARO0=
+	t=1748877340; cv=none; b=NSDRdYMCGWTsZP2RncbjrHkGEpL2v4JSU0GT1FMSi26M0SUYx9pfpBB1cbbGUn+Y6aqqM2v3EyAJNkW9PwrbeG4d+qOofo7wVe6FB5QCO3CAp9gHSA9GzL8gjsf5LQTB4dFchE59v9z/ihwaYWX01kOeRATxPpVMizGh1z5V/t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877434; c=relaxed/simple;
-	bh=pU3zvxMHfuJUT0PIGhhzhazXFJGhqYZLml4DNT9pPqs=;
+	s=arc-20240116; t=1748877340; c=relaxed/simple;
+	bh=chI/uJmAPOPPSB1dmUVOg0WZo66wl3bIAkC2F1FjBOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9I4K1/2UpcjVJTGrlp8sPM5EhJjOga0u+fIH1mmdoG4o4KNaa+oqUumCp+m58GyJBm4jpkPpHZnF9Hjne9jq8HP8JYGzu5J/iBf6zcvaWg1V1zGBydwPTeNqtgAaerZNjT8qvl/GB1cAMaBd5rZoUPA4JBM70L3kGXe14Sgun8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOx6NxF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4B8C4CEEE;
-	Mon,  2 Jun 2025 15:17:13 +0000 (UTC)
+	 MIME-Version; b=mF5Sv5e//Om7iv5dsLywJ6CXR4rQ2IEfICd2+VT7DMRAu/+iLRdxSqCXUtvENn6u4a5Ae9HnoNiZODZTqgPi2TYE3+LWVnDpN9tms0zf5GAPXZfyWiu7NoJxWxwyYNL+IYfTguWf3zfWzNiUtRUXy7IVh35XBdx9GPxzqAmlCds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4tekD4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A30C4CEEB;
+	Mon,  2 Jun 2025 15:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877434;
-	bh=pU3zvxMHfuJUT0PIGhhzhazXFJGhqYZLml4DNT9pPqs=;
+	s=korg; t=1748877340;
+	bh=chI/uJmAPOPPSB1dmUVOg0WZo66wl3bIAkC2F1FjBOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xOx6NxF5FARL2Jk7wbezNIaVobV7TD5/pw3HK4U98u8a9OVrhJ+2LHsSWSxAPSftA
-	 a7W8OL34ZUvRa5sT4lR3nEt8hHbX0a7pqiyiSYgVvK6/XNbupXr2jqyVOqwIKhA1MB
-	 ChtAVixJTf2mpv536yQdTtHVFetK1JbEFY1aTbZY=
+	b=j4tekD4xGyOyEuHsgwLCaSz/Upt3ZUXHxV+ykXjrZpwyVa7hJQinUMvcAhFIPmblG
+	 Vq1wiSYRL5wjsPHu7Tnxm6iFZIcnrV2DotIDYORNPJByScVXsfqtlYQw3W2uFoOvev
+	 d9vOr+Zna0DRGMG7aCiy6iWYshtvG+7Sz63Br8pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
+	syzbot+55c12726619ff85ce1f6@syzkaller.appspotmail.com,
+	Wang Liang <wangliang74@huawei.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 246/325] octeontx2-pf: Add AF_XDP non-zero copy support
-Date: Mon,  2 Jun 2025 15:48:42 +0200
-Message-ID: <20250602134329.776953528@linuxfoundation.org>
+Subject: [PATCH 6.1 247/325] net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done
+Date: Mon,  2 Jun 2025 15:48:43 +0200
+Message-ID: <20250602134329.819447660@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
 References: <20250602134319.723650984@linuxfoundation.org>
@@ -66,49 +67,123 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit b4164de5041b51cda3438e75bce668e2556057c3 ]
+[ Upstream commit e279024617134c94fd3e37470156534d5f2b3472 ]
 
-Set xdp rx ring memory type as MEM_TYPE_PAGE_POOL for
-af-xdp to work. This is needed since xdp_return_frame
-internally will use page pools.
+Syzbot reported a slab-use-after-free with the following call trace:
 
-Fixes: 06059a1a9a4a ("octeontx2-pf: Add XDP support to netdev PF")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in tipc_aead_encrypt_done+0x4bd/0x510 net/tipc/crypto.c:840
+  Read of size 8 at addr ffff88807a733000 by task kworker/1:0/25
+
+  Call Trace:
+   kasan_report+0xd9/0x110 mm/kasan/report.c:601
+   tipc_aead_encrypt_done+0x4bd/0x510 net/tipc/crypto.c:840
+   crypto_request_complete include/crypto/algapi.h:266
+   aead_request_complete include/crypto/internal/aead.h:85
+   cryptd_aead_crypt+0x3b8/0x750 crypto/cryptd.c:772
+   crypto_request_complete include/crypto/algapi.h:266
+   cryptd_queue_worker+0x131/0x200 crypto/cryptd.c:181
+   process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
+
+  Allocated by task 8355:
+   kzalloc_noprof include/linux/slab.h:778
+   tipc_crypto_start+0xcc/0x9e0 net/tipc/crypto.c:1466
+   tipc_init_net+0x2dd/0x430 net/tipc/core.c:72
+   ops_init+0xb9/0x650 net/core/net_namespace.c:139
+   setup_net+0x435/0xb40 net/core/net_namespace.c:343
+   copy_net_ns+0x2f0/0x670 net/core/net_namespace.c:508
+   create_new_namespaces+0x3ea/0xb10 kernel/nsproxy.c:110
+   unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:228
+   ksys_unshare+0x419/0x970 kernel/fork.c:3323
+   __do_sys_unshare kernel/fork.c:3394
+
+  Freed by task 63:
+   kfree+0x12a/0x3b0 mm/slub.c:4557
+   tipc_crypto_stop+0x23c/0x500 net/tipc/crypto.c:1539
+   tipc_exit_net+0x8c/0x110 net/tipc/core.c:119
+   ops_exit_list+0xb0/0x180 net/core/net_namespace.c:173
+   cleanup_net+0x5b7/0xbf0 net/core/net_namespace.c:640
+   process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
+
+After freed the tipc_crypto tx by delete namespace, tipc_aead_encrypt_done
+may still visit it in cryptd_queue_worker workqueue.
+
+I reproduce this issue by:
+  ip netns add ns1
+  ip link add veth1 type veth peer name veth2
+  ip link set veth1 netns ns1
+  ip netns exec ns1 tipc bearer enable media eth dev veth1
+  ip netns exec ns1 tipc node set key this_is_a_master_key master
+  ip netns exec ns1 tipc bearer disable media eth dev veth1
+  ip netns del ns1
+
+The key of reproduction is that, simd_aead_encrypt is interrupted, leading
+to crypto_simd_usable() return false. Thus, the cryptd_queue_worker is
+triggered, and the tipc_crypto tx will be visited.
+
+  tipc_disc_timeout
+    tipc_bearer_xmit_skb
+      tipc_crypto_xmit
+        tipc_aead_encrypt
+          crypto_aead_encrypt
+            // encrypt()
+            simd_aead_encrypt
+              // crypto_simd_usable() is false
+              child = &ctx->cryptd_tfm->base;
+
+  simd_aead_encrypt
+    crypto_aead_encrypt
+      // encrypt()
+      cryptd_aead_encrypt_enqueue
+        cryptd_aead_enqueue
+          cryptd_enqueue_request
+            // trigger cryptd_queue_worker
+            queue_work_on(smp_processor_id(), cryptd_wq, &cpu_queue->work)
+
+Fix this by holding net reference count before encrypt.
+
+Reported-by: syzbot+55c12726619ff85ce1f6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=55c12726619ff85ce1f6
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Link: https://patch.msgid.link/20250520101404.1341730-1-wangliang74@huawei.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/tipc/crypto.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 5e11599d13223..59a7e6f376f47 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -988,6 +988,7 @@ static int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
- 	int err, pool_id, non_xdp_queues;
- 	struct nix_aq_enq_req *aq;
- 	struct otx2_cq_queue *cq;
-+	struct otx2_pool *pool;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 25c18f8783ce9..a9c02fac039b5 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -817,12 +817,16 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
+ 		goto exit;
+ 	}
  
- 	cq = &qset->cq[qidx];
- 	cq->cq_idx = qidx;
-@@ -996,8 +997,13 @@ static int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
- 		cq->cq_type = CQ_RX;
- 		cq->cint_idx = qidx;
- 		cq->cqe_cnt = qset->rqe_cnt;
--		if (pfvf->xdp_prog)
-+		if (pfvf->xdp_prog) {
-+			pool = &qset->pool[qidx];
- 			xdp_rxq_info_reg(&cq->xdp_rxq, pfvf->netdev, qidx, 0);
-+			xdp_rxq_info_reg_mem_model(&cq->xdp_rxq,
-+						   MEM_TYPE_PAGE_POOL,
-+						   pool->page_pool);
-+		}
- 	} else if (qidx < non_xdp_queues) {
- 		cq->cq_type = CQ_TX;
- 		cq->cint_idx = qidx - pfvf->hw.rx_queues;
++	/* Get net to avoid freed tipc_crypto when delete namespace */
++	get_net(aead->crypto->net);
++
+ 	/* Now, do encrypt */
+ 	rc = crypto_aead_encrypt(req);
+ 	if (rc == -EINPROGRESS || rc == -EBUSY)
+ 		return rc;
+ 
+ 	tipc_bearer_put(b);
++	put_net(aead->crypto->net);
+ 
+ exit:
+ 	kfree(ctx);
+@@ -860,6 +864,7 @@ static void tipc_aead_encrypt_done(struct crypto_async_request *base, int err)
+ 	kfree(tx_ctx);
+ 	tipc_bearer_put(b);
+ 	tipc_aead_put(aead);
++	put_net(net);
+ }
+ 
+ /**
 -- 
 2.39.5
 
