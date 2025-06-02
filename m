@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B85FACB553
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B85BFACB33B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 588924A5610
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C022194762B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A6422FAD4;
-	Mon,  2 Jun 2025 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCC222422F;
+	Mon,  2 Jun 2025 14:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOaQbKcS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctCceThV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117C822F772;
-	Mon,  2 Jun 2025 14:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5211F4165;
+	Mon,  2 Jun 2025 14:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875624; cv=none; b=M1VFLYY6H+pF4Sl092Vrp4OkxgXFQXDj7nKrh3bEOpxyIG/5uTi1oSsT6zhrLROckuyAk0efo8VYC5sQFQkWavpCBSqljrenNxYw+SJ3KnA2AP/6U+NU38Rm5J6AdzsVZpHIKZ0A2/ocDzNiFWRpLbcPuNSLdKbZqaSG0P7L76k=
+	t=1748874176; cv=none; b=nmrbPdWy2cvsQAN11amkZs4CDnufKlP0lBgicifblOghHKECkPs5uAJY5ZrHzdi9+CSvdeUj+ntwqhXhxIfgQz7EYQz0vXRva8n//PwCyv8IiNwd599nU1kpJ41yphyjkNLuZwOI0rW8xnJoPNcItluVjfhgIesRUHYZN2wfE9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875624; c=relaxed/simple;
-	bh=c2hbu2NttbuIqryBT6sCalUHnTW+ccIFdJP1s016X7I=;
+	s=arc-20240116; t=1748874176; c=relaxed/simple;
+	bh=zdDnEj5SKHLUFalBt5F3+wRcd9wC2z82pPKkgkYQO0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUHKa+WWXLB7BBdqwLYKUrpmu7cgVuXJo0Q2jbSXec9P35FJTBGf+zN04a/Q1j+vR3ZvZNi5umSTmSY8lxvynkXL4awNypcx/QCG7WdICIeo16Wx8m96Xnzk2FUiA9WS/okzpfBrv72o3GR0IOcMivD3JMoeZ/q/zDAYnZJiZZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOaQbKcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C486C4CEEB;
-	Mon,  2 Jun 2025 14:47:03 +0000 (UTC)
+	 MIME-Version; b=atYdvcp29LbYOYIxdpvCPO79xrwrSMCgkTbvbpzJUaJ9SX3F7z/vfOQ2cDAusIEh55dQ1ThwUI1M8qhUdWCoyv9Hi78yV6yMEsX78d0RX3fqw/Yu18hxhkLImFpwxczGDj/r6A/w/qAtbm8GFcFwf01ccs7pCChuaZjs4VoNljU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctCceThV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAEAC4CEEB;
+	Mon,  2 Jun 2025 14:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875623;
-	bh=c2hbu2NttbuIqryBT6sCalUHnTW+ccIFdJP1s016X7I=;
+	s=korg; t=1748874175;
+	bh=zdDnEj5SKHLUFalBt5F3+wRcd9wC2z82pPKkgkYQO0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOaQbKcSByhb0RpoIU0ETtPU5vLJ1JF/yqLsICOHGycRDFlBtrGjz5lev0sgNcoIh
-	 dm5qXb+zsZWhIOOBuHHmkYUILKFufYyPEWVCMcwi3Y5lVsDU1BVCv25ZeYXhcPeMkN
-	 gumQFoFOF8PCuwrNfocpZRh/djWITg2cCYMp53GE=
+	b=ctCceThVDxUXjSDgfot1b4traSdw1pKcjwFVxQqM4aqm8hSXBWrxUkExFQvRhaehZ
+	 biRN0XZcfGhqNFds+j5Dt6Y+mSEjmqH6VHlOZIZvvsIpw1zgf1rDvUQ411EacDhx/o
+	 2bOrNMU+0kpT3prpD5MoXHtoon8Wr9cS0soUUuPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/270] orangefs: Do not truncate file size
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Hendrik Donner <hd@os-cillation.de>
+Subject: [PATCH 6.6 383/444] x86/boot: Compile boot code with -std=gnu11 too
 Date: Mon,  2 Jun 2025 15:47:27 +0200
-Message-ID: <20250602134313.844143119@linuxfoundation.org>
+Message-ID: <20250602134356.457680581@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-[ Upstream commit 062e8093592fb866b8e016641a8b27feb6ac509d ]
+commit b3bee1e7c3f2b1b77182302c7b2131c804175870 upstream.
 
-'len' is used to store the result of i_size_read(), so making 'len'
-a size_t results in truncation to 4GiB on 32-bit systems.
+Use -std=gnu11 for consistency with main kernel code.
 
-Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Link: https://lore.kernel.org/r/20250305204734.1475264-2-willy@infradead.org
-Tested-by: Mike Marshall <hubcap@omnibond.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It doesn't seem to change anything in vmlinux.
+
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lore.kernel.org/r/2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183
+Cc: Hendrik Donner <hd@os-cillation.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/orangefs/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/x86/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index 48f0547d4850e..cd70ded309e47 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -22,9 +22,9 @@ static int orangefs_writepage_locked(struct page *page,
- 	struct orangefs_write_range *wr = NULL;
- 	struct iov_iter iter;
- 	struct bio_vec bv;
--	size_t len, wlen;
-+	size_t wlen;
- 	ssize_t ret;
--	loff_t off;
-+	loff_t len, off;
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -43,7 +43,7 @@ endif
  
- 	set_page_writeback(page);
- 
-@@ -93,8 +93,7 @@ static int orangefs_writepages_work(struct orangefs_writepages *ow,
- 	struct orangefs_write_range *wrp, wr;
- 	struct iov_iter iter;
- 	ssize_t ret;
--	size_t len;
--	loff_t off;
-+	loff_t len, off;
- 	int i;
- 
- 	len = i_size_read(inode);
--- 
-2.39.5
-
+ # How to compile the 16-bit code.  Note we always compile for -march=i386;
+ # that way we can complain to the user if the CPU is insufficient.
+-REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
++REALMODE_CFLAGS	:= -std=gnu11 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
+ 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
+ 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
+ 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
 
 
 
