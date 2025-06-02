@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-148957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FA1ACAF6E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7605BACAFE2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A34D51BA21EB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844E71BA3B62
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5E414901B;
-	Mon,  2 Jun 2025 13:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB2F221734;
+	Mon,  2 Jun 2025 13:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGf7hUoh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiNjBCJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D321A285;
-	Mon,  2 Jun 2025 13:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B091A01C6;
+	Mon,  2 Jun 2025 13:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872077; cv=none; b=TxlJkMNfVai+SaRTb3sFedTxVno8GW1yNAOpwCZDhGbsnHP5U1TufZvjox15cKMyUgzpup7haxJuLlOkmROuW4pabyXfCxHdxI68WmUH9bDGXg0wBX0z9m0pEzaICc8lr9IZ0IDZ+Puu99jM27qG22f6kJxAm75j1cdlYgICJps=
+	t=1748872611; cv=none; b=WcQ3OOi0LmJ/MiIkMF9jhFeEsjerFA8Xj6WOGvWCmIVwTJQysbO2dFKiJ2dXwEA4eGvMyB5hF1UPkSf5pnUtI2NbunM7NlGns59e/3MlPTL6WcdYVjwA4DJfk/vlPyEo8Y6qrz2FBjwuSgqoaPefrDmq5PDb/Wd6BupCz5bRLUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872077; c=relaxed/simple;
-	bh=mLOlmUmqmLOl4iREhtGp2GsJ9Ioj99IdJXdbQZoFta0=;
+	s=arc-20240116; t=1748872611; c=relaxed/simple;
+	bh=xeWgAZ55M7Fr8POqQ8LZQgsWZvdNRdx2xQbZ0W0fGOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvLjsFzRBR2shNXuD4BVgjEfWVrtp3z31S2M33/onThyxnfBzhdBzclQ5lEqyUG/r/NHhjoimQs2Jvu0MfTw35fPLlQQfowAwy+Lj2wNMXkR+AiJsNWwXLmgtVc4mDHCVrgq1PIpekLtFZ6iUPhPCW+bisin7nOpoDnWDVrBkls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGf7hUoh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986A6C4CEF1;
-	Mon,  2 Jun 2025 13:47:56 +0000 (UTC)
+	 MIME-Version; b=TlgGg8h7P1rAJI/EUsg0/nb1fjeO10tmyOwoq375AXI2uTWjpkBg2R00+tv7doDEm5UthBTP0t/908lZXk+EpZxMeessZgTQkr/srsnMRYy7SnlJk5qb38v1MD+HjbQDe3VGQ49A/jTyduAKuVqGHy/eFA0pQYF4fmldkjopapY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiNjBCJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FE5C4CEEB;
+	Mon,  2 Jun 2025 13:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872077;
-	bh=mLOlmUmqmLOl4iREhtGp2GsJ9Ioj99IdJXdbQZoFta0=;
+	s=korg; t=1748872611;
+	bh=xeWgAZ55M7Fr8POqQ8LZQgsWZvdNRdx2xQbZ0W0fGOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGf7hUohL30hD1mvn7/GfIr7tdg8WnsgDgyfEwmxW54+gKU6TYxM1CHRf5y0DRENM
-	 foiCE2cX4V8kxsDfGnEJpPDcxpPBrzAoiGnI6licFMqwaKU9t6sExWTT1lTf79JksH
-	 T63bcM4Xoo+UhldiAJx6zCELP1jCnhl9BqYQfdsk=
+	b=kiNjBCJWUsdZBBaFXDkP4LfbV18f5BDDbFGaRVKfWXX1mf/kEywvCSK8xNaLDfLLQ
+	 XXxaxhPFbH47+2rZ3WFtVmjKCSKj9V/J9CnlJYx/HKrHECH69Czb10IUjpVwWxkTcM
+	 EPUwghcNpKuWbhAZbDJdb5AhvXDSUd4Os/WExLDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 11/49] arm64: dts: qcom: sm8650: Add missing properties for cryptobam
+Subject: [PATCH 6.14 17/73] arm64: dts: qcom: x1e80100-hp-omnibook-x14: Fix vreg_l2j_1p2 voltage
 Date: Mon,  2 Jun 2025 15:47:03 +0200
-Message-ID: <20250602134238.383461819@linuxfoundation.org>
+Message-ID: <20250602134242.379376696@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 38b88722bce07b6a5927f45fbf7a9a85e834572c upstream.
+commit 4a09dad9d437a13e9cd4383ff7791a816a6e1652 upstream.
 
-num-channels and qcom,num-ees are required for BAM nodes without clock,
-because the driver cannot ensure the hardware is powered on when trying to
-obtain the information from the hardware registers. Specifying the node
-without these properties is unsafe and has caused early boot crashes for
-other SoCs before [1, 2].
-
-Add the missing information from the hardware registers to ensure the
-driver can probe successfully without causing crashes.
-
-[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
-[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
+In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
+uV instead of the 1200000 uV we have currently in the device tree. Use the
+same for consistency and correctness.
 
 Cc: stable@vger.kernel.org
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
+Fixes: 6f18b8d4142c ("arm64: dts: qcom: x1e80100-hp-x14: dt for HP Omnibook X Laptop 14")
 Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-4-f560889e65d8@linaro.org
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-4-24b6a2043025@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -2533,6 +2533,8 @@
- 				 <&apps_smmu 0x481 0>;
+--- a/arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts
+@@ -871,8 +871,8 @@
  
- 			qcom,ee = <0>;
-+			qcom,num-ees = <4>;
-+			num-channels = <20>;
- 			qcom,controlled-remotely;
+ 		vreg_l2j_1p2: ldo2 {
+ 			regulator-name = "vreg_l2j_1p2";
+-			regulator-min-microvolt = <1200000>;
+-			regulator-max-microvolt = <1200000>;
++			regulator-min-microvolt = <1256000>;
++			regulator-max-microvolt = <1256000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
  		};
  
 
