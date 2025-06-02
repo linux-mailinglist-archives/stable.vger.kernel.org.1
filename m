@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413ADACB2F9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC0DACB7FC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2314E1946C63
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 123254A164E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B40239096;
-	Mon,  2 Jun 2025 14:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECC222D7AA;
+	Mon,  2 Jun 2025 15:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYlO9Jo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kb3oYbzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B856F224B09;
-	Mon,  2 Jun 2025 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3521822D4CE;
+	Mon,  2 Jun 2025 15:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874051; cv=none; b=sayzm1gYwrbw0r5hK0Fy7FUFLBYTV6Mjmif5nRVUyeQivhIUkXEqVjh58QtuhZo+y+vjC+N8S/UZ0OA2UjVhbMatjp9Rl4NwPJvfti+XwRFmMPuQNjK2sWSl8X+Dy6gW3kBRTAucx985D1gdHgTP+IEj2TTCdJ9Ee6PAwXJWtUE=
+	t=1748876871; cv=none; b=eXsGoZvZiH23uXZYdHR68mc1AkLIkIWPO+I7JEKI43/V0+uB5oOtPw/n55Ak6hgberXvOD3jUAL4P5uRMDDgeOyySe2Wi+JggMDB8H6hMH7gkXQ1eZQ2LiPzuUOuKn5qd5XtaEtS0DohPg7rKV1eEtDANRUi7ugmtfqyALKRz5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874051; c=relaxed/simple;
-	bh=dURlkI1fO5YqfzdPNMaadd/IQzsLBJlA0ONTRMR5ENE=;
+	s=arc-20240116; t=1748876871; c=relaxed/simple;
+	bh=wnOPOOieDsp/E7CCIURjYHWU+KSfbPVeWWkg6w5m2D8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVT4pAdJSQy6X/jBScgRFZBmdmQoyiG8bti3A95NJcL43YJGRfKGft1+YnTo+qGvDsZ2RnyRzrrMjug61jhdyNxN4PuXOSidUHxktNWCE1sMASsjxvLpRxtYWjafju/LeIKweX9MIFNRz7oxIbAK8hBfAYtHJS9fG+O2nBL6Zso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYlO9Jo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44499C4CEEB;
-	Mon,  2 Jun 2025 14:20:51 +0000 (UTC)
+	 MIME-Version; b=F7I6DNogg0zozNQz0JwbJG7ph51eETXOyv+W7QrelLbaZSrXbRRpHUoNVb7J3cps/8q+YGQ3comyiE5u4BSGaibaoLpyPLMXN5ROcZKX+BF7w3C48MANgbmCVXd8sLfp2D0IDqkGnKQ6fH3CWo2DPtqmo9XEKyMgHexJVaAD1tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kb3oYbzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9070FC4CEEB;
+	Mon,  2 Jun 2025 15:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874051;
-	bh=dURlkI1fO5YqfzdPNMaadd/IQzsLBJlA0ONTRMR5ENE=;
+	s=korg; t=1748876871;
+	bh=wnOPOOieDsp/E7CCIURjYHWU+KSfbPVeWWkg6w5m2D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYlO9Jo1nkIPxFKRe8EW8ODyzJmp1+O0hQL0DO5+e6XeUNLdXm3YCcrF9ZoUscGMk
-	 cHcVPR3/vVN+BRDVCqArx0zehYsnPdXy4OpkQ03ZVeYg+DKRxe/kNX8/2AKkSK43cp
-	 2DzNG/7Sy8qGvn3UFke0fIlKIOCkQmMIORSg3b8k=
+	b=kb3oYbzrDn6m4ntJNG0oWYKVfobyzTAlcFl9GU8sCBSU7q+pkQmMCH3nkgteNFL9d
+	 UlgAWZswkWVRJjSToibt1o9fnFAQIiZNHgia89/7zv41w+f3UvXN1y0De6iM5RESoN
+	 QTgjpwkLhjRD7q4aaOXmo0wb6i1jc3MLNNKZYm9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 312/444] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
+Subject: [PATCH 6.1 100/325] ieee802154: ca8210: Use proper setters and getters for bitwise types
 Date: Mon,  2 Jun 2025 15:46:16 +0200
-Message-ID: <20250602134353.603939823@linuxfoundation.org>
+Message-ID: <20250602134323.845933196@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a9a69c3b38c89d7992fb53db4abb19104b531d32 ]
+[ Upstream commit 169b2262205836a5d1213ff44dca2962276bece1 ]
 
-Incorrect types are used as sizeof() arguments in devm_kcalloc().
-It should be sizeof(dai_link_data) for link_data instead of
-sizeof(snd_soc_dai_link).
+Sparse complains that the driver doesn't respect the bitwise types:
 
-This is found by our static analysis tool.
+drivers/net/ieee802154/ca8210.c:1796:27: warning: incorrect type in assignment (different base types)
+drivers/net/ieee802154/ca8210.c:1796:27:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
+drivers/net/ieee802154/ca8210.c:1796:27:    got unsigned short [usertype]
+drivers/net/ieee802154/ca8210.c:1801:25: warning: incorrect type in assignment (different base types)
+drivers/net/ieee802154/ca8210.c:1801:25:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
+drivers/net/ieee802154/ca8210.c:1801:25:    got unsigned short [usertype]
+drivers/net/ieee802154/ca8210.c:1928:28: warning: incorrect type in argument 3 (different base types)
+drivers/net/ieee802154/ca8210.c:1928:28:    expected unsigned short [usertype] dst_pan_id
+drivers/net/ieee802154/ca8210.c:1928:28:    got restricted __le16 [addressable] [usertype] pan_id
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://patch.msgid.link/20250406210854.149316-1-chenyuan0y@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Use proper setters and getters for bitwise types.
+
+Note, in accordance with [1] the protocol is little endian.
+
+Link: https://www.cascoda.com/wp-content/uploads/2018/11/CA-8210_datasheet_0418.pdf [1]
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250305105656.2133487-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-card.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ieee802154/ca8210.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index 7128bcf3a743e..bb304de5cc38a 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -517,7 +517,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
- 	if (!card->dai_link)
- 		return -ENOMEM;
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index 1659bbffdb91c..463be34a4ca4c 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -1446,8 +1446,7 @@ static u8 mcps_data_request(
+ 	command.pdata.data_req.src_addr_mode = src_addr_mode;
+ 	command.pdata.data_req.dst.mode = dst_address_mode;
+ 	if (dst_address_mode != MAC_MODE_NO_ADDR) {
+-		command.pdata.data_req.dst.pan_id[0] = LS_BYTE(dst_pan_id);
+-		command.pdata.data_req.dst.pan_id[1] = MS_BYTE(dst_pan_id);
++		put_unaligned_le16(dst_pan_id, command.pdata.data_req.dst.pan_id);
+ 		if (dst_address_mode == MAC_MODE_SHORT_ADDR) {
+ 			command.pdata.data_req.dst.address[0] = LS_BYTE(
+ 				dst_addr->short_address
+@@ -1795,12 +1794,12 @@ static int ca8210_skb_rx(
+ 	}
+ 	hdr.source.mode = data_ind[0];
+ 	dev_dbg(&priv->spi->dev, "srcAddrMode: %#03x\n", hdr.source.mode);
+-	hdr.source.pan_id = *(u16 *)&data_ind[1];
++	hdr.source.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[1]));
+ 	dev_dbg(&priv->spi->dev, "srcPanId: %#06x\n", hdr.source.pan_id);
+ 	memcpy(&hdr.source.extended_addr, &data_ind[3], 8);
+ 	hdr.dest.mode = data_ind[11];
+ 	dev_dbg(&priv->spi->dev, "dstAddrMode: %#03x\n", hdr.dest.mode);
+-	hdr.dest.pan_id = *(u16 *)&data_ind[12];
++	hdr.dest.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[12]));
+ 	dev_dbg(&priv->spi->dev, "dstPanId: %#06x\n", hdr.dest.pan_id);
+ 	memcpy(&hdr.dest.extended_addr, &data_ind[14], 8);
  
--	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link), GFP_KERNEL);
-+	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link_data), GFP_KERNEL);
- 	if (!data->link_data)
- 		return -ENOMEM;
- 
+@@ -1927,7 +1926,7 @@ static int ca8210_skb_tx(
+ 	status =  mcps_data_request(
+ 		header.source.mode,
+ 		header.dest.mode,
+-		header.dest.pan_id,
++		le16_to_cpu(header.dest.pan_id),
+ 		(union macaddr *)&header.dest.extended_addr,
+ 		skb->len - mac_len,
+ 		&skb->data[mac_len],
 -- 
 2.39.5
 
