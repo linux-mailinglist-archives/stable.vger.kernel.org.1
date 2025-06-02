@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193CEACB41F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F0AACB33A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 737FB4A2E51
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FDF6170145
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABD4226CFB;
-	Mon,  2 Jun 2025 14:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9640523AE87;
+	Mon,  2 Jun 2025 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajLdsEZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cOYDsYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2862248A6;
-	Mon,  2 Jun 2025 14:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B6F223323;
+	Mon,  2 Jun 2025 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874650; cv=none; b=XscXC4uZwkG/qtd7KGnZc1mEi7JACcVtKS79N/rZgRfOJmkD54flx+VEoMfpSa/0DV491SHu/JdnJhDIy13h2n8WnKQxk0JeO/5O3H1CTYiIcZIevcatIoZkh2WJbm/PycoSw2FVcfGtSjW3VjC0UbddrZNpDyRaaiaZl2l0VY0=
+	t=1748874109; cv=none; b=swGVRNied1kCV4B9+Mcz14B7hc541Gxpsb2miC1dwd5RTqQX+KxbKTA06TeaCk+cffv2UAH44IrULmZRywiPLiCkoAaerUWLtu1z/LbQSq0qcaTQpgkkI9x6BWcxqXTYK74eHYrWMkr3quEbmydPNdIl1y6qvOJboT+Ud0Ojj3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874650; c=relaxed/simple;
-	bh=DhmlS+BkoUZvh3Ga+BpLJZIxjIQqjcGeOVAQllg/rJw=;
+	s=arc-20240116; t=1748874109; c=relaxed/simple;
+	bh=dD0fTV+A97NAssOAb2PTv6hjsaMfs1a5EnonL2erZFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OYS2LOLStsv1I/TtvA8eym6KKIZv2+Dhs0gWW1MT11gLVtkl7fortqw0gWRLjMRPH9GPHXDAuc06NCj1hI7X2XUT3rZT3Z0Xpvx44Ot2cg5F51Rj1sGsylzosA3YMP9ktbQohGH9RXTQ89bA6jOOyeRLerYb5h1/+7F6H4wPRxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajLdsEZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2B3C4CEEB;
-	Mon,  2 Jun 2025 14:30:49 +0000 (UTC)
+	 MIME-Version; b=KGX4sH0KAxydfay+4ihJLFPE6w476q/TTgIbWK7ApC0TtCS0l0G5SxidqKqlKhjBdrMGOwngkTysjLxTvFJTfRRkp5xK9S9URCgC9Caniy+2ua+vR9MKEJa/Ff3WjpXeyB1qU5YbdC6N6Sl1/GsBCFxt5UMWM6LKFOFXDRz7GSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cOYDsYr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE594C4CEEB;
+	Mon,  2 Jun 2025 14:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874650;
-	bh=DhmlS+BkoUZvh3Ga+BpLJZIxjIQqjcGeOVAQllg/rJw=;
+	s=korg; t=1748874109;
+	bh=dD0fTV+A97NAssOAb2PTv6hjsaMfs1a5EnonL2erZFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajLdsEZ63Xvcx+J4f6fQ2oK5vmVUHviBW94e2FpC9ZRGNkyFmDpS7S6XySpwrTm28
-	 cL+K46XqTtBFjQywlR6vztAKpjSDkXZCJPz8RRol49caiRrYGmo9qdAK2QaXDgl4AS
-	 CwtpebKc8y+IK5f8OnZ9RqJq6lqQnyC5zibCHXQI=
+	b=2cOYDsYrRpx+wS39VMJ7ti8z/PQ7OnEAQxhHfMGs2OflrX+IwvYoNVXMXTAhY2f2Z
+	 x5wh1QuPg0Qb6pnlaP7Q7wseasStnAY6vFQCc0U76OjmRl02XVSZ4rqNuZcI+xqCbD
+	 o724mkHJ8509JjeFYTr6/fntSCp1R+FgFvPyXIuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/204] fbdev: fsl-diu-fb: add missing device_remove_file()
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 360/444] can: bcm: add missing rcu read protection for procfs content
 Date: Mon,  2 Jun 2025 15:47:04 +0200
-Message-ID: <20250602134259.238891885@linuxfoundation.org>
+Message-ID: <20250602134355.531202808@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shixiong Ou <oushixiong@kylinos.cn>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 86d16cd12efa547ed43d16ba7a782c1251c80ea8 ]
+commit dac5e6249159ac255dad9781793dbe5908ac9ddb upstream.
 
-Call device_remove_file() when driver remove.
+When the procfs content is generated for a bcm_op which is in the process
+to be removed the procfs output might show unreliable data (UAF).
 
-Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As the removal of bcm_op's is already implemented with rcu handling this
+patch adds the missing rcu_read_lock() and makes sure the list entries
+are properly removed under rcu protection.
+
+Fixes: f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly synchronize_rcu()")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Suggested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250519125027.11900-2-socketcan@hartkopp.net
+Cc: stable@vger.kernel.org # >= 5.4
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/fsl-diu-fb.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/can/bcm.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
-index d4c2a6b3839ec..3dc399704adc1 100644
---- a/drivers/video/fbdev/fsl-diu-fb.c
-+++ b/drivers/video/fbdev/fsl-diu-fb.c
-@@ -1828,6 +1828,7 @@ static int fsl_diu_remove(struct platform_device *pdev)
- 	int i;
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -207,7 +207,9 @@ static int bcm_proc_show(struct seq_file
+ 	seq_printf(m, " / bound %s", bcm_proc_getifname(net, ifname, bo->ifindex));
+ 	seq_printf(m, " <<<\n");
  
- 	data = dev_get_drvdata(&pdev->dev);
-+	device_remove_file(&pdev->dev, &data->dev_attr);
- 	disable_lcdc(&data->fsl_diu_info[0]);
+-	list_for_each_entry(op, &bo->rx_ops, list) {
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(op, &bo->rx_ops, list) {
  
- 	free_irq(data->irq, data->diu_reg);
--- 
-2.39.5
-
+ 		unsigned long reduction;
+ 
+@@ -263,6 +265,9 @@ static int bcm_proc_show(struct seq_file
+ 		seq_printf(m, "# sent %ld\n", op->frames_abs);
+ 	}
+ 	seq_putc(m, '\n');
++
++	rcu_read_unlock();
++
+ 	return 0;
+ }
+ #endif /* CONFIG_PROC_FS */
+@@ -816,7 +821,7 @@ static int bcm_delete_rx_op(struct list_
+ 						  REGMASK(op->can_id),
+ 						  bcm_rx_handler, op);
+ 
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+@@ -836,7 +841,7 @@ static int bcm_delete_tx_op(struct list_
+ 	list_for_each_entry_safe(op, n, ops, list) {
+ 		if ((op->can_id == mh->can_id) && (op->ifindex == ifindex) &&
+ 		    (op->flags & CAN_FD_FRAME) == (mh->flags & CAN_FD_FRAME)) {
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+@@ -1258,7 +1263,7 @@ static int bcm_rx_setup(struct bcm_msg_h
+ 					      bcm_rx_handler, op, "bcm", sk);
+ 		if (err) {
+ 			/* this bcm rx op is broken -> remove it */
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return err;
+ 		}
 
 
 
