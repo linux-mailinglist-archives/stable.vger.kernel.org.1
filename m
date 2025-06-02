@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-150397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058DEACB8B5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:45:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F46ACB5F4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8DB494332F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C35617952C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3AD1B81DC;
-	Mon,  2 Jun 2025 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008AF2C325E;
+	Mon,  2 Jun 2025 14:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuvP01KZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STa7L9TN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2870817BB6;
-	Mon,  2 Jun 2025 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25531C5D72;
+	Mon,  2 Jun 2025 14:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876994; cv=none; b=L6bN1S1Y9AcP6wPbKewXBVmj0A3LZXIti2RQzDgcgrxYsIIGWlnQq5K8De3tdV9uhuPbqV0quiYA0ijaT1LYqa7dPXoEKtGl+mvB0l5MFRAdT/QrD2CmrUSxS0Nj2btqoCCtVto+L7IrP5sCv3/acb385XKvTq51Jjgqg7bhWQU=
+	t=1748876005; cv=none; b=tBcYjlINddmmkuTl9pl5wg3Zlk+P+6kR/aAquAyYVtwWa01+t7iadPcD5nsAI1jCOrxuoeXdFv2fY324dSkBxvjVYR/kPuDWAyIjdhmbP+yosAV63ch4heWDLnqQOr8R/x8epgSrP+30RPUPklVkUkB1Ihqgn+u7R3RqQTURJzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876994; c=relaxed/simple;
-	bh=JI7A3MlkYdLxBJ7QhScfVXF3s2XR2jMS+sYfpC+ZLjM=;
+	s=arc-20240116; t=1748876005; c=relaxed/simple;
+	bh=zFLiObP3mxFaW1jAR4ObN1g5d60HSCZns6tZWOS/Gmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6L4KEw7UTplBc8S4WfRV7MM3B5xTUumNtiSOVFA+r02osZVvyGXZsN5jbl0KSWvRXhbTXVdOkMQQqhB/am44t6Hunz4DHl/OBzDa8IkCeMiRTI6OhegjDrdmtclFg6ctkVwFKA9vljZMeCedt9Zdk74iKCy7Z1hcSXOTGqKImQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuvP01KZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27DEC4CEEE;
-	Mon,  2 Jun 2025 15:09:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IUmfixx+pOgrfcdxK3w4f/1iZEpHLaD8doNZpnp5hLO2FnsnjEQS5XJWMiRDYpNLlZzso/bXxh2lJijPfFIuyzzfGfdtDJNcnvFdOlEy6z7TTaUo2PFaWx3n12SEUAefh4HnkxgqAJnn83hh7xseMXzuehwg9yIlk0iTJCLX8EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STa7L9TN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F65C4CEEB;
+	Mon,  2 Jun 2025 14:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876994;
-	bh=JI7A3MlkYdLxBJ7QhScfVXF3s2XR2jMS+sYfpC+ZLjM=;
+	s=korg; t=1748876005;
+	bh=zFLiObP3mxFaW1jAR4ObN1g5d60HSCZns6tZWOS/Gmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RuvP01KZkKJJrh7ky5J7PrZj2sGKNq1y+LtcqOu6ix9qzDEv5c6xd2yGkggKFJpBZ
-	 /Wv7I2SviYG++jx0ZIK6c/iUXxKVf02HnSyG8faqXp8FgMLEAbpoYoS31v9uMYEsXK
-	 F5ZAH8BuBobuTjzKDpXJoiuKMFp42y2VNQloDyJ4=
+	b=STa7L9TNRnlrEL2cq3ptgc92KawWE0lP9EPgQaKjJ+t4UTMyTJa+cpHjBxJfmVxlP
+	 1/b8HtlDwgVnmmbfO7fUy6uVrU5Hdrq7HHRLej5aRD2Pvko/fMoewqqHcHkMhp7AK8
+	 P4jBKvnCc+tBXdr6XQkTpy4gPADy04sb1X142/jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samson Tam <samson.tam@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/325] drm/amd/display: handle max_downscale_src_width fail check
+Subject: [PATCH 5.15 041/207] scsi: st: ERASE does not change tape location
 Date: Mon,  2 Jun 2025 15:46:53 +0200
-Message-ID: <20250602134325.371830682@linuxfoundation.org>
+Message-ID: <20250602134300.368970835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 02a940da2ccc0cc0299811379580852b405a0ea2 ]
+[ Upstream commit ad77cebf97bd42c93ab4e3bffd09f2b905c1959a ]
 
-[WHY]
-If max_downscale_src_width check fails, we exit early from TAP calculation and left a NULL
-value to the scaling data structure to cause the zero divide in the DML validation.
+The SCSI ERASE command erases from the current position onwards.  Don't
+clear the position variables.
 
-[HOW]
-Call set default TAP calculation before early exit in get_optimal_number_of_taps due to
-max downscale limit exceed.
-
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-3-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/scsi/st.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-index 50dc834046446..4ce45f1bdac0f 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-@@ -392,11 +392,6 @@ bool dpp3_get_optimal_number_of_taps(
- 	int min_taps_y, min_taps_c;
- 	enum lb_memory_config lb_config;
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index a58cb2171f958..26827e94d5e38 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -2884,7 +2884,6 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			timeout = STp->long_timeout * 8;
  
--	if (scl_data->viewport.width > scl_data->h_active &&
--		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
--		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
--		return false;
--
- 	/*
- 	 * Set default taps if none are provided
- 	 * From programming guide: taps = min{ ceil(2*H_RATIO,1), 8} for downscaling
-@@ -434,6 +429,12 @@ bool dpp3_get_optimal_number_of_taps(
- 	else
- 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
- 
-+	// Avoid null data in the scl data with this early return, proceed non-adaptive calcualtion first
-+	if (scl_data->viewport.width > scl_data->h_active &&
-+		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
-+		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
-+		return false;
-+
- 	/*Ensure we can support the requested number of vtaps*/
- 	min_taps_y = dc_fixpt_ceil(scl_data->ratios.vert);
- 	min_taps_c = dc_fixpt_ceil(scl_data->ratios.vert_c);
+ 		DEBC_printk(STp, "Erasing tape.\n");
+-		fileno = blkno = at_sm = 0;
+ 		break;
+ 	case MTSETBLK:		/* Set block length */
+ 	case MTSETDENSITY:	/* Set tape density */
 -- 
 2.39.5
 
