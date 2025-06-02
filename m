@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAC3ACB52C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A50ACB29D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0877B1884099
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A63053A2C6A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C282222CC;
-	Mon,  2 Jun 2025 14:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D2622F766;
+	Mon,  2 Jun 2025 14:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hk3axRQF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RruR+fXh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7125A221DA2;
-	Mon,  2 Jun 2025 14:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D70222590;
+	Mon,  2 Jun 2025 14:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875079; cv=none; b=RmXccPo99lHW5FN0owxM7uhGQ3JRnNo869E9KznnTUSIHTb/JRSKyEEr+PH9uHWjuvMuSitUNFbDMnwQDQwzU1JyV9Ln6tfTt2OTL76GvWIF1zYUMl9BJmvFGKMOwbRPn44odCRla2l5h4Ayxg0CShTZcSXe8tTlpE/n41NhNdw=
+	t=1748873846; cv=none; b=OeDb3ATtAd7K9t3t7H5yxXd9BbujLP+0SRqqI78ht/wuVHKEeoKNcSHOVbpAf8M9fQ+Upq/0X0n9AlWkSC9+rFSwDE2av3i2MFVBxNn4TiUoUuIRDm2sJDMZdqTZ23cWoh2yaMVUv7IYU1QSxkWBzATbFjolOqJDkYPwsfEp3Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875079; c=relaxed/simple;
-	bh=H+OghfKBU5Cb+y6BV09ybp6KLsIicsuDN+E/ie/hd6o=;
+	s=arc-20240116; t=1748873846; c=relaxed/simple;
+	bh=fmtJ+lMf6NJ1AY2teVVInixuB6mHzCzw5tkY5JWSOag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+fa6StuaE11y0p1XAy3KH27iWreu+t16nKdKImEOCXvo689nQfsdl/JsNje0UKuizBlVtyaoqxsojMjI+VBcoeU1mHRJkKcX1yJE4/p+RGv4NnTlngTdye/wtAMT14h5fVmnk3DsGxisNPjeS0WjX1DPlNXOInbIZ3qrNIYvc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hk3axRQF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BE4C4CEEB;
-	Mon,  2 Jun 2025 14:37:58 +0000 (UTC)
+	 MIME-Version; b=D6zb8bpZX5pIEmCbdL09JbYBwzDT/77XQwwDs9b3AyfB/EHtmy7q+gybQlv7bu/EGN0gYBH9c8j3jzXlsYlwCW6oIORQZlYQEOkYfJOauD6uXTRFPbhMlDuVvw9woc0Z6wuwuGKBoVTQhNxIMTxmoxLoa0DdKGReEWcImJiRI70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RruR+fXh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50100C4CEEB;
+	Mon,  2 Jun 2025 14:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875079;
-	bh=H+OghfKBU5Cb+y6BV09ybp6KLsIicsuDN+E/ie/hd6o=;
+	s=korg; t=1748873846;
+	bh=fmtJ+lMf6NJ1AY2teVVInixuB6mHzCzw5tkY5JWSOag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hk3axRQFL5z6Byxj3XGZjqPuwFtBPY+l0VcKcCtZ8unhy2csC03HxiyaUJd0U69MV
-	 hyVv63nIYM4oySE7dPNhCqFMdFokR/+ZqYSKb9MuuUAjCNMBJ14DkOoFxmRpgXymsI
-	 HujBvzFuOsOiPIEkq3ZDPYgGi7xL5X8n4P5ofzyw=
+	b=RruR+fXhOZEvxKsDjVpqFYm8rbha0Fpx/Fs2+2aZ4NOZF7WP0Jjunn0Dt+NY5BOKb
+	 xSowz2eevFJilKpoagBFZBZsKd7vPJaXk6O2KCHFblhvfTq6BDU8P88Y0ciQiRVfO7
+	 31piQSpPOEfcZxG1TLqd+b2jHhbcY3DvYllBNNbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/270] net_sched: ets: Fix double list add in class with netem as child qdisc
+Subject: [PATCH 6.6 242/444] soundwire: amd: change the soundwire wake enable/disable sequence
 Date: Mon,  2 Jun 2025 15:45:06 +0200
-Message-ID: <20250602134308.067787729@linuxfoundation.org>
+Message-ID: <20250602134350.737723856@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 1a6d0c00fa07972384b0c308c72db091d49988b6 ]
+[ Upstream commit dcc48a73eae7f791b1a6856ea1bcc4079282c88d ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of ets, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+During runtime suspend scenario, SoundWire wake should be enabled and
+during system level suspend scenario SoundWire wake should be disabled.
 
-In addition to checking for qlen being zero, this patch checks whether
-the class was already added to the active_list (cl_is_active) before
-doing the addition to cater for the reentrant case.
+Implement the SoundWire wake enable/disable sequence as per design flow
+for SoundWire poweroff mode.
 
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-4-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250207065841.4718-2-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/soundwire/amd_manager.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 0afd9187f836a..35b8577aef7dc 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -74,6 +74,11 @@ static const struct nla_policy ets_class_policy[TCA_ETS_MAX + 1] = {
- 	[TCA_ETS_QUANTA_BAND] = { .type = NLA_U32 },
- };
- 
-+static bool cl_is_active(struct ets_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
-+
- static int ets_quantum_parse(struct Qdisc *sch, const struct nlattr *attr,
- 			     unsigned int *quantum,
- 			     struct netlink_ext_ack *extack)
-@@ -424,7 +429,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct ets_class *cl;
- 	int err = 0;
--	bool first;
- 
- 	cl = ets_classify(skb, sch, &err);
- 	if (!cl) {
-@@ -434,7 +438,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
- 	}
- 
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		if (net_xmit_drop_count(err)) {
-@@ -444,7 +447,7 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
- 	}
- 
--	if (first && !ets_class_is_strict(q, cl)) {
-+	if (!cl_is_active(cl) && !ets_class_is_strict(q, cl)) {
- 		list_add_tail(&cl->alist, &q->active);
- 		cl->deficit = cl->quantum;
- 	}
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index 79173ab540a6b..31b203ebbae0c 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -1138,6 +1138,7 @@ static int __maybe_unused amd_suspend(struct device *dev)
+ 		amd_sdw_wake_enable(amd_manager, false);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
++		amd_sdw_wake_enable(amd_manager, false);
+ 		/*
+ 		 * As per hardware programming sequence on AMD platforms,
+ 		 * clock stop should be invoked first before powering-off
+@@ -1165,6 +1166,7 @@ static int __maybe_unused amd_suspend_runtime(struct device *dev)
+ 		amd_sdw_wake_enable(amd_manager, true);
+ 		return amd_sdw_clock_stop(amd_manager);
+ 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
++		amd_sdw_wake_enable(amd_manager, true);
+ 		ret = amd_sdw_clock_stop(amd_manager);
+ 		if (ret)
+ 			return ret;
 -- 
 2.39.5
 
