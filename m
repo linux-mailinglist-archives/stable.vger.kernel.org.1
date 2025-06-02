@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-149317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95104ACB23C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4835ACB25D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31BDF194187F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:22:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6D5019416DE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B3323E33D;
-	Mon,  2 Jun 2025 14:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77F9223DEE;
+	Mon,  2 Jun 2025 14:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oN4Du00r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVXe+Via"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1FF23E330;
-	Mon,  2 Jun 2025 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954AA223DCD;
+	Mon,  2 Jun 2025 14:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873594; cv=none; b=uALfd288UXdKeJHZR9yZLbh8sy/yuuKMPRRPuo5gci6sB3Z1f1/LNNcZ7nNajVtoTer0hl3/uJqqjhjcUge9cv5KktJFAxLk4a7Pe5R/GYzDgALsW/gLMiLsHW5wUlV1QbBH8S3v38Tly5tVw+wgpUuCxLg8ZIvJQDd2WFEQY40=
+	t=1748873601; cv=none; b=B0/x5rx8kCK4TSzzcz794bxelJQRq9VjI0AzH33F1j4npdKzyQyJj6Ov4E6rK55aXdEq5BZu6Rr9KMT/KkPMVaZ2RIZC6KrwLadMWUVRLre/dd39u1dgc3WFrVa5ByunO/AHWWdgp19yEYnrJYURp5YRSC+zn2il6qcBQb9Ngxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873594; c=relaxed/simple;
-	bh=Z01/UxO9Q5FHCkFQ3voeE0Kk+kxbjHknifOvpluuX64=;
+	s=arc-20240116; t=1748873601; c=relaxed/simple;
+	bh=GIm50p4n/Eyw2Us4kyZ3yaLejCKRchxCC7YvgKmeq18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+oAHDa0MSiXtHiGlnJS1BCzJJNDIn63q0gjOCBZPrnzTi/Q63q0MyHRn/4pejlv7kndj3CEfzX+cgP1uS2xRzJ3LoxDSr7WqxJhdCxBJFOujdiVJaoXmKB7hzBElIidTvDNnXFlTYfCWT4tz48ea/2oMYQsVkY7N+xsKDBqGkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oN4Du00r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0F1C4CEEB;
-	Mon,  2 Jun 2025 14:13:13 +0000 (UTC)
+	 MIME-Version; b=Dch6arq14a8LkPFMtBYEzG2bKZLfE9ANTYIuy+nnLFG4JADUN0htxkKdj4eJikrwHLAlYhjkTeBBSvR9zj/8lJ5m1BK1OqPCaS5fl+HgQfWmk1w/50qqjCcwjB6eY1xf+W99h51ZfPbOy6UXqVUn7vMt3JvYHmwQdHlKOjuJcpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVXe+Via; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9374BC4CEEB;
+	Mon,  2 Jun 2025 14:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873594;
-	bh=Z01/UxO9Q5FHCkFQ3voeE0Kk+kxbjHknifOvpluuX64=;
+	s=korg; t=1748873601;
+	bh=GIm50p4n/Eyw2Us4kyZ3yaLejCKRchxCC7YvgKmeq18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oN4Du00rqwNt2AbynBx8Ve6M9ECJtjOz7Yk3HwaCLrukbfv2rfxoghjow5JOX63Dr
-	 3jmQmP8B7UE6Q0AKlwa+OXaMxcmdR3dLXh5vV6HMH6KbZ+VpLqokq0/evoXYwlPgub
-	 eLRw+vIxVvMQNHt5xJsR71WWOszzFWL2z7Z/I3Jg=
+	b=jVXe+ViaOJnUuwZ02vPY5kLcnRBLr6kVK85rd0a8+v3IzFTObfz6nVqYwCmV1WJin
+	 fYx9HNSzyMKVMbYr45fyXNMe2P0fN6V7ODgYWF7ATuq9id2Juc3t3RdAqS9bbEYjQs
+	 AWpRpcEQpToBlZgvrw9kj8qHX4xiTVoeLQ+hOqiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Nandakumar Edamana <nandakumar@nandakumar.co.in>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/444] media: tc358746: improve calculation of the D-PHY timing registers
-Date: Mon,  2 Jun 2025 15:44:15 +0200
-Message-ID: <20250602134348.658300868@linuxfoundation.org>
+Subject: [PATCH 6.6 192/444] libbpf: Fix out-of-bound read
+Date: Mon,  2 Jun 2025 15:44:16 +0200
+Message-ID: <20250602134348.699013555@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -67,78 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthias Fend <matthias.fend@emfend.at>
+From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
 
-[ Upstream commit 78d7265e2e1ce349e7f3c6a085f2b66d7b73f4ca ]
+[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
 
-When calculating D-PHY registers, using data rates that are not multiples
-of 16 can lead to precision loss in division operations. This can result in
-register values that produce timing violations against the MIPI standard.
+In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
+that it will be at least two characters long due to the presence of checks for
+opening and closing quotes. But the check for the closing quote
+(value[len - 1] != '"') misses the fact that it could be checking the opening
+quote itself in case of an invalid input that consists of just the opening
+quote.
 
-An example:
-cfg->hs_clk_rate = 294MHz
-hf_clk = 18
+This commit adds an explicit check to make sure the string is at least two
+characters long.
 
-If the desired value in cfg->init is 100us, which is the minimum allowed
-value, then the LINEINITCNT register is calculated as 1799. But since the
-actual clock is 18.375MHz instead of 18MHz, this setting results in a time
-that is shorter than 100us and thus violates the standard. The correct
-value for LINEINITCNT would be 1837.
-
-Improve the precision of calculations by using Hz instead of MHz as unit.
-
-Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358746.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/tc358746.c b/drivers/media/i2c/tc358746.c
-index 566f5eaddd572..b12a6bd42102e 100644
---- a/drivers/media/i2c/tc358746.c
-+++ b/drivers/media/i2c/tc358746.c
-@@ -460,24 +460,20 @@ static int tc358746_apply_misc_config(struct tc358746 *tc358746)
- 	return err;
- }
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 2fad178949efe..fa2abe56e845d 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -1802,7 +1802,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
+ 	}
  
--/* Use MHz as base so the div needs no u64 */
--static u32 tc358746_cfg_to_cnt(unsigned int cfg_val,
--			       unsigned int clk_mhz,
--			       unsigned int time_base)
-+static u32 tc358746_cfg_to_cnt(unsigned long cfg_val, unsigned long clk_hz,
-+			       unsigned long long time_base)
- {
--	return DIV_ROUND_UP(cfg_val * clk_mhz, time_base);
-+	return div64_u64((u64)cfg_val * clk_hz + time_base - 1, time_base);
- }
- 
--static u32 tc358746_ps_to_cnt(unsigned int cfg_val,
--			      unsigned int clk_mhz)
-+static u32 tc358746_ps_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
- {
--	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, USEC_PER_SEC);
-+	return tc358746_cfg_to_cnt(cfg_val, clk_hz, PSEC_PER_SEC);
- }
- 
--static u32 tc358746_us_to_cnt(unsigned int cfg_val,
--			      unsigned int clk_mhz)
-+static u32 tc358746_us_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
- {
--	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, 1);
-+	return tc358746_cfg_to_cnt(cfg_val, clk_hz, USEC_PER_SEC);
- }
- 
- static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
-@@ -492,7 +488,6 @@ static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
- 
- 	/* The hs_byte_clk is also called SYSCLK in the excel sheet */
- 	hs_byte_clk = cfg->hs_clk_rate / 8;
--	hs_byte_clk /= HZ_PER_MHZ;
- 	hf_clk = hs_byte_clk / 2;
- 
- 	val = tc358746_us_to_cnt(cfg->init, hf_clk) - 1;
+ 	len = strlen(value);
+-	if (value[len - 1] != '"') {
++	if (len < 2 || value[len - 1] != '"') {
+ 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
+ 			ext->name, value);
+ 		return -EINVAL;
 -- 
 2.39.5
 
