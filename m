@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-150046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC22ACB5D4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D62ACB809
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722EC4A6DEF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6B72A27233
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB05723F412;
-	Mon,  2 Jun 2025 14:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3261B231A51;
+	Mon,  2 Jun 2025 15:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPNJd/jT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvxR/NEW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6884F22A814;
-	Mon,  2 Jun 2025 14:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4343231845;
+	Mon,  2 Jun 2025 15:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875864; cv=none; b=KuQGhIUVnERDK/R5ji8cBa6BMiQ2qrUrfi8jizzdoMSCMFC8CPlvELu3JQY4CnVegU1raKS4hAdCwtvqvBsRZSbJ1c6PPbeW4Nj9W3FUf0/0LtRvcvujLZ+rml0tzuWvBsEzC6K1cwhW/IL2q1k16l2pVkh77Wxaown1Azcw+Ns=
+	t=1748876464; cv=none; b=TOXHL+HYzuJ88VvKZfNNFAZqI7rbb2paPK8HJLj3O425kYnv3xzz5Sc4iHYbCkIqRG426btn1UcSpXLLGxPzxysOA96Tk4r/DSIO3aUSdHriOk753haoa8EM5HD6TnQLSRFkXR46L51mAZ2ozM9n8naVHaa4m0+EwKSZFt3TSXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875864; c=relaxed/simple;
-	bh=noIJ5uW3aL5siMsgwUZSFkb+qp18jc3hUcsbDTbNOsY=;
+	s=arc-20240116; t=1748876464; c=relaxed/simple;
+	bh=4q8WCn5EaCAFZwcKIYuFgoU55i7RLm3mXPZHTSVYSUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OUBKK2tBTRPUD329cP9U6bslUIFdMkPgX5hE0KirOHBznjbQtiI5bSsRZFs5n9qC9qmNE10LH3QabN9mg0zrtzBMxSpprnDXEzuX4bID5wjOPR1dit+kdrE3iBxK+1OUtXFf2k9Zjo0fMNSTXNTXA5AtzDGA6Q2SWLyPvlDCcr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPNJd/jT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EC2C4CEEE;
-	Mon,  2 Jun 2025 14:51:03 +0000 (UTC)
+	 MIME-Version; b=SqnLS+jzitOp5qNg6Bd8As6HXUXj68lxUwOCal2+60EAz4YVBTdlf/42W0wzo/Dz3XKBUsDAy+o/dM9ajM4fRNRMNghFawQSQWc7PtUFCbcCRaCr86OLYKg2nI700O8RrfHnIjphLbcyyV2wSeSdxrvv01MwVOVvmv4kvhia688=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvxR/NEW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF5EC4CEEB;
+	Mon,  2 Jun 2025 15:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875863;
-	bh=noIJ5uW3aL5siMsgwUZSFkb+qp18jc3hUcsbDTbNOsY=;
+	s=korg; t=1748876463;
+	bh=4q8WCn5EaCAFZwcKIYuFgoU55i7RLm3mXPZHTSVYSUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPNJd/jTszfQXRs3E3RUOFvUEbKCzG2rUUIadi4fNgG0qFBMmwj8y0X9OLTbHd9zi
-	 KU7Ou+GweJuaGPYIGyxgsEL9Cds1k83/gXi2r51j/zMpYuqmNAhFtuIoxZgtaoUa86
-	 QLbJLMuPfFDttu92mJlwVe5JfwQC1A8WM5+aUP/Q=
+	b=hvxR/NEW/RInW+ZRqoitLMcLBYhs4dhCKyfwbJn6vGR8qs9I4cmEUTrccELNdbhr2
+	 cKtKEAj+WIsEHMshpYDRw8RlrQhBNfAvA1/1gyHscU6hoIddbuLQT3FNYmGR5Imdvi
+	 /vrzkAV911QDfWyBEGvL2gBDQDpBdxXPa5nAuA6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Barbosa <debarbos@redhat.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 268/270] platform/x86: thinkpad_acpi: Ignore battery threshold change event notification
+Subject: [PATCH 5.15 181/207] Revert "arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection"
 Date: Mon,  2 Jun 2025 15:49:13 +0200
-Message-ID: <20250602134318.292242844@linuxfoundation.org>
+Message-ID: <20250602134305.842535268@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +60,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-[ Upstream commit 29e4e6b4235fefa5930affb531fe449cac330a72 ]
+[ Upstream commit 573f99c7585f597630f14596550c79e73ffaeef4 ]
 
-If user modifies the battery charge threshold an ACPI event is generated.
-Confirmed with Lenovo FW team this is only generated on user event. As no
-action is needed, ignore the event and prevent spurious kernel logs.
+This reverts commit 531fdbeedeb89bd32018a35c6e137765c9cc9e97.
 
-Reported-by: Derek Barbosa <debarbos@redhat.com>
-Closes: https://lore.kernel.org/platform-driver-x86/7e9a1c47-5d9c-4978-af20-3949d53fb5dc@app.fastmail.com/T/#m5f5b9ae31d3fbf30d7d9a9d76c15fb3502dfd903
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250517023348.2962591-1-mpearson-lenovo@squebb.ca
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Hardware that uses I2C wasn't designed with high speeds in mind, so
+communication with PMIC via RSB can intermittently fail. Go back to I2C
+as higher speed and efficiency isn't worth the trouble.
+
+Fixes: 531fdbeedeb8 ("arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection")
+Link: https://github.com/LibreELEC/LibreELEC.tv/issues/7731
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20250413135848.67283-1-jernej.skrabec@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../dts/allwinner/sun50i-h6-beelink-gs1.dts   | 38 +++++++++----------
+ .../dts/allwinner/sun50i-h6-orangepi-3.dts    | 14 +++----
+ .../dts/allwinner/sun50i-h6-orangepi.dtsi     | 22 +++++------
+ 3 files changed, 37 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index e9e63d8cbfbfd..5a8434da60e78 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -195,6 +195,7 @@ enum tpacpi_hkey_event_t {
- 	/* Thermal events */
- 	TP_HKEY_EV_ALARM_BAT_HOT	= 0x6011, /* battery too hot */
- 	TP_HKEY_EV_ALARM_BAT_XHOT	= 0x6012, /* battery critically hot */
-+	TP_HKEY_EV_ALARM_BAT_LIM_CHANGE	= 0x6013, /* battery charge limit changed*/
- 	TP_HKEY_EV_ALARM_SENSOR_HOT	= 0x6021, /* sensor too hot */
- 	TP_HKEY_EV_ALARM_SENSOR_XHOT	= 0x6022, /* sensor critically hot */
- 	TP_HKEY_EV_THM_TABLE_CHANGED	= 0x6030, /* windows; thermal table changed */
-@@ -4049,6 +4050,10 @@ static bool hotkey_notify_6xxx(const u32 hkey,
- 		pr_alert("THERMAL EMERGENCY: battery is extremely hot!\n");
- 		/* recommended action: immediate sleep/hibernate */
- 		break;
-+	case TP_HKEY_EV_ALARM_BAT_LIM_CHANGE:
-+		pr_debug("Battery Info: battery charge threshold changed\n");
-+		/* User changed charging threshold. No action needed */
-+		return true;
- 	case TP_HKEY_EV_ALARM_SENSOR_HOT:
- 		pr_crit("THERMAL ALARM: a sensor reports something is too hot!\n");
- 		/* recommended action: warn user through gui, that */
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+index 6249e9e029286..f6efa69ce4b75 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+@@ -150,28 +150,12 @@
+ 	vcc-pg-supply = <&reg_aldo1>;
+ };
+ 
+-&r_ir {
+-	linux,rc-map-name = "rc-beelink-gs1";
+-	status = "okay";
+-};
+-
+-&r_pio {
+-	/*
+-	 * FIXME: We can't add that supply for now since it would
+-	 * create a circular dependency between pinctrl, the regulator
+-	 * and the RSB Bus.
+-	 *
+-	 * vcc-pl-supply = <&reg_aldo1>;
+-	 */
+-	vcc-pm-supply = <&reg_aldo1>;
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -289,6 +273,22 @@
+ 	};
+ };
+ 
++&r_ir {
++	linux,rc-map-name = "rc-beelink-gs1";
++	status = "okay";
++};
++
++&r_pio {
++	/*
++	 * PL0 and PL1 are used for PMIC I2C
++	 * don't enable the pl-supply else
++	 * it will fail at boot
++	 *
++	 * vcc-pl-supply = <&reg_aldo1>;
++	 */
++	vcc-pm-supply = <&reg_aldo1>;
++};
++
+ &spdif {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
+index c45d7b7fb39a8..19339644a68a5 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
+@@ -175,16 +175,12 @@
+ 	vcc-pg-supply = <&reg_vcc_wifi_io>;
+ };
+ 
+-&r_ir {
+-	status = "okay";
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -295,6 +291,10 @@
+ 	};
+ };
+ 
++&r_ir {
++	status = "okay";
++};
++
+ &rtc {
+ 	clocks = <&ext_osc32k>;
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+index 92745128fcfeb..4ec4996592bef 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+@@ -112,20 +112,12 @@
+ 	vcc-pg-supply = <&reg_aldo1>;
+ };
+ 
+-&r_ir {
+-	status = "okay";
+-};
+-
+-&r_pio {
+-	vcc-pm-supply = <&reg_bldo3>;
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -240,6 +232,14 @@
+ 	};
+ };
+ 
++&r_ir {
++	status = "okay";
++};
++
++&r_pio {
++	vcc-pm-supply = <&reg_bldo3>;
++};
++
+ &rtc {
+ 	clocks = <&ext_osc32k>;
+ };
 -- 
 2.39.5
 
