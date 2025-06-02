@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-149554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DA8ACB343
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D440ACB426
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77E1B1947C47
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CE471881D08
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EC6227EA4;
-	Mon,  2 Jun 2025 14:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B2022D785;
+	Mon,  2 Jun 2025 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZzEWPSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OL0RXiR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57FD227E95;
-	Mon,  2 Jun 2025 14:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8DB22259A;
+	Mon,  2 Jun 2025 14:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874306; cv=none; b=X17ccKRdNt+55P39o99eCAtybwxN81IKuslrE1cwSo16ibOlhYOjE80UelJl1Pnre0GtO7UmxDjI7OXEEKGnhFbC97YQZqVPEjFhXqR2t3uU8FGndVp+nLR1bZyIyURKJf58MQA1v5lSp3I4MBXVj7pLlDduQO6c9E8Y+zHba38=
+	t=1748874856; cv=none; b=beUGFVOHNZLCyZEjAuiWgEGpXgQfT0m7JsQ+4ymUCRJxZI3EDnzHzTx8gywRia1GWkZk5QDosujmuz31DSbpVB6UU3c+B6U3DTOLZSG68LS+Z8WZpP4GP+assrFFpoCMIRC5qWzWJiX8UBkNiF/B8Kye/qifOaZtC+bTOw41hEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874306; c=relaxed/simple;
-	bh=sRU6wzMKILfjntz5xMu6rDmTtIq3BEWojPtzBCKF+MM=;
+	s=arc-20240116; t=1748874856; c=relaxed/simple;
+	bh=9M1yZj25d+hnKsomFC0VyrQvB+AOZtCcRrFrovqZvYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJbffQQGUtbl+tmWse9L38TMZ6xAwvHDMGXXroc1t0488jlhiHgP7Jo3b1ttvHzjHi/zKXlGSxt9Ttz7AESpP22xaNef2wbHYdSjKs90xtbFZErcg29TWOdwy6wLCwVQL8UVgkanWGVZqQxUJdSR5A3Xowuuphc08IpaWNXROhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZzEWPSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AA9C4CEEB;
-	Mon,  2 Jun 2025 14:25:05 +0000 (UTC)
+	 MIME-Version; b=FzjpOa8VpUHEmOutO3KFifYJE4ga7TOkyCHfKvddJiKw49rs2d9/zMdFokT9gSsUtZbWiOmc9FCnbZmTlIY19A4n/LvXGAUYK6gNuPnLPIRAfxjjHrSvxd5wWNbG/7nNWa+O/1+BERpUSHGUe+yykdWtc8EKo6spx3ivid2BB44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OL0RXiR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6979BC4CEEB;
+	Mon,  2 Jun 2025 14:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874306;
-	bh=sRU6wzMKILfjntz5xMu6rDmTtIq3BEWojPtzBCKF+MM=;
+	s=korg; t=1748874855;
+	bh=9M1yZj25d+hnKsomFC0VyrQvB+AOZtCcRrFrovqZvYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZzEWPSM6KkCHtAQLgtbqVj+2bJ6SmYdD2AG2fZEBukr27g74G8Lkti1vbUopKLz8
-	 z84hQ+vYjqYmHCChwBU60xtPimPA9e4y/228r9NsZOBG8ZkK2ZIyP7x+DS8265lBTi
-	 hVw3DsfdsDMxIgMaKN4aoAx+wT9RrW/y2S5sZwrw=
+	b=OL0RXiR6nhnvA0zFRt3jPolvdrTEcre0HYuKDhEj21NtKGGtn+BapbzRY55ii/JiK
+	 asDtF/Tb5KHMNxOX8KYvHlGZPKaDjrcfUVaI4ckW5JxFZlqhCPbWPS1JpzSCAETynu
+	 27LHxripwBwwWho8jb6AZjcA03j1RYJ7VgtpvNZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	William Liu <will@willsroot.io>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 426/444] net_sched: hfsc: Address reentrant enqueue adding class to eltree twice
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 157/204] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
 Date: Mon,  2 Jun 2025 15:48:10 +0200
-Message-ID: <20250602134358.231596659@linuxfoundation.org>
+Message-ID: <20250602134301.827609140@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit ac9fe7dd8e730a103ae4481147395cc73492d786 upstream.
+[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
 
-Savino says:
-    "We are writing to report that this recent patch
-    (141d34391abbb315d68556b7c67ad97885407547) [1]
-    can be bypassed, and a UAF can still occur when HFSC is utilized with
-    NETEM.
+After a port swap between separate fabrics, there may be multiple nodes in
+the vport's fc_nodes list with the same fabric well known address.
+Duplication is temporary and eventually resolves itself after dev_loss_tmo
+expires, but nameserver queries may still occur before dev_loss_tmo.  This
+possibly results in returning stale fabric ndlp objects.  Fix by adding an
+nlp_state check to ensure the ndlp search routine returns the correct newer
+allocated ndlp fabric object.
 
-    The patch only checks the cl->cl_nactive field to determine whether
-    it is the first insertion or not [2], but this field is only
-    incremented by init_vf [3].
-
-    By using HFSC_RSC (which uses init_ed) [4], it is possible to bypass the
-    check and insert the class twice in the eltree.
-    Under normal conditions, this would lead to an infinite loop in
-    hfsc_dequeue for the reasons we already explained in this report [5].
-
-    However, if TBF is added as root qdisc and it is configured with a
-    very low rate,
-    it can be utilized to prevent packets from being dequeued.
-    This behavior can be exploited to perform subsequent insertions in the
-    HFSC eltree and cause a UAF."
-
-To fix both the UAF and the infinite loop, with netem as an hfsc child,
-check explicitly in hfsc_enqueue whether the class is already in the eltree
-whenever the HFSC_RSC flag is set.
-
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=141d34391abbb315d68556b7c67ad97885407547
-[2] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1572
-[3] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L677
-[4] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1574
-[5] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/T/#u
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Reported-by: William Liu <will@willsroot.io>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250522181448.1439717-2-pctammela@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -175,6 +175,11 @@ struct hfsc_sched {
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 0abce779fbb13..3238222b89fa8 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5357,6 +5357,7 @@ static struct lpfc_nodelist *
+ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ {
+ 	struct lpfc_nodelist *ndlp;
++	struct lpfc_nodelist *np = NULL;
+ 	uint32_t data1;
  
- #define	HT_INFINITY	0xffffffffffffffffULL	/* infinite time value */
- 
-+static bool cl_in_el_or_vttree(struct hfsc_class *cl)
-+{
-+	return ((cl->cl_flags & HFSC_FSC) && cl->cl_nactive) ||
-+		((cl->cl_flags & HFSC_RSC) && !RB_EMPTY_NODE(&cl->el_node));
-+}
- 
- /*
-  * eligible tree holds backlogged classes being sorted by their eligible times.
-@@ -1040,6 +1045,8 @@ hfsc_change_class(struct Qdisc *sch, u32
- 	if (cl == NULL)
- 		return -ENOBUFS;
- 
-+	RB_CLEAR_NODE(&cl->el_node);
+ 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
+@@ -5371,14 +5372,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ 					 ndlp, ndlp->nlp_DID,
+ 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
+ 					 ndlp->active_rrqs_xri_bitmap);
+-			return ndlp;
 +
- 	err = tcf_block_get(&cl->block, &cl->filter_list, sch, extack);
- 	if (err) {
- 		kfree(cl);
-@@ -1573,7 +1580,7 @@ hfsc_enqueue(struct sk_buff *skb, struct
- 	sch->qstats.backlog += len;
- 	sch->q.qlen++;
++			/* Check for new or potentially stale node */
++			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
++				return ndlp;
++			np = ndlp;
+ 		}
+ 	}
  
--	if (first && !cl->cl_nactive) {
-+	if (first && !cl_in_el_or_vttree(cl)) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
+-	/* FIND node did <did> NOT FOUND */
+-	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
+-			 "0932 FIND node did x%x NOT FOUND.\n", did);
+-	return NULL;
++	if (!np)
++		/* FIND node did <did> NOT FOUND */
++		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
++				 "0932 FIND node did x%x NOT FOUND.\n", did);
++
++	return np;
+ }
+ 
+ struct lpfc_nodelist *
+-- 
+2.39.5
+
 
 
 
