@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BDEACB7F7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCD1ACB6AF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B1841C22F70
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954EF4C53BF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3073E23184F;
-	Mon,  2 Jun 2025 15:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B375322D4F6;
+	Mon,  2 Jun 2025 15:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYjXuyFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wy5lR+XA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D802D1FF61E;
-	Mon,  2 Jun 2025 15:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7145C22CBF4;
+	Mon,  2 Jun 2025 15:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877411; cv=none; b=BbUh/qjHTnq9qiP0HG29G4LxmJzQIb/zO3xpiCzoNq1d2bDx6xhM/RHckMDJ69N44Xi7GibN8nrW9YO+O2bs5n6+z6Ukps4QpOiXEpdzMTlqu2L89OWxMKt6RWWeNdnu7bl4R7DZajjTKwFVQdmDwk2BRYTwEMIIDXtJ0Np7vEc=
+	t=1748876434; cv=none; b=VQSzsM7L/jUz2gEg9mkbAwdOVtjwUVJUTxouOTWE/h6STYm5Kt/6rpxEm4sBTVjcYo+PaGigKTaX3XVkGwWootlsTG9HixjRoKJoHlMbNMeY+iP0/BF+7Va4T+bONeqPvniXjdYIdIGg1836hufOQe2r750QjSrNHJXDlONfMpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877411; c=relaxed/simple;
-	bh=2Y+wC4RpJ3rxNEgX8lUZYnrvWCl/+6bCTZbz8tJCOXM=;
+	s=arc-20240116; t=1748876434; c=relaxed/simple;
+	bh=CbZcLwNcwag9vc/TPpugaS0l2ec9Il3oz9yLOvs7qiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqnYKswMPDbAMDxK1jQqHnmHmID79rpMfdqvjW4PWppD7T8ioBYsB+2GVkVQbcl1qGktDxgPOD/hLI4ERZtrGvAD5GRWlbrQ2OwIOioZm7raYwGfWmhSs+iVu5g9HrLW6eyzqifHcYSgGaK/J+lYMHRbqV/38BZ7Lx6IDGFCDQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYjXuyFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD3DC4CEEB;
-	Mon,  2 Jun 2025 15:16:50 +0000 (UTC)
+	 MIME-Version; b=guDLp7je9BKVcWKF4F2a2n36gqA047kJeq/rsM1ZaQN05uUoaJV8OL1tWd6Sy1bqTZ+PPC9F2cTgNnj1HdTIRJsTGSU4a5Bo8Y5U3/DnU+41RYOwB9DqcRRZw5GrcwDsO0T+SSQ4cV/uff7oaLgkCnMqIybrsA+u4WGCzpXGTNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wy5lR+XA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA06C4CEEB;
+	Mon,  2 Jun 2025 15:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877411;
-	bh=2Y+wC4RpJ3rxNEgX8lUZYnrvWCl/+6bCTZbz8tJCOXM=;
+	s=korg; t=1748876434;
+	bh=CbZcLwNcwag9vc/TPpugaS0l2ec9Il3oz9yLOvs7qiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYjXuyFi7d2A4Mo3T7IGfPtLJxBYsbTAAiz4O3yrOJwOE0MyT4Bhl4YFLt4FZZ/uB
-	 93n4/PHlBfJKseQJ+Ihk83mXZD+utyJFasVg4e3vOaCImh+TQZg6ZBPa1zJdmwAnp8
-	 ISG4VaMeGWjmP962AFJRe3j7p3dkjrFljLTDX6jY=
+	b=wy5lR+XAIedcO2tgHVLaMpAjlJcih3aVcyjEUiXj8oq1Mww9GCZXZpwipNXXYPiA2
+	 gcVBuLPDutHtmPqmtqoDhjBQGtCs4HfHavopgkf6aFIvfB310siXhg3gmT1Hxloz7c
+	 PlSW56J94KEsMGmfj4aeO2di6cLpyEyerk+mjiiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 268/325] spi: spi-fsl-dspi: Halt the module after a new message transfer
-Date: Mon,  2 Jun 2025 15:49:04 +0200
-Message-ID: <20250602134330.663086949@linuxfoundation.org>
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 173/207] can: bcm: add missing rcu read protection for procfs content
+Date: Mon,  2 Jun 2025 15:49:05 +0200
+Message-ID: <20250602134305.523616889@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 8a30a6d35a11ff5ccdede7d6740765685385a917 ]
+commit dac5e6249159ac255dad9781793dbe5908ac9ddb upstream.
 
-The XSPI mode implementation in this driver still uses the EOQ flag to
-signal the last word in a transmission and deassert the PCS signal.
-However, at speeds lower than ~200kHZ, the PCS signal seems to remain
-asserted even when SR[EOQF] = 1 indicates the end of a transmission.
-This is a problem for target devices which require the deassertation of
-the PCS signal between transfers.
+When the procfs content is generated for a bcm_op which is in the process
+to be removed the procfs output might show unreliable data (UAF).
 
-Hence, this commit 'forces' the deassertation of the PCS by stopping the
-module through MCR[HALT] after completing a new transfer. According to
-the reference manual, the module stops or transitions from the Running
-state to the Stopped state after the current frame, when any one of the
-following conditions exist:
-- The value of SR[EOQF] = 1.
-- The chip is in Debug mode and the value of MCR[FRZ] = 1.
-- The value of MCR[HALT] = 1.
+As the removal of bcm_op's is already implemented with rcu handling this
+patch adds the missing rcu_read_lock() and makes sure the list entries
+are properly removed under rcu protection.
 
-This shouldn't be done if the last transfer in the message has cs_change
-set.
-
-Fixes: ea93ed4c181b ("spi: spi-fsl-dspi: Use EOQ for last word in buffer even for XSPI mode")
-Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-2-bea884630cfb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly synchronize_rcu()")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Suggested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250519125027.11900-2-socketcan@hartkopp.net
+Cc: stable@vger.kernel.org # >= 5.4
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ net/can/bcm.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 3f9609edac944..93cdc52f0fb06 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -61,6 +61,7 @@
- #define SPI_SR_TFIWF			BIT(18)
- #define SPI_SR_RFDF			BIT(17)
- #define SPI_SR_CMDFFF			BIT(16)
-+#define SPI_SR_TXRXS			BIT(30)
- #define SPI_SR_CLEAR			(SPI_SR_TCFQF | \
- 					SPI_SR_TFUF | SPI_SR_TFFF | \
- 					SPI_SR_CMDTCF | SPI_SR_SPEF | \
-@@ -907,9 +908,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 	struct spi_device *spi = message->spi;
- 	struct spi_transfer *transfer;
- 	int status = 0;
-+	u32 val = 0;
-+	bool cs_change = false;
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -207,7 +207,9 @@ static int bcm_proc_show(struct seq_file
+ 	seq_printf(m, " / bound %s", bcm_proc_getifname(net, ifname, bo->ifindex));
+ 	seq_printf(m, " <<<\n");
  
- 	message->actual_length = 0;
- 
-+	/* Put DSPI in running mode if halted. */
-+	regmap_read(dspi->regmap, SPI_MCR, &val);
-+	if (val & SPI_MCR_HALT) {
-+		regmap_update_bits(dspi->regmap, SPI_MCR, SPI_MCR_HALT, 0);
-+		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
-+		       !(val & SPI_SR_TXRXS))
-+			;
-+	}
+-	list_for_each_entry(op, &bo->rx_ops, list) {
++	rcu_read_lock();
 +
- 	list_for_each_entry(transfer, &message->transfers, transfer_list) {
- 		dspi->cur_transfer = transfer;
- 		dspi->cur_msg = message;
-@@ -934,6 +946,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
- 		}
++	list_for_each_entry_rcu(op, &bo->rx_ops, list) {
  
-+		cs_change = transfer->cs_change;
- 		dspi->tx = transfer->tx_buf;
- 		dspi->rx = transfer->rx_buf;
- 		dspi->len = transfer->len;
-@@ -966,6 +979,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 		spi_transfer_delay_exec(transfer);
+ 		unsigned long reduction;
+ 
+@@ -263,6 +265,9 @@ static int bcm_proc_show(struct seq_file
+ 		seq_printf(m, "# sent %ld\n", op->frames_abs);
  	}
- 
-+	if (status || !cs_change) {
-+		/* Put DSPI in stop mode */
-+		regmap_update_bits(dspi->regmap, SPI_MCR,
-+				   SPI_MCR_HALT, SPI_MCR_HALT);
-+		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
-+		       val & SPI_SR_TXRXS)
-+			;
-+	}
+ 	seq_putc(m, '\n');
 +
- 	message->status = status;
- 	spi_finalize_current_message(ctlr);
- 
-@@ -1206,6 +1228,8 @@ static int dspi_init(struct fsl_dspi *dspi)
- 	if (!spi_controller_is_slave(dspi->ctlr))
- 		mcr |= SPI_MCR_MASTER;
- 
-+	mcr |= SPI_MCR_HALT;
++	rcu_read_unlock();
 +
- 	regmap_write(dspi->regmap, SPI_MCR, mcr);
- 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+ 	return 0;
+ }
+ #endif /* CONFIG_PROC_FS */
+@@ -811,7 +816,7 @@ static int bcm_delete_rx_op(struct list_
+ 						  REGMASK(op->can_id),
+ 						  bcm_rx_handler, op);
  
--- 
-2.39.5
-
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+@@ -831,7 +836,7 @@ static int bcm_delete_tx_op(struct list_
+ 	list_for_each_entry_safe(op, n, ops, list) {
+ 		if ((op->can_id == mh->can_id) && (op->ifindex == ifindex) &&
+ 		    (op->flags & CAN_FD_FRAME) == (mh->flags & CAN_FD_FRAME)) {
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+@@ -1253,7 +1258,7 @@ static int bcm_rx_setup(struct bcm_msg_h
+ 					      bcm_rx_handler, op, "bcm", sk);
+ 		if (err) {
+ 			/* this bcm rx op is broken -> remove it */
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return err;
+ 		}
 
 
 
