@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-149937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AEFACB5B8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:08:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDACACB75D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EE414002EF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB644A69D5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBD622A4F6;
-	Mon,  2 Jun 2025 14:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBB52248A4;
+	Mon,  2 Jun 2025 15:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6hUUVYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6EIRHaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694492147E7;
-	Mon,  2 Jun 2025 14:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599D71FF61E;
+	Mon,  2 Jun 2025 15:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875514; cv=none; b=Ug0CEz/6vKhJ+3kL6qnIy8HX4iZrXYYu5e4Sb8vjCnAH6suEEVUgNJPwahmZVI7SjmBLmHP3nmzRamdeDOdghf6+A3ES9O3CU92l/wi4mlp4dZATRlOW1zyYCLyjUINaLnKOYG+x8qUhZTaf4nOuBi2ykuiLJ7QMq/TqHw4ta78=
+	t=1748877083; cv=none; b=Afm+hQJRqbH/DVAyUyEMBvTsNfUw1f2b3yyKRQj3CjK3SuPB9NVNuqKeX+ZF4YdZR7HrxKLXv77o/E6WdWOE5dmzRAArGqSlNj+ASJk7eZ6FHMow0H0U4oO11iEUqAppygnfFfdipj6ii7ZwuhuoFod2OlICWve7K18ljx4GnbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875514; c=relaxed/simple;
-	bh=o/3WzLnwKaMcBnfo95/Ugu6C0f0VwsjJZGrVgksiXLE=;
+	s=arc-20240116; t=1748877083; c=relaxed/simple;
+	bh=itp0YnXLY1S7z/yIBJorG92Xf2SbQ29Mj52TucBaDNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H446j4m+7aeRXLsndz7c3xXVBpJMs6OQHh9nPYxGONmlBfDh3jx1v7x6JY95kpdH8mY18hswKh18NQUeAaGRDC/huW1NQkXRvwP087FgBFRI+3iIi/LnGu4dJ32rf9mNrE/C/7OcL4nOdy4h5PT2BCo+JgGHfHFjEk+ohkOTn2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6hUUVYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB23C4CEEB;
-	Mon,  2 Jun 2025 14:45:13 +0000 (UTC)
+	 MIME-Version; b=bvxs/3/5+F/L0cjKqDALrnvyd96IVRALJOiR28VY0yIXGxTZyrvuBCs4pNWzsPynAL9L+wn5/Ubsq1dur6OU32ShQcAg//6ZPvFmAiax2AhdqNvuj5pwzDeZ3u3vmtULc0krlWgHXhI4E3ohTsoESkeB3tJU9KFtDCrJq9SQCpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6EIRHaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4630C4CEEB;
+	Mon,  2 Jun 2025 15:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875514;
-	bh=o/3WzLnwKaMcBnfo95/Ugu6C0f0VwsjJZGrVgksiXLE=;
+	s=korg; t=1748877083;
+	bh=itp0YnXLY1S7z/yIBJorG92Xf2SbQ29Mj52TucBaDNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6hUUVYvE/Jt2Sm0iA6dZxgAyb6uUr0g237T4FGMVn3HkbQiVXVIwI5XR03BPeT6/
-	 sPw4PFKV5BLX/TN7pO4fJtZwA5Uoi96dUw55Ji6OSJTgyMWeVv3iElJbv9J2dOc9h3
-	 /9eo0qgsscowz4/Z6wok7/HhZTwDSCf/soAMi0pU=
+	b=c6EIRHaPC/nh7Dcxgo70cRfN4MAJpiuO3mITpzaOi8uc1X+LaWxvfprPHYB8IOCUt
+	 D3MnkUjKJQTWAQ+UZBJCPPJwRfYUdFuqS6Zq+sv3VDJAuKQgZ3VBIGtFQJOtosqJgv
+	 qOXQDQVub/zh1+x5rWUHqtok0M6ZWPP04qZH2XJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 157/270] rtc: ds1307: stop disabling alarms on probe
+Subject: [PATCH 6.1 166/325] net/mlx5: Apply rate-limiting to high temperature warning
 Date: Mon,  2 Jun 2025 15:47:22 +0200
-Message-ID: <20250602134313.631899346@linuxfoundation.org>
+Message-ID: <20250602134326.544236574@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
+[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
 
-It is a bad practice to disable alarms on probe or remove as this will
-prevent alarms across reboots.
+Wrap the high temperature warning in a temperature event with
+a call to net_ratelimit() to prevent flooding the kernel log
+with repeated warning messages when temperature exceeds the
+threshold multiple times within a short duration.
 
-Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 07a9cc91671b0..3a2401ce2ec9c 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1864,10 +1864,8 @@ static int ds1307_probe(struct i2c_client *client,
- 		 * For some variants, be sure alarms can trigger when we're
- 		 * running on Vbackup (BBSQI/BBSQW)
- 		 */
--		if (want_irq || ds1307_can_wakeup_device) {
-+		if (want_irq || ds1307_can_wakeup_device)
- 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
--			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
--		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 68b92927c74e9..6aa96d33c210b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -169,9 +169,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
  
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+-	mlx5_core_warn(events->dev,
+-		       "High temperature on sensors with bit set %llx %llx",
+-		       value_msb, value_lsb);
++	if (net_ratelimit())
++		mlx5_core_warn(events->dev,
++			       "High temperature on sensors with bit set %llx %llx",
++			       value_msb, value_lsb);
+ 
+ 	return NOTIFY_OK;
+ }
 -- 
 2.39.5
 
