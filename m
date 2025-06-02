@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2ECACAFAF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:52:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39AF5ACB02A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 714617AE5CC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B43F40278F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6DF221FC3;
-	Mon,  2 Jun 2025 13:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD762222B0;
+	Mon,  2 Jun 2025 14:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ8JCh/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZGCFoKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC05C221DB6;
-	Mon,  2 Jun 2025 13:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB7D221FD0;
+	Mon,  2 Jun 2025 14:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872221; cv=none; b=WpjoKqHMgO6IIM+pecjx4CbG5YPqTtCU1vrB0uQFEy5Rge6Q5czQM8giAUf8MSqDYYYRqY4o4g53rM0Cke3PYLyw3Pu/y+QpZW7hOx2vIg9bZFJB/zC/1p1vD9CkYbb3dk74MBdewDyUGaF3rM7yZK4wPB64PXZhXfw5cZQzb2I=
+	t=1748872839; cv=none; b=TxKJlDxactAvfncQ5eRAIbkwWe3HaTYX7fBwECdGQYW/CvR8UDrxDGu23/m89WEZ+8zW7iyM4cIENuzH3WRnbQjL9NIKkLDGfUnVe8Oop2RKUuNvfedMqlgh9IOiHP/8cwcYf/KwpWI9q6Y0FUQsVCg9TNi4U+UWdIIwgkblyek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872221; c=relaxed/simple;
-	bh=EIVofoz7x0vOAwfFGo9BH4wU6logjK88mYfdN8Q6j98=;
+	s=arc-20240116; t=1748872839; c=relaxed/simple;
+	bh=0IImWFj+mZ1jUCShdDfCQ/xW0GfVSyO80qbnT6d4gNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UikHlzpXZ4neRyKhqHuGbxIRf1NeBrsw9VlXDFPdfnucrgYNYarNzb+V8rjG+FbBn8ZaciiGFD8g0dSHsG7R1S0wAPMCROSmMSdeksgSBzIcYYRaBTCS2teyryHzXoJay1PWCoRJh87C/lUvqlGHbblMycKOaaQuoBmAgcuG4KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ8JCh/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7D1C4CEEB;
-	Mon,  2 Jun 2025 13:50:21 +0000 (UTC)
+	 MIME-Version; b=f6O6xmYz1kJBb1rQb6oBRWnoNDc+xr6RwHEmDzn5uKnwgaDUu3LUD7Udv4JlgAYacJYjmwE7eCa9QAZYX6mnFXHm9hh3bmYgDiFicJ+F1wXPZUqLFiYWLrQPBWD7OfrP/oq0tnNtwbxqPI9JVb6X5IPfvc+ZB2JjlgLW/YV26iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZGCFoKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4002C4CEEB;
+	Mon,  2 Jun 2025 14:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872221;
-	bh=EIVofoz7x0vOAwfFGo9BH4wU6logjK88mYfdN8Q6j98=;
+	s=korg; t=1748872839;
+	bh=0IImWFj+mZ1jUCShdDfCQ/xW0GfVSyO80qbnT6d4gNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZ8JCh/Qe69+sqGDpiX16wCdCrlhSJzT2cg+uloRdZCPgozRoif06nVabZKH+xppl
-	 tqKCCSYwrnqEpIiy3uAG+nH3aUxtFlu8+8kkOkR3Dl/OUoe8n6WMrdaxutotjcnMN8
-	 AyEBvcjQqy3ySTfSZCHz6zlUpV+pdGscJ+qEuJ7g=
+	b=jZGCFoKW2ufTse3JR+tAR0Fy5B9U7Ax7I6lgIviU4V2YF1cWUMNqPXP0GbUz6hRz8
+	 irAHb60V81dt7iKS34hQkXcbY0Vn0QEkUqSeLLNDutPsQFIlxSZEuCZWvd6uD2GcCV
+	 +eJc1EEwvtUzLN+v8zZWwoIlQCNGe/xzpZtXxl4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.15 37/49] arm64: dts: ti: k3-j721e-sk: Add requiried voltage supplies for IMX219
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 12/55] arm64: dts: qcom: x1e80100-qcp: mark l12b and l15b always-on
 Date: Mon,  2 Jun 2025 15:47:29 +0200
-Message-ID: <20250602134239.395867866@linuxfoundation.org>
+Message-ID: <20250602134238.757731174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit c6a20a250200da6fcaf80fe945b7b92cba8cfe0f upstream.
+commit ff6ba96378367133b66587bd3ee9f068a39ff3a9 upstream.
 
-The device tree overlay for the IMX219 sensor requires three voltage
-supplies to be defined: VANA (analog), VDIG (digital core), and VDDL
-(digital I/O). Add the corresponding voltage supply definitions to
-avoid dtbs_check warnings.
+The l12b and l15b supplies are used by components that are not (fully)
+described (and some never will be) and must never be disabled.
 
-Fixes: f767eb918096 ("arm64: dts: ti: k3-j721e-sk: Add overlay for IMX219")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Link: https://lore.kernel.org/r/20250415111328.3847502-5-y-abhilashchandra@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Mark the regulators as always-on to prevent them from being disabled,
+for example, when consumers probe defer or suspend.
+
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
+Cc: stable@vger.kernel.org	# 6.8
+Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250314145440.11371-8-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso |   33 +++++++++++++++
- 1 file changed, 33 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
-@@ -19,6 +19,33 @@
- 		#clock-cells = <0>;
- 		clock-frequency = <24000000>;
- 	};
-+
-+	reg_2p8v: regulator-2p8v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "2P8V";
-+		regulator-min-microvolt = <2800000>;
-+		regulator-max-microvolt = <2800000>;
-+		vin-supply = <&vdd_sd_dv>;
-+		regulator-always-on;
-+	};
-+
-+	reg_1p8v: regulator-1p8v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1P8V";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		vin-supply = <&vdd_sd_dv>;
-+		regulator-always-on;
-+	};
-+
-+	reg_1p2v: regulator-1p2v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1P2V";
-+		regulator-min-microvolt = <1200000>;
-+		regulator-max-microvolt = <1200000>;
-+		vin-supply = <&vdd_sd_dv>;
-+		regulator-always-on;
-+	};
- };
+--- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+@@ -356,6 +356,7 @@
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
  
- &csi_mux {
-@@ -34,6 +61,9 @@
- 		reg = <0x10>;
+ 		vreg_l13b_3p0: ldo13 {
+@@ -377,6 +378,7 @@
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
  
- 		clocks = <&clk_imx219_fixed>;
-+		VANA-supply = <&reg_2p8v>;
-+		VDIG-supply = <&reg_1p8v>;
-+		VDDL-supply = <&reg_1p2v>;
- 
- 		port {
- 			csi2_cam0: endpoint {
-@@ -55,6 +85,9 @@
- 		reg = <0x10>;
- 
- 		clocks = <&clk_imx219_fixed>;
-+		VANA-supply = <&reg_2p8v>;
-+		VDIG-supply = <&reg_1p8v>;
-+		VDDL-supply = <&reg_1p2v>;
- 
- 		port {
- 			csi2_cam1: endpoint {
+ 		vreg_l16b_2p9: ldo16 {
 
 
 
