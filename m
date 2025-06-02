@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302A6ACB34C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0030ACB467
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A2B3B7BDA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B1709E0BEA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86B3239E79;
-	Mon,  2 Jun 2025 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71B42236F2;
+	Mon,  2 Jun 2025 14:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnMtF+SF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqPMbBbF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9363222539E;
-	Mon,  2 Jun 2025 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D3519EEBD;
+	Mon,  2 Jun 2025 14:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874085; cv=none; b=UYuCKmwsnMGriJPZe+Sa2laM4V1hBY3juG9bjQSwxCEwSgIW3NmuhYoIip7PNkhST9YgEocYxclUVN9JpI9lji3sX64EoD4x+Wz32XNgpSgg9U4aJg0yMLG3w2vh6sVUPwcSa2xLVodY8nqe3BY8tOTMCDYPWtzR+/4wP9JkHLU=
+	t=1748874625; cv=none; b=qfVHKbMdY/NqCBsq6HhdhI8elZZXlb0rHSxLH2nfcOsEhdBN4lcvNXcDcLtMl03uhTccK8cMcmpYhMjO0KouRXl4AMhFmpbbYidc7Xsn79OCwl3fUUZshsCTKWt8zzvi+qNI6Kmu7IRqo3gH2Lo70koWWkRZt2DrFe/Jp6l7gu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874085; c=relaxed/simple;
-	bh=0e+cezd0yAXPWtsNyJQWJT0IVT7LNAfwfYd50zXlOCM=;
+	s=arc-20240116; t=1748874625; c=relaxed/simple;
+	bh=cxhWKODbK+hNUHH5irpi6XgMDVSBApdQnQLjHfIH7R8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/mxl9p953ZcPBFQLoXGptgRSvOifpOodmbB56/fHsTcY0bNZbAMPTExt3pXnWDWNJksKPIDIXHOvHy0tE7AAj1Fom0YKwIMMlYVX3s9Ob79jM5TNe7ensxLJFLthOIDAiOGuExRYe5FrZHLL8MkbuwvtVbs7/GLOnIMfXC0s4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnMtF+SF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB629C4CEF0;
-	Mon,  2 Jun 2025 14:21:24 +0000 (UTC)
+	 MIME-Version; b=tcW456hMyMk2ALuWawdmAafSukBcO99lN/SewRHr2lPd0/gSG8uLiXPb+TyxkIZ564toU5qRF1fdQX7lyCiHhg8eqdr5+Mpw5nqT9cbufB/0t1gl9Y8Q+e3CruhrdJXSfTvAj5Bmg66otRVnl+0yHgE+ebrLkNcgH/no+kh//vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqPMbBbF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DAAC4CEEB;
+	Mon,  2 Jun 2025 14:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874085;
-	bh=0e+cezd0yAXPWtsNyJQWJT0IVT7LNAfwfYd50zXlOCM=;
+	s=korg; t=1748874624;
+	bh=cxhWKODbK+hNUHH5irpi6XgMDVSBApdQnQLjHfIH7R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnMtF+SFgQP9OI+UMkpufhk+0NAKxIrdzTEU0XpXCF+Dq1RZnpcmmE9ToJPm/QW5i
-	 LNj1HbsA6KJOsB1DCNgFwpGuaOC+WnIGyAAGftz0LZ6ehv5+aL7HauBj79lfHthk7u
-	 nlybwlG7NKcUo2beVyfTHMJvvWKzeHBmc8isjhwU=
+	b=nqPMbBbFr7l7+KPPsxcM2oNjf40vhoxFoQKQ4X2kJdj6HKcnE6cK+vSn+qtVVaqJ1
+	 j6UjjZQw6Sl//MpriqskQUMwZf5LAT390jFBy7lUZA0eN3NErv1cJZvwL9AQ3Eri79
+	 Lm9YgGaZD2w6GRZ9ti9fasYBVeBmDD6YuhPrNSQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 353/444] octeontx2-af: Set LMT_ENA bit for APR table entries
+	Matthias Eilert <kernel.hias@eilert.tech>,
+	Aditya Garg <gargaditya08@live.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 084/204] Input: synaptics - enable InterTouch on TUXEDO InfinityBook Pro 14 v5
 Date: Mon,  2 Jun 2025 15:46:57 +0200
-Message-ID: <20250602134355.258030679@linuxfoundation.org>
+Message-ID: <20250602134258.969478546@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Aditya Garg <gargaditya08@live.com>
 
-[ Upstream commit 0eefa27b493306928d88af6368193b134c98fd64 ]
+commit 2abc698ac77314e0de5b33a6d96a39c5159d88e4 upstream.
 
-This patch enables the LMT line for a PF/VF by setting the
-LMT_ENA bit in the APR_LMT_MAP_ENTRY_S structure.
+Enable InterTouch mode on TUXEDO InfinityBook Pro 14 v5 by adding
+"SYN1221" to the list of SMBus-enabled variants.
 
-Additionally, it simplifies the logic for calculating the
-LMTST table index by consistently using the maximum
-number of hw supported VFs (i.e., 256).
+Add support for InterTouch on SYN1221 by adding it to the list of
+SMBus-enabled variants.
 
-Fixes: 873a1e3d207a ("octeontx2-af: cn10k: Setting up lmtst map table").
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250521060834.19780-2-gakula@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Matthias Eilert <kernel.hias@eilert.tech>
+Tested-by: Matthias Eilert <kernel.hias@eilert.tech>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Link: https://lore.kernel.org/r/PN3PR01MB9597C033C4BC20EE2A0C4543B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/input/mouse/synaptics.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-index 0e74c5a2231e6..de91053ad5a3d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-@@ -15,13 +15,17 @@
- #define LMT_TBL_OP_WRITE	1
- #define LMT_MAP_TABLE_SIZE	(128 * 1024)
- #define LMT_MAPTBL_ENTRY_SIZE	16
-+#define LMT_MAX_VFS		256
-+
-+#define LMT_MAP_ENTRY_ENA      BIT_ULL(20)
-+#define LMT_MAP_ENTRY_LINES    GENMASK_ULL(18, 16)
- 
- /* Function to perform operations (read/write) on lmtst map table */
- static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
- 			       int lmt_tbl_op)
- {
- 	void __iomem *lmt_map_base;
--	u64 tbl_base;
-+	u64 tbl_base, cfg;
- 
- 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
- 
-@@ -35,6 +39,13 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
- 		*val = readq(lmt_map_base + index);
- 	} else {
- 		writeq((*val), (lmt_map_base + index));
-+
-+		cfg = FIELD_PREP(LMT_MAP_ENTRY_ENA, 0x1);
-+		/* 2048 LMTLINES */
-+		cfg |= FIELD_PREP(LMT_MAP_ENTRY_LINES, 0x6);
-+
-+		writeq(cfg, (lmt_map_base + (index + 8)));
-+
- 		/* Flushing the AP interceptor cache to make APR_LMT_MAP_ENTRY_S
- 		 * changes effective. Write 1 for flush and read is being used as a
- 		 * barrier and sets up a data dependency. Write to 0 after a write
-@@ -52,7 +63,7 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
- #define LMT_MAP_TBL_W1_OFF  8
- static u32 rvu_get_lmtst_tbl_index(struct rvu *rvu, u16 pcifunc)
- {
--	return ((rvu_get_pf(pcifunc) * rvu->hw->total_vfs) +
-+	return ((rvu_get_pf(pcifunc) * LMT_MAX_VFS) +
- 		(pcifunc & RVU_PFVF_FUNC_MASK)) * LMT_MAPTBL_ENTRY_SIZE;
- }
- 
--- 
-2.39.5
-
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -186,6 +186,7 @@ static const char * const smbus_pnp_ids[
+ 	"LEN2044", /* L470  */
+ 	"LEN2054", /* E480 */
+ 	"LEN2055", /* E580 */
++	"SYN1221", /* TUXEDO InfinityBook Pro 14 v5 */
+ 	"SYN3003", /* HP EliteBook 850 G1 */
+ 	"SYN3052", /* HP EliteBook 840 G4 */
+ 	"SYN3221", /* HP 15-ay000 */
 
 
 
