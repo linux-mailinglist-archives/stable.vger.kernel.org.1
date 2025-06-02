@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730E3ACB745
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F1AACB248
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 666994C201C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1650F1945B2E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC54224882;
-	Mon,  2 Jun 2025 15:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D982253E9;
+	Mon,  2 Jun 2025 14:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtkeKgls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAjmQQMU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A964223DE5;
-	Mon,  2 Jun 2025 15:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D761E3772;
+	Mon,  2 Jun 2025 14:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876582; cv=none; b=ivWO8cSp6LFJrZA+Jc2YYSvV7xhAV43RtvTi67WvHuiJXHO9gxyuKNeovLOA6VfKnBrtuZHHexeh4+g9+LjA7UtVw3hU61t9IzOI5LmZGRgAkFzIsU1tX188hGyR8z6YAA9VniKtBJ2ccUrQ9330i8NrmxaMSo5sb/NTCoZ8IGA=
+	t=1748873668; cv=none; b=jreQ1u2UOHF3bAHr7JLWuGsqOipGNf6WUYRE5dwsmpYRcnBkAZMhILD7UEhQdkrTNCLWNwzszt1mv/H7M/IaQt5DfH+ipNG/ZXP8UHH+q2rCkapHGcYlmEKcnEI+yVW3LJEWa0NC1QaaHIQ6yR5EOt0j5smrDk0tkwNiHhGsDPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876582; c=relaxed/simple;
-	bh=4rDZXCEMRd6V8JVQxm+vrREoZ01rLAHTQkq0gwidN94=;
+	s=arc-20240116; t=1748873668; c=relaxed/simple;
+	bh=zrdEv7S8KJnFIpPrvvDZKKAaUylDKaJOzzqgVl1Gwrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPXEf2UvUiTh1eRWtvakGYSDQUh5w9iqKEr2eXs7kcTf0GIAZQkEYx89umfcJvEy7PA6A/Pi6eWAfp4iNfJfsJv+LEVCPWxP/zJN71mJQ32vvBQoi2X48LfkAsqXYuyuZqbmQNA9dBqfjydyYBAzplrBZNzV5Ve0/2Tdv5PplKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtkeKgls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C512C4CEEB;
-	Mon,  2 Jun 2025 15:03:01 +0000 (UTC)
+	 MIME-Version; b=BoJRkjvq6BTzNmL9jY9BB3cyG05pYILPtgtY1KWnncn1dLnfSL1e9d6cvJe2xjv3ovUQEzdfU0v2d1y8k5d9IipmVF2yn8xzKxzAQ2ipxd4mzvETaQ6hJ2xluMHASy/4G9OWtwj+z+RmcIYg5SocpQ14RE7LInHXRuZC+g5RJzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAjmQQMU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AEEC4CEEB;
+	Mon,  2 Jun 2025 14:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876582;
-	bh=4rDZXCEMRd6V8JVQxm+vrREoZ01rLAHTQkq0gwidN94=;
+	s=korg; t=1748873667;
+	bh=zrdEv7S8KJnFIpPrvvDZKKAaUylDKaJOzzqgVl1Gwrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AtkeKglsx1foaYgrD0SYeaSmTmC4n4UG6wl+w6GVNFlCEd8gASHnd3b2Z7oUvaA5m
-	 ct82duydzg1aikm7vmk8B4+IXhib4dEuYG8+M6zKejY7b5CTdr/YVXrOGpRrDYlsX/
-	 eUYqH6teFy30/iyFz/C5KSuW1/uD1l5DSK2t5dT4=
+	b=PAjmQQMUsZju2rbfjNb0AVBA3N6usbCh7GHJDuRyiDH8TfQMQH21pB+veWDRAAz/Q
+	 9MdOzgEYuw6BObSt5JxX6QK2DLdqkrsDc5Di9+zXxivYbu3nL/L8v9IhzjhrjRRg8O
+	 ihi4L1St9dx/+y9pVfUo5sMN2SJIX1TI9dqgBRgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/325] gpio: pca953x: Split pca953x_restore_context() and pca953x_save_context()
+Subject: [PATCH 6.6 214/444] can: c_can: Use of_property_present() to test existence of DT property
 Date: Mon,  2 Jun 2025 15:44:38 +0200
-Message-ID: <20250602134319.828797703@linuxfoundation.org>
+Message-ID: <20250602134349.594674202@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit ec5bde62019b0a5300c67bd81b9864a8ea12274e ]
+[ Upstream commit ab1bc2290fd8311d49b87c29f1eb123fcb581bee ]
 
-Split regcache handling to the respective helpers. It will allow to
-have further refactoring with ease.
+of_property_read_bool() should be used only on boolean properties.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Stable-dep-of: 3e38f946062b ("gpio: pca953x: fix IRQ storm on system wake up")
+Cc: Rob Herring <robh@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250212-syscon-phandle-args-can-v2-3-ac9a1253396b@linaro.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pca953x.c | 44 ++++++++++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 15 deletions(-)
+ drivers/net/can/c_can/c_can_platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index caf3bb6cb6b9f..db4a48558c676 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -1200,9 +1200,9 @@ static void pca953x_remove(struct i2c_client *client)
- }
+diff --git a/drivers/net/can/c_can/c_can_platform.c b/drivers/net/can/c_can/c_can_platform.c
+index 7f405bcf11c23..603680792f1ff 100644
+--- a/drivers/net/can/c_can/c_can_platform.c
++++ b/drivers/net/can/c_can/c_can_platform.c
+@@ -333,7 +333,7 @@ static int c_can_plat_probe(struct platform_device *pdev)
+ 		/* Check if we need custom RAMINIT via syscon. Mostly for TI
+ 		 * platforms. Only supported with DT boot.
+ 		 */
+-		if (np && of_property_read_bool(np, "syscon-raminit")) {
++		if (np && of_property_present(np, "syscon-raminit")) {
+ 			u32 id;
+ 			struct c_can_raminit *raminit = &priv->raminit_sys;
  
- #ifdef CONFIG_PM_SLEEP
--static int pca953x_regcache_sync(struct device *dev)
-+static int pca953x_regcache_sync(struct pca953x_chip *chip)
- {
--	struct pca953x_chip *chip = dev_get_drvdata(dev);
-+	struct device *dev = &chip->client->dev;
- 	int ret;
- 	u8 regaddr;
- 
-@@ -1249,13 +1249,37 @@ static int pca953x_regcache_sync(struct device *dev)
- 	return 0;
- }
- 
--static int pca953x_suspend(struct device *dev)
-+static int pca953x_restore_context(struct pca953x_chip *chip)
- {
--	struct pca953x_chip *chip = dev_get_drvdata(dev);
-+	int ret;
- 
-+	mutex_lock(&chip->i2c_lock);
-+
-+	regcache_cache_only(chip->regmap, false);
-+	regcache_mark_dirty(chip->regmap);
-+	ret = pca953x_regcache_sync(chip);
-+	if (ret) {
-+		mutex_unlock(&chip->i2c_lock);
-+		return ret;
-+	}
-+
-+	ret = regcache_sync(chip->regmap);
-+	mutex_unlock(&chip->i2c_lock);
-+	return ret;
-+}
-+
-+static void pca953x_save_context(struct pca953x_chip *chip)
-+{
- 	mutex_lock(&chip->i2c_lock);
- 	regcache_cache_only(chip->regmap, true);
- 	mutex_unlock(&chip->i2c_lock);
-+}
-+
-+static int pca953x_suspend(struct device *dev)
-+{
-+	struct pca953x_chip *chip = dev_get_drvdata(dev);
-+
-+	pca953x_save_context(chip);
- 
- 	if (atomic_read(&chip->wakeup_path))
- 		device_set_wakeup_path(dev);
-@@ -1278,17 +1302,7 @@ static int pca953x_resume(struct device *dev)
- 		}
- 	}
- 
--	mutex_lock(&chip->i2c_lock);
--	regcache_cache_only(chip->regmap, false);
--	regcache_mark_dirty(chip->regmap);
--	ret = pca953x_regcache_sync(dev);
--	if (ret) {
--		mutex_unlock(&chip->i2c_lock);
--		return ret;
--	}
--
--	ret = regcache_sync(chip->regmap);
--	mutex_unlock(&chip->i2c_lock);
-+	ret = pca953x_restore_context(chip);
- 	if (ret) {
- 		dev_err(dev, "Failed to restore register map: %d\n", ret);
- 		return ret;
 -- 
 2.39.5
 
