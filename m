@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-150499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17656ACB7AC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BF4ACB3E4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E4074C6A17
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 671014A0A31
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BC222E3E0;
-	Mon,  2 Jun 2025 15:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B2822A80D;
+	Mon,  2 Jun 2025 14:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gVUT5AT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpal1tfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D4622F14C;
-	Mon,  2 Jun 2025 15:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D75222582;
+	Mon,  2 Jun 2025 14:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877318; cv=none; b=tQreqStT4hbk3cmP9b85fOfk2xqoW6ZaGiUgm7zJP1y0Zg3v2YXFIOo2xMUBiFwPDjOAkEWdYtt2pNTfWLXwojHOKXa5K0b86AnmirSs1zszA3IG9J4flY8AIEfN1WCZ0udv9nvzB8SJAE1oTDQvJYB9n/5MDgHA/FA4uEOiWVU=
+	t=1748874837; cv=none; b=uCRTfW5mHOOieNqKi5Wx85ppZOXCf5IDYwIJ+fQmew/le5Hxm3oWcmKgjmhsFstMk99kVgG2YE7uR3uUQW7xiYbTahBMquGqCbIT4eWM1gwlySVxG9JT6Zl5zOqcQpQTcyMwcydV1jpEkOdIDkM8HHr9tDoZLaS79/T8WF0xX9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877318; c=relaxed/simple;
-	bh=Er6BgJk3TmK4wX7nHR6v6hHBfE+CPNint4bpQp30XYQ=;
+	s=arc-20240116; t=1748874837; c=relaxed/simple;
+	bh=0ItAvp/pFRDvhTJww2cTKE8FlATJDu9pHtDMiKJYxB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KuWRm7OlsrJ8+ltb1oXaeQMZp/1mXV9xMVAukXMrTE9sHGfqtO1Q5xdlDW1v57HyNGrWBdtIlA0f4isg36dpu0/t7LqdijtM73lG+5UtGNNg+SKGpmgDrOUp10HMaFm8phVP/66tc9DwchSpGX70koWyHorGt7w8XjZSmKz5JSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gVUT5AT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C34EC4CEEB;
-	Mon,  2 Jun 2025 15:15:17 +0000 (UTC)
+	 MIME-Version; b=nGZqdfz/zi7No07APuJDuutpCcl2bFeV4BCdSl+4k+MYGYmTaiCmXeY/U2BOVD/Zf/7DIrPskdbOKTwSxf+ZoIMlbg+TAQtZWGo86nd1p+5Tbh+y8su+7HykXVXhG5CDQs2W6BQohgFZ+lRaFVsV+tLQ04YRvTM65cTON8bRDQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpal1tfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2100C4CEEB;
+	Mon,  2 Jun 2025 14:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877318;
-	bh=Er6BgJk3TmK4wX7nHR6v6hHBfE+CPNint4bpQp30XYQ=;
+	s=korg; t=1748874837;
+	bh=0ItAvp/pFRDvhTJww2cTKE8FlATJDu9pHtDMiKJYxB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gVUT5ATA/26TvUr4SNeCPbTMHaHiG8raIiSpHyWO3nVgLaTA6FRtyoZcyXQnr0HX
-	 eo3bOPj3/p6nXgbfU6zOTJxWUFs88V31Z+dTzmriimrfGGR237MZKBAYjcO+qvf3/O
-	 JODlaGYTsyeguSOlLA4cb9GT4wYAX/Pcu85ys/to=
+	b=bpal1tfn2tbt2bYdXBivK+i9GXH6FUPCktW2Yj7jxXSaJltALba+iWCvh2XLzHrRB
+	 CuGHrBUwV92XpG6DzNH50WZEbN1M32lAB8LV9VvX2Zd809tQ4ilQhdB6Vg7CjyAR6I
+	 mfFpJj5eSos9dzhv+Dj8aVh27Hh3bAqTMM9kymYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viktor Malik <vmalik@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/325] bpftool: Fix readlink usage in get_fd_type
+Subject: [PATCH 5.4 152/204] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
 Date: Mon,  2 Jun 2025 15:48:05 +0200
-Message-ID: <20250602134328.288274731@linuxfoundation.org>
+Message-ID: <20250602134301.622146156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
+[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
 
-The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
-bytes and *does not* append null-terminator to buf. With respect to
-that, fix two pieces in get_fd_type:
+The following patch will not set skb->sk from VRF path.
 
-1. Change the truncation check to contain sizeof(buf) rather than
-   sizeof(path).
-2. Append null-terminator to buf.
+Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
+in fib[46]_rule_configure().
 
-Reported by Coverity.
-
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/fib_rules.c  | 4 ++--
+ net/ipv6/fib6_rules.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index db02b000fbebd..eea00bc15b5cc 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -384,10 +384,11 @@ int get_fd_type(int fd)
- 		p_err("can't read link type: %s", strerror(errno));
- 		return -1;
- 	}
--	if (n == sizeof(path)) {
-+	if (n == sizeof(buf)) {
- 		p_err("can't read link type: path too long!");
- 		return -1;
- 	}
-+	buf[n] = '\0';
+diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
+index e9a3cc9e98dfa..1617ea18fae3a 100644
+--- a/net/ipv4/fib_rules.c
++++ b/net/ipv4/fib_rules.c
+@@ -220,9 +220,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
+-	struct net *net = sock_net(skb->sk);
++	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
  
- 	if (strstr(buf, "bpf-map"))
- 		return BPF_OBJ_MAP;
+ 	if (frh->tos & ~IPTOS_TOS_MASK) {
+ 		NL_SET_ERR_MSG(extack, "Invalid tos");
+diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
+index 3cf9dc2231036..acb8610c9a9df 100644
+--- a/net/ipv6/fib6_rules.c
++++ b/net/ipv6/fib6_rules.c
+@@ -344,9 +344,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
++	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct net *net = sock_net(skb->sk);
+-	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
+ 
+ 	if (rule->action == FR_ACT_TO_TBL && !rule->l3mdev) {
+ 		if (rule->table == RT6_TABLE_UNSPEC) {
 -- 
 2.39.5
 
