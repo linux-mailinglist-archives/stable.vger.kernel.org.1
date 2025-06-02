@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0BDACB6A0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6752DACB24E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBAEC16AB23
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A54C4A0686
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20222248BB;
-	Mon,  2 Jun 2025 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64B421B9F6;
+	Mon,  2 Jun 2025 14:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMVxRH6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqrMZqUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A689D1E3772;
-	Mon,  2 Jun 2025 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BD729D05;
+	Mon,  2 Jun 2025 14:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876593; cv=none; b=AdN44DnldM7IG42iqUqhKOMRJ2wDIUkJH7W4PoOcfx23GAVxsOd0wdFoK0cxlzK75JyN2JJjvGUP2ueMOqklo0mmMOW2B1K0Ics3gfsd46fM7KnKBmmt3s5vcBKtzntQptwr7/6p+94eCyrFzD9IPoZlHQXHBXRmWh226FzDFdA=
+	t=1748873679; cv=none; b=fKq9lEc0FxfiVQZKr+GaUCkTSuTYokCkA5yp+CDhCI4swqW9ajZTXDRWJmZts/l1x6DG7TDWl+GvNDUbuAlq3TrNkwxXPaSftqrXPjBlK2VLMbrXRNG6aP259AaVwXSszYNwMrkc6lfo0qMmgBUu97VvCL1hrxMWqcv0HfXS8gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876593; c=relaxed/simple;
-	bh=ArbNSIPq475ScAyD3x0VaTvPxkga703x1DPKqq2FvnU=;
+	s=arc-20240116; t=1748873679; c=relaxed/simple;
+	bh=kBozSbZyWi+KUvNt5LocKh69JSOJeo9frJgntO/z5Js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPsGBLxQb+OdmpcFgGlwZcLqLxXs4fzwUlgYD02mwfrYM1BI8H6/Im+jhqw8+qJyLYdWkrmLdX77F9UhVCuhGinbyQpG5lGyNh/GU0Ntfg2mYIT1ASRuQ5Fj9r6HXnQPtbcqJv3+xb+PsQJYuWX8lLVzyQZtc60l/LpWmqu9NvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMVxRH6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14672C4CEEB;
-	Mon,  2 Jun 2025 15:03:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XEKpIeanLx8uJvUgcfezWRHECcxgZ1abpxjesoOcdxRGzGu/Gws7XxNsHMFXkcC4QUArVk0eNdAyinO6hsQIvKaolZc+v6wnHwpKyFyCpEC96WjAQvBQcPxYvRFDl5fEY2bSk4f6wo/Gb2b/3SPVRjcvgtmx/SJJwEwiaOg1i3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqrMZqUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C4FC4CEEB;
+	Mon,  2 Jun 2025 14:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876593;
-	bh=ArbNSIPq475ScAyD3x0VaTvPxkga703x1DPKqq2FvnU=;
+	s=korg; t=1748873679;
+	bh=kBozSbZyWi+KUvNt5LocKh69JSOJeo9frJgntO/z5Js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMVxRH6hqNCimDUeHQRbBoB072bYr3pj70PDuh35PTy1MStxTZjHoCfdFKBBXh1rk
-	 q0ZLX6GqQhOgXnL9hEkP8PQbCEtkfsocQbiNV1llSZUKRVLY3QYAGyv0VuFKsF2Tbv
-	 9AQCkNhqT/hze3BRLPgz9VIfuv50WEFD5oduAZb0=
+	b=cqrMZqUsJXSW3haFyqsamR/6Q97Ey0236xKfKOVTusUypIdK7X+80ZuC6r0VRTV3v
+	 NQvR23xBlS2PnWRiIuOh50IVRWAiHtr07P6aCXa+xS7LN+5+Qi+Hw9cp+2AptO9QZM
+	 dwXem9G9+wvvAji2e2MpZh6+BDym+dEC6sP/LHVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Xiaochun Lee <lixc17@lenovo.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/325] phy: renesas: rcar-gen3-usb2: Add support to initialize the bus
+Subject: [PATCH 6.6 217/444] PCI: Fix old_size lower bound in calculate_iosize() too
 Date: Mon,  2 Jun 2025 15:44:41 +0200
-Message-ID: <20250602134319.947200760@linuxfoundation.org>
+Message-ID: <20250602134349.718163511@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,160 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 4eae16375357a2a7e8501be5469532f7636064b3 ]
+[ Upstream commit ff61f380de5652e723168341480cc7adf1dd6213 ]
 
-The Renesas RZ/G3S need to initialize the USB BUS before transferring data
-due to hardware limitation. As the register that need to be touched for
-this is in the address space of the USB PHY, and the UBS PHY need to be
-initialized before any other USB drivers handling data transfer, add
-support to initialize the USB BUS.
+Commit 903534fa7d30 ("PCI: Fix resource double counting on remove &
+rescan") fixed double counting of mem resources because of old_size being
+applied too early.
 
-As the USB PHY is probed before any other USB drivers that enables
-clocks and de-assert the reset signals and the BUS initialization is done
-in the probe phase, we need to add code to de-assert reset signal and
-runtime resume the device (which enables its clocks) before accessing
-the registers.
+Fix a similar counting bug on the io resource side.
 
-As the reset signals are not required by the USB PHY driver for the other
-USB PHY hardware variants, the reset signals and runtime PM was handled
-only in the function that initialize the USB BUS.
-
-The PHY initialization was done right after runtime PM enable to have
-all in place when the PHYs are registered.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20240822152801.602318-11-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 9ce71e85b29e ("phy: renesas: rcar-gen3-usb2: Assert PLL reset on PHY power off")
+Link: https://lore.kernel.org/r/20241216175632.4175-6-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Xiaochun Lee <lixc17@lenovo.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 50 ++++++++++++++++++++++--
- 1 file changed, 47 insertions(+), 3 deletions(-)
+ drivers/pci/setup-bus.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index 3824e338b61e5..d13083f60d897 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -21,12 +21,14 @@
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/reset.h>
- #include <linux/string.h>
- #include <linux/usb/of.h>
- #include <linux/workqueue.h>
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index fba402f4f6330..3f40be417856e 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -802,11 +802,9 @@ static resource_size_t calculate_iosize(resource_size_t size,
+ 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
+ #endif
+ 	size = size + size1;
+-	if (size < old_size)
+-		size = old_size;
  
- /******* USB2.0 Host registers (original offset is +0x200) *******/
- #define USB2_INT_ENABLE		0x000
-+#define USB2_AHB_BUS_CTR	0x008
- #define USB2_USBCTR		0x00c
- #define USB2_SPD_RSM_TIMSET	0x10c
- #define USB2_OC_TIMSET		0x110
-@@ -42,6 +44,10 @@
- #define USB2_INT_ENABLE_USBH_INTB_EN	BIT(2)	/* For EHCI */
- #define USB2_INT_ENABLE_USBH_INTA_EN	BIT(1)	/* For OHCI */
- 
-+/* AHB_BUS_CTR */
-+#define USB2_AHB_BUS_CTR_MBL_MASK	GENMASK(1, 0)
-+#define USB2_AHB_BUS_CTR_MBL_INCR4	2
-+
- /* USBCTR */
- #define USB2_USBCTR_DIRPD	BIT(2)
- #define USB2_USBCTR_PLL_RST	BIT(1)
-@@ -112,6 +118,7 @@ struct rcar_gen3_chan {
- 	struct extcon_dev *extcon;
- 	struct rcar_gen3_phy rphys[NUM_OF_PHYS];
- 	struct regulator *vbus;
-+	struct reset_control *rstc;
- 	struct work_struct work;
- 	struct mutex lock;	/* protects rphys[...].powered */
- 	enum usb_dr_mode dr_mode;
-@@ -126,6 +133,7 @@ struct rcar_gen3_chan {
- struct rcar_gen3_phy_drv_data {
- 	const struct phy_ops *phy_usb2_ops;
- 	bool no_adp_ctrl;
-+	bool init_bus;
- };
- 
- /*
-@@ -647,6 +655,35 @@ static enum usb_dr_mode rcar_gen3_get_dr_mode(struct device_node *np)
- 	return candidate;
+-	size = ALIGN(max(size, add_size) + children_add_size, align);
+-	return size;
++	size = max(size, add_size) + children_add_size;
++	return ALIGN(max(size, old_size), align);
  }
  
-+static int rcar_gen3_phy_usb2_init_bus(struct rcar_gen3_chan *channel)
-+{
-+	struct device *dev = channel->dev;
-+	int ret;
-+	u32 val;
-+
-+	channel->rstc = devm_reset_control_array_get_shared(dev);
-+	if (IS_ERR(channel->rstc))
-+		return PTR_ERR(channel->rstc);
-+
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = reset_control_deassert(channel->rstc);
-+	if (ret)
-+		goto rpm_put;
-+
-+	val = readl(channel->base + USB2_AHB_BUS_CTR);
-+	val &= ~USB2_AHB_BUS_CTR_MBL_MASK;
-+	val |= USB2_AHB_BUS_CTR_MBL_INCR4;
-+	writel(val, channel->base + USB2_AHB_BUS_CTR);
-+
-+rpm_put:
-+	pm_runtime_put(dev);
-+
-+	return ret;
-+}
-+
- static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- {
- 	const struct rcar_gen3_phy_drv_data *phy_data;
-@@ -700,6 +737,15 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		goto error;
- 	}
- 
-+	platform_set_drvdata(pdev, channel);
-+	channel->dev = dev;
-+
-+	if (phy_data->init_bus) {
-+		ret = rcar_gen3_phy_usb2_init_bus(channel);
-+		if (ret)
-+			goto error;
-+	}
-+
- 	channel->soc_no_adp_ctrl = phy_data->no_adp_ctrl;
- 	if (phy_data->no_adp_ctrl)
- 		channel->obint_enable_bits = USB2_OBINT_IDCHG_EN;
-@@ -727,9 +773,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		channel->vbus = NULL;
- 	}
- 
--	platform_set_drvdata(pdev, channel);
--	channel->dev = dev;
--
- 	provider = devm_of_phy_provider_register(dev, rcar_gen3_phy_usb2_xlate);
- 	if (IS_ERR(provider)) {
- 		dev_err(dev, "Failed to register PHY provider\n");
-@@ -756,6 +799,7 @@ static int rcar_gen3_phy_usb2_remove(struct platform_device *pdev)
- 	if (channel->is_otg_channel)
- 		device_remove_file(&pdev->dev, &dev_attr_role);
- 
-+	reset_control_assert(channel->rstc);
- 	pm_runtime_disable(&pdev->dev);
- 
- 	return 0;
+ static resource_size_t calculate_memsize(resource_size_t size,
 -- 
 2.39.5
 
