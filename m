@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB88ACB6AC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F45DACB4E6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66A827A4608
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEE833B7CF4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E292C324F;
-	Mon,  2 Jun 2025 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E025A221F3E;
+	Mon,  2 Jun 2025 14:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1pyBiAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwLDqXLt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFD017BBF;
-	Mon,  2 Jun 2025 15:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDB12C3247;
+	Mon,  2 Jun 2025 14:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877355; cv=none; b=SiW6/ph6/Hh/6Q7Je6GEEd9yqCDmHTmg093bDVTJ/MyXlX09HAIkIiWiV3XFYN1bCBpJv+omQcJn54GTnos9TqRPW50Q3NL9YxBW0n5hE4MHsn58haCmaRWrON2/KmPsQ+tX0cMzy0+TSHLozDLzhHQOpQZBq5da62tCi7k6TSQ=
+	t=1748874984; cv=none; b=j1r8SzvOMK8b6RrRSebT7av0hs3MPSAjlY0YAVLAG4r5+h3MZp4u4ICRS4PrYH65d92fOaz2jPNTKze0da5oaqGJ/aKfyaqe8GN6UzfY7svOFOKHONDOYaPGvl0+QL6iBw2vGxKPrRJzZOaMUQBeRbKPxxodktTIU7w/Zjz8EFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877355; c=relaxed/simple;
-	bh=kSHN3T+95OCshCm08gfKV54M8k2Ybgm2fo+/4ASQZRo=;
+	s=arc-20240116; t=1748874984; c=relaxed/simple;
+	bh=/YmNfNiDBzMJr8qzoDZRxjqE8pdZnRnryZNgqbCPMvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9wMWNtvfFyF3yxkLrqZwjXll+6lZ4zSECFvzN8GVm/v/aJNIOHPIV8GTSJkAiz0YpDwMzpHwyRbzPo4lRqdjEfdxdnbvOaehYVcHo7SOIC6T15JX0kfpDOiJxc4ActcI4TOi1xNLNMp5ZYkL6czRh42PwgdwWohcTV9xcgIx3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1pyBiAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A798C4CEEB;
-	Mon,  2 Jun 2025 15:15:54 +0000 (UTC)
+	 MIME-Version; b=QP7lYP/BNF/H3RqwGwGmTI1Qe99lnG9iDhbi5Jki72zkuCU/5jSuZ+vNITqaFiAMH6lMmcMNx/8jn3v+oF6kAbP41DEb4ZUJVKH7g9YBRml8WOHRnfhmn7WN9ii+7YOgLi7CTuPzAQL6m7MzWL6XotttsH4naTHTaOqEPk60JvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwLDqXLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248BCC4CEEB;
+	Mon,  2 Jun 2025 14:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877354;
-	bh=kSHN3T+95OCshCm08gfKV54M8k2Ybgm2fo+/4ASQZRo=;
+	s=korg; t=1748874984;
+	bh=/YmNfNiDBzMJr8qzoDZRxjqE8pdZnRnryZNgqbCPMvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1pyBiAN6IcbxOLH2op9KxnHcdoO8xp95MkEc0yVR9BgT5C2itpQADknFBPNlLoOv
-	 4HQmZBLL6y3E8fMKcGGv3DLjM9bviceJu5DsrcTAPYzZAh+eXvZhNvupVHoXw0ONid
-	 wK5Vmfjj8edax3MQ11akfzaDT0HbvKqsjGGfDjIU=
+	b=WwLDqXLtmysPzOP6gv9U1H17Sm9a8nP0yidWsHQn5cmJ/pEE2mIVRZW/jR8XNrSO8
+	 hNVz7jbmVnnSEHGT3H9nSPgXSpC/ohskJ1s2VdrYvuQVnbJDOgf4BKtB3q7pJ9oQrw
+	 StUOfmNX/7C8ZBCToGzE9DLHp0ThWlKXXjONiJPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Sanchez <carlossanchez@geotab.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 252/325] can: slcan: allow reception of short error messages
-Date: Mon,  2 Jun 2025 15:48:48 +0200
-Message-ID: <20250602134330.015717428@linuxfoundation.org>
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 196/204] coredump: hand a pidfd to the usermode coredump helper
+Date: Mon,  2 Jun 2025 15:48:49 +0200
+Message-ID: <20250602134303.375493176@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Sanchez <carlossanchez@geotab.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit ef0841e4cb08754be6cb42bf97739fce5d086e5f upstream.
+commit b5325b2a270fcaf7b2a9a0f23d422ca8a5a8bdea upstream.
 
-Allows slcan to receive short messages (typically errors) from the serial
-interface.
+Give userspace a way to instruct the kernel to install a pidfd into the
+usermode helper process. This makes coredump handling a lot more
+reliable for userspace. In parallel with this commit we already have
+systemd adding support for this in [1].
 
-When error support was added to slcan protocol in
-b32ff4668544e1333b694fcc7812b2d7397b4d6a ("can: slcan: extend the protocol
-with error info") the minimum valid message size changed from 5 (minimum
-standard can frame tIII0) to 3 ("e1a" is a valid protocol message, it is
-one of the examples given in the comments for slcan_bump_err() ), but the
-check for minimum message length prodicating all decoding was not adjusted.
-This makes short error messages discarded and error frames not being
-generated.
+We create a pidfs file for the coredumping process when we process the
+corename pattern. When the usermode helper process is forked we then
+install the pidfs file as file descriptor three into the usermode
+helpers file descriptor table so it's available to the exec'd program.
 
-This patch changes the minimum length to the new minimum (3 characters,
-excluding terminator, is now a valid message).
+Since usermode helpers are either children of the system_unbound_wq
+workqueue or kthreadd we know that the file descriptor table is empty
+and can thus always use three as the file descriptor number.
 
-Signed-off-by: Carlos Sanchez <carlossanchez@geotab.com>
-Fixes: b32ff4668544 ("can: slcan: extend the protocol with error info")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250520102305.1097494-1-carlossanchez@geotab.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Note, that we'll install a pidfd for the thread-group leader even if a
+subthread is calling do_coredump(). We know that task linkage hasn't
+been removed due to delay_group_leader() and even if this @current isn't
+the actual thread-group leader we know that the thread-group leader
+cannot be reaped until @current has exited.
+
+[brauner: This is a backport for the v5.4 series. Upstream has
+significantly changed and backporting all that infra is a non-starter.
+So simply backport the pidfd_prepare() helper and waste the file
+descriptor we allocated. Then we minimally massage the umh coredump
+setup code.]
+
+Link: https://github.com/systemd/systemd/pull/37125 [1]
+Link: https://lore.kernel.org/20250414-work-coredump-v2-3-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/slcan/slcan-core.c |   26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ fs/coredump.c           |   77 +++++++++++++++++++++++++++++++++++++++++++-----
+ include/linux/binfmts.h |    1 
+ 2 files changed, 71 insertions(+), 7 deletions(-)
 
---- a/drivers/net/can/slcan/slcan-core.c
-+++ b/drivers/net/can/slcan/slcan-core.c
-@@ -71,12 +71,21 @@ MODULE_AUTHOR("Dario Binacchi <dario.bin
- #define SLCAN_CMD_LEN 1
- #define SLCAN_SFF_ID_LEN 3
- #define SLCAN_EFF_ID_LEN 8
-+#define SLCAN_DATA_LENGTH_LEN 1
-+#define SLCAN_ERROR_LEN 1
- #define SLCAN_STATE_LEN 1
- #define SLCAN_STATE_BE_RXCNT_LEN 3
- #define SLCAN_STATE_BE_TXCNT_LEN 3
--#define SLCAN_STATE_FRAME_LEN       (1 + SLCAN_CMD_LEN + \
--				     SLCAN_STATE_BE_RXCNT_LEN + \
--				     SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_STATE_MSG_LEN     (SLCAN_CMD_LEN +		\
-+                                 SLCAN_STATE_LEN +		\
-+                                 SLCAN_STATE_BE_RXCNT_LEN +	\
-+                                 SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_ERROR_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_ERROR_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
-+#define SLCAN_FRAME_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_SFF_ID_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
- struct slcan {
- 	struct can_priv         can;
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -52,6 +52,13 @@
  
-@@ -176,6 +185,9 @@ static void slcan_bump_frame(struct slca
- 	u32 tmpid;
- 	char *cmd = sl->rbuff;
+ #include <trace/events/sched.h>
  
-+	if (sl->rcount < SLCAN_FRAME_MSG_LEN_MIN)
-+		return;
++/*
++ * File descriptor number for the pidfd for the thread-group leader of
++ * the coredumping task installed into the usermode helper's file
++ * descriptor table.
++ */
++#define COREDUMP_PIDFD_NUMBER 3
 +
- 	skb = alloc_can_skb(sl->dev, &cf);
- 	if (unlikely(!skb)) {
- 		sl->dev->stats.rx_dropped++;
-@@ -281,7 +293,7 @@ static void slcan_bump_state(struct slca
- 		return;
- 	}
- 
--	if (state == sl->can.state || sl->rcount < SLCAN_STATE_FRAME_LEN)
-+	if (state == sl->can.state || sl->rcount != SLCAN_STATE_MSG_LEN)
- 		return;
- 
- 	cmd += SLCAN_STATE_BE_RXCNT_LEN + SLCAN_CMD_LEN + 1;
-@@ -328,6 +340,9 @@ static void slcan_bump_err(struct slcan
- 	bool rx_errors = false, tx_errors = false, rx_over_errors = false;
- 	int i, len;
- 
-+	if (sl->rcount < SLCAN_ERROR_MSG_LEN_MIN)
-+		return;
+ int core_uses_pid;
+ unsigned int core_pipe_limit;
+ char core_pattern[CORENAME_MAX_SIZE] = "core";
+@@ -314,6 +321,27 @@ static int format_corename(struct core_n
+ 				err = cn_printf(cn, "%lu",
+ 					      rlimit(RLIMIT_CORE));
+ 				break;
++			/* pidfd number */
++			case 'F': {
++				/*
++				 * Installing a pidfd only makes sense if
++				 * we actually spawn a usermode helper.
++				 */
++				if (!ispipe)
++					break;
 +
- 	/* get len from sanitized ASCII value */
- 	len = cmd[1];
- 	if (len >= '0' && len < '9')
-@@ -456,8 +471,7 @@ static void slcan_bump(struct slcan *sl)
- static void slcan_unesc(struct slcan *sl, unsigned char s)
++				/*
++				 * Note that we'll install a pidfd for the
++				 * thread-group leader. We know that task
++				 * linkage hasn't been removed yet and even if
++				 * this @current isn't the actual thread-group
++				 * leader we know that the thread-group leader
++				 * cannot be reaped until @current has exited.
++				 */
++				cprm->pid = task_tgid(current);
++				err = cn_printf(cn, "%d", COREDUMP_PIDFD_NUMBER);
++				break;
++			}
+ 			default:
+ 				break;
+ 			}
+@@ -537,7 +565,7 @@ static void wait_for_dump_helpers(struct
+ }
+ 
+ /*
+- * umh_pipe_setup
++ * umh_coredump_setup
+  * helper function to customize the process used
+  * to collect the core in userspace.  Specifically
+  * it sets up a pipe and installs it as fd 0 (stdin)
+@@ -547,27 +575,62 @@ static void wait_for_dump_helpers(struct
+  * is a special value that we use to trap recursive
+  * core dumps
+  */
+-static int umh_pipe_setup(struct subprocess_info *info, struct cred *new)
++static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
  {
- 	if ((s == '\r') || (s == '\a')) { /* CR or BEL ends the pdu */
--		if (!test_and_clear_bit(SLF_ERROR, &sl->flags) &&
--		    sl->rcount > 4)
-+		if (!test_and_clear_bit(SLF_ERROR, &sl->flags))
- 			slcan_bump(sl);
+ 	struct file *files[2];
++	struct file *pidfs_file = NULL;
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+ 	int err;
  
- 		sl->rcount = 0;
++	if (cp->pid) {
++		int fd;
++
++		fd = pidfd_prepare(cp->pid, 0, &pidfs_file);
++		if (fd < 0)
++			return fd;
++
++		/*
++		 * We don't care about the fd. We also cannot simply
++		 * replace it below because dup2() will refuse to close
++		 * this file descriptor if its in a larval state. So
++		 * close it!
++		 */
++		put_unused_fd(fd);
++
++		/*
++		 * Usermode helpers are childen of either
++		 * system_unbound_wq or of kthreadd. So we know that
++		 * we're starting off with a clean file descriptor
++		 * table. So we should always be able to use
++		 * COREDUMP_PIDFD_NUMBER as our file descriptor value.
++		 */
++		err = replace_fd(COREDUMP_PIDFD_NUMBER, pidfs_file, 0);
++		if (err < 0)
++			goto out_fail;
++
++		pidfs_file = NULL;
++	}
++
+ 	err = create_pipe_files(files, 0);
+ 	if (err)
+-		return err;
++		goto out_fail;
+ 
+ 	cp->file = files[1];
+ 
+ 	err = replace_fd(0, files[0], 0);
+ 	fput(files[0]);
+ 	if (err < 0)
+-		return err;
++		goto out_fail;
+ 
+ 	/* and disallow core files too */
+ 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
+ 
+-	return 0;
++	err = 0;
++
++out_fail:
++	if (pidfs_file)
++		fput(pidfs_file);
++	return err;
+ }
+ 
+ void do_coredump(const kernel_siginfo_t *siginfo)
+@@ -643,7 +706,7 @@ void do_coredump(const kernel_siginfo_t
+ 		}
+ 
+ 		if (cprm.limit == 1) {
+-			/* See umh_pipe_setup() which sets RLIMIT_CORE = 1.
++			/* See umh_coredump_setup() which sets RLIMIT_CORE = 1.
+ 			 *
+ 			 * Normally core limits are irrelevant to pipes, since
+ 			 * we're not writing to the file system, but we use
+@@ -688,7 +751,7 @@ void do_coredump(const kernel_siginfo_t
+ 		retval = -ENOMEM;
+ 		sub_info = call_usermodehelper_setup(helper_argv[0],
+ 						helper_argv, NULL, GFP_KERNEL,
+-						umh_pipe_setup, NULL, &cprm);
++						umh_coredump_setup, NULL, &cprm);
+ 		if (sub_info)
+ 			retval = call_usermodehelper_exec(sub_info,
+ 							  UMH_WAIT_EXEC);
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -93,6 +93,7 @@ struct coredump_params {
+ 	unsigned long mm_flags;
+ 	loff_t written;
+ 	loff_t pos;
++	struct pid *pid;
+ };
+ 
+ /*
 
 
 
