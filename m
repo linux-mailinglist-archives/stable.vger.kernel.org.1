@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99E0ACB05B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F162CACB004
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 146F7482E0E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D429481864
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5CE221FCA;
-	Mon,  2 Jun 2025 14:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4498C21FF39;
+	Mon,  2 Jun 2025 13:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wy3QGSp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3iObxWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFB4221FBF;
-	Mon,  2 Jun 2025 14:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D1D1C5D72;
+	Mon,  2 Jun 2025 13:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872879; cv=none; b=qAYFwPUj0TVA7uWNECI7s7wDbwgRuYVDEA0t2cfsMa9b+5YB6dX2qeS4YBSEiY2O4T58z5SuSBeig3mLQ3iLsutInhW1xZNaGoW3fZScCiOZ0TZs57LkXA55X+Fi82fKjpEzLFOa/3sbBexoVFWerTFRn8yb2KeMO2Vzw7i7N6Y=
+	t=1748872749; cv=none; b=cN2RUsJ2WRILZU1N2+LaXwpZ9R5mZgaLl90MvUeF3/WibmwxqB4v4sY/ghgAB3r8cdxlfTuZLuc+mcqUmN0efUW2aCn0ZxNGAphb6V05qknDdLSjhEFFUh2LjlBH7T0LZ3Bb0P2hp6VeRTcoznYveoSY4s2R2MU3AvTZSInX2Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872879; c=relaxed/simple;
-	bh=su5ADR9uSb1K9cgomGSCWdz8PHEWL1MA45fjiutLpHY=;
+	s=arc-20240116; t=1748872749; c=relaxed/simple;
+	bh=wgLxbBNA0QMDkXAo/PJEZmo3HSDKAR7AquiC9bY9b2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/DfFSesePcL8263igdAUICSSmiZEA+5qmI5ZA8LormoggFMQGQMp3g/VlcjYQHUMW9noa09jvbGp71diM1OZ+TcFoNzLuITUP8Woj8CjAv7qzNlHkZIBZCoAvc9eSolh3kVekCr3LmWVSJOYCGrcVXxN18Pog23HAT5IWQ714o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wy3QGSp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7554C4CEEB;
-	Mon,  2 Jun 2025 14:01:18 +0000 (UTC)
+	 MIME-Version; b=CD6y47gNmIuEaWlkGhId/Qlm8cOl6vPcMq7i/m/R6+vcJPQZSTYqfIBrPJAd2HdN805zkeG1RIgUNUTIfbHx7SUZ9ahVa9ZgwBF6HkO5e+G75fEKBKJZ4c++YWiDIPkkKmWtUHjqfk4bWuiL4NQ8Qa9EUDf9xdCnMMasCKMRa3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3iObxWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757E2C4CEEB;
+	Mon,  2 Jun 2025 13:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872879;
-	bh=su5ADR9uSb1K9cgomGSCWdz8PHEWL1MA45fjiutLpHY=;
+	s=korg; t=1748872748;
+	bh=wgLxbBNA0QMDkXAo/PJEZmo3HSDKAR7AquiC9bY9b2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wy3QGSp+7Bgez8bOvdDPM00aAivNUTskM1HCl5SjBbQhSIJABRNnPTqzlL6Cwqvuj
-	 7h34VTUn4F3vUsZqQOxB02Gmb5UzSh2qgj3e9btclKTRgaJQzSzqBwqPitV+3hUl76
-	 ZtIsLwjDeSFOIWLXcX911THeLXTfGTC09bZqnzZo=
+	b=e3iObxWv0v3lguRJAczd0vJS+OEPeIOYqX/yJtxKErpZqn7ceBOdAgncQwa4k6+14
+	 2KmvQgrVzL3XI1wat8OyuqXKni/6afzq+Ny24DtKXY+TmDbv4XCDvGhIZ/3nJSlCe2
+	 wQUrOy6HUQSH5At9EKP+dVpH9PVnRrFydcxEtEkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Neha Malcom Francis <n-francis@ti.com>,
-	Jai Luthra <jai.luthra@linux.dev>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.12 24/55] arm64: dts: ti: k3-j721e-sk: Remove clock-names property from IMX219 overlay
-Date: Mon,  2 Jun 2025 15:47:41 +0200
-Message-ID: <20250602134239.227834436@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Markus Burri <markus.burri@mt.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 56/73] gpio: virtuser: fix potential out-of-bound write
+Date: Mon,  2 Jun 2025 15:47:42 +0200
+Message-ID: <20250602134243.901814090@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Markus Burri <markus.burri@mt.com>
 
-commit 24ab76e55ef15450c6681a2b5db4d78f45200939 upstream.
+[ Upstream commit 7118be7c6072f40391923543fdd1563b8d56377c ]
 
-The IMX219 sensor device tree bindings do not include a clock-names
-property. Remove the incorrectly added clock-names entry to avoid
-dtbs_check warnings.
+If the caller wrote more characters, count is truncated to the max
+available space in "simple_write_to_buffer". Check that the input
+size does not exceed the buffer size. Write a zero termination
+afterwards.
 
-Fixes: f767eb918096 ("arm64: dts: ti: k3-j721e-sk: Add overlay for IMX219")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
-Reviewed-by: Jai Luthra <jai.luthra@linux.dev>
-Link: https://lore.kernel.org/r/20250415111328.3847502-4-y-abhilashchandra@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505091754.285hHbr2-lkp@intel.com/
+Signed-off-by: Markus Burri <markus.burri@mt.com>
+Link: https://lore.kernel.org/r/20250509150459.115489-1-markus.burri@mt.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpio/gpio-virtuser.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
-@@ -34,7 +34,6 @@
- 		reg = <0x10>;
+diff --git a/drivers/gpio/gpio-virtuser.c b/drivers/gpio/gpio-virtuser.c
+index e89f299f21400..dcecb7a259117 100644
+--- a/drivers/gpio/gpio-virtuser.c
++++ b/drivers/gpio/gpio-virtuser.c
+@@ -400,10 +400,15 @@ static ssize_t gpio_virtuser_direction_do_write(struct file *file,
+ 	char buf[32], *trimmed;
+ 	int ret, dir, val = 0;
  
- 		clocks = <&clk_imx219_fixed>;
--		clock-names = "xclk";
+-	ret = simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
++	if (count >= sizeof(buf))
++		return -EINVAL;
++
++	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
+ 	if (ret < 0)
+ 		return ret;
  
- 		port {
- 			csi2_cam0: endpoint {
-@@ -56,7 +55,6 @@
- 		reg = <0x10>;
++	buf[ret] = '\0';
++
+ 	trimmed = strim(buf);
  
- 		clocks = <&clk_imx219_fixed>;
--		clock-names = "xclk";
+ 	if (strcmp(trimmed, "input") == 0) {
+@@ -622,12 +627,15 @@ static ssize_t gpio_virtuser_consumer_write(struct file *file,
+ 	char buf[GPIO_VIRTUSER_NAME_BUF_LEN + 2];
+ 	int ret;
  
- 		port {
- 			csi2_cam1: endpoint {
++	if (count >= sizeof(buf))
++		return -EINVAL;
++
+ 	ret = simple_write_to_buffer(buf, GPIO_VIRTUSER_NAME_BUF_LEN, ppos,
+ 				     user_buf, count);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	buf[strlen(buf) - 1] = '\0';
++	buf[ret] = '\0';
+ 
+ 	ret = gpiod_set_consumer_name(data->ad.desc, buf);
+ 	if (ret)
+-- 
+2.39.5
+
 
 
 
