@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3820ACB294
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9DAACB760
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB1419408DA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4861E4A6D65
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E98423F419;
-	Mon,  2 Jun 2025 14:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815C8230BC5;
+	Mon,  2 Jun 2025 15:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0wK0nA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tP+XS5GQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2D1222576;
-	Mon,  2 Jun 2025 14:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7032AE9A;
+	Mon,  2 Jun 2025 15:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873823; cv=none; b=k75YAosCCjIhUFf52TrUn0Z8f2xi8uB8H/QMC+OreL9k+1HJDQYKyMlV19WSzHmRYBP+hr3/iBXsDxAMHvBXF3hioHp/oKZAZbkKsJuff4948OrIAN4z/FoHIhJvJN+7fYoirRqt3GsSjeSpcbivBbtIPKZLoirPRl3B/RcQjao=
+	t=1748876717; cv=none; b=RMI0Nov99TVwJqt2UkywKSjgVnWCQNdcXIYKcVSy9w9MR40rXqaEmolmttoZm377zad/SFzeedcwZlz1J0RNQ+R7Raoj3PZsYBl/e9wrBGHY00TTJGgroaZ6vkYaGgE2F+czGXAhYqDWqa/BBXX20URJ7R2pmZPmG2Q2zSj5qSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873823; c=relaxed/simple;
-	bh=dhTu+hRuxhzcuTx1TVADUqOS5+zGYvYfkZTbUTubTk0=;
+	s=arc-20240116; t=1748876717; c=relaxed/simple;
+	bh=YdpDOVuJLvgzzaSITlrsbNghUXwXe64O2mXyBMyXxqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNLd5CZEeXYWcdcCkNWRhkKQY3Pd6xITwws/Xa5b65sixQG3Lq9GAj3LC0tGkJv+TWO5YIvRcaCkGa3x01yP2Zbx1wwd069QtY7jACytBkH9g9V/xI6mN7MBSGoC/jV8pME4POejQ3ls4y+vXishi1MBxNe1YXk/KJUFqcF+vCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0wK0nA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C601C4CEEB;
-	Mon,  2 Jun 2025 14:17:02 +0000 (UTC)
+	 MIME-Version; b=FlTSt4uyWYOvtFe1QBKCn/wjq/wwiNSdWBs14Gdmi9c3UDHXvfmVzRorXDvivEj6Qzzjz7vKP5G3TQI0EPKgKjKVHKS9qsHi0Pmf0XYlWw7ThiX/8Z9F2U2im771Fx4FAgCQQPL2r9m8Dv6CYftMML1r/SNTuHX1Js+oC4c+xL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tP+XS5GQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF60FC4CEEB;
+	Mon,  2 Jun 2025 15:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873823;
-	bh=dhTu+hRuxhzcuTx1TVADUqOS5+zGYvYfkZTbUTubTk0=;
+	s=korg; t=1748876717;
+	bh=YdpDOVuJLvgzzaSITlrsbNghUXwXe64O2mXyBMyXxqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t0wK0nA/HnmBF9bwRnGXP96TwyGKCJgHD/94pqPp3/5zTrF8Xr6YpU+fwgFiBfE3a
-	 J1H1Yoke/N48UvyPkhO+HUCwRs3r0vG8ri5nZXQEji/Q223d1LWMt29Kb+xZS6GWdO
-	 k3DGib8LYSRg9FBsxu+CgA305CVHr0iE59m4Pus8=
+	b=tP+XS5GQjc3MRrjMN2z11jzXGRgm/nNvAZ6O1GpmpSzPzkvsjkIqMSYEtXAwj9vYh
+	 Va0rOgJjQv9bVZkqIR6PovBQP1qFFIu6WS2q3YqFAFY58Ux2/3Ja3kPiyJHBPLyXtB
+	 1uZE6DAlRnmLubYqX5Q+QkdH/DIVR97nOZstDjs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <maharmstone@fb.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/444] pstore: Change kmsg_bytes storage size to u32
+Subject: [PATCH 6.1 052/325] btrfs: avoid linker error in btrfs_find_create_tree_block()
 Date: Mon,  2 Jun 2025 15:45:28 +0200
-Message-ID: <20250602134351.647237448@linuxfoundation.org>
+Message-ID: <20250602134321.877025177@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Mark Harmstone <maharmstone@fb.com>
 
-[ Upstream commit 5674609535bafa834ab014d90d9bbe8e89223a0b ]
+[ Upstream commit 7ef3cbf17d2734ca66c4ed8573be45f4e461e7ee ]
 
-The types around kmsg_bytes were inconsistent. The global was unsigned
-long, the argument to pstore_set_kmsg_bytes() was int, and the filesystem
-option was u32. Given other internal limits, there's not much sense
-in making a single pstore record larger than INT_MAX and it can't be
-negative, so use u32 everywhere. Additionally, use READ/WRITE_ONCE and a
-local variable in pstore_dump() to avoid kmsg_bytes changing during a
-dump.
+The inline function btrfs_is_testing() is hardcoded to return 0 if
+CONFIG_BTRFS_FS_RUN_SANITY_TESTS is not set. Currently we're relying on
+the compiler optimizing out the call to alloc_test_extent_buffer() in
+btrfs_find_create_tree_block(), as it's not been defined (it's behind an
+ #ifdef).
 
-Link: https://lore.kernel.org/r/20250206191655.work.798-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Add a stub version of alloc_test_extent_buffer() to avoid linker errors
+on non-standard optimization levels. This problem was seen on GCC 14
+with -O0 and is helps to see symbols that would be otherwise optimized
+out.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <maharmstone@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/inode.c    |  2 +-
- fs/pstore/internal.h |  4 ++--
- fs/pstore/platform.c | 11 ++++++-----
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ fs/btrfs/extent_io.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pstore/inode.c b/fs/pstore/inode.c
-index 7dbbf3b6d98d3..a1c97cd2720a6 100644
---- a/fs/pstore/inode.c
-+++ b/fs/pstore/inode.c
-@@ -264,7 +264,7 @@ static void parse_options(char *options)
- static int pstore_show_options(struct seq_file *m, struct dentry *root)
- {
- 	if (kmsg_bytes != CONFIG_PSTORE_DEFAULT_KMSG_BYTES)
--		seq_printf(m, ",kmsg_bytes=%lu", kmsg_bytes);
-+		seq_printf(m, ",kmsg_bytes=%u", kmsg_bytes);
- 	return 0;
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 72227c0b4b5a1..d5552875f872a 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -4459,10 +4459,10 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
+ 	return eb;
  }
  
-diff --git a/fs/pstore/internal.h b/fs/pstore/internal.h
-index 801d6c0b170c3..a0fc511969100 100644
---- a/fs/pstore/internal.h
-+++ b/fs/pstore/internal.h
-@@ -6,7 +6,7 @@
- #include <linux/time.h>
- #include <linux/pstore.h>
- 
--extern unsigned long kmsg_bytes;
-+extern unsigned int kmsg_bytes;
- 
- #ifdef CONFIG_PSTORE_FTRACE
- extern void pstore_register_ftrace(void);
-@@ -35,7 +35,7 @@ static inline void pstore_unregister_pmsg(void) {}
- 
- extern struct pstore_info *psinfo;
- 
--extern void	pstore_set_kmsg_bytes(int);
-+extern void	pstore_set_kmsg_bytes(unsigned int bytes);
- extern void	pstore_get_records(int);
- extern void	pstore_get_backend_records(struct pstore_info *psi,
- 					   struct dentry *root, int quiet);
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index 03425928d2fb3..ef62389212b60 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -92,8 +92,8 @@ module_param(compress, charp, 0444);
- MODULE_PARM_DESC(compress, "compression to use");
- 
- /* How much of the kernel log to snapshot */
--unsigned long kmsg_bytes = CONFIG_PSTORE_DEFAULT_KMSG_BYTES;
--module_param(kmsg_bytes, ulong, 0444);
-+unsigned int kmsg_bytes = CONFIG_PSTORE_DEFAULT_KMSG_BYTES;
-+module_param(kmsg_bytes, uint, 0444);
- MODULE_PARM_DESC(kmsg_bytes, "amount of kernel log to snapshot (in bytes)");
- 
- static void *compress_workspace;
-@@ -107,9 +107,9 @@ static void *compress_workspace;
- static char *big_oops_buf;
- static size_t max_compressed_size;
- 
--void pstore_set_kmsg_bytes(int bytes)
-+void pstore_set_kmsg_bytes(unsigned int bytes)
+-#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+ 					u64 start)
  {
--	kmsg_bytes = bytes;
-+	WRITE_ONCE(kmsg_bytes, bytes);
- }
++#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ 	struct extent_buffer *eb, *exists = NULL;
+ 	int ret;
  
- /* Tag each group of saved records with a sequence number */
-@@ -278,6 +278,7 @@ static void pstore_dump(struct kmsg_dumper *dumper,
- 			enum kmsg_dump_reason reason)
- {
- 	struct kmsg_dump_iter iter;
-+	unsigned int	remaining = READ_ONCE(kmsg_bytes);
- 	unsigned long	total = 0;
- 	const char	*why;
- 	unsigned int	part = 1;
-@@ -300,7 +301,7 @@ static void pstore_dump(struct kmsg_dumper *dumper,
- 	kmsg_dump_rewind(&iter);
+@@ -4498,8 +4498,11 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+ free_eb:
+ 	btrfs_release_extent_buffer(eb);
+ 	return exists;
+-}
++#else
++	/* Stub to avoid linker error when compiled with optimizations turned off. */
++	return NULL;
+ #endif
++}
  
- 	oopscount++;
--	while (total < kmsg_bytes) {
-+	while (total < remaining) {
- 		char *dst;
- 		size_t dst_size;
- 		int header_size;
+ static struct extent_buffer *grab_extent_buffer(
+ 		struct btrfs_fs_info *fs_info, struct page *page)
 -- 
 2.39.5
 
