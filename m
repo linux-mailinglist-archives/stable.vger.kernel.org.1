@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-148986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57F0ACAF97
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:50:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F66ACB021
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D1F27AE438
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B4391BA2512
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D778221F12;
-	Mon,  2 Jun 2025 13:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6373621C190;
+	Mon,  2 Jun 2025 13:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mh3gctdB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEvvTG8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102D7221F0A;
-	Mon,  2 Jun 2025 13:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B331C5D72;
+	Mon,  2 Jun 2025 13:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872169; cv=none; b=I2qzfGPIJv/h3TZPSXXQFeVYK4kvCTpfZ5huRZryLg4qRG+qqllrI87ejTd7qQC2EUlL+/jiseBPUm9gw0lFWmrrzibmmFMDqA5aidlgOXWjbS76g4qk6FAoXr/wPTRW4QUDve8A8SQDz2FNkMoOcDYdxSjBy8rIHJfgeIn450g=
+	t=1748872787; cv=none; b=BLOdvkVGIyToF6r9J2a9vRy65F8vVhWgAJwyQC8EsV29uDBXiqBfkXIouqZt9awbPvoxaE8C89ICThBzW+p5h52+pPyuRUapF1yuCsnQvJrUPVDrWADumWspTdAx4CDMyxxKJRIBJjBjMBrE4BRq/VpMmQL2IG5l6JRvT46Wzxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872169; c=relaxed/simple;
-	bh=qD8gyQtvzLXoSeSoSWBxeIIXlVbo0B4xaXOdl9lU4Tk=;
+	s=arc-20240116; t=1748872787; c=relaxed/simple;
+	bh=JwVoz33uOdhkYSiAzx6hvv0+PLHLCj5JagRCCzCOz78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPF0VzMmawlwxDGBm8eOcpDYgkYJGFUVh/nGKEpcfUtq6j2lYwfcj2NwJkCy+tJrGedcr3aIh86ohjwaCphQWXl5O75lAdE9w9xISEE2fVEsKkiVyNw7MDgNhs2ogCKz/KyS3SUsTPH9pxJz+oVGZdUVE9ebDZyxcNweyTBN4mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mh3gctdB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DE8C4CEEB;
-	Mon,  2 Jun 2025 13:49:27 +0000 (UTC)
+	 MIME-Version; b=Mk0WBxMQpdcUYiQgYHSlR7U8rIllvRpifc87ivpaCkIuC1iLPeHinDtNXUkjkT3oMfQgI2ayxhbfMgd7TwhGrGcH262GpjfVpaoI51Cf1Octbr/+rksetSSDbzFWNasPnILK9mNFeVpTKIupN0sgdXwFnvx1F/PrWq0R4A5THSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEvvTG8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B44C4CEEB;
+	Mon,  2 Jun 2025 13:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872168;
-	bh=qD8gyQtvzLXoSeSoSWBxeIIXlVbo0B4xaXOdl9lU4Tk=;
+	s=korg; t=1748872787;
+	bh=JwVoz33uOdhkYSiAzx6hvv0+PLHLCj5JagRCCzCOz78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mh3gctdBpjIH6P2mau6UajEmSjLuzor9X13ASxB3wNiLmqQRl9IAzcbJvfDITbIUL
-	 +Ci4NPWXvYnj7rYF3vG3Ix8nXQPcIOyqeaG6yt8WNYAUTCrYxVX65DEl7X1ifFXjR0
-	 ROhn8TGI2nTD5c+KmK/xDgsXfaUE3zrhhrwX547Y=
+	b=wEvvTG8JedYJc68/RQQN6ACap3UXXr2f1rcsSxE+4wMTwn6B+zxoTGt1b0qIO0x3H
+	 A876s+s8HCzHelhOMo6aE7u1cgTNTzK3ECoAiDRPJJLrEwl6Vg5KFU8qsjCK7MGvcq
+	 bJcf3xlFu0YNpfiyHzRHUzf3FbCx5DugoABkl/BI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Neha Malcom Francis <n-francis@ti.com>,
-	Jai Luthra <jai.luthra@linux.dev>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
 	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.15 32/49] arm64: dts: ti: k3-am62x: Rename I2C switch to I2C mux in OV5640 overlay
+Subject: [PATCH 6.14 38/73] arm64: dts: ti: k3-j722s-evm: Enable "serdes_wiz0" and "serdes_wiz1"
 Date: Mon,  2 Jun 2025 15:47:24 +0200
-Message-ID: <20250602134239.206732699@linuxfoundation.org>
+Message-ID: <20250602134243.197893404@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit b22cc402d38774ccc552d18e762c25dde02f7be0 upstream.
+commit 9d76be5828be44ed7a104cc21b4f875be4a63322 upstream.
 
-The OV5640 device tree overlay incorrectly defined an I2C switch
-instead of an I2C mux. According to the DT bindings, the correct
-terminology and node definition should use "i2c-mux" instead of
-"i2c-switch". Hence, update the same to avoid dtbs_check warnings.
+In preparation for disabling "serdes_wiz0" and "serdes_wiz1" device-tree
+nodes in the SoC file, enable them in the board file. The motivation for
+this change is that of following the existing convention of disabling
+nodes in the SoC file and only enabling the required ones in the board
+file.
 
-Fixes: 635ed9715194 ("arm64: dts: ti: k3-am62x: Add overlays for OV5640")
+Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
-Reviewed-by: Jai Luthra <jai.luthra@linux.dev>
-Link: https://lore.kernel.org/r/20250415111328.3847502-8-y-abhilashchandra@ti.com
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20250417123246.2733923-2-s-vadapalli@ti.com
 Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-ov5640.dtso      |    2 +-
- arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j722s-evm.dts |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-ov5640.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-ov5640.dtso
-@@ -22,7 +22,7 @@
- 	#size-cells = <0>;
- 	status = "okay";
+--- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+@@ -815,6 +815,10 @@
+ 		      <J722S_SERDES1_LANE0_PCIE0_LANE0>;
+ };
  
--	i2c-switch@71 {
-+	i2c-mux@71 {
- 		compatible = "nxp,pca9543";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
---- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
-@@ -22,7 +22,7 @@
- 	#size-cells = <0>;
++&serdes_wiz0 {
++	status = "okay";
++};
++
+ &serdes0 {
  	status = "okay";
+ 	serdes0_usb_link: phy@0 {
+@@ -826,6 +830,10 @@
+ 	};
+ };
  
--	i2c-switch@71 {
-+	i2c-mux@71 {
- 		compatible = "nxp,pca9543";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
++&serdes_wiz1 {
++	status = "okay";
++};
++
+ &serdes1 {
+ 	status = "okay";
+ 	serdes1_pcie_link: phy@0 {
 
 
 
