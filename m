@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F56AACB51D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8866EACB676
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A5FE1BC13FC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E94A04C67F0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A77224B10;
-	Mon,  2 Jun 2025 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCBD22FF30;
+	Mon,  2 Jun 2025 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XABslzKC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQM5q7Rk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832BE1CAA7D;
-	Mon,  2 Jun 2025 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D984227EB2;
+	Mon,  2 Jun 2025 15:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875082; cv=none; b=HbmE1lGn7arLTqLwAt0QkI6PH8FL751i5FQF7+gW6qF0ylzqp7FgVoyhCapL8rx2pzcZHXyVv2wr3XddC4xs/AQZG0ENBeHWOXigBRCZnWoTi/QsI8TepdKVE9wurF7y1iKoSL8BDti+MHk9jYzqVRcyTgRy8lXjhIO754KdGew=
+	t=1748876657; cv=none; b=d83Oqco7KYCSEIduDtfW25Hwu2cBFM3dJ3qPX66arxc3Y6Bu4SVfqf9i8OgFMn93GLxNGze4/CslznTNIXcoSewE4N/QZboHW2x8hIy11ZIScvXA1JSy5jsrq5Nam5pxCd+78skNamfVFR/xMf1y4DuiMyCE4I2Y3015sWuBdOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875082; c=relaxed/simple;
-	bh=XcmhcZjFmWcKfPIUnHYOmT3/9UQMVnxXa3Cx1yP3FUQ=;
+	s=arc-20240116; t=1748876657; c=relaxed/simple;
+	bh=uhPuurN+3eVIS+j+nFmWDRdAEAtPtVqQlYVSiSuiL5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pI5ylxzUx1VO5KoS2tV9vdDLkj5hwfIe+JQDQFf6QT/jUB0/eMi23IEoA4ypPq6cR3zN+H/bElGcOb+8FPGOubUqSYiQ+XY5FutyXmdISgRNEl2xdMbEZR+IiX1qnvGe04ZPZr/jsqjSkxBlWNI1gn9LVqbyJxIvPBgHbWlXPQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XABslzKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E907BC4CEEB;
-	Mon,  2 Jun 2025 14:38:01 +0000 (UTC)
+	 MIME-Version; b=ITJcOdx8uBKPEZpa5YVgy2tQSGdNIJRbQpPicZl8Cc2b1gyp44MXZuwo/So3Aq1wAA2Dw0L7C87lOodClKN40/rgJlKtnjURCkIGKl2FpJttxSYxn8mkgI/91xdZu1LDy8nEL5PMo9oFWeilRZRnCo5pv35Tjddu4nhQxrOxfKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQM5q7Rk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482A5C4AF0F;
+	Mon,  2 Jun 2025 15:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875082;
-	bh=XcmhcZjFmWcKfPIUnHYOmT3/9UQMVnxXa3Cx1yP3FUQ=;
+	s=korg; t=1748876653;
+	bh=uhPuurN+3eVIS+j+nFmWDRdAEAtPtVqQlYVSiSuiL5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XABslzKC98Fd8jp2eLGu7IkpMM+sYZQrCwmACcCHUexvqth3UweFHYdQf1IIRWh0b
-	 rJuAu691MEgcYgZgyLoBIpGzET22G+5PJP48lvV11G56oCJsuSB0mg/gEWrYYKvMhD
-	 zavFI4TgNp94zcNZNlwbSifBs9e0uh88DDevluJU=
+	b=xQM5q7RkuSMGiB4sUpxGXmeqfpWiDdQ5vLfLTBgGJPTSUgJAx7cyVy0cHTEr9aPAI
+	 XYNnOoX0DtICpZ3krI2frJ8PxvMStTnNZESwvR1bKeLlcq/eGl2JM/0jyc3Vrbey82
+	 /6TUhl65aUNyVELIFfBILPXPU3Rixe9pz+jarQdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/270] net_sched: qfq: Fix double list add in class with netem as child qdisc
+Subject: [PATCH 6.1 031/325] fbdev: fsl-diu-fb: add missing device_remove_file()
 Date: Mon,  2 Jun 2025 15:45:07 +0200
-Message-ID: <20250602134308.107151554@linuxfoundation.org>
+Message-ID: <20250602134321.011932748@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Shixiong Ou <oushixiong@kylinos.cn>
 
-[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
+[ Upstream commit 86d16cd12efa547ed43d16ba7a782c1251c80ea8 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of qfq, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+Call device_remove_file() when driver remove.
 
-This patch checks whether the class was already added to the agg->active
-list (cl_is_active) before doing the addition to cater for the reentrant
-case.
-
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/fsl-diu-fb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index ebf9f473c9392..1ee15db5fcc8c 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -204,6 +204,11 @@ struct qfq_sched {
-  */
- enum update_reason {enqueue, requeue};
+diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
+index ce3c5b0b8f4ef..53be4ab374cc3 100644
+--- a/drivers/video/fbdev/fsl-diu-fb.c
++++ b/drivers/video/fbdev/fsl-diu-fb.c
+@@ -1829,6 +1829,7 @@ static int fsl_diu_remove(struct platform_device *pdev)
+ 	int i;
  
-+static bool cl_is_active(struct qfq_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
-+
- static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
-@@ -1222,7 +1227,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct qfq_class *cl;
- 	struct qfq_aggregate *agg;
- 	int err = 0;
--	bool first;
+ 	data = dev_get_drvdata(&pdev->dev);
++	device_remove_file(&pdev->dev, &data->dev_attr);
+ 	disable_lcdc(&data->fsl_diu_info[0]);
  
- 	cl = qfq_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -1244,7 +1248,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
-@@ -1261,8 +1264,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	++sch->q.qlen;
- 
- 	agg = cl->agg;
--	/* if the queue was not empty, then done here */
--	if (!first) {
-+	/* if the class is active, then done here */
-+	if (cl_is_active(cl)) {
- 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
- 		    list_first_entry(&agg->active, struct qfq_class, alist)
- 		    == cl && cl->deficit < len)
+ 	free_irq(data->irq, data->diu_reg);
 -- 
 2.39.5
 
