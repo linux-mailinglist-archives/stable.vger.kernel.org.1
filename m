@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-149197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD3CACB16F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:19:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EBEEACB18F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2319D4067D4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:15:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2156D194063C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC4D22A4E6;
-	Mon,  2 Jun 2025 14:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3542C22A7ED;
+	Mon,  2 Jun 2025 14:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aF87I2Kn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsTGZAxv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A5922A4EF;
-	Mon,  2 Jun 2025 14:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97852222B6;
+	Mon,  2 Jun 2025 14:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873204; cv=none; b=lHyK+WXcGWtPpIjsdEc62v+MW6vWcgRLtN6jnJbKkpLY9eRdAZnXUerV55AyA9DJHQBrmtAG7k7X2acMoa58CXfKaa+Gzpo27SdnEyZeV+kAhdiEhG8JSZpQlLznFAdnoEG2VdP8YKPxy8n+TiqskvELPNjP9SH0sEZdqnbOOoI=
+	t=1748873209; cv=none; b=sorgR+0dpIyZEC1I4oFgLqIQAxZSoQBVI9Ck9RoiGNhK0z2hJXBqexbWJFtZMNwkkS1jmdrrB8QPMFHjzQJa6WAc2BuvVAqScu3pR/SPDLARvNPFqSY+hm0jbfqUDb5ppfThTvPS3UfreEQBh3AZWbflGwY3E41I5w4aX9ZYJ+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873204; c=relaxed/simple;
-	bh=LFz/Cghl5Ca2pTIfLpYp3bBDXKYrRzFQ6DAkcD7W/Gw=;
+	s=arc-20240116; t=1748873209; c=relaxed/simple;
+	bh=ZLHzcl93aexg0ZS96XyUhERacvm5ek+7GjpA8UMvSIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtnjHTba6CtDMEbC2dr0MfsKei7MAnBmNQZz4BQyd/COQbeOMMMKt/yJBm8o1q/upo/NaqmheEK4wzetVcEb/kGSkuNReCO6k8/tuXQw/GulnecoEobhH1OTNl9V3dKIxBu+JpVm6MYKfuPia5unLVm7iIG7oi331nBFJOUCLUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aF87I2Kn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4662CC4CEEB;
-	Mon,  2 Jun 2025 14:06:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZBk/iZT4WnWQRH3EGwRYUIjqYQxFeORzChf9heQXilDfEGcnaK/Ouy0j2E6mdiKxjZetqZ3uCE+ChtvYzeMaWCfDIvNKaHz/lgbkwFRzRbz4JVlTsMck8ATHeA78ZQNKNucn/kjRJ96lJsIZ3ESKILLViZhSXdMqyUs6oZDUCnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsTGZAxv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC97C4CEEB;
+	Mon,  2 Jun 2025 14:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873203;
-	bh=LFz/Cghl5Ca2pTIfLpYp3bBDXKYrRzFQ6DAkcD7W/Gw=;
+	s=korg; t=1748873209;
+	bh=ZLHzcl93aexg0ZS96XyUhERacvm5ek+7GjpA8UMvSIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aF87I2KnP+ZBhwuPiVGGAmxOKgsQt9fogq8ITNivO3JqUuRVEVTp7INT/qMCyBeVx
-	 EHsWRod3P3a5qLdhEcxxbrfB+RHljOOHPLaPz8CR+h4hJ85UvXTaNl76lN5dWHbC5J
-	 YMtRS7u6mR5y1uVG92MJ7E7apWbyP5mvq4idTsNE=
+	b=QsTGZAxv8NL3BmXarW8D2IAW5iXhE3UzYL4oymyGI44yaSSJqAx4atb7DrRyVfejQ
+	 VEMrA2JFmm4FtPmtKkD6dH62YpN/BW7qV+49POColRdkiaf8rq8R1p+05Ulhjhr9j9
+	 NeWJmr9jC6Bb4lNhFgZkyQ9wovEN1CPXFW/3MgjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Ingo Molnar <mingo@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Uros Bizjak <ubizjak@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/444] wifi: mt76: mt7996: revise TXS size
-Date: Mon,  2 Jun 2025 15:42:14 +0200
-Message-ID: <20250602134343.754163287@linuxfoundation.org>
+Subject: [PATCH 6.6 071/444] x86/stackprotector/64: Only export __ref_stack_chk_guard on CONFIG_SMP
+Date: Mon,  2 Jun 2025 15:42:15 +0200
+Message-ID: <20250602134343.793740591@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -60,65 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Ingo Molnar <mingo@kernel.org>
 
-[ Upstream commit 593c829b4326f7b3b15a69e97c9044ecbad3c319 ]
+[ Upstream commit 91d5451d97ce35cbd510277fa3b7abf9caa4e34d ]
 
-Size of MPDU/PPDU TXS is 12 DWs.
-In mt7996/mt7992, last 4 DWs are reserved, so TXS size was mistakenly
-considered to be 8 DWs. However, in mt7990, 9th DW of TXS starts to be used.
+The __ref_stack_chk_guard symbol doesn't exist on UP:
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Link: https://patch.msgid.link/20250311103646.43346-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  <stdin>:4:15: error: ‘__ref_stack_chk_guard’ undeclared here (not in a function)
+
+Fix the #ifdef around the entry.S export.
+
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lore.kernel.org/r/20250123190747.745588-8-brgerst@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h | 3 +++
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c       | 4 ++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/entry/entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-index 87bfa441a9374..4979012d5abfa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-@@ -280,6 +280,9 @@ enum tx_mgnt_type {
- #define MT_TXFREE_INFO_COUNT		GENMASK(27, 24)
- #define MT_TXFREE_INFO_STAT		GENMASK(29, 28)
- 
-+#define MT_TXS_HDR_SIZE			4 /* Unit: DW */
-+#define MT_TXS_SIZE			12 /* Unit: DW */
-+
- #define MT_TXS0_BW			GENMASK(31, 29)
- #define MT_TXS0_TID			GENMASK(28, 26)
- #define MT_TXS0_AMPDU			BIT(25)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 73d46ec1181ae..35d9673ec0d8f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1354,7 +1354,7 @@ bool mt7996_rx_check(struct mt76_dev *mdev, void *data, int len)
- 		mt7996_mac_tx_free(dev, data, len);
- 		return false;
- 	case PKT_TYPE_TXS:
--		for (rxd += 4; rxd + 8 <= end; rxd += 8)
-+		for (rxd += MT_TXS_HDR_SIZE; rxd + MT_TXS_SIZE <= end; rxd += MT_TXS_SIZE)
- 			mt7996_mac_add_txs(dev, rxd);
- 		return false;
- 	case PKT_TYPE_RX_FW_MONITOR:
-@@ -1391,7 +1391,7 @@ void mt7996_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 		mt7996_mcu_rx_event(dev, skb);
- 		break;
- 	case PKT_TYPE_TXS:
--		for (rxd += 4; rxd + 8 <= end; rxd += 8)
-+		for (rxd += MT_TXS_HDR_SIZE; rxd + MT_TXS_SIZE <= end; rxd += MT_TXS_SIZE)
- 			mt7996_mac_add_txs(dev, rxd);
- 		dev_kfree_skb(skb);
- 		break;
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index 78fd2442b49dc..ad292c0d971a3 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -59,7 +59,7 @@ EXPORT_SYMBOL_GPL(mds_verw_sel);
+  * entirely in the C code, and use an alias emitted by the linker script
+  * instead.
+  */
+-#ifdef CONFIG_STACKPROTECTOR
++#if defined(CONFIG_STACKPROTECTOR) && defined(CONFIG_SMP)
+ EXPORT_SYMBOL(__ref_stack_chk_guard);
+ #endif
+ #endif
 -- 
 2.39.5
 
