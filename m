@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4053ACB629
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D96ACB2C9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0464D7A584D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B247C407329
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049FF22DA0A;
-	Mon,  2 Jun 2025 15:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B2923184D;
+	Mon,  2 Jun 2025 14:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4e8E3pk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXY1d8xl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CFB188907;
-	Mon,  2 Jun 2025 15:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E744231846;
+	Mon,  2 Jun 2025 14:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876903; cv=none; b=KhQsLD6ps1CBK1qNoyW9JZ/jxYR/AkVLylo0PO4Apix+9oiofpYzuhVSjyCc0tiHuwdhWTea3y1Ta6UqQevDzRblF7lzhgScRVL1cZj720kPYU55eOLASYHmgLZd6Sugps3hTNqcpO+zu9te8oQx0HFkI4D0zWz9B75eduw6kqY=
+	t=1748873906; cv=none; b=tpHnCkE0zli+gYu6xoHVRR0ImsrMHOK/SeFbosMI7Q2c3NqW+hvvDSizuL2zbMiRswoEaHaDYnNWvlYElfqaaBXqmJz4S1QvOuWKh5ctlfOGUPpyUSGtIL6Oojz8DkHUAHIJ6FsmTGvYU91aiJzSicfu+byLkVWC0w0wgF/TGO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876903; c=relaxed/simple;
-	bh=BhhQZRAzkvZ885Zb4zPsFJMKlZvoh21y0FC5rq9c+FM=;
+	s=arc-20240116; t=1748873906; c=relaxed/simple;
+	bh=E7N5QtdFH3fhIKKetUoEoRDpy2k0erdGpEjdl15+KRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBCFZpOP7p5Q61K7PJWugAm7gk5xJcxrLCnaeN1DU2rFnB//z0hpOueRlSoX1uw4YKkU1gcHg4vuurs3pdeIYElyWTAbs1AtBgGRGet5HjQ33FvXaYZo64CLMWd24d8u1r0TAN8O2FBIAsihPxj8FiVcwSK7Wu4cuRlaGCaMxqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4e8E3pk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78DCC4CEEB;
-	Mon,  2 Jun 2025 15:08:22 +0000 (UTC)
+	 MIME-Version; b=BMBCdDjoIHGQJvEWV312ZKbxzDlmkCJIFqa51cTycoBfAnCs+NqtT3L+23azYH90X2PU9KTDkdcr06Orc686zwmYihq6EQQPFbSz6S62cPUvTlzNn4K6tXjoZ4i14TNsK6JSoiaz0f9XZEsU+OumEUKwN5Hck1CH15022bGU7vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXY1d8xl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD41C4CEEB;
+	Mon,  2 Jun 2025 14:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876903;
-	bh=BhhQZRAzkvZ885Zb4zPsFJMKlZvoh21y0FC5rq9c+FM=;
+	s=korg; t=1748873906;
+	bh=E7N5QtdFH3fhIKKetUoEoRDpy2k0erdGpEjdl15+KRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4e8E3pkfSGF+otGjksJAw6hpcei7r8xXSoOJGUEYLARwrTQ6FmC5MwFgx8A7y72n
-	 oi51Uyu40qzuTILMUvdDwr79H6+pYqxeKWUiILjlPgSaPsrZJ10ioYo4AdJYRfwzA2
-	 t+8ykxlUcMBqZro86hbqRSXq/1X+GxWe/W6qi5aM=
+	b=HXY1d8xlGrge2HPiDmG7Ufx1f+ZexzUZK0Pt23hzZsSEYXMBWErMOoEcC785ROIdz
+	 8EIkpIDzLFLE/CViT53BbaKLTqrfqn1Q20x0nBzwPYh2pTW3F3rcv0inZS3V/A1IBm
+	 wigc1LnYxJTa6FuEDpAfb1kS2uo9dUTvw6uBIx0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/325] posix-timers: Add cond_resched() to posix_timer_add() search loop
+Subject: [PATCH 6.6 292/444] ASoC: codecs: pcm3168a: Allow for 24-bit in provider mode
 Date: Mon,  2 Jun 2025 15:45:56 +0200
-Message-ID: <20250602134323.027332977@linuxfoundation.org>
+Message-ID: <20250602134352.806909206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 5f2909c6cd13564a07ae692a95457f52295c4f22 ]
+[ Upstream commit 7d92a38d67e5d937b64b20aa4fd14451ee1772f3 ]
 
-With a large number of POSIX timers the search for a valid ID might cause a
-soft lockup on PREEMPT_NONE/VOLUNTARY kernels.
+As per codec device specification, 24-bit is allowed in provider mode.
+Update the code to reflect that.
 
-Add cond_resched() to the loop to prevent that.
-
-[ tglx: Split out from Eric's series ]
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/all/20250214135911.2037402-2-edumazet@google.com
-Link: https://lore.kernel.org/all/20250308155623.635612865@linutronix.de
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250203141051.2361323-4-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-timers.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/pcm3168a.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 2d6cf93ca370a..fc08d4ccdeeb9 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -161,6 +161,7 @@ static int posix_timer_add(struct k_itimer *timer)
- 			return id;
+diff --git a/sound/soc/codecs/pcm3168a.c b/sound/soc/codecs/pcm3168a.c
+index 9d6431338fb71..329549936bd5c 100644
+--- a/sound/soc/codecs/pcm3168a.c
++++ b/sound/soc/codecs/pcm3168a.c
+@@ -494,9 +494,9 @@ static int pcm3168a_hw_params(struct snd_pcm_substream *substream,
  		}
- 		spin_unlock(&hash_lock);
-+		cond_resched();
- 	}
- 	/* POSIX return code when no timer ID could be allocated */
- 	return -EAGAIN;
+ 		break;
+ 	case 24:
+-		if (provider_mode || (format == SND_SOC_DAIFMT_DSP_A) ||
+-		    		     (format == SND_SOC_DAIFMT_DSP_B)) {
+-			dev_err(component->dev, "24-bit slots not supported in provider mode, or consumer mode using DSP\n");
++		if (!provider_mode && ((format == SND_SOC_DAIFMT_DSP_A) ||
++				       (format == SND_SOC_DAIFMT_DSP_B))) {
++			dev_err(component->dev, "24-bit slots not supported in consumer mode using DSP\n");
+ 			return -EINVAL;
+ 		}
+ 		break;
 -- 
 2.39.5
 
