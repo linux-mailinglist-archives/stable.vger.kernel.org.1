@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739A6ACB4C7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4134DACB7AD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA13D9E789D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C129E5724
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35E6221DB7;
-	Mon,  2 Jun 2025 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAF517BB6;
+	Mon,  2 Jun 2025 14:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoSPBY8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpxlEj+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8002C290F;
-	Mon,  2 Jun 2025 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B3421CA1E;
+	Mon,  2 Jun 2025 14:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875349; cv=none; b=n9iDkvDnOxRsVtc2VkPQUo4orOohb0dEueFP/eMN0JP6vNsK17GCS2QNw+If4WJTlSbVQK3OidA4TWH5dL5mh64vtD5Xv60NNfd7U0Zy+LeBezxX1wp4u7JCDyo/5jfWwQ4cbu5RmTT58zUWtSJSyU0hCFefwBfXoRaqHfvQYg0=
+	t=1748876041; cv=none; b=QU26sxLy0qd1WUuKFfmjVJ6QO4Nr8NwrUX615QX5371UlG8NV2nFXYghUQ7cDQr+tXfcvcJVCaRgYbqls8pYKzxVusZrzT8Gc+8Yd+5yVvHgwlxgnJOUJ8iX2EvajDB2i8EOYynI6FeRurMt3gb9ROZhxLiRNLT0a2ilIIazppA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875349; c=relaxed/simple;
-	bh=nnIjt+JqNQvrerXqJPb2N0yI/djW8RwuwIZknJa8Rn8=;
+	s=arc-20240116; t=1748876041; c=relaxed/simple;
+	bh=9PuzkWJsLpjlJeseVI3zaSaj5sthibD3oQXnRJNsP+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfszwNxZezYu23I628WljJqov5W7r+YQoHUsTboQ05m+WN5orehak2rNhONfm9uTY92Fnnv+mEboifluqcQ/jIHcIqFg/V0BTaReYkwIzuZjtc1ob7bsbj9ht6Tsc+67VTj5GydqihmKybLViHqDHvcCFw3WShJ3UDWDlb8SU7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoSPBY8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790E6C4CEEB;
-	Mon,  2 Jun 2025 14:42:28 +0000 (UTC)
+	 MIME-Version; b=C5mvUtBew8tpxMGVNi5uw3O7AHkw5xzsnjF3rTA80lCjgvbYO9qSpaq5uOxo60Aq2ff7LID4cJnlEPQi7unaHc9Us8XAEUrC2ojuRp54kMv1zDR0G1rw+U20HIEvda9ICa3wl3fyqibva2ASsylUiwex/4He/PKjNSflFRPj1/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpxlEj+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD49C4CEEB;
+	Mon,  2 Jun 2025 14:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875349;
-	bh=nnIjt+JqNQvrerXqJPb2N0yI/djW8RwuwIZknJa8Rn8=;
+	s=korg; t=1748876040;
+	bh=9PuzkWJsLpjlJeseVI3zaSaj5sthibD3oQXnRJNsP+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZoSPBY8KlSR90rW43Um1QjH6N8KPJQLweGPq0Z4t0dJ5qFJ6Em8YoJkQv2Sg/FRF3
-	 C/bfNY7yofL9nn2K55UbKcNgcvh+KLQPUqQlkq+HarINO3LdUeckujBhuMx7aF7+kx
-	 9WNizsW8oJYQu0TWXaURHEqr5y76uMWwgiH1KiLw=
+	b=BpxlEj+Gf43UZKXkKUgamGRtVNqQb1gFw3c6PCYqUi0m/Rq0GAElJlw+EoJTs2nnz
+	 TnLIotH/KEKPaN1SxKBYenB9I/Zn+/YcloLktVD/P2K0q8Du1lUZQh/2ZUn/ONVaSz
+	 pxNlHaO7o6ipdl+lAtYO1gwEqVruDaFpS69u0zDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RD Babiera <rdbabiera@google.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 107/270] usb: typec: altmodes/displayport: create sysfs nodes as drivers default device attribute group
-Date: Mon,  2 Jun 2025 15:46:32 +0200
-Message-ID: <20250602134311.604737229@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 021/207] PCI: dwc: ep: Ensure proper iteration over outbound map windows
+Date: Mon,  2 Jun 2025 15:46:33 +0200
+Message-ID: <20250602134259.606633254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 165376f6b23e9a779850e750fb2eb06622e5a531 upstream.
+[ Upstream commit f3e1dccba0a0833fc9a05fb838ebeb6ea4ca0e1a ]
 
-The DisplayPort driver's sysfs nodes may be present to the userspace before
-typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
-a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
-hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
-NULL in those cases.
+Most systems' PCIe outbound map windows have non-zero physical addresses,
+but the possibility of encountering zero increased after following commit
+("PCI: dwc: Use parent_bus_offset").
 
-Remove manual sysfs node creation in favor of adding attribute group as
-default for devices bound to the driver. The ATTRIBUTE_GROUPS() macro is
-not used here otherwise the path to the sysfs nodes is no longer compliant
-with the ABI.
+'ep->outbound_addr[n]', representing 'parent_bus_address', might be 0 on
+some hardware, which trims high address bits through bus fabric before
+sending to the PCIe controller.
 
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Link: https://lore.kernel.org/r/20240229001101.3889432-2-rdbabiera@google.com
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace the iteration logic with 'for_each_set_bit()' to ensure only
+allocated map windows are iterated when determining the ATU index from a
+given address.
+
+Link: https://lore.kernel.org/r/20250315201548.858189-12-helgaas@kernel.org
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -527,15 +527,20 @@ static ssize_t pin_assignment_show(struc
- }
- static DEVICE_ATTR_RW(pin_assignment);
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index fc92d30a0ad99..5502751334cc6 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -267,7 +267,7 @@ static int dw_pcie_find_index(struct dw_pcie_ep *ep, phys_addr_t addr,
+ 	u32 index;
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
  
--static struct attribute *dp_altmode_attrs[] = {
-+static struct attribute *displayport_attrs[] = {
- 	&dev_attr_configuration.attr,
- 	&dev_attr_pin_assignment.attr,
- 	NULL
- };
- 
--static const struct attribute_group dp_altmode_group = {
-+static const struct attribute_group displayport_group = {
- 	.name = "displayport",
--	.attrs = dp_altmode_attrs,
-+	.attrs = displayport_attrs,
-+};
-+
-+static const struct attribute_group *displayport_groups[] = {
-+	&displayport_group,
-+	NULL,
- };
- 
- int dp_altmode_probe(struct typec_altmode *alt)
-@@ -543,7 +548,6 @@ int dp_altmode_probe(struct typec_altmod
- 	const struct typec_altmode *port = typec_altmode_get_partner(alt);
- 	struct fwnode_handle *fwnode;
- 	struct dp_altmode *dp;
--	int ret;
- 
- 	/* FIXME: Port can only be DFP_U. */
- 
-@@ -554,10 +558,6 @@ int dp_altmode_probe(struct typec_altmod
- 	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo)))
- 		return -ENODEV;
- 
--	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
--	if (ret)
--		return ret;
--
- 	dp = devm_kzalloc(&alt->dev, sizeof(*dp), GFP_KERNEL);
- 	if (!dp)
- 		return -ENOMEM;
-@@ -588,7 +588,6 @@ void dp_altmode_remove(struct typec_altm
- {
- 	struct dp_altmode *dp = typec_altmode_get_drvdata(alt);
- 
--	sysfs_remove_group(&alt->dev.kobj, &dp_altmode_group);
- 	cancel_work_sync(&dp->work);
- 
- 	if (dp->connector_fwnode) {
-@@ -613,6 +612,7 @@ static struct typec_altmode_driver dp_al
- 	.driver = {
- 		.name = "typec_displayport",
- 		.owner = THIS_MODULE,
-+		.dev_groups = displayport_groups,
- 	},
- };
- module_typec_altmode_driver(dp_altmode_driver);
+-	for (index = 0; index < pci->num_ob_windows; index++) {
++	for_each_set_bit(index, ep->ob_window_map, pci->num_ob_windows) {
+ 		if (ep->outbound_addr[index] != addr)
+ 			continue;
+ 		*atu_index = index;
+-- 
+2.39.5
+
 
 
 
