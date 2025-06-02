@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEC4ACB244
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BF9ACB531
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D80C96401DF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:22:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3DC19436FD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C9D221DBD;
-	Mon,  2 Jun 2025 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCA2224B0C;
+	Mon,  2 Jun 2025 14:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNZfxk2k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0le6U5sz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B4C224B12;
-	Mon,  2 Jun 2025 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFDB224AF3;
+	Mon,  2 Jun 2025 14:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873695; cv=none; b=rAZ6r86ViCjERRaBZqIyf7uH7HFXw/w9Yc3cmytrzsli11c4LCOtBAwhvxcH51SPCYdFx9BosP81AvIWgqCss9k4FuSIpIaIiLcLiC9JDHS7PWUNCBPx+xiJjxkyuj2bbahcf3/EjdpS2tmq2bM1K/ca2ORCWLhNCRJrb2Ko7gs=
+	t=1748875073; cv=none; b=RRFJWFURaAeHgQiB69wDFXs5wjPlYSh9tjzNomqX8NNqV+kQ5wBET+B73oc+KjqqQyVQw1USyeIXWW6GTod8og+AOJUkbMQdqQXmt1EAe8m3q35qoTAXXXFE1+7m2+ba+jneThJHnHcYroV2QUCKeAE1r7iMA7dvDV15Nyhgys0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873695; c=relaxed/simple;
-	bh=Alq2pf5ZE2fuCsuXOqS4hiIAMlZKUPdNCoTFhsea6dk=;
+	s=arc-20240116; t=1748875073; c=relaxed/simple;
+	bh=qyRzSzGrZ2U0xLt9B+baHqwi0yrVUvkNE178RgcaHDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZYkTUgGIaEBsAKkbdmfqL55ylD4txTXSTaiwm550Rp9ADGIWGr0OWWOHCJR65PaAegjbZ2QY21l/Ur3Ltebfr47kGOkAkT9jv1zgdbz98Y49bTjuTv0qf644+PZfPISqbz/sG2TRTeD6329um0qTuTsoz25ekBGRQakSuk92PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNZfxk2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A921C4CEEB;
-	Mon,  2 Jun 2025 14:14:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a4oAH2Ds6gMNtPXWTCIeeJq+w8U/o/y0JnX6A+2fU17R/ob9rzBWoEkjlR3hu9nXDWLESI/VzDl0J3v7Z0B8+p32jyNu5m2aCPJwR7ph5Vl51Jl8MkPTS8sQNgrR1SJL9xeHNK7bqKRmxEb7ETScJ38lgibTQ3HCIJSe/tfChIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0le6U5sz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7D0C4CEEB;
+	Mon,  2 Jun 2025 14:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873695;
-	bh=Alq2pf5ZE2fuCsuXOqS4hiIAMlZKUPdNCoTFhsea6dk=;
+	s=korg; t=1748875072;
+	bh=qyRzSzGrZ2U0xLt9B+baHqwi0yrVUvkNE178RgcaHDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNZfxk2k4J9l5WVsvqPedAPxQiNMNzimEPnuTZdwpeWAHHgPCBu4PAFdDv26yVx/Q
-	 FWd3FyymWJuyj23tWRgw75ZbyNXOkRMJSDzAfXUxvIHXXAiS4INPdn0M7Oa6p2+pBr
-	 bhXfKtQDuSylgEeYb0JhlWLn/sUN9yUFS8Dr2HvY=
+	b=0le6U5szvSUerkcxyP+n/9Z42MTdVFxs5H+pfuzXuBsNk1QfGoDxjT7xng2+EpuGW
+	 gLiS7eZvT0yMdkRusQoaBPzF1rSW3cRhCW0+oL2jdSwWVSD0AhtyJ289cQMoBH5hoP
+	 dlKqjIXpQ4C0Eb04ihlvS1mVAjweOrOMH9kFYuVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 222/444] net/mlx5: Apply rate-limiting to high temperature warning
-Date: Mon,  2 Jun 2025 15:44:46 +0200
-Message-ID: <20250602134349.918156173@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.10 002/270] drm/nouveau: Fix WARN_ON in nouveau_fence_context_kill()
+Date: Mon,  2 Jun 2025 15:44:47 +0200
+Message-ID: <20250602134307.297453124@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
+commit bbe5679f30d7690a9b6838a583b9690ea73fe0e9 upstream.
 
-Wrap the high temperature warning in a temperature event with
-a call to net_ratelimit() to prevent flooding the kernel log
-with repeated warning messages when temperature exceeds the
-threshold multiple times within a short duration.
+Nouveau is mostly designed in a way that it's expected that fences only
+ever get signaled through nouveau_fence_signal(). However, in at least
+one other place, nouveau_fence_done(), can signal fences, too. If that
+happens (race) a signaled fence remains in the pending list for a while,
+until it gets removed by nouveau_fence_update().
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Should nouveau_fence_context_kill() run in the meantime, this would be
+a bug because the function would attempt to set an error code on an
+already signaled fence.
+
+Have nouveau_fence_context_kill() check for a fence being signaled.
+
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: ea13e5abf807 ("drm/nouveau: signal pending fences when channel has been killed")
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20250415121900.55719-3-phasta@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_fence.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 0f4763dab5d25..e7143d32b2211 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -169,9 +169,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+--- a/drivers/gpu/drm/nouveau/nouveau_fence.c
++++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+@@ -95,7 +95,7 @@ nouveau_fence_context_kill(struct nouvea
+ 	while (!list_empty(&fctx->pending)) {
+ 		fence = list_entry(fctx->pending.next, typeof(*fence), head);
  
--	mlx5_core_warn(events->dev,
--		       "High temperature on sensors with bit set %llx %llx",
--		       value_msb, value_lsb);
-+	if (net_ratelimit())
-+		mlx5_core_warn(events->dev,
-+			       "High temperature on sensors with bit set %llx %llx",
-+			       value_msb, value_lsb);
+-		if (error)
++		if (error && !dma_fence_is_signaled_locked(&fence->base))
+ 			dma_fence_set_error(&fence->base, error);
  
- 	return NOTIFY_OK;
- }
--- 
-2.39.5
-
+ 		if (nouveau_fence_signal(fence))
 
 
 
