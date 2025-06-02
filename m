@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-149519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D37EACB3AD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C42FACB8B6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBC574019C1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 868BE1C24AF9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8B92222B2;
-	Mon,  2 Jun 2025 14:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D118522F177;
+	Mon,  2 Jun 2025 15:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nb9MNeYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaNd9c/m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFAB2C327E;
-	Mon,  2 Jun 2025 14:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1C62288F4;
+	Mon,  2 Jun 2025 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874202; cv=none; b=m7B+sqQi7EY4AI8CF1dlwmgjp0OoX6qo0eDIs/8ix/zudrWDr0eGOzeaQsEpQx11VqUIMzPL1ZKeY2qukbrkBnpbjBcZnoHWEUB+AKyHqD09fxwIQnZ6m5Eg4vmHMMm5d0eNE2Y433dfH6JKxR5WO7ub7U9s91GPLpP2C86BeV0=
+	t=1748877224; cv=none; b=BUNxrnxUZJ57RZf86t9Vz9KPF8BXfXZYZavmR4SE+kWP6egDaymFfizzC3tA5A5oROPxPpQvHYmqFTnwelt5uAar6yVw7ro7i1DKNId4KclNa5AJTvcGFSwggeeqeOtbpBlMUtyNNzfWXyJRwRZ73mYynKsiBv4acJi2o13/rWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874202; c=relaxed/simple;
-	bh=iUzlmyuE3KzGN6EwcgbeLBTuduXBTYp2vKPAEfXyhYs=;
+	s=arc-20240116; t=1748877224; c=relaxed/simple;
+	bh=qegTNn3LI3ZB5F5cCm0r/HIP/TlpJAu66DybyekzOwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dky2ehreBilNrXgieMDtHjhyI8ww+zgg6idXmGXBbWBQ4zHnq2JyeOyYCsE1nGR5DnzHH1qnMSQZutRmYyLhqwmgzkL2ui4la7YNVCCWqduhKC3eNQMvhRIIvO5wX1fA0ThVKa7SdEf3Ifm4ilX0aO8Ewt2VDvheH5CAl6jyO1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nb9MNeYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4782AC4CEEB;
-	Mon,  2 Jun 2025 14:23:21 +0000 (UTC)
+	 MIME-Version; b=kokdVlBzTphd/GWE+iy0PM9/CPaUs9GSPh+YfpcbC5mFpE/NlHmecd9E4uv3FfT8S5qVj+aYtodlVOeZB2NpOfAQz5NRSHu9fyxkX1FRWdDwTn7PGaljbkxGl77Z1JeZWcTfqnM8IKcWLiciDQGNKuUVUfpcbuGmt+Nuy3/ikZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaNd9c/m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6844FC4CEEB;
+	Mon,  2 Jun 2025 15:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874202;
-	bh=iUzlmyuE3KzGN6EwcgbeLBTuduXBTYp2vKPAEfXyhYs=;
+	s=korg; t=1748877222;
+	bh=qegTNn3LI3ZB5F5cCm0r/HIP/TlpJAu66DybyekzOwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nb9MNeYXH3litdvJnm8HXo7tl6aQBXO6/iQiTbcxGmDKnkaAU0GQOeDL6OPuDD8yt
-	 kZXkY2/XWMX2MkUj53VwQCBs5QMbr9H+OFTRr39zOMOtMV9Ae42Cp4R9VFrsxkP0mk
-	 gXC+jJMoT5kcbDOv5o2PtI0Fx61caSVhLs3t0UOs=
+	b=BaNd9c/mzOF//6b1+wUp2HeEJG9FiWhFyH4/myFQv+bujtQxC7GQh//zCGqUt8Klu
+	 5bFfZnELbHRWaA1rki737YTcko70/QK+jZZ5mXdbDOZv6pgTzqdZJNioniSL1kF34s
+	 6H5x4Y8Aktlt7m8MTRRu/C0j50vH0cjkyg2h/L88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Andy Yan <andyshrk@163.com>,
-	Anusha Srivatsa <asrivats@redhat.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: [PATCH 6.6 391/444] drm/gem: Internally test import_attach for imported objects
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 179/325] drm/amdgpu: reset psp->cmd to NULL after releasing the buffer
 Date: Mon,  2 Jun 2025 15:47:35 +0200
-Message-ID: <20250602134356.780212081@linuxfoundation.org>
+Message-ID: <20250602134327.090937261@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,66 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Jiang Liu <gerry@linux.alibaba.com>
 
-commit 8260731ccad0451207b45844bb66eb161a209218 upstream.
+[ Upstream commit e92f3f94cad24154fd3baae30c6dfb918492278d ]
 
-Test struct drm_gem_object.import_attach to detect imported objects.
+Reset psp->cmd to NULL after releasing the buffer in function psp_sw_fini().
 
-During object clenanup, the dma_buf field might be NULL. Testing it in
-an object's free callback then incorrectly does a cleanup as for native
-objects. Happens for calls to drm_mode_destroy_dumb_ioctl() that
-clears the dma_buf field in drm_gem_object_exported_dma_buf_free().
-
-v3:
-- only test for import_attach (Boris)
-v2:
-- use import_attach.dmabuf instead of dma_buf (Christian)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b57aa47d39e9 ("drm/gem: Test for imported GEM buffers with helper")
-Reported-by: Andy Yan <andyshrk@163.com>
-Closes: https://lore.kernel.org/dri-devel/38d09d34.4354.196379aa560.Coremail.andyshrk@163.com/
-Tested-by: Andy Yan <andyshrk@163.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Anusha Srivatsa <asrivats@redhat.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-media@vger.kernel.org
-Cc: linaro-mm-sig@lists.linaro.org
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://lore.kernel.org/r/20250416065820.26076-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_gem.h |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/include/drm/drm_gem.h
-+++ b/include/drm/drm_gem.h
-@@ -567,8 +567,7 @@ static inline bool drm_gem_object_is_sha
-  */
- static inline bool drm_gem_is_imported(const struct drm_gem_object *obj)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index f8740ad08af41..a176b1da03bd3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -484,7 +484,6 @@ static int psp_sw_fini(void *handle)
  {
--	/* The dma-buf's priv field points to the original GEM object. */
--	return obj->dma_buf && (obj->dma_buf->priv != obj);
-+	return !!obj->import_attach;
- }
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 	struct psp_context *psp = &adev->psp;
+-	struct psp_gfx_cmd_resp *cmd = psp->cmd;
  
- #ifdef CONFIG_LOCKDEP
+ 	psp_memory_training_fini(psp);
+ 	if (psp->sos_fw) {
+@@ -511,8 +510,8 @@ static int psp_sw_fini(void *handle)
+ 	    adev->ip_versions[MP0_HWIP][0] == IP_VERSION(11, 0, 7))
+ 		psp_sysfs_fini(adev);
+ 
+-	kfree(cmd);
+-	cmd = NULL;
++	kfree(psp->cmd);
++	psp->cmd = NULL;
+ 
+ 	psp_free_shared_bufs(psp);
+ 
+-- 
+2.39.5
+
 
 
 
