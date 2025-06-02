@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67667ACAFA3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:51:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84ACFACB02C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DFC91BA2AFD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:51:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBAD2402606
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F882C3247;
-	Mon,  2 Jun 2025 13:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D54221F29;
+	Mon,  2 Jun 2025 14:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCwU4M33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lA+xeOmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61000221DBD;
-	Mon,  2 Jun 2025 13:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECEC2C327B;
+	Mon,  2 Jun 2025 14:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872232; cv=none; b=kFyfIVTpUtHeJyAv6AbHHhPGCDcKEXjqH37PnAXbtZRi78tA3+yQdGzrhqR0lp66xC3XRYuIihgK8Hz0uA+ll5eHlI/6jQRF/je8rmz+Ow8gnMwPVstHn1LyuDfBGRQmvClNgDUvw5lQNDxlkLsEkE7SnCWBIGuQmkZzcGV7XWM=
+	t=1748872849; cv=none; b=cwGAPWTcNMxYMYLk+4v0PvGk37xdgQEqukgbvvxXGVOv46zyD5D515CZdJ9UkxT1YyEiV5LMzRPC98q2XxGW31kMDETgFNSmOREQo3livt7Gy4gYjGzUil9VzKd6+13YM3pECCh70yudZ/bzIHHFzgYgZmuvpJOqHKJP4pnqMKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872232; c=relaxed/simple;
-	bh=gYHIDmAP6ErTz5OoyFQvt7ot6o6i5pR8vbMf5B9NfP8=;
+	s=arc-20240116; t=1748872849; c=relaxed/simple;
+	bh=XABGkuuwMKZN1adBkDPBI+URQbXVO7LeMGOYxOl2cqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XJ9yx/nONeR5GWJxoQ6Chae9nfcOWiX6/kMVUrEI0yoauEwJI3QQbdW6G26wwxc5tTZq4RFdrMDEoB2alyfH9zr+poqWb5zSB/gymPN5x/ZHSr4UX+GFWlSli0xrFgrdCzq1fg0kKFDy3dhNOc5cJ2jIFuzz3AQWBwZAS2x8wS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCwU4M33; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A86C4CEEB;
-	Mon,  2 Jun 2025 13:50:31 +0000 (UTC)
+	 MIME-Version; b=t3cHcR/RiJR1Pin+clBuzhoWQMd572MiSI+QsVqNKiWZWxRY6tLUoQOwlnPavll+2TFUdJBUoSjS0uqV/eTTGwCQvxm3wh1BEwRMqa5AT91cUN+rkEanpgf7xBYKF8cbHDjTO4ja0FXjadbBErUkIqmD36VwTT+MuX3zEz7c0ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lA+xeOmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B285C4CEEB;
+	Mon,  2 Jun 2025 14:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872232;
-	bh=gYHIDmAP6ErTz5OoyFQvt7ot6o6i5pR8vbMf5B9NfP8=;
+	s=korg; t=1748872848;
+	bh=XABGkuuwMKZN1adBkDPBI+URQbXVO7LeMGOYxOl2cqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCwU4M33Bpu6Ksi5IZIftAT8ub4O41ldH4f426m9uceBQWd59PXG5cSqy8IQ4DZTQ
-	 NGvVUQyrj7ep3Pqm4Qc/E4C+/0zcrfD4NFuDkyetLBCAnGNA3p8PX+QPy4fyLXw5v6
-	 TTkwad9o22+5ahftrSl+B1Dbu2hJ+gMLFJZAuflU=
+	b=lA+xeOmnzB0/jGgqj2bxc5+x9OWp+IRpYdcZPyCMbk+iV1OFpCVvsxkrTtcEDpqrX
+	 90Do0vAqt6JDocRbQEA+/OmuPn+A5x1fptKv/6CIr3R1DjxzhacZ3YcnukxqJMb9N8
+	 aQ3U91ao87VP+o50o/5EC6TulQJKKl/UXlIm5/gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Judith Mendez <jm@ti.com>,
 	Udit Kumar <u-kumar1@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
 	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.15 40/49] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix length of serdes_ln_ctrl
+Subject: [PATCH 6.12 15/55] arm64: dts: ti: k3-am62-main: Set eMMC clock parent to default
 Date: Mon,  2 Jun 2025 15:47:32 +0200
-Message-ID: <20250602134239.515173294@linuxfoundation.org>
+Message-ID: <20250602134238.883599740@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Judith Mendez <jm@ti.com>
 
-commit 3b62bd1fde50d54cc59015e14869e6cc3d6899e0 upstream.
+commit 3a71cdfec94436079513d9adf4b1d4f7a7edd917 upstream.
 
-Commit under Fixes corrected the "mux-reg-masks" property but did not
-update the "length" field of the "reg" property to account for the
-newly added register offsets which extend the region. Fix this.
+Set eMMC clock parents to the defaults which is MAIN_PLL0_HSDIV5_CLKOUT
+for eMMC. This change is necessary since DM is not implementing the
+correct procedure to switch PLL clock source for eMMC and MMC CLK mux is
+not glich-free. As a preventative action, lets switch back to the defaults.
 
-Fixes: 38e7f9092efb ("arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks")
+Fixes: c37c58fdeb8a ("arm64: dts: ti: k3-am62: Add more peripheral nodes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20250423151612.48848-1-s-vadapalli@ti.com
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Udit Kumar <u-kumar1@ti.com>
+Acked-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20250429163337.15634-2-jm@ti.com
 Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-@@ -77,7 +77,7 @@
- 
- 		serdes_ln_ctrl: mux-controller@4080 {
- 			compatible = "reg-mux";
--			reg = <0x00004080 0x30>;
-+			reg = <0x00004080 0x50>;
- 			#mux-control-cells = <1>;
- 			mux-reg-masks = <0x0 0x3>, <0x4 0x3>, /* SERDES0 lane0/1 select */
- 					<0x8 0x3>, <0xc 0x3>, /* SERDES0 lane2/3 select */
+--- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+@@ -552,8 +552,6 @@
+ 		power-domains = <&k3_pds 57 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 57 5>, <&k3_clks 57 6>;
+ 		clock-names = "clk_ahb", "clk_xin";
+-		assigned-clocks = <&k3_clks 57 6>;
+-		assigned-clock-parents = <&k3_clks 57 8>;
+ 		bus-width = <8>;
+ 		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
 
 
 
