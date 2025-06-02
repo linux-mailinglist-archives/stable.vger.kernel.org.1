@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-149474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC16ACB2EB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCEABACB8AE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97A51946D3E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F59C4062D2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558DA239E6D;
-	Mon,  2 Jun 2025 14:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A4C221299;
+	Mon,  2 Jun 2025 15:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHPG0u63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgM2woSQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EF61E0DD8;
-	Mon,  2 Jun 2025 14:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F472C327E;
+	Mon,  2 Jun 2025 15:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874070; cv=none; b=nAm/aqHOCFyv8O4ISH94nzMRHi52o/Qa9OG8oq+SR6tS2H2drXNGBtomahpO+t8NRkeEp+KRbS36MhMRjBH6mThB+08SgDEQ9AhFmoVAii2K3j/ecKV/Liz98Eyp5mtN+kI6DUx9cwa4YnpYsLbkizbgRAi6FhnpQvxYY266xOk=
+	t=1748876991; cv=none; b=FiHcfHXvQbJpd4zecIM2gbiJrCw4Ksw6vsEkC5zeAWZJuJBIQANsIbiLE4kyCVCF8CWzjvJVvtQrN6Q/gwSjhIepQBlZIT1UY87dy8bGS4VTBBBtbiX8C3Ku1mJtFDafLIGf8NRec+U97ekgYDzfVDyZ/dniYzwzT92BgmtzAv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874070; c=relaxed/simple;
-	bh=F/L1PelHYQF6PMp2dPrDk48Nrk8hzOTAL5zz30HGJjc=;
+	s=arc-20240116; t=1748876991; c=relaxed/simple;
+	bh=hMexWv6w3+m3HfJ3kIf4FJZQ3HGqrASVckhsecXerGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVM0XzguIeijTrSi/Z5EFqwQ7C964bb/iDpIvfnPbku2QhEWhW+li8VLJQvHlE4QLwzcdWU01tL8hyYI9XaNh/CnnCA1+Vc3Fb80jiuLpHEB+ZW5PZM+CJCAH2lb83W6SrM24lr67XLu8YT5kWwJ8hmjlO7P1e98SdMmaNwAQaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHPG0u63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931D9C4CEEB;
-	Mon,  2 Jun 2025 14:21:09 +0000 (UTC)
+	 MIME-Version; b=HaYQza7HKChGpWoA0e+hT2cgu0mpntXiOIaJLF6Zw39E+4s1rH2MZ5nCMD2mVuu5tShW2pAXMa48CVzbuROoAr5JJ6MRzgCpiCio/lBuR4p8NTBgeOqUMxz+m1019Fk6OGDy5fwHpd+mwMY+W02+dIPBpzifUYftkzofGFZe570=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgM2woSQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD09C4CEEE;
+	Mon,  2 Jun 2025 15:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874069;
-	bh=F/L1PelHYQF6PMp2dPrDk48Nrk8hzOTAL5zz30HGJjc=;
+	s=korg; t=1748876991;
+	bh=hMexWv6w3+m3HfJ3kIf4FJZQ3HGqrASVckhsecXerGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHPG0u63rIBVKqPKTNYCoy4YcD6W1TLU1eLuj3f6f9jVqjOkHEK8lVzZyD6EvmF3q
-	 kbCp6N6x4KvhHycGyAPszR51jpC6QIAyEWiKu2QgXCwADCKf8PaRfj7x0RzGn/+CpN
-	 QHF3rzCoOR6SQkYDLOctHCGtl8qPoP4928T4KDOw=
+	b=WgM2woSQQmv+Rm/WYkB2sKek5YNKv295+wKUwQJ6Hhk3mjtQrgg3AdN575JCyNhqR
+	 9f5RDpktL3PQqUwi+LdQ4VykpkA44ZRIte6ru8S18uuunzvEq4euWN6YgbQlgW7Cdv
+	 MlkLbS8MfolvNjEB+JKeBD9psDavjMW92WErVWAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nir Lichtman <nir@lichtman.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Masahiro Yamada <yamada.masahiro@socionext.com>,
+	Michal Marek <michal.lkml@markovi.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 348/444] net: lan743x: Restore SGMII CTRL register on resume
+Subject: [PATCH 6.1 136/325] x86/build: Fix broken copy command in genimage.sh when making isoimage
 Date: Mon,  2 Jun 2025 15:46:52 +0200
-Message-ID: <20250602134355.061514301@linuxfoundation.org>
+Message-ID: <20250602134325.333357459@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Nir Lichtman <nir@lichtman.org>
 
-[ Upstream commit 293e38ff4e4c2ba53f3fd47d8a4a9f0f0414a7a6 ]
+[ Upstream commit e451630226bd09dc730eedb4e32cab1cc7155ae8 ]
 
-SGMII_CTRL register, which specifies the active interface, was not
-properly restored when resuming from suspend. This led to incorrect
-interface selection after resume particularly in scenarios involving
-the FPGA.
+Problem: Currently when running the "make isoimage" command there is an
+error related to wrong parameters passed to the cp command:
 
-To fix this:
-- Move the SGMII_CTRL setup out of the probe function.
-- Initialize the register in the hardware initialization helper function,
-which is called during both device initialization and resume.
+  "cp: missing destination file operand after 'arch/x86/boot/isoimage/'"
 
-This ensures the interface configuration is consistently restored after
-suspend/resume cycles.
+This is caused because FDINITRDS is an empty array.
 
-Fixes: a46d9d37c4f4f ("net: lan743x: Add support for SGMII interface")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Link: https://patch.msgid.link/20250516035719.117960-1-thangaraj.s@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Solution: Check if FDINITRDS is empty before executing the "cp" command,
+similar to how it is done in the case of hdimage.
+
+Signed-off-by: Nir Lichtman <nir@lichtman.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Link: https://lore.kernel.org/r/20250110120500.GA923218@lichtman.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ arch/x86/boot/genimage.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 5d2ceff72784f..f971d60484f06 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -3259,6 +3259,7 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- 				 struct pci_dev *pdev)
- {
- 	struct lan743x_tx *tx;
-+	u32 sgmii_ctl;
- 	int index;
- 	int ret;
- 
-@@ -3271,6 +3272,15 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- 		spin_lock_init(&adapter->eth_syslock_spinlock);
- 		mutex_init(&adapter->sgmii_rw_lock);
- 		pci11x1x_set_rfe_rd_fifo_threshold(adapter);
-+		sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
-+		if (adapter->is_sgmii_en) {
-+			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
-+			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
-+		} else {
-+			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
-+			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
-+		}
-+		lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
- 	} else {
- 		adapter->max_tx_channels = LAN743X_MAX_TX_CHANNELS;
- 		adapter->used_tx_channels = LAN743X_USED_TX_CHANNELS;
-@@ -3319,7 +3329,6 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- 
- static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
- {
--	u32 sgmii_ctl;
- 	int ret;
- 
- 	adapter->mdiobus = devm_mdiobus_alloc(&adapter->pdev->dev);
-@@ -3331,10 +3340,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
- 	adapter->mdiobus->priv = (void *)adapter;
- 	if (adapter->is_pci11x1x) {
- 		if (adapter->is_sgmii_en) {
--			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
--			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
--			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
--			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
- 			netif_dbg(adapter, drv, adapter->netdev,
- 				  "SGMII operation\n");
- 			adapter->mdiobus->read = lan743x_mdiobus_read_c22;
-@@ -3345,10 +3350,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
- 			netif_dbg(adapter, drv, adapter->netdev,
- 				  "lan743x-mdiobus-c45\n");
- 		} else {
--			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
--			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
--			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
--			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
- 			netif_dbg(adapter, drv, adapter->netdev,
- 				  "RGMII operation\n");
- 			// Only C22 support when RGMII I/F
+diff --git a/arch/x86/boot/genimage.sh b/arch/x86/boot/genimage.sh
+index c9299aeb7333e..3882ead513f74 100644
+--- a/arch/x86/boot/genimage.sh
++++ b/arch/x86/boot/genimage.sh
+@@ -22,6 +22,7 @@
+ # This script requires:
+ #   bash
+ #   syslinux
++#   genisoimage
+ #   mtools (for fdimage* and hdimage)
+ #   edk2/OVMF (for hdimage)
+ #
+@@ -251,7 +252,9 @@ geniso() {
+ 	cp "$isolinux" "$ldlinux" "$tmp_dir"
+ 	cp "$FBZIMAGE" "$tmp_dir"/linux
+ 	echo default linux "$KCMDLINE" > "$tmp_dir"/isolinux.cfg
+-	cp "${FDINITRDS[@]}" "$tmp_dir"/
++	if [ ${#FDINITRDS[@]} -gt 0 ]; then
++		cp "${FDINITRDS[@]}" "$tmp_dir"/
++	fi
+ 	genisoimage -J -r -appid 'LINUX_BOOT' -input-charset=utf-8 \
+ 		    -quiet -o "$FIMAGE" -b isolinux.bin \
+ 		    -c boot.cat -no-emul-boot -boot-load-size 4 \
 -- 
 2.39.5
 
