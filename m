@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-150371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E14EACB784
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE0BACB615
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83E9C4C16EC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C236B7A37BE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7474E22DA1F;
-	Mon,  2 Jun 2025 15:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104892376FF;
+	Mon,  2 Jun 2025 15:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lyu34wvZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxhjH+j4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7DF15CD55;
-	Mon,  2 Jun 2025 15:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19F923717C;
+	Mon,  2 Jun 2025 15:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876910; cv=none; b=iXfDEwG+Ft0TwsuvByV2RFdvejgkTke4xHXj7bLNdlyG+PK6VSzvWjxRbAQG8xGG8hNsQyf5/g36xwLsrUQmAjuIb77n/d2uI5mNgYBd6eOrHEKZNQrecnu8mKhZ0O0z70YOWZ4LrgkggNsFbr5DXMoNxPzD84RY1PdAiGGMYW0=
+	t=1748876807; cv=none; b=QBXqLZRLixNGoRjD93SH74QByofuKTuKHAkXe2mB9qwgpob2ypi+u2bDPgAtHSYlqiMtyjcXgOlp+JFGwGVPCoHDXTjUdefXAgBTU1r35Zb9lmI1+VIfvueohHZmddAf4Vn3y/NLn8JPL2Ee5SXYvaLVe3SFwXDnl0qXqV53Bfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876910; c=relaxed/simple;
-	bh=eWfI8LkyUIYyDNF1Dlba1Bg1BphkX2SlKF+3eD8dJ8A=;
+	s=arc-20240116; t=1748876807; c=relaxed/simple;
+	bh=gGdSpHXTYTyn9dpB70LlQMpp7dJ5a8x7lOTZyuGpejw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YYYQWt5GF9Oz4vZAaojVdIQ9uAgwkeSuN9DrFe9BAPot18zwHw073ITJQkVz18J8cw+a4hVMHQN/hvWoba4HG+SM1HgGdx11CR26xpUe8nYnoIPGaz4xhIUp7+vwEN5pqFDiXGMZFecP7L/9Uvgfg5usmM6qx0NgPJhb933HnWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lyu34wvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C7CC4CEEB;
-	Mon,  2 Jun 2025 15:08:29 +0000 (UTC)
+	 MIME-Version; b=R1UO2KmFP3ZDWa716HzRwxKl3NHbEaqhjSqP5nLmeA/RBGIL6Nx/MyTlyckfzBbFIzSqRDXhRxrc9o20PcywIBgyTA+iEamZWSOaRoAJ/dzQ1sa8n2C+7kOCw7OgnP7bmbX8JkZPfe2JksGwuHOQIe4KTA3dRPepvGGO7b3thhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxhjH+j4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE84C4CEEB;
+	Mon,  2 Jun 2025 15:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876910;
-	bh=eWfI8LkyUIYyDNF1Dlba1Bg1BphkX2SlKF+3eD8dJ8A=;
+	s=korg; t=1748876807;
+	bh=gGdSpHXTYTyn9dpB70LlQMpp7dJ5a8x7lOTZyuGpejw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lyu34wvZXNGRWDZV6fV3+/FXghYaEmRwowsDrpSznOfeaOVQYNYd3kww7ZAM84+1E
-	 X3Su9i4oAkMMglK8wD795xI/eJft1fwSgQZeYPjNme66PTg7KwsPN9cRoPIHa2qo5r
-	 cs/8BdegbuKNAKxQDkln+rU9PVAWAoerndJg9xj8=
+	b=WxhjH+j4T4q2o4Nte6lFn4fBGwXKpnFS0WUKlUN1Aslljg7rre61KkjxyA7P5ztIK
+	 +SKYto8WFCJkkTgllcXa2K4XWWg0wNcDWUG9BNAeUOE9u+VkljF4WkkmeXicVeyvlo
+	 SkkNHnMIXSRYEUluafc4tOzplx9GuCnhe144BqyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shashank Gupta <shashankg@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/325] crypto: octeontx2 - suppress auth failure screaming due to negative tests
-Date: Mon,  2 Jun 2025 15:45:48 +0200
-Message-ID: <20250602134322.711242965@linuxfoundation.org>
+Subject: [PATCH 6.1 073/325] dm: restrict dm device size to 2^63-512 bytes
+Date: Mon,  2 Jun 2025 15:45:49 +0200
+Message-ID: <20250602134322.753336680@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
 References: <20250602134319.723650984@linuxfoundation.org>
@@ -66,40 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shashank Gupta <shashankg@marvell.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 64b7871522a4cba99d092e1c849d6f9092868aaa ]
+[ Upstream commit 45fc728515c14f53f6205789de5bfd72a95af3b8 ]
 
-This patch addresses an issue where authentication failures were being
-erroneously reported due to negative test failures in the "ccm(aes)"
-selftest.
-pr_debug suppress unnecessary screaming of these tests.
+The devices with size >= 2^63 bytes can't be used reliably by userspace
+because the type off_t is a signed 64-bit integer.
 
-Signed-off-by: Shashank Gupta <shashankg@marvell.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Therefore, we limit the maximum size of a device mapper device to
+2^63-512 bytes.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/md/dm-table.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c b/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
-index 811ded72ce5fb..798bb40fed68d 100644
---- a/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
-@@ -410,9 +410,10 @@ static int cpt_process_ccode(struct otx2_cptlfs_info *lfs,
- 				break;
- 			}
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index a20cf54d12dca..8b23b8bc5a036 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -671,6 +671,10 @@ int dm_table_add_target(struct dm_table *t, const char *type,
+ 		DMERR("%s: zero-length target", dm_device_name(t->md));
+ 		return -EINVAL;
+ 	}
++	if (start + len < start || start + len > LLONG_MAX >> SECTOR_SHIFT) {
++		DMERR("%s: too large device", dm_device_name(t->md));
++		return -EINVAL;
++	}
  
--			dev_err(&pdev->dev,
--				"Request failed with software error code 0x%x\n",
--				cpt_status->s.uc_compcode);
-+			pr_debug("Request failed with software error code 0x%x: algo = %s driver = %s\n",
-+				 cpt_status->s.uc_compcode,
-+				 info->req->areq->tfm->__crt_alg->cra_name,
-+				 info->req->areq->tfm->__crt_alg->cra_driver_name);
- 			otx2_cpt_dump_sg_list(pdev, info->req);
- 			break;
- 		}
+ 	ti->type = dm_get_target_type(type);
+ 	if (!ti->type) {
 -- 
 2.39.5
 
