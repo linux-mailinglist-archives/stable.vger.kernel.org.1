@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-148981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4FBACAF82
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:49:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4AAACAFDD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C88F1764C0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 109EB1BA3311
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E0122156B;
-	Mon,  2 Jun 2025 13:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16223221F09;
+	Mon,  2 Jun 2025 13:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOYKjGCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxEbtqbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BE01A3A80;
-	Mon,  2 Jun 2025 13:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C885D1A01C6;
+	Mon,  2 Jun 2025 13:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872153; cv=none; b=oFQZTiVV4nH43qgfHDTRqOea2TTi1NT8TK+mxex7UYxGuy4ma1g9zYYy8W3Ye44J32Lptgf3IWiuxYTRzOq+DaqbB9b7hgeRsMJgVzZpOoCSLpX2ARO+8bjIF8ErGOcZm/vuCD0YVK9nCxuNwOfCd0Evux6uiJOgD0EJFnqNn+s=
+	t=1748872592; cv=none; b=HhlHvrIZmy36d8rgXQKRNKY9XrBVdLdsfmGhVg3PeCfg5xqimk2e5sDLPgWxOtTeiEfzS+8PC08LHhKoRRcpka2up/lL6dnSgIz9JJHLwj8Cq/1mnwAXMTsAJAFPHpBPk6DcwDOplTy9myPIlUOvU1P4afi4OEQeNqSqeeiwWqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872153; c=relaxed/simple;
-	bh=8ec1elZkqW5KTt2jgeQ6lQF4yBlaen6E654z+ZOaets=;
+	s=arc-20240116; t=1748872592; c=relaxed/simple;
+	bh=JzgHLVeD1neLmicwG61LNAat7eURGGPKjDl3sJk9KrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6/p430DwCjog3d/SElws6odjJxPXdKYhwXnrrv+01enIl8TuExzY+Uh/hjxMGUCNlkecJzr1IRYVCrYBlOGzdCrqnaoRbn6b/8VdZNrirVlEdr6xH5ZzB+j5QyzM75muw7ofzoZ6lLNPYsDIN34u5kgKwENDb1jUof2H2VzNzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOYKjGCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEAFC4CEEB;
-	Mon,  2 Jun 2025 13:49:12 +0000 (UTC)
+	 MIME-Version; b=qDlajB8nNIQ+OrOWWfOIH2Q12tkpYmAqZyLTI3s2hE/IzwVCEO3GnfT4CtIp2DBL5TmuFUji+UAmlK3dxYU9tIlb2N7zwJ6jQBKcZykXp9OXNgtaVaxOQtUM83aYr0z6OtzsNzBqhdp0tcyawrqWix2N8UAIp1YNMrqflvsxJJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxEbtqbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93F4C4CEEB;
+	Mon,  2 Jun 2025 13:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872153;
-	bh=8ec1elZkqW5KTt2jgeQ6lQF4yBlaen6E654z+ZOaets=;
+	s=korg; t=1748872591;
+	bh=JzgHLVeD1neLmicwG61LNAat7eURGGPKjDl3sJk9KrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOYKjGCTOREx08UyAJcSn7XgkbiZCZk8rEY7+7nqAqa1RIhUoKmq16Xwm2YL74HQm
-	 liCBzWuHrXYSVfxhuA6uXAU3hDH3/8Ii9bmgmLVbw0exgo9B+1/lX+d/UmMxjpOm0s
-	 42KeMlqaM8YqmmEBwG29wLfKbFZwuNDMuMT4qjBo=
+	b=WxEbtqbSpBeNFu8dJWqH7B/R7pY7XvfI1Fec7icW7SFikWLMUBBuSF+J8EBYUN+KR
+	 mKgCEOCoDCSuiw/HplJxLUqcUze5VNbbPJm1c81PFZ/DdbAaSLxQPQkkWVkE2luKzP
+	 HNVGfzpIDYieX8v0GaH/aXtSthvPrF/olgAfeAZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Ling Xu <quic_lxu5@quicinc.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 06/49] arm64: dts: qcom: sa8775p: Remove extra entries from the iommus property
+Subject: [PATCH 6.14 12/73] arm64: dts: qcom: x1e001de-devkit: Fix vreg_l2j_1p2 voltage
 Date: Mon,  2 Jun 2025 15:46:58 +0200
-Message-ID: <20250602134238.192987073@linuxfoundation.org>
+Message-ID: <20250602134242.179678671@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,438 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ling Xu <quic_lxu5@quicinc.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit eb73f500548a3205741330cbd7d0e209a7a6a9af upstream.
+commit 3ed2a9e03abfeece9e30ebc746f935536f661414 upstream.
 
-There are some items come out to be same value if we do SID & ~MASK.
-Remove extra entries from the iommus property for sa8775p to simplify.
+In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
+uV instead of the 1200000 uV we have currently in the device tree. Use the
+same for consistency and correctness.
 
-Fixes: f7b01bfb4b47 ("arm64: qcom: sa8775p: Add ADSP and CDSP0 fastrpc nodes")
-Cc: stable@kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
-Link: https://lore.kernel.org/r/49f463415c8fa2b08fbc2317e31493362056f403.1739260973.git.quic_lxu5@quicinc.com
+Cc: stable@vger.kernel.org
+Fixes: 7b8a31e82b87 ("arm64: dts: qcom: Add X1E001DE Snapdragon Devkit for Windows")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-2-24b6a2043025@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi |  240 +++-------------------------------
- 1 file changed, 24 insertions(+), 216 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e001de-devkit.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -4905,15 +4905,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <1>;
- 						iommus = <&apps_smmu 0x2141 0x04a0>,
--							 <&apps_smmu 0x2161 0x04a0>,
--							 <&apps_smmu 0x2181 0x0400>,
--							 <&apps_smmu 0x21c1 0x04a0>,
--							 <&apps_smmu 0x21e1 0x04a0>,
--							 <&apps_smmu 0x2541 0x04a0>,
--							 <&apps_smmu 0x2561 0x04a0>,
--							 <&apps_smmu 0x2581 0x0400>,
--							 <&apps_smmu 0x25c1 0x04a0>,
--							 <&apps_smmu 0x25e1 0x04a0>;
-+							 <&apps_smmu 0x2181 0x0400>;
- 						dma-coherent;
- 					};
+--- a/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts
++++ b/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts
+@@ -745,8 +745,8 @@
  
-@@ -4921,15 +4913,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <2>;
- 						iommus = <&apps_smmu 0x2142 0x04a0>,
--							 <&apps_smmu 0x2162 0x04a0>,
--							 <&apps_smmu 0x2182 0x0400>,
--							 <&apps_smmu 0x21c2 0x04a0>,
--							 <&apps_smmu 0x21e2 0x04a0>,
--							 <&apps_smmu 0x2542 0x04a0>,
--							 <&apps_smmu 0x2562 0x04a0>,
--							 <&apps_smmu 0x2582 0x0400>,
--							 <&apps_smmu 0x25c2 0x04a0>,
--							 <&apps_smmu 0x25e2 0x04a0>;
-+							 <&apps_smmu 0x2182 0x0400>;
- 						dma-coherent;
- 					};
+ 		vreg_l2j_1p2: ldo2 {
+ 			regulator-name = "vreg_l2j_1p2";
+-			regulator-min-microvolt = <1200000>;
+-			regulator-max-microvolt = <1200000>;
++			regulator-min-microvolt = <1256000>;
++			regulator-max-microvolt = <1256000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
  
-@@ -4937,15 +4921,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <3>;
- 						iommus = <&apps_smmu 0x2143 0x04a0>,
--							 <&apps_smmu 0x2163 0x04a0>,
--							 <&apps_smmu 0x2183 0x0400>,
--							 <&apps_smmu 0x21c3 0x04a0>,
--							 <&apps_smmu 0x21e3 0x04a0>,
--							 <&apps_smmu 0x2543 0x04a0>,
--							 <&apps_smmu 0x2563 0x04a0>,
--							 <&apps_smmu 0x2583 0x0400>,
--							 <&apps_smmu 0x25c3 0x04a0>,
--							 <&apps_smmu 0x25e3 0x04a0>;
-+							 <&apps_smmu 0x2183 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -4953,15 +4929,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <4>;
- 						iommus = <&apps_smmu 0x2144 0x04a0>,
--							 <&apps_smmu 0x2164 0x04a0>,
--							 <&apps_smmu 0x2184 0x0400>,
--							 <&apps_smmu 0x21c4 0x04a0>,
--							 <&apps_smmu 0x21e4 0x04a0>,
--							 <&apps_smmu 0x2544 0x04a0>,
--							 <&apps_smmu 0x2564 0x04a0>,
--							 <&apps_smmu 0x2584 0x0400>,
--							 <&apps_smmu 0x25c4 0x04a0>,
--							 <&apps_smmu 0x25e4 0x04a0>;
-+							 <&apps_smmu 0x2184 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -4969,15 +4937,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <5>;
- 						iommus = <&apps_smmu 0x2145 0x04a0>,
--							 <&apps_smmu 0x2165 0x04a0>,
--							 <&apps_smmu 0x2185 0x0400>,
--							 <&apps_smmu 0x21c5 0x04a0>,
--							 <&apps_smmu 0x21e5 0x04a0>,
--							 <&apps_smmu 0x2545 0x04a0>,
--							 <&apps_smmu 0x2565 0x04a0>,
--							 <&apps_smmu 0x2585 0x0400>,
--							 <&apps_smmu 0x25c5 0x04a0>,
--							 <&apps_smmu 0x25e5 0x04a0>;
-+							 <&apps_smmu 0x2185 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -4985,15 +4945,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <6>;
- 						iommus = <&apps_smmu 0x2146 0x04a0>,
--							 <&apps_smmu 0x2166 0x04a0>,
--							 <&apps_smmu 0x2186 0x0400>,
--							 <&apps_smmu 0x21c6 0x04a0>,
--							 <&apps_smmu 0x21e6 0x04a0>,
--							 <&apps_smmu 0x2546 0x04a0>,
--							 <&apps_smmu 0x2566 0x04a0>,
--							 <&apps_smmu 0x2586 0x0400>,
--							 <&apps_smmu 0x25c6 0x04a0>,
--							 <&apps_smmu 0x25e6 0x04a0>;
-+							 <&apps_smmu 0x2186 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5001,15 +4953,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <7>;
- 						iommus = <&apps_smmu 0x2147 0x04a0>,
--							 <&apps_smmu 0x2167 0x04a0>,
--							 <&apps_smmu 0x2187 0x0400>,
--							 <&apps_smmu 0x21c7 0x04a0>,
--							 <&apps_smmu 0x21e7 0x04a0>,
--							 <&apps_smmu 0x2547 0x04a0>,
--							 <&apps_smmu 0x2567 0x04a0>,
--							 <&apps_smmu 0x2587 0x0400>,
--							 <&apps_smmu 0x25c7 0x04a0>,
--							 <&apps_smmu 0x25e7 0x04a0>;
-+							 <&apps_smmu 0x2187 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5017,15 +4961,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <8>;
- 						iommus = <&apps_smmu 0x2148 0x04a0>,
--							 <&apps_smmu 0x2168 0x04a0>,
--							 <&apps_smmu 0x2188 0x0400>,
--							 <&apps_smmu 0x21c8 0x04a0>,
--							 <&apps_smmu 0x21e8 0x04a0>,
--							 <&apps_smmu 0x2548 0x04a0>,
--							 <&apps_smmu 0x2568 0x04a0>,
--							 <&apps_smmu 0x2588 0x0400>,
--							 <&apps_smmu 0x25c8 0x04a0>,
--							 <&apps_smmu 0x25e8 0x04a0>;
-+							 <&apps_smmu 0x2188 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5033,15 +4969,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <9>;
- 						iommus = <&apps_smmu 0x2149 0x04a0>,
--							 <&apps_smmu 0x2169 0x04a0>,
--							 <&apps_smmu 0x2189 0x0400>,
--							 <&apps_smmu 0x21c9 0x04a0>,
--							 <&apps_smmu 0x21e9 0x04a0>,
--							 <&apps_smmu 0x2549 0x04a0>,
--							 <&apps_smmu 0x2569 0x04a0>,
--							 <&apps_smmu 0x2589 0x0400>,
--							 <&apps_smmu 0x25c9 0x04a0>,
--							 <&apps_smmu 0x25e9 0x04a0>;
-+							 <&apps_smmu 0x2189 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5049,15 +4977,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <10>;
- 						iommus = <&apps_smmu 0x214a 0x04a0>,
--							 <&apps_smmu 0x216a 0x04a0>,
--							 <&apps_smmu 0x218a 0x0400>,
--							 <&apps_smmu 0x21ca 0x04a0>,
--							 <&apps_smmu 0x21ea 0x04a0>,
--							 <&apps_smmu 0x254a 0x04a0>,
--							 <&apps_smmu 0x256a 0x04a0>,
--							 <&apps_smmu 0x258a 0x0400>,
--							 <&apps_smmu 0x25ca 0x04a0>,
--							 <&apps_smmu 0x25ea 0x04a0>;
-+							 <&apps_smmu 0x218a 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5065,15 +4985,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <11>;
- 						iommus = <&apps_smmu 0x214b 0x04a0>,
--							 <&apps_smmu 0x216b 0x04a0>,
--							 <&apps_smmu 0x218b 0x0400>,
--							 <&apps_smmu 0x21cb 0x04a0>,
--							 <&apps_smmu 0x21eb 0x04a0>,
--							 <&apps_smmu 0x254b 0x04a0>,
--							 <&apps_smmu 0x256b 0x04a0>,
--							 <&apps_smmu 0x258b 0x0400>,
--							 <&apps_smmu 0x25cb 0x04a0>,
--							 <&apps_smmu 0x25eb 0x04a0>;
-+							 <&apps_smmu 0x218b 0x0400>;
- 						dma-coherent;
- 					};
- 				};
-@@ -5133,15 +5045,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <1>;
- 						iommus = <&apps_smmu 0x2941 0x04a0>,
--							 <&apps_smmu 0x2961 0x04a0>,
--							 <&apps_smmu 0x2981 0x0400>,
--							 <&apps_smmu 0x29c1 0x04a0>,
--							 <&apps_smmu 0x29e1 0x04a0>,
--							 <&apps_smmu 0x2d41 0x04a0>,
--							 <&apps_smmu 0x2d61 0x04a0>,
--							 <&apps_smmu 0x2d81 0x0400>,
--							 <&apps_smmu 0x2dc1 0x04a0>,
--							 <&apps_smmu 0x2de1 0x04a0>;
-+							 <&apps_smmu 0x2981 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5149,15 +5053,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <2>;
- 						iommus = <&apps_smmu 0x2942 0x04a0>,
--							 <&apps_smmu 0x2962 0x04a0>,
--							 <&apps_smmu 0x2982 0x0400>,
--							 <&apps_smmu 0x29c2 0x04a0>,
--							 <&apps_smmu 0x29e2 0x04a0>,
--							 <&apps_smmu 0x2d42 0x04a0>,
--							 <&apps_smmu 0x2d62 0x04a0>,
--							 <&apps_smmu 0x2d82 0x0400>,
--							 <&apps_smmu 0x2dc2 0x04a0>,
--							 <&apps_smmu 0x2de2 0x04a0>;
-+							 <&apps_smmu 0x2982 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5165,15 +5061,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <3>;
- 						iommus = <&apps_smmu 0x2943 0x04a0>,
--							 <&apps_smmu 0x2963 0x04a0>,
--							 <&apps_smmu 0x2983 0x0400>,
--							 <&apps_smmu 0x29c3 0x04a0>,
--							 <&apps_smmu 0x29e3 0x04a0>,
--							 <&apps_smmu 0x2d43 0x04a0>,
--							 <&apps_smmu 0x2d63 0x04a0>,
--							 <&apps_smmu 0x2d83 0x0400>,
--							 <&apps_smmu 0x2dc3 0x04a0>,
--							 <&apps_smmu 0x2de3 0x04a0>;
-+							 <&apps_smmu 0x2983 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5181,15 +5069,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <4>;
- 						iommus = <&apps_smmu 0x2944 0x04a0>,
--							 <&apps_smmu 0x2964 0x04a0>,
--							 <&apps_smmu 0x2984 0x0400>,
--							 <&apps_smmu 0x29c4 0x04a0>,
--							 <&apps_smmu 0x29e4 0x04a0>,
--							 <&apps_smmu 0x2d44 0x04a0>,
--							 <&apps_smmu 0x2d64 0x04a0>,
--							 <&apps_smmu 0x2d84 0x0400>,
--							 <&apps_smmu 0x2dc4 0x04a0>,
--							 <&apps_smmu 0x2de4 0x04a0>;
-+							 <&apps_smmu 0x2984 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5197,15 +5077,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <5>;
- 						iommus = <&apps_smmu 0x2945 0x04a0>,
--							 <&apps_smmu 0x2965 0x04a0>,
--							 <&apps_smmu 0x2985 0x0400>,
--							 <&apps_smmu 0x29c5 0x04a0>,
--							 <&apps_smmu 0x29e5 0x04a0>,
--							 <&apps_smmu 0x2d45 0x04a0>,
--							 <&apps_smmu 0x2d65 0x04a0>,
--							 <&apps_smmu 0x2d85 0x0400>,
--							 <&apps_smmu 0x2dc5 0x04a0>,
--							 <&apps_smmu 0x2de5 0x04a0>;
-+							 <&apps_smmu 0x2985 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5213,15 +5085,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <6>;
- 						iommus = <&apps_smmu 0x2946 0x04a0>,
--							 <&apps_smmu 0x2966 0x04a0>,
--							 <&apps_smmu 0x2986 0x0400>,
--							 <&apps_smmu 0x29c6 0x04a0>,
--							 <&apps_smmu 0x29e6 0x04a0>,
--							 <&apps_smmu 0x2d46 0x04a0>,
--							 <&apps_smmu 0x2d66 0x04a0>,
--							 <&apps_smmu 0x2d86 0x0400>,
--							 <&apps_smmu 0x2dc6 0x04a0>,
--							 <&apps_smmu 0x2de6 0x04a0>;
-+							 <&apps_smmu 0x2986 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5229,15 +5093,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <7>;
- 						iommus = <&apps_smmu 0x2947 0x04a0>,
--							 <&apps_smmu 0x2967 0x04a0>,
--							 <&apps_smmu 0x2987 0x0400>,
--							 <&apps_smmu 0x29c7 0x04a0>,
--							 <&apps_smmu 0x29e7 0x04a0>,
--							 <&apps_smmu 0x2d47 0x04a0>,
--							 <&apps_smmu 0x2d67 0x04a0>,
--							 <&apps_smmu 0x2d87 0x0400>,
--							 <&apps_smmu 0x2dc7 0x04a0>,
--							 <&apps_smmu 0x2de7 0x04a0>;
-+							 <&apps_smmu 0x2987 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5245,15 +5101,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <8>;
- 						iommus = <&apps_smmu 0x2948 0x04a0>,
--							 <&apps_smmu 0x2968 0x04a0>,
--							 <&apps_smmu 0x2988 0x0400>,
--							 <&apps_smmu 0x29c8 0x04a0>,
--							 <&apps_smmu 0x29e8 0x04a0>,
--							 <&apps_smmu 0x2d48 0x04a0>,
--							 <&apps_smmu 0x2d68 0x04a0>,
--							 <&apps_smmu 0x2d88 0x0400>,
--							 <&apps_smmu 0x2dc8 0x04a0>,
--							 <&apps_smmu 0x2de8 0x04a0>;
-+							 <&apps_smmu 0x2988 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5261,15 +5109,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <9>;
- 						iommus = <&apps_smmu 0x2949 0x04a0>,
--							 <&apps_smmu 0x2969 0x04a0>,
--							 <&apps_smmu 0x2989 0x0400>,
--							 <&apps_smmu 0x29c9 0x04a0>,
--							 <&apps_smmu 0x29e9 0x04a0>,
--							 <&apps_smmu 0x2d49 0x04a0>,
--							 <&apps_smmu 0x2d69 0x04a0>,
--							 <&apps_smmu 0x2d89 0x0400>,
--							 <&apps_smmu 0x2dc9 0x04a0>,
--							 <&apps_smmu 0x2de9 0x04a0>;
-+							 <&apps_smmu 0x2989 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5277,15 +5117,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <10>;
- 						iommus = <&apps_smmu 0x294a 0x04a0>,
--							 <&apps_smmu 0x296a 0x04a0>,
--							 <&apps_smmu 0x298a 0x0400>,
--							 <&apps_smmu 0x29ca 0x04a0>,
--							 <&apps_smmu 0x29ea 0x04a0>,
--							 <&apps_smmu 0x2d4a 0x04a0>,
--							 <&apps_smmu 0x2d6a 0x04a0>,
--							 <&apps_smmu 0x2d8a 0x0400>,
--							 <&apps_smmu 0x2dca 0x04a0>,
--							 <&apps_smmu 0x2dea 0x04a0>;
-+							 <&apps_smmu 0x298a 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5293,15 +5125,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <11>;
- 						iommus = <&apps_smmu 0x294b 0x04a0>,
--							 <&apps_smmu 0x296b 0x04a0>,
--							 <&apps_smmu 0x298b 0x0400>,
--							 <&apps_smmu 0x29cb 0x04a0>,
--							 <&apps_smmu 0x29eb 0x04a0>,
--							 <&apps_smmu 0x2d4b 0x04a0>,
--							 <&apps_smmu 0x2d6b 0x04a0>,
--							 <&apps_smmu 0x2d8b 0x0400>,
--							 <&apps_smmu 0x2dcb 0x04a0>,
--							 <&apps_smmu 0x2deb 0x04a0>;
-+							 <&apps_smmu 0x298b 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5309,15 +5133,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <12>;
- 						iommus = <&apps_smmu 0x294c 0x04a0>,
--							 <&apps_smmu 0x296c 0x04a0>,
--							 <&apps_smmu 0x298c 0x0400>,
--							 <&apps_smmu 0x29cc 0x04a0>,
--							 <&apps_smmu 0x29ec 0x04a0>,
--							 <&apps_smmu 0x2d4c 0x04a0>,
--							 <&apps_smmu 0x2d6c 0x04a0>,
--							 <&apps_smmu 0x2d8c 0x0400>,
--							 <&apps_smmu 0x2dcc 0x04a0>,
--							 <&apps_smmu 0x2dec 0x04a0>;
-+							 <&apps_smmu 0x298c 0x0400>;
- 						dma-coherent;
- 					};
- 
-@@ -5325,15 +5141,7 @@
- 						compatible = "qcom,fastrpc-compute-cb";
- 						reg = <13>;
- 						iommus = <&apps_smmu 0x294d 0x04a0>,
--							 <&apps_smmu 0x296d 0x04a0>,
--							 <&apps_smmu 0x298d 0x0400>,
--							 <&apps_smmu 0x29Cd 0x04a0>,
--							 <&apps_smmu 0x29ed 0x04a0>,
--							 <&apps_smmu 0x2d4d 0x04a0>,
--							 <&apps_smmu 0x2d6d 0x04a0>,
--							 <&apps_smmu 0x2d8d 0x0400>,
--							 <&apps_smmu 0x2dcd 0x04a0>,
--							 <&apps_smmu 0x2ded 0x04a0>;
-+							 <&apps_smmu 0x298d 0x0400>;
- 						dma-coherent;
- 					};
- 				};
 
 
 
