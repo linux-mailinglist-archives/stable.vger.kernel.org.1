@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-150329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36602ACB702
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C556ACB4E4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A76C3BE19D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D94FA9E0B31
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB3922A7E5;
-	Mon,  2 Jun 2025 15:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D13223324;
+	Mon,  2 Jun 2025 14:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijmaRqJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAqeTLTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE05235362;
-	Mon,  2 Jun 2025 15:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA35221F3E;
+	Mon,  2 Jun 2025 14:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876780; cv=none; b=LQY325XrLR+asEPIC5hj5f4eOzhwI52DwOrsGsdhMuw/VLz1r587srBceAehm6tLVMtWIk856lJ/fdimDERLYpS8EQVKJLtjVWIKKjhkepkKcuaaX9bIByoCqzmwxz1H9KKKjogwWmJz9fVAOTtAzk7xJOO2Nh8CtM0DliTdfwc=
+	t=1748875331; cv=none; b=LExL1MSG3aQDnJd5u9bcFpkCWH4HDv/qAaS0tItRvyYnJze833edFUFDFby5pMnu/nUCN/iwu/aOILWGrtC69698J51vZMTyu/vYhtpDD9KzBzQmuaNL1cd2PQk7CuODJp5k0DYMC2IuJGQ2MrB+8hG6dW+MW++47FvD3SguEl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876780; c=relaxed/simple;
-	bh=OiqZ19h9Ty7yW+bXGV3cqO3rVPXaKg4vfT9mRg80lAA=;
+	s=arc-20240116; t=1748875331; c=relaxed/simple;
+	bh=qD2XnlQ7dglrMQ1VRaZ5DSUlMQWaghBCTpkF6YHwttw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8uLPvAM8Nyn/uWyDRYOo7u8j/4198dc8jM2A1pzrmmyKSzakIuQGowR9CMYbpZzBobePSfd7k5yCVApJfRzLBvhXC6ix7fuJtnGb5Xs5RRSbILIHE69MQmNLBjE8QuvkUAXhXEKtgAWNo2QkIUI8+PI0MHxN+mLrtKi57u3hfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijmaRqJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CB3C4CEEB;
-	Mon,  2 Jun 2025 15:06:16 +0000 (UTC)
+	 MIME-Version; b=Bv4f74vr520Uqljib5pIqGNPETOPBgLbce8BBsZHiHXMjHbg68/Jt0yEFoE0oENnsyGEYwEq6QrvuEwNOdcCJux/KqpqEcXsIr09tw+5/GfXCd4NTv4OKSJ55fpq9zibjA52ow8mTnFVRg08XSyKz7TR9hvTpOs3t+5A84/ywTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAqeTLTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D151C4CEEB;
+	Mon,  2 Jun 2025 14:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876776;
-	bh=OiqZ19h9Ty7yW+bXGV3cqO3rVPXaKg4vfT9mRg80lAA=;
+	s=korg; t=1748875330;
+	bh=qD2XnlQ7dglrMQ1VRaZ5DSUlMQWaghBCTpkF6YHwttw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijmaRqJLO9MLnsVorhrEnVpOI4zAzztjI5DzKfsErh7UWiqn+9JTXsk0H71WadEKU
-	 /TkoIUoariEJ87u0zxJ/d98WxMRJoOManxXBp6IZpjNIezgdlJ41oKz1b5/nlp2w5T
-	 iVNexxRucQPH3wlmYeLkra+9iHEjI03AfiR4xoe0=
+	b=eAqeTLTYQhoMYTUr189YsGi8AP79fo0FHCZkWG4RxhRCuzw2EoX0dm65vjFh6cCvN
+	 puwFEFCCo7mgDCjNYyCmxq58wHY6KhhcXDTfh6h22OQ1HT72fRqP9anjLQfogI+VwC
+	 lS7QE2itQRhnhqPae8QUeT0NuryvvrIwHtAyOz0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/325] thunderbolt: Do not add non-active NVM if NVM upgrade is disabled for retimer
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 060/270] iio: adis16201: Correct inclinometer channel resolution
 Date: Mon,  2 Jun 2025 15:45:45 +0200
-Message-ID: <20250602134322.590033999@linuxfoundation.org>
+Message-ID: <20250602134309.646133565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-[ Upstream commit ad79c278e478ca8c1a3bf8e7a0afba8f862a48a1 ]
+commit 609bc31eca06c7408e6860d8b46311ebe45c1fef upstream.
 
-This is only used to write a new NVM in order to upgrade the retimer
-firmware. It does not make sense to expose it if upgrade is disabled.
-This also makes it consistent with the router NVM upgrade.
+The inclinometer channels were previously defined with 14 realbits.
+However, the ADIS16201 datasheet states the resolution for these output
+channels is 12 bits (Page 14, text description; Page 15, table 7).
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Correct the realbits value to 12 to accurately reflect the hardware.
+
+Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Link: https://patch.msgid.link/20250421131539.912966-1-gshahrouzi@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/retimer.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/iio/accel/adis16201.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
-index 5bd5c22a5085d..d2038337ea03b 100644
---- a/drivers/thunderbolt/retimer.c
-+++ b/drivers/thunderbolt/retimer.c
-@@ -89,9 +89,11 @@ static int tb_retimer_nvm_add(struct tb_retimer *rt)
- 	if (ret)
- 		goto err_nvm;
+--- a/drivers/iio/accel/adis16201.c
++++ b/drivers/iio/accel/adis16201.c
+@@ -214,9 +214,9 @@ static const struct iio_chan_spec adis16
+ 			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+ 	ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, 0, 12),
+ 	ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_X,
+-			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
++			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+ 	ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
+-			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
++			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+ 	IIO_CHAN_SOFT_TIMESTAMP(7)
+ };
  
--	ret = tb_nvm_add_non_active(nvm, nvm_write);
--	if (ret)
--		goto err_nvm;
-+	if (!rt->no_nvm_upgrade) {
-+		ret = tb_nvm_add_non_active(nvm, nvm_write);
-+		if (ret)
-+			goto err_nvm;
-+	}
- 
- 	rt->nvm = nvm;
- 	return 0;
--- 
-2.39.5
-
 
 
 
