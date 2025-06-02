@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D9ACB43D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E55F6ACB078
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AE701BA55CF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C32BC1BA6172
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C1A226D13;
-	Mon,  2 Jun 2025 14:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC1322538F;
+	Mon,  2 Jun 2025 14:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIz8qXAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKCQ5Hni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331EF1EA65;
-	Mon,  2 Jun 2025 14:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951322248A6;
+	Mon,  2 Jun 2025 14:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874770; cv=none; b=nwuCmRRNpjT98GByLT95dWXvfFBdGnlFVPHurSLMq6tgPUDqekq58j29TBFF8H/vbVX6PgbTI4hIh9tn9iJwixOLO9wXxyN+Bis5F3NGYaOY1k2B2HtJc2ZGIc/f9m/Za/Twh5y0ghilGm1b8kUjUTdWlGrGWoZbt234An2vFCg=
+	t=1748872907; cv=none; b=BOUclqBg545mmWv5FJfmMC2qvVOd0ugMiFs85fiC6N+AVtepcmHJFzQ9q9xKBBgqEfv9ijmOtp0IvN5n2CCdm8H59znmuq2+jU19TwptpzwpVFkIjFLjPRhyxy5eoxCkG+ta4bJxI3wCZ8Wj0AbyrzofpCqvWQevBuKgqgEjXHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874770; c=relaxed/simple;
-	bh=ryu+J81VTZEm5f2WixjsC7/MVVLCDwotR2M5buSLnKs=;
+	s=arc-20240116; t=1748872907; c=relaxed/simple;
+	bh=6t3XVX9j73thKG3TB3zM2QlniDxf6DTXVttTI9fGv48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxOVX+2IwDxCSwEViu/nF8sNuUbGEaOWYO48k2Wa3Wl6OhUaJ8S0QR/ZGBwsURovbEk98P+EhXxM/vxz6APO6aR5JbiRVwR49FsnuXStAsdb0Q6yAuSTTkyPzsVy6Y4vlrIHba/CVSmWPsCtWV4C/Ni/OXGJzLNRj/k9t2H2sGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIz8qXAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978B6C4CEEB;
-	Mon,  2 Jun 2025 14:32:49 +0000 (UTC)
+	 MIME-Version; b=SGTFuoh4xEQh+q9QJscgOGXIDK/JFvvmGtnRq2dPLCoySKV0H1VwCX4DO2C9ED0PX8nBs1No+qPKR3/Xp1k9z6tpLWENsuYmVGSgaXbEJX0+B4kgoW6nQaxPRNnshiXQiV6HCsR9uxP3P5YDkcjxEh5huFnWkZRGj05ypqyRHj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKCQ5Hni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B289CC4CEF2;
+	Mon,  2 Jun 2025 14:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874770;
-	bh=ryu+J81VTZEm5f2WixjsC7/MVVLCDwotR2M5buSLnKs=;
+	s=korg; t=1748872907;
+	bh=6t3XVX9j73thKG3TB3zM2QlniDxf6DTXVttTI9fGv48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OIz8qXAyOEGeEVNHX6BuKKLdIY8WdzwCMWwknexl95woKKLOURyE6EskhJK4blAFq
-	 XGkzOCWuwQPmQ9JEzFuyQdcZuwjul5fmgGCYAokSn6kSp7ihdp1pnQxOOYK7XpdGoV
-	 2+NnQ2+tTGcDrxWhT9hKENtfQqSOTbx+CHV01Bgo=
+	b=dKCQ5HniFh6nZtGFZauTu5BNPbbBzjqxAqssP0rzLEjMWsNZ7oymqgzyY6o4woHHe
+	 2DgSVzdJFBmAHFmAfsb52mVh9hpqyhhnfXUmUD1ni5zJp9/3EXJM4GNrzM7oKqWjA1
+	 V3X02jPjRz1c8H/lU09Pvf0P1fdMq5wCGgpyOQ2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 130/204] net: xgene-v2: remove incorrect ACPI_PTR annotation
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.12 26/55] arm64: dts: ti: k3-j722s-evm: Enable "serdes_wiz0" and "serdes_wiz1"
 Date: Mon,  2 Jun 2025 15:47:43 +0200
-Message-ID: <20250602134300.759096613@linuxfoundation.org>
+Message-ID: <20250602134239.306480328@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 01358e8fe922f716c05d7864ac2213b2440026e7 ]
+commit 9d76be5828be44ed7a104cc21b4f875be4a63322 upstream.
 
-Building with W=1 shows a warning about xge_acpi_match being unused when
-CONFIG_ACPI is disabled:
+In preparation for disabling "serdes_wiz0" and "serdes_wiz1" device-tree
+nodes in the SoC file, enable them in the board file. The motivation for
+this change is that of following the existing convention of disabling
+nodes in the SoC file and only enabling the required ones in the board
+file.
 
-drivers/net/ethernet/apm/xgene-v2/main.c:723:36: error: unused variable 'xge_acpi_match' [-Werror,-Wunused-const-variable]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250225163341.4168238-2-arnd@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20250417123246.2733923-2-s-vadapalli@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/apm/xgene-v2/main.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j722s-evm.dts |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
-index 848be6bf2fd1f..514a121d96aeb 100644
---- a/drivers/net/ethernet/apm/xgene-v2/main.c
-+++ b/drivers/net/ethernet/apm/xgene-v2/main.c
-@@ -9,8 +9,6 @@
+--- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+@@ -720,6 +720,10 @@
+ 		      <J722S_SERDES1_LANE0_PCIE0_LANE0>;
+ };
  
- #include "main.h"
++&serdes_wiz0 {
++	status = "okay";
++};
++
+ &serdes0 {
+ 	status = "okay";
+ 	serdes0_usb_link: phy@0 {
+@@ -731,6 +735,10 @@
+ 	};
+ };
  
--static const struct acpi_device_id xge_acpi_match[];
--
- static int xge_get_resources(struct xge_pdata *pdata)
- {
- 	struct platform_device *pdev;
-@@ -733,7 +731,7 @@ MODULE_DEVICE_TABLE(acpi, xge_acpi_match);
- static struct platform_driver xge_driver = {
- 	.driver = {
- 		   .name = "xgene-enet-v2",
--		   .acpi_match_table = ACPI_PTR(xge_acpi_match),
-+		   .acpi_match_table = xge_acpi_match,
- 	},
- 	.probe = xge_probe,
- 	.remove = xge_remove,
--- 
-2.39.5
-
++&serdes_wiz1 {
++	status = "okay";
++};
++
+ &serdes1 {
+ 	status = "okay";
+ 	serdes1_pcie_link: phy@0 {
 
 
 
