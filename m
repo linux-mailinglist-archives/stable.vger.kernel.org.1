@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-150224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B551CACB688
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA763ACB6E5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B68E9E32A1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE8821BC61C7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4544022D4FF;
-	Mon,  2 Jun 2025 15:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F36C225A40;
+	Mon,  2 Jun 2025 14:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzbG5yCv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFE0SIeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012CE22CBF4;
-	Mon,  2 Jun 2025 15:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C022120F07C;
+	Mon,  2 Jun 2025 14:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876439; cv=none; b=c6IQvb181bRmSyJ9mfuh2sFtGbyyRVofcI2QKem01Nx3rniZ4McMzHIsVjx8yZU68FFJq+GHFEIT3SavOABtSRGUEU/Ckna8qPGsbUPxfYNDbesNrLqH2vs44UXX4XtgU1Iamhl2ahMbm0k8up6WADa5+IhYYsgijxIBBeqE0QU=
+	t=1748875885; cv=none; b=WBezx7SmXUllJvNP4U/2G1UgpNqgIEhM1mKie5Wm3wHGF29haxa9eBj4gPiROarkIX9QZmLXr5RkKS15F5B1G2rq7Ku1zI1QTToQXORToig40THrr1a2YpWvsBSbuT0Cw3JNXPBflrYASBwfiOcC2Y3WkxKfQwA46jEJm9CVSkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876439; c=relaxed/simple;
-	bh=uCNu65uhj925jorTD8EIaVuGIqVjg0m6mDra+baDkZI=;
+	s=arc-20240116; t=1748875885; c=relaxed/simple;
+	bh=oIHMKEcZbBEA9u2vNFjx8JSMjSZIJ6RV8RoB/ZONlR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcXuQUDBN0uHB66LIcMOQHD3ZdXnhKok/H/1oQgDM8FongDYycD/Cn6KNbmxGqcoQ9vpB0L9gqxOi4QDtdUcIgSmTnEXKvTnI5PwFQp92bg9jItnKcGuNKIh8YPjuomyUFs5ffsZx/DVOjeGmVP8XGPhJ++bbtZSuRor31YkLNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzbG5yCv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DD3C4CEEB;
-	Mon,  2 Jun 2025 15:00:37 +0000 (UTC)
+	 MIME-Version; b=n+pZiNCHZ9G6I/tegB3grzq+DETsa5gVIDSpLzbHvagAL0gwuK2zke16cpkztsPGu7geiFjCuRX0DRmu6Wdd4FyvZn0Wqpej+CFClvjM2CYhsqT3BkNWMm6W8ZBPbVcJ5cm/Kc8RqUODnwL6aQhhFU9a6riYBQF327cN6ArhRLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFE0SIeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F40C4CEEB;
+	Mon,  2 Jun 2025 14:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876438;
-	bh=uCNu65uhj925jorTD8EIaVuGIqVjg0m6mDra+baDkZI=;
+	s=korg; t=1748875885;
+	bh=oIHMKEcZbBEA9u2vNFjx8JSMjSZIJ6RV8RoB/ZONlR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzbG5yCvGrIBroIDPJdDIcF0iyAuLBYAFx2xlC5WMT7gGxPd/xCdLsJf3HwAh53Ed
-	 MuTG3h0jyMfkxpH3SxKXU1aSEIHG42X2qayCfVAY8fqc95e/nNiN6ldYci9sSoQ4Ig
-	 A4i9+9VPmP2dWsCsis8DoMi+lyMBdgmWw4HUW4r8=
+	b=XFE0SIeYjkuLuTvLfRqO8Zpus1P/3QB9UPgk3qEBWEefmSYxgGbh2OOFGYylFJ5DO
+	 OiwwQ+WcXczncQ2yXleioXEH32TMc1VPvkP9gNzGvDLA55M991mhLf+c/C0Zt1G5yT
+	 0EZJol5XUQOrszdJPZybdvUIIyuNLhjWrCAgVFTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+32d4647f551007595173@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 174/207] ALSA: pcm: Fix race of buffer access at PCM OSS layer
-Date: Mon,  2 Jun 2025 15:49:06 +0200
-Message-ID: <20250602134305.563585940@linuxfoundation.org>
+	Omar Sandoval <osandov@osandov.com>,
+	Sargun Dillon <sargun@sargun.me>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 262/270] nfs: dont share pNFS DS connections between net namespaces
+Date: Mon,  2 Jun 2025 15:49:07 +0200
+Message-ID: <20250602134318.045397178@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +65,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 93a81ca0657758b607c3f4ba889ae806be9beb73 upstream.
+[ Upstream commit 6b9785dc8b13d9fb75ceec8cf4ea7ec3f3b1edbc ]
 
-The PCM OSS layer tries to clear the buffer with the silence data at
-initialization (or reconfiguration) of a stream with the explicit call
-of snd_pcm_format_set_silence() with runtime->dma_area.  But this may
-lead to a UAF because the accessed runtime->dma_area might be freed
-concurrently, as it's performed outside the PCM ops.
+Currently, different NFS clients can share the same DS connections, even
+when they are in different net namespaces. If a containerized client
+creates a DS connection, another container can find and use it. When the
+first client exits, the connection will close which can lead to stalls
+in other clients.
 
-For avoiding it, move the code into the PCM core and perform it inside
-the buffer access lock, so that it won't be changed during the
-operation.
+Add a net namespace pointer to struct nfs4_pnfs_ds, and compare those
+value to the caller's netns in _data_server_lookup_locked() when
+searching for a nfs4_pnfs_ds to match.
 
-Reported-by: syzbot+32d4647f551007595173@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/68164d8e.050a0220.11da1b.0019.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250516080817.20068-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Omar Sandoval <osandov@osandov.com>
+Reported-by: Sargun Dillon <sargun@sargun.me>
+Closes: https://lore.kernel.org/linux-nfs/Z_ArpQC_vREh_hEA@telecaster/
+Tested-by: Sargun Dillon <sargun@sargun.me>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Link: https://lore.kernel.org/r/20250410-nfs-ds-netns-v2-1-f80b7979ba80@kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/pcm.h      |    2 ++
- sound/core/oss/pcm_oss.c |    3 +--
- sound/core/pcm_native.c  |   11 +++++++++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ fs/nfs/filelayout/filelayoutdev.c         | 6 +++---
+ fs/nfs/flexfilelayout/flexfilelayoutdev.c | 6 +++---
+ fs/nfs/pnfs.h                             | 4 +++-
+ fs/nfs/pnfs_nfs.c                         | 9 +++++----
+ 4 files changed, 14 insertions(+), 11 deletions(-)
 
---- a/include/sound/pcm.h
-+++ b/include/sound/pcm.h
-@@ -1384,6 +1384,8 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
- #define snd_pcm_lib_mmap_iomem	NULL
- #endif
+diff --git a/fs/nfs/filelayout/filelayoutdev.c b/fs/nfs/filelayout/filelayoutdev.c
+index 86c3f7e69ec42..e6bf55e37521f 100644
+--- a/fs/nfs/filelayout/filelayoutdev.c
++++ b/fs/nfs/filelayout/filelayoutdev.c
+@@ -75,6 +75,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	struct page *scratch;
+ 	struct list_head dsaddrs;
+ 	struct nfs4_pnfs_ds_addr *da;
++	struct net *net = server->nfs_client->cl_net;
  
-+void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
-+
- /**
-  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
-  * @dma: DMA number
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -1079,8 +1079,7 @@ static int snd_pcm_oss_change_params_loc
- 	runtime->oss.params = 0;
- 	runtime->oss.prepare = 1;
- 	runtime->oss.buffer_used = 0;
--	if (runtime->dma_area)
--		snd_pcm_format_set_silence(runtime->format, runtime->dma_area, bytes_to_samples(runtime, runtime->dma_bytes));
-+	snd_pcm_runtime_buffer_set_silence(runtime);
+ 	/* set up xdr stream */
+ 	scratch = alloc_page(gfp_flags);
+@@ -160,8 +161,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
  
- 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
+ 		mp_count = be32_to_cpup(p); /* multipath count */
+ 		for (j = 0; j < mp_count; j++) {
+-			da = nfs4_decode_mp_ds_addr(server->nfs_client->cl_net,
+-						    &stream, gfp_flags);
++			da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
+ 			if (da)
+ 				list_add_tail(&da->da_node, &dsaddrs);
+ 		}
+@@ -171,7 +171,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 			goto out_err_free_deviceid;
+ 		}
  
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -703,6 +703,17 @@ static void snd_pcm_buffer_access_unlock
- 	atomic_inc(&runtime->buffer_accessing);
+-		dsaddr->ds_list[i] = nfs4_pnfs_ds_add(&dsaddrs, gfp_flags);
++		dsaddr->ds_list[i] = nfs4_pnfs_ds_add(net, &dsaddrs, gfp_flags);
+ 		if (!dsaddr->ds_list[i])
+ 			goto out_err_drain_dsaddrs;
+ 
+diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+index bfa7202ca7be1..4b0cdddce6eb3 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
++++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+@@ -49,6 +49,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	struct nfs4_pnfs_ds_addr *da;
+ 	struct nfs4_ff_layout_ds *new_ds = NULL;
+ 	struct nfs4_ff_ds_version *ds_versions = NULL;
++	struct net *net = server->nfs_client->cl_net;
+ 	u32 mp_count;
+ 	u32 version_count;
+ 	__be32 *p;
+@@ -80,8 +81,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 
+ 	for (i = 0; i < mp_count; i++) {
+ 		/* multipath ds */
+-		da = nfs4_decode_mp_ds_addr(server->nfs_client->cl_net,
+-					    &stream, gfp_flags);
++		da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
+ 		if (da)
+ 			list_add_tail(&da->da_node, &dsaddrs);
+ 	}
+@@ -147,7 +147,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	new_ds->ds_versions = ds_versions;
+ 	new_ds->ds_versions_cnt = version_count;
+ 
+-	new_ds->ds = nfs4_pnfs_ds_add(&dsaddrs, gfp_flags);
++	new_ds->ds = nfs4_pnfs_ds_add(net, &dsaddrs, gfp_flags);
+ 	if (!new_ds->ds)
+ 		goto out_err_drain_dsaddrs;
+ 
+diff --git a/fs/nfs/pnfs.h b/fs/nfs/pnfs.h
+index a7cf84a6673bf..f88b0cf00f21e 100644
+--- a/fs/nfs/pnfs.h
++++ b/fs/nfs/pnfs.h
+@@ -57,6 +57,7 @@ struct nfs4_pnfs_ds {
+ 	struct list_head	ds_node;  /* nfs4_pnfs_dev_hlist dev_dslist */
+ 	char			*ds_remotestr;	/* comma sep list of addrs */
+ 	struct list_head	ds_addrs;
++	const struct net	*ds_net;
+ 	struct nfs_client	*ds_clp;
+ 	refcount_t		ds_count;
+ 	unsigned long		ds_state;
+@@ -405,7 +406,8 @@ int pnfs_generic_commit_pagelist(struct inode *inode,
+ int pnfs_generic_scan_commit_lists(struct nfs_commit_info *cinfo, int max);
+ void pnfs_generic_write_commit_done(struct rpc_task *task, void *data);
+ void nfs4_pnfs_ds_put(struct nfs4_pnfs_ds *ds);
+-struct nfs4_pnfs_ds *nfs4_pnfs_ds_add(struct list_head *dsaddrs,
++struct nfs4_pnfs_ds *nfs4_pnfs_ds_add(const struct net *net,
++				      struct list_head *dsaddrs,
+ 				      gfp_t gfp_flags);
+ void nfs4_pnfs_v3_ds_connect_unload(void);
+ int nfs4_pnfs_ds_connect(struct nfs_server *mds_srv, struct nfs4_pnfs_ds *ds,
+diff --git a/fs/nfs/pnfs_nfs.c b/fs/nfs/pnfs_nfs.c
+index a2ad8bb87e2db..461c00c1338c2 100644
+--- a/fs/nfs/pnfs_nfs.c
++++ b/fs/nfs/pnfs_nfs.c
+@@ -651,12 +651,12 @@ _same_data_server_addrs_locked(const struct list_head *dsaddrs1,
+  * Lookup DS by addresses.  nfs4_ds_cache_lock is held
+  */
+ static struct nfs4_pnfs_ds *
+-_data_server_lookup_locked(const struct list_head *dsaddrs)
++_data_server_lookup_locked(const struct net *net, const struct list_head *dsaddrs)
+ {
+ 	struct nfs4_pnfs_ds *ds;
+ 
+ 	list_for_each_entry(ds, &nfs4_data_server_cache, ds_node)
+-		if (_same_data_server_addrs_locked(&ds->ds_addrs, dsaddrs))
++		if (ds->ds_net == net && _same_data_server_addrs_locked(&ds->ds_addrs, dsaddrs))
+ 			return ds;
+ 	return NULL;
  }
+@@ -749,7 +749,7 @@ nfs4_pnfs_remotestr(struct list_head *dsaddrs, gfp_t gfp_flags)
+  * uncached and return cached struct nfs4_pnfs_ds.
+  */
+ struct nfs4_pnfs_ds *
+-nfs4_pnfs_ds_add(struct list_head *dsaddrs, gfp_t gfp_flags)
++nfs4_pnfs_ds_add(const struct net *net, struct list_head *dsaddrs, gfp_t gfp_flags)
+ {
+ 	struct nfs4_pnfs_ds *tmp_ds, *ds = NULL;
+ 	char *remotestr;
+@@ -767,13 +767,14 @@ nfs4_pnfs_ds_add(struct list_head *dsaddrs, gfp_t gfp_flags)
+ 	remotestr = nfs4_pnfs_remotestr(dsaddrs, gfp_flags);
  
-+/* fill the PCM buffer with the current silence format; called from pcm_oss.c */
-+void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
-+{
-+	snd_pcm_buffer_access_lock(runtime);
-+	if (runtime->dma_area)
-+		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
-+					   bytes_to_samples(runtime, runtime->dma_bytes));
-+	snd_pcm_buffer_access_unlock(runtime);
-+}
-+EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
-+
- #if IS_ENABLED(CONFIG_SND_PCM_OSS)
- #define is_oss_stream(substream)	((substream)->oss.oss)
- #else
+ 	spin_lock(&nfs4_ds_cache_lock);
+-	tmp_ds = _data_server_lookup_locked(dsaddrs);
++	tmp_ds = _data_server_lookup_locked(net, dsaddrs);
+ 	if (tmp_ds == NULL) {
+ 		INIT_LIST_HEAD(&ds->ds_addrs);
+ 		list_splice_init(dsaddrs, &ds->ds_addrs);
+ 		ds->ds_remotestr = remotestr;
+ 		refcount_set(&ds->ds_count, 1);
+ 		INIT_LIST_HEAD(&ds->ds_node);
++		ds->ds_net = net;
+ 		ds->ds_clp = NULL;
+ 		list_add(&ds->ds_node, &nfs4_data_server_cache);
+ 		dprintk("%s add new data server %s\n", __func__,
+-- 
+2.39.5
+
 
 
 
