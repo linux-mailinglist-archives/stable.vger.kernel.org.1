@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ABDBACB685
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A714ACB369
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0FEC7A16AC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4E11886047
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39E022A804;
-	Mon,  2 Jun 2025 15:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CEF22A1FA;
+	Mon,  2 Jun 2025 14:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zcnw5Mjm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2ewTri1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5D721CA07;
-	Mon,  2 Jun 2025 15:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B6E221299;
+	Mon,  2 Jun 2025 14:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877273; cv=none; b=FewyxpAPJDgJmLU6lcwwVzfQ672hNRivW2YIfCko5ZRUS//Q40qJ+xbow7m8PoErd0rev+S0mRExg2ALn2tY2eUuuMVqsUe7CIDbnSrO0ZK+xYMa5Kabo/kqMJYLTxYBir572ar11zQ+UvyiSCovGGq5KO8E6vED5w4KktannKk=
+	t=1748874369; cv=none; b=cViPshDPZgKg0Ku1HmJmVUdemZman6QcYewWfaSQgpPmf9J0XUbD7UtteJQOeVIbWN7c4puUTuCT4a8V9Uv6hb4Gu2mXhhq7t7JqqDzK7LIHpcFADrHMS3+Eo14sz5ErJd2zjZJ3Iy+973jxKzkzP7/Poe12fmcP3wOfXl+A6Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877273; c=relaxed/simple;
-	bh=nLPQUnU5NmFjkZZtNSxECxusbR2mFFdFfQQqIz65jzM=;
+	s=arc-20240116; t=1748874369; c=relaxed/simple;
+	bh=P4vgKvB1+JF/fOV1As6kEBDmsic07XYwPBy+iy/eXsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpg9EUiy355pcwyh4U95uuZ7yILD/YUvCHV3HDUt0jYM0nEYKet+G9dAPlNxV0FjrZWjc5vNWMQGsX1fVfRRoWgKVqErwRDRgdB95hGZzKBlDDA1KaUcxMoqiyf3Y7vt7Wxt5kz1q8RyKkJZ21rBT1SHUQY/e1+JdBiaEotmJBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zcnw5Mjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B8DC4CEEB;
-	Mon,  2 Jun 2025 15:14:32 +0000 (UTC)
+	 MIME-Version; b=eR0EWR7RwboSfQme0rKKap+IhuIH+R1gqDOgW2RXxN1LrLt+qK2ZpJWw1SuiiQxqbGAYUoFbMtC0UIlH1jzH8mFpI2HDN+EAnpgHmXk63YGX/UGc09cbg4QxivX7FEdpvqWrOEWeDFPToSBxua2gr6u3BDGvr79PzGIg6Zsbo6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2ewTri1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC23C4CEEB;
+	Mon,  2 Jun 2025 14:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877273;
-	bh=nLPQUnU5NmFjkZZtNSxECxusbR2mFFdFfQQqIz65jzM=;
+	s=korg; t=1748874369;
+	bh=P4vgKvB1+JF/fOV1As6kEBDmsic07XYwPBy+iy/eXsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zcnw5Mjm9ni7bVL/s395UNOX2qPKZubL3loO8Gkuo1m2i0YRxZqq2LS8wjeZqSZJu
-	 dANkoiEDmS4B4fWL71GMF+zTxVUk3s6/ugt0/06b4+TtYTwmd8ocL1Zbf+E2lXPuV9
-	 pMZ41AcecV4UMZL6F7/PF4uIsHpi2H7o0fjI/N5I=
+	b=s2ewTri1EivbZkHdGSYWNfWaWWf08peejd/rza5UYKTRCEtNniNFo8zPBQZ0kfunn
+	 fPvmPkjWuNT8QUcmxc3rh6jU/V30tIBClbTGOuUHqO9hJX0GwnSsfXb5KoVfL0x6ZQ
+	 7Io4b/6OUjReOdiUhzzHCrP5hyImBOI7ARlvN1Qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3e77fd302e99f5af9394@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 225/325] io_uring/fdinfo: annotate racy sq/cq head/tail reads
+Subject: [PATCH 6.6 437/444] phy: starfive: jh7110-usb: Fix USB 2.0 host occasional detection failure
 Date: Mon,  2 Jun 2025 15:48:21 +0200
-Message-ID: <20250602134328.927759313@linuxfoundation.org>
+Message-ID: <20250602134358.675164037@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Hal Feng <hal.feng@starfivetech.com>
 
-[ Upstream commit f024d3a8ded0d8d2129ae123d7a5305c29ca44ce ]
+[ Upstream commit 3f097adb9b6c804636bcf8d01e0e7bc037bee0d3 ]
 
-syzbot complains about the cached sq head read, and it's totally right.
-But we don't need to care, it's just reading fdinfo, and reading the
-CQ or SQ tail/head entries are known racy in that they are just a view
-into that very instant and may of course be outdated by the time they
-are reported.
+JH7110 USB 2.0 host fails to detect USB 2.0 devices occasionally. With a
+long time of debugging and testing, we found that setting Rx clock gating
+control signal to normal power consumption mode can solve this problem.
 
-Annotate both the SQ head and CQ tail read with data_race() to avoid
-this syzbot complaint.
-
-Link: https://lore.kernel.org/io-uring/6811f6dc.050a0220.39e3a1.0d0e.GAE@google.com/
-Reported-by: syzbot+3e77fd302e99f5af9394@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Hal Feng <hal.feng@starfivetech.com>
+Link: https://lore.kernel.org/r/20250422101244.51686-1-hal.feng@starfivetech.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/fdinfo.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/starfive/phy-jh7110-usb.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/io_uring/fdinfo.c b/io_uring/fdinfo.c
-index ea2c2ded4e412..4a50531699777 100644
---- a/io_uring/fdinfo.c
-+++ b/io_uring/fdinfo.c
-@@ -79,11 +79,11 @@ static __cold void __io_uring_show_fdinfo(struct io_ring_ctx *ctx,
- 	seq_printf(m, "SqMask:\t0x%x\n", sq_mask);
- 	seq_printf(m, "SqHead:\t%u\n", sq_head);
- 	seq_printf(m, "SqTail:\t%u\n", sq_tail);
--	seq_printf(m, "CachedSqHead:\t%u\n", ctx->cached_sq_head);
-+	seq_printf(m, "CachedSqHead:\t%u\n", data_race(ctx->cached_sq_head));
- 	seq_printf(m, "CqMask:\t0x%x\n", cq_mask);
- 	seq_printf(m, "CqHead:\t%u\n", cq_head);
- 	seq_printf(m, "CqTail:\t%u\n", cq_tail);
--	seq_printf(m, "CachedCqTail:\t%u\n", ctx->cached_cq_tail);
-+	seq_printf(m, "CachedCqTail:\t%u\n", data_race(ctx->cached_cq_tail));
- 	seq_printf(m, "SQEs:\t%u\n", sq_tail - sq_head);
- 	sq_entries = min(sq_tail - sq_head, ctx->sq_entries);
- 	for (i = 0; i < sq_entries; i++) {
+diff --git a/drivers/phy/starfive/phy-jh7110-usb.c b/drivers/phy/starfive/phy-jh7110-usb.c
+index 633912f8a05d0..bf52b41110db8 100644
+--- a/drivers/phy/starfive/phy-jh7110-usb.c
++++ b/drivers/phy/starfive/phy-jh7110-usb.c
+@@ -16,6 +16,8 @@
+ #include <linux/usb/of.h>
+ 
+ #define USB_125M_CLK_RATE		125000000
++#define USB_CLK_MODE_OFF		0x0
++#define USB_CLK_MODE_RX_NORMAL_PWR	BIT(1)
+ #define USB_LS_KEEPALIVE_OFF		0x4
+ #define USB_LS_KEEPALIVE_ENABLE		BIT(4)
+ 
+@@ -68,6 +70,7 @@ static int jh7110_usb2_phy_init(struct phy *_phy)
+ {
+ 	struct jh7110_usb2_phy *phy = phy_get_drvdata(_phy);
+ 	int ret;
++	unsigned int val;
+ 
+ 	ret = clk_set_rate(phy->usb_125m_clk, USB_125M_CLK_RATE);
+ 	if (ret)
+@@ -77,6 +80,10 @@ static int jh7110_usb2_phy_init(struct phy *_phy)
+ 	if (ret)
+ 		return ret;
+ 
++	val = readl(phy->regs + USB_CLK_MODE_OFF);
++	val |= USB_CLK_MODE_RX_NORMAL_PWR;
++	writel(val, phy->regs + USB_CLK_MODE_OFF);
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
