@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-150503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1AC2ACB8F1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:50:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4227ACB376
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90376946C8A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D26D16CE5D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75982040B6;
-	Mon,  2 Jun 2025 15:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD43227E89;
+	Mon,  2 Jun 2025 14:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tD//uAo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5LqJx5k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8762F15CD55;
-	Mon,  2 Jun 2025 15:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D00F1EA65;
+	Mon,  2 Jun 2025 14:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877330; cv=none; b=TmlrrKzfvIQWyXR89vXWyQeg/+wuqTcQDDZeS4APM56+3n1PtRCSS/yNjdptVC+qkonVx5s7YpkiGTvFdxkkxvBPUjLHrqknCJNhV81mYMBiU4pXLRH1CzCWqpm4EqZvhj99cwcGgmSmh+GrnDq0cjAvia3lF+J/C/ibAuiJcXU=
+	t=1748874304; cv=none; b=L+Qteg10MBEZDaZZ179rNIxhfn0ceprBELb/Qb/nZljCMwnKyphkx+3+SFfrl/N3AQKUTIaEjvT3ZpREA5BSfhPwTmXzNS0cdK92M4eAdNRA1tuaZJObaCYn8FwwsHyKuHpkjkJLgGiaAsQiVLFCx6t+9zBzO6DBVVKXcXQrStU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877330; c=relaxed/simple;
-	bh=QlHdtWePQza0JGb0ej+ixaKr0W9ddjyaXXsQ489sR1o=;
+	s=arc-20240116; t=1748874304; c=relaxed/simple;
+	bh=IUxiZMqiL1P1RcEOI+xmomWcGzKvzdo8mHOcwHHeERs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LoW2Np31feM9z9EHUwhdc8XP0N1eaZCTdYfTOCDnrCyHF5VXNZyBGPeAtPObIPdYhDJCPKORtMVq/QCy4X8P0FnPcrzKDw9pG9dobz5GJE94hjp6b/fAaHrZbUUaNJKXkODgzRHSjPbN69TvWTWToXVfhlyFW5HQvbvCDD+pu68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tD//uAo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FECEC4CEEE;
-	Mon,  2 Jun 2025 15:15:29 +0000 (UTC)
+	 MIME-Version; b=c5XUzDNMOUGlfuKzJUvJLpx6Hz7fThqUWFhEj/phGdMdI5Lgf5EsAbWZzuscEGUTWwctRrIWqDH0zrbCoNXe7fC7ssa0a2aZY8Sxc3KqMLqn5SKSsR9eIL5rX/Pn22EUwbEsbf3tPWi0mAaHHhtbouLCttVmv9/qiVzlGz7FBrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5LqJx5k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE3BC4CEEB;
+	Mon,  2 Jun 2025 14:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877330;
-	bh=QlHdtWePQza0JGb0ej+ixaKr0W9ddjyaXXsQ489sR1o=;
+	s=korg; t=1748874303;
+	bh=IUxiZMqiL1P1RcEOI+xmomWcGzKvzdo8mHOcwHHeERs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tD//uAo14gLH14NHsBfODfTaIM90n7Lchb4+g4jJwRkQHlz6+Z2Nw6fB9nQ/RMb/y
-	 vT5cyrY38d9tFX5u1299o3lS+7PUo1jpyttsXyf+Ds1Gq+z2xhBcQjNwi1X70uHecj
-	 6l504WaUMMgl4rsvH+01z5vy3kEpVPc+LKHVfgbs=
+	b=m5LqJx5kTkaPfZHMZB4JzEgUwVK48MYxtO2tGKqmxswmsP9IZyWYVAJuxZd/dpX9w
+	 urlxxuhB30g9qndmjl+Ib/79dCicMcXMFObCyVzPSYOzNze/OAxMiKBOhKlPUNFaXU
+	 IyhFSLVhWPUoWSbcpkZOsCVx2+1CA2FU8/fJ8rx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 213/325] wifi: rtw89: add wiphy_lock() to work that isnt held wiphy_lock() yet
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Neha Malcom Francis <n-francis@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.6 425/444] arm64: dts: ti: k3-am68-sk: Fix regulator hierarchy
 Date: Mon,  2 Jun 2025 15:48:09 +0200
-Message-ID: <20250602134328.453390738@linuxfoundation.org>
+Message-ID: <20250602134358.191128580@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-[ Upstream commit ebfc9199df05d37b67f4d1b7ee997193f3d2e7c8 ]
+commit 7edf0a4d3bb7f5cd84f172b76c380c4259bb4ef8 upstream.
 
-To ensure where are protected by driver mutex can also be protected by
-wiphy_lock(), so afterward we can remove driver mutex safely.
+Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3)
+to LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator
+node for the LM61460 5V supply to support this change.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250122060310.31976-2-pkshih@realtek.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
+
+Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20250415111328.3847502-3-y-abhilashchandra@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/regd.c | 2 ++
- drivers/net/wireless/realtek/rtw89/ser.c  | 4 ++++
- 2 files changed, 6 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/regd.c b/drivers/net/wireless/realtek/rtw89/regd.c
-index 6e5a740b128f0..2d31193fcc87d 100644
---- a/drivers/net/wireless/realtek/rtw89/regd.c
-+++ b/drivers/net/wireless/realtek/rtw89/regd.c
-@@ -334,6 +334,7 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
- 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
- 	struct rtw89_dev *rtwdev = hw->priv;
+--- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+@@ -43,6 +43,17 @@
+ 		regulator-boot-on;
+ 	};
  
-+	wiphy_lock(wiphy);
- 	mutex_lock(&rtwdev->mutex);
- 	rtw89_leave_ps_mode(rtwdev);
- 
-@@ -350,4 +351,5 @@ void rtw89_regd_notifier(struct wiphy *wiphy, struct regulatory_request *request
- 
- exit:
- 	mutex_unlock(&rtwdev->mutex);
-+	wiphy_unlock(wiphy);
- }
-diff --git a/drivers/net/wireless/realtek/rtw89/ser.c b/drivers/net/wireless/realtek/rtw89/ser.c
-index afb1b41e1a9a5..f5dacdc4d11ab 100644
---- a/drivers/net/wireless/realtek/rtw89/ser.c
-+++ b/drivers/net/wireless/realtek/rtw89/ser.c
-@@ -153,9 +153,11 @@ static void ser_state_run(struct rtw89_ser *ser, u8 evt)
- 	rtw89_debug(rtwdev, RTW89_DBG_SER, "ser: %s receive %s\n",
- 		    ser_st_name(ser), ser_ev_name(ser, evt));
- 
-+	wiphy_lock(rtwdev->hw->wiphy);
- 	mutex_lock(&rtwdev->mutex);
- 	rtw89_leave_lps(rtwdev);
- 	mutex_unlock(&rtwdev->mutex);
-+	wiphy_unlock(rtwdev->hw->wiphy);
- 
- 	ser->st_tbl[ser->state].st_func(ser, evt);
- }
-@@ -624,9 +626,11 @@ static void ser_l2_reset_st_hdl(struct rtw89_ser *ser, u8 evt)
- 
- 	switch (evt) {
- 	case SER_EV_STATE_IN:
-+		wiphy_lock(rtwdev->hw->wiphy);
- 		mutex_lock(&rtwdev->mutex);
- 		ser_l2_reset_st_pre_hdl(ser);
- 		mutex_unlock(&rtwdev->mutex);
-+		wiphy_unlock(rtwdev->hw->wiphy);
- 
- 		ieee80211_restart_hw(rtwdev->hw);
- 		ser_set_alarm(ser, SER_RECFG_TIMEOUT, SER_EV_L2_RECFG_TIMEOUT);
--- 
-2.39.5
-
++	vsys_5v0: regulator-vsys5v0 {
++		/* Output of LM61460 */
++		compatible = "regulator-fixed";
++		regulator-name = "vsys_5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&vusb_main>;
++		regulator-always-on;
++		regulator-boot-on;
++	};
++
+ 	vsys_3v3: regulator-vsys3v3 {
+ 		/* Output of LM5141 */
+ 		compatible = "regulator-fixed";
+@@ -75,7 +86,7 @@
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <3300000>;
+ 		regulator-boot-on;
+-		vin-supply = <&vsys_3v3>;
++		vin-supply = <&vsys_5v0>;
+ 		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
+ 		states = <1800000 0x0>,
+ 			 <3300000 0x1>;
 
 
 
