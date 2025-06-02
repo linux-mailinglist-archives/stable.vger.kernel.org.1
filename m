@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D68ACB567
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A9DACB6CE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0684D19412A1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D1716910F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F360D22DF9A;
-	Mon,  2 Jun 2025 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5008622ACD6;
+	Mon,  2 Jun 2025 15:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fx02iHdg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0Bu/Tr7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0544224247;
-	Mon,  2 Jun 2025 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC3F1A83E8;
+	Mon,  2 Jun 2025 15:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875272; cv=none; b=Rxi/knYwvY4HNAYTB63wae9j3v38I4mI6DHjuEyN/RMz0WWhFqCz9r5WEHladuCG8rx7NVuW2GDRaq7YiV7tbYdTNQI1tKw5d2VQz5qO2hBkbeCY/sqL8Z7KMo1ogxGpXAkYsXKy8RclOXeKZeflIPkF8RcECKbuVq3Q9QI9InE=
+	t=1748876840; cv=none; b=G/0kq/rURtwK7Q6LbxIGgRoH3vBbF+fJ9V3Cj9TKmDuTV1k5BuJUAe6o64MA65pKmChKixxFok81POPeyhEYFO4LJi0kRHeHZSVPldKfxIAM3LiGqOLny9wvFAdOa36uYcYufyhQJXdbJ1d138y7dj42HTcaxt+bAWK0yfVFd/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875272; c=relaxed/simple;
-	bh=U85LASC22LjKEJ25q0YN6rAPF9ca85mjadhb+Y4lGDI=;
+	s=arc-20240116; t=1748876840; c=relaxed/simple;
+	bh=6pFvKsK03irC1THXQobE8zQJhjaou3bBD8v9ycCGgdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQwaQvdNtXyapogluqtKzk1xJCA9q2B73VgrZvLKYvM/cioHIJ6q/A3636h32gMXOrUr2MTNE38hL11+QOm/GN1V4k7nbOUaoVOBiBZ7+nYTCCLdoeL/C1P2+NsAnMr7x2lai0ahNgntpUbqJjJpq5DAh4sTf6H2KHv/Ccfxk2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fx02iHdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409C3C4CEEB;
-	Mon,  2 Jun 2025 14:41:12 +0000 (UTC)
+	 MIME-Version; b=KwJCtT0MCA0/UnEia1kIP2+359zlgpZJwB7wJqWM30ShLlPOlHQoMFVrOY7L16S/Bf3gRWhDm2WR22ZmMpT5V0iy0H49PTjbn6RL8oaVRsHiIFO9/db3WD4OGADySm75eLYFy8xbXO8c/MnS6wUjreJIdFemsu+vsHf+8li9j8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0Bu/Tr7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F632C4CEEB;
+	Mon,  2 Jun 2025 15:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875272;
-	bh=U85LASC22LjKEJ25q0YN6rAPF9ca85mjadhb+Y4lGDI=;
+	s=korg; t=1748876839;
+	bh=6pFvKsK03irC1THXQobE8zQJhjaou3bBD8v9ycCGgdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fx02iHdgbwWstpDBgE4xKihiPYGNf3VnzMnYJNLoBO+PiMFzU9P7/R6Q7tfOWmK8G
-	 Ast1DlaC+BwKkGsRcwWhLEJSH3uy8iU+dR/qXTJP/0czeAD3SNBwyMnGpaiiDXxSPA
-	 erfUC8Egku0WCrIbKo2rLunDgJ/XE5wuhUFaWH2Y=
+	b=Q0Bu/Tr7TgAl3BywRHz3rLXPpfKfONytDkLdaHSEhbO0cedzWQBEgC838vrnTNNG3
+	 /3psZRH/J++jEwcnYyk/Ai7GqvJ2v78ctWmlqf/WVoe8EKgn2jzfwNMMS1FV3s2F5o
+	 +WDS0yfz8OrW/YXbiJF68f43cQ7FKPlxV1JUfQ5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/270] do_umount(): add missing barrier before refcount checks in sync case
+Subject: [PATCH 6.1 091/325] ASoC: qcom: sm8250: explicitly set format in sm8250_be_hw_params_fixup()
 Date: Mon,  2 Jun 2025 15:46:07 +0200
-Message-ID: <20250602134310.525069482@linuxfoundation.org>
+Message-ID: <20250602134323.479652040@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit 65781e19dcfcb4aed1167d87a3ffcc2a0c071d47 ]
+[ Upstream commit 89be3c15a58b2ccf31e969223c8ac93ca8932d81 ]
 
-do_umount() analogue of the race fixed in 119e1ef80ecf "fix
-__legitimize_mnt()/mntput() race".  Here we want to make sure that
-if __legitimize_mnt() doesn't notice our lock_mount_hash(), we will
-notice their refcount increment.  Harder to hit than mntput_no_expire()
-one, fortunately, and consequences are milder (sync umount acting
-like umount -l on a rare race with RCU pathwalk hitting at just the
-wrong time instead of use-after-free galore mntput_no_expire()
-counterpart used to be hit).  Still a bug...
+Setting format to s16le is required for compressed playback on compatible
+soundcards.
 
-Fixes: 48a066e72d97 ("RCU'd vfsmounts")
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250228161430.373961-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/qcom/sm8250.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 2f97112657adc..e46267e7d29d1 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -569,7 +569,7 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 		return 0;
- 	mnt = real_mount(bastard);
- 	mnt_add_count(mnt, 1);
--	smp_mb();			// see mntput_no_expire()
-+	smp_mb();		// see mntput_no_expire() and do_umount()
- 	if (likely(!read_seqretry(&mount_lock, seq)))
- 		return 0;
- 	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
-@@ -1638,6 +1638,7 @@ static int do_umount(struct mount *mnt, int flags)
- 			umount_tree(mnt, UMOUNT_PROPAGATE);
- 		retval = 0;
- 	} else {
-+		smp_mb(); // paired with __legitimize_mnt()
- 		shrink_submounts(mnt);
- 		retval = -EBUSY;
- 		if (!propagate_mount_busy(mnt, 2)) {
+diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+index 41be09a07ca71..65e51b6b46ff9 100644
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -7,6 +7,7 @@
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+ #include <sound/pcm.h>
++#include <sound/pcm_params.h>
+ #include <linux/soundwire/sdw.h>
+ #include <sound/jack.h>
+ #include <linux/input-event-codes.h>
+@@ -39,9 +40,11 @@ static int sm8250_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
+ 					SNDRV_PCM_HW_PARAM_RATE);
+ 	struct snd_interval *channels = hw_param_interval(params,
+ 					SNDRV_PCM_HW_PARAM_CHANNELS);
++	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
+ 
+ 	rate->min = rate->max = 48000;
+ 	channels->min = channels->max = 2;
++	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
