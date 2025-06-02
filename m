@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-148988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2775ACAF92
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:50:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77007ACB04E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A9A5188D5FB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:50:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3DAF1BA4E9A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C3A1A3A80;
-	Mon,  2 Jun 2025 13:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6677A21B9C7;
+	Mon,  2 Jun 2025 14:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YP1AteVT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tp3NdtLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0D4218AC8;
-	Mon,  2 Jun 2025 13:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241B021CC4F;
+	Mon,  2 Jun 2025 14:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872175; cv=none; b=jwxAJI44i6aqDI7sYgzq89//CHycNZF/L3G9HDb8gF19ucFM3v7bYcWvn0Vl3K1z1/5XwyNkO/YnoVbJHeoHbrmckw+SkMUfnLEdi6c5+IczDMlvp1FwpqagSfDKjhuDtm36YojN70lXb7wr/Ke99Mox15NELT6Di4lHYxEkdIs=
+	t=1748872855; cv=none; b=DzW6ZxgqkGRAUcoDRYUgFrbcXeKeOTCDfQnlCdxKoBmYoetYR4s1z7c9yQgNl2VCBV8lssDxw/I/oEa3e5W5m5rmcBdJ/UbGSVzL3pLfaaCbtfBAE9sCiBBibT+HK4v/1yWP1Dfi0lmkRO+2RE9sbbHh3id4R44VCRiqos62IlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872175; c=relaxed/simple;
-	bh=gpfZuWgriEcuHHh2QQa57DoeiTU8rWrQfkfLPJvO+38=;
+	s=arc-20240116; t=1748872855; c=relaxed/simple;
+	bh=RtRay0zTz1DI+tgOVuvpouQ4mRj0YdyMbeQ2EOCuX0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=efMHh5v7TjmTC4efN0ue6RldNyU9bgE/K/uA4ibAkNoYt5GrzNnndLuW/8pgAegYpK05s2MPcyJ0tIEc8x6iHeENzFnPTtKAlULhbzTm6vKHyASP+JPCg5OSOhrCIXPo3nUVCptUtVeop96JEV6FyO0lgzpu9iXfRbZG8uQpRUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YP1AteVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5742EC4CEEB;
-	Mon,  2 Jun 2025 13:49:34 +0000 (UTC)
+	 MIME-Version; b=iSo2Ihtougj1yFAwXfT5pTtWOnvpXIfHnq6g5KJxg3SG/ftgMSbS/xLboSHLL2XVFD9NFtppk1U6BBMcvRnqb9Dbhmb9YlgoGVAs9mYmEbO2LMs2CgvyaChYbuq0WACiL9WzAaWvc/e8NuBAk8rskALsQ7Xuel6sI0GiwY2plaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tp3NdtLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D32DC4CEEB;
+	Mon,  2 Jun 2025 14:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872174;
-	bh=gpfZuWgriEcuHHh2QQa57DoeiTU8rWrQfkfLPJvO+38=;
+	s=korg; t=1748872854;
+	bh=RtRay0zTz1DI+tgOVuvpouQ4mRj0YdyMbeQ2EOCuX0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YP1AteVTDM9gaL5dVPtmX5qtfoKlWKGRqkcNvOGvui8DdQqBSTm1H1TA1IwtQqFAR
-	 4uT7yykG2xpK0M+CjOAL3/Y2urc/P+bx1ouUNqHATrLdTTKxDPAaLV3vUmXM/Of5+F
-	 JYSIg/3F/pQZRuHnimWO3RmvX8GVXimpYs9IO0ls=
+	b=tp3NdtLBHYRgjYu280Iwa5xVkv1suJ6Bjskx3VpGUGqf45GFbwqDFSK7kuKLqFet/
+	 Of3xl3BTT5sFKVhTMVwsRkLpb4sha26NqF+9x4dhHygD3DmVHYrbJKKp/vStbDtX1p
+	 gpOsju2EbTUw6d94MyR76aI12AbIjxcygaGCnh/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.15 42/49] perf/arm-cmn: Fix REQ2/SNP2 mixup
+	Judith Mendez <jm@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.12 17/55] arm64: dts: ti: k3-am62p-j722s-common-main: Set eMMC clock parent to default
 Date: Mon,  2 Jun 2025 15:47:34 +0200
-Message-ID: <20250602134239.594149322@linuxfoundation.org>
+Message-ID: <20250602134238.961543536@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Judith Mendez <jm@ti.com>
 
-commit 11b0f576e0cbde6a12258f2af6753b17b8df342b upstream.
+commit 9c6b73fc72e19c449147233587833ce20f84b660 upstream.
 
-Somehow the encodings for REQ2/SNP2 channels in XP events
-got mixed up... Unmix them.
+Set eMMC clock parents to the defaults which is MAIN_PLL0_HSDIV5_CLKOUT
+for eMMC. This change is necessary since DM is not implementing the
+correct procedure to switch PLL clock source for eMMC and MMC CLK mux is
+not glich-free. As a preventative action, lets switch back to the defaults.
 
-CC: stable@vger.kernel.org
-Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/087023e9737ac93d7ec7a841da904758c254cb01.1746717400.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: b5080c7c1f7e ("arm64: dts: ti: k3-am62p: Add nodes for more IPs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Udit Kumar <u-kumar1@ti.com>
+Acked-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20250429163337.15634-4-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/arm-cmn.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -727,8 +727,8 @@ static umode_t arm_cmn_event_attr_is_vis
- 
- 		if ((chan == 5 && cmn->rsp_vc_num < 2) ||
- 		    (chan == 6 && cmn->dat_vc_num < 2) ||
--		    (chan == 7 && cmn->snp_vc_num < 2) ||
--		    (chan == 8 && cmn->req_vc_num < 2))
-+		    (chan == 7 && cmn->req_vc_num < 2) ||
-+		    (chan == 8 && cmn->snp_vc_num < 2))
- 			return 0;
- 	}
- 
-@@ -882,8 +882,8 @@ static umode_t arm_cmn_event_attr_is_vis
- 	_CMN_EVENT_XP(pub_##_name, (_event) | (4 << 5)),	\
- 	_CMN_EVENT_XP(rsp2_##_name, (_event) | (5 << 5)),	\
- 	_CMN_EVENT_XP(dat2_##_name, (_event) | (6 << 5)),	\
--	_CMN_EVENT_XP(snp2_##_name, (_event) | (7 << 5)),	\
--	_CMN_EVENT_XP(req2_##_name, (_event) | (8 << 5))
-+	_CMN_EVENT_XP(req2_##_name, (_event) | (7 << 5)),	\
-+	_CMN_EVENT_XP(snp2_##_name, (_event) | (8 << 5))
- 
- #define CMN_EVENT_XP_DAT(_name, _event)				\
- 	_CMN_EVENT_XP_PORT(dat_##_name, (_event) | (3 << 5)),	\
+--- a/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62p-j722s-common-main.dtsi
+@@ -564,8 +564,6 @@
+ 		power-domains = <&k3_pds 57 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 57 1>, <&k3_clks 57 2>;
+ 		clock-names = "clk_ahb", "clk_xin";
+-		assigned-clocks = <&k3_clks 57 2>;
+-		assigned-clock-parents = <&k3_clks 57 4>;
+ 		bus-width = <8>;
+ 		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
 
 
 
