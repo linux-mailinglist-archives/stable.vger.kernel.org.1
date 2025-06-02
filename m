@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55F6ACB078
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B78ACB714
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C32BC1BA6172
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67D741C20869
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC1322538F;
-	Mon,  2 Jun 2025 14:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85A9235067;
+	Mon,  2 Jun 2025 14:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKCQ5Hni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTu+J4/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951322248A6;
-	Mon,  2 Jun 2025 14:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7564122A7E7;
+	Mon,  2 Jun 2025 14:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872907; cv=none; b=BOUclqBg545mmWv5FJfmMC2qvVOd0ugMiFs85fiC6N+AVtepcmHJFzQ9q9xKBBgqEfv9ijmOtp0IvN5n2CCdm8H59znmuq2+jU19TwptpzwpVFkIjFLjPRhyxy5eoxCkG+ta4bJxI3wCZ8Wj0AbyrzofpCqvWQevBuKgqgEjXHg=
+	t=1748876256; cv=none; b=sIiJJ9wdCIZPyJ38HpCmYU2pLjb7bIX3LrLn3g7PQe3MpZr6b6aJsg2TWCxOdb0bVgw+k0dOcQozXlxGZBLtF594V4BwsrvcAdQGQnrGd0Tfd95QD+4XunELq/+5CTt1GBIRBw8+ZBvKUjKel6h0+5P8GAWUalwCZlNAxz+n1LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872907; c=relaxed/simple;
-	bh=6t3XVX9j73thKG3TB3zM2QlniDxf6DTXVttTI9fGv48=;
+	s=arc-20240116; t=1748876256; c=relaxed/simple;
+	bh=1khoZj0OwGqVdiUFgpwHq0fpO5Pk6EaHDXd4BhE13XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGTFuoh4xEQh+q9QJscgOGXIDK/JFvvmGtnRq2dPLCoySKV0H1VwCX4DO2C9ED0PX8nBs1No+qPKR3/Xp1k9z6tpLWENsuYmVGSgaXbEJX0+B4kgoW6nQaxPRNnshiXQiV6HCsR9uxP3P5YDkcjxEh5huFnWkZRGj05ypqyRHj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKCQ5Hni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B289CC4CEF2;
-	Mon,  2 Jun 2025 14:01:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HIt9lIHV5BbGWgTFUZx5JN/HVn7OqOPq6GnmOtGxAsmNxAbMHCx8TEVirxmOalIJw8G3hWFswVYxoPBC6zXYUWj+SZVeZMZA0kJlZxk/Z/tYwySka4fOnPDi1yDpnE/VToYfhIaUixcDQy8g4VkMzIyPR2zGvB2VWZ3AavLOJwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTu+J4/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720D5C4CEEB;
+	Mon,  2 Jun 2025 14:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872907;
-	bh=6t3XVX9j73thKG3TB3zM2QlniDxf6DTXVttTI9fGv48=;
+	s=korg; t=1748876255;
+	bh=1khoZj0OwGqVdiUFgpwHq0fpO5Pk6EaHDXd4BhE13XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKCQ5HniFh6nZtGFZauTu5BNPbbBzjqxAqssP0rzLEjMWsNZ7oymqgzyY6o4woHHe
-	 2DgSVzdJFBmAHFmAfsb52mVh9hpqyhhnfXUmUD1ni5zJp9/3EXJM4GNrzM7oKqWjA1
-	 V3X02jPjRz1c8H/lU09Pvf0P1fdMq5wCGgpyOQ2o=
+	b=fTu+J4/suEc+hjRFKeUXU1kiY2kVbvKS7uCvrDJtjTcJtwebzeFLg8B8plC00rwnc
+	 8hcXRfncL7J8rKIfXhv3EiWyq+9C971Fq2r8Uf1y772np22vWts//VMY1x7w/LLkQl
+	 6hQ/38/uhzRjdCmSINsGExFF7NnEWf0CDGGmrOOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.12 26/55] arm64: dts: ti: k3-j722s-evm: Enable "serdes_wiz0" and "serdes_wiz1"
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 091/207] bonding: report duplicate MAC address in all situations
 Date: Mon,  2 Jun 2025 15:47:43 +0200
-Message-ID: <20250602134239.306480328@linuxfoundation.org>
+Message-ID: <20250602134302.299771943@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 9d76be5828be44ed7a104cc21b4f875be4a63322 upstream.
+[ Upstream commit 28d68d396a1cd21591e8c6d74afbde33a7ea107e ]
 
-In preparation for disabling "serdes_wiz0" and "serdes_wiz1" device-tree
-nodes in the SoC file, enable them in the board file. The motivation for
-this change is that of following the existing convention of disabling
-nodes in the SoC file and only enabling the required ones in the board
-file.
+Normally, a bond uses the MAC address of the first added slave as the bond’s
+MAC address. And the bond will set active slave’s MAC address to bond’s
+address if fail_over_mac is set to none (0) or follow (2).
 
-Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20250417123246.2733923-2-s-vadapalli@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When the first slave is removed, the bond will still use the removed slave’s
+MAC address, which can lead to a duplicate MAC address and potentially cause
+issues with the switch. To avoid confusion, let's warn the user in all
+situations, including when fail_over_mac is set to 2 or not in active-backup
+mode.
+
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250225033914.18617-1-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j722s-evm.dts |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/bonding/bond_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-@@ -720,6 +720,10 @@
- 		      <J722S_SERDES1_LANE0_PCIE0_LANE0>;
- };
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 75499e2967e8f..6bdc29d04a580 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2355,7 +2355,7 @@ static int __bond_release_one(struct net_device *bond_dev,
  
-+&serdes_wiz0 {
-+	status = "okay";
-+};
-+
- &serdes0 {
- 	status = "okay";
- 	serdes0_usb_link: phy@0 {
-@@ -731,6 +735,10 @@
- 	};
- };
+ 	RCU_INIT_POINTER(bond->current_arp_slave, NULL);
  
-+&serdes_wiz1 {
-+	status = "okay";
-+};
-+
- &serdes1 {
- 	status = "okay";
- 	serdes1_pcie_link: phy@0 {
+-	if (!all && (!bond->params.fail_over_mac ||
++	if (!all && (bond->params.fail_over_mac != BOND_FOM_ACTIVE ||
+ 		     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
+ 		if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
+ 		    bond_has_slaves(bond))
+-- 
+2.39.5
+
 
 
 
