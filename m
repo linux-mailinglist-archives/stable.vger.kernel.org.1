@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-149111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B571BACB075
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD24EACB47D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CD7516D5A0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3766194313D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9449F223710;
-	Mon,  2 Jun 2025 14:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA4D22F74A;
+	Mon,  2 Jun 2025 14:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbVHUYTy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqtKUiL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDB7221DAE;
-	Mon,  2 Jun 2025 14:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C72A188907;
+	Mon,  2 Jun 2025 14:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872928; cv=none; b=FW5uTthL+1pYBuNFipQLhrqznobZAKM5gjlKyab9qYdO6g1kLujb+s2qq7HDbxhbtU/GbGm9jAPlg4B1xGqfWokRfv/kJeG6TYxxo2mKMK7/w59bfX2riqbkY4VnoavwS6sRNZnbERFRkloYXYDY62NQrGerj9YuvHJ0EfRzv2w=
+	t=1748874919; cv=none; b=jmBfyrpuK6hV2ylZJx0xWah86F6EJ7+qk2BGZd+OerrmujNVb31fay08Te7jwnYZgPKCaXfFNRVEMG+jygmZsZrtUq08NtjUk6uUDZdSc9HAVDYXHSCKMJIor1ebBGNEqp+jNTcQWTGbkVa0qQEn8KFt5BoVffceYigoEkv/S5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872928; c=relaxed/simple;
-	bh=jEa2Lkk6VXz4xAR6PYRE791rbEEyhLjf5vI7M5Mm57M=;
+	s=arc-20240116; t=1748874919; c=relaxed/simple;
+	bh=6VS/A7YdtS8LxuVmmkPmTmsvKEbPdS7jZXHOzHMiDYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eu4H3c4ycukBnccCLmyF7q2D03yyLmSC2KOAv2cA9Rny4MQSfDlmZfiL1UlX73VNvu8tUluZwQFUha8LJ531F9omgGXSJ/obm9WNplYxIjM2UPLQmBoNYmpkJaznqfiqr2sR03poZUG+UremoemHYdlZ92Bx4kpasEriSOWKzgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbVHUYTy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1471C4CEF2;
-	Mon,  2 Jun 2025 14:02:07 +0000 (UTC)
+	 MIME-Version; b=cjsi2JNUY2GFn2uUTOEteTRi1xdTUaKko9ue0LVYHjvsCEYEoCDbAnXmLgzQ0Lo4z65tvEqRMq2W9Qg9ERcPoGCtiZiyC+NYwrtpDqN77OihAKPfBtYuYJbNSVUZfO/YqinWKzqttuMUUGdV+e72XlJDYTVlddNFdlNFpHQU+KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqtKUiL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05631C4CEEB;
+	Mon,  2 Jun 2025 14:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872928;
-	bh=jEa2Lkk6VXz4xAR6PYRE791rbEEyhLjf5vI7M5Mm57M=;
+	s=korg; t=1748874919;
+	bh=6VS/A7YdtS8LxuVmmkPmTmsvKEbPdS7jZXHOzHMiDYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbVHUYTy5aYLz7EWpTf6w/6O8EtGOt3JXUvgdjh/5hrMZCottUEU9knn7Cut7JL+p
-	 3sRlgY7DIkRpiIYWtb/54LKjqt0/aodKbiXJ4c9j7EwINHN5/7mWFAMrr6BoNZVA/X
-	 B9p/FHY4n4OadF8DcpxM1PdTsX60c/YjVWi2GLSg=
+	b=DqtKUiL+mBrPDyzWt2b2H75oJ4KFr20cbVhSsnsiAL0Rk+AAR7EQ72N5RpBbQlfhV
+	 j6UV6JuJF6ePqjshvPULG+af1d4/aaRh9FAduPDk6NIL5lpiGhYrncNPc5w7tIeKAx
+	 /PU2sOl1HRduNSiOBzymZlJ4bbe1e/D2Qx7fuRtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Valentin Caron <valentin.caron@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 41/55] drm/amd/display: fix link_set_dpms_off multi-display MST corner case
+Subject: [PATCH 5.4 145/204] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
 Date: Mon,  2 Jun 2025 15:47:58 +0200
-Message-ID: <20250602134239.899493470@linuxfoundation.org>
+Message-ID: <20250602134301.351436627@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Valentin Caron <valentin.caron@foss.st.com>
 
-[ Upstream commit 3c1a467372e0c356b1d3c59f6d199ed5a6612dd1 ]
+[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
 
-[Why & How]
-When MST config is unplugged/replugged too quickly, it can potentially
-result in a scenario where previous DC state has not been reset before
-the HPD link detection sequence begins. In this case, driver will
-disable the streams/link prior to re-enabling the link for link
-training.
+Cross case in pinctrl framework make impossible to an hogged pin and
+another, not hogged, used within the same device-tree node. For example
+with this simplified device-tree :
 
-There is a bug in the current logic that does not account for the fact
-that current_state can be released and cleared prior to swapping to a
-new state (resulting in the pipe_ctx stream pointers to be cleared) in
-between disabling streams.
+  &pinctrl {
+    pinctrl_pin_1: pinctrl-pin-1 {
+      pins = "dummy-pinctrl-pin";
+    };
+  };
 
-To resolve this, cache the original streams prior to committing any
-stream updates.
+  &rtc {
+    pinctrl-names = "default"
+    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1561782686ccc36af844d55d31b44c938dd412dc)
+    rtc_pin_1: rtc-pin-1 {
+      pins = "dummy-rtc-pin";
+    };
+  };
+
+"pinctrl_pin_1" configuration is never set. This produces this path in
+the code:
+
+  really_probe()
+    pinctrl_bind_pins()
+    | devm_pinctrl_get()
+    |   pinctrl_get()
+    |     create_pinctrl()
+    |       pinctrl_dt_to_map()
+    |         // Hog pin create an abort for all pins of the node
+    |         ret = dt_to_map_one_config()
+    |         | /* Do not defer probing of hogs (circular loop) */
+    |         | if (np_pctldev == p->dev->of_node)
+    |         |   return -ENODEV;
+    |         if (ret)
+    |           goto err
+    |
+    call_driver_probe()
+      stm32_rtc_probe()
+        pinctrl_enable()
+          pinctrl_claim_hogs()
+            create_pinctrl()
+              for_each_maps(maps_node, i, map)
+                // Not hog pin is skipped
+                if (pctldev && strcmp(dev_name(pctldev->dev),
+                                      map->ctrl_dev_name))
+                  continue;
+
+At the first call of create_pinctrl() the hogged pin produces an abort to
+avoid a defer of hogged pins. All other pin configurations are trashed.
+
+At the second call, create_pinctrl is now called with pctldev parameter to
+get hogs, but in this context only hogs are set. And other pins are
+skipped.
+
+To handle this, do not produce an abort in the first call of
+create_pinctrl(). Classic pin configuration will be set in
+pinctrl_bind_pins() context. And the hogged pin configuration will be set
+in pinctrl_claim_hogs() context.
+
+Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/pinctrl/devicetree.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index c4e03482ba9ae..aa28001297675 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -148,6 +148,7 @@ void link_blank_dp_stream(struct dc_link *link, bool hw_init)
- void link_set_all_streams_dpms_off_for_link(struct dc_link *link)
- {
- 	struct pipe_ctx *pipes[MAX_PIPES];
-+	struct dc_stream_state *streams[MAX_PIPES];
- 	struct dc_state *state = link->dc->current_state;
- 	uint8_t count;
- 	int i;
-@@ -160,10 +161,18 @@ void link_set_all_streams_dpms_off_for_link(struct dc_link *link)
- 
- 	link_get_master_pipes_with_dpms_on(link, state, &count, pipes);
- 
-+	/* The subsequent call to dc_commit_updates_for_stream for a full update
-+	 * will release the current state and swap to a new state. Releasing the
-+	 * current state results in the stream pointers in the pipe_ctx structs
-+	 * to be zero'd. Hence, cache all streams prior to dc_commit_updates_for_stream.
-+	 */
-+	for (i = 0; i < count; i++)
-+		streams[i] = pipes[i]->stream;
-+
- 	for (i = 0; i < count; i++) {
--		stream_update.stream = pipes[i]->stream;
-+		stream_update.stream = streams[i];
- 		dc_commit_updates_for_stream(link->ctx->dc, NULL, 0,
--				pipes[i]->stream, &stream_update,
-+				streams[i], &stream_update,
- 				state);
+diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
+index 200357094e3be..e9bfb96a2e0e8 100644
+--- a/drivers/pinctrl/devicetree.c
++++ b/drivers/pinctrl/devicetree.c
+@@ -141,10 +141,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
+ 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
+ 		if (pctldev)
+ 			break;
+-		/* Do not defer probing of hogs (circular loop) */
++		/*
++		 * Do not defer probing of hogs (circular loop)
++		 *
++		 * Return 1 to let the caller catch the case.
++		 */
+ 		if (np_pctldev == p->dev->of_node) {
+ 			of_node_put(np_pctldev);
+-			return -ENODEV;
++			return 1;
+ 		}
  	}
- 
+ 	of_node_put(np_pctldev);
+@@ -268,6 +272,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
+ 			ret = dt_to_map_one_config(p, pctldev, statename,
+ 						   np_config);
+ 			of_node_put(np_config);
++			if (ret == 1)
++				continue;
+ 			if (ret < 0)
+ 				goto err;
+ 		}
 -- 
 2.39.5
 
