@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1170CACB3C3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F19ACB360
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEFA89E0D3A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 502713BBC94
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66B3223DDA;
-	Mon,  2 Jun 2025 14:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B6D23BD1F;
+	Mon,  2 Jun 2025 14:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7kdH7ot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hH61YuJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631EB19EEBD;
-	Mon,  2 Jun 2025 14:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6B322333B;
+	Mon,  2 Jun 2025 14:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874644; cv=none; b=KK90XoY5PCkFJQBCwf0b7FT0IlqEyL2Jn6Hk12if9duizlYD6YKMEqwfDvqv2HqYJmtNYbaLdI+zFiHQR8oZRAm+NcC4+vANjXacpv5YaT2INCm2hjf9DEr78i6q1IpYYtAHxRsofV3oDWxXD2Nw9q6yn22Tdr8FAJhKPBxyZdE=
+	t=1748874142; cv=none; b=cFldX+ujbfbazUeS/gfbQChWMVT82kC9IUlqCkI5vV2QlRGJRBf10ueSGdK3pJ0eKdyql96JiaZs+ayP7LZdAQIQljD2phaI+8rDFVZKtr4o82WuuM3MHCYPOspSbl79J/909d9DNpS9dgDjneXf53Hd/TILvtuasZ8QmI0pLyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874644; c=relaxed/simple;
-	bh=5pdxsO8gY7EhJk4y1wOHJDaN6qguvnMI41rX75cN7SA=;
+	s=arc-20240116; t=1748874142; c=relaxed/simple;
+	bh=TH2AZehqhRGDWUk6NoGY0hqBoRO7rKax3dszJ/M1hHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sHi1nPFg7Sa7XtyC6Pes5z9S7l5D79leFFtWSk5m2hGfraYAAaDu5b//SI3x4sdhZZzI4aLe0AI63LXLBLqdS87VworQGD7T8opCISLASlG+PRQl8V4DbuP/L3MDAW0sWbjKdqxAVwFgNRSpOs0oyMrEPyVXS/RtQL0WW3EBybU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7kdH7ot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F86C4CEEB;
-	Mon,  2 Jun 2025 14:30:43 +0000 (UTC)
+	 MIME-Version; b=JYzuxnvhmWHPrdC2q1c84CsHTukjqUFPEct/c0yREYhqN+5RZsPme4TDVZxQGzhyAkyiPuHIQ/SEsFfc+A2WbC4HKgJ5WnsAWuHfabQ061NohZBcJGCiylFGg7DptjmnAs3SDGD4J0qxFCsfFNz58DIznDzJzqfc/AUOGqVNBmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hH61YuJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9995C4CEF2;
+	Mon,  2 Jun 2025 14:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874644;
-	bh=5pdxsO8gY7EhJk4y1wOHJDaN6qguvnMI41rX75cN7SA=;
+	s=korg; t=1748874142;
+	bh=TH2AZehqhRGDWUk6NoGY0hqBoRO7rKax3dszJ/M1hHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7kdH7otDjc9s4UMQJAt5RLW32NzPLdww+vNqQ6IAL1/UP7dZTqLNfzrgTquHAyRJ
-	 y6BY1Tw1ScUy0c4xk/S5J8YV/IUnAe9UhVJspetqLpKCUCKFvlM8KJJYxvu68taHpL
-	 M1R2312haeWIS8hj9PMUcws/Q2Z7ekiA/xSoJbCk=
+	b=0hH61YuJt87IxR6L96q1CAdvocO/xuz88vhkapKOt/1fzOwdyrrFv8dvzqrt3ulOY
+	 BwLvprI6ubMefbFRgv60bAYZt9hKEbD75PVjj4YOftD8Idc4uwCnrS/qdrdFbr3KT9
+	 zkcL6DOz6Zeau1EdoiaAc6CvCpvzwpTR2Akl6LTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	En-Wei Wu <en-wei.wu@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 072/204] net: dsa: sja1105: discard incoming frames in BR_STATE_LISTENING
+Subject: [PATCH 6.6 341/444] Bluetooth: btusb: use skb_pull to avoid unsafe access in QCA dump handling
 Date: Mon,  2 Jun 2025 15:46:45 +0200
-Message-ID: <20250602134258.510103274@linuxfoundation.org>
+Message-ID: <20250602134354.775568921@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +62,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: En-Wei Wu <en-wei.wu@canonical.com>
 
-[ Upstream commit 498625a8ab2c8e1c9ab5105744310e8d6952cc01 ]
+[ Upstream commit 4bcb0c7dc25446b99fc7a8fa2a143d69f3314162 ]
 
-It has been reported that when under a bridge with stp_state=1, the logs
-get spammed with this message:
+Use skb_pull() and skb_pull_data() to safely parse QCA dump packets.
 
-[  251.734607] fsl_dpaa2_eth dpni.5 eth0: Couldn't decode source port
+This avoids direct pointer math on skb->data, which could lead to
+invalid access if the packet is shorter than expected.
 
-Further debugging shows the following info associated with packets:
-source_port=-1, switch_id=-1, vid=-1, vbid=1
-
-In other words, they are data plane packets which are supposed to be
-decoded by dsa_tag_8021q_find_port_by_vbid(), but the latter (correctly)
-refuses to do so, because no switch port is currently in
-BR_STATE_LEARNING or BR_STATE_FORWARDING - so the packet is effectively
-unexpected.
-
-The error goes away after the port progresses to BR_STATE_LEARNING in 15
-seconds (the default forward_time of the bridge), because then,
-dsa_tag_8021q_find_port_by_vbid() can correctly associate the data plane
-packets with a plausible bridge port in a plausible STP state.
-
-Re-reading IEEE 802.1D-1990, I see the following:
-
-"4.4.2 Learning: (...) The Forwarding Process shall discard received
-frames."
-
-IEEE 802.1D-2004 further clarifies:
-
-"DISABLED, BLOCKING, LISTENING, and BROKEN all correspond to the
-DISCARDING port state. While those dot1dStpPortStates serve to
-distinguish reasons for discarding frames, the operation of the
-Forwarding and Learning processes is the same for all of them. (...)
-LISTENING represents a port that the spanning tree algorithm has
-selected to be part of the active topology (computing a Root Port or
-Designated Port role) but is temporarily discarding frames to guard
-against loops or incorrect learning."
-
-Well, this is not what the driver does - instead it sets
-mac[port].ingress = true.
-
-To get rid of the log spam, prevent unexpected data plane packets to
-be received by software by discarding them on ingress in the LISTENING
-state.
-
-In terms of blame attribution: the prints only date back to commit
-d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based
-on the VBID"). However, the settings would permit a LISTENING port to
-forward to a FORWARDING port, and the standard suggests that's not OK.
-
-Fixes: 640f763f98c2 ("net: dsa: sja1105: Add support for Spanning Tree Protocol")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250509113816.2221992-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 20981ce2d5a5 ("Bluetooth: btusb: Add WCN6855 devcoredump support")
+Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/bluetooth/btusb.c | 98 ++++++++++++++++-----------------------
+ 1 file changed, 40 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index eab861352bf23..007eb05ed659f 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1390,6 +1390,7 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
- 	switch (state) {
- 	case BR_STATE_DISABLED:
- 	case BR_STATE_BLOCKING:
-+	case BR_STATE_LISTENING:
- 		/* From UM10944 description of DRPDTAG (why put this there?):
- 		 * "Management traffic flows to the port regardless of the state
- 		 * of the INGRESS flag". So BPDUs are still be allowed to pass.
-@@ -1399,11 +1400,6 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
- 		mac[port].egress    = false;
- 		mac[port].dyn_learn = false;
- 		break;
--	case BR_STATE_LISTENING:
--		mac[port].ingress   = true;
--		mac[port].egress    = false;
--		mac[port].dyn_learn = false;
--		break;
- 	case BR_STATE_LEARNING:
- 		mac[port].ingress   = true;
- 		mac[port].egress    = false;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index d6195565ef7ae..e0dd698896088 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3525,9 +3525,8 @@ static void btusb_coredump_qca(struct hci_dev *hdev)
+ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+ 	int ret = 0;
++	unsigned int skip = 0;
+ 	u8 pkt_type;
+-	u8 *sk_ptr;
+-	unsigned int sk_len;
+ 	u16 seqno;
+ 	u32 dump_size;
+ 
+@@ -3536,18 +3535,13 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 	struct usb_device *udev = btdata->udev;
+ 
+ 	pkt_type = hci_skb_pkt_type(skb);
+-	sk_ptr = skb->data;
+-	sk_len = skb->len;
++	skip = sizeof(struct hci_event_hdr);
++	if (pkt_type == HCI_ACLDATA_PKT)
++		skip += sizeof(struct hci_acl_hdr);
+ 
+-	if (pkt_type == HCI_ACLDATA_PKT) {
+-		sk_ptr += HCI_ACL_HDR_SIZE;
+-		sk_len -= HCI_ACL_HDR_SIZE;
+-	}
+-
+-	sk_ptr += HCI_EVENT_HDR_SIZE;
+-	sk_len -= HCI_EVENT_HDR_SIZE;
++	skb_pull(skb, skip);
++	dump_hdr = (struct qca_dump_hdr *)skb->data;
+ 
+-	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
+ 	seqno = le16_to_cpu(dump_hdr->seqno);
+ 	if (seqno == 0) {
+ 		set_bit(BTUSB_HW_SSR_ACTIVE, &btdata->flags);
+@@ -3567,16 +3561,15 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ 		btdata->qca_dump.ram_dump_size = dump_size;
+ 		btdata->qca_dump.ram_dump_seqno = 0;
+-		sk_ptr += offsetof(struct qca_dump_hdr, data0);
+-		sk_len -= offsetof(struct qca_dump_hdr, data0);
++
++		skb_pull(skb, offsetof(struct qca_dump_hdr, data0));
+ 
+ 		usb_disable_autosuspend(udev);
+ 		bt_dev_info(hdev, "%s memdump size(%u)\n",
+ 			    (pkt_type == HCI_ACLDATA_PKT) ? "ACL" : "event",
+ 			    dump_size);
+ 	} else {
+-		sk_ptr += offsetof(struct qca_dump_hdr, data);
+-		sk_len -= offsetof(struct qca_dump_hdr, data);
++		skb_pull(skb, offsetof(struct qca_dump_hdr, data));
+ 	}
+ 
+ 	if (!btdata->qca_dump.ram_dump_size) {
+@@ -3596,7 +3589,6 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 		return ret;
+ 	}
+ 
+-	skb_pull(skb, skb->len - sk_len);
+ 	hci_devcd_append(hdev, skb);
+ 	btdata->qca_dump.ram_dump_seqno++;
+ 	if (seqno == QCA_LAST_SEQUENCE_NUM) {
+@@ -3624,68 +3616,58 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ /* Return: true if the ACL packet is a dump packet, false otherwise. */
+ static bool acl_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	u8 *sk_ptr;
+-	unsigned int sk_len;
+-
+ 	struct hci_event_hdr *event_hdr;
+ 	struct hci_acl_hdr *acl_hdr;
+ 	struct qca_dump_hdr *dump_hdr;
++	struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
++	bool is_dump = false;
+ 
+-	sk_ptr = skb->data;
+-	sk_len = skb->len;
+-
+-	acl_hdr = hci_acl_hdr(skb);
+-	if (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE)
++	if (!clone)
+ 		return false;
+ 
+-	sk_ptr += HCI_ACL_HDR_SIZE;
+-	sk_len -= HCI_ACL_HDR_SIZE;
+-	event_hdr = (struct hci_event_hdr *)sk_ptr;
+-
+-	if ((event_hdr->evt != HCI_VENDOR_PKT) ||
+-	    (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
+-		return false;
++	acl_hdr = skb_pull_data(clone, sizeof(*acl_hdr));
++	if (!acl_hdr || (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE))
++		goto out;
+ 
+-	sk_ptr += HCI_EVENT_HDR_SIZE;
+-	sk_len -= HCI_EVENT_HDR_SIZE;
++	event_hdr = skb_pull_data(clone, sizeof(*event_hdr));
++	if (!event_hdr || (event_hdr->evt != HCI_VENDOR_PKT))
++		goto out;
+ 
+-	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
+-	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
+-	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
+-	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
+-		return false;
++	dump_hdr = skb_pull_data(clone, sizeof(*dump_hdr));
++	if (!dump_hdr || (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
++	   (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
++		goto out;
+ 
+-	return true;
++	is_dump = true;
++out:
++	consume_skb(clone);
++	return is_dump;
+ }
+ 
+ /* Return: true if the event packet is a dump packet, false otherwise. */
+ static bool evt_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	u8 *sk_ptr;
+-	unsigned int sk_len;
+-
+ 	struct hci_event_hdr *event_hdr;
+ 	struct qca_dump_hdr *dump_hdr;
++	struct sk_buff *clone = skb_clone(skb, GFP_ATOMIC);
++	bool is_dump = false;
+ 
+-	sk_ptr = skb->data;
+-	sk_len = skb->len;
+-
+-	event_hdr = hci_event_hdr(skb);
+-
+-	if ((event_hdr->evt != HCI_VENDOR_PKT)
+-	    || (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
++	if (!clone)
+ 		return false;
+ 
+-	sk_ptr += HCI_EVENT_HDR_SIZE;
+-	sk_len -= HCI_EVENT_HDR_SIZE;
++	event_hdr = skb_pull_data(clone, sizeof(*event_hdr));
++	if (!event_hdr || (event_hdr->evt != HCI_VENDOR_PKT))
++		goto out;
+ 
+-	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
+-	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
+-	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
+-	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
+-		return false;
++	dump_hdr = skb_pull_data(clone, sizeof(*dump_hdr));
++	if (!dump_hdr || (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
++	   (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
++		goto out;
+ 
+-	return true;
++	is_dump = true;
++out:
++	consume_skb(clone);
++	return is_dump;
+ }
+ 
+ static int btusb_recv_acl_qca(struct hci_dev *hdev, struct sk_buff *skb)
 -- 
 2.39.5
 
