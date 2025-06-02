@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-149329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0C0ACB238
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 378A2ACB235
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88E9C164983
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:22:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C0243B53F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327A41F4165;
-	Mon,  2 Jun 2025 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1B9224AFC;
+	Mon,  2 Jun 2025 14:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pE5uS7tc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbW2gkDn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A2C2248BF;
-	Mon,  2 Jun 2025 14:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7221C177;
+	Mon,  2 Jun 2025 14:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873633; cv=none; b=J4MOUuWo6+Ojdq+mswEk19lNiVNf3JehVydud+XBu0SVYg4Nxh3Tl1hq9S1zNNQn6oLqDeO7PoTiGGPqeINdLwlwMdqf30xNocGFNhjRk+unFN/pQK/nJGXhNKK8FA5PK6lXW1a03gGJxd61EbnnXfO6E0E4cIWu2Lutbmkw5lc=
+	t=1748873642; cv=none; b=Lcr/pA0LTvWmtstSwnp4Ir1st8kGexiqacwvCbHTM+Xpi2ZbkFBkycb20tKfh5IzrezuPTa1ceERs/1Ra3sSqQNcBvR1zW1PPetSl5SLvDwJamN9mthi5TMM74dJQD0H+T2X9X02LpboQNZeOwSphNsBhg2fhEeDxzg6rhPQGLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873633; c=relaxed/simple;
-	bh=mfdxeDEyNOJxmW2amUZXj5fafkZTPcQhnwExjB17e8k=;
+	s=arc-20240116; t=1748873642; c=relaxed/simple;
+	bh=xjZ8dFPf9veZOSjrE/RMnrHT4O6B88CnMYw5qRYKOhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/FGlksckDkKwwva4VzPFBu7NSqC4sY5nrH0IYRvlR6hl7jnmN9PyIxGs5ejKGE+RPMPUOrsi3yQuMKjNsInwarw2PR64mgdqEdRJ2ZzP5Gxyg/OEP9wBb9saY4A567v2ITqY8qrbkPm1gjWyDDZYvQOcsnZFAOvtLS7h47Vz0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pE5uS7tc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643D9C4CEEB;
-	Mon,  2 Jun 2025 14:13:52 +0000 (UTC)
+	 MIME-Version; b=OO3goMh3cRlodHLYsDYlRkMUhUDAXD5Idgk9wByZNj2pD8PPNfcaTno9gIZXnZ/tQSRvMa1U1hvQpLZBX7HK5aSKI6J1mMazoU+CraCvDXut64Dx3T8L35gy25SoE1fOmJ6evcToVxDTcqRjlodTz6Ytjjy12NLvt0gi0iLNY1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbW2gkDn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4746C4CEEB;
+	Mon,  2 Jun 2025 14:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873632;
-	bh=mfdxeDEyNOJxmW2amUZXj5fafkZTPcQhnwExjB17e8k=;
+	s=korg; t=1748873642;
+	bh=xjZ8dFPf9veZOSjrE/RMnrHT4O6B88CnMYw5qRYKOhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pE5uS7tcBeXhclZNRUZsfSCMdGYB15k+vGxvTmshriHtHHoAC/ZnH0/7Cw2KJDI0C
-	 WGFjHrNRKEnAhtEkkFvvSpIUSWowIBhfx1HHVrAn1JEID+olc2Q1xJfYGYsyP5ieE1
-	 CTIwX22aQU5XKqAF0KDW2lEacjkMR7SnPxaBJ0WI=
+	b=jbW2gkDnVq8Xa7sAPCN4jXsYMjCutzTZgpbeFH+CeBg6veWoOELLzQ+g/Xq2lQTaO
+	 XDDLv0n117uK5iX7ojEFKi6vbXsSvcYu8fCpusa2j+8Je8ceHGYlLCrkxiZj+7jEgB
+	 yA3vM6FqEtb7dOQ4g8v40OsVJbFr35SDc7vRq460=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanjun Gong <ruc_gongyuanjun@163.com>,
-	Lee Jones <lee@kernel.org>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/444] leds: pwm-multicolor: Add check for fwnode_property_read_u32
-Date: Mon,  2 Jun 2025 15:43:59 +0200
-Message-ID: <20250602134347.996680010@linuxfoundation.org>
+Subject: [PATCH 6.6 176/444] net: ethernet: mtk_ppe_offload: Allow QinQ, double ETH_P_8021Q only
+Date: Mon,  2 Jun 2025 15:44:00 +0200
+Message-ID: <20250602134348.037202848@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -66,37 +66,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Eric Woudstra <ericwouds@gmail.com>
 
-[ Upstream commit 6d91124e7edc109f114b1afe6d00d85d0d0ac174 ]
+[ Upstream commit 7fe0353606d77a32c4c7f2814833dd1c043ebdd2 ]
 
-Add a check to the return value of fwnode_property_read_u32()
-in case it fails.
+mtk_foe_entry_set_vlan() in mtk_ppe.c already supports double vlan
+tagging, but mtk_flow_offload_replace() in mtk_ppe_offload.c only allows
+for 1 vlan tag, optionally in combination with pppoe and dsa tags.
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Link: https://lore.kernel.org/r/20250223121459.2889484-1-ruc_gongyuanjun@163.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+However, mtk_foe_entry_set_vlan() only allows for setting the vlan id.
+The protocol cannot be set, it is always ETH_P_8021Q, for inner and outer
+tag. This patch adds QinQ support to mtk_flow_offload_replace(), only in
+the case that both inner and outer tags are ETH_P_8021Q.
+
+Only PPPoE-in-Q (as before) and Q-in-Q are allowed. A combination
+of PPPoE and Q-in-Q is not allowed.
+
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+Link: https://patch.msgid.link/20250225201509.20843-1-ericwouds@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/rgb/leds-pwm-multicolor.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../net/ethernet/mediatek/mtk_ppe_offload.c   | 22 +++++++++----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/leds/rgb/leds-pwm-multicolor.c b/drivers/leds/rgb/leds-pwm-multicolor.c
-index e1a81e0109e8a..c0aa34b1d0e2d 100644
---- a/drivers/leds/rgb/leds-pwm-multicolor.c
-+++ b/drivers/leds/rgb/leds-pwm-multicolor.c
-@@ -135,8 +135,11 @@ static int led_pwm_mc_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+index a4efbeb162084..889fd26843e60 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
+@@ -34,8 +34,10 @@ struct mtk_flow_data {
+ 	u16 vlan_in;
  
- 	/* init the multicolor's LED class device */
- 	cdev = &priv->mc_cdev.led_cdev;
--	fwnode_property_read_u32(mcnode, "max-brightness",
-+	ret = fwnode_property_read_u32(mcnode, "max-brightness",
- 				 &cdev->max_brightness);
-+	if (ret)
-+		goto release_mcnode;
-+
- 	cdev->flags = LED_CORE_SUSPENDRESUME;
- 	cdev->brightness_set_blocking = led_pwm_mc_set;
+ 	struct {
+-		u16 id;
+-		__be16 proto;
++		struct {
++			u16 id;
++			__be16 proto;
++		} vlans[2];
+ 		u8 num;
+ 	} vlan;
+ 	struct {
+@@ -330,18 +332,19 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+ 		case FLOW_ACTION_CSUM:
+ 			break;
+ 		case FLOW_ACTION_VLAN_PUSH:
+-			if (data.vlan.num == 1 ||
++			if (data.vlan.num + data.pppoe.num == 2 ||
+ 			    act->vlan.proto != htons(ETH_P_8021Q))
+ 				return -EOPNOTSUPP;
+ 
+-			data.vlan.id = act->vlan.vid;
+-			data.vlan.proto = act->vlan.proto;
++			data.vlan.vlans[data.vlan.num].id = act->vlan.vid;
++			data.vlan.vlans[data.vlan.num].proto = act->vlan.proto;
+ 			data.vlan.num++;
+ 			break;
+ 		case FLOW_ACTION_VLAN_POP:
+ 			break;
+ 		case FLOW_ACTION_PPPOE_PUSH:
+-			if (data.pppoe.num == 1)
++			if (data.pppoe.num == 1 ||
++			    data.vlan.num == 2)
+ 				return -EOPNOTSUPP;
+ 
+ 			data.pppoe.sid = act->pppoe.sid;
+@@ -431,12 +434,9 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
+ 	if (offload_type == MTK_PPE_PKT_TYPE_BRIDGE)
+ 		foe.bridge.vlan = data.vlan_in;
+ 
+-	if (data.vlan.num == 1) {
+-		if (data.vlan.proto != htons(ETH_P_8021Q))
+-			return -EOPNOTSUPP;
++	for (i = 0; i < data.vlan.num; i++)
++		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.vlans[i].id);
+ 
+-		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.id);
+-	}
+ 	if (data.pppoe.num == 1)
+ 		mtk_foe_entry_set_pppoe(eth, &foe, data.pppoe.sid);
  
 -- 
 2.39.5
