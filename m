@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C29CACB41A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ADBACB55C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41A494A2999
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6A311BC2902
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A665223315A;
-	Mon,  2 Jun 2025 14:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EE422A4E5;
+	Mon,  2 Jun 2025 14:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrIVXqSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeRsulOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DFF233155;
-	Mon,  2 Jun 2025 14:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D322147E7;
+	Mon,  2 Jun 2025 14:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874612; cv=none; b=Ps0CkEMzNjJ1KGShkZ13jcu3o6ci8h0D99biseB1W/pFwOh6briNMB9Rbdu82waMNqKfWxfIzfRhy5BiT1n1IF0Er4tJ5DHBi1hfrpDMm7MRKIDQtytdjNCimjdL2lzhsGS3/XiCRlzSWAUbxRMnvkoUqjkI12nRshrEdIAhw4I=
+	t=1748875517; cv=none; b=Dn+ixEaeQfBjBa85ez9AoXh5op0QQ0g7RT9c8ax0oZ9VouqMXTDoeKIXul8pBNg3DwvOKPgUuvk5kza/MMRh1t4/cq0AspRWj4cgjhspuJT/o21ixa8HFi+VHsWgRvO9TbNFc3CGeHEgUV6u/sq93Ar6VZ/XzUj+OTJng/xROiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874612; c=relaxed/simple;
-	bh=J8DEBbmqgVqHx9zekQbbW8vM7wCFBNCGjVwQ5NtjHQE=;
+	s=arc-20240116; t=1748875517; c=relaxed/simple;
+	bh=jIuTMPwY3K5/Qapyw5hNuQlQ28w9Mqgg1/dedrRQK1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WlsnkX3heLLu3NHjpJd0RpuSJWCXUTIQn5bLM+dOGxOacJmf2XJXb8Dctc1vFQSytpYRPCkVdMo/mqdAkxuKIifJKTziz4fDA8X7KV3qEJrW+/16h4IL6KvziZ+ZC/30ne3rdGorre4OJ8s0XUSuQXyBG2wURnwIxZMbQmmYKyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrIVXqSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C825EC4CEEB;
-	Mon,  2 Jun 2025 14:30:11 +0000 (UTC)
+	 MIME-Version; b=YL0HT5loDZko07PIN1SC6yaWBAn3i5TsancTmagz+657fSo/CrhEJupqRkn9DYfqpQVbzAdU0iHgi27gSUUXXUz4RGP5wMqHdRJM9DkgWEqg/uNUb+5MRvPn3jCanuLjBM3yuG/2VCR8kpBls2NY22T0xzyk2CvQ+DnkSK+4JFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeRsulOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250BCC4CEEB;
+	Mon,  2 Jun 2025 14:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874612;
-	bh=J8DEBbmqgVqHx9zekQbbW8vM7wCFBNCGjVwQ5NtjHQE=;
+	s=korg; t=1748875517;
+	bh=jIuTMPwY3K5/Qapyw5hNuQlQ28w9Mqgg1/dedrRQK1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrIVXqSx4DT6jQfOqUgDYc3XCnYQPocqvWr/DiD68UBiX8+03o+jI7N9lsr+qetP0
-	 10HHH64SPovUl+vPVMRLURVQvERH2M8CToP5WZZzk1RCCVYsBzgdtS3j/h4RQVfQIB
-	 5PByWXmYX7dMyd7bWTzvMbIgXvViTxI/Oj9Ki/q0=
+	b=JeRsulOJ18hKbhhY9B3ZMLpZ/Q9qu6qZKLvFTbp7FZgPVqo/zQ9KTDfOz4kn3Nt3i
+	 QVY9QGyvwkp03lK9RA+gscK2Jn+XoApDEHwz0q6+phep1fcVmqsgPc+4pZRLzlSLrA
+	 zPQq6VYGolVAjtMGlP+WXotqbVFOMKbRSatnVII4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Thierry Reding <treding@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.4 080/204] phy: Fix error handling in tegra_xusb_port_init
-Date: Mon,  2 Jun 2025 15:46:53 +0200
-Message-ID: <20250602134258.817230721@linuxfoundation.org>
+	Jing Su <jingsusu@didiglobal.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 129/270] dql: Fix dql->limit value when reset.
+Date: Mon,  2 Jun 2025 15:46:54 +0200
+Message-ID: <20250602134312.507301124@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Jing Su <jingsusu@didiglobal.com>
 
-commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
+[ Upstream commit 3a17f23f7c36bac3a3584aaf97d3e3e0b2790396 ]
 
-If device_add() fails, do not use device_unregister() for error
-handling. device_unregister() consists two functions: device_del() and
-put_device(). device_unregister() should only be called after
-device_add() succeeded because device_del() undoes what device_add()
-does if successful. Change device_unregister() to put_device() call
-before returning from the function.
+Executing dql_reset after setting a non-zero value for limit_min can
+lead to an unreasonable situation where dql->limit is less than
+dql->limit_min.
 
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+For instance, after setting
+/sys/class/net/eth*/queues/tx-0/byte_queue_limits/limit_min,
+an ifconfig down/up operation might cause the ethernet driver to call
+netdev_tx_reset_queue, which in turn invokes dql_reset.
 
-Found by code review.
+In this case, dql->limit is reset to 0 while dql->limit_min remains
+non-zero value, which is unexpected. The limit should always be
+greater than or equal to limit_min.
 
-Cc: stable@vger.kernel.org
-Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jing Su <jingsusu@didiglobal.com>
+Link: https://patch.msgid.link/Z9qHD1s/NEuQBdgH@pilot-ThinkCentre-M930t-N000
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ lib/dynamic_queue_limits.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -526,16 +526,16 @@ static int tegra_xusb_port_init(struct t
- 
- 	err = dev_set_name(&port->dev, "%s-%u", name, index);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
- 
- 	err = device_add(&port->dev);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
- 
- 	return 0;
- 
--unregister:
--	device_unregister(&port->dev);
-+put_device:
-+	put_device(&port->dev);
- 	return err;
- }
- 
+diff --git a/lib/dynamic_queue_limits.c b/lib/dynamic_queue_limits.c
+index fde0aa2441480..a75a9ca46b594 100644
+--- a/lib/dynamic_queue_limits.c
++++ b/lib/dynamic_queue_limits.c
+@@ -116,7 +116,7 @@ EXPORT_SYMBOL(dql_completed);
+ void dql_reset(struct dql *dql)
+ {
+ 	/* Reset all dynamic values */
+-	dql->limit = 0;
++	dql->limit = dql->min_limit;
+ 	dql->num_queued = 0;
+ 	dql->num_completed = 0;
+ 	dql->last_obj_cnt = 0;
+-- 
+2.39.5
+
 
 
 
