@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BF4ACB3E4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A105ACB068
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 671014A0A31
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5AA57A8EE9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B2822A80D;
-	Mon,  2 Jun 2025 14:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B95229B29;
+	Mon,  2 Jun 2025 14:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpal1tfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJzm3/hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D75222582;
-	Mon,  2 Jun 2025 14:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DD7229B1E;
+	Mon,  2 Jun 2025 14:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874837; cv=none; b=uCRTfW5mHOOieNqKi5Wx85ppZOXCf5IDYwIJ+fQmew/le5Hxm3oWcmKgjmhsFstMk99kVgG2YE7uR3uUQW7xiYbTahBMquGqCbIT4eWM1gwlySVxG9JT6Zl5zOqcQpQTcyMwcydV1jpEkOdIDkM8HHr9tDoZLaS79/T8WF0xX9Y=
+	t=1748872954; cv=none; b=Ku9DKjLH1hBrnMqTOtOWst2xdruhpntsNTNevIQQhZzNZt92gepsMjp+OyxKkqKeTaBcYF1ewDXNTUGQc0D3z9M8yVXuv4Msh2hmg4XbIpVSDXIJh69uGV2fg+P2RaY1d4VeiVAm843oXHW4X61mawxUCwBMZ4rRZSaRe235/z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874837; c=relaxed/simple;
-	bh=0ItAvp/pFRDvhTJww2cTKE8FlATJDu9pHtDMiKJYxB4=;
+	s=arc-20240116; t=1748872954; c=relaxed/simple;
+	bh=tX8cqv8ShOeLJ3tZlX/sCBkYvFQAgNuDDCaKbLJDRcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGZqdfz/zi7No07APuJDuutpCcl2bFeV4BCdSl+4k+MYGYmTaiCmXeY/U2BOVD/Zf/7DIrPskdbOKTwSxf+ZoIMlbg+TAQtZWGo86nd1p+5Tbh+y8su+7HykXVXhG5CDQs2W6BQohgFZ+lRaFVsV+tLQ04YRvTM65cTON8bRDQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpal1tfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2100C4CEEB;
-	Mon,  2 Jun 2025 14:33:56 +0000 (UTC)
+	 MIME-Version; b=O/81R1q9D1UZvxyuE2/HYWrUljUKj9fKdy0XVvBjJ+9KNvPFEz0qEU13mkBpq3WTbTCFapocIf9TDOUo/kVgWEX052Wp6x+ETY8+JLYnhzk3sRLBFGs1felQrq8jmvOvcA6QHff8M0iNehP6euvIE5iNB2LdhIxAD87eB5as9XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJzm3/hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789C8C4CEF3;
+	Mon,  2 Jun 2025 14:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874837;
-	bh=0ItAvp/pFRDvhTJww2cTKE8FlATJDu9pHtDMiKJYxB4=;
+	s=korg; t=1748872953;
+	bh=tX8cqv8ShOeLJ3tZlX/sCBkYvFQAgNuDDCaKbLJDRcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpal1tfn2tbt2bYdXBivK+i9GXH6FUPCktW2Yj7jxXSaJltALba+iWCvh2XLzHrRB
-	 CuGHrBUwV92XpG6DzNH50WZEbN1M32lAB8LV9VvX2Zd809tQ4ilQhdB6Vg7CjyAR6I
-	 mfFpJj5eSos9dzhv+Dj8aVh27Hh3bAqTMM9kymYk=
+	b=tJzm3/hj57Ie16WQhiyqAUvaQoCy+nt409bj78ysuljF0I2grs/FUp7zkxx7togfN
+	 D9DJtSAud+q8V1s16C/Y6uKKT12okBQ5OVNVpnCiuKBBYy6BEl0e7pBWuYDpX8cL+c
+	 aspCFo7tqWM38+Qy/A0r5fvsxLkPz8PqvsS1IjsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 152/204] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
+Subject: [PATCH 6.12 48/55] drm/xe: Save the gt pointer in lrc and drop the tile
 Date: Mon,  2 Jun 2025 15:48:05 +0200
-Message-ID: <20250602134301.622146156@linuxfoundation.org>
+Message-ID: <20250602134240.170711222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
+[ Upstream commit ce15563e49fb0b5c802564433ff8468acd1339eb ]
 
-The following patch will not set skb->sk from VRF path.
+Save the gt pointer in the lrc so that it can used for gt based helpers.
 
-Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
-in fib[46]_rule_configure().
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250509161159.2173069-7-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit 741d3ef8b8b88fab2729ca89de1180e49bc9cef0)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_rules.c  | 4 ++--
- net/ipv6/fib6_rules.c | 4 ++--
+ drivers/gpu/drm/xe/xe_lrc.c       | 4 ++--
+ drivers/gpu/drm/xe/xe_lrc_types.h | 4 ++--
  2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
-index e9a3cc9e98dfa..1617ea18fae3a 100644
---- a/net/ipv4/fib_rules.c
-+++ b/net/ipv4/fib_rules.c
-@@ -220,9 +220,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
--	struct net *net = sock_net(skb->sk);
-+	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
+diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
+index 2d4e38b3bab19..ce6d2167b94ad 100644
+--- a/drivers/gpu/drm/xe/xe_lrc.c
++++ b/drivers/gpu/drm/xe/xe_lrc.c
+@@ -874,7 +874,7 @@ static void *empty_lrc_data(struct xe_hw_engine *hwe)
  
- 	if (frh->tos & ~IPTOS_TOS_MASK) {
- 		NL_SET_ERR_MSG(extack, "Invalid tos");
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index 3cf9dc2231036..acb8610c9a9df 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -344,9 +344,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
+ static void xe_lrc_set_ppgtt(struct xe_lrc *lrc, struct xe_vm *vm)
  {
-+	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct net *net = sock_net(skb->sk);
--	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
+-	u64 desc = xe_vm_pdp4_descriptor(vm, lrc->tile);
++	u64 desc = xe_vm_pdp4_descriptor(vm, gt_to_tile(lrc->gt));
  
- 	if (rule->action == FR_ACT_TO_TBL && !rule->l3mdev) {
- 		if (rule->table == RT6_TABLE_UNSPEC) {
+ 	xe_lrc_write_ctx_reg(lrc, CTX_PDP0_UDW, upper_32_bits(desc));
+ 	xe_lrc_write_ctx_reg(lrc, CTX_PDP0_LDW, lower_32_bits(desc));
+@@ -905,6 +905,7 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
+ 	int err;
+ 
+ 	kref_init(&lrc->refcount);
++	lrc->gt = gt;
+ 	lrc->flags = 0;
+ 	lrc_size = ring_size + xe_gt_lrc_size(gt, hwe->class);
+ 	if (xe_gt_has_indirect_ring_state(gt))
+@@ -923,7 +924,6 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
+ 		return PTR_ERR(lrc->bo);
+ 
+ 	lrc->size = lrc_size;
+-	lrc->tile = gt_to_tile(hwe->gt);
+ 	lrc->ring.size = ring_size;
+ 	lrc->ring.tail = 0;
+ 	lrc->ctx_timestamp = 0;
+diff --git a/drivers/gpu/drm/xe/xe_lrc_types.h b/drivers/gpu/drm/xe/xe_lrc_types.h
+index 71ecb453f811a..cd38586ae9893 100644
+--- a/drivers/gpu/drm/xe/xe_lrc_types.h
++++ b/drivers/gpu/drm/xe/xe_lrc_types.h
+@@ -25,8 +25,8 @@ struct xe_lrc {
+ 	/** @size: size of lrc including any indirect ring state page */
+ 	u32 size;
+ 
+-	/** @tile: tile which this LRC belongs to */
+-	struct xe_tile *tile;
++	/** @gt: gt which this LRC belongs to */
++	struct xe_gt *gt;
+ 
+ 	/** @flags: LRC flags */
+ #define XE_LRC_FLAG_INDIRECT_RING_STATE		0x1
 -- 
 2.39.5
 
