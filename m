@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-148961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17073ACAF72
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A7CACAFCF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E88883A2175
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF043B41BB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB6D221DAE;
-	Mon,  2 Jun 2025 13:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF631DE881;
+	Mon,  2 Jun 2025 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgJFPNqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9u9XZAm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C03221299;
-	Mon,  2 Jun 2025 13:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C352576;
+	Mon,  2 Jun 2025 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872090; cv=none; b=OknZZWzE41zgHG8Sye57FGzKYYNi8Fzdd070OIcievYnv793BNH/SEDoOf/KeJcC7ace83c6pPOiw8h45W5lXaXYoZixNR1hJo2Gwj6S7NUweRnF+wwP9GniwlwXXFi5XSHH2ICAgJbsHmMP+Q7pkozbWvuy4v57zJPFii3Kh7Y=
+	t=1748872627; cv=none; b=p9ELJIv2u7Nov8CK1GBlh9aroYAywn03B4is76u4KMEqnzIjUSgNazpRhBiUN/CkcctQOxF70gonvSZSaooVlK73CB/A7ofnYgGfxFWlYCZR/LEs4/LgiI9ayj6YEkbkJMuJyvnIh52LDuhSUIu/Y1VoEj2N8vaAF/sZhPLz52A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872090; c=relaxed/simple;
-	bh=FJ4ma42pt3PqDZX2mj7HKngjWt1XaP6B44eZ9Sm8n38=;
+	s=arc-20240116; t=1748872627; c=relaxed/simple;
+	bh=ZSzRFbC+bDBBcbLFrULwSR32rDkxUUEgcpyAAAigkjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqDIYjXf1zc1nfJi0DEkb0HzafvDy1UBsy97zu3NQ/k1UPDUyvnn4dB+ArN1AX0T4fwR9je4iJgxEtA2NkDTjUN39KerJVgk9+DCLPXl5ZNsI/++MIrginSHDhsf6rQ6kXbRmug36Rqi3GnkyqfUxZXiGxoRa8H1rBC9BOjvwSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgJFPNqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59739C4CEEB;
-	Mon,  2 Jun 2025 13:48:09 +0000 (UTC)
+	 MIME-Version; b=TOpWVO1TM/iTtEw/lN3t9SnczIGlkb4P37sPIhL8hO7UdMFS1t6JNJGN7SfENLJS22UiqCMgeVGXAc7o8BQWxvUNDiUocNiubQJFoOGRmdSYgEAMNWFCCbX4Y8sFXVpM19VCpiD+y0HVZtj6LyHGrjdtq6/qyAuv6PlPYN84tUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9u9XZAm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1FEC4CEEB;
+	Mon,  2 Jun 2025 13:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872089;
-	bh=FJ4ma42pt3PqDZX2mj7HKngjWt1XaP6B44eZ9Sm8n38=;
+	s=korg; t=1748872627;
+	bh=ZSzRFbC+bDBBcbLFrULwSR32rDkxUUEgcpyAAAigkjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgJFPNqgVW7oh+NkU0LOiv1EjJKZE3FWa8E6AzXaY6jXETE+X84SlNwseJcn+g3WN
-	 40Qe1PCFcDz8tCmA9jb+7LbW4a/XqVa5E4uWD6Sb22GlDFVHGGQIQtuCHP9NKs+HdT
-	 W19IgNXM250RtDCqlCZyAm9RXAsPi2axevYtzSF4=
+	b=Q9u9XZAmagXBjy6QhKip2rI4JDMXADCYH708Vo4Fs8blX53f9WUGZzQvHAAHajIrt
+	 bAVFc7A+yZb3y5BS49NahMnAdhP0aGlfIZum/fdutRHdWgvUUX7Ky4NbzghZfg52qv
+	 Nvt998+tTpIO7s9XUho/L/PbSrX4+ii3zGqlN6aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 15/49] arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on
+Subject: [PATCH 6.14 21/73] arm64: dts: qcom: x1e80100-qcp: mark l12b and l15b always-on
 Date: Mon,  2 Jun 2025 15:47:07 +0200
-Message-ID: <20250602134238.546056391@linuxfoundation.org>
+Message-ID: <20250602134242.534419027@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 63169c07d74031c5e10a9f91229dabade880cf0f upstream.
+commit ff6ba96378367133b66587bd3ee9f068a39ff3a9 upstream.
 
 The l12b and l15b supplies are used by components that are not (fully)
 described (and some never will be) and must never be disabled.
@@ -77,25 +77,21 @@ described (and some never will be) and must never be disabled.
 Mark the regulators as always-on to prevent them from being disabled,
 for example, when consumers probe defer or suspend.
 
-Note that these supplies currently have no consumers described in
-mainline.
-
-Fixes: f5b788d0e8cd ("arm64: dts: qcom: Add support for X1-based Dell XPS 13 9345")
-Cc: stable@vger.kernel.org	# 6.13
-Reviewed-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Tested-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
+Cc: stable@vger.kernel.org	# 6.8
+Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250314145440.11371-5-johan+linaro@kernel.org
+Link: https://lore.kernel.org/r/20250314145440.11371-8-johan+linaro@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts |    2 ++
+ arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts
-@@ -359,6 +359,7 @@
+--- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+@@ -437,6 +437,7 @@
  			regulator-min-microvolt = <1200000>;
  			regulator-max-microvolt = <1200000>;
  			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
@@ -103,14 +99,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		};
  
  		vreg_l13b_3p0: ldo13 {
-@@ -380,6 +381,7 @@
+@@ -458,6 +459,7 @@
  			regulator-min-microvolt = <1800000>;
  			regulator-max-microvolt = <1800000>;
  			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
 +			regulator-always-on;
  		};
  
- 		vreg_l17b_2p5: ldo17 {
+ 		vreg_l16b_2p9: ldo16 {
 
 
 
