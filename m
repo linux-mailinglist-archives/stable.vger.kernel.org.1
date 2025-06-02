@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-148997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D07ACAF96
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:50:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DDBACB027
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E8C2179D46
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:50:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25AAA188B305
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4723D211A0E;
-	Mon,  2 Jun 2025 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AF1221299;
+	Mon,  2 Jun 2025 13:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYhaX9zH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxHQICvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CF4221DA2;
-	Mon,  2 Jun 2025 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E743B1C5D72;
+	Mon,  2 Jun 2025 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872206; cv=none; b=gGvbHW6JJccjKsAbTfec23OxYJab5VmMMqSpiBqJHw/K4u+3RSEu78QGk2cphKqa5BjoGbKfhT0VGJPKMkQbnUu5Als6gRF/4/ITB/yDaK6B8eQ5NhmFk798wQ9jZ8zLeVPES0jdX5rHtYRRwqmlfidIuQWdGCc0v5vkCSaEcZQ=
+	t=1748872793; cv=none; b=fjgDKNcbvuL0spq4/rnAPAc+pXQ4vET9dlp3dISCOghDcwRvaWl/99vJZurIh99ycgxXdIAVP2smF8iH8IVsomlV4SVm1DV+xOjOvEvYehF7VlsNDhpvXwEy/OeQ5CQ8Wy7JYfP0+Adverv8/egFNExCNyc+oO5S1mk8pHrCwWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872206; c=relaxed/simple;
-	bh=ZHPzj8Wf7Mz1AimGys67VEYkpYMnkbnoGZJdsPF/UAM=;
+	s=arc-20240116; t=1748872793; c=relaxed/simple;
+	bh=EsofmpkbWBpGrsIMHHhVOCzNNHyGpHw9TNG80f9XPjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLeUTr3rv+mcCN0l3p5FywoVnvJVaQN3VyJ6ET99Jwuq8nTzAUxV+OcJvXOAm5DlwiR8uUH5XUk8fDWXr0tjrLCaod4FM6n/RsnAut0EfqEV9mUerrBUEENxeYAn3Eea+rXy9Lgg4FSO/uAdm7Dzsdiv8Lrq9T0hyMf5U8MmNnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYhaX9zH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D252C4CEEB;
-	Mon,  2 Jun 2025 13:50:05 +0000 (UTC)
+	 MIME-Version; b=mswz6JMW1dwP9jfRVUD/HAVjUVko1fIsWW1m9vmMOvsmlRK6lbLexoMoh6w2LYvtx+FIOVveICDqKbJRMcL5AiEir1ROiFDVfGaGz14zT1wDXVjLOJy4P0RkVuoEAV61fjD0824/BFx4yipbcINDxM4vW/VX856uPMzMPjAe+hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxHQICvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F266C4CEEE;
+	Mon,  2 Jun 2025 13:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872205;
-	bh=ZHPzj8Wf7Mz1AimGys67VEYkpYMnkbnoGZJdsPF/UAM=;
+	s=korg; t=1748872792;
+	bh=EsofmpkbWBpGrsIMHHhVOCzNNHyGpHw9TNG80f9XPjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fYhaX9zHujLJuyT531X/7NukDxDerJZvjL8CeBUjQIcowxsdj3/NEsNsA5fSor+TT
-	 gkUk3rfAZHaP+DYE89XYFOMES8BhE3/AeXgziPcC9tuNBt3qeYlYlNm4aJxXztAbYj
-	 nte6QweV0Bf12SEa4W+vC1paLfXOJC1sBSqY89mo=
+	b=RxHQICvvQ4Qyvy6FRT+v75bHzsbJz8oTQsztBEVI+LLVYuFJJgfPtmpBOg5TpTwKN
+	 ZnZXmgzIBVh5yXs+bwcjQpt534UcmITr3ekJvu/6WB3NJCrJdu2GJ/TPthZZP+GAP9
+	 lfnZNQrRehDZeOY95XGAHu59lL8kBjPXSngop308=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Neha Malcom Francis <n-francis@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Udit Kumar <u-kumar1@ti.com>,
 	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.15 34/49] arm64: dts: ti: k3-am68-sk: Fix regulator hierarchy
+Subject: [PATCH 6.14 40/73] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix length of serdes_ln_ctrl
 Date: Mon,  2 Jun 2025 15:47:26 +0200
-Message-ID: <20250602134239.281183164@linuxfoundation.org>
+Message-ID: <20250602134243.272787285@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 7edf0a4d3bb7f5cd84f172b76c380c4259bb4ef8 upstream.
+commit 3b62bd1fde50d54cc59015e14869e6cc3d6899e0 upstream.
 
-Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3)
-to LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator
-node for the LM61460 5V supply to support this change.
+Commit under Fixes corrected the "mux-reg-masks" property but did not
+update the "length" field of the "reg" property to account for the
+newly added register offsets which extend the region. Fix this.
 
-AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
-
-Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
+Fixes: 38e7f9092efb ("arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20250415111328.3847502-3-y-abhilashchandra@ti.com
+Link: https://lore.kernel.org/r/20250423151612.48848-1-s-vadapalli@ti.com
 Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-@@ -44,6 +44,17 @@
- 		regulator-boot-on;
- 	};
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
+@@ -77,7 +77,7 @@
  
-+	vsys_5v0: regulator-vsys5v0 {
-+		/* Output of LM61460 */
-+		compatible = "regulator-fixed";
-+		regulator-name = "vsys_5v0";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&vusb_main>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+
- 	vsys_3v3: regulator-vsys3v3 {
- 		/* Output of LM5141 */
- 		compatible = "regulator-fixed";
-@@ -76,7 +87,7 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
--		vin-supply = <&vsys_3v3>;
-+		vin-supply = <&vsys_5v0>;
- 		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
- 		states = <1800000 0x0>,
- 			 <3300000 0x1>;
+ 		serdes_ln_ctrl: mux-controller@4080 {
+ 			compatible = "reg-mux";
+-			reg = <0x00004080 0x30>;
++			reg = <0x00004080 0x50>;
+ 			#mux-control-cells = <1>;
+ 			mux-reg-masks = <0x0 0x3>, <0x4 0x3>, /* SERDES0 lane0/1 select */
+ 					<0x8 0x3>, <0xc 0x3>, /* SERDES0 lane2/3 select */
 
 
 
