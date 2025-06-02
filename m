@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-149884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5F9ACB5A7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:07:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3351AACB2EA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8BED3B2F34
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C5C140831E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B39223DCD;
-	Mon,  2 Jun 2025 14:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E81D224247;
+	Mon,  2 Jun 2025 14:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oodWgn5R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6fUssOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71072290F;
-	Mon,  2 Jun 2025 14:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06FE238C06;
+	Mon,  2 Jun 2025 14:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875346; cv=none; b=aYcqKojveK2t4Jp0RBGb5a0S3aEY9WjDJ8GCmSbhAdYj3ys2O38uGOuR/MUeWkKlfSbl2yNEkHbmnUCJi5CAGUw3DOK0wAXpLLmU1b1Wro1+DX2kjrfudkwS5Gqe8E6Yez3nyTshqQgRn8gcxevPjNDbXWqZLvUsdfdpm5s8fNI=
+	t=1748874012; cv=none; b=CgYLi9WmmHMlzE5RmMNbVSRA04hkS/gScyxww+bEcyh9zFFEDYooojrzwN4KvcY1t0LbMT3rQgKNZQ9N0S1DryYDp1jWXIO7nMWKJ/MaprhkSXjNCkffNhilc2zOsS8fylCGI+2CxKfJDW9x2Iy78J9DFyqCON8GPuWeT4cN//4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875346; c=relaxed/simple;
-	bh=DG/Ca6cUlmogT9Uklw9TtrHQjx+4SX9V/1WKIr//4aQ=;
+	s=arc-20240116; t=1748874012; c=relaxed/simple;
+	bh=NJ5Id5A87l1Jiitzv0URgDPyMadpmLMlveAM2DMR/iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STueDtKLTP4/TDSxXuoADsBqN8mtaQr4mkgaEU6nBUyAXMTCOqpLzkirL5UzKQbY1Rq4iSE2o1qbsj8jtCs+Aho7G89cA9oORmsJ3Z2ccc45YINeWap0pfjaabpCLpifqeEozPhnL/UcTCcVPizFKmfkgaBXYWroWFNI5byhIc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oodWgn5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C4EC4CEEB;
-	Mon,  2 Jun 2025 14:42:25 +0000 (UTC)
+	 MIME-Version; b=aXd9NbNN13KZ3ocMexyX349yFJJHhHkZihoIzx2AwAAVIfQwuCDuu00CG5KmEKoluvKj95kp3MAwWfCbYNz7+diDQE3MmulKEO1RSvzaQNUGFXJdGYtyLQOYATQuLDQNAhv5tn4S5Uk/Vh6PeNyjLkzaFoxIYZEOKlAeacAS28w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6fUssOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89A3C4CEEB;
+	Mon,  2 Jun 2025 14:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875345;
-	bh=DG/Ca6cUlmogT9Uklw9TtrHQjx+4SX9V/1WKIr//4aQ=;
+	s=korg; t=1748874012;
+	bh=NJ5Id5A87l1Jiitzv0URgDPyMadpmLMlveAM2DMR/iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oodWgn5RKICZtgovhUDszJQamTGTIArkb1dF72wcLp3v8FgewSn8viZxXCjcm5qN7
-	 aOUnbgH0sSKPNIhWxK8vHc6Yiq07pLgzmJI6gO9jo5cU8pLhBdumJGregO+Uqj2e2u
-	 Xqo7gI8+X550kJZskCUqRZgTZ/k8ugVJFcqTbXsY=
+	b=h6fUssOU1RNDgj+R/nMDANLOWM6sywGp+Ss0t6Ipb+gBZao/bfC33crNx1d8Lu8TE
+	 xXdDtV0r0Pm1dmJOJ6IRyagv3Jh2pdRuUxlD8Vruu9mUbtGlNtGJwORmPHiSWcvLBi
+	 ttowgM1NMoT6k17s5hgDIF7Xip8KiYomRKqVRi4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
-	Zhi Yang <Zhi.Yang@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 106/270] drm/vmwgfx: Fix a deadlock in dma buf fence polling
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 327/444] wifi: iwlwifi: add support for Killer on MTL
 Date: Mon,  2 Jun 2025 15:46:31 +0200
-Message-ID: <20250602134311.564526349@linuxfoundation.org>
+Message-ID: <20250602134354.215227591@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit e58337100721f3cc0c7424a18730e4f39844934f upstream.
+[ Upstream commit ebedf8b7f05b9c886d68d63025db8d1b12343157 ]
 
-Introduce a version of the fence ops that on release doesn't remove
-the fence from the pending list, and thus doesn't require a lock to
-fix poll->fence wait->fence unref deadlocks.
+For now, we need another entry for these devices, this
+will be changed completely for 6.16.
 
-vmwgfx overwrites the wait callback to iterate over the list of all
-fences and update their status, to do that it holds a lock to prevent
-the list modifcations from other threads. The fence destroy callback
-both deletes the fence and removes it from the list of pending
-fences, for which it holds a lock.
-
-dma buf polling cb unrefs a fence after it's been signaled: so the poll
-calls the wait, which signals the fences, which are being destroyed.
-The destruction tries to acquire the lock on the pending fences list
-which it can never get because it's held by the wait from which it
-was called.
-
-Old bug, but not a lot of userspace apps were using dma-buf polling
-interfaces. Fix those, in particular this fixes KDE stalls/deadlock.
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 2298e804e96e ("drm/vmwgfx: rework to new fence interface, v2")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.2+
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240722184313.181318-2-zack.rusin@broadcom.com
-[Minor context change fixed]
-Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219926
+Link: https://patch.msgid.link/20250506214258.2efbdc9e9a82.I31915ec252bd1c74bd53b89a0e214e42a74b6f2e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |   17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-@@ -32,7 +32,6 @@
- #define VMW_FENCE_WRAP (1 << 31)
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 4a2de79f2e864..c01a9a6f06a4d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -580,6 +580,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
+ 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+ 	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
+ 	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
++	IWL_DEV_INFO(0x7F70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
++	IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
  
- struct vmw_fence_manager {
--	int num_fence_objects;
- 	struct vmw_private *dev_priv;
- 	spinlock_t lock;
- 	struct list_head fence_list;
-@@ -113,13 +112,13 @@ static void vmw_fence_obj_destroy(struct
- {
- 	struct vmw_fence_obj *fence =
- 		container_of(f, struct vmw_fence_obj, base);
--
- 	struct vmw_fence_manager *fman = fman_from_fence(fence);
- 
--	spin_lock(&fman->lock);
--	list_del_init(&fence->head);
--	--fman->num_fence_objects;
--	spin_unlock(&fman->lock);
-+	if (!list_empty(&fence->head)) {
-+		spin_lock(&fman->lock);
-+		list_del_init(&fence->head);
-+		spin_unlock(&fman->lock);
-+	}
- 	fence->destroy(fence);
- }
- 
-@@ -250,7 +249,6 @@ static const struct dma_fence_ops vmw_fe
- 	.release = vmw_fence_obj_destroy,
- };
- 
--
- /**
-  * Execute signal actions on fences recently signaled.
-  * This is done from a workqueue so we don't have to execute
-@@ -353,7 +351,6 @@ static int vmw_fence_obj_init(struct vmw
- 		goto out_unlock;
- 	}
- 	list_add_tail(&fence->head, &fman->fence_list);
--	++fman->num_fence_objects;
- 
- out_unlock:
- 	spin_unlock(&fman->lock);
-@@ -402,7 +399,7 @@ static bool vmw_fence_goal_new_locked(st
- {
- 	u32 goal_seqno;
- 	u32 *fifo_mem;
--	struct vmw_fence_obj *fence;
-+	struct vmw_fence_obj *fence, *next_fence;
- 
- 	if (likely(!fman->seqno_valid))
- 		return false;
-@@ -413,7 +410,7 @@ static bool vmw_fence_goal_new_locked(st
- 		return false;
- 
- 	fman->seqno_valid = false;
--	list_for_each_entry(fence, &fman->fence_list, head) {
-+	list_for_each_entry_safe(fence, next_fence, &fman->fence_list, head) {
- 		if (!list_empty(&fence->seq_passed_actions)) {
- 			fman->seqno_valid = true;
- 			vmw_mmio_write(fence->base.seqno,
+ 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
+ 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma, iwl_ax411_killer_1690s_name),
+-- 
+2.39.5
+
 
 
 
