@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-149553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4227ACB376
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E428ACB457
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D26D16CE5D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31EE21942933
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD43227E89;
-	Mon,  2 Jun 2025 14:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856EF234977;
+	Mon,  2 Jun 2025 14:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5LqJx5k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyVzDT+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D00F1EA65;
-	Mon,  2 Jun 2025 14:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EB922D4F9;
+	Mon,  2 Jun 2025 14:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874304; cv=none; b=L+Qteg10MBEZDaZZ179rNIxhfn0ceprBELb/Qb/nZljCMwnKyphkx+3+SFfrl/N3AQKUTIaEjvT3ZpREA5BSfhPwTmXzNS0cdK92M4eAdNRA1tuaZJObaCYn8FwwsHyKuHpkjkJLgGiaAsQiVLFCx6t+9zBzO6DBVVKXcXQrStU=
+	t=1748874850; cv=none; b=TEbPkHbajjyMKA3/3X18lMeVz3jCIu14bvv4Xb8yiyUod4WKmveUqTySd/rYzZCooTEqhfRSaa7/z927y0vK62PBQyD12NjPrqCjjApdUb7reDv5x8hbwrHoUPVqKrLBidhudnVcrNWzaId503EmqrSk+JPC+J7Xx3sc70taDh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874304; c=relaxed/simple;
-	bh=IUxiZMqiL1P1RcEOI+xmomWcGzKvzdo8mHOcwHHeERs=;
+	s=arc-20240116; t=1748874850; c=relaxed/simple;
+	bh=PqE8WJBtyf3QIbQ9CsXzWUOMlATvsKN2/8cKfizdcIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5XUzDNMOUGlfuKzJUvJLpx6Hz7fThqUWFhEj/phGdMdI5Lgf5EsAbWZzuscEGUTWwctRrIWqDH0zrbCoNXe7fC7ssa0a2aZY8Sxc3KqMLqn5SKSsR9eIL5rX/Pn22EUwbEsbf3tPWi0mAaHHhtbouLCttVmv9/qiVzlGz7FBrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5LqJx5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE3BC4CEEB;
-	Mon,  2 Jun 2025 14:25:03 +0000 (UTC)
+	 MIME-Version; b=IDWHTDfGhwIPvqIHCUxB1A4JY4VFa+HYIAU16oGlueaQDP48TuVdY9BrhG8z1UxyuuHLAMb1iOP7mmmE+UOm+aDTvBlhu1KrgskWQT2CReZeT25QZDQ/fCKsutaqY3+WgwQr+IYyXbW2OLrESQIXYmJnCk87AUNe17cXrEZHNI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyVzDT+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C62C4CEEB;
+	Mon,  2 Jun 2025 14:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874303;
-	bh=IUxiZMqiL1P1RcEOI+xmomWcGzKvzdo8mHOcwHHeERs=;
+	s=korg; t=1748874850;
+	bh=PqE8WJBtyf3QIbQ9CsXzWUOMlATvsKN2/8cKfizdcIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5LqJx5kTkaPfZHMZB4JzEgUwVK48MYxtO2tGKqmxswmsP9IZyWYVAJuxZd/dpX9w
-	 urlxxuhB30g9qndmjl+Ib/79dCicMcXMFObCyVzPSYOzNze/OAxMiKBOhKlPUNFaXU
-	 IyhFSLVhWPUoWSbcpkZOsCVx2+1CA2FU8/fJ8rx4=
+	b=iyVzDT+z1LK0yFGhel6SSqeqZm+uFpclG1XqoMXRJPJPji0AH9+HpmLmpbe9mOKlU
+	 fbMyX2Nj046PHeyXyfD1qyyD9afvg5hk6QSNLDuP5YJ9AdIR3EMPcAODtOgP4l2gHq
+	 QFe6RfUmQ6OPzQ6jJ+aq94hhinLIefC7ZEU4Zbd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Neha Malcom Francis <n-francis@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.6 425/444] arm64: dts: ti: k3-am68-sk: Fix regulator hierarchy
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 156/204] rcu: fix header guard for rcu_all_qs()
 Date: Mon,  2 Jun 2025 15:48:09 +0200
-Message-ID: <20250602134358.191128580@linuxfoundation.org>
+Message-ID: <20250602134301.789648133@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Ankur Arora <ankur.a.arora@oracle.com>
 
-commit 7edf0a4d3bb7f5cd84f172b76c380c4259bb4ef8 upstream.
+[ Upstream commit ad6b5b73ff565e88aca7a7d1286788d80c97ba71 ]
 
-Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3)
-to LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator
-node for the LM61460 5V supply to support this change.
+rcu_all_qs() is defined for !CONFIG_PREEMPT_RCU but the declaration
+is conditioned on CONFIG_PREEMPTION.
 
-AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
+With CONFIG_PREEMPT_LAZY, CONFIG_PREEMPTION=y does not imply
+CONFIG_PREEMPT_RCU=y.
 
-Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20250415111328.3847502-3-y-abhilashchandra@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Decouple the two.
+
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ include/linux/rcutree.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-@@ -43,6 +43,17 @@
- 		regulator-boot-on;
- 	};
+diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
+index 18b1ed9864b02..5d39875c6594e 100644
+--- a/include/linux/rcutree.h
++++ b/include/linux/rcutree.h
+@@ -53,7 +53,7 @@ void rcu_scheduler_starting(void);
+ extern int rcu_scheduler_active __read_mostly;
+ void rcu_end_inkernel_boot(void);
+ bool rcu_is_watching(void);
+-#ifndef CONFIG_PREEMPTION
++#ifndef CONFIG_PREEMPT_RCU
+ void rcu_all_qs(void);
+ #endif
  
-+	vsys_5v0: regulator-vsys5v0 {
-+		/* Output of LM61460 */
-+		compatible = "regulator-fixed";
-+		regulator-name = "vsys_5v0";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&vusb_main>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+
- 	vsys_3v3: regulator-vsys3v3 {
- 		/* Output of LM5141 */
- 		compatible = "regulator-fixed";
-@@ -75,7 +86,7 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
--		vin-supply = <&vsys_3v3>;
-+		vin-supply = <&vsys_5v0>;
- 		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
- 		states = <1800000 0x0>,
- 			 <3300000 0x1>;
+-- 
+2.39.5
+
 
 
 
