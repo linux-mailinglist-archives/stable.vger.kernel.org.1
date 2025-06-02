@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0030ACB467
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B25ACB862
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B1709E0BEA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79E741BC4AD0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71B42236F2;
-	Mon,  2 Jun 2025 14:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4282248B0;
+	Mon,  2 Jun 2025 15:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqPMbBbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsHiIyoO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D3519EEBD;
-	Mon,  2 Jun 2025 14:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698131DF73C;
+	Mon,  2 Jun 2025 15:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874625; cv=none; b=qfVHKbMdY/NqCBsq6HhdhI8elZZXlb0rHSxLH2nfcOsEhdBN4lcvNXcDcLtMl03uhTccK8cMcmpYhMjO0KouRXl4AMhFmpbbYidc7Xsn79OCwl3fUUZshsCTKWt8zzvi+qNI6Kmu7IRqo3gH2Lo70koWWkRZt2DrFe/Jp6l7gu0=
+	t=1748877089; cv=none; b=OGz3rh3Y9rkr234+i4yT1mwoEb1GcCyfyQIQpSI6bsdHhmf8YCxe+m2nkWmduMiBlICMZ3FTabmvgfFtg+4WIrB1SVPA2XTu2Lmd+2Fx81KRsCeyG1zLhzSr9GCkIuUrSk21DLnUpyWecz0J1LxhEz/NeRPks1aempSrKcatOLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874625; c=relaxed/simple;
-	bh=cxhWKODbK+hNUHH5irpi6XgMDVSBApdQnQLjHfIH7R8=;
+	s=arc-20240116; t=1748877089; c=relaxed/simple;
+	bh=DOTQOcgx5/2LnSs66q6DEuP607uuEEHz4wTF2/o7ABQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcW456hMyMk2ALuWawdmAafSukBcO99lN/SewRHr2lPd0/gSG8uLiXPb+TyxkIZ564toU5qRF1fdQX7lyCiHhg8eqdr5+Mpw5nqT9cbufB/0t1gl9Y8Q+e3CruhrdJXSfTvAj5Bmg66otRVnl+0yHgE+ebrLkNcgH/no+kh//vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqPMbBbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DAAC4CEEB;
-	Mon,  2 Jun 2025 14:30:24 +0000 (UTC)
+	 MIME-Version; b=GR/ZGouMpBBDrDClBzpzt84XDqzalIbSiW0KNlQ0a+j6bm4+qEFHDjv8JZ4smy1aVYr025lMMV2e47qLGppI2nNbcmW73W9LPbMlW3/uZTxyDBUaeZV9t31UcdYezlrlPZ9y4BTsWJFHsJx2uUI1YDbq0Dim4ABiINftCZ0nix0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsHiIyoO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD875C4CEEB;
+	Mon,  2 Jun 2025 15:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874624;
-	bh=cxhWKODbK+hNUHH5irpi6XgMDVSBApdQnQLjHfIH7R8=;
+	s=korg; t=1748877089;
+	bh=DOTQOcgx5/2LnSs66q6DEuP607uuEEHz4wTF2/o7ABQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqPMbBbFr7l7+KPPsxcM2oNjf40vhoxFoQKQ4X2kJdj6HKcnE6cK+vSn+qtVVaqJ1
-	 j6UjjZQw6Sl//MpriqskQUMwZf5LAT390jFBy7lUZA0eN3NErv1cJZvwL9AQ3Eri79
-	 Lm9YgGaZD2w6GRZ9ti9fasYBVeBmDD6YuhPrNSQ0=
+	b=FsHiIyoO+zLSgt3ASxhdtcUVBE458Oz3IU31svJS7Us5BZ8BMrf6dnr7YKTdAMy4Q
+	 oOvtEQBNQfbSPpjcLk00qN+JV2DuyZxnBPJ32uVUsCrXQ2FIeB+0RoIJFJ26+DiauL
+	 IudzzDheLaAkaacB6EjDi2r94AJPfPQt0WGbt3Rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Eilert <kernel.hias@eilert.tech>,
-	Aditya Garg <gargaditya08@live.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 084/204] Input: synaptics - enable InterTouch on TUXEDO InfinityBook Pro 14 v5
+	Nandakumar Edamana <nandakumar@nandakumar.co.in>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 141/325] libbpf: Fix out-of-bound read
 Date: Mon,  2 Jun 2025 15:46:57 +0200
-Message-ID: <20250602134258.969478546@linuxfoundation.org>
+Message-ID: <20250602134325.530389669@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
 
-commit 2abc698ac77314e0de5b33a6d96a39c5159d88e4 upstream.
+[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
 
-Enable InterTouch mode on TUXEDO InfinityBook Pro 14 v5 by adding
-"SYN1221" to the list of SMBus-enabled variants.
+In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
+that it will be at least two characters long due to the presence of checks for
+opening and closing quotes. But the check for the closing quote
+(value[len - 1] != '"') misses the fact that it could be checking the opening
+quote itself in case of an invalid input that consists of just the opening
+quote.
 
-Add support for InterTouch on SYN1221 by adding it to the list of
-SMBus-enabled variants.
+This commit adds an explicit check to make sure the string is at least two
+characters long.
 
-Reported-by: Matthias Eilert <kernel.hias@eilert.tech>
-Tested-by: Matthias Eilert <kernel.hias@eilert.tech>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Link: https://lore.kernel.org/r/PN3PR01MB9597C033C4BC20EE2A0C4543B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/synaptics.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -186,6 +186,7 @@ static const char * const smbus_pnp_ids[
- 	"LEN2044", /* L470  */
- 	"LEN2054", /* E480 */
- 	"LEN2055", /* E580 */
-+	"SYN1221", /* TUXEDO InfinityBook Pro 14 v5 */
- 	"SYN3003", /* HP EliteBook 850 G1 */
- 	"SYN3052", /* HP EliteBook 840 G4 */
- 	"SYN3221", /* HP 15-ay000 */
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index a0fb50718daef..98d5e566e0582 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -1751,7 +1751,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
+ 	}
+ 
+ 	len = strlen(value);
+-	if (value[len - 1] != '"') {
++	if (len < 2 || value[len - 1] != '"') {
+ 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
+ 			ext->name, value);
+ 		return -EINVAL;
+-- 
+2.39.5
+
 
 
 
