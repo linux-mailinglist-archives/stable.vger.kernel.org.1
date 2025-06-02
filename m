@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-149840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4573ACB3E7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84AC0ACB275
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E59E7AD409
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D78E6401BBD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D50322A4E8;
-	Mon,  2 Jun 2025 14:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39D122A7FD;
+	Mon,  2 Jun 2025 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYhi7ili"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbfQbcWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B6622A1E6;
-	Mon,  2 Jun 2025 14:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D16221727;
+	Mon,  2 Jun 2025 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875206; cv=none; b=E+8R3bkdxFy/GHuzeDGiYPWADy5g9q5Vi/1YF/INejqrMpoBE5jMLUIB1LBowK5xvwefN0zxFlwUE60SIkFE+GY2oJtCkLSxbT19tnMki/xREm1EbTwyLPKRFz9q73WY8q/N2Z/J+IvsOz+xAfx+sUP3BuIuBnvwy13Cs4pcNxE=
+	t=1748873785; cv=none; b=FH8pNLTxtU6LInJFPLeWggFa40zl9Z3r/oUSIZzhsDD4mD9n3rP87NOK94mprzy1l1TavwRYzApZb3wmyv8VUEyRcHvxKMdq4gWIF7ZP1jnoRw/kE1lDHWjCgUrUFT5pmtM3zsYGLgbAi9uXHnQKnYkVedFtgyOfUXoNYfQyF30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875206; c=relaxed/simple;
-	bh=Afiko+hniFQoNWIUpoSUQcewR+ezzZYQsY9jXmFV0kM=;
+	s=arc-20240116; t=1748873785; c=relaxed/simple;
+	bh=PsdTrBpEC02SySoWH85+WyuXa3wz0lsuvn4mPPnDGWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNjW8zA+NwZlBjWtBkHUirdkpDguMjGDQqyZKMrjTZVR1HbSerUz8SZ6CFf38kbbHbwGEGbB7NfB1ESVizcepyKH3lX8HO09Me3mwWYFIzTcyl6Atya2etE5yYJP7ziEU+tRzWHlnepFEMvxt2N9tCc3VWJH+fCrur14nyc7nx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYhi7ili; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4E2C4CEEB;
-	Mon,  2 Jun 2025 14:40:05 +0000 (UTC)
+	 MIME-Version; b=FBToywxEP7WJKBtn0opAQDZ4ZcY1PsxRHxw2aLx91FwvrBO+uq3h5DQKZ9MfgiNHdh37K0G3oWInoN6TLOSY/Jjz1C3QNXhw7aCoIizyVDPZ9O7+4SkFpybZyAIEBRacQzHSmpkLY0kRNjTZ+0eEf84tlUY/vDa1hQ7F0ChBGZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SbfQbcWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AADC4CEEB;
+	Mon,  2 Jun 2025 14:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875205;
-	bh=Afiko+hniFQoNWIUpoSUQcewR+ezzZYQsY9jXmFV0kM=;
+	s=korg; t=1748873785;
+	bh=PsdTrBpEC02SySoWH85+WyuXa3wz0lsuvn4mPPnDGWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYhi7iliFEOdt4vRagE9SxPFusR7J/Ra1jefajJYCtavvw9WZFyu8jRfQdtjx/AUf
-	 NGjRzjbqxwjXs5xHWEVLWuR0h3ksc5kDPvfg+MO1uMLFnZmFn80JTnQNZiMwhgRD/U
-	 7gtoi3XFdLF9lnJEpfGKkRd+RdyOtlNUqQZD9H4w=
+	b=SbfQbcWyqaj1kRT61JeIU25qoXo8xArZk/zQ/+AsyG4732PbwDhfxP3hoG182dX1b
+	 MLFH3v5RGlEnHHu8TfBNlAKiAbPDaPZyUROv6S5nscgw1+ErM5r5hQ0VsGOzYHf41m
+	 sfaJsPWuGzRgMWFCW1lUgiCGfzYiUGy/dxZVKjtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nisar Sayed <Nisar.Sayed@microchip.com>,
-	Yuiko Oshino <yuiko.oshino@microchip.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/270] net: phy: microchip: implement generic .handle_interrupt() callback
+Subject: [PATCH 6.6 252/444] net/mlx5: Extend Ethtool loopback selftest to support non-linear SKB
 Date: Mon,  2 Jun 2025 15:45:16 +0200
-Message-ID: <20250602134308.472104908@linuxfoundation.org>
+Message-ID: <20250602134351.151201945@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-[ Upstream commit e01a3feb8f69ab620b0016498603cad364f65224 ]
+[ Upstream commit 95b9606b15bb3ce1198d28d2393dd0e1f0a5f3e9 ]
 
-In an attempt to actually support shared IRQs in phylib, we now move the
-responsibility of triggering the phylib state machine or just returning
-IRQ_NONE, based on the IRQ status register, to the PHY driver. Having
-3 different IRQ handling callbacks (.handle_interrupt(),
-.did_interrupt() and .ack_interrupt() ) is confusing so let the PHY
-driver implement directly an IRQ handler like any other device driver.
-Make this driver follow the new convention.
+Current loopback test validation ignores non-linear SKB case in
+the SKB access, which can lead to failures in scenarios such as
+when HW GRO is enabled.
+Linearize the SKB so both cases will be handled.
 
-Cc: Nisar Sayed <Nisar.Sayed@microchip.com>
-Cc: Yuiko Oshino <yuiko.oshino@microchip.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250209101716.112774-15-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 30a41ed32d30 ("net: phy: microchip: force IRQ polling mode for lan88xx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip.c    | 19 +++++++++++++++++++
- drivers/net/phy/microchip_t1.c | 19 +++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index 375bbd60b38af..a149d0ae58b02 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -56,6 +56,24 @@ static int lan88xx_phy_ack_interrupt(struct phy_device *phydev)
- 	return rc < 0 ? rc : 0;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
+index 08a75654f5f18..c170503b3aace 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
+@@ -165,6 +165,9 @@ mlx5e_test_loopback_validate(struct sk_buff *skb,
+ 	struct udphdr *udph;
+ 	struct iphdr *iph;
  
-+static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
++	if (skb_linearize(skb))
++		goto out;
 +
-+	irq_status = phy_read(phydev, LAN88XX_INT_STS);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int lan88xx_suspend(struct phy_device *phydev)
- {
- 	struct lan88xx_priv *priv = phydev->priv;
-@@ -374,6 +392,7 @@ static struct phy_driver microchip_phy_driver[] = {
- 
- 	.ack_interrupt	= lan88xx_phy_ack_interrupt,
- 	.config_intr	= lan88xx_phy_config_intr,
-+	.handle_interrupt = lan88xx_handle_interrupt,
- 
- 	.suspend	= lan88xx_suspend,
- 	.resume		= genphy_resume,
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index fed3e395f18e1..553b391d1747a 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -203,6 +203,24 @@ static int lan87xx_phy_ack_interrupt(struct phy_device *phydev)
- 	return rc < 0 ? rc : 0;
- }
- 
-+static irqreturn_t lan87xx_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
-+
-+	irq_status = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	if (irq_status == 0)
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int lan87xx_config_init(struct phy_device *phydev)
- {
- 	int rc = lan87xx_phy_init(phydev);
-@@ -223,6 +241,7 @@ static struct phy_driver microchip_t1_phy_driver[] = {
- 
- 		.ack_interrupt  = lan87xx_phy_ack_interrupt,
- 		.config_intr    = lan87xx_phy_config_intr,
-+		.handle_interrupt = lan87xx_handle_interrupt,
- 
- 		.suspend        = genphy_suspend,
- 		.resume         = genphy_resume,
+ 	/* We are only going to peek, no need to clone the SKB */
+ 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
+ 		goto out;
 -- 
 2.39.5
 
