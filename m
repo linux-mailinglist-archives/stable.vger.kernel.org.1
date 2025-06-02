@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE78ACB816
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA564ACB484
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 375FC3B77CA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3C484A0762
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4774822DA13;
-	Mon,  2 Jun 2025 15:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E63022D4FF;
+	Mon,  2 Jun 2025 14:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV96ZqSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP22lPXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F219D22D4CE;
-	Mon,  2 Jun 2025 15:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0CC22A804;
+	Mon,  2 Jun 2025 14:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876897; cv=none; b=cLnx56K1AWK3TARzt0+ZcJLmadLjhvOSck7wOQcHKRWSkmEvNxtDeCvGOjWnlGlDIAg1I6OZT5bewST/9wI5jIePZaYuV3ZWeuk0Ossopp8Zo1uTu0Wwkgyv9h/gJxdScpXN/7Ltl6AgznCpJkKDP7U9uE3MnamrmlNNk5Nrm+o=
+	t=1748875231; cv=none; b=F8ZpAs6RitE627EwNt9kXTs6Fa8NoOahNlGOxowL4wDykwPdNTqAZyG4Ym19M0vo+CyZf9+6bBcFAHqjs1uJfUbuut+9ek4ih24xy+6+M7GVnvKbH/3ATbrt02b9nrqWKcCgpIENb7ekZMve7ZbAwP19X8oDJ//f2lBJu+KFROE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876897; c=relaxed/simple;
-	bh=ngZ9/YwZ3sOxw1lJLuvNmAzIm0aztW0XKky+e69blT4=;
+	s=arc-20240116; t=1748875231; c=relaxed/simple;
+	bh=+NuOw8SVgUHpX9MjD25Y6pIOEWl3C29u6BP6ggaykl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiWRNE6m/QZfosVUd9XNMWO18+oBePemFea5itGitpyratLXRdWXWk/jB3U56ENET+gezHbYCN6xhVXd7s+ojzjYPnQNF9bZxhjWj5S1EnW4SsVtW4qDKWaQPe28vBW3Sj0D6GoNEQf/N+DMmITfex9fW5Gswp31E4iz4ZN1Bbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV96ZqSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E57C4CEEB;
-	Mon,  2 Jun 2025 15:08:16 +0000 (UTC)
+	 MIME-Version; b=WbhK73ZoKHmnmSkA5sUpKk9Yn33hOZvhqKy6Bl/5sNWIwpsFY3KMhSftpWmz7pLEYqnVwDlK8N/2/YZkyz9duomiJErM3ZCA8RN6YNNDdZBJqUUq2Q765eqyVjXnADCdCDNCUPyqZNVBJteCbff6BBRjkGSZwN1hTwMjNfGVD6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP22lPXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FBFC4CEEB;
+	Mon,  2 Jun 2025 14:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876896;
-	bh=ngZ9/YwZ3sOxw1lJLuvNmAzIm0aztW0XKky+e69blT4=;
+	s=korg; t=1748875231;
+	bh=+NuOw8SVgUHpX9MjD25Y6pIOEWl3C29u6BP6ggaykl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aV96ZqSU2iTKKyxNWT5ghmndT01axE9RaexyY1QlStnF50kVShW9GTsd2QkPEu8DM
-	 dJmjXtEUe7S8aRTe24RiHsB+AXuOMHuOgkLrv13Tx6K89xNC5S40xDhUvu1hq0QVE1
-	 1REwZQCSImLPDrlpDkARDsUgSCoIiXF2+treT5l0=
+	b=yP22lPXEjBF4GR7MYYFolUivyvtV73Qgd5W9Y9/TwqnMw0Hp/D1xGTmVcU4YcOet2
+	 5yeoh0U3y9cjML4ACefAf00thkdSImMeUvgvz1bYmud71GAv3/cOzcLEklJDJYCQiT
+	 X0XP+O+skCVLUZjgVSrinsvCBmwMU3L4DiLKkv7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/325] ext4: reject the data_err=abort option in nojournal mode
-Date: Mon,  2 Jun 2025 15:45:54 +0200
-Message-ID: <20250602134322.947152625@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jim Lin <jilin@nvidia.com>,
+	Wayne Chang <waynec@nvidia.com>
+Subject: [PATCH 5.10 070/270] usb: host: tegra: Prevent host controller crash when OTG port is used
+Date: Mon,  2 Jun 2025 15:45:55 +0200
+Message-ID: <20250602134310.047967174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Jim Lin <jilin@nvidia.com>
 
-[ Upstream commit 26343ca0df715097065b02a6cddb4a029d5b9327 ]
+commit 732f35cf8bdfece582f6e4a9c659119036577308 upstream.
 
-data_err=abort aborts the journal on I/O errors. However, this option is
-meaningless if journal is disabled, so it is rejected in nojournal mode
-to reduce unnecessary checks. Also, this option is ignored upon remount.
+When a USB device is connected to the OTG port, the tegra_xhci_id_work()
+routine transitions the PHY to host mode and calls xhci_hub_control()
+with the SetPortFeature command to enable port power.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250122110533.4116662-4-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In certain cases, the XHCI controller may be in a low-power state
+when this operation occurs. If xhci_hub_control() is invoked while
+the controller is suspended, the PORTSC register may return 0xFFFFFFFF,
+indicating a read failure. This causes xhci_hc_died() to be triggered,
+leading to host controller shutdown.
+
+Example backtrace:
+[  105.445736] Workqueue: events tegra_xhci_id_work
+[  105.445747]  dump_backtrace+0x0/0x1e8
+[  105.445759]  xhci_hc_died.part.48+0x40/0x270
+[  105.445769]  tegra_xhci_set_port_power+0xc0/0x240
+[  105.445774]  tegra_xhci_id_work+0x130/0x240
+
+To prevent this, ensure the controller is fully resumed before
+interacting with hardware registers by calling pm_runtime_get_sync()
+prior to the host mode transition and xhci_hub_control().
+
+Fixes: f836e7843036 ("usb: xhci-tegra: Add OTG support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jim Lin <jilin@nvidia.com>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Link: https://lore.kernel.org/r/20250422114001.126367-1-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/usb/host/xhci-tegra.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 7f0231b349057..f829f989f2b59 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -2741,6 +2741,13 @@ static int ext4_check_opt_consistency(struct fs_context *fc,
- 	}
+--- a/drivers/usb/host/xhci-tegra.c
++++ b/drivers/usb/host/xhci-tegra.c
+@@ -1178,6 +1178,7 @@ static void tegra_xhci_id_work(struct wo
+ 	tegra->otg_usb3_port = tegra_xusb_padctl_get_usb3_companion(tegra->padctl,
+ 								    tegra->otg_usb2_port);
  
- 	if (is_remount) {
-+		if (!sbi->s_journal &&
-+		    ctx_test_mount_opt(ctx, EXT4_MOUNT_DATA_ERR_ABORT)) {
-+			ext4_msg(NULL, KERN_WARNING,
-+				 "Remounting fs w/o journal so ignoring data_err option");
-+			ctx_clear_mount_opt(ctx, EXT4_MOUNT_DATA_ERR_ABORT);
-+		}
-+
- 		if (ctx_test_mount_opt(ctx, EXT4_MOUNT_DAX_ALWAYS) &&
- 		    (test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA)) {
- 			ext4_msg(NULL, KERN_ERR, "can't mount with "
-@@ -5318,6 +5325,11 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
- 				 "data=, fs mounted w/o journal");
- 			goto failed_mount3a;
++	pm_runtime_get_sync(tegra->dev);
+ 	if (tegra->host_mode) {
+ 		/* switch to host mode */
+ 		if (tegra->otg_usb3_port >= 0) {
+@@ -1207,6 +1208,7 @@ static void tegra_xhci_id_work(struct wo
  		}
-+		if (test_opt(sb, DATA_ERR_ABORT)) {
-+			ext4_msg(sb, KERN_ERR,
-+				 "can't mount with data_err=abort, fs mounted w/o journal");
-+			goto failed_mount3a;
-+		}
- 		sbi->s_def_mount_opt &= ~EXT4_MOUNT_JOURNAL_CHECKSUM;
- 		clear_opt(sb, JOURNAL_CHECKSUM);
- 		clear_opt(sb, DATA_FLAGS);
--- 
-2.39.5
-
+ 
+ 		tegra_xhci_set_port_power(tegra, true, true);
++		pm_runtime_mark_last_busy(tegra->dev);
+ 
+ 	} else {
+ 		if (tegra->otg_usb3_port >= 0)
+@@ -1214,6 +1216,7 @@ static void tegra_xhci_id_work(struct wo
+ 
+ 		tegra_xhci_set_port_power(tegra, true, false);
+ 	}
++	pm_runtime_put_autosuspend(tegra->dev);
+ }
+ 
+ static int tegra_xusb_get_usb2_port(struct tegra_xusb *tegra,
 
 
 
