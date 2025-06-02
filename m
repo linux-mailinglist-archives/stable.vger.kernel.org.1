@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-150199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB679ACB62C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87258ACB872
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DBC49E36B4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 422E494810E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA66239E65;
-	Mon,  2 Jun 2025 14:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E783225792;
+	Mon,  2 Jun 2025 15:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2zGszsx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZt+znib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1976B239594;
-	Mon,  2 Jun 2025 14:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF598225776;
+	Mon,  2 Jun 2025 15:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876351; cv=none; b=fdqslu5URAgCM86IaDs3Zv7KXUriY6J8EfK9prn43JKx0Lftvg/YlXpJqudmGZB80GCXw023qANXeQtHFAcpqIln/EL72Iw+g5cDGZbAtpimQ+prNPoa9Rz43MbtliMrvETFJeE05TtC6TWErypyjwmql7Txzf+fj2Bzs9AuvjA=
+	t=1748877427; cv=none; b=mwM821eF167PIQVEO+02wnyVKYum3xuB+8c9e/T6MT6Lj+Ebr4x3Y/L1iXt/XzrS0kDrJGFKd/DC9SFmjz+f3pk7+DY45vvQ28BAXJjJShc8vpk5KiVPqnyA6X3k4l5maAnLBqzE93kHEvtToJKRgiZ2K8YFcL3DJeVbBlo73LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876351; c=relaxed/simple;
-	bh=BYV0xfdzfHJ/wxb8wm300UfB+aCAy4FBTBd5LuClJZg=;
+	s=arc-20240116; t=1748877427; c=relaxed/simple;
+	bh=D8AZY29T13VlZ1JlTg0SRdQhCjIQY6ceHXERDZNreeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7LFib5jndaiAYxI+i3CPhaEjpELK/hyZBNgG07HamtuGdjYlvAlhJ08LqAjeP/gaLMEUnUZ28HZSlueWeH1bc0MZJQeGVcuy/yNxc4F3yizXHwLW8nW2VxGUjbgkPeYEkwbdOJRoArnAx+oRcW8Ouvw0o3m3FktwVyaRZhn3LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2zGszsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A03C4CEEB;
-	Mon,  2 Jun 2025 14:59:10 +0000 (UTC)
+	 MIME-Version; b=IUw3RbK6aoJsPiJ1+EXjiRyAIKF+9DrsdyX7X4ZJAud3GDUEsMeCBC4Ldxv+0vD5DDGrerB5GeGvNkzMD4aLdxzfi9s0V/x3A2Ud8BjCA5tCeDpbgwqn0jXOxfWxjPzVtyCFTp+qJSM3CBOzcxYYgJFGtZHYiiCZceKy/DumlCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZt+znib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E22C4CEEB;
+	Mon,  2 Jun 2025 15:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876351;
-	bh=BYV0xfdzfHJ/wxb8wm300UfB+aCAy4FBTBd5LuClJZg=;
+	s=korg; t=1748877427;
+	bh=D8AZY29T13VlZ1JlTg0SRdQhCjIQY6ceHXERDZNreeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2zGszsx+erxZLSNsy4xpbuOn2DW034cWYTJX/fbUuXci3GLLxSKOTQy+lFRRnCHD
-	 CsQeRb6MU7vNtc1Hv/4pGtqRa5JnpYnOdK6gqRfB+IOLlKCjo7yY73pqos4FLACgnt
-	 qxftmNC5hY2P3CAPSVS5g4AXuxrjZew4sp+cJYGc=
+	b=nZt+znib5ir8lCwdyBadp/OAO+L7h6JrYirwRPvTlwaKwYBQ/dBBbN9+DGPVnFeDN
+	 L85/TyysegAH7ZtT+INCwIfZVQkynlDqSTCV1gWeXd/c1gx2FrEh6ZA2lfYW0VyB1l
+	 VQeyGgSzSoSkTtmf9DoG1LBwibMdy8YCC3x3wnG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/207] wifi: rtw88: Dont use static local variable in rtw8822b_set_tx_power_index_by_rate
+Subject: [PATCH 6.1 244/325] sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()
 Date: Mon,  2 Jun 2025 15:48:40 +0200
-Message-ID: <20250602134304.518414811@linuxfoundation.org>
+Message-ID: <20250602134329.698616972@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
+[ Upstream commit 3f981138109f63232a5fb7165938d4c945cc1b9d ]
 
-Some users want to plug two identical USB devices at the same time.
-This static variable could theoretically cause them to use incorrect
-TX power values.
+When enqueuing the first packet to an HFSC class, hfsc_enqueue() calls the
+child qdisc's peek() operation before incrementing sch->q.qlen and
+sch->qstats.backlog. If the child qdisc uses qdisc_peek_dequeued(), this may
+trigger an immediate dequeue and potential packet drop. In such cases,
+qdisc_tree_reduce_backlog() is called, but the HFSC qdisc's qlen and backlog
+have not yet been updated, leading to inconsistent queue accounting. This
+can leave an empty HFSC class in the active list, causing further
+consequences like use-after-free.
 
-Move the variable to the caller and pass a pointer to it to
-rtw8822b_set_tx_power_index_by_rate().
+This patch fixes the bug by moving the increment of sch->q.qlen and
+sch->qstats.backlog before the call to the child qdisc's peek() operation.
+This ensures that queue length and backlog are always accurate when packet
+drops or dequeues are triggered during the peek.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
+Fixes: 12d0ad3be9c3 ("net/sched/sch_hfsc.c: handle corner cases where head may change invalidating calculated deadline")
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250518222038.58538-2-xiyou.wangcong@gmail.com
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ net/sched/sch_hfsc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 247f26e3e8192..63ecac7201a12 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -954,11 +954,11 @@ static void rtw8822b_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
- }
- 
- static void
--rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
-+rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
-+				    u8 rs, u32 *phy_pwr_idx)
- {
- 	struct rtw_hal *hal = &rtwdev->hal;
- 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
--	static u32 phy_pwr_idx;
- 	u8 rate, rate_idx, pwr_index, shift;
- 	int j;
- 
-@@ -966,12 +966,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
- 		rate = rtw_rate_section[rs][j];
- 		pwr_index = hal->tx_pwr_tbl[path][rate];
- 		shift = rate & 0x3;
--		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
-+		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
- 		if (shift == 0x3) {
- 			rate_idx = rate & 0xfc;
- 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
--				    phy_pwr_idx);
--			phy_pwr_idx = 0;
-+				    *phy_pwr_idx);
-+			*phy_pwr_idx = 0;
- 		}
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index fc1370c293730..ec6ee45100132 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1568,6 +1568,9 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
+ 		return err;
  	}
- }
-@@ -979,11 +979,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
- static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
- {
- 	struct rtw_hal *hal = &rtwdev->hal;
-+	u32 phy_pwr_idx = 0;
- 	int rs, path;
  
- 	for (path = 0; path < hal->rf_path_num; path++) {
- 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
--			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
-+			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
-+							    &phy_pwr_idx);
++	sch->qstats.backlog += len;
++	sch->q.qlen++;
++
+ 	if (first && !cl->cl_nactive) {
+ 		if (cl->cl_flags & HFSC_RSC)
+ 			init_ed(cl, len);
+@@ -1583,9 +1586,6 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
+ 
  	}
+ 
+-	sch->qstats.backlog += len;
+-	sch->q.qlen++;
+-
+ 	return NET_XMIT_SUCCESS;
  }
  
 -- 
