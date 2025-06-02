@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088BCACB443
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D4CACB81B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4279C3B1664
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72D391C240F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B6E232376;
-	Mon,  2 Jun 2025 14:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9311422258C;
+	Mon,  2 Jun 2025 15:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zR47Sf7p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qHgOU0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F9A290F;
-	Mon,  2 Jun 2025 14:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC51221F10;
+	Mon,  2 Jun 2025 15:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874653; cv=none; b=POx7KubXWT8PVwjCKVLw40CMgsQBRnxtOGpgZWyem2WoZFFAg4VWd1FA/90Z5w/lTJ1EXYYodOrYdV5Qz64MRoYDRTVDowFgthftu+AxplgRU8pqX3J88Pnm/tsyUnRlfLoEqkA+jis5hx9A7mT7sZwKssoz7+XD9XAn9EwcMMY=
+	t=1748877026; cv=none; b=q6eXNxbBvsJW6ZkaVCQzDZwUo7CIfSeSvLrVCMAYOCRk3qEdEpICF5Dk9a2pn2MDZea7k1jmLH6z0FiM7oZmSXgShBensh4NIB9U5+3I0a1QvGVKGTwIZQ3mBlHgRnm3s2Z9YROE9d7tNrXMqpSsd3mvICOBX4G4yU+QDKw2Uv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874653; c=relaxed/simple;
-	bh=UwXBaTl8tu4+G95KR6FOMNhScreAGno83suMw0DRKr8=;
+	s=arc-20240116; t=1748877026; c=relaxed/simple;
+	bh=iYcXX8kZWKDt+JhJ6NNzF+GOp5h8uA54atkPdpAS/CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLs0a3sxl29Z70HpNwKdfcPLY8grQacu2q38KOjhtNIWLRvcJY+dG2Sj83tdO/rM5ftlNHwd/4FW/5QomxQ+NIQTQYTsQWxn+WF2TcyUrDvI4ukRZqIEyA4Bd6R2/hejgleyJmh6wdB5yZBG0lB0rPFLqFWttecQOe69tjLdbUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zR47Sf7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5306C4CEEB;
-	Mon,  2 Jun 2025 14:30:52 +0000 (UTC)
+	 MIME-Version; b=MS5Jiu5G/nnjuvfqtGwN8+9kSAle/lEye8C6DIBIusz+7fIL+Ph3m6kz3Ljp+/vIa9ixYmi1hoaTvR0WNAJt8rU0M1xD1awzHiH/R89tgpFJ9EUWL50LFdNGrdcKwyZ9+mKQOKYUyS2ypVWDCI7hryj9o5wJv+kdFyJ8Omed/j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qHgOU0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B218FC4CEEB;
+	Mon,  2 Jun 2025 15:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874653;
-	bh=UwXBaTl8tu4+G95KR6FOMNhScreAGno83suMw0DRKr8=;
+	s=korg; t=1748877026;
+	bh=iYcXX8kZWKDt+JhJ6NNzF+GOp5h8uA54atkPdpAS/CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zR47Sf7pytXhp5asTmtspFlUmYH8Mec3us4bU3Gn0gv2DKO88vGSimrTy1saBA33J
-	 GzKtMk4oeJJnoyqOQoFBvUaWWet+ixLYHSROw0k8aaqN7XSIbu2zzg2ZMS3ijr1sBA
-	 2H1AICrV8y4IqRRrICxWDKe1jJQrGc/bRw1lQiqU=
+	b=2qHgOU0fZ5MileTkNelKVv1O0MPOOqVSJSbp3WFGeSz0CCufsCJiqWZ1qfo5zEroX
+	 m7/9qyFw24Ww+jcm5P+D9fFnX7PmmrokcXm+u9SWCjZosZO/HkqmeYWLZMQ4DQNW8c
+	 gRe8MllHCQ7iUCujyFzPlMLnDqC3F/0BQ1fmz1Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zsolt Kajtar <soci@c64.rulez.org>,
-	Helge Deller <deller@gmx.de>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 092/204] fbdev: core: tileblit: Implement missing margin clearing for tileblit
+Subject: [PATCH 6.1 149/325] wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
 Date: Mon,  2 Jun 2025 15:47:05 +0200
-Message-ID: <20250602134259.277141249@linuxfoundation.org>
+Message-ID: <20250602134325.868966569@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zsolt Kajtar <soci@c64.rulez.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 76d3ca89981354e1f85a3e0ad9ac4217d351cc72 ]
+[ Upstream commit 6be7544d19fcfcb729495e793bc6181f85bb8949 ]
 
-I was wondering why there's garbage at the bottom of the screen when
-tile blitting is used with an odd mode like 1080, 600 or 200. Sure there's
-only space for half a tile but the same area is clean when the buffer
-is bitmap.
+Set the MCS maps and the highest rates according to the number of
+spatial streams the chip has. For RTL8814AU that is 3.
 
-Then later I found that it's supposed to be cleaned but that's not
-implemented. So I took what's in bitblit and adapted it for tileblit.
-
-This implementation was tested for both the horizontal and vertical case,
-and now does the same as what's done for bitmap buffers.
-
-If anyone is interested to reproduce the problem then I could bet that'd
-be on a S3 or Ark. Just set up a mode with an odd line count and make
-sure that the virtual size covers the complete tile at the bottom. E.g.
-for 600 lines that's 608 virtual lines for a 16 tall tile. Then the
-bottom area should be cleaned.
-
-For the right side it's more difficult as there the drivers won't let an
-odd size happen, unless the code is modified. But once it reports back a
-few pixel columns short then fbcon won't use the last column. With the
-patch that column is now clean.
-
-Btw. the virtual size should be rounded up by the driver for both axes
-(not only the horizontal) so that it's dividable by the tile size.
-That's a driver bug but correcting it is not in scope for this patch.
-
-Implement missing margin clearing for tileblit
-
-Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/e86aa009-b5bf-4b3a-8112-ea5e3cd49465@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/tileblit.c | 37 ++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
-index adff8d6ffe6f9..64c60fcb92d75 100644
---- a/drivers/video/fbdev/core/tileblit.c
-+++ b/drivers/video/fbdev/core/tileblit.c
-@@ -77,7 +77,42 @@ static void tile_putcs(struct vc_data *vc, struct fb_info *info,
- static void tile_clear_margins(struct vc_data *vc, struct fb_info *info,
- 			       int color, int bottom_only)
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 7c390c2c608d8..8a47cfb358b16 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1552,8 +1552,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
+ 			     struct ieee80211_sta_vht_cap *vht_cap)
  {
--	return;
-+	unsigned int cw = vc->vc_font.width;
-+	unsigned int ch = vc->vc_font.height;
-+	unsigned int rw = info->var.xres - (vc->vc_cols*cw);
-+	unsigned int bh = info->var.yres - (vc->vc_rows*ch);
-+	unsigned int rs = info->var.xres - rw;
-+	unsigned int bs = info->var.yres - bh;
-+	unsigned int vwt = info->var.xres_virtual / cw;
-+	unsigned int vht = info->var.yres_virtual / ch;
-+	struct fb_tilerect rect;
-+
-+	rect.index = vc->vc_video_erase_char &
-+		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
-+	rect.fg = color;
-+	rect.bg = color;
-+
-+	if ((int) rw > 0 && !bottom_only) {
-+		rect.sx = (info->var.xoffset + rs + cw - 1) / cw;
-+		rect.sy = 0;
-+		rect.width = (rw + cw - 1) / cw;
-+		rect.height = vht;
-+		if (rect.width + rect.sx > vwt)
-+			rect.width = vwt - rect.sx;
-+		if (rect.sx < vwt)
-+			info->tileops->fb_tilefill(info, &rect);
-+	}
-+
-+	if ((int) bh > 0) {
-+		rect.sx = info->var.xoffset / cw;
-+		rect.sy = (info->var.yoffset + bs) / ch;
-+		rect.width = rs / cw;
-+		rect.height = (bh + ch - 1) / ch;
-+		if (rect.height + rect.sy > vht)
-+			rect.height = vht - rect.sy;
-+		if (rect.sy < vht)
-+			info->tileops->fb_tilefill(info, &rect);
-+	}
- }
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
+-	u16 mcs_map;
++	u16 mcs_map = 0;
+ 	__le16 highest;
++	int i;
  
- static void tile_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+ 	if (efuse->hw_cap.ptcl != EFUSE_HW_CAP_IGNORE &&
+ 	    efuse->hw_cap.ptcl != EFUSE_HW_CAP_PTCL_VHT)
+@@ -1576,21 +1577,15 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
+ 	if (rtw_chip_has_rx_ldpc(rtwdev))
+ 		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
+ 
+-	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 8 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 10 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 12 |
+-		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 14;
+-	if (efuse->hw_cap.nss > 1) {
+-		highest = cpu_to_le16(780);
+-		mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
+-	} else {
+-		highest = cpu_to_le16(390);
+-		mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << 2;
++	for (i = 0; i < 8; i++) {
++		if (i < efuse->hw_cap.nss)
++			mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << (i * 2);
++		else
++			mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2);
+ 	}
+ 
++	highest = cpu_to_le16(390 * efuse->hw_cap.nss);
++
+ 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
+ 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
+ 	vht_cap->vht_mcs.rx_highest = highest;
 -- 
 2.39.5
 
