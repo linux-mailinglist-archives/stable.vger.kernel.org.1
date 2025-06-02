@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAA0ACB706
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF25ACB6E7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 074C7A23B30
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE431BC74D0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93A7188907;
-	Mon,  2 Jun 2025 14:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B934D22D7A6;
+	Mon,  2 Jun 2025 15:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkZPSR1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfS0RsL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F36422E3FC;
-	Mon,  2 Jun 2025 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6726322D9E7;
+	Mon,  2 Jun 2025 15:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875945; cv=none; b=GcYmTTIPQpyB4EGyL5ZpT/i1PUbvfBx/V6svmr3Sn8aC5ZLiKfKaSDuzZV4fzAEb9Gb2HWGtMtFt3qvgiNT2dgUdsm5x88pAn3RbvJZKWU8PNABDN1EbxMkGpgSyIZnciiiCYJ6GrAnl+uyjLtRGKWFWkgGZhVOERoh+bF6uN4s=
+	t=1748876887; cv=none; b=ESCI65EhfLrZeNArict4k84CxO9TaUe9WkO9Is0wWTjUDhlTFbBf1lZL3xlf29NeWaLBjezj/1+NAgKtyugN5wSoxZ5ZGKqVIR8W2qVvdQbVtuLN1C0td7OzKx69aX0jBVTvrlc4bkr13SWwLTqDj5VMAprKekiDiPB3o+IGWVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875945; c=relaxed/simple;
-	bh=Eh5bRi0POL8YIzyJ2jLrW7kDSA1dubKFaUvc2TnzdjQ=;
+	s=arc-20240116; t=1748876887; c=relaxed/simple;
+	bh=VCkwJfG2TFI61pWvJ+xhhJN2I/Ozy6V7GhH9INONLjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3spgK83jbA6j9CgU54DFes7RJ6lIwp1a0aMBYtOu53wn6/81tir30AS9m77EP5tqXS7E1SQYUgnk9ut4CFPjfR+pbNVKIL14SJ/nrKgrVdctoVk73QGojcBtlpusPHz2xguaC/FMOhpYjdbDC+BjCgKyoe0LWK5Ud3SiazvsyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkZPSR1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2B1C4CEEB;
-	Mon,  2 Jun 2025 14:52:24 +0000 (UTC)
+	 MIME-Version; b=iHzMbRpf0VG1k8JdQfM08kFTNQgRFQiqsJsTe+ONLShfKeko54p1W1nmxbLf+lxUAcJo0J5dTAyc/20WOGkTO+ICEj+tsWluse1cj502dcPz9oFxCJmPkH2vkbOKfCOGL1yXESTjP6XxPjBPXcI9wyrQk8m+yFkVqzOwfdxRWJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfS0RsL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51CFC4CEEB;
+	Mon,  2 Jun 2025 15:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875944;
-	bh=Eh5bRi0POL8YIzyJ2jLrW7kDSA1dubKFaUvc2TnzdjQ=;
+	s=korg; t=1748876887;
+	bh=VCkwJfG2TFI61pWvJ+xhhJN2I/Ozy6V7GhH9INONLjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkZPSR1FvX4AQfHOZ+aFFrkeGAuZ4JoVRtG2sYCVv14xutt/rDaYnXqb0d1SVrgUU
-	 b1FS4bCKrLojpoWSWq/9bHU7OoDczsyRWI3lH8IKoaumXTHSZwGH06BbZMb8bz7Gb7
-	 w67XTThAnNUbDtCSsJIGIL3EX7uLPKgyEJtUknDo=
+	b=RfS0RsL1U0sg0rRCmZQMXh27zZ8kt/m/V0BGDKuHYUSoNLp4RETbZDxtqSmivBIdH
+	 sn5T0VgICcXL4DaUQ1/7+ZWbpvjk9dQPesmgbdB0aDU/o59Bgic5CK4zWZ0G4D5s6y
+	 l3zRsQ9JiSGDjV3pLLU7tW4A84Ele4rFa5NlfbSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 008/207] kconfig: merge_config: use an empty file as initfile
+Subject: [PATCH 6.1 104/325] orangefs: Do not truncate file size
 Date: Mon,  2 Jun 2025 15:46:20 +0200
-Message-ID: <20250602134259.098360990@linuxfoundation.org>
+Message-ID: <20250602134324.009229626@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
+[ Upstream commit 062e8093592fb866b8e016641a8b27feb6ac509d ]
 
-The scripts/kconfig/merge_config.sh script requires an existing
-$INITFILE (or the $1 argument) as a base file for merging Kconfig
-fragments. However, an empty $INITFILE can serve as an initial starting
-point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
-if -m is not used. This variable can point to any configuration file
-containing preset config symbols (the merged output) as stated in
-Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
-contain just the merge output requiring the user to run make (i.e.
-KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
-olddefconfig).
+'len' is used to store the result of i_size_read(), so making 'len'
+a size_t results in truncation to 4GiB on 32-bit systems.
 
-Instead of failing when `$INITFILE` is missing, create an empty file and
-use it as the starting point for merges.
-
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Link: https://lore.kernel.org/r/20250305204734.1475264-2-willy@infradead.org
+Tested-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/merge_config.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/orangefs/inode.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
-index 72da3b8d6f307..151f9938abaa7 100755
---- a/scripts/kconfig/merge_config.sh
-+++ b/scripts/kconfig/merge_config.sh
-@@ -105,8 +105,8 @@ INITFILE=$1
- shift;
+diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
+index b3bbb5a5787ac..cc81ff6ac735e 100644
+--- a/fs/orangefs/inode.c
++++ b/fs/orangefs/inode.c
+@@ -23,9 +23,9 @@ static int orangefs_writepage_locked(struct page *page,
+ 	struct orangefs_write_range *wr = NULL;
+ 	struct iov_iter iter;
+ 	struct bio_vec bv;
+-	size_t len, wlen;
++	size_t wlen;
+ 	ssize_t ret;
+-	loff_t off;
++	loff_t len, off;
  
- if [ ! -r "$INITFILE" ]; then
--	echo "The base file '$INITFILE' does not exist.  Exit." >&2
--	exit 1
-+	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
-+	touch "$INITFILE"
- fi
+ 	set_page_writeback(page);
  
- MERGE_LIST=$*
+@@ -94,8 +94,7 @@ static int orangefs_writepages_work(struct orangefs_writepages *ow,
+ 	struct orangefs_write_range *wrp, wr;
+ 	struct iov_iter iter;
+ 	ssize_t ret;
+-	size_t len;
+-	loff_t off;
++	loff_t len, off;
+ 	int i;
+ 
+ 	len = i_size_read(inode);
 -- 
 2.39.5
 
