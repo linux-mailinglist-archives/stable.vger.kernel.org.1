@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-149132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB3CACB102
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:15:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FD2ACB4E2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3DC7165894
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:11:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C19737B1B84
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D352B23C510;
-	Mon,  2 Jun 2025 14:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC14F22F16C;
+	Mon,  2 Jun 2025 14:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOk7UhfH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN6MZ+cq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9123A23C8A1;
-	Mon,  2 Jun 2025 14:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DBC22F14D;
+	Mon,  2 Jun 2025 14:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872995; cv=none; b=ueksTi/x7eqL+zRw9ZVq3d20o+CKuNBco60ugMf5qKN9+eY+qPWSyFKAgpgVd8Y0vEnoZnAzifcF83DrwjxnUgtxCEHXQN87u8OZM9JFpV5tD6Vf/l4FFI5PpjAbOIs3SGz9UTe+yAeVQL/3viBlG1hZ48r9h4oIThdbsGkjJ7o=
+	t=1748875602; cv=none; b=buGZ3JYXKXge7ILFj37T9AfBJNZxpCTUzgHtVIawvGlTAsvSYCogZy3VczQId3RJuJ0ZcTQZBliQov57VBcB1Kb8WmGHMdS9zTa7k6ZuZ2mgUXsj0chBQpVyQ8gkcqfNxhlytp2MWYJ1qw643E6YctfBb/meFPGEnNHbYi8QJtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872995; c=relaxed/simple;
-	bh=GlVCvZyvIpS5r2yoWKnyJDKMOCE8SAJLJQ0lmc8tZ8c=;
+	s=arc-20240116; t=1748875602; c=relaxed/simple;
+	bh=aLhERqS9yvB/OH7lIGDWG8p5YF9XFep2MO9AR9ZbNWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FbNYB8B856sQye53r2BHTrb1mbOJ5oJHI7CWgxrI1XW7koAGenqArkiWsb+OJ9QYJ61Qrt23MsLLXGOQ2B/lbUPM79Su8pFpgS8blykgDKNclcXzwvd8PlLcHI7bYyv5fEyumWZmwZDjsiliaJUjqAACX5BNfqtzP36Xti2nWl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOk7UhfH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD23EC4CEEB;
-	Mon,  2 Jun 2025 14:03:14 +0000 (UTC)
+	 MIME-Version; b=ros4RITKyRuMxFJ6JcY3doN22BjbKfNiEi6EZ0+QZ+Tlsk13gzO8xbGJ5Vv8HeIUmxAx5l3octzLgOpGArBmE97pXXIK+m/W6t3ewsRqDqgN8AoUQHUlphoo/fG/bNfd4ttHgmjeLr9+RG0f66tVhSDlf6Sh+Ys7/tJtehv3z1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN6MZ+cq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E4EC4CEEB;
+	Mon,  2 Jun 2025 14:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872995;
-	bh=GlVCvZyvIpS5r2yoWKnyJDKMOCE8SAJLJQ0lmc8tZ8c=;
+	s=korg; t=1748875602;
+	bh=aLhERqS9yvB/OH7lIGDWG8p5YF9XFep2MO9AR9ZbNWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOk7UhfHSU7FCmOZ3tHWOFvxAjZTLLC5pPqYPi8bGK147KTetM02EleG4FwT/1wKx
-	 x8F9nXNlc0iq6HaJjskpqa+HnMjvnnFu1k08wOMM8HlzRRSCxDLm3XqduwSlilbxqT
-	 aYXG+UbJ0vNA2mlZx/NNizv3mXiy/lRRBxp2zekQ=
+	b=ZN6MZ+cqOSpzXNDV7ilR6Sg1OODikG7Nxond19Bfi6nzYFeWrfoHPzKysjbZk27Z+
+	 jKooyX52wiaTbMPm8kIiDzgUURQ2a9kQXXOEzt/oeSk2IwUoRcClQisiMqEUGLWZl9
+	 hoohqODOsUqyi5kw3e28fs6hTAAtFuF/tqgZioSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 33/55] coredump: fix error handling for replace_fd()
+	Paul Burton <paulburton@kernel.org>,
+	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 185/270] MIPS: pm-cps: Use per-CPU variables as per-CPU, not per-core
 Date: Mon,  2 Jun 2025 15:47:50 +0200
-Message-ID: <20250602134239.586020166@linuxfoundation.org>
+Message-ID: <20250602134314.773935895@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +66,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Paul Burton <paulburton@kernel.org>
 
-commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
+[ Upstream commit 00a134fc2bb4a5f8fada58cf7ff4259149691d64 ]
 
-The replace_fd() helper returns the file descriptor number on success
-and a negative error code on failure. The current error handling in
-umh_pipe_setup() only works because the file descriptor that is replaced
-is zero but that's pretty volatile. Explicitly check for a negative
-error code.
+The pm-cps code has up until now used per-CPU variables indexed by core,
+rather than CPU number, in order to share data amongst sibling CPUs (ie.
+VPs/threads in a core). This works fine for single cluster systems, but
+with multi-cluster systems a core number is no longer unique in the
+system, leading to sharing between CPUs that are not actually siblings.
 
-Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
-Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Avoid this issue by using per-CPU variables as they are more generally
+used - ie. access them using CPU numbers rather than core numbers.
+Sharing between siblings is then accomplished by:
+ - Assigning the same pointer to entries for each sibling CPU for the
+   nc_asm_enter & ready_count variables, which allow this by virtue of
+   being per-CPU pointers.
+
+ - Indexing by the first CPU set in a CPUs cpu_sibling_map in the case
+   of pm_barrier, for which we can't use the previous approach because
+   the per-CPU variable is not a pointer.
+
+Signed-off-by: Paul Burton <paulburton@kernel.org>
+Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
+Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/coredump.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/mips/kernel/pm-cps.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -507,7 +507,9 @@ static int umh_pipe_setup(struct subproc
+diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
+index 9bf60d7d44d36..a7bcf2b814c86 100644
+--- a/arch/mips/kernel/pm-cps.c
++++ b/arch/mips/kernel/pm-cps.c
+@@ -56,10 +56,7 @@ static DEFINE_PER_CPU_ALIGNED(u32*, ready_count);
+ /* Indicates online CPUs coupled with the current CPU */
+ static DEFINE_PER_CPU_ALIGNED(cpumask_t, online_coupled);
+ 
+-/*
+- * Used to synchronize entry to deep idle states. Actually per-core rather
+- * than per-CPU.
+- */
++/* Used to synchronize entry to deep idle states */
+ static DEFINE_PER_CPU_ALIGNED(atomic_t, pm_barrier);
+ 
+ /* Saved CPU state across the CPS_PM_POWER_GATED state */
+@@ -118,9 +115,10 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 	cps_nc_entry_fn entry;
+ 	struct core_boot_config *core_cfg;
+ 	struct vpe_boot_config *vpe_cfg;
++	atomic_t *barrier;
+ 
+ 	/* Check that there is an entry function for this state */
+-	entry = per_cpu(nc_asm_enter, core)[state];
++	entry = per_cpu(nc_asm_enter, cpu)[state];
+ 	if (!entry)
+ 		return -EINVAL;
+ 
+@@ -156,7 +154,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 	smp_mb__after_atomic();
+ 
+ 	/* Create a non-coherent mapping of the core ready_count */
+-	core_ready_count = per_cpu(ready_count, core);
++	core_ready_count = per_cpu(ready_count, cpu);
+ 	nc_addr = kmap_noncoherent(virt_to_page(core_ready_count),
+ 				   (unsigned long)core_ready_count);
+ 	nc_addr += ((unsigned long)core_ready_count & ~PAGE_MASK);
+@@ -164,7 +162,8 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 
+ 	/* Ensure ready_count is zero-initialised before the assembly runs */
+ 	WRITE_ONCE(*nc_core_ready_count, 0);
+-	coupled_barrier(&per_cpu(pm_barrier, core), online);
++	barrier = &per_cpu(pm_barrier, cpumask_first(&cpu_sibling_map[cpu]));
++	coupled_barrier(barrier, online);
+ 
+ 	/* Run the generated entry code */
+ 	left = entry(online, nc_core_ready_count);
+@@ -635,12 +634,14 @@ static void *cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
+ 
+ static int cps_pm_online_cpu(unsigned int cpu)
  {
- 	struct file *files[2];
- 	struct coredump_params *cp = (struct coredump_params *)info->data;
--	int err = create_pipe_files(files, 0);
-+	int err;
+-	enum cps_pm_state state;
+-	unsigned core = cpu_core(&cpu_data[cpu]);
++	unsigned int sibling, core;
+ 	void *entry_fn, *core_rc;
++	enum cps_pm_state state;
 +
-+	err = create_pipe_files(files, 0);
- 	if (err)
- 		return err;
++	core = cpu_core(&cpu_data[cpu]);
  
-@@ -515,10 +517,13 @@ static int umh_pipe_setup(struct subproc
+ 	for (state = CPS_PM_NC_WAIT; state < CPS_PM_STATE_COUNT; state++) {
+-		if (per_cpu(nc_asm_enter, core)[state])
++		if (per_cpu(nc_asm_enter, cpu)[state])
+ 			continue;
+ 		if (!test_bit(state, state_support))
+ 			continue;
+@@ -652,16 +653,19 @@ static int cps_pm_online_cpu(unsigned int cpu)
+ 			clear_bit(state, state_support);
+ 		}
  
- 	err = replace_fd(0, files[0], 0);
- 	fput(files[0]);
-+	if (err < 0)
-+		return err;
+-		per_cpu(nc_asm_enter, core)[state] = entry_fn;
++		for_each_cpu(sibling, &cpu_sibling_map[cpu])
++			per_cpu(nc_asm_enter, sibling)[state] = entry_fn;
+ 	}
+ 
+-	if (!per_cpu(ready_count, core)) {
++	if (!per_cpu(ready_count, cpu)) {
+ 		core_rc = kmalloc(sizeof(u32), GFP_KERNEL);
+ 		if (!core_rc) {
+ 			pr_err("Failed allocate core %u ready_count\n", core);
+ 			return -ENOMEM;
+ 		}
+-		per_cpu(ready_count, core) = core_rc;
 +
- 	/* and disallow core files too */
- 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
++		for_each_cpu(sibling, &cpu_sibling_map[cpu])
++			per_cpu(ready_count, sibling) = core_rc;
+ 	}
  
--	return err;
-+	return 0;
- }
- 
- void do_coredump(const kernel_siginfo_t *siginfo)
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
