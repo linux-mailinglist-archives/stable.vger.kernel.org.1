@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AADACB390
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E6FACB572
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48FCE943584
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4B6BA20D1B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32499225A47;
-	Mon,  2 Jun 2025 14:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588081C6FE9;
+	Mon,  2 Jun 2025 14:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxvD5UDH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBuG3cAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F8520E026;
-	Mon,  2 Jun 2025 14:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A6C23184A;
+	Mon,  2 Jun 2025 14:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874242; cv=none; b=ZdigSF+2zIq8wIejxhiPbFutI59QcYHEeZyVn5g38zvfiXdgo08MXjUYwr3CxYJwJ/nieAlPYmWdakrMYFXSAV/oDWi32tq2XMS/ZjC2ODO6b2B4V/RmutmQTq/v9uYMpY642OBiGHHBHLwmNHx//OBFw+H+rbANOaZ2oay/QJQ=
+	t=1748875502; cv=none; b=Kh1RrsVMttUvnhpOOFlxfq016+E34/S5r1YhuDx5GhGuA/Cad59zPgqqy1kMHO00ihsPpwv9rnv8xsgaacAmjn6q1LOSvaGBSJpR5BtOjJ8eTXPmB/7KLTRKJN4d+IoaI+g1yvt1VU2x8DiUPAUq5kAsidjfudOGrPKGE/R+Np8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874242; c=relaxed/simple;
-	bh=rvXUQ5vLsf1qvrUxheIRPxnZgurkpwpM5U8NtswBgPw=;
+	s=arc-20240116; t=1748875502; c=relaxed/simple;
+	bh=K0hwO6lk8IsvL+qrfjJrQJhaesRUy8W4bEP7/0N0rX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t24O5fRpnQA6Koxekv0B1lbHt06AABI0xj3O1AFAzA/CZo5NDarELG7j55UQxOg5smYtRmUMu4AleSQD4R8eC2cyKnLCxygT4g+6/E00DjTk7ACmwavpwynHqaNVilOGFc9BRZ3d4X2IAT1U1hQTuS3vPk5BGyKl/+LrG7vDzZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxvD5UDH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696E3C4CEEB;
-	Mon,  2 Jun 2025 14:24:01 +0000 (UTC)
+	 MIME-Version; b=sLBCX7qP3lyPaHzACmK/sRlARYzNobq3DgGjjqYOPE1FWmzwCwYVzUuFS5kEINKyI1VJ3tAkjFBtmk2UnO3xEwE/5IO4G0EWtUfqOiTB6gphJGprYGRjJchUfTmXeJAk2tgsIUuGYlS4be9NmG2bahhIdMF6oi+IlxF8GjP/+X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBuG3cAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB69C4CEEB;
+	Mon,  2 Jun 2025 14:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874241;
-	bh=rvXUQ5vLsf1qvrUxheIRPxnZgurkpwpM5U8NtswBgPw=;
+	s=korg; t=1748875501;
+	bh=K0hwO6lk8IsvL+qrfjJrQJhaesRUy8W4bEP7/0N0rX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxvD5UDHSdVHD3rTi1Me1MPs9Be1gsxYd3xmP8TdtmFCA7wLWmSLJ5d5criVQ916U
-	 0Smk8X/TdPXVWafMV+2YkXzsza5vnAh1MlSECi9u1SJv8gECIn9pDopD9VQeAylgdd
-	 8A/Fl20uTZHYhODVVDDQh1Xz4JwKse4oofgS6C5A=
+	b=eBuG3cAP10j/2+HANHbgOO/wmu1OpzETkfJ499baJqPTEDODeKgvn2tWjjvzlC4fs
+	 7rZ0hf0gORwl9Zy3UGI8Xh2t4RbpyT0DDI6pnlL3nm82V8WRKhX0/LvvbEFay/0Hf0
+	 N0IIhWc/RyYlYK2LA+KsmhTXy67QtWSCwU+9PT3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 375/444] Input: xpad - add more controllers
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 154/270] arm64: tegra: p2597: Fix gpio for vdd-1v8-dis regulator
 Date: Mon,  2 Jun 2025 15:47:19 +0200
-Message-ID: <20250602134356.137567724@linuxfoundation.org>
+Message-ID: <20250602134313.513745188@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-commit f0d17942ea3edec191f1c0fc0d2cd7feca8de2f0 upstream.
+[ Upstream commit f34621f31e3be81456c903287f7e4c0609829e29 ]
 
-Adds support for a revision of the Turtle Beach Recon Wired Controller,
-the Turtle Beach Stealth Ultra, and the PowerA Wired Controller.
+According to the board schematics the enable pin of this regulator is
+connected to gpio line #9 of the first instance of the TCA9539
+GPIO expander, so adjust it.
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20250513225950.2719387-1-vi@endrift.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://lore.kernel.org/r/20250224-diogo-gpio_exp-v1-1-80fb84ac48c6@tecnico.ulisboa.pt
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -289,6 +289,8 @@ static const struct xpad_device {
- 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
- 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
- 	{ 0x10f5, 0x7005, "Turtle Beach Recon Controller", 0, XTYPE_XBOXONE },
-+	{ 0x10f5, 0x7008, "Turtle Beach Recon Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
-+	{ 0x10f5, 0x7073, "Turtle Beach Stealth Ultra Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
- 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
- 	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
- 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
-@@ -353,6 +355,7 @@ static const struct xpad_device {
- 	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
- 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
-+	{ 0x20d6, 0x2064, "PowerA Wired Controller for Xbox", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
- 	{ 0x24c6, 0x5000, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x24c6, 0x5300, "PowerA MINI PROEX Controller", 0, XTYPE_XBOX360 },
+diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+index a9caaf7c0d67e..c04772a9740ec 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+@@ -1638,7 +1638,7 @@ vdd_1v8_dis: regulator@7 {
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <1800000>;
+ 		regulator-always-on;
+-		gpio = <&exp1 14 GPIO_ACTIVE_HIGH>;
++		gpio = <&exp1 9 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 		vin-supply = <&vdd_1v8>;
+ 	};
+-- 
+2.39.5
+
 
 
 
