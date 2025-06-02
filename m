@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3AEACB4A8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F710ACB2F4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A10944A7C4C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFEFD1941456
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9D9188907;
-	Mon,  2 Jun 2025 14:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6299238C19;
+	Mon,  2 Jun 2025 14:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZUdaOGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uyh0RBIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF5D15CD55;
-	Mon,  2 Jun 2025 14:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D0821CA07;
+	Mon,  2 Jun 2025 14:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875284; cv=none; b=XMiuW7uNTd3PKnk9/zV/wHvAk04CsroxQ13xE2hDJP32gGUG7dHnsQYPvOLXYXoaEfKcBERQ9kNQC0p5/6589yy2AXzqxnx+i5jPvdxssuSHbD9/s5b8uyLVIipwDtgap0sZ33b9R3uNBe0VPVNr1nm7ydrXYCfLhmobyxhAGkM=
+	t=1748874029; cv=none; b=o06dUkeGG9oNf5feokQvt1rP+L9rSxUvGynzOvLaBskhVKZh6LpPYduYY9DwfcDc8TboAyz9vYQnP52SVKtOjtrdFtYUpb6o8EOrAvBs+YUiclLLNr925afI3n3Iwl9y3lK8Pga+cSR+7nwS39TIYzv+p9x6PKdAFAxYLUXyXAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875284; c=relaxed/simple;
-	bh=wXsPeRSRrc4CLxT59ArkUySTWCY4LS4vDyEjhSdCxs8=;
+	s=arc-20240116; t=1748874029; c=relaxed/simple;
+	bh=WxU90/t7yUpxErsV4V6dEJWhngb5RXzCvlFP/fImx3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jND2IFROL8ZnMwrvFcMRea5dNeKFNUGLRkl5WXyLYhSljnwAhTcUlDan49CnytCBGVn77Hf+TJbYfVHrl3zdnhFvcqFfwtEiTtJEKzefS2X7nFetV1pn8J145ZmwrHkg2KlwxsfTdjCiNqlIswvQI38e07chy7qCvrk28Ov7w0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZUdaOGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46830C4CEEB;
-	Mon,  2 Jun 2025 14:41:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uGBWvfbD29AE4w8JeGbIvYnrmqc4NqYT2v1JZNFGGutlsH2dBZpWPbLYAxBgYKu4ZhQiTkzbrEibpCHAV2nzDtYkiiFKGBdrsxIouLW9G2yM9cQ/LOXGR+aEou4EDfDF5djvq7hyffRFRk6PJygnEj5S0kNALnTKeLZBOoALmiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uyh0RBIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F9BC4CEEB;
+	Mon,  2 Jun 2025 14:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875284;
-	bh=wXsPeRSRrc4CLxT59ArkUySTWCY4LS4vDyEjhSdCxs8=;
+	s=korg; t=1748874029;
+	bh=WxU90/t7yUpxErsV4V6dEJWhngb5RXzCvlFP/fImx3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZUdaOGfIFnKWJSFtYJCX83ZDgJlLyuE+NcbV6jUkQAWMwjJtPEBZYLs6Mk49wyYQ
-	 Z+9xxzY6pSL+aRodWwmMge0dMMtDq3CItpMJOJEZdPLguRVcY2SZSTKdjxs7VxLfk9
-	 NuXalzvyi5AsnVh8WyFy6qig3tcC6GssJgdZQ+Ng=
+	b=Uyh0RBIC9hi8+Hpcg0MAWbExkOI2BObDx7DlhLFhYaIqZJX/BlVLvWulZulgOxGrC
+	 Nxu8WYebvygf1Su1Od2e6VGCLPiowLOmJscUmitTnqlIKLOoPAPi63Ov0witC/yCUd
+	 AkjQ/VYgmfd4LkA8LgSmaB+T85kQjkKF6zJlCnS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/270] iio: chemical: sps30: use aligned_s64 for timestamp
+Subject: [PATCH 6.6 306/444] wifi: ath9k: return by of_get_mac_address
 Date: Mon,  2 Jun 2025 15:46:10 +0200
-Message-ID: <20250602134310.642425025@linuxfoundation.org>
+Message-ID: <20250602134353.353436711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +64,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit bb49d940344bcb8e2b19e69d7ac86f567887ea9a ]
+[ Upstream commit dfffb317519f88534bb82797f055f0a2fd867e7b ]
 
-Follow the pattern of other drivers and use aligned_s64 for the
-timestamp. This will ensure that the timestamp is correctly aligned on
-all architectures.
+When using nvmem, ath9k could potentially be loaded before nvmem, which
+loads after mtd. This is an issue if DT contains an nvmem mac address.
 
-Fixes: a5bf6fdd19c3 ("iio:chemical:sps30: Fix timestamp alignment")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-5-eafac1e22318@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+If nvmem is not ready in time for ath9k, -EPROBE_DEFER is returned. Pass
+it to _probe so that ath9k can properly grab a potentially present MAC
+address.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20241105222326.194417-1-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/sps30.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/chemical/sps30.c b/drivers/iio/chemical/sps30.c
-index 2ea9a5c4d8462..002628e31b5c9 100644
---- a/drivers/iio/chemical/sps30.c
-+++ b/drivers/iio/chemical/sps30.c
-@@ -232,7 +232,7 @@ static irqreturn_t sps30_trigger_handler(int irq, void *p)
- 	int ret;
- 	struct {
- 		s32 data[4]; /* PM1, PM2P5, PM4, PM10 */
--		s64 ts;
-+		aligned_s64 ts;
- 	} scan;
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index 4f00400c7ffb8..58386906598a7 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -691,7 +691,9 @@ static int ath9k_of_init(struct ath_softc *sc)
+ 		ah->ah_flags |= AH_NO_EEP_SWAP;
+ 	}
  
- 	mutex_lock(&state->lock);
+-	of_get_mac_address(np, common->macaddr);
++	ret = of_get_mac_address(np, common->macaddr);
++	if (ret == -EPROBE_DEFER)
++		return ret;
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
