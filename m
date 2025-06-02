@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06762ACAFF7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4795ACB054
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D419B401DFB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:58:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D754482489
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA8B21FF39;
-	Mon,  2 Jun 2025 13:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027C0224244;
+	Mon,  2 Jun 2025 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azsq5p7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kArRzM83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9792576;
-	Mon,  2 Jun 2025 13:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF271223DEF;
+	Mon,  2 Jun 2025 14:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872736; cv=none; b=hve7u1sFZAlUoPetrUlAVSJqu8gSBKftyAjg3jWzXAnk9Vjsg08PyZtUls3tOmHSDN1YAQwGdEjq7SQ2D9DYew7O3SdTJhIALsd4kJfLt9A5LDFnJSwCN1ah6DLbzDnJidlbY61mB0iw0KIzxn5NSLKI5KbiaXYYCxWns5D7lhQ=
+	t=1748872873; cv=none; b=bYCvQnvCSG8kawDAPPnkrqBk+78ii+BsYz73J/wYzhSkMPb32SDJtorVqpe2uBKzIWPW1uSJF9toM5dL7p0P/jzkGGCfaQuz9KYDYZHI6mW+WYN2q1zsxuvVDQzhEx1x90yb4peniF9Air0s3o3nT0rpczqOG9ymqRLgjvKjN54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872736; c=relaxed/simple;
-	bh=DnT7CygK/AKDW3OHTvz3ruUukYNz3ZSRAFS8HJoXQt4=;
+	s=arc-20240116; t=1748872873; c=relaxed/simple;
+	bh=W+jtXM0uDiHjILujSeFQds8dHndSWX4EAcSt01IacSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ik6k0HADhoYW3Z0JjNkoZOTPQ/aEnhwbRkGCpEA6BpiANDo/gFt5VECRVPyHLQscmLuPFQbFLWJuDEm7kvzw1HH4tbwoeClYNRZACl2/OLdm39nPeqPziN4TzAX9s8B+jiIxy565J8wwFa2gs2spiqmLFykJDo1e0bGD1EYP1N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azsq5p7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7D7C4CEEB;
-	Mon,  2 Jun 2025 13:58:55 +0000 (UTC)
+	 MIME-Version; b=rwaJU8zC7h0+y9KbO2+wUfDZ2wE8aYALlCgSF6afdkmplFtHx3SMc4RcQcRQ5PXqy0f+6/SKlYbkdEbeWwrP15bLKcykV75T7VrJbz9VCgIFqqZFbpO/5TiJ2MHZb9L2InJVr6eAG3fVfIlMUvoF3zc30c9XE9A88Fza1sFasj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kArRzM83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAE1C4CEEB;
+	Mon,  2 Jun 2025 14:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872736;
-	bh=DnT7CygK/AKDW3OHTvz3ruUukYNz3ZSRAFS8HJoXQt4=;
+	s=korg; t=1748872873;
+	bh=W+jtXM0uDiHjILujSeFQds8dHndSWX4EAcSt01IacSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azsq5p7o1Y3Ht2SgVMluOWZLUvnqtuPW7E1DLwWA/GFt+x46COjib9JsQrcU/uPfy
-	 ImZWOUpzOF7ScFPRHBr2A29O26UnNlukLe+LsdJyVseDYDsl2fgicOsB0jK8XdAGeH
-	 vaI5Mar7gRvLIWH84fhLd3rtZ1sjkRhExh+SwSq8=
+	b=kArRzM83WyUT1yvqpzntWmoQsIoO/CwDecPahEdQ6e/MwTeDKtq8EWwfCkGFRquip
+	 sBEAz+IZDkUnKmIehU0jeryVcHFI+/IEMJP8c3/mxA48CoIFZOWpeBWN9bE+29ebmU
+	 K/GOSSLuV3s9u2KXW/iKXiXyol7oVEagVYmRZzMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Chau <johnchau@0atlas.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 52/73] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
-Date: Mon,  2 Jun 2025 15:47:38 +0200
-Message-ID: <20250602134243.746577791@linuxfoundation.org>
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Neha Malcom Francis <n-francis@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.12 22/55] arm64: dts: ti: k3-am68-sk: Fix regulator hierarchy
+Date: Mon,  2 Jun 2025 15:47:39 +0200
+Message-ID: <20250602134239.150019619@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Chau <johnchau@0atlas.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
+commit 7edf0a4d3bb7f5cd84f172b76c380c4259bb4ef8 upstream.
 
-Change get_thinkpad_model_data() to check for additional vendor name
-"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
-more).
+Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3)
+to LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator
+node for the LM61460 5V supply to support this change.
 
-The reason of this works with minimal changes is because NEC Lavie
-X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
-"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
-the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
+AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
 
-I compiled and tested with my own machine, attached the dmesg
-below as proof of work:
-[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
-[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
-[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
-[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
-[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
-[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
-[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
-[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
-[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
-[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
-
-Signed-off-by: John Chau <johnchau@0atlas.com>
-Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20250415111328.3847502-3-y-abhilashchandra@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 2ff38ca9ddb40..ace1cd14d4ba3 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -11481,6 +11481,8 @@ static int __must_check __init get_thinkpad_model_data(
- 		tp->vendor = PCI_VENDOR_ID_IBM;
- 	else if (dmi_name_in_vendors("LENOVO"))
- 		tp->vendor = PCI_VENDOR_ID_LENOVO;
-+	else if (dmi_name_in_vendors("NEC"))
-+		tp->vendor = PCI_VENDOR_ID_LENOVO;
- 	else
- 		return 0;
+--- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
+@@ -44,6 +44,17 @@
+ 		regulator-boot-on;
+ 	};
  
--- 
-2.39.5
-
++	vsys_5v0: regulator-vsys5v0 {
++		/* Output of LM61460 */
++		compatible = "regulator-fixed";
++		regulator-name = "vsys_5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&vusb_main>;
++		regulator-always-on;
++		regulator-boot-on;
++	};
++
+ 	vsys_3v3: regulator-vsys3v3 {
+ 		/* Output of LM5141 */
+ 		compatible = "regulator-fixed";
+@@ -76,7 +87,7 @@
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <3300000>;
+ 		regulator-boot-on;
+-		vin-supply = <&vsys_3v3>;
++		vin-supply = <&vsys_5v0>;
+ 		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
+ 		states = <1800000 0x0>,
+ 			 <3300000 0x1>;
 
 
 
