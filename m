@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7867AACB2D3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9624ACB87E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 996C44863B8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C4D6940D61
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF89233704;
-	Mon,  2 Jun 2025 14:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026CA23505F;
+	Mon,  2 Jun 2025 15:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpNA88gs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTcS1zkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F225C233149;
-	Mon,  2 Jun 2025 14:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FC5233D9C;
+	Mon,  2 Jun 2025 15:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873948; cv=none; b=pJSUJFV23gfKShwM/AtuF0Z6M+p822maBhNRWQe+MoprPwGGXZTFc/fY0vCjU0eGIlU3hK1BseAG03dHmqf/7qWVrIpqRomz05hKBpbsC/rt+GPQ1Kgx6A2LNeaAEyz6rbZfXhNKUUwRv/rULm0AhlH28dhH28PVv7wWdizJYFk=
+	t=1748876758; cv=none; b=mEhEahza/hCtVmfEpjRPGfKelGKl1ReMDAuoUC+D5uXQKYydazOtV3Cg25zkcUi+6MRY1Ujd5AiFLpzj9nUTPAYTZ84Y/BxuiHTu/a30FQy6w7kTT4qFZ4AeuOvblKJssDdzFJcdfbw8J4tQ+Vce9TRWonJv0p2+0J04CDVsYfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873948; c=relaxed/simple;
-	bh=9IaX5VL4cT2dViwlk6qnHGau4p/rC1+fprix7iEc2AE=;
+	s=arc-20240116; t=1748876758; c=relaxed/simple;
+	bh=SIQviJ97hcTo9l6wuB4qt40pILqVizMhi2eVGND5DY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gIjhWOL939lCvC/jczH8Ypaz1Pdd+5VR91fwAeymSg01yDVgiGLOsvdPyGmvhYQcLt2l/k+FvS+FrnomAy0C4drm8kLvtwbwPl6GjMhQaOaR06gTx+v0dWBB+UXJHfFIOiOrC/OvGJsL5tQ8VBPvqn0YxwddbHPfwRncCAqU9rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpNA88gs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79802C4CEEB;
-	Mon,  2 Jun 2025 14:19:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YQ79y5USCsGoO/sExW6VyBD2WYJV7xgPjpC88k+OE+2Dchd0o9b13+Jo+RpVel9b5era0A0Kh6bREDxPEW6W3J5fnUOvNPuC+xf0vH6fqd7mC656i0lOod6GwJpy3FYki0/nyXeY0Uj8kI4doqTal3Yqf9fpQwkoBkk5riVIP2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTcS1zkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B559FC4CEEB;
+	Mon,  2 Jun 2025 15:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873947;
-	bh=9IaX5VL4cT2dViwlk6qnHGau4p/rC1+fprix7iEc2AE=;
+	s=korg; t=1748876758;
+	bh=SIQviJ97hcTo9l6wuB4qt40pILqVizMhi2eVGND5DY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpNA88gsru4kkISZB79nDDJpdBnlYzyGJ6EKp9mCn3LgJ3OSMXcyXIQNttKR5R51x
-	 rfehYOeVBc8e/cTrVU9voJFlk+7mSmBlBAekrqewUYHdBkTm1uj2gBF55k0k0RiYWY
-	 vyE/0YOJoroU1+/Ss0hFsgK9DsCw0sA5+XpaQPRU=
+	b=hTcS1zkHFTcvCQKhcw+nuxUy54uilBp4MfdmLK8EjfT8yi7QZAcvxSyn+AhNj5Xes
+	 Wo0xbWis6n5LfPn2XcCab8/ShlQiv4lL53zMBeRIVt5yV9gOUozCyEp4EUmIx7CJhE
+	 7m2pUThBoTowZxf5v1gQ1qO/1q0+l3cDIfb4nT90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 276/444] ipv4: ip_gre: Fix set but not used warning in ipgre_err() if IPv4-only
+Subject: [PATCH 6.1 064/325] scsi: st: ERASE does not change tape location
 Date: Mon,  2 Jun 2025 15:45:40 +0200
-Message-ID: <20250602134352.160265531@linuxfoundation.org>
+Message-ID: <20250602134322.374924688@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +63,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 50f37fc2a39c4a8cc4813629b4cf239b71c6097d ]
+[ Upstream commit ad77cebf97bd42c93ab4e3bffd09f2b905c1959a ]
 
-if CONFIG_NET_IPGRE is enabled, but CONFIG_IPV6 is disabled:
+The SCSI ERASE command erases from the current position onwards.  Don't
+clear the position variables.
 
-    net/ipv4/ip_gre.c: In function ‘ipgre_err’:
-    net/ipv4/ip_gre.c:144:22: error: variable ‘data_len’ set but not used [-Werror=unused-but-set-variable]
-      144 |         unsigned int data_len = 0;
-	  |                      ^~~~~~~~
-
-Fix this by moving all data_len processing inside the IPV6-only section
-that uses its result.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501121007.2GofXmh5-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d09113cfe2bfaca02f3dddf832fb5f48dd20958b.1738704881.git.geert@linux-m68k.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-3-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/scsi/st.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 890c15510b421..f261e29adc7c2 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -140,7 +140,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 	const struct iphdr *iph;
- 	const int type = icmp_hdr(skb)->type;
- 	const int code = icmp_hdr(skb)->code;
--	unsigned int data_len = 0;
- 	struct ip_tunnel *t;
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 284c2cf1ae662..3ff4e6d44db88 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -2887,7 +2887,6 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			timeout = STp->long_timeout * 8;
  
- 	if (tpi->proto == htons(ETH_P_TEB))
-@@ -181,7 +180,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 	case ICMP_TIME_EXCEEDED:
- 		if (code != ICMP_EXC_TTL)
- 			return 0;
--		data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
+ 		DEBC_printk(STp, "Erasing tape.\n");
+-		fileno = blkno = at_sm = 0;
  		break;
- 
- 	case ICMP_REDIRECT:
-@@ -189,10 +187,16 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 	}
- 
- #if IS_ENABLED(CONFIG_IPV6)
--	if (tpi->proto == htons(ETH_P_IPV6) &&
--	    !ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
--					type, data_len))
--		return 0;
-+	if (tpi->proto == htons(ETH_P_IPV6)) {
-+		unsigned int data_len = 0;
-+
-+		if (type == ICMP_TIME_EXCEEDED)
-+			data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
-+
-+		if (!ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
-+						type, data_len))
-+			return 0;
-+	}
- #endif
- 
- 	if (t->parms.iph.daddr == 0 ||
+ 	case MTSETBLK:		/* Set block length */
+ 	case MTSETDENSITY:	/* Set tape density */
 -- 
 2.39.5
 
