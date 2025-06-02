@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-150229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F39ACB6D8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67885ACB881
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3588FA27096
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B2121BA57F8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F9022E3E0;
-	Mon,  2 Jun 2025 15:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DF9215F6B;
+	Mon,  2 Jun 2025 15:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAkHYuxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY1n6NQ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7C822DA0F;
-	Mon,  2 Jun 2025 15:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251BE4A1E;
+	Mon,  2 Jun 2025 15:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876455; cv=none; b=Mzd78RSthuiSUNHfZIoALjcMJ2pcbnXO5sMO+0jLzuw6//dAntQFNuwCe9lJbgr0WjvGgNb+3QRVQTSKbGFChltIBG7OyL/IxpYRCvRQuuLwVwjgOfQQsonIt+Z8Glm4DDSJERIWHagZHX16JrUB1vj5iNJesuvoPdndotoxU8Y=
+	t=1748877343; cv=none; b=A7UjdROOAFhNXRi1wVYf0qBzGtDmyqP6FksCONUIEZ3I60gSh4NGixbU7eosyXB0LFKYLa98BOYZe13+PZ9FzMaP4UgnUXj8rAnc+7zKrr1HWhlt+HzuoZATyRbgfzJWFnDO85sz/DZ75wLzT8+I3IWAc8WxKAqSHsnkdGvP9wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876455; c=relaxed/simple;
-	bh=SRs3RE+X4QejBQRKaq74EtWc4pceBuvX296x2rDNY1k=;
+	s=arc-20240116; t=1748877343; c=relaxed/simple;
+	bh=zkorsWqUaA9YF7LxMaKWjw7ZLfHhigxdLq4YGbPD9Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pHlzUYew1RcZUAzbdWHPCAafp6I3UIIBqGdWn2YoXyt9wHoV8XHym2LJQo1i3SV30bFi1ysmHuPq0SmMm8aqsetUAs7nNQou+QKPi+5XwL6htgHBS5qXS39eHjSKUnxDj+mtKA1kTBrpHINSCwQN+0jL3TojG7xRw37ha8Dpchg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAkHYuxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626CAC4CEEB;
-	Mon,  2 Jun 2025 15:00:54 +0000 (UTC)
+	 MIME-Version; b=JB0x5qeWkxBPm2eqnBXfGpVwjqFQVub6cQGAyWaXkpxmgBRBpvm4Em5Ql5QGRtwGZvSb68lev7LOFEdrmLOdw55st4WSPfUdt892MuVLDwkR/ewB0kRZz7EH2Ef/oKPLuS14nDlS9OcwAUUMJv9dRP9PZnzBU/oXOz47GHcG7u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY1n6NQ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DA0C4CEEB;
+	Mon,  2 Jun 2025 15:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876454;
-	bh=SRs3RE+X4QejBQRKaq74EtWc4pceBuvX296x2rDNY1k=;
+	s=korg; t=1748877343;
+	bh=zkorsWqUaA9YF7LxMaKWjw7ZLfHhigxdLq4YGbPD9Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAkHYuxmKH6Xz27QD53N3pirMhOEWEiwOfoX3pky6ZN57f1ANR2VaGgAkj1KDi8/k
-	 IF+3p+ANcDUL14dlGOIT668JZBd+lmFc0j91u7AvAE+EJFaaLLaJQHsAFOxRmtW7pi
-	 oCd0FEELnGABoYnCFj96lwAT4fPCUDWpxw8AxZwo=
+	b=tY1n6NQ4OOY7cmHqrdCKmn5QR8H2WNih1gr3HJaxHHE70XRiezmUNv1C+Nvo45Tdf
+	 c8B3G/bBdiPaC3HV6XuaheoXs3EslhiVIyNmJL/Nd531oW2IULkPElC7nqqEddLaFJ
+	 OKlp1OtLKl3F+N87PRrosiARh7gFUlj5PGABFxwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pekka Paalanen <pekka.paalanen@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Rob Clark <robdclark@gmail.com>,
-	Simon Ser <contact@emersion.fr>,
-	Manasi Navare <navaremanasi@google.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Simona Vetter <simona.vetter@intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 152/207] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
+Subject: [PATCH 6.1 248/325] octeontx2-af: Set LMT_ENA bit for APR table entries
 Date: Mon,  2 Jun 2025 15:48:44 +0200
-Message-ID: <20250602134304.673885250@linuxfoundation.org>
+Message-ID: <20250602134329.859113975@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,92 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simona Vetter <simona.vetter@ffwll.ch>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
+[ Upstream commit 0eefa27b493306928d88af6368193b134c98fd64 ]
 
-msm is automagically upgrading normal commits to full modesets, and
-that's a big no-no:
+This patch enables the LMT line for a PF/VF by setting the
+LMT_ENA bit in the APR_LMT_MAP_ENTRY_S structure.
 
-- for one this results in full on->off->on transitions on all these
-  crtc, at least if you're using the usual helpers. Which seems to be
-  the case, and is breaking uapi
+Additionally, it simplifies the logic for calculating the
+LMTST table index by consistently using the maximum
+number of hw supported VFs (i.e., 256).
 
-- further even if the ctm change itself would not result in flicker,
-  this can hide modesets for other reasons. Which again breaks the
-  uapi
-
-v2: I forgot the case of adding unrelated crtc state. Add that case
-and link to the existing kerneldoc explainers. This has come up in an
-irc discussion with Manasi and Ville about intel's bigjoiner mode.
-Also cc everyone involved in the msm irc discussion, more people
-joined after I sent out v1.
-
-v3: Wording polish from Pekka and Thomas
-
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Simon Ser <contact@emersion.fr>
-Cc: Manasi Navare <navaremanasi@google.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
+Fixes: 873a1e3d207a ("octeontx2-af: cn10k: Setting up lmtst map table").
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250521060834.19780-2-gakula@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
-index 1701c2128a5cb..1b8dd160c51f9 100644
---- a/include/drm/drm_atomic.h
-+++ b/include/drm/drm_atomic.h
-@@ -353,8 +353,27 @@ struct drm_atomic_state {
- 	 *
- 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
- 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
--	 * never consult this flag, instead looking at the output of
--	 * drm_atomic_crtc_needs_modeset().
-+	 * generally not consult this flag, but instead look at the output of
-+	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
-+	 *
-+	 * - Drivers must not consult @allow_modeset in the atomic commit path.
-+	 *   Use drm_atomic_crtc_needs_modeset() instead.
-+	 *
-+	 * - Drivers must consult @allow_modeset before adding unrelated struct
-+	 *   drm_crtc_state to this commit by calling
-+	 *   drm_atomic_get_crtc_state(). See also the warning in the
-+	 *   documentation for that function.
-+	 *
-+	 * - Drivers must never change this flag, it is under the exclusive
-+	 *   control of userspace.
-+	 *
-+	 * - Drivers may consult @allow_modeset in the atomic check path, if
-+	 *   they have the choice between an optimal hardware configuration
-+	 *   which requires a modeset, and a less optimal configuration which
-+	 *   can be committed without a modeset. An example would be suboptimal
-+	 *   scanout FIFO allocation resulting in increased idle power
-+	 *   consumption. This allows userspace to avoid flickering and delays
-+	 *   for the normal composition loop at reasonable cost.
- 	 */
- 	bool allow_modeset : 1;
- 	/**
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+index f9faa5b23bb9d..6ec0609074dca 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+@@ -15,13 +15,17 @@
+ #define LMT_TBL_OP_WRITE	1
+ #define LMT_MAP_TABLE_SIZE	(128 * 1024)
+ #define LMT_MAPTBL_ENTRY_SIZE	16
++#define LMT_MAX_VFS		256
++
++#define LMT_MAP_ENTRY_ENA      BIT_ULL(20)
++#define LMT_MAP_ENTRY_LINES    GENMASK_ULL(18, 16)
+ 
+ /* Function to perform operations (read/write) on lmtst map table */
+ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ 			       int lmt_tbl_op)
+ {
+ 	void __iomem *lmt_map_base;
+-	u64 tbl_base;
++	u64 tbl_base, cfg;
+ 
+ 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
+ 
+@@ -35,6 +39,13 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ 		*val = readq(lmt_map_base + index);
+ 	} else {
+ 		writeq((*val), (lmt_map_base + index));
++
++		cfg = FIELD_PREP(LMT_MAP_ENTRY_ENA, 0x1);
++		/* 2048 LMTLINES */
++		cfg |= FIELD_PREP(LMT_MAP_ENTRY_LINES, 0x6);
++
++		writeq(cfg, (lmt_map_base + (index + 8)));
++
+ 		/* Flushing the AP interceptor cache to make APR_LMT_MAP_ENTRY_S
+ 		 * changes effective. Write 1 for flush and read is being used as a
+ 		 * barrier and sets up a data dependency. Write to 0 after a write
+@@ -52,7 +63,7 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ #define LMT_MAP_TBL_W1_OFF  8
+ static u32 rvu_get_lmtst_tbl_index(struct rvu *rvu, u16 pcifunc)
+ {
+-	return ((rvu_get_pf(pcifunc) * rvu->hw->total_vfs) +
++	return ((rvu_get_pf(pcifunc) * LMT_MAX_VFS) +
+ 		(pcifunc & RVU_PFVF_FUNC_MASK)) * LMT_MAPTBL_ENTRY_SIZE;
+ }
+ 
 -- 
 2.39.5
 
