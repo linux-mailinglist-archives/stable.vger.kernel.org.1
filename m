@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDAFACB49F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A70ACB3F5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375254A7AB2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 167A6485ECA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9059221D94;
-	Mon,  2 Jun 2025 14:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE74B22CBE9;
+	Mon,  2 Jun 2025 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OCzsIf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3+fDGvQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85248223301;
-	Mon,  2 Jun 2025 14:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4CA1CBA18;
+	Mon,  2 Jun 2025 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875253; cv=none; b=FP9J5+F50VnWPQdnH1kqj/Mzh6opnmj8u1IFWdc+Voi9XzQ0RlocI8QsmglDf6QnqMaRB+HwgEWAapE/KeyfNbJuVHHmq68kKrzOVl+iirXw4JKHzGsQXIn7OmUX69riRAuiMfB3iF6pXPS9D7FfwPH7SB4/3c+iXK0QpOTXIVM=
+	t=1748874456; cv=none; b=PFnM2KFiZTZQlXu9yN34WdpEBu2aYG4W1xhs6fxH3N4ox2Z+HPNKPSBT+EVpBRLnFGAkso/HnijXHqYQIGNxLSyX6WUQhRrBTJsIB0drGxuvUYMfNbgytrpi27NtIY+sDuMWoSgDV9N3+qW36eAtBzEVZTRntvpadoZ7QmHgX1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875253; c=relaxed/simple;
-	bh=OrluX6Qi6ifHan0tWcPuXQSpwn/c86ZLpLnLQP+TnjY=;
+	s=arc-20240116; t=1748874456; c=relaxed/simple;
+	bh=Um0Pn4R3xXEj4vpOijmRGtE7zaebtl3Y0pEzWhofWjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWhUqtoq4fe+Kq1QICVn5ciSWQ3MqYxOJSslOpanEzhSWDuGh10snjqGfqzcN9g1mcKe1A8zTxZwWnS+2JXBlS6wWCfaeEs1uIoFT9kA2aLgcwB+tGdCbAsbEUYXLM0y32M/XCK7gI9/iUf+95oA25carfw18juLLUzmCQLprsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OCzsIf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C75C4CEEB;
-	Mon,  2 Jun 2025 14:40:52 +0000 (UTC)
+	 MIME-Version; b=NXywBgBlhBsiVGoaDjGxJO6pRHsgqIwyuHWfUS3HhjiaEs72UBlalEvUyWPIHRCSPGgI3yToz6j2NYgGWGmJem9Ki7A47UJG7UVGEtdXluMR4nhJ8QMdZFit5S8U5pmSOHw2q3gqtDxMMjVKPFJPn5yNqrkjz362fS+nfwVfcSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3+fDGvQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AA1C4CEEB;
+	Mon,  2 Jun 2025 14:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875253;
-	bh=OrluX6Qi6ifHan0tWcPuXQSpwn/c86ZLpLnLQP+TnjY=;
+	s=korg; t=1748874456;
+	bh=Um0Pn4R3xXEj4vpOijmRGtE7zaebtl3Y0pEzWhofWjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0OCzsIf4rx13iP99gvsOaZl5Brcebkl7ObNQqjmkW1AygpQpBhs/iBG9ZdcRZY0eW
-	 N4L859kEbz8OFIerSa/RC3Ufa7iMluoupv9DI3OAxhdibRB1zw2ujDo2hzHv/9/ue6
-	 a+3fzrxQMGTjnB0FGBylKSiCdPvjVsCU203FT1Ag=
+	b=Q3+fDGvQcMlYnyXBlVk53YJm20QKE6DvRCsvP0TgX3F/VfBpr5i0vVo3FUN97I3F2
+	 P2DsTVS738lfCYL4FyL3FLuhnDVrkeLChbYuGOlL4OTw1mOU6BhDRE+vySzKeR5zng
+	 jt3Y17qG2VfYtHw9XNvQR+WwBFXqnrfvqsPBapxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/270] types: Complement the aligned types with signed 64-bit one
+Subject: [PATCH 5.4 029/204] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
 Date: Mon,  2 Jun 2025 15:46:02 +0200
-Message-ID: <20250602134310.323303938@linuxfoundation.org>
+Message-ID: <20250602134256.827301665@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit e4ca0e59c39442546866f3dd514a3a5956577daf ]
+[ Upstream commit 8c531e0a8c2d82509ad97c6d3a1e6217c7ed136d ]
 
-Some user may want to use aligned signed 64-bit type.
-Provide it for them.
+usb_phy_init() may return an error code if e.g. its implementation fails
+to prepare/enable some clocks. And properly rollback on probe error path
+by calling the counterpart usb_phy_shutdown().
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20240903180218.3640501-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 5097eaae98e5 ("iio: adc: dln2: Use aligned_s64 for timestamp")
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250316102658.490340-4-pchelkin@ispras.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/types.h      | 3 ++-
- include/uapi/linux/types.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/chipidea/ci_hdrc_imx.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index a147977602b5e..cb496d6a8d791 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -109,8 +109,9 @@ typedef u64			u_int64_t;
- typedef s64			int64_t;
- #endif
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index 0fd860da9267d..d4566b5ec348d 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -417,7 +417,11 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
+ 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
+ 		data->override_phy_control = true;
+-		usb_phy_init(pdata.usb_phy);
++		ret = usb_phy_init(pdata.usb_phy);
++		if (ret) {
++			dev_err(dev, "Failed to init phy\n");
++			goto err_clk;
++		}
+ 	}
  
--/* this is a special 64bit data type that is 8-byte aligned */
-+/* These are the special 64-bit data types that are 8-byte aligned */
- #define aligned_u64		__aligned_u64
-+#define aligned_s64		__aligned_s64
- #define aligned_be64		__aligned_be64
- #define aligned_le64		__aligned_le64
+ 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
+@@ -426,7 +430,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	ret = imx_usbmisc_init(data->usbmisc_data);
+ 	if (ret) {
+ 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
+-		goto err_clk;
++		goto phy_shutdown;
+ 	}
  
-diff --git a/include/uapi/linux/types.h b/include/uapi/linux/types.h
-index f6d2f83cbe297..aa96c4589b71f 100644
---- a/include/uapi/linux/types.h
-+++ b/include/uapi/linux/types.h
-@@ -46,6 +46,7 @@ typedef __u32 __bitwise __wsum;
-  * No conversions are necessary between 32-bit user-space and a 64-bit kernel.
-  */
- #define __aligned_u64 __u64 __attribute__((aligned(8)))
-+#define __aligned_s64 __s64 __attribute__((aligned(8)))
- #define __aligned_be64 __be64 __attribute__((aligned(8)))
- #define __aligned_le64 __le64 __attribute__((aligned(8)))
+ 	data->ci_pdev = ci_hdrc_add_device(dev,
+@@ -435,7 +439,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	if (IS_ERR(data->ci_pdev)) {
+ 		ret = PTR_ERR(data->ci_pdev);
+ 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
+-		goto err_clk;
++		goto phy_shutdown;
+ 	}
  
+ 	ret = imx_usbmisc_init_post(data->usbmisc_data);
+@@ -455,6 +459,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 
+ disable_device:
+ 	ci_hdrc_remove_device(data->ci_pdev);
++phy_shutdown:
++	if (data->override_phy_control)
++		usb_phy_shutdown(data->phy);
+ err_clk:
+ 	imx_disable_unprepare_clks(dev);
+ disable_hsic_regulator:
 -- 
 2.39.5
 
