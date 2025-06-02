@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-149930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52041ACB59C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:06:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5717ACB403
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA0FA207F9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4FA1BA58AB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CF8229B1F;
-	Mon,  2 Jun 2025 14:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDE61FF61E;
+	Mon,  2 Jun 2025 14:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2g7X/wz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvH6UO2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208CE228CA9;
-	Mon,  2 Jun 2025 14:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057832AE9A;
+	Mon,  2 Jun 2025 14:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875493; cv=none; b=W+l4qYpLQ//tSURAPSyrk/0U07fJWW8wA79fi+j8cww6nbbbDArCTEvLCLPQ85OY/lpAti/KLuqmKVSkfnnu9ju2u2UPd4cwETf8cyFMEwZ4lF0jLns7v200QfNXWZCi62xhtcZjSbwflvBVacYGH3cSYDq1q7FSpDvtPPLVT4w=
+	t=1748874815; cv=none; b=XAfL4KcsDjDMvFv4JVuPz4QfKvYTqfP/rH5fNr/MpUxGaM0iyHYP++ivSUSK05CChucj0/BFwKywh134+o7pPRrl5Db/QMkBip/QWSaKvRqdAxIU4Nsw6DjX5oZCifFZO0pUkaRHvGV2Ffb4mSP2UnMrxeZMoEF3JzqpHOxbywY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875493; c=relaxed/simple;
-	bh=2zfCz0bQ9ZyjWwzdJ2DPjgfxbQImJEtM69s+b1+tP3E=;
+	s=arc-20240116; t=1748874815; c=relaxed/simple;
+	bh=kYS0A7lSf8NNjaFiTtAUQkUbDO1XAuGvIYBgm5MlpHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIJ1e1zsuv0oACzlWsiJ66AJG7vMF0CBr+Os+vVv4CVFHd0CjoMy8KUflBMcBzn2keCzr4RmPvcBOtoIYZJkyBg3jZ3WSR3jkATX1n5lQchSQSUXl0ZOpGVHDAW2ZfywIbXRFSiFV2yjMnNmWxGQ6p/WrtLkA6BVlsVKaUgUVgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2g7X/wz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C823C4CEEB;
-	Mon,  2 Jun 2025 14:44:52 +0000 (UTC)
+	 MIME-Version; b=i9msFjEIBmWqJS4IXBwSt2vzWZqK+Fbco/7ub50cul0JWgbIHzhkc7irGW/WSR8E3ksbzOKNzRuHLxiJhUlqn48UhMniC0t4+GVm4SQqsvR1wbMjv9pdePQQUzZplcpyeE+dUEWzfmX6FBTZd3ct2IGl0MdvAkIlZFLO4nF/3n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvH6UO2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E66C4CEEB;
+	Mon,  2 Jun 2025 14:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875493;
-	bh=2zfCz0bQ9ZyjWwzdJ2DPjgfxbQImJEtM69s+b1+tP3E=;
+	s=korg; t=1748874814;
+	bh=kYS0A7lSf8NNjaFiTtAUQkUbDO1XAuGvIYBgm5MlpHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2g7X/wz2+JUaH9bBg69fkY895M5bfj5NdEwxYqsIoEBp/D1cKNc/1rcCs0NXO0jL
-	 3t2QRz9K+xMk1LLHKzbOysEUem+DVCxKsltKw77zNu0TvTwbeXA03hS5moadeB8Sz2
-	 TOb1sne6x6HfRSJ1vgMYr7zRvsoWBhbJrZePHwfM=
+	b=EvH6UO2zPVOTtF/mb1QT67TToYLU6AiVNQN1Q4z0upXpOcjXoIhvXUjk/QwMMngkn
+	 jmDAQX8bqJ4sZmbnJzOunS96/rMPbIF7gbouLdXxOaag6PkN3IEAQyNzoxpheleU84
+	 uUKUM/5GD1aKHwuTzXiYssDFmiS242NJWZEr2Qgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 151/270] arm64/mm: Check PUD_TYPE_TABLE in pud_bad()
+Subject: [PATCH 5.4 103/204] um: Store full CSGSFS and SS register from mcontext
 Date: Mon,  2 Jun 2025 15:47:16 +0200
-Message-ID: <20250602134313.390180682@linuxfoundation.org>
+Message-ID: <20250602134259.709240231@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit bfb1d2b9021c21891427acc86eb848ccedeb274e ]
+[ Upstream commit cef721e0d53d2b64f2ba177c63a0dfdd7c0daf17 ]
 
-pud_bad() is currently defined in terms of pud_table(). Although for some
-configs, pud_table() is hard-coded to true i.e. when using 64K base pages
-or when page table levels are less than 3.
+Doing this allows using registers as retrieved from an mcontext to be
+pushed to a process using PTRACE_SETREGS.
 
-pud_bad() is intended to check that the pud is configured correctly. Hence
-let's open-code the same check that the full version of pud_table() uses
-into pud_bad(). Then it always performs the check regardless of the config.
+It is not entirely clear to me why CSGSFS was masked. Doing so creates
+issues when using the mcontext as process state in seccomp and simply
+copying the register appears to work perfectly fine for ptrace.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250221044227.1145393-7-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Link: https://patch.msgid.link/20250224181827.647129-2-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/um/os-Linux/mcontext.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 7756a365d4c49..d92b5aed354e9 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -601,7 +601,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
- 	pr_err("%s:%d: bad pmd %016llx.\n", __FILE__, __LINE__, pmd_val(e))
- 
- #define pud_none(pud)		(!pud_val(pud))
--#define pud_bad(pud)		(!pud_table(pud))
-+#define pud_bad(pud)		((pud_val(pud) & PUD_TYPE_MASK) != \
-+				 PUD_TYPE_TABLE)
- #define pud_present(pud)	pte_present(pud_pte(pud))
- #define pud_leaf(pud)		(pud_present(pud) && !pud_table(pud))
- #define pud_valid(pud)		pte_valid(pud_pte(pud))
+diff --git a/arch/x86/um/os-Linux/mcontext.c b/arch/x86/um/os-Linux/mcontext.c
+index 49c3744cac371..81b9d1f9f4e68 100644
+--- a/arch/x86/um/os-Linux/mcontext.c
++++ b/arch/x86/um/os-Linux/mcontext.c
+@@ -26,7 +26,6 @@ void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)
+ 	COPY(RIP);
+ 	COPY2(EFLAGS, EFL);
+ 	COPY2(CS, CSGSFS);
+-	regs->gp[CS / sizeof(unsigned long)] &= 0xffff;
+-	regs->gp[CS / sizeof(unsigned long)] |= 3;
++	regs->gp[SS / sizeof(unsigned long)] = mc->gregs[REG_CSGSFS] >> 48;
+ #endif
+ }
 -- 
 2.39.5
 
