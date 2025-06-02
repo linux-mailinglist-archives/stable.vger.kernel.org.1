@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-150262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB5AACB654
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9827DACB7E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACB934C6016
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D8624E0032
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0C82222DA;
-	Mon,  2 Jun 2025 15:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37547227EAF;
+	Mon,  2 Jun 2025 15:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0o0dfhFk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="froMkeeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3E01FF61E;
-	Mon,  2 Jun 2025 15:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67FA221DB1;
+	Mon,  2 Jun 2025 15:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876559; cv=none; b=qXcjyPUOWeXB+KzHVj6W3RDeNfHFGNsR4HGLaouEJVmN0jqznyRYgtSCNauadzMBA2qvASIUdCmYhgo6fwMR/L7HH/eX4gU4wx7vAvvDvKtHozgXNP/Jiv9Xqs7YGTUfVdFhjgm9pWktC/ClGrfi4aY95swrk9IJHh79HU2jKBo=
+	t=1748877457; cv=none; b=amObSbZJwHME0mZ+aGMjHfEf8THdxPxgfSJp5JElvsxusE1qSow/aP44hB6FmBNWcd9a+oGpOU9ZerOQEP4+e/nlBIkYNQTgCgPVFmfznEQOEc2qxrd1rECDgv9M6EygFnSVdSJGjWyKTMsNVrjNmCldvpjkvxiBt3Y65d7weNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876559; c=relaxed/simple;
-	bh=u/bmYzTTdEkNpShzUcorhswNbPKJI373i3LLnpfSxKg=;
+	s=arc-20240116; t=1748877457; c=relaxed/simple;
+	bh=ZENF+OqbrAai3e0Zp9Vn6xr3v8i7SIqPCzcCis5KzAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tXZE0pRA4d+bIn8TySMcFkT6dp2PruquB9QCDHRcJoL5UcXxKpZOek9rG9qe+5uu7btW/K+yUWujQduORkNUSdtOpO7r7A1es0paarH5RdE8o6/8hGdYNjSEWam6MzVq0SFBtORBZTaU4Z9SeCPDIqfsun1DORDROkkvFNLsQBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0o0dfhFk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F46C4CEEB;
-	Mon,  2 Jun 2025 15:02:37 +0000 (UTC)
+	 MIME-Version; b=eoEtCAdKg4fhCV+aA+t0C3JwWFVJ88zxOY4HDXM84PVF2X154Fj8/TWlbRxxBhCvgWQmWfgASN2RxIcPINKlEBDzSEvnNEWdirFM0U9Slwa2iL2Ai7aROI4UfnkAHv/3TdEAUnF5hndcSSzmSDT8ZEBqnXj6N/fSya2qeLBi+9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=froMkeeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50331C4CEEB;
+	Mon,  2 Jun 2025 15:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876559;
-	bh=u/bmYzTTdEkNpShzUcorhswNbPKJI373i3LLnpfSxKg=;
+	s=korg; t=1748877456;
+	bh=ZENF+OqbrAai3e0Zp9Vn6xr3v8i7SIqPCzcCis5KzAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0o0dfhFkfPqOWSigkJl57ICjm5xQW56bPLkb1XwuZXlL69zsynrmDoSso7xYtdQ/L
-	 mnycDt6c3Wywpf8V3cS5HNhCn1+8IvPV1M7V0md6F9hSQqOTXx5Mp1WOeoBqn3wYa6
-	 onkiTTeEnqT9Q0saYQroqPnAMc3KraVnNdpVtr0c=
+	b=froMkeeJi2QjdcF+kW1Me5K/CHa7jEL9QnyNZAgNhT18DDNd4C8OggFMfHL+fdjrE
+	 Ndue3vHAj1l99x9Es/PDXJa6Dhil5r9GlUxbbM/XVbfMUoDa80nGlkKwYtsdJiEueM
+	 FHBqn2YEMV33xIwLf+rH4OXqkU73RDHSbJhBEg0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Nicolas Chauvet <kwizart@gmail.com>,
-	Damian Tometzki <damian@riscv-rocks.de>,
-	Zhenyu Wang <zhenyuw.linux@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.15 188/207] drm/i915/gvt: fix unterminated-string-initialization warning
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 284/325] af_unix: Try to run GC async.
 Date: Mon,  2 Jun 2025 15:49:20 +0200
-Message-ID: <20250602134306.131826933@linuxfoundation.org>
+Message-ID: <20250602134331.299499705@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +62,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
+commit d9f21b3613337b55cc9d4a6ead484dca68475143 upstream.
 
-Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
-(which is "IntelGraphicsMem") drops the NUL termination of the
-string. This is intentional, but the compiler doesn't know this.
+If more than 16000 inflight AF_UNIX sockets exist and the garbage
+collector is not running, unix_(dgram|stream)_sendmsg() call unix_gc().
+Also, they wait for unix_gc() to complete.
 
-Switch to initializing header->signature directly from the string
-litaral, with sizeof destination rather than source. We don't treat the
-signature as a string other than for initialization; it's really just a
-blob of binary data.
+In unix_gc(), all inflight AF_UNIX sockets are traversed at least once,
+and more if they are the GC candidate.  Thus, sendmsg() significantly
+slows down with too many inflight AF_UNIX sockets.
 
-Add a static assert for good measure to cross-check the sizes.
+However, if a process sends data with no AF_UNIX FD, the sendmsg() call
+does not need to wait for GC.  After this change, only the process that
+meets the condition below will be blocked under such a situation.
 
-Reported-by: Kees Cook <kees@kernel.org>
-Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
-Tested-by: Nicolas Chauvet <kwizart@gmail.com>
-Tested-by: Damian Tometzki <damian@riscv-rocks.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
-Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-[nathan: Move static_assert() to top of function to avoid instance of
-         -Wdeclaration-after-statement due to lack of b5ec6fd286df]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+  1) cmsg contains AF_UNIX socket
+  2) more than 32 AF_UNIX sent by the same user are still inflight
+
+Note that even a sendmsg() call that does not meet the condition but has
+AF_UNIX FD will be blocked later in unix_scm_to_skb() by the spinlock,
+but we allow that as a bonus for sane users.
+
+The results below are the time spent in unix_dgram_sendmsg() sending 1
+byte of data with no FD 4096 times on a host where 32K inflight AF_UNIX
+sockets exist.
+
+Without series: the sane sendmsg() needs to wait gc unreasonably.
+
+  $ sudo /usr/share/bcc/tools/funclatency -p 11165 unix_dgram_sendmsg
+  Tracing 1 functions for "unix_dgram_sendmsg"... Hit Ctrl-C to end.
+  ^C
+       nsecs               : count     distribution
+  [...]
+      524288 -> 1048575    : 0        |                                        |
+     1048576 -> 2097151    : 3881     |****************************************|
+     2097152 -> 4194303    : 214      |**                                      |
+     4194304 -> 8388607    : 1        |                                        |
+
+  avg = 1825567 nsecs, total: 7477526027 nsecs, count: 4096
+
+With series: the sane sendmsg() can finish much faster.
+
+  $ sudo /usr/share/bcc/tools/funclatency -p 8702  unix_dgram_sendmsg
+  Tracing 1 functions for "unix_dgram_sendmsg"... Hit Ctrl-C to end.
+  ^C
+       nsecs               : count     distribution
+  [...]
+         128 -> 255        : 0        |                                        |
+         256 -> 511        : 4092     |****************************************|
+         512 -> 1023       : 2        |                                        |
+        1024 -> 2047       : 0        |                                        |
+        2048 -> 4095       : 0        |                                        |
+        4096 -> 8191       : 1        |                                        |
+        8192 -> 16383      : 1        |                                        |
+
+  avg = 410 nsecs, total: 1680510 nsecs, count: 4096
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240123170856.41348-6-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gvt/opregion.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/net/af_unix.h |   12 ++++++++++--
+ include/net/scm.h     |    1 +
+ net/core/scm.c        |    5 +++++
+ net/unix/af_unix.c    |    6 ++++--
+ net/unix/garbage.c    |   10 +++++++++-
+ 5 files changed, 29 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/i915/gvt/opregion.c
-+++ b/drivers/gpu/drm/i915/gvt/opregion.c
-@@ -222,7 +222,8 @@ int intel_vgpu_init_opregion(struct inte
- 	u8 *buf;
- 	struct opregion_header *header;
- 	struct vbt v;
--	const char opregion_signature[16] = OPREGION_SIGNATURE;
-+
-+	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -8,12 +8,20 @@
+ #include <linux/refcount.h>
+ #include <net/sock.h>
  
- 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
- 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
-@@ -236,8 +237,9 @@ int intel_vgpu_init_opregion(struct inte
- 	/* emulated opregion with VBT mailbox only */
- 	buf = (u8 *)vgpu_opregion(vgpu)->va;
- 	header = (struct opregion_header *)buf;
--	memcpy(header->signature, opregion_signature,
--	       sizeof(opregion_signature));
++#if IS_ENABLED(CONFIG_UNIX)
++struct unix_sock *unix_get_socket(struct file *filp);
++#else
++static inline struct unix_sock *unix_get_socket(struct file *filp)
++{
++	return NULL;
++}
++#endif
 +
-+	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
+ void unix_inflight(struct user_struct *user, struct file *fp);
+ void unix_notinflight(struct user_struct *user, struct file *fp);
+ void unix_destruct_scm(struct sk_buff *skb);
+ void unix_gc(void);
+-void wait_for_unix_gc(void);
+-struct unix_sock *unix_get_socket(struct file *filp);
++void wait_for_unix_gc(struct scm_fp_list *fpl);
+ struct sock *unix_peer_get(struct sock *sk);
+ 
+ #define UNIX_HASH_MOD	(256 - 1)
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -23,6 +23,7 @@ struct scm_creds {
+ 
+ struct scm_fp_list {
+ 	short			count;
++	short			count_unix;
+ 	short			max;
+ 	struct user_struct	*user;
+ 	struct file		*fp[SCM_MAX_FD];
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -36,6 +36,7 @@
+ #include <net/compat.h>
+ #include <net/scm.h>
+ #include <net/cls_cgroup.h>
++#include <net/af_unix.h>
+ 
+ 
+ /*
+@@ -85,6 +86,7 @@ static int scm_fp_copy(struct cmsghdr *c
+ 			return -ENOMEM;
+ 		*fplp = fpl;
+ 		fpl->count = 0;
++		fpl->count_unix = 0;
+ 		fpl->max = SCM_MAX_FD;
+ 		fpl->user = NULL;
+ 	}
+@@ -109,6 +111,9 @@ static int scm_fp_copy(struct cmsghdr *c
+ 			fput(file);
+ 			return -EINVAL;
+ 		}
++		if (unix_get_socket(file))
++			fpl->count_unix++;
 +
- 	header->size = 0x8;
- 	header->opregion_ver = 0x02000000;
- 	header->mboxes = MBOX_VBT;
+ 		*fpp++ = file;
+ 		fpl->count++;
+ 	}
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1875,11 +1875,12 @@ static int unix_dgram_sendmsg(struct soc
+ 	long timeo;
+ 	int err;
+ 
+-	wait_for_unix_gc();
+ 	err = scm_send(sock, msg, &scm, false);
+ 	if (err < 0)
+ 		return err;
+ 
++	wait_for_unix_gc(scm.fp);
++
+ 	err = -EOPNOTSUPP;
+ 	if (msg->msg_flags&MSG_OOB)
+ 		goto out;
+@@ -2145,11 +2146,12 @@ static int unix_stream_sendmsg(struct so
+ 	bool fds_sent = false;
+ 	int data_len;
+ 
+-	wait_for_unix_gc();
+ 	err = scm_send(sock, msg, &scm, false);
+ 	if (err < 0)
+ 		return err;
+ 
++	wait_for_unix_gc(scm.fp);
++
+ 	err = -EOPNOTSUPP;
+ 	if (msg->msg_flags & MSG_OOB) {
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -335,8 +335,9 @@ void unix_gc(void)
+ }
+ 
+ #define UNIX_INFLIGHT_TRIGGER_GC 16000
++#define UNIX_INFLIGHT_SANE_USER (SCM_MAX_FD * 8)
+ 
+-void wait_for_unix_gc(void)
++void wait_for_unix_gc(struct scm_fp_list *fpl)
+ {
+ 	/* If number of inflight sockets is insane,
+ 	 * force a garbage collect right now.
+@@ -348,6 +349,13 @@ void wait_for_unix_gc(void)
+ 	    !READ_ONCE(gc_in_progress))
+ 		unix_gc();
+ 
++	/* Penalise users who want to send AF_UNIX sockets
++	 * but whose sockets have not been received yet.
++	 */
++	if (!fpl || !fpl->count_unix ||
++	    READ_ONCE(fpl->user->unix_inflight) < UNIX_INFLIGHT_SANE_USER)
++		return;
++
+ 	if (READ_ONCE(gc_in_progress))
+ 		flush_work(&unix_gc_work);
+ }
 
 
 
