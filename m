@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D1CACB718
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 391E8ACB474
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CE113BB35F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E19347A5EEA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA091231854;
-	Mon,  2 Jun 2025 14:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0B4221F1C;
+	Mon,  2 Jun 2025 14:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGrYfHya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxYj6mD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AFA188907;
-	Mon,  2 Jun 2025 14:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0805219EEBD;
+	Mon,  2 Jun 2025 14:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875941; cv=none; b=WfLTKep4O6pocICj28KPbLe6t2CHN3d6gI/Yp5VkPCR+5kg7QbMt0iJlsXH0oJqKBG4vTZ1AQv5j4QdXD+FPKt4Qo8dos7gN1Uf9ZW8kj2ETVX75c5x7kgQEoXJgwssXrFZuAsPWl+AR5aQ89U+Ixn3Nz3LStyOJlKm9u3SUlzM=
+	t=1748875368; cv=none; b=hptU8NXF/Zx4QWjacQl/gwxGe4Cm/qEbOSlJrNBO9ngMDApc2VOvqJ/ZOBLJcxGLy8hWOlj1i310FdymIbts0tFXTZH/wLUTGNWq7pN3zEPfL57BaPNnQjs5h9WCopsGs5V15PbxbJHDVbHtsAJvEWxx1KLHt7acaQQeix5AMk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875941; c=relaxed/simple;
-	bh=IP2MFkzMjQ0Vd4sh/gBPkWKTPEfKtAcd7jbYeOQUKlk=;
+	s=arc-20240116; t=1748875368; c=relaxed/simple;
+	bh=7H85x1unmjANEZ9lrm01GebyVNaB+jv1F+Z17sVLZ28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+PJxSlyj99s2cCIB52MTsaz2wx9TMm43JP+tDTGEGPtc7bZp2lHdgwtFkHKG8oc0yn+myJ1630OkaU9HZNu0SeCYmFcRwV4nmbf4+F1KUIekDl1C4T2jFU5eHj3Y2WLPIl4nteIJRR2lS/vyoV5gITwxFvRq3SDwcPrWFdhSeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGrYfHya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC19C4CEEB;
-	Mon,  2 Jun 2025 14:52:20 +0000 (UTC)
+	 MIME-Version; b=sVIo8XZE+xiqSdp7d1S7H3MEEjggafytb+Qoqt7oWzAAyEYrME/Mt3wtc6O+MKR4rn0t+cANQ7olYPlS80tkMBaWDV3Up4fyp1V0X1H08EhSjWlMkiTddxOMMRV6nux0FaxRjdM4fgpnRGk2UC47sYuaI67kidlx7+MjGHikKHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxYj6mD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB35C4CEEE;
+	Mon,  2 Jun 2025 14:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875941;
-	bh=IP2MFkzMjQ0Vd4sh/gBPkWKTPEfKtAcd7jbYeOQUKlk=;
+	s=korg; t=1748875367;
+	bh=7H85x1unmjANEZ9lrm01GebyVNaB+jv1F+Z17sVLZ28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGrYfHyamXTgaEfNDV1OrZr1oT/KAcxHOeb8LANkyqkwdJsdtslNnscVdmPV6hbjK
-	 9axkBxUuG1dR1rYcUMWAX67YtK8Uycr9fKT/WVsjAf+Hckuub5IiHj8Ou4GGrJwj44
-	 4GHEyW4Hj3X/FICggZo5YJi6cRUVaufKjWbRmPEQ=
+	b=yxYj6mD4fQT6X4MK9nUm74dQ3eYZZJ9skGiAS/SVSoopKX+3QdzCn2GKrM63L2XKQ
+	 b4svYcWySJVD3bLv/Ce387Byqneq9XtaQY/aDIhZ4lqZ44GbkN34HGc6BW9BS0W3lI
+	 N15UfKWeEtKFZTjlvmicoZR7cIdgLqb3YLgvTgRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoran Jiang <jianghaoran@kylinos.cn>,
-	zhangxi <zhangxi@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/207] samples/bpf: Fix compilation failure for samples/bpf on LoongArch Fedora
-Date: Mon,  2 Jun 2025 15:46:19 +0200
-Message-ID: <20250602134259.056974670@linuxfoundation.org>
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 095/270] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
+Date: Mon,  2 Jun 2025 15:46:20 +0200
+Message-ID: <20250602134311.060723797@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoran Jiang <jianghaoran@kylinos.cn>
+From: Nathan Lynch <nathan.lynch@amd.com>
 
-[ Upstream commit 548762f05d19c5542db7590bcdfb9be1fb928376 ]
+commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
 
-When building the latest samples/bpf on LoongArch Fedora
+Several issues with this change:
 
-     make M=samples/bpf
+* The analysis is flawed and it's unclear what problem is being
+  fixed. There is no difference between wait_event_freezable_timeout()
+  and wait_event_timeout() with respect to device interrupts. And of
+  course "the interrupt notifying the finish of an operation happens
+  during wait_event_freezable_timeout()" -- that's how it's supposed
+  to work.
 
-There are compilation errors as follows:
+* The link at the "Closes:" tag appears to be an unrelated
+  use-after-free in idxd.
 
-In file included from ./linux/samples/bpf/sockex2_kern.c:2:
-In file included from ./include/uapi/linux/in.h:25:
-In file included from ./include/linux/socket.h:8:
-In file included from ./include/linux/uio.h:9:
-In file included from ./include/linux/thread_info.h:60:
-In file included from ./arch/loongarch/include/asm/thread_info.h:15:
-In file included from ./arch/loongarch/include/asm/processor.h:13:
-In file included from ./arch/loongarch/include/asm/cpu-info.h:11:
-./arch/loongarch/include/asm/loongarch.h:13:10: fatal error: 'larchintrin.h' file not found
-         ^~~~~~~~~~~~~~~
-1 error generated.
+* It introduces a regression: dmatest threads are meant to be
+  freezable and this change breaks that.
 
-larchintrin.h is included in /usr/lib64/clang/14.0.6/include,
-and the header file location is specified at compile time.
+See discussion here:
+https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
 
-Test on LoongArch Fedora:
-https://github.com/fedora-remix-loongarch/releases-info
-
-Signed-off-by: Haoran Jiang <jianghaoran@kylinos.cn>
-Signed-off-by: zhangxi <zhangxi@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250425095042.838824-1-jianghaoran@kylinos.cn
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
+Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
+Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/bpf/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/dmatest.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-index e2c9ea65df9fb..9edf83eb2a99d 100644
---- a/samples/bpf/Makefile
-+++ b/samples/bpf/Makefile
-@@ -438,7 +438,7 @@ $(obj)/%.o: $(src)/%.c
- 	@echo "  CLANG-bpf " $@
- 	$(Q)$(CLANG) $(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(BPF_EXTRA_CFLAGS) \
- 		-I$(obj) -I$(srctree)/tools/testing/selftests/bpf/ \
--		-I$(LIBBPF_INCLUDE) \
-+		-I$(LIBBPF_INCLUDE) $(CLANG_SYS_INCLUDES) \
- 		-D__KERNEL__ -D__BPF_TRACING__ -Wno-unused-value -Wno-pointer-sign \
- 		-D__TARGET_ARCH_$(SRCARCH) -Wno-compare-distinct-pointer-types \
- 		-Wno-gnu-variable-sized-type-not-at-end \
--- 
-2.39.5
-
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -825,9 +825,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
+ 
+-			wait_event_timeout(thread->done_wait,
+-					   done->done,
+-					   msecs_to_jiffies(params->timeout));
++			wait_event_freezable_timeout(thread->done_wait,
++					done->done,
++					msecs_to_jiffies(params->timeout));
+ 
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
 
 
 
