@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC48ACB502
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F97ACB372
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 421967B187C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1811218822C6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8595F290F;
-	Mon,  2 Jun 2025 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAD0227E8A;
+	Mon,  2 Jun 2025 14:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqsMRBun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XErKjWul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446C2221FD2;
-	Mon,  2 Jun 2025 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0781EA65;
+	Mon,  2 Jun 2025 14:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875655; cv=none; b=Rzq4x9SxqC3+MCSP9iJc8GIqiI6Uul+sECj8mO/nnlcF3RWijnL3IkmnBv79P680t2tKX4y3er87TxR+gWGBNRtlV/JyQa/UgPYxwPm4H4fmxa1IbszFI7lAqXi6MrWacxbJsHpKyQz5brszp/X6WFv1w57U7fxO+/iyT5BisqA=
+	t=1748874301; cv=none; b=AFkAJT8r3j+0AYuFpLTTA1CiV4YCx0kdiTdDX4tCQ0ysNamaeEgHckfphIKK6p0d8faGJ9gIaqSPdpP+ut1sVFbSj8MjdMdBp7kH+mEyON7TioW4zIAdhdC1P5bg3LZPsOJGqI7rIsJBmErOpqpT1k8O+vwzOOk5CZAhD+pEpA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875655; c=relaxed/simple;
-	bh=SYXV8MW7MJ7tyTfzkyXfz/g1uSTSsHdAcbZcMTMlw3s=;
+	s=arc-20240116; t=1748874301; c=relaxed/simple;
+	bh=gy2en5pIrZw2CEZiLzaqEz+x9LDqgmd+z3IuA/gVpjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5vYPGJ8aCHUHvmu3ykWHigWajydP/aNev7ZYYEDs6wGcs+BdBqcjDofQ0OSxJZA95e6uUSna35Xgv5ZAz9LHueMstZPUHyiDbIkmE/30Hlnm9TY2HLgZuOhFhygy7/oWUcB4jrp76f+kWVxTsIBP+PYLDPI26MdyfoKmgKiBH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqsMRBun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55C7C4CEEB;
-	Mon,  2 Jun 2025 14:47:34 +0000 (UTC)
+	 MIME-Version; b=c6lUW5GxzTjOJyK1wnkJCFsBz8aUfHtSztBTqooxOA8q+oIYXTsWgr0gFKa6YDqr5bu2h+4mvSADl2gttVkV4xHby0boMNc2SbFLcX4hg0FvrR4uVB+BiUSR5ytz3dmxYO2o+oArMGZZYbEnbtCWn4gHtk94buxQrPALJqQuEsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XErKjWul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC36C4CEEB;
+	Mon,  2 Jun 2025 14:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875655;
-	bh=SYXV8MW7MJ7tyTfzkyXfz/g1uSTSsHdAcbZcMTMlw3s=;
+	s=korg; t=1748874300;
+	bh=gy2en5pIrZw2CEZiLzaqEz+x9LDqgmd+z3IuA/gVpjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqsMRBunlMJq8GDd/uBdIkVzTy0nCXqkYN1C648diR/yF6aLoolMcPx4fTKVPLjnt
-	 K6MButKZWRRqyc5t1x5xw9EMOlGhYJiudS48FGkVCGfgvdroCPk5ZPZ0ALtWLYtwog
-	 I9/sZCXy2IaRuN//LJTG9dLCADEazcoFghwRnAJU=
+	b=XErKjWulooEAib0qgltedUBCVEOtxdBAgAKAfc54sp7esfqjsj89HFelLv3H5C3PO
+	 itxTqwxU0kZ0IF7s+C4quj1+wCrwUDXqioHujjf1bFVd1c0mYT5GZSLz+BZLWjyhA5
+	 sg7jGYIS0tFopGnvW+WTBBTpIdPXOxN1CVkMp8yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 203/270] smack: recognize ipv4 CIPSO w/o categories
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 424/444] arm64: dts: qcom: sm8550: Add missing properties for cryptobam
 Date: Mon,  2 Jun 2025 15:48:08 +0200
-Message-ID: <20250602134315.494648935@linuxfoundation.org>
+Message-ID: <20250602134358.151913791@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
+commit 663cd2cad36da23cf1a3db7868fce9f1a19b2d61 upstream.
 
-If SMACK label has CIPSO representation w/o categories, e.g.:
+num-channels and qcom,num-ees are required for BAM nodes without clock,
+because the driver cannot ensure the hardware is powered on when trying to
+obtain the information from the hardware registers. Specifying the node
+without these properties is unsafe and has caused early boot crashes for
+other SoCs before [1, 2].
 
-| # cat /smack/cipso2
-| foo  10
-| @ 250/2
-| ...
+Add the missing information from the hardware registers to ensure the
+driver can probe successfully without causing crashes.
 
-then SMACK does not recognize such CIPSO in input ipv4 packets
-and substitues '*' label instead. Audit records may look like
+[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
 
-| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
-|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
-
-This happens in two steps:
-
-1) security/smack/smackfs.c`smk_set_cipso
-   does not clear NETLBL_SECATTR_MLS_CAT
-   from (struct smack_known *)skp->smk_netlabel.flags
-   on assigning CIPSO w/o categories:
-
-| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
-
-2) security/smack/smack_lsm.c`smack_from_secattr
-   can not match skp->smk_netlabel with input packet's
-   struct netlbl_lsm_secattr *sap
-   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
-   but skp->smk_netlabel.flags have (what is incorrect):
-
-| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
-| 	if ((skp->smk_netlabel.flags &
-| 		 NETLBL_SECATTR_MLS_CAT) == 0)
-| 		found = 1;
-| 	break;
-| }
-
-This commit sets/clears NETLBL_SECATTR_MLS_CAT in
-skp->smk_netlabel.flags according to the presense of CIPSO categories.
-The update of smk_netlabel is not atomic, so input packets processing
-still may be incorrect during short time while update proceeds.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 433477c3bf0b ("arm64: dts: qcom: sm8550: add QCrypto nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-3-f560889e65d8@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/smack/smackfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index 44f0b5148a5b9..6402626e47c69 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -921,6 +921,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-+		if (ncats.attr.mls.cat)
-+			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
-+		else
-+			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
- 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
- 		synchronize_rcu();
- 		netlbl_catmap_free(old_cat);
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -1866,6 +1866,8 @@
+ 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,num-ees = <4>;
++			num-channels = <20>;
+ 			qcom,controlled-remotely;
+ 			iommus = <&apps_smmu 0x480 0x0>,
+ 				 <&apps_smmu 0x481 0x0>;
 
 
 
