@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-149852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FA6ACB401
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DF4ACB354
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B691F7B0AD0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 873C31948353
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C777A22D795;
-	Mon,  2 Jun 2025 14:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA3322B8CF;
+	Mon,  2 Jun 2025 14:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTLR3Ryc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hm1kDNXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DAD22259C;
-	Mon,  2 Jun 2025 14:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F4C1CBA18;
+	Mon,  2 Jun 2025 14:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875244; cv=none; b=uvGrdVDyp7qjEN+/ppl/E26cELl7fIMgtgzZ7nv7j514TXUY4U/q7PKmUfLI+dI2gwBqlITEusdhLyaTHTETKPEmcENKbBK8xq/I5RbymIjqAP+0viU2rKSS52ZSv7kVRRQKlHKoCkfo4NqVR3XX4vPjWKxaC0wqCe4c//X4sF8=
+	t=1748874447; cv=none; b=JwiVvg97x4y6e33I6zILVV4m0WDxZf0x920WMhcpA2lgbtlItbpZoM+EeAzmCFqAoVyh3El0jVRqVZgWNiIC0S1DT0fs3YdvmofgFsikHb3J/mz1uXtcqLbW0jPMOqmIHzPb+BHQbp2RbRF4M3GeEntmy8PS8zsnZxEYSyxZ6mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875244; c=relaxed/simple;
-	bh=qf1UOrNf65ZVes1zNIu7mn+lAITsxk04ePP9hfPONfE=;
+	s=arc-20240116; t=1748874447; c=relaxed/simple;
+	bh=GhlcC37eAoiIWb+iJXN2nniluH09D3qtMLYQSPgEqyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoNXbKXvUNPE936Uqm/HITJ+GEZQyaR0etYc3cCz6WBH4MfnmcVOdD0/F3EK3G7XuW6+yDAdGF3okWrFQSHInOVtxCtE4dAFJc3MW7rLcNwxY4tMzUSUSMHI+KhPeRoKPZJ8n5vWWUlQh6qkQo3mbeBEO6zTifPo4vv/SPs4onk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTLR3Ryc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE180C4CEEB;
-	Mon,  2 Jun 2025 14:40:43 +0000 (UTC)
+	 MIME-Version; b=W0yyX6CDKsR656Lg/LlScd/WOwyRoo+PRzXh74wZvOVjJYKSEdotruC8j4Dx6Hr78Wf5JeP6c7rZBbk0YRHI3gOH6B9QcO1Tce7xJbj/PEe25gPOZ9GYXSFqjlFV9eEppfIMA2+9Dq/rJhlFe73kTjR6dNBCgK1t3D7yUOen19s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hm1kDNXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270C4C4CEEB;
+	Mon,  2 Jun 2025 14:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875244;
-	bh=qf1UOrNf65ZVes1zNIu7mn+lAITsxk04ePP9hfPONfE=;
+	s=korg; t=1748874447;
+	bh=GhlcC37eAoiIWb+iJXN2nniluH09D3qtMLYQSPgEqyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTLR3Rycnd+LL5ni4K+1h7fFSq5tblVU4r/Cvp3pcX3I3ULzfyq0W3hSCXT8A0ean
-	 PwYKtLeYlJ2956/2MoenfWr3oXGJI9WfedYYzfpQXrs8XlMKCOqNfOU58jz39PVyNq
-	 06Shhv9SnXzel8JJZQytcho6cHWo9j6rJXG111Ug=
+	b=hm1kDNXlEfOauMHo1ZbqUKXAeCpvJVSzQhI9T6vH3EamNQ3TS8fhwCwPbLh2yKShe
+	 8boxTn1hz/jG6O+lXNBwpoZxF67WYXBlEP7YjUbtcZrBOpTY9BZ672vEi7TrLDFhEZ
+	 aPVTagQpN9oQYdEubvRJwFA4HELLpM2XYYYvx7C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Katzmann <vk2bea@gmail.com>,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 5.10 074/270] usb: usbtmc: Fix erroneous get_stb ioctl error returns
+	Peter Chen <peter.chen@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 026/204] usb: chipidea: imx: change hsic power regulator as optional
 Date: Mon,  2 Jun 2025 15:45:59 +0200
-Message-ID: <20250602134310.207256155@linuxfoundation.org>
+Message-ID: <20250602134256.712401903@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Peter Chen <peter.chen@nxp.com>
 
-commit cac01bd178d6a2a23727f138d647ce1a0e8a73a1 upstream.
+[ Upstream commit 7d5ec335f94e74e885ca2f6c97a3479fe9fe3b15 ]
 
-wait_event_interruptible_timeout returns a long
-The return was being assigned to an int causing an integer overflow when
-the remaining jiffies > INT_MAX resulting in random error returns.
+Not every platform needs this regulator.
 
-Use a long return value and convert to int ioctl return only on error.
-
-When the return value of wait_event_interruptible_timeout was <= INT_MAX
-the number of remaining jiffies was returned which has no meaning for the
-user. Return 0 on success.
-
-Reported-by: Michael Katzmann <vk2bea@gmail.com>
-Fixes: dbf3e7f654c0 ("Implement an ioctl to support the USMTMC-USB488 READ_STATUS_BYTE operation.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250502070941.31819-2-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Chen <peter.chen@nxp.com>
+Stable-dep-of: 8c531e0a8c2d ("usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/usbtmc.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/usb/chipidea/ci_hdrc_imx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -485,6 +485,7 @@ static int usbtmc488_ioctl_read_stb(stru
- 	u8 tag;
- 	__u8 stb;
- 	int rv;
-+	long wait_rv;
- 
- 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
- 		data->iin_ep_present);
-@@ -527,16 +528,17 @@ static int usbtmc488_ioctl_read_stb(stru
- 	}
- 
- 	if (data->iin_ep_present) {
--		rv = wait_event_interruptible_timeout(
-+		wait_rv = wait_event_interruptible_timeout(
- 			data->waitq,
- 			atomic_read(&data->iin_data_valid) != 0,
- 			file_data->timeout);
--		if (rv < 0) {
--			dev_dbg(dev, "wait interrupted %d\n", rv);
-+		if (wait_rv < 0) {
-+			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
-+			rv = wait_rv;
- 			goto exit;
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index 0fe545815c5ce..09a7bee7203c5 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -369,7 +369,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 			return PTR_ERR(data->pinctrl_hsic_active);
  		}
  
--		if (rv == 0) {
-+		if (wait_rv == 0) {
- 			dev_dbg(dev, "wait timed out\n");
- 			rv = -ETIMEDOUT;
- 			goto exit;
-@@ -556,6 +558,8 @@ static int usbtmc488_ioctl_read_stb(stru
- 	rv = put_user(stb, (__u8 __user *)arg);
- 	dev_dbg(dev, "stb:0x%02x received %d\n", (unsigned int)stb, rv);
- 
-+	rv = 0;
-+
-  exit:
- 	/* bump interrupt bTag */
- 	data->iin_bTag += 1;
+-		data->hsic_pad_regulator = devm_regulator_get(dev, "hsic");
++		data->hsic_pad_regulator =
++				devm_regulator_get_optional(dev, "hsic");
+ 		if (PTR_ERR(data->hsic_pad_regulator) == -EPROBE_DEFER) {
+ 			return -EPROBE_DEFER;
+ 		} else if (PTR_ERR(data->hsic_pad_regulator) == -ENODEV) {
+-- 
+2.39.5
+
 
 
 
