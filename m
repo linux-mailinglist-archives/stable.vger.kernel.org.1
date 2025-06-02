@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56CECACB84A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:38:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A97ACB594
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E6041C22882
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E94E4A38F9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C3322DF96;
-	Mon,  2 Jun 2025 15:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF6322FDFF;
+	Mon,  2 Jun 2025 14:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyVcqCOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfIoJhrL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F1922259C;
-	Mon,  2 Jun 2025 15:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6181F22FDEA;
+	Mon,  2 Jun 2025 14:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877315; cv=none; b=F9oNVpQqIjB40qpKmWTIPgyJ8/LSpcREMzV7Pmz1zimgpfAtfGfK7nuXR8I/VlBLhYe876MrSGPjQjB9yrB6ZJUJsQwTjLyvxL8AXZJ95taLtpxNdGljZQcKS1kX22CgBd3XirYJrvKuR9dbcm6Wo4BX7wPNGmYk5xdt+iE/818=
+	t=1748875742; cv=none; b=Z7MEivVdygxMNl0oIRnAo1riryk7U8gNjsrSzLySie4TCpL3RoZEuSFiN7nbPQira9lc1PgFnYqJeiV/fSxboe07JJtDUbpnWsCLEYusAwTU+euE6BwXU6GA9TuIEKgVBBAKmVitCmw5cQc0a4p3tfTJf3nkkm+5+O1XoRZl8zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877315; c=relaxed/simple;
-	bh=XcGlgBxwYXYmzd4vjrbaDil5MONc7+/wwbV5OF9cos0=;
+	s=arc-20240116; t=1748875742; c=relaxed/simple;
+	bh=TvWWSEWlAfBbHQS3BpHoh7E60OmeLnJ37yqcGSoqjfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vwu9Exlz7BPFFOgDIT6V1PpFOd3FXd+UFZ3C2BIB3TCr6OMNL+u+oRjue1EqbV+5fT3aI18vU8W9xX5eLWqXbwIKuWqeEuBHJdPcEmObzrRsdRgUdTsBUnFCkAVZdn/u3QthblnlpSfnKwi969mVwQxQDWjnn9aXUGlRmk2wdsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyVcqCOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61104C4CEF2;
-	Mon,  2 Jun 2025 15:15:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RhieU+GjBrTQ3IG2G5UqcSvEw42KswwkFnHblr1s/vVlQ+3AjDreqyIlWfby0Z4h39jzJRtO/V7Hm6utnclvRYbK9Pq14Bsw+hcEv/WTpxmF2Li1c+PR/2BPvvaMMcxxPGmhcGwW7HbER+g2fT8KQpDH2gEnoW4SgZ/ikYe+g5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfIoJhrL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EEEC4CEEE;
+	Mon,  2 Jun 2025 14:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877314;
-	bh=XcGlgBxwYXYmzd4vjrbaDil5MONc7+/wwbV5OF9cos0=;
+	s=korg; t=1748875741;
+	bh=TvWWSEWlAfBbHQS3BpHoh7E60OmeLnJ37yqcGSoqjfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oyVcqCOuAZwFlLVcSDoVIseV2MJQDzZzFGHls1UFjYQELSTPj1hd/cRiDEVpKNKnP
-	 h2aRE9kx412qV0S2do+u0QCOssWoRYsa6txev4YLgwKHrLPm2aNXnoC4wRiWSn9+5U
-	 l6ixFQ0pONE9B3I+JwWxQL+MXii7XV0WdMtsBBL0=
+	b=xfIoJhrLOy4j58fZ0EbJnJBa//mx0iZ6bnOnlt+tw7MvjNWWQeHVxHHrew6OBdwIm
+	 M2M/qceQ+sdaVYOnuuRwxw+iuEFItS6Im4t0hNylLRDUaxPFMeOgIDJQy9HhBqsLjI
+	 sL7cM6SESHRyFodzSbMwVSOnkZs0+EOnWCKi//kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
+	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 208/325] drm/ast: Find VBIOS mode from regular display size
+Subject: [PATCH 5.10 199/270] ASoC: ops: Enforce platform maximum on initial value
 Date: Mon,  2 Jun 2025 15:48:04 +0200
-Message-ID: <20250602134328.250093356@linuxfoundation.org>
+Message-ID: <20250602134315.326961019@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Martin Povišer <povik+lin@cutebit.org>
 
-[ Upstream commit c81202906b5cd56db403e95db3d29c9dfc8c74c1 ]
+[ Upstream commit 783db6851c1821d8b983ffb12b99c279ff64f2ee ]
 
-The ast driver looks up supplied display modes from an internal list of
-display modes supported by the VBIOS.
+Lower the volume if it is violating the platform maximum at its initial
+value (i.e. at the time of the 'snd_soc_limit_volume' call).
 
-Do not use the crtc_-prefixed display values from struct drm_display_mode
-for looking up the VBIOS mode. The fields contain raw values that the
-driver programs to hardware. They are affected by display settings like
-double-scan or interlace.
-
-Instead use the regular vdisplay and hdisplay fields for lookup. As the
-programmed values can now differ from the values used for lookup, set
-struct drm_display_mode.crtc_vdisplay and .crtc_hdisplay from the VBIOS
-mode.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250131092257.115596-9-tzimmermann@suse.de
+Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
+[Cherry picked from the Asahi kernel with fixups -- broonie]
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-volume-limit-v1-1-b98fcf4cdbad@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_mode.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ sound/soc/soc-ops.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-index 1bc0220e6783e..9fe856fd8a84f 100644
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -103,7 +103,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		return false;
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index a83cd8d8a9633..55f7c7999330a 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -615,6 +615,33 @@ int snd_soc_get_volsw_range(struct snd_kcontrol *kcontrol,
+ }
+ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
+ 
++static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
++{
++	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
++	struct snd_ctl_elem_value uctl;
++	int ret;
++
++	if (!mc->platform_max)
++		return 0;
++
++	ret = kctl->get(kctl, &uctl);
++	if (ret < 0)
++		return ret;
++
++	if (uctl.value.integer.value[0] > mc->platform_max)
++		uctl.value.integer.value[0] = mc->platform_max;
++
++	if (snd_soc_volsw_is_stereo(mc) &&
++	    uctl.value.integer.value[1] > mc->platform_max)
++		uctl.value.integer.value[1] = mc->platform_max;
++
++	ret = kctl->put(kctl, &uctl);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
+ /**
+  * snd_soc_limit_volume - Set new limit to an existing volume control.
+  *
+@@ -640,7 +667,7 @@ int snd_soc_limit_volume(struct snd_soc_card *card,
+ 		mc = (struct soc_mixer_control *)kctl->private_value;
+ 		if (max <= mc->max) {
+ 			mc->platform_max = max;
+-			ret = 0;
++			ret = snd_soc_clip_to_platform_max(kctl);
+ 		}
  	}
- 
--	switch (mode->crtc_hdisplay) {
-+	switch (mode->hdisplay) {
- 	case 640:
- 		vbios_mode->enh_table = &res_640x480[refresh_rate_index];
- 		break;
-@@ -117,7 +117,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1152x864[refresh_rate_index];
- 		break;
- 	case 1280:
--		if (mode->crtc_vdisplay == 800)
-+		if (mode->vdisplay == 800)
- 			vbios_mode->enh_table = &res_1280x800[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1280x1024[refresh_rate_index];
-@@ -129,7 +129,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1440x900[refresh_rate_index];
- 		break;
- 	case 1600:
--		if (mode->crtc_vdisplay == 900)
-+		if (mode->vdisplay == 900)
- 			vbios_mode->enh_table = &res_1600x900[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1600x1200[refresh_rate_index];
-@@ -138,7 +138,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1680x1050[refresh_rate_index];
- 		break;
- 	case 1920:
--		if (mode->crtc_vdisplay == 1080)
-+		if (mode->vdisplay == 1080)
- 			vbios_mode->enh_table = &res_1920x1080[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1920x1200[refresh_rate_index];
-@@ -182,6 +182,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 	hborder = (vbios_mode->enh_table->flags & HBorder) ? 8 : 0;
- 	vborder = (vbios_mode->enh_table->flags & VBorder) ? 8 : 0;
- 
-+	adjusted_mode->crtc_hdisplay = vbios_mode->enh_table->hde;
- 	adjusted_mode->crtc_htotal = vbios_mode->enh_table->ht;
- 	adjusted_mode->crtc_hblank_start = vbios_mode->enh_table->hde + hborder;
- 	adjusted_mode->crtc_hblank_end = vbios_mode->enh_table->ht - hborder;
-@@ -191,6 +192,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 					 vbios_mode->enh_table->hfp +
- 					 vbios_mode->enh_table->hsync);
- 
-+	adjusted_mode->crtc_vdisplay = vbios_mode->enh_table->vde;
- 	adjusted_mode->crtc_vtotal = vbios_mode->enh_table->vt;
- 	adjusted_mode->crtc_vblank_start = vbios_mode->enh_table->vde + vborder;
- 	adjusted_mode->crtc_vblank_end = vbios_mode->enh_table->vt - vborder;
+ 	return ret;
 -- 
 2.39.5
 
