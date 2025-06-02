@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-149044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E791BACB00A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:59:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2775ACAF92
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B023F7A2373
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A9A5188D5FB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F08E1A3A80;
-	Mon,  2 Jun 2025 13:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C3A1A3A80;
+	Mon,  2 Jun 2025 13:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ujw5vk4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YP1AteVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079A71C5D72;
-	Mon,  2 Jun 2025 13:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0D4218AC8;
+	Mon,  2 Jun 2025 13:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872720; cv=none; b=I/Qv2GoJqY43E3AmARNZsW7jSz+iJ6E2kQtyi5XrOqGAz/jTrF1VKakb8YVNdIkdBnxDTXEQEA+CTpQ0dTJWMHQWWVbzyydPtYnqPt60pPzWVKfGbi0d65aQ8QnnXHoMYcFgHQkrqOUmi9Psog1hEXIw+G2Wk7DK2ri2DJbRETQ=
+	t=1748872175; cv=none; b=jwxAJI44i6aqDI7sYgzq89//CHycNZF/L3G9HDb8gF19ucFM3v7bYcWvn0Vl3K1z1/5XwyNkO/YnoVbJHeoHbrmckw+SkMUfnLEdi6c5+IczDMlvp1FwpqagSfDKjhuDtm36YojN70lXb7wr/Ke99Mox15NELT6Di4lHYxEkdIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872720; c=relaxed/simple;
-	bh=UfyqKNbEHX+anR0Xgp6MhWA/QS6OUGgt/5XvV0zBH3w=;
+	s=arc-20240116; t=1748872175; c=relaxed/simple;
+	bh=gpfZuWgriEcuHHh2QQa57DoeiTU8rWrQfkfLPJvO+38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j66zTUYEenR7A2rJjdeEH1dO5kwv4KPAUbdejYmG9XA8O6+0+FbayqR5sx5jGQ77sX6izYDFsCW5TrEebbzr8g85YSApdFK0lEc//BaPx8vDApvaa13KfZi8UsaAPzwFlU/Jp9WuHgfRbUGF4PyAPd0MnTffaoW2cFWP6H7c4MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ujw5vk4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C135C4CEF0;
-	Mon,  2 Jun 2025 13:58:39 +0000 (UTC)
+	 MIME-Version; b=efMHh5v7TjmTC4efN0ue6RldNyU9bgE/K/uA4ibAkNoYt5GrzNnndLuW/8pgAegYpK05s2MPcyJ0tIEc8x6iHeENzFnPTtKAlULhbzTm6vKHyASP+JPCg5OSOhrCIXPo3nUVCptUtVeop96JEV6FyO0lgzpu9iXfRbZG8uQpRUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YP1AteVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5742EC4CEEB;
+	Mon,  2 Jun 2025 13:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872719;
-	bh=UfyqKNbEHX+anR0Xgp6MhWA/QS6OUGgt/5XvV0zBH3w=;
+	s=korg; t=1748872174;
+	bh=gpfZuWgriEcuHHh2QQa57DoeiTU8rWrQfkfLPJvO+38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ujw5vk4Ros1gFfcoGQmLOhkwE39lAr3Vz+Z+/7kpTRSI1jZTGeMsCAMjE1NnSJ/RL
-	 KpJ3sZe0YbYCW1HnuhWdONDISkB/Z6Z0Xwd3bGTp1ULYypwMGeKWjO+ewBqwGYpqZn
-	 S3Z72xxvYD6WW2+p1Q+DayGWg8SZeOo8FmwD1O80=
+	b=YP1AteVTDM9gaL5dVPtmX5qtfoKlWKGRqkcNvOGvui8DdQqBSTm1H1TA1IwtQqFAR
+	 4uT7yykG2xpK0M+CjOAL3/Y2urc/P+bx1ouUNqHATrLdTTKxDPAaLV3vUmXM/Of5+F
+	 JYSIg/3F/pQZRuHnimWO3RmvX8GVXimpYs9IO0ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purva Yeshi <purvayeshi550@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 48/73] dmaengine: idxd: cdev: Fix uninitialized use of sva in idxd_cdev_open
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.15 42/49] perf/arm-cmn: Fix REQ2/SNP2 mixup
 Date: Mon,  2 Jun 2025 15:47:34 +0200
-Message-ID: <20250602134243.593811922@linuxfoundation.org>
+Message-ID: <20250602134239.594149322@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purva Yeshi <purvayeshi550@gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 97994333de2b8062d2df4e6ce0dc65c2dc0f40dc ]
+commit 11b0f576e0cbde6a12258f2af6753b17b8df342b upstream.
 
-Fix Smatch-detected issue:
-drivers/dma/idxd/cdev.c:321 idxd_cdev_open() error:
-uninitialized symbol 'sva'.
+Somehow the encodings for REQ2/SNP2 channels in XP events
+got mixed up... Unmix them.
 
-'sva' pointer may be used uninitialized in error handling paths.
-Specifically, if PASID support is enabled and iommu_sva_bind_device()
-returns an error, the code jumps to the cleanup label and attempts to
-call iommu_sva_unbind_device(sva) without ensuring that sva was
-successfully assigned. This triggers a Smatch warning about an
-uninitialized symbol.
-
-Initialize sva to NULL at declaration and add a check using
-IS_ERR_OR_NULL() before unbinding the device. This ensures the
-function does not use an invalid or uninitialized pointer during
-cleanup.
-
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://lore.kernel.org/r/20250410110216.21592-1-purvayeshi550@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/087023e9737ac93d7ec7a841da904758c254cb01.1746717400.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/cdev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/perf/arm-cmn.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index cd57067e82180..6d12033649f81 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -222,7 +222,7 @@ static int idxd_cdev_open(struct inode *inode, struct file *filp)
- 	struct idxd_wq *wq;
- 	struct device *dev, *fdev;
- 	int rc = 0;
--	struct iommu_sva *sva;
-+	struct iommu_sva *sva = NULL;
- 	unsigned int pasid;
- 	struct idxd_cdev *idxd_cdev;
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -727,8 +727,8 @@ static umode_t arm_cmn_event_attr_is_vis
  
-@@ -317,7 +317,7 @@ static int idxd_cdev_open(struct inode *inode, struct file *filp)
- 	if (device_user_pasid_enabled(idxd))
- 		idxd_xa_pasid_remove(ctx);
- failed_get_pasid:
--	if (device_user_pasid_enabled(idxd))
-+	if (device_user_pasid_enabled(idxd) && !IS_ERR_OR_NULL(sva))
- 		iommu_sva_unbind_device(sva);
- failed:
- 	mutex_unlock(&wq->wq_lock);
--- 
-2.39.5
-
+ 		if ((chan == 5 && cmn->rsp_vc_num < 2) ||
+ 		    (chan == 6 && cmn->dat_vc_num < 2) ||
+-		    (chan == 7 && cmn->snp_vc_num < 2) ||
+-		    (chan == 8 && cmn->req_vc_num < 2))
++		    (chan == 7 && cmn->req_vc_num < 2) ||
++		    (chan == 8 && cmn->snp_vc_num < 2))
+ 			return 0;
+ 	}
+ 
+@@ -882,8 +882,8 @@ static umode_t arm_cmn_event_attr_is_vis
+ 	_CMN_EVENT_XP(pub_##_name, (_event) | (4 << 5)),	\
+ 	_CMN_EVENT_XP(rsp2_##_name, (_event) | (5 << 5)),	\
+ 	_CMN_EVENT_XP(dat2_##_name, (_event) | (6 << 5)),	\
+-	_CMN_EVENT_XP(snp2_##_name, (_event) | (7 << 5)),	\
+-	_CMN_EVENT_XP(req2_##_name, (_event) | (8 << 5))
++	_CMN_EVENT_XP(req2_##_name, (_event) | (7 << 5)),	\
++	_CMN_EVENT_XP(snp2_##_name, (_event) | (8 << 5))
+ 
+ #define CMN_EVENT_XP_DAT(_name, _event)				\
+ 	_CMN_EVENT_XP_PORT(dat_##_name, (_event) | (3 << 5)),	\
 
 
 
