@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFB0ACB520
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028CAACB8EB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F22E34A57E4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6290E945A61
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C7B2222AA;
-	Mon,  2 Jun 2025 14:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D344E22A819;
+	Mon,  2 Jun 2025 15:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yz2SH/YI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzrS8YdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B704B1B81DC;
-	Mon,  2 Jun 2025 14:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E34322A801;
+	Mon,  2 Jun 2025 15:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875683; cv=none; b=eKEomRSSRQ5i9nVINIOjoAzvgw+LP37E4Mpe1/fF4o6SeSUJF4TaTg1ZIbOn7k/asKWGOQY45fb71gOHZbnv+Ii8j0J0lcjYPknZ347GpF6R45rZDdTxj5KMOPW1ptu2reXFuNSLqBMiuU1iYj/NOPZdewHs18jL1+f6BlowwAE=
+	t=1748877259; cv=none; b=kjKEoJDArz2IcuGLQPUbGpvwrHa+5QOgnzNX9N/jCIGNaXBZIDEhFVHRTbe3osHe41Z3NSkI1OQ+ehjjGD/xvi/aG62LTRJLvbaKsL2m02SbGJP82uyHrsxMWV71hsuBdB5d2JH0BGyLYPmpvsXYIAvg4IYmuNeRCIBg04v5L3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875683; c=relaxed/simple;
-	bh=8dlGyb376UFbDzzD24rFbWhJyAqnzY3oaLu44H4mfRg=;
+	s=arc-20240116; t=1748877259; c=relaxed/simple;
+	bh=BiHEkZF7hrSUOklejltvgy3hfpc15T80njz2pWoyxLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gzbc5/52XsXaC5A71bnF0H1PBoxefVtcquCLv4/vbfGX9JrUYmbLO4kM5ktKbdHQ8sEnuYk//ufe2ieInPen0gWnb3/jlsvyizxKZGZ02nET5JnxAlYbRiEgcsQbvc8tRs5r9Ahvifo95JPc2GZZiY00oUii5znfNSynLWlg4JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yz2SH/YI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B0AC4CEEB;
-	Mon,  2 Jun 2025 14:48:02 +0000 (UTC)
+	 MIME-Version; b=DzfMLl3WTgpU51mZxhtu5b+xpdNHxfgZ58Nd5zAEeqfB/Apms9hUxJXalQ//m8YwOrvJ9u24uSnB1iuZbGh6cUq+ODbsV1be3y8odODkifdtcbU8TNOJVNhrTptzCZobUi1Fmk49XX77NkIv5J2owknsAuj67NYTR9gnkd4jr+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzrS8YdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8433BC4CEEB;
+	Mon,  2 Jun 2025 15:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875683;
-	bh=8dlGyb376UFbDzzD24rFbWhJyAqnzY3oaLu44H4mfRg=;
+	s=korg; t=1748877257;
+	bh=BiHEkZF7hrSUOklejltvgy3hfpc15T80njz2pWoyxLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yz2SH/YI5VsUZch/sljy32JTI1TOQL9DOsh+OqEvt065mp/BFPC//4+4bDrL7ly0l
-	 WwiiJraBykSAoz2F5hMNUHCO3VjtbwXk7Kp2TAMAS/xG09Zv10FE/IREQHrCUlw0zP
-	 vS6Y6kRNyA0LSc0/wnXCTxs8pT0T+NtgXSQN2DSk=
+	b=fzrS8YdFQWPOrEEc3pwcogOuDmSMLuo62/xJssM4RJR3fsfLjZmlufAwo055xbbKG
+	 WHjiqRYHg4Mg5ng4oi8XF5Glk5Kx4UxvOwBRPUUy2yuaz+HX4di6IfL1Ypwc2LvPIv
+	 hJxA4SsnnD6IViX6JjrMopqyV/uzXYOllF796QXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 211/270] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
-Date: Mon,  2 Jun 2025 15:48:16 +0200
-Message-ID: <20250602134315.810785605@linuxfoundation.org>
+Subject: [PATCH 6.1 221/325] pinctrl: meson: define the pull up/down resistor value as 60 kOhm
+Date: Mon,  2 Jun 2025 15:48:17 +0200
+Message-ID: <20250602134328.766823333@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
+[ Upstream commit e56088a13708757da68ad035269d69b93ac8c389 ]
 
-The following patch will not set skb->sk from VRF path.
+The public datasheets of the following Amlogic SoCs describe a typical
+resistor value for the built-in pull up/down resistor:
+- Meson8/8b/8m2: not documented
+- GXBB (S905): 60 kOhm
+- GXL (S905X): 60 kOhm
+- GXM (S912): 60 kOhm
+- G12B (S922X): 60 kOhm
+- SM1 (S905D3): 60 kOhm
 
-Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
-in fib[46]_rule_configure().
+The public G12B and SM1 datasheets additionally state min and max
+values:
+- min value: 50 kOhm for both, pull-up and pull-down
+- max value for the pull-up: 70 kOhm
+- max value for the pull-down: 130 kOhm
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use 60 kOhm in the pinctrl-meson driver as well so it's shown in the
+debugfs output. It may not be accurate for Meson8/8b/8m2 but in reality
+60 kOhm is closer to the actual value than 1 Ohm.
+
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/20250329190132.855196-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_rules.c  | 4 ++--
- net/ipv6/fib6_rules.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/pinctrl/meson/pinctrl-meson.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
-index d279cb8ac1584..a270951386e19 100644
---- a/net/ipv4/fib_rules.c
-+++ b/net/ipv4/fib_rules.c
-@@ -226,9 +226,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
--	struct net *net = sock_net(skb->sk);
-+	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
- 
- 	if (frh->tos & ~IPTOS_TOS_MASK) {
- 		NL_SET_ERR_MSG(extack, "Invalid tos");
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index cf9a44fb8243d..0d4e82744921f 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -353,9 +353,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
-+	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct net *net = sock_net(skb->sk);
--	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
- 
- 	if (rule->action == FR_ACT_TO_TBL && !rule->l3mdev) {
- 		if (rule->table == RT6_TABLE_UNSPEC) {
+diff --git a/drivers/pinctrl/meson/pinctrl-meson.c b/drivers/pinctrl/meson/pinctrl-meson.c
+index 530f3f934e196..1f05f7f1a9aee 100644
+--- a/drivers/pinctrl/meson/pinctrl-meson.c
++++ b/drivers/pinctrl/meson/pinctrl-meson.c
+@@ -487,7 +487,7 @@ static int meson_pinconf_get(struct pinctrl_dev *pcdev, unsigned int pin,
+ 	case PIN_CONFIG_BIAS_PULL_DOWN:
+ 	case PIN_CONFIG_BIAS_PULL_UP:
+ 		if (meson_pinconf_get_pull(pc, pin) == param)
+-			arg = 1;
++			arg = 60000;
+ 		else
+ 			return -EINVAL;
+ 		break;
 -- 
 2.39.5
 
