@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93ADACB2C4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C00ACB6A9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6523B5801
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6C034A6715
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6234722DF92;
-	Mon,  2 Jun 2025 14:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DD2227586;
+	Mon,  2 Jun 2025 15:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhBvaqR4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIj1WeKH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F51B222591;
-	Mon,  2 Jun 2025 14:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2F1226D14;
+	Mon,  2 Jun 2025 15:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873832; cv=none; b=AWgP8gGiIIjs3rhdawES1AD67BgGHsNuovob89PUe2+bYiKnxys/6JXUGcLQKPmfycbQi5bLH7Qo7gzEpUnkrHlPXmf6PuWLQElvvu7B4Ad66qnE3gOmU2hZv2S5z+LFQJL5PaI5vH+UubZG8b9scbVP9enZpZ4QN06Wehdq9Bw=
+	t=1748876644; cv=none; b=doQaxxHI+wZALcrKyifdeM44wq3rr7ujLGlqCogSmNTPS5rsdEkRk+4tDjuO4xTxlNu8mB80HHG+Qvpt3ZIX9hodxrtqZHoVzFjR26uoaS8MirYDoNgGAhHQAXHXBDki93jwdBr646T0/yfGqsVT8kMrCMROzAgFKE/n8t6HEvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873832; c=relaxed/simple;
-	bh=oE8ZPWr0iCCOHBOUD4I4BnI39Q28umPiANpETFVY1/Q=;
+	s=arc-20240116; t=1748876644; c=relaxed/simple;
+	bh=/mWTHe1nGbgGWoo+30lS2qeRu1poe5N0+GEBTr0YA+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9xKaifkx73M3kmxzVzNrh7RmdL0/77rouLITdjR5Xaa12FKIDN6nfxSLqx91xmypiOjw4ioI4yflx02klshpGTZKL/eSzh5NorDFHSuSLByuLTQIPkndqH29rfi7eymza8iqB3aiPwuHYlCSR3PYkxfmGnj+nJjL8Dqc+0+QTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhBvaqR4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80094C4CEEB;
-	Mon,  2 Jun 2025 14:17:11 +0000 (UTC)
+	 MIME-Version; b=baGVGTjFfGko6TEfpJYZsJwZqvPg2vAPxyDMqgjwG9ylLGwTgnU6xH/sNQXjy3YIlXGK5Kiu2IfdckFI5JlZMBweQJ0+0l4OeoACDMqJJ61AEbUL7fSgs1o6fGW8NjvGE/X+Y9qwpBzim1tza0Wa5t6758xGaTzrqlA2yDPP0sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIj1WeKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF30C4CEEB;
+	Mon,  2 Jun 2025 15:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873832;
-	bh=oE8ZPWr0iCCOHBOUD4I4BnI39Q28umPiANpETFVY1/Q=;
+	s=korg; t=1748876644;
+	bh=/mWTHe1nGbgGWoo+30lS2qeRu1poe5N0+GEBTr0YA+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhBvaqR4PJoRgoUzmnsAsYmlARD2cHrQCQNuS36I4Sm41FHMlewunFaJ1Xbh9pdv1
-	 f7kykyFIhUeCIxUcqN/l+zsDTSr0RJzwZodX6OUeWIeKGlyCFV/j2nFtVoQULpy2zE
-	 E+zEd07iuHNLzj3oxgb3W4ifnaCzdh05iZ3G01bc=
+	b=AIj1WeKHf2x9tw7zz+Gm1SBOKJ436G5nCvHX1kS5000a/GZDBGPmnoM80zuDOOGY1
+	 hY9PmN8c1qoVYQAi+f/VLFZnokd/2YcdKElJMvwilDzp6smYctOpnLQkGgc8Ik+fLB
+	 wJIp18Wkx2in9JP0DgelPw9y5kkTSS1jp1PJSsMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jinqian Yang <yangjinqian1@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 240/444] serial: sh-sci: Update the suspend/resume support
+Subject: [PATCH 6.1 028/325] arm64: Add support for HIP09 Spectre-BHB mitigation
 Date: Mon,  2 Jun 2025 15:45:04 +0200
-Message-ID: <20250602134350.652874539@linuxfoundation.org>
+Message-ID: <20250602134320.887774745@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,166 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Jinqian Yang <yangjinqian1@huawei.com>
 
-[ Upstream commit 22a6984c5b5df8eab864d7f3e8b94d5a554d31ab ]
+[ Upstream commit e18c09b204e81702ea63b9f1a81ab003b72e3174 ]
 
-The Renesas RZ/G3S supports a power saving mode where power to most of the
-SoC components is turned off. When returning from this power saving mode,
-SoC components need to be re-configured.
+The HIP09 processor is vulnerable to the Spectre-BHB (Branch History
+Buffer) attack, which can be exploited to leak information through
+branch prediction side channels. This commit adds the MIDR of HIP09
+to the list for software mitigation.
 
-The SCIFs on the Renesas RZ/G3S need to be re-configured as well when
-returning from this power saving mode. The sh-sci code already configures
-the SCIF clocks, power domain and registers by calling uart_resume_port()
-in sci_resume(). On suspend path the SCIF UART ports are suspended
-accordingly (by calling uart_suspend_port() in sci_suspend()). The only
-missing setting is the reset signal. For this assert/de-assert the reset
-signal on driver suspend/resume.
-
-In case the no_console_suspend is specified by the user, the registers need
-to be saved on suspend path and restore on resume path. To do this the
-sci_console_save()/sci_console_restore() functions were added. There is no
-need to cache/restore the status or FIFO registers. Only the control
-registers. The registers that will be saved/restored on suspend/resume are
-specified by the struct sci_suspend_regs data structure.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20250207113313.545432-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jinqian Yang <yangjinqian1@huawei.com>
+Link: https://lore.kernel.org/r/20250325141900.2057314-1-yangjinqian1@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c | 71 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 69 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ arch/arm64/kernel/proton-pack.c  | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index 2434eb6e6847d..9da7adc4bd9f3 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -104,6 +104,15 @@ struct plat_sci_reg {
- 	u8 offset, size;
- };
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index fe022fe2d4f6b..41612b03af638 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -132,6 +132,7 @@
+ #define FUJITSU_CPU_PART_A64FX		0x001
  
-+struct sci_suspend_regs {
-+	u16 scsmr;
-+	u16 scscr;
-+	u16 scfcr;
-+	u16 scsptr;
-+	u8 scbrr;
-+	u8 semr;
-+};
-+
- struct sci_port_params {
- 	const struct plat_sci_reg regs[SCIx_NR_REGS];
- 	unsigned int fifosize;
-@@ -134,6 +143,8 @@ struct sci_port {
- 	struct dma_chan			*chan_tx;
- 	struct dma_chan			*chan_rx;
+ #define HISI_CPU_PART_TSV110		0xD01
++#define HISI_CPU_PART_HIP09			0xD02
  
-+	struct reset_control		*rstc;
-+
- #ifdef CONFIG_SERIAL_SH_SCI_DMA
- 	struct dma_chan			*chan_tx_saved;
- 	struct dma_chan			*chan_rx_saved;
-@@ -153,6 +164,7 @@ struct sci_port {
- 	int				rx_trigger;
- 	struct timer_list		rx_fifo_timer;
- 	int				rx_fifo_timeout;
-+	struct sci_suspend_regs		suspend_regs;
- 	u16				hscif_tot;
- 
- 	bool has_rtscts;
-@@ -3325,6 +3337,7 @@ static struct plat_sci_port *sci_parse_dt(struct platform_device *pdev,
- 	}
- 
- 	sp = &sci_ports[id];
-+	sp->rstc = rstc;
- 	*dev_id = id;
- 
- 	p->type = SCI_OF_TYPE(data);
-@@ -3473,13 +3486,57 @@ static int sci_probe(struct platform_device *dev)
- 	return 0;
- }
- 
-+static void sci_console_save(struct sci_port *s)
-+{
-+	struct sci_suspend_regs *regs = &s->suspend_regs;
-+	struct uart_port *port = &s->port;
-+
-+	if (sci_getreg(port, SCSMR)->size)
-+		regs->scsmr = sci_serial_in(port, SCSMR);
-+	if (sci_getreg(port, SCSCR)->size)
-+		regs->scscr = sci_serial_in(port, SCSCR);
-+	if (sci_getreg(port, SCFCR)->size)
-+		regs->scfcr = sci_serial_in(port, SCFCR);
-+	if (sci_getreg(port, SCSPTR)->size)
-+		regs->scsptr = sci_serial_in(port, SCSPTR);
-+	if (sci_getreg(port, SCBRR)->size)
-+		regs->scbrr = sci_serial_in(port, SCBRR);
-+	if (sci_getreg(port, SEMR)->size)
-+		regs->semr = sci_serial_in(port, SEMR);
-+}
-+
-+static void sci_console_restore(struct sci_port *s)
-+{
-+	struct sci_suspend_regs *regs = &s->suspend_regs;
-+	struct uart_port *port = &s->port;
-+
-+	if (sci_getreg(port, SCSMR)->size)
-+		sci_serial_out(port, SCSMR, regs->scsmr);
-+	if (sci_getreg(port, SCSCR)->size)
-+		sci_serial_out(port, SCSCR, regs->scscr);
-+	if (sci_getreg(port, SCFCR)->size)
-+		sci_serial_out(port, SCFCR, regs->scfcr);
-+	if (sci_getreg(port, SCSPTR)->size)
-+		sci_serial_out(port, SCSPTR, regs->scsptr);
-+	if (sci_getreg(port, SCBRR)->size)
-+		sci_serial_out(port, SCBRR, regs->scbrr);
-+	if (sci_getreg(port, SEMR)->size)
-+		sci_serial_out(port, SEMR, regs->semr);
-+}
-+
- static __maybe_unused int sci_suspend(struct device *dev)
- {
- 	struct sci_port *sport = dev_get_drvdata(dev);
- 
--	if (sport)
-+	if (sport) {
- 		uart_suspend_port(&sci_uart_driver, &sport->port);
- 
-+		if (!console_suspend_enabled && uart_console(&sport->port))
-+			sci_console_save(sport);
-+		else
-+			return reset_control_assert(sport->rstc);
-+	}
-+
- 	return 0;
- }
- 
-@@ -3487,8 +3544,18 @@ static __maybe_unused int sci_resume(struct device *dev)
- {
- 	struct sci_port *sport = dev_get_drvdata(dev);
- 
--	if (sport)
-+	if (sport) {
-+		if (!console_suspend_enabled && uart_console(&sport->port)) {
-+			sci_console_restore(sport);
-+		} else {
-+			int ret = reset_control_deassert(sport->rstc);
-+
-+			if (ret)
-+				return ret;
-+		}
-+
- 		uart_resume_port(&sci_uart_driver, &sport->port);
-+	}
- 
- 	return 0;
- }
+ #define APPLE_CPU_PART_M1_ICESTORM	0x022
+ #define APPLE_CPU_PART_M1_FIRESTORM	0x023
+@@ -201,6 +202,7 @@
+ #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
+ #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
+ #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
++#define MIDR_HISI_HIP09 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_HIP09)
+ #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
+ #define MIDR_APPLE_M1_FIRESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_FIRESTORM)
+ #define MIDR_APPLE_M1_ICESTORM_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM_PRO)
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index fcc641f30c93d..4978c466e325d 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -916,6 +916,7 @@ static u8 spectre_bhb_loop_affected(void)
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
++		MIDR_ALL_VERSIONS(MIDR_HISI_HIP09),
+ 		{},
+ 	};
+ 	static const struct midr_range spectre_bhb_k11_list[] = {
 -- 
 2.39.5
 
