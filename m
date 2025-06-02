@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAE0ACB767
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C3CACB568
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA21B4A5E85
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE391BA030B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4FB231826;
-	Mon,  2 Jun 2025 15:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DFA226556;
+	Mon,  2 Jun 2025 14:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5f8yZZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVAlONPX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2DB230BEF;
-	Mon,  2 Jun 2025 15:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D50225A3E;
+	Mon,  2 Jun 2025 14:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877302; cv=none; b=lw29XdNTD7yQ/yVUtyHgxtbsGLUI1i5g6ZTu72Ce/JVOlFYQP765dljLHwYIdFDu1DeZhMuIq/PPJ2idB7Z6AcKaxCdnpr0o7ZTfZ6Zw+jBIiwkiMPEmpDauWGxt4gwKJVrNZ0mKdSQFn35ijqAiFzzWA1o2kVq88JgXTeQMV2c=
+	t=1748875739; cv=none; b=L+qLlPFL/PunAigNF0NpIQs4LX8of0f5ngzPlfXs84qscF6AKhOQv4qPb9Z8jqjGvWSIogZ4WNfv2ouFVjQzXEgsqAzfZnY5QmOPqdmVrgJjUhrg/b+I8EXBSE1RCVBDIiUPCDLK8hbxbFt1/lyM9a87Tehlrdd8khj6GVG9V8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877302; c=relaxed/simple;
-	bh=tfdSYgE0R2zIbxngj4KBpGeMelKp6tlJbsjb00xBC3E=;
+	s=arc-20240116; t=1748875739; c=relaxed/simple;
+	bh=KTPWBbQYdlhcdNRtvFEy+zLc/djpTWAz5Y5gEm+gosc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxGsiYoTjI9hNbTf7wpshhyoAMEM/zeXzrYhLBWT5z/jXPkhdXJtKMKRntexsoDk6DDNS0a6qdaIoLPy8I662tyU2a2hQM8sAS9tPXTatVqaEk4+55a8gzmX960t3SaLbmTa1JlpxfrB4RAzYfq8gUHPjNS/uphbnm6yGQxOsBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5f8yZZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B43C4CEEB;
-	Mon,  2 Jun 2025 15:15:01 +0000 (UTC)
+	 MIME-Version; b=bSiQgJUkeA4yzDjoMU9L/ND4KJusAat9WHEshq9dIXnev1fDP6OkVmHmTD26Qc7DlF76RJ4kgOgjiRWLFoUiy5IRfGMyKt/5eMCCQRZa+KJFmLPWFxS/2lyGLbomuEXHfQR6B9p9PutfFKd38w7fmIBkJw0V9xNuDLI8Fr65xIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVAlONPX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398A5C4CEEE;
+	Mon,  2 Jun 2025 14:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877302;
-	bh=tfdSYgE0R2zIbxngj4KBpGeMelKp6tlJbsjb00xBC3E=;
+	s=korg; t=1748875738;
+	bh=KTPWBbQYdlhcdNRtvFEy+zLc/djpTWAz5Y5gEm+gosc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5f8yZZSj7CtC+gFqz5BHMWKHYHm34O3a5vLmpdj7nEwFp1xSm1eHFu0IX9N/pI2e
-	 brD927pOcg468bvmDi2P5HstJ6QBNCctYMy6N0ckggJ86Qx0Yo5NachkApEumWcOA/
-	 /VwokC8CaYhtFnYCuw4VeeTm60AthJewSfgnFZ7E=
+	b=zVAlONPXDWeAF9pP8iZXqHVKpVi333xQizAEEFXVS7qYyL8x92SWSZoAc3+j3fhgY
+	 XIouvApgLZ13rKLJf1Cuhzznr774t/oMAsYhIxcfxoQQbQS4JqK7yR4M3jixnLy8Ut
+	 qSpXTikPs7E8W/vfRZi+H6aN16g4PVDTkT0jnjqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/325] ASoC: codecs: pcm3168a: Allow for 24-bit in provider mode
+Subject: [PATCH 5.10 198/270] net/mlx5: Apply rate-limiting to high temperature warning
 Date: Mon,  2 Jun 2025 15:48:03 +0200
-Message-ID: <20250602134328.201367611@linuxfoundation.org>
+Message-ID: <20250602134315.288430235@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit 7d92a38d67e5d937b64b20aa4fd14451ee1772f3 ]
+[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
 
-As per codec device specification, 24-bit is allowed in provider mode.
-Update the code to reflect that.
+Wrap the high temperature warning in a temperature event with
+a call to net_ratelimit() to prevent flooding the kernel log
+with repeated warning messages when temperature exceeds the
+threshold multiple times within a short duration.
 
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250203141051.2361323-4-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/pcm3168a.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/pcm3168a.c b/sound/soc/codecs/pcm3168a.c
-index 9d6431338fb71..329549936bd5c 100644
---- a/sound/soc/codecs/pcm3168a.c
-+++ b/sound/soc/codecs/pcm3168a.c
-@@ -494,9 +494,9 @@ static int pcm3168a_hw_params(struct snd_pcm_substream *substream,
- 		}
- 		break;
- 	case 24:
--		if (provider_mode || (format == SND_SOC_DAIFMT_DSP_A) ||
--		    		     (format == SND_SOC_DAIFMT_DSP_B)) {
--			dev_err(component->dev, "24-bit slots not supported in provider mode, or consumer mode using DSP\n");
-+		if (!provider_mode && ((format == SND_SOC_DAIFMT_DSP_A) ||
-+				       (format == SND_SOC_DAIFMT_DSP_B))) {
-+			dev_err(component->dev, "24-bit slots not supported in consumer mode using DSP\n");
- 			return -EINVAL;
- 		}
- 		break;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 9d7b0a4cc48a9..5e8db7a6185a4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -162,9 +162,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+ 
+-	mlx5_core_warn(events->dev,
+-		       "High temperature on sensors with bit set %llx %llx",
+-		       value_msb, value_lsb);
++	if (net_ratelimit())
++		mlx5_core_warn(events->dev,
++			       "High temperature on sensors with bit set %llx %llx",
++			       value_msb, value_lsb);
+ 
+ 	return NOTIFY_OK;
+ }
 -- 
 2.39.5
 
