@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-150243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A20ACB657
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E02CACB7B4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B63093B8451
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F4854A437A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D65922F767;
-	Mon,  2 Jun 2025 15:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096F0228CA9;
+	Mon,  2 Jun 2025 15:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGhal9bm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpyKRaqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CC222F765;
-	Mon,  2 Jun 2025 15:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF4E20E026;
+	Mon,  2 Jun 2025 15:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876496; cv=none; b=LmtCgVRiE0vV86XF++woKpjafQZQR+PEodYPglM/MY5dDMfBaJIIkklj5u+A6NFwA0046fGM6XukWAFPiMolZ55oBoGoDgkowLcqhCf3JeFiHDolAUVsx54zJJpq7UvzdhAuMN3nWQ5l1EcSP2zT8udlrE0ihLE206PYs7Q8TFE=
+	t=1748877479; cv=none; b=Hy9mzngjpNpbT2XzKtaAe6oNFmFXzqEGh8PD7gcC3n5yxnFKw5iE07EMrtbOBlDEbrxIIVn10uAiCrkwBkM+28zJb6OIDsTATfSpRC/PYMs4VJ7P9HHSPWzFy1cTOjtZuQ6qvfuSfH2+H0RXjivAslGFXKGuuRkmEpWoTVQIV3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876496; c=relaxed/simple;
-	bh=JUX7dmiP32lhndQ79OT+KUPRfn1J8esMWAzQzw46ldk=;
+	s=arc-20240116; t=1748877479; c=relaxed/simple;
+	bh=LTAtfZ3m1j5wC4l+jsFMwAYb6kttri75qk0pHfKuiQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7uLgqrc//dcI8PEMzjy+7TVRGmFSsiWpATEWyIkhQZeY1Xto4TSk7vCaqVZLPNnRvQRse318LDwCxttnSVflkMPPutZ2Vq8M6Cb20BDOsoi8hVLSePzSk65fh+uH5h5E2dQI6KXkY5a8QUBN6UN/9QLShzU5lOgnP1pNuFfVSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGhal9bm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169E6C4CEEB;
-	Mon,  2 Jun 2025 15:01:34 +0000 (UTC)
+	 MIME-Version; b=dX1VCk+nfA0eABCxyZWkLBR0i8wcoNZDVRK863ipOBYl2SYGb6a97pT0y+d4hSFEGen+aNcfjjTHhvqvGudmbn/VhyYpr7vuoiULBc/gAWBEzPjrgxXzxUgmkx9pOfL5F53tBytmBAupWTodopCgQ/rlUs6Tky/FdpowqqG1GbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpyKRaqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC862C4CEEB;
+	Mon,  2 Jun 2025 15:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876495;
-	bh=JUX7dmiP32lhndQ79OT+KUPRfn1J8esMWAzQzw46ldk=;
+	s=korg; t=1748877479;
+	bh=LTAtfZ3m1j5wC4l+jsFMwAYb6kttri75qk0pHfKuiQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGhal9bm4dtUl9epQSXk3MVmdeATfLuBWgBCQ79/SMZliUwpOHDjRw7JFzm/jGDG8
-	 Y1yIVceK0rX/kS2G30hRtWte1wgssimjOXAlleRZAB8zBfKbohpW0KpcxlW/hHdmT+
-	 wPdGpVqUa4ID0WjrGs/UhHNmoXW0bOnBDJj4elLI=
+	b=PpyKRaqKJOu53oMsT8P9lTcCYJ2arzFJp+0R7xCs3dELuZpOC2LodkaGgo2eQYVer
+	 sfkzYQMbQcr9hBgeSxf+DbpspZeEeRYiNjeNdodxpgtt/XNyguqkV+byEYp0phOONL
+	 H3UeZYCciqPLiqg54lEhu26wQkQ2VDH5hq51uyKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	William Liu <will@willsroot.io>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 193/207] net_sched: hfsc: Address reentrant enqueue adding class to eltree twice
-Date: Mon,  2 Jun 2025 15:49:25 +0200
-Message-ID: <20250602134306.334462249@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 290/325] af_unix: Link struct unix_edge when queuing skb.
+Date: Mon,  2 Jun 2025 15:49:26 +0200
+Message-ID: <20250602134331.687490975@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +63,261 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit ac9fe7dd8e730a103ae4481147395cc73492d786 upstream.
+commit 42f298c06b30bfe0a8cbee5d38644e618699e26e upstream.
 
-Savino says:
-    "We are writing to report that this recent patch
-    (141d34391abbb315d68556b7c67ad97885407547) [1]
-    can be bypassed, and a UAF can still occur when HFSC is utilized with
-    NETEM.
+Just before queuing skb with inflight fds, we call scm_stat_add(),
+which is a good place to set up the preallocated struct unix_vertex
+and struct unix_edge in UNIXCB(skb).fp.
 
-    The patch only checks the cl->cl_nactive field to determine whether
-    it is the first insertion or not [2], but this field is only
-    incremented by init_vf [3].
+Then, we call unix_add_edges() and construct the directed graph
+as follows:
 
-    By using HFSC_RSC (which uses init_ed) [4], it is possible to bypass the
-    check and insert the class twice in the eltree.
-    Under normal conditions, this would lead to an infinite loop in
-    hfsc_dequeue for the reasons we already explained in this report [5].
+  1. Set the inflight socket's unix_sock to unix_edge.predecessor.
+  2. Set the receiver's unix_sock to unix_edge.successor.
+  3. Set the preallocated vertex to inflight socket's unix_sock.vertex.
+  4. Link inflight socket's unix_vertex.entry to unix_unvisited_vertices.
+  5. Link unix_edge.vertex_entry to the inflight socket's unix_vertex.edges.
 
-    However, if TBF is added as root qdisc and it is configured with a
-    very low rate,
-    it can be utilized to prevent packets from being dequeued.
-    This behavior can be exploited to perform subsequent insertions in the
-    HFSC eltree and cause a UAF."
+Let's say we pass the fd of AF_UNIX socket A to B and the fd of B
+to C.  The graph looks like this:
 
-To fix both the UAF and the infinite loop, with netem as an hfsc child,
-check explicitly in hfsc_enqueue whether the class is already in the eltree
-whenever the HFSC_RSC flag is set.
+  +-------------------------+
+  | unix_unvisited_vertices | <-------------------------.
+  +-------------------------+                           |
+  +                                                     |
+  |     +--------------+             +--------------+   |         +--------------+
+  |     |  unix_sock A | <---. .---> |  unix_sock B | <-|-. .---> |  unix_sock C |
+  |     +--------------+     | |     +--------------+   | | |     +--------------+
+  | .-+ |    vertex    |     | | .-+ |    vertex    |   | | |     |    vertex    |
+  | |   +--------------+     | | |   +--------------+   | | |     +--------------+
+  | |                        | | |                      | | |
+  | |   +--------------+     | | |   +--------------+   | | |
+  | '-> |  unix_vertex |     | | '-> |  unix_vertex |   | | |
+  |     +--------------+     | |     +--------------+   | | |
+  `---> |    entry     | +---------> |    entry     | +-' | |
+        |--------------|     | |     |--------------|     | |
+        |    edges     | <-. | |     |    edges     | <-. | |
+        +--------------+   | | |     +--------------+   | | |
+                           | | |                        | | |
+    .----------------------' | | .----------------------' | |
+    |                        | | |                        | |
+    |   +--------------+     | | |   +--------------+     | |
+    |   |   unix_edge  |     | | |   |   unix_edge  |     | |
+    |   +--------------+     | | |   +--------------+     | |
+    `-> | vertex_entry |     | | `-> | vertex_entry |     | |
+        |--------------|     | |     |--------------|     | |
+        |  predecessor | +---' |     |  predecessor | +---' |
+        |--------------|       |     |--------------|       |
+        |   successor  | +-----'     |   successor  | +-----'
+        +--------------+             +--------------+
 
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=141d34391abbb315d68556b7c67ad97885407547
-[2] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1572
-[3] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L677
-[4] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1574
-[5] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/T/#u
+Henceforth, we denote such a graph as A -> B (-> C).
 
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Reported-by: William Liu <will@willsroot.io>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250522181448.1439717-2-pctammela@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Now, we can express all inflight fd graphs that do not contain
+embryo sockets.  We will support the particular case later.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-4-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/net/af_unix.h |    2 +
+ include/net/scm.h     |    1 
+ net/core/scm.c        |    2 +
+ net/unix/af_unix.c    |    8 +++-
+ net/unix/garbage.c    |   90 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 5 files changed, 100 insertions(+), 3 deletions(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -176,6 +176,11 @@ struct hfsc_sched {
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -22,6 +22,8 @@ extern unsigned int unix_tot_inflight;
  
- #define	HT_INFINITY	0xffffffffffffffffULL	/* infinite time value */
+ void unix_inflight(struct user_struct *user, struct file *fp);
+ void unix_notinflight(struct user_struct *user, struct file *fp);
++void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver);
++void unix_del_edges(struct scm_fp_list *fpl);
+ int unix_prepare_fpl(struct scm_fp_list *fpl);
+ void unix_destroy_fpl(struct scm_fp_list *fpl);
+ void unix_gc(void);
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -30,6 +30,7 @@ struct scm_fp_list {
+ 	short			count_unix;
+ 	short			max;
+ #ifdef CONFIG_UNIX
++	bool			inflight;
+ 	struct list_head	vertices;
+ 	struct unix_edge	*edges;
+ #endif
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -90,6 +90,7 @@ static int scm_fp_copy(struct cmsghdr *c
+ 		fpl->max = SCM_MAX_FD;
+ 		fpl->user = NULL;
+ #if IS_ENABLED(CONFIG_UNIX)
++		fpl->inflight = false;
+ 		fpl->edges = NULL;
+ 		INIT_LIST_HEAD(&fpl->vertices);
+ #endif
+@@ -380,6 +381,7 @@ struct scm_fp_list *scm_fp_dup(struct sc
+ 		new_fpl->max = new_fpl->count;
+ 		new_fpl->user = get_uid(fpl->user);
+ #if IS_ENABLED(CONFIG_UNIX)
++		new_fpl->inflight = false;
+ 		new_fpl->edges = NULL;
+ 		INIT_LIST_HEAD(&new_fpl->vertices);
+ #endif
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1910,8 +1910,10 @@ static void scm_stat_add(struct sock *sk
+ 	struct scm_fp_list *fp = UNIXCB(skb).fp;
+ 	struct unix_sock *u = unix_sk(sk);
  
-+static bool cl_in_el_or_vttree(struct hfsc_class *cl)
-+{
-+	return ((cl->cl_flags & HFSC_FSC) && cl->cl_nactive) ||
-+		((cl->cl_flags & HFSC_RSC) && !RB_EMPTY_NODE(&cl->el_node));
-+}
+-	if (unlikely(fp && fp->count))
++	if (unlikely(fp && fp->count)) {
+ 		atomic_add(fp->count, &u->scm_stat.nr_fds);
++		unix_add_edges(fp, u);
++	}
+ }
+ 
+ static void scm_stat_del(struct sock *sk, struct sk_buff *skb)
+@@ -1919,8 +1921,10 @@ static void scm_stat_del(struct sock *sk
+ 	struct scm_fp_list *fp = UNIXCB(skb).fp;
+ 	struct unix_sock *u = unix_sk(sk);
+ 
+-	if (unlikely(fp && fp->count))
++	if (unlikely(fp && fp->count)) {
+ 		atomic_sub(fp->count, &u->scm_stat.nr_fds);
++		unix_del_edges(fp);
++	}
+ }
  
  /*
-  * eligible tree holds backlogged classes being sorted by their eligible times.
-@@ -1038,6 +1043,8 @@ hfsc_change_class(struct Qdisc *sch, u32
- 	if (cl == NULL)
- 		return -ENOBUFS;
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -101,6 +101,38 @@ struct unix_sock *unix_get_socket(struct
+ 	return NULL;
+ }
  
-+	RB_CLEAR_NODE(&cl->el_node);
++static LIST_HEAD(unix_unvisited_vertices);
 +
- 	err = tcf_block_get(&cl->block, &cl->filter_list, sch, extack);
- 	if (err) {
- 		kfree(cl);
-@@ -1575,7 +1582,7 @@ hfsc_enqueue(struct sk_buff *skb, struct
- 	sch->qstats.backlog += len;
- 	sch->q.qlen++;
++static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
++{
++	struct unix_vertex *vertex = edge->predecessor->vertex;
++
++	if (!vertex) {
++		vertex = list_first_entry(&fpl->vertices, typeof(*vertex), entry);
++		vertex->out_degree = 0;
++		INIT_LIST_HEAD(&vertex->edges);
++
++		list_move_tail(&vertex->entry, &unix_unvisited_vertices);
++		edge->predecessor->vertex = vertex;
++	}
++
++	vertex->out_degree++;
++	list_add_tail(&edge->vertex_entry, &vertex->edges);
++}
++
++static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
++{
++	struct unix_vertex *vertex = edge->predecessor->vertex;
++
++	list_del(&edge->vertex_entry);
++	vertex->out_degree--;
++
++	if (!vertex->out_degree) {
++		edge->predecessor->vertex = NULL;
++		list_move_tail(&vertex->entry, &fpl->vertices);
++	}
++}
++
+ static void unix_free_vertices(struct scm_fp_list *fpl)
+ {
+ 	struct unix_vertex *vertex, *next_vertex;
+@@ -111,6 +143,60 @@ static void unix_free_vertices(struct sc
+ 	}
+ }
  
--	if (first && !cl->cl_nactive) {
-+	if (first && !cl_in_el_or_vttree(cl)) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
++DEFINE_SPINLOCK(unix_gc_lock);
++
++void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
++{
++	int i = 0, j = 0;
++
++	spin_lock(&unix_gc_lock);
++
++	if (!fpl->count_unix)
++		goto out;
++
++	do {
++		struct unix_sock *inflight = unix_get_socket(fpl->fp[j++]);
++		struct unix_edge *edge;
++
++		if (!inflight)
++			continue;
++
++		edge = fpl->edges + i++;
++		edge->predecessor = inflight;
++		edge->successor = receiver;
++
++		unix_add_edge(fpl, edge);
++	} while (i < fpl->count_unix);
++
++out:
++	spin_unlock(&unix_gc_lock);
++
++	fpl->inflight = true;
++
++	unix_free_vertices(fpl);
++}
++
++void unix_del_edges(struct scm_fp_list *fpl)
++{
++	int i = 0;
++
++	spin_lock(&unix_gc_lock);
++
++	if (!fpl->count_unix)
++		goto out;
++
++	do {
++		struct unix_edge *edge = fpl->edges + i++;
++
++		unix_del_edge(fpl, edge);
++	} while (i < fpl->count_unix);
++
++out:
++	spin_unlock(&unix_gc_lock);
++
++	fpl->inflight = false;
++}
++
+ int unix_prepare_fpl(struct scm_fp_list *fpl)
+ {
+ 	struct unix_vertex *vertex;
+@@ -141,11 +227,13 @@ err:
+ 
+ void unix_destroy_fpl(struct scm_fp_list *fpl)
+ {
++	if (fpl->inflight)
++		unix_del_edges(fpl);
++
+ 	kvfree(fpl->edges);
+ 	unix_free_vertices(fpl);
+ }
+ 
+-DEFINE_SPINLOCK(unix_gc_lock);
+ unsigned int unix_tot_inflight;
+ static LIST_HEAD(gc_candidates);
+ static LIST_HEAD(gc_inflight_list);
 
 
 
