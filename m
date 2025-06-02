@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-150343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D1BACB763
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B64ACB3E5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 544364C01BA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4E8B485471
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140DC238C0A;
-	Mon,  2 Jun 2025 15:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA9C22C325;
+	Mon,  2 Jun 2025 14:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZECRPrqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5+IAWr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BF823644F;
-	Mon,  2 Jun 2025 15:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A827C1CBA18;
+	Mon,  2 Jun 2025 14:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876820; cv=none; b=PXfO0Rk0E2T7Lyq+/6OP9TVsJG+AIlBto4DlIzZ8cTjY+TiBBTc1IVYiuvFijV4C25BD4+F1LiPAf5a6u/Mt2oq4PNXPMJae0Ybi28QCJRsPN6O/XD9DomqURAdi8aurALlYelmg8zySg4290tChJnMnI2gFZqslGOiu5hTU/Jc=
+	t=1748874453; cv=none; b=R/jdA+DDmRZk6it5oEAz0UEw6QnujCeMglL/peZVOe9rshxlwaIxzqNT4iTPe4Q8WRShW+MdNRQct4HamEXa1ZuA/yG49vwcYGbaw0+1Roj9kJxdCTh56bC+4C33O9Knp64EfwTwRuY+XAj8Glp0+Yq8Bh90CNBsigbHoINP9w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876820; c=relaxed/simple;
-	bh=FDRIDzVey/VLJkmjTbE0k+ml66An/35uKHrO3Uxw/+E=;
+	s=arc-20240116; t=1748874453; c=relaxed/simple;
+	bh=Aequtit8cCk3Wwwfdcj0pJJVQc6wUQjEDncnhK6TmxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SVIKuRNJ4B1qCx97YgoAM12CCdMt65o3jdh98Qa2fVf5vLBzb42aERV0FsfS6JHqrXCEw0UMI+uxGG+BQP72wpxtxtYuCq0XnQ7E6I7MkS6dbgVAn+OJT8DKqbB2AvoTN5qNC0MQcPzkDev69Szyc6mhF6Xye1hSwYL4DD+E0/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZECRPrqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E4AC4CEF0;
-	Mon,  2 Jun 2025 15:06:59 +0000 (UTC)
+	 MIME-Version; b=jX0yTRC5BWMAZyKi63zdKjN1qB2m/IASQvOrbRRo85Ir/YO+3rJk+RElBpe/gSMgA3jKqxYoop4T/WTB8jtaw0JjPbUvCFmDezpwcPb5ypZop95MnagyrUHbDrvFxkHBcEVtWqsdrfiq6w8VrzAWa50KOhEcdV2xx9DGzc8MVH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5+IAWr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173BCC4CEEB;
+	Mon,  2 Jun 2025 14:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876820;
-	bh=FDRIDzVey/VLJkmjTbE0k+ml66An/35uKHrO3Uxw/+E=;
+	s=korg; t=1748874453;
+	bh=Aequtit8cCk3Wwwfdcj0pJJVQc6wUQjEDncnhK6TmxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZECRPrqSnEcDdAVERM4Ex/1BJL6hQyRWsrqD1rWmSQCHvHy89ZS6wT+9oDmHCV5cM
-	 Ieslyu/r3RyN2WXq5BywJw5tmu9pFt+PqQgstXj/Jo9ea17lFfNJlLztoYYKDPcFfW
-	 x7AYpwPtYfXocwSA6huRCwn5bB00NdguW1cnHfx0=
+	b=Z5+IAWr1tDbst/vr6SHBXkS6VvPawOMb5UZbtheyCRHiCsPguy8leOofFeARvC0yO
+	 11gCDLK5kMUURSUNlavpiWrLleLumAgLX2ZO0f5+pd0UCzW80h8BWTP2nRTY2QhZP3
+	 LjHMk2lT4OSaXzEXqyCrLNe7ZjpEue1fSzYc4RlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Roeschley <kyle.roeschley@ni.com>,
-	Brad Mouring <brad.mouring@ni.com>,
-	Erick Shepherd <erick.shepherd@ni.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Peter Chen <peter.chen@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/325] mmc: sdhci: Disable SD card clock before changing parameters
+Subject: [PATCH 5.4 028/204] usb: chipidea: ci_hdrc_imx: use dev_err_probe()
 Date: Mon,  2 Jun 2025 15:46:01 +0200
-Message-ID: <20250602134323.235743760@linuxfoundation.org>
+Message-ID: <20250602134256.788877722@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Shepherd <erick.shepherd@ni.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc ]
+[ Upstream commit 18171cfc3c236a1587dcad9adc27c6e781af4438 ]
 
-Per the SD Host Controller Simplified Specification v4.20 §3.2.3, change
-the SD card clock parameters only after first disabling the external card
-clock. Doing this fixes a spurious clock pulse on Baytrail and Apollo Lake
-SD controllers which otherwise breaks voltage switching with a specific
-Swissbit SD card.
+Use dev_err_probe() to simplify handling errors in ci_hdrc_imx_probe()
 
-Signed-off-by: Kyle Roeschley <kyle.roeschley@ni.com>
-Signed-off-by: Brad Mouring <brad.mouring@ni.com>
-Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250211214645.469279-1-erick.shepherd@ni.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20220614120522.1469957-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 8c531e0a8c2d ("usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/ci_hdrc_imx.c | 23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index 536d21028a116..6822a3249286c 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -2049,10 +2049,15 @@ void sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index 034de11a1ac11..0fd860da9267d 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -342,12 +342,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 		data->pinctrl = devm_pinctrl_get(dev);
+ 		if (PTR_ERR(data->pinctrl) == -ENODEV)
+ 			data->pinctrl = NULL;
+-		else if (IS_ERR(data->pinctrl)) {
+-			if (PTR_ERR(data->pinctrl) != -EPROBE_DEFER)
+-				dev_err(dev, "pinctrl get failed, err=%ld\n",
+-					PTR_ERR(data->pinctrl));
+-			return PTR_ERR(data->pinctrl);
+-		}
++		else if (IS_ERR(data->pinctrl))
++			return dev_err_probe(dev, PTR_ERR(data->pinctrl),
++					     "pinctrl get failed\n");
  
- 	host->mmc->actual_clock = 0;
+ 		pinctrl_hsic_idle = pinctrl_lookup_state(data->pinctrl, "idle");
+ 		if (IS_ERR(pinctrl_hsic_idle)) {
+@@ -377,13 +374,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 		if (PTR_ERR(data->hsic_pad_regulator) == -ENODEV) {
+ 			/* no pad regualator is needed */
+ 			data->hsic_pad_regulator = NULL;
+-		} else if (IS_ERR(data->hsic_pad_regulator)) {
+-			if (PTR_ERR(data->hsic_pad_regulator) != -EPROBE_DEFER)
+-				dev_err(dev,
+-					"Get HSIC pad regulator error: %ld\n",
+-					PTR_ERR(data->hsic_pad_regulator));
+-			return PTR_ERR(data->hsic_pad_regulator);
+-		}
++		} else if (IS_ERR(data->hsic_pad_regulator))
++			return dev_err_probe(dev, PTR_ERR(data->hsic_pad_regulator),
++					     "Get HSIC pad regulator error\n");
  
--	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-+	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
-+	if (clk & SDHCI_CLOCK_CARD_EN)
-+		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
-+			SDHCI_CLOCK_CONTROL);
+ 		if (data->hsic_pad_regulator) {
+ 			ret = regulator_enable(data->hsic_pad_regulator);
+@@ -441,9 +434,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 				&pdata);
+ 	if (IS_ERR(data->ci_pdev)) {
+ 		ret = PTR_ERR(data->ci_pdev);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "ci_hdrc_add_device failed, err=%d\n",
+-					ret);
++		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
+ 		goto err_clk;
+ 	}
  
--	if (clock == 0)
-+	if (clock == 0) {
-+		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
- 		return;
-+	}
- 
- 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
- 	sdhci_enable_clk(host, clk);
 -- 
 2.39.5
 
