@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C792ACB661
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07B4ACB5B3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C029E3B81
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E61DD1947FD6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F2F238C0A;
-	Mon,  2 Jun 2025 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595E522A7E3;
+	Mon,  2 Jun 2025 14:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpvnWMZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqxpES3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBB9238174;
-	Mon,  2 Jun 2025 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161FC23183A;
+	Mon,  2 Jun 2025 14:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876325; cv=none; b=hvaPhxkzE38z17OO+GWAcZxhSykaw7QFJt9rQcci0U0O2ECIc24rtIaS1/abcsvbPZbS1BJ18bQSXjsBwEoI99R9gH1glvziOR4QKRJVUdA4A6AgcdKwTVWdLBrXEzojX9arSs4BI6gk29pe6eeEELE/n6G6bL1jtNb5QepfGLI=
+	t=1748875835; cv=none; b=DtqPsgWz4od/fas5PBKHaXFqo1fPeWjRgux3TYy9SGgxtgSj0BsAFze+44H3b6KJqjUcSbw7AFfKfB4d8G62fcwRyK8Tu+ONkjyryd9Vq6Fzqqa7IveplQ/D368mFrq0UR/TUw7aiPk4zR64fWoBee4Btx9t7Yrg8O8Mlx9VmWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876325; c=relaxed/simple;
-	bh=JOWvlx6YVt9ipASdrXbDCwXL4UKqGrsaRO5Cwf2aeZM=;
+	s=arc-20240116; t=1748875835; c=relaxed/simple;
+	bh=cZ3GbmpVApe43//WWw+qeKXPNeV87dLlZvTH/+EqtUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTrijagvLsxDP/J+1IJJ92uF1t/GH+LA6RshvtWbDX0mTFUOrBVK9V/xhHWBNG/ytJQqnGW4kJ8xPgJZS/5QhEWvWeyftemSZbrwgr6lAl7WMc3TPLs8r8XSBRR5HqjMYO8lZpaNN5QOPDIH4jy7gW95K8aCzrJgQTRO/Xno+Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpvnWMZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8FDC4CEEB;
-	Mon,  2 Jun 2025 14:58:44 +0000 (UTC)
+	 MIME-Version; b=lRxPLYIzh82+mgSBq+P/CbFoOnV/JDocqPUdZko0Gs7nHysRkeW+tJ0HY8jZzT4Mu4rumTD1dJXFKI/vqvCR5cMO0RTkv6Mfq1GZi6T1IWVImq/VPsNScXnJY61+zf7eudjtvO6XgduEZlenxxzCn2nIbSnli28GYqIxPV4FFBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqxpES3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788D9C4CEEB;
+	Mon,  2 Jun 2025 14:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876324;
-	bh=JOWvlx6YVt9ipASdrXbDCwXL4UKqGrsaRO5Cwf2aeZM=;
+	s=korg; t=1748875835;
+	bh=cZ3GbmpVApe43//WWw+qeKXPNeV87dLlZvTH/+EqtUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpvnWMZdsR6HG3C1UyctPcb/njiVP1CdE4gzlM09oCDNSbH1LSJkCNd++tJIOz8JF
-	 cb5CsXnMvDlU87jnIEeY5xvcToVMaho8AW2CP7OYXSvuvtkVyDb+8Kh4U0w0U6BpGX
-	 4OGsdYfUBFpQvlUtkLhPW7aOVyW52HjsgrPLx8AI=
+	b=TqxpES3an3QGgZ0ujne/g7OOV/NTOTDhKO9Iwn1fHSPlrpmLXkz9H3xbTPPcIJxsg
+	 z6XnmDPtz9qgHsxpsveFEy8JAckOm1GJrjwLf4/LN8yZSfi8KLIoICwl+oItHccgvF
+	 ZqZg7cRWkBwNSIzee7BLfIjrEjNB5CTa2oq7cLJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/207] net/mana: fix warning in the writer of client oob
-Date: Mon,  2 Jun 2025 15:48:33 +0200
-Message-ID: <20250602134304.246059613@linuxfoundation.org>
+Subject: [PATCH 5.10 229/270] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
+Date: Mon,  2 Jun 2025 15:48:34 +0200
+Message-ID: <20250602134316.676082180@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5ec7e1c86c441c46a374577bccd9488abea30037 ]
+[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
 
-Do not warn on missing pad_data when oob is in sgl.
+Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
+model for making it working.
 
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://patch.msgid.link/1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 0fb42193643dc..7864611f55a77 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -957,7 +957,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
- 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
- 
- 	if (oob_in_sgl) {
--		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
-+		WARN_ON_ONCE(wqe_req->num_sge < 2);
- 
- 		header->client_oob_in_sgl = 1;
- 
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 06559f2afe326..b4b2781ad22e8 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -431,6 +431,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{       /* Acer Aspire SW3-013 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
++		},
++		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
 -- 
 2.39.5
 
