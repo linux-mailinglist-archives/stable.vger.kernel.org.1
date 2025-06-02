@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1A9ACB7E6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0416DACB575
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848D6189E459
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA08E4C2899
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719E122AE65;
-	Mon,  2 Jun 2025 14:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF1E230BC0;
+	Mon,  2 Jun 2025 14:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSS3houy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPo/g5aq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDEC22ACD6;
-	Mon,  2 Jun 2025 14:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A84B229B1E;
+	Mon,  2 Jun 2025 14:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876389; cv=none; b=uqLEmASOPwMIaIvpbD/2joR6lIIYTg8iKXnjCSdSDLYuzIZTBQviXFdu9KH8MuSJ9SAIBX1TINqlfVwaWdIJeqBvpItiBh6edkUlAh9h46WCRDWOJYVpTiEkklSsyCgX5uhTBoZfiUKToOJ2InT1r3CVVm4S2Ja9O79v4FKcWFg=
+	t=1748875806; cv=none; b=JJF76VLai0BHe7q13i4yPd0/isaKdvQU5XiaqNGtx0A0jObpVeOyO1LJX7cBDADx8RFQMHw1PoswRNSyfkFaIaIm9+mmH8Gk19Wi08KkGS7uz8uHWpImTyWgziIm/7xtDqqFE2G+kJbZ++jo5nY9mw1srFZua6JROmwtiEA/Tqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876389; c=relaxed/simple;
-	bh=YBiOVvLSsdzOqvqYB4heWBnekybTa/efAs/nlLv9T4g=;
+	s=arc-20240116; t=1748875806; c=relaxed/simple;
+	bh=6OaLxzM7S13cVsmSuwGqla5QRyxwiTkJjc4/N34KOAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uM3TWpFUOfe0k0jViB+42y/Ih+/iKfPd85kvw56jViAi0aWfgLVXk26ykoYDHo6g6s4Od3FiOe07+Rf9yVmmWRZT5RG7ti+nN5+osn6NxFlEpaSkxjCKtWjgeIrILtb4pUYN2W6Rnj9DLSTOhvbz+FLd27MY1133vBFpdUshVfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSS3houy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BF7C4CEEB;
-	Mon,  2 Jun 2025 14:59:48 +0000 (UTC)
+	 MIME-Version; b=W8sqIiWj0IUbO8EXgJ8TCc4Efoob7d+koXOZRn3KWrBQYPUaDlK4MrSwgrB8MRsrezXZFB3d6ke4PWug/uywxbYWpaPNrGKtnE8TgD81B+cpNPGDNRTo8QfPRaeI4atdw4U9yBy7rq+Cq6FQUrcM+MNRuzxGxo4bsMe9oKjbQhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPo/g5aq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D089C4CEEE;
+	Mon,  2 Jun 2025 14:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876389;
-	bh=YBiOVvLSsdzOqvqYB4heWBnekybTa/efAs/nlLv9T4g=;
+	s=korg; t=1748875806;
+	bh=6OaLxzM7S13cVsmSuwGqla5QRyxwiTkJjc4/N34KOAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSS3houy/FaCTMmE1Q3mhIEiGqCGMx2U+jPkBDdLdCfXOL1XgHoLiWhyy0k/CI8Hv
-	 HR44cDB47zxdBsbxCk9G3QVTjL+j1OCKtqzhIiD9DRLE774hfyOs7Wld6e6cAcd1py
-	 KaeFnr+AsnS/Y2ZJVdU+7fHIcTTKIsn2SmITBs0I=
+	b=HPo/g5aqLeNr5GIaeZkW5j69Ds9xPBK8KEUV+q/d47wDQ8S16IVHC6eyjsHYrmOuc
+	 BZ1fD1kpDTankPAPlsZqFkTNNVGU5ctJh4/SVEbAWTRM2drbS1+rbmZGe9QmiccXN9
+	 ENgAiel+QwXHZWfdYy5oD7x4tOLFEqLGnpkG2a/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 5.15 162/207] remoteproc: qcom_wcnss: Fix on platforms without fallback regulators
+	Xulin Sun <xulin.sun@windriver.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 249/270] spi: spi-fsl-dspi: restrict register range for regmap access
 Date: Mon,  2 Jun 2025 15:48:54 +0200
-Message-ID: <20250602134305.070651017@linuxfoundation.org>
+Message-ID: <20250602134317.511200899@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-[ Upstream commit 4ca45af0a56d00b86285d6fdd720dca3215059a7 ]
+[ Upstream commit 283ae0c65e9c592f4a1ba4f31917f5e766da7f31 ]
 
-Recent change to handle platforms with only single power domain broke
-pronto-v3 which requires power domains and doesn't have fallback voltage
-regulators in case power domains are missing. Add a check to verify
-the number of fallback voltage regulators before using the code which
-handles single power domain situation.
+DSPI registers are NOT continuous, some registers are reserved and
+accessing them from userspace will trigger external abort, add regmap
+register access table to avoid below abort.
 
-Fixes: 65991ea8a6d1 ("remoteproc: qcom_wcnss: Handle platforms with only single power domain")
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Tested-by: Luca Weiss <luca.weiss@fairphone.com> # sdm632-fairphone-fp3
-Link: https://lore.kernel.org/r/20250511234026.94735-1-matti.lehtimaki@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  For example on S32G:
+
+  # cat /sys/kernel/debug/regmap/401d8000.spi/registers
+
+  Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
+  ...
+  Call trace:
+  regmap_mmio_read32le+0x24/0x48
+  regmap_mmio_read+0x48/0x70
+  _regmap_bus_reg_read+0x38/0x48
+  _regmap_read+0x68/0x1b0
+  regmap_read+0x50/0x78
+  regmap_read_debugfs+0x120/0x338
+
+Fixes: 1acbdeb92c87 ("spi/fsl-dspi: Convert to use regmap and add big-endian support")
+Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
+Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-1-bea884630cfb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_wcnss.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
-index 3e07f5621d0f2..90c09cde6e0fb 100644
---- a/drivers/remoteproc/qcom_wcnss.c
-+++ b/drivers/remoteproc/qcom_wcnss.c
-@@ -446,7 +446,8 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
- 	if (wcnss->num_pds) {
- 		info += wcnss->num_pds;
- 		/* Handle single power domain case */
--		num_vregs += num_pd_vregs - wcnss->num_pds;
-+		if (wcnss->num_pds < num_pd_vregs)
-+			num_vregs += num_pd_vregs - wcnss->num_pds;
- 	} else {
- 		num_vregs += num_pd_vregs;
- 	}
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 0d9201a2999de..7c26eef0570e7 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ //
+ // Copyright 2013 Freescale Semiconductor, Inc.
+-// Copyright 2020 NXP
++// Copyright 2020-2025 NXP
+ //
+ // Freescale DSPI driver
+ // This file contains a driver for the Freescale DSPI
+@@ -1128,6 +1128,20 @@ static int dspi_resume(struct device *dev)
+ 
+ static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
+ 
++static const struct regmap_range dspi_yes_ranges[] = {
++	regmap_reg_range(SPI_MCR, SPI_MCR),
++	regmap_reg_range(SPI_TCR, SPI_CTAR(3)),
++	regmap_reg_range(SPI_SR, SPI_TXFR3),
++	regmap_reg_range(SPI_RXFR0, SPI_RXFR3),
++	regmap_reg_range(SPI_CTARE(0), SPI_CTARE(3)),
++	regmap_reg_range(SPI_SREX, SPI_SREX),
++};
++
++static const struct regmap_access_table dspi_access_table = {
++	.yes_ranges	= dspi_yes_ranges,
++	.n_yes_ranges	= ARRAY_SIZE(dspi_yes_ranges),
++};
++
+ static const struct regmap_range dspi_volatile_ranges[] = {
+ 	regmap_reg_range(SPI_MCR, SPI_TCR),
+ 	regmap_reg_range(SPI_SR, SPI_SR),
+@@ -1145,6 +1159,8 @@ static const struct regmap_config dspi_regmap_config = {
+ 	.reg_stride	= 4,
+ 	.max_register	= 0x88,
+ 	.volatile_table	= &dspi_volatile_table,
++	.rd_table	= &dspi_access_table,
++	.wr_table	= &dspi_access_table,
+ };
+ 
+ static const struct regmap_range dspi_xspi_volatile_ranges[] = {
+@@ -1166,6 +1182,8 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 		.reg_stride	= 4,
+ 		.max_register	= 0x13c,
+ 		.volatile_table	= &dspi_xspi_volatile_table,
++		.rd_table	= &dspi_access_table,
++		.wr_table	= &dspi_access_table,
+ 	},
+ 	{
+ 		.name		= "pushr",
 -- 
 2.39.5
 
