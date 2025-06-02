@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-149436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70167ACB2B8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAC9ACB3F2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B7A44865D2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17ACB4A5A69
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2A723505D;
-	Mon,  2 Jun 2025 14:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244DD22DF9A;
+	Mon,  2 Jun 2025 14:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pd2isJZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFKcnmZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F4F233727;
-	Mon,  2 Jun 2025 14:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D642F22DF84;
+	Mon,  2 Jun 2025 14:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873960; cv=none; b=TrAS0XJdpRW9zsXbfuMt2wEqtNEV9opN3AKjtAcHnFrGhcOS13vh97GsvzBs+mf4ix9+eNeuQVHOZJusiMqqHv7tZPn20NqkL/ah4Yi41lN1emRr0ICSz7mh2BkU2crToqx0yQlwEM2cZItIdCpUtjFB6q62+A5cpu3BYmIxPuw=
+	t=1748874492; cv=none; b=QI12IuEoeRlSbIAjAJrBXB9lygr9SjW2uzZqa6dxiFK2hJR031frh6I4QRWwYojJ2O0vytIQC9HE2GV9hXXcCPHJWoxQ4Jnfad++6LPhd8ilzXJTQ9HOqV7wz0sqXLo30DrmA0iMcn+fPIHyGfa+Phe2p/h6TOOPgVTVE/9Mrac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873960; c=relaxed/simple;
-	bh=cnj9JA4mgkWfvrcbwCW0ePEHFpXI9qrXeKqUrKK0+GE=;
+	s=arc-20240116; t=1748874492; c=relaxed/simple;
+	bh=ACWqTkPzHD+/7huJXUfYvvaZrlroRs7HUzyaRf3iZ8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iENsHROIbr9kmLiWjLKKIioTxtvwj/u7FYgxPiCRScgCPfCXYqYwV5ZR/7gPjHLJhFVZA2SHzoFmlUmz4U++QFFjgndmk/VgFluvnqX//iH96agkLt9lZET90rCmJU3JqJqEoFFjcIdvlrV8cQJdMVvtladDbYgnBn4lVHrKDdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pd2isJZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEBCC4CEEB;
-	Mon,  2 Jun 2025 14:19:16 +0000 (UTC)
+	 MIME-Version; b=hxrHSrsZdekbVVnU+nst2sBwqOmV0BwduW5zZ9LuObYAEy+DLkBRaCt5g9ZC/ivx+e6rgdb97GkCyR07GkBK1+V+5Vq/r1H9VEn6G3fs1DM6npwVyG8NQZ3A/0N7YER1oxj3fDsiptxRWas2gyLloZFtXbOVz/Wyw6PgTh5iG2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFKcnmZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FABC4CEEB;
+	Mon,  2 Jun 2025 14:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873956;
-	bh=cnj9JA4mgkWfvrcbwCW0ePEHFpXI9qrXeKqUrKK0+GE=;
+	s=korg; t=1748874492;
+	bh=ACWqTkPzHD+/7huJXUfYvvaZrlroRs7HUzyaRf3iZ8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pd2isJZAQVUbjlvBWuVQZu7K5rjWyKxK/B0ZfLZbOrfo5CmI4ktJlMmck35Y5q/Oa
-	 00bye1mQIJUpIrgr8W5XaX0UCn8tWnAFkLyvNBeJpLYq6lkW3lDmlgE7iygbBpjSdk
-	 PcyS+Xmadt8LFnpmgKMYcSQN73SBoXoLBVcv5wCs=
+	b=zFKcnmZVUXatbPSKPsoz1b1BKUQo5iDIRVHOM7Ti6aRFuokq9oBqktRfz28B6HyL5
+	 /h30e9XxpOSpsn3dEvNsgEmL0jbPNNNPa0+6v91KmkgC+gjVSeXeVUt/QQhg2Od/lz
+	 u4ru28AUadLWqeS/iOidVN7gMyh06KSF3naCibkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
 	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 279/444] ice: treat dyn_allowed only as suggestion
+Subject: [PATCH 5.4 010/204] net/mlx5: E-Switch, Initialize MAC Address for Default GID
 Date: Mon,  2 Jun 2025 15:45:43 +0200
-Message-ID: <20250602134352.280332196@linuxfoundation.org>
+Message-ID: <20250602134255.881995749@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,135 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Maor Gottlieb <maorg@nvidia.com>
 
-[ Upstream commit a8c2d3932c1106af2764cc6869b29bcf3cb5bc47 ]
+[ Upstream commit 5d1a04f347e6cbf5ffe74da409a5d71fbe8c5f19 ]
 
-It can be needed to have some MSI-X allocated as static and rest as
-dynamic. For example on PF VSI. We want to always have minimum one MSI-X
-on it, because of that it is allocated as a static one, rest can be
-dynamic if it is supported.
+Initialize the source MAC address when creating the default GID entry.
+Since this entry is used only for loopback traffic, it only needs to
+be a unicast address. A zeroed-out MAC address is sufficient for this
+purpose.
+Without this fix, random bits would be assigned as the source address.
+If these bits formed a multicast address, the firmware would return an
+error, preventing the user from switching to switchdev mode:
 
-Change the ice_get_irq_res() to allow using static entries if they are
-free even if caller wants dynamic one.
+Error: mlx5_core: Failed setting eswitch to offloads.
+kernel answers: Invalid argument
 
-Adjust limit values to the new approach. Min and max in limit means the
-values that are valid, so decrease max and num_static by one.
-
-Set vsi::irq_dyn_alloc if dynamic allocation is supported.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 80f09dfc237f ("net/mlx5: Eswitch, enable RoCE loopback traffic")
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250423083611.324567-3-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_irq.c | 25 ++++++++++++------------
- drivers/net/ethernet/intel/ice/ice_lib.c |  2 ++
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/rdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
-index ad82ff7d19957..09f9c7ba52795 100644
---- a/drivers/net/ethernet/intel/ice/ice_irq.c
-+++ b/drivers/net/ethernet/intel/ice/ice_irq.c
-@@ -45,7 +45,7 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
- /**
-  * ice_get_irq_res - get an interrupt resource
-  * @pf: board private structure
-- * @dyn_only: force entry to be dynamically allocated
-+ * @dyn_allowed: allow entry to be dynamically allocated
-  *
-  * Allocate new irq entry in the free slot of the tracker. Since xarray
-  * is used, always allocate new entry at the lowest possible index. Set
-@@ -53,11 +53,12 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
-  *
-  * Returns allocated irq entry or NULL on failure.
-  */
--static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
-+static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
-+					     bool dyn_allowed)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
+index 2389239acadc9..945d90844f0cb 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
+@@ -130,8 +130,8 @@ static void mlx5_rdma_make_default_gid(struct mlx5_core_dev *dev, union ib_gid *
+ 
+ static int mlx5_rdma_add_roce_addr(struct mlx5_core_dev *dev)
  {
--	struct xa_limit limit = { .max = pf->irq_tracker.num_entries,
-+	struct xa_limit limit = { .max = pf->irq_tracker.num_entries - 1,
- 				  .min = 0 };
--	unsigned int num_static = pf->irq_tracker.num_static;
-+	unsigned int num_static = pf->irq_tracker.num_static - 1;
- 	struct ice_irq_entry *entry;
- 	unsigned int index;
- 	int ret;
-@@ -66,9 +67,9 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
- 	if (!entry)
- 		return NULL;
++	u8 mac[ETH_ALEN] = {};
+ 	union ib_gid gid;
+-	u8 mac[ETH_ALEN];
  
--	/* skip preallocated entries if the caller says so */
--	if (dyn_only)
--		limit.min = num_static;
-+	/* only already allocated if the caller says so */
-+	if (!dyn_allowed)
-+		limit.max = num_static;
- 
- 	ret = xa_alloc(&pf->irq_tracker.entries, &index, entry, limit,
- 		       GFP_KERNEL);
-@@ -78,7 +79,7 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
- 		entry = NULL;
- 	} else {
- 		entry->index = index;
--		entry->dynamic = index >= num_static;
-+		entry->dynamic = index > num_static;
- 	}
- 
- 	return entry;
-@@ -272,7 +273,7 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
- /**
-  * ice_alloc_irq - Allocate new interrupt vector
-  * @pf: board private structure
-- * @dyn_only: force dynamic allocation of the interrupt
-+ * @dyn_allowed: allow dynamic allocation of the interrupt
-  *
-  * Allocate new interrupt vector for a given owner id.
-  * return struct msi_map with interrupt details and track
-@@ -285,20 +286,20 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
-  * interrupt will be allocated with pci_msix_alloc_irq_at.
-  *
-  * Some callers may only support dynamically allocated interrupts.
-- * This is indicated with dyn_only flag.
-+ * This is indicated with dyn_allowed flag.
-  *
-  * On failure, return map with negative .index. The caller
-  * is expected to check returned map index.
-  *
-  */
--struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_only)
-+struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_allowed)
- {
- 	int sriov_base_vector = pf->sriov_base_vector;
- 	struct msi_map map = { .index = -ENOENT };
- 	struct device *dev = ice_pf_to_dev(pf);
- 	struct ice_irq_entry *entry;
- 
--	entry = ice_get_irq_res(pf, dyn_only);
-+	entry = ice_get_irq_res(pf, dyn_allowed);
- 	if (!entry)
- 		return map;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 1fc4805353eb5..a6a290514e548 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -587,6 +587,8 @@ ice_vsi_alloc_def(struct ice_vsi *vsi, struct ice_channel *ch)
- 			return -ENOMEM;
- 	}
- 
-+	vsi->irq_dyn_alloc = pci_msix_can_alloc_dyn(vsi->back->pdev);
-+
- 	switch (vsi->type) {
- 	case ICE_VSI_SWITCHDEV_CTRL:
- 		/* Setup eswitch MSIX irq handler for VSI */
+ 	mlx5_rdma_make_default_gid(dev, &gid);
+ 	return mlx5_core_roce_gid_set(dev, 0,
 -- 
 2.39.5
 
