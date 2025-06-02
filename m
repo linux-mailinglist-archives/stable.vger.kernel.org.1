@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F652ACB546
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 302A6ACB34C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 323B64C0EDF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A2B3B7BDA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3D922A7E4;
-	Mon,  2 Jun 2025 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86B3239E79;
+	Mon,  2 Jun 2025 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+y7wlBe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnMtF+SF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F3B17BBF;
-	Mon,  2 Jun 2025 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9363222539E;
+	Mon,  2 Jun 2025 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875527; cv=none; b=cQn32xD3OEaUjL8SeKHYeeRIxbnx2B7UBKlobHc4lH32tkAP6nCRFjnWUuhHvKuZL1HNJkW6Jeh6PqVVvvDLTyzRXh8KnUhRW0EC/QtF6pdrBVh3exonyXxoJkXVXK3O4p4E+ayK0b2txTiTY4sx4MduwTAE0VGyHhPEMMwJsn8=
+	t=1748874085; cv=none; b=UYuCKmwsnMGriJPZe+Sa2laM4V1hBY3juG9bjQSwxCEwSgIW3NmuhYoIip7PNkhST9YgEocYxclUVN9JpI9lji3sX64EoD4x+Wz32XNgpSgg9U4aJg0yMLG3w2vh6sVUPwcSa2xLVodY8nqe3BY8tOTMCDYPWtzR+/4wP9JkHLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875527; c=relaxed/simple;
-	bh=WeDqzgQ48gSDPMPjWY39zgQvsSQ5vmwCO8F2gKAoiM0=;
+	s=arc-20240116; t=1748874085; c=relaxed/simple;
+	bh=0e+cezd0yAXPWtsNyJQWJT0IVT7LNAfwfYd50zXlOCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jld24HCnSHUjmPxOEvZXqXVbPmLvdGP017oYVxi9zTqeL4+SG78B22xaV7YEw0z9rlq/tQJRLXYCGd7P3NS6fa4dsapGui/r0cIJVbuAJ/eusv8FKcllYFVB1obsGAIRu+QjD7fDOr2ZwrVVQrmp42qUfwidX4SYMxcAUltc3/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+y7wlBe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EF4C4CEEB;
-	Mon,  2 Jun 2025 14:45:26 +0000 (UTC)
+	 MIME-Version; b=W/mxl9p953ZcPBFQLoXGptgRSvOifpOodmbB56/fHsTcY0bNZbAMPTExt3pXnWDWNJksKPIDIXHOvHy0tE7AAj1Fom0YKwIMMlYVX3s9Ob79jM5TNe7ensxLJFLthOIDAiOGuExRYe5FrZHLL8MkbuwvtVbs7/GLOnIMfXC0s4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnMtF+SF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB629C4CEF0;
+	Mon,  2 Jun 2025 14:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875527;
-	bh=WeDqzgQ48gSDPMPjWY39zgQvsSQ5vmwCO8F2gKAoiM0=;
+	s=korg; t=1748874085;
+	bh=0e+cezd0yAXPWtsNyJQWJT0IVT7LNAfwfYd50zXlOCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s+y7wlBerWWbCFbQsz7XaccKvpVPGZotdUl5gRWjPlbIWu43VewImPW/WD/Ha3kF8
-	 qCEQYsyngaqkGz13FdGnU0wWorU+oH3tkmEkzrGihrNgxvAwD6QTgHOIJGX+Zk1DKh
-	 Cz4vsAJsH/8r0LlcxWXok8qg6rJj9w0UBzu7GKTM=
+	b=EnMtF+SFgQP9OI+UMkpufhk+0NAKxIrdzTEU0XpXCF+Dq1RZnpcmmE9ToJPm/QW5i
+	 LNj1HbsA6KJOsB1DCNgFwpGuaOC+WnIGyAAGftz0LZ6ehv5+aL7HauBj79lfHthk7u
+	 nlybwlG7NKcUo2beVyfTHMJvvWKzeHBmc8isjhwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Richter <rrichter@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 132/270] libnvdimm/labels: Fix divide error in nd_label_data_init()
+Subject: [PATCH 6.6 353/444] octeontx2-af: Set LMT_ENA bit for APR table entries
 Date: Mon,  2 Jun 2025 15:46:57 +0200
-Message-ID: <20250602134312.623924734@linuxfoundation.org>
+Message-ID: <20250602134355.258030679@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Richter <rrichter@amd.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit ef1d3455bbc1922f94a91ed58d3d7db440652959 ]
+[ Upstream commit 0eefa27b493306928d88af6368193b134c98fd64 ]
 
-If a faulty CXL memory device returns a broken zero LSA size in its
-memory device information (Identify Memory Device (Opcode 4000h), CXL
-spec. 3.1, 8.2.9.9.1.1), a divide error occurs in the libnvdimm
-driver:
+This patch enables the LMT line for a PF/VF by setting the
+LMT_ENA bit in the APR_LMT_MAP_ENTRY_S structure.
 
- Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
- RIP: 0010:nd_label_data_init+0x10e/0x800 [libnvdimm]
+Additionally, it simplifies the logic for calculating the
+LMTST table index by consistently using the maximum
+number of hw supported VFs (i.e., 256).
 
-Code and flow:
-
-1) CXL Command 4000h returns LSA size = 0
-2) config_size is assigned to zero LSA size (CXL pmem driver):
-
-drivers/cxl/pmem.c:             .config_size = mds->lsa_size,
-
-3) max_xfer is set to zero (nvdimm driver):
-
-drivers/nvdimm/label.c: max_xfer = min_t(size_t, ndd->nsarea.max_xfer, config_size);
-
-4) A subsequent DIV_ROUND_UP() causes a division by zero:
-
-drivers/nvdimm/label.c: /* Make our initial read size a multiple of max_xfer size */
-drivers/nvdimm/label.c: read_size = min(DIV_ROUND_UP(read_size, max_xfer) * max_xfer,
-drivers/nvdimm/label.c-                 config_size);
-
-Fix this by checking the config size parameter by extending an
-existing check.
-
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20250320112223.608320-1-rrichter@amd.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 873a1e3d207a ("octeontx2-af: cn10k: Setting up lmtst map table").
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250521060834.19780-2-gakula@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/label.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index 9251441fd8a35..5251058adc4d1 100644
---- a/drivers/nvdimm/label.c
-+++ b/drivers/nvdimm/label.c
-@@ -421,7 +421,8 @@ int nd_label_data_init(struct nvdimm_drvdata *ndd)
- 	if (ndd->data)
- 		return 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+index 0e74c5a2231e6..de91053ad5a3d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+@@ -15,13 +15,17 @@
+ #define LMT_TBL_OP_WRITE	1
+ #define LMT_MAP_TABLE_SIZE	(128 * 1024)
+ #define LMT_MAPTBL_ENTRY_SIZE	16
++#define LMT_MAX_VFS		256
++
++#define LMT_MAP_ENTRY_ENA      BIT_ULL(20)
++#define LMT_MAP_ENTRY_LINES    GENMASK_ULL(18, 16)
  
--	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0) {
-+	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0 ||
-+	    ndd->nsarea.config_size == 0) {
- 		dev_dbg(ndd->dev, "failed to init config data area: (%u:%u)\n",
- 			ndd->nsarea.max_xfer, ndd->nsarea.config_size);
- 		return -ENXIO;
+ /* Function to perform operations (read/write) on lmtst map table */
+ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ 			       int lmt_tbl_op)
+ {
+ 	void __iomem *lmt_map_base;
+-	u64 tbl_base;
++	u64 tbl_base, cfg;
+ 
+ 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
+ 
+@@ -35,6 +39,13 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ 		*val = readq(lmt_map_base + index);
+ 	} else {
+ 		writeq((*val), (lmt_map_base + index));
++
++		cfg = FIELD_PREP(LMT_MAP_ENTRY_ENA, 0x1);
++		/* 2048 LMTLINES */
++		cfg |= FIELD_PREP(LMT_MAP_ENTRY_LINES, 0x6);
++
++		writeq(cfg, (lmt_map_base + (index + 8)));
++
+ 		/* Flushing the AP interceptor cache to make APR_LMT_MAP_ENTRY_S
+ 		 * changes effective. Write 1 for flush and read is being used as a
+ 		 * barrier and sets up a data dependency. Write to 0 after a write
+@@ -52,7 +63,7 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ #define LMT_MAP_TBL_W1_OFF  8
+ static u32 rvu_get_lmtst_tbl_index(struct rvu *rvu, u16 pcifunc)
+ {
+-	return ((rvu_get_pf(pcifunc) * rvu->hw->total_vfs) +
++	return ((rvu_get_pf(pcifunc) * LMT_MAX_VFS) +
+ 		(pcifunc & RVU_PFVF_FUNC_MASK)) * LMT_MAPTBL_ENTRY_SIZE;
+ }
+ 
 -- 
 2.39.5
 
