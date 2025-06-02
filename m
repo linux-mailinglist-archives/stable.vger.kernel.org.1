@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-149153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5FBACB143
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A52ACB145
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B457F177A53
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:14:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF71178F70
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD66223DFC;
-	Mon,  2 Jun 2025 14:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40704226534;
+	Mon,  2 Jun 2025 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Mq9ISMS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewiB8gKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4889B225A37;
-	Mon,  2 Jun 2025 14:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A28221734;
+	Mon,  2 Jun 2025 14:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873065; cv=none; b=oGqmBHKGShztJi6DXZDDqsQlJp6glacpTLha8waznQQLoz0e+xdUvysPLp9XopgzNcmlKy4EkHGZD3rFlmNGDYcgmX10NAmIBvhZtTCc6uM4dW8XbixAp/vHuL9SuMe8+2AZ5DndohNm/rfdRkMAS6FQm8XZMudjCCVqCq90lk4=
+	t=1748873071; cv=none; b=VCFj830VOexElWHWyLSlhwN8nlSqdIBvrjbPsYsJYOwyT8G7rl9hvS/U7pPgTUWhbGicQKWa/tFMKbM2dMdLx1OctAKXKmJc/PJ1owPibHHMBJRg+Xzz3lbwZrNgEFdeI7O3JkQOQrlhGotkEdy+fvDhQEy1288hM0fMpF6rQAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873065; c=relaxed/simple;
-	bh=QtP4TinNJYN26YTKRugZsq18M5WEjnPfvOcPbcd5xCE=;
+	s=arc-20240116; t=1748873071; c=relaxed/simple;
+	bh=34qr2EHv95hOPEwelJN05qmukMwq3AFK5yT6AmTDLLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPtIaiqBcvbcdzf0CxhLePqnAbarxIDW36dXxDRYVp07b0K9dqFOYK7tMpIlheKXkZx4o7r/SWrIDo8b4O5EMKbLyddNw8WzaDpG3PfqntQb3ODbKAHjq/Vnuhof3iL30Y9dcdDqU3P99Li1qt2A9cK3hRulng1slC/gAxgoRE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Mq9ISMS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D5EC4CEEB;
-	Mon,  2 Jun 2025 14:04:24 +0000 (UTC)
+	 MIME-Version; b=rjN2KIk6FhxffzRa07JRYVA/4yktqp94XbRlZpApQNgkpo0UpNMJgWQFTXnFh91bdC5+fW81hWJD+QJVSoPDZAVYnnas1kJ7zqvK3YcLKc9wv+3XMPzr3YvV/4FLj8n1iPUNzpBz7GLGPazWvdusa82RZ5CKWs6y12tlXhiWcpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewiB8gKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A855C4CEEB;
+	Mon,  2 Jun 2025 14:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873065;
-	bh=QtP4TinNJYN26YTKRugZsq18M5WEjnPfvOcPbcd5xCE=;
+	s=korg; t=1748873070;
+	bh=34qr2EHv95hOPEwelJN05qmukMwq3AFK5yT6AmTDLLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Mq9ISMS5EjRrpTfYKLSfKaJiX2QJarzLR98HvFiI6xujh6btfl/IVwgdZH+pBilM
-	 y2/WcYUheEDiiMcfDfK1Set7JTQuloLAtKvwE5ECIiiCBoU7Kc9GzXq6MhHEeobUQI
-	 WnC+dLDlkNjH92+rQiLawLSBguFpKNLtIHllnZbI=
+	b=ewiB8gKeNbm56vutPgtq6EG1Tgukhf3DtT3VUoMmLqH9dTDpi614T0MnckFZOh0Si
+	 P+40uK+kudN8Mc0bIvYXOgu78oQWyzzERBkoPSAzdzz4bf3QCCHSrHrQmVwafKDn3o
+	 LPDOqm8qfBocL2lUZCUJRDLItPLzUVg0htqumddQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Frederick Lawler <fred@cloudflare.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/444] net: enetc: refactor bulk flipping of RX buffers to separate function
-Date: Mon,  2 Jun 2025 15:41:31 +0200
-Message-ID: <20250602134342.023195093@linuxfoundation.org>
+Subject: [PATCH 6.6 028/444] ima: process_measurement() needlessly takes inode_lock() on MAY_READ
+Date: Mon,  2 Jun 2025 15:41:32 +0200
+Message-ID: <20250602134342.062701269@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -67,64 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Frederick Lawler <fred@cloudflare.com>
 
-[ Upstream commit 1d587faa5be7e9785b682cc5f58ba8f4100c13ea ]
+[ Upstream commit 30d68cb0c37ebe2dc63aa1d46a28b9163e61caa2 ]
 
-This small snippet of code ensures that we do something with the array
-of RX software buffer descriptor elements after passing the skb to the
-stack. In this case, we see if the other half of the page is reusable,
-and if so, we "turn around" the buffers, making them directly usable by
-enetc_refill_rx_ring() without going to enetc_new_page().
+On IMA policy update, if a measure rule exists in the policy,
+IMA_MEASURE is set for ima_policy_flags which makes the violation_check
+variable always true. Coupled with a no-action on MAY_READ for a
+FILE_CHECK call, we're always taking the inode_lock().
 
-We will need to perform this kind of buffer flipping from a new code
-path, i.e. from XDP_PASS. Currently, enetc_build_skb() does it there
-buffer by buffer, but in a subsequent change we will stop using
-enetc_build_skb() for XDP_PASS.
+This becomes a performance problem for extremely heavy read-only workloads.
+Therefore, prevent this only in the case there's no action to be taken.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250417120005.3288549-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Frederick Lawler <fred@cloudflare.com>
+Acked-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ security/integrity/ima/ima_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 8feb7d4226bb5..0c09d82dbf00d 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1572,6 +1572,16 @@ static void enetc_xdp_drop(struct enetc_bdr *rx_ring, int rx_ring_first,
- 	}
- }
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index 98308a2bdef6e..068edb0d79f73 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -235,7 +235,9 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 				&allowed_algos);
+ 	violation_check = ((func == FILE_CHECK || func == MMAP_CHECK ||
+ 			    func == MMAP_CHECK_REQPROT) &&
+-			   (ima_policy_flag & IMA_MEASURE));
++			   (ima_policy_flag & IMA_MEASURE) &&
++			   ((action & IMA_MEASURE) ||
++			    (file->f_mode & FMODE_WRITE)));
+ 	if (!action && !violation_check)
+ 		return 0;
  
-+static void enetc_bulk_flip_buff(struct enetc_bdr *rx_ring, int rx_ring_first,
-+				 int rx_ring_last)
-+{
-+	while (rx_ring_first != rx_ring_last) {
-+		enetc_flip_rx_buff(rx_ring,
-+				   &rx_ring->rx_swbd[rx_ring_first]);
-+		enetc_bdr_idx_inc(rx_ring, &rx_ring_first);
-+	}
-+}
-+
- static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 				   struct napi_struct *napi, int work_limit,
- 				   struct bpf_prog *prog)
-@@ -1687,11 +1697,7 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 				enetc_xdp_drop(rx_ring, orig_i, i);
- 				rx_ring->stats.xdp_redirect_failures++;
- 			} else {
--				while (orig_i != i) {
--					enetc_flip_rx_buff(rx_ring,
--							   &rx_ring->rx_swbd[orig_i]);
--					enetc_bdr_idx_inc(rx_ring, &orig_i);
--				}
-+				enetc_bulk_flip_buff(rx_ring, orig_i, i);
- 				xdp_redirect_frm_cnt++;
- 				rx_ring->stats.xdp_redirect++;
- 			}
 -- 
 2.39.5
 
