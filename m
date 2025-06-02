@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09062ACB623
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1263EACB61D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EA6D7A533E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEDF54C3A8D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1E322D7B1;
-	Mon,  2 Jun 2025 15:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FF9231A51;
+	Mon,  2 Jun 2025 14:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sb7m+Q1S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOzn+pJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AA722D4CE;
-	Mon,  2 Jun 2025 15:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD94A231854;
+	Mon,  2 Jun 2025 14:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876874; cv=none; b=QfHAG8qTWP/zC9UpjDp5eXIw+BPtOOp/1qNQiY3jSbQcTA+8RxvU0yD4EjO0te2UOxAucXapbuDEtXu2RfhL7jza6kGbPxJjy++fRlnTZH9e5EeX2gAz1+Qq5H3dtTpZgUhYVSiuJwwgPwp7wk3CACfyjOyaE3nOaX1m0s4lnfc=
+	t=1748875938; cv=none; b=Zt5HJBx95576djw08JZ6iJ6/iMMColPVV21dyM8Qy3Od1+vRAssTx0jfmxg5MdJlGIQ7DlDFbNsUVaMPfzQB8GJxJTsGwrPSYXbS7ddqTScB3u/PVbjLx1jDirVdYYnprpgMchjkFzJcVayTeAwKOa7NeyIWLsBCjlNSQnZdsFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876874; c=relaxed/simple;
-	bh=4zxxQV6mk97o9a4mbBeGLxQ4diTv8leGHwW174eIWvQ=;
+	s=arc-20240116; t=1748875938; c=relaxed/simple;
+	bh=pTovmpH3iGYILiUB5CpRbnX+NUJ3Cjfd42hxBBzWM9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D08OweK+jyZKmy2D55FJVXOpQGeNvXxupb34s8LzlmDw9iVOhYzGmVXtvmAZRBRRzIKSNvxoRImxVV5cebhK3W1e3KS1WneCcSg7X4ssBEH+h6jVvDjXrSSOiF17mUbfQZGJebx7G4Jyv5BuFnbRztc2FmbaKgQv8XuUYW3xe8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sb7m+Q1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C75C4CEEB;
-	Mon,  2 Jun 2025 15:07:53 +0000 (UTC)
+	 MIME-Version; b=gvTBZwTOb1Sjxu6eV+yFgaOfzs6fHPf8U86iJGHMBWJy/VUftQd9lV03/GcSoRpyDoHbIPjOCx2Awz2nOav3O6dSfRA6CzX8eZDVCuAj/0wiCBXUnpiuo1Dntq4HT+SxiwygsQpORxnapiKiaskCwy0ApDDbukJefeFQB9a3Qas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOzn+pJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF78C4CEEB;
+	Mon,  2 Jun 2025 14:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876874;
-	bh=4zxxQV6mk97o9a4mbBeGLxQ4diTv8leGHwW174eIWvQ=;
+	s=korg; t=1748875938;
+	bh=pTovmpH3iGYILiUB5CpRbnX+NUJ3Cjfd42hxBBzWM9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sb7m+Q1St809epZLh5bCT2LoBfi5jwiHFwcOz9Iiv75fRop/9x60tV3ZT66cEdXVW
-	 19o5e8t/B1EQ4ImgxhVJex1zP4qSG+Q6LjMDlZH3Ur2KvdMO7/ZrpzpnQkJeaygtJJ
-	 /GuQaYWvSOsYeNGYiASMLNtIEAqb/2+dX537jFU0=
+	b=qOzn+pJwBfGrr6Gdr8l++noMgC3cevwyZsLVcskixiNt+k2MlG5IFqTOTGYBzwWGq
+	 mcYNISM/HW5k9GsG1dKJXrq85T0rX5otbVjXb2ZmlezbVgGS7QUQ4gJKoIE+pxBjzw
+	 DtW3wMASIsze2PoxQVqWOcF+SC4vB7JdNsrz7gFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Brandon Kammerdiener <brandon.kammerdiener@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/325] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
-Date: Mon,  2 Jun 2025 15:46:17 +0200
-Message-ID: <20250602134323.884195031@linuxfoundation.org>
+Subject: [PATCH 5.15 006/207] bpf: fix possible endless loop in BPF map iteration
+Date: Mon,  2 Jun 2025 15:46:18 +0200
+Message-ID: <20250602134259.018682196@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Brandon Kammerdiener <brandon.kammerdiener@intel.com>
 
-[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
+[ Upstream commit 75673fda0c557ae26078177dd14d4857afbf128d ]
 
-PLLD is usually used as parent clock for internal video devices, like
-DSI for example, while PLLD2 is used as parent for HDMI.
+The _safe variant used here gets the next element before running the callback,
+avoiding the endless loop condition.
 
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Brandon Kammerdiener <brandon.kammerdiener@intel.com>
+Link: https://lore.kernel.org/r/20250424153246.141677-2-brandon.kammerdiener@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Hou Tao <houtao1@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/tegra114.dtsi | 2 +-
+ kernel/bpf/hashtab.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/tegra114.dtsi b/arch/arm/boot/dts/tegra114.dtsi
-index 09996acad6399..bb23bb39dd5b1 100644
---- a/arch/arm/boot/dts/tegra114.dtsi
-+++ b/arch/arm/boot/dts/tegra114.dtsi
-@@ -139,7 +139,7 @@ dsib: dsi@54400000 {
- 			reg = <0x54400000 0x00040000>;
- 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
- 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
--				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
-+				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
- 			clock-names = "dsi", "lp", "parent";
- 			resets = <&tegra_car 82>;
- 			reset-names = "dsi";
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index d08fe64e0e453..24258c54057d4 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -2102,7 +2102,7 @@ static int bpf_for_each_hash_elem(struct bpf_map *map, void *callback_fn,
+ 		b = &htab->buckets[i];
+ 		rcu_read_lock();
+ 		head = &b->head;
+-		hlist_nulls_for_each_entry_rcu(elem, n, head, hash_node) {
++		hlist_nulls_for_each_entry_safe(elem, n, head, hash_node) {
+ 			key = elem->key;
+ 			if (is_percpu) {
+ 				/* current cpu value for percpu map */
 -- 
 2.39.5
 
