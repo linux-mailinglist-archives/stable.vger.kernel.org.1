@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F57CACB573
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F567ACB31B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 101577A1AE8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ED7D1944A9F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2CC223DFA;
-	Mon,  2 Jun 2025 14:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C2223C8A2;
+	Mon,  2 Jun 2025 14:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eie6m7Uj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnGDcXtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E9B1EA65;
-	Mon,  2 Jun 2025 14:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51349223DF6;
+	Mon,  2 Jun 2025 14:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876101; cv=none; b=kdAOvJ4I/VYmuuxgTy/qkSBwP3lE6zA2n/UpUqaEbV80fMqHPVCL1Zfag8ffoW2HuDDfxcgFQ4vBVTGpoZbtIjGenm7LSrF33AgbSceaUxPeRlJYsqf2ZNG5BVz1Fln+5iy2WZ5L5PscCGrMpSAcJP+/XvEE7ka0q0qH5bxRq3M=
+	t=1748874163; cv=none; b=K/raqyqxc6Y4XRz2HK3AuJlIIBOS9KKJmft5SX+Ua/Scxn/RbjBnoZn9W6ZrvN4ShZoQDzQMks+YMgljlOzM12l6nxPiVWPMHQhqmsGTVegrrvmysIzFvMIOmkriW/Qayq+9nhfXP2Vp6mS4yku/MpbWDiI2y1TjB7aHtbKJ7uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876101; c=relaxed/simple;
-	bh=GnGVeqmEtbz3r8orxYZtknt3gpJ3NoIZAPriijjtFWc=;
+	s=arc-20240116; t=1748874163; c=relaxed/simple;
+	bh=W3jKQK6XwfYRSve7GU9aqYQnLIqRrIpfE0xoE7l4vUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQK4ww5ofBtEU+C7zUrupukLcjOhr84ycjDpQK0RZETZY4uaspSaXE4aakAFdM2PMnoum7KlOoOHJvbdSuxeF5Di0qB3c5dc9YYVyEZJpO17k6siTGY6f1o+3eL9oGtFLfmE3D4+lpAm9bcPaQyeFqs2mM1aVpnLdO+2od3SDww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eie6m7Uj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B004C4CEEE;
-	Mon,  2 Jun 2025 14:55:00 +0000 (UTC)
+	 MIME-Version; b=NZ37SnO8ZN7ZtWAAOfXfsvSi+ZJP8uGFrI/xEf8dJmHIM+67b0imWFdH4fh965qpCHvSD8n/z/Ccrzhv/jStJ/wdILJlE3NTmmocLZT1G2fcETF4DdJLysUKWszRoKFaOGIm88rLycwXrolGMyvA1iv9GDh4t9i1Dd2xWr1n+0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnGDcXtM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDF5C4CEEE;
+	Mon,  2 Jun 2025 14:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876101;
-	bh=GnGVeqmEtbz3r8orxYZtknt3gpJ3NoIZAPriijjtFWc=;
+	s=korg; t=1748874163;
+	bh=W3jKQK6XwfYRSve7GU9aqYQnLIqRrIpfE0xoE7l4vUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eie6m7Ujv2f2VDO5lAIW0Ua1uEwDpWVo71M/R2DH//GM3MnM0/Wk6f1bBqwiopMD3
-	 NO1CmYQVXEOs1eDVtoj7lloIz4cC09MBBZ1ySeV/2FGSt1Nnhd1PtIlt6jmSDFxMAv
-	 ljZQzCAe8q2g6n4Waj2PP0dLuBRiObcf5cLxl+jo=
+	b=JnGDcXtMOsp6EdydrGZoazzgKyK0ge/MTNnRdMdPNdFwLU7km47sKmeKMAde1I4/k
+	 VyjUVWUjEboEFLomIewUh9O1jbf0Rf7WNWpOgoKrOy4udRXBO7lc7mmWg7uFBABSL8
+	 WVA/vpPGw9FT2lKnPAOZiavhjg3OUX7eJM51iMYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Lu <victorchengchi.lu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/207] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
+Subject: [PATCH 6.6 379/444] ksmbd: fix stream write failure
 Date: Mon,  2 Jun 2025 15:47:23 +0200
-Message-ID: <20250602134301.518333288@linuxfoundation.org>
+Message-ID: <20250602134356.298053079@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
+[ Upstream commit 1f4bbedd4e5a69b01cde2cc21d01151ab2d0884f ]
 
-SRIOV VF does not have write access to AGP BAR regs.
-Skip the writes to avoid a dmesg warning.
+If there is no stream data in file, v_len is zero.
+So, If position(*pos) is zero, stream write will fail
+due to stream write position validation check.
+This patch reorganize stream write position validation.
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0ca6df4f40cf ("ksmbd: prevent out-of-bounds stream writes by validating *pos")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/smb/server/vfs.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-index f51fd0688eca7..9b881d8413b14 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-@@ -92,12 +92,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- {
- 	uint64_t value;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index f6616d687365a..3bbf238270605 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -426,10 +426,15 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 	ksmbd_debug(VFS, "write stream data pos : %llu, count : %zd\n",
+ 		    *pos, count);
  
--	/* Program the AGP BAR */
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
--
- 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
-+		/* Program the AGP BAR */
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
++	if (*pos >= XATTR_SIZE_MAX) {
++		pr_err("stream write position %lld is out of bounds\n",	*pos);
++		return -EINVAL;
++	}
 +
- 		/* Program the system aperture low logical page number. */
- 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+ 	size = *pos + count;
+ 	if (size > XATTR_SIZE_MAX) {
+ 		size = XATTR_SIZE_MAX;
+-		count = (*pos + count) - XATTR_SIZE_MAX;
++		count = XATTR_SIZE_MAX - *pos;
+ 	}
+ 
+ 	v_len = ksmbd_vfs_getcasexattr(idmap,
+@@ -443,13 +448,6 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 		goto out;
+ 	}
+ 
+-	if (v_len <= *pos) {
+-		pr_err("stream write position %lld is out of bounds (stream length: %zd)\n",
+-				*pos, v_len);
+-		err = -EINVAL;
+-		goto out;
+-	}
+-
+ 	if (v_len < size) {
+ 		wbuf = kvzalloc(size, GFP_KERNEL);
+ 		if (!wbuf) {
 -- 
 2.39.5
 
