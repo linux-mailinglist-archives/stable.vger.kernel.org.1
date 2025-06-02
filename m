@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2869ACB87B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 578C8ACB46D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1811BC3E90
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D2FF1944AF2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B7B225766;
-	Mon,  2 Jun 2025 15:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13D222F77F;
+	Mon,  2 Jun 2025 14:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2/F8NS+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWnlX7yE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FA91FF61E;
-	Mon,  2 Jun 2025 15:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901FD225388;
+	Mon,  2 Jun 2025 14:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877418; cv=none; b=Z9W8a/n80eGhRejAlie6J7nyZ/chxEgo2a6zIIy/cbiPFXtBM/0qgY8fpcE+th7rtSv4acXDWfzLj1cVMjM7F8STU2gb7CCfSPNvhhKtSRCkWeKQBG0beycmhWgtuE2CKz6C4CTh1XqEvlo3W5ra9buM8eOw0TaOum3tJYDu/v8=
+	t=1748874944; cv=none; b=em44KGOzHDRhXebLc9elaAVdU/HwWidureVIQ1wu0JbsvB5C4TqmgTG5aq5oI286aLXgi9aPagNxumCg8vfjtgCtYK0T5QsuBUvWa47EzUroXqkkK1YPgRcJUeu/UrOZcf8E6U5/ZgDFkEUQxT/Ldw+NooU6RqXJJiABwAAxbt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877418; c=relaxed/simple;
-	bh=k9mc60W2B7ng2q+5Fh8fgROGyWuCoikzHsvAoL+alLY=;
+	s=arc-20240116; t=1748874944; c=relaxed/simple;
+	bh=NZHaNj2Z302+zOcf7jXty+9yx3+1U5DHES+j58KIrkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jn0yGsTiw4M7Re9BXjiIJv+vR2vKDNy/Ku11Ewx9Ji32uFvDEpJgl3d58YzWACR+orOEUHp3BQC8S+XxIVn0seS7gUGJCQjN19bQ9ZfDFShM/rhP3/aQG83a2SmvtzPWX1rfQR8D8zzHpO7bq8g1fSb6Auw/viRVquU9VMp9Iug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2/F8NS+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1C0C4CEEE;
-	Mon,  2 Jun 2025 15:16:57 +0000 (UTC)
+	 MIME-Version; b=J4CvNcpnQf6otFtxJXeqksQC42wtb7wP8Zp+Lj9QC0x/N4e81lZoYmlFqzLKx2AklfWqJAH5Ii4+Pq2uouDdCj2T/lnpjyif+WRFaRVLbmOsWMf/C/3B62C+SD00e7MK4jYEgXU/+w127yO9xCv/JzqqHwKCzWCWkIgwbkI5VAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWnlX7yE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020C6C4CEEB;
+	Mon,  2 Jun 2025 14:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877417;
-	bh=k9mc60W2B7ng2q+5Fh8fgROGyWuCoikzHsvAoL+alLY=;
+	s=korg; t=1748874944;
+	bh=NZHaNj2Z302+zOcf7jXty+9yx3+1U5DHES+j58KIrkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X2/F8NS+KjZTo6gYAWJ/KyMPupg/dGazpFbilb45FVmJXEEgit1YhN6iNPqrO5sZn
-	 XXfU0zDFuQlcNicNzPm9NTSKm2ZBqFsoiBExvgYVIDzpP4OVT8EGNVYXvxCjb7Hd93
-	 BvR0zxUC5nHK3Y1ThllSB78mNwGJF+zADSabKrUU=
+	b=OWnlX7yEp2az3HEARVm+m3OLCLVG3Cp+Las/uJKcaSZmsYPSSrNhsPmr5VkkiLylc
+	 q2sY0e7NYOpkUXxz6mD2FfL5dsGvDsZh37a9zQbLZejT2m9ItF7pyGiE3O3zbqUBa6
+	 xQoPBH8X9W21DgAgmN0+Qt6l2BPxGn6FAQMTiBck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 241/325] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Marcus Seyfarth <m.seyfarth@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.4 184/204] kbuild: Disable -Wdefault-const-init-unsafe
 Date: Mon,  2 Jun 2025 15:48:37 +0200
-Message-ID: <20250602134329.581122217@linuxfoundation.org>
+Message-ID: <20250602134302.906049241@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
+commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
 
-While the MDIO address of the internal PHY on Allwinner sun8i chips is
-generally 1, of_mdio_parse_addr is used to cleanly parse the address
-from the device-tree instead of hardcoding it.
+A new on by default warning in clang [1] aims to flags instances where
+const variables without static or thread local storage or const members
+in aggregate types are not initialized because it can lead to an
+indeterminate value. This is quite noisy for the kernel due to
+instances originating from header files such as:
 
-A commit reworking the code ditched the parsed value and hardcoded the
-value 1 instead, which didn't really break anything but is more fragile
-and not future-proof.
+  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+     62 |         typecheck(typeof(ring->size), next);
+        |         ^
+  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
+     10 | ({      type __dummy; \
+        |              ^
 
-Restore the initial behavior using the parsed address returned from the
-helper.
+  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+        |                            ^
+  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
+    138 | #define time_before(a,b)        time_after(b,a)
+        |                                 ^
+  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
+    128 |         (typecheck(unsigned long, a) && \
+        |          ^
+  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+     11 |         typeof(x) __dummy2; \
+        |                   ^
 
-Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
+    409 |         struct list_head *next = smp_load_acquire(&head->next);
+        |                                  ^
+  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
+    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
+        |                             ^
+  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
+    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
+        |                                                                  ^
+  include/linux/list.h:409:27: note: member '__val' declared 'const' here
+
+  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+     66 |         struct scatter_walk walk;
+        |                             ^
+  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
+    112 |                 void *const addr;
+        |                             ^
+
+  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+    733 |         struct vm_area_struct pseudo_vma;
+        |                               ^
+  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
+    803 |                 const vm_flags_t vm_flags;
+        |                                  ^
+
+Silencing the instances from typecheck.h is difficult because '= {}' is
+not available in older but supported compilers and '= {0}' would cause
+warnings about a literal 0 being treated as NULL. While it might be
+possible to come up with a local hack to silence the warning for
+clang-21+, it may not be worth it since -Wuninitialized will still
+trigger if an uninitialized const variable is actually used.
+
+In all audited cases of the "field" variant of the warning, the members
+are either not used in the particular call path, modified through other
+means such as memset() / memcpy() because the containing object is not
+const, or are within a union with other non-const members.
+
+Since this warning does not appear to have a high signal to noise ratio,
+just disable it.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Apply change to Makefile instead of scripts/Makefile.extrawarn
+         due to lack of e88ca24319e4 in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Makefile |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index f834472599f75..0921b78c6244f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -948,7 +948,7 @@ static int sun8i_dwmac_set_syscon(struct device *dev,
- 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
- 		 * address. No need to mask it again.
- 		 */
--		reg |= 1 << H3_EPHY_ADDR_SHIFT;
-+		reg |= ret << H3_EPHY_ADDR_SHIFT;
- 	} else {
- 		/* For SoCs without internal PHY the PHY selection bit should be
- 		 * set to 0 (external PHY).
--- 
-2.39.5
-
+--- a/Makefile
++++ b/Makefile
+@@ -770,6 +770,18 @@ KBUILD_CFLAGS += -Wno-tautological-compa
+ # source of a reference will be _MergedGlobals and not on of the whitelisted names.
+ # See modpost pattern 2
+ KBUILD_CFLAGS += -mno-global-merge
++
++# Clang may emit a warning when a const variable, such as the dummy variables
++# in typecheck(), or const member of an aggregate type are not initialized,
++# which can result in unexpected behavior. However, in many audited cases of
++# the "field" variant of the warning, this is intentional because the field is
++# never used within a particular call path, the field is within a union with
++# other non-const members, or the containing object is not const so the field
++# can be modified via memcpy() / memset(). While the variable warning also gets
++# disabled with this same switch, there should not be too much coverage lost
++# because -Wuninitialized will still flag when an uninitialized const variable
++# is used.
++KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
+ else
+ 
+ # Warn about unmarked fall-throughs in switch statement.
 
 
 
